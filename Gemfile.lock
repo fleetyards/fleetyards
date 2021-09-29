@@ -159,6 +159,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    committee (4.4.0)
+      json_schema (~> 0.14, >= 0.14.3)
+      openapi_parser (>= 0.11.1, < 1.0)
+      rack (>= 1.5)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crack (0.4.5)
@@ -183,6 +187,7 @@ GEM
       devise (~> 4.0)
       railties (~> 7.0)
       rotp (~> 6.0)
+    diff-lcs (1.4.4)
     discordrb-webhooks (3.5.0)
       rest-client (>= 2.0.0)
     docile (1.4.0)
@@ -203,6 +208,11 @@ GEM
       ffi (>= 1.15.0)
     excon (0.100.0)
     execjs (2.8.1)
+    factory_bot (6.2.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     faker (3.2.0)
       i18n (>= 1.8.11, < 2)
     faraday (2.7.10)
@@ -301,6 +311,9 @@ GEM
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
+    json_schema (0.21.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -375,6 +388,7 @@ GEM
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     oj (3.15.0)
+    openapi_parser (0.14.1)
     opensearch-api (2.2.0)
       multi_json
     opensearch-ruby (2.1.0)
@@ -520,6 +534,30 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
+    rspec-core (3.10.1)
+      rspec-support (~> 3.10.0)
+    rspec-expectations (3.10.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.10.0)
+    rspec-mocks (3.10.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.10.0)
+    rspec-rails (5.0.1)
+      actionpack (>= 5.2)
+      activesupport (>= 5.2)
+      railties (>= 5.2)
+      rspec-core (~> 3.10)
+      rspec-expectations (~> 3.10)
+      rspec-mocks (~> 3.10)
+      rspec-support (~> 3.10)
+    rspec-support (3.10.2)
+    rswag-api (2.9.0)
+      railties (>= 3.1, < 7.1)
+    rswag-specs (2.9.0)
+      activesupport (>= 3.1, < 7.1)
+      json-schema (>= 2.2, < 4.0)
+      railties (>= 3.1, < 7.1)
+      rspec-core (>= 2.14)
     rubocop (1.52.1)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -698,6 +736,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.1)
   carrierwave
   coffee-rails
+  committee
   dalli
   data_migrate
   devise
@@ -707,6 +746,7 @@ DEPENDENCIES
   dotenv-rails
   dynamic_fields_for_rails
   ed25519
+  factory_bot_rails
   faker
   flipper
   flipper-active_record
@@ -767,6 +807,9 @@ DEPENDENCIES
   responders
   rollups
   rqrcode
+  rspec-rails
+  rswag-api
+  rswag-specs
   sass-rails
   searchkick
   selectize-rails

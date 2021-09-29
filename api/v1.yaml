@@ -1,0 +1,2470 @@
+---
+openapi: 3.0.1
+info:
+  title: FleetYards.net API v1
+  version: v1
+  description: "> “Strap into one of dozens of ships and embark on a life within the
+    Star Citizen universe. Unbound by profession or skill sets, you choose the path
+    of your own life.”\n\nThis API provides basic Information about All Ships / Components
+    / Manufacturers for the upcomming Space Simulation Star Citizen.\n\nNOTE: This
+    document is a **work in progress**.\n \n## Current Version\n\nThe Current Version
+    is ```v1``` and is included in each Request like this:\n```\nhttps://api.fleetyards.net/v1/ships\n```\n
+    \n## Schema\n\nAll API access is over HTTPS, and accessed from the https://api.fleetyards.net.
+    All data is sent and received as JSON.\n\nBlank fields are included as null instead
+    of being omitted.\n\n### Timestamps\nAll timestamps return in ISO 8601 format:\n\n```\nYYYY-MM-DDTHH:MM:SSZ\n```\n\n###
+    Summary Representations\nWhen you fetch a list of resources, the response includes
+    a subset of the attributes for that resource. This is the \"summary\" representation
+    of the resource.\n\nExample: When you get a list of models, you get the summary
+    representation of each model:\n\n```\nGET /v1/models\n```\n\n<br>\n<h3>Detailed
+    Representations</h3>\nWhen you fetch an individual resource, the response typically
+    includes all attributes for that resource. This is the \"detailed\" representation
+    of the resource.\n\nExample: When you get an individual model, you get the detailed
+    representation of the model. Here, we fetch Origins ```300i``` repository:\n\n```\nGET
+    /v1/models/300i\n```\n\nThe documentation provides an example response for each
+    API method. The example response illustrates all attributes that are returned
+    by that method.\n \n## Client Errors\n \n## Authentication\n \n## Pagination\n\nRequests
+    that return multiple items will be paginated to ```30``` items by default. \nYou
+    can specify further pages with the ```?page``` parameter. \nFor some resources,
+    you can also set a custom page size up to ```200``` with the ```?perPage``` parameter.
+    Note that for technical reasons not all endpoints respect the ```?perPage``` parameter,
+    see events for example.\n\ncurl 'https://api.fleetyards.net/models?page=2&perPage=200'\nNote
+    that page numbering is 1-based and that omitting the ```?page``` parameter will
+    return the first page.\n\n### Link Header\nThe Link header includes pagination
+    information:\n\n```\nLink: <https://api.fleetyards.net/models?page=1&perPage=200>;
+    rel=\"next\",\n  <https://api.fleetyards.net/models?page=2&perPage=200>; rel=\"last\"\n```\nThe
+    example includes a line break for readability.\n\nThis Link response header contains
+    one or more Hypermedia link relations, some of which may require expansion as
+    URI templates.\n\nThe possible ```rel``` values are:\n\nName | Description                                                  \n----:|
+    ------------------------------------------------------------\nnext | The link
+    relation for the immediate next page of results.    \nlast | The link relation
+    for the last page of results.              \nfirst| The link relation for the
+    first page of results.             \nprev | The link relation for the immediate
+    previous page of results.\n\n## Rate Limiting\n\n# Embed Fleetview\n\n## Setup\n\nTo
+    get a custom Ship List on your Website you can just paste the example code on
+    the right side at the position where you want to render a Ship List.\n\n```html\n<div
+    id=\"fleetyards-view\"></div>\n<script>\n    var fleetyards_config = function
+    () {\n        return {\n            details: true, // Set to false if you want
+    to display a minimal version of the Ship Panel\n            grouped: true, //
+    Set to false if you want to display the same Ships multiple times in your Fleetview.\n
+    \           fleetchart: false, // Set to true if you want to display a Fleetchart
+    instead of the normal Ship Panels.\n            fleetchartGrouped: false, // Set
+    to true if you want to group the Ships on the Fleetchart View or not.\n            fleetchartScale:
+    50, // Initial Scale of the Fleetchart\n            groupedButton: false, // Allow
+    the User to toggle Groupped Views\n            fleetchartSlider: false, // Set
+    to true to display a slider which allows users to scale the Fleetchart\n            ships:
+    ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List
+    of Shipnames (slugs) you want to display,\n            users: ['torlekmaru', 'johndoe'],
+    // Replace the Array with a list of Fleetyards.net usernames, alternative to the
+    ships option.\n        }\n    };\n    (function() {\n        var d = document,
+    s = d.createElement('script');\n        s.src = 'https://fleetyards.net/embed.js#'
+    + new Date().getTime();\n        (d.head || d.body).appendChild(s);\n    })();\n</script>\n<noscript>Please
+    enable JavaScript to view your custom Fleetview powered by FleetYards.net.</a></noscript>\n```\n\n##
+    Options\n\n### Show Details\n\n```details```: `true|false` (boolean) default is
+    `true` \n\nDisplay details about the given Ship or just a minimal version. \n\n<br>\n\n###
+    Grouped View\n\n```grouped```: `true|false` (boolean) default is `true` \n\nGroup
+    duplicated Ships and Show a count on each Ship Panel. \n\n<br>\n\n### Render as
+    Fleetchart\n\n```fleetchart```: `true|false` (boolean) default is `false` \n\nDisplay
+    the Fleetview as a Fleetchart with correct Ship Dimensions.\n\n<br>\n\n### Grouped
+    View for Fleetchart\n\n```fleetchartGrouped```: `true|false` (boolean) default
+    is `false` \n\nGroup duplicated Ships in the Fleetchart\n\n<br>\n\n### Initial
+    Fleetchart Scale\n\n```fleetchartScale```: `50` (int) default is `50` \n\nSet
+    the initial Scale of the Fleetchart, can be between 10 - 300 for Desktop and 10
+    - 100 for Mobile.\n\n<br>\n\n\n### Show Fleetchart Slider\n\n```fleetchartSlider```:
+    `true|false` (boolean) default is `false` \n\nDisplay a slider to allow users
+    to scale the Fleetchart.\n\n<br>\n\n### Ships List\n\n```ships```: `[]` (Array
+    of Strings) default is `[]`\n\nThe Fleetview expects a List of Shipnames (slugs).
+    If you want to have Ships multiple times in the Fleetview just add them multiple
+    times to the list.\nTo be able to resolve the correct Ships from the Fleetyards.net
+    API you need to provide every Shipname (slug) in the correct Format.\n\nYou can
+    use the Following Mapping to find out what the slug looks like for each Ship:\n\n```json\n{\n
+    \   \"100i\": \"100i\",\n    \"125a\": \"125a\",\n    \"135c\": \"135c\",\n    \"300i\":
+    \"300i\",\n    \"315p\": \"315p\",\n    \"325a\": \"325a\",\n    \"350r\": \"350r\",\n
+    \   \"600i Explorer\": \"600i-explorer\",\n    \"600i Touring\": \"600i-touring\",\n
+    \   \"85X\": \"85x\",\n    \"890 Jump\": \"890-jump\",\n    \"A2 Hercules\": \"a2-hercules\",\n
+    \   \"Apollo Medivac\": \"apollo-medivac\",\n    \"Apollo Triage\": \"apollo-triage\",\n
+    \   \"Aurora CL\": \"aurora-cl\",\n    \"Aurora ES\": \"aurora-es\",\n    \"Aurora
+    LN\": \"aurora-ln\",\n    \"Aurora LX\": \"aurora-lx\",\n    \"Aurora MR\": \"aurora-mr\",\n
+    \   \"Avenger Stalker\": \"avenger-stalker\",\n    \"Avenger Titan\": \"avenger-titan\",\n
+    \   \"Avenger Titan Renegade\": \"avenger-titan-renegade\",\n    \"Avenger Warlock\":
+    \"avenger-warlock\",\n    \"Blade\": \"blade\",\n    \"Buccaneer\": \"buccaneer\",\n
+    \   \"C2 Hercules\": \"c2-hercules\",\n    \"Carrack\": \"carrack\",\n    \"Caterpillar\":
+    \"caterpillar\",\n    \"Caterpillar Pirate Edition\": \"caterpillar-pirate-edition\",\n
+    \   \"Constellation Andromeda\": \"constellation-andromeda\",\n    \"Constellation
+    Aquila\": \"constellation-aquila\",\n    \"Constellation Phoenix\": \"constellation-phoenix\",\n
+    \   \"Constellation Phoenix Emerald\": \"constellation-phoenix-emerald\",\n    \"Constellation
+    Taurus\": \"constellation-taurus\",\n    \"Crucible\": \"crucible\",\n    \"Cutlass
+    Black\": \"cutlass-black\",\n    \"Cutlass Blue\": \"cutlass-blue\",\n    \"Cutlass
+    Red\": \"cutlass-red\",\n    \"Cyclone\": \"cyclone\",\n    \"Cyclone-AA\": \"cyclone-aa\",\n
+    \   \"Cyclone-RC\": \"cyclone-rc\",\n    \"Cyclone-RN\": \"cyclone-rn\",\n    \"Cyclone-TR\":
+    \"cyclone-tr\",\n    \"Defender\": \"defender\",\n    \"Dragonfly Black\": \"dragonfly-black\",\n
+    \   \"Dragonfly Starkitten Edition\": \"dragonfly-starkitten-edition\",\n    \"Dragonfly
+    Yellowjacket\": \"dragonfly-yellowjacket\",\n    \"Eclipse\": \"eclipse\",\n    \"Endeavor\":
+    \"endeavor\",\n    \"F7A Hornet\": \"f7a-hornet\",\n    \"F7C Hornet\": \"f7c-hornet\",\n
+    \   \"F7C Hornet Wildfire\": \"f7c-hornet-wildfire\",\n    \"F7C-M Super Hornet\":
+    \"f7c-m-super-hornet\",\n    \"F7C-R Hornet Tracker\": \"f7c-r-hornet-tracker\",\n
+    \   \"F7C-S Hornet Ghost\": \"f7c-s-hornet-ghost\",\n    \"F8C\": \"f8c\",\n    \"F8C
+    Executive\": \"f8c-executive\",\n    \"Freelancer\": \"freelancer\",\n    \"Freelancer
+    DUR\": \"freelancer-dur\",\n    \"Freelancer MAX\": \"freelancer-max\",\n    \"Freelancer
+    MIS\": \"freelancer-mis\",\n    \"Genesis Starliner\": \"genesis-starliner\",\n
+    \   \"Geotack Planetary Beacon\": \"geotack-planetary-beacon\",\n    \"Geotack-X
+    Planetary Beacon\": \"geotack-x-planetary-beacon\",\n    \"Gladiator\": \"gladiator\",\n
+    \   \"Gladius\": \"gladius\",\n    \"Gladius Valiant\": \"gladius-valiant\",\n
+    \   \"Glaive\": \"glaive\",\n    \"Hammerhead\": \"hammerhead\",\n    \"Hawk\":
+    \"hawk\",\n    \"Herald\": \"herald\",\n    \"Hull A\": \"hull-a\",\n    \"Hull
+    B\": \"hull-b\",\n    \"Hull C\": \"hull-c\",\n    \"Hull D\": \"hull-d\",\n    \"Hull
+    E\": \"hull-e\",\n    \"Hurricane\": \"hurricane\",\n    \"Idris-M\": \"idris-m\",\n
+    \   \"Idris-P\": \"idris-p\",\n    \"Javelin\": \"javelin\",\n    \"Khartu-Al\":
+    \"khartu-al\",\n    \"M2 Hercules\": \"m2-hercules\",\n    \"M50\": \"m50\",\n
+    \   \"MPUV Cargo\": \"mpuv-cargo\",\n    \"MPUV Personnel\": \"mpuv-personnel\",\n
+    \   \"Merchantman\": \"merchantman\",\n    \"Mustang Alpha\": \"mustang-alpha\",\n
+    \   \"Mustang Beta\": \"mustang-beta\",\n    \"Mustang Delta\": \"mustang-delta\",\n
+    \   \"Mustang Gamma\": \"mustang-gamma\",\n    \"Mustang Omega\": \"mustang-omega\",\n
+    \   \"Nova Tank\": \"nova-tank\",\n    \"Nox\": \"nox\",\n    \"Nox Kue\": \"nox-kue\",\n
+    \   \"Orion\": \"orion\",\n    \"P52 Merlin\": \"p52-merlin\",\n    \"P72 Archimedes\":
+    \"p72-archimedes\",\n    \"PTV\": \"ptv\",\n    \"Pioneer\": \"pioneer\",\n    \"Polaris\":
+    \"polaris\",\n    \"Prospector\": \"prospector\",\n    \"Prowler\": \"prowler\",\n
+    \   \"Razor\": \"razor\",\n    \"Razor EX\": \"razor-ex\",\n    \"Razor LX\":
+    \"razor-lx\",\n    \"Reclaimer\": \"reclaimer\",\n    \"Redeemer\": \"redeemer\",\n
+    \   \"Reliant Kore\": \"reliant-kore\",\n    \"Reliant Mako\": \"reliant-mako\",\n
+    \   \"Reliant Sen\": \"reliant-sen\",\n    \"Reliant Tana\": \"reliant-tana\",\n
+    \   \"Retaliator Base\": \"retaliator-base\",\n    \"Retaliator Bomber\": \"retaliator-bomber\",\n
+    \   \"Sabre\": \"sabre\",\n    \"Sabre Comet\": \"sabre-comet\",\n    \"Sabre
+    Raven\": \"sabre-raven\",\n    \"Scythe\": \"scythe\",\n    \"Starfarer\": \"starfarer\",\n
+    \   \"Starfarer Gemini\": \"starfarer-gemini\",\n    \"Terrapin\": \"terrapin\",\n
+    \   \"Ursa Rover\": \"ursa-rover\",\n    \"Vanguard Harbinger\": \"vanguard-harbinger\",\n
+    \   \"Vanguard Hoplite\": \"vanguard-hoplite\",\n    \"Vanguard Sentinel\": \"vanguard-sentinel\",\n
+    \   \"Vanguard Warden\": \"vanguard-warden\",\n    \"Vulcan\": \"vulcan\",\n    \"Vulture\":
+    \"vulture\",\n    \"X1 Base\": \"x1-base\",\n    \"X1 Force\": \"x1-force\",\n
+    \   \"X1 Velocity\": \"x1-velocity\"\n}\n```\n\nPlease use https://www.fleetyards.net/ships
+    or call the Fleetyards.net API ```/v1/models``` to fetch the latest Shipnames.\n\n<br>\n\n###
+    Users List\n\n```users```: `[]` (Array of Strings) default is `[]`\n\nAs an alternative
+    to the Ships List you can also provide a list of Fleetyards usernames. You will
+    than get a list of all Ships those Users have in there public Hangar.\n\n<br>\n\n<br>\n"
+  x-logo:
+    url: http://fleetyards.test/docs/logo.png
+    altText: FleetYards.net logo
+servers:
+- url: "{protocol}://{host}"
+  variables:
+    host:
+      default: api.fleetyards.net/v1
+    protocol:
+      enum:
+      - https
+      - http
+      default: https
+- url: https://api.fleetyards.net/v1
+  description: Production Server
+- url: https://stage.fleetyards.net/api/v1
+  description: Test Server
+- url: http://api.fleetyards.test/v1
+  description: Local Test Server
+paths:
+  "/celestial-objects":
+    get:
+      summary: Celestial Objects List
+      description: Get a List of Celestial Objects
+      tags:
+      - CelestialObjects
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CelestialObject"
+  "/celestial-objects/{slug}":
+    get:
+      summary: Celestial Object Detail
+      parameters:
+      - name: slug
+        in: path
+        description: slug
+        schema:
+          type: string
+        required: true
+      description: Get Detail of a Celestial Object referenced by its Slug
+      tags:
+      - CelestialObjects
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CelestialObject"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/commodities":
+    get:
+      summary: list commodities
+      description: Get a List of Commodities
+      tags:
+      - Commodities
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Commodity"
+  "/commodities/types":
+    get:
+      summary: commodity_types commodity
+      description: Get a List of all Commodity Types
+      tags:
+      - Commodities
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/commodity-prices":
+    post:
+      summary: create commodity_price
+      description: Create new CommodityPrice
+      tags:
+      - Commodities
+      responses:
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CommodityPrice"
+        '400':
+          description: invalid data
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+  "/commodity-prices/time-ranges":
+    get:
+      summary: time_ranges commodity_price
+      description: Get a List of all Commodity Price TimeRanges
+      tags:
+      - Commodities
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/components":
+    get:
+      summary: list components
+      description: Get a List of Components
+      tags:
+      - Components
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Component"
+  "/components/class_filters":
+    get:
+      summary: class_filters component
+      description: Get a List of all Component Classes
+      tags:
+      - Components
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/components/item_type_filters":
+    get:
+      summary: item_type_filters component
+      description: Get a List of all Component Item Types
+      tags:
+      - Components
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/equipment":
+    get:
+      summary: list equipment
+      description: Get a List of Equipment
+      tags:
+      - Equipment
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Equipment"
+  "/fleets/{slug}/invite-urls":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list fleet_invite_urls
+      tags:
+      - Fleets - Invite Urls
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create fleet_invite_url
+      tags:
+      - Fleets - Invite Urls
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/invite-urls/{token}":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: token
+      in: path
+      description: token
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: delete fleet_invite_url
+      tags:
+      - Fleets - Invite Urls
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list fleet_members
+      tags:
+      - Fleets - Members
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/member-quick-stats":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: quick_stats fleet_member
+      tags:
+      - Fleets - Members
+      responses:
+        '200':
+          description: successful
+  "/fleets/use-invite":
+    post:
+      summary: create_by_invite fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/current":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: current fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/accept-invite":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    put:
+      summary: accept_invite fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/decline-invite":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    put:
+      summary: decline_invite fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/leave":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: leave fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/create-by-invite":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    post:
+      summary: create_by_invite fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/{username}/demote":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: demote fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/{username}/promote":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: promote fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/{username}/accept-request":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: accept_request fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/{username}/decline-request":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: decline_request fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/members/{username}":
+    parameters:
+    - name: slug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: delete fleet_membership
+      tags:
+      - Fleets - Memberships
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/stats/models-by-size":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: models_by_size fleet_stat
+      tags:
+      - Fleets - Stats
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/stats/models-by-production-status":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: models_by_production_status fleet_stat
+      tags:
+      - Fleets - Stats
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/stats/models-by-manufacturer":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: models_by_manufacturer fleet_stat
+      tags:
+      - Fleets - Stats
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/stats/models-by-classification":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: models_by_classification fleet_stat
+      tags:
+      - Fleets - Stats
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/vehicles":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list fleet_vehicles
+      tags:
+      - Fleets - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/public-vehicles":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public fleet_vehicle
+      tags:
+      - Fleets - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/fleetchart":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: fleetchart fleet_vehicle
+      tags:
+      - Fleets - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/public-fleetchart":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public_fleetchart fleet_vehicle
+      tags:
+      - Fleets - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/quick-stats":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: quick_stats fleet_vehicle
+      tags:
+      - Fleets - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/fleets":
+    post:
+      summary: create fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/check":
+    post:
+      summary: check fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/invites":
+    get:
+      summary: invites fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/current":
+    get:
+      summary: current fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/hangar-groups":
+    get:
+      summary: list hangar_groups
+      tags:
+      - HangarGroups
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create hangar_group
+      tags:
+      - HangarGroups
+      responses:
+        '200':
+          description: successful
+  "/hangar-groups/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    patch:
+      summary: update hangar_group
+      tags:
+      - HangarGroups
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update hangar_group
+      tags:
+      - HangarGroups
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete hangar_group
+      tags:
+      - HangarGroups
+      responses:
+        '200':
+          description: successful
+  "/hangar-groups/sort":
+    put:
+      summary: sort hangar_group
+      tags:
+      - HangarGroups
+      responses:
+        '200':
+          description: successful
+  "/images":
+    get:
+      summary: list images
+      description: Get a List of Images
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Image"
+  "/images/random":
+    get:
+      summary: random image
+      description: Get a randomized List of Images
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Image"
+  "/manufacturers":
+    get:
+      summary: list manufacturers
+      tags:
+      - Manufacturers
+      responses:
+        '200':
+          description: successful
+  "/manufacturers/with-models":
+    get:
+      summary: with_models manufacturer
+      tags:
+      - Manufacturers
+      responses:
+        '200':
+          description: successful
+  "/models":
+    get:
+      summary: list models
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/fleetchart":
+    get:
+      summary: fleetchart model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/with-docks":
+    get:
+      summary: with_docks model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/unscheduled":
+    get:
+      summary: unscheduled model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/latest":
+    get:
+      summary: latest model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/slugs":
+    get:
+      summary: slugs model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/updated":
+    get:
+      summary: updated model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/filters":
+    get:
+      summary: filters model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/classifications":
+    get:
+      summary: classifications model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/production-states":
+    get:
+      summary: production_states model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/focus":
+    get:
+      summary: focus model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/sizes":
+    get:
+      summary: sizes model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/cargo-options":
+    get:
+      summary: cargo_options model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/embed":
+    get:
+      summary: embed model
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/hardpoints":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: hardpoints model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/images":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: images model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/videos":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: videos model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/variants":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: variants model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/loaners":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: loaners model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/snub-crafts":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: snub_crafts model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/modules":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: modules model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/upgrades":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: upgrades model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/paints":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: paints model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/store-image":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: store_image model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/models/{slug}/fleetchart-image":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: fleetchart_image model
+      tags:
+      - Models - Detail
+      responses:
+        '200':
+          description: successful
+  "/password":
+    patch:
+      summary: update password
+      tags:
+      - Passwords
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update password
+      tags:
+      - Passwords
+      responses:
+        '200':
+          description: successful
+  "/password/request":
+    post:
+      summary: request_email password
+      tags:
+      - Passwords
+      responses:
+        '200':
+          description: successful
+  "/password/update":
+    patch:
+      summary: update password
+      tags:
+      - Passwords
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update password
+      tags:
+      - Passwords
+      responses:
+        '200':
+          description: successful
+  "/password/update/{reset_password_token}":
+    parameters:
+    - name: reset_password_token
+      in: path
+      description: reset_password_token
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update_with_token password
+      tags:
+      - Passwords
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update_with_token password
+      tags:
+      - Passwords
+      responses:
+        '200':
+          description: successful
+  "/roadmap":
+    get:
+      summary: list roadmaps
+      tags:
+      - Roadmap
+      responses:
+        '200':
+          description: successful
+  "/roadmap/weeks":
+    get:
+      summary: weeks roadmap
+      tags:
+      - Roadmap
+      responses:
+        '200':
+          description: successful
+  "/search":
+    get:
+      summary: list searches
+      tags:
+      - Search
+      responses:
+        '200':
+          description: successful
+  "/sessions":
+    post:
+      summary: create session
+      tags:
+      - Sessions
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete session
+      tags:
+      - Sessions
+      responses:
+        '200':
+          description: successful
+  "/sessions/confirm-access":
+    post:
+      summary: confirm_access session
+      tags:
+      - Sessions
+      responses:
+        '200':
+          description: successful
+  "/stations/{station_slug}/shops/{shop_slug}/commodities":
+    parameters:
+    - name: station_slug
+      in: path
+      description: station_slug
+      required: true
+      schema:
+        type: string
+    - name: shop_slug
+      in: path
+      description: shop_slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list shop_commodities
+      tags:
+      - ShopCommodities
+      responses:
+        '200':
+          description: successful
+  "/shop-commodities/commodity-type-options":
+    get:
+      summary: commodity_item_types shop_commodity
+      tags:
+      - ShopCommodities
+      responses:
+        '200':
+          description: successful
+  "/filters/shop-commodities/sub-categories":
+    get:
+      summary: sub_categories shop_commodity
+      tags:
+      - ShopCommodities
+      responses:
+        '200':
+          description: successful
+  "/shops":
+    get:
+      summary: list shops
+      tags:
+      - Shops
+      responses:
+        '200':
+          description: successful
+  "/stations/{station_slug}/shops/{slug}":
+    parameters:
+    - name: station_slug
+      in: path
+      description: station_slug
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show shop
+      tags:
+      - Shops
+      responses:
+        '200':
+          description: successful
+  "/shops/shop-types":
+    get:
+      summary: shop_types shop
+      tags:
+      - Shops
+      responses:
+        '200':
+          description: successful
+  "/starsystems":
+    get:
+      summary: list starsystems
+      description: Get a List of Starsystems
+      tags:
+      - Starsystems
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Starsystem"
+  "/starsystems/{slug}":
+    get:
+      summary: show starsystem
+      parameters:
+      - name: slug
+        in: path
+        description: slug
+        schema:
+          type: string
+        required: true
+      description: Get Detail of a Starsystem referenced by its Slug
+      tags:
+      - Starsystems
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Starsystem"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stations":
+    get:
+      summary: list stations
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/{slug}/images":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: images station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/ship-sizes":
+    get:
+      summary: ship_sizes station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/station-types":
+    get:
+      summary: station_types station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/classifications":
+    get:
+      summary: classifications station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stats/quick-stats":
+    get:
+      summary: quick_stats stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-per-month":
+    get:
+      summary: models_per_month stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-size":
+    get:
+      summary: models_by_size stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-production-status":
+    get:
+      summary: models_by_production_status stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-manufacturer":
+    get:
+      summary: models_by_manufacturer stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-classification":
+    get:
+      summary: models_by_classification stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/components-by-class":
+    get:
+      summary: components_by_class stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/trade-routes":
+    get:
+      summary: list trade_routes
+      tags:
+      - TradeRoutes
+      responses:
+        '200':
+          description: successful
+  "/users/two-factor/qrcode":
+    get:
+      summary: qrcode two_factor
+      tags:
+      - Settings - TwoFactor
+      responses:
+        '200':
+          description: successful
+  "/users/two-factor/enable":
+    post:
+      summary: enable two_factor
+      tags:
+      - Settings - TwoFactor
+      responses:
+        '200':
+          description: successful
+  "/users/two-factor/disable":
+    post:
+      summary: disable two_factor
+      tags:
+      - Settings - TwoFactor
+      responses:
+        '200':
+          description: successful
+  "/users/two-factor/generate-backup-codes":
+    post:
+      summary: generate_backup_codes two_factor
+      tags:
+      - Settings - TwoFactor
+      responses:
+        '200':
+          description: successful
+  "/users/current":
+    get:
+      summary: current user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+  "/users/signup":
+    post:
+      summary: signup user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+  "/users/confirm":
+    post:
+      summary: confirm user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+  "/users/check-email":
+    post:
+      summary: check_email user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+  "/users/check-username":
+    post:
+      summary: check_username user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+  "/users/current-account":
+    put:
+      summary: update_account user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update_account user
+      tags:
+      - CurrentUser
+      responses:
+        '200':
+          description: successful
+  "/users/{username}":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+  "/vehicles":
+    get:
+      summary: list vehicles
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    patch:
+      summary: update vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/fleetchart":
+    get:
+      summary: fleetchart vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/export":
+    get:
+      summary: export vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/import":
+    put:
+      summary: import vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/bulk":
+    put:
+      summary: update_bulk vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/destroy-bulk":
+    put:
+      summary: destroy_bulk vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/destroy-all":
+    delete:
+      summary: destroy_all vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/embed":
+    get:
+      summary: embed vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/hangar-items":
+    get:
+      summary: hangar_items vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/hangar":
+    get:
+      summary: hangar vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+  "/vehicles/quick-stats":
+    get:
+      summary: quick_stats vehicle
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-size":
+    get:
+      summary: models_by_size vehicle
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-production-status":
+    get:
+      summary: models_by_production_status vehicle
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-manufacturer":
+    get:
+      summary: models_by_manufacturer vehicle
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-classification":
+    get:
+      summary: models_by_classification vehicle
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/{username}":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public vehicle
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+  "/vehicles/{username}/fleetchart":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public_fleetchart vehicle
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+  "/vehicles/{username}/quick-stats":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public_quick_stats vehicle
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+  "/vehicles/check-serial":
+    post:
+      summary: check_serial vehicle
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+components:
+  schemas:
+    CelestialObject:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+          nullable: true
+        designation:
+          type: string
+        storeImageIsFallback:
+          type: boolean
+        storeImage:
+          type: string
+          format: url
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        habitable:
+          type: boolean
+          nullable: true
+        fairchanceact:
+          type: boolean
+          nullable: true
+        subType:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        danger:
+          type: integer
+          nullable: true
+        economy:
+          type: integer
+          nullable: true
+        population:
+          type: integer
+          nullable: true
+        localtionLabel:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+        parent:
+          "$ref": "#/components/schemas/CelestialObjectBase"
+          nullable: true
+        moons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObjectBase"
+      required:
+      - name
+      - slug
+      - designation
+      - createdAt
+      - updatedAt
+      - starsystem
+      additionalProperties: false
+      title: CelestialObject
+    CelestialObjectBase:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+          nullable: true
+        designation:
+          type: string
+        storeImageIsFallback:
+          type: boolean
+        storeImage:
+          type: string
+          format: url
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        habitable:
+          type: boolean
+          nullable: true
+        fairchanceact:
+          type: boolean
+          nullable: true
+        subType:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        danger:
+          type: integer
+          nullable: true
+        economy:
+          type: integer
+          nullable: true
+        population:
+          type: integer
+          nullable: true
+        localtionLabel:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - name
+      - slug
+      - designation
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: CelestialObjectBase
+    Commodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        storeImageIsFallback:
+          type: boolean
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        soldAt:
+          "$ref": "#/components/schemas/ShopCommodity"
+          nullable: true
+        boughtAt:
+          "$ref": "#/components/schemas/ShopCommodity"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - storeImageIsFallback
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: Commodity
+    CommodityPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+          format: float
+        timeRange:
+          type: string
+          nullable: true
+        type:
+          type: string
+        shopCommodityId:
+          type: string
+          format: uuid
+        confirmed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - price
+      - type
+      - shop_commodity_id
+      - confirmed
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: CommodityPrice
+    Component:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        grade:
+          type: string
+        class:
+          type: string
+        size:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        itemClass:
+          type: string
+        itemClassLabel:
+          type: string
+        trackingSignal:
+          type: string
+        trackingSignalLabel:
+          type: string
+        storeImageIsFallback:
+          type: boolean
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        soldAt:
+          "$ref": "#/components/schemas/ShopCommodity"
+          nullable: true
+        boughtAt:
+          "$ref": "#/components/schemas/ShopCommodity"
+          nullable: true
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - storeImageIsFallback
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: Component
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        grade:
+          type: string
+        size:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        itemType:
+          type: string
+        itemTypeLabel:
+          type: string
+        weaponClass:
+          type: string
+        weaponClassLabel:
+          type: string
+        slot:
+          type: string
+        slotLabel:
+          type: string
+        damageReduction:
+          type: string
+        rateOfFire:
+          type: string
+        range:
+          type: string
+        extras:
+          type: string
+        storage:
+          type: string
+        storeImageIsFallback:
+          type: boolean
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        soldAt:
+          "$ref": "#/components/schemas/ShopCommodity"
+          nullable: true
+        boughtAt:
+          "$ref": "#/components/schemas/ShopCommodity"
+          nullable: true
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - storeImageIsFallback
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: Equipment
+    FieldError:
+      type: object
+      properties:
+        attribute:
+          type: string
+        messages:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StandardError"
+      required:
+      - attribute
+      - messages
+      additionalProperties: false
+      title: FieldError
+    FilterOption:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        category:
+          type: string
+        icon:
+          type: string
+          nullable: true
+      required:
+      - name
+      - value
+      - category
+      additionalProperties: false
+      title: FilterOption
+    Gallery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+      - id
+      - name
+      - slug
+      additionalProperties: false
+      title: Gallery
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        caption:
+          type: string
+        url:
+          type: string
+        width:
+          type: string
+        type:
+          type: string
+        background:
+          type: boolean
+        smallUrl:
+          type: string
+        bigUrl:
+          type: string
+        gallery:
+          "$ref": "#/components/schemas/Gallery"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - url
+      - width
+      - height
+      - type
+      - background
+      - smallUrl
+      - bigUrl
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: Image
+    Manufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type: string
+        logo:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: Manufacturer
+    ShopCommodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: ShopCommodity
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+      additionalProperties: false
+      title: StandardError
+    Starsystem:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        mapX:
+          type: string
+          nullable: true
+        mapY:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        population:
+          type: string
+          nullable: true
+        economy:
+          type: string
+          nullable: true
+        danger:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        locationLabel:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      additionalProperties: false
+      title: Starsystem
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FieldError"
+      required:
+      - code
+      - message
+      additionalProperties: false
+      title: ValidationError

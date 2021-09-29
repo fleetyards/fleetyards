@@ -1,0 +1,37 @@
+<div>
+  <% @models.each do |model, options| %>
+    <%= model %>
+    <br>
+    <br>
+  <% end %>
+  <% @tags.each do |tag| %>
+    <%= tag %>
+    <ul>
+    <% @paths.select { |path| path[:tags].include?(tag) }.each do |path| %>
+      <li>
+        <%= path[:method].upcase %> - <%= path[:name] %>
+        <br>
+        <ul>
+        <% path[:responses].sort_by { |status, _response| status }.each do |status, response| %>
+          <li>
+            <%= status %>
+            <br>
+            <ul>
+            <% (response['content'] || []).each do |content_type, content| %>
+              <li>
+                <%= content_type %>
+                <br>
+                <%= render "api/docs/response", schema: content['schema'] %>
+              </li>
+            <% end %>
+            </ul>
+          </li>
+        <% end %>
+        </ul>
+      </li>
+    <% end %>
+    </ul>
+    <br>
+    <br>
+  <% end %>
+</div>

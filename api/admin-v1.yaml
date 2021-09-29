@@ -1,0 +1,56 @@
+---
+openapi: 3.0.1
+info:
+  title: FleetYards.net Command API v1
+  version: v1
+servers:
+- url: "{adminHost}"
+  variables:
+    adminHost:
+      default: https://admin.fleetyards.net/api/v1
+- url: http://admin.fleetyards.test/api/v1
+paths:
+  "/images":
+    get:
+      summary: list images
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create image
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful
+  "/images/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update image
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update image
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete image
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful

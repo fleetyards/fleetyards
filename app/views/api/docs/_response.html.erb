@@ -1,0 +1,23 @@
+<ul>
+  <% schema.keys.each do |key| %>
+  <li>
+    <%= key %>:
+    <br>
+    <% if schema[key].is_a?(Hash) %>
+      <%= render "api/docs/response", schema: schema[key] %>
+    <% elsif schema[key].is_a?(Array) %>
+      <% schema[key].each do |item| %>
+        <% if item.is_a?(Hash) %>
+          <%= render "api/docs/response", schema: item %>
+        <% else %>
+          <%= item %>
+        <% end %>
+        <br>
+      <% end %>
+    <% else %>
+      <%= schema[key] %>
+    <% end %>
+    <br>
+  </li>
+  <% end %>
+</ul>
