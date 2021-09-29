@@ -17,3 +17,7 @@ en:
       create: Group could not be created
       destroy: Group could not be destroyed
       update: Group could not be updated
+    commodity_price:
+      create: Price could not be created
+      destroy: Price could not be destroyed
+      update: Price could not be updated

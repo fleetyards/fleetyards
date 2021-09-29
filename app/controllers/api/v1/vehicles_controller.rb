@@ -59,7 +59,7 @@ module Api
 
         @response = ::HangarImporter.new(JSON.parse(params[:import].read)).run(current_user.id)
       rescue JSON::ParserError => e
-        render json: ValidationError.new('vehicle.import', e), status: :bad_request
+        render json: ValidationError.new('vehicle.import', message: e), status: :bad_request
       end
 
       def fleetchart
@@ -230,7 +230,7 @@ module Api
         if vehicle.save
           render status: :created
         else
-          render json: ValidationError.new('vehicle.create', @vehicle.errors), status: :bad_request
+          render json: ValidationError.new('vehicle.create', errors: @vehicle.errors), status: :bad_request
         end
       end
 
@@ -243,7 +243,7 @@ module Api
 
         return if vehicle.update(vehicle_params)
 
-        render json: ValidationError.new('vehicle.update', @vehicle.errors), status: :bad_request
+        render json: ValidationError.new('vehicle.update', errors: @vehicle.errors), status: :bad_request
       end
 
       def update_bulk
@@ -265,7 +265,7 @@ module Api
 
         return if errors.blank?
 
-        render json: ValidationError.new('vehicle.bulk_update', errors), status: :bad_request
+        render json: ValidationError.new('vehicle.bulk_update', errors: errors), status: :bad_request
       end
 
       def destroy
@@ -273,7 +273,7 @@ module Api
 
         return if vehicle.destroy
 
-        render json: ValidationError.new('vehicle.destroy', @vehicle.errors), status: :bad_request
+        render json: ValidationError.new('vehicle.destroy', errors: @vehicle.errors), status: :bad_request
       end
 
       def destroy_bulk

@@ -90,7 +90,7 @@ v1_api_routes = lambda do
     end
   end
 
-  resources :vehicles, except: [:show] do
+  resources :vehicles, only: %i[index create update destroy] do
     collection do
       get 'quick-stats' => 'vehicles#quick_stats'
       get :fleetchart
@@ -163,7 +163,7 @@ v1_api_routes = lambda do
     end
   end
 
-  resources :fleets, param: :slug, except: %i[index] do
+  resources :fleets, param: :slug, only: %i[show create update destroy] do
     collection do
       post :check
       get :invites

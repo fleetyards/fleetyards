@@ -28,7 +28,7 @@ module Api
 
         return if fleet_invite_url.save
 
-        render json: ValidationError.new('fleet_invite_urls.create', fleet_invite_url.errors), status: :bad_request
+        render json: ValidationError.new('fleet_invite_urls.create', errors: fleet_invite_url.errors), status: :bad_request
       end
 
       def destroy
@@ -39,7 +39,7 @@ module Api
         if fleet_invite_url.destroy
           render json: nil, status: :ok
         else
-          render json: ValidationError.new('fleet_invite_urls.destroy', fleet_invite_url.errors), status: :bad_request
+          render json: ValidationError.new('fleet_invite_urls.destroy', errors: fleet_invite_url.errors), status: :bad_request
         end
       end
 
