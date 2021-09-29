@@ -22,7 +22,7 @@ module Api
         if user.update_with_password(change_password_params)
           render json: { code: 'change_pasword.success', message: I18n.t('devise.passwords.updated_not_active') }
         else
-          render json: ValidationError.new('change_pasword', user.errors), status: :bad_request
+          render json: ValidationError.new('change_pasword', errors: user.errors), status: :bad_request
         end
       end
 
@@ -31,7 +31,7 @@ module Api
         if user.errors.blank?
           render json: { code: 'change_pasword.success', message: I18n.t('devise.passwords.updated_not_active') }
         else
-          render json: ValidationError.new('change_pasword', user.errors), status: :bad_request
+          render json: ValidationError.new('change_pasword', errors: user.errors), status: :bad_request
         end
       end
 

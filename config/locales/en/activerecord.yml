@@ -294,7 +294,7 @@ en:
           done: Done
     errors:
       messages:
-        blank: Please fill out the Field
+        blank: can't be blank
         record_invalid: Bad Data
       models:
         fleet_membership:

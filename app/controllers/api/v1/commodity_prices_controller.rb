@@ -3,7 +3,7 @@
 module Api
   module V1
     class CommodityPricesController < ::Api::BaseController
-      before_action :authenticate_user!
+      before_action :authenticate_user!, only: [:create]
 
       def create
         @commodity_price = CommodityPrice.find_or_initialize_by(
@@ -21,7 +21,7 @@ module Api
         if @commodity_price.new_record?
           return if @commodity_price.save
 
-          render json: ValidationError.new('create', @commodity_price.errors), status: :bad_request
+          render json: ValidationError.new('commodity_price.create', errors: @commodity_price.errors), status: :bad_request
         elsif @commodity_price.submitters.exclude?(current_user.id)
           @commodity_price.update(
             submitters: @commodity_price.submitters << current_user.id,

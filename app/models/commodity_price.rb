@@ -26,7 +26,6 @@ class CommodityPrice < ApplicationRecord
 
   validates :price, presence: true
   validates :type, presence: true
-  validates :shop_commodity, presence: true
 
   serialize :submitters, Array
 
