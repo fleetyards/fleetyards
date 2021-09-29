@@ -76,6 +76,7 @@
         <div class="hangar-header">
           <div class="hangar-labels">
             <GroupLabels
+              v-if="hangarStats"
               :hangar-groups="groupsCollection.records"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
