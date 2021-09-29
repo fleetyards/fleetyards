@@ -672,7 +672,7 @@ DEPENDENCIES
   minitest-rails
   mocha
   nokogiri (= 1.12.5)
-  oj (= 3.13.8)
+  oj
   paper_trail
   pg (~> 1.0)
   premailer-rails
