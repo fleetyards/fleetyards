@@ -23,6 +23,7 @@ module Api
 
       def show
         authorize! :show, :api_celestial_objects
+
         @celestial_object = CelestialObject.visible.find_by!(slug: params[:slug])
       end
 

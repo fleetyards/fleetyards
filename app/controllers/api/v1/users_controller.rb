@@ -22,7 +22,7 @@ module Api
         @user = current_user
         return if @user.update(user_params)
 
-        render json: ValidationError.new('update', @user.errors), status: :bad_request
+        render json: ValidationError.new('update', errors: @user.errors), status: :bad_request
       end
 
       def update_account
@@ -36,7 +36,7 @@ module Api
         @user = current_user
         return if @user.update(user_account_params)
 
-        render json: ValidationError.new('update', @user.errors), status: :bad_request
+        render json: ValidationError.new('update', errors: @user.errors), status: :bad_request
       end
 
       def signup
@@ -61,7 +61,7 @@ module Api
           return
         end
 
-        render json: ValidationError.new('signup', @user.errors.messages), status: :bad_request
+        render json: ValidationError.new('signup', errors: @user.errors.messages), status: :bad_request
       end
 
       def confirm
@@ -69,7 +69,7 @@ module Api
         if user.present? && user.errors.blank?
           render json: { code: 'confirmation', message: I18n.t('devise.confirmations.confirmed') }
         else
-          render json: ValidationError.new('confirmation', user.errors), status: :bad_request
+          render json: ValidationError.new('confirmation', errors: user.errors), status: :bad_request
         end
       end
 
@@ -91,7 +91,7 @@ module Api
 
           render json: { code: 'current_user.destroyed', message: I18n.t('messages.destroy.success', resource: I18n.t('resources.user')) }
         else
-          render json: ValidationError.new('current_user.destroy', @current_user.errors), status: :bad_request
+          render json: ValidationError.new('current_user.destroy', errors: @current_user.errors), status: :bad_request
         end
       end
 

@@ -127,6 +127,7 @@ import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
+import { transformErrors } from 'frontend/api/helpers'
 
 @Component<Signup>({
   components: {
@@ -189,7 +190,7 @@ export default class Signup extends Vue {
       if (error.response && error.response.data) {
         const { data: errorData } = error.response
 
-        this.$refs.form.setErrors(errorData.errors)
+        this.$refs.form.setErrors(transformErrors(errorData.errors))
 
         displayAlert({
           text: errorData.message,

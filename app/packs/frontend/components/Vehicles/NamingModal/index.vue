@@ -143,6 +143,7 @@ import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
 import Btn from 'frontend/core/components/Btn'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
+import { transformErrors } from 'frontend/api/helpers'
 
 @Component<VehicleModal>({
   components: {
@@ -217,7 +218,7 @@ export default class VehicleNamingModal extends Vue {
       if (error.response && error.response.data) {
         const { data: errorData } = error.response
 
-        this.$refs.form.setErrors(errorData.errors)
+        this.$refs.form.setErrors(transformErrors(errorData.errors))
       }
     }
 

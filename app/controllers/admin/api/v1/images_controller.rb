@@ -26,7 +26,7 @@ module Admin
 
           return if image.save
 
-          render json: ValidationError.new('image.create', image.errors), status: :bad_request
+          render json: ValidationError.new('image.create', errors: image.errors), status: :bad_request
         end
 
         def destroy
@@ -34,7 +34,7 @@ module Admin
 
           return if image.destroy
 
-          render json: ValidationError.new('image.destroy', image.errors), status: :bad_request
+          render json: ValidationError.new('image.destroy', errors: image.errors), status: :bad_request
         end
 
         def update
@@ -42,7 +42,7 @@ module Admin
 
           return if image.update(image_params)
 
-          render json: ValidationError.new('image.update', image.errors), status: :bad_request
+          render json: ValidationError.new('image.update', errors: image.errors), status: :bad_request
         end
 
         private def image_query_params

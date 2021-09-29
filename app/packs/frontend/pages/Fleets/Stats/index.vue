@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-md-3">
+          <div class="col-12 col-md-4 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -26,7 +26,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-3">
+          <div class="col-12 col-md-4 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -41,7 +41,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-3">
+          <div class="col-12 col-md-4 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -56,7 +56,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-3">
+          <div class="col-12 col-md-4 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -71,7 +71,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-3">
+          <div class="col-12 col-md-4 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">

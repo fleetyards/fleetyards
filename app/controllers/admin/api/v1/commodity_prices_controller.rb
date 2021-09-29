@@ -25,7 +25,7 @@ module Admin
 
           return if commodity_price.save
 
-          render json: ValidationError.new('commodity_price.create', commodity_price.errors), status: :bad_request
+          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
         end
 
         def create_buy_price
@@ -35,7 +35,7 @@ module Admin
 
           return if commodity_price.save
 
-          render json: ValidationError.new('commodity_price.create', commodity_price.errors), status: :bad_request
+          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
         end
 
         def create_rental_price
@@ -45,7 +45,7 @@ module Admin
 
           return if commodity_price.save
 
-          render json: ValidationError.new('commodity_price.create', commodity_price.errors), status: :bad_request
+          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
         end
 
         def confirm
@@ -53,7 +53,7 @@ module Admin
 
           return if commodity_price.confirm
 
-          render json: ValidationError.new('commodity_price.create', commodity_price.errors), status: :bad_request
+          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
         end
 
         def destroy
@@ -61,7 +61,7 @@ module Admin
 
           return if commodity_price.destroy
 
-          render json: ValidationError.new('commodity_price.destroy', commodity_price.errors), status: :bad_request
+          render json: ValidationError.new('commodity_price.destroy', errors: commodity_price.errors), status: :bad_request
         end
 
         def time_ranges

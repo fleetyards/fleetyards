@@ -269,6 +269,7 @@ import Avatar from 'frontend/core/components/Avatar'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from 'frontend/api/collections/Fleets'
+import { transformErrors } from 'frontend/api/helpers'
 
 @Component<FleetSettings>({
   beforeRouteEnter: fleetRouteGuard,
@@ -481,7 +482,7 @@ export default class FleetSettings extends Vue {
     if (error.response && error.response.data) {
       const { data: errorData } = error.response
 
-      this.$refs.form.setErrors(errorData.errors)
+      this.$refs.form.setErrors(transformErrors(errorData.errors))
 
       displayAlert({
         text: errorData.message,
