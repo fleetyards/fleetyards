@@ -12,7 +12,7 @@ describe('Loader', () => {
     const mainElement = cmp.find('div')
 
     expect(mainElement.exists()).toBe(true)
-    expect(mainElement.classes('text-center')).toBe(true)
+    expect(mainElement.classes('loader')).toBe(true)
     expect(cmp.find('.loader').exists()).toBe(true)
   })
 })

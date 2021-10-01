@@ -1,4 +1,4 @@
-import Loader from 'frontend/core/components/Loader'
+import Loader from 'embed/components/Loader'
 import { mount } from '@vue/test-utils'
 
 describe('Loader', () => {
