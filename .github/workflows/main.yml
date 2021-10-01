@@ -108,6 +108,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+      - run: echo $RAILS_MASTER_KEY
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
