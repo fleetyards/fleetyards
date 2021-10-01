@@ -3,7 +3,16 @@ name: Main Action
 on: [push]
 
 jobs:
-  yarn:
+  ruby-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+
+  js-setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,23 +35,18 @@ jobs:
             .cache/Cypress
 
   bundle-audit:
+    needs: ruby-setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.2
-          bundler-cache: true
       - name: Update Audit DB
         run: bundle exec bundle-audit update
       - name: Check Audit DB
         run: bundle exec bundle-audit check
 
   yarn-audit:
-    needs: yarn
+    needs: js-setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: yarn-bundle
@@ -50,16 +54,12 @@ jobs:
       - name: Check Audit DB
         run: yarn audit --groups dependencies
 
-  # rubocop:
-  #   <<: *defaults
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: /root
-  #     - run: bundle install
-  #     - run:
-  #         name: rubocoptering
-  #         command: bundle exec rubocop --format progress
+  rubocop:
+    needs: ruby-setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: rubocoptering
+        run: bundle exec rubocop --format progress
 
   # js-lint:
   #   <<: *defaults
