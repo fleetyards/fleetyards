@@ -39,6 +39,7 @@ jobs:
         run: bundle exec bundle-audit check
 
   yarn-audit:
+    needs: yarn
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
