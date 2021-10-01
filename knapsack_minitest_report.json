@@ -1,0 +1,22 @@
+{
+  "/usr/local/var/rbenv/versions/3.0.2/lib/ruby/gems/3.0.0/gems/shoulda-context-2.0.0/lib/shoulda/context/context.rb": 0.02832100004889071,
+  "test/models/fleet_test.rb": 0.574629999930039,
+  "test/controllers/api/v1/fleet_vehicles_controller_test.rb": 1.015459000132978,
+  "test/controllers/api/v1/fleet_invite_urls_controller_test.rb": 0.1451690001413226,
+  "test/controllers/api/v1/trade_routes_controller_test.rb": 0.2554459997918457,
+  "test/unit/hangar_importer_test.rb": 210.17956099985167,
+  "test/controllers/api/v1/celestial_objects_controller_test.rb": 0.23248200002126396,
+  "test/controllers/api/v1/vehicles_controller_test.rb": 0.2990720004308969,
+  "test/unit/sc_data_loader_test.rb": 4.938469000160694,
+  "test/channels/application_cable/connection_test.rb": 4.300009459257126e-05,
+  "/usr/local/var/rbenv/versions/3.0.2/lib/ruby/gems/3.0.0/gems/minitest-5.14.4/lib/minitest/spec.rb": 0.027002000715583563,
+  "test/controllers/api/v1/stations_controller_test.rb": 0.23527499986812472,
+  "test/controllers/api/v1/roadmap_controller_test.rb": 0.06662400020286441,
+  "test/controllers/api/v1/models_controller_test.rb": 0.06653599999845028,
+  "test/controllers/api/v1/users_controller_test.rb": 0.14344899985007942,
+  "test/controllers/api/v1/shops_controller_test.rb": 0.20583799993619323,
+  "test/controllers/api/v1/shop_commodities_controller_test.rb": 0.1405019999947399,
+  "test/controllers/api/v1/starsystems_controller_test.rb": 0.149789999704808,
+  "test/models/user_test.rb": 0.05231100041419268,
+  "test/unit/rsi_models_loader_test.rb": 65.40718000032939
+}

@@ -53,5 +53,3 @@ REVISION
 .idea
 
 cypress/*
-
-knapsack_minitest_report.json
