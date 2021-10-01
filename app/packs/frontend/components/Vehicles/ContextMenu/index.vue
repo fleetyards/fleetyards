@@ -54,6 +54,16 @@
       <span>{{ $t('actions.hangar.editGroups') }}</span>
     </Btn>
     <Btn
+      v-if="upgradable"
+      :aria-label="$t('labels.model.addons')"
+      size="small"
+      variant="dropdown"
+      @click.native="openAddonsModal"
+    >
+      <i class="fa fa-plus-octagon" />
+      <span>{{ $t('labels.model.addons') }}</span>
+    </Btn>
+    <Btn
       v-if="editable"
       :aria-label="$t('actions.remove')"
       size="small"
@@ -64,16 +74,6 @@
     >
       <i class="fal fa-trash" />
       <span>{{ $t('actions.remove') }}</span>
-    </Btn>
-    <Btn
-      v-if="upgradable"
-      :aria-label="$t('labels.model.addons')"
-      size="small"
-      variant="dropdown"
-      @click.native="openAddonsModal"
-    >
-      <i class="fa fa-plus-octagon" />
-      <span>{{ $t('labels.model.addons') }}</span>
     </Btn>
   </BtnDropdown>
 </template>
