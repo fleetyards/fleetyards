@@ -1,0 +1,12 @@
+
+name: Health Check
+
+on:
+  schedule:
+    - cron: "0 18 * * *"
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl --write-out '%{http_code}' --silent --fail --output /dev/null https://fleetyards.net
