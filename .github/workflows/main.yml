@@ -3,6 +3,15 @@ name: Main Action
 on: [push]
 
 jobs:
+  ruby-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+
   js-setup:
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +23,7 @@ jobs:
       - run: yarn install
 
   bundle-audit:
+    needs: ruby-setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,6 +49,7 @@ jobs:
         run: yarn audit --groups dependencies
 
   rubocop:
+    needs: ruby-setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
