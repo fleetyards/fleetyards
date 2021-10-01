@@ -213,7 +213,6 @@ jobs:
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       JOBS: 1
-      PORT: 8270
       CYPRESS_BASE_URL: http://localhost:8270
 
     services:
@@ -256,7 +255,7 @@ jobs:
       - name: Prefill DB
         run: bundle exec rails db:seed
       - name: Run Server
-        run: bundle exec puma -C config/puma.rb &
+        run: PORT=8270 bundle exec puma -C config/puma.rb &
       - name: Wait for Server
         run: |
           until $(curl --output /dev/null --silent --head --fail $CYPRESS_BASE_URL); do
