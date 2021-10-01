@@ -60,20 +60,97 @@ jobs:
       - name: rubocoptering
         run: bundle exec rubocop --format progress
 
-  # js-lint:
-  #   <<: *defaults
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: /root
-  #     - run: yarn install
-  #     - run: yarn run lint:js
+  js-lint:
+    needs: js-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - run: yarn run lint:js
 
-  # style-lint:
-  #   <<: *defaults
+  style-lint:
+    needs: js-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - run: yarn run lint:style
+
+  ruby-tests:
+    needs: ruby-setup
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        # Add a health check
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+      - run: mkdir -p ~/app/log
+      - run: bundle exec rails db:create db:schema:load
+      - name: Run Unit Tests
+        run: bundle exec rails test:coverage
+
+  js-tests:
+    needs: js-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - name: Run Javascript Tests
+        run: yarn test:ci
+
+  # seeds:
+  #   <<: *seeds
   #   steps:
   #     - checkout
   #     - attach_workspace:
   #         at: /root
+  #     - run: bundle install
+  #     - run: mkdir -p ~/app/log
+  #     - run: bundle exec rails db:create db:schema:load
+  #     - run:
+  #         name: Create ES Index
+  #         command: bundle exec thor search:index
+  #     - run:
+  #         name: Run Seeds
+  #         command: bundle exec rails db:seed
+
+  # assets:
+  #   <<: *ruby-defaults
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: /root
+  #     - run: bundle install
   #     - run: yarn install
-  #     - run: yarn run lint:style
+  #     - run:
+  #         name: Webpacker & Assets Compile
+  #         command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+  #     - persist_to_workspace:
+  #         root: /root
+  #         paths:
+  #           - app/public/assets
+  #           - app/public/packs
+  #           - app/tmp/cache/webpacker
