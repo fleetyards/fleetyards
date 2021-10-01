@@ -1,4 +1,4 @@
-name: Main Action
+name: Main
 
 on: [push]
 
@@ -88,6 +88,8 @@ jobs:
   ruby-tests:
     needs: ruby-setup
     runs-on: ubuntu-latest
+
+    environment: test
 
     env:
       RAILS_ENV: test
