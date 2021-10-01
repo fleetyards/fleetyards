@@ -1,0 +1,79 @@
+name: Main Action
+
+on: [push]
+
+jobs:
+  # yarn:
+  #   <<: *defaults
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - restore_cache:
+  #         keys:
+  #           - v4-yarn-{{ checksum "Gemfile.lock" }}
+  #           - v4-yarn-
+  #     - run: yarn install
+  #     - save_cache:
+  #         key: v4-yarn-{{ checksum "Gemfile.lock" }}
+  #         paths:
+  #           - ~/.cache/yarn
+  #           - ~/app/node_modules
+  #           - /root/.cache/Cypress
+  #     - uses: actions/upload-artifact@v2
+  #       with:
+  #         name: yarn-bundle
+  #         path: |
+  #           app/node_modules
+  #           .cache/Cypress
+
+  bundle-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+      - name: Update Audit DB
+        run: bundle exec bundle-audit update
+      - name: Check Audit DB
+        run: bundle exec bundle-audit check
+
+  # yarn-audit:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: /root
+  #     - run: yarn install
+  #     - run:
+  #         name: Check Audit DB
+  #         command: yarn audit --groups dependencies
+
+  # rubocop:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: /root
+  #     - run: bundle install
+  #     - run:
+  #         name: rubocoptering
+  #         command: bundle exec rubocop --format progress
+
+  # js-lint:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: /root
+  #     - run: yarn install
+  #     - run: yarn run lint:js
+
+  # style-lint:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: /root
+  #     - run: yarn install
+  #     - run: yarn run lint:style
