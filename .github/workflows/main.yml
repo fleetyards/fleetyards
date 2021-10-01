@@ -252,6 +252,8 @@ jobs:
         run: bundle exec rails db:create db:schema:load
       - name: Create ES Index
         run: bundle exec thor search:index
+      - name: Webpacker & Assets Compile
+        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
       - name: Run Server
