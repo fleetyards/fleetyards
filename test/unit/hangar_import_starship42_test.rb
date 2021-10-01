@@ -4,7 +4,7 @@ require 'test_helper'
 require 'hangar_importer'
 require 'rsi/models_loader'
 
-class HangarImporterTest < ActiveSupport::TestCase
+class HangarImporterStarship42Test < ActiveSupport::TestCase
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
   let(:user) { users :data }
@@ -185,7 +185,7 @@ class HangarImporterTest < ActiveSupport::TestCase
     end
   end
 
-  let(:data) { JSON.parse(File.read(Rails.root.join('test/fixtures/imports/export.json'))) }
+  let(:data) { JSON.parse(File.read(Rails.root.join('test/fixtures/imports/starship42.json'))) }
 
   it 'imports all data' do
     assert_equal(
