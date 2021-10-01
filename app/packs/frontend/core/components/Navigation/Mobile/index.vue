@@ -1,7 +1,7 @@
 <template>
   <div class="navigation-mobile noselect">
     <div class="navigation-items">
-      <Btn variant="link" :inline="true" :to="{ name: 'home' }">
+      <Btn variant="link" :inline="true" :to="{ name: 'home' }" :exact="true">
         <i class="fad fa-home-alt" />
       </Btn>
       <portal-target name="navigation-mobile-extras">
