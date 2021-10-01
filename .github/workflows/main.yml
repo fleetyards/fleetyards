@@ -113,7 +113,7 @@ jobs:
         with:
           ruby-version: 3.0.2
           bundler-cache: true
-      - run: mkdir -p ~/app/log
+      - run: mkdir -p log
       - run: bundle exec rails db:create db:schema:load
       - name: Run Unit Tests
         run: bundle exec rails test:coverage
@@ -138,7 +138,7 @@ jobs:
   #     - attach_workspace:
   #         at: /root
   #     - run: bundle install
-  #     - run: mkdir -p ~/app/log
+  #     - run: mkdir -p log
   #     - run: bundle exec rails db:create db:schema:load
   #     - run:
   #         name: Create ES Index
