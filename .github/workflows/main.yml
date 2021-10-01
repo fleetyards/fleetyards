@@ -2,16 +2,10 @@ name: Main
 
 on: [push]
 
-jobs:
-  ruby-setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.2
-          bundler-cache: true
+env:
+  RUBY_VERSION: 3.0.2
 
+jobs:
   js-setup:
     runs-on: ubuntu-latest
     steps:
@@ -21,45 +15,6 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
-
-  bundle-audit:
-    needs: ruby-setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.2
-          bundler-cache: true
-      - name: Update Audit DB
-        run: bundle exec bundle-audit update
-      - name: Check Audit DB
-        run: bundle exec bundle-audit check
-
-  yarn-audit:
-    needs: js-setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-      - name: Check Audit DB
-        run: yarn audit --groups dependencies
-
-  rubocop:
-    needs: ruby-setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.2
-          bundler-cache: true
-      - name: rubocoptering
-        run: bundle exec rubocop --format progress
 
   js-lint:
     needs: js-setup
@@ -84,6 +39,40 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
       - run: yarn run lint:style
+
+  js-tests:
+    needs: js-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - name: Run Javascript Tests
+        run: yarn test:ci
+
+  ruby-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+
+  rubocop:
+    needs: ruby-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: rubocoptering
+        run: bundle exec rubocop --format progress
 
   ruby-tests:
     needs: ruby-setup
@@ -117,7 +106,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0.2
+          ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
       - run: mkdir -p log
       - run: bundle exec rails db:create db:schema:load
@@ -128,49 +117,72 @@ jobs:
         run: |
           bundle exec rake knapsack:minitest
 
-  js-tests:
-    needs: js-setup
+  seeds:
+    needs: ruby-setup
+
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+        env:
+          cluster.name: fleetyards-test-cluster
+          xpack.security.enabled: 'false'
+          transport.host: localhost
+          network.host: 127.0.0.1
+          http.port: 9200
+          discovery.type: single-node
+          ES_JAVA_OPTS: -Xms512m -Xmx512m
+
     steps:
       - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - run: mkdir -p log
+      - run: bundle exec rails db:create db:schema:load
+      - name: Create ES Index
+        run: bundle exec thor search:index
+      - name: Run Seeds
+        run: bundle exec rails db:seed
+
+  assets:
+    needs: [ruby-setup, js-setup]
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
-      - name: Run Javascript Tests
-        run: yarn test:ci
-
-  # seeds:
-  #   <<: *seeds
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: /root
-  #     - run: bundle install
-  #     - run: mkdir -p log
-  #     - run: bundle exec rails db:create db:schema:load
-  #     - run:
-  #         name: Create ES Index
-  #         command: bundle exec thor search:index
-  #     - run:
-  #         name: Run Seeds
-  #         command: bundle exec rails db:seed
-
-  # assets:
-  #   <<: *ruby-defaults
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: /root
-  #     - run: bundle install
-  #     - run: yarn install
-  #     - run:
-  #         name: Webpacker & Assets Compile
-  #         command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
-  #     - persist_to_workspace:
-  #         root: /root
-  #         paths:
-  #           - app/public/assets
-  #           - app/public/packs
-  #           - app/tmp/cache/webpacker
+      - run: mkdir -p log
+      - name: Webpacker & Assets Compile
+        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
