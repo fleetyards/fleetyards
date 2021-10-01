@@ -40,6 +40,7 @@ jobs:
     needs: js-setup
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
@@ -64,6 +65,7 @@ jobs:
     needs: js-setup
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
@@ -75,6 +77,7 @@ jobs:
     needs: js-setup
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
@@ -113,6 +116,7 @@ jobs:
     needs: js-setup
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
