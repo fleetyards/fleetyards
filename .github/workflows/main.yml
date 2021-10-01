@@ -108,6 +108,18 @@ jobs:
         # Add a health check
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
+    # https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
+    strategy:
+      fail-fast: false
+      matrix:
+        # Set N number of parallel jobs you want to run tests on.
+        # Use higher number if you have slow tests to split them on more parallel jobs.
+        # Remember to update ci_node_index below to 0..N-1
+        ci_node_total: [8]
+        # set N-1 indexes for parallel jobs
+        # When you run 2 parallel jobs then first job will have index 0, the second job will have index 1 etc
+        ci_node_index: [0, 1, 2, 3, 4, 5, 6, 7]
+
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
@@ -116,8 +128,12 @@ jobs:
           bundler-cache: true
       - run: mkdir -p log
       - run: bundle exec rails db:create db:schema:load
-      - name: Run Unit Tests
-        run: bundle exec rails test:coverage
+      - name: Run tests
+        env:
+          CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
+          CI_NODE_INDEX: ${{ matrix.ci_node_index }}
+        run: |
+          bundle exec rake knapsack:minitest
 
   js-tests:
     needs: js-setup

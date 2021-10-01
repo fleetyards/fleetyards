@@ -167,4 +167,6 @@ group :development, :test do
 
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
+
+  gem 'knapsack'
 end
