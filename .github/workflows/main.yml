@@ -214,6 +214,7 @@ jobs:
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       JOBS: 1
       CYPRESS_BASE_URL: http://localhost:8270
+      REDIS_URL: redis:6379
 
     services:
       postgres:
