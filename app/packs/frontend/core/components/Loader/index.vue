@@ -1,19 +1,18 @@
 <template>
   <transition name="fade">
-    <div v-if="loading" class="text-center">
-      <div
-        :class="{
-          fixed: fixed,
-          inline: inline,
-        }"
-        data-test="loader"
-        class="loader"
-      >
-        <div class="cube1 cube" />
-        <div class="cube2 cube" />
-        <div class="cube4 cube" />
-        <div class="cube3 cube" />
-      </div>
+    <div
+      v-if="loading"
+      :class="{
+        fixed: fixed,
+        inline: inline,
+      }"
+      data-test="loader"
+      class="loader"
+    >
+      <div class="cube1 cube" />
+      <div class="cube2 cube" />
+      <div class="cube4 cube" />
+      <div class="cube3 cube" />
     </div>
   </transition>
 </template>
