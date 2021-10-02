@@ -214,7 +214,7 @@ jobs:
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       JOBS: 1
       CYPRESS_BASE_URL: http://localhost:8270
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis:6379
 
     services:
       postgres:
@@ -229,13 +229,13 @@ jobs:
 
       redis:
         image: redis
+        ports:
+          - 6379:6379
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
