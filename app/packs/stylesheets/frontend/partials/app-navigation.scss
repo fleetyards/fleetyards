@@ -10,7 +10,7 @@
     display: flex;
     align-items: stretch;
     justify-content: space-between;
-    height: $navigation-mobile-height;
+    min-height: $navigation-mobile-height;
     background-color: rgba(darken($gray-darker, 7%), .95);
     border-top: 1px solid rgba(30, 34, 38, .5);
 
@@ -32,14 +32,14 @@
 
       &::after {
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: 10%;
         display: none;
         width: 80%;
         height: 3px;
         background: $primary;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px;
         box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
         content: '';
       }
