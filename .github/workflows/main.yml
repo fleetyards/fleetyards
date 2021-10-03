@@ -275,6 +275,5 @@ jobs:
               printf '.'
               sleep 5
           done
-      - run: yarn install
       - name: Run E2E Tests
         run: yarn run test:e2e --record --parallel

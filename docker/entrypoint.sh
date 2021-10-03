@@ -10,8 +10,8 @@ fi
 
 bundle exec rails db:migrate
 
-# bundle exec thor search:index
+bundle exec thor search:index
 
-# bundle exec rails db:seed
+bundle exec rails db:seed
 
 exec "$@"

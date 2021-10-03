@@ -5,7 +5,7 @@ services:
     image: fleetyards/app:latest
     build: .
     ports:
-      - 3001:3000
+      - 3001:3001
     environment:
       DATABASE_URL: postgresql://root:root@postgres:5432/fleetyards
       REDIS_URL: redis://redis:6379
@@ -13,7 +13,8 @@ services:
       INITIAL_DB_SETUP: 1
       UNSAFE: 1
       RAILS_SERVE_STATIC_FILES: 1
-      PORT: 3000
+      DOMAIN: localhost:3001
+      PORT: 3001
       ON_SUBDOMAIN: 1
     depends_on:
       - postgres
