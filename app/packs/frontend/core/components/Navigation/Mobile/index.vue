@@ -1,7 +1,13 @@
 <template>
   <div class="navigation-mobile noselect">
     <div class="navigation-items">
-      <Btn variant="link" :inline="true" :to="{ name: 'home' }" :exact="true">
+      <Btn
+        variant="link"
+        :inline="true"
+        :to="{ name: 'home' }"
+        :class="{ active: routeActive('home') }"
+        :exact="true"
+      >
         <i class="fad fa-home-alt" />
       </Btn>
       <portal-target name="navigation-mobile-extras">
@@ -85,6 +91,10 @@ export default class NavigationHeader extends Vue {
     return {
       q: this.filters[route],
     }
+  }
+
+  routeActive(route) {
+    return route === this.$route.name
   }
 }
 </script>
