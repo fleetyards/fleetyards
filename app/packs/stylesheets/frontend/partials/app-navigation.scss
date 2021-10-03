@@ -13,6 +13,7 @@
     min-height: $navigation-mobile-height;
     background-color: rgba(darken($gray-darker, 7%), .95);
     border-top: 1px solid rgba(30, 34, 38, .5);
+    padding-bottom: $navigation-mobile-bottom-offset;
 
     > button {
       flex-direction: column;

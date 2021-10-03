@@ -126,7 +126,7 @@ hr {
 
 @media (max-width: $desktop-breakpoint) {
   body {
-    padding-bottom: $navigation-mobile-height;
+    padding-bottom: $navigation-mobile-height + $navigation-mobile-bottom-offset;
   }
 
   .app-body {
@@ -135,12 +135,7 @@ hr {
     .main-wrapper {
       padding-top: env(safe-area-inset-top);
       padding-right: env(safe-area-inset-right);
-      padding-bottom: env(safe-area-inset-bottom);
       padding-left: env(safe-area-inset-left);
-    }
-
-    .navigtion-items {
-      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .main {
