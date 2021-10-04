@@ -238,7 +238,12 @@
     </FilteredList>
 
     <portal to="navigation-mobile-extras">
-      <Btn variant="link" :inline="true" @click.native="showNewModal">
+      <Btn
+        variant="link"
+        size="large"
+        :inline="true"
+        @click.native="showNewModal"
+      >
         <i class="fa fa-plus" />
       </Btn>
     </portal>

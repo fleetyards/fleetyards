@@ -3,6 +3,7 @@
     <div class="navigation-items">
       <Btn
         variant="link"
+        size="large"
         :inline="true"
         :to="{ name: 'home' }"
         :class="{ active: routeActive('home') }"
@@ -11,16 +12,17 @@
         <i class="fad fa-home-alt" />
       </Btn>
       <portal-target name="navigation-mobile-extras">
-        <Btn variant="link" :inline="true">
+        <Btn variant="link" size="large" :inline="true">
           <span />
         </Btn>
       </portal-target>
-      <Btn variant="link" :inline="true" :to="{ name: 'search' }">
+      <Btn variant="link" size="large" :inline="true" :to="{ name: 'search' }">
         <i class="fa fa-search" />
       </Btn>
       <Btn
         v-if="isAuthenticated || !hangarPreview"
         variant="link"
+        size="large"
         :inline="true"
         :to="{
           name: 'hangar',
@@ -32,10 +34,15 @@
       <Btn
         v-else
         variant="link"
+        size="large"
         :inline="true"
-        :to="{ name: 'hangar-preview' }"
+        :to="{
+          name: 'models',
+          query: filterFor('models'),
+        }"
+        :active="$route.name === 'model'"
       >
-        <i class="fad fa-bookmark" />
+        <i class="fad fa-starship" />
       </Btn>
       <button
         :class="{
