@@ -97,7 +97,7 @@
             <i class="fal fa-check" />
           </div>
           <div
-            v-else-if="!mobile && model.loaners && loanersHintVisible"
+            v-else-if="!mobile && hasLoaners && loanersHintVisible"
             v-tooltip="loanersTooltip"
             class="loaner-label"
           >
@@ -273,6 +273,10 @@ export default class VehiclePanel extends Vue {
       this.$t('labels.vehicle.hasLoaners'),
       this.model.loaners.map(loaner => loaner.name).join(', '),
     ].join(': ')
+  }
+
+  get hasLoaners() {
+    return this.model?.loaners?.length
   }
 
   filterManufacturerQuery(manufacturer) {
