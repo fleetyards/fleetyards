@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.16.0](https://github.com/fleetyards/fleetyards/compare/v4.15.0...v4.16.0) (2021-10-05)
+
+
+### Features
+
+* add share button to model detail ([6bd00d9](https://github.com/fleetyards/fleetyards/commit/6bd00d996f69157c5bf6a514e1295b46fe5c0c23))
+
+
+### Bug Fixes
+
+* active home nav on mobile ([7c96a86](https://github.com/fleetyards/fleetyards/commit/7c96a864359976d7c25f4e3c799e968018f09f49))
+* hide hangar groups until stats are loaded ([6585619](https://github.com/fleetyards/fleetyards/commit/658561918b6a4e6fba52f28799c073453f09cf0c))
+* loader position ([362d76e](https://github.com/fleetyards/fleetyards/commit/362d76e45a46c975e048ff1df4b280391b7f14da))
+* mobile nav ([4f7923d](https://github.com/fleetyards/fleetyards/commit/4f7923d00d140b9fb589eb474bcc513fcc92fe12))
+* navigation ([1a9cdff](https://github.com/fleetyards/fleetyards/commit/1a9cdffdd7cad4c67e4ba1cc064f667b2e21f965))
+* specs ([22be552](https://github.com/fleetyards/fleetyards/commit/22be552237e8b3809101e97f30d79ee52a02da22))
+
 ## [4.15.0](https://github.com/fleetyards/fleetyards/compare/v4.14.1...v4.15.0) (2021-09-27)
 
 
