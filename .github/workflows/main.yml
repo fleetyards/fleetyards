@@ -185,18 +185,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-      - run: mkdir -p log
-      - name: Webpacker & Assets Compile
-        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+      # - uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: ${{ env.RUBY_VERSION }}
+      #     bundler-cache: true
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: '**/node_modules'
+      #     key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      # - run: yarn install
+      # - run: mkdir -p log
+      # - name: Webpacker & Assets Compile
+      #   run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -208,10 +208,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Step that prints name of pull request's base branch
         run: |
-          echo "Pull request's base branch is: ${BASE_BRANCH}"
+          echo "Pull request's base branch is: ${BASE_BRANCH} ref: $GITHUB_REF"
         env:
           BASE_BRANCH: ${{ github.base_ref }}
-        if: github.event_name == 'pull_request'
       # - name: Build and push
       #   uses: docker/build-push-action@v2
       #   with:
