@@ -26,10 +26,8 @@ export type ApiErrorResponse = {
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
   headers: {
-    common: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
   },
   paramsSerializer: params =>
     Qs.stringify(params, {
@@ -118,7 +116,7 @@ export async function get(
     })
     return handleResponse(response, params, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, params, silent)
+    return handleError(error as AxiosError<never>, params, silent)
   }
 }
 
@@ -129,7 +127,7 @@ export async function post(path: string, body = {}, silent: boolean = false) {
   try {
     return handleResponse(await client.post(path, body), body, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, body, silent)
+    return handleError(error as AxiosError<never>, body, silent)
   }
 }
 
@@ -140,7 +138,7 @@ export async function put(path: string, body = {}, silent: boolean = false) {
   try {
     return handleResponse(await client.put(path, body), body, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, body, silent)
+    return handleError(error as AxiosError<never>, body, silent)
   }
 }
 
@@ -156,7 +154,7 @@ export async function destroy(
   try {
     return handleResponse(await client.delete(path, { data }), data, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, data, silent)
+    return handleError(error as AxiosError<never>, data, silent)
   }
 }
 
@@ -176,7 +174,7 @@ export async function upload(path: string, body = {}, silent: boolean = false) {
       silent,
     )
   } catch (error) {
-    return handleError(error as AxiosError<any>, body, silent)
+    return handleError(error as AxiosError<never>, body, silent)
   }
 }
 
@@ -198,7 +196,7 @@ export async function download(
       silent,
     )
   } catch (error) {
-    return handleError(error as AxiosError<any>, params, silent)
+    return handleError(error as AxiosError<never>, params, silent)
   }
 }
 
@@ -213,7 +211,8 @@ const apiClient = {
 }
 
 export default {
-  install(Vue) {
+  // tslint:disable-next-line
+  install(Vue: any) {
     // eslint-disable-next-line no-param-reassign
     Vue.prototype.$api = apiClient
   },
