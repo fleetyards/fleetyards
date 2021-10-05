@@ -159,6 +159,12 @@ hr {
       }
     }
   }
+
+  .sticky-left {
+    position: initial;
+    left: auto;
+    z-index: initial;
+  }
 }
 
 @media (max-width: 370px) {

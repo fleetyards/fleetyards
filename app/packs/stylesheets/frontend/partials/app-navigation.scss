@@ -1,9 +1,11 @@
 .navigation-mobile {
   position: fixed;
   right: 0;
+  left: 0;
   bottom: 0;
   z-index: 1000;
   width: 100%;
+  max-width: 100vw;
   transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   .navigation-items {
@@ -11,9 +13,9 @@
     align-items: stretch;
     justify-content: space-between;
     min-height: $navigation-mobile-height;
+    padding-bottom: $navigation-mobile-bottom-offset;
     background-color: rgba(darken($gray-darker, 7%), .95);
     border-top: 1px solid rgba(30, 34, 38, .5);
-    padding-bottom: $navigation-mobile-bottom-offset;
 
     .navigation-item-image {
       max-width: 24px;

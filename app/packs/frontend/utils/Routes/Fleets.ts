@@ -1,4 +1,4 @@
-export const isFleetRoute = async function isFleetRoute(routeName) {
+export const isFleetRoute = function isFleetRoute(routeName: string) {
   return [
     'fleet',
     'fleet-ships',

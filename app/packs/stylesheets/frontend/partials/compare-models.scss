@@ -102,7 +102,7 @@
 
       i {
         position: absolute;
-        top: 2px;
+        top: 4px;
         right: 0;
         transition: all .5s ease;
       }
@@ -132,19 +132,11 @@
 
 @media (max-width: 992px) {
   .compare-models {
+    overflow: auto;
+
     .metrics-label,
     .metrics-title {
       text-align: center;
-    }
-
-    .compare-section {
-      .metrics-title {
-        padding-right: 0;
-
-        i {
-          right: 15px;
-        }
-      }
     }
   }
 }

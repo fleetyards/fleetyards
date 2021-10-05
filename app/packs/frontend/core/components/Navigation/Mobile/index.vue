@@ -182,11 +182,15 @@ export default class NavigationHeader extends Vue {
   }
 
   mounted() {
-    this.fetch()
-    this.$comlink.$on('fleet-update', this.fetch)
+    this.fetchFleet()
+    this.$comlink.$on('fleet-update', this.fetchFleet)
   }
 
-  async fetch() {
+  async fetchFleet() {
+    if (!this.isFleetRoute) {
+      return
+    }
+
     await this.fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }

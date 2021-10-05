@@ -20,17 +20,18 @@
           <div class="col-12">
             <div class="row compare-row compare-row-headline">
               <div class="col-12 compare-row-label">
-                <FilterGroup
+                <CollectionFilterGroup
                   v-model="newModel"
                   v-tooltip="disabledTooltip"
-                  translation-key="compare.addModel"
                   name="new-model"
                   :search-label="$t('actions.findModel')"
-                  :fetch="fetchModels"
+                  :collection="modelsCollection"
                   value-attr="slug"
+                  translation-key="compare.addModel"
                   :disabled="selectDisabled"
-                  :searchable="true"
                   :paginated="true"
+                  :searchable="true"
+                  :return-object="true"
                   :no-label="true"
                   @input="add"
                 />
@@ -101,7 +102,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
 import Box from 'frontend/core/components/Box'
 import Btn from 'frontend/core/components/Btn'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
@@ -109,10 +110,12 @@ import BaseRows from 'frontend/components/Compare/Models/Base'
 import CrewRows from 'frontend/components/Compare/Models/Crew'
 import SpeedRows from 'frontend/components/Compare/Models/Speed'
 import HardpointRows from 'frontend/components/Compare/Models/Hardpoints'
+import modelsCollection from 'frontend/api/collections/Models'
+import modelHardpointsCollection from 'frontend/api/collections/ModelHardpoints'
 
 @Component<ModelsCompare>({
   components: {
-    FilterGroup,
+    CollectionFilterGroup,
     Box,
     Btn,
     BreadCrumbs,
@@ -125,6 +128,8 @@ import HardpointRows from 'frontend/components/Compare/Models/Hardpoints'
 })
 export default class ModelsCompare extends Vue {
   @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
+
+  modelsCollection: ModelsCollection = modelsCollection
 
   newModel: Model | null = null
 
@@ -208,10 +213,10 @@ export default class ModelsCompare extends Vue {
   }
 
   async add() {
-    if (this.newModel && !this.form.models.includes(this.newModel)) {
-      const model = await this.fetchModel(this.newModel)
+    if (this.newModel && !this.form.models.includes(this.newModel.slug)) {
+      const model = await this.fetchModel(this.newModel.slug)
       this.models.push(model)
-      this.form.models.push(this.newModel)
+      this.form.models.push(this.newModel.slug)
     }
     this.newModel = null
   }
@@ -228,30 +233,15 @@ export default class ModelsCompare extends Vue {
     }
   }
 
-  fetchModels({ page, search, missingValue }) {
-    const query = {
-      q: {},
-    }
-
-    if (search) {
-      query.q.nameCont = search
-    } else if (missingValue) {
-      query.q.nameCont = missingValue
-    } else if (page) {
-      query.page = page
-    }
-
-    return this.$api.get('models', query)
-  }
-
   async fetchModel(slug) {
-    const response = await this.$api.get(`models/${slug}`)
+    const model = await modelsCollection.findBySlug(slug)
 
-    if (!response.error) {
-      return response.data
+    const hardpoints = await modelHardpointsCollection.findAllByModel(slug)
+
+    return {
+      ...model,
+      hardpoints,
     }
-
-    return null
   }
 }
 </script>

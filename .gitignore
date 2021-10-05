@@ -51,3 +51,5 @@ reserved_usernames.json
 REVISION
 
 .idea
+
+cypress/*
