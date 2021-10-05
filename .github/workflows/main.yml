@@ -165,7 +165,7 @@ jobs:
       - name: Run Seeds
         run: bundle exec rails db:seed
 
-  build:
+  assets:
     needs: [ruby-setup, js-setup]
     runs-on: ubuntu-latest
 
@@ -200,25 +200,6 @@ jobs:
       - run: mkdir -p log
       - name: Webpacker & Assets Compile
         run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v1
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v1
-      # - name: Login to DockerHub
-      #   uses: docker/login-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # - id: get-branch-name
-      #   run: |
-      #     branchName=$(echo ${{github.ref}} | rev | cut -d/ -f1 | rev)
-      #     echo "::set-output name=branchName::$branchName"
-      # - name: Build and push
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
 
   e2e-test:
     needs: [ruby-setup, js-setup]
