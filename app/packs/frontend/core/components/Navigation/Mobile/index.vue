@@ -1,7 +1,6 @@
 <template>
   <div class="navigation-mobile noselect">
-    <portal-target name="navigation-mobile-extras" />
-    <div class="navigation-items">
+    <div v-if="$route.name" class="navigation-items">
       <template v-if="isFleetRoute && currentFleet">
         <Btn
           variant="link"
@@ -13,10 +12,14 @@
           exact
         >
           <img
+            v-if="currentFleet.logo"
             :src="currentFleet.logo"
             :alt="`${currentFleet.name} image`"
             class="navigation-item-image"
           />
+          <span v-else class="nav-item-image-empty">
+            {{ firstLetter }}
+          </span>
         </Btn>
         <Btn
           v-if="currentFleet.publicFleet || currentFleet.myFleet"
@@ -163,6 +166,10 @@ export default class NavigationHeader extends Vue {
 
   get shipsNavActive() {
     return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
+  }
+
+  get firstLetter() {
+    return this.currentFleet?.name?.charAt(0)
   }
 
   filterFor(route) {
