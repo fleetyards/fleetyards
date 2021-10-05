@@ -7,7 +7,6 @@ json.loaner vehicle.loaner
 json.model do
   json.partial! 'api/v1/models/minimal', model: vehicle.model if vehicle.model.present?
 end
-json.model nil if vehicle.model.blank?
 json.paint do
   json.partial! 'api/v1/model_paints/minimal', model_paint: vehicle.model_paint if vehicle.model_paint.present?
 end

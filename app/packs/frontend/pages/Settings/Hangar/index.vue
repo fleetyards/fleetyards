@@ -22,6 +22,21 @@
             />
           </ValidationProvider>
         </div>
+        <div class="col-12 col-md-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="publicHangarLoaners"
+            :name="$t('labels.user.publicHangarLoaners')"
+            :slim="true"
+          >
+            <Checkbox
+              id="publicHangarLoaners"
+              v-model="form.publicHangarLoaners"
+              :label="$t('labels.user.publicHangarLoaners')"
+              :class="{ 'has-error has-feedback': errors[0] }"
+            />
+          </ValidationProvider>
+        </div>
       </div>
       <br />
       <Btn :loading="submitting" type="submit" size="large">
@@ -69,13 +84,14 @@ export default class SettingsHangar extends Vue {
   setupForm() {
     this.form = {
       publicHangar: this.currentUser.publicHangar,
+      publicHangarLoaners: this.currentUser.publicHangarLoaners,
     }
   }
 
   async submit() {
     this.submitting = true
 
-    const response = await userCollection.updateAccount(this.form)
+    const response = await userCollection.updateProfile(this.form)
 
     this.submitting = false
 

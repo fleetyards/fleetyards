@@ -97,6 +97,13 @@
             <i class="fal fa-check" />
           </div>
           <div
+            v-else-if="!mobile && model.loaners && loanersHintVisible"
+            v-tooltip="loanersTooltip"
+            class="loaner-label"
+          >
+            <i class="fal fa-exchange" />
+          </div>
+          <div
             v-show="model.onSale"
             v-tooltip="$t('labels.model.onSale')"
             class="on-sale"
@@ -151,6 +158,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
+import { Getter } from 'vuex-class'
 import Panel from 'frontend/core/components/Panel'
 import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
@@ -178,6 +186,10 @@ export default class VehiclePanel extends Vue {
   @Prop({ default: false }) editable: boolean
 
   @Prop({ default: false }) highlight: boolean
+
+  @Prop({ default: false }) loanersHintVisible: boolean
+
+  @Getter('mobile') mobile
 
   get uuid() {
     return this._uid
@@ -254,6 +266,13 @@ export default class VehiclePanel extends Vue {
     }
 
     return this.$t('actions.markAsPurchased')
+  }
+
+  get loanersTooltip() {
+    return [
+      this.$t('labels.vehicle.hasLoaners'),
+      this.model.loaners.map(loaner => loaner.name).join(', '),
+    ].join(': ')
   }
 
   filterManufacturerQuery(manufacturer) {

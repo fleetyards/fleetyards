@@ -84,6 +84,10 @@ module Api
             'code' => nil,
             'logo' => nil
           },
+          'loaners' => [{
+            'slug' => 'ptv',
+            'name' => 'PTV'
+          }],
           'createdAt' => origin.created_at.utc.iso8601,
           'updatedAt' => origin.updated_at.utc.iso8601
         }, {
@@ -150,6 +154,7 @@ module Api
             'code' => nil,
             'logo' => nil
           },
+          'loaners' => [],
           'createdAt' => Model.last.created_at.utc.iso8601,
           'updatedAt' => Model.last.updated_at.utc.iso8601
         }]
