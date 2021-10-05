@@ -89,6 +89,7 @@ import StationsNav from 'frontend/core/components/Navigation/StationsNav'
 import RoadmapNav from 'frontend/core/components/Navigation/RoadmapNav'
 import NavFooter from 'frontend/core/components/Navigation/NavFooter'
 import NavigationMixin from 'frontend/mixins/Navigation'
+import { isFleetRoute } from 'frontend/utils/Routes/Fleets'
 
 @Component<Navigation>({
   components: {
@@ -115,16 +116,7 @@ export default class Navigation extends Vue {
   @Getter('preview', { namespace: 'hangar' }) hangarPreview
 
   get isFleetRoute() {
-    return [
-      'fleet',
-      'fleet-ships',
-      'fleet-members',
-      'fleet-stats',
-      'fleet-fleetchart',
-      'fleet-settings',
-      'fleet-settings-fleet',
-      'fleet-settings-membership',
-    ].includes(this.$route.name)
+    return isFleetRoute(this.$route.name)
   }
 
   @Watch('$route')

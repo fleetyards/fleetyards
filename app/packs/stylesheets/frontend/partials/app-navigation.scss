@@ -15,6 +15,14 @@
     border-top: 1px solid rgba(30, 34, 38, .5);
     padding-bottom: $navigation-mobile-bottom-offset;
 
+    .navigation-item-image {
+      max-width: 24px;
+      margin-right: 3px;
+      margin-left: 3px;
+      vertical-align: middle;
+      transition: max-width ease $transition-base-speed, margin ease $transition-base-speed;
+    }
+
     > button {
       flex-direction: column;
     }
@@ -25,7 +33,7 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      min-height: 75px;
+      min-height: $navigation-mobile-height;
       margin-right: 0;
       padding: 0;
       border-radius: 0;
