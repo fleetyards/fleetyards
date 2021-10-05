@@ -116,6 +116,7 @@
             <VehiclePanel
               :vehicle="record"
               :highlight="record.hangarGroupIds.includes(highlightedGroup)"
+              :loaners-hint-visible="user.publicHangarLoaners"
             />
           </template>
         </FilteredGrid>

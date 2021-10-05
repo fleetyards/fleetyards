@@ -150,6 +150,10 @@ module Api
                 'code' => nil,
                 'logo' => nil
               },
+              'loaners' => [{
+                'slug' => 'ptv',
+                'name' => 'PTV'
+              }],
               'createdAt' => explorer.model.created_at.utc.iso8601,
               'updatedAt' => explorer.model.updated_at.utc.iso8601
             },
@@ -243,6 +247,7 @@ module Api
                 'code' => nil,
                 'logo' => nil
               },
+              'loaners' => [],
               'createdAt' => enterprise.model.created_at.utc.iso8601,
               'updatedAt' => enterprise.model.updated_at.utc.iso8601
             },
@@ -349,6 +354,7 @@ module Api
                 'code' => nil,
                 'logo' => nil
               },
+              'loaners' => [],
               'createdAt' => enterprise.model.created_at.utc.iso8601,
               'updatedAt' => enterprise.model.updated_at.utc.iso8601
             },

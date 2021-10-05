@@ -42,7 +42,7 @@
 @media (max-width: $desktop-breakpoint) {
   .app-shopping-cart {
     right: 0;
-    bottom: $navigation-mobile-height;
+    bottom: $navigation-mobile-height + $navigation-mobile-bottom-offset;
     left: auto;
     width: 100%;
     margin-left: 0;

@@ -1,36 +1,113 @@
 <template>
   <div class="navigation-mobile noselect">
-    <div class="navigation-items">
-      <Btn variant="link" :inline="true" :to="{ name: 'home' }" :exact="true">
-        <i class="fad fa-home-alt" />
-      </Btn>
-      <portal-target name="navigation-mobile-extras">
-        <Btn variant="link" :inline="true">
-          <span />
+    <div v-if="$route.name" class="navigation-items">
+      <template v-if="isFleetRoute && currentFleet">
+        <Btn
+          variant="link"
+          size="large"
+          :inline="true"
+          :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
+          :image="currentFleet.logo"
+          :class="{ active: routeActive('fleet') }"
+          exact
+        >
+          <img
+            v-if="currentFleet.logo"
+            :src="currentFleet.logo"
+            :alt="`${currentFleet.name} image`"
+            class="navigation-item-image"
+          />
+          <span v-else class="nav-item-image-empty">
+            {{ firstLetter }}
+          </span>
         </Btn>
-      </portal-target>
-      <Btn variant="link" :inline="true" :to="{ name: 'search' }">
-        <i class="fa fa-search" />
-      </Btn>
-      <Btn
-        v-if="isAuthenticated || !hangarPreview"
-        variant="link"
-        :inline="true"
-        :to="{
-          name: 'hangar',
-          query: filterFor('hangar'),
-        }"
-      >
-        <i class="fad fa-bookmark" />
-      </Btn>
-      <Btn
-        v-else
-        variant="link"
-        :inline="true"
-        :to="{ name: 'hangar-preview' }"
-      >
-        <i class="fad fa-bookmark" />
-      </Btn>
+        <Btn
+          v-if="currentFleet.publicFleet || currentFleet.myFleet"
+          variant="link"
+          size="large"
+          :inline="true"
+          :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
+          :class="{ active: shipsNavActive }"
+          :active="shipsNavActive"
+        >
+          <i class="fad fa-starship" />
+        </Btn>
+        <template v-if="currentFleet.myFleet">
+          <Btn
+            variant="link"
+            size="large"
+            :inline="true"
+            :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
+            :class="{ active: routeActive('fleet-members') }"
+          >
+            <i class="fad fa-users" />
+          </Btn>
+          <Btn
+            variant="link"
+            size="large"
+            :inline="true"
+            :to="{
+              name: 'fleet-settings',
+              params: { slug: currentFleet.slug },
+            }"
+            :class="{ active: routeActive('fleet-settings') }"
+          >
+            <i class="fad fa-cogs" />
+          </Btn>
+        </template>
+      </template>
+      <template v-else>
+        <Btn
+          variant="link"
+          size="large"
+          :inline="true"
+          :to="{ name: 'home' }"
+          :class="{ active: routeActive('home') }"
+          :exact="true"
+        >
+          <i class="fad fa-home-alt" />
+        </Btn>
+        <Btn
+          variant="link"
+          size="large"
+          :inline="true"
+          :to="{
+            name: 'models',
+            query: filterFor('models'),
+          }"
+        >
+          <i class="fad fa-starship" />
+        </Btn>
+        <Btn
+          variant="link"
+          size="large"
+          :inline="true"
+          :to="{ name: 'search' }"
+        >
+          <i class="fa fa-search" />
+        </Btn>
+        <Btn
+          v-if="isAuthenticated || !hangarPreview"
+          variant="link"
+          size="large"
+          :inline="true"
+          :to="{
+            name: 'hangar',
+            query: filterFor('hangar'),
+          }"
+        >
+          <i class="fad fa-bookmark" />
+        </Btn>
+        <Btn
+          v-else
+          variant="link"
+          size="large"
+          :inline="true"
+          :to="{ name: 'hangar-preview' }"
+        >
+          <i class="fad fa-bookmark" />
+        </Btn>
+      </template>
       <button
         :class="{
           collapsed: navCollapsed,
@@ -56,6 +133,8 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
+import { isFleetRoute } from 'frontend/utils/Routes/Fleets'
+import fleetsApiCollection from 'frontend/api/collections/Fleets'
 
 @Component<NavigationHeader>({
   components: {
@@ -75,6 +154,24 @@ export default class NavigationHeader extends Vue {
 
   @Action('toggleNav', { namespace: 'app' }) toggle
 
+  fleetsCollection: FleetsCollection = fleetsApiCollection
+
+  get isFleetRoute() {
+    return isFleetRoute(this.$route.name)
+  }
+
+  get currentFleet(): Fleet | null {
+    return this.fleetsCollection.record
+  }
+
+  get shipsNavActive() {
+    return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
+  }
+
+  get firstLetter() {
+    return this.currentFleet?.name?.charAt(0)
+  }
+
   filterFor(route) {
     // // TODO: disabled until vue-router supports navigation to same route
     // return null
@@ -85,6 +182,23 @@ export default class NavigationHeader extends Vue {
     return {
       q: this.filters[route],
     }
+  }
+
+  routeActive(route) {
+    return route === this.$route.name
+  }
+
+  mounted() {
+    this.fetchFleet()
+    this.$comlink.$on('fleet-update', this.fetchFleet)
+  }
+
+  async fetchFleet() {
+    if (!this.isFleetRoute) {
+      return
+    }
+
+    await this.fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

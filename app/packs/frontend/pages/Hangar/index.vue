@@ -237,11 +237,7 @@
       </template>
     </FilteredList>
 
-    <portal to="navigation-mobile-extras">
-      <Btn variant="link" :inline="true" @click.native="showNewModal">
-        <i class="fa fa-plus" />
-      </Btn>
-    </portal>
+    <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
   </section>
 </template>
 

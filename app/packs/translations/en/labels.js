@@ -327,6 +327,7 @@ export default {
     unconfirmedEmail: 'Unconfirmed email',
     saleNotify: 'I want to receive Sale Notifications',
     publicHangar: 'Public Hangar enabled',
+    publicHangarLoaners: 'Show Loaners Hint on Public Hangar',
   },
   'vehicle': {
     name: 'Name',
@@ -348,6 +349,7 @@ export default {
     bulkGroupEdit: {
       hint: 'Existing Groups will be overridden!',
     },
+    hasLoaners: 'Loaners',
   },
   'image': {
     background: 'Use as Background?',

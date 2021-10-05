@@ -131,6 +131,10 @@ module Api
               'code' => nil,
               'logo' => nil
             },
+            'loaners' => [{
+              'slug' => 'ptv',
+              'name' => 'PTV'
+            }],
             'createdAt' => explorer.commodity_item.created_at.utc.iso8601,
             'updatedAt' => explorer.commodity_item.updated_at.utc.iso8601
           },
@@ -251,6 +255,7 @@ module Api
               'code' => nil,
               'logo' => nil
             },
+            'loaners' => [],
             'createdAt' => andromeda.commodity_item.created_at.utc.iso8601,
             'updatedAt' => andromeda.commodity_item.updated_at.utc.iso8601
           },

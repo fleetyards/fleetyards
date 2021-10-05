@@ -12,6 +12,8 @@ type UserForm = {
   twitch: string
   guilded: string
   removeAvatar: boolean
+  publicHangar: boolean
+  publicHangarLoaners: boolean
 }
 
 type UserAccountForm = {

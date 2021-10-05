@@ -4,15 +4,25 @@
   bottom: 0;
   z-index: 1000;
   width: 100%;
+  max-width: 100vw;
   transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   .navigation-items {
     display: flex;
     align-items: stretch;
     justify-content: space-between;
-    height: $navigation-mobile-height;
+    min-height: $navigation-mobile-height;
+    padding-bottom: $navigation-mobile-bottom-offset;
     background-color: rgba(darken($gray-darker, 7%), .95);
     border-top: 1px solid rgba(30, 34, 38, .5);
+
+    .navigation-item-image {
+      max-width: 24px;
+      margin-right: 3px;
+      margin-left: 3px;
+      vertical-align: middle;
+      transition: max-width ease $transition-base-speed, margin ease $transition-base-speed;
+    }
 
     > button {
       flex-direction: column;
@@ -24,7 +34,7 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      min-height: 75px;
+      min-height: $navigation-mobile-height;
       margin-right: 0;
       padding: 0;
       border-radius: 0;
@@ -32,14 +42,14 @@
 
       &::after {
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: 10%;
         display: none;
         width: 80%;
         height: 3px;
         background: $primary;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px;
         box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
         content: '';
       }

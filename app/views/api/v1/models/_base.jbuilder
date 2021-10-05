@@ -67,3 +67,6 @@ json.manufacturer do
   json.null! if model.manufacturer.blank?
   json.partial! 'api/v1/manufacturers/base', manufacturer: model.manufacturer if model.manufacturer.present?
 end
+json.loaners do
+  json.array! model.loaners, partial: 'api/v1/models/loaner', as: :loaner
+end

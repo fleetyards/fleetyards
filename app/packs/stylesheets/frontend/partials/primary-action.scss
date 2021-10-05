@@ -44,7 +44,7 @@
 
 @media (max-width: $desktop-breakpoint) {
   .primary-action {
-    right: auto;
-    left: 1rem;
+    bottom: $navigation-mobile-height + $navigation-mobile-bottom-offset;
+    margin-bottom: 1rem;
   }
 }
