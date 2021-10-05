@@ -6,9 +6,6 @@ on:
       - '**'
     tags-ignore:
       - '*.*'
-    paths-ignore:
-      - README.md
-      - CHANGELOG.md
 
 env:
   RUBY_VERSION: 3.0.2
@@ -240,7 +237,7 @@ jobs:
           context: .
           push: true
           tags: |
-            - ghcr.io/fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
+            ghcr.io/fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
       - if: ${{ contains(github.ref, 'refs/tags') }}
         name: Build and push
         uses: docker/build-push-action@v2
@@ -248,7 +245,7 @@ jobs:
           context: .
           push: true
           tags: |
-            - fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
+            fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
 
   e2e-test:
     needs: [ruby-setup, js-setup]
