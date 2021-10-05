@@ -1,9 +1,12 @@
 name: Main
 
 on:
-  push:
+  pull_request:
     tags-ignore:
       - '*.*'
+  push:
+    branches:
+      - main
 
 env:
   RUBY_VERSION: 3.0.2
