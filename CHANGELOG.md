@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.16.1](https://github.com/fleetyards/fleetyards/compare/v4.16.0...v4.16.1) (2021-10-05)
+
+
+### Bug Fixes
+
+* public hangar loaners hint ([00ba48e](https://github.com/fleetyards/fleetyards/commit/00ba48e528d1737517c4d27b308810c253451c72))
+
 ## [4.16.0](https://github.com/fleetyards/fleetyards/compare/v4.15.0...v4.16.0) (2021-10-05)
 
 
