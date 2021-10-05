@@ -1,9 +1,6 @@
 name: Main
 
-on:
-  push:
-    tags-ignore:
-      - '*.*'
+on: [push]
 
 env:
   RUBY_VERSION: 3.0.2
