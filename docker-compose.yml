@@ -10,7 +10,7 @@ services:
       DATABASE_URL: postgresql://root:root@postgres:5432/fleetyards
       REDIS_URL: redis://redis:6379
       ELASTICSEARCH_URL: elasticsearch:9200
-      INITIAL_DB_SETUP: 1
+      # INITIAL_DB_SETUP: 1
       UNSAFE: 1
       RAILS_SERVE_STATIC_FILES: 1
       DOMAIN: localhost:3001
@@ -43,10 +43,10 @@ services:
       - 9200:9200
       - 9300:9300
     environment:
-      cluster.name: fleetyards-development-cluster
-      xpack.security.enabled: 'false'
-      discovery.type: single-node
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - cluster.name=fleetyards-development-cluster
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - ./data/es-local:/usr/share/elasticsearch/data
   # kibana:

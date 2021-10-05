@@ -5,15 +5,15 @@ require 'thor'
 class Search < Thor
   include Thor::Actions
 
-  def self.exit_on_failure?
-    true
-  end
+  # def self.exit_on_failure?
+  #   true
+  # end
 
   desc 'cleanup', 'Cleanup index for all Relevant Models'
   def cleanup
     require './config/environment'
 
-    run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    wait_for_elasticsearch
 
     puts
     puts 'Starting Clenaup...'
@@ -39,7 +39,7 @@ class Search < Thor
   def index
     require './config/environment'
 
-    run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    wait_for_elasticsearch
 
     puts
     puts 'Starting Reindex...'
@@ -90,6 +90,21 @@ class Search < Thor
   no_commands do
     private def elasticsearch_url
       ENV['ELASTICSEARCH_URL'] || 'http://localhost:9200'
+    end
+
+    private def wait_for_elasticsearch
+      until check_elasticsearch
+        puts '.'
+        sleep 5
+      end
+
+      run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    end
+
+    private def check_elasticsearch
+      result = system("curl --silent \"#{elasticsearch_url}/_cat/health?h=st\"")
+
+      result.nil?!= 'red'
     end
   end
 end
