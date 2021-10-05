@@ -1,7 +1,7 @@
 <template>
   <div>
     <Panel
-      v-if="model"
+      v-if="vehicle && model"
       :id="id"
       class="model-panel"
       :class="`model-panel-${model.slug}`"
