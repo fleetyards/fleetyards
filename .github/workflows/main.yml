@@ -331,7 +331,9 @@ jobs:
     needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, build, e2e-test]
     runs-on: ubuntu-latest
 
-    environment: Stage
+    environment:
+      name: Stage
+      url: https://stage.fleetyards.net
 
     env:
       APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}

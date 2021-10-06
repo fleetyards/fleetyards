@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  RUBY_VERSION: 3.0.2
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - name: Run E2E Tests
+        run: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net --parallel
+
+  deploy-to-live:
+    needs: [smoke-test]
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Live
+      url: https://fleetyards.net
+
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      GITHUB_USER: ${{ github.actor }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: ignore
+      - name: Deploy
+        run: bundle exec cap live deploy
+      - run: |
+          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
+      - run: |
+          curl -X POST $DISCORD_WEBHOOK \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }"
