@@ -11,324 +11,324 @@ env:
   RUBY_VERSION: 3.0.2
 
 jobs:
-  # js-setup:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-  #     - run: yarn install
+  js-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
 
-  # js-lint:
-  #   needs: js-setup
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-  #     - run: yarn install
-  #     - run: yarn run lint:js
+  js-lint:
+    needs: js-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - run: yarn run lint:js
 
-  # style-lint:
-  #   needs: js-setup
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-  #     - run: yarn install
-  #     - run: yarn run lint:style
+  style-lint:
+    needs: js-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - run: yarn run lint:style
 
-  # js-tests:
-  #   needs: js-setup
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-  #     - run: yarn install
-  #     - name: Run Javascript Tests
-  #       run: yarn test:ci
+  js-tests:
+    needs: js-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - name: Run Javascript Tests
+        run: yarn test:ci
 
-  # ruby-setup:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: ${{ env.RUBY_VERSION }}
-  #         bundler-cache: true
+  ruby-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
 
-  # rubocop:
-  #   needs: ruby-setup
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: ${{ env.RUBY_VERSION }}
-  #         bundler-cache: true
-  #     - name: rubocoptering
-  #       run: bundle exec rubocop --format progress
+  rubocop:
+    needs: ruby-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: rubocoptering
+        run: bundle exec rubocop --format progress
 
-  # ruby-tests:
-  #   needs: ruby-setup
-  #   runs-on: ubuntu-latest
+  ruby-tests:
+    needs: ruby-setup
+    runs-on: ubuntu-latest
 
-  #   env:
-  #     RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  #     RAILS_ENV: test
-  #     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
-  #     DATABASE_HOST: 127.0.0.1
-  #     DATABASE_USER: root
+    env:
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      RAILS_ENV: test
+      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_USER: root
 
-  #   services:
-  #     postgres:
-  #       image: postgres:13.2-alpine
-  #       env:
-  #         POSTGRES_USER: root
-  #         POSTGRES_DB: fleetyards_test
-  #         POSTGRES_PASSWORD: root
-  #       ports:
-  #         - 5432:5432
-  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       ci_node_total: [4]
-  #       ci_node_index: [0, 1, 2, 3]
+    strategy:
+      fail-fast: false
+      matrix:
+        ci_node_total: [4]
+        ci_node_index: [0, 1, 2, 3]
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: ${{ env.RUBY_VERSION }}
-  #         bundler-cache: true
-  #     - run: mkdir -p log
-  #     - run: bundle exec rails db:create db:schema:load
-  #     - name: Run tests
-  #       env:
-  #         CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
-  #         CI_NODE_INDEX: ${{ matrix.ci_node_index }}
-  #       run: |
-  #         bundle exec rake knapsack:minitest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - run: mkdir -p log
+      - run: bundle exec rails db:create db:schema:load
+      - name: Run tests
+        env:
+          CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
+          CI_NODE_INDEX: ${{ matrix.ci_node_index }}
+        run: |
+          bundle exec rake knapsack:minitest
 
-  # seeds:
-  #   needs: ruby-setup
-  #   runs-on: ubuntu-latest
+  seeds:
+    needs: ruby-setup
+    runs-on: ubuntu-latest
 
-  #   env:
-  #     RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  #     RAILS_ENV: test
-  #     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
-  #     DATABASE_HOST: 127.0.0.1
-  #     DATABASE_USER: root
+    env:
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      RAILS_ENV: test
+      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_USER: root
 
-  #   services:
-  #     postgres:
-  #       image: postgres:13.2-alpine
-  #       env:
-  #         POSTGRES_USER: root
-  #         POSTGRES_DB: fleetyards_test
-  #         POSTGRES_PASSWORD: root
-  #       ports:
-  #         - 5432:5432
-  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: ${{ env.RUBY_VERSION }}
-  #         bundler-cache: true
-  #     - name: Configure sysctl limits
-  #       run: |
-  #         sudo swapoff -a
-  #         sudo sysctl -w vm.swappiness=1
-  #         sudo sysctl -w fs.file-max=262144
-  #         sudo sysctl -w vm.max_map_count=262144
-  #     - name: Runs Elasticsearch
-  #       uses: elastic/elastic-github-actions/elasticsearch@master
-  #       with:
-  #         stack-version: 7.6.0
-  #     - run: mkdir -p log
-  #     - run: bundle exec rails db:create db:schema:load
-  #     - name: Create ES Index
-  #       run: bundle exec thor search:index
-  #     - name: Run Seeds
-  #       run: bundle exec rails db:seed
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 7.6.0
+      - run: mkdir -p log
+      - run: bundle exec rails db:create db:schema:load
+      - name: Create ES Index
+        run: bundle exec thor search:index
+      - name: Run Seeds
+        run: bundle exec rails db:seed
 
-  # build:
-  #   needs: [ruby-setup, js-setup]
-  #   runs-on: ubuntu-latest
+  build:
+    needs: [ruby-setup, js-setup]
+    runs-on: ubuntu-latest
 
-  #   env:
-  #     RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  #     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
-  #     DATABASE_HOST: 127.0.0.1
-  #     DATABASE_USER: root
+    env:
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_USER: root
 
-  #   services:
-  #     postgres:
-  #       image: postgres:13.2-alpine
-  #       env:
-  #         POSTGRES_USER: root
-  #         POSTGRES_DB: fleetyards_test
-  #         POSTGRES_PASSWORD: root
-  #       ports:
-  #         - 5432:5432
-  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: ${{ env.RUBY_VERSION }}
-  #         bundler-cache: true
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-  #     - run: yarn install
-  #     - run: mkdir -p log
-  #     - name: Webpacker & Assets Compile
-  #       run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v1
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v1
-  #     - if: ${{ contains(github.ref, 'refs/heads') }}
-  #       name: Login to GitHub Container Registry
-  #       uses: docker/login-action@v1
-  #       with:
-  #         registry: ghcr.io
-  #         username: ${{ github.repository_owner }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
-  #     - if: ${{ contains(github.ref, 'refs/tags') }}
-  #       name: Login to DockerHub
-  #       uses: docker/login-action@v1
-  #       with:
-  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
-  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
-  #     - id: get-branch-name
-  #       run: |
-  #         branchName=$(echo ${{github.ref}} | rev | cut -d/ -f1 | rev)
-  #         echo "::set-output name=branchName::$branchName"
-  #     - name: Cache Docker layers
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: /tmp/.buildx-cache
-  #         key: ${{ runner.os }}-buildx-${{ github.sha }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-buildx-
-  #     - if: ${{ contains(github.ref, 'refs/heads') }}
-  #       name: Build and push
-  #       uses: docker/build-push-action@v2
-  #       with:
-  #         context: .
-  #         push: true
-  #         tags: ghcr.io/fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
-  #     - if: ${{ contains(github.ref, 'refs/tags') }}
-  #       name: Build and push
-  #       uses: docker/build-push-action@v2
-  #       with:
-  #         context: .
-  #         push: true
-  #         tags: fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - run: mkdir -p log
+      - name: Webpacker & Assets Compile
+        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - if: ${{ contains(github.ref, 'refs/heads') }}
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - if: ${{ contains(github.ref, 'refs/tags') }}
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - id: get-branch-name
+        run: |
+          branchName=$(echo ${{github.ref}} | rev | cut -d/ -f1 | rev)
+          echo "::set-output name=branchName::$branchName"
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - if: ${{ contains(github.ref, 'refs/heads') }}
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
+      - if: ${{ contains(github.ref, 'refs/tags') }}
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
 
-  # e2e-test:
-  #   needs: [ruby-setup, js-setup]
-  #   runs-on: ubuntu-latest
+  e2e-test:
+    needs: [ruby-setup, js-setup]
+    runs-on: ubuntu-latest
 
-  #   env:
-  #     RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  #     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
-  #     DATABASE_HOST: 127.0.0.1
-  #     DATABASE_USER: root
-  #     TEST_SEEDS: 1
-  #     RAILS_ENV: ci
-  #     ON_SUBDOMAIN: 1
-  #     RAILS_SERVE_STATIC_FILES: 1
-  #     DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-  #     JOBS: 1
-  #     CYPRESS_BASE_URL: http://localhost:8270
+    env:
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_USER: root
+      TEST_SEEDS: 1
+      RAILS_ENV: ci
+      ON_SUBDOMAIN: 1
+      RAILS_SERVE_STATIC_FILES: 1
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      JOBS: 1
+      CYPRESS_BASE_URL: http://localhost:8270
 
-  #   services:
-  #     postgres:
-  #       image: postgres:13.2-alpine
-  #       env:
-  #         POSTGRES_USER: root
-  #         POSTGRES_DB: fleetyards_test
-  #         POSTGRES_PASSWORD: root
-  #       ports:
-  #         - 5432:5432
-  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-  #     redis:
-  #       image: redis
-  #       ports:
-  #         - 6379:6379
-  #       options: >-
-  #         --health-cmd "redis-cli ping"
-  #         --health-interval 10s
-  #         --health-timeout 5s
-  #         --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: ${{ env.RUBY_VERSION }}
-  #         bundler-cache: true
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-  #     - run: yarn install
-  #     - name: Configure sysctl limits
-  #       run: |
-  #         sudo swapoff -a
-  #         sudo sysctl -w vm.swappiness=1
-  #         sudo sysctl -w fs.file-max=262144
-  #         sudo sysctl -w vm.max_map_count=262144
-  #     - name: Runs Elasticsearch
-  #       uses: elastic/elastic-github-actions/elasticsearch@master
-  #       with:
-  #         stack-version: 7.6.0
-  #     - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
-  #     - name: Setup DB
-  #       run: bundle exec rails db:create db:schema:load
-  #     - name: Create ES Index
-  #       run: bundle exec thor search:index
-  #     - name: Webpacker & Assets Compile
-  #       run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
-  #     - name: Prefill DB
-  #       run: bundle exec rails db:seed
-  #     - name: Run Server
-  #       run: PORT=8270 bundle exec puma -C config/puma.rb &
-  #     - name: Wait for Server
-  #       run: |
-  #         until $(curl --output /dev/null --silent --head --fail $CYPRESS_BASE_URL); do
-  #             printf '.'
-  #             sleep 5
-  #         done
-  #     - run: yarn install
-  #     - name: Run E2E Tests
-  #       run: yarn run test:e2e --record --parallel
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 7.6.0
+      - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
+      - name: Setup DB
+        run: bundle exec rails db:create db:schema:load
+      - name: Create ES Index
+        run: bundle exec thor search:index
+      - name: Webpacker & Assets Compile
+        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+      - name: Prefill DB
+        run: bundle exec rails db:seed
+      - name: Run Server
+        run: PORT=8270 bundle exec puma -C config/puma.rb &
+      - name: Wait for Server
+        run: |
+          until $(curl --output /dev/null --silent --head --fail $CYPRESS_BASE_URL); do
+              printf '.'
+              sleep 5
+          done
+      - run: yarn install
+      - name: Run E2E Tests
+        run: yarn run test:e2e --record --parallel
 
   deploy-to-stage:
-    # if: github.ref == 'refs/heads/main'
-    # needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, build, e2e-test]
+    if: github.ref == 'refs/heads/main'
+    needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, build, e2e-test]
     runs-on: ubuntu-latest
 
     environment: Stage
