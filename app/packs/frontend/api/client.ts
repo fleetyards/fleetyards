@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import nprogress from 'nprogress'
 import Store from 'frontend/lib/Store'
 import linkHeaderParser from 'parse-link-header'

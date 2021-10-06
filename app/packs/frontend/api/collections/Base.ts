@@ -1,5 +1,3 @@
-import { AxiosError } from 'axios'
-
 export default class BaseCollection {
   primaryKey: string = 'slug'
 
@@ -19,7 +17,7 @@ export default class BaseCollection {
     }
   }
 
-  extractErrorCode(error: AxiosError | null): string | null {
+  extractErrorCode(error: any): string | null {
     return error?.response?.data?.code || null
   }
 }
