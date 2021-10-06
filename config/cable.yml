@@ -3,7 +3,10 @@ production: &default
   url: <%= Rails.configuration.redis.url %>
   channel_prefix: <%= Rails.configuration.app.cable_channel_prefix %>
 
-docker:
+staging:
+  <<: *default
+
+ci:
   <<: *default
 
 development:

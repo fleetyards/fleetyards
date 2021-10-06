@@ -1,6 +1,27 @@
-version: '2'
+version: '3'
 
 services:
+  app:
+    image: fleetyards/app:latest
+    build: .
+    ports:
+      - 3001:3001
+    environment:
+      DATABASE_URL: postgresql://root:root@postgres:5432/fleetyards
+      REDIS_URL: redis://redis:6379
+      ELASTICSEARCH_URL: elasticsearch:9200
+      # INITIAL_DB_SETUP: 1
+      UNSAFE: 1
+      RAILS_SERVE_STATIC_FILES: 1
+      DOMAIN: localhost:3001
+      PORT: 3001
+      ON_SUBDOMAIN: 1
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+      # - kibana
+      # - mailhog
   postgres:
     image: postgres:10.5
     restart: always
@@ -22,23 +43,23 @@ services:
       - 9200:9200
       - 9300:9300
     environment:
-      cluster.name: fleetyards-development-cluster
-      xpack.security.enabled: 'false'
-      discovery.type: single-node
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - cluster.name=fleetyards-development-cluster
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - ./data/es-local:/usr/share/elasticsearch/data
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.9.2
-    ports:
-      - 5601:5601
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-  mailhog:
-    image: mailhog/mailhog:latest
-    ports:
-      - 1025:1025
-      - 8025:8025
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.9.2
+  #   ports:
+  #     - 5601:5601
+  #   environment:
+  #     ELASTICSEARCH_URL: http://elasticsearch:9200
+  #     ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+  #   depends_on:
+  #     - elasticsearch
+  # mailhog:
+  #   image: mailhog/mailhog:latest
+  #   ports:
+  #     - 1025:1025
+  #     - 8025:8025

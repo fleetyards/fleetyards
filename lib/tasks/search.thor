@@ -13,7 +13,7 @@ class Search < Thor
   def cleanup
     require './config/environment'
 
-    run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    set_elasticsearch_settings
 
     puts
     puts 'Starting Clenaup...'
@@ -33,13 +33,13 @@ class Search < Thor
     puts 'Finished'
     puts
 
-    run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
   end
   desc 'index', 'Create index/reindex for all Relevant Models'
   def index
     require './config/environment'
 
-    run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    set_elasticsearch_settings
 
     puts
     puts 'Starting Reindex...'
@@ -59,7 +59,7 @@ class Search < Thor
     puts 'Finished'
     puts
 
-    run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
   end
   # rubocop:disable Metrics/CyclomaticComplexity
   desc 'delete_index', 'Delete index for all Relevant Models'
@@ -86,4 +86,14 @@ class Search < Thor
     puts
   end
   # rubocop:enable Metrics/CyclomaticComplexity
+
+  no_commands do
+    private def elasticsearch_url
+      ENV['ELASTICSEARCH_URL'] || 'http://localhost:9200'
+    end
+
+    private def set_elasticsearch_settings
+      run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    end
+  end
 end

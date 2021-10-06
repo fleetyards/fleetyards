@@ -318,6 +318,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+    knapsack (4.0.0)
+      rake
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -664,6 +666,7 @@ DEPENDENCIES
   js-routes
   js_cookie_rails
   kaminari
+  knapsack
   listen
   lograge
   metadown

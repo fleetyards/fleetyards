@@ -310,57 +310,57 @@ jobs:
           path: ~/app/cypress/screenshots
           destination: e2e-screenshots
 
-  deploy-to-stage:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /root
-      - run: bundle install
-      - add_ssh_keys:
-          fingerprints:
-            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
-      - run:
-          name: Keyscan Stage Server (HACK)
-          command: ssh-keyscan -H fleetyards-stage.mortik.xyz >> ~/.ssh/known_hosts
-      - run:
-          name: Keyscan Github (HACK)
-          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-      - run:
-          name: Deploy
-          command: bundle exec cap stage deploy
-      - run: |
-          curl -X POST $APP_SIGNAL_STAGE_DEPLOY_HOOK \
-          -H 'Content-Type: application/json' \
-          -d "{\"revision\": \"$CIRCLE_SHA1\", \"user\": \"$CIRCLE_USERNAME\"}"
-      - run: |
-          curl -X POST $DISCORD_WEBHOOK_STAGE \
-          -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**New Stage Release:**\" }"
+  # deploy-to-stage:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: /root
+  #     - run: bundle install
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
+  #     - run:
+  #         name: Keyscan Stage Server (HACK)
+  #         command: ssh-keyscan -H fleetyards-stage.mortik.xyz >> ~/.ssh/known_hosts
+  #     - run:
+  #         name: Keyscan Github (HACK)
+  #         command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+  #     - run:
+  #         name: Deploy
+  #         command: bundle exec cap stage deploy
+  #     - run: |
+  #         curl -X POST $APP_SIGNAL_STAGE_DEPLOY_HOOK \
+  #         -H 'Content-Type: application/json' \
+  #         -d "{\"revision\": \"$CIRCLE_SHA1\", \"user\": \"$CIRCLE_USERNAME\"}"
+  #     - run: |
+  #         curl -X POST $DISCORD_WEBHOOK_STAGE \
+  #         -H 'Content-Type: application/json' \
+  #         -d "{\"content\": \"**New Stage Release:**\" }"
 
-  create-release:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /root
-      - run: bundle install
-      - run: yarn install
-      - add_ssh_keys:
-          fingerprints:
-            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
-      - run:
-          name: Keyscan Live Server (HACK)
-          command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
-      - run:
-          name: Keyscan Github (HACK)
-          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-      - run:
-          name: Setup Git
-          command: git config --global user.email $GIT_EMAIL && git config --global user.name $GIT_USER
-      - run:
-          name: Create Release
-          command: bundle exec thor release:new --push
+  # create-release:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: /root
+  #     - run: bundle install
+  #     - run: yarn install
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
+  #     - run:
+  #         name: Keyscan Live Server (HACK)
+  #         command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
+  #     - run:
+  #         name: Keyscan Github (HACK)
+  #         command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+  #     - run:
+  #         name: Setup Git
+  #         command: git config --global user.email $GIT_EMAIL && git config --global user.name $GIT_USER
+  #     - run:
+  #         name: Create Release
+  #         command: bundle exec thor release:new --push
 
   deploy-to-live:
     <<: *defaults
@@ -480,22 +480,22 @@ workflows:
       - e2e-test:
           requires:
             - assets
-      - deploy-to-stage:
-          requires:
-            - seeds
-            - e2e-test
-            - rubocop
-            - ruby-tests
-            - js-tests
-            - js-lint
-            - style-lint
-          filters:
-            branches:
-              only: main
-      - request-release:
-          type: approval
-          requires:
-            - deploy-to-stage
-      - create-release:
-          requires:
-            - request-release
+      # - deploy-to-stage:
+      #     requires:
+      #       - seeds
+      #       - e2e-test
+      #       - rubocop
+      #       - ruby-tests
+      #       - js-tests
+      #       - js-lint
+      #       - style-lint
+      #     filters:
+      #       branches:
+      #         only: main
+      # - request-release:
+      #     type: approval
+      #     requires:
+      #       - deploy-to-stage
+      # - create-release:
+      #     requires:
+      #       - request-release
