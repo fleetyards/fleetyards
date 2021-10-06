@@ -2,6 +2,9 @@ name: Create Release
 
 on: [workflow_dispatch]
 
+env:
+  RUBY_VERSION: 3.0.2
+
 jobs:
   create-release:
     if: github.ref == 'refs/heads/main'
