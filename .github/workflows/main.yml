@@ -331,7 +331,7 @@ jobs:
     needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, build, e2e-test]
     runs-on: ubuntu-latest
 
-    environment: staging
+    environment: Stage
 
     steps:
       - uses: actions/checkout@v2
