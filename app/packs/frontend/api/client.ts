@@ -20,7 +20,7 @@ export type ApiErrorResponse = {
   data: null
   params: any
   meta: null
-  error: AxiosError
+  error: any
 }
 
 const client = axios.create({
@@ -59,7 +59,7 @@ const extractMetaInfo = function extractMetaInfo(
 }
 
 const handleError = async function handleError(
-  error: AxiosError<any>,
+  error: any,
   params: any,
   silent: boolean,
 ): Promise<ApiErrorResponse> {
@@ -116,7 +116,7 @@ export async function get(
     })
     return handleResponse(response, params, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, params, silent)
+    return handleError(error, params, silent)
   }
 }
 
@@ -127,7 +127,7 @@ export async function post(path: string, body = {}, silent: boolean = false) {
   try {
     return handleResponse(await client.post(path, body), body, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, body, silent)
+    return handleError(error, body, silent)
   }
 }
 
@@ -138,7 +138,7 @@ export async function put(path: string, body = {}, silent: boolean = false) {
   try {
     return handleResponse(await client.put(path, body), body, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, body, silent)
+    return handleError(error, body, silent)
   }
 }
 
@@ -154,7 +154,7 @@ export async function destroy(
   try {
     return handleResponse(await client.delete(path, { data }), data, silent)
   } catch (error) {
-    return handleError(error as AxiosError<any>, data, silent)
+    return handleError(error, data, silent)
   }
 }
 
@@ -174,7 +174,7 @@ export async function upload(path: string, body = {}, silent: boolean = false) {
       silent,
     )
   } catch (error) {
-    return handleError(error as AxiosError<any>, body, silent)
+    return handleError(error, body, silent)
   }
 }
 
@@ -196,7 +196,7 @@ export async function download(
       silent,
     )
   } catch (error) {
-    return handleError(error as AxiosError<any>, params, silent)
+    return handleError(error, params, silent)
   }
 }
 
