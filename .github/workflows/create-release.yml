@@ -1,6 +1,9 @@
 name: Create Release
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    branches:
+      - main
 
 env:
   RUBY_VERSION: 3.0.2
@@ -30,6 +33,5 @@ jobs:
       - name: Setup Git
         run: git config --global user.email ${{ secrets.GIT_EMAIL }} && git config --global user.name ${{ secrets.GIT_USER }}
       - run: echo "Create Release triggered!"
-
-      # - name: Create Release
-      #   run: bundle exec thor release:new --push
+      - name: Create Release
+        run: bundle exec thor release:new --push
