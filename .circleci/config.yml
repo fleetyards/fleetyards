@@ -15,32 +15,10 @@ ciImage: &ciImage
     JOBS: 1
     NODE_OPTIONS: --max-old-space-size=1024
 
-e2eImage: &e2eImage
-  image: fleetyards/e2e:3.0.2
-  auth:
-    username: $DOCKERHUB_USER
-    password: $DOCKERHUB_PASSWORD
-  environment:
-    DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
-    TEST_SEEDS: 1
-    BUNDLE_PATH: ~/app/vendor/bundle
-    RAILS_ENV: ci
-    ON_SUBDOMAIN: 1
-    RAILS_SERVE_STATIC_FILES: 1
-    DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-    JOBS: 1
-    PORT: 8270
-    CYPRESS_BASE_URL: http://localhost:8270
-
 defaults: &defaults
   working_directory: ~/app
   docker:
     - *ciImage
-
-smokeTest: &smokeTest
-  working_directory: ~/app
-  docker:
-    - *e2eImage
 
 jobs:
   health-check:
@@ -113,51 +91,6 @@ jobs:
           name: Check Audit DB
           command: yarn audit --groups dependencies
 
-  smoke-test:
-    <<: *smokeTest
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /root
-      - run: yarn install
-      - run:
-          name: Run E2E Tests
-          command: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net --parallel
-      - store_artifacts:
-          path: ~/app/cypress/snapshots
-          destination: e2e-snapshots
-      - store_artifacts:
-          path: ~/app/cypress/screenshots
-          destination: e2e-screenshots
-
-  deploy-to-live:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /root
-      - run: bundle install
-      - add_ssh_keys:
-          fingerprints:
-            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
-      - run:
-          name: Keyscan Live Server (HACK)
-          command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
-      - run:
-          name: Keyscan Github (HACK)
-          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-      - run:
-          name: Deploy
-          command: bundle exec cap live deploy
-      - run: |
-          curl -X POST $APP_SIGNAL_LIVE_DEPLOY_HOOK \
-          -H 'Content-Type: application/json' \
-          -d "{\"revision\": \"$CIRCLE_SHA1\", \"user\": \"$CIRCLE_USERNAME\"}"
-      - run: |
-          curl -X POST $DISCORD_WEBHOOK \
-          -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }"
-
 workflows:
   version: 2
   check:
@@ -186,35 +119,3 @@ workflows:
               only: main
     jobs:
       - health-check
-
-  release:
-    jobs:
-      - bundle:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - yarn:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - smoke-test:
-          requires:
-            - bundle
-            - yarn
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - deploy-to-live:
-          requires:
-            - smoke-test
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
