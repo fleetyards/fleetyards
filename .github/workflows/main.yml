@@ -325,3 +325,31 @@ jobs:
       - run: yarn install
       - name: Run E2E Tests
         run: yarn run test:e2e --record --parallel
+
+  deploy-to-stage:
+    if: github.ref == 'refs/heads/main'
+    needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, build, e2e-test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: ignore
+      - name: Deploy
+        run: bundle exec cap stage deploy
+      - run: |
+          curl -X POST ${{ secrets.APP_SIGNAL_STAGE_DEPLOY_HOOK }} \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
+      - run: |
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK_STAGE }} \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**New Stage Release:**\" }"
