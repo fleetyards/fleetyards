@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.16.13](https://github.com/fleetyards/fleetyards/compare/v4.16.12...v4.16.13) (2021-10-07)
+
+
+### Bug Fixes
+
+* fleet ValidationErrors ([f56101a](https://github.com/fleetyards/fleetyards/commit/f56101a2643494003a4c8b757ae08605a6c64a9a))
+* validation ([5d07bd7](https://github.com/fleetyards/fleetyards/commit/5d07bd7dafe27857c928324722287f68f3f9c669))
+
 ### [4.16.12](https://github.com/fleetyards/fleetyards/compare/v4.16.11...v4.16.12) (2021-10-07)
 
 
