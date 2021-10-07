@@ -27,7 +27,6 @@ jobs:
         run: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net --parallel
 
   build:
-    needs: [ruby-setup, js-setup]
     runs-on: ubuntu-latest
 
     env:
