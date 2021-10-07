@@ -1,0 +1,23 @@
+name: Test
+
+on: push
+
+env:
+  RUBY_VERSION: 3.0.2
+  TAG_NAME: v4.16.13
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Get Changelog
+        id: Changelog
+        run: echo ::set-output name=changelog::$(echo $(bundle exec thor changelog:entry $TAG_NAME))
+      - run: |
+          echo ${{ steps.Changelog.outputs.changelog }}
