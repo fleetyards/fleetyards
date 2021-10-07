@@ -2,14 +2,20 @@ name: Test
 
 on: push
 
+env:
+  TAG_NAME: v4.16.12
+  RUBY_VERSION: 3.0.2
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    env:
-      TAG_NAME: v4.16.12
-
     steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
       - name: Get Changelog
         id: Changelog
         run: echo ::set-output name=changelog::$(echo $(thor changelog:entry $TAG_NAME))
