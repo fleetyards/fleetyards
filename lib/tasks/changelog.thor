@@ -13,10 +13,10 @@ class Changelog < Thor
   def entry(tag)
     changelog = File.read('CHANGELOG.md')
 
-    match_string = /### \[#{tag.gsub('v', '')}\]\(\S+(v\S+)...v\S+\) \(\S+\)(.*)/m
+    match_string = /### \[#{tag.delete('v')}\]\(\S+(v\S+)...v\S+\) \(\S+\)(.*)/m
     match = changelog.scan(match_string)
 
-    last_tag = match.first.first.gsub('v', '')
+    last_tag = match.first.first.delete('v')
 
     puts match.first.last.scan(/(.*)### \[#{last_tag}/m)
   end

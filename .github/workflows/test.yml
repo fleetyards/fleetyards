@@ -1,0 +1,13 @@
+name: Test
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Changelog
+        id: Changelog
+        run: echo ::set-output name=changelog::$(echo $(thor changelog:entry $TAG_NAME))
+      - run: echo ${{ steps.Changelog.outputs.changelog }}

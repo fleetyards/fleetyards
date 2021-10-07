@@ -125,7 +125,7 @@ jobs:
         run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: Get Changelog
         id: Changelog
-        run: echo ::set-output name=changelog::$(thor changelog:entry $TAG_NAME)
+        run: echo ::set-output name=changelog::$(echo $(thor changelog:entry $TAG_NAME))
       - uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
