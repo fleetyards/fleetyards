@@ -11,6 +11,10 @@ env:
 jobs:
   smoke-test:
     runs-on: ubuntu-latest
+
+    env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
