@@ -17,7 +17,6 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
       - name: Get Changelog
-        id: Changelog
-        run: echo ::set-output name=changelog::"$(echo $(bundle exec thor changelog:entry $TAG_NAME))"
+        run: echo "CHANGELOG=$(echo $(bundle exec thor changelog:entry $TAG_NAME))" >> $GITHUB_ENV
       - run: |
-          echo ${{ steps.Changelog.outputs.changelog }}
+          echo $CHANGELOG
