@@ -6,6 +6,10 @@ on:
       - '**'
     tags-ignore:
       - '*.*'
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'config/version.rb'
+      - 'package.json'
   workflow_dispatch:
     branches:
       - '**'
@@ -19,7 +23,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: |
+            '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
 
