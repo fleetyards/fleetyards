@@ -2,10 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - "!*"
     tags:
-      - 'v*'
+      - '*'
 
 env:
   RUBY_VERSION: 3.0.2
