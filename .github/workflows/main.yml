@@ -181,19 +181,20 @@ jobs:
     env:
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
-      DATABASE_HOST: 127.0.0.1
-      DATABASE_USER: root
+      # DATABASE_HOST: 127.0.0.1
+      # DATABASE_USER: root
+      BRANCH_NAME: $(echo ${{github.ref}} | rev | cut -d/ -f1 | rev)
 
-    services:
-      postgres:
-        image: postgres:13.2-alpine
-        env:
-          POSTGRES_USER: root
-          POSTGRES_DB: fleetyards_test
-          POSTGRES_PASSWORD: root
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    # services:
+      # postgres:
+      #   image: postgres:13.2-alpine
+      #   env:
+      #     POSTGRES_USER: root
+      #     POSTGRES_DB: fleetyards_test
+      #     POSTGRES_PASSWORD: root
+      #   ports:
+      #     - 5432:5432
+      #   options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
@@ -213,23 +214,18 @@ jobs:
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - if: ${{ contains(github.ref, 'refs/heads') }}
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - if: ${{ contains(github.ref, 'refs/tags') }}
-        name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - id: get-branch-name
-        run: |
-          branchName=$(echo ${{github.ref}} | rev | cut -d/ -f1 | rev)
-          echo "::set-output name=branchName::$branchName"
+      # - if: ${{ contains(github.ref, 'refs/tags') }}
+      #   name: Login to DockerHub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
@@ -237,20 +233,19 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - if: ${{ contains(github.ref, 'refs/heads') }}
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ghcr.io/fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
-      - if: ${{ contains(github.ref, 'refs/tags') }}
-        name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: fleetyards/app:${{ steps.get-branch-name.outputs.branchName }}
+          tags: ghcr.io/fleetyards/app:$BRANCH_NAME
+      # - if: ${{ contains(github.ref, 'refs/tags') }}
+      #   name: Build and push
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: fleetyards/app:$BRANCH_NAME
 
   e2e-test:
     needs: [ruby-setup, js-setup]

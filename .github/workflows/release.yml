@@ -38,26 +38,29 @@ jobs:
       APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       GITHUB_USER: ${{ github.actor }}
+      TAG_NAME: ${GITHUB_REF/refs\/tags\//}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: ignore
-      - name: Deploy
-        run: bundle exec cap live deploy
-      - run: |
-          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
-          -H 'Content-Type: application/json' \
-          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
+      # - uses: actions/checkout@v2
+      # - uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: ${{ env.RUBY_VERSION }}
+      #     bundler-cache: true
+      # - name: Install SSH key
+      #   uses: shimataro/ssh-key-action@v2
+      #   with:
+      #     key: ${{ secrets.SSH_KEY }}
+      #     known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      #     if_key_exists: ignore
+      # - id: get-tag-name
+      #   run: echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
+      # - name: Deploy
+      #   run: bundle exec cap live deploy
+      # - run: |
+      #     curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
+      #     -H 'Content-Type: application/json' \
+      #     -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
       - run: |
           curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }"
+          -d "{\"content\": \"**New Release:** $TAG_NAME\nhttps://github.com/fleetyards/fleetyards/releases/tag/$TAG_NAME\" }"
