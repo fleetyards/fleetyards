@@ -6,6 +6,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      TAG_NAME: v4.16.12
+
     steps:
       - name: Get Changelog
         id: Changelog
