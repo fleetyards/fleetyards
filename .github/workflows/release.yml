@@ -27,6 +27,7 @@ jobs:
         run: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net --parallel
 
   build:
+    needs: [smoke-test]
     runs-on: ubuntu-latest
 
     env:
@@ -73,7 +74,7 @@ jobs:
           tags: fleetyards/app:${{ env.TAG_NAME }}
 
   deploy-to-live:
-    needs: [smoke-test]
+    needs: [build]
     runs-on: ubuntu-latest
 
     environment:
