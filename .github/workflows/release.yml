@@ -26,6 +26,53 @@ jobs:
       - name: Run E2E Tests
         run: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net --parallel
 
+  build:
+    needs: [ruby-setup, js-setup]
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - run: mkdir -p log
+      - name: Webpacker & Assets Compile
+        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Set TAG_NAME
+        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: fleetyards/app:$TAG_NAME
+
   deploy-to-live:
     needs: [smoke-test]
     runs-on: ubuntu-latest
@@ -38,7 +85,6 @@ jobs:
       APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       GITHUB_USER: ${{ github.actor }}
-      TAG_NAME: ${GITHUB_REF/refs\/tags\//}
 
     steps:
       # - uses: actions/checkout@v2
@@ -60,6 +106,8 @@ jobs:
       #     curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
       #     -H 'Content-Type: application/json' \
       #     -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
+      - name: Set TAG_NAME
+        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - run: |
           curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
