@@ -78,7 +78,7 @@ class Release < Thor
       run("git add #{version_file}")
       run("git add #{changelog_file}")
       run("git add #{package_file}")
-      run("git commit -m 'chore(release): new Version #{next_version} (#{name}) [ci skip]' --no-verify")
+      run("git commit -m 'chore(release): new Version #{next_version} (#{name})' --no-verify")
       run("git tag #{next_version} -m 'Release #{next_version} (#{name})'")
     end
   end
