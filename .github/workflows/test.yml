@@ -20,4 +20,4 @@ jobs:
         id: Changelog
         run: echo ::set-output name=changelog::$(echo $(bundle exec thor changelog:entry $TAG_NAME))
       - run: |
-          echo ${{ steps.Changelog.outputs.changelog }}
+          echo "${{ steps.Changelog.outputs.changelog }}"
