@@ -105,6 +105,7 @@ export default {
     emailTaken: 'Email is already taken.',
     fleetTaken: 'Fleet is already taken.',
     serialTaken: 'Serial is already taken.',
+    textInvalid: '%{field} is invalid',
     hangar: {
       accountRequired:
         'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',

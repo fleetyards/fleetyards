@@ -32,7 +32,7 @@ module Api
 
         return if fleet.save
 
-        render json: ValidationError.new('fleet.create', errors: fleet.errors.messages), status: :bad_request
+        render json: ValidationError.new('fleet.create', errors: fleet.errors), status: :bad_request
       end
 
       def update
@@ -40,7 +40,7 @@ module Api
 
         return if fleet.update(fleet_params)
 
-        render json: ValidationError.new('fleet.update', errors: fleet.errors.messages), status: :bad_request
+        render json: ValidationError.new('fleet.update', errors: fleet.errors), status: :bad_request
       end
 
       def destroy

@@ -61,7 +61,7 @@ module Api
           return
         end
 
-        render json: ValidationError.new('signup', errors: @user.errors.messages), status: :bad_request
+        render json: ValidationError.new('signup', errors: @user.errors), status: :bad_request
       end
 
       def confirm

@@ -10,10 +10,10 @@ class ValidationError
   end
 
   private def transform_errors(errors)
-    errors.keys.map do |key|
+    errors.attribute_names.map do |key|
       {
         attribute: key,
-        messages: errors[key].map do |error|
+        messages: errors.where(key).map do |error|
           {
             code: error.type,
             message: error.full_message
