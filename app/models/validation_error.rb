@@ -13,7 +13,7 @@ class ValidationError
     errors.keys.map do |key|
       {
         attribute: key,
-        messages: errors.where(key).map do |error|
+        messages: errors[key].map do |error|
           {
             code: error.type,
             message: error.full_message
