@@ -87,28 +87,48 @@ jobs:
       GITHUB_USER: ${{ github.actor }}
 
     steps:
-      # - uses: actions/checkout@v2
-      # - uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: ${{ env.RUBY_VERSION }}
-      #     bundler-cache: true
-      # - name: Install SSH key
-      #   uses: shimataro/ssh-key-action@v2
-      #   with:
-      #     key: ${{ secrets.SSH_KEY }}
-      #     known_hosts: ${{ secrets.KNOWN_HOSTS }}
-      #     if_key_exists: ignore
-      # - id: get-tag-name
-      #   run: echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
-      # - name: Deploy
-      #   run: bundle exec cap live deploy
-      # - run: |
-      #     curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
-      #     -H 'Content-Type: application/json' \
-      #     -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: ignore
+      - name: Deploy
+        run: bundle exec cap live deploy
+      - run: |
+          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
       - name: Set TAG_NAME
         run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - run: |
           curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
           -d "{\"content\": \"**New Release:** $TAG_NAME\nhttps://github.com/fleetyards/fleetyards/releases/tag/$TAG_NAME\" }"
+
+  create-release:
+    needs: [deploy-to-live]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set TAG_NAME
+        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+      - name: Get Changelog
+        id: Changelog
+        run: echo ::set-output name=changelog::$(cat CHANGELOG.md)
+      - uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ env.TAG_NAME}}
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
