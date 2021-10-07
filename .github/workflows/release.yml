@@ -71,7 +71,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: fleetyards/app:$TAG_NAME
+          tags: fleetyards/app:${{ env.TAG_NAME }}
 
   deploy-to-live:
     needs: [smoke-test]

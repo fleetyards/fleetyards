@@ -220,7 +220,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/fleetyards/app:$BRANCH_NAME
+          tags: ghcr.io/fleetyards/app:${{ env.BRANCH_NAME }}
 
   e2e-test:
     needs: [ruby-setup, js-setup]
