@@ -105,12 +105,6 @@ jobs:
           curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
           -H 'Content-Type: application/json' \
           -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
-      - name: Set TAG_NAME
-        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
-      - run: |
-          curl -X POST $DISCORD_WEBHOOK \
-          -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**New Release:** $TAG_NAME\nhttps://github.com/fleetyards/fleetyards/releases/tag/$TAG_NAME\" }"
 
   create-release:
     needs: [deploy-to-live]
@@ -135,3 +129,7 @@ jobs:
           body_path: ${{ env.TAG_NAME }}.md
           draft: false
           prerelease: false
+      - run: |
+          curl -X POST $DISCORD_WEBHOOK \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**New Release:** $TAG_NAME\nhttps://github.com/fleetyards/fleetyards/releases/tag/$TAG_NAME\" }"
