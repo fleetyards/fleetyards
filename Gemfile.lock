@@ -201,7 +201,7 @@ GEM
       tzinfo
     ethon (0.14.0)
       ffi (>= 1.15.0)
-    excon (0.86.0)
+    excon (0.87.0)
     execjs (2.8.1)
     faker (2.19.0)
       i18n (>= 1.6, < 2)
