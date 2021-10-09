@@ -9,6 +9,6 @@ class AvatarUploader < BaseUploader
   end
 
   def extension_allowlist
-    %w[jpg jpeg png]
+    %w[jpg jpeg png webp]
   end
 end
