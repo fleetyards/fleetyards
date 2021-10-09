@@ -67,12 +67,17 @@ class Equipment < ApplicationRecord
     parent.table[:equipment_type]
   end
 
-  enum slot: { undersuit: 0, arms: 1, helmet: 2, torso: 3, legs: 4, footwear: 5, hat: 6, gloves: 7, pants: 8, shirt: 9, jacket: 10 }, _suffix: true
+  enum slot: { undersuit: 0, arms: 1, helmet: 2, torso: 3, legs: 4, footwear: 5, hat: 6, gloves: 7, pants: 8, shirt: 9, jacket: 10, backpack: 11 }, _suffix: true
   ransacker :slot, formatter: proc { |v| Equipment.slots[v] } do |parent|
     parent.table[:slot]
   end
 
-  enum item_type: { flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5, pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12, special_railgun: 13, assault_rifle: 14, weapon_scope: 15, utility: 16, rocket_launcher: 17, grenade_launcher: 18, knife: 19, }
+  enum item_type: {
+    flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5,
+    pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12,
+    special_railgun: 13, assault_rifle: 14, weapon_scope: 15, utility: 16, rocket_launcher: 17,
+    grenade_launcher: 18, knife: 19, backpack: 20
+  }
   ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
     parent.table[:item_type]
   end

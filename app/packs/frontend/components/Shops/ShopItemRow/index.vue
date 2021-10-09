@@ -188,6 +188,6 @@ export default {
 
 <style lang="scss" scoped>
 .shop-item-row-unconfirmed {
-  opacity: .5;
+  opacity: 0.5;
 }
 </style>
