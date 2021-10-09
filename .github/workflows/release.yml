@@ -84,7 +84,6 @@ jobs:
 
     env:
       APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       GITHUB_USER: ${{ github.actor }}
 
     steps:
@@ -109,6 +108,9 @@ jobs:
   create-release:
     needs: [deploy-to-live]
     runs-on: ubuntu-latest
+
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
     steps:
       - uses: actions/checkout@v2
