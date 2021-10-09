@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.16.15](https://github.com/fleetyards/fleetyards/compare/v4.16.14...v4.16.15) (2021-10-09)
+
+
+### Bug Fixes
+
+* search model panel ([7607c35](https://github.com/fleetyards/fleetyards/commit/7607c358a095576105b63aae38a503990c0a487e))
+
 ### [4.16.14](https://github.com/fleetyards/fleetyards/compare/v4.16.13...v4.16.14) (2021-10-08)
 
 ### [4.16.13](https://github.com/fleetyards/fleetyards/compare/v4.16.12...v4.16.13) (2021-10-07)
