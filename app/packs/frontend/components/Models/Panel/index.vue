@@ -117,6 +117,10 @@ export default class ModelPanel extends Vue {
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] }
   }
+
+  mounted() {
+    console.log(this.details)
+  }
 }
 </script>
 

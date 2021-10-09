@@ -163,6 +163,7 @@ en:
         weapon_classes:
           energy: Energy
           ballistic: Ballistic
+          frag: Frag
         item_types:
           flightsuit: Flightsuit
           light_armor: Light Armor
