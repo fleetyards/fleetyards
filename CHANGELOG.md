@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.16.16](https://github.com/fleetyards/fleetyards/compare/v4.16.15...v4.16.16) (2021-10-10)
+
+
+### Bug Fixes
+
+* add missing safeguards on possibly undefined params ([aa638bf](https://github.com/fleetyards/fleetyards/commit/aa638bf2721d867a94419555a749693e811db1fc))
+* release workflow ([0b7c018](https://github.com/fleetyards/fleetyards/commit/0b7c0189dfd5cc6318904ba049037b63867e43a4))
+
 ### [4.16.15](https://github.com/fleetyards/fleetyards/compare/v4.16.14...v4.16.15) (2021-10-09)
 
 
