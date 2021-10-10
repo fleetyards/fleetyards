@@ -2,7 +2,7 @@
   <section class="container request-password">
     <div class="row">
       <div class="col-12">
-        <ValidationObserver v-slot="{ handleSubmit }" slim>
+        <ValidationObserver v-if="form" v-slot="{ handleSubmit }" :slim="true">
           <form @submit.prevent="handleSubmit(requestPassword)">
             <h1>
               <router-link to="/" exact>
