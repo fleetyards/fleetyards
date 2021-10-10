@@ -109,6 +109,8 @@ jobs:
     needs: [deploy-to-live]
     runs-on: ubuntu-latest
 
+    environment: Live
+
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
