@@ -111,7 +111,7 @@ module Api
         authorize! :destroy, my_membership
 
         if my_membership.admin?
-          render json: ValidationError.new('fleet_memberships.destroy', errors: [I18n.t('validation_error.fleet_memberships.destroy_as_admin')]), status: :bad_request
+          render json: ValidationError.new('fleet_memberships.destroy', message: I18n.t('validation_error.fleet_memberships.destroy_as_admin')), status: :bad_request
           return
         end
 
