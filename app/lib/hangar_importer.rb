@@ -16,6 +16,8 @@ class HangarImporter
 
   def initialize(data)
     @data = data.map do |item|
+      return item unless item.is_a? Hash
+
       item.transform_keys(&:underscore)
         .transform_keys(&:to_sym)
     end.filter do |item|

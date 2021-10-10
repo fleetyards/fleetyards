@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
+  <ValidationObserver v-if="form" v-slot="{ handleSubmit }" :slim="true">
     <form @submit.prevent="handleSubmit(submit)">
       <div class="row">
         <div class="col-lg-12">

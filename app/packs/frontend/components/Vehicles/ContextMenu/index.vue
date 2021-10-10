@@ -8,6 +8,7 @@
     :inline="true"
   >
     <Btn
+      v-if="vehicle.model"
       :to="{
         name: 'model',
         params: {

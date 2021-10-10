@@ -284,7 +284,7 @@ export default class VehiclePanel extends Vue {
   }
 
   async togglePurchased() {
-    if (!this.editable || vehicle.loaner) {
+    if (!this.editable || this.vehicle.loaner) {
       return
     }
 

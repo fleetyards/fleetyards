@@ -39,7 +39,7 @@
                 {{ $t('labels.3dView') }}
               </Btn>
               <a
-                v-show="holoviewerVisible"
+                v-show="holoviewerVisible && !model.holo"
                 :href="starship42Url"
                 class="starship42-link"
                 target="_blank"
@@ -118,7 +118,9 @@
 
               <AddToHangar :model="model" />
 
-              <Btn @click.native="share"><i class="fad fa-share-square" /></Btn>
+              <Btn v-if="!mobile" data-test="share" @click.native="share">
+                <i class="fad fa-share-square" />
+              </Btn>
 
               <BtnDropdown data-test="model-dropdown">
                 <Btn
@@ -155,6 +157,15 @@
                 >
                   <i class="fal fa-exchange" />
                   <span>{{ $t('actions.compare.models') }}</span>
+                </Btn>
+                <Btn
+                  v-if="mobile"
+                  data-test="share"
+                  variant="dropdown"
+                  @click.native="share"
+                >
+                  <i class="fad fa-share-square" />
+                  <span>{{ $t('actions.share') }}</span>
                 </Btn>
               </BtnDropdown>
             </div>
@@ -341,6 +352,8 @@ export default class ModelDetail extends Vue {
   ]
 
   @Getter('overlayVisible', { namespace: 'app' }) overlayVisible
+
+  @Getter('mobile') mobile
 
   @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
 

@@ -151,6 +151,7 @@ en:
           pants: Pants
           shirt: Shirt
           jacket: Jacket
+          backpack: Backpack
         equipment_types:
           undersuit: Undersuit
           armor: Armor
@@ -163,6 +164,7 @@ en:
         weapon_classes:
           energy: Energy
           ballistic: Ballistic
+          frag: Frag
         item_types:
           flightsuit: Flightsuit
           light_armor: Light Armor
@@ -184,6 +186,7 @@ en:
           rocket_launcher: Rocket Launcher
           grenade_launcher: Grenade Launcher
           knife: Knife
+          backpack: Backpack
       fleet_membership:
         user_id: Member
         roles:

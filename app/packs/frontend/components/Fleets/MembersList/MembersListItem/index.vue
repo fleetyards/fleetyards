@@ -1,5 +1,5 @@
 <template>
-  <div class="fade-list-item col-12 flex-list-item">
+  <div v-if="member" class="fade-list-item col-12 flex-list-item">
     <div class="flex-list-row">
       <div class="username">
         <Avatar :avatar="member.avatar" size="small" />

@@ -62,7 +62,7 @@
               <ModelPanel
                 v-if="result.resultType === 'model'"
                 :model="result"
-                details
+                :details="true"
               />
               <CelestialObjectsPanel
                 v-else-if="
