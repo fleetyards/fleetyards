@@ -108,7 +108,7 @@ import FormInput from 'frontend/core/components/Form/FormInput'
 import debounce from 'lodash.debounce'
 import InfiniteLoading from 'vue-infinite-loading'
 
-@Component<FilterGroup>({
+@Component<CollectionFilterGroup>({
   components: {
     BCollapse,
     SmallLoader,
@@ -116,7 +116,7 @@ import InfiniteLoading from 'vue-infinite-loading'
     FormInput,
   },
 })
-export default class FilterGroup extends Vue {
+export default class CollectionFilterGroup extends Vue {
   visible: boolean = false
 
   search: string | null = null
@@ -256,10 +256,12 @@ export default class FilterGroup extends Vue {
     }
   }
 
-  @Watch('collectionFilter')
+  @Watch('collectionFilter', { deep: true })
   onCollectionFilterChange() {
-    this.fetchedOptions = []
-    this.fetchOptions()
+    debounce(() => {
+      this.fetchedOptions = []
+      this.fetchOptions()
+    }, 300)
   }
 
   @Watch('disabled')

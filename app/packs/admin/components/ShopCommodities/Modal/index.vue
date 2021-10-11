@@ -53,7 +53,7 @@
                   v-model="form.commodityItemId"
                   :label="$t('labels.filters.shopCommodities.commodity')"
                   :collection="commoditiesCollection"
-                  name="equipment-commodityItemId"
+                  name="commodity-commodityItemId"
                   value-attr="id"
                   :error="errors[0]"
                   :paginated="true"
@@ -180,9 +180,11 @@ import componentItemTypeFiltersCollection from 'admin/api/collections/ComponentI
 export default class VehicleModal extends Vue {
   @Prop({ required: true }) shopId: string
 
-  @Prop({ default: null }) commodityItemType: string
+  @Prop({ default: null }) commodityItemType: string | null
 
-  @Prop({ default: null }) shopCommodity: ShopCommodity
+  @Prop({ default: null }) itemTypeFilter: string | null
+
+  @Prop({ default: null }) shopCommodity: ShopCommodity | null
 
   modelsCollection: ModelsCollection = modelsCollection
 
@@ -250,6 +252,8 @@ export default class VehicleModal extends Vue {
   }
 
   mounted() {
+    this.componentItemTypeFilter = this.itemTypeFilter
+
     this.setupForm()
   }
 
@@ -270,18 +274,24 @@ export default class VehicleModal extends Vue {
     }
   }
 
-  submit() {
+  async submit() {
     if (this.shopCommodity && this.shopCommodity.id) {
-      this.update()
+      await this.update()
     } else {
-      this.create()
+      await this.create()
     }
   }
 
   async create() {
     this.submitting = true
 
-    if (await shopCommodityCollection.create(this.shopId, this.form, true)) {
+    const success = await shopCommodityCollection.create(
+      this.shopId,
+      this.form,
+      true,
+    )
+
+    if (success) {
       this.$comlink.$emit('close-modal')
     }
 
@@ -291,13 +301,13 @@ export default class VehicleModal extends Vue {
   async update() {
     this.submitting = true
 
-    if (
-      await shopCommodityCollection.update(
-        this.shopCommodity.shopId,
-        this.shopCommodity.id,
-        this.form,
-      )
-    ) {
+    const success = await shopCommodityCollection.update(
+      this.shopCommodity.shop.id,
+      this.shopCommodity.id,
+      this.form,
+    )
+
+    if (success) {
       this.$comlink.$emit('close-modal')
     }
 

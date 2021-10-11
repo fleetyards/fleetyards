@@ -115,6 +115,20 @@ en:
           quantum_drives: Quantum Drives
           mining_lasers: Mining Lasers
           missile_racks: Missle Racks
+          manned_turrets: Manned Turrets
+          remote_turrets: Remote Turrets
+          missile_turrets: Missile Turrets
+          fuel_intakes: Fuel Intakes
+          fuel_tanks: Fuel Tanks
+          quantum_fuel_tanks: Quantum Fuel Tanks
+          scanners: Scanners
+          mid_range_radar: Midrange Radar
+          thrusters: Thrusters
+          joint_thrusters: Joint Thrusters
+          fixed_thrusters: Fixed Thrusters
+          weapon_defensive: Weapon Defensive
+          countermeasure_launcher: Countermeasure Launcher
+          cargo_grids: Cargogrids
         item_classes:
           stealth: Stealth
           civilian: Civilian

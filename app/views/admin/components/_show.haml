@@ -8,7 +8,8 @@
   %td
     = component.manufacturer.name if component.manufacturer.present?
   %td
-    = I18n.t("filter.component.class.items.#{component.component_class.downcase}")
+    - if component.component_class.present?
+      = I18n.t("filter.component.class.items.#{component.component_class.downcase}")
   %td.text-right
     .btn-group
       = link_to edit_admin_component_path(component), 'data-turbolinks': "false", title: I18n.t(:"actions.edit"), class: "btn btn-dark" do
