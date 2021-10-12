@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.17.0](https://github.com/fleetyards/fleetyards/compare/v4.16.18...v4.17.0) (2021-10-12)
+
+
+### Features
+
+* add sales page link to ship detail ([09ab2f7](https://github.com/fleetyards/fleetyards/commit/09ab2f7ee619c4bfbec159b4504bf8fec9b4e680))
+* show shop locations for listed items without prices ([9761adf](https://github.com/fleetyards/fleetyards/commit/9761adf2bae2b2a80c83c49cbd5cb2842c61e7af))
+
+
+### Bug Fixes
+
+* specs ([222acd7](https://github.com/fleetyards/fleetyards/commit/222acd742276cab7ab5c2adde62ebd0d804ee4ca))
+* specs ([65a5c17](https://github.com/fleetyards/fleetyards/commit/65a5c17097a852ebc280f5b5c445ae44b0eb1cce))
+* specs ([eae03c9](https://github.com/fleetyards/fleetyards/commit/eae03c9ed000c68b6b13f7c101c945c7b08a2e3f))
+
 ### [4.16.18](https://github.com/fleetyards/fleetyards/compare/v4.16.17...v4.16.18) (2021-10-12)
 
 ### [4.16.17](https://github.com/fleetyards/fleetyards/compare/v4.16.16...v4.16.17) (2021-10-11)
