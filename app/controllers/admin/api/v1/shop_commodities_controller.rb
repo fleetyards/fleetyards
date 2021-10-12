@@ -138,7 +138,8 @@ module Admin
                 :confirmed,
                 {
                   name: [], manufacturer_slug: [], category: [], sub_category: [],
-                  component_item_type: [], equipment_item_type: []
+                  component_item_type: [], equipment_item_type: [], equipment_type: [],
+                  equipment_slot: []
                 }
               ]
             )

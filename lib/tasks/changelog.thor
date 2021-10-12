@@ -13,12 +13,12 @@ class Changelog < Thor
   def entry(tag)
     changelog = File.read('CHANGELOG.md')
 
-    match_string = /### \[#{tag.delete('v')}\]\(\S+(v\S+)...v\S+\) \(\S+\)(.*)/m
+    match_string = /\#{2,3} \[#{tag.delete('v')}\]\(\S+(v\S+)...v\S+\) \(\S+\)(.*)/m
     match = changelog.scan(match_string)
 
     last_tag = match.first&.first&.delete('v')
 
-    return if last_tag.nil?
+    raise 'No Tag Found!' if last_tag.nil?
 
     File.write("#{tag}.md", %(
 #{match.first.last.scan(/(.*)### \[#{last_tag}/m).first&.first}

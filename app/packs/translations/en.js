@@ -132,6 +132,7 @@ export default {
     manufacturer: 'Manufacturer',
   },
   shopCommodity: {
+    listedAt: 'Listed at',
     soldAt: 'Sold at',
     boughtAt: 'Bought at',
   },

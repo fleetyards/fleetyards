@@ -115,6 +115,16 @@ class Equipment < ApplicationRecord
     end
   end
 
+  def self.slot_filters
+    Equipment.slots.map do |(item, _index)|
+      Filter.new(
+        category: 'slot',
+        name: Equipment.human_enum_name(:slot, item),
+        value: item
+      )
+    end
+  end
+
   def sold_at
     shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
   end

@@ -42,9 +42,25 @@ module Admin
           render 'api/shared/filters'
         end
 
+        def type_filters
+          authorize! :index, :admin_api_equipment
+
+          @filters = Equipment.type_filters
+
+          render 'api/shared/filters'
+        end
+
+        def slot_filters
+          authorize! :index, :admin_api_equipment
+
+          @filters = Equipment.slot_filters
+
+          render 'api/shared/filters'
+        end
+
         private def equipment_query_params
           @equipment_query_params ||= query_params(
-            :name_in, :id_eq, :name_cont, :name_eq
+            :name_in, :id_eq, :name_cont, :name_eq, :equipment_type_eq, :slot_eq
           )
         end
       end

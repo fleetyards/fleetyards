@@ -257,11 +257,14 @@ export default class CollectionFilterGroup extends Vue {
   }
 
   @Watch('collectionFilter', { deep: true })
-  onCollectionFilterChange() {
-    debounce(() => {
+  onCollectionFilterChange(newValue, oldValue) {
+    if (
+      Object.entries(newValue).toString() !==
+      Object.entries(oldValue).toString()
+    ) {
       this.fetchedOptions = []
       this.fetchOptions()
-    }, 300)
+    }
   }
 
   @Watch('disabled')

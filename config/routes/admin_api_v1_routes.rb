@@ -18,8 +18,13 @@ v1_admin_api_routes = lambda do
   end
 
   resources :equipment, only: [:index] do
-    get :item_type_filters, on: :collection
+    collection do
+      get :item_type_filters
+      get :type_filters
+      get :slot_filters
+    end
   end
+
   resources :commodities, only: [:index]
   resources :components, only: [:index] do
     get :class_filters, on: :collection

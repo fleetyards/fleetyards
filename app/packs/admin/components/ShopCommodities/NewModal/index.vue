@@ -1,6 +1,6 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit }" :small="true" :slim="true">
-    <Modal v-if="form && shopCommodity" :title="title">
+    <Modal v-if="form" :title="title">
       <form :id="formId" @submit.prevent="handleSubmit(submit)">
         <div class="row">
           <div class="col-12 col-md-6">
@@ -65,104 +65,110 @@
           </div>
           <div class="col-12">
             <div class="form-group">
-              <ValidationProvider
-                v-slot="{ errors }"
-                vid="commodityItemId"
-                rules="required"
-                :name="$t('labels.shopCommodity.commodityItemId')"
-                :slim="true"
-              >
-                <CollectionFilterGroup
-                  v-if="form.commodityItemType === 'Commodity'"
-                  key="commodity-filter-group"
-                  v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.commodity')"
-                  :collection="commoditiesCollection"
-                  name="commodity-commodityItemId"
-                  value-attr="id"
-                  :error="errors[0]"
-                  :paginated="true"
-                  :searchable="true"
-                  :no-label="true"
-                />
-                <CollectionFilterGroup
-                  v-if="form.commodityItemType === 'Component'"
-                  key="component-filter-group"
-                  v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.component')"
-                  :collection="componentsCollection"
-                  :collection-filter="{
-                    itemTypeEq: componentItemTypeFilter,
-                  }"
-                  name="components-commodityItemId"
-                  value-attr="id"
-                  :error="errors[0]"
-                  :paginated="true"
-                  :searchable="true"
-                  :no-label="true"
-                />
-                <CollectionFilterGroup
-                  v-if="form.commodityItemType === 'Equipment'"
-                  key="equipment-filter-group"
-                  v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.equipment')"
-                  :collection="equipmentCollection"
-                  :collection-filter="{
-                    equipmentTypeEq: equipmentTypeFilter,
-                    slotEq: equipmentSlotFilter,
-                  }"
-                  name="equipment-commodityItemId"
-                  value-attr="id"
-                  :error="errors[0]"
-                  :paginated="true"
-                  :searchable="true"
-                  :no-label="true"
-                />
-                <CollectionFilterGroup
-                  v-if="form.commodityItemType === 'Model'"
-                  key="model-filter-group"
-                  v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.model')"
-                  :collection="modelsCollection"
-                  name="models-commodityItemId"
-                  value-attr="id"
-                  :error="errors[0]"
-                  :paginated="true"
-                  :searchable="true"
-                  :no-label="true"
-                />
-                <CollectionFilterGroup
-                  v-if="form.commodityItemType === 'ModelModule'"
-                  key="model-module-filter-group"
-                  v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.modelModule')"
-                  :collection="modelModulesCollection"
-                  name="modelModules-commodityItemId"
-                  value-attr="id"
-                  :error="errors[0]"
-                  :paginated="true"
-                  :searchable="true"
-                  :no-label="true"
-                />
-                <CollectionFilterGroup
-                  v-if="form.commodityItemType === 'ModelPaint'"
-                  key="model-paint-filter-group"
-                  v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.modelPaint')"
-                  :collection="modelPaintsCollection"
-                  name="modelPaints-commodityItemId"
-                  value-attr="id"
-                  label-attr="nameWithModel"
-                  :error="errors[0]"
-                  :paginated="true"
-                  :searchable="true"
-                  :no-label="true"
-                />
-              </ValidationProvider>
+              <CollectionFilterGroup
+                v-if="form.commodityItemType === 'Commodity'"
+                key="commodity-filter-group"
+                :label="$t('labels.filters.shopCommodities.commodity')"
+                :collection="commoditiesCollection"
+                name="commodity-commodityItemId"
+                value-attr="id"
+                :paginated="true"
+                :searchable="true"
+                :no-label="true"
+                :return-object="true"
+                @input="add"
+              />
+              <CollectionFilterGroup
+                v-if="form.commodityItemType === 'Component'"
+                key="component-filter-group"
+                :label="$t('labels.filters.shopCommodities.component')"
+                :collection="componentsCollection"
+                :collection-filter="{
+                  itemTypeEq: componentItemTypeFilter,
+                }"
+                name="components-commodityItemId"
+                value-attr="id"
+                :paginated="true"
+                :searchable="true"
+                :no-label="true"
+                :return-object="true"
+                @input="add"
+              />
+              <CollectionFilterGroup
+                v-if="form.commodityItemType === 'Equipment'"
+                key="equipment-filter-group"
+                :label="$t('labels.filters.shopCommodities.equipment')"
+                :collection="equipmentCollection"
+                :collection-filter="{
+                  equipmentTypeEq: equipmentTypeFilter,
+                  slotEq: equipmentSlotFilter,
+                }"
+                name="equipment-commodityItemId"
+                value-attr="id"
+                :return-object="true"
+                :paginated="true"
+                :searchable="true"
+                :no-label="true"
+                @input="add"
+              />
+              <CollectionFilterGroup
+                v-if="form.commodityItemType === 'Model'"
+                key="model-filter-group"
+                :label="$t('labels.filters.shopCommodities.model')"
+                :collection="modelsCollection"
+                name="models-commodityItemId"
+                value-attr="id"
+                :paginated="true"
+                :searchable="true"
+                :no-label="true"
+                :return-object="true"
+                @input="add"
+              />
+              <CollectionFilterGroup
+                v-if="form.commodityItemType === 'ModelModule'"
+                key="model-module-filter-group"
+                :label="$t('labels.filters.shopCommodities.modelModule')"
+                :collection="modelModulesCollection"
+                name="modelModules-commodityItemId"
+                value-attr="id"
+                :paginated="true"
+                :searchable="true"
+                :no-label="true"
+                :return-object="true"
+                @input="add"
+              />
+              <CollectionFilterGroup
+                v-if="form.commodityItemType === 'ModelPaint'"
+                key="model-paint-filter-group"
+                :label="$t('labels.filters.shopCommodities.modelPaint')"
+                :collection="modelPaintsCollection"
+                name="modelPaints-commodityItemId"
+                value-attr="id"
+                label-attr="nameWithModel"
+                :paginated="true"
+                :searchable="true"
+                :no-label="true"
+                :return-object="true"
+                @input="add"
+              />
             </div>
           </div>
         </div>
       </form>
+      <div v-for="(item, index) in items" :key="index" class="row">
+        <div class="col-8 col-md-10">
+          <TeaserPanel :item="item" variant="text" :with-description="false" />
+        </div>
+        <div class="col-4 col-md-2">
+          <Btn
+            v-tooltip="$t('actions.remove')"
+            :aria-label="$t('actions.remove')"
+            @click.native="removeItem(index)"
+          >
+            <i class="fa fa-trash" />
+          </Btn>
+        </div>
+      </div>
 
       <template #footer>
         <div class="float-sm-right">
@@ -184,7 +190,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Modal from 'frontend/core/components/AppModal/Modal'
 import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
@@ -199,6 +205,7 @@ import modelPaintsCollection from 'admin/api/collections/ModelPaints'
 import componentItemTypeFiltersCollection from 'admin/api/collections/ComponentItemTypeFilters'
 import equipmentTypeFiltersCollection from 'admin/api/collections/EquipmentTypeFilters'
 import equipmentSlotFiltersCollection from 'admin/api/collections/EquipmentSlotFilters'
+import TeaserPanel from 'frontend/core/components/TeaserPanel'
 
 @Component<VehicleModal>({
   components: {
@@ -206,12 +213,11 @@ import equipmentSlotFiltersCollection from 'admin/api/collections/EquipmentSlotF
     FilterGroup,
     CollectionFilterGroup,
     Btn,
+    TeaserPanel,
   },
 })
 export default class VehicleModal extends Vue {
   @Prop({ required: true }) shopId: string
-
-  @Prop({ required: true }) shopCommodity: ShopCommodity
 
   @Prop({ default: null }) commodityItemType: string | null
 
@@ -245,6 +251,8 @@ export default class VehicleModal extends Vue {
 
   form: Object | null = null
 
+  items = []
+
   commodityTypeOptions: FilterGroupItem[] = [
     {
       value: 'Commodity',
@@ -273,23 +281,16 @@ export default class VehicleModal extends Vue {
   ]
 
   get formId() {
-    return `shopCommodity-${this.shopCommodity.id}`
+    return 'shopCommodity-new'
   }
 
   get title() {
-    return this.$t('headlines.modals.shopCommodity.update', {
-      shopCommodity: this.shopCommodity.item.name,
-    })
+    return this.$t('headlines.modals.shopCommodity.create')
   }
 
   mounted() {
     this.componentItemTypeFilter = this.itemTypeFilter
 
-    this.setupForm()
-  }
-
-  @Watch('shopCommodity')
-  onShopCommodityChange() {
     this.setupForm()
   }
 
@@ -299,34 +300,35 @@ export default class VehicleModal extends Vue {
 
   setupForm() {
     this.form = {
-      commodityItemId: this.shopCommodity?.commodityItemId,
-      commodityItemType:
-        this.shopCommodity?.commodityItemType || this.commodityItemType,
+      commodityItemType: this.commodityItemType,
     }
   }
 
   async submit() {
-    if (this.shopCommodity && this.shopCommodity.id) {
-      await this.update()
-    }
-  }
-
-  async update() {
     this.submitting = true
 
-    const success = await shopCommodityCollection.update(
-      this.shopCommodity.shop.id,
-      this.shopCommodity.id,
-      this.form,
+    await Promise.all(
+      this.items.map(async item => {
+        await shopCommodityCollection.create(this.shopId, {
+          commodityItemId: item.id,
+          ...this.form,
+        })
+      }),
     )
 
-    if (success) {
-      this.$comlink.$emit('commodities-update')
+    this.$comlink.$emit('commodities-update')
 
-      this.$comlink.$emit('close-modal')
-    }
+    this.$comlink.$emit('close-modal')
 
     this.submitting = false
+  }
+
+  add(value) {
+    this.items.push(value)
+  }
+
+  removeItem(index) {
+    this.items.splice(index, 1)
   }
 }
 </script>

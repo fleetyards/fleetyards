@@ -188,10 +188,12 @@ export default class AdminStationImages extends Vue {
 
   mounted() {
     this.$comlink.$on('prices-update', this.fetch)
+    this.$comlink.$on('commodities-update', this.fetch)
   }
 
   beforeDestroy() {
     this.$comlink.$off('prices-update')
+    this.$comlink.$off('commodities-update')
   }
 
   async fetch() {
@@ -243,7 +245,7 @@ export default class AdminStationImages extends Vue {
 
   openAddModal(commodityItemType) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/Modal'),
+      component: () => import('admin/components/ShopCommodities/NewModal'),
       props: {
         shopId: this.routeParams.shopId,
         commodityItemType,
@@ -253,7 +255,7 @@ export default class AdminStationImages extends Vue {
 
   openComponentModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/Modal'),
+      component: () => import('admin/components/ShopCommodities/NewModal'),
       props: {
         shopId: this.routeParams.shopId,
         commodityItemType: 'Component',

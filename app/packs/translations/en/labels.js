@@ -413,6 +413,8 @@ export default {
       component: 'Component',
       componentItemTypeFilter: 'Component Item Types',
       equipmentItemTypeFilter: 'Equipment Item Types',
+      equipmentTypeFilter: 'Equipment Type',
+      equipmentSlotFilter: 'Equipment Slot',
       commodity: 'Commodity',
       model: 'Ship',
       name: 'Name',

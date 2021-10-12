@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="item.listedAt.length">
-      <span class="metrics-label">{{ $t('shopCommodity.soldAt') }}:</span>
+      <span class="metrics-label">{{ $t('shopCommodity.listedAt') }}:</span>
       <ul class="list-unstyled">
         <li
           v-for="location in item.listedAt"

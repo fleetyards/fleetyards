@@ -30,6 +30,28 @@
       :no-label="true"
     />
 
+    <CollectionFilterGroup
+      key="equipment-type-filters-filter-group"
+      v-model="form.equipment_type"
+      :label="$t('labels.filters.shopCommodities.equipmentTypeFilter')"
+      :collection="equipmentTypeFiltersCollection"
+      name="equipment-type-filter"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
+    />
+
+    <CollectionFilterGroup
+      key="equipment-slot-filters-filter-group"
+      v-model="form.equipment_slot"
+      :label="$t('labels.filters.shopCommodities.equipmentSlotFilter')"
+      :collection="equipmentSlotFiltersCollection"
+      name="equipment-slot-filter"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
+    />
+
     <Btn
       :disabled="!isFilterSelected"
       :block="true"
@@ -49,6 +71,8 @@ import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
 import componentItemTypeFiltersCollection from 'admin/api/collections/ComponentItemTypeFilters'
 import equipmentItemTypeFiltersCollection from 'admin/api/collections/EquipmentItemTypeFilters'
+import equipmentTypeFiltersCollection from 'admin/api/collections/EquipmentTypeFilters'
+import equipmentSlotFiltersCollection from 'admin/api/collections/EquipmentSlotFilters'
 import { debounce } from 'ts-debounce'
 import { getFilters, isFilterSelected } from 'frontend/utils/Filters'
 
@@ -64,6 +88,10 @@ export default class ShopCommoditiesFilterForm extends Vue {
 
   equipmentItemTypeFiltersCollection: EquipmentItemTypeFiltersCollection = equipmentItemTypeFiltersCollection
 
+  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection = equipmentTypeFiltersCollection
+
+  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection = equipmentSlotFiltersCollection
+
   loading: boolean = false
 
   search: string = null
@@ -71,6 +99,8 @@ export default class ShopCommoditiesFilterForm extends Vue {
   form = {
     component_item_type: [],
     equipment_item_type: [],
+    equipment_type: [],
+    equipment_slot: [],
   }
 
   filter: Function = debounce(this.debouncedFilter, 500)
@@ -129,6 +159,8 @@ export default class ShopCommoditiesFilterForm extends Vue {
     this.form = {
       component_item_type: filters.component_item_type || [],
       equipment_item_type: filters.equipment_item_type || [],
+      equipment_type: filters.equipment_type || [],
+      equipment_slot: filters.equipment_slot || [],
     }
   }
 }
