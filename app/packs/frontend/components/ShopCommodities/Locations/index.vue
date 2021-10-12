@@ -1,5 +1,19 @@
 <template>
   <div>
+    <div v-if="item.listedAt.length">
+      <span class="metrics-label">{{ $t('shopCommodity.soldAt') }}:</span>
+      <ul class="list-unstyled">
+        <li
+          v-for="location in item.listedAt"
+          :key="`${item.id}-sell-${location.id}-${location.shop.slug}`"
+          class="prices-item"
+        >
+          <router-link :to="shopRoute(location.shop)">
+            {{ location.shop.name }} {{ location.shop.locationLabel }}
+          </router-link>
+        </li>
+      </ul>
+    </div>
     <div v-if="item.soldAt.length">
       <span class="metrics-label">{{ $t('shopCommodity.soldAt') }}:</span>
       <ul class="list-unstyled">

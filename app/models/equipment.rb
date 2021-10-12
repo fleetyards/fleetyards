@@ -123,6 +123,10 @@ class Equipment < ApplicationRecord
     shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
+  def listed_at
+    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| item.shop.slug }
+  end
+
   def equipment_type_label
     Equipment.human_enum_name(:equipment_type, equipment_type)
   end

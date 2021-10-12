@@ -303,6 +303,10 @@ class Model < ApplicationRecord
     shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
+  def listed_at
+    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| item.shop.slug }
+  end
+
   def rental_at
     shop_commodities.where.not(rental_price_1_day: nil).uniq { |item| item.shop.slug }
   end

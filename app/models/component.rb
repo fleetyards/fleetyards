@@ -136,6 +136,10 @@ class Component < ApplicationRecord
     end
   end
 
+  def listed_at
+    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| item.shop.slug }
+  end
+
   def sold_at
     shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
   end

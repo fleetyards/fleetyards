@@ -22,6 +22,9 @@ end
 json.bought_at do
   json.array! component.bought_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
 end
+json.listed_at do
+  json.array! component.listed_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+end
 json.manufacturer do
   json.null! if component.manufacturer.blank?
   json.partial! 'api/v1/manufacturers/base', manufacturer: component.manufacturer if component.manufacturer.present?
