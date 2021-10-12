@@ -167,6 +167,14 @@
                   <i class="fad fa-share-square" />
                   <span>{{ $t('actions.share') }}</span>
                 </Btn>
+                <Btn
+                  v-if="model.salesPageUrl"
+                  :href="model.salesPageUrl"
+                  variant="dropdown"
+                >
+                  <i class="fad fa-megaphone" />
+                  <span>{{ $t('labels.model.salesPage') }}</span>
+                </Btn>
               </BtnDropdown>
             </div>
           </div>

@@ -254,6 +254,7 @@ export default {
     upgrades: 'Upgrade-Kits',
     brochure: 'Brochure',
     onSale: 'On Sale',
+    salesPage: 'Sales Page',
     addons: 'Modules & Upgrade-Kits',
     productionStatus: {
       'in-production': 'In Production',

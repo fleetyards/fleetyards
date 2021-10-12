@@ -37,6 +37,7 @@ json.brochure model.brochure.url
 json.holo model.holo.url
 json.holo_colored model.holo_colored
 json.store_url model.rsi_store_url
+json.sales_page_url model.rsi_sales_page_url
 json.price((model.price.to_f if model.price.present?))
 json.pledge_price((model.pledge_price.to_f if model.pledge_price.present?))
 json.last_pledge_price((model.last_pledge_price.to_f if model.last_pledge_price.present?))

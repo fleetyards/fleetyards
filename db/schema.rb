@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_05_104300) do
+ActiveRecord::Schema.define(version: 2021_10_12_113535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(version: 2021_10_05_104300) do
     t.string "quantum_fuel_tanks"
     t.string "holo"
     t.boolean "holo_colored", default: false
+    t.string "sales_page_url"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

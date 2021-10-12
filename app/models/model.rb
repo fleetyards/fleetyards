@@ -70,6 +70,7 @@
 #  rsi_yaw_max              :decimal(15, 2)
 #  rsi_yaxis_acceleration   :decimal(15, 2)
 #  rsi_zaxis_acceleration   :decimal(15, 2)
+#  sales_page_url           :string
 #  sc_identifier            :string
 #  scm_speed                :decimal(15, 2)
 #  size                     :string
@@ -293,6 +294,12 @@ class Model < ApplicationRecord
 
   def rsi_store_url
     "#{Rails.configuration.rsi.endpoint}#{store_url}"
+  end
+
+  def rsi_sales_page_url
+    return if sales_page_url.blank?
+
+    "#{Rails.configuration.rsi.endpoint}#{sales_page_url}"
   end
 
   def sold_at

@@ -297,6 +297,12 @@
           %small
             = form_errors model, :store_url
 
+        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :sales_page_url)}
+          = form.label :sales_page_url
+          = form.text_field :sales_page_url, class: 'form-control'
+          %small
+            = form_errors model, :sales_page_url
+
   %fieldset
     %legend
       Videos:
