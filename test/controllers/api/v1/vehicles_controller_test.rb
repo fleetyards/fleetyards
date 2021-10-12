@@ -529,6 +529,66 @@ module Api
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
               'soldAt' => [],
               'boughtAt' => [],
+              'listedAt' => [{
+                'id' => 'c38015d3-a8f7-5419-9aed-03e80ec3169a',
+                'name' => 'Andromeda',
+                'slug' => 'andromeda',
+                'storeImage' =>
+                        'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                'storeImageLarge' =>
+                        'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                'storeImageMedium' =>
+                        'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                'storeImageSmall' =>
+                        'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                'category' => 'model',
+                'subCategory' => 'multi_role',
+                'subCategoryLabel' => 'Multi role',
+                'description' => nil,
+                'pricePerUnit' => false,
+                'sellPrice' => nil,
+                'averageSellPrice' => nil,
+                'buyPrice' => nil,
+                'averageBuyPrice' => nil,
+                'rentalPrice1Day' => nil,
+                'averageRentalPrice1Day' => nil,
+                'rentalPrice3Days' => nil,
+                'averageRentalPrice3Days' => nil,
+                'rentalPrice7Days' => nil,
+                'averageRentalPrice7Days' => nil,
+                'rentalPrice30Days' => nil,
+                'averageRentalPrice30Days' => nil,
+                'locationLabel' => 'sold at New Deal on Port Olisar',
+                'confirmed' => true,
+                'commodityItemType' => 'Model',
+                'commodityItemId' => 'f5412c18-0c29-5b52-b503-ad58947dbe13',
+                'shop' => {
+                  'id' => 'df2c9942-135d-5cbc-81d6-e1c14b6298bd',
+                  'name' => 'New Deal',
+                  'slug' => 'new-deal',
+                  'type' => 'ships',
+                  'typeLabel' => 'Ship Store',
+                  'stationLabel' => 'at Port Olisar',
+                  'location' => nil,
+                  'locationLabel' => 'at Port Olisar in orbit around Crusader',
+                  'rental' => false,
+                  'buying' => false,
+                  'selling' => false,
+                  'storeImage' =>
+                  'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                  'storeImageLarge' =>
+                  'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                  'storeImageMedium' =>
+                  'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                  'storeImageSmall' =>
+                  'http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg',
+                  'refineryTerminal' => nil,
+                  'station' => {
+                    'name' => 'Port Olisar',
+                    'slug' => 'port-olisar'
+                  }
+                }
+              }],
               'rentalAt' => [],
               'manufacturer' => {
                 'name' => 'RSI',
