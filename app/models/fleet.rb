@@ -55,7 +55,7 @@ class Fleet < ApplicationRecord
 
   validates :description,
             format: {
-              with: %r{^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚ\-_'".,?!:;/\s]*$},
+              with: %r{^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäößáíñóú\-_'".,?!:;\s]*$},
               multiline: true
             }
 
