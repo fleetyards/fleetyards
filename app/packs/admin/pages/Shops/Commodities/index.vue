@@ -17,7 +17,7 @@
       <Btn @click.native="openAddModal('Commodity')">
         {{ $t('actions.add') }} Commodity
       </Btn>
-      <Btn @click.native="openAddModal('Component')">
+      <Btn @click.native="openComponentModal">
         {{ $t('actions.add') }} Component
       </Btn>
       <Btn @click.native="openAddModal('Equipment')">
@@ -247,6 +247,18 @@ export default class AdminStationImages extends Vue {
       props: {
         shopId: this.routeParams.shopId,
         commodityItemType,
+      },
+    })
+  }
+
+  openComponentModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('admin/components/ShopCommodities/Modal'),
+      props: {
+        shopId: this.routeParams.shopId,
+        commodityItemType: 'Component',
+        itemTypeFilter: (this.$route.query.filters?.component_item_type ||
+          [])[0],
       },
     })
   }

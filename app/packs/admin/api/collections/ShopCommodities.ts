@@ -24,7 +24,9 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   }
 
   async refresh(): Promise<void> {
-    await this.findAll(this.params)
+    setTimeout(async () => {
+      await this.findAll(this.params)
+    }, 500)
   }
 
   async create(
@@ -36,7 +38,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
 
     if (!response.error) {
       if (refetch) {
-        this.findAll(this.params)
+        this.refresh()
       }
 
       return response.data
@@ -52,7 +54,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   ): Promise<boolean> {
     const response = await put(`shops/${shopId}/commodities/${id}`, form)
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }

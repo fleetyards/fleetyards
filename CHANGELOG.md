@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.16.17](https://github.com/fleetyards/fleetyards/compare/v4.16.16...v4.16.17) (2021-10-11)
+
+
+### Bug Fixes
+
+* components management in backend ([820b91b](https://github.com/fleetyards/fleetyards/commit/820b91b72e81bf2526fd2d62c96b166f19ddd8f5))
+* fleet member leave error ([28ef860](https://github.com/fleetyards/fleetyards/commit/28ef860deb785d1a1f1df94cceeec1eb716623a2))
+
 ### [4.16.16](https://github.com/fleetyards/fleetyards/compare/v4.16.15...v4.16.16) (2021-10-10)
 
 
