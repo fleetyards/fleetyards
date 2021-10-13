@@ -7,7 +7,7 @@
           {{ component.name }}
           <small v-if="component.manufacturer">
             <br />
-            {{ component.manufacturer.name }}
+            <span v-html="component.manufacturer.name" />
           </small>
         </h2>
         <AddToCartBtn :item="component" type="Component" class="add-to-cart" />
