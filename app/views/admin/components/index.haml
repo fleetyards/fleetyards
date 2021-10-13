@@ -25,8 +25,8 @@
       .col-12.col-md-3
         = search_form_for [:admin, @q] do |f|
           .form-group
-            = f.label :name_cont
-            = f.search_field :name_cont, class: 'form-control'
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
 
           .form-group
             = f.label :size_eq

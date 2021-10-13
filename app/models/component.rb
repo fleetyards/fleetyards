@@ -46,6 +46,10 @@ class Component < ApplicationRecord
     }
   end
 
+  def should_index?
+    listed_at.present?
+  end
+
   belongs_to :manufacturer, optional: true
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 

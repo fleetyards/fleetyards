@@ -20,6 +20,7 @@
 #  slug             :string
 #  storage          :decimal(15, 2)
 #  store_image      :string
+#  volume           :decimal(15, 2)
 #  weapon_class     :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -47,7 +48,7 @@ class Equipment < ApplicationRecord
   end
 
   def should_index?
-    !hidden
+    !hidden && listed_at.present?
   end
 
   belongs_to :manufacturer, optional: true
