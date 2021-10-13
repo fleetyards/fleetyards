@@ -59,7 +59,7 @@ module Admin
 
     private def save_filters
       session[:equipment_filters] = query_params(
-        :name_cont, :equipment_type_eq
+        :name_or_slug_cont, :equipment_type_eq
       ).to_h
       session[:equipment_page] = params[:page]
     end
