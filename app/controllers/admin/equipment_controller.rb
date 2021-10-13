@@ -76,7 +76,7 @@ module Admin
       @equipment_params ||= params.require(:equipment).permit(
         :name, :description, :equipment_type, :item_type, :weapon_class, :size, :grade, :range, :extras,
         :weapon_class, :damage_reduction, :rate_of_fire, :hidden, :store_image, :store_image_cache,
-        :remove_store_image, :manufacturer_id, :slot
+        :remove_store_image, :manufacturer_id, :slot, :storage, :volume
       )
     end
 

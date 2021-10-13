@@ -20,6 +20,7 @@ json.rate_of_fire equipment.rate_of_fire
 json.range equipment.range
 json.extras equipment.extras
 json.storage equipment.storage
+json.volume equipment.volume
 json.store_image_is_fallback equipment.store_image.identifier.nil?
 json.store_image equipment.store_image.url
 json.store_image_medium equipment.store_image.medium.url
