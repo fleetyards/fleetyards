@@ -2,5 +2,5 @@
 
 module Fleetyards
   CODENAME = 'Mercury'
-  VERSION = 'v4.17.2'
+  VERSION = 'v4.17.3'
 end
