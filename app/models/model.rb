@@ -303,19 +303,19 @@ class Model < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
   end
 
   def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
   end
 
   def rental_at
-    shop_commodities.where.not(rental_price_1_day: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where.not(rental_price_1_day: nil).order(rental_price_1_day: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
   end
 
   def dock_counts

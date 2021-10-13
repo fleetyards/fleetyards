@@ -19,6 +19,13 @@ const createShoppingCartItem = (newItem, type) => {
     name: newItem.name,
     bestSoldAt: soldAt[0],
     soldAt,
+    listedAt: (newItem.listedAt || []).map(item => ({
+      id: item.id,
+      shopName: item.shop.name,
+      shopSlug: item.shop.slug,
+      stationName: item.shop.station.name,
+      stationSlug: item.shop.station.slug,
+    })),
     amount: 1,
   }
 }
