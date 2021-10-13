@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.17.5](https://github.com/fleetyards/fleetyards/compare/v4.17.4...v4.17.5) (2021-10-13)
+
+
+### Bug Fixes
+
+* model paints for shops ([b37589f](https://github.com/fleetyards/fleetyards/commit/b37589f95d5d82253587a96199ae49881af09dab))
+
 ### [4.17.4](https://github.com/fleetyards/fleetyards/compare/v4.17.3...v4.17.4) (2021-10-13)
 
 
