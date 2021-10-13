@@ -51,6 +51,8 @@ en:
         rate_of_fire: Rate of Fire
         range: Range
         extras: Extras
+        storage: storage
+        volume: Volume
     prompt:
       video:
         video_type: Please select a Video Type

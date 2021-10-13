@@ -81,7 +81,7 @@ module Admin
     end
 
     private def equipment
-      @equipment ||= Equipment.where(id: params.fetch(:id, nil)).first
+      @equipment ||= Equipment.find(params[:id])
     end
     helper_method :equipment
 
