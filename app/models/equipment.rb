@@ -20,6 +20,7 @@
 #  slug             :string
 #  storage          :decimal(15, 2)
 #  store_image      :string
+#  volume           :decimal(15, 2)
 #  weapon_class     :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -47,7 +48,7 @@ class Equipment < ApplicationRecord
   end
 
   def should_index?
-    !hidden
+    !hidden && (listed_at.present? || sold_at.present? || bought_at.present?)
   end
 
   belongs_to :manufacturer, optional: true
@@ -126,15 +127,15 @@ class Equipment < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
   end
 
   def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
   end
 
   def equipment_type_label

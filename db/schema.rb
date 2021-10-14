@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_12_113535) do
+ActiveRecord::Schema.define(version: 2021_10_13_062947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_113535) do
     t.integer "weapon_class"
     t.integer "slot"
     t.decimal "storage", precision: 15, scale: 2
+    t.decimal "volume", precision: 15, scale: 2
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 

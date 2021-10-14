@@ -336,7 +336,7 @@ class ShopCommodity < ApplicationRecord
   end
 
   def manufacturer
-    return if commodity_item.is_a?(Commodity)
+    return if commodity_item.is_a?(Commodity) || commodity_item.is_a?(ModelPaint)
 
     commodity_item.manufacturer
   end

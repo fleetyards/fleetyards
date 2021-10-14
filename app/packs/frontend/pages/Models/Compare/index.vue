@@ -85,6 +85,7 @@
               </div>
             </div>
             <div class="compare-wrapper">
+              <TopViewRows :models="sortedModels" />
               <BaseRows :models="sortedModels" />
               <CrewRows :models="sortedModels" />
               <SpeedRows :models="sortedModels" />
@@ -106,6 +107,7 @@ import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilte
 import Box from 'frontend/core/components/Box'
 import Btn from 'frontend/core/components/Btn'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import TopViewRows from 'frontend/components/Compare/Models/TopView'
 import BaseRows from 'frontend/components/Compare/Models/Base'
 import CrewRows from 'frontend/components/Compare/Models/Crew'
 import SpeedRows from 'frontend/components/Compare/Models/Speed'
@@ -119,6 +121,7 @@ import modelHardpointsCollection from 'frontend/api/collections/ModelHardpoints'
     Box,
     Btn,
     BreadCrumbs,
+    TopViewRows,
     BaseRows,
     CrewRows,
     SpeedRows,

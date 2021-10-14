@@ -4,13 +4,17 @@
       <div v-if="cartItems.length" class="item-list">
         <div class="item-list-item item-list-header">
           <div class="item-name"></div>
+
           <div class="item-amount"></div>
+
           <div class="item-sold-at">
             {{ $t('labels.shoppingCart.perItem') }}
           </div>
+
           <div class="item-price">
             {{ $t('labels.shoppingCart.itemTotal') }}
           </div>
+
           <div class="item-actions"></div>
         </div>
         <div
@@ -19,7 +23,9 @@
           class="item-list-item"
         >
           <div class="item-name">{{ cartItem.name }}</div>
+
           <ItemAmount v-if="!mobile" :cart-item="cartItem" />
+
           <div class="item-sold-at">
             <ul class="list-unstyled">
               <li
@@ -33,15 +39,32 @@
                 <span class="price-label" v-html="$toUEC(soldAt.price)" />
               </li>
             </ul>
+            <ul class="list-unstyled">
+              <li
+                v-for="listedAt in cartItem.listedAt"
+                :key="`${cartItem.id}-${listedAt.id}`"
+              >
+                <div>
+                  {{ listedAt.stationName }}
+                  <span class="text-muted">{{ listedAt.shopName }}</span>
+                </div>
+                <span class="price-label">
+                  -
+                </span>
+              </li>
+            </ul>
           </div>
+
           <div
             v-if="cartItem.soldAt.length"
             class="item-price price-label"
             v-html="$toUEC(sum(cartItem))"
           />
+
           <div v-else class="item-price unavailable">
             {{ $t('labels.unavailable') }}
           </div>
+
           <div class="item-actions">
             <ItemAmount v-if="mobile" :cart-item="cartItem" />
             <Btn

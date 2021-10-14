@@ -199,7 +199,7 @@ GEM
     erubis (2.7.0)
     et-orbi (1.2.5)
       tzinfo
-    ethon (0.14.0)
+    ethon (0.15.0)
       ffi (>= 1.15.0)
     excon (0.87.0)
     execjs (2.8.1)
@@ -386,7 +386,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.6)
-    puma (5.5.1)
+    puma (5.5.2)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.5.2)

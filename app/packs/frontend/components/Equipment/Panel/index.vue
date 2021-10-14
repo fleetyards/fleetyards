@@ -19,9 +19,7 @@
             <div class="metrics-label">
               {{ $t('commodityItem.manufacturer') }}:
             </div>
-            <div class="metrics-value">
-              {{ equipment.manufacturer.name }}
-            </div>
+            <div class="metrics-value" v-html="equipment.manufacturer.name" />
           </div>
           <div v-if="equipment.size" class="metrics-item">
             <div class="metrics-label">{{ $t('commodityItem.size') }}:</div>

@@ -9,7 +9,6 @@ module Admin
         def index
           authorize! :index, :admin_api_shop_commodities
 
-          Rails.logger.debug query_params.to_yaml
           @shop_commodities = ShopCommodity.search(
             search_params || '*',
             fields: [{ name: :word_start }],

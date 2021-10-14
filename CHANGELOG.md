@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.17.5](https://github.com/fleetyards/fleetyards/compare/v4.17.4...v4.17.5) (2021-10-13)
+
+
+### Bug Fixes
+
+* model paints for shops ([b37589f](https://github.com/fleetyards/fleetyards/commit/b37589f95d5d82253587a96199ae49881af09dab))
+
+### [4.17.4](https://github.com/fleetyards/fleetyards/compare/v4.17.3...v4.17.4) (2021-10-13)
+
+
+### Bug Fixes
+
+* manufacturer names on search results ([292054c](https://github.com/fleetyards/fleetyards/commit/292054ca277bb5c74f0119861041d238414f360a))
+
+### [4.17.3](https://github.com/fleetyards/fleetyards/compare/v4.17.2...v4.17.3) (2021-10-13)
+
+
+### Bug Fixes
+
+* indexing of components and equipment ([51f6173](https://github.com/fleetyards/fleetyards/commit/51f61733fb7804d6b655c9c561daeee0ec8e4191))
+
+### [4.17.2](https://github.com/fleetyards/fleetyards/compare/v4.17.1...v4.17.2) (2021-10-13)
+
+
+### Bug Fixes
+
+* shop location listings in search result ([4d8a106](https://github.com/fleetyards/fleetyards/commit/4d8a1060a203537d7356efc9c97aaec6d748f466))
+* translations ([b271205](https://github.com/fleetyards/fleetyards/commit/b271205acac3290f800dc24abea0e3941fe8741f))
+
 ### [4.17.1](https://github.com/fleetyards/fleetyards/compare/v4.17.0...v4.17.1) (2021-10-12)
 
 ## [4.17.0](https://github.com/fleetyards/fleetyards/compare/v4.16.18...v4.17.0) (2021-10-12)

@@ -79,6 +79,18 @@
       %small
         = form_errors equipment, :extras
 
+    .col-12.col-md-3.form-group{class: form_error?(equipment, :storage)}
+      = form.label :storage
+      = form.number_field :storage, step: 'any', placeholder: I18n.t(:"helpers.placeholder.equipment.storage"), class: 'form-control'
+      %small
+        = form_errors equipment, :storage
+
+    .col-12.col-md-3.form-group{class: form_error?(equipment, :volume)}
+      = form.label :volume
+      = form.number_field :volume, step: 'any', placeholder: I18n.t(:"helpers.placeholder.equipment.volume"), class: 'form-control'
+      %small
+        = form_errors equipment, :volume
+
     .col-12.col-md-3
       .form-group
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.equipment.hidden"), class: 'checkbox'

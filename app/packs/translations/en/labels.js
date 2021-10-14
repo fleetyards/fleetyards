@@ -12,6 +12,7 @@ export default {
   'enabled': 'Enabled',
   'disabled': 'Disabled',
   'collapse': 'Collapse',
+  'price': 'Price',
   'expand': 'Expand',
   'toggleNavigation': 'Toggle Navigation',
   'enableYoutube':
@@ -267,6 +268,7 @@ export default {
   'metrics': {
     info: 'Info',
     levels: 'Levels',
+    topView: 'Top View',
     base: 'Base',
     crew: 'Crew',
     speed: 'Speed',
