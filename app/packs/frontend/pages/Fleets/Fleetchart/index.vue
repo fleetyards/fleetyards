@@ -37,8 +37,6 @@ import PublicFleetchart from 'frontend/components/Fleets/PublicFleetchart'
   mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class FleetFleetchart extends Vue {
-  collection: FleetVehiclesCollection = fleetVehiclesCollection
-
   get fleet() {
     return fleetsCollection.record
   }
@@ -77,6 +75,8 @@ export default class FleetFleetchart extends Vue {
       },
     ]
   }
+
+  collection: FleetVehiclesCollection = fleetVehiclesCollection
 
   mounted() {
     this.fetch()

@@ -158,18 +158,6 @@ import publicHangarGroupsCollection from 'frontend/api/collections/PublicHangarG
   mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
-  loading: boolean = false
-
-  collection: PublicVehiclesCollection = publicVehiclesCollection
-
-  userCollection: PublicUserCollection = publicUserCollection
-
-  highlightedGroup: string = null
-
-  groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection
-
-  @Getter('mobile') mobile
-
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
       return []
@@ -217,6 +205,18 @@ export default class PublicHangar extends Vue {
       filters: this.$route.query.q,
     }
   }
+
+  loading: boolean = false
+
+  collection: PublicVehiclesCollection = publicVehiclesCollection
+
+  userCollection: PublicUserCollection = publicUserCollection
+
+  highlightedGroup: string = null
+
+  groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection
+
+  @Getter('mobile') mobile
 
   @Watch('$route')
   onRouteChange() {

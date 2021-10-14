@@ -38,8 +38,6 @@ import imagesCollection, {
   },
 })
 export default class AdminStationImages extends Vue {
-  collection: AdminImagesCollection = imagesCollection
-
   get galleryId() {
     return this.$route.params.uuid
   }
@@ -57,6 +55,8 @@ export default class AdminStationImages extends Vue {
       page: this.$route.query.page,
     }
   }
+
+  collection: AdminImagesCollection = imagesCollection
 
   async fetch() {
     await this.collection.findAllForGallery(this.filters)

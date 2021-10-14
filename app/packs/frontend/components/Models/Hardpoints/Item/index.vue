@@ -54,12 +54,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<HardpointItem>({})
 export default class HardpointItem extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint
-
-  /* eslint-disable global-require */
-  turretIcon = require('images/hardpoints/turrets-dark.svg')
   /* eslint-enable global-require */
-
   get tooltip() {
     if (
       !this.showCategory &&
@@ -85,5 +80,10 @@ export default class HardpointItem extends Vue {
       !['main_thrusters', 'maneuvering_thrusters'].includes(this.hardpoint.type)
     )
   }
+
+  @Prop({ required: true }) hardpoint: Hardpoint
+
+  /* eslint-disable global-require */
+  turretIcon = require('images/hardpoints/turrets-dark.svg')
 }
 </script>

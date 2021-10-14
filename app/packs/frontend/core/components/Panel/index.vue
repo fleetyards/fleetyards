@@ -31,6 +31,14 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class Panel extends Vue {
+  private get variantClass() {
+    return `panel-${this.variant}`
+  }
+
+  private get transparencyClass() {
+    return `panel-transparency-${this.transparency}`
+  }
+
   @Prop({ default: true }) outerSpacing!: boolean
 
   @Prop({ default: 'default' }) transparency!: 'default' | 'more' | 'complete'
@@ -40,13 +48,5 @@ export default class Panel extends Vue {
   @Prop({ default: false }) forText!: boolean
 
   @Prop({ default: 'default' }) variant!: 'default' | 'primary' | 'success'
-
-  private get variantClass() {
-    return `panel-${this.variant}`
-  }
-
-  private get transparencyClass() {
-    return `panel-transparency-${this.transparency}`
-  }
 }
 </script>

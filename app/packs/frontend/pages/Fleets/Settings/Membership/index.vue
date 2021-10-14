@@ -102,16 +102,6 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
   mixins: [MetaInfo],
 })
 export default class FleetMembershipSettings extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection
-
-  submitting: boolean = false
-
-  form: FleetMembershipForm = {
-    primary: false,
-    shipsFilter: null,
-    hangarGroupId: null,
-  }
-
   get fleet() {
     return fleetsCollection.record
   }
@@ -166,6 +156,16 @@ export default class FleetMembershipSettings extends Vue {
 
   get membership() {
     return this.collection.record
+  }
+
+  collection: FleetMembersCollection = fleetMembersCollection
+
+  submitting: boolean = false
+
+  form: FleetMembershipForm = {
+    primary: false,
+    shipsFilter: null,
+    hangarGroupId: null,
   }
 
   @Watch('$route')

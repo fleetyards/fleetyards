@@ -102,10 +102,6 @@ import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
   },
 })
 export default class ModelPanel extends Vue {
-  @Prop({ required: true }) model: Model
-
-  @Prop({ default: false }) details: boolean
-
   get uuid() {
     return this._uid
   }
@@ -113,6 +109,10 @@ export default class ModelPanel extends Vue {
   get storeImage() {
     return this.model.storeImageMedium
   }
+
+  @Prop({ required: true }) model: Model
+
+  @Prop({ default: false }) details: boolean
 
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] }

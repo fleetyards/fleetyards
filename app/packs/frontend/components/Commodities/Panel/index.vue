@@ -37,10 +37,6 @@ import ShopCommodityLocations from 'frontend/components/ShopCommodities/Location
   },
 })
 export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) commodity!: Component
-
-  @Prop({ default: true }) showStats!: boolean
-
   get tradeRouteRoute() {
     return {
       name: 'trade-routes',
@@ -51,6 +47,10 @@ export default class ComponentPanel extends Vue {
       },
     }
   }
+
+  @Prop({ required: true }) commodity!: Component
+
+  @Prop({ default: true }) showStats!: boolean
 }
 </script>
 

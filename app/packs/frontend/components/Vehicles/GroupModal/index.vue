@@ -97,6 +97,18 @@ import VSwatches from 'vue-swatches'
   },
 })
 export default class GroupModal extends Vue {
+  get title() {
+    if (this.hangarGroup && this.hangarGroup.id) {
+      return this.$t('headlines.hangarGroup.edit')
+    }
+
+    return this.$t('headlines.hangarGroup.create')
+  }
+
+  get id() {
+    return (this.hangarGroup && this.hangarGroup.id) || 'new'
+  }
+
   @Prop({
     default() {
       return {}
@@ -109,18 +121,6 @@ export default class GroupModal extends Vue {
   deleting: boolean = false
 
   form: HangarGroupForm | null = null
-
-  get title() {
-    if (this.hangarGroup && this.hangarGroup.id) {
-      return this.$t('headlines.hangarGroup.edit')
-    }
-
-    return this.$t('headlines.hangarGroup.create')
-  }
-
-  get id() {
-    return (this.hangarGroup && this.hangarGroup.id) || 'new'
-  }
 
   mounted() {
     this.setupForm()

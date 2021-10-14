@@ -167,22 +167,6 @@ import debounce from 'lodash.debounce'
   },
 })
 export default class FleetShipsList extends Vue {
-  collection: FleetVehiclesCollection = fleetVehiclesCollection
-
-  fleetVehiclesChannel = null
-
-  @Prop({ required: true }) fleet: Fleet
-
-  @Prop({ required: true }) copyPublicUrl: Function
-
-  @Getter('grouped', { namespace: 'fleet' }) grouped
-
-  @Getter('money', { namespace: 'fleet' }) money
-
-  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
-
-  @Getter('mobile') mobile
-
   get fleetStats() {
     return this.collection.stats
   }
@@ -209,6 +193,22 @@ export default class FleetShipsList extends Vue {
       page: this.$route.query.page,
     }
   }
+
+  collection: FleetVehiclesCollection = fleetVehiclesCollection
+
+  fleetVehiclesChannel = null
+
+  @Prop({ required: true }) fleet: Fleet
+
+  @Prop({ required: true }) copyPublicUrl: Function
+
+  @Getter('grouped', { namespace: 'fleet' }) grouped
+
+  @Getter('money', { namespace: 'fleet' }) money
+
+  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
+
+  @Getter('mobile') mobile
 
   @Watch('grouped')
   onGroupedChange() {

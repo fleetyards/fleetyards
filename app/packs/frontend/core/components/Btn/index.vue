@@ -23,56 +23,6 @@ import { RouteConfig } from 'vue-router'
   },
 })
 export default class Btn extends Vue {
-  @Prop({ default: false }) loading!: boolean
-
-  @Prop({ default: null }) to!: RouteConfig
-
-  @Prop({ default: null }) href!: string
-
-  @Prop({
-    default: 'button',
-    validator(value) {
-      return ['button', 'submit'].indexOf(value) !== -1
-    },
-  })
-  type!: string
-
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return (
-        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
-          value,
-        ) !== -1
-      )
-    },
-  })
-  variant!: string
-
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
-    },
-  })
-  size!: string
-
-  @Prop({ default: false }) exact!: boolean
-
-  @Prop({ default: false }) block!: boolean
-
-  @Prop({ default: false }) mobileBlock!: boolean
-
-  @Prop({ default: false }) inline!: boolean
-
-  @Prop({ default: false }) textInline!: boolean
-
-  @Prop({ default: false }) active!: boolean
-
-  @Prop({ default: false }) disabled!: boolean
-
-  @Prop({ default: null }) routeActiveClass!: boolean
-
   get btnType() {
     if (this.to && !this.disabled) return 'router-link'
 
@@ -122,5 +72,55 @@ export default class Btn extends Vue {
       'disabled': this.disabled,
     }
   }
+
+  @Prop({ default: false }) loading!: boolean
+
+  @Prop({ default: null }) to!: RouteConfig
+
+  @Prop({ default: null }) href!: string
+
+  @Prop({
+    default: 'button',
+    validator(value) {
+      return ['button', 'submit'].indexOf(value) !== -1
+    },
+  })
+  type!: string
+
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return (
+        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+          value,
+        ) !== -1
+      )
+    },
+  })
+  variant!: string
+
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'small', 'large'].indexOf(value) !== -1
+    },
+  })
+  size!: string
+
+  @Prop({ default: false }) exact!: boolean
+
+  @Prop({ default: false }) block!: boolean
+
+  @Prop({ default: false }) mobileBlock!: boolean
+
+  @Prop({ default: false }) inline!: boolean
+
+  @Prop({ default: false }) textInline!: boolean
+
+  @Prop({ default: false }) active!: boolean
+
+  @Prop({ default: false }) disabled!: boolean
+
+  @Prop({ default: null }) routeActiveClass!: boolean
 }
 </script>

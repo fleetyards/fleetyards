@@ -41,10 +41,10 @@ import Modal from 'frontend/core/components/AppModal/Modal'
   },
 })
 export default class Support extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint
-
   get component() {
     return this.hardpoint.component
   }
+
+  @Prop({ required: true }) hardpoint: Hardpoint
 }
 </script>

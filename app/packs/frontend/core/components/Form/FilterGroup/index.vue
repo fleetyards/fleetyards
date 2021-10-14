@@ -117,79 +117,6 @@ import InfiniteLoading from 'vue-infinite-loading'
   },
 })
 export default class FilterGroup extends Vue {
-  @Prop({ required: true }) name!: string
-
-  @Prop({ default: null }) error!: string
-
-  @Prop({
-    default: () => [],
-  })
-  options!: any[]
-
-  @Prop({
-    default() {
-      if (this.multiple) {
-        return []
-      }
-      return null
-    },
-  })
-  value!: string[] | string | number | Object | null
-
-  @Prop({ default: 'value' }) valueAttr!: string
-
-  @Prop({ default: 'name' }) labelAttr!: string
-
-  @Prop({ default: 'icon' }) iconAttr!: string
-
-  @Prop({ default: false }) multiple!: boolean
-
-  @Prop({ default: false }) disabled!: boolean
-
-  @Prop({ default: false }) searchable!: boolean
-
-  @Prop({ default: null }) error!: string
-
-  @Prop({ default: false }) returnObject!: boolean
-
-  @Prop({ default: true }) nullable!: boolean
-
-  @Prop({ default: false }) paginated!: boolean
-
-  @Prop({ default: false }) hideLabelOnEmpty!: boolean
-
-  @Prop({ default: null }) label!: string
-
-  @Prop({ default: 'filterGroup' }) translationKey!: string
-
-  @Prop({ default: false }) noLabel!: boolean
-
-  @Prop({ default: false }) bigIcon!: boolean
-
-  @Prop({ default: null }) fetch!: Function
-
-  @Prop({ default: null }) fetchPath!: string
-
-  @Prop({ default: null }) searchLabel!: string
-
-  @Prop({ default: false }) newSearchQuery!: boolean
-
-  visible: boolean = false
-
-  search = null
-
-  page: number = 1
-
-  loading: boolean = false
-
-  fetchedOptions = []
-
-  selectedId: string = null
-
-  id: string = null
-
-  onSearch: Function = debounce(this.debouncedOnSearch, 500)
-
   get prompt() {
     if (this.multiple) {
       return this.label
@@ -269,6 +196,79 @@ export default class FilterGroup extends Vue {
       'has-error has-feedback': this.error,
     }
   }
+
+  @Prop({ required: true }) name!: string
+
+  @Prop({ default: null }) error!: string
+
+  @Prop({
+    default: () => [],
+  })
+  options!: any[]
+
+  @Prop({
+    default() {
+      if (this.multiple) {
+        return []
+      }
+      return null
+    },
+  })
+  value!: string[] | string | number | Object | null
+
+  @Prop({ default: 'value' }) valueAttr!: string
+
+  @Prop({ default: 'name' }) labelAttr!: string
+
+  @Prop({ default: 'icon' }) iconAttr!: string
+
+  @Prop({ default: false }) multiple!: boolean
+
+  @Prop({ default: false }) disabled!: boolean
+
+  @Prop({ default: false }) searchable!: boolean
+
+  @Prop({ default: null }) error!: string
+
+  @Prop({ default: false }) returnObject!: boolean
+
+  @Prop({ default: true }) nullable!: boolean
+
+  @Prop({ default: false }) paginated!: boolean
+
+  @Prop({ default: false }) hideLabelOnEmpty!: boolean
+
+  @Prop({ default: null }) label!: string
+
+  @Prop({ default: 'filterGroup' }) translationKey!: string
+
+  @Prop({ default: false }) noLabel!: boolean
+
+  @Prop({ default: false }) bigIcon!: boolean
+
+  @Prop({ default: null }) fetch!: Function
+
+  @Prop({ default: null }) fetchPath!: string
+
+  @Prop({ default: null }) searchLabel!: string
+
+  @Prop({ default: false }) newSearchQuery!: boolean
+
+  visible: boolean = false
+
+  search = null
+
+  page: number = 1
+
+  loading: boolean = false
+
+  fetchedOptions = []
+
+  selectedId: string = null
+
+  id: string = null
+
+  onSearch: Function = debounce(this.debouncedOnSearch, 500)
 
   mounted() {
     this.selectedId = this._uid.toString()

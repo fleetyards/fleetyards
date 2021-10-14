@@ -209,6 +209,16 @@ import equipmentSlotFiltersCollection from 'admin/api/collections/EquipmentSlotF
   },
 })
 export default class VehicleModal extends Vue {
+  get formId() {
+    return `shopCommodity-${this.shopCommodity.id}`
+  }
+
+  get title() {
+    return this.$t('headlines.modals.shopCommodity.update', {
+      shopCommodity: this.shopCommodity.item.name,
+    })
+  }
+
   @Prop({ required: true }) shopId: string
 
   @Prop({ required: true }) shopCommodity: ShopCommodity
@@ -271,16 +281,6 @@ export default class VehicleModal extends Vue {
       name: 'Model Paint',
     },
   ]
-
-  get formId() {
-    return `shopCommodity-${this.shopCommodity.id}`
-  }
-
-  get title() {
-    return this.$t('headlines.modals.shopCommodity.update', {
-      shopCommodity: this.shopCommodity.item.name,
-    })
-  }
 
   mounted() {
     this.componentItemTypeFilter = this.itemTypeFilter

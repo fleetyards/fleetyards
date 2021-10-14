@@ -232,12 +232,6 @@ import { shopRouteGuard } from 'frontend/utils/RouteGuards/Shops'
   mixins: [MetaInfo],
 })
 export default class Shop extends Vue {
-  collection: ShopCommoditiesCollection = shopCommoditiesCollection
-
-  subCategories = []
-
-  @Getter('mobile') mobile
-
   get shop() {
     return shopsCollection.record
   }
@@ -365,6 +359,12 @@ export default class Shop extends Vue {
 
     return crumbs
   }
+
+  collection: ShopCommoditiesCollection = shopCommoditiesCollection
+
+  subCategories = []
+
+  @Getter('mobile') mobile
 
   mounted() {
     if (this.shop) {

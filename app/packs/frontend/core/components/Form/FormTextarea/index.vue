@@ -40,34 +40,6 @@ import VueTrix from 'vue-trix'
   },
 })
 export default class FormTextarea extends Vue {
-  @Prop({ required: true }) id!: string
-
-  @Prop({ default: null }) icon!: string
-
-  @Prop({ default: null }) value!: string | number
-
-  @Prop({ default: null }) error!: string
-
-  @Prop({ default: null }) translationKey!: string
-
-  @Prop({ default: false }) autofocus!: boolean
-
-  @Prop({ default: false }) hideLabelOnEmpty!: boolean
-
-  @Prop({ default: null }) label!: string
-
-  @Prop({ default: false }) noLabel!: boolean
-
-  @Prop({ default: false }) noPlaceholder!: boolean
-
-  @Prop({ default: null }) placeholder!: string
-
-  @Prop({ default: false }) clearable!: boolean
-
-  @Prop({ default: false }) disabled!: boolean
-
-  inputValue: any = null
-
   get innerId() {
     return `${this.id}-${this._uid}`
   }
@@ -106,6 +78,34 @@ export default class FormTextarea extends Vue {
       'form-input-clearable': this.clearable,
     }
   }
+
+  @Prop({ required: true }) id!: string
+
+  @Prop({ default: null }) icon!: string
+
+  @Prop({ default: null }) value!: string | number
+
+  @Prop({ default: null }) error!: string
+
+  @Prop({ default: null }) translationKey!: string
+
+  @Prop({ default: false }) autofocus!: boolean
+
+  @Prop({ default: false }) hideLabelOnEmpty!: boolean
+
+  @Prop({ default: null }) label!: string
+
+  @Prop({ default: false }) noLabel!: boolean
+
+  @Prop({ default: false }) noPlaceholder!: boolean
+
+  @Prop({ default: null }) placeholder!: string
+
+  @Prop({ default: false }) clearable!: boolean
+
+  @Prop({ default: false }) disabled!: boolean
+
+  inputValue: any = null
 
   @Watch('value')
   onValueChange() {
