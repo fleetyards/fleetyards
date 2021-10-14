@@ -268,6 +268,7 @@ export default {
   'metrics': {
     info: 'Info',
     levels: 'Levels',
+    topView: 'Top View',
     base: 'Base',
     crew: 'Crew',
     speed: 'Speed',
