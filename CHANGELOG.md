@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.18.0](https://github.com/fleetyards/fleetyards/compare/v4.17.5...v4.18.0) (2021-10-14)
+
+
+### Features
+
+* add top views to compare page ([36e9ac1](https://github.com/fleetyards/fleetyards/commit/36e9ac1a551d34d964ad387d86b64dbeb256de9d))
+
 ### [4.17.5](https://github.com/fleetyards/fleetyards/compare/v4.17.4...v4.17.5) (2021-10-13)
 
 
