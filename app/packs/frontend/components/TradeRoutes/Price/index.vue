@@ -14,14 +14,6 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<TradeRoutePrice>({})
 export default class TradeRoutePrice extends Vue {
-  @Prop({ required: true }) tradeRoute!: TradeRoute
-
-  @Prop({ default: 'buy' }) priceType!: string
-
-  @Prop({ default: null }) availableCargo!: Number
-
-  @Prop({ default: false }) average!: ToTextBooleanArg
-
   get priceTypeCapitalized() {
     return this.priceType.charAt(0).toUpperCase() + this.priceType.slice(1)
   }
@@ -33,6 +25,14 @@ export default class TradeRoutePrice extends Vue {
 
     return this.tradeRoute[`${this.priceType}Price`]
   }
+
+  @Prop({ required: true }) tradeRoute!: TradeRoute
+
+  @Prop({ default: 'buy' }) priceType!: string
+
+  @Prop({ default: null }) availableCargo!: Number
+
+  @Prop({ default: false }) average!: ToTextBooleanArg
 
   tPrice(price) {
     return this.$toUEC(price, this.$t('labels.uecPerUnit'))

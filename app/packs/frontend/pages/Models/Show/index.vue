@@ -325,46 +325,6 @@ import copyText from 'frontend/utils/CopyText'
   beforeRouteEnter: modelRouteGuard,
 })
 export default class ModelDetail extends Vue {
-  loading: boolean = false
-
-  loadingVariants: boolean = false
-
-  loadingLoaners: boolean = false
-
-  loadingModules: boolean = false
-
-  loadingUpgrades: boolean = false
-
-  show3d: boolean = false
-
-  variants: Model[] = []
-
-  loaners: ModelLoaner[] = []
-
-  modules: ModelModule[] = []
-
-  upgrades: ModelUpgrade[] = []
-
-  model: Model | null = null
-
-  attributes: string[] = [
-    'length',
-    'beam',
-    'height',
-    'mass',
-    'cargo',
-    'minCrew',
-    'maxCrew',
-    'scmSpeed',
-    'afterburnerSpeed',
-  ]
-
-  @Getter('overlayVisible', { namespace: 'app' }) overlayVisible
-
-  @Getter('mobile') mobile
-
-  @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
-
   get storeImage() {
     if (this.mobile) {
       return this.model.storeImageMedium
@@ -411,6 +371,46 @@ export default class ModelDetail extends Vue {
   get shareUrl() {
     return window.location.href
   }
+
+  loading: boolean = false
+
+  loadingVariants: boolean = false
+
+  loadingLoaners: boolean = false
+
+  loadingModules: boolean = false
+
+  loadingUpgrades: boolean = false
+
+  show3d: boolean = false
+
+  variants: Model[] = []
+
+  loaners: ModelLoaner[] = []
+
+  modules: ModelModule[] = []
+
+  upgrades: ModelUpgrade[] = []
+
+  model: Model | null = null
+
+  attributes: string[] = [
+    'length',
+    'beam',
+    'height',
+    'mass',
+    'cargo',
+    'minCrew',
+    'maxCrew',
+    'scmSpeed',
+    'afterburnerSpeed',
+  ]
+
+  @Getter('overlayVisible', { namespace: 'app' }) overlayVisible
+
+  @Getter('mobile') mobile
+
+  @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
 
   mounted() {
     this.fetch()

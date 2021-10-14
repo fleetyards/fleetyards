@@ -148,22 +148,6 @@ import hangarGroupsCollection, {
   mixins: [MetaInfo, Filters],
 })
 export default class HangarFleetchart extends Vue {
-  deleting: boolean = false
-
-  guideVisible: boolean = false
-
-  vehiclesChannel = null
-
-  collection: VehiclesCollection = vehiclesCollection
-
-  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
-
-  @Getter('mobile') mobile
-
-  @Getter('currentUser', { namespace: 'session' }) currentUser
-
-  @Getter('fleetchartScale', { namespace: 'hangar' }) fleetchartScale
-
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
       return []
@@ -181,6 +165,22 @@ export default class HangarFleetchart extends Vue {
       filters: this.$route.query.q,
     }
   }
+
+  deleting: boolean = false
+
+  guideVisible: boolean = false
+
+  vehiclesChannel = null
+
+  collection: VehiclesCollection = vehiclesCollection
+
+  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
+
+  @Getter('mobile') mobile
+
+  @Getter('currentUser', { namespace: 'session' }) currentUser
+
+  @Getter('fleetchartScale', { namespace: 'hangar' }) fleetchartScale
 
   @Watch('$route')
   onRouteChange() {

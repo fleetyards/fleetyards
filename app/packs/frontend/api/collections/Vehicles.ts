@@ -11,6 +11,14 @@ import Store from 'frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
+  get perPage(): number {
+    return Store.getters['hangar/perPage']
+  }
+
+  get perPageSteps(): number[] {
+    return [15, 30, 60, 120, 240]
+  }
+
   primaryKey: string = 'id'
 
   records: Vehicle[] = []
@@ -20,14 +28,6 @@ export class VehiclesCollection extends BaseCollection {
   params: VehicleParams | null = null
 
   lastUsedMethod: string = 'findAll'
-
-  get perPage(): number {
-    return Store.getters['hangar/perPage']
-  }
-
-  get perPageSteps(): number[] {
-    return [15, 30, 60, 120, 240]
-  }
 
   updatePerPage(perPage) {
     Store.dispatch('hangar/updatePerPage', perPage)

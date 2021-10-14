@@ -12,12 +12,6 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<TradeRouteProfit>({})
 export default class TradeRouteProfit extends Vue {
-  @Prop({ required: true }) tradeRoute!: TradeRoute
-
-  @Prop({ default: null }) availableCargo!: Number
-
-  @Prop({ default: false }) average!: ToTextBooleanArg
-
   get profit() {
     if (this.average) {
       return this.tradeRoute.averageProfitPerUnit
@@ -33,6 +27,12 @@ export default class TradeRouteProfit extends Vue {
 
     return this.tradeRoute.profitPerUnitPercent
   }
+
+  @Prop({ required: true }) tradeRoute!: TradeRoute
+
+  @Prop({ default: null }) availableCargo!: Number
+
+  @Prop({ default: false }) average!: ToTextBooleanArg
 
   tPrice(price) {
     return this.$toUEC(price, this.$t('labels.uecPerUnit'))

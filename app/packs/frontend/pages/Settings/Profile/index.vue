@@ -174,18 +174,6 @@ import userCollection from 'frontend/api/collections/User'
   mixins: [MetaInfo],
 })
 export default class SettingsAccount extends Vue {
-  @Getter('currentUser', { namespace: 'session' }) currentUser
-
-  form: UserForm | null = null
-
-  files = []
-
-  fileExtensions: string = 'jpg,jpeg,png,webp'
-
-  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
-
-  submitting: boolean = false
-
   get avatarUrl() {
     return this.newAvatar.url || (this.currentUser && this.currentUser.avatar)
   }
@@ -197,6 +185,18 @@ export default class SettingsAccount extends Vue {
   get fileExtensionsList() {
     return this.fileExtensions.split(',')
   }
+
+  @Getter('currentUser', { namespace: 'session' }) currentUser
+
+  form: UserForm | null = null
+
+  files = []
+
+  fileExtensions: string = 'jpg,jpeg,png,webp'
+
+  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
+
+  submitting: boolean = false
 
   @Watch('currentUser')
   onCurrentUserChange() {

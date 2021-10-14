@@ -102,12 +102,6 @@ import debounce from 'lodash.debounce'
   beforeRouteEnter: fleetRouteGuard,
 })
 export default class FleetMemmbers extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection
-
-  fleetMembersChannel = null
-
-  @Getter('mobile') mobile
-
   get fleet() {
     return fleetsCollection.record
   }
@@ -149,6 +143,12 @@ export default class FleetMemmbers extends Vue {
   get canInvite(): boolean {
     return ['admin', 'officer'].includes(this.fleet.myRole)
   }
+
+  collection: FleetMembersCollection = fleetMembersCollection
+
+  fleetMembersChannel = null
+
+  @Getter('mobile') mobile
 
   mounted() {
     this.fetchFleet()

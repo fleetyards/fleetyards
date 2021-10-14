@@ -66,12 +66,6 @@ import HardpointGroup from './Group'
   },
 })
 export default class Hardpoints extends Vue {
-  @Prop({ required: true }) model!: Model
-
-  collection: ModelHardpointsCollection = modelHardpointsCollection
-
-  loading: boolean = false
-
   get hardpoints() {
     return this.collection.records || []
   }
@@ -95,6 +89,12 @@ export default class Hardpoints extends Vue {
 
     return `https://scunpacked.com/ships/${this.model.scIdentifier}`
   }
+
+  @Prop({ required: true }) model!: Model
+
+  collection: ModelHardpointsCollection = modelHardpointsCollection
+
+  loading: boolean = false
 
   hardpointsForGroup(group) {
     return this.hardpoints.filter(hardpoint => hardpoint.group === group)

@@ -133,25 +133,6 @@ import Cookies from 'js-cookie'
   },
 })
 export default class ImageUploader extends Vue {
-  @Prop({ required: true }) images: Image[]
-
-  @Prop({ default: null }) galleryId: string | null
-
-  @Prop({ default: null }) galleryType: string | null
-
-  @Prop({ default: false }) loading: boolean
-
-  newImages = []
-
-  postAction: string = `${window.API_ENDPOINT}/images`
-
-  uploadCount: number = 1
-
-  headers = {
-    'Accept': 'application/json',
-    'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
-  }
-
   get isUploadActive() {
     return !!this.galleryId && !!this.galleryType
   }
@@ -200,6 +181,25 @@ export default class ImageUploader extends Vue {
         .map(item => parseFloat(item.speed))
         .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
     )
+  }
+
+  @Prop({ required: true }) images: Image[]
+
+  @Prop({ default: null }) galleryId: string | null
+
+  @Prop({ default: null }) galleryType: string | null
+
+  @Prop({ default: false }) loading: boolean
+
+  newImages = []
+
+  postAction: string = `${window.API_ENDPOINT}/images`
+
+  uploadCount: number = 1
+
+  headers = {
+    'Accept': 'application/json',
+    'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
   }
 
   mounted() {

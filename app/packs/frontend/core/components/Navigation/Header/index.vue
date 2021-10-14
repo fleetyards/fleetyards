@@ -35,14 +35,6 @@ import Search from 'frontend/core/components/Navigation/Search'
   },
 })
 export default class NavigationHeader extends Vue {
-  @Getter('mobile') mobile!: boolean
-
-  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
-
-  @Getter('gitRevision', { namespace: 'app' }) gitRevision!: string
-
-  @Action('toggleNav', { namespace: 'app' }) toggle
-
   get environmentLabelClasses() {
     const cssClasses = ['pill']
 
@@ -62,5 +54,13 @@ export default class NavigationHeader extends Vue {
 
     return (window.NODE_ENV || '').toUpperCase()
   }
+
+  @Getter('mobile') mobile!: boolean
+
+  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
+
+  @Getter('gitRevision', { namespace: 'app' }) gitRevision!: string
+
+  @Action('toggleNav', { namespace: 'app' }) toggle
 }
 </script>

@@ -59,15 +59,15 @@ import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
   },
 })
 export default class VehicleGroupsModal extends Vue {
+  get hangarGroups() {
+    return hangarGroupsCollection.records
+  }
+
   @Prop({ required: true }) vehicle: Vehicle
 
   submitting: boolean = false
 
   form: Object | null = null
-
-  get hangarGroups() {
-    return hangarGroupsCollection.records
-  }
 
   mounted() {
     this.setupForm()

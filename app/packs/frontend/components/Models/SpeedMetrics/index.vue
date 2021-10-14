@@ -96,10 +96,10 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<SpeedMetrics>({})
 export default class SpeedMetrics extends Vue {
-  @Prop({ required: true }) model: Model
-
   get isGroundVehicle() {
     return this.model.classification === 'ground'
   }
+
+  @Prop({ required: true }) model: Model
 }
 </script>

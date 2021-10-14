@@ -90,6 +90,46 @@ import { isFilterSelected } from 'frontend/utils/Filters'
   },
 })
 export default class FilteredList extends Vue {
+  get filters() {
+    return this.routeQuery[this.routeFilterName]
+  }
+
+  get search() {
+    return this.routeQuery.search
+  }
+
+  get hasFilterSlot() {
+    return !!this.$slots.filter
+  }
+
+  get page() {
+    return parseInt(this.routeQuery.page, 10) || 1
+  }
+
+  get filterVisible() {
+    return !!this.filtersVisible[this.name] && this.hasFilterSlot
+  }
+
+  get filterTooltip() {
+    if (this.filterVisible) {
+      return this.$t('actions.hideFilter')
+    }
+
+    return this.$t('actions.showFilter')
+  }
+
+  get isFilterSelected() {
+    return isFilterSelected(this.filters)
+  }
+
+  get emptyBoxVisible() {
+    return !!(
+      !this.loading &&
+      !this.collection.records.length &&
+      (this.isFilterSelected || (this.paginated && this.page))
+    )
+  }
+
   loading: boolean = true
 
   fullscreen: boolean = false
@@ -132,46 +172,6 @@ export default class FilteredList extends Vue {
   @Mutation('setFiltersVisible') setFiltersVisible
 
   @Mutation('setFilters') setFilters
-
-  get filters() {
-    return this.routeQuery[this.routeFilterName]
-  }
-
-  get search() {
-    return this.routeQuery.search
-  }
-
-  get hasFilterSlot() {
-    return !!this.$slots.filter
-  }
-
-  get page() {
-    return parseInt(this.routeQuery.page, 10) || 1
-  }
-
-  get filterVisible() {
-    return !!this.filtersVisible[this.name] && this.hasFilterSlot
-  }
-
-  get filterTooltip() {
-    if (this.filterVisible) {
-      return this.$t('actions.hideFilter')
-    }
-
-    return this.$t('actions.showFilter')
-  }
-
-  get isFilterSelected() {
-    return isFilterSelected(this.filters)
-  }
-
-  get emptyBoxVisible() {
-    return !!(
-      !this.loading &&
-      !this.collection.records.length &&
-      (this.isFilterSelected || (this.paginated && this.page))
-    )
-  }
 
   @Watch('filters', { deep: true })
   onFiltersChange() {

@@ -49,8 +49,6 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
   },
 })
 export default class FleetNav extends Vue {
-  collection: FleetsCollection = fleetsCollection
-
   get currentFleet(): Fleet | null {
     return this.collection.record
   }
@@ -58,6 +56,8 @@ export default class FleetNav extends Vue {
   get shipsNavActive() {
     return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
   }
+
+  collection: FleetsCollection = fleetsCollection
 
   mounted() {
     this.fetch()

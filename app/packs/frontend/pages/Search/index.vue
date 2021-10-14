@@ -131,26 +131,32 @@ import searchCollection from 'frontend/api/collections/Search'
   mixins: [MetaInfo, Filters],
 })
 export default class Search extends Vue {
-  collection: SearchCollection = searchCollection
-
-  form: SearchFilter = {
-    search: null
-  }
-
   get historyVisible() {
     return !this.collection.records.length && !this.form.search
   }
 
-  get filters() {
+get filters() {
     return {
       filters: this.$route.query.q,
       page: this.$route.query.page || 1,
     }
   }
 
-  get firstPage() {
+get firstPage() {
     return !this.$route.query.page || this.$route.query.page === 1
   }
+
+collection: SearchCollection = searchCollection
+
+  form: SearchFilter = {
+    search: null
+  }
+
+
+
+
+
+
 
   @Watch('$route')
   onRouteChange() {

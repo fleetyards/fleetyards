@@ -217,6 +217,14 @@ import TeaserPanel from 'frontend/core/components/TeaserPanel'
   },
 })
 export default class VehicleModal extends Vue {
+  get formId() {
+    return 'shopCommodity-new'
+  }
+
+  get title() {
+    return this.$t('headlines.modals.shopCommodity.create')
+  }
+
   @Prop({ required: true }) shopId: string
 
   @Prop({ default: null }) commodityItemType: string | null
@@ -279,14 +287,6 @@ export default class VehicleModal extends Vue {
       name: 'Model Paint',
     },
   ]
-
-  get formId() {
-    return 'shopCommodity-new'
-  }
-
-  get title() {
-    return this.$t('headlines.modals.shopCommodity.create')
-  }
 
   mounted() {
     this.componentItemTypeFilter = this.itemTypeFilter
