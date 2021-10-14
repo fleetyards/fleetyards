@@ -20,7 +20,7 @@
   .row
     .col-12.col-md-4.form-group{class: form_error?(component, :component_class)}
       = form.label :component_class
-      = form.select :component_class, Component.component_classes.map { |w| [Component.human_enum_name(:component_class, w), w] }, { include_blank: I18n.t(:"helpers.prompt.component.component_class") }, { class: 'form-control' }
+      = form.select :component_class, Component.component_classes.map { |w| [Component.human_enum_name(:component_class, w), w] }, { include_blank: I18n.t(:"helpers.prompt.component.component_class") }, { required: true, class: 'form-control' }
       %small
         = form_errors component, :component_class
 
