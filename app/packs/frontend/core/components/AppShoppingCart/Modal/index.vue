@@ -142,6 +142,16 @@ import ModelsCollection from 'frontend/api/collections/Models'
   },
 })
 export default class ShoppingCart extends Vue {
+  get sortedItems() {
+    return sortBy(this.cartItems, 'name')
+  }
+
+  get total() {
+    return sumArray(
+      this.cartItems.map(item => this.sum(item)).filter(item => item),
+    )
+  }
+
   @Getter('mobile') mobile: boolean
 
   @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
@@ -153,16 +163,6 @@ export default class ShoppingCart extends Vue {
   @Action('remove', { namespace: 'shoppingCart' }) removeFromCart: any
 
   loading: boolean = false
-
-  get sortedItems() {
-    return sortBy(this.cartItems, 'name')
-  }
-
-  get total() {
-    return sumArray(
-      this.cartItems.map(item => this.sum(item)).filter(item => item),
-    )
-  }
 
   sum(cartItem) {
     return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)

@@ -77,10 +77,6 @@ import ShopCommodityLocations from 'frontend/components/ShopCommodities/Location
   },
 })
 export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) component!: Component
-
-  @Prop({ default: true }) showMetrics!: boolean
-
   get image() {
     if (this.component.storeImageIsFallback) {
       return (
@@ -90,5 +86,9 @@ export default class ComponentPanel extends Vue {
 
     return this.component.storeImageMedium
   }
+
+  @Prop({ required: true }) component!: Component
+
+  @Prop({ default: true }) showMetrics!: boolean
 }
 </script>

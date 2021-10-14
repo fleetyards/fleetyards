@@ -30,6 +30,10 @@ import Btn from 'frontend/core/components/Btn'
   },
 })
 export default class PerPageDropdown extends Vue {
+  get uuid() {
+    return this._uid
+  }
+
   @Prop({ required: true }) perPage!: number
 
   @Prop({
@@ -38,10 +42,6 @@ export default class PerPageDropdown extends Vue {
   steps!: number[]
 
   @Getter('mobile') mobile
-
-  get uuid() {
-    return this._uid
-  }
 
   update(step) {
     this.$emit('change', step)

@@ -117,75 +117,6 @@ import InfiniteLoading from 'vue-infinite-loading'
   },
 })
 export default class CollectionFilterGroup extends Vue {
-  visible: boolean = false
-
-  search: string | null = null
-
-  page: number = 1
-
-  loading: boolean = false
-
-  selectedId: string = null
-
-  id: string = null
-
-  fetchedOptions: FilterGroupOption[] = []
-
-  onSearch: Function = debounce(this.debouncedOnSearch, 500)
-
-  @Prop({ required: true }) collection!: BaseCollection
-
-  @Prop({ default: 'findAll' }) collectionMethod: string
-
-  @Prop({
-    default: () => ({}),
-  })
-  collectionFilter!: Object
-
-  @Prop({ required: true }) name!: string
-
-  @Prop({
-    default() {
-      if (this.multiple) {
-        return []
-      }
-      return null
-    },
-  })
-  value!: string[] | string | number | Object | null
-
-  @Prop({ default: 'value' }) valueAttr!: string
-
-  @Prop({ default: 'name' }) labelAttr!: string
-
-  @Prop({ default: 'icon' }) iconAttr!: string
-
-  @Prop({ default: false }) multiple!: boolean
-
-  @Prop({ default: false }) disabled!: boolean
-
-  @Prop({ default: false }) searchable!: boolean
-
-  @Prop({ default: false }) returnObject!: boolean
-
-  @Prop({ default: true }) nullable!: boolean
-
-  @Prop({ default: null }) error!: string
-
-  @Prop({ default: false }) paginated!: boolean
-
-  @Prop({ default: false }) hideLabelOnEmpty!: boolean
-
-  @Prop({ default: null }) label!: string | null
-
-  @Prop({ default: 'filterGroup' }) translationKey!: string
-
-  @Prop({ default: false }) noLabel!: boolean
-
-  @Prop({ default: false }) bigIcon!: boolean
-
-  @Prop({ default: null }) searchLabel!: string | null
-
   get prompt() {
     if (this.multiple) {
       return this.label
@@ -255,6 +186,75 @@ export default class CollectionFilterGroup extends Vue {
       'has-error has-feedback': this.error,
     }
   }
+
+  visible: boolean = false
+
+  search: string | null = null
+
+  page: number = 1
+
+  loading: boolean = false
+
+  selectedId: string = null
+
+  id: string = null
+
+  fetchedOptions: FilterGroupOption[] = []
+
+  onSearch: Function = debounce(this.debouncedOnSearch, 500)
+
+  @Prop({ required: true }) collection!: BaseCollection
+
+  @Prop({ default: 'findAll' }) collectionMethod: string
+
+  @Prop({
+    default: () => ({}),
+  })
+  collectionFilter!: Object
+
+  @Prop({ required: true }) name!: string
+
+  @Prop({
+    default() {
+      if (this.multiple) {
+        return []
+      }
+      return null
+    },
+  })
+  value!: string[] | string | number | Object | null
+
+  @Prop({ default: 'value' }) valueAttr!: string
+
+  @Prop({ default: 'name' }) labelAttr!: string
+
+  @Prop({ default: 'icon' }) iconAttr!: string
+
+  @Prop({ default: false }) multiple!: boolean
+
+  @Prop({ default: false }) disabled!: boolean
+
+  @Prop({ default: false }) searchable!: boolean
+
+  @Prop({ default: false }) returnObject!: boolean
+
+  @Prop({ default: true }) nullable!: boolean
+
+  @Prop({ default: null }) error!: string
+
+  @Prop({ default: false }) paginated!: boolean
+
+  @Prop({ default: false }) hideLabelOnEmpty!: boolean
+
+  @Prop({ default: null }) label!: string | null
+
+  @Prop({ default: 'filterGroup' }) translationKey!: string
+
+  @Prop({ default: false }) noLabel!: boolean
+
+  @Prop({ default: false }) bigIcon!: boolean
+
+  @Prop({ default: null }) searchLabel!: string | null
 
   @Watch('collectionFilter', { deep: true })
   onCollectionFilterChange(newValue, oldValue) {

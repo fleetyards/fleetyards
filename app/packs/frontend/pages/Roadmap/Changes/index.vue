@@ -86,18 +86,6 @@ import EmptyBox from 'frontend/core/components/EmptyBox'
   mixins: [MetaInfo],
 })
 export default class RoadmapChanges extends Vue {
-  loading: boolean = true
-
-  compact: boolean = false
-
-  roadmapChanges = []
-
-  options = []
-
-  roadmapChannel = null
-
-  selectedWeek = 0
-
   get toggleCompactTooltip() {
     if (this.compact) {
       return this.$t('actions.showDetails')
@@ -128,6 +116,18 @@ export default class RoadmapChanges extends Vue {
       return value
     }, {})
   }
+
+  loading: boolean = true
+
+  compact: boolean = false
+
+  roadmapChanges = []
+
+  options = []
+
+  roadmapChannel = null
+
+  selectedWeek = 0
 
   async mounted() {
     await this.fetchOptions()

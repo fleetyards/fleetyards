@@ -30,20 +30,6 @@ import { displayWarning } from 'frontend/lib/Noty'
   },
 })
 export default class AddToHangar extends Vue {
-  @Prop({ required: true }) model: Model
-
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return ['default', 'panel', 'menu'].includes(value)
-    },
-  })
-  variant: string
-
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
-
-  @Getter('ships', { namespace: 'hangar' }) ships
-
   get inHangar() {
     return !!(this.ships || []).find(item => item === this.model.slug)
   }
@@ -63,6 +49,20 @@ export default class AddToHangar extends Vue {
 
     return 'default'
   }
+
+  @Prop({ required: true }) model: Model
+
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'panel', 'menu'].includes(value)
+    },
+  })
+  variant: string
+
+  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
+
+  @Getter('ships', { namespace: 'hangar' }) ships
 
   async add() {
     if (!this.isAuthenticated) {

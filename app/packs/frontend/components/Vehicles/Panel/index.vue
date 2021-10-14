@@ -179,18 +179,6 @@ import HangarGroups from 'frontend/components/Vehicles/HangarGroups'
   },
 })
 export default class VehiclePanel extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle | null
-
-  @Prop({ default: false }) details: boolean
-
-  @Prop({ default: false }) editable: boolean
-
-  @Prop({ default: false }) highlight: boolean
-
-  @Prop({ default: false }) loanersHintVisible: boolean
-
-  @Getter('mobile') mobile
-
   get uuid() {
     return this._uid
   }
@@ -278,6 +266,18 @@ export default class VehiclePanel extends Vue {
   get hasLoaners() {
     return this.model?.loaners?.length
   }
+
+  @Prop({ required: true }) vehicle: Vehicle | null
+
+  @Prop({ default: false }) details: boolean
+
+  @Prop({ default: false }) editable: boolean
+
+  @Prop({ default: false }) highlight: boolean
+
+  @Prop({ default: false }) loanersHintVisible: boolean
+
+  @Getter('mobile') mobile
 
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] }

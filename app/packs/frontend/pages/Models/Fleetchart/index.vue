@@ -81,12 +81,6 @@ import ModelsCollection from 'frontend/api/collections/Models'
   mixins: [MetaInfo, Filters],
 })
 export default class ModelsFleetchart extends Vue {
-  collection = ModelsCollection
-
-  @Mutation('setFleetchartScale', { namespace: 'models' }) updateScale: any
-
-  @Getter('fleetchartScale', { namespace: 'models' }) fleetchartScale
-
   get crumbs() {
     return [
       {
@@ -97,5 +91,11 @@ export default class ModelsFleetchart extends Vue {
       },
     ]
   }
+
+  collection = ModelsCollection
+
+  @Mutation('setFleetchartScale', { namespace: 'models' }) updateScale: any
+
+  @Getter('fleetchartScale', { namespace: 'models' }) fleetchartScale
 }
 </script>

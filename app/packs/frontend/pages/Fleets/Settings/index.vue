@@ -52,10 +52,6 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetSettingsIndex>({})
 export default class FleetSettingsIndex extends Vue {
-  leaving: boolean = false
-
-  collection: FleetsCollection = fleetsCollection
-
   get fleet(): Fleet | null {
     return this.collection.record
   }
@@ -71,6 +67,10 @@ export default class FleetSettingsIndex extends Vue {
   get canEdit(): boolean {
     return this.fleet?.myRole === 'admin'
   }
+
+  leaving: boolean = false
+
+  collection: FleetsCollection = fleetsCollection
 
   @Watch('$route')
   onRouteChange() {

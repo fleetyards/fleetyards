@@ -286,38 +286,6 @@ import debounce from 'lodash.debounce'
   mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class Hangar extends Vue {
-  deleting: boolean = false
-
-  guideVisible: boolean = false
-
-  vehiclesChannel = null
-
-  highlightedGroup: string = null
-
-  collection: VehiclesCollection = vehiclesCollection
-
-  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
-
-  @Getter('mobile') mobile
-
-  @Getter('currentUser', { namespace: 'session' }) currentUser
-
-  @Getter('detailsVisible', { namespace: 'hangar' }) detailsVisible
-
-  @Getter('gridView', { namespace: 'hangar' }) gridView
-
-  @Getter('perPage', { namespace: 'hangar' }) perPage
-
-  @Getter('money', { namespace: 'hangar' }) money
-
-  @Getter('starterGuideVisible', { namespace: 'hangar' }) starterGuideVisible
-
-  @Action('toggleDetails', { namespace: 'hangar' }) toggleDetails: any
-
-  @Action('toggleMoney', { namespace: 'hangar' }) toggleMoney: any
-
-  @Action('toggleGridView', { namespace: 'hangar' }) toggleGridView: any
-
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
       return []
@@ -369,6 +337,38 @@ export default class Hangar extends Vue {
       page: this.$route.query.page,
     }
   }
+
+  deleting: boolean = false
+
+  guideVisible: boolean = false
+
+  vehiclesChannel = null
+
+  highlightedGroup: string = null
+
+  collection: VehiclesCollection = vehiclesCollection
+
+  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
+
+  @Getter('mobile') mobile
+
+  @Getter('currentUser', { namespace: 'session' }) currentUser
+
+  @Getter('detailsVisible', { namespace: 'hangar' }) detailsVisible
+
+  @Getter('gridView', { namespace: 'hangar' }) gridView
+
+  @Getter('perPage', { namespace: 'hangar' }) perPage
+
+  @Getter('money', { namespace: 'hangar' }) money
+
+  @Getter('starterGuideVisible', { namespace: 'hangar' }) starterGuideVisible
+
+  @Action('toggleDetails', { namespace: 'hangar' }) toggleDetails: any
+
+  @Action('toggleMoney', { namespace: 'hangar' }) toggleMoney: any
+
+  @Action('toggleGridView', { namespace: 'hangar' }) toggleGridView: any
 
   @Watch('$route')
   onRouteChange() {

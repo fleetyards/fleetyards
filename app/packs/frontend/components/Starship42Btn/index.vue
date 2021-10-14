@@ -29,12 +29,6 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class Panel extends Btn {
-  @Prop({ required: true }) vehicles!: Vehicle[]
-
-  @Prop({ default: false }) withIcon!: boolean
-
-  @Getter('mobile') mobile
-
   get url() {
     const shipList = this.vehicles.map(vehicle => {
       if (!vehicle.model) {
@@ -61,5 +55,11 @@ export default class Panel extends Btn {
     // @ts-ignore
     return this.$t('labels.poweredByStarship42')
   }
+
+  @Prop({ required: true }) vehicles!: Vehicle[]
+
+  @Prop({ default: false }) withIcon!: boolean
+
+  @Getter('mobile') mobile
 }
 </script>

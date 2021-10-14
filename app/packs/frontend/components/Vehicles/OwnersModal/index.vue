@@ -42,13 +42,13 @@ import { uniqByField as uniqByFieldArray } from 'frontend/utils/Array'
   },
 })
 export default class OwnersModal extends Vue {
-  @Prop({ required: true }) vehicles: Vehicle[]
-
   get sortedVehicles() {
     return sortBy(this.vehicles, 'username').filter(
       uniqByFieldArray('username'),
     )
   }
+
+  @Prop({ required: true }) vehicles: Vehicle[]
 }
 </script>
 

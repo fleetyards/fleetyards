@@ -131,27 +131,6 @@ export type FilteredTableColumn = {
   },
 })
 export default class FilteredTable extends Vue {
-  @Prop({ required: true }) records!: any[]
-
-  @Prop({ required: true }) columns!: FilteredTableColumn[]
-
-  @Prop({ required: true }) primaryKey!: string
-
-  @Prop({ default: false }) loading!: boolean
-
-  @Prop({ default: false }) emptyBoxVisible!: boolean
-
-  @Prop({ default: false }) selectable!: boolean
-
-  @Prop({
-    default: () => [],
-  })
-  selected!: string[]
-
-  internalSelected: string[] = []
-
-  @Getter('mobile') mobile
-
   get uuid() {
     return this._uid
   }
@@ -172,6 +151,27 @@ export default class FilteredTable extends Vue {
       .filter(name => name.startsWith(itemSlotPrefix))
       .map(name => name.substring(itemSlotPrefix.length))
   }
+
+  @Prop({ required: true }) records!: any[]
+
+  @Prop({ required: true }) columns!: FilteredTableColumn[]
+
+  @Prop({ required: true }) primaryKey!: string
+
+  @Prop({ default: false }) loading!: boolean
+
+  @Prop({ default: false }) emptyBoxVisible!: boolean
+
+  @Prop({ default: false }) selectable!: boolean
+
+  @Prop({
+    default: () => [],
+  })
+  selected!: string[]
+
+  internalSelected: string[] = []
+
+  @Getter('mobile') mobile
 
   @Watch('selected')
   onSelectedChange() {

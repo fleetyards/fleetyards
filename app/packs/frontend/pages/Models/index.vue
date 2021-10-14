@@ -74,12 +74,6 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
   mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class Models extends Vue {
-  collection: ModelsCollection = modelsCollection
-
-  @Action('toggleDetails', { namespace: 'models' }) toggleDetails: any
-
-  @Getter('detailsVisible', { namespace: 'models' }) detailsVisible
-
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
       return this.$t('actions.hideDetails')
@@ -87,5 +81,11 @@ export default class Models extends Vue {
 
     return this.$t('actions.showDetails')
   }
+
+  collection: ModelsCollection = modelsCollection
+
+  @Action('toggleDetails', { namespace: 'models' }) toggleDetails: any
+
+  @Getter('detailsVisible', { namespace: 'models' }) detailsVisible
 }
 </script>

@@ -100,10 +100,6 @@ import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
   },
 })
 export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) equipment!: Equipment
-
-  @Prop({ default: true }) showStats!: boolean
-
   get image() {
     if (this.equipment.storeImageIsFallback) {
       return (
@@ -113,5 +109,9 @@ export default class ComponentPanel extends Vue {
 
     return this.equipment.storeImageMedium
   }
+
+  @Prop({ required: true }) equipment!: Equipment
+
+  @Prop({ default: true }) showStats!: boolean
 }
 </script>

@@ -62,15 +62,15 @@ import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
   },
 })
 export default class VehicleModal extends Vue {
+  get hangarGroups() {
+    return hangarGroupsCollection.records
+  }
+
   @Prop({ required: true }) vehicleIds: string[]
 
   submitting: boolean = false
 
   hangarGroupIds: string[] = []
-
-  get hangarGroups() {
-    return hangarGroupsCollection.records
-  }
 
   selected(groupId) {
     return this.hangarGroupIds.includes(groupId)

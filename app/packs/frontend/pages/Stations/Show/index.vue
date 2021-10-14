@@ -102,8 +102,6 @@ import stationsCollection from 'frontend/api/collections/Stations'
   mixins: [MetaInfo],
 })
 export default class StationDetail extends Vue {
-  loading: boolean = false
-
   get station() {
     return stationsCollection.record
   }
@@ -171,6 +169,8 @@ export default class StationDetail extends Vue {
 
     return crumbs
   }
+
+  loading: boolean = false
 
   mounted() {
     this.fetch()
