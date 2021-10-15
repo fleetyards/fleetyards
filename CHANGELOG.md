@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.18.1](https://github.com/fleetyards/fleetyards/compare/v4.18.0...v4.18.1) (2021-10-15)
+
+
+### Bug Fixes
+
+* variants for non rsi ships ([37de5a3](https://github.com/fleetyards/fleetyards/commit/37de5a34539aafa63c0f0ee0be1563765773af16))
+
 ## [4.18.0](https://github.com/fleetyards/fleetyards/compare/v4.17.5...v4.18.0) (2021-10-14)
 
 
