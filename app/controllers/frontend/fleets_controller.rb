@@ -9,7 +9,7 @@ module Frontend
         @og_image = fleet.logo.url if fleet.logo.present?
       end
 
-      render 'frontend/index'
+      render_frontend
     end
 
     def invite
@@ -19,7 +19,7 @@ module Frontend
         @og_image = fleet.logo.url if fleet.logo.present?
       end
 
-      render 'frontend/index'
+      render_frontend
     end
 
     def stats
@@ -29,7 +29,7 @@ module Frontend
         @og_image = fleet.logo.url if fleet.logo.present?
       end
 
-      render 'frontend/index'
+      render_frontend
     end
 
     def members
@@ -39,7 +39,7 @@ module Frontend
         @og_image = fleet.logo.url if fleet.logo.present?
       end
 
-      render 'frontend/index'
+      render_frontend
     end
 
     def settings
@@ -49,7 +49,18 @@ module Frontend
         @og_image = fleet.logo.url if fleet.logo.present?
       end
 
-      render 'frontend/index'
+      render_frontend
+    end
+
+    private def render_frontend
+      respond_to do |format|
+        format.html do
+          render 'frontend/index', status: :ok
+        end
+        format.all do
+          redirect_to '/404'
+        end
+      end
     end
 
     private def fleet

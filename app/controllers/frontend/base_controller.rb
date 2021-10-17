@@ -14,22 +14,25 @@ module Frontend
 
       @title = I18n.t("title.frontend.#{route}")
 
-      render 'frontend/index'
+      render_frontend
     end
 
     def confirm
       @title = I18n.t('title.frontend.confirm')
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def password
       @title = I18n.t('title.frontend.password_change')
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def commodities
       @title = I18n.t('title.frontend.commodities')
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def model
@@ -41,7 +44,8 @@ module Frontend
         @og_image = @model.store_image.url
         add_to_prefetch(:model, @model.to_json)
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def model_images
@@ -52,7 +56,8 @@ module Frontend
         @og_type = 'article'
         @og_image = @model.random_image&.name&.url
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def model_videos
@@ -63,7 +68,8 @@ module Frontend
         @og_type = 'article'
         @og_image = @model.random_image&.name&.url
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def compare_models
@@ -79,7 +85,8 @@ module Frontend
         @og_image = @models.first.store_image.url
         # compare_image(@models) TODO: needs to be updated for AWS images
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def starsystem
@@ -90,7 +97,8 @@ module Frontend
         @og_type = 'article'
         @og_image = @starsystem.store_image.url
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def station
@@ -101,7 +109,8 @@ module Frontend
         @og_type = 'article'
         @og_image = @station.store_image.url
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def station_images
@@ -112,7 +121,8 @@ module Frontend
         @og_type = 'article'
         @og_image = @station.store_image.url
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def celestial_object
@@ -123,7 +133,8 @@ module Frontend
         @og_type = 'article'
         @og_image = @celestial_object.store_image.url
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def shop
@@ -134,7 +145,8 @@ module Frontend
         @og_type = 'article'
         @og_image = @shop.store_image.url
       end
-      render 'frontend/index'
+
+      render_frontend
     end
 
     def not_found
@@ -144,6 +156,17 @@ module Frontend
         end
         format.json do
           render json: { code: 'not_found', message: 'Not Found' }, status: :not_found
+        end
+        format.all do
+          redirect_to '/404'
+        end
+      end
+    end
+
+    private def render_frontend
+      respond_to do |format|
+        format.html do
+          render 'frontend/index', status: :ok
         end
         format.all do
           redirect_to '/404'

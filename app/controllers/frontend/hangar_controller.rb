@@ -10,7 +10,19 @@ module Frontend
         @og_type = 'article'
         @og_image = vehicle.model.store_image.url if vehicle.present?
       end
-      render 'frontend/index'
+
+      render_frontend
+    end
+
+    private def render_frontend
+      respond_to do |format|
+        format.html do
+          render 'frontend/index', status: :ok
+        end
+        format.all do
+          redirect_to '/404'
+        end
+      end
     end
 
     private def username(name)
