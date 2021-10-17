@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.18.2](https://github.com/fleetyards/fleetyards/compare/v4.18.1...v4.18.2) (2021-10-17)
+
+
+### Bug Fixes
+
+* starship42 redirect to fleetview for very big fleets ([c53b13d](https://github.com/fleetyards/fleetyards/commit/c53b13dc0f77b851d94f03801506058a39c020a8))
+* starship42 redirect to fleetview for very big fleets ([d65e410](https://github.com/fleetyards/fleetyards/commit/d65e4108619c50923debeaf7202e8b00ea83c641))
+
 ### [4.18.1](https://github.com/fleetyards/fleetyards/compare/v4.18.0...v4.18.1) (2021-10-15)
 
 
