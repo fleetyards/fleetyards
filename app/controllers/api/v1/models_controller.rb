@@ -358,14 +358,14 @@ module Api
         )
       end
 
-      private def will_it_fit_ship_dock?(scope, ship_dock)
+      private def will_it_fit_ship_dock?(scope, dock_metrics)
         scope.where(
           '(ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height',
           dock_metrics
         )
       end
 
-      private def will_it_fit_vehicle_dock?(scope, vehicle_dock)
+      private def will_it_fit_vehicle_dock?(scope, dock_metrics)
         scope.where(
           'ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height',
           dock_metrics
