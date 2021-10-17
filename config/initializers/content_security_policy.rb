@@ -61,6 +61,7 @@ Rails.application.config.content_security_policy do |policy|
 
   form_src = [
     :self, api_endpoint,
+    'https://starship42.com'
   ]
 
   policy.default_src :none

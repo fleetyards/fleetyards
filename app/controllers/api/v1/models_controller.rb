@@ -326,34 +326,50 @@ module Api
         vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).order(length: :desc).first
         ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).order(length: :desc).first
 
+        dock_metrics = extract_dock_metrics(ship_dock, vehicle_dock)
+
         if ship_dock && vehicle_dock
-          scope.where(
-            %{
-              ((ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height) or
-              (ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height)
-            },
-            ship_length: ship_dock.length - 2.0,
-            ship_beam: ship_dock.beam - 2.0,
-            ship_height: ship_dock.height - 1.0,
-            vehicle_length: vehicle_dock.length - 1.0,
-            vehicle_beam: vehicle_dock.beam - 1.0,
-            vehicle_height: vehicle_dock.height - 0.5
-          )
+          will_it_fit_ship_or_vehicle_dock?(scope, dock_metrics)
         elsif ship_dock
-          scope.where(
-            '(ground = FALSE or ground IS NULL) and length <= :length and beam <= :beam and height <= :height',
-            length: ship_dock.length - 2.0,
-            beam: ship_dock.beam - 2.0,
-            height: ship_dock.height - 1.0
-          )
+          will_it_fit_ship_dock?(scope, dock_metrics)
         else
-          scope.where(
-            'ground = TRUE and length <= :length and beam <= :beam and height <= :height',
-            length: vehicle_dock.length - 1.0,
-            beam: vehicle_dock.beam - 1.0,
-            height: vehicle_dock.height - 0.5
-          )
+          will_it_fit_vehicle_dock?(scope, dock_metrics)
         end
+      end
+
+      private def extract_dock_metrics(ship_dock, vehicle_dock)
+        {
+          ship_length: (ship_dock.length || 0) - 2.0,
+          ship_beam: (ship_dock.beam || 0) - 2.0,
+          ship_height: (ship_dock.height || 0) - 1.0,
+          vehicle_length: (vehicle_dock.length || 0) - 1.0,
+          vehicle_beam: (vehicle_dock.beam || 0) - 1.0,
+          vehicle_height: (vehicle_dock.height || 0) - 0.5
+        }
+      end
+
+      private def will_it_fit_ship_or_vehicle_dock?(scope, dock_metrics)
+        scope.where(
+          %{
+            ((ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height) or
+            (ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height)
+          },
+          dock_metrics
+        )
+      end
+
+      private def will_it_fit_ship_dock?(scope, ship_dock)
+        scope.where(
+          '(ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height',
+          dock_metrics
+        )
+      end
+
+      private def will_it_fit_vehicle_dock?(scope, vehicle_dock)
+        scope.where(
+          'ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height',
+          dock_metrics
+        )
       end
 
       private def pledge_price_in

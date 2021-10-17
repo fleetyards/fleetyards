@@ -2,10 +2,10 @@
   <Btn
     v-if="vehicles && vehicles.length"
     v-tooltip="tooltip"
-    :href="url"
     :variant="variant"
     :size="size"
     :inline="inline"
+    @click.native="openStarship42"
   >
     <template v-if="withIcon">
       <i class="fad fa-cube" />
@@ -18,7 +18,6 @@
 </template>
 
 <script lang="ts">
-import qs from 'qs'
 import { Component, Prop } from 'vue-property-decorator'
 import Btn from 'frontend/core/components/Btn/index.vue'
 import { Getter } from 'vuex-class'
@@ -29,22 +28,14 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class Panel extends Btn {
-  get url() {
-    const shipList = this.vehicles.map(vehicle => {
-      if (!vehicle.model) {
-        return null
-      }
+  @Prop({ required: true }) vehicles!: Vehicle[]
 
-      if (vehicle.paint && vehicle.paint.rsiId) {
-        return vehicle.paint.rsiName
-      }
+  @Prop({ default: false }) withIcon!: boolean
 
-      return vehicle.model.rsiName
-    })
+  @Getter('mobile') mobile
 
-    const data = { type: 'matrix', s: shipList }
-
-    return `http://www.starship42.com/fleetview/?${qs.stringify(data)}`
+  get basePath() {
+    return 'https://starship42.com/fleetview/'
   }
 
   get tooltip() {
@@ -56,10 +47,22 @@ export default class Panel extends Btn {
     return this.$t('labels.poweredByStarship42')
   }
 
-  @Prop({ required: true }) vehicles!: Vehicle[]
+  openStarship42() {
+    const form = document.createElement('form')
+    form.method = 'post'
+    form.action = this.basePath
 
-  @Prop({ default: false }) withIcon!: boolean
+    this.vehicles.forEach(vehicle => {
+      const hiddenField = document.createElement('input')
+      hiddenField.type = 'hidden'
+      hiddenField.name = 's[]'
+      hiddenField.value = vehicle.model.rsiName
 
-  @Getter('mobile') mobile
+      form.appendChild(hiddenField)
+    })
+
+    document.body.appendChild(form)
+    form.submit()
+  }
 }
 </script>
