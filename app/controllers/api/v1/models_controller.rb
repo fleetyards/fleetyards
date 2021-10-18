@@ -339,12 +339,12 @@ module Api
 
       private def extract_dock_metrics(ship_dock, vehicle_dock)
         {
-          ship_length: (ship_dock.length || 0) - 2.0,
-          ship_beam: (ship_dock.beam || 0) - 2.0,
-          ship_height: (ship_dock.height || 0) - 1.0,
-          vehicle_length: (vehicle_dock.length || 0) - 1.0,
-          vehicle_beam: (vehicle_dock.beam || 0) - 1.0,
-          vehicle_height: (vehicle_dock.height || 0) - 0.5
+          ship_length: (ship_dock&.length || 0) - 2.0,
+          ship_beam: (ship_dock&.beam || 0) - 2.0,
+          ship_height: (ship_dock&.height || 0) - 1.0,
+          vehicle_length: (vehicle_dock&.length || 0) - 1.0,
+          vehicle_beam: (vehicle_dock&.beam || 0) - 1.0,
+          vehicle_height: (vehicle_dock&.height || 0) - 0.5
         }
       end
 
