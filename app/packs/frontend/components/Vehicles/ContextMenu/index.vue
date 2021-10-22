@@ -178,5 +178,15 @@ export default class ContextMenu extends Vue {
       },
     })
   }
+
+  openAddonsModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/AddonsModal'),
+      props: {
+        vehicle: this.vehicle,
+        editable: this.editable,
+      },
+    })
+  }
 }
 </script>
