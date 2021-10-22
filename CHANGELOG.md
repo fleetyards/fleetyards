@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.18.3](https://github.com/fleetyards/fleetyards/compare/v4.18.2...v4.18.3) (2021-10-20)
+
+
+### Bug Fixes
+
+* addons and modules menu in context menu ([6259361](https://github.com/fleetyards/fleetyards/commit/62593618a7b6723204472f9ecb431137e0a40575))
+* will_it_fit check ([f9f93c0](https://github.com/fleetyards/fleetyards/commit/f9f93c09d3df671aa3b2ab8588ccbcd7d83d036f))
+
 ### [4.18.2](https://github.com/fleetyards/fleetyards/compare/v4.18.1...v4.18.2) (2021-10-17)
 
 
