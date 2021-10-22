@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "4.18.2",
+  "version": "4.18.3",
   "scripts": {
     "check-for-reinstalling": "./scripts/check-for-reinstalling.sh",
     "docs:old": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
@@ -116,12 +116,12 @@
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-jest": "25.2.2",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-sort-class-members": "^1.11.0",
+    "eslint-plugin-sort-class-members": "^1.12.0",
     "eslint-plugin-vue": "7.19.1",
     "eslint-plugin-vue-types": "2.1.0",
     "jest": "27.3.0",
     "jest-serializer-vue": "2.0.2",
-    "standard-version": "9.3.1",
+    "standard-version": "9.3.2",
     "stylelint": "13.13.1",
     "stylelint-config-prettier": "9.0.3",
     "stylelint-config-rational-order": "^0.1.2",
