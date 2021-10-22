@@ -56,10 +56,6 @@ import FleetchartItemImage from 'frontend/components/Fleetchart/List/Item/Image'
   },
 })
 export default class ModelsCompareTopView extends Vue {
-  @Prop({ required: true }) models!: Model[]
-
-  visible: boolean = false
-
   get topViewScale() {
     if (this.models.length <= 0) {
       return 0
@@ -77,6 +73,10 @@ export default class ModelsCompareTopView extends Vue {
 
     return 50
   }
+
+  @Prop({ required: true }) models!: Model[]
+
+  visible: boolean = false
 
   mounted() {
     this.visible = this.models.length > 0
