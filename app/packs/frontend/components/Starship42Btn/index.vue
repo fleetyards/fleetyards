@@ -28,12 +28,6 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class Panel extends Btn {
-  @Prop({ required: true }) vehicles!: Vehicle[]
-
-  @Prop({ default: false }) withIcon!: boolean
-
-  @Getter('mobile') mobile
-
   get basePath() {
     return 'https://starship42.com/fleetview/'
   }
@@ -46,6 +40,12 @@ export default class Panel extends Btn {
     // @ts-ignore
     return this.$t('labels.poweredByStarship42')
   }
+
+  @Prop({ required: true }) vehicles!: Vehicle[]
+
+  @Prop({ default: false }) withIcon!: boolean
+
+  @Getter('mobile') mobile
 
   openStarship42() {
     const form = document.createElement('form')
