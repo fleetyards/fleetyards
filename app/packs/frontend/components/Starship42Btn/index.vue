@@ -52,13 +52,19 @@ export default class Panel extends Btn {
     form.method = 'post'
     form.action = this.basePath
 
-    this.vehicles.forEach(vehicle => {
-      const hiddenField = document.createElement('input')
-      hiddenField.type = 'hidden'
-      hiddenField.name = 's[]'
-      hiddenField.value = vehicle.model.rsiName
+    const typeField = document.createElement('input')
+    typeField.type = 'hidden'
+    typeField.name = 'type'
+    typeField.value = 'matrix'
+    form.appendChild(typeField)
 
-      form.appendChild(hiddenField)
+    this.vehicles.forEach(vehicle => {
+      const shipField = document.createElement('input')
+      shipField.type = 'hidden'
+      shipField.name = 's[]'
+      shipField.value = vehicle.model.rsiName
+
+      form.appendChild(shipField)
     })
 
     document.body.appendChild(form)
