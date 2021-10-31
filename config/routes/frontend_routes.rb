@@ -84,6 +84,7 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
   get 'embed-test' => 'embed#test'
   get 'embed-v2-test' => 'embed#test_v2'
   get 'embed-v2-username-test' => 'embed#test_v2_username'
+  get 'embed-v2-fleet-test' => 'embed#test_v2_fleet'
 
   match '404' => 'base#not_found', via: :all
 
