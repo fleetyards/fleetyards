@@ -37,6 +37,7 @@ setTimeout(() => {
     data: {
       ships: config.ships || [],
       users: config.users || [],
+      fleetID: config.fleetID || null,
       groupedButton: config.groupedButton || false,
       fleetchartSlider: config.fleetchartSlider || false,
       frontendEndpoint: window.FRONTEND_ENDPOINT,
@@ -53,6 +54,13 @@ setTimeout(() => {
         const fleetview = (this.$children || [])[0]
         if (fleetview) {
           fleetview.updateUsers(users)
+        }
+      },
+
+      updateFleet(fleetID) {
+        const fleetview = (this.$children || [])[0]
+        if (fleetview) {
+          fleetview.updateFleet(fleetID)
         }
       },
     },

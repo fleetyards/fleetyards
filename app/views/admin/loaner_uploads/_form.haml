@@ -1,0 +1,6 @@
+= form_for :loaner_upload, url: admin_loaner_uploads_path, method: :post, html: { multipart: true } do |form|
+  .row
+    .col-12.col-md-4.form-group
+      = form.file_field :html_upload, class: 'form-control'
+
+  = render "shared/submit", path: admin_models_path

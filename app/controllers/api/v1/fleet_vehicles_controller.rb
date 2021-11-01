@@ -3,7 +3,7 @@
 module Api
   module V1
     class FleetVehiclesController < ::Api::BaseController
-      before_action :authenticate_user!, except: %i[public public_fleetchart]
+      before_action :authenticate_user!, except: %i[public public_fleetchart embed]
 
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index public]
 
@@ -84,6 +84,28 @@ module Api
             .page(params[:page])
             .per(per_page(Vehicle))
         end
+      end
+
+      def embed
+        authorize! :read, :api_fleet
+
+        @fleet = Fleet.find_by!(slug: params[:slug])
+
+        unless fleet.public_fleet?
+          @vehicles = []
+          return
+        end
+
+        scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+
+        vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
+
+        @q = scope.ransack(vehicle_query_params)
+
+        @vehicles = @q.result(distinct: true)
+          .includes(:model)
+          .joins(:model)
+          .all
       end
 
       def fleetchart
