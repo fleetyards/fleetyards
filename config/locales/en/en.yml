@@ -118,6 +118,8 @@ en:
       index: Models
       images: Images
       new: New Model
+    loaner_uploads:
+      new: New Loaner Upload
     station:
       edit: Edit Station
       index: Stations

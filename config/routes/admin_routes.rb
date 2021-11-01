@@ -41,8 +41,12 @@ namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), cons
   end
 
   resources :models, except: [:show] do
-    put 'reload', on: :collection
-    put 'reload_data', on: :collection
+    collection do
+      put 'reload'
+      put 'reload_data'
+      resources :loaner_uploads, only: %i[new create]
+    end
+
     member do
       get 'images'
       put 'reload_one'
