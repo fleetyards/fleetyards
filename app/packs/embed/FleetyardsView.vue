@@ -121,6 +121,7 @@ export default {
     return {
       ships: [],
       users: [],
+      fleetID: null,
       vehicles: null,
       models: null,
       loading: false,
@@ -209,10 +210,13 @@ export default {
   mounted() {
     this.ships = this.$root.ships
     this.users = this.$root.users
+    this.fleetID = this.$root.fleetID
     this.slider = this.$root.fleetchartSlider
     this.groupedButton = this.$root.groupedButton
 
-    if (this.users) {
+    if (this.fleetID) {
+      this.fetchFleetShips()
+    } else if (this.users) {
       this.fetchHangars()
     } else {
       this.fetchShips()
@@ -243,6 +247,10 @@ export default {
 
     updateUsers(users) {
       this.users = users
+    },
+
+    updateFleet(fleetID) {
+      this.fleetID = fleetID
     },
 
     updateFleetchartScale(value) {
@@ -286,6 +294,16 @@ export default {
 
       if (!response.error) {
         this.models = response.data
+      }
+    },
+
+    async fetchFleetShips() {
+      this.loading = true
+      const response = await this.$api.get(`fleets/${this.fleetID}/embed`)
+      this.loading = false
+
+      if (!response.error) {
+        this.vehicles = response.data
       }
     },
 

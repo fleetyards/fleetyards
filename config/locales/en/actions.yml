@@ -18,6 +18,7 @@ en:
         new: Create new Manufacturer
       model:
         new: Create new Model
+        new_loaner_upload: Loaner Upload
       user:
         new: Create new User
       commodity:

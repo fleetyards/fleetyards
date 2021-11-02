@@ -15,6 +15,7 @@
       .col-12.col-md-4
         .d-flex.justify-content-end
           .btn-group
+            = link_to I18n.t(:"actions.admin.model.new_loaner_upload"), new_admin_loaner_upload_path, 'data-turbolinks': "false", class: "btn btn-dark"
             = link_to I18n.t(:"actions.admin.model.new"), new_admin_model_path, 'data-turbolinks': "false", class: "btn btn-dark"
 
     .row

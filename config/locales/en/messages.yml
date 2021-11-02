@@ -42,3 +42,6 @@ en:
       requires_access_confirmation: 'Access confirmation pending'
       two_factor_setup:
         active: Two-factor Authentication already active
+    loaner_upload:
+      success: Loaner Upload successfull.
+      failure: "Loaner Upload failed! Bad file_data: %{class_name} %{content}"

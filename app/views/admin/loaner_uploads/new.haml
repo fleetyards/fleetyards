@@ -1,0 +1,16 @@
+- content_for :title do
+  = I18n.t(:"title.loaner_uploads.new")
+.row
+  .col-12.col-md-12
+
+    .row
+      .col-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.admin.loaner_uploads.new")
+
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.back"), admin_models_path(params: index_back_params), class: "btn btn-dark"
+
+    = render "form"
