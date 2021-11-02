@@ -1,0 +1,18 @@
+# == Schema Information
+#
+# Table name: model_module_package_items
+#
+#  id                      :uuid             not null, primary key
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  model_module_id         :uuid
+#  model_module_package_id :uuid
+#
+
+one:
+  model_module_package_id: 
+  model_module_id: 
+
+two:
+  model_module_package_id: 
+  model_module_id: 
