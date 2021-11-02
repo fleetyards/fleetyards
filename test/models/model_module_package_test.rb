@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: model_module_packages
@@ -13,7 +15,7 @@
 #  updated_at  :datetime         not null
 #  model_id    :uuid
 #
-require "test_helper"
+require 'test_helper'
 
 class ModelModulePackageTest < ActiveSupport::TestCase
   # test "the truth" do
