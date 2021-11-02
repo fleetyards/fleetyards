@@ -248,7 +248,7 @@ GEM
       raabro (~> 1.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    graphql (1.12.17)
+    graphql (1.12.18)
     graphql-client (0.17.0)
       activesupport (>= 3.0)
       graphql (~> 1.10)
