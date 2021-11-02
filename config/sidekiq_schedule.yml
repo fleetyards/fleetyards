@@ -34,10 +34,11 @@ production: &production
     cron: '0 20 * * 0' # Weekly on Sunday 20:00
     class: 'Notifications::AdminJob'
     queue: 'notifications'
-  loaders_loaner_job:
-    cron: '0 21 * * 0' # Weekly on Sunday 21:00
-    class: 'Loaders::LoanerJob'
-    queue: 'loaders'
+  # Currently Support page is blocked via cloudflare for automated scraping, loaner upload is done manually for now
+  # loaders_loaner_job:
+  #   cron: '0 21 * * 0' # Weekly on Sunday 21:00
+  #   class: 'Loaders::LoanerJob'
+  #   queue: 'loaders'
   cleanup_fleet_invite_url_job:
     cron: '0 22 * * 0' # Weekly on Sunday 22:00
     class: 'Cleanup::FleetInviteUrlJob'

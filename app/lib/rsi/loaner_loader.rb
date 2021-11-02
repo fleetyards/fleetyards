@@ -10,12 +10,14 @@ module Rsi
       @base_url = 'https://support.robertsspaceindustries.com/hc/en-us/articles/360003093114-Loaner-Ship-Matrixs'
     end
 
-    def run
-      response = fetch_remote("#{base_url}?time=#{Time.zone.now.to_i}")
+    def run(html = nil)
+      html_content = html
 
-      return unless response.success?
+      html_content = fetch_loaners if html_content.blank?
 
-      page = Nokogiri::HTML(response.body)
+      return if html_content.blank?
+
+      page = Nokogiri::HTML(html_content)
 
       missing_loaners = []
       missing_models = []
@@ -51,6 +53,14 @@ module Rsi
       ModelLoaner.where.not(id: model_loaners).destroy_all
 
       [missing_loaners, missing_models]
+    end
+
+    private def fetch_loaners
+      response = fetch_remote("#{base_url}?time=#{Time.zone.now.to_i}")
+
+      return unless response.success?
+
+      response.body
     end
 
     private def models_map(name)

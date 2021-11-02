@@ -19,6 +19,8 @@ en:
         images: Imageupload for %{model}
         index: Models
         new: New Model
+      loaner_uploads:
+        new: New Loaner Upload
       user:
         edit: Edit %{user}
         index: Users
