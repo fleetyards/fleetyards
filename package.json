@@ -116,7 +116,7 @@
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-jest": "25.2.2",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-sort-class-members": "^1.12.0",
+    "eslint-plugin-sort-class-members": "^1.14.0",
     "eslint-plugin-vue": "7.20.0",
     "eslint-plugin-vue-types": "2.1.0",
     "jest": "27.3.1",
