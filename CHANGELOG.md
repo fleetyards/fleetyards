@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.19.0](https://github.com/fleetyards/fleetyards/compare/v4.18.3...v4.19.0) (2021-11-03)
+
+
+### Features
+
+* allow public fleets in embed view ([5a0e1a7](https://github.com/fleetyards/fleetyards/commit/5a0e1a71d35ba8a67fe4f425a80a2cb01b496c49))
+
 ### [4.18.3](https://github.com/fleetyards/fleetyards/compare/v4.18.2...v4.18.3) (2021-10-20)
 
 
