@@ -31,8 +31,8 @@
           class="image"
         />
       </div>
-      <BCollapse
-        :id="`details-${model.slug}-${uuid}-wrapper`"
+      <PanelDetails
+        :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
         <div class="production-status">
@@ -50,22 +50,22 @@
         <ModelTopMetrics :model="model" padding />
         <hr class="dark slim-spacer" />
         <ModelBaseMetrics :model="model" padding />
-      </BCollapse>
+      </PanelDetails>
     </Panel>
   </div>
 </template>
 
 <script>
-import { BCollapse } from 'bootstrap-vue'
 import Panel from 'embed/components/Panel'
+import PanelDetails from 'embed/components/Panel/PanelDetails'
 import ModelTopMetrics from 'embed/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'embed/partials/Models/BaseMetrics'
 import LazyImage from 'embed/components/LazyImage'
 
 export default {
   components: {
-    BCollapse,
     Panel,
+    PanelDetails,
     ModelTopMetrics,
     ModelBaseMetrics,
     LazyImage,
