@@ -79,8 +79,8 @@
           :vehicles="vehicles"
         />
       </div>
-      <BCollapse
-        :id="`details-${model.slug}-${uuid}-wrapper`"
+      <PanelDetails
+        :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
         <div class="production-status">
@@ -96,7 +96,7 @@
           </strong>
         </div>
         <ModelPanelMetrics :model="model" />
-      </BCollapse>
+      </PanelDetails>
     </Panel>
   </div>
 </template>
@@ -104,8 +104,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
 import Panel from 'frontend/core/components/Panel'
+import PanelDetails from 'frontend/core/components/Panel/PanelDetails'
 import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
 import VehicleOwner from 'frontend/components/Vehicles/OwnerLabel'
@@ -113,8 +113,8 @@ import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
 
 @Component<FleetVehiclePanel>({
   components: {
-    BCollapse,
     Panel,
+    PanelDetails,
     LazyImage,
     AddToHangar,
     VehicleOwner,

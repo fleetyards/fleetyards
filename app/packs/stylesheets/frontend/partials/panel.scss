@@ -177,6 +177,11 @@ $contentBorderRadius: $panelContentBorderRadius;
     padding-bottom: 0;
   }
 
+  .panel-details {
+    overflow: hidden;
+    transition: height $transition-base-speed ease;
+  }
+
   .panel-image {
     position: relative;
     height: 200px;
