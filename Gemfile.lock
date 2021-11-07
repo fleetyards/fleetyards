@@ -87,7 +87,7 @@ GEM
     after_commit_everywhere (1.1.0)
       activerecord (>= 4.2)
       activesupport
-    ahoy_matey (4.0.1)
+    ahoy_matey (4.0.2)
       activesupport (>= 5.2)
       device_detector
       safely_block (>= 0.2.1)
