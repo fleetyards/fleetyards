@@ -21,10 +21,12 @@
 #  rsi_slug                :string
 #  rsi_store_image         :string
 #  rsi_store_url           :string
+#  side_view               :string
 #  slug                    :string
 #  store_image             :string
 #  store_images_updated_at :datetime
 #  store_url               :string
+#  top_view                :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  model_id                :uuid
@@ -41,6 +43,8 @@ class ModelPaint < ApplicationRecord
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :rsi_store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
+  mount_uploader :top_view, FleetchartImageUploader
+  mount_uploader :side_view, FleetchartImageUploader
 
   before_save :update_slugs
 

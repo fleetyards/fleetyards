@@ -74,6 +74,8 @@ module Admin
       @model_paint_params ||= params.require(:model_paint).permit(
         :name, :hidden, :active, :store_image, :store_image_cache, :remove_store_image,
         :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
+        :top_view, :top_view_cache, :remove_top_view,
+        :side_view, :side_view_cache, :remove_side_view,
         :pledge_price, :description, :model_id
       )
     end
