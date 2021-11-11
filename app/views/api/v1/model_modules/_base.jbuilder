@@ -4,6 +4,7 @@ json.id model_module.id
 json.name model_module.name
 json.description model_module.description
 json.pledge_price model_module.pledge_price
+json.has_store_image model_module.store_image.present?
 json.store_image model_module.store_image.url
 json.store_image_large model_module.store_image.large.url
 json.store_image_medium model_module.store_image.medium.url

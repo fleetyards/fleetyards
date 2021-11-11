@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_13_062947) do
+ActiveRecord::Schema.define(version: 2021_11_11_155123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -374,6 +374,25 @@ ActiveRecord::Schema.define(version: 2021_10_13_062947) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "model_module_package_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "model_module_package_id"
+    t.uuid "model_module_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "model_module_packages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "model_id"
+    t.string "name"
+    t.string "slug"
+    t.text "description"
+    t.string "store_image"
+    t.boolean "hidden", default: true
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "model_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -414,6 +433,8 @@ ActiveRecord::Schema.define(version: 2021_10_13_062947) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "rsi_store_image"
     t.string "fleetchart_image"
+    t.string "top_view"
+    t.string "side_view"
   end
 
   create_table "model_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -515,6 +536,8 @@ ActiveRecord::Schema.define(version: 2021_10_13_062947) do
     t.string "holo"
     t.boolean "holo_colored", default: false
     t.string "sales_page_url"
+    t.string "top_view"
+    t.string "side_view"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

@@ -33,6 +33,8 @@ json.store_image_large model.store_image.large.url
 json.store_image_medium model.store_image.medium.url
 json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url
+json.top_view model.top_view.url
+json.side_view model.side_view.url
 json.brochure model.brochure.url
 json.holo model.holo.url
 json.holo_colored model.holo_colored
