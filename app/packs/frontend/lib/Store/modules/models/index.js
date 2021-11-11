@@ -21,6 +21,14 @@ export default () => ({
       return state.fleetchartScale
     },
 
+    fleetchartViewpoint(state) {
+      return state.fleetchartViewpoint
+    },
+
+    fleetchartLabels(state) {
+      return state.fleetchartLabels
+    },
+
     holoviewerVisible(state) {
       return state.holoviewerVisible
     },
@@ -42,6 +50,14 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload
+    },
+
+    setFleetchartViewpoint(state, payload) {
+      state.fleetchartViewpoint = payload
+    },
+
+    setFleetchartLabels(state, payload) {
+      state.fleetchartLabels = payload
     },
 
     setHoloviewerVisible(state, payload) {

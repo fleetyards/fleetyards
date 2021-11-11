@@ -73,4 +73,28 @@
       %small
         = form_errors model_paint, :fleetchart_image
 
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :top_view)}
+      = form.label :top_view
+      = form.file_field :top_view, class: 'form-control'
+      = form.hidden_field :top_view_cache
+      %br
+      - if model_paint.top_view?
+        = image_tag(model_paint.top_view.url)
+        = form.check_box :remove_top_view
+        Remove Image
+      %small
+        = form_errors model_paint, :top_view
+
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :side_view)}
+      = form.label :side_view
+      = form.file_field :side_view, class: 'form-control'
+      = form.hidden_field :side_view_cache
+      %br
+      - if model_paint.side_view?
+        = image_tag(model_paint.side_view.url)
+        = form.check_box :remove_side_view
+        Remove Image
+      %small
+        = form_errors model_paint, :side_view
+
   = render "shared/submit", path: admin_model_paints_path

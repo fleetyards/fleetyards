@@ -37,12 +37,28 @@ export default () => ({
       return state.fleetchartScale
     },
 
+    fleetchartViewpoint(state) {
+      return state.fleetchartViewpoint
+    },
+
+    fleetchartLabels(state) {
+      return state.fleetchartLabels
+    },
+
     publicFleetchartVisible(state) {
       return state.publicFleetchartVisible
     },
 
     publicFleetchartScale(state) {
       return state.publicFleetchartScale
+    },
+
+    publicFleetchartViewpoint(state) {
+      return state.publicFleetchartViewpoint
+    },
+
+    publicFleetchartLabels(state) {
+      return state.publicFleetchartLabels
     },
 
     money(state) {
@@ -92,12 +108,28 @@ export default () => ({
       state.fleetchartScale = payload
     },
 
+    setFleetchartViewpoint(state, payload) {
+      state.fleetchartViewpoint = payload
+    },
+
+    setFleetchartLabels(state, payload) {
+      state.fleetchartLabels = payload
+    },
+
     setPublicFleetchartVisible(state, payload) {
       state.publicFleetchartVisible = payload
     },
 
     setPublicFleetchartScale(state, payload) {
       state.publicFleetchartScale = payload
+    },
+
+    setPublicFleetchartViewpoint(state, payload) {
+      state.publicFleetchartViewpoint = payload
+    },
+
+    setPublicFleetchartLabels(state, payload) {
+      state.publicFleetchartLabels = payload
     },
 
     setShips(state, payload) {
