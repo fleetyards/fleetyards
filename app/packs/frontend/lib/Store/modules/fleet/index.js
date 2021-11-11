@@ -25,6 +25,26 @@ export default () => ({
       return state.fleetchartScale
     },
 
+    fleetchartViewpoint(state) {
+      return state.fleetchartViewpoint
+    },
+
+    fleetchartLabels(state) {
+      return state.fleetchartLabels
+    },
+
+    publicFleetchartScale(state) {
+      return state.publicFleetchartScale
+    },
+
+    publicFleetchartViewpoint(state) {
+      return state.publicFleetchartViewpoint
+    },
+
+    publicFleetchartLabels(state) {
+      return state.publicFleetchartLabels
+    },
+
     grouped(state) {
       return state.grouped
     },
@@ -62,6 +82,26 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload
+    },
+
+    setFleetchartViewpoint(state, payload) {
+      state.fleetchartViewpoint = payload
+    },
+
+    setFleetchartLabels(state, payload) {
+      state.fleetchartLabels = payload
+    },
+
+    setPublicFleetchartScale(state, payload) {
+      state.publicFleetchartScale = payload
+    },
+
+    setPublicFleetchartViewpoint(state, payload) {
+      state.publicFleetchartViewpoint = payload
+    },
+
+    setPublicFleetchartLabels(state, payload) {
+      state.publicFleetchartLabels = payload
     },
 
     setGrouped(state, payload) {

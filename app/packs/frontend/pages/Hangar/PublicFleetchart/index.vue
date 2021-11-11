@@ -142,14 +142,17 @@
           <div v-if="records.length" class="row justify-content-lg-center">
             <div class="col-12 col-lg-4">
               <FleetchartSlider
-                :initial-scale="publicFleetchartScale"
+                :initial-scale="fleetchartScale"
                 @change="updateScale"
               />
             </div>
           </div>
         </transition>
 
-        <FleetchartList :items="records" :scale="publicFleetchartScale" />
+        <FleetchartList
+          :items="records"
+          :scale="fleetchartScale"
+        />
       </template>
     </FilteredList>
   </section>
@@ -237,7 +240,7 @@ export default class PublicHangar extends Vue {
   @Getter('mobile') mobile
 
   @Getter('publicFleetchartScale', { namespace: 'hangar' })
-  publicFleetchartScale
+  fleetchartScale
 
   @Watch('$route')
   onRouteChange() {
