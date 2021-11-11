@@ -233,6 +233,32 @@
       %small
         = form_errors model, :fleetchart_image
 
+    .col-12.col-md-4.form-group{class: form_error?(model, :top_view)}
+      = form.label :top_view
+      = form.file_field :top_view, class: 'form-control'
+      - if model.top_view_cache
+        = form.hidden_field :top_view_cache
+      %br
+      - if model.top_view?
+        = image_tag(model.top_view.url)
+        = form.check_box :remove_top_view
+        Remove Image
+      %small
+        = form_errors model, :top_view
+
+    .col-12.col-md-4.form-group{class: form_error?(model, :side_view)}
+      = form.label :side_view
+      = form.file_field :side_view, class: 'form-control'
+      - if model.side_view_cache
+        = form.hidden_field :side_view_cache
+      %br
+      - if model.side_view?
+        = image_tag(model.side_view.url)
+        = form.check_box :remove_side_view
+        Remove Image
+      %small
+        = form_errors model, :side_view
+
   .row
     .col-12.col-md-4.form-group{class: form_error?(model, :holo)}
       = form.label :holo

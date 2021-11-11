@@ -118,6 +118,7 @@ module Admin
         :name, :hidden, :active, :ground, :store_image, :store_image_cache, :remove_store_image,
         :rsi_store_image, :remove_rsi_store_image, :quantum_fuel_tank_size, :hydrogen_fuel_tank_size,
         :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
+        :top_view, :top_view_cache, :remove_top_view, :side_view, :side_view_cache, :remove_side_view,
         :brochure, :brochure_cache, :remove_brochure, :store_url, :base_model_id, :holo_colored,
         :holo, :holo_cache, :remove_holo, :beam, :length, :height, :mass, :cargo, :pledge_price,
         :on_sale, :manufacturer_id, :focus, :classification, :description, :production_status,
