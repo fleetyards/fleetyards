@@ -188,25 +188,11 @@ export default class HangarFleetchart extends Vue {
 
   groupsCollection: HangarGroupsCollection = hangarGroupsCollection
 
-  deleting: boolean = false
-
-  guideVisible: boolean = false
-
-  vehiclesChannel = null
-
-  collection: VehiclesCollection = vehiclesCollection
-
-  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
-
   @Getter('mobile') mobile
 
   @Getter('currentUser', { namespace: 'session' }) currentUser
 
   @Getter('fleetchartScale', { namespace: 'hangar' }) fleetchartScale
-
-  @Getter('fleetchartViewpoint', { namespace: 'hangar' }) fleetchartViewpoint
-
-  @Getter('fleetchartLabels', { namespace: 'hangar' }) fleetchartLabels
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
@@ -234,6 +220,29 @@ export default class HangarFleetchart extends Vue {
     }
   }
 
+<<<<<<< HEAD
+=======
+  deleting: boolean = false
+
+  guideVisible: boolean = false
+
+  vehiclesChannel = null
+
+  collection: VehiclesCollection = vehiclesCollection
+
+  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
+
+  @Getter('mobile') mobile
+
+  @Getter('currentUser', { namespace: 'session' }) currentUser
+
+  @Getter('fleetchartScale', { namespace: 'hangar' }) fleetchartScale
+
+  @Getter('fleetchartViewpoint', { namespace: 'hangar' }) fleetchartViewpoint
+
+  @Getter('fleetchartLabels', { namespace: 'hangar' }) fleetchartLabels
+
+>>>>>>> 71b5e02b9 (feat(fleetchart-v2): update styling for new horizontal view)
   @Watch('$route')
   onRouteChange() {
     this.fetch()
@@ -295,7 +304,7 @@ export default class HangarFleetchart extends Vue {
       },
       {
         received: this.fetch,
-      }
+      },
     )
   }
 }

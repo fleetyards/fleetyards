@@ -40,7 +40,9 @@
             <a
               v-if="user.rsiHandle"
               v-tooltip="$t('nav.rsiProfile')"
-              :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
+              :href="
+                `https://robertsspaceindustries.com/citizens/${user.rsiHandle}`
+              "
               target="_blank"
               rel="noopener"
             >
@@ -168,7 +170,16 @@
           </div>
         </transition>
 
+<<<<<<< HEAD
         <FleetchartList :items="records" :scale="fleetchartScale" />
+=======
+        <FleetchartList
+          :items="records"
+          :scale="fleetchartScale"
+          :viewpoint="fleetchartViewpoint"
+          :labels="fleetchartLabels"
+        />
+>>>>>>> 71b5e02b9 (feat(fleetchart-v2): update styling for new horizontal view)
       </template>
     </FilteredList>
   </section>
@@ -223,12 +234,6 @@ export default class PublicHangar extends Vue {
   @Getter('publicFleetchartScale', { namespace: 'hangar' })
   fleetchartScale
 
-  @Getter('publicFleetchartViewpoint', { namespace: 'hangar' })
-  fleetchartViewpoint
-
-  @Getter('publicFleetchartLabels', { namespace: 'hangar' })
-  fleetchartLabels
-
   get metaTitle() {
     return this.$t('title.hangar.public', { user: this.usernamePlural })
   }
@@ -264,6 +269,26 @@ export default class PublicHangar extends Vue {
     return this.username[0].toUpperCase() + this.username.slice(1)
   }
 
+<<<<<<< HEAD
+=======
+  loading: boolean = false
+
+  collection: PublicVehiclesCollection = publicVehiclesCollection
+
+  userCollection: PublicUserCollection = publicUserCollection
+
+  @Getter('mobile') mobile
+
+  @Getter('publicFleetchartScale', { namespace: 'hangar' })
+  fleetchartScale
+
+  @Getter('publicFleetchartViewpoint', { namespace: 'hangar' })
+  fleetchartViewpoint
+
+  @Getter('publicFleetchartLabels', { namespace: 'hangar' })
+  fleetchartLabels
+
+>>>>>>> 71b5e02b9 (feat(fleetchart-v2): update styling for new horizontal view)
   @Watch('$route')
   onRouteChange() {
     this.fetch()

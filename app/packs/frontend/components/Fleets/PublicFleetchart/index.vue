@@ -20,6 +20,30 @@
     >
       <PublicFleetVehiclesFilterForm slot="filter" />
 
+      <template #actions>
+        <Btn
+          size="small"
+          :active="fleetchartLabels"
+          @click.native="toggleFleetchartLabel"
+        >
+          <i class="fad fa-tags" />
+        </Btn>
+        <Btn
+          size="small"
+          :active="fleetchartViewpoint === 'top'"
+          @click.native="updateFleetchartViewpointTop"
+        >
+          <i class="fad fa-arrow-to-bottom" />
+        </Btn>
+        <Btn
+          size="small"
+          :active="fleetchartViewpoint === 'side'"
+          @click.native="updateFleetchartViewpointSide"
+        >
+          <i class="fad fa-arrow-to-left" />
+        </Btn>
+      </template>
+
       <template #default="{ records }">
         <transition name="fade" appear>
           <div v-if="records.length" class="row justify-content-lg-center">
@@ -32,7 +56,12 @@
           </div>
         </transition>
 
-        <FleetchartList :items="records" :scale="fleetchartScale" />
+        <FleetchartList
+          :items="records"
+          :scale="fleetchartScale"
+          :viewpoint="fleetchartViewpoint"
+          :labels="fleetchartLabels"
+        />
       </template>
     </FilteredList>
   </div>
@@ -69,10 +98,30 @@ export default class FleetPublicFleetchart extends Vue {
 
   @Prop({ required: true }) fleet: Fleet
 
-  @Getter('fleetchartScale', { namespace: 'fleet' }) fleetchartScale
+  @Getter('publicFleetchartScale', { namespace: 'fleet' }) fleetchartScale
+
+  @Getter('publicFleetchartViewpoint', { namespace: 'fleet' })
+  fleetchartViewpoint
+
+  @Getter('publicFleetchartLabels', { namespace: 'fleet' }) fleetchartLabels
 
   updateScale(value) {
-    this.$store.commit('fleet/setFleetchartScale', value)
+    this.$store.commit('fleet/setPublicFleetchartScale', value)
+  }
+
+  updateFleetchartViewpointTop() {
+    this.$store.commit('fleet/setPublicFleetchartViewpoint', 'top')
+  }
+
+  updateFleetchartViewpointSide() {
+    this.$store.commit('fleet/setPublicFleetchartViewpoint', 'side')
+  }
+
+  toggleFleetchartLabel() {
+    this.$store.commit(
+      'fleet/setPublicFleetchartLabels',
+      !this.fleetchartLabels,
+    )
   }
 }
 </script>

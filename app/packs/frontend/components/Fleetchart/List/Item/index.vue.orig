@@ -47,12 +47,6 @@ export default class FleetchartListItem extends Vue {
 
   @Prop({ default: false }) showStatus!: boolean
 
-  @Prop({ default: 'side' }) viewpoint!: string
-
-  @Prop({ default: false }) showLabel!: boolean
-
-  @Prop({ default: false }) showStatus!: boolean
-
   get cssClasses() {
     const cssClasses = [`fleetchart-item-${this.model.slug}`]
 
@@ -119,7 +113,7 @@ export default class FleetchartListItem extends Vue {
 
   get productionStatus() {
     return this.$t(
-      `labels.model.productionStatus.${this.model.productionStatus}`
+      `labels.model.productionStatus.${this.model.productionStatus}`,
     )
   }
 
@@ -146,5 +140,21 @@ export default class FleetchartListItem extends Vue {
 
     return `${this.model.manufacturer.code} ${this.model.name}`
   }
+
+<<<<<<< HEAD
+  modelLabel(name) {
+    return `${this.model.manufacturer.code} ${name}`
+  }
+=======
+  @Prop() item!: Model | Vehicle
+
+  @Prop() scale!: number
+
+  @Prop({ default: 'side' }) viewpoint!: string
+
+  @Prop({ default: false }) showLabel!: boolean
+
+  @Prop({ default: false }) showStatus!: boolean
+>>>>>>> 71b5e02b9 (feat(fleetchart-v2): update styling for new horizontal view)
 }
 </script>

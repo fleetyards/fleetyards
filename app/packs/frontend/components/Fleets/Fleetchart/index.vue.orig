@@ -159,10 +159,6 @@ export default class FleetFleetchart extends Vue {
 
   @Getter('fleetchartScale', { namespace: 'fleet' }) fleetchartScale
 
-  @Getter('fleetchartViewpoint', { namespace: 'fleet' }) fleetchartViewpoint
-
-  @Getter('fleetchartLabels', { namespace: 'fleet' }) fleetchartLabels
-
   @Getter('mobile') mobile
 
   get fleetStats() {
@@ -185,6 +181,21 @@ export default class FleetFleetchart extends Vue {
     return `${host}/fleets/${this.fleet.slug}/fleetchart`
   }
 
+<<<<<<< HEAD
+=======
+  collection: FleetVehiclesCollection = fleetVehiclesCollection
+
+  @Prop({ required: true }) fleet: Fleet
+
+  @Getter('fleetchartScale', { namespace: 'fleet' }) fleetchartScale
+
+  @Getter('fleetchartViewpoint', { namespace: 'fleet' }) fleetchartViewpoint
+
+  @Getter('fleetchartLabels', { namespace: 'fleet' }) fleetchartLabels
+
+  @Getter('mobile') mobile
+
+>>>>>>> 71b5e02b9 (feat(fleetchart-v2): update styling for new horizontal view)
   mounted() {
     this.fetch()
   }
@@ -222,7 +233,7 @@ export default class FleetFleetchart extends Vue {
         displayAlert({
           text: this.$t('messages.copyPublicUrl.failure'),
         })
-      }
+      },
     )
   }
 }

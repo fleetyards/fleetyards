@@ -115,10 +115,6 @@ export default class ModelsFleetchart extends Vue {
 
   @Getter('fleetchartScale', { namespace: 'models' }) fleetchartScale
 
-  @Getter('fleetchartViewpoint', { namespace: 'models' }) fleetchartViewpoint
-
-  @Getter('fleetchartLabels', { namespace: 'models' }) fleetchartLabels
-
   get crumbs() {
     return [
       {
@@ -129,6 +125,18 @@ export default class ModelsFleetchart extends Vue {
       },
     ]
   }
+<<<<<<< HEAD
+=======
+
+  collection = ModelsCollection
+
+  @Mutation('setFleetchartScale', { namespace: 'models' }) updateScale: any
+
+  @Getter('fleetchartScale', { namespace: 'models' }) fleetchartScale
+
+  @Getter('fleetchartViewpoint', { namespace: 'models' }) fleetchartViewpoint
+
+  @Getter('fleetchartLabels', { namespace: 'models' }) fleetchartLabels
 
   updateFleetchartViewpointTop() {
     this.$store.commit('models/setFleetchartViewpoint', 'top')
@@ -141,5 +149,6 @@ export default class ModelsFleetchart extends Vue {
   toggleFleetchartLabel() {
     this.$store.commit('models/setFleetchartLabels', !this.fleetchartLabels)
   }
+>>>>>>> 71b5e02b9 (feat(fleetchart-v2): update styling for new horizontal view)
 }
 </script>

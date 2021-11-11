@@ -3,7 +3,7 @@
     v-if="src"
     :src="src"
     :style="{
-      height: `${length * lengthMultiplicator}px`,
+      width: `${length * lengthMultiplicator}px`,
     }"
     :alt="label"
     class="fleetchart-item-image"

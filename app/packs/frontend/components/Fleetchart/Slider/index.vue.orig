@@ -26,6 +26,13 @@ import VueSlider from 'vue-slider-component'
   },
 })
 export default class FleetchartSlider extends Vue {
+<<<<<<< HEAD
+=======
+  get max() {
+    return this.mobile ? 100 : 1000
+  }
+
+>>>>>>> 71b5e02b9 (feat(fleetchart-v2): update styling for new horizontal view)
   @Prop({ required: true }) initialScale: Number
 
   scale: Number = null

@@ -1,29 +1,34 @@
 <template>
   <div class="row">
     <div class="col-12 fleetchart-wrapper">
-      <transition-group
-        id="fleetchart"
-        name="fade-list"
-        class="row fleetchart"
-        tag="div"
-        appear
-      >
-        <FleetchartItem
-          v-for="item in items"
-          :key="item.id"
-          :item="item"
-          :scale="scale"
-          :show-status="showStatus"
-          @click.native="openContextMenu($event, item)"
-        />
-
-        <div key="made-by-the-community" class="fleetchart-download-image">
-          <img
-            :src="require('images/community-logo.png')"
-            alt="made-by-the-community"
+      <div class="fleetchart-scroll-wrapper">
+        <transition-group
+          id="fleetchart"
+          ref="fleetchart"
+          name="fade-list"
+          class="fleetchart"
+          tag="div"
+          :appear="true"
+        >
+          <FleetchartItem
+            v-for="item in items"
+            :key="item.id"
+            :item="item"
+            :scale="scale"
+            :viewpoint="viewpoint"
+            :show-label="labels"
+            :show-status="showStatus"
+            @click.native="openContextMenu($event, item)"
           />
-        </div>
-      </transition-group>
+
+          <div key="made-by-the-community" class="fleetchart-download-image">
+            <img
+              :src="require('images/community-logo.png')"
+              alt="made-by-the-community"
+            />
+          </div>
+        </transition-group>
+      </div>
     </div>
 
     <FleetchartItemContextMenu ref="contextMenu" data-test="context-menu" />
@@ -51,6 +56,10 @@ export default class FleetchartList extends Vue {
   items!: Vehicle[] | Model[]
 
   @Prop({ default: false }) myShip!: boolean
+
+  @Prop({ default: 'side' }) viewpoint!: string
+
+  @Prop({ default: false }) labels!: boolean
 
   @Prop({ default: 100 }) scale!: number
 
