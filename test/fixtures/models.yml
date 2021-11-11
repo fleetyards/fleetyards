@@ -71,12 +71,14 @@
 #  sales_page_url           :string
 #  sc_identifier            :string
 #  scm_speed                :decimal(15, 2)
+#  side_view                :string
 #  size                     :string
 #  slug                     :string(255)
 #  speed                    :decimal(15, 2)
 #  store_image              :string(255)
 #  store_images_updated_at  :datetime
 #  store_url                :string(255)
+#  top_view                 :string
 #  upgrade_kits_count       :integer          default(0)
 #  videos_count             :integer          default(0)
 #  xaxis_acceleration       :decimal(15, 2)
