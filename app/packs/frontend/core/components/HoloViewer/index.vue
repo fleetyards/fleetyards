@@ -201,7 +201,7 @@ export default class HoloViewer extends Vue {
     if (this.mobile) {
       camera.position.set(0, 40, 80)
     } else {
-      camera.position.set(0, 40, 70)
+      camera.position.set(0, 40, 130)
     }
 
     return camera
@@ -216,8 +216,8 @@ export default class HoloViewer extends Vue {
     controls.enablePan = false
 
     controls.enableZoom = this.zoom
-    controls.minDistance = 0
-    controls.maxDistance = 200
+    controls.minDistance = 50
+    controls.maxDistance = 250
 
     controls.autoRotate = this.autoRotate
     controls.autoRotateSpeed = this.autoRotateSpeed
