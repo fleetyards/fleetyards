@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.20.0](https://github.com/fleetyards/fleetyards/compare/v4.19.1...v4.20.0) (2021-11-12)
+
+
+### Features
+
+* **fleetchart-v2:** add fields to model paints ([ff1435f](https://github.com/fleetyards/fleetyards/commit/ff1435f7663468c5f1bcf55d00ccbdef63475011))
+* **fleetchart-v2:** add new upload fields to model ([2278517](https://github.com/fleetyards/fleetyards/commit/22785174b8758e575710f4dc51c59322bbdefdf3))
+
+
+### Bug Fixes
+
+* specs ([9b34dc6](https://github.com/fleetyards/fleetyards/commit/9b34dc69ecfa3aa2cee4ca8c1c047186959c08a7))
+
 ### [4.19.1](https://github.com/fleetyards/fleetyards/compare/v4.19.0...v4.19.1) (2021-11-05)
 
 ## [4.19.0](https://github.com/fleetyards/fleetyards/compare/v4.18.3...v4.19.0) (2021-11-03)
