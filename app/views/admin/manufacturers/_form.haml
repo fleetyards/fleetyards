@@ -6,6 +6,24 @@
       %small
         = form_errors manufacturer, :name
 
+    .col-12.col-md-6.form-group{class: form_error?(manufacturer, :description)}
+      = form.label :description
+      = form.text_area :description, placeholder: I18n.t(:"helpers.placeholder.description"), class: 'form-control'
+      %small
+        = form_errors manufacturer, :description
+
+    .col-12.col-md-6.form-group{class: form_error?(manufacturer, :known_for)}
+      = form.label :known_for
+      = form.text_field :known_for, placeholder: I18n.t(:"helpers.placeholder.manufacturer.known_for"), class: 'form-control'
+      %small
+        = form_errors manufacturer, :known_for
+
+    .col-12.col-md-6.form-group{class: form_error?(manufacturer, :code)}
+      = form.label :code
+      = form.text_field :code, placeholder: I18n.t(:"helpers.placeholder.manufacturer.code"), class: 'form-control'
+      %small
+        = form_errors manufacturer, :code
+
     .col-12.col-md-6.form-group{class: form_error?(manufacturer, :logo)}
       = form.label :logo
       = form.file_field :logo, class: 'form-control'

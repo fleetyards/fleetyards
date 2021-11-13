@@ -32,6 +32,10 @@
             = f.label :equipment_type_eq
             = f.select :equipment_type_eq, Equipment.equipment_types.keys.map { |w| [Equipment.human_enum_name(:equipment_type, w), w] }, { include_blank: true }, { class: 'form-control' }
 
+          .form-group
+            = f.label :item_type_eq
+            = f.select :item_type_eq, Equipment.item_types.keys.map { |w| [Equipment.human_enum_name(:item_type, w), w] }, { include_blank: true }, { class: 'form-control' }
+
           .btn-group
             %button.btn.btn-primary
               Filter

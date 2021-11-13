@@ -91,11 +91,23 @@
       %small
         = form_errors equipment, :volume
 
-    .col-12.col-md-3
-      .form-group
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.equipment.hidden"), class: 'checkbox'
-        = form.label :hidden do
-          = I18n.t(:"activerecord.attributes.equipment.hidden")
+    .col-12.col-md-3.form-group{class: form_error?(equipment, :temperature_rating)}
+      = form.label :temperature_rating
+      = form.text_field :temperature_rating, placeholder: I18n.t(:"helpers.placeholder.equipment.temperature_rating"), class: 'form-control'
+      %small
+        = form_errors equipment, :temperature_rating
+
+    .col-12.col-md-3.form-group{class: form_error?(equipment, :backpack_compatibility)}
+      = form.label :backpack_compatibility
+      = form.select :backpack_compatibility, Equipment.backpack_compatibilities.keys.map { |w| [Equipment.human_enum_name(:backpack_compatibility, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.backpack_compatibility") }, { class: 'form-control' }
+      %small
+        = form_errors equipment, :backpack_compatibility
+
+    .col-12.col-md-3.form-group{class: form_error?(equipment, :core_compatibility)}
+      = form.label :core_compatibility
+      = form.select :core_compatibility, Equipment.core_compatibilities.keys.map { |w| [Equipment.human_enum_name(:core_compatibility, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.core_compatibility") }, { class: 'form-control' }
+      %small
+        = form_errors equipment, :core_compatibility
 
     .col-12.col-md-6.form-group{class: form_error?(equipment, :store_image)}
       = form.label :store_image
@@ -109,5 +121,11 @@
         Remove Image
       %small
         = form_errors equipment, :store_image
+
+    .col-12.col-md-3
+      .form-group
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.equipment.hidden"), class: 'checkbox'
+        = form.label :hidden do
+          = I18n.t(:"activerecord.attributes.equipment.hidden")
 
   = render "shared/submit", path: admin_equipment_index_path

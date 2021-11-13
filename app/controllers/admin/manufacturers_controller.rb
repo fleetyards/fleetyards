@@ -68,7 +68,7 @@ module Admin
 
     private def manufacturer_params
       @manufacturer_params ||= params.require(:manufacturer).permit(
-        :name, :logo, :logo_cache, :remove_logo
+        :name, :logo, :logo_cache, :remove_logo, :known_for, :description, :code
       )
     end
 

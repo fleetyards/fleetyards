@@ -53,6 +53,10 @@ en:
         extras: Extras
         storage: storage
         volume: Volume
+        temperature_rating: Temp. Rating
+      manufacturer:
+        known_for: ...
+        code: Shortcode of Name
     prompt:
       video:
         video_type: Please select a Video Type
@@ -85,3 +89,5 @@ en:
         equipment_type: Please select a Type
         item_type: Please select a Item Type
         weapon_class: Please select a Weapon Class
+        backpack_compatibility: Backpack compatibility
+        core_compatibility: Core compatibility

@@ -4,27 +4,30 @@
 #
 # Table name: equipment
 #
-#  id               :uuid             not null, primary key
-#  damage_reduction :decimal(15, 2)
-#  description      :text
-#  equipment_type   :integer
-#  extras           :string
-#  grade            :string
-#  hidden           :boolean          default(TRUE)
-#  item_type        :integer
-#  name             :string
-#  range            :decimal(15, 2)
-#  rate_of_fire     :decimal(15, 2)
-#  size             :string
-#  slot             :integer
-#  slug             :string
-#  storage          :decimal(15, 2)
-#  store_image      :string
-#  volume           :decimal(15, 2)
-#  weapon_class     :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  manufacturer_id  :uuid
+#  id                     :uuid             not null, primary key
+#  backpack_compatibility :integer
+#  core_compatibility     :integer
+#  damage_reduction       :decimal(15, 2)
+#  description            :text
+#  equipment_type         :integer
+#  extras                 :string
+#  grade                  :string
+#  hidden                 :boolean          default(TRUE)
+#  item_type              :integer
+#  name                   :string
+#  range                  :decimal(15, 2)
+#  rate_of_fire           :decimal(15, 2)
+#  size                   :string
+#  slot                   :integer
+#  slug                   :string
+#  storage                :decimal(15, 2)
+#  store_image            :string
+#  temperature_rating     :string
+#  volume                 :decimal(15, 2)
+#  weapon_class           :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  manufacturer_id        :uuid
 #
 # Indexes
 #
@@ -77,7 +80,8 @@ class Equipment < ApplicationRecord
     flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5,
     pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12,
     special_railgun: 13, assault_rifle: 14, weapon_scope: 15, utility: 16, rocket_launcher: 17,
-    grenade_launcher: 18, knife: 19, backpack: 20
+    grenade_launcher: 18, knife: 19, backpack: 20, light_backpack: 21, medium_backpack: 22,
+    heavy_backpack: 23
   }
   ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
     parent.table[:item_type]
@@ -87,6 +91,9 @@ class Equipment < ApplicationRecord
   ransacker :weapon_class, formatter: proc { |v| Equipment.weapon_classes[v] } do |parent|
     parent.table[:weapon_class]
   end
+
+  enum core_compatibility: { all: 0, medium_heavy: 1, heavy: 2 }, _suffix: true
+  enum backpack_compatibility: { all: 0, light_medium: 1, light: 2 }, _suffix: true
 
   def self.visible
     where(hidden: false)

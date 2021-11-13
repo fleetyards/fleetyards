@@ -59,7 +59,7 @@ module Admin
 
     private def save_filters
       session[:equipment_filters] = query_params(
-        :name_or_slug_cont, :equipment_type_eq
+        :name_or_slug_cont, :equipment_type_eq, :item_type_eq
       ).to_h
       session[:equipment_page] = params[:page]
     end
@@ -74,8 +74,9 @@ module Admin
 
     private def equipment_params
       @equipment_params ||= params.require(:equipment).permit(
-        :name, :description, :equipment_type, :item_type, :weapon_class, :size, :grade, :range, :extras,
-        :weapon_class, :damage_reduction, :rate_of_fire, :hidden, :store_image, :store_image_cache,
+        :name, :description, :equipment_type, :item_type, :weapon_class, :size, :grade, :range,
+        :extras, :temperature_rating, :backpack_compatibility, :core_compatibility, :weapon_class,
+        :damage_reduction, :rate_of_fire, :hidden, :store_image, :store_image_cache,
         :remove_store_image, :manufacturer_id, :slot, :storage, :volume
       )
     end

@@ -60,6 +60,9 @@ en:
           password: SMPT Password or Token
           port: SMTP Port
           user: SMTP User
+      manufacturer:
+        known_for: Known for?
+        code: CODE
       updated_at: "%{time} ago"
       user:
         admin: Admin?
@@ -201,6 +204,18 @@ en:
           grenade_launcher: Grenade Launcher
           knife: Knife
           backpack: Backpack
+          light_backpack: Light Backpack
+          medium_backpack: Medium Backpack
+          heavy_backpack: Heavy Backpack
+        backpack_compatibilities:
+          all: All
+          light_medium: Light & Medium
+          light: Light
+        core_compatibilities:
+          all: All
+          medium_heavy: Medium & Heavy
+          heavy: Heavy
+        temperature_rating: Temp.
       fleet_membership:
         user_id: Member
         roles:
