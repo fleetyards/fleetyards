@@ -135,6 +135,8 @@ en:
       new: New Commodity
     shop_commodity:
       confirmation: Confirm submitted Shop Commodities
+    shop_commodities:
+      index: Shop Commodities
     commodity_price:
       confirmation: Confirm submitted Prices
     equipment:
