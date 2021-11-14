@@ -8,9 +8,12 @@
           :key="`${item.id}-sell-${location.id}-${location.shop.slug}`"
           class="prices-item"
         >
-          <router-link :to="shopRoute(location.shop)">
-            {{ location.shop.name }} {{ location.shop.locationLabel }}
-          </router-link>
+          <span class="location-item">
+            <router-link :to="shopRoute(location.shop)">
+              {{ location.shop.name }}
+            </router-link>
+            {{ location.shop.locationLabel }}
+          </span>
         </li>
       </ul>
     </div>
@@ -22,9 +25,13 @@
           :key="`${item.id}-sell-${location.id}-${location.shop.slug}`"
           class="prices-item"
         >
-          <router-link :to="shopRoute(location.shop)">
-            {{ location.shop.name }} {{ location.shop.locationLabel }}
-          </router-link>
+          <span class="location-item">
+            <router-link :to="shopRoute(location.shop)">
+              {{ location.shop.name }}
+            </router-link>
+            {{ location.shop.locationLabel }}
+          </span>
+
           <b v-html="$toUEC(location.sellPrice)" />
         </li>
       </ul>
@@ -37,9 +44,12 @@
           :key="`${item.id}-buy-${location.id}-${location.shop.slug}`"
           class="prices-item"
         >
-          <router-link :to="shopRoute(location.shop)">
-            {{ location.shop.name }} {{ location.shop.locationLabel }}
-          </router-link>
+          <span class="location-item">
+            <router-link :to="shopRoute(location.shop)">
+              {{ location.shop.name }}
+            </router-link>
+            {{ location.shop.locationLabel }}
+          </span>
           <b v-html="$toUEC(location.buyPrice)" />
         </li>
       </ul>

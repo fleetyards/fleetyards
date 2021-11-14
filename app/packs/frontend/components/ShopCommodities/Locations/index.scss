@@ -1,3 +1,4 @@
+@import '~stylesheets/variables';
 
 .prices-item {
   display: flex;
@@ -8,5 +9,9 @@
   b {
     min-width: 120px;
     text-align: right;
+  }
+
+  .location-item {
+    color: darken($text-color, 30%);
   }
 }
