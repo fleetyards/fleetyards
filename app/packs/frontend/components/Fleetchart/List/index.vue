@@ -10,6 +10,13 @@
           tag="div"
           :appear="true"
         >
+          <div key="made-by-the-community" class="fleetchart-download-image">
+            <img
+              :src="require('images/community-logo.png')"
+              alt="made-by-the-community"
+            />
+          </div>
+
           <FleetchartItem
             v-for="item in items"
             :key="item.id"
@@ -20,13 +27,6 @@
             :show-status="showStatus"
             @click.native="openContextMenu($event, item)"
           />
-
-          <div key="made-by-the-community" class="fleetchart-download-image">
-            <img
-              :src="require('images/community-logo.png')"
-              alt="made-by-the-community"
-            />
-          </div>
         </transition-group>
       </div>
     </div>
