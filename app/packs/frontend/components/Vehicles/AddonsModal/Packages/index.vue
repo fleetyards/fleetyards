@@ -84,8 +84,8 @@ export default class AddonsModal extends Vue {
 
   selectedPackage(package) {
     return (
-      JSON.stringify(this.value) ===
-      JSON.stringify(package.modules.map(module => module.id))
+      JSON.stringify([...this.value].sort()) ===
+      JSON.stringify(package.modules.map(module => module.id).sort())
     )
   }
 }
