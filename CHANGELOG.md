@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.22.1](https://github.com/fleetyards/fleetyards/compare/v4.22.0...v4.22.1) (2021-11-14)
+
+
+### Bug Fixes
+
+* module packages edit page for admin ([4064647](https://github.com/fleetyards/fleetyards/commit/4064647c5dc58aeeb9f78acac76f43b490025a72))
+
 ## [4.22.0](https://github.com/fleetyards/fleetyards/compare/v4.21.3...v4.22.0) (2021-11-14)
 
 
