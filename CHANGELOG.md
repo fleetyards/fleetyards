@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.21.1](https://github.com/fleetyards/fleetyards/compare/v4.21.0...v4.21.1) (2021-11-14)
+
+
+### Bug Fixes
+
+* new field labels ([dc211df](https://github.com/fleetyards/fleetyards/commit/dc211df77a414e2ac9ba726b3ff61543c1986521))
+
 ## [4.21.0](https://github.com/fleetyards/fleetyards/compare/v4.20.0...v4.21.0) (2021-11-14)
 
 
