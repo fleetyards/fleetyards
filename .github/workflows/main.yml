@@ -174,53 +174,53 @@ jobs:
       - name: Run Seeds
         run: bundle exec rails db:seed
 
-  build:
-    needs: [ruby-setup, js-setup]
-    runs-on: ubuntu-latest
+  # build:
+  #   needs: [ruby-setup, js-setup]
+  #   runs-on: ubuntu-latest
 
-    env:
-      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+  #   env:
+  #     RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+  #     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
 
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-      - run: mkdir -p log
-      - name: Webpacker & Assets Compile
-        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-      - name: Set BRANCH_NAME
-        run: echo "BRANCH_NAME=$(echo ${{github.ref}} | rev | cut -d/ -f1 | rev)" >> $GITHUB_ENV
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/fleetyards/app:${{ env.BRANCH_NAME }}
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: ${{ env.RUBY_VERSION }}
+  #         bundler-cache: true
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: '**/node_modules'
+  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+  #     - run: yarn install
+  #     - run: mkdir -p log
+  #     - name: Webpacker & Assets Compile
+  #       run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v1
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v1
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v1
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.repository_owner }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Cache Docker layers
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: /tmp/.buildx-cache
+  #         key: ${{ runner.os }}-buildx-${{ github.sha }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-buildx-
+  #     - name: Set BRANCH_NAME
+  #       run: echo "BRANCH_NAME=$(echo ${{github.ref}} | rev | cut -d/ -f1 | rev)" >> $GITHUB_ENV
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: .
+  #         push: true
+  #         tags: ghcr.io/fleetyards/app:${{ env.BRANCH_NAME }}
 
   e2e-test:
     needs: [ruby-setup, js-setup]
@@ -305,7 +305,7 @@ jobs:
 
   deploy-to-stage:
     if: github.ref == 'refs/heads/main'
-    needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, build, e2e-test]
+    needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, e2e-test]
     runs-on: ubuntu-latest
 
     environment:
