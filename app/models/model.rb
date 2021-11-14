@@ -142,6 +142,10 @@ class Model < ApplicationRecord
            through: :module_hardpoints,
            source: :model_module
 
+  has_many :module_packages,
+           class_name: 'ModelModulePackage',
+           dependent: :destroy
+
   has_many :model_loaners,
            dependent: :destroy,
            inverse_of: :model

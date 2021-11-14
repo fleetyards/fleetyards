@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_13_220212) do
+ActiveRecord::Schema.define(version: 2021_11_14_095523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -394,6 +394,7 @@ ActiveRecord::Schema.define(version: 2021_11_13_220212) do
     t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "pledge_price", precision: 15, scale: 2
   end
 
   create_table "model_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

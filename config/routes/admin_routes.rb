@@ -55,6 +55,7 @@ namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), cons
   end
 
   resources :model_modules, path: 'model-modules', except: [:show]
+  resources :model_module_packages, path: 'model-module-packages', except: [:show]
   resources :model_upgrades, path: 'model-upgrades', except: [:show]
   resources :model_paints, path: 'model-paints', except: [:show] do
     collection do

@@ -1,0 +1,16 @@
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th.preview
+        %th=sort_link(@q, :name)
+        %th=sort_link(@q, :model_name, 'Models')
+        %th=sort_link(@q, :module_package_items_name, 'Items')
+        %th=sort_link(@q, :hidden)
+        %th=sort_link(@q, :active)
+        %th.actions.actions-two=I18n.t(:"labels.table.actions")
+    %tbody
+      = render partial: "admin/model_module_packages/show", collection: @model_module_packages, as: :model_module_package
+
+      - if @model_module_packages.blank?
+        = render "shared/tables/blank", count: 7, resource: "model_module_package"

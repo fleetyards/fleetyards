@@ -8,6 +8,20 @@
       class="addons"
       @submit.prevent="save"
     >
+      <div v-if="modelModulePackagesCollection.records.length" class="row">
+        <div class="col-12">
+          <fieldset>
+            <legend>
+              <h3>{{ $t('labels.model.modulePackages') }}:</h3>
+            </legend>
+            <Packages
+              v-model="form.modelModuleIds"
+              :packages="modelModulePackagesCollection.records"
+              :editable="editable"
+            />
+          </fieldset>
+        </div>
+      </div>
       <div class="row">
         <div class="col-12">
           <fieldset v-if="modelModulesCollection.records.length">
@@ -65,9 +79,12 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import Btn from 'frontend/core/components/Btn'
 import Modal from 'frontend/core/components/AppModal/Modal'
 import Loader from 'frontend/core/components/Loader'
+import Panel from 'frontend/core/components/Panel'
 import modelModulesCollection from 'frontend/api/collections/ModelModules'
+import modelModulePackagesCollection from 'frontend/api/collections/ModelModulePackages'
 import modelUpgradesCollection from 'frontend/api/collections/ModelUpgrades'
 import Addons from './Addons'
+import Packages from './Packages'
 
 type AddonsForm = {
   modelModuleIds: string[]
@@ -79,7 +96,9 @@ type AddonsForm = {
     Btn,
     Modal,
     Loader,
+    Panel,
     Addons,
+    Packages,
   },
 })
 export default class AddonsModal extends Vue {
@@ -88,6 +107,8 @@ export default class AddonsModal extends Vue {
   @Prop({ default: false }) editable: boolean
 
   modelModulesCollection: ModelModulesCollection = modelModulesCollection
+
+  modelModulePackagesCollection: ModelModulePackagesCollection = modelModulePackagesCollection
 
   modelUpgradesCollection: ModelUpgradesCollection = modelUpgradesCollection
 
@@ -153,7 +174,30 @@ export default class AddonsModal extends Vue {
 
   async fetch() {
     await modelModulesCollection.findAll(this.vehicle.model.slug)
+    await modelModulePackagesCollection.findAll(this.vehicle.model.slug)
     await modelUpgradesCollection.findAll(this.vehicle.model.slug)
+  }
+
+  activatePackage(package) {
+    if (!this.editable) {
+      return
+    }
+
+    package.modules.forEach(module => {
+      const additionalPackageModules = package.modules.filter(
+        packageModule => packageModule.id === module.id,
+      )
+      const foundModules = this.form.modelModuleIds.filter(
+        id => id === module.id,
+      )
+
+      if (
+        !foundModules.length ||
+        foundModules.length < additionalPackageModules.length
+      ) {
+        this.form.modelModuleIds.push(module.id)
+      }
+    })
   }
 }
 </script>

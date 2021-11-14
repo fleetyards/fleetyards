@@ -31,6 +31,7 @@ v1_api_routes = lambda do
       get :loaners
       get 'snub-crafts' => 'models#snub_crafts'
       get :modules
+      get :module_packages, path: 'module-packages'
       get :upgrades
       get :paints
       get :store_image, path: 'store-image'
