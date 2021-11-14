@@ -29,9 +29,9 @@
 
           <Btn
             v-if="fleet.myFleet && fleet.publicFleet"
-            v-tooltip="$t('actions.copyPublicUrl')"
+            v-tooltip="$t('actions.share')"
             :inline="true"
-            @click.native="copyPublicUrl"
+            @click.native="copyShareUrl"
           >
             <i class="fad fa-share-square" />
           </Btn>
@@ -45,7 +45,7 @@
       <ShipsList
         v-if="fleet.myFleet"
         :fleet="fleet"
-        :copy-public-url="copyPublicUrl"
+        :copy-public-url="copyShareUrl"
       />
       <PublicShipsList v-else-if="fleet.publicFleet" :fleet="fleet" />
     </template>
@@ -90,7 +90,7 @@ export default class FleetShips extends Vue {
     return this.fleet.name
   }
 
-  get publicUrl() {
+  get shareUrl() {
     if (!this.fleet) {
       return ''
     }
@@ -114,18 +114,24 @@ export default class FleetShips extends Vue {
     await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 
-  copyPublicUrl(_event) {
-    copyText(this.publicUrl).then(
+  copyShareUrl() {
+    if (!this.shareUrl) {
+      displayAlert({
+        text: this.$t('messages.copyShareUrl.failure'),
+      })
+    }
+
+    copyText(this.shareUrl).then(
       () => {
         displaySuccess({
-          text: this.$t('messages.copyPublicUrl.success', {
-            publicUrl: this.publicUrl,
+          text: this.$t('messages.copyShareUrl.success', {
+            url: this.shareUrl,
           }),
         })
       },
       () => {
         displayAlert({
-          text: this.$t('messages.copyPublicUrl.failure'),
+          text: this.$t('messages.copyShareUrl.failure'),
         })
       },
     )

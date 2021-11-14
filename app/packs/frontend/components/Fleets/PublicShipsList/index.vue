@@ -49,6 +49,8 @@
       </BtnDropdown>
     </template>
 
+    <PublicFleetVehiclesFilterForm slot="filter" />
+
     <template #default="{ records, loading, filterVisible, primaryKey }">
       <FilteredGrid
         :records="records"
@@ -77,8 +79,7 @@ import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import FleetVehiclePanel from 'frontend/components/Fleets/VehiclePanel'
-import FleetVehiclesFilterForm from 'frontend/components/Fleets/FilterForm'
-import FleetModelsFilterForm from 'frontend/components/Models/FilterForm'
+import PublicFleetVehiclesFilterForm from 'frontend/components/Fleets/PublicFilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import publicFleetVehiclesCollection from 'frontend/api/collections/PublicFleetVehicles'
@@ -92,8 +93,7 @@ import publicFleetVehiclesCollection from 'frontend/api/collections/PublicFleetV
     FleetVehiclePanel,
     ModelClassLabels,
     AddonsModal,
-    FleetVehiclesFilterForm,
-    FleetModelsFilterForm,
+    PublicFleetVehiclesFilterForm,
   },
 })
 export default class FleetPublicShipsList extends Vue {

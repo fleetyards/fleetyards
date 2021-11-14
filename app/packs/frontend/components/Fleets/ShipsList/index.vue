@@ -147,7 +147,6 @@ import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import FleetVehiclePanel from 'frontend/components/Fleets/VehiclePanel'
 import FleetVehiclesFilterForm from 'frontend/components/Fleets/FilterForm'
-import FleetModelsFilterForm from 'frontend/components/Models/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
@@ -163,7 +162,6 @@ import debounce from 'lodash.debounce'
     ModelClassLabels,
     AddonsModal,
     FleetVehiclesFilterForm,
-    FleetModelsFilterForm,
   },
 })
 export default class FleetShipsList extends Vue {

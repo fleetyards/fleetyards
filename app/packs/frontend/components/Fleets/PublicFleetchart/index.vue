@@ -18,6 +18,8 @@
       :hash="$route.hash"
       :paginated="true"
     >
+      <PublicFleetVehiclesFilterForm slot="filter" />
+
       <template #default="{ records }">
         <transition name="fade" appear>
           <div v-if="records.length" class="row justify-content-lg-center">
@@ -48,6 +50,7 @@ import FleetchartList from 'frontend/components/Fleetchart/List'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import FleetchartSlider from 'frontend/components/Fleetchart/Slider'
 import publicFleetVehiclesCollection from 'frontend/api/collections/PublicFleetVehicles'
+import PublicFleetVehiclesFilterForm from 'frontend/components/Fleets/PublicFilterForm'
 
 @Component<FleetPublicFleetchart>({
   components: {
@@ -58,6 +61,7 @@ import publicFleetVehiclesCollection from 'frontend/api/collections/PublicFleetV
     FleetchartList,
     AddonsModal,
     FleetchartSlider,
+    PublicFleetVehiclesFilterForm,
   },
 })
 export default class FleetPublicFleetchart extends Vue {
