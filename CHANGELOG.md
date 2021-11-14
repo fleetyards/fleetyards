@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.21.2](https://github.com/fleetyards/fleetyards/compare/v4.21.1...v4.21.2) (2021-11-14)
+
+
+### Bug Fixes
+
+* store images for equipment ([6a27ac1](https://github.com/fleetyards/fleetyards/commit/6a27ac147ce34574aa97915dabcf105d220f8fca))
+
 ### [4.21.1](https://github.com/fleetyards/fleetyards/compare/v4.21.0...v4.21.1) (2021-11-14)
 
 
