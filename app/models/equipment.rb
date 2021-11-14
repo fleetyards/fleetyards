@@ -161,6 +161,14 @@ class Equipment < ApplicationRecord
     Equipment.human_enum_name(:weapon_class, weapon_class)
   end
 
+  def core_compatibility_label
+    Equipment.human_enum_name(:core_compatibility, core_compatibility)
+  end
+
+  def backpack_compatibility_label
+    Equipment.human_enum_name(:backpack_compatibility, backpack_compatibility)
+  end
+
   private def touch_shop_commodities
     # rubocop:disable Rails/SkipsModelValidations
     shop_commodities.update_all(updated_at: Time.zone.now)
