@@ -107,7 +107,7 @@ export default class ComponentPanel extends Vue {
       )
     }
 
-    return this.equipment.storeImageMedium
+    return this.equipment.storeImage
   }
 
   @Prop({ required: true }) equipment!: Equipment
