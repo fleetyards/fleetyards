@@ -252,6 +252,7 @@ export default {
     loaners: 'Loaners',
     paints: 'Paints',
     modules: 'Modules',
+    modulePackages: 'Module Packages',
     upgrades: 'Upgrade-Kits',
     brochure: 'Brochure',
     onSale: 'On Sale',

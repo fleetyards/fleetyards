@@ -1,0 +1,16 @@
+- content_for :title do
+  = I18n.t(:"title.model_module_package.edit")
+.row
+  .col-12.col-md-12
+
+    .row
+      .col-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.admin.model_module_package.edit", model_module_package: model_module_package.name)
+
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.back"), admin_model_module_packages_path(params: index_back_params, anchor: model_module_package.id), class: "btn btn-dark"
+
+    = render "form"

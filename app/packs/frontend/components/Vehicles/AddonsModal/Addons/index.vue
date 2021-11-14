@@ -93,23 +93,29 @@ export default {
   data() {
     return {
       addonToAdd: null,
-      availableAddons: [...this.value],
+      internalAddons: [...this.value],
     }
   },
 
   watch: {
-    addons() {
-      this.availableAddons = [...this.value]
+    value() {
+      if (this.internalAddons !== this.value) {
+        this.internalAddons = [...this.value]
+      }
     },
 
-    availableAddons() {
-      this.$emit('input', this.availableAddons)
+    addons() {
+      this.internalAddons = [...this.value]
+    },
+
+    internalAddons() {
+      this.$emit('input', this.internalAddons)
     },
   },
 
   methods: {
     selectTooltip(addonId) {
-      if (this.availableAddons.includes(addonId)) {
+      if (this.internalAddons.includes(addonId)) {
         return this.$t('labels.deselect')
       }
       return null
@@ -119,12 +125,12 @@ export default {
       if (!this.addonToAdd) {
         return
       }
-      this.availableAddons.push(this.addonToAdd)
+      this.internalAddons.push(this.addonToAdd)
       this.addonToAdd = null
     },
 
     idsForAddon(addonId) {
-      const ids = this.availableAddons.filter(item => item === addonId)
+      const ids = this.internalAddons.filter(item => item === addonId)
       if (ids.length) {
         return ids
       }
@@ -136,20 +142,20 @@ export default {
         return
       }
 
-      if (this.availableAddons.includes(addonId)) {
-        const index = this.availableAddons.findIndex(
+      if (this.internalAddons.includes(addonId)) {
+        const index = this.internalAddons.findIndex(
           itemId => itemId === addonId,
         )
         if (index > -1) {
-          this.availableAddons.splice(index, 1)
+          this.internalAddons.splice(index, 1)
         }
       } else {
-        this.availableAddons.push(addonId)
+        this.internalAddons.push(addonId)
       }
     },
 
     selectedAddon(addonId) {
-      return this.value.includes(addonId)
+      return this.internalAddons.includes(addonId)
     },
   },
 }

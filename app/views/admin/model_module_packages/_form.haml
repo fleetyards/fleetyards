@@ -1,0 +1,67 @@
+= form_for [:admin, model_module_package], html: { multipart: true } do |form|
+  .row
+    .col-12.col-md-6.form-group{class: form_error?(model_module_package, :name)}
+      = form.label :name
+      = form.text_field :name, class: 'form-control'
+      %small
+        = form_errors model_module_package, :name
+    .col-12.col-md-6.form-group{class: form_error?(model_module_package, :description)}
+      = form.label :description
+      = form.text_area :description, class: 'form-control'
+      %small
+        = form_errors model_module_package, :description
+
+  .row
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module_package, :model_id)}
+      = form.label :model_id
+      = form.select :model_id, options_from_collection_for_select(Model.all.order(:name), :id, :name, model_module_package.model_id), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model_module_package, :model_id
+
+  .row
+    .col-12.col-sm-6.col-md-3
+      .form-group
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden"), class: 'checkbox'
+        = form.label :hidden do
+          = I18n.t(:"activerecord.attributes.model.hidden")
+
+    .col-12.col-sm-6.col-md-3
+      .form-group
+        = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active"), class: 'checkbox'
+        = form.label :active do
+          = I18n.t(:"activerecord.attributes.model.active")
+
+    .col-12.col-sm-6.col-md-3.form-group{class: form_error?(model_module_package, :pledge_price)}
+      = form.label :pledge_price
+      = form.text_field :pledge_price, class: 'form-control'
+      %small
+        = form_errors model_module_package, :pledge_price
+
+  .row
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module_package, :store_image)}
+      = form.label :store_image
+      = form.file_field :store_image, class: 'form-control'
+      = form.hidden_field :store_image_cache
+      %br
+      - if model_module_package.store_image?
+        = image_tag(model_module_package.store_image.url)
+        = form.check_box :remove_store_image
+        Remove Image
+      %small
+        = form_errors model_module_package, :store_image
+
+  %fieldset
+    %legend
+      Modules:
+    #module_items
+      - if model_module_package.module_package_items.any?
+        = form.fields_for :module_package_items, model_module_package.module_package_items do |builder|
+          = render 'model_module_packages/module_package_item_fields', fields: builder
+
+    .d-flex.justify-content-end
+      .btn-group-responsive
+        = link_to_add_fields form, :module_package_items, name: I18n.t(:"actions.add"), class: "btn btn-dark", target: "#module_items" do
+          %i.fa.fa-plus
+          = I18n.t(:"actions.add_module_package_item")
+
+  = render "shared/submit", path: admin_model_module_packages_path

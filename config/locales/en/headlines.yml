@@ -68,6 +68,10 @@ en:
         edit: Module %{model_module}
         index: Modules
         new: New Module
+      model_module_package:
+        edit: Module Package %{model_module}
+        index: Module Packages
+        new: New Module Package
       model_upgrade:
         edit: Upgrade %{model_upgrade}
         index: Upgrades

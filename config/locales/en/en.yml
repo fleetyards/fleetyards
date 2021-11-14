@@ -28,6 +28,7 @@ en:
     model:
       overview: Index
     models: Models
+    model_module_packages: Module Packages
     users: Users
     workers: Workers
     commodities: Commodities
@@ -159,6 +160,10 @@ en:
       edit: Edit Module
       index: Modules
       new: New Module
+    model_module_package:
+      edit: Edit Module Package
+      index: Module Packages
+      new: New Module Package
     model_upgrade:
       edit: Edit Upgrade
       index: Upgrades

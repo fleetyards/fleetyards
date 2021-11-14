@@ -230,6 +230,17 @@ module Api
           .per(per_page(ModelModule))
       end
 
+      def module_packages
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_module_packages = model.module_packages
+          .visible
+          .active
+          .page(params[:page])
+          .per(per_page(ModelModule))
+      end
+
       def upgrades
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
