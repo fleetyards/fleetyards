@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.21.0](https://github.com/fleetyards/fleetyards/compare/v4.20.0...v4.21.0) (2021-11-14)
+
+
+### Features
+
+* add missing attributes to equipment ([659b73e](https://github.com/fleetyards/fleetyards/commit/659b73e8203e3f5e824f8f0cbc6c96c49faf0ce1)), closes [#1933](https://github.com/fleetyards/fleetyards/issues/1933)
+
+
+### Bug Fixes
+
+* admin locales ([3788328](https://github.com/fleetyards/fleetyards/commit/37883281d6a310d326701265465c590d6eb7bfa8))
+
 ## [4.20.0](https://github.com/fleetyards/fleetyards/compare/v4.19.1...v4.20.0) (2021-11-12)
 
 
