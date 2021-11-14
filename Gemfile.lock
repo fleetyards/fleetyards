@@ -296,7 +296,7 @@ GEM
       foundation_emails (~> 2)
       nokogiri
     ipaddress (0.8.3)
-    jbuilder (2.11.2)
+    jbuilder (2.11.3)
       activesupport (>= 5.0.0)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
