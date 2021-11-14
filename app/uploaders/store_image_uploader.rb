@@ -13,7 +13,7 @@ class StoreImageUploader < BaseUploader
   end
 
   version :medium do
-    process resize_to_fill: [800, 280]
+    process resize_to_fill: [800, 800]
     process quality: 90
   end
 

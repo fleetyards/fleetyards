@@ -62,7 +62,7 @@ class Equipment < ApplicationRecord
   before_save :update_slugs
   after_save :touch_shop_commodities
 
-  mount_uploader :store_image, ImageUploader
+  mount_uploader :store_image, StoreImageUploader
 
   ransack_alias :name, :name_or_slug
 
