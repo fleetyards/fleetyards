@@ -9,6 +9,20 @@
     />
 
     <FilterGroup
+      v-model="form.memberIn"
+      :label="$t('labels.filters.fleets.member')"
+      :fetch-path="`fleets/${$route.params.slug}/members`"
+      name="member"
+      value-attr="username"
+      label-attr="username"
+      icon-attr="avatar"
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
+    />
+
+    <FilterGroup
       v-model="form.manufacturerIn"
       :label="$t('labels.filters.models.manufacturer')"
       fetch-path="manufacturers/with-models"
@@ -214,6 +228,7 @@ export default {
         priceIn: query.priceIn || [],
         pledgePriceIn: query.pledgePriceIn || [],
         productionStatusIn: query.productionStatusIn || [],
+        memberIn: query.memberIn || [],
       },
     }
   },
@@ -252,6 +267,7 @@ export default {
         priceIn: query.priceIn || [],
         pledgePriceIn: query.pledgePriceIn || [],
         productionStatusIn: query.productionStatusIn || [],
+        memberIn: query.memberIn || [],
       }
     },
   },

@@ -490,6 +490,7 @@ export default {
       model: 'Ship',
     },
     fleets: {
+      member: 'Member',
       members: {
         role: 'Role',
       },

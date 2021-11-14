@@ -10,7 +10,10 @@ module Api
       def index
         authorize! :show, fleet
 
-        scope = fleet.vehicles(loaner: loaner_included?).includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+        scope = fleet.vehicles(fleet_vehicle_filters).includes(
+          :model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
+          model: [:manufacturer]
+        )
 
         if price_range.present?
           vehicle_query_params['sorts'] = 'model_price asc'
@@ -32,7 +35,7 @@ module Api
             .joins(:model)
             .pluck(:model_id)
 
-          @models = fleet.models(loaner: loaner_included?)
+          @models = fleet.models(fleet_vehicle_filters)
             .where(id: model_ids)
             .order(name: :asc)
             .page(params[:page])
@@ -232,7 +235,7 @@ module Api
           :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq,
           manufacturer_in: [], classification_in: [], focus_in: [],
           size_in: [], price_in: [], pledge_price_in: [],
-          production_status_in: [], sorts: []
+          production_status_in: [], sorts: [], member_in: []
         )
       end
 
@@ -243,7 +246,7 @@ module Api
           :pledge_price_lteq, :will_it_fit, :search_cont, :loaner_eq,
           name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
           production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
-          id_not_in: []
+          id_not_in: [], member_in: []
         )
       end
 
@@ -259,6 +262,19 @@ module Api
         [false, true]
       end
       helper_method :loaner_included?
+
+      private def for_members
+        return if vehicle_query_params[:member_in].blank?
+
+        User.where(username: vehicle_query_params[:member_in]).pluck(:id)
+      end
+
+      private def fleet_vehicle_filters
+        {
+          loaner: loaner_included?,
+          user_id: for_members.presence
+        }.compact
+      end
     end
   end
 end
