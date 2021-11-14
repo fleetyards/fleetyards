@@ -1,6 +1,6 @@
 <template>
   <div v-if="station" v-tooltip="tooltip">
-    <template v-if="station.type === 'rest_stop'">
+    <template v-if="station.classification === 'rest_stop'">
       {{ suffix }}
     </template>
     <template v-else-if="suffix">

@@ -267,6 +267,7 @@ en:
           default: 'on'
           asteriod: 'on asteroid near'
           orbit: 'in orbit around'
+          near: 'near'
         station_types:
           landing_zone: Landing Zone
           station: Station

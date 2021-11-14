@@ -139,11 +139,17 @@ class Station < ApplicationRecord
   end
 
   def location_label
-    "#{location_prefix} #{celestial_object.name}"
+    if location.present?
+      "#{location_prefix} #{location}"
+    else
+      "#{location_prefix} #{celestial_object.name}"
+    end
   end
 
   def location_prefix
-    if asteroid_station?
+    if location.present?
+      I18n.t('activerecord.attributes.station.location_prefix.near')
+    elsif asteroid_station?
       I18n.t('activerecord.attributes.station.location_prefix.asteriod')
     elsif station?
       I18n.t('activerecord.attributes.station.location_prefix.orbit')
