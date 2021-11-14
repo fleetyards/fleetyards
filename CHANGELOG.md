@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.22.0](https://github.com/fleetyards/fleetyards/compare/v4.21.3...v4.22.0) (2021-11-14)
+
+
+### Features
+
+* **fleet:** add member filter to ship page ([91dd1af](https://github.com/fleetyards/fleetyards/commit/91dd1af52bd655b7aabbb1fd05dbba79b1123661)), closes [#1907](https://github.com/fleetyards/fleetyards/issues/1907)
+* **fleets:** add filters to public ship pages ([639a3b3](https://github.com/fleetyards/fleetyards/commit/639a3b3f6e2cfe486a4ec72814abfe057126d0a9)), closes [#1909](https://github.com/fleetyards/fleetyards/issues/1909)
+
+
+### Bug Fixes
+
+* fleet description validation ([3f6c374](https://github.com/fleetyards/fleetyards/commit/3f6c374663d61672cada481131ba934eb04f5162)), closes [#1837](https://github.com/fleetyards/fleetyards/issues/1837)
+* location labels for lagrange rest stops ([548e50f](https://github.com/fleetyards/fleetyards/commit/548e50fce5f0fdb88c4807fb373e8f32add8606b))
+
 ### [4.21.3](https://github.com/fleetyards/fleetyards/compare/v4.21.2...v4.21.3) (2021-11-14)
 
 
