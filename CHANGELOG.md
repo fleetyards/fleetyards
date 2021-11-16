@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.22.2](https://github.com/fleetyards/fleetyards/compare/v4.22.1...v4.22.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* store image loader ([5a168da](https://github.com/fleetyards/fleetyards/commit/5a168dafd9f58041c1c4b9c54fef29e94c17b897))
+* **module-packages:** make package selected display independent from order ([202774f](https://github.com/fleetyards/fleetyards/commit/202774fff1c5afce7c11f31d1bcf75d9c88a1805))
+
 ### [4.22.1](https://github.com/fleetyards/fleetyards/compare/v4.22.0...v4.22.1) (2021-11-14)
 
 
