@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.22.4](https://github.com/fleetyards/fleetyards/compare/v4.22.3...v4.22.4) (2021-11-16)
+
+
+### Bug Fixes
+
+* store image uploader medium size ([89331d4](https://github.com/fleetyards/fleetyards/commit/89331d476bd99b6f8db4fa8aad5dc4095f849be5))
+
 ### [4.22.3](https://github.com/fleetyards/fleetyards/compare/v4.22.2...v4.22.3) (2021-11-16)
 
 
