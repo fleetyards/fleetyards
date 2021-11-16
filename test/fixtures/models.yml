@@ -14,6 +14,7 @@
 #  cruise_speed             :decimal(15, 2)
 #  description              :text
 #  dock_size                :integer
+#  erkul_identifier         :string
 #  fleetchart_image         :string
 #  focus                    :string(255)
 #  ground                   :boolean          default(FALSE)

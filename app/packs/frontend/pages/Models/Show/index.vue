@@ -47,7 +47,6 @@
               >
                 {{ $t('labels.poweredByStarship42') }}
               </a>
-
               <HoloViewer
                 v-if="holoviewerVisible && model.holo"
                 :holo="model.holo"

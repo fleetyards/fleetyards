@@ -44,7 +44,11 @@
           = form.text_field :sc_identifier, class: 'form-control'
           %small
             = form_errors model, :sc_identifier
-
+        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :erkul_identifier)}
+          = form.label :erkul_identifier
+          = form.text_field :erkul_identifier, class: 'form-control'
+          %small
+            = form_errors model, :erkul_identifier
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
       = form.label :focus

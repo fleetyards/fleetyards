@@ -74,12 +74,12 @@ export default class Hardpoints extends Vue {
     if (
       !this.model ||
       this.model.productionStatus !== 'flight-ready' ||
-      !this.model.scIdentifier
+      !this.model.erkulIdentifier
     ) {
       return null
     }
 
-    return `https://www.erkul.games/ship/${this.model.scIdentifier}`
+    return `https://www.erkul.games/ship/${this.model.erkulIdentifier}`
   }
 
   get scunpackedUrl(): string | null {

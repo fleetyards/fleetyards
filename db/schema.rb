@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_14_095523) do
+ActiveRecord::Schema.define(version: 2021_11_16_131746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -542,6 +542,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_095523) do
     t.string "sales_page_url"
     t.string "top_view"
     t.string "side_view"
+    t.string "erkul_identifier"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
