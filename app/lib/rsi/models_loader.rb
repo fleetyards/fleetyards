@@ -206,7 +206,7 @@ module Rsi
       # image_url = store_image_url.gsub('store_hub_large', 'source')
 
       model.remote_rsi_store_image_url = store_image_url
-      model.remote_store_image_url = image_url if model.store_image.blank?
+      model.remote_store_image_url = store_image_url if model.store_image.blank?
       model.save
     end
 
