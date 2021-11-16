@@ -92,18 +92,18 @@ module Api
         upgrades = vehicles.map(&:model_upgrades).flatten
         modules = vehicles.map(&:model_modules).flatten
 
-        @quick_stats = OpenStruct.new(
+        @quick_stats = QuickStats.new(
           total: vehicles.count,
           classifications: Model.classifications.map do |classification|
-            OpenStruct.new(
-              count: models.count { |model| model.classification == classification },
+            ClassificationCount.new(
+              classification_count: models.count { |model| model.classification == classification },
 
               name: classification,
               label: classification.humanize
             )
           end,
           groups: HangarGroup.where(user: current_user).order([{ sort: :asc, name: :asc }]).map do |group|
-            OpenStruct.new(
+            HangarGroupCount.new(
               count: group.vehicles.where(id: vehicles.map(&:id)).size,
               id: group.id,
               slug: group.slug
@@ -168,19 +168,19 @@ module Api
 
         models = vehicles.map(&:model)
 
-        @quick_stats = OpenStruct.new(
+        @quick_stats = QuickStats.new(
           total: vehicles.count,
           classifications: Model.classifications.map do |classification|
-            OpenStruct.new(
-              count: models.count { |model| model.classification == classification },
+            ClassificationCount.new(
+              classification_count: models.count { |model| model.classification == classification },
 
               name: classification,
               label: classification.humanize
             )
           end,
           groups: HangarGroup.where(user: user, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
-            OpenStruct.new(
-              count: group.vehicles.where(id: vehicles.map(&:id)).size,
+            HangarGroupCount.new(
+              group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
               id: group.id,
               slug: group.slug
             )

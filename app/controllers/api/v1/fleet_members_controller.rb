@@ -27,7 +27,7 @@ module Api
 
         members = @q.result
 
-        @quick_stats = OpenStruct.new(
+        @quick_stats = QuickStats.new(
           total: members.size,
           metrics: {
             total_admins: members.where(role: :admin).size,

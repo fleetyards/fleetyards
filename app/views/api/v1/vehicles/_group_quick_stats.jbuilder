@@ -2,4 +2,4 @@
 
 json.id group_quick_stats.id
 json.slug group_quick_stats.slug
-json.count group_quick_stats.count
+json.count group_quick_stats.group_count

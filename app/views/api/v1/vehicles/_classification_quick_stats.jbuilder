@@ -2,4 +2,4 @@
 
 json.name classification_quick_stats.name
 json.label classification_quick_stats.label
-json.count classification_quick_stats.count
+json.count classification_quick_stats.classification_count

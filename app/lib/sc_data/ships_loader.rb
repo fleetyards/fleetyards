@@ -17,6 +17,8 @@ module ScData
       ship_data = load_ship_data(model.sc_identifier)
       components_data = load_components_data(model.sc_identifier)
 
+      raise "Model has no ports data: #{model.sc_identifier}" if components_data.blank?
+
       hardpoints_loader.extract_from_components(model, components_data)
 
       model.update!(

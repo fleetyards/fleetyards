@@ -329,7 +329,7 @@ class Model < ApplicationRecord
   def dock_counts
     docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
       docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
-        OpenStruct.new(size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, count: docks_by_type.size)
+        DockCount.new(dock_size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, dock_count: docks_by_type.size)
       end
     end.flatten
   end

@@ -159,11 +159,11 @@ module Api
         upgrades = vehicles.map(&:model_upgrades).flatten
         modules = vehicles.map(&:model_modules).flatten
 
-        @quick_stats = OpenStruct.new(
+        @quick_stats = QuickStats.new(
           total: vehicles.count,
           classifications: models.map(&:classification).uniq.compact.map do |classification|
-            OpenStruct.new(
-              count: models.count { |model| model.classification == classification },
+            ClassificationCount.new(
+              classification_count: models.count { |model| model.classification == classification },
 
               name: classification,
               label: classification.humanize
