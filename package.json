@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "4.22.4",
+  "version": "4.22.5",
   "scripts": {
     "check-for-reinstalling": "./scripts/check-for-reinstalling.sh",
     "docs:old": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
