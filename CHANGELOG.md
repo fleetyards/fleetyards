@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.22.3](https://github.com/fleetyards/fleetyards/compare/v4.22.2...v4.22.3) (2021-11-16)
+
+
+### Bug Fixes
+
+* sc_data loader and HangarGroupCount Struct ([9017377](https://github.com/fleetyards/fleetyards/commit/90173771f07289a65779c976d27dfe84daa7bc43))
+
 ### [4.22.2](https://github.com/fleetyards/fleetyards/compare/v4.22.1...v4.22.2) (2021-11-16)
 
 
