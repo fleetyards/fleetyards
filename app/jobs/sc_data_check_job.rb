@@ -8,12 +8,12 @@ class ScDataCheckJob < ApplicationJob
 
     old_version = File.read(version_file).strip if File.exist?(version_file)
 
-    if new_version != old_version
-      Loaders::ScDataShipsJob.perform_later
+    return if new_version == old_version
 
-      File.open(version_file, 'w') do |file|
-        file.write(new_version)
-      end
+    Loaders::ScDataShipsJob.perform_later
+
+    File.open(version_file, 'w') do |file|
+      file.write(new_version)
     end
   end
 end
