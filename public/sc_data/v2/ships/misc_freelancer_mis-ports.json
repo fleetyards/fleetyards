@@ -1,0 +1,3662 @@
+{
+  "PilotHardpoints": [
+    {
+      "PortName": "hardpoint_sidecannon_left",
+      "Size": 5,
+      "Loadout": "BEHR_PC2_Dual_S3",
+      "InstalledItem": {
+        "ClassName": "BEHR_PC2_Dual_S3",
+        "Size": 5,
+        "Grade": 1,
+        "Type": "Turret.NoseMounted",
+        "Name": "PC2 Dual S3 Mount",
+        "Description": "[PH] PC2 Dual S3 Mount",
+        "Tags": [
+          "gimbalMount",
+          "flightReady"
+        ],
+        "Durability": {
+          "Health": 400.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 40.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "hardpoint_weapon_01",
+            "Size": 3,
+            "Loadout": "BEHR_LaserCannon_S3",
+            "InstalledItem": {
+              "ClassName": "BEHR_LaserCannon_S3",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "WeaponGun.Gun",
+              "Name": "M5A Cannon",
+              "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 3\n\nWhen energy autocannons are designed, Behring's M5A provides the standard to which they are measured against, owing to its long range of engagement and low damage fallout.",
+              "Manufacturer": {
+                "Code": "BEH",
+                "Name": "Behring"
+              },
+              "Tags": [
+                "BEHR",
+                "LaserCannon",
+                "flightReady",
+                "weaponMountUsable"
+              ],
+              "Durability": {
+                "Health": 1024.0,
+                "Lifetime": 20.0
+              },
+              "PowerConnection": {
+                "PowerBase": 240.0,
+                "PowerDraw": 240.0
+              },
+              "HeatConnection": {
+                "ThermalEnergyBase": 100.0,
+                "ThermalEnergyDraw": 200.0,
+                "CoolingRate": 160.0
+              },
+              "Weapon": {
+                "Ammunition": {
+                  "Speed": 700.0,
+                  "Range": 1225.0,
+                  "Size": 3.0,
+                  "Capacity": 0.0,
+                  "ImpactDamage": {
+                    "Energy": 150.0
+                  }
+                },
+                "Modes": [
+                  {
+                    "Name": "Single",
+                    "LocalisedName": "[AUTO]",
+                    "RoundsPerMinute": 200.0,
+                    "FireType": "sequence",
+                    "AmmoPerShot": 1.0,
+                    "PelletsPerShot": 1.0,
+                    "DamagePerShot": {
+                      "Energy": 150.0
+                    },
+                    "DamagePerSecond": {
+                      "Energy": 500.0
+                    }
+                  }
+                ],
+                "Consumption": {
+                  "RequestedRegenPerSec": 2500.0,
+                  "Cooldown": 1.25,
+                  "CostPerBullet": 75.0,
+                  "RequestedAmmoLoad": 15000.0
+                }
+              },
+              "Ammunition": {
+                "Speed": 700.0,
+                "Range": 1225.0,
+                "Size": 3.0,
+                "Capacity": 0.0,
+                "ImpactDamage": {
+                  "Energy": 150.0
+                }
+              },
+              "Ports": [
+                {
+                  "PortName": "magazine_attach",
+                  "Size": 0,
+                  "Category": "UNKNOWN"
+                }
+              ]
+            },
+            "Types": [
+              "WeaponGun.Gun"
+            ],
+            "Category": "Weapon hardpoints"
+          },
+          {
+            "PortName": "hardpoint_weapon_02",
+            "Size": 3,
+            "Loadout": "BEHR_LaserCannon_S3",
+            "InstalledItem": {
+              "ClassName": "BEHR_LaserCannon_S3",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "WeaponGun.Gun",
+              "Name": "M5A Cannon",
+              "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 3\n\nWhen energy autocannons are designed, Behring's M5A provides the standard to which they are measured against, owing to its long range of engagement and low damage fallout.",
+              "Manufacturer": {
+                "Code": "BEH",
+                "Name": "Behring"
+              },
+              "Tags": [
+                "BEHR",
+                "LaserCannon",
+                "flightReady",
+                "weaponMountUsable"
+              ],
+              "Durability": {
+                "Health": 1024.0,
+                "Lifetime": 20.0
+              },
+              "PowerConnection": {
+                "PowerBase": 240.0,
+                "PowerDraw": 240.0
+              },
+              "HeatConnection": {
+                "ThermalEnergyBase": 100.0,
+                "ThermalEnergyDraw": 200.0,
+                "CoolingRate": 160.0
+              },
+              "Weapon": {
+                "Ammunition": {
+                  "Speed": 700.0,
+                  "Range": 1225.0,
+                  "Size": 3.0,
+                  "Capacity": 0.0,
+                  "ImpactDamage": {
+                    "Energy": 150.0
+                  }
+                },
+                "Modes": [
+                  {
+                    "Name": "Single",
+                    "LocalisedName": "[AUTO]",
+                    "RoundsPerMinute": 200.0,
+                    "FireType": "sequence",
+                    "AmmoPerShot": 1.0,
+                    "PelletsPerShot": 1.0,
+                    "DamagePerShot": {
+                      "Energy": 150.0
+                    },
+                    "DamagePerSecond": {
+                      "Energy": 500.0
+                    }
+                  }
+                ],
+                "Consumption": {
+                  "RequestedRegenPerSec": 2500.0,
+                  "Cooldown": 1.25,
+                  "CostPerBullet": 75.0,
+                  "RequestedAmmoLoad": 15000.0
+                }
+              },
+              "Ammunition": {
+                "Speed": 700.0,
+                "Range": 1225.0,
+                "Size": 3.0,
+                "Capacity": 0.0,
+                "ImpactDamage": {
+                  "Energy": 150.0
+                }
+              },
+              "Ports": [
+                {
+                  "PortName": "magazine_attach",
+                  "Size": 0,
+                  "Category": "UNKNOWN"
+                }
+              ]
+            },
+            "Types": [
+              "WeaponGun.Gun"
+            ],
+            "Category": "Weapon hardpoints"
+          }
+        ]
+      },
+      "Types": [
+        "Turret.NoseMounted",
+        "WeaponGun.Gun"
+      ],
+      "Flags": [
+        "$uneditable",
+        "MISC"
+      ],
+      "Category": "Weapon hardpoints",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_sidecannon_right",
+      "Size": 5,
+      "Loadout": "BEHR_PC2_Dual_S3",
+      "InstalledItem": {
+        "ClassName": "BEHR_PC2_Dual_S3",
+        "Size": 5,
+        "Grade": 1,
+        "Type": "Turret.NoseMounted",
+        "Name": "PC2 Dual S3 Mount",
+        "Description": "[PH] PC2 Dual S3 Mount",
+        "Tags": [
+          "gimbalMount",
+          "flightReady"
+        ],
+        "Durability": {
+          "Health": 400.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 40.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "hardpoint_weapon_01",
+            "Size": 3,
+            "Loadout": "BEHR_LaserCannon_S3",
+            "InstalledItem": {
+              "ClassName": "BEHR_LaserCannon_S3",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "WeaponGun.Gun",
+              "Name": "M5A Cannon",
+              "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 3\n\nWhen energy autocannons are designed, Behring's M5A provides the standard to which they are measured against, owing to its long range of engagement and low damage fallout.",
+              "Manufacturer": {
+                "Code": "BEH",
+                "Name": "Behring"
+              },
+              "Tags": [
+                "BEHR",
+                "LaserCannon",
+                "flightReady",
+                "weaponMountUsable"
+              ],
+              "Durability": {
+                "Health": 1024.0,
+                "Lifetime": 20.0
+              },
+              "PowerConnection": {
+                "PowerBase": 240.0,
+                "PowerDraw": 240.0
+              },
+              "HeatConnection": {
+                "ThermalEnergyBase": 100.0,
+                "ThermalEnergyDraw": 200.0,
+                "CoolingRate": 160.0
+              },
+              "Weapon": {
+                "Ammunition": {
+                  "Speed": 700.0,
+                  "Range": 1225.0,
+                  "Size": 3.0,
+                  "Capacity": 0.0,
+                  "ImpactDamage": {
+                    "Energy": 150.0
+                  }
+                },
+                "Modes": [
+                  {
+                    "Name": "Single",
+                    "LocalisedName": "[AUTO]",
+                    "RoundsPerMinute": 200.0,
+                    "FireType": "sequence",
+                    "AmmoPerShot": 1.0,
+                    "PelletsPerShot": 1.0,
+                    "DamagePerShot": {
+                      "Energy": 150.0
+                    },
+                    "DamagePerSecond": {
+                      "Energy": 500.0
+                    }
+                  }
+                ],
+                "Consumption": {
+                  "RequestedRegenPerSec": 2500.0,
+                  "Cooldown": 1.25,
+                  "CostPerBullet": 75.0,
+                  "RequestedAmmoLoad": 15000.0
+                }
+              },
+              "Ammunition": {
+                "Speed": 700.0,
+                "Range": 1225.0,
+                "Size": 3.0,
+                "Capacity": 0.0,
+                "ImpactDamage": {
+                  "Energy": 150.0
+                }
+              },
+              "Ports": [
+                {
+                  "PortName": "magazine_attach",
+                  "Size": 0,
+                  "Category": "UNKNOWN"
+                }
+              ]
+            },
+            "Types": [
+              "WeaponGun.Gun"
+            ],
+            "Category": "Weapon hardpoints"
+          },
+          {
+            "PortName": "hardpoint_weapon_02",
+            "Size": 3,
+            "Loadout": "BEHR_LaserCannon_S3",
+            "InstalledItem": {
+              "ClassName": "BEHR_LaserCannon_S3",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "WeaponGun.Gun",
+              "Name": "M5A Cannon",
+              "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 3\n\nWhen energy autocannons are designed, Behring's M5A provides the standard to which they are measured against, owing to its long range of engagement and low damage fallout.",
+              "Manufacturer": {
+                "Code": "BEH",
+                "Name": "Behring"
+              },
+              "Tags": [
+                "BEHR",
+                "LaserCannon",
+                "flightReady",
+                "weaponMountUsable"
+              ],
+              "Durability": {
+                "Health": 1024.0,
+                "Lifetime": 20.0
+              },
+              "PowerConnection": {
+                "PowerBase": 240.0,
+                "PowerDraw": 240.0
+              },
+              "HeatConnection": {
+                "ThermalEnergyBase": 100.0,
+                "ThermalEnergyDraw": 200.0,
+                "CoolingRate": 160.0
+              },
+              "Weapon": {
+                "Ammunition": {
+                  "Speed": 700.0,
+                  "Range": 1225.0,
+                  "Size": 3.0,
+                  "Capacity": 0.0,
+                  "ImpactDamage": {
+                    "Energy": 150.0
+                  }
+                },
+                "Modes": [
+                  {
+                    "Name": "Single",
+                    "LocalisedName": "[AUTO]",
+                    "RoundsPerMinute": 200.0,
+                    "FireType": "sequence",
+                    "AmmoPerShot": 1.0,
+                    "PelletsPerShot": 1.0,
+                    "DamagePerShot": {
+                      "Energy": 150.0
+                    },
+                    "DamagePerSecond": {
+                      "Energy": 500.0
+                    }
+                  }
+                ],
+                "Consumption": {
+                  "RequestedRegenPerSec": 2500.0,
+                  "Cooldown": 1.25,
+                  "CostPerBullet": 75.0,
+                  "RequestedAmmoLoad": 15000.0
+                }
+              },
+              "Ammunition": {
+                "Speed": 700.0,
+                "Range": 1225.0,
+                "Size": 3.0,
+                "Capacity": 0.0,
+                "ImpactDamage": {
+                  "Energy": 150.0
+                }
+              },
+              "Ports": [
+                {
+                  "PortName": "magazine_attach",
+                  "Size": 0,
+                  "Category": "UNKNOWN"
+                }
+              ]
+            },
+            "Types": [
+              "WeaponGun.Gun"
+            ],
+            "Category": "Weapon hardpoints"
+          }
+        ]
+      },
+      "Types": [
+        "Turret.NoseMounted",
+        "WeaponGun.Gun"
+      ],
+      "Flags": [
+        "$uneditable",
+        "MISC"
+      ],
+      "Category": "Weapon hardpoints",
+      "Uneditable": true
+    }
+  ],
+  "MannedTurrets": [
+    {
+      "PortName": "hardpoint_rear_turret",
+      "Size": 6,
+      "Loadout": "MISC_Freelancer_Base_SCItem_Turret",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Base_SCItem_Turret",
+        "Size": 6,
+        "Grade": 1,
+        "Type": "TurretBase.MannedTurret",
+        "Name": "Manned Turret",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Durability": {
+          "Health": 2000.0,
+          "Lifetime": 25.0
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 2.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "turret_left",
+            "Size": 2,
+            "Loadout": "KLWE_LaserRepeater_S2",
+            "InstalledItem": {
+              "ClassName": "KLWE_LaserRepeater_S2",
+              "Size": 2,
+              "Grade": 1,
+              "Type": "WeaponGun.Gun",
+              "Name": "CF-227 Badger Repeater",
+              "Description": "Manufacturer: Klaus & Werner\nItem Type: Laser Repeater\nSize: 2\n\nThe CF-227 Badger is Klaus & Werner’s dependable size two repeating laser. Its increased output and high rate of fire make it a solid contender in any fight.",
+              "Manufacturer": {
+                "Code": "KLA",
+                "Name": "Klaus & Werner"
+              },
+              "Tags": [
+                "KLWE",
+                "LaserRepeater",
+                "flightReady",
+                "weaponMountUsable"
+              ],
+              "Durability": {
+                "Health": 850.0,
+                "Lifetime": 20.0
+              },
+              "PowerConnection": {
+                "PowerBase": 190.0,
+                "PowerDraw": 190.0
+              },
+              "HeatConnection": {
+                "ThermalEnergyBase": 100.0,
+                "ThermalEnergyDraw": 200.0,
+                "CoolingRate": 100.95
+              },
+              "Weapon": {
+                "Ammunition": {
+                  "Speed": 1400.0,
+                  "Range": 1540.0000000000002,
+                  "Size": 2.0,
+                  "Capacity": 0.0,
+                  "ImpactDamage": {
+                    "Energy": 40.0
+                  }
+                },
+                "Modes": [
+                  {
+                    "Name": "Single",
+                    "LocalisedName": "[SEMI]",
+                    "RoundsPerMinute": 600.0,
+                    "FireType": "sequence",
+                    "AmmoPerShot": 1.0,
+                    "PelletsPerShot": 1.0,
+                    "DamagePerShot": {
+                      "Energy": 40.0
+                    },
+                    "DamagePerSecond": {
+                      "Energy": 400.0
+                    }
+                  }
+                ],
+                "Consumption": {
+                  "RequestedRegenPerSec": 2000.0,
+                  "Cooldown": 1.0,
+                  "CostPerBullet": 40.0,
+                  "RequestedAmmoLoad": 12000.0
+                }
+              },
+              "Ammunition": {
+                "Speed": 1400.0,
+                "Range": 1540.0000000000002,
+                "Size": 2.0,
+                "Capacity": 0.0,
+                "ImpactDamage": {
+                  "Energy": 40.0
+                }
+              },
+              "Ports": [
+                {
+                  "PortName": "BAR1",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.Barrel"
+                  ],
+                  "Category": "Weapon attachments"
+                },
+                {
+                  "PortName": "MEC",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.FiringMechanism"
+                  ],
+                  "Category": "Weapon attachments"
+                },
+                {
+                  "PortName": "POW",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.PowerArray"
+                  ],
+                  "Category": "Weapon attachments"
+                },
+                {
+                  "PortName": "VEN",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.Ventilation"
+                  ],
+                  "Category": "Weapon attachments"
+                }
+              ]
+            },
+            "Types": [
+              "WeaponGun.Gun"
+            ],
+            "Category": "Weapon hardpoints"
+          },
+          {
+            "PortName": "turret_right",
+            "Size": 2,
+            "Loadout": "KLWE_LaserRepeater_S2",
+            "InstalledItem": {
+              "ClassName": "KLWE_LaserRepeater_S2",
+              "Size": 2,
+              "Grade": 1,
+              "Type": "WeaponGun.Gun",
+              "Name": "CF-227 Badger Repeater",
+              "Description": "Manufacturer: Klaus & Werner\nItem Type: Laser Repeater\nSize: 2\n\nThe CF-227 Badger is Klaus & Werner’s dependable size two repeating laser. Its increased output and high rate of fire make it a solid contender in any fight.",
+              "Manufacturer": {
+                "Code": "KLA",
+                "Name": "Klaus & Werner"
+              },
+              "Tags": [
+                "KLWE",
+                "LaserRepeater",
+                "flightReady",
+                "weaponMountUsable"
+              ],
+              "Durability": {
+                "Health": 850.0,
+                "Lifetime": 20.0
+              },
+              "PowerConnection": {
+                "PowerBase": 190.0,
+                "PowerDraw": 190.0
+              },
+              "HeatConnection": {
+                "ThermalEnergyBase": 100.0,
+                "ThermalEnergyDraw": 200.0,
+                "CoolingRate": 100.95
+              },
+              "Weapon": {
+                "Ammunition": {
+                  "Speed": 1400.0,
+                  "Range": 1540.0000000000002,
+                  "Size": 2.0,
+                  "Capacity": 0.0,
+                  "ImpactDamage": {
+                    "Energy": 40.0
+                  }
+                },
+                "Modes": [
+                  {
+                    "Name": "Single",
+                    "LocalisedName": "[SEMI]",
+                    "RoundsPerMinute": 600.0,
+                    "FireType": "sequence",
+                    "AmmoPerShot": 1.0,
+                    "PelletsPerShot": 1.0,
+                    "DamagePerShot": {
+                      "Energy": 40.0
+                    },
+                    "DamagePerSecond": {
+                      "Energy": 400.0
+                    }
+                  }
+                ],
+                "Consumption": {
+                  "RequestedRegenPerSec": 2000.0,
+                  "Cooldown": 1.0,
+                  "CostPerBullet": 40.0,
+                  "RequestedAmmoLoad": 12000.0
+                }
+              },
+              "Ammunition": {
+                "Speed": 1400.0,
+                "Range": 1540.0000000000002,
+                "Size": 2.0,
+                "Capacity": 0.0,
+                "ImpactDamage": {
+                  "Energy": 40.0
+                }
+              },
+              "Ports": [
+                {
+                  "PortName": "BAR1",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.Barrel"
+                  ],
+                  "Category": "Weapon attachments"
+                },
+                {
+                  "PortName": "MEC",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.FiringMechanism"
+                  ],
+                  "Category": "Weapon attachments"
+                },
+                {
+                  "PortName": "POW",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.PowerArray"
+                  ],
+                  "Category": "Weapon attachments"
+                },
+                {
+                  "PortName": "VEN",
+                  "Size": 1,
+                  "Types": [
+                    "WeaponAttachment.Ventilation"
+                  ],
+                  "Category": "Weapon attachments"
+                }
+              ]
+            },
+            "Types": [
+              "WeaponGun.Gun"
+            ],
+            "Category": "Weapon hardpoints"
+          }
+        ]
+      },
+      "Types": [
+        "TurretBase.MannedTurret"
+      ],
+      "Flags": [
+        "$uneditable",
+        "lower"
+      ],
+      "Category": "Manned turrets",
+      "Uneditable": true
+    }
+  ],
+  "RemoteTurrets": [],
+  "MiningTurrets": [],
+  "UtilityTurrets": [],
+  "MiningHardpoints": [],
+  "UtilityHardpoints": [],
+  "MissileRacks": [
+    {
+      "PortName": "hardpoint_weapon_missilerack_right_wing_outer",
+      "Size": 4,
+      "Loadout": "MRCK_S04_BEHR_Dual_S03",
+      "InstalledItem": {
+        "ClassName": "MRCK_S04_BEHR_Dual_S03",
+        "Size": 4,
+        "Grade": 1,
+        "Type": "MissileLauncher.MissileRack",
+        "Name": "MSD-423 Missile Rack",
+        "Description": "Item Type: Missile Rack\nManufacturer: Behring\nSize: 4\nMissiles: 2xS3\n\nBehring’s MSD-423 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 4 hardpoint for the reliable and effective launch of two S3 missiles.",
+        "Manufacturer": {
+          "Code": "BEH",
+          "Name": "Behring"
+        },
+        "Tags": [
+          "flightReady"
+        ],
+        "Durability": {
+          "Health": 200.0
+        },
+        "MissileRack": {
+          "Count": 2,
+          "Size": 3
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 20.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "missile_01_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_02_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          }
+        ]
+      },
+      "Types": [
+        "MissileLauncher.MissileRack"
+      ],
+      "Category": "Missile racks"
+    },
+    {
+      "PortName": "hardpoint_weapon_missilerack_right_wing_inner",
+      "Size": 4,
+      "Loadout": "MRCK_S04_BEHR_Dual_S03",
+      "InstalledItem": {
+        "ClassName": "MRCK_S04_BEHR_Dual_S03",
+        "Size": 4,
+        "Grade": 1,
+        "Type": "MissileLauncher.MissileRack",
+        "Name": "MSD-423 Missile Rack",
+        "Description": "Item Type: Missile Rack\nManufacturer: Behring\nSize: 4\nMissiles: 2xS3\n\nBehring’s MSD-423 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 4 hardpoint for the reliable and effective launch of two S3 missiles.",
+        "Manufacturer": {
+          "Code": "BEH",
+          "Name": "Behring"
+        },
+        "Tags": [
+          "flightReady"
+        ],
+        "Durability": {
+          "Health": 200.0
+        },
+        "MissileRack": {
+          "Count": 2,
+          "Size": 3
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 20.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "missile_01_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_02_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          }
+        ]
+      },
+      "Types": [
+        "MissileLauncher.MissileRack"
+      ],
+      "Category": "Missile racks"
+    },
+    {
+      "PortName": "hardpoint_weapon_missilelauncher_left",
+      "Size": 5,
+      "Loadout": "MRCK_S05_MISC_Freelancer_MIS_Left",
+      "InstalledItem": {
+        "ClassName": "MRCK_S05_MISC_Freelancer_MIS_Left",
+        "Size": 5,
+        "Grade": 1,
+        "Type": "MissileLauncher.MissileRack",
+        "Name": "MISC Freelancer MIS Missile Launcher",
+        "Description": "[PH] MISC Freelancer MIS Missile Launcher",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Tags": [
+          "flightReady",
+          "MISC_Freelancer_MIS"
+        ],
+        "Durability": {
+          "Health": 200.0
+        },
+        "MissileRack": {
+          "Count": 10,
+          "Size": 3
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 20.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "missile_01_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_02_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_03_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_04_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_05_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_06_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_07_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_08_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_09_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_10_attach_left",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          }
+        ]
+      },
+      "Types": [
+        "MissileLauncher.MissileRack"
+      ],
+      "Flags": [
+        "$uneditable",
+        "left"
+      ],
+      "Category": "Missile racks",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_weapon_missilelauncher_right",
+      "Size": 5,
+      "Loadout": "MRCK_S05_MISC_Freelancer_MIS_Right",
+      "InstalledItem": {
+        "ClassName": "MRCK_S05_MISC_Freelancer_MIS_Right",
+        "Size": 5,
+        "Grade": 1,
+        "Type": "MissileLauncher.MissileRack",
+        "Name": "MISC Freelancer MIS Missile Launcher",
+        "Description": "[PH] MISC Freelancer MIS Missile Launcher",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Tags": [
+          "flightReady",
+          "MISC_Freelancer_MIS"
+        ],
+        "Durability": {
+          "Health": 200.0
+        },
+        "MissileRack": {
+          "Count": 10,
+          "Size": 3
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 20.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "missile_01_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_02_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_03_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_04_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_05_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_06_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_07_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_08_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_09_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_10_attach_right",
+            "Size": 3,
+            "Loadout": "MISL_S03_EM_FSKI_Thunderbolt",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_EM_FSKI_Thunderbolt",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Thunderbolt III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Electromagnetic \nSize: 3\n\nThanks to the Firestorm Thunderbolt's agile frame and EM targeting system, this proximity missile is a solid choice for a wide variety of combat scenarios.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "EM",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 930.787,
+                  "Energy": 3723.15
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          }
+        ]
+      },
+      "Types": [
+        "MissileLauncher.MissileRack"
+      ],
+      "Flags": [
+        "$uneditable",
+        "right"
+      ],
+      "Category": "Missile racks",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_weapon_missilerack_left_wing_outer",
+      "Size": 4,
+      "Loadout": "MRCK_S04_BEHR_Dual_S03",
+      "InstalledItem": {
+        "ClassName": "MRCK_S04_BEHR_Dual_S03",
+        "Size": 4,
+        "Grade": 1,
+        "Type": "MissileLauncher.MissileRack",
+        "Name": "MSD-423 Missile Rack",
+        "Description": "Item Type: Missile Rack\nManufacturer: Behring\nSize: 4\nMissiles: 2xS3\n\nBehring’s MSD-423 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 4 hardpoint for the reliable and effective launch of two S3 missiles.",
+        "Manufacturer": {
+          "Code": "BEH",
+          "Name": "Behring"
+        },
+        "Tags": [
+          "flightReady"
+        ],
+        "Durability": {
+          "Health": 200.0
+        },
+        "MissileRack": {
+          "Count": 2,
+          "Size": 3
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 20.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "missile_01_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_02_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          }
+        ]
+      },
+      "Types": [
+        "MissileLauncher.MissileRack"
+      ],
+      "Category": "Missile racks"
+    },
+    {
+      "PortName": "hardpoint_weapon_missilerack_left_wing_inner",
+      "Size": 4,
+      "Loadout": "MRCK_S04_BEHR_Dual_S03",
+      "InstalledItem": {
+        "ClassName": "MRCK_S04_BEHR_Dual_S03",
+        "Size": 4,
+        "Grade": 1,
+        "Type": "MissileLauncher.MissileRack",
+        "Name": "MSD-423 Missile Rack",
+        "Description": "Item Type: Missile Rack\nManufacturer: Behring\nSize: 4\nMissiles: 2xS3\n\nBehring’s MSD-423 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 4 hardpoint for the reliable and effective launch of two S3 missiles.",
+        "Manufacturer": {
+          "Code": "BEH",
+          "Name": "Behring"
+        },
+        "Tags": [
+          "flightReady"
+        ],
+        "Durability": {
+          "Health": 200.0
+        },
+        "MissileRack": {
+          "Count": 2,
+          "Size": 3
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 20.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Ports": [
+          {
+            "PortName": "missile_01_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          },
+          {
+            "PortName": "missile_02_attach",
+            "Size": 3,
+            "Loadout": "MISL_S03_CS_FSKI_Arrester",
+            "InstalledItem": {
+              "ClassName": "MISL_S03_CS_FSKI_Arrester",
+              "Size": 3,
+              "Grade": 1,
+              "Type": "Missile.Missile",
+              "Name": "Arrester III Missile",
+              "Description": "Manufacturer: Firestorm Kinetics\nTracking Signal: Cross Section\nSize: 3\n\nUsing cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.",
+              "Manufacturer": {
+                "Code": "FSKI",
+                "Name": "Aegis Dynamics"
+              },
+              "Tags": [
+                "FSKI",
+                "CS",
+                "flightReady"
+              ],
+              "Durability": {
+                "Health": 10.0
+              },
+              "Missile": {
+                "Damage": {
+                  "Physical": 842.14,
+                  "Energy": 3368.56
+                }
+              }
+            },
+            "Types": [
+              "Missile.Missile"
+            ],
+            "Category": "Missiles"
+          }
+        ]
+      },
+      "Types": [
+        "MissileLauncher.MissileRack"
+      ],
+      "Category": "Missile racks"
+    }
+  ],
+  "Countermeasures": [
+    {
+      "PortName": "hardpoint_countermeasure_launcher_right",
+      "Size": 2,
+      "Loadout": "MISC_CML_Noise_Small",
+      "InstalledItem": {
+        "ClassName": "MISC_CML_Noise_Small",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponDefensive.CountermeasureLauncher",
+        "Name": "Joker Defcon - Noise Launcher",
+        "Description": "[PH] Joker Defcon - Noise Launcher",
+        "Manufacturer": {
+          "Code": "JOK",
+          "Name": "Joker Engineering"
+        },
+        "Durability": {
+          "Health": 1000.0
+        },
+        "PowerConnection": {
+          "PowerBase": 1.0,
+          "PowerDraw": 1.0
+        },
+        "Weapon": {
+          "Ammunition": {
+            "Speed": 180.0,
+            "Range": 144.0,
+            "Size": 0.0,
+            "Capacity": 5.0,
+            "ImpactDamage": {}
+          },
+          "Modes": [
+            {
+              "Name": "Single",
+              "LocalisedName": "[SEMI]",
+              "RoundsPerMinute": 50.0,
+              "FireType": "single",
+              "AmmoPerShot": 1.0,
+              "PelletsPerShot": 1.0,
+              "DamagePerShot": {},
+              "DamagePerSecond": {}
+            }
+          ]
+        },
+        "Ammunition": {
+          "Speed": 180.0,
+          "Range": 144.0,
+          "Size": 0.0,
+          "Capacity": 5.0,
+          "ImpactDamage": {}
+        }
+      },
+      "Types": [
+        "WeaponDefensive.CountermeasureLauncher"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Countermeasures",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_countermeasure_launcher_left",
+      "Size": 2,
+      "Loadout": "MISC_CML_Decoy_Small",
+      "InstalledItem": {
+        "ClassName": "MISC_CML_Decoy_Small",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponDefensive.CountermeasureLauncher",
+        "Name": "Aegis Gladius - Decoy Launcher",
+        "Description": "[PH] Aegis Gladius - Decoy Launcher",
+        "Manufacturer": {
+          "Code": "AEG",
+          "Name": "Aegis Dynamics"
+        },
+        "Durability": {
+          "Health": 1000.0
+        },
+        "PowerConnection": {
+          "PowerBase": 1.0,
+          "PowerDraw": 1.0
+        },
+        "Weapon": {
+          "Ammunition": {
+            "Speed": 65.0,
+            "Range": 520.0,
+            "Size": 0.0,
+            "Capacity": 48.0,
+            "ImpactDamage": {}
+          },
+          "Modes": [
+            {
+              "Name": "Burst",
+              "LocalisedName": "[BURST]",
+              "RoundsPerMinute": 450.0,
+              "FireType": "burst",
+              "AmmoPerShot": 1.0,
+              "PelletsPerShot": 1.0,
+              "DamagePerShot": {},
+              "DamagePerSecond": {}
+            }
+          ]
+        },
+        "Ammunition": {
+          "Speed": 65.0,
+          "Range": 520.0,
+          "Size": 0.0,
+          "Capacity": 48.0,
+          "ImpactDamage": {}
+        }
+      },
+      "Types": [
+        "WeaponDefensive.CountermeasureLauncher"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Countermeasures",
+      "Uneditable": true
+    }
+  ],
+  "Shields": [
+    {
+      "PortName": "hardpoint_shield_generator",
+      "Size": 2,
+      "Loadout": "SHLD_GODI_S02_FullStop_SCItem",
+      "InstalledItem": {
+        "ClassName": "SHLD_GODI_S02_FullStop_SCItem",
+        "Size": 2,
+        "Grade": 3,
+        "Type": "Shield.UNDEFINED",
+        "Name": "FullStop",
+        "Description": "Item Type: Shield Generator\nManufacturer: Gorgon Defender Industries\nSize: 2\nGrade: C\nClass: Military\n\nFeaturing proprietary recoil tech, the FullStop shield generator was built to better absorb attacks from a multitude of damage types.",
+        "Manufacturer": {
+          "Code": "GODI",
+          "Name": "Gorgon Defender Industries"
+        },
+        "Shield": {
+          "Health": 7500.0,
+          "Regeneration": 500.0,
+          "DownedDelay": 5.0,
+          "DamagedDelay": 5.0,
+          "Absorption": {
+            "Physical": {
+              "Minimum": 0.5,
+              "Maximum": 0.95
+            },
+            "Energy": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Distortion": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Thermal": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Biochemical": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Stun": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            }
+          }
+        },
+        "Durability": {
+          "Health": 375.0,
+          "Lifetime": 20.0
+        },
+        "PowerConnection": {
+          "PowerBase": 1000.0,
+          "PowerDraw": 1400.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 88412.7,
+          "ThermalEnergyDraw": 90000.0,
+          "CoolingRate": 179.3651
+        }
+      },
+      "Types": [
+        "Shield"
+      ],
+      "Flags": [
+        "invisible"
+      ],
+      "Category": "Shield generators"
+    },
+    {
+      "PortName": "hardpoint_shield_generator_02",
+      "Size": 2,
+      "Loadout": "SHLD_GODI_S02_FullStop_SCItem",
+      "InstalledItem": {
+        "ClassName": "SHLD_GODI_S02_FullStop_SCItem",
+        "Size": 2,
+        "Grade": 3,
+        "Type": "Shield.UNDEFINED",
+        "Name": "FullStop",
+        "Description": "Item Type: Shield Generator\nManufacturer: Gorgon Defender Industries\nSize: 2\nGrade: C\nClass: Military\n\nFeaturing proprietary recoil tech, the FullStop shield generator was built to better absorb attacks from a multitude of damage types.",
+        "Manufacturer": {
+          "Code": "GODI",
+          "Name": "Gorgon Defender Industries"
+        },
+        "Shield": {
+          "Health": 7500.0,
+          "Regeneration": 500.0,
+          "DownedDelay": 5.0,
+          "DamagedDelay": 5.0,
+          "Absorption": {
+            "Physical": {
+              "Minimum": 0.5,
+              "Maximum": 0.95
+            },
+            "Energy": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Distortion": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Thermal": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Biochemical": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            },
+            "Stun": {
+              "Minimum": 1.0,
+              "Maximum": 1.0
+            }
+          }
+        },
+        "Durability": {
+          "Health": 375.0,
+          "Lifetime": 20.0
+        },
+        "PowerConnection": {
+          "PowerBase": 1000.0,
+          "PowerDraw": 1400.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 88412.7,
+          "ThermalEnergyDraw": 90000.0,
+          "CoolingRate": 179.3651
+        }
+      },
+      "Types": [
+        "Shield"
+      ],
+      "Flags": [
+        "invisible"
+      ],
+      "Category": "Shield generators"
+    }
+  ],
+  "PowerPlants": [
+    {
+      "PortName": "hardpoint_powerplant_01",
+      "Size": 2,
+      "Loadout": "POWR_AEGS_S02_Maelstrom_SCItem",
+      "InstalledItem": {
+        "ClassName": "POWR_AEGS_S02_Maelstrom_SCItem",
+        "Size": 2,
+        "Grade": 3,
+        "Type": "PowerPlant.Power",
+        "Name": "Maelstrom",
+        "Description": "Item Type: Power Plant\nManufacturer: Aegis Dynamics\nSize: 2\nGrade: C\nClass: Military\n\nThis military-grade component has been put through the paces by the UEE Navy, so you know the Maelstrom can handle the havoc of battle. ",
+        "Manufacturer": {
+          "Code": "AEG",
+          "Name": "Aegis Dynamics"
+        },
+        "PowerPlant": {
+          "Output": 9375.0
+        },
+        "Durability": {
+          "Health": 1800.0,
+          "Lifetime": 35.2
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 9375.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 86250.0,
+          "ThermalEnergyDraw": 93750.0,
+          "CoolingRate": 205.0
+        }
+      },
+      "Types": [
+        "PowerPlant"
+      ],
+      "Flags": [
+        "invisible"
+      ],
+      "Category": "Power plants"
+    }
+  ],
+  "Coolers": [
+    {
+      "PortName": "hardpoint_cooler",
+      "Size": 2,
+      "Loadout": "COOL_AEGS_S02_Arctic_SCItem",
+      "InstalledItem": {
+        "ClassName": "COOL_AEGS_S02_Arctic_SCItem",
+        "Size": 2,
+        "Grade": 3,
+        "Type": "Cooler.UNDEFINED",
+        "Name": "Arctic",
+        "Description": "Item Type: Cooler\nManufacturer: Aegis Dynamics \nSize: 2\nGrade: C\nClass: Military\n\nProviding the kind of durability that made Aegis products a mainstay with the military, the Arctic is an economic mil-spec cooler capable of withstanding the rigors of combat without sacrificing performance.",
+        "Manufacturer": {
+          "Code": "AEG",
+          "Name": "Aegis Dynamics"
+        },
+        "Cooler": {
+          "Rate": 5200000.0
+        },
+        "Durability": {
+          "Health": 1750.0,
+          "Lifetime": 88.0
+        },
+        "PowerConnection": {
+          "PowerBase": 16.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "Cooler"
+      ],
+      "Flags": [
+        "invisible"
+      ],
+      "Category": "Coolers"
+    },
+    {
+      "PortName": "hardpoint_cooler_02",
+      "Size": 2,
+      "Loadout": "COOL_AEGS_S02_Arctic_SCItem",
+      "InstalledItem": {
+        "ClassName": "COOL_AEGS_S02_Arctic_SCItem",
+        "Size": 2,
+        "Grade": 3,
+        "Type": "Cooler.UNDEFINED",
+        "Name": "Arctic",
+        "Description": "Item Type: Cooler\nManufacturer: Aegis Dynamics \nSize: 2\nGrade: C\nClass: Military\n\nProviding the kind of durability that made Aegis products a mainstay with the military, the Arctic is an economic mil-spec cooler capable of withstanding the rigors of combat without sacrificing performance.",
+        "Manufacturer": {
+          "Code": "AEG",
+          "Name": "Aegis Dynamics"
+        },
+        "Cooler": {
+          "Rate": 5200000.0
+        },
+        "Durability": {
+          "Health": 1750.0,
+          "Lifetime": 88.0
+        },
+        "PowerConnection": {
+          "PowerBase": 16.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "Cooler"
+      ],
+      "Flags": [
+        "invisible"
+      ],
+      "Category": "Coolers"
+    }
+  ],
+  "QuantumDrives": [
+    {
+      "PortName": "hardpoint_quantum_drive",
+      "Size": 2,
+      "Loadout": "QDRV_WETK_S02_Crossfield_SCItem",
+      "InstalledItem": {
+        "ClassName": "QDRV_WETK_S02_Crossfield_SCItem",
+        "Size": 2,
+        "Grade": 3,
+        "Type": "QuantumDrive.UNDEFINED",
+        "Name": "Crossfield",
+        "Description": "Item Type: Quantum Drive\nManufacturer: Wei-Tek \nSize: 2\nGrade: C\nClass: Military\n\nWei-Tek has marketed the Crossfield specifically to target military personnel and veteran pilots who will appreciate the stats that the mil-spec quantum drive offers.",
+        "Manufacturer": {
+          "Code": "WETK",
+          "Name": "Wei-Tek"
+        },
+        "QuantumDrive": {
+          "FuelRate": 2.0709999999999998E-08,
+          "JumpRange": 3.402823E+38,
+          "StandardJump": {
+            "Speed": 235872000.0,
+            "Cooldown": 21.6,
+            "Stage1AccelerationRate": 1080000.0,
+            "State2AccelerationRate": 13867670.0,
+            "SpoolUpTime": 2.25
+          },
+          "SplineJump": {
+            "Speed": 400000.0,
+            "Cooldown": 21.6,
+            "Stage1AccelerationRate": 250.0,
+            "State2AccelerationRate": 50000.0,
+            "SpoolUpTime": 2.25
+          }
+        },
+        "Durability": {
+          "Health": 2700.0,
+          "Lifetime": 41.6
+        },
+        "PowerConnection": {
+          "PowerBase": 4.5,
+          "PowerDraw": 1000.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 110136.0,
+          "ThermalEnergyDraw": 110136.0,
+          "CoolingRate": 181.3015
+        }
+      },
+      "Types": [
+        "QuantumDrive.QDrive"
+      ],
+      "Flags": [
+        "invisible"
+      ],
+      "Category": "Quantum drives"
+    }
+  ],
+  "QuantumFuelTanks": [
+    {
+      "PortName": "hardpoint_quantum_fuel_tank",
+      "Size": 2,
+      "Loadout": "QTNK_MISC_Freelancer_MIS",
+      "InstalledItem": {
+        "ClassName": "QTNK_MISC_Freelancer_MIS",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "QuantumFuelTank.QuantumFuel",
+        "Name": "QTNK_MISC_Freelancer_MIS",
+        "Tags": [
+          "flightReady"
+        ],
+        "QuantumFuelTank": {
+          "Capacity": 2500.0
+        }
+      },
+      "Types": [
+        "QuantumFuelTank.QuantumFuel"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Quantum fuel tanks",
+      "Uneditable": true
+    }
+  ],
+  "MainThrusters": [
+    {
+      "PortName": "hardpoint_engine_right",
+      "Size": 5,
+      "Loadout": "MISC_Freelancer_Thruster_Main_Right",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Main_Right",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "MainThruster.FixedThruster",
+        "Name": "MISC_Freelancer_Thruster_Main_Right",
+        "Thruster": {
+          "ThrustCapacity": 4795510.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Main",
+          "MaxThrustFuelRate": 59.943875000000006
+        },
+        "Durability": {
+          "Health": 15750.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 45.0
+        }
+      },
+      "Types": [
+        "MainThruster"
+      ],
+      "Flags": [
+        "main",
+        "rear",
+        "right",
+        "uneditable"
+      ],
+      "Category": "Main thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_engine_left",
+      "Size": 5,
+      "Loadout": "MISC_Freelancer_Thruster_Main",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Main",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "MainThruster.FixedThruster",
+        "Name": "MISC_Freelancer_Thruster_Main",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 4795510.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Main",
+          "MaxThrustFuelRate": 59.943875000000006
+        },
+        "Durability": {
+          "Health": 15750.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 45.0
+        }
+      },
+      "Types": [
+        "MainThruster"
+      ],
+      "Flags": [
+        "main",
+        "rear",
+        "left",
+        "uneditable"
+      ],
+      "Category": "Main thrusters",
+      "Uneditable": true
+    }
+  ],
+  "RetroThrusters": [
+    {
+      "PortName": "hardpoint_retro_right_a",
+      "Size": 3,
+      "Loadout": "MISC_Freelancer_Thruster_Retro",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Retro",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.FixedThruster",
+        "Name": "MISC_Freelancer_Thruster_Retro",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1235127.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Retro",
+          "MaxThrustFuelRate": 15.439087500000001
+        },
+        "Durability": {
+          "Health": 14560.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 45.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "retro",
+        "uneditable"
+      ],
+      "Category": "Retro thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_retro_right_b",
+      "Size": 3,
+      "Loadout": "MISC_Freelancer_Thruster_Retro",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Retro",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.FixedThruster",
+        "Name": "MISC_Freelancer_Thruster_Retro",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1235127.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Retro",
+          "MaxThrustFuelRate": 15.439087500000001
+        },
+        "Durability": {
+          "Health": 14560.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 45.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "retro",
+        "uneditable"
+      ],
+      "Category": "Retro thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_retro_left_a",
+      "Size": 3,
+      "Loadout": "MISC_Freelancer_Thruster_Retro",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Retro",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.FixedThruster",
+        "Name": "MISC_Freelancer_Thruster_Retro",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1235127.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Retro",
+          "MaxThrustFuelRate": 15.439087500000001
+        },
+        "Durability": {
+          "Health": 14560.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 45.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "retro",
+        "uneditable"
+      ],
+      "Category": "Retro thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_retro_left_b",
+      "Size": 3,
+      "Loadout": "MISC_Freelancer_Thruster_Retro",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Retro",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.FixedThruster",
+        "Name": "MISC_Freelancer_Thruster_Retro",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1235127.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Retro",
+          "MaxThrustFuelRate": 15.439087500000001
+        },
+        "Durability": {
+          "Health": 14560.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 45.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "retro",
+        "uneditable"
+      ],
+      "Category": "Retro thrusters",
+      "Uneditable": true
+    }
+  ],
+  "VtolThrusters": [],
+  "ManeuveringThrusters": [
+    {
+      "PortName": "hardpoint_thruster_front_left_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_front_right_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_front_left_top",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_front_right_top",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_centre_rear_right_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_centre_rear_left_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_rear_right_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_back_right_top",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_rear_left_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_back_left_top",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_centre_right_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_thruster_centre_left_bottom",
+      "Size": 2,
+      "Loadout": "MISC_Freelancer_Thruster_Mav_Joint",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "ManneuverThruster.JointThruster",
+        "Name": "MISC_Freelancer_Thruster_Mav_Joint",
+        "Manufacturer": {
+          "Code": "MIS",
+          "Name": "Musashi Industrial & Starflight Concern"
+        },
+        "Thruster": {
+          "ThrustCapacity": 1218713.0,
+          "FuelRate": 1.25E-05,
+          "Type": "Maneuver",
+          "MaxThrustFuelRate": 15.2339125
+        },
+        "Durability": {
+          "Health": 13450.0,
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 20.0,
+          "PowerDraw": 24.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 500.0,
+          "ThermalEnergyDraw": 1250.0,
+          "CoolingRate": 42.0
+        }
+      },
+      "Types": [
+        "ManneuverThruster"
+      ],
+      "Flags": [
+        "uneditable"
+      ],
+      "Category": "Maneuvering thrusters",
+      "Uneditable": true
+    }
+  ],
+  "HydrogenFuelTanks": [
+    {
+      "PortName": "hardpoint_fuel_tank_left",
+      "Size": 1,
+      "Loadout": "HTNK_MISC_Freelancer_MIS",
+      "InstalledItem": {
+        "ClassName": "HTNK_MISC_Freelancer_MIS",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "FuelTank.Fuel",
+        "Name": "HTNK_MISC_Freelancer_MIS",
+        "Tags": [
+          "flightReady"
+        ],
+        "HydrogenFuelTank": {
+          "Capacity": 187500.0
+        }
+      },
+      "Types": [
+        "FuelTank"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Fuel tanks",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_fuel_tank_right",
+      "Size": 1,
+      "Loadout": "HTNK_MISC_Freelancer_MIS",
+      "InstalledItem": {
+        "ClassName": "HTNK_MISC_Freelancer_MIS",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "FuelTank.Fuel",
+        "Name": "HTNK_MISC_Freelancer_MIS",
+        "Tags": [
+          "flightReady"
+        ],
+        "HydrogenFuelTank": {
+          "Capacity": 187500.0
+        }
+      },
+      "Types": [
+        "FuelTank"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Fuel tanks",
+      "Uneditable": true
+    }
+  ],
+  "HydogenFuelIntakes": [
+    {
+      "PortName": "hardpoint_fuel_intake_left",
+      "Size": 1,
+      "Loadout": "INTK_MISC_Freelancer_MIS",
+      "InstalledItem": {
+        "ClassName": "INTK_MISC_Freelancer_MIS",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "FuelIntake.Fuel",
+        "Name": "INTK_MISC_Freelancer_MIS",
+        "Tags": [
+          "flightReady"
+        ],
+        "HydrogenFuelIntake": {
+          "Rate": 48.5
+        },
+        "PowerConnection": {
+          "PowerBase": 0.5,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "FuelIntake"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Fuel intakes",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_fuel_intake_right",
+      "Size": 1,
+      "Loadout": "INTK_MISC_Freelancer_MIS",
+      "InstalledItem": {
+        "ClassName": "INTK_MISC_Freelancer_MIS",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "FuelIntake.Fuel",
+        "Name": "INTK_MISC_Freelancer_MIS",
+        "Tags": [
+          "flightReady"
+        ],
+        "HydrogenFuelIntake": {
+          "Rate": 48.5
+        },
+        "PowerConnection": {
+          "PowerBase": 0.5,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "FuelIntake"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Fuel intakes",
+      "Uneditable": true
+    }
+  ],
+  "InterdictionHardpoints": [],
+  "CargoGrids": [
+    {
+      "PortName": "hardpoint_cargogrid_mid_left",
+      "Size": 1,
+      "Loadout": "MISC_Freelancer_CargoGrid_Mid",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_CargoGrid_Mid",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Cargo.UNDEFINED",
+        "Name": "MISC_Freelancer_CargoGrid_Mid",
+        "CargoGrid": {
+          "Capacity": 6.0,
+          "Width": 2.5,
+          "Height": 3.75,
+          "Depth": 1.25
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "Cargo"
+      ],
+      "Flags": [
+        "selfphys",
+        "uneditable"
+      ],
+      "Category": "Cargo grids",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_cargogrid_mid_right",
+      "Size": 1,
+      "Loadout": "MISC_Freelancer_CargoGrid_Mid",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_CargoGrid_Mid",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Cargo.UNDEFINED",
+        "Name": "MISC_Freelancer_CargoGrid_Mid",
+        "CargoGrid": {
+          "Capacity": 6.0,
+          "Width": 2.5,
+          "Height": 3.75,
+          "Depth": 1.25
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "Cargo"
+      ],
+      "Flags": [
+        "selfphys",
+        "uneditable"
+      ],
+      "Category": "Cargo grids",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_cargogrid_rear",
+      "Size": 1,
+      "Loadout": "MISC_Freelancer_CargoGrid_Rear_DUR",
+      "InstalledItem": {
+        "ClassName": "MISC_Freelancer_CargoGrid_Rear_DUR",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Cargo.UNDEFINED",
+        "Name": "MISC_Freelancer_CargoGrid_Rear_DUR",
+        "CargoGrid": {
+          "Capacity": 24.0,
+          "Width": 2.5,
+          "Height": 3.75,
+          "Depth": 5.0
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "Cargo"
+      ],
+      "Flags": [
+        "selfphys",
+        "uneditable"
+      ],
+      "Category": "Cargo grids",
+      "Uneditable": true
+    }
+  ],
+  "Avionics": [
+    {
+      "PortName": "hardpoint_radar",
+      "Size": 2,
+      "Loadout": "RADR_WLOP_S02_Chernykh",
+      "InstalledItem": {
+        "ClassName": "RADR_WLOP_S02_Chernykh",
+        "Size": 2,
+        "Grade": 1,
+        "Type": "Radar.MidRangeRadar",
+        "Name": "Chernykh",
+        "Description": "Item Type: Radar\nManufacturer: WillsOp\nSize: 2\nGrade: C\nClass: Civilian\n\nThe Chernykh is named after the famed 26th century engineer who designed some of the most prized radars of that era. This medium radar from WillsOp celebrates both the look and performance of those classic components.",
+        "Tags": [
+          "flightReady"
+        ],
+        "Durability": {
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 0.1,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Radar": {
+          "DetectionLifetime": 0.0,
+          "AltitudeCeiling": 0.0,
+          "CrossSectionOcclusion": false
+        },
+        "Ports": [
+          {
+            "PortName": "BatteryPort",
+            "Size": 2,
+            "Types": [
+              "Battery"
+            ],
+            "Flags": [
+              "invisible"
+            ],
+            "Category": "Batteries"
+          }
+        ]
+      },
+      "Types": [
+        "Radar.ShortRangeRadar",
+        "Radar.MidRangeRadar"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Radars",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_copilot_radar",
+      "Size": 2,
+      "Types": [
+        "Radar.ShortRangeRadar",
+        "Radar.MidRangeRadar"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Radars",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_radar_turret",
+      "Size": 2,
+      "Loadout": "RADR_WLOP_S02_Chernykh",
+      "InstalledItem": {
+        "ClassName": "RADR_WLOP_S02_Chernykh",
+        "Size": 2,
+        "Grade": 1,
+        "Type": "Radar.MidRangeRadar",
+        "Name": "Chernykh",
+        "Description": "Item Type: Radar\nManufacturer: WillsOp\nSize: 2\nGrade: C\nClass: Civilian\n\nThe Chernykh is named after the famed 26th century engineer who designed some of the most prized radars of that era. This medium radar from WillsOp celebrates both the look and performance of those classic components.",
+        "Tags": [
+          "flightReady"
+        ],
+        "Durability": {
+          "Lifetime": 720.0
+        },
+        "PowerConnection": {
+          "PowerBase": 0.1,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        },
+        "Radar": {
+          "DetectionLifetime": 0.0,
+          "AltitudeCeiling": 0.0,
+          "CrossSectionOcclusion": false
+        },
+        "Ports": [
+          {
+            "PortName": "BatteryPort",
+            "Size": 2,
+            "Types": [
+              "Battery"
+            ],
+            "Flags": [
+              "invisible"
+            ],
+            "Category": "Batteries"
+          }
+        ]
+      },
+      "Types": [
+        "Radar.ShortRangeRadar",
+        "Radar.MidRangeRadar"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Radars",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_scanner",
+      "Size": 1,
+      "Loadout": "test_scanner",
+      "InstalledItem": {
+        "ClassName": "test_scanner",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Scanner.UNDEFINED",
+        "Name": "test_scanner",
+        "Tags": [
+          "flightReady"
+        ],
+        "Scanner": {
+          "Range": 0.0
+        }
+      },
+      "Types": [
+        "Scanner"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Scanners",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_ping",
+      "Size": 1,
+      "Loadout": "test_ping_S2",
+      "InstalledItem": {
+        "ClassName": "test_ping_S2",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Ping.UNDEFINED",
+        "Name": "Ping",
+        "Description": "Ping",
+        "Tags": [
+          "flightReady"
+        ]
+      },
+      "Types": [
+        "Ping"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Pings",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_transponder",
+      "Size": 1,
+      "Types": [
+        "Transponder"
+      ],
+      "Flags": [
+        "invisible",
+        "uneditable"
+      ],
+      "Category": "Transponders",
+      "Uneditable": true
+    }
+  ]
+}

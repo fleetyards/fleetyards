@@ -1,0 +1,152 @@
+{
+  "ClassName": "ESPR_LaserCannon_S1",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Lightstrike I Cannon",
+  "Description": "Manufacturer: Esperia\nItem Type: Laser Cannon \nSize: S1\n\nThe Lightstrike I takes the attack to distant targets by delivering focused, high damage blasts that will make any aggressor think twice before coming too close. Capable of providing powerful overwatch options during troop deployments or engaging targets in outer space, it's easy to see why the Lightstrike I was feared by UPE forces during the First Tevarin War.  ",
+  "Manufacturer": {
+    "Code": "ESPR",
+    "Name": "Esperia"
+  },
+  "Tags": [
+    "ESP",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 220.0,
+    "PowerDraw": 220.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 61.8181
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 85.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 240.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 85.0
+        },
+        "DamagePerSecond": {
+          "Energy": 340.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 1700.0,
+      "Cooldown": 0.75,
+      "CostPerBullet": 43.0,
+      "RequestedAmmoLoad": 10200.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 85.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Loadout": "ESPR_LaserCannon_Barrel_S1",
+      "InstalledItem": {
+        "ClassName": "ESPR_LaserCannon_Barrel_S1",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Barrel",
+        "Name": "ESPR_LaserCannon_Barrel_S1",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Loadout": "ESPR_LaserCannon_FiringMechanism_S1",
+      "InstalledItem": {
+        "ClassName": "ESPR_LaserCannon_FiringMechanism_S1",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.FiringMechanism",
+        "Name": "ESPR_LaserCannon_FiringMechanism_S1",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Loadout": "ESPR_LaserCannon_PowerArray_S1",
+      "InstalledItem": {
+        "ClassName": "ESPR_LaserCannon_PowerArray_S1",
+        "Size": 3,
+        "Grade": 3,
+        "Type": "WeaponAttachment.PowerArray",
+        "Name": "ESPR_LaserCannon_PowerArray_S1",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Loadout": "ESPR_LaserCannon_Ventilation_S1",
+      "InstalledItem": {
+        "ClassName": "ESPR_LaserCannon_Ventilation_S1",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Ventilation",
+        "Name": "ESPR_LaserCannon_Ventilation_S1",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

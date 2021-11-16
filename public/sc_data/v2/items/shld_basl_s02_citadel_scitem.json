@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BASL_S02_Citadel_SCItem",
+  "Size": 2,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Citadel",
+  "Description": "Item Type: Shield Generator\nManufacturer: Basilisk\nSize: 2\nGrade: B\nClass: Industrial\n\nFortify your ship with Basilisk’s Citadel shield generator. Tailored toward industrial vessels, the component emits a robust and reliable shield.",
+  "Manufacturer": {
+    "Code": "BASL",
+    "Name": "Basilisk"
+  },
+  "Shield": {
+    "Health": 8250.0,
+    "Regeneration": 550.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 525.0,
+    "Lifetime": 42.0
+  },
+  "PowerConnection": {
+    "PowerBase": 1000.0,
+    "PowerDraw": 1400.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 93366.21,
+    "ThermalEnergyDraw": 94500.0,
+    "CoolingRate": 188.5465
+  }
+}

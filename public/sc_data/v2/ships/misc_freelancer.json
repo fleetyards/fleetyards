@@ -1,0 +1,108 @@
+{
+  "ClassName": "MISC_Freelancer",
+  "Name": "MISC Freelancer",
+  "Description": "Manufacturer: MISC\nFocus: Medium Freight\n\nFreelancers are used as long haul merchant ships by major corporations, but they are just as frequently repurposed as dedicated exploration vessels by independent captains who want to operate on the fringes of the galaxy.",
+  "Career": "Transporter",
+  "Role": "Medium Freight",
+  "Size": 3,
+  "Cargo": 66,
+  "Crew": 1,
+  "WeaponCrew": 1,
+  "OperationsCrew": 0,
+  "Mass": 231696.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "MIS",
+    "Name": "Musashi Industrial & Starflight Concern"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 8400.0,
+    "Body": 9200.0,
+    "Tail": 6200.0
+  },
+  "DamageBeforeDetach": {
+    "Roof_Scoop": 1200.0,
+    "Wing_Left": 1960.0,
+    "Wingflap_Left": 640.0,
+    "Wing_Right": 1960.0,
+    "WingFlap_Right": 640.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 154.0,
+    "MaxSpeed": 1005.0,
+    "ZeroToScm": 3.7202700025648996,
+    "ZeroToMax": 24.278385406348857,
+    "ScmToZero": 7.2221690562994745,
+    "MaxToZero": 47.13168767260371,
+    "Acceleration": {
+      "Main": 41.394844969270075,
+      "Retro": 21.323233892686968,
+      "Vtol": 0.0,
+      "Maneuvering": 63.11958773565362
+    },
+    "AccelerationG": {
+      "Main": 4.221099385267762,
+      "Retro": 2.174364695487077,
+      "Vtol": 0.0,
+      "Maneuvering": 6.4364065908958565
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 360000.0,
+    "FuelIntakeRate": 94.0,
+    "FuelUsage": {
+      "Main": 119.88775000000001,
+      "Retro": 61.756350000000005,
+      "Vtol": 0.0,
+      "Maneuvering": 182.80695
+    },
+    "ThrustCapacity": {
+      "Main": 9591020.0,
+      "Retro": 4940508.0,
+      "Vtol": 0.0,
+      "Maneuvering": 14624556.0
+    },
+    "IntakeToMainFuelRatio": 0.784066762450709,
+    "IntakeToTankCapacityRatio": 0.0002611111111111111,
+    "TimeForIntakesToFillTank": 3829.7872340425533,
+    "ManeuveringTimeTillEmpty": 3069.2833159513852
+  },
+  "QuantumTravel": {
+    "Speed": 124143200.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 2500.0,
+    "Range": 229357798165.1376,
+    "PortOlisarToArcCorpTime": 337.7337709193899,
+    "PortOlisarToArcCorpFuel": 457.008126663,
+    "PortOlisarToArcCorpAndBack": 2.735181120579407
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [
+    {
+      "Size": 6,
+      "Turret": true,
+      "WeaponSizes": [
+        2,
+        2
+      ]
+    }
+  ],
+  "RemoteTurrets": []
+}

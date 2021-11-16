@@ -1,0 +1,80 @@
+{
+  "ClassName": "AMRS_LaserCannon_S6",
+  "Size": 6,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Omnisky XVIII Cannon",
+  "Description": "Manufacturer: Amon & Reese Co.\nItem Type: Laser Cannon\nSize: 6\n\nNicknamed 'Augustus' by Amon & Reese engineers after the Roman Emperor who founded the notable 'Eighteenth Legion,' this massive size six laser autocannon hits hard over great distances, making the Omnisky XVIII an effective way to keep enemies at bay.",
+  "Manufacturer": {
+    "Code": "AMRS",
+    "Name": "Amon & Reese Co."
+  },
+  "Tags": [
+    "AMRS",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 4224.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 500.0,
+    "PowerDraw": 500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 381.47
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 2800.0,
+      "Size": 4.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 2000.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 60.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 2000.0
+        },
+        "DamagePerSecond": {
+          "Energy": 2000.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 10000.0,
+      "Cooldown": 2.0,
+      "CostPerBullet": 1000.0,
+      "RequestedAmmoLoad": 60000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 2800.0,
+    "Size": 4.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 2000.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

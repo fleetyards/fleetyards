@@ -1,0 +1,80 @@
+{
+  "ClassName": "KRIG_LaserCannon_S3",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Quarreler Cannon",
+  "Description": "Manufacturer: Kruger Intergalactic\nItem Type: Laser Cannon\nSize: 3\n\nCrafted with precision manufactured parts forged to extremely tight tolerances, designed for top-of-class heat management and assembled to exceed all industry standards, the Quarreler laser autocannon was created by Kruger Intergalactic for true defensive dependability.",
+  "Manufacturer": {
+    "Code": "KRI",
+    "Name": "Kruger Intergalatic"
+  },
+  "Tags": [
+    "KRIG",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 2850.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 240.0,
+    "PowerDraw": 240.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 161.8181
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 3.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 150.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 200.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 150.0
+        },
+        "DamagePerSecond": {
+          "Energy": 500.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2500.0,
+      "Cooldown": 1.25,
+      "CostPerBullet": 75.0,
+      "RequestedAmmoLoad": 15000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 3.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 150.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

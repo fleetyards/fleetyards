@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BEHR_S02_6MA_SCItem",
+  "Size": 2,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "6MA 'Kozane'",
+  "Description": "Item Type: Shield Generator\nManufacturer: Behring\nSize: 2\nGrade: B\nClass: Civilian\n\nBehring’s ironclad reputation is almost as impenetrable as the shield produced by the 6MA ‘Kozane’. If it’s good enough for Behring, it’s good enough for you.",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Shield": {
+    "Health": 8250.0,
+    "Regeneration": 550.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 262.5,
+    "Lifetime": 32.0
+  },
+  "PowerConnection": {
+    "PowerBase": 1000.0,
+    "PowerDraw": 1400.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 44743.73,
+    "ThermalEnergyDraw": 47250.0,
+    "CoolingRate": 93.49749
+  }
+}

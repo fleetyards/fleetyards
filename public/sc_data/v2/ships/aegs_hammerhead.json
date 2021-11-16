@@ -1,0 +1,136 @@
+{
+  "ClassName": "AEGS_Hammerhead",
+  "Name": "Aegis Hammerhead",
+  "Description": "Manufacturer: Aegis Dynamics \nFocus: Heavy Gunship\n\nA fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.",
+  "Career": "Combat",
+  "Role": "Corvette",
+  "Size": 5,
+  "Cargo": 40,
+  "Crew": 2,
+  "WeaponCrew": 6,
+  "OperationsCrew": 0,
+  "Mass": 4617511.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 80000.0,
+    "nose": 80000.0
+  },
+  "DamageBeforeDetach": {},
+  "FlightCharacteristics": {
+    "ScmSpeed": 105.0,
+    "MaxSpeed": 1000.0,
+    "ZeroToScm": 1.9553484316032677,
+    "ZeroToMax": 18.622366015269215,
+    "ScmToZero": 6.384486289987427,
+    "MaxToZero": 60.804631333213585,
+    "Acceleration": {
+      "Main": 53.69886936923377,
+      "Retro": 16.446115667076917,
+      "Vtol": 0.0,
+      "Maneuvering": 74.76214783245779
+    },
+    "AccelerationG": {
+      "Main": 5.475760681126268,
+      "Retro": 1.677037050963136,
+      "Vtol": 0.0,
+      "Maneuvering": 7.623617300443047
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 6945000.0,
+    "FuelIntakeRate": 926.0,
+    "FuelUsage": {
+      "Main": 3099.4390000000003,
+      "Retro": 949.2515000000001,
+      "Vtol": 0.0,
+      "Maneuvering": 4315.188000000001
+    },
+    "ThrustCapacity": {
+      "Main": 247955120.0,
+      "Retro": 75940120.0,
+      "Vtol": 0.0,
+      "Maneuvering": 345215040.0
+    },
+    "IntakeToMainFuelRatio": 0.2987637440194822,
+    "IntakeToTankCapacityRatio": 0.00013333333333333334,
+    "TimeForIntakesToFillTank": 7500.0,
+    "ManeuveringTimeTillEmpty": 1603.543542614429
+  },
+  "QuantumTravel": {
+    "Speed": 59588720.0,
+    "SpoolTime": 19.375,
+    "FuelCapacity": 11000.0,
+    "Range": 284679089026.9151,
+    "PortOlisarToArcCorpTime": 703.6122116736187,
+    "PortOlisarToArcCorpFuel": 1620.0728453448,
+    "PortOlisarToArcCorpAndBack": 3.3949090720235082
+  },
+  "PilotHardpoints": [],
+  "MannedTurrets": [
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        4,
+        4,
+        4,
+        4
+      ]
+    }
+  ],
+  "RemoteTurrets": []
+}

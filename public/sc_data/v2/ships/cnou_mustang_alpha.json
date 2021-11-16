@@ -1,0 +1,122 @@
+{
+  "ClassName": "CNOU_Mustang_Alpha",
+  "Name": "C.O. Mustang Alpha",
+  "Description": "Manufacturer: Consolidated Outland \nFocus: Light Freight\n\nInspired by Consolidated Outland CEO Silas Koerner’s cutting edge vision, the Mustang Alpha is a sleek, stylish spacecraft that uses ultralight alloys to push power ratios to the limits, albeit sometimes unsafely. And now, with the optional Cargo Carrier, you can have the Alpha’s advantages without sacrificing carrying capacity.",
+  "Career": "Multi-Role",
+  "Role": "Starter / Light Freight",
+  "Size": 2,
+  "Cargo": 4,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 34221.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "CNOU",
+    "Name": "Consolidated Outland"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 2500.0,
+    "body": 1200.0
+  },
+  "DamageBeforeDetach": {
+    "cockpit_glass_frame_inner": 1.0,
+    "nacelle_left": 1200.0,
+    "wing_left_part02": 500.0,
+    "wing_left_part03": 50.0,
+    "small_wing_left": 75.0,
+    "nacelle_right": 1200.0,
+    "wing_right_part02": 500.0,
+    "wing_right_part03": 50.0,
+    "small_wing_right": 75.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 191.0,
+    "MaxSpeed": 1160.0,
+    "ZeroToScm": 1.6767297130206582,
+    "ZeroToMax": 10.183279932481485,
+    "ScmToZero": 4.4841746537877505,
+    "MaxToZero": 27.23373088164288,
+    "Acceleration": {
+      "Main": 113.91221764413665,
+      "Retro": 42.59423745653253,
+      "Vtol": 0.0,
+      "Maneuvering": 201.57408608749017
+    },
+    "AccelerationG": {
+      "Main": 11.615813327217577,
+      "Retro": 4.343403379749122,
+      "Vtol": 0.0,
+      "Maneuvering": 20.554836030946955
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 60000.0,
+    "FuelIntakeRate": 15.0,
+    "FuelUsage": {
+      "Main": 48.727375,
+      "Retro": 18.2202175,
+      "Vtol": 0.0,
+      "Maneuvering": 86.22583499999998
+    },
+    "ThrustCapacity": {
+      "Main": 3898190.0,
+      "Retro": 1457617.4,
+      "Vtol": 0.0,
+      "Maneuvering": 6898066.800000002
+    },
+    "IntakeToMainFuelRatio": 0.30783517478624695,
+    "IntakeToTankCapacityRatio": 0.00025,
+    "TimeForIntakesToFillTank": 4000.0,
+    "ManeuveringTimeTillEmpty": 780.840338420107
+  },
+  "QuantumTravel": {
+    "Speed": 159399800.0,
+    "SpoolTime": 5.5,
+    "FuelCapacity": 583.33,
+    "Range": 54608687511.70193,
+    "PortOlisarToArcCorpTime": 263.0326453985513,
+    "PortOlisarToArcCorpFuel": 447.86796412974,
+    "PortOlisarToArcCorpAndBack": 0.6512298788030961
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Turret": true,
+      "WeaponSizes": [
+        2,
+        2
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

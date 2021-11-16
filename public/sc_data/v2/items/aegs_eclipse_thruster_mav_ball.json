@@ -1,0 +1,30 @@
+{
+  "ClassName": "AEGS_Eclipse_Thruster_Mav_Ball",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "ManneuverThruster.JointThruster",
+  "Name": "AEGS_Eclipse_Thruster_Mav_Ball",
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "Thruster": {
+    "ThrustCapacity": 240529.9,
+    "FuelRate": 1.25E-05,
+    "Type": "Maneuver",
+    "MaxThrustFuelRate": 3.00662375
+  },
+  "Durability": {
+    "Health": 10500.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 40.0
+  }
+}

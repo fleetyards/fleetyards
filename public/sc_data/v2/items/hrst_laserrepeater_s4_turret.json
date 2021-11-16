@@ -1,0 +1,151 @@
+{
+  "ClassName": "HRST_LaserRepeater_S4_Turret",
+  "Size": 4,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Attrition-4 Repeater",
+  "Description": "Manufacturer: Hurston Dynamics\nItem Type: Laser Repeater\nSize: 4\n\nHurston Dynamics has fully integrated it's cascade laser technology into their Attrition-line of repeaters. The size four Attrition-4 is no exception, operating at peak performance when near its maximum thermal capacity.",
+  "Manufacturer": {
+    "Code": "HRST",
+    "Name": "Hurston Dynamics"
+  },
+  "Tags": [
+    "HRST",
+    "LaserRepeater",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 220.0,
+    "PowerDraw": 220.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 216.5
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 1400.0,
+      "Range": 1540.0000000000002,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 80.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 480.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 80.0
+        },
+        "DamagePerSecond": {
+          "Energy": 640.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 3200.0,
+      "Cooldown": 1.5,
+      "CostPerBullet": 80.0,
+      "RequestedAmmoLoad": 19200.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 1400.0,
+    "Range": 1540.0000000000002,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 80.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Loadout": "HRST_LaserRepeater_Barrel_S4",
+      "InstalledItem": {
+        "ClassName": "HRST_LaserRepeater_Barrel_S4",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Barrel",
+        "Name": "HRST_LaserRepeater_Barrel_S4",
+        "Manufacturer": {
+          "Code": "HRST",
+          "Name": "Hurston Dynamics"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Loadout": "HRST_LaserRepeater_FiringMechanism_S4",
+      "InstalledItem": {
+        "ClassName": "HRST_LaserRepeater_FiringMechanism_S4",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.FiringMechanism",
+        "Name": "HRST_LaserRepeater_FiringMechanism_S4",
+        "Manufacturer": {
+          "Code": "HRST",
+          "Name": "Hurston Dynamics"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Loadout": "HRST_LaserRepeater_PowerArray_S4",
+      "InstalledItem": {
+        "ClassName": "HRST_LaserRepeater_PowerArray_S4",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.PowerArray",
+        "Name": "HRST_LaserRepeater_PowerArray_S4",
+        "Manufacturer": {
+          "Code": "HRST",
+          "Name": "Hurston Dynamics"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Loadout": "HRST_LaserRepeater_Ventilation_S4",
+      "InstalledItem": {
+        "ClassName": "HRST_LaserRepeater_Ventilation_S4",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Ventilation",
+        "Name": "HRST_LaserRepeater_Ventilation_S4",
+        "Manufacturer": {
+          "Code": "HRST",
+          "Name": "Hurston Dynamics"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

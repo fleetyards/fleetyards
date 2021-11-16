@@ -7,7 +7,6 @@ module ScData
     def initialize
       super
 
-      self.base_url = "#{base_url}/ships"
       self.components_loader = ::ScData::ComponentsLoader.new
       self.hardpoints_loader = ::ScData::HardpointsLoader.new(components_loader: components_loader)
     end
@@ -15,21 +14,8 @@ module ScData
     def load(model)
       return if model.sc_identifier.blank?
 
-      sleep 1
-
-      ship_response = fetch_remote("#{model.sc_identifier.downcase}.json")
-
-      return unless ship_response.success?
-
-      ship_data = (parse_json_response(ship_response) || {})
-
-      sleep 1
-
-      ports_response = fetch_remote("#{model.sc_identifier.downcase}-ports.json")
-
-      return unless ports_response.success?
-
-      components_data = (parse_json_response(ports_response) || {})
+      ship_data = load_ship_data(model.sc_identifier)
+      components_data = load_components_data(model.sc_identifier)
 
       hardpoints_loader.extract_from_components(model, components_data)
 
@@ -39,6 +25,14 @@ module ScData
         hydrogen_fuel_tanks: extract_hydrogen_fuel_tanks(components_data['HydrogenFuelTanks']),
         quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data['QuantumFuelTanks'])
       )
+    end
+
+    private def load_ship_data(sc_identifier)
+      load_from_export("v2/ships/#{sc_identifier.downcase}.json")
+    end
+
+    private def load_components_data(sc_identifier)
+      load_from_export("v2/ships/#{sc_identifier.downcase}-ports.json")
     end
 
     private def extract_cargo_holds(cargo_grids = [])

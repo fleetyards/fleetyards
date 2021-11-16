@@ -1,0 +1,175 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "6df1749c-48ea-43e5-bae5-8084d9fe5aca"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Shield",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "abca0ae0-a819-4aeb-a1a7-f8f1d7e277cf",
+        "Tags": "",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_NameSHLD_ASAS_S01_Mirage",
+          "Description": "@item_Desc_SHLD_ASAS_S01_Mirage"
+        }
+      }
+    },
+    "SHealthComponentParams": {
+      "Health": 106.25,
+      "DamageResistances": {
+        "DamageResistance": {
+          "PhysicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "EnergyResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "DistortionResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "ThermalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "BiochemicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "StunResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          }
+        }
+      }
+    },
+    "SDegradationParams": {
+      "MaxLifetimeHours": 19.0,
+      "InitialAgeRatio": 0.0,
+      "DegradeOnlyWhenAttached": true
+    },
+    "EntityComponentPowerConnection": {
+      "PowerBase": 200.0,
+      "PowerDraw": 250.0,
+      "TimeToReachDrawRequest": 0.0,
+      "SafeguardPriority": 10.0,
+      "DisplayedInPoweredItemList": true,
+      "IsThrottleable": true,
+      "IsOverclockable": false,
+      "OverclockThresholdMin": 0.0,
+      "OverclockThresholdMax": 0.0,
+      "OverpowerPerformance": 0.0,
+      "OverclockPerformance": 0.0,
+      "PowerToEM": 7.1,
+      "DecayRateOfEM": 0.2,
+      "WarningDelayTime": 0.3,
+      "WarningDisplayTime": 8.0
+    },
+    "EntityComponentHeatConnection": {
+      "TemperatureToIR": 40.0,
+      "OverpowerHeat": 0.0,
+      "OverclockThresholdMinHeat": 0.0,
+      "OverclockThresholdMaxHeat": 0.0,
+      "ThermalEnergyBase": 2001.389,
+      "ThermalEnergyDraw": 5300.0,
+      "ThermalConductivity": 0.05,
+      "SpecificHeatCapacity": 0.5,
+      "Mass": 445.3125,
+      "SurfaceArea": 0.05,
+      "StartCoolingTemperature": 300.0,
+      "MaxCoolingRate": 20.84055,
+      "MaxTemperature": 700.0,
+      "OverheatTemperature": 650.0,
+      "RecoveryTemperature": 550.0,
+      "MinTemperature": 0.0,
+      "MisfireMinTemperature": 300.0,
+      "MisfireMaxTemperature": 900.0
+    },
+    "SDistortionParams": {
+      "DecayRate": 5.0,
+      "Maximum": 1038.7,
+      "OverloadRatio": 0.68,
+      "RecoveryRatio": 0.51,
+      "RecoveryTime": 0.45
+    },
+    "SCItemShieldGeneratorParams": {
+      "MaxShieldHealth": 1725.0,
+      "MaxShieldRegen": 450.0,
+      "DecayRatio": 0.25,
+      "DownedRegenDelay": 5.0,
+      "DamagedRegenDelay": 5.0,
+      "MaxReallocation": 0.0,
+      "ReallocationRate": 0.0,
+      "ShieldResistance": [
+        {
+          "Max": 0.25,
+          "Min": 0.0
+        },
+        {
+          "Max": 0.25,
+          "Min": 0.0
+        },
+        {
+          "Max": 0.25,
+          "Min": 0.0
+        },
+        {
+          "Max": 0.0,
+          "Min": 0.0
+        },
+        {
+          "Max": 0.0,
+          "Min": 0.0
+        },
+        {
+          "Max": 0.0,
+          "Min": 0.0
+        }
+      ],
+      "ShieldAbsorption": [
+        {
+          "Max": 0.95,
+          "Min": 0.5
+        },
+        {
+          "Max": 1.0,
+          "Min": 1.0
+        },
+        {
+          "Max": 1.0,
+          "Min": 1.0
+        },
+        {
+          "Max": 1.0,
+          "Min": 1.0
+        },
+        {
+          "Max": 1.0,
+          "Min": 1.0
+        },
+        {
+          "Max": 1.0,
+          "Min": 1.0
+        }
+      ]
+    },
+    "SEntityInteractableParams": {
+      "Interactable": {
+        "SharedInteractions": []
+      }
+    }
+  },
+  "ClassName": "SHLD_ASAS_S01_Mirage_SCItem",
+  "__ref": "94807046-b89e-422d-8bbc-f914b1cbc08d",
+  "__type": "EntityClassDefinition"
+}

@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BASL_S03_Parapet_SCItem",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Parapet",
+  "Description": "Item Type: Shield Generator\nManufacturer: Basilisk\nSize: 3\nGrade: A\nClass: Industrial\n\nAs the peak of Basilisk’s large industrial shield generators, it’s easy to see why the Parapet is so beloved. With one of the industry’s best shield generation to damage ratio, it’s difficult to degrade the shield and expose the hull. ",
+  "Manufacturer": {
+    "Code": "BASL",
+    "Name": "Basilisk"
+  },
+  "Shield": {
+    "Health": 115000.0,
+    "Regeneration": 1440.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 1650.0,
+    "Lifetime": 84.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 512454.5,
+    "ThermalEnergyDraw": 517000.0,
+    "CoolingRate": 158.7972
+  }
+}

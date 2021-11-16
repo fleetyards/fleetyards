@@ -1,0 +1,104 @@
+{
+  "ClassName": "KLWE_LaserRepeater_S1",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "CF-117 Bulldog Repeater",
+  "Description": "Manufacturer: Klaus & Werner\nItem Type: Laser Repeater\nSize: 1\n\nFeaturing a three-barrel sequential fire design, the Klaus & Werner CF-117 Bulldog laser repeater is capable of delivering high velocity energy rounds while maintaining heat efficiency making it a favorite among new pilots who are outfitting their first ship.",
+  "Manufacturer": {
+    "Code": "KLA",
+    "Name": "Klaus & Werner"
+  },
+  "Tags": [
+    "KLWE",
+    "LaserRepeater",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 525.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 180.0,
+    "PowerDraw": 180.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 61.81
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 1400.0,
+      "Range": 1540.0000000000002,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 28.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 720.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 28.0
+        },
+        "DamagePerSecond": {
+          "Energy": 336.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 1680.0,
+      "Cooldown": 0.75,
+      "CostPerBullet": 28.0,
+      "RequestedAmmoLoad": 10080.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 1400.0,
+    "Range": 1540.0000000000002,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 28.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

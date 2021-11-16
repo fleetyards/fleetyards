@@ -1,0 +1,80 @@
+{
+  "ClassName": "MXOX_NeutronCannon_S1",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "NN-13 Cannon",
+  "Description": "Manufacturer: MaxOx\nItem Type: Neutron Cannon\nSize: 1\n\nMaxOx’s NN-13 neutron cannon offers a massive energy payload at the expense of speed and energy efficiency. One could argue the virtues of speed, rate of fire and distance over damage, but the argument becomes irrelevant if you only need to hit them once.",
+  "Manufacturer": {
+    "Code": "MXOX",
+    "Name": "Aegis Dynamics"
+  },
+  "Tags": [
+    "MXOX",
+    "NeutronCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 220.0,
+    "PowerDraw": 220.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 66.66
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 85.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 240.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 85.0
+        },
+        "DamagePerSecond": {
+          "Energy": 340.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 1700.0,
+      "Cooldown": 0.75,
+      "CostPerBullet": 43.0,
+      "RequestedAmmoLoad": 10200.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 85.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

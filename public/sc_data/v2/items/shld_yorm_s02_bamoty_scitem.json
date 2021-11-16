@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_YORM_S02_Bamoty_SCItem",
+  "Size": 2,
+  "Grade": 4,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Bamoty",
+  "Description": "Item Type: Shield Generator\nManufacturer: Yorm\nSize: 2\nGrade: D\nClass: Competition\n\nThe Bamoty is Yorm’s take on a commercial style shield generator. This medium-sized component has won the company a wider fanbase because it expertly balances performance, durability, and stealth.",
+  "Manufacturer": {
+    "Code": "YORM",
+    "Name": "Yorm"
+  },
+  "Shield": {
+    "Health": 6750.0,
+    "Regeneration": 450.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 162.5,
+    "Lifetime": 8.0
+  },
+  "PowerConnection": {
+    "PowerBase": 1000.0,
+    "PowerDraw": 1400.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 22238.1,
+    "ThermalEnergyDraw": 27000.0,
+    "CoolingRate": 52.09524
+  }
+}

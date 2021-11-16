@@ -17,11 +17,7 @@ module ScData
     end
 
     private def load_translations
-      response = fetch_remote('labels.json')
-
-      return {} unless response.success?
-
-      parse_json_response(response)
+      load_from_export('labels.json')
     end
   end
 end

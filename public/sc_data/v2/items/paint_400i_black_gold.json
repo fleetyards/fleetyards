@@ -1,0 +1,17 @@
+{
+  "ClassName": "Paint_400i_Black_Gold",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "400i Penumbra Livery",
+  "Description": "Inky black and shimmering gold combine for the Penumbra livery, making it an elegant option for the 400i.",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Origin Jumpworks"
+  },
+  "Tags": [
+    "Paint_400i",
+    "@Paint_400i_Black_Gold"
+  ]
+}

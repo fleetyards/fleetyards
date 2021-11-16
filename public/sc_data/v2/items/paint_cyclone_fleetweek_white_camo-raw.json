@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "a6502eb3-edf0-46c7-8eb6-96b56dbb58aa",
+        "Tags": "Paint_Cyclone @Paint_Cyclone_FW_White_Camo",
+        "RequiredTags": "Paint_Cyclone",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_NameCyclone_Paint_Fleetweek_Level2_Camo",
+          "Description": "@item_DescCyclone_Paint_Fleetweek_Level2_Camo"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_Cyclone_Fleetweek_White_Camo",
+  "__ref": "09dcd495-0d4a-4ab3-bebd-d8d5d3131e49",
+  "__type": "EntityClassDefinition"
+}

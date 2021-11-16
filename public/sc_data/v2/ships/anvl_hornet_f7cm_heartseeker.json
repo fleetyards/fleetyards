@@ -1,0 +1,112 @@
+{
+  "ClassName": "ANVL_Hornet_F7CM_Heartseeker",
+  "Name": "Anvil F7C-M Hornet Heartseeker",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Medium Fighter\n\nDesigned for pilots whose true love is the pulse-pounding thrill of a harrowing dogfight, the limited-edition F7C-M Heartseeker is 'the one' for true combat die-hards. Loaded with top-of-the-line components and outfitted with four imposing Behring laser cannons, this fierce eradicator hones the legendary combat proficiency of the Super Hornet to give you the ultimate edge in space combat.",
+  "Career": "Combat",
+  "Role": "Medium Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 78670.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 4000.0,
+    "Nose": 4000.0
+  },
+  "DamageBeforeDetach": {
+    "Tail_Debris": 2500.0,
+    "WingLeftRear": 800.0,
+    "WingLeft_Debris": 3000.0,
+    "LG_Door_Rear_L": 100.0,
+    "WingRightRear": 800.0,
+    "WingRight_Debris": 3000.0,
+    "LG_Door_Rear_R": 100.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 192.0,
+    "MaxSpeed": 1229.0,
+    "ZeroToScm": 4.300214204454223,
+    "ZeroToMax": 27.525850298303332,
+    "ScmToZero": 14.709481545855821,
+    "MaxToZero": 94.15600427008752,
+    "Acceleration": {
+      "Main": 44.648938604296426,
+      "Retro": 13.052805389602135,
+      "Vtol": 0.0,
+      "Maneuvering": 89.19035464598957
+    },
+    "AccelerationG": {
+      "Main": 4.552924583613364,
+      "Retro": 1.3310157061095729,
+      "Vtol": 0.0,
+      "Maneuvering": 9.094884917372815
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 135000.0,
+    "FuelIntakeRate": 33.0,
+    "FuelUsage": {
+      "Main": 43.90665,
+      "Retro": 12.8358025,
+      "Vtol": 0.0,
+      "Maneuvering": 87.70756500000002
+    },
+    "ThrustCapacity": {
+      "Main": 3512532.0,
+      "Retro": 1026864.2,
+      "Vtol": 0.0,
+      "Maneuvering": 7016605.2
+    },
+    "IntakeToMainFuelRatio": 0.7515945762202308,
+    "IntakeToTankCapacityRatio": 0.00024444444444444443,
+    "TimeForIntakesToFillTank": 4090.909090909091,
+    "ManeuveringTimeTillEmpty": 2465.283669919882
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 64003730524.46786,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.7632694278444891
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        4
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

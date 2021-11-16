@@ -1,0 +1,109 @@
+{
+  "ClassName": "DRAK_Herald",
+  "Name": "Drake Herald",
+  "Description": "Manufacturer: Drake Interplanetary\nFocus: Medium Data\n\nThe Drake Herald is a small, armored ship designed to safely get information from Point A to Point B. Featuring a powerful central engine (for high speed transit and generating the power needed for effective data encryption/containment), advanced encryption software and an armored computer core, the Herald is unique among personal spacecraft in that it is designed to be easily ‘cleaned’ when in danger of capture.",
+  "Career": "Transporter",
+  "Role": "Medium Data",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 65705.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "DRAK",
+    "Name": "Drake Interplanetary"
+  },
+  "DamageBeforeDestruction": {
+    "body": 2880.0,
+    "tail": 1400.0
+  },
+  "DamageBeforeDetach": {
+    "sat_array_lower_right": 100.0,
+    "sat_array_upper_right": 100.0,
+    "sat_flap_lower": 100.0,
+    "sat_array_upper_left": 100.0,
+    "sat_flap_right": 100.0,
+    "sat_flap_left": 100.0,
+    "sat_array_lower_left": 100.0,
+    "WingLeft_Detach": 660.0,
+    "WingRight_Detach": 660.0,
+    "pipe_cover_right": 100.0,
+    "pipe_cover_left": 100.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 174.0,
+    "MaxSpeed": 1361.0,
+    "ZeroToScm": 1.7937328150556782,
+    "ZeroToMax": 14.03028943270562,
+    "ScmToZero": 3.953000363051709,
+    "MaxToZero": 30.919732724789515,
+    "Acceleration": {
+      "Main": 97.00441366714863,
+      "Retro": 44.01719808233772,
+      "Vtol": 0.0,
+      "Maneuvering": 174.16328133323182
+    },
+    "AccelerationG": {
+      "Main": 9.891697171535053,
+      "Retro": 4.488504979412207,
+      "Vtol": 0.0,
+      "Maneuvering": 17.75971187517856
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 105000.0,
+    "FuelIntakeRate": 27.0,
+    "FuelUsage": {
+      "Main": 79.67093750000001,
+      "Retro": 36.151875000000004,
+      "Vtol": 0.0,
+      "Maneuvering": 143.04248
+    },
+    "ThrustCapacity": {
+      "Main": 6373675.0,
+      "Retro": 2892150.0,
+      "Vtol": 0.0,
+      "Maneuvering": 11443398.399999997
+    },
+    "IntakeToMainFuelRatio": 0.33889396619689577,
+    "IntakeToTankCapacityRatio": 0.00025714285714285715,
+    "TimeForIntakesToFillTank": 3888.8888888888887,
+    "ManeuveringTimeTillEmpty": 845.4638779483514
+  },
+  "QuantumTravel": {
+    "Speed": 148971800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 59523469387.755104,
+    "PortOlisarToArcCorpTime": 281.4448846694475,
+    "PortOlisarToArcCorpFuel": 410.888040486,
+    "PortOlisarToArcCorpAndBack": 0.7098405678953749
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

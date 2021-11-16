@@ -1,0 +1,146 @@
+{
+  "ClassName": "ESPR_BallisticCannon_S3",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Deadbolt III Cannon",
+  "Description": "Manufacturer: Esperia\nItem Type: Ballistic Cannon \nSize: S3\n\nSpread dread with the Deadbolt III ballistic cannon. Feared for its firepower at short range, this notorious Tevarin weapon earned its intimidating reputation during the First Tevarin War as part of the Tevarin fleet's devastating arsenal. Esperia has painstakingly recreated the Deadbolt III out of respect to the original weapon and warriors who used it so effectively.",
+  "Manufacturer": {
+    "Code": "ESPR",
+    "Name": "Esperia"
+  },
+  "Tags": [
+    "ESP",
+    "BallisticCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 50.0,
+    "PowerDraw": 70.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 61.81
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 1.0,
+      "Capacity": 200.0,
+      "ImpactDamage": {
+        "Physical": 187.5
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 200.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Physical": 187.5
+        },
+        "DamagePerSecond": {
+          "Physical": 625.0
+        }
+      }
+    ]
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 1.0,
+    "Capacity": 200.0,
+    "ImpactDamage": {
+      "Physical": 187.5
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Loadout": "ESPR_BallisticCannon_Barrel_S3",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_Barrel_S3",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Barrel",
+        "Name": "ESPR_BallisticCannon_Barrel_S3",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Loadout": "ESPR_BallisticCannon_FiringMechanism_S3",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_FiringMechanism_S3",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.FiringMechanism",
+        "Name": "ESPR_BallisticCannon_FiringMechanism_S3",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Loadout": "ESPR_BallisticCannon_PowerArray_S3",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_PowerArray_S3",
+        "Size": 3,
+        "Grade": 3,
+        "Type": "WeaponAttachment.PowerArray",
+        "Name": "ESPR_BallisticCannon_PowerArray_S3",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Loadout": "ESPR_BallisticCannon_Ventilation_S3",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_Ventilation_S3",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Ventilation",
+        "Name": "ESPR_BallisticCannon_Ventilation_S3",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

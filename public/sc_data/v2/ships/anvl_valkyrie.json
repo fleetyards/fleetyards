@@ -1,0 +1,139 @@
+{
+  "ClassName": "ANVL_Valkyrie",
+  "Name": "Anvil Valkyrie",
+  "Description": "Manufacturer: Anvil Aerospace \nFocus: Military / Industrial\n\nThe Valkyrie ups the ante on troop transport. Designed to carry up to twenty soldiers, as well as vehicles, to the most hostile locations, this conflict-ready mil-spec craft is a formidable force, both offensively and defensively. Built with military and private defense contractors in mind, the Valkyrie is one of the most efficient and effective personnel transports in its class.",
+  "Career": "Combat",
+  "Role": "Drop Ship",
+  "Size": 4,
+  "Cargo": 30,
+  "Crew": 1,
+  "WeaponCrew": 6,
+  "OperationsCrew": 0,
+  "Mass": 621046.06,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 10000.0,
+    "Tail": 10000.0
+  },
+  "DamageBeforeDetach": {
+    "Wing_Left": 4500.0,
+    "Wing_Right": 4500.0,
+    "Wing_RR": 2000.0,
+    "Wing_RL": 2000.0,
+    "Engine_RR_Split": 2500.0,
+    "Engine_RL_Split": 2500.0,
+    "Engine_FL_Split": 2500.0,
+    "Engine_FR_Split": 2500.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 165.0,
+    "MaxSpeed": 1100.0,
+    "ZeroToScm": 3.613064466618804,
+    "ZeroToMax": 24.08709644412536,
+    "ScmToZero": 9.430610606190566,
+    "MaxToZero": 62.87073737460377,
+    "Acceleration": {
+      "Main": 45.66760475060416,
+      "Retro": 17.49621598114639,
+      "Vtol": 0.0,
+      "Maneuvering": 66.14407955506552
+    },
+    "AccelerationG": {
+      "Main": 4.656799620400306,
+      "Retro": 1.7841174807480211,
+      "Vtol": 0.0,
+      "Maneuvering": 6.744818920236489
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 945000.0,
+    "FuelIntakeRate": 30.0,
+    "FuelUsage": {
+      "Main": 354.521075,
+      "Retro": 135.82445,
+      "Vtol": 0.0,
+      "Maneuvering": 513.4815
+    },
+    "ThrustCapacity": {
+      "Main": 28361686.0,
+      "Retro": 10865956.0,
+      "Vtol": 0.0,
+      "Maneuvering": 41078520.0
+    },
+    "IntakeToMainFuelRatio": 0.08462120340800613,
+    "IntakeToTankCapacityRatio": 3.1746031746031745E-05,
+    "TimeForIntakesToFillTank": 31500.0,
+    "ManeuveringTimeTillEmpty": 1625.7733767394752
+  },
+  "QuantumTravel": {
+    "Speed": 124143200.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 2500.0,
+    "Range": 229357798165.1376,
+    "PortOlisarToArcCorpTime": 337.7337709193899,
+    "PortOlisarToArcCorpFuel": 457.008126663,
+    "PortOlisarToArcCorpAndBack": 2.735181120579407
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": [
+        2,
+        2
+      ]
+    }
+  ],
+  "MannedTurrets": [
+    {
+      "Size": 4,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    },
+    {
+      "Size": 4,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Turret": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 3,
+      "Turret": true,
+      "WeaponSizes": [
+        1
+      ]
+    }
+  ],
+  "RemoteTurrets": [
+    {
+      "Size": 6,
+      "Gimballed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 6,
+      "Gimballed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ]
+}

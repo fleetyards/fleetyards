@@ -1,0 +1,29 @@
+{
+  "ClassName": "eld_shirt_07_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Torso_0.UNDEFINED",
+  "Name": "Yenny Shirt",
+  "Description": "A simple, light grey, long-sleeved shirt constructed from moisture wicking fabric ideal for keeping you comfortable during work and play.",
+  "Manufacturer": {
+    "Code": "ELD",
+    "Name": "Escar Limited"
+  },
+  "Tags": [
+    "eld_shirt",
+    "Set_07",
+    "Color_01"
+  ],
+  "Ports": [
+    {
+      "PortName": "Material_Variant",
+      "Size": 1,
+      "Types": [
+        "Paints"
+      ],
+      "Flags": [
+        "nontransferable"
+      ]
+    }
+  ]
+}

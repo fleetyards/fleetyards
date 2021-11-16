@@ -1,0 +1,30 @@
+{
+  "ClassName": "MISC_Starfarer_Thruster_Mav_Fixed_03",
+  "Size": 4,
+  "Grade": 1,
+  "Type": "ManneuverThruster.FixedThruster",
+  "Name": "MISC_Starfarer_Thruster_Mav_Fixed_03",
+  "Manufacturer": {
+    "Code": "MIS",
+    "Name": "Musashi Industrial & Starflight Concern"
+  },
+  "Thruster": {
+    "ThrustCapacity": 7683313.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Maneuver",
+    "MaxThrustFuelRate": 96.0414125
+  },
+  "Durability": {
+    "Health": 21000.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 45.0
+  }
+}

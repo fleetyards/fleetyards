@@ -48,6 +48,7 @@ namespace :deploy do
     invoke :'server:restart_app'
     invoke :'server:restart_worker'
     invoke :'server:broadcast_version'
+    invoke :'server:check_sc_data'
   end
 
   desc 'Reload'
@@ -55,6 +56,7 @@ namespace :deploy do
     invoke :'server:reload_app'
     invoke :'server:restart_worker'
     invoke :'server:broadcast_version'
+    invoke :'server:check_sc_data'
   end
 end
 
@@ -112,6 +114,18 @@ namespace :server do
         with rails_env: fetch(:rails_env) do
           info 'Broadcast Version'
           execute(:bundle, :exec, :thor, 'broadcast:version')
+        end
+      end
+    end
+  end
+
+  desc 'Check SC Data'
+  task :check_sc_data do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Check for SC Data updates'
+          execute(:bundle, :exec, :thor, 'broadcast:check_sc_data')
         end
       end
     end

@@ -1,0 +1,113 @@
+{
+  "ClassName": "ANVL_Hornet_F7C",
+  "Name": "Anvil F7C Hornet",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Medium Fighter\n\nTo the enemy, it is a weapon never to be underestimated. To allies, it's a savior. The F7C Hornet is the same dependable and resilient multi-purpose fighter that has become the face of the UEE Navy. The F7C is the foundation to build on and meet whatever requirements you have in mind.",
+  "Career": "Combat",
+  "Role": "Medium Fighter",
+  "Size": 2,
+  "Cargo": 2,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 74132.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 4000.0,
+    "Body": 4000.0
+  },
+  "DamageBeforeDetach": {
+    "WingRight_Debris": 3000.0,
+    "LG_Door_Rear_R": 100.0,
+    "Tail_Debris": 2500.0,
+    "WingRightRear": 800.0,
+    "WingLeft_Debris": 3000.0,
+    "LG_Door_Rear_L": 100.0,
+    "WingLeftRear": 800.0,
+    "Canopy": 80.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 192.0,
+    "MaxSpeed": 1229.0,
+    "ZeroToScm": 4.052160663589684,
+    "ZeroToMax": 25.93804924766522,
+    "ScmToZero": 13.860979864718237,
+    "MaxToZero": 88.72470965488912,
+    "Acceleration": {
+      "Main": 47.38212917498516,
+      "Retro": 13.851834565369881,
+      "Vtol": 0.0,
+      "Maneuvering": 94.65015377974423
+    },
+    "AccelerationG": {
+      "Main": 4.831632452825546,
+      "Retro": 1.4124940052830102,
+      "Vtol": 0.0,
+      "Maneuvering": 9.651629477819554
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 120000.0,
+    "FuelIntakeRate": 30.0,
+    "FuelUsage": {
+      "Main": 43.90665,
+      "Retro": 12.8358025,
+      "Vtol": 0.0,
+      "Maneuvering": 87.70756500000002
+    },
+    "ThrustCapacity": {
+      "Main": 3512532.0,
+      "Retro": 1026864.2,
+      "Vtol": 0.0,
+      "Maneuvering": 7016605.199999999
+    },
+    "IntakeToMainFuelRatio": 0.6832677965638463,
+    "IntakeToTankCapacityRatio": 0.00025,
+    "TimeForIntakesToFillTank": 4000.0,
+    "ManeuveringTimeTillEmpty": 2077.546770447053
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 64003730524.46786,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.7632694278444891
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

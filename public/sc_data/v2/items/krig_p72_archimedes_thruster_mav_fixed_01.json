@@ -1,0 +1,26 @@
+{
+  "ClassName": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "ManneuverThruster.FixedThruster",
+  "Name": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01",
+  "Thruster": {
+    "ThrustCapacity": 164638.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Maneuver",
+    "MaxThrustFuelRate": 2.057975
+  },
+  "Durability": {
+    "Health": 1000.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 42.0
+  }
+}

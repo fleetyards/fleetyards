@@ -1,0 +1,80 @@
+{
+  "StaticEntityClassData": {},
+  "tags": [
+    {
+      "value": "d0d29c20-f5e2-46f7-9d53-cc90f6ac63f2"
+    },
+    {
+      "value": "81fe2b3c-ec28-423c-a4f0-a21af95aec68"
+    }
+  ],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Seat",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+        "Tags": "",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@LOC_PLACEHOLDER",
+          "Description": "@LOC_EMPTY"
+        }
+      }
+    },
+    "SEntityInteractableParams": {
+      "Interactable": {
+        "SharedInteractions": [
+          {
+            "Name": "EnterDefaultMode",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@vehicle_interactor_CycleHud_Flight",
+            "DisplayType": "Show",
+            "GenericCursor": "Button",
+            "FocusModeOnly": false,
+            "Sendable": true,
+            "Linkable": true,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "EnterScanMode",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@vehicle_interactor_CycleHud_Scanning",
+            "DisplayType": "Show",
+            "GenericCursor": "Button",
+            "FocusModeOnly": false,
+            "Sendable": true,
+            "Linkable": true,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "EnterQuantumMode",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@vehicle_interactor_CycleHud_Quantum",
+            "DisplayType": "Show",
+            "GenericCursor": "Button",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          }
+        ]
+      }
+    }
+  },
+  "ClassName": "CRUS_Starlifter_SCItem_Seat_CoPilot",
+  "__ref": "edc004ef-61a3-47f0-b053-d4984989d6fa",
+  "__type": "EntityClassDefinition"
+}

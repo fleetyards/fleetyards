@@ -1,0 +1,16 @@
+{
+  "ClassName": "Paint_Starfighter_Cinder_Grey_Black",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "Paint_Starfighter_Cinder_Grey_Black",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Crusader Industries"
+  },
+  "Tags": [
+    "Paint_Starfighter",
+    "@Paint_Starfighter_Cinder_Grey_Black"
+  ]
+}

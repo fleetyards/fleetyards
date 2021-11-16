@@ -1,0 +1,35 @@
+{
+  "ClassName": "RSI_Phoenix_Door_Switch_Elevator_Upper",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "ControlPanel.DoorPart",
+  "Name": "RSI_Phoenix_Door_Switch_Elevator_Upper",
+  "Manufacturer": {
+    "Code": "RSI",
+    "Name": "Roberts Space Industries"
+  },
+  "Tags": [
+    "AirlockControlUI"
+  ],
+  "Ports": [
+    {
+      "PortName": "hardpoint_panel_screen",
+      "Size": 5,
+      "Loadout": "UI_EnvironmentScreen_Phoenix_ElevatorPanel_Top",
+      "InstalledItem": {
+        "ClassName": "UI_EnvironmentScreen_Phoenix_ElevatorPanel_Top",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "StatusScreen.AirlockPart",
+        "Name": "UI_EnvironmentScreen_Phoenix_ElevatorPanel_Top",
+        "Tags": [
+          "AirlockStateUI"
+        ]
+      },
+      "Flags": [
+        "uneditable"
+      ],
+      "Uneditable": true
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "ClassName": "AMRS_ScatterGun_S3",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "PyroBurst Scattergun",
+  "Description": "Manufacturer: Amon & Reese Co.\nItem Type: Plasma Scattergun\nSize: 3\n\nYou ship will spread havoc with A&R’s PyroBurst plasma shotgun. Effective in close quarters, the PyroBurst sprays self-detonating plasma projectiles, sacrificing pinpoint accuracy for area saturation. ",
+  "Manufacturer": {
+    "Code": "AMRS",
+    "Name": "Amon & Reese Co."
+  },
+  "Tags": [
+    "AMRS",
+    "ScatterGun",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 1550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 50.0,
+    "PowerDraw": 70.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 120.185
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 800.0,
+      "Range": 400.0,
+      "Size": 0.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 1.0
+      },
+      "DetonationDamage": {
+        "Energy": 45.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 70.0,
+        "FireType": "single",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 8.0,
+        "DamagePerShot": {
+          "Energy": 368.0
+        },
+        "DamagePerSecond": {
+          "Energy": 429.33333333333337
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2100.0,
+      "Cooldown": 1.25,
+      "CostPerBullet": 450.0,
+      "RequestedAmmoLoad": 12600.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 800.0,
+    "Range": 400.0,
+    "Size": 0.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 1.0
+    },
+    "DetonationDamage": {
+      "Energy": 45.0
+    }
+  }
+}

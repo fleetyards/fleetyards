@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_SECO_S03_HAVEN_SCItem",
+  "Size": 3,
+  "Grade": 4,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "HAVEN",
+  "Description": "Item Type: Shield Generator\nManufacturer: Seal Corporation\nSize: 3\nGrade: D\nClass: Civilian\n\nThe HAVEN is an admired shield generator for large ships. Seal Corp’s simple, clean design makes repairing the component an easy and affordable task, and has only increased its popularity over the years.",
+  "Manufacturer": {
+    "Code": "SECO",
+    "Name": "Seal Corporation"
+  },
+  "Shield": {
+    "Health": 90000.0,
+    "Regeneration": 1080.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 675.0,
+    "Lifetime": 36.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 247388.9,
+    "ThermalEnergyDraw": 258500.0,
+    "CoolingRate": 78.8547
+  }
+}

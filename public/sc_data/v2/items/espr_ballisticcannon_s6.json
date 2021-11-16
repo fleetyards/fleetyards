@@ -1,0 +1,146 @@
+{
+  "ClassName": "ESPR_BallisticCannon_S6",
+  "Size": 6,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Deadbolt VI Cannon",
+  "Description": "Manufacturer: Esperia\nItem Type: Ballistic Cannon \nSize: S6\n\nSpread dread with the Deadbolt VI ballistic cannon. Feared for its firepower at short range, this notorious Tevarin weapon earned its intimidating reputation during the First Tevarin War as part of the Tevarin fleet's devastating arsenal. Esperia has painstakingly recreated the Deadbolt VI out of respect to the original weapon and warriors who used it so effectively.",
+  "Manufacturer": {
+    "Code": "ESPR",
+    "Name": "Esperia"
+  },
+  "Tags": [
+    "ESP",
+    "BallisticCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 220.0,
+    "PowerDraw": 240.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 375.0
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 2800.0,
+      "Size": 1.0,
+      "Capacity": 1800.0,
+      "ImpactDamage": {
+        "Physical": 2500.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 65.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Physical": 2500.0
+        },
+        "DamagePerSecond": {
+          "Physical": 2708.333333333333
+        }
+      }
+    ]
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 2800.0,
+    "Size": 1.0,
+    "Capacity": 1800.0,
+    "ImpactDamage": {
+      "Physical": 2500.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 6,
+      "Loadout": "ESPR_BallisticCannon_Barrel_S6",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_Barrel_S6",
+        "Size": 6,
+        "Grade": 6,
+        "Type": "WeaponAttachment.Barrel",
+        "Name": "ESPR_BallisticCannon_Barrel_S6",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 6,
+      "Loadout": "ESPR_BallisticCannon_FiringMechanism_S6",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_FiringMechanism_S6",
+        "Size": 6,
+        "Grade": 6,
+        "Type": "WeaponAttachment.FiringMechanism",
+        "Name": "ESPR_BallisticCannon_FiringMechanism_S6",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 6,
+      "Loadout": "ESPR_BallisticCannon_PowerArray_S6",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_PowerArray_S6",
+        "Size": 6,
+        "Grade": 6,
+        "Type": "WeaponAttachment.PowerArray",
+        "Name": "ESPR_BallisticCannon_PowerArray_S6",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 6,
+      "Loadout": "ESPR_BallisticCannon_Ventilation_S6",
+      "InstalledItem": {
+        "ClassName": "ESPR_BallisticCannon_Ventilation_S6",
+        "Size": 6,
+        "Grade": 6,
+        "Type": "WeaponAttachment.Ventilation",
+        "Name": "ESPR_BallisticCannon_Ventilation_S6",
+        "Manufacturer": {
+          "Code": "ESPR",
+          "Name": "Esperia"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

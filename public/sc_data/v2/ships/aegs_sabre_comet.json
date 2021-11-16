@@ -1,0 +1,125 @@
+{
+  "ClassName": "AEGS_Sabre_Comet",
+  "Name": "Aegis Sabre Comet",
+  "Description": "Manufacturer: Aegis Dynamics\nFocus: Stealth Fighter\n\nCreated as part of the ‘Masters of Flight’ series in conjunction with the flight-sim Arena Commander, the Comet pays tribute to famed pilot Captain Kamur Dalion for his work with Aegis to usher in a new era of combat ship design. This Sabre comes equipped with a specialized dogfighting focused loadout and a custom special edition livery honoring this iconic ship.",
+  "Career": "Combat",
+  "Role": "Stealth Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 86592.72,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 4000.0,
+    "Body": 4000.0
+  },
+  "DamageBeforeDetach": {
+    "hardpoint_thruster_bottomRR": 50.0,
+    "hardpoint_thruster_bottomRL": 50.0,
+    "hardpoint_thruster_retro_left": 50.0,
+    "hardpoint_thruster_retro_right": 50.0,
+    "hardpoint_thruster_bottomFL": 50.0,
+    "hardpoint_thruster_bottomFR": 50.0,
+    "hardpoint_thruster_topFL": 50.0,
+    "hardpoint_thruster_topFR": 50.0,
+    "hardpoint_thruster_topRR": 50.0,
+    "hardpoint_thruster_topRL": 50.0,
+    "Rear_Wing_Left": 280.0,
+    "Rear_Wing_Right": 280.0,
+    "hardpoint_engine_left": 10.0,
+    "hardpoint_engine_right": 10.0,
+    "hardpoint_weapon_missilerack_right": 10.0,
+    "hardpoint_weapon_missilerack_left": 10.0,
+    "Front_Wing_Left": 800.0,
+    "Wing_Left": 320.0,
+    "Front_Wing_Right": 800.0,
+    "Wing_Right": 320.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 206.0,
+    "MaxSpeed": 1235.0,
+    "ZeroToScm": 2.6171966252174386,
+    "ZeroToMax": 15.690474913318138,
+    "ScmToZero": 11.447192354103986,
+    "MaxToZero": 68.62758522970108,
+    "Acceleration": {
+      "Main": 78.71017332634891,
+      "Retro": 17.995679082490998,
+      "Vtol": 0.0,
+      "Maneuvering": 66.14608248822763
+    },
+    "AccelerationG": {
+      "Main": 8.026203854340197,
+      "Retro": 1.835048542130538,
+      "Vtol": 0.0,
+      "Maneuvering": 6.745023162575013
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 135000.0,
+    "FuelIntakeRate": 35.0,
+    "FuelUsage": {
+      "Main": 85.1966,
+      "Retro": 19.478685000000002,
+      "Vtol": 0.0,
+      "Maneuvering": 71.597115
+    },
+    "ThrustCapacity": {
+      "Main": 6815728.0,
+      "Retro": 1558294.8,
+      "Vtol": 0.0,
+      "Maneuvering": 5727769.199999999
+    },
+    "IntakeToMainFuelRatio": 0.4108145160722376,
+    "IntakeToTankCapacityRatio": 0.00025925925925925926,
+    "TimeForIntakesToFillTank": 3857.1428571428573,
+    "ManeuveringTimeTillEmpty": 1569.8558375220139
+  },
+  "QuantumTravel": {
+    "Speed": 171317600.0,
+    "SpoolTime": 6.75,
+    "FuelCapacity": 583.33,
+    "Range": 35013805522.208885,
+    "PortOlisarToArcCorpTime": 244.73463946494698,
+    "PortOlisarToArcCorpFuel": 698.5096688262,
+    "PortOlisarToArcCorpAndBack": 0.41755327523257346
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

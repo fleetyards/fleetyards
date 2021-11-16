@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_YORM_S02_Haltur_SCItem",
+  "Size": 2,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Haltur",
+  "Description": "Item Type: Shield Generator\nManufacturer: Yorm\nSize: 2\nGrade: B\nClass: Competition\n\nStrong shield health and an exceptional generation rate gives the Haltur the best performance ranking of any shield in its class. Beloved by racers and those who prefer to navigate away from danger instead of soaking it up.",
+  "Manufacturer": {
+    "Code": "YORM",
+    "Name": "Yorm"
+  },
+  "Shield": {
+    "Health": 8250.0,
+    "Regeneration": 550.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 212.5,
+    "Lifetime": 12.0
+  },
+  "PowerConnection": {
+    "PowerBase": 1000.0,
+    "PowerDraw": 1400.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 20421.0,
+    "ThermalEnergyDraw": 24750.0,
+    "CoolingRate": 47.7684
+  }
+}

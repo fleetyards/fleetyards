@@ -1,0 +1,113 @@
+{
+  "ClassName": "ANVL_Hornet_F7CS",
+  "Name": "Anvil F7C-S Hornet Ghost",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Stealth Fighter\n\nThrough a combination of low-emission drives, low-draw weapons, and Void Armor technology capable of diffusing scans, the F7C-S Ghost is built for the pilot who wants to keep a low profile. The Ghost is capable of slipping past the most ardent of observers to accomplish whatever goal you need to accomplish. Don't worry, we won't ask.",
+  "Career": "Combat",
+  "Role": "Stealth Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 73724.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 4000.0,
+    "Body": 4000.0
+  },
+  "DamageBeforeDetach": {
+    "WingRight_Debris": 3000.0,
+    "LG_Door_Rear_R": 100.0,
+    "Tail_Debris": 2500.0,
+    "WingRightRear": 800.0,
+    "WingLeft_Debris": 3000.0,
+    "LG_Door_Rear_L": 100.0,
+    "WingLeftRear": 800.0,
+    "Canopy": 80.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 192.0,
+    "MaxSpeed": 1229.0,
+    "ZeroToScm": 4.02985880270984,
+    "ZeroToMax": 25.795294106929134,
+    "ScmToZero": 13.784693243760959,
+    "MaxToZero": 88.23639581553239,
+    "Acceleration": {
+      "Main": 47.644349194292225,
+      "Retro": 13.928492756768486,
+      "Vtol": 0.0,
+      "Maneuvering": 95.1739623460474
+    },
+    "AccelerationG": {
+      "Main": 4.8583714528900135,
+      "Retro": 1.4203109652167556,
+      "Vtol": 0.0,
+      "Maneuvering": 9.7050430856942
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 120000.0,
+    "FuelIntakeRate": 30.0,
+    "FuelUsage": {
+      "Main": 43.90665,
+      "Retro": 12.8358025,
+      "Vtol": 0.0,
+      "Maneuvering": 87.70756500000002
+    },
+    "ThrustCapacity": {
+      "Main": 3512532.0,
+      "Retro": 1026864.2,
+      "Vtol": 0.0,
+      "Maneuvering": 7016605.199999999
+    },
+    "IntakeToMainFuelRatio": 0.6832677965638463,
+    "IntakeToTankCapacityRatio": 0.00025,
+    "TimeForIntakesToFillTank": 4000.0,
+    "ManeuveringTimeTillEmpty": 2077.546770447053
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 64003730524.46786,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.7632694278444891
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

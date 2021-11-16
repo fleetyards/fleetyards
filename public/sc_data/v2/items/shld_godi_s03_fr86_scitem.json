@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_GODI_S03_FR86_SCItem",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "FR-86",
+  "Description": "Item Type: Shield Generator\nManufacturer: Gorgon Defender Industries\nSize: 3\nGrade: A\nClass: Military\n\nGorgon’s FR-86 is tried, tested, and trusted. No other large shield generator delivers both exceptional performance and durability to this degree.",
+  "Manufacturer": {
+    "Code": "GODI",
+    "Name": "Gorgon Defender Industries"
+  },
+  "Shield": {
+    "Health": 115000.0,
+    "Regeneration": 1440.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 1275.0,
+    "Lifetime": 48.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 511117.7,
+    "ThermalEnergyDraw": 517000.0,
+    "CoolingRate": 158.7149
+  }
+}

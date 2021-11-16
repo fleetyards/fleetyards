@@ -1,0 +1,93 @@
+{
+  "ClassName": "ORIG_100i",
+  "Name": "Origin 100i",
+  "Description": "Manufacturer: Origin Jumpworks\nFocus: Starter / Touring\n\nTour the universe with the perfect coupling of luxury and performance. The 100i features Origin Jumpworks' patented AIR fuel system, making it the most efficient and eco-friendly ship on the market. Capable of long distance flights that most ships of its size aren't equipped for, the 100i is perfect for solo pilots looking to turn heads without sacrificing functionality or reliability.",
+  "Career": "Exploration",
+  "Role": "Starter / Pathfinder",
+  "Size": 1,
+  "Cargo": 2,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 48143.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ORIG",
+    "Name": "Origin Jumpworks"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 2200.0
+  },
+  "DamageBeforeDetach": {
+    "Spoiler": 650.0,
+    "Wing_Right": 800.0,
+    "Wing_Left": 800.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 210.0,
+    "MaxSpeed": 1000.0,
+    "ZeroToScm": 1.8144268581757723,
+    "ZeroToMax": 8.640127896075107,
+    "ScmToZero": 6.034397755759819,
+    "MaxToZero": 28.73522740838009,
+    "Acceleration": {
+      "Main": 115.73902748063063,
+      "Retro": 34.80049020626051,
+      "Vtol": 0.0,
+      "Maneuvering": 228.19098103566458
+    },
+    "AccelerationG": {
+      "Main": 11.802096084975222,
+      "Retro": 3.548662349761502,
+      "Vtol": 0.0,
+      "Maneuvering": 23.26900391795998
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 65000.0,
+    "FuelIntakeRate": 61.0,
+    "FuelUsage": {
+      "Main": 69.6503,
+      "Retro": 20.942500000000003,
+      "Vtol": 0.0,
+      "Maneuvering": 137.32247999999998
+    },
+    "ThrustCapacity": {
+      "Main": 5572024.0,
+      "Retro": 1675400.0,
+      "Vtol": 0.0,
+      "Maneuvering": 10985798.4
+    },
+    "IntakeToMainFuelRatio": 0.875803837169402,
+    "IntakeToTankCapacityRatio": 0.0009384615384615385,
+    "TimeForIntakesToFillTank": 1065.5737704918033,
+    "ManeuveringTimeTillEmpty": 840.7541746031707
+  },
+  "QuantumTravel": {
+    "Speed": 148971800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 700.0,
+    "Range": 71428571428.57143,
+    "PortOlisarToArcCorpTime": 281.4448846694475,
+    "PortOlisarToArcCorpFuel": 410.888040486,
+    "PortOlisarToArcCorpAndBack": 0.8518135489804439
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

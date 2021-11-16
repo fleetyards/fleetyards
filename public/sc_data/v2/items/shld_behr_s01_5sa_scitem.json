@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BEHR_S01_5SA_SCItem",
+  "Size": 1,
+  "Grade": 3,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "5SA 'Rhada'",
+  "Description": "Item Type: Shield Generator\nManufacturer: Behring\nSize: 1\nGrade: C\nClass: Civilian\n\nThe 5SA ‘Rhada’ delivers Behring’s expert engineering and trusted performance to make it a worthy shield generator for any commercial ship.",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Shield": {
+    "Health": 1500.0,
+    "Regeneration": 375.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 93.75,
+    "Lifetime": 30.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 8516.667,
+    "ThermalEnergyDraw": 10600.0,
+    "CoolingRate": 43.44889
+  }
+}

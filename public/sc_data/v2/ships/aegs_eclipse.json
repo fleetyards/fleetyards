@@ -1,0 +1,103 @@
+{
+  "ClassName": "AEGS_Eclipse",
+  "Name": "Aegis Eclipse",
+  "Description": "Manufacturer: Aegis Dynamics\nFocus: Stealth Bomber\n\nThe Aegis Eclipse is a bomber designed to get in and strike before it's ever even spotted. After extensive service with the UEE, this high-tech military equipment made its civilian market debut in 2947.",
+  "Career": "Combat",
+  "Role": "Stealth Bomber",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 55920.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 2500.0,
+    "body": 2500.0
+  },
+  "DamageBeforeDetach": {
+    "wing_left": 1500.0,
+    "wing_left_broken": 320.0,
+    "wingtip_left": 200.0,
+    "wing_right": 1500.0,
+    "wing_right_broken": 320.0,
+    "wingtip_right": 200.0,
+    "tail": 1500.0,
+    "hardpoint_engine_left": 10.0,
+    "bay_door_left_01": 300.0,
+    "bay_door_left_02": 300.0,
+    "bay_door_right_02": 300.0,
+    "bay_door_right_01": 300.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 146.0,
+    "MaxSpeed": 981.0,
+    "ZeroToScm": 2.485062510691377,
+    "ZeroToMax": 16.697577554713977,
+    "ScmToZero": 9.451435371802857,
+    "MaxToZero": 63.50587739546988,
+    "Acceleration": {
+      "Main": 58.75103719599428,
+      "Retro": 15.44738912732475,
+      "Vtol": 0.0,
+      "Maneuvering": 40.648025751072964
+    },
+    "AccelerationG": {
+      "Main": 5.990938416992647,
+      "Retro": 1.5751952881511708,
+      "Vtol": 0.0,
+      "Maneuvering": 4.144945020027883
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 90000.0,
+    "FuelIntakeRate": 11.0,
+    "FuelUsage": {
+      "Main": 41.066975,
+      "Retro": 10.797725,
+      "Vtol": 0.0,
+      "Maneuvering": 28.412970000000005
+    },
+    "ThrustCapacity": {
+      "Main": 3285358.0,
+      "Retro": 863818.0,
+      "Vtol": 0.0,
+      "Maneuvering": 2273037.6
+    },
+    "IntakeToMainFuelRatio": 0.2678551317695058,
+    "IntakeToTankCapacityRatio": 0.00012222222222222221,
+    "TimeForIntakesToFillTank": 8181.818181818182,
+    "ManeuveringTimeTillEmpty": 2032.8205656390985
+  },
+  "QuantumTravel": {
+    "Speed": 171317600.0,
+    "SpoolTime": 6.75,
+    "FuelCapacity": 1166.66,
+    "Range": 70027611044.41777,
+    "PortOlisarToArcCorpTime": 244.73463946494698,
+    "PortOlisarToArcCorpFuel": 698.5096688262,
+    "PortOlisarToArcCorpAndBack": 0.8351065504651469
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

@@ -1,0 +1,68 @@
+{
+  "ClassName": "BEHR_BallisticCannon_VNG_S2",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "CVSA Cannon",
+  "Description": "Manufacturer: Behring\nItem Type: Ballistic Cannon\nSize: 2\n\nBehring designed the CVSA to be their Vanguard only ballistic cannon variant. This weapon features a slower rate of fire delivers a higher velocity round that is ideal for dealing major damage to targets at medium to long ranges. ",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "flightReady",
+    "weaponMountUsable",
+    "VanguardNose",
+    "AEGS_Vanguard_Base"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 40.0,
+    "PowerDraw": 60.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 109.2308
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 1.0,
+      "Capacity": 220.0,
+      "ImpactDamage": {
+        "Physical": 143.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 220.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Physical": 143.0
+        },
+        "DamagePerSecond": {
+          "Physical": 524.3333333333333
+        }
+      }
+    ]
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 1.0,
+    "Capacity": 220.0,
+    "ImpactDamage": {
+      "Physical": 143.0
+    }
+  }
+}

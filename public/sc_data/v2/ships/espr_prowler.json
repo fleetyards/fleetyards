@@ -1,0 +1,107 @@
+{
+  "ClassName": "ESPR_Prowler",
+  "Name": "Esperia Prowler",
+  "Description": "Manufacturer: Esperia\nFocus: Dropship\n\nNamed after the UPE military designation, the Prowler is a modernized version of the infamous Tevarin boarding craft from the First Tevarin War. The Prowler’s effectiveness as a rapid personnel deployment vehicle was mainly due to its silence. With the Prowler, you will find the perfect fusion of two cultures: the elegance and effectiveness of the Tevarin war machine combined with the reliability of modern UEE technology.",
+  "Career": "Combat",
+  "Role": "Drop Ship",
+  "Size": 3,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 1,
+  "OperationsCrew": 0,
+  "Mass": 171700.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ESPR",
+    "Name": "Esperia"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 5250.0
+  },
+  "DamageBeforeDetach": {
+    "rear_wing_stabilizer_right": 150.0,
+    "rear_wing_stabilizer_left": 150.0,
+    "humerus_base_e_left": 1000.0,
+    "humerus_left": 2000.0,
+    "ulna_left": 1500.0,
+    "humerus_base_e_right": 1000.0,
+    "humerus_right": 2000.0,
+    "ulna_right": 1500.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 178.0,
+    "MaxSpeed": 1116.0,
+    "ZeroToScm": 3.226104736038203,
+    "ZeroToMax": 20.226589243924913,
+    "ScmToZero": 6.726018436349593,
+    "MaxToZero": 42.16986839868621,
+    "Acceleration": {
+      "Main": 55.1748980780431,
+      "Retro": 26.464393709959232,
+      "Vtol": 0.0,
+      "Maneuvering": 87.54495748398368
+    },
+    "AccelerationG": {
+      "Main": 5.6262737191631995,
+      "Retro": 2.698617088758788,
+      "Vtol": 0.0,
+      "Maneuvering": 8.92710110385158
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 390000.0,
+    "FuelIntakeRate": 104.0,
+    "FuelUsage": {
+      "Main": 118.41912500000001,
+      "Retro": 56.799205,
+      "Vtol": 0.0,
+      "Maneuvering": 187.89336500000005
+    },
+    "ThrustCapacity": {
+      "Main": 9473530.0,
+      "Retro": 4543936.4,
+      "Vtol": 0.0,
+      "Maneuvering": 15031469.199999997
+    },
+    "IntakeToMainFuelRatio": 0.8782365179610978,
+    "IntakeToTankCapacityRatio": 0.0002666666666666667,
+    "TimeForIntakesToFillTank": 3750.0,
+    "ManeuveringTimeTillEmpty": 3598.9211818497265
+  },
+  "QuantumTravel": {
+    "Speed": 142764600.0,
+    "SpoolTime": 6.75,
+    "FuelCapacity": 2500.0,
+    "Range": 134916351861.84564,
+    "PortOlisarToArcCorpTime": 293.68170449817393,
+    "PortOlisarToArcCorpFuel": 776.9138153271,
+    "PortOlisarToArcCorpAndBack": 1.6089300709290628
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": [
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    }
+  ]
+}

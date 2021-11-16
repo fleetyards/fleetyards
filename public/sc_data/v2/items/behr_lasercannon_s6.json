@@ -1,0 +1,80 @@
+{
+  "ClassName": "BEHR_LaserCannon_S6",
+  "Size": 6,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "M8A Cannon",
+  "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 6\n\nThe M8A laser autocannon exemplifies Behring's extensive history designing and constructing ship armaments. The result is a dependable and effective energy weapon capable of handling large skirmishes or precise defensive maneuvers. ",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "BEHR",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 4224.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 500.0,
+    "PowerDraw": 550.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 600.0
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 2800.0,
+      "Size": 6.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 2000.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 60.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 2000.0
+        },
+        "DamagePerSecond": {
+          "Energy": 2000.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 10000.0,
+      "Cooldown": 2.0,
+      "CostPerBullet": 1000.0,
+      "RequestedAmmoLoad": 60000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 2800.0,
+    "Size": 6.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 2000.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

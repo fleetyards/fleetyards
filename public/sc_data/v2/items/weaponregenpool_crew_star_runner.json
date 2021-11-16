@@ -1,0 +1,13 @@
+{
+  "ClassName": "WeaponRegenPool_Crew_Star_Runner",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponRegenPool.UNDEFINED",
+  "Classification": "Ship.WeaponRegenPool",
+  "Name": "WeaponRegenPool_Crew_Star_Runner",
+  "WeaponRegenPool": {
+    "RegenFillRate": 3000.0,
+    "AmmoLoad": 10000,
+    "RespectsCapacitorAssignments": true
+  }
+}

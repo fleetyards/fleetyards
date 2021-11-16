@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_ASAS_S01_Cloak_SCItem",
+  "Size": 1,
+  "Grade": 4,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Cloak",
+  "Description": "Item Type: Shield Generator\nManufacturer: Ascension Astro\nSize: 1\nGrade: D\nClass: Stealth\n\nDiscreet security is within your reach thanks to this small shield generator from Ascension Astro. With a lower signature then many other generators in its class, the Cloak provides protection without drawing unnecessary attention.",
+  "Manufacturer": {
+    "Code": "ASAS",
+    "Name": "Ascension Astro"
+  },
+  "Shield": {
+    "Health": 1350.0,
+    "Regeneration": 340.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 81.25,
+    "Lifetime": 13.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 2178.015,
+    "ThermalEnergyDraw": 6360.0,
+    "CoolingRate": 25.89821
+  }
+}

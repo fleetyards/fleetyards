@@ -1,0 +1,29 @@
+{
+  "ClassName": "oct_pants_03_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Legs.UNDEFINED",
+  "Name": "Auditor Pants Grey",
+  "Description": "Carrying Capacity: 1K µSCU\n\nThe Auditor is Octagon's top rated line of tactical dress pants. The Auditor's unique double-weave fibers allow for increased durability when action calls while its modern-cut, flat-front design disappears easily into the crowd. The Auditor also features an attached belt crafted from synthetic leather.",
+  "Manufacturer": {
+    "Code": "OCT",
+    "Name": "@LOC_PLACEHOLDER"
+  },
+  "Tags": [
+    "oct_pants",
+    "Set_03",
+    "Color_01"
+  ],
+  "Ports": [
+    {
+      "PortName": "Material_Variant",
+      "Size": 1,
+      "Types": [
+        "Paints"
+      ],
+      "Flags": [
+        "nontransferable"
+      ]
+    }
+  ]
+}

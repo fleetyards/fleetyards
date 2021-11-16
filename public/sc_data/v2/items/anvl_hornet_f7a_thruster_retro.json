@@ -1,0 +1,33 @@
+{
+  "ClassName": "ANVL_Hornet_F7A_Thruster_Retro",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "ManneuverThruster.JointThruster",
+  "Name": "ANVL_Hornet_F7A_Thruster_Retro",
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "Tags": [
+    "ANVL_Hornet_F7A"
+  ],
+  "Thruster": {
+    "ThrustCapacity": 698218.9,
+    "FuelRate": 1.25E-05,
+    "Type": "Maneuver",
+    "MaxThrustFuelRate": 8.727736250000001
+  },
+  "Durability": {
+    "Health": 8000.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 45.0
+  }
+}

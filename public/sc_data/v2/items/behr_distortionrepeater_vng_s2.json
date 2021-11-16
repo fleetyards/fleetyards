@@ -1,0 +1,80 @@
+{
+  "ClassName": "BEHR_DistortionRepeater_VNG_S2",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "ATVS Repeater",
+  "Description": "Manufacturer: Behring\nItem Type: Distortion Repeater\nSize: 2\n\nMess with an aggressor's electrical system with the ATVS from Behring. This disruptive, non-lethal distortion repeater is only compatible with the nose-mount on the Aegis Vanguard.",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "flightReady",
+    "weaponMountUsable",
+    "VanguardNose",
+    "AEGS_Vanguard_Base"
+  ],
+  "Durability": {
+    "Health": 850.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 190.0,
+    "PowerDraw": 190.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 83.33334
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 1400.0,
+      "Range": 1540.0000000000002,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Distortion": 1.0
+      },
+      "DetonationDamage": {
+        "Distortion": 48.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 295.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Distortion": 49.0
+        },
+        "DamagePerSecond": {
+          "Distortion": 240.91666666666669
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 1180.0,
+      "Cooldown": 1.0,
+      "CostPerBullet": 48.0,
+      "RequestedAmmoLoad": 7080.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 1400.0,
+    "Range": 1540.0000000000002,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Distortion": 1.0
+    },
+    "DetonationDamage": {
+      "Distortion": 48.0
+    }
+  }
+}

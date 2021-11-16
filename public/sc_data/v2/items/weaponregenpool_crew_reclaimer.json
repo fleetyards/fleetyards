@@ -1,0 +1,13 @@
+{
+  "ClassName": "WeaponRegenPool_Crew_Reclaimer",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponRegenPool.UNDEFINED",
+  "Classification": "Ship.WeaponRegenPool",
+  "Name": "WeaponRegenPool_Crew_Reclaimer",
+  "WeaponRegenPool": {
+    "RegenFillRate": 3000.0,
+    "AmmoLoad": 15000,
+    "RespectsCapacitorAssignments": true
+  }
+}

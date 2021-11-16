@@ -1,0 +1,103 @@
+{
+  "ClassName": "ANVL_Arrow",
+  "Name": "Anvil Arrow",
+  "Description": "Manufacturer: Anvil Aerospace \nFocus: Light Fighter\n\nUnmatched design, blazing top speed, and ultra-responsive maneuverability make the Arrow the most agile scrapper in its class. With a robust weapons package that provides firepower to spare, this is truly the classic light fighter, updated for the next generation of combat.",
+  "Career": "Combat",
+  "Role": "Light Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 32310.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 2300.0,
+    "body": 2300.0
+  },
+  "DamageBeforeDetach": {
+    "wing_left": 1500.0,
+    "wing_right": 1500.0,
+    "stabilizer_left": 800.0,
+    "stabilizer_right": 800.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 200.0,
+    "MaxSpeed": 1235.0,
+    "ZeroToScm": 1.5694625622945728,
+    "ZeroToMax": 9.691431322168986,
+    "ScmToZero": 3.9748679103783546,
+    "MaxToZero": 24.544809346586337,
+    "Acceleration": {
+      "Main": 127.43215722686475,
+      "Retro": 50.3161374187558,
+      "Vtol": 0.0,
+      "Maneuvering": 89.94374497059732
+    },
+    "AccelerationG": {
+      "Main": 12.994463463578196,
+      "Retro": 5.130818025409397,
+      "Vtol": 0.0,
+      "Maneuvering": 9.171709348976055
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 75000.0,
+    "FuelIntakeRate": 34.0,
+    "FuelUsage": {
+      "Main": 51.466662500000005,
+      "Retro": 20.32143,
+      "Vtol": 0.0,
+      "Maneuvering": 36.32603
+    },
+    "ThrustCapacity": {
+      "Main": 4117333.0,
+      "Retro": 1625714.4,
+      "Vtol": 0.0,
+      "Maneuvering": 2906082.3999999994
+    },
+    "IntakeToMainFuelRatio": 0.6606218151410148,
+    "IntakeToTankCapacityRatio": 0.0004533333333333333,
+    "TimeForIntakesToFillTank": 2205.8823529411766,
+    "ManeuveringTimeTillEmpty": 2104.9867768238983
+  },
+  "QuantumTravel": {
+    "Speed": 253252000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 583.33,
+    "Range": 31328141783.029003,
+    "PortOlisarToArcCorpTime": 165.55585373462006,
+    "PortOlisarToArcCorpFuel": 780.6872769234001,
+    "PortOlisarToArcCorpAndBack": 0.37360029889230256
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Turret": true,
+      "WeaponSizes": [
+        1,
+        1
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

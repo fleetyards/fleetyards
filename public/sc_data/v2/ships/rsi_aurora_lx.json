@@ -1,0 +1,109 @@
+{
+  "ClassName": "RSI_Aurora_LX",
+  "Name": "RSI Aurora LX",
+  "Description": "Manufacturer: RSI\nFocus: Pathfinder\n\nBe proud of your roots with the brand-new Aurora Deluxe, built for the discerning pilot who never forgets where he or she came from. The LX features patent leather interior to guarantee comfort for those long stretches in the deep black.",
+  "Career": "Exploration",
+  "Role": "Pathfinder",
+  "Size": 2,
+  "Cargo": 3,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 26736.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "RSI",
+    "Name": "Roberts Space Industries"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 1940.0,
+    "Body": 1880.0
+  },
+  "DamageBeforeDetach": {
+    "Wing_Bottom_Left": 480.0,
+    "Wing_Top_Left": 480.0,
+    "Wing_Bottom_Right": 480.0,
+    "Wing_Top_Right": 480.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 143.0,
+    "MaxSpeed": 1199.0,
+    "ZeroToScm": 1.6086764434862295,
+    "ZeroToMax": 13.488133256923001,
+    "ScmToZero": 3.350815221582934,
+    "MaxToZero": 28.09529685788768,
+    "Acceleration": {
+      "Main": 88.89295332136446,
+      "Retro": 42.67618192698982,
+      "Vtol": 0.0,
+      "Maneuvering": 49.46744464392579
+    },
+    "AccelerationG": {
+      "Main": 9.064558422624861,
+      "Retro": 4.351759390120224,
+      "Vtol": 0.0,
+      "Maneuvering": 5.0442754486036225
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 45000.0,
+    "FuelIntakeRate": 11.0,
+    "FuelUsage": {
+      "Main": 29.708025000000003,
+      "Retro": 14.26238,
+      "Vtol": 0.0,
+      "Maneuvering": 16.532020000000003
+    },
+    "ThrustCapacity": {
+      "Main": 2376642.0,
+      "Retro": 1140990.4,
+      "Vtol": 0.0,
+      "Maneuvering": 1322561.5999999999
+    },
+    "IntakeToMainFuelRatio": 0.370270322581188,
+    "IntakeToTankCapacityRatio": 0.00024444444444444443,
+    "TimeForIntakesToFillTank": 4090.909090909091,
+    "ManeuveringTimeTillEmpty": 1668.2709872660876
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 700.0,
+    "Range": 76804915514.59294,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.9159285472908001
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

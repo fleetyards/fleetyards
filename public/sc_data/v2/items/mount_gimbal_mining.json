@@ -1,0 +1,33 @@
+{
+  "ClassName": "Mount_Gimbal_Mining",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Turret.GunTurret",
+  "Name": "Mount_Gimbal_Mining",
+  "Tags": [
+    "flightReady",
+    "miningMount"
+  ],
+  "Durability": {
+    "Health": 5000.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 0.0,
+    "PowerDraw": 10.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "CoolingRate": 1.0
+  },
+  "Ports": [
+    {
+      "PortName": "hardpoint_mining_laser",
+      "Size": 1,
+      "Types": [
+        "WeaponMining.Gun"
+      ]
+    }
+  ]
+}

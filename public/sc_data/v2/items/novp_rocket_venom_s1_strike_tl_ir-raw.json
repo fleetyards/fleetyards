@@ -1,0 +1,112 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Missile",
+        "SubType": "Rocket",
+        "Size": 9,
+        "Grade": 1,
+        "Manufacturer": "67fd3077-ee8c-4a7c-8bad-91500b2a9509",
+        "Tags": "flightReady",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_NameNOVP_Rocket_Venom_S1_Strike_TL_IR",
+          "Description": "@item_DescNOVP_Rocket_Venom_S1_Strike_TL_IR"
+        }
+      }
+    },
+    "SHealthComponentParams": {
+      "Health": 100.0,
+      "DamageResistances": {
+        "DamageResistance": {
+          "PhysicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "EnergyResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "DistortionResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "ThermalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "BiochemicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "StunResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          }
+        }
+      }
+    },
+    "SCItemMissileParams": {
+      "safeDistance": 0.0,
+      "igniteTime": 0.0,
+      "irSignalMinValue": 0.0,
+      "irSignalMaxValue": 0.0,
+      "irSignalRiseRate": 0.0,
+      "irSignalDecayRate": 0.0,
+      "projectileProximity": 1.82,
+      "targetingParams": {
+        "trackingSignalType": "CrossSection",
+        "trackingSignalMin": 89.9,
+        "trackingDistanceMax": 0.0,
+        "trackingSignalAmplifier": 0.0,
+        "trackingSignalAmplifierSeeking": 0.0,
+        "trackingAngle": 0.0,
+        "trackingNoiseAmplifier": 0.0,
+        "lockTime": 0.0
+      },
+      "explosionParams": {
+        "friendlyFire": "Team",
+        "minRadius": 0.0,
+        "maxRadius": 0.5,
+        "soundRadius": 50.0,
+        "minPhysRadius": 12.0,
+        "maxPhysRadius": 15.25,
+        "pressure": 821.0,
+        "holeSize": 0.0,
+        "terrainHoleSize": 3.0,
+        "maxblurdist": 10.0,
+        "effectScale": 1.0,
+        "useRandomScale": 0.0,
+        "effectScaleMin": 2.0,
+        "effectScaleMax": 1.0,
+        "hitType": "explosion",
+        "damage": [
+          {
+            "DamagePhysical": 30.0,
+            "DamageEnergy": 395620.4,
+            "DamageDistortion": 0.0,
+            "DamageThermal": 30.0,
+            "DamageBiochemical": 30.0,
+            "DamageStun": 0.0
+          }
+        ]
+      }
+    },
+    "SItemPortContainerComponentParams": {
+      "PortFlags": "",
+      "PortTags": "",
+      "RequiredItemTags": "",
+      "Ports": []
+    }
+  },
+  "ClassName": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+  "__ref": "d0562627-1838-4fe7-bea7-788d6b8c4055",
+  "__type": "EntityClassDefinition"
+}

@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BEHR_S03_6CA_SCItem",
+  "Size": 3,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "6CA 'Bila'",
+  "Description": "Item Type: Shield Generator\nManufacturer: Behring\nSize: 3\nGrade: B\nClass: Civilian\n\n“Built by Behring” is a phrase synonymous with quality. That’s why so many around the Empire trust their 6CA ‘Bila’ large shield generator to provide them with solid performance, impressive durable, and an acceptable degree of stealth.",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Shield": {
+    "Health": 110000.0,
+    "Regeneration": 1320.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 787.5,
+    "Lifetime": 64.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 236223.7,
+    "ThermalEnergyDraw": 246750.0,
+    "CoolingRate": 75.27531
+  }
+}

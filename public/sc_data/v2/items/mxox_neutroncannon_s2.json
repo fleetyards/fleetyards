@@ -1,0 +1,80 @@
+{
+  "ClassName": "MXOX_NeutronCannon_S2",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "NN-14 Cannon",
+  "Description": "Manufacturer: MaxOx\nItem Type: Neutron Cannon\nSize: 2\n\nBuilding on the technology of the NN-13, MaxOx’s NN-14 offers a significant increase in power for the neutron autocannon to give each shot a devastating punch. With that increased damage however, comes a heavier draw on your power plant.\t",
+  "Manufacturer": {
+    "Code": "MXOX",
+    "Name": "Aegis Dynamics"
+  },
+  "Tags": [
+    "MXOX",
+    "NeutronCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 850.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 230.0,
+    "PowerDraw": 230.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 86.66
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 2.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 110.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 220.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 110.0
+        },
+        "DamagePerSecond": {
+          "Energy": 403.3333333333333
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2016.67,
+      "Cooldown": 1.0,
+      "CostPerBullet": 55.0,
+      "RequestedAmmoLoad": 12100.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 2.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 110.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BEHR_S01_6SA_SCItem",
+  "Size": 1,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "6SA 'Arbiter'",
+  "Description": "Item Type: Shield Generator\nManufacturer: Behring\nSize: 1\nGrade: B\nClass: Civilian\n\nProviding above average shield health and damage absorption, the 6SA ‘Arbiter’ has been a trusted component for centuries. Experience the Behring advantage by installing this small shield generator today.",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Shield": {
+    "Health": 1650.0,
+    "Regeneration": 413.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 131.25,
+    "Lifetime": 32.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 9403.026,
+    "ThermalEnergyDraw": 11130.0,
+    "CoolingRate": 43.82316
+  }
+}

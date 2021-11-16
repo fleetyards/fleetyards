@@ -1,0 +1,20 @@
+{
+  "ClassName": "VNCL_Scythe_SCItem_Seat_Pilot",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Seat.UNDEFINED",
+  "Name": "TRGT. STATUS",
+  "Manufacturer": {
+    "Code": "VNC",
+    "Name": "Vanduul Components - Generic"
+  },
+  "Tags": [
+    "flightReady"
+  ],
+  "Ports": [
+    {
+      "PortName": "Display_HUD",
+      "Size": 1
+    }
+  ]
+}

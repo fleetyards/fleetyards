@@ -1,0 +1,25 @@
+{
+  "StaticEntityClassData": {},
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Ping",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "00000000-0000-0000-0000-000000000000",
+        "Tags": "flightReady",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Name_test_ping_Prospector",
+          "Description": "@item_Name_test_ping_Prospector"
+        }
+      }
+    }
+  },
+  "ClassName": "test_ping_Prospector",
+  "__ref": "cc2da51b-5e51-45b2-8086-efc0ae33edcf",
+  "__type": "EntityClassDefinition"
+}

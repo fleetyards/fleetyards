@@ -1,0 +1,17 @@
+{
+  "ClassName": "Paint_Carrack_Expedition",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "[PH] PH Paint Carrack Expedition",
+  "Description": "[PH] PH Paint Carrack Expedition",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Anvil Aerospace"
+  },
+  "Tags": [
+    "Paint_Carrack",
+    "@Paint_Carrack_Expedition"
+  ]
+}

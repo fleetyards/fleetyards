@@ -1,0 +1,110 @@
+{
+  "ClassName": "ksar_shotgun_energy_01_green01",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "WeaponPersonal.Medium",
+  "Classification": "FPS.Weapon.Medium",
+  "Name": "Devastator “Warhawk” Shotgun",
+  "Description": "Manufacturer: Kastak Arms\nItem Type: Shotgun\nClass: Energy (Plasma)\n\nMagazine Size: 20\nRate Of Fire: 60 rpm\nEffective Range: 20 m\n\nAttachments: Optics (S1), Barrel (S3), Underbarrel (S2)\n\nKastak Arms’ Devastator is a pump-action plasma shotgun capable of delivering sustained medium range, high-impact plasma blasts for close combat, room clearances and other combat operations. If the situation requires a high-power presence, look no further than the Devastator.",
+  "Manufacturer": {
+    "Code": "KSAR",
+    "Name": "Kastak Arms"
+  },
+  "Tags": [
+    "stocked",
+    "ksar_shotgun_energy_01",
+    "shotgun"
+  ],
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 300.0,
+      "Range": 600.0,
+      "Size": 1.0,
+      "ImpactDamage": {
+        "Energy": 2.7
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Charge",
+        "LocalisedName": "[CHARGE]",
+        "RoundsPerMinute": 60.0,
+        "FireType": "charged",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 12.0,
+        "DamagePerShot": {
+          "Energy": 32.400000000000006
+        },
+        "DamagePerSecond": {
+          "Energy": 32.400000000000006
+        }
+      }
+    ]
+  },
+  "Ammunition": {
+    "Speed": 300.0,
+    "Range": 600.0,
+    "Size": 1.0,
+    "ImpactDamage": {
+      "Energy": 2.7
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 1,
+      "Loadout": "ksar_shotgun_energy_01_mag",
+      "InstalledItem": {
+        "ClassName": "ksar_shotgun_energy_01_mag",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Magazine",
+        "Name": "Devastator Shotgun Battery (20 cap)",
+        "Description": "Item Type: Magazine\nCapacity: 20\n\nThis high-voltage plasma capacitor allows the Kastak Arms Devastator shotgun to fire twenty standard shots, or four over-charged shots. ",
+        "Manufacturer": {
+          "Code": "KSAR",
+          "Name": "Kastak Arms"
+        },
+        "Tags": [
+          "ksar_shotgun_energy_01"
+        ],
+        "Ammunition": {
+          "Speed": 300.0,
+          "Range": 600.0,
+          "Size": 1.0,
+          "Capacity": 12.0,
+          "ImpactDamage": {
+            "Energy": 2.7
+          }
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Magazine"
+      ]
+    },
+    {
+      "PortName": "optics_attach",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.IronSight"
+      ]
+    },
+    {
+      "PortName": "barrel_attach",
+      "Size": 3,
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ],
+      "Flags": [
+        "energy_barrel"
+      ]
+    },
+    {
+      "PortName": "underbarrel_attach",
+      "Size": 2,
+      "Types": [
+        "WeaponAttachment.BottomAttachment"
+      ]
+    }
+  ]
+}

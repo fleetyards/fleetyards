@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_SECO_S01_HEX_SCItem",
+  "Size": 1,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "HEX",
+  "Description": "Item Type: Shield Generator\nManufacturer: Seal Corporation\nSize: 1\nGrade: B\nClass: Civilian\n\nPrepare your ship for any circumstance by installing a HEX from Seal Corporation. Balanced performance and durability make this an ideal, versatile choice for those who don’t know where their next adventure may take them. ",
+  "Manufacturer": {
+    "Code": "SECO",
+    "Name": "Seal Corporation"
+  },
+  "Shield": {
+    "Health": 1650.0,
+    "Regeneration": 413.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 137.5,
+    "Lifetime": 22.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 10211.14,
+    "ThermalEnergyDraw": 11660.0,
+    "CoolingRate": 47.56173
+  }
+}

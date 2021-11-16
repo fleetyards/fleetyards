@@ -1,0 +1,17 @@
+{
+  "ClassName": "Paint_400i_Black_White",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "400i Calacatta Livery",
+  "Description": "Balancing black and white, the Calacatta livery for the 400i accentuates the unique shape of the ship.",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Origin Jumpworks"
+  },
+  "Tags": [
+    "Paint_400i",
+    "@Paint_400i_Black_White"
+  ]
+}

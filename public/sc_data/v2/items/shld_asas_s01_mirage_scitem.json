@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_ASAS_S01_Mirage_SCItem",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Mirage",
+  "Description": "Item Type: Shield Generator\nManufacturer: Ascension Astro\nSize: 1\nGrade: A\nClass: Stealth\n\nBy boasting a signature so faint most won’t believe it’s there, Ascension Astro’s top of the line small shield generator lives up to its name — Mirage. It’s the ultimate component for those who want to go unnoticed.",
+  "Manufacturer": {
+    "Code": "ASAS",
+    "Name": "Ascension Astro"
+  },
+  "Shield": {
+    "Health": 1725.0,
+    "Regeneration": 450.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 106.25,
+    "Lifetime": 19.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 2001.389,
+    "ThermalEnergyDraw": 5300.0,
+    "CoolingRate": 20.84055
+  }
+}

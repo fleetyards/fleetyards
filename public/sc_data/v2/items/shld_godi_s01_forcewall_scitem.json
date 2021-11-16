@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_GODI_S01_ForceWall_SCItem",
+  "Size": 1,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "ForceWall",
+  "Description": "Item Type: Shield Generator\nManufacturer: Gorgon Defender Industries\nSize: 1\nGrade: B\nClass: Military\n\nWant to stay in the thick of battle a bit longer? Gorgon’s ForceWall is a military-grade shield generator that’s able to absorb more damage, providing a notable uptick to your shield’s durability.",
+  "Manufacturer": {
+    "Code": "GODI",
+    "Name": "Gorgon Defender Industries"
+  },
+  "Shield": {
+    "Health": 1650.0,
+    "Regeneration": 413.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 200.0,
+    "Lifetime": 22.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 21263.91,
+    "ThermalEnergyDraw": 22260.0,
+    "CoolingRate": 92.2804
+  }
+}

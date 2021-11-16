@@ -1,0 +1,104 @@
+{
+  "ClassName": "ANVL_Terrapin",
+  "Name": "Anvil Terrapin",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Pathfinder\n\nPresenting the Anvil Aerospace U4A-3 Terrapin-class Scanning/Exploration Ship. The Terrapin was developed near the end of the 28th century to serve as the first ship in the Empire’s defensive restructuring of the Navy. The Terrapin’s watchword is protection, with extensive shield systems and armor layers designed to provide the maximum possible defense for pilot and crew. While it lacks the maneuverability of a dedicated fighter, it does maintain an advanced, hard-hitting array of weapons intended to keep the most fearsome Vanduul raider at bay.",
+  "Career": "Support",
+  "Role": "Pathfinder",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 1,
+  "OperationsCrew": 0,
+  "Mass": 166850.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 15000.0,
+    "Nose": 15000.0,
+    "Tail": 15000.0
+  },
+  "DamageBeforeDetach": {
+    "Front_left_leg": 10000.0,
+    "Vent_flap_top_left": 500.0,
+    "Front_right_leg": 10000.0,
+    "Vent_flap_top_right": 500.0,
+    "Leg_rear_Left": 10000.0,
+    "rear_left_Main_Thruster_wing_top": 3000.0,
+    "rear_left_Main_Thruster_wing_bot": 3000.0,
+    "Flap_Top_left": 250.0,
+    "Flap_Top_right": 250.0,
+    "Leg_rear_Right": 10000.0,
+    "rear_right_Main_Thruster_wing_top": 3000.0,
+    "rear_right_Main_Thruster_wing_bot": 3000.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 157.0,
+    "MaxSpeed": 1204.0,
+    "ZeroToScm": 3.7277286448007367,
+    "ZeroToMax": 28.587167441656604,
+    "ScmToZero": 6.267645769609175,
+    "MaxToZero": 48.06525800388183,
+    "Acceleration": {
+      "Main": 42.11679952052742,
+      "Retro": 25.049277794426132,
+      "Vtol": 0.0,
+      "Maneuvering": 70.51598441714114
+    },
+    "AccelerationG": {
+      "Main": 4.294718260148583,
+      "Retro": 2.554315426907565,
+      "Vtol": 0.0,
+      "Maneuvering": 7.190629139829201
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 455000.0,
+    "FuelIntakeRate": 33.0,
+    "FuelUsage": {
+      "Main": 87.83985,
+      "Retro": 52.2434,
+      "Vtol": 0.0,
+      "Maneuvering": 147.06990000000005
+    },
+    "ThrustCapacity": {
+      "Main": 7027188.0,
+      "Retro": 4179472.0,
+      "Vtol": 0.0,
+      "Maneuvering": 11765592.0
+    },
+    "IntakeToMainFuelRatio": 0.3756837016456654,
+    "IntakeToTankCapacityRatio": 7.252747252747253E-05,
+    "TimeForIntakesToFillTank": 13787.878787878788,
+    "ManeuveringTimeTillEmpty": 3544.3093192744986
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 950.0,
+    "Range": 104235242484.09041,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 1.2430458856089428
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Turret": true,
+      "WeaponSizes": [
+        2,
+        2
+      ]
+    }
+  ],
+  "MannedTurrets": [
+    {
+      "Size": 1,
+      "Turret": true,
+      "WeaponSizes": []
+    }
+  ],
+  "RemoteTurrets": []
+}

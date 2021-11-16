@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BASL_S02_Rampart_SCItem",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Rampart",
+  "Description": "Item Type: Shield Generator\nManufacturer: Basilisk\nSize: 2\nGrade: A\nClass: Industrial\n\nBasilisk understands that escape isn’t always an option. That’s why they built the Rampart industrial shield generator to take an incredible amount of damage before it’s depleted.",
+  "Manufacturer": {
+    "Code": "BASL",
+    "Name": "Basilisk"
+  },
+  "Shield": {
+    "Health": 8625.0,
+    "Regeneration": 600.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 250.0,
+    "Lifetime": 45.0
+  },
+  "PowerConnection": {
+    "PowerBase": 1000.0,
+    "PowerDraw": 1400.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 97917.75,
+    "ThermalEnergyDraw": 99000.0,
+    "CoolingRate": 197.5671
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "ClassName": "cba_security_jacket_01_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Torso_1.UNDEFINED",
+  "Name": "Ajax Security Uniform Jacket",
+  "Description": "Carrying Capacity: 2K µSCU\n\nThe Ajax Security Uniform Jacket is a standard security accessory produced by Code Blue Apparel's professional division. The jacket is a uniform intended for security professionals and does not provide any armored protection.",
+  "Manufacturer": {
+    "Code": "CBA",
+    "Name": "CBD"
+  },
+  "Tags": [
+    "cba_security_jacket",
+    "Set_01",
+    "Color_01"
+  ],
+  "Ports": [
+    {
+      "PortName": "Material_Variant",
+      "Size": 1,
+      "Types": [
+        "Paints"
+      ],
+      "Flags": [
+        "nontransferable"
+      ]
+    }
+  ]
+}

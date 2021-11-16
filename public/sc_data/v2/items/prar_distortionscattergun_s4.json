@@ -1,0 +1,80 @@
+{
+  "ClassName": "PRAR_DistortionScatterGun_S4",
+  "Size": 4,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Salvation Distortion Scattergun",
+  "Description": "Manufacturer: Preacher Armaments\nItem Type: Distortion Scattergun\nSize: 4\n\nDisable an enemy's ship without damaging it with the Salvation scattergun from Preacher Armaments. With its wide spread and low rate of fire this size four scattergun is most potent at close range.",
+  "Manufacturer": {
+    "Code": "PRAR",
+    "Name": "Aegis Dynamics"
+  },
+  "Tags": [
+    "PRAR",
+    "DistortionScatterGun",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 1650.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 134.0,
+    "PowerDraw": 366.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 226.5
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 800.0,
+      "Range": 400.0,
+      "Size": 1.0,
+      "Capacity": 10.0,
+      "ImpactDamage": {
+        "Distortion": 1.0
+      },
+      "DetonationDamage": {
+        "Distortion": 45.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 85.0,
+        "FireType": "single",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 8.0,
+        "DamagePerShot": {
+          "Distortion": 368.0
+        },
+        "DamagePerSecond": {
+          "Distortion": 521.3333333333334
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2550.0,
+      "Cooldown": 1.5,
+      "CostPerBullet": 360.0,
+      "RequestedAmmoLoad": 15300.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 800.0,
+    "Range": 400.0,
+    "Size": 1.0,
+    "Capacity": 10.0,
+    "ImpactDamage": {
+      "Distortion": 1.0
+    },
+    "DetonationDamage": {
+      "Distortion": 45.0
+    }
+  }
+}

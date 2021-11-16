@@ -1,0 +1,79 @@
+{
+  "ClassName": "BEHR_DistortionCannon_VNG_S2",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "EVSD Cannon",
+  "Description": "Manufacturer: Behring\nItem Type: Distortion Cannon\nSize: 2\n\nDisable ships without hurting their crew or cargo with the EVSD from Behring. This distortion cannon features much of the same industry-leading technology used in other Behring weapons, but is specifically designed to be mounted on the nose of an Aegis Vanguard.  ",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "flightReady",
+    "weaponMountUsable",
+    "VanguardNose"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 230.0,
+    "PowerDraw": 230.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 91.42857
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Distortion": 1.0
+      },
+      "DetonationDamage": {
+        "Distortion": 200.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 84.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Distortion": 201.0
+        },
+        "DamagePerSecond": {
+          "Distortion": 281.4
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 1400.0,
+      "Cooldown": 1.0,
+      "CostPerBullet": 100.0,
+      "RequestedAmmoLoad": 8400.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Distortion": 1.0
+    },
+    "DetonationDamage": {
+      "Distortion": 200.0
+    }
+  }
+}

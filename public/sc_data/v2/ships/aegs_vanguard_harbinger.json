@@ -1,0 +1,133 @@
+{
+  "ClassName": "AEGS_Vanguard_Harbinger",
+  "Name": "Aegis Vanguard Harbinger",
+  "Description": "Manufacturer: Aegis Dynamics\nFocus: Heavy Fighter\n\nA hard-charging bulldog of a fighter which features extensive forward-mounted weaponry designed to tear through the shields and armor of other spacecraft. So-named because their multiple-jump range allows them to form the vanguard of any military expedition, Vanguards have seen extensive service against the Vanduul.",
+  "Career": "Combat",
+  "Role": "Heavy Fighter",
+  "Size": 3,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 1,
+  "OperationsCrew": 0,
+  "Mass": 336604.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 9600.0,
+    "Body": 10000.0
+  },
+  "DamageBeforeDetach": {
+    "Engine_R": 7500.0,
+    "Tail_Fin_Right_Upper": 250.0,
+    "Tail_Fin_Right_Lower": 250.0,
+    "Wing_Right_Geo": 800.0,
+    "Wing_Right_Flaps_Geo": 600.0,
+    "Engine_L": 7500.0,
+    "Tail_Fin_Left_Upper": 250.0,
+    "Tail_Fin_Left_Lower": 250.0,
+    "Wing_Left_Geo": 800.0,
+    "Wing_Left_Flaps_Geo": 600.0,
+    "Wing_Back_Right": 1800.0,
+    "Wing_Back_Left": 1800.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 171.0,
+    "MaxSpeed": 1022.0,
+    "ZeroToScm": 3.2804254985926935,
+    "ZeroToMax": 19.605817892173878,
+    "ScmToZero": 8.19229123701436,
+    "MaxToZero": 48.962114878530265,
+    "Acceleration": {
+      "Main": 52.127384107140735,
+      "Retro": 20.873281363263658,
+      "Vtol": 0.0,
+      "Maneuvering": 47.12935675155376
+    },
+    "AccelerationG": {
+      "Main": 5.31551378374804,
+      "Retro": 2.128482307311487,
+      "Vtol": 0.0,
+      "Maneuvering": 4.805856839413996
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 390000.0,
+    "FuelIntakeRate": 104.0,
+    "FuelUsage": {
+      "Main": 219.328575,
+      "Retro": 87.82537500000001,
+      "Vtol": 0.0,
+      "Maneuvering": 198.29912500000003
+    },
+    "ThrustCapacity": {
+      "Main": 17546286.0,
+      "Retro": 7026030.0,
+      "Vtol": 0.0,
+      "Maneuvering": 15863930.0
+    },
+    "IntakeToMainFuelRatio": 0.4741744207292643,
+    "IntakeToTankCapacityRatio": 0.0002666666666666667,
+    "TimeForIntakesToFillTank": 3750.0,
+    "ManeuveringTimeTillEmpty": 1818.367151756901
+  },
+  "QuantumTravel": {
+    "Speed": 248286300.0,
+    "SpoolTime": 2.0,
+    "FuelCapacity": 2500.0,
+    "Range": 109217999126.256,
+    "PortOlisarToArcCorpTime": 168.86695347266442,
+    "PortOlisarToArcCorpFuel": 959.7170659923,
+    "PortOlisarToArcCorpAndBack": 1.3024672002759081
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    }
+  ],
+  "MannedTurrets": [
+    {
+      "Size": 6,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    }
+  ],
+  "RemoteTurrets": []
+}

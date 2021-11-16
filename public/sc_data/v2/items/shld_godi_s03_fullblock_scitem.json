@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_GODI_S03_FullBlock_SCItem",
+  "Size": 3,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "FullBlock",
+  "Description": "Item Type: Shield Generator\nManufacturer: Gorgon Defender Industries\nSize: 3\nGrade: B\nClass: Military\n\nCrafted by former residents of Caliban, Gorgon’s FullBlock large shield generator has been repeatedly put to the test by members of the military and public. That means you can count on it regardless of what you come up against.",
+  "Manufacturer": {
+    "Code": "GODI",
+    "Name": "Gorgon Defender Industries"
+  },
+  "Shield": {
+    "Health": 110000.0,
+    "Regeneration": 1320.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 1200.0,
+    "Lifetime": 44.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 487250.0,
+    "ThermalEnergyDraw": 493500.0,
+    "CoolingRate": 151.4615
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "ClassName": "MobiGlas_04",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "MobiGlas.Personal",
+  "Name": "mobiGlas Lemon Casing",
+  "Description": "Apply your own style to your mobiGlas with this custom paint casing.",
+  "Manufacturer": {
+    "Code": "MIT",
+    "Name": "microTech"
+  },
+  "Tags": [
+    "yellow"
+  ],
+  "Ports": [
+    {
+      "PortName": "mobiglas_screen_attach",
+      "Size": 1,
+      "Loadout": "PersonalMobiGlas",
+      "InstalledItem": {
+        "ClassName": "PersonalMobiGlas",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Display.Personal",
+        "Name": "PersonalMobiGlas"
+      },
+      "Types": [
+        "Display.Personal"
+      ],
+      "Flags": [
+        "nophys",
+        "uneditable"
+      ],
+      "Uneditable": true
+    }
+  ]
+}

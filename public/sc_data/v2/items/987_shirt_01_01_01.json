@@ -1,0 +1,29 @@
+{
+  "ClassName": "987_shirt_01_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Torso_0.UNDEFINED",
+  "Name": "Hyper Vanguard Force T-Shirt",
+  "Description": "The battle against pirate captain Balthazar jumps from the arcade to this animated t-shirt. Special fabric scrolls graphics from 'Hyper Vanguard Force IV' to celebrate this arcade classic from Original System.",
+  "Manufacturer": {
+    "Code": "987",
+    "Name": "987"
+  },
+  "Tags": [
+    "987_shirt",
+    "Set_01",
+    "Color_01"
+  ],
+  "Ports": [
+    {
+      "PortName": "Material_Variant",
+      "Size": 1,
+      "Types": [
+        "Paints"
+      ],
+      "Flags": [
+        "nontransferable"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "ClassName": "CRUS_Starlifter_M2",
+  "Name": "Crusader M2 Hercules Starlifter",
+  "Description": "Manufacturer: Crusader Industries\nFocus: Medium Freight / Combat\n\nThe M2 Hercules is the UEE's premier tactical starlifter. The ship's potent combination of capacity, maneuverability, and durability make it the obvious choice in large-scale transport, and a robust weapons package assures your cargo, and crew, gets to where they’re going in one piece.",
+  "Career": "Transporter",
+  "Role": "Courier",
+  "Size": 5,
+  "Cargo": 522,
+  "Crew": 3,
+  "WeaponCrew": 3,
+  "OperationsCrew": 0,
+  "Mass": 3139240.06,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "CRUS",
+    "Name": "Crusader Industries"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 58500.0
+  },
+  "DamageBeforeDetach": {
+    "Tail_Left": 4680.0,
+    "Tail_Right": 4680.0,
+    "Wing_Left": 7930.0,
+    "Wing_Right": 7930.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 135.0,
+    "MaxSpeed": 963.0,
+    "ZeroToScm": 2.5408451333069326,
+    "ZeroToMax": 18.12469528425612,
+    "ScmToZero": 23.963878676439403,
+    "MaxToZero": 170.9423345586011,
+    "Acceleration": {
+      "Main": 53.13192773157972,
+      "Retro": 5.633478696114754,
+      "Vtol": 18.455979438539657,
+      "Maneuvering": 90.32382187426596
+    },
+    "AccelerationG": {
+      "Main": 5.417948724106964,
+      "Retro": 0.5744549467147898,
+      "Vtol": 1.8819861149466197,
+      "Maneuvering": 9.210466406421762
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 5044000.0,
+    "FuelIntakeRate": 700.0,
+    "FuelUsage": {
+      "Main": 2084.9234500000002,
+      "Retro": 221.060525,
+      "Vtol": 724.221875,
+      "Maneuvering": 3544.352
+    },
+    "ThrustCapacity": {
+      "Main": 166793876.0,
+      "Retro": 17684842.0,
+      "Vtol": 57937750.0,
+      "Maneuvering": 283548160.0
+    },
+    "IntakeToMainFuelRatio": 0.33574374157478054,
+    "IntakeToTankCapacityRatio": 0.0001387787470261697,
+    "TimeForIntakesToFillTank": 7205.714285714285,
+    "ManeuveringTimeTillEmpty": 1597.6690249653047
+  },
+  "QuantumTravel": {
+    "Speed": 188697600.0,
+    "SpoolTime": 5.625,
+    "FuelCapacity": 88000.0,
+    "Range": 719189277541.6803,
+    "PortOlisarToArcCorpTime": 222.19334570233008,
+    "PortOlisarToArcCorpFuel": 5130.2306769252,
+    "PortOlisarToArcCorpAndBack": 8.576612392480442
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 10,
+      "Fixed": true,
+      "WeaponSizes": [
+        10
+      ]
+    },
+    {
+      "Size": 10,
+      "Fixed": true,
+      "WeaponSizes": [
+        10
+      ]
+    },
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": [
+    {
+      "Size": 5,
+      "Gimballed": true,
+      "WeaponSizes": [
+        4,
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Gimballed": true,
+      "WeaponSizes": [
+        4,
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Gimballed": true,
+      "WeaponSizes": [
+        4,
+        4
+      ]
+    }
+  ]
+}

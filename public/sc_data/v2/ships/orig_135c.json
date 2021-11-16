@@ -1,0 +1,93 @@
+{
+  "ClassName": "ORIG_135c",
+  "Name": "Origin 135c",
+  "Description": "Manufacturer: Origin Jumpworks\nFocus: Starter / Light Freighter\n\nWith a deceptive amount of storage space in its sleek, stylish frame, and Origin's patented AIR fuel system, the 135c model is the obvious choice for musicians, couriers, and anyone trying to get the party started. Get it there fast, and look good while you're doing it.",
+  "Career": "Exploration",
+  "Role": "Light Freight",
+  "Size": 1,
+  "Cargo": 6,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 48143.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ORIG",
+    "Name": "Origin Jumpworks"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 2200.0
+  },
+  "DamageBeforeDetach": {
+    "Spoiler": 650.0,
+    "Wing_Right": 800.0,
+    "Wing_Left": 800.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 190.0,
+    "MaxSpeed": 1095.0,
+    "ZeroToScm": 1.6416243002542703,
+    "ZeroToMax": 9.460940046202241,
+    "ScmToZero": 5.459693207592217,
+    "MaxToZero": 31.4650740121762,
+    "Acceleration": {
+      "Main": 115.73902748063063,
+      "Retro": 34.80049020626051,
+      "Vtol": 0.0,
+      "Maneuvering": 228.19098103566458
+    },
+    "AccelerationG": {
+      "Main": 11.802096084975222,
+      "Retro": 3.548662349761502,
+      "Vtol": 0.0,
+      "Maneuvering": 23.26900391795998
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 65000.0,
+    "FuelIntakeRate": 61.0,
+    "FuelUsage": {
+      "Main": 69.6503,
+      "Retro": 20.942500000000003,
+      "Vtol": 0.0,
+      "Maneuvering": 137.32247999999998
+    },
+    "ThrustCapacity": {
+      "Main": 5572024.0,
+      "Retro": 1675400.0,
+      "Vtol": 0.0,
+      "Maneuvering": 10985798.4
+    },
+    "IntakeToMainFuelRatio": 0.875803837169402,
+    "IntakeToTankCapacityRatio": 0.0009384615384615385,
+    "TimeForIntakesToFillTank": 1065.5737704918033,
+    "ManeuveringTimeTillEmpty": 840.7541746031707
+  },
+  "QuantumTravel": {
+    "Speed": 148971800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 700.0,
+    "Range": 71428571428.57143,
+    "PortOlisarToArcCorpTime": 281.4448846694475,
+    "PortOlisarToArcCorpFuel": 410.888040486,
+    "PortOlisarToArcCorpAndBack": 0.8518135489804439
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}
