@@ -2,21 +2,19 @@
 
 module ScData
   class BaseLoader
-    attr_accessor :base_url
+    private def load_from_export(path)
+      full_path = Rails.root.join("public/sc_data/#{path}")
 
-    def initialize
-      self.base_url = 'https://scunpacked.com/api/v2'
+      raw_data = File.read(full_path) if File.exist?(full_path)
+
+      parse_json(raw_data) if raw_data.present?
     end
 
-    private def fetch_remote(path)
-      Typhoeus.get("#{base_url}/#{path}")
-    end
-
-    private def parse_json_response(response)
-      JSON.parse(response.body)
+    private def parse_json(raw_data)
+      JSON.parse(raw_data)
     rescue JSON::ParserError => e
       Raven.capture_exception(e)
-      Rails.logger.error "SC Data could not be parsed: #{response.body}"
+      Rails.logger.error "SC Data could not be parsed: #{raw_data}"
       nil
     end
   end

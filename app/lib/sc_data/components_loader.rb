@@ -7,18 +7,11 @@ module ScData
     def initialize
       super
 
-      self.base_url = "#{base_url}/items"
       self.translations_loader = ::ScData::TranslationsLoader.new
     end
 
     def load(sc_identifier)
-      sleep 1
-
-      component_response = fetch_remote("#{sc_identifier.downcase}.json")
-
-      return unless component_response.success?
-
-      component_data = (parse_json_response(component_response) || {})
+      component_data = load_from_export("v2/items/#{sc_identifier.downcase}.json")
 
       extract_component!(component_data)
     end

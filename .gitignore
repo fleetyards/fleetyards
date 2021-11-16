@@ -53,3 +53,5 @@ REVISION
 .idea
 
 cypress/*
+
+.sc_data_version
