@@ -104,7 +104,7 @@ module Api
           end,
           groups: HangarGroup.where(user: current_user).order([{ sort: :asc, name: :asc }]).map do |group|
             HangarGroupCount.new(
-              count: group.vehicles.where(id: vehicles.map(&:id)).size,
+              group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
               id: group.id,
               slug: group.slug
             )

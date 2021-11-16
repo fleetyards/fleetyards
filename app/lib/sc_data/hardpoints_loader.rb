@@ -240,7 +240,7 @@ module ScData
     end
 
     private def missile_turret?(component)
-      component['InstalledItem']['Type'] == 'Turret.MissileTurret'
+      component.dig('InstalledItem', 'Type') == 'Turret.MissileTurret'
     end
 
     private def cleanup_ship_matrix_hardpoints(model_id)
