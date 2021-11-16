@@ -1,0 +1,80 @@
+{
+  "ClassName": "BEHR_LaserCannon_S3",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "M5A Cannon",
+  "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 3\n\nWhen energy autocannons are designed, Behring's M5A provides the standard to which they are measured against, owing to its long range of engagement and low damage fallout.",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "BEHR",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 1024.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 240.0,
+    "PowerDraw": 240.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 160.0
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 3.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 150.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 200.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 150.0
+        },
+        "DamagePerSecond": {
+          "Energy": 500.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2500.0,
+      "Cooldown": 1.25,
+      "CostPerBullet": 75.0,
+      "RequestedAmmoLoad": 15000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 3.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 150.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

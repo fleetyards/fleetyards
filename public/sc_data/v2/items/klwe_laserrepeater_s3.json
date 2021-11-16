@@ -1,0 +1,104 @@
+{
+  "ClassName": "KLWE_LaserRepeater_S3",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "CF-337 Panther Repeater",
+  "Description": "Manufacturer: Klaus & Werner\nItem Type: Laser Repeater\nSize: 3\n\nThe CF-337 Panther is the size three model in Klaus & Werner's laser repeater line. The Panther is a true fire-and-forget weapon with a respectable power consumption-to-damage ratio. Pilots who outfit their ships with Panthers rarely regret the decision.",
+  "Manufacturer": {
+    "Code": "KLA",
+    "Name": "Klaus & Werner"
+  },
+  "Tags": [
+    "KLWE",
+    "LaserRepeater",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 1024.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 200.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 100.0,
+    "CoolingRate": 160.0
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 1400.0,
+      "Range": 1540.0000000000002,
+      "Size": 3.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 60.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 500.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 60.0
+        },
+        "DamagePerSecond": {
+          "Energy": 500.00000000000006
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2500.0,
+      "Cooldown": 1.25,
+      "CostPerBullet": 60.0,
+      "RequestedAmmoLoad": 15000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 1400.0,
+    "Range": 1540.0000000000002,
+    "Size": 3.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 60.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

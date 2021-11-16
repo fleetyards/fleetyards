@@ -1,0 +1,106 @@
+{
+  "ClassName": "RSI_Mantis",
+  "Name": "RSI Mantis",
+  "Description": "Manufacturer: RSI\nFocus: Interdiction\n\nStop ships dead in their tracks with RSI’s premier Quantum Enforcement ship. The Mantis features a tailor-made Quantum Enforcement Device from Wei-Tek, capable of ripping ships out of QT with its Quantum Snare and preventing hasty escapes with its Quantum Dampener.",
+  "Career": "Combat",
+  "Role": "Interdiction",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 228123.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "RSI",
+    "Name": "Roberts Space Industries"
+  },
+  "DamageBeforeDestruction": {
+    "body_main": 2700.0
+  },
+  "DamageBeforeDetach": {
+    "nose_wingmount_left": 650.0,
+    "nose_wingmount_right": 150.0,
+    "tail": 1200.0,
+    "top_cover_mid": 50.0,
+    "interdiction_top_cover_right": 50.0,
+    "interdiction_top_cover_left": 50.0,
+    "interdiction_bottom_cover_left": 50.0,
+    "interdiction_bottom_cover_right": 50.0,
+    "wing_left": 500.0,
+    "tail_wing_left": 300.0,
+    "engines_base_left": 500.0,
+    "engine_left": 550.0,
+    "wing_right": 500.0,
+    "tail_wing_right": 300.0,
+    "engines_base_right": 500.0,
+    "engine_right": 550.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 168.0,
+    "MaxSpeed": 1220.0,
+    "ZeroToScm": 1.711133336071766,
+    "ZeroToMax": 12.426087321473538,
+    "ScmToZero": 4.531891314064891,
+    "MaxToZero": 32.91016311404266,
+    "Acceleration": {
+      "Main": 98.18054295270534,
+      "Retro": 37.07061541361458,
+      "Vtol": 0.0,
+      "Maneuvering": 65.42628318933207
+    },
+    "AccelerationG": {
+      "Main": 10.011628979661024,
+      "Retro": 3.7801506938863985,
+      "Vtol": 0.0,
+      "Maneuvering": 6.671624062268204
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 632250.0,
+    "FuelIntakeRate": 32.0,
+    "FuelUsage": {
+      "Main": 279.9655,
+      "Retro": 105.70825,
+      "Vtol": 0.0,
+      "Maneuvering": 186.5655
+    },
+    "ThrustCapacity": {
+      "Main": 22397240.0,
+      "Retro": 8456660.0,
+      "Vtol": 0.0,
+      "Maneuvering": 14925240.0
+    },
+    "IntakeToMainFuelRatio": 0.11429979765363946,
+    "IntakeToTankCapacityRatio": 5.0612890470541714E-05,
+    "TimeForIntakesToFillTank": 19757.8125,
+    "ManeuveringTimeTillEmpty": 1852.7567540639404
+  },
+  "QuantumTravel": {
+    "Speed": 253252000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 583.33,
+    "Range": 31328141783.029003,
+    "PortOlisarToArcCorpTime": 165.55585373462006,
+    "PortOlisarToArcCorpFuel": 780.6872769234001,
+    "PortOlisarToArcCorpAndBack": 0.37360029889230256
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

@@ -1,0 +1,80 @@
+{
+  "ClassName": "PRAR_DistortionScatterGun_S5",
+  "Size": 5,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Absolution Distortion Scattergun",
+  "Description": "Manufacturer: Preacher Armaments\nItem Type: Distortion Scattergun\nSize: 5\n\nDeliver high distortion damage in close quarters with Preacher Armaments' Absolution scattergun. This size five weapon is an ideal loadout option for those interested in capturing or boarding their target.",
+  "Manufacturer": {
+    "Code": "PRAR",
+    "Name": "Aegis Dynamics"
+  },
+  "Tags": [
+    "PRAR",
+    "DistortionScatterGun",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 2640.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 174.0,
+    "PowerDraw": 476.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 395.0
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 800.0,
+      "Range": 400.0,
+      "Size": 1.0,
+      "Capacity": 10.0,
+      "ImpactDamage": {
+        "Distortion": 1.0
+      },
+      "DetonationDamage": {
+        "Distortion": 67.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 80.0,
+        "FireType": "single",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 8.0,
+        "DamagePerShot": {
+          "Distortion": 544.0
+        },
+        "DamagePerSecond": {
+          "Distortion": 725.3333333333333
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 3573.33,
+      "Cooldown": 1.75,
+      "CostPerBullet": 536.0,
+      "RequestedAmmoLoad": 21440.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 800.0,
+    "Range": 400.0,
+    "Size": 1.0,
+    "Capacity": 10.0,
+    "ImpactDamage": {
+      "Distortion": 1.0
+    },
+    "DetonationDamage": {
+      "Distortion": 67.0
+    }
+  }
+}

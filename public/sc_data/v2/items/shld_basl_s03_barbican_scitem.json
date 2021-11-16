@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BASL_S03_Barbican_SCItem",
+  "Size": 3,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Barbican",
+  "Description": "Item Type: Shield Generator\nManufacturer: Basilisk\nSize: 3\nGrade: B\nClass: Industrial\n\nBarricade your ship against external forces with the Basilisk Barbican. Originally fabricated for large industrial vessels, this shield generator has became quite popular due to its high damage absorption. ",
+  "Manufacturer": {
+    "Code": "BASL",
+    "Name": "Basilisk"
+  },
+  "Shield": {
+    "Health": 110000.0,
+    "Regeneration": 1320.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 1575.0,
+    "Lifetime": 84.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 488738.1,
+    "ThermalEnergyDraw": 493500.0,
+    "CoolingRate": 151.5531
+  }
+}

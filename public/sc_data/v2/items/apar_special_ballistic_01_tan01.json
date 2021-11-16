@@ -1,0 +1,95 @@
+{
+  "ClassName": "apar_special_ballistic_01_tan01",
+  "Size": 5,
+  "Grade": 1,
+  "Type": "WeaponPersonal.Large",
+  "Classification": "FPS.Weapon.Large",
+  "Name": "Scourge “Desert Shadow” Railgun",
+  "Description": "Manufacturer: Apocalypse Arms\nItem Type: Railgun\nClass: Ballistic\n\nMagazine Size: 10\nRate Of Fire: 60 rpm\nEffective Range: 200 m\n\nAttachments: Optics (N/A), Barrel (N/A), Underbarrel (S4)\n\nEqually devastating to larger threats and hostile vehicles, this shoulder mounted railgun from Apocalypse Arms uses electromagnets to deliver its payload accurately over great distances, making it the Scourge of land, air and space. ",
+  "Manufacturer": {
+    "Code": "APAR",
+    "Name": "Apocalypse Arms"
+  },
+  "Tags": [
+    "shouldered",
+    "SM_RestrictedWep"
+  ],
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 50.0,
+      "Range": 200.0,
+      "Size": 1.0,
+      "ImpactDamage": {
+        "Physical": 20.0
+      },
+      "DetonationDamage": {
+        "Physical": 5.5
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Charge",
+        "LocalisedName": "[CHARGE]",
+        "RoundsPerMinute": 70.0,
+        "FireType": "charged",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Physical": 25.5
+        },
+        "DamagePerSecond": {
+          "Physical": 29.750000000000004
+        }
+      }
+    ]
+  },
+  "Ammunition": {
+    "Speed": 50.0,
+    "Range": 200.0,
+    "Size": 1.0,
+    "ImpactDamage": {
+      "Physical": 20.0
+    },
+    "DetonationDamage": {
+      "Physical": 5.5
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 1,
+      "Loadout": "apar_special_ballistic_01_mag",
+      "InstalledItem": {
+        "ClassName": "apar_special_ballistic_01_mag",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Magazine",
+        "Name": "Scourge Railgun Magazine (10 cap)",
+        "Description": "Item Type: Magazine\nCapacity: 10\n\nThis magazine holds the large specially designed .937 caliber tungsten sabot rounds fired by the Apocalypse Arms Scourge railgun.",
+        "Manufacturer": {
+          "Code": "APAR",
+          "Name": "Apocalypse Arms"
+        },
+        "Tags": [
+          "apar_special_ballistic_01",
+          "SM_RestrictedWep"
+        ],
+        "Ammunition": {
+          "Speed": 50.0,
+          "Range": 200.0,
+          "Size": 1.0,
+          "Capacity": 5.0,
+          "ImpactDamage": {
+            "Physical": 20.0
+          },
+          "DetonationDamage": {
+            "Physical": 5.5
+          }
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Magazine"
+      ]
+    }
+  ]
+}

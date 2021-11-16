@@ -1,0 +1,114 @@
+{
+  "ClassName": "ANVL_Hornet_F7A_Mk1",
+  "Name": "Anvil F7A Hornet",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Medium Fighter\n\nThe UEE Navy's premier carrier-based fighter craft, the F7A is the front-line attack ship for military combat missions. While not outfitted for long range runs, the Hornet can take her share of hits... and dish out a consistent, powerful response.",
+  "Career": "Combat",
+  "Role": "Medium Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 74132.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 4000.0,
+    "Body": 4000.0
+  },
+  "DamageBeforeDetach": {
+    "WingRight_Debris": 3000.0,
+    "LG_Door_Rear_R": 100.0,
+    "Tail_Debris": 2500.0,
+    "WingRightRear": 800.0,
+    "WingLeft_Debris": 3000.0,
+    "LG_Door_Rear_L": 100.0,
+    "WingLeftRear": 800.0,
+    "Canopy": 80.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 200.0,
+    "MaxSpeed": 1337.0,
+    "ZeroToScm": 4.221000691239254,
+    "ZeroToMax": 28.217389620934416,
+    "ScmToZero": 14.43852069241483,
+    "MaxToZero": 96.52151082879314,
+    "Acceleration": {
+      "Main": 47.38212917498516,
+      "Retro": 13.851834565369881,
+      "Vtol": 0.0,
+      "Maneuvering": 94.65015377974423
+    },
+    "AccelerationG": {
+      "Main": 4.831632452825546,
+      "Retro": 1.4124940052830102,
+      "Vtol": 0.0,
+      "Maneuvering": 9.651629477819554
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 140000.0,
+    "FuelIntakeRate": 35.0,
+    "FuelUsage": {
+      "Main": 43.90665,
+      "Retro": 12.8358025,
+      "Vtol": 0.0,
+      "Maneuvering": 87.70756500000002
+    },
+    "ThrustCapacity": {
+      "Main": 3512532.0,
+      "Retro": 1026864.2,
+      "Vtol": 0.0,
+      "Maneuvering": 7016605.199999999
+    },
+    "IntakeToMainFuelRatio": 0.7971457626578207,
+    "IntakeToTankCapacityRatio": 0.00025,
+    "TimeForIntakesToFillTank": 4000.0,
+    "ManeuveringTimeTillEmpty": 2653.503645937701
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 750.0,
+    "Range": 82290980908.49243,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.9813520149544286
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 5,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

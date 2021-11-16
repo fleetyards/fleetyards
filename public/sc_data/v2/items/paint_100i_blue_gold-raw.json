@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "8846a4a4-6aa9-435a-8f28-9ca433ee6503",
+        "Tags": "Paint_100i @Paint_100i_Blue_Gold",
+        "RequiredTags": "Paint_100i",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Name100i_Paint_Blue_Gold",
+          "Description": "@item_Desc100i_Paint_Blue_Gold"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_100i_Blue_Gold",
+  "__ref": "b9019a07-0ace-4cf5-927b-3d58c2800235",
+  "__type": "EntityClassDefinition"
+}

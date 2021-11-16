@@ -1,0 +1,146 @@
+{
+  "ClassName": "GATS_BallisticCannon_S1",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Tarantula GT-870 Mark 1 Cannon",
+  "Description": "Manufacturer: Gallenson Tactical Systems\nItem Type: Ballistic Cannon\nSize: 1\n\nFed by Gallenson Tactical’s patented SpinGlide drum ammunition system, the Tarantula GT-870 Mk1 can smoothly and accurately deliver a consistent stream of ballistic shells. Though it only has a moderate rate of fire, its trustworthy durability makes it a dependable addition to any fight.",
+  "Manufacturer": {
+    "Code": "GAT",
+    "Name": "Gallenson Tactical Systems"
+  },
+  "Tags": [
+    "GATS",
+    "BallisticCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 30.0,
+    "PowerDraw": 50.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 61.81
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 1.0,
+      "Capacity": 240.0,
+      "ImpactDamage": {
+        "Physical": 106.25
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 240.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Physical": 106.25
+        },
+        "DamagePerSecond": {
+          "Physical": 425.0
+        }
+      }
+    ]
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 1.0,
+    "Capacity": 240.0,
+    "ImpactDamage": {
+      "Physical": 106.25
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Loadout": "GATS_BallisticCannon_Barrel_S1",
+      "InstalledItem": {
+        "ClassName": "GATS_BallisticCannon_Barrel_S1",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Barrel",
+        "Name": "GATS_BallisticCannon_Barrel_S1",
+        "Manufacturer": {
+          "Code": "GAT",
+          "Name": "Gallenson Tactical Systems"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Loadout": "GATS_BallisticCannon_FiringMechanism_S1",
+      "InstalledItem": {
+        "ClassName": "GATS_BallisticCannon_FiringMechanism_S1",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.FiringMechanism",
+        "Name": "GATS_BallisticCannon_FiringMechanism_S1",
+        "Manufacturer": {
+          "Code": "GAT",
+          "Name": "Gallenson Tactical Systems"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Loadout": "GATS_BallisticCannon_PowerArray_S1",
+      "InstalledItem": {
+        "ClassName": "GATS_BallisticCannon_PowerArray_S1",
+        "Size": 3,
+        "Grade": 3,
+        "Type": "WeaponAttachment.PowerArray",
+        "Name": "GATS_BallisticCannon_PowerArray_S1",
+        "Manufacturer": {
+          "Code": "GAT",
+          "Name": "Gallenson Tactical Systems"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Loadout": "GATS_BallisticCannon_Ventilation_S1",
+      "InstalledItem": {
+        "ClassName": "GATS_BallisticCannon_Ventilation_S1",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Ventilation",
+        "Name": "GATS_BallisticCannon_Ventilation_S1",
+        "Manufacturer": {
+          "Code": "GAT",
+          "Name": "Gallenson Tactical Systems"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

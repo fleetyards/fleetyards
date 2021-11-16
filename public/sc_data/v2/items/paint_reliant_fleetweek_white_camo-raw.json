@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "429e3fc3-72a1-4372-b135-786842058482",
+        "Tags": "MISC_Reliant_Base Paint_Reliant @Paint_Reliant_FW_White_Camo",
+        "RequiredTags": "Paint_Reliant",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_NameReliant_Paint_Fleetweek_Level2_Camo",
+          "Description": "@item_DescReliant_Paint_Fleetweek_Level2_Camo"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_Reliant_Fleetweek_White_Camo",
+  "__ref": "2ae651b9-bdc4-4347-9853-b1412ff0bfcb",
+  "__type": "EntityClassDefinition"
+}

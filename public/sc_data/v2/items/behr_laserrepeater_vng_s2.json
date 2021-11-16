@@ -1,0 +1,73 @@
+{
+  "ClassName": "BEHR_LaserRepeater_VNG_S2",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "GVSR Repeater",
+  "Description": "Manufacturer: Behring\nItem Type: Laser Repeater\nSize: 2\n\nAegis commissioned Behring to design a laser repeater specifically for their Vanguard line-up. The result was the GVSR, which met Aegis exacting standards by delivering a steady rate of fire without overtaxing the ship's power plant. ",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "flightReady",
+    "weaponMountUsable",
+    "VanguardNose"
+  ],
+  "Durability": {
+    "Health": 850.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 190.0,
+    "PowerDraw": 190.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 85.47059
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 1400.0,
+      "Range": 1540.0000000000002,
+      "Size": 2.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 44.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 600.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 44.0
+        },
+        "DamagePerSecond": {
+          "Energy": 440.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2200.0,
+      "Cooldown": 1.0,
+      "CostPerBullet": 44.0,
+      "RequestedAmmoLoad": 13200.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 1400.0,
+    "Range": 1540.0000000000002,
+    "Size": 2.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 44.0
+    }
+  }
+}

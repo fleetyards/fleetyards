@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BASL_S03_Ward_SCItem",
+  "Size": 3,
+  "Grade": 4,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Ward",
+  "Description": "Item Type: Shield Generator\nManufacturer: Basilisk\nSize: 3\nGrade: D\nClass: Industrial\n\nThe Ward is Basilisk’s basic industrial-grade shield generator for large ships. It provides decent performance and durability while also keeping its signature respectable. ",
+  "Manufacturer": {
+    "Code": "BASL",
+    "Name": "Basilisk"
+  },
+  "Shield": {
+    "Health": 90000.0,
+    "Regeneration": 1080.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 1425.0,
+    "Lifetime": 76.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 488236.8,
+    "ThermalEnergyDraw": 493500.0,
+    "CoolingRate": 151.5223
+  }
+}

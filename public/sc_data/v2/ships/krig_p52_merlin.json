@@ -1,0 +1,99 @@
+{
+  "ClassName": "KRIG_P52_Merlin",
+  "Name": "Kruger P-52 Merlin",
+  "Description": "Manufacturer: Kruger Intergalactic\nFocus: Snub Fighter\n\nDesigned in conjunction with RSI, this elegant short-range snub fighter represents the first ship produced under the Kruger Intergalactic brand. Utilizing centuries of manufacturing expertise, the compact precision of the Kruger hull blends perfectly with the trusted RSI thrusters to grant the Merlin exceptional handling and maneuverability while ensuring that it is capable of fulfilling a variety of roles from combat to scouting to scanning. ",
+  "Career": "Combat",
+  "Role": "Snub Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 8479.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "KRI",
+    "Name": "Kruger Intergalatic"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 1700.0
+  },
+  "DamageBeforeDetach": {
+    "wing_left_animation_geo": 750.0,
+    "wing_right_animation_geo": 750.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 202.0,
+    "MaxSpeed": 1028.0,
+    "ZeroToScm": 1.2239958814187037,
+    "ZeroToMax": 6.2290483470219185,
+    "ScmToZero": 3.3232489940561125,
+    "MaxToZero": 16.91237606876081,
+    "Acceleration": {
+      "Main": 165.03323505130322,
+      "Retro": 60.78388960962378,
+      "Vtol": 0.0,
+      "Maneuvering": 219.6277013798797
+    },
+    "AccelerationG": {
+      "Main": 16.82870626864169,
+      "Retro": 6.198231670050647,
+      "Vtol": 0.0,
+      "Maneuvering": 22.395792422235257
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 15000.0,
+    "FuelIntakeRate": 7.0,
+    "FuelUsage": {
+      "Main": 17.49146,
+      "Retro": 6.442332500000001,
+      "Vtol": 0.0,
+      "Maneuvering": 23.277791
+    },
+    "ThrustCapacity": {
+      "Main": 1399316.8,
+      "Retro": 515386.60000000003,
+      "Vtol": 0.0,
+      "Maneuvering": 1862223.28
+    },
+    "IntakeToMainFuelRatio": 0.4001952953041084,
+    "IntakeToTankCapacityRatio": 0.00046666666666666666,
+    "TimeForIntakesToFillTank": 2142.8571428571427,
+    "ManeuveringTimeTillEmpty": 677.8020353084703
+  },
+  "QuantumTravel": {
+    "Speed": 0.0,
+    "SpoolTime": 0.0,
+    "FuelCapacity": 0.0,
+    "Range": 0.0,
+    "PortOlisarToArcCorpTime": 0.0,
+    "PortOlisarToArcCorpFuel": 0.0,
+    "PortOlisarToArcCorpAndBack": 0.0
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

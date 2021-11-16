@@ -1,0 +1,29 @@
+{
+  "ClassName": "oct_shirt_03_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Torso_1.UNDEFINED",
+  "Name": "Auditor Shirt Covalex Edition",
+  "Description": "Octagon's Auditor line of shirts offers the ultimate in urban styling. The simple short-sleeve, button-down shirts feature an accent color and a collar that matches the modern fashion. Octagon's patented altsilk fabric allows for high breathability and a full range of flexible motion.",
+  "Manufacturer": {
+    "Code": "OCT",
+    "Name": "@LOC_PLACEHOLDER"
+  },
+  "Tags": [
+    "oct_shirt",
+    "Set_03",
+    "Color_01"
+  ],
+  "Ports": [
+    {
+      "PortName": "Material_Variant",
+      "Size": 1,
+      "Types": [
+        "Paints"
+      ],
+      "Flags": [
+        "nontransferable"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "ClassName": "ANVL_Lightning_F8",
+  "Name": "Anvil F8 Lightning",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Heavy Fighter\n\nFew vehicles employed by the proud men and women who serve in our Empire’s Navy inspire the awe of the legendary F8 Lightning. A force to be reckoned with, the F8 has secured Humanity’s freedom from numerous threats at home and abroad countless times.",
+  "Career": "Combat",
+  "Role": "Heavy Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 158774.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "body": 10000.0
+  },
+  "DamageBeforeDetach": {
+    "wing_base_left": 7500.0,
+    "rear_wing_left": 2000.0,
+    "rear_wing_flap_left": 50.0,
+    "wing_left": 250.0,
+    "mini_wing_left": 1.0,
+    "top_wing_flap_left": 25.0,
+    "wing_base_right": 7500.0,
+    "rear_wing_right": 2000.0,
+    "rear_wing_flap_right": 1.0,
+    "wing_right": 200.0,
+    "mini_wing_right": 1.0,
+    "top_wing_flap_right": 1.0,
+    "tail_right": 250.0,
+    "front_wing_right": 250.0,
+    "front_wing_left": 1.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 212.0,
+    "MaxSpeed": 1337.0,
+    "ZeroToScm": 3.0753801478791676,
+    "ZeroToMax": 19.39520404582286,
+    "ScmToZero": 7.200240606341671,
+    "MaxToZero": 45.40906457867366,
+    "Acceleration": {
+      "Main": 68.93456737249171,
+      "Retro": 29.443460516205423,
+      "Vtol": 0.0,
+      "Maneuvering": 78.76811064783907
+    },
+    "AccelerationG": {
+      "Main": 7.029369482498025,
+      "Retro": 3.002397355935837,
+      "Vtol": 0.0,
+      "Maneuvering": 8.03211181684876
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 133200.0,
+    "FuelIntakeRate": 29.0,
+    "FuelUsage": {
+      "Main": 136.8127125,
+      "Retro": 58.435700000000004,
+      "Vtol": 0.0,
+      "Maneuvering": 156.32909999999995
+    },
+    "ThrustCapacity": {
+      "Main": 10945017.0,
+      "Retro": 4674856.0,
+      "Vtol": 0.0,
+      "Maneuvering": 12506328.0
+    },
+    "IntakeToMainFuelRatio": 0.21196860635300976,
+    "IntakeToTankCapacityRatio": 0.00021771771771771773,
+    "TimeForIntakesToFillTank": 4593.103448275862,
+    "ManeuveringTimeTillEmpty": 716.2165858850622
+  },
+  "QuantumTravel": {
+    "Speed": 148971800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 10000.0,
+    "Range": 1020408163265.3062,
+    "PortOlisarToArcCorpTime": 281.4448846694475,
+    "PortOlisarToArcCorpFuel": 410.888040486,
+    "PortOlisarToArcCorpAndBack": 12.168764985434914
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 4,
+      "Fixed": true,
+      "WeaponSizes": [
+        4
+      ]
+    },
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 4,
+      "Fixed": true,
+      "WeaponSizes": [
+        4
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

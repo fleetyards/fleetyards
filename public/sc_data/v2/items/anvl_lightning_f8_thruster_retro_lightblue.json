@@ -1,0 +1,33 @@
+{
+  "ClassName": "ANVL_Lightning_F8_Thruster_Retro_LightBlue",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "MainThruster.FixedThruster",
+  "Name": "ANVL_Lightning_F8_Thruster_Retro_LightBlue",
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "Tags": [
+    "flightready"
+  ],
+  "Thruster": {
+    "ThrustCapacity": 2337428.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Retro",
+    "MaxThrustFuelRate": 29.217850000000002
+  },
+  "Durability": {
+    "Health": 9800.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 45.0
+  }
+}

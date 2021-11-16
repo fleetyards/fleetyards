@@ -1,0 +1,79 @@
+{
+  "ClassName": "ARGO_MPUV_Transport",
+  "Name": "Argo MPUV Personnel",
+  "Description": "Manufacturer: Argo Astronautics\nFocus: Transport\n\nThe Argo Astronautics MPUV-1P (commonly ‘Argo Personnel.’) This version of the Argo is geared towards a simple but incredibly important responsibility: moving grounds of people from place to place. The UEE Navy uses MPUV-1Ps extensively, and any new recruit can likely recall those terrifying moments in which such a ship carried them to their first space assignment. In civilian hands, Argo Personnel ships are adapted for everything from standard taxi services to use as makeshift combat dropships. The Argo MPUV-1P is capable of carrying up to eight humans and their equipment.",
+  "Career": "Transporter",
+  "Role": "Passenger",
+  "Size": 1,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 13005.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ARGO",
+    "Name": "Argo Astronautics"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 1000.0,
+    "Body": 1000.0,
+    "aegs_escape_pod_exterior": 440.0
+  },
+  "DamageBeforeDetach": {
+    "Leg_Left": 240.0,
+    "Leg_Right": 240.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 115.0,
+    "MaxSpeed": 919.0,
+    "ZeroToScm": 6.262988086555641,
+    "ZeroToMax": 50.04944392647508,
+    "ScmToZero": "Infinity",
+    "MaxToZero": "Infinity",
+    "Acceleration": {
+      "Main": 18.361842368319877,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 70.59296732026144
+    },
+    "AccelerationG": {
+      "Main": 1.872386805430408,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 7.198479211143115
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 30000.0,
+    "FuelIntakeRate": 3.0,
+    "FuelUsage": {
+      "Main": 2.9849470000000005,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 11.475769249999999
+    },
+    "ThrustCapacity": {
+      "Main": 238795.76,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 918061.54
+    },
+    "IntakeToMainFuelRatio": 1.0050429706122084,
+    "IntakeToTankCapacityRatio": 0.0001,
+    "TimeForIntakesToFillTank": 10000.0,
+    "ManeuveringTimeTillEmpty": 5242.160169267605
+  },
+  "QuantumTravel": {
+    "Speed": 0.0,
+    "SpoolTime": 0.0,
+    "FuelCapacity": 0.0,
+    "Range": 0.0,
+    "PortOlisarToArcCorpTime": 0.0,
+    "PortOlisarToArcCorpFuel": 0.0,
+    "PortOlisarToArcCorpAndBack": 0.0
+  },
+  "PilotHardpoints": [],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "1244444d-b901-4e2e-b8e1-77838fd563d2",
+        "Tags": "Paint_100i @Paint_100i_FW_Blue_Gold",
+        "RequiredTags": "Paint_100i",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Name100_Series_Paint_Invictus_blue_gold",
+          "Description": "@item_Desc100_Series_Paint_Invictus_blue_gold"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_100i_Fleetweek_Blue_Gold",
+  "__ref": "57f14363-ce4b-4b48-968e-451709a69ede",
+  "__type": "EntityClassDefinition"
+}

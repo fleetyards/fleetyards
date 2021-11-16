@@ -1,0 +1,80 @@
+{
+  "ClassName": "VNCL_LaserCannon_S2",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "'WASP' Repeater",
+  "Description": "Manufacturer: Vanduul / Esperia\nItem Type: Laser Repeater\nSize: 2\n\nThis laser repeater is typically found on Vanduul war ships and is commonly known by its UEE Navy designation of 'WASP'.",
+  "Manufacturer": {
+    "Code": "VNC",
+    "Name": "Vanduul Components - Generic"
+  },
+  "Tags": [
+    "VNCL",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 850.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 190.0,
+    "PowerDraw": 190.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 103.33
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 1400.0,
+      "Range": 1540.0000000000002,
+      "Size": 2.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 40.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 600.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 40.0
+        },
+        "DamagePerSecond": {
+          "Energy": 400.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2000.0,
+      "Cooldown": 1.0,
+      "CostPerBullet": 40.0,
+      "RequestedAmmoLoad": 12000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 1400.0,
+    "Range": 1540.0000000000002,
+    "Size": 2.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 40.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

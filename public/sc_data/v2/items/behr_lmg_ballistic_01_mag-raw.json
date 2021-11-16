@@ -1,0 +1,188 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "9ff7bf08-e06e-4203-bced-753cbc8676fb"
+    }
+  },
+  "tags": [
+    {
+      "value": "6c6028af-fcc2-4205-b18c-8e344c629c10"
+    },
+    {
+      "value": "59ca5e36-b9a2-4459-ad0e-5745bcf5d899"
+    },
+    {
+      "value": "b97f2439-cde7-45f9-acc3-5eab75b0f84c"
+    },
+    {
+      "value": "755e8d4c-f0a2-4025-80aa-bd6002cd0697"
+    },
+    {
+      "value": "386f5ab5-4bde-49ef-a1dd-a8a2b7d1060d"
+    },
+    {
+      "value": "b0926341-4178-4614-bbd8-e2036fe5e88f"
+    },
+    {
+      "value": "bed8e09b-a5f2-4f4e-9be9-ab618ebfbd58"
+    }
+  ],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "WeaponAttachment",
+        "SubType": "Magazine",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+        "Tags": "behr_lmg_ballistic_01",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Namebehr_lmg_ballistic_01_mag",
+          "Description": "@item_Descbehr_lmg_ballistic_01_mag"
+        }
+      }
+    },
+    "SAmmoContainerComponentParams": {
+      "initialAmmoCount": 120.0,
+      "maxAmmoCount": 120.0,
+      "ammoParamsRecord": "164cba0d-026f-42a6-a6a0-55a8bfe8b480"
+    },
+    "SEntityInteractableParams": {
+      "Interactable": {
+        "SharedInteractions": [
+          {
+            "Name": "Grab",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_grab",
+            "DisplayType": "Show",
+            "GenericCursor": "Grab",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "CarryLowered",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_carry",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Equip",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_equip",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "OffHandEquip",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_equip",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Store",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "OffHandStore",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Drop",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_drop",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Inspect",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@innerthought_inspect",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Place",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_place",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          }
+        ]
+      }
+    }
+  },
+  "ClassName": "behr_lmg_ballistic_01_mag",
+  "__ref": "b5f37920-ba9a-4a07-85e9-4d09f8e2f5ad",
+  "__type": "EntityClassDefinition"
+}

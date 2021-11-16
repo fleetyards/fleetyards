@@ -1,0 +1,29 @@
+{
+  "ClassName": "dyl_gloves_01_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Hands.UNDEFINED",
+  "Name": "Opus Gloves",
+  "Description": "Give any outfit that final elegant touch with the Opus opera gloves from Dyna Lei. Contrasting black velvet and rich leather impeccably trimmed with gold satin to create an understated impact that's sure to liven any evening.\n\nMen sizes are currently unavailable.",
+  "Manufacturer": {
+    "Code": "DYL",
+    "Name": "Dyna Lei"
+  },
+  "Tags": [
+    "dyl_gloves",
+    "Set_01",
+    "Color_01"
+  ],
+  "Ports": [
+    {
+      "PortName": "Material_Variant",
+      "Size": 1,
+      "Types": [
+        "Paints"
+      ],
+      "Flags": [
+        "nontransferable"
+      ]
+    }
+  ]
+}

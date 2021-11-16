@@ -1,0 +1,109 @@
+{
+  "ClassName": "RSI_Aurora_CL",
+  "Name": "RSI Aurora CL",
+  "Description": "Manufacturer: RSI\nFocus: Light Freight\n\nCustomized for mercantile and trading excursions, the Aurora Clipper is the perfect vessel for aspiring entrepreneurs and seasoned traders alike. Swapping a smaller power plant and armor capabilities for an expanded cargo capacity, the Clipper ups the ante for personal merchant craft.",
+  "Career": "Transporter",
+  "Role": "Light Freight",
+  "Size": 2,
+  "Cargo": 6,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 26422.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "RSI",
+    "Name": "Roberts Space Industries"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 1940.0,
+    "Body": 1880.0
+  },
+  "DamageBeforeDetach": {
+    "Wing_Bottom_Left": 480.0,
+    "Wing_Top_Left": 480.0,
+    "Wing_Bottom_Right": 480.0,
+    "Wing_Top_Right": 480.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 138.0,
+    "MaxSpeed": 1093.0,
+    "ZeroToScm": 1.5341965680990237,
+    "ZeroToMax": 12.151281514001687,
+    "ScmToZero": 3.1956763176973273,
+    "MaxToZero": 25.31068271915347,
+    "Acceleration": {
+      "Main": 89.94936038150027,
+      "Retro": 43.18334721065778,
+      "Vtol": 0.0,
+      "Maneuvering": 50.055317538414954
+    },
+    "AccelerationG": {
+      "Main": 9.172281961520637,
+      "Retro": 4.403475855508829,
+      "Vtol": 0.0,
+      "Maneuvering": 5.1042217997830015
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 45000.0,
+    "FuelIntakeRate": 11.0,
+    "FuelUsage": {
+      "Main": 29.708025000000003,
+      "Retro": 14.26238,
+      "Vtol": 0.0,
+      "Maneuvering": 16.532020000000003
+    },
+    "ThrustCapacity": {
+      "Main": 2376642.0,
+      "Retro": 1140990.4,
+      "Vtol": 0.0,
+      "Maneuvering": 1322561.5999999999
+    },
+    "IntakeToMainFuelRatio": 0.370270322581188,
+    "IntakeToTankCapacityRatio": 0.00024444444444444443,
+    "TimeForIntakesToFillTank": 4090.909090909091,
+    "ManeuveringTimeTillEmpty": 1668.2709872660876
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 64003730524.46786,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.7632694278444891
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

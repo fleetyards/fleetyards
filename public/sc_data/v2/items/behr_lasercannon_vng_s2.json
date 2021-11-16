@@ -1,0 +1,74 @@
+{
+  "ClassName": "BEHR_LaserCannon_VNG_S2",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "MVSA Cannon ",
+  "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 2\n\nThe classic M4A has been specially retooled by Behring to create the VS (Vanguard Special), a laser weapon designed to meet the Aegis' unique requirements. The default nose-mounted weapon on the Vanguard Warden, the MVSA can only be loaded onto other Vanguard variants. ",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "flightReady",
+    "weaponMountUsable",
+    "VanguardNose",
+    "AEGS_Vanguard_Base"
+  ],
+  "Durability": {
+    "Health": 850.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 230.0,
+    "PowerDraw": 230.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 103.3
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 2.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 137.5
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 220.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 137.5
+        },
+        "DamagePerSecond": {
+          "Energy": 504.16666666666663
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2520.83,
+      "Cooldown": 1.0,
+      "CostPerBullet": 69.0,
+      "RequestedAmmoLoad": 15125.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 2.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 137.5
+    }
+  }
+}

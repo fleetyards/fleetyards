@@ -1,0 +1,30 @@
+{
+  "ClassName": "AEGS_Avenger_Thruster_Main",
+  "Size": 4,
+  "Grade": 1,
+  "Type": "MainThruster.FixedThruster",
+  "Name": "AEGS_Avenger_Thruster_Main",
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "Thruster": {
+    "ThrustCapacity": 2622815.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Main",
+    "MaxThrustFuelRate": 32.7851875
+  },
+  "Durability": {
+    "Health": 9100.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 45.0
+  }
+}

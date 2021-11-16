@@ -1,0 +1,13 @@
+{
+  "ClassName": "WeaponRegenPool_Turret_Hammerhead",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponRegenPool.UNDEFINED",
+  "Classification": "Ship.WeaponRegenPool",
+  "Name": "WeaponRegenPool_Turret_Hammerhead",
+  "WeaponRegenPool": {
+    "RegenFillRate": 1000000.0,
+    "AmmoLoad": 1000000,
+    "RespectsCapacitorAssignments": false
+  }
+}

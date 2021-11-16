@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_GODI_S03_SecureScreen_SCItem",
+  "Size": 3,
+  "Grade": 4,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "SecureScreen",
+  "Description": "Item Type: Shield Generator\nManufacturer: Gorgon Defender Industries\nSize: 3\nGrade: D\nClass: Military\n\nGorgon Defender Industries brings military might to their entry-level, large shield generator. Featuring best-in-class durability, the SecureScreen was built to take a beating and survive.",
+  "Manufacturer": {
+    "Code": "GODI",
+    "Name": "Gorgon Defender Industries"
+  },
+  "Shield": {
+    "Health": 100000.0,
+    "Regeneration": 1200.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 1050.0,
+    "Lifetime": 36.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 486603.4,
+    "ThermalEnergyDraw": 493500.0,
+    "CoolingRate": 151.4218
+  }
+}

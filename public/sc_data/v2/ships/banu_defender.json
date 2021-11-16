@@ -1,0 +1,107 @@
+{
+  "ClassName": "BANU_Defender",
+  "Name": "Banu Defender",
+  "Description": "Manufacturer: Banu \nFocus: Light Fighter\n\nMeet the Banu Defender, a multi-crew fighter whose patchwork design highlights technology from a variety of species. Featuring modest accommodations for its crew and easy access to components, the Defender gets its name from the role it serves: the first line of defense against enemy attacks. That's why the Defender makes the ideal companion to the Merchantman: one to do the heavy hauling and the other to perform the deadly dogfighting.",
+  "Career": "Combat",
+  "Role": "Light Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 244726.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "BANU",
+    "Name": "Banu"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 4000.0
+  },
+  "DamageBeforeDetach": {
+    "Pod": 4000.0,
+    "Wing_Hull_Left": 3000.0,
+    "Wing_Hull_Right": 3000.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 202.5,
+    "MaxSpeed": 1200.0,
+    "ZeroToScm": 2.220194910447641,
+    "ZeroToMax": 13.156710580430465,
+    "ScmToZero": 5.187821222523619,
+    "MaxToZero": 30.74264428162145,
+    "Acceleration": {
+      "Main": 91.20820836363933,
+      "Retro": 39.033727515670584,
+      "Vtol": 0.0,
+      "Maneuvering": 189.55014179122773
+    },
+    "AccelerationG": {
+      "Main": 9.300648729109632,
+      "Retro": 3.9803324144207273,
+      "Vtol": 0.0,
+      "Maneuvering": 19.32873495688507
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 430000.0,
+    "FuelIntakeRate": 37.0,
+    "FuelUsage": {
+      "Main": 279.01275000000004,
+      "Retro": 119.4071,
+      "Vtol": 0.0,
+      "Maneuvering": 579.8481
+    },
+    "ThrustCapacity": {
+      "Main": 22321020.0,
+      "Retro": 9552568.0,
+      "Vtol": 0.0,
+      "Maneuvering": 46387848.0
+    },
+    "IntakeToMainFuelRatio": 0.1326104273012613,
+    "IntakeToTankCapacityRatio": 8.604651162790697E-05,
+    "TimeForIntakesToFillTank": 11621.621621621622,
+    "ManeuveringTimeTillEmpty": 808.3667082254883
+  },
+  "QuantumTravel": {
+    "Speed": 253252000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 2750.0,
+    "Range": 147690655209.4522,
+    "PortOlisarToArcCorpTime": 165.55585373462006,
+    "PortOlisarToArcCorpFuel": 780.6872769234001,
+    "PortOlisarToArcCorpAndBack": 1.761268616312948
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

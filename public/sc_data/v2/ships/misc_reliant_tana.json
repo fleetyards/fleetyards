@@ -1,0 +1,113 @@
+{
+  "ClassName": "MISC_Reliant_Tana",
+  "Name": "MISC Reliant Tana",
+  "Description": "Manufacturer: MISC\nFocus: Light Fighter\n\nWith Humanity ever-expanding through the universe, the need for a versatile lightweight fighter has expanded with it. Easy to maintain with a rugged construction, the Reliant Tana makes for an ideal choice for frontier and outpost defense thanks to its custom high-yield power plant, stronger shields, and additional weapon mounts.",
+  "Career": "Multi-Role",
+  "Role": "Light Fighter",
+  "Size": 3,
+  "Cargo": 1,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 39168.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "MIS",
+    "Name": "Musashi Industrial & Starflight Concern"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 2700.0,
+    "Body": 2700.0
+  },
+  "DamageBeforeDetach": {
+    "Wing_Left": 2700.0,
+    "Vertical_Stabilizer_Wing_Top_Left": 25.0,
+    "Vertical_Stabilizer_Wing_Bottom_Left": 25.0,
+    "Wing_Right": 2700.0,
+    "Vertical_Stabilizer_Wing_Top_Right": 25.0,
+    "Vertical_Stabilizer_Wing_Bottom_Right": 25.0,
+    "Engine_Left": 1180.0,
+    "Engine_Right": 1180.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 166.0,
+    "MaxSpeed": 1150.0,
+    "ZeroToScm": 5.1958066512904795,
+    "ZeroToMax": 35.99504607821718,
+    "ScmToZero": "Infinity",
+    "MaxToZero": "Infinity",
+    "Acceleration": {
+      "Main": 31.948840890522874,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 241.13247549019604
+    },
+    "AccelerationG": {
+      "Main": 3.2578750504590106,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 24.58866906773943
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 75000.0,
+    "FuelIntakeRate": 8.0,
+    "FuelUsage": {
+      "Main": 15.6421525,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 118.05846000000001
+    },
+    "ThrustCapacity": {
+      "Main": 1251372.2,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 9444676.799999999
+    },
+    "IntakeToMainFuelRatio": 0.5114385632028584,
+    "IntakeToTankCapacityRatio": 0.00010666666666666667,
+    "TimeForIntakesToFillTank": 9375.0,
+    "ManeuveringTimeTillEmpty": 1124.9204259413698
+  },
+  "QuantumTravel": {
+    "Speed": 253252000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 583.33,
+    "Range": 31328141783.029003,
+    "PortOlisarToArcCorpTime": 165.55585373462006,
+    "PortOlisarToArcCorpFuel": 780.6872769234001,
+    "PortOlisarToArcCorpAndBack": 0.37360029889230256
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

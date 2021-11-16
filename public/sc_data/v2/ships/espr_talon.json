@@ -1,0 +1,144 @@
+{
+  "ClassName": "ESPR_Talon",
+  "Name": "Esperia Talon",
+  "Description": "Manufacturer: Esperia\nFocus: Light Fighter\n\nThe Talon represents Esperia's continuing effort to preserve historically significant Tevarin ship designs. A maneuverable single-seat combat ship with light armor but powerful, directional \"Phalanx\" shields, the Talon is made to strike first and strike hard before using the shields to cover its escape.",
+  "Career": "Combat",
+  "Role": "Fighter",
+  "Size": 1,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 51352.06,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ESPR",
+    "Name": "Esperia"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 2700.0
+  },
+  "DamageBeforeDetach": {
+    "eject_joint": 80.0,
+    "Leg_Right": 1900.0,
+    "Leg_Lower_Right": 1500.0,
+    "leg_feathers_01_right": 50.0,
+    "leg_feathers_02_right": 50.0,
+    "leg_feathers_03_right": 50.0,
+    "leg_feathers_04_right": 50.0,
+    "leg_feathers_05_right": 50.0,
+    "wing_small_segment_01_right": 200.0,
+    "wings_small_feathers_01_right": 50.0,
+    "wings_small_feathers_02_right": 50.0,
+    "wings_small_feathers_03_right": 50.0,
+    "wings_small_feathers_04_right": 50.0,
+    "wings_small_feathers_05_right": 50.0,
+    "wings_small_feathers_06_right": 50.0,
+    "wings_small_feathers_07_right": 50.0,
+    "comp_jumpdrive_door_front": 50.0,
+    "comp_jumpdrive_door_mid": 50.0,
+    "comp_jumpdrive_door_rear": 50.0,
+    "comp_jumpdrive_door_right": 50.0,
+    "comp_jumpdrive_door_left": 50.0,
+    "radar_scanner_door_right": 50.0,
+    "radar_scanner_door_rear": 50.0,
+    "radar_scanner_door_mid": 50.0,
+    "radar_scanner_door_front": 50.0,
+    "radar_scanner_door_left": 50.0,
+    "coolers_door_mid": 50.0,
+    "coolers_door_rear": 50.0,
+    "coolers_door_right": 50.0,
+    "coolers_door_front": 50.0,
+    "coolers_door_left": 50.0,
+    "shieldgen_door_outer_right": 50.0,
+    "shieldgen_door_inner_right": 50.0,
+    "shieldgen_door_inner_left": 50.0,
+    "shieldgen_door_outer_left": 50.0,
+    "Leg_Left": 1900.0,
+    "Leg_Lower_Left": 1500.0,
+    "leg_feathers_05_left": 50.0,
+    "leg_feathers_04_left": 50.0,
+    "leg_feathers_03_left": 50.0,
+    "leg_feathers_02_left": 50.0,
+    "leg_feathers_01_left": 50.0,
+    "wing_small_segment_01_left": 200.0,
+    "wings_small_feathers_01_left": 50.0,
+    "wings_small_feathers_02_left": 50.0,
+    "wings_small_feathers_03_left": 50.0,
+    "wings_small_feathers_04_left": 50.0,
+    "wings_small_feathers_05_left": 50.0,
+    "wings_small_feathers_06_left": 50.0,
+    "wings_small_feathers_07_left": 50.0,
+    "Tail_Left": 1650.0,
+    "Wing_Left": 1650.0,
+    "Wing_Right": 1650.0,
+    "Tail_Right": 1650.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 208.0,
+    "MaxSpeed": 1236.0,
+    "ZeroToScm": 1.46139067893218,
+    "ZeroToMax": 8.684033072885454,
+    "ScmToZero": 3.707369625279409,
+    "MaxToZero": 22.030331042525717,
+    "Acceleration": {
+      "Main": 142.33018110665864,
+      "Retro": 56.104467863606644,
+      "Vtol": 0.0,
+      "Maneuvering": 289.92114435136585
+    },
+    "AccelerationG": {
+      "Main": 14.513639087677927,
+      "Retro": 5.721063455743168,
+      "Vtol": 0.0,
+      "Maneuvering": 29.563728650419343
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 80000.0,
+    "FuelIntakeRate": 60.0,
+    "FuelUsage": {
+      "Main": 91.36185,
+      "Retro": 36.0135,
+      "Vtol": 0.0,
+      "Maneuvering": 186.10060000000001
+    },
+    "ThrustCapacity": {
+      "Main": 7308948.0,
+      "Retro": 2881080.0,
+      "Vtol": 0.0,
+      "Maneuvering": 14888048.0
+    },
+    "IntakeToMainFuelRatio": 0.6567292584377395,
+    "IntakeToTankCapacityRatio": 0.00075,
+    "TimeForIntakesToFillTank": 1333.3333333333333,
+    "ManeuveringTimeTillEmpty": 643.0240133298878
+  },
+  "QuantumTravel": {
+    "Speed": 171317600.0,
+    "SpoolTime": 6.75,
+    "FuelCapacity": 583.33,
+    "Range": 35013805522.208885,
+    "PortOlisarToArcCorpTime": 244.73463946494698,
+    "PortOlisarToArcCorpFuel": 698.5096688262,
+    "PortOlisarToArcCorpAndBack": 0.41755327523257346
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 4,
+      "Fixed": true,
+      "WeaponSizes": [
+        4
+      ]
+    },
+    {
+      "Size": 4,
+      "Fixed": true,
+      "WeaponSizes": [
+        4
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

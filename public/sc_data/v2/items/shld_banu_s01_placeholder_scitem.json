@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_BANU_S01_Placeholder_SCItem",
+  "Size": 1,
+  "Grade": 3,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "Suldrath",
+  "Description": "Item Type: Shield Generator\nManufacturer: Banu\nSize: 1\nGrade: C\nClass: Military\n\nClassic Tevarin tech melds with modern design for the Suldrath shield generator. The Banu beautifully blend the best parts of historic Tevarin shield tech with contemporary upgrades and conveniences expected of this component generation. The result is an effective and unique xeno-crafted shield ready to shroud your ship and protect you from whatever dangers come your way.",
+  "Manufacturer": {
+    "Code": "BANU",
+    "Name": "Banu"
+  },
+  "Shield": {
+    "Health": 1500.0,
+    "Regeneration": 375.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 125.0,
+    "Lifetime": 30.0
+  },
+  "PowerConnection": {
+    "PowerBase": 200.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 10057.92,
+    "ThermalEnergyDraw": 10900.0,
+    "CoolingRate": 42.48029
+  }
+}

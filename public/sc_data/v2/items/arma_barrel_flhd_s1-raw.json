@@ -1,0 +1,169 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "086801b6-4827-47ea-b796-ef9706b5b694"
+    }
+  },
+  "tags": [
+    {
+      "value": "df89f2a0-381b-46ce-9120-e548d7fb2da4"
+    },
+    {
+      "value": "8a060cf7-3053-4b0b-a518-4974e1826ab0"
+    },
+    {
+      "value": "b97f2439-cde7-45f9-acc3-5eab75b0f84c"
+    },
+    {
+      "value": "3453cb19-e52c-4313-9bad-23a72cfee206"
+    },
+    {
+      "value": "59ca5e36-b9a2-4459-ad0e-5745bcf5d899"
+    },
+    {
+      "value": "bed8e09b-a5f2-4f4e-9be9-ab618ebfbd58"
+    },
+    {
+      "value": "568b2e30-8111-4e14-9e54-816a45b98a67"
+    }
+  ],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "WeaponAttachment",
+        "SubType": "Barrel",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a",
+        "Tags": "FPS_Barrel ballistic_attach energy_attach",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Namearma_barrel_flhd_s1",
+          "Description": "@item_Descarma_barrel_flhd_s1"
+        }
+      }
+    },
+    "SEntityInteractableParams": {
+      "Interactable": {
+        "SharedInteractions": [
+          {
+            "Name": "Grab",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_grab",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Carry",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_carry",
+            "DisplayType": "Show",
+            "GenericCursor": "Grab",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Drop",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_drop",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Inspect",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@innerthought_inspect",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Place",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_place",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Equip",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_equip",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Store",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "OffHandStore",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          }
+        ]
+      }
+    }
+  },
+  "ClassName": "arma_barrel_flhd_s1",
+  "__ref": "04f546d6-651a-47f4-b0ae-64ed2b37557b",
+  "__type": "EntityClassDefinition"
+}

@@ -1,0 +1,125 @@
+{
+  "ClassName": "ANVL_Hawk",
+  "Name": "Anvil Hawk",
+  "Description": "Manufacturer: Anvil Aerospace \nFocus: Light Fighter\n\nA small, light fighter with an emphasis on weaponry, the Hawk boasts an impressive arsenal of lethal and non-lethal weapons, making it a perfect ship for independent bounty hunters or local security looking for a little more punch.",
+  "Career": "Combat",
+  "Role": "Light Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 67066.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 1500.0,
+    "body": 1500.0
+  },
+  "DamageBeforeDetach": {
+    "Nacelle_left": 1500.0,
+    "rear_wing_left": 800.0,
+    "wing_left": 800.0,
+    "Nacelle_right": 1500.0,
+    "rear_wing_right": 800.0,
+    "wing_right": 800.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 225.0,
+    "MaxSpeed": 1315.0,
+    "ZeroToScm": 2.3170395770877055,
+    "ZeroToMax": 13.541809083868145,
+    "ScmToZero": 6.770884279995227,
+    "MaxToZero": 39.57205701419432,
+    "Acceleration": {
+      "Main": 97.1066710404676,
+      "Retro": 33.23051919005159,
+      "Vtol": 0.0,
+      "Maneuvering": 116.29268929114602
+    },
+    "AccelerationG": {
+      "Main": 9.902124521510062,
+      "Retro": 3.3885698624885743,
+      "Vtol": 0.0,
+      "Maneuvering": 11.858553876512978
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 105000.0,
+    "FuelIntakeRate": 6.2,
+    "FuelUsage": {
+      "Main": 81.40695000000001,
+      "Retro": 27.857975,
+      "Vtol": 0.0,
+      "Maneuvering": 97.49106875000001
+    },
+    "ThrustCapacity": {
+      "Main": 6512556.0,
+      "Retro": 2228638.0,
+      "Vtol": 0.0,
+      "Maneuvering": 7799285.499999999
+    },
+    "IntakeToMainFuelRatio": 0.07616057351368648,
+    "IntakeToTankCapacityRatio": 5.9047619047619046E-05,
+    "TimeForIntakesToFillTank": 16935.483870967742,
+    "ManeuveringTimeTillEmpty": 847.0987937792189
+  },
+  "QuantumTravel": {
+    "Speed": 159399800.0,
+    "SpoolTime": 5.5,
+    "FuelCapacity": 583.33,
+    "Range": 54608687511.70193,
+    "PortOlisarToArcCorpTime": 263.0326453985513,
+    "PortOlisarToArcCorpFuel": 447.86796412974,
+    "PortOlisarToArcCorpAndBack": 0.6512298788030961
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

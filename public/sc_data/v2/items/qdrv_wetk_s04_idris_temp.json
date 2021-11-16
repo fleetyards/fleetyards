@@ -1,0 +1,39 @@
+{
+  "ClassName": "QDRV_WETK_S04_Idris_TEMP",
+  "Size": 4,
+  "Grade": 1,
+  "Type": "QuantumDrive.UNDEFINED",
+  "Classification": "Ship.QuantumDrive",
+  "Name": "QDRV_WETK_S04_Idris_TEMP",
+  "QuantumDrive": {
+    "FuelRate": 6.13E-08,
+    "JumpRange": 3.402823E+38,
+    "StandardJump": {
+      "Speed": 133904700.0,
+      "Cooldown": 92.07,
+      "Stage1AccelerationRate": 75000.0,
+      "State2AccelerationRate": 150000.0,
+      "SpoolUpTime": 5.0
+    },
+    "SplineJump": {
+      "Speed": 400000.0,
+      "Cooldown": 0.0,
+      "Stage1AccelerationRate": 250.0,
+      "State2AccelerationRate": 50000.0,
+      "SpoolUpTime": 5.0
+    }
+  },
+  "Durability": {
+    "Health": 4000.0,
+    "Lifetime": 1440.0
+  },
+  "PowerConnection": {
+    "PowerBase": 768.0,
+    "PowerDraw": 1.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 2916667.0,
+    "ThermalEnergyDraw": 2916667.0,
+    "CoolingRate": 120.098
+  }
+}

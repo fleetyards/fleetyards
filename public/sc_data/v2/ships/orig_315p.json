@@ -1,0 +1,100 @@
+{
+  "ClassName": "ORIG_315p",
+  "Name": "Origin 315p",
+  "Description": "Manufacturer: Origin Jumpworks\nFocus: Pathfinder\n\nExploration is man's highest calling. Prepare to chart distant horizons with man's most sophisticated piece of technology, the Origin 315p. Featuring a more robust power plant and a custom scanning package, exclusively designed by Chimera Communications.",
+  "Career": "Exploration",
+  "Role": "Pathfinder",
+  "Size": 2,
+  "Cargo": 12,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 80592.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ORIG",
+    "Name": "Origin Jumpworks"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 2350.0,
+    "tail": 2400.0
+  },
+  "DamageBeforeDetach": {
+    "glass_canopy_front": 1500.0,
+    "wing_left_bottom": 800.0,
+    "wing_b_left": 500.0,
+    "wing_left_top": 200.0,
+    "wing_flap_left": 200.0,
+    "wing_right_bottom": 800.0,
+    "wing_b_right": 500.0,
+    "wing_right_top": 200.0,
+    "wing_flap_right": 200.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 210.0,
+    "MaxSpeed": 1223.0,
+    "ZeroToScm": 2.2429035589583974,
+    "ZeroToMax": 13.062243107648191,
+    "ScmToZero": 5.104587164817983,
+    "MaxToZero": 29.728143345582826,
+    "Acceleration": {
+      "Main": 93.62863559658527,
+      "Retro": 41.13946793726424,
+      "Vtol": 0.0,
+      "Maneuvering": 191.30707762557077
+    },
+    "AccelerationG": {
+      "Main": 9.54746361421569,
+      "Retro": 4.195058175701413,
+      "Vtol": 0.0,
+      "Maneuvering": 19.507892549474338
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 105000.0,
+    "FuelIntakeRate": 26.0,
+    "FuelUsage": {
+      "Main": 94.3214875,
+      "Retro": 41.4439,
+      "Vtol": 0.0,
+      "Maneuvering": 192.72275000000005
+    },
+    "ThrustCapacity": {
+      "Main": 7545719.0,
+      "Retro": 3315512.0,
+      "Vtol": 0.0,
+      "Maneuvering": 15417820.0
+    },
+    "IntakeToMainFuelRatio": 0.27565298946329697,
+    "IntakeToTankCapacityRatio": 0.0002476190476190476,
+    "TimeForIntakesToFillTank": 4038.4615384615386,
+    "ManeuveringTimeTillEmpty": 637.5891116174884
+  },
+  "QuantumTravel": {
+    "Speed": 89383080.0,
+    "SpoolTime": 7.75,
+    "FuelCapacity": 830.0,
+    "Range": 143103448275.86206,
+    "PortOlisarToArcCorpTime": 469.0748077824125,
+    "PortOlisarToArcCorpFuel": 243.178636206,
+    "PortOlisarToArcCorpAndBack": 1.7065643860608204
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

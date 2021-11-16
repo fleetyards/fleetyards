@@ -1,0 +1,129 @@
+{
+  "ClassName": "ANVL_Gladiator",
+  "Name": "Anvil Gladiator",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Bomber\n\nThe civilian model of the Gladiator appeals to those that want explore the ‘Verse with a bit of added security. Supporting a maximum of two the Gladiator is perfectly equipped to explore and fight with or without a wingman. The Civilian model allows pilots to choose between an extra cargo hold or a bomb bay.",
+  "Career": "Combat",
+  "Role": "Bomber",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 1,
+  "OperationsCrew": 0,
+  "Mass": 88408.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 10000.0,
+    "body": 10000.0
+  },
+  "DamageBeforeDetach": {
+    "shield_generator_cover": 40.0,
+    "canopy": 7500.0,
+    "canopy_glass": 250.0,
+    "cockpitbay_outerdoor_left": 100.0,
+    "cockpitbay_outerdoor_right": 100.0,
+    "amunition_hatch_right": 40.0,
+    "amunition_hatch_left": 40.0,
+    "engine_cover_left": 40.0,
+    "engine_cover_right": 40.0,
+    "sidefin_left": 40.0,
+    "tailfin_left": 800.0,
+    "tailfin_left_rudder": 40.0,
+    "sidefin_right": 40.0,
+    "tailfin_right": 800.0,
+    "tailfin_right_rudder": 40.0,
+    "wing_right": 800.0,
+    "wing_right_tip": 300.0,
+    "wing_flap_side_right": 160.0,
+    "cockpitbay_gunnerdoor": 40.0,
+    "hull_avionicsaccess_panel": 40.0,
+    "hull_fuelaccess_panel_left": 40.0,
+    "hull_fuelaccess_panel_right": 40.0,
+    "bombbay_outerdoor_left": 60.0,
+    "bombbay_outerdoor_right": 600.0,
+    "core_bottomshield": 400.0,
+    "core_topshield": 200.0,
+    "wing_left": 800.0,
+    "wing_left_tip": 300.0,
+    "wing_flap_side_left": 160.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 151.0,
+    "MaxSpeed": 983.0,
+    "ZeroToScm": 3.218753903004403,
+    "ZeroToMax": 20.95387474604853,
+    "ScmToZero": 6.806323959127003,
+    "MaxToZero": 44.30871822398572,
+    "Acceleration": {
+      "Main": 46.91256447380328,
+      "Retro": 22.185250203601484,
+      "Vtol": 0.0,
+      "Maneuvering": 65.16089041715682
+    },
+    "AccelerationG": {
+      "Main": 4.783750179731548,
+      "Retro": 2.262265894846399,
+      "Vtol": 0.0,
+      "Maneuvering": 6.6445615314551265
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 150000.0,
+    "FuelIntakeRate": 18.0,
+    "FuelUsage": {
+      "Main": 51.843075000000006,
+      "Retro": 24.516920000000002,
+      "Vtol": 0.0,
+      "Maneuvering": 72.00930000000001
+    },
+    "ThrustCapacity": {
+      "Main": 4147446.0,
+      "Retro": 1961353.6,
+      "Vtol": 0.0,
+      "Maneuvering": 5760744.0
+    },
+    "IntakeToMainFuelRatio": 0.34720162721829284,
+    "IntakeToTankCapacityRatio": 0.00012,
+    "TimeForIntakesToFillTank": 8333.333333333334,
+    "ManeuveringTimeTillEmpty": 2147.5287849389506
+  },
+  "QuantumTravel": {
+    "Speed": 253252000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 583.33,
+    "Range": 31328141783.029003,
+    "PortOlisarToArcCorpTime": 165.55585373462006,
+    "PortOlisarToArcCorpFuel": 780.6872769234001,
+    "PortOlisarToArcCorpAndBack": 0.37360029889230256
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [
+    {
+      "Size": 6,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    }
+  ],
+  "RemoteTurrets": []
+}

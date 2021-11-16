@@ -1,0 +1,132 @@
+{
+  "ClassName": "AEGS_Retaliator",
+  "Name": "Aegis Retaliator",
+  "Description": "Manufacturer: Aegis Dynamics\nFocus: Heavy Bomber\n\nThis civilian refit of the Retaliator trades the ship's massive torpedo bays for equally massive cargo capacity.",
+  "Career": "Combat",
+  "Role": "Heavy Bomber",
+  "Size": 4,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 5,
+  "OperationsCrew": 0,
+  "Mass": 343270.29,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 120000.0
+  },
+  "DamageBeforeDetach": {
+    "front_left_wing_damage": 1.0,
+    "$LOD1_front_left_wing_damage": 1.0,
+    "$LOD2_front_left_wing_damage": 1.0,
+    "front_left_wing_flp_geom": 1.0,
+    "left_wing_rs_geom": 50.0,
+    "wing_left_mlr_damage": 240.0,
+    "wing_left_rl_damage": 10000.0,
+    "wing_left_rl_fin_geom": 50.0,
+    "wing_left_m_damage": 2800.0,
+    "wing_right_rl_damage": 10000.0,
+    "wing_right_rl_fin_geom": 50.0,
+    "wing_right_mlr_damage": 240.0,
+    "right_wing_rs_geom": 50.0,
+    "wing_right_m_damage": 2800.0,
+    "front_right_wing_damage": 1.0,
+    "front_right_wing_flp_geom": 600.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 138.0,
+    "MaxSpeed": 942.0,
+    "ZeroToScm": 3.7400894707172525,
+    "ZeroToMax": 25.530175952287333,
+    "ScmToZero": 8.049159529046184,
+    "MaxToZero": 54.94426287218482,
+    "Acceleration": {
+      "Main": 36.897513035573226,
+      "Retro": 17.14464715253977,
+      "Vtol": 15.898772363900179,
+      "Maneuvering": 51.47256990985151
+    },
+    "AccelerationG": {
+      "Main": 3.7624991640381484,
+      "Retro": 1.7482674378885206,
+      "Vtol": 1.6212235678522584,
+      "Maneuvering": 5.248741319502937
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 510000.0,
+    "FuelIntakeRate": 67.2,
+    "FuelUsage": {
+      "Main": 158.32275,
+      "Retro": 73.5656,
+      "Vtol": 68.21970250000001,
+      "Maneuvering": 220.86255
+    },
+    "ThrustCapacity": {
+      "Main": 12665820.0,
+      "Retro": 5885248.0,
+      "Vtol": 5457576.199999999,
+      "Maneuvering": 17669004.0
+    },
+    "IntakeToMainFuelRatio": 0.4244494237246384,
+    "IntakeToTankCapacityRatio": 0.00013176470588235296,
+    "TimeForIntakesToFillTank": 7589.285714285714,
+    "ManeuveringTimeTillEmpty": 2530.3389500656212
+  },
+  "QuantumTravel": {
+    "Speed": 235872000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 2500.0,
+    "Range": 120714630613.23033,
+    "PortOlisarToArcCorpTime": 177.75467656186407,
+    "PortOlisarToArcCorpFuel": 868.3154406596999,
+    "PortOlisarToArcCorpAndBack": 1.439569010831267
+  },
+  "PilotHardpoints": [],
+  "MannedTurrets": [
+    {
+      "Size": 4,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    },
+    {
+      "Size": 4,
+      "Turret": true,
+      "WeaponSizes": [
+        2,
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Turret": true,
+      "WeaponSizes": [
+        2,
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    },
+    {
+      "Size": 4,
+      "Turret": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    }
+  ],
+  "RemoteTurrets": []
+}

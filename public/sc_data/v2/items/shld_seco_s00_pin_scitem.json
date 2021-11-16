@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_SECO_S00_PIN_SCItem",
+  "Size": 0,
+  "Grade": 3,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "PIN",
+  "Description": "Item Type: Shield Generator\nManufacturer: Seal Corporation\nSize: 0\nGrade: C\nClass: Civilian\n\nWith the PIN vehicle shield generator you can now trust Seal Corp to protect you whether you’re in space or atmosphere.",
+  "Manufacturer": {
+    "Code": "SECO",
+    "Name": "Seal Corporation"
+  },
+  "Shield": {
+    "Health": 750.0,
+    "Regeneration": 187.5,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 65.0,
+    "Lifetime": 10.0
+  },
+  "PowerConnection": {
+    "PowerBase": 45.0,
+    "PowerDraw": 60.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 6500.0,
+    "ThermalEnergyDraw": 7500.0,
+    "CoolingRate": 73.0
+  }
+}

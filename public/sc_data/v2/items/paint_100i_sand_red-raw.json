@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "15338981-c0b4-4e17-a79d-11c21cad26e6",
+        "Tags": "Paint_100i @Paint_100i_Sand_Red",
+        "RequiredTags": "Paint_100i",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Name100i_Paint_Sand_Red",
+          "Description": "@item_Desc100i_Paint_Sand_Red"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_100i_Sand_Red",
+  "__ref": "ee3bd1ab-ed48-4944-87aa-543320c4193f",
+  "__type": "EntityClassDefinition"
+}

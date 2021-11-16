@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "2058ea19-0f9f-4f54-9ce4-5db9f3541db2",
+        "Tags": "Paint_100i @Paint_100i_Blue_Pink",
+        "RequiredTags": "Paint_100i",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Name100i_Paint_Blue_Pink",
+          "Description": "@item_Desc100i_Paint_Blue_Pink"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_100i_Blue_Pink",
+  "__ref": "3d92e380-e6c8-49f3-8ef4-465815452a30",
+  "__type": "EntityClassDefinition"
+}

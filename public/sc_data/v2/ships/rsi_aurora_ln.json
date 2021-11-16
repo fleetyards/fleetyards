@@ -1,0 +1,109 @@
+{
+  "ClassName": "RSI_Aurora_LN",
+  "Name": "RSI Aurora LN",
+  "Description": "Manufacturer: RSI\nFocus: Light Fighter\n\nWith a more robust shield generator and a pair of additional weapon hard points, the Legionnaire is a dedicated combat fighter, built to handle any obstacle the universe can throw at you.",
+  "Career": "Combat",
+  "Role": "Light Fighter",
+  "Size": 2,
+  "Cargo": 3,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 28714.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "RSI",
+    "Name": "Roberts Space Industries"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 1940.0,
+    "Body": 1880.0
+  },
+  "DamageBeforeDetach": {
+    "Wing_Bottom_Left": 480.0,
+    "Wing_Top_Left": 480.0,
+    "Wing_Bottom_Right": 480.0,
+    "Wing_Top_Right": 480.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 138.0,
+    "MaxSpeed": 1208.0,
+    "ZeroToScm": 1.6672818203162276,
+    "ZeroToMax": 14.594756803927558,
+    "ScmToZero": 3.4728881154477724,
+    "MaxToZero": 30.400353938122528,
+    "Acceleration": {
+      "Main": 82.76945044229296,
+      "Retro": 39.73637946646235,
+      "Vtol": 0.0,
+      "Maneuvering": 46.05981751062199
+    },
+    "AccelerationG": {
+      "Main": 8.44013491632299,
+      "Retro": 4.051982971869273,
+      "Vtol": 0.0,
+      "Maneuvering": 4.696794190773367
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 45000.0,
+    "FuelIntakeRate": 12.0,
+    "FuelUsage": {
+      "Main": 29.708025000000003,
+      "Retro": 14.26238,
+      "Vtol": 0.0,
+      "Maneuvering": 16.532020000000003
+    },
+    "ThrustCapacity": {
+      "Main": 2376642.0,
+      "Retro": 1140990.4,
+      "Vtol": 0.0,
+      "Maneuvering": 1322561.5999999999
+    },
+    "IntakeToMainFuelRatio": 0.4039312609976597,
+    "IntakeToTankCapacityRatio": 0.0002666666666666667,
+    "TimeForIntakesToFillTank": 3750.0,
+    "ManeuveringTimeTillEmpty": 1732.4993979564592
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 64003730524.46786,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.7632694278444891
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

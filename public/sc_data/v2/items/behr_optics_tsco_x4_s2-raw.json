@@ -1,0 +1,169 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "086801b6-4827-47ea-b796-ef9706b5b694"
+    }
+  },
+  "tags": [
+    {
+      "value": "93c88aa6-79bb-41a4-9bc1-10fd364496d3"
+    },
+    {
+      "value": "84c6f3a1-35a5-4bdd-a5d3-7caa63f90067"
+    },
+    {
+      "value": "b97f2439-cde7-45f9-acc3-5eab75b0f84c"
+    },
+    {
+      "value": "59ca5e36-b9a2-4459-ad0e-5745bcf5d899"
+    },
+    {
+      "value": "bed8e09b-a5f2-4f4e-9be9-ab618ebfbd58"
+    },
+    {
+      "value": "6ab65582-281b-4d8c-af32-beba7ce7bcb0"
+    },
+    {
+      "value": "15726024-aaed-4202-87cc-c8d56f8404b2"
+    }
+  ],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "WeaponAttachment",
+        "SubType": "IronSight",
+        "Size": 2,
+        "Grade": 1,
+        "Manufacturer": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+        "Tags": "",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Namebehr_optics_tsco_x4_s2",
+          "Description": "@item_Descbehr_optics_tsco_x4_s2"
+        }
+      }
+    },
+    "SEntityInteractableParams": {
+      "Interactable": {
+        "SharedInteractions": [
+          {
+            "Name": "Grab",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_grab",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Carry",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_carry",
+            "DisplayType": "Show",
+            "GenericCursor": "Grab",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Drop",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_drop",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Inspect",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@innerthought_inspect",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Place",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_place",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Equip",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_equip",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Store",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "OffHandStore",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          }
+        ]
+      }
+    }
+  },
+  "ClassName": "behr_optics_tsco_x4_s2",
+  "__ref": "a392c30b-5798-4b35-a70c-01264c6a083e",
+  "__type": "EntityClassDefinition"
+}

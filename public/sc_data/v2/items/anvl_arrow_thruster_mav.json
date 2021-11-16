@@ -1,0 +1,30 @@
+{
+  "ClassName": "ANVL_Arrow_Thruster_Mav",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "ManneuverThruster.JointThruster",
+  "Name": "ANVL_Arrow_Thruster_Mav",
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "Thruster": {
+    "ThrustCapacity": 363260.3,
+    "FuelRate": 1.25E-05,
+    "Type": "Maneuver",
+    "MaxThrustFuelRate": 4.54075375
+  },
+  "Durability": {
+    "Health": 9750.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 42.0
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "ClassName": "WeaponRegenPool_Crew_Carrack",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponRegenPool.UNDEFINED",
+  "Classification": "Ship.WeaponRegenPool",
+  "Name": "WeaponRegenPool_Crew_Carrack",
+  "WeaponRegenPool": {
+    "RegenFillRate": 30000.0,
+    "AmmoLoad": 75000,
+    "RespectsCapacitorAssignments": true
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "ClassName": "BEHR_LaserCannon_S1",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "M3A Cannon",
+  "Description": "Manufacturer: Behring\nItem Type: Laser Cannon\nSize: 1\n\nThe M3A is Behring's entry level laser autocannon. The autocannon configuration offers modest damage per projectile and a fairly low rate of fire. As the most basic offering in Behring's weapons lineup, it features low power consumption, but poor power efficiency. It makes up ground for its shortcomings by being cheap, a feature many pilots are looking for when outfitting their ships on a budget.",
+  "Manufacturer": {
+    "Code": "BEH",
+    "Name": "Behring"
+  },
+  "Tags": [
+    "BEHR",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 220.0,
+    "PowerDraw": 220.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 61.8181
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 85.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 240.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 85.0
+        },
+        "DamagePerSecond": {
+          "Energy": 340.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 1700.0,
+      "Cooldown": 0.75,
+      "CostPerBullet": 43.0,
+      "RequestedAmmoLoad": 10200.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 85.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

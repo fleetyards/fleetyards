@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_SECO_S02_BLOC_SCItem",
+  "Size": 2,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "BLOC",
+  "Description": "Item Type: Shield Generator\nManufacturer: Seal Corporation\nSize: 2\nGrade: B\nClass: Civilian\n\nSeal Corporation’s BLOC shield generator was the first to use the company’s revolutionary quantum core semiconductor to reduce the component’s power draw without compromising performance.",
+  "Manufacturer": {
+    "Code": "SECO",
+    "Name": "Seal Corporation"
+  },
+  "Shield": {
+    "Health": 8250.0,
+    "Regeneration": 550.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 275.0,
+    "Lifetime": 22.0
+  },
+  "PowerConnection": {
+    "PowerBase": 1000.0,
+    "PowerDraw": 1400.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 47335.5,
+    "ThermalEnergyDraw": 49500.0,
+    "CoolingRate": 98.1342
+  }
+}

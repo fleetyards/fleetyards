@@ -1,0 +1,66 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "67f50be7-458e-4760-8df1-ad1a48abbd7a"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "MissileLauncher",
+        "SubType": "MissileRack",
+        "Size": 4,
+        "Grade": 1,
+        "Manufacturer": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+        "Tags": "flightReady",
+        "RequiredTags": "ESPR_Talon_Base",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_NameMRCK_S06_BEHR_Octo_S03",
+          "Description": "@item_DescMRCK_S06_BEHR_Octo_S03"
+        }
+      }
+    },
+    "SHealthComponentParams": {
+      "Health": 200.0,
+      "DamageResistances": {
+        "DamageResistance": {
+          "PhysicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "EnergyResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "DistortionResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "ThermalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "BiochemicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "StunResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          }
+        }
+      }
+    },
+    "SItemPortContainerComponentParams": {
+      "PortFlags": "",
+      "PortTags": "",
+      "RequiredItemTags": "",
+      "Ports": []
+    }
+  },
+  "ClassName": "MRCK_S04_ESPR_Talon_CAP_R",
+  "__ref": "d3497338-3bf8-4433-bcd4-50b3693f90b3",
+  "__type": "EntityClassDefinition"
+}

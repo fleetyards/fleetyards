@@ -1,0 +1,152 @@
+{
+  "ClassName": "KRON_LaserCannon_S3",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "FL-33 Cannon",
+  "Description": "Manufacturer: Kroneg\nItem Type: Laser Cannon\nSize: 3\n\nDeliver massive damage from a distance with Kroneg's FL line of laser cannons. Embodying Kroneg's practical design philosophy, the FL-33 remains one of the most reliable and destructive size three laser cannons currently available.  ",
+  "Manufacturer": {
+    "Code": "KRON",
+    "Name": "Kroneg"
+  },
+  "Tags": [
+    "KRON",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 1024.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 240.0,
+    "PowerDraw": 240.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 145.0
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 3.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 150.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 200.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 150.0
+        },
+        "DamagePerSecond": {
+          "Energy": 500.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2500.0,
+      "Cooldown": 1.25,
+      "CostPerBullet": 75.0,
+      "RequestedAmmoLoad": 15000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 3.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 150.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "BAR1",
+      "Size": 1,
+      "Loadout": "KRON_LaserCannon_Barrel_S3",
+      "InstalledItem": {
+        "ClassName": "KRON_LaserCannon_Barrel_S3",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Barrel",
+        "Name": "KRON_LaserCannon_Barrel_S3",
+        "Manufacturer": {
+          "Code": "KRON",
+          "Name": "Kroneg"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Barrel"
+      ]
+    },
+    {
+      "PortName": "MEC",
+      "Size": 1,
+      "Loadout": "KRON_LaserCannon_FiringMechanism_S3",
+      "InstalledItem": {
+        "ClassName": "KRON_LaserCannon_FiringMechanism_S3",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.FiringMechanism",
+        "Name": "KRON_LaserCannon_FiringMechanism_S3",
+        "Manufacturer": {
+          "Code": "KRON",
+          "Name": "Kroneg"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.FiringMechanism"
+      ]
+    },
+    {
+      "PortName": "POW",
+      "Size": 1,
+      "Loadout": "KRON_LaserCannon_PowerArray_S3",
+      "InstalledItem": {
+        "ClassName": "KRON_LaserCannon_PowerArray_S3",
+        "Size": 3,
+        "Grade": 3,
+        "Type": "WeaponAttachment.PowerArray",
+        "Name": "KRON_LaserCannon_PowerArray_S3",
+        "Manufacturer": {
+          "Code": "KRON",
+          "Name": "Kroneg"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.PowerArray"
+      ]
+    },
+    {
+      "PortName": "VEN",
+      "Size": 1,
+      "Loadout": "KRON_LaserCannon_Ventilation_S3",
+      "InstalledItem": {
+        "ClassName": "KRON_LaserCannon_Ventilation_S3",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "WeaponAttachment.Ventilation",
+        "Name": "KRON_LaserCannon_Ventilation_S3",
+        "Manufacturer": {
+          "Code": "KRON",
+          "Name": "Kroneg"
+        }
+      },
+      "Types": [
+        "WeaponAttachment.Ventilation"
+      ]
+    }
+  ]
+}

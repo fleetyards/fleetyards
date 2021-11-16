@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "358fa1a1-b6e7-4f24-877a-6bbbf4da4370",
+        "Tags": "Paint_100i @Paint_100i_FW_White_Camo",
+        "RequiredTags": "Paint_100i",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Name100_Series_Paint_Fleetweek_Level2_Camo",
+          "Description": "@item_Desc100_Series_Paint_Fleetweek_Level2_Camo"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_100i_Fleetweek_White_Camo",
+  "__ref": "d8ae58b1-4bff-4294-95e6-44879ffe2f73",
+  "__type": "EntityClassDefinition"
+}

@@ -1,0 +1,27 @@
+{
+  "ClassName": "MISL_S05_CS_TALN_Stalker",
+  "Size": 5,
+  "Grade": 1,
+  "Type": "Missile.Missile",
+  "Classification": "Ship.Missile.Missile",
+  "Name": "Stalker V Missile",
+  "Description": "Manufacturer: Talon\nTracking Signal: Cross Section\nSize: 5\n\nWith dedicated cross section tracking, the Talon Stalker has endured over the years as a precision strike torpedo with maximum stopping power.",
+  "Manufacturer": {
+    "Code": "TALN",
+    "Name": "Talon"
+  },
+  "Tags": [
+    "TALN",
+    "CS",
+    "flightReady"
+  ],
+  "Durability": {
+    "Health": 10.0
+  },
+  "Missile": {
+    "Damage": {
+      "Physical": 3772.928,
+      "Energy": 17091.71
+    }
+  }
+}

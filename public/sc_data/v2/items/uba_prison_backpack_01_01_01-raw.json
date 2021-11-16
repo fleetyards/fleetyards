@@ -1,0 +1,194 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Char_Armor_Backpack",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "04ded06f-7862-4771-b40f-aa310b74ee17",
+        "Tags": "$Prison+ Set_01 Color_01 backpack SM_RestrictedArm uba_prison_backpack",
+        "RequiredTags": "uba_prison_01",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_Name_uba_prison_backpack_01",
+          "Description": "@item_Desc_uba_prison_backpack_01"
+        }
+      }
+    },
+    "SEntityInteractableParams": {
+      "Interactable": {
+        "SharedInteractions": [
+          {
+            "Name": "Grab",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_grab",
+            "DisplayType": "Show",
+            "GenericCursor": "Grab",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Carry",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_carry",
+            "DisplayType": "Show",
+            "GenericCursor": "Grab",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Drop",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_drop",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Place",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_place",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Store",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Equip",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_equip",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "OpenExternalInventory",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_open",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          }
+        ]
+      }
+    },
+    "SCItemClothingParams": {
+      "TemperatureResistance": {
+        "MinResistance": "-75",
+        "MaxResistance": "75"
+      }
+    },
+    "SItemPortContainerComponentParams": {
+      "PortFlags": "",
+      "PortTags": "",
+      "RequiredItemTags": "",
+      "Ports": [
+        {
+          "Name": "wep_stocked_2",
+          "DisplayName": "wep_stocked_2",
+          "PortTags": "",
+          "RequiredPortTags": "",
+          "Flags": "body_attach nophys inventory",
+          "MinSize": 2,
+          "MaxSize": 4,
+          "InteractionPointSize": -1.0,
+          "DefaultWeaponGroup": "UNDEFINED",
+          "Types": [
+            {
+              "Type": "WeaponPersonal",
+              "SubTypes": [
+                {
+                  "value": "Medium"
+                },
+                {
+                  "value": "Large"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Name": "wep_stocked_3",
+          "DisplayName": "wep_stocked_3",
+          "PortTags": "",
+          "RequiredPortTags": "",
+          "Flags": "body_attach nophys inventory",
+          "MinSize": 2,
+          "MaxSize": 5,
+          "InteractionPointSize": -1.0,
+          "DefaultWeaponGroup": "UNDEFINED",
+          "Types": [
+            {
+              "Type": "WeaponPersonal",
+              "SubTypes": [
+                {
+                  "value": "Medium"
+                },
+                {
+                  "value": "Large"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "ClassName": "uba_prison_backpack_01_01_01",
+  "__ref": "80674bc3-0798-45cc-9bc0-3a46cb140f91",
+  "__type": "EntityClassDefinition"
+}

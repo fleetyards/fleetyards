@@ -1,0 +1,13 @@
+{
+  "ClassName": "WeaponRegenPool_Crew_MultiRoleFighter",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponRegenPool.UNDEFINED",
+  "Classification": "Ship.WeaponRegenPool",
+  "Name": "WeaponRegenPool_Crew_MultiRoleFighter",
+  "WeaponRegenPool": {
+    "RegenFillRate": 3000.0,
+    "AmmoLoad": 5500,
+    "RespectsCapacitorAssignments": true
+  }
+}

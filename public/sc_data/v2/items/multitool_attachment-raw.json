@@ -1,0 +1,160 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "086801b6-4827-47ea-b796-ef9706b5b694"
+    }
+  },
+  "tags": [
+    {
+      "value": "70b78947-4637-4852-bf01-4d6bb1f2b363"
+    },
+    {
+      "value": "a54f6149-8696-48bb-811e-3ddc79e4d412"
+    },
+    {
+      "value": "b97f2439-cde7-45f9-acc3-5eab75b0f84c"
+    },
+    {
+      "value": "59ca5e36-b9a2-4459-ad0e-5745bcf5d899"
+    }
+  ],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "WeaponAttachment",
+        "SubType": "Utility",
+        "Size": 0,
+        "Grade": 1,
+        "Manufacturer": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+        "Tags": "",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@LOC_PLACEHOLDER",
+          "Description": "@LOC_EMPTY"
+        }
+      }
+    },
+    "SEntityInteractableParams": {
+      "Interactable": {
+        "SharedInteractions": [
+          {
+            "Name": "Grab",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_grab",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Carry",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_carry",
+            "DisplayType": "Show",
+            "GenericCursor": "Grab",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Drop",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_drop",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Inspect",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@innerthought_inspect",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Place",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_place",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Equip",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_equip",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "Store",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          },
+          {
+            "Name": "OffHandStore",
+            "RoomTag": "00000000-0000-0000-0000-000000000000",
+            "UsableTag": "00000000-0000-0000-0000-000000000000",
+            "DisplayName": "@interaction_store",
+            "DisplayType": "Show",
+            "GenericCursor": "SingleAction",
+            "FocusModeOnly": false,
+            "Sendable": false,
+            "Linkable": false,
+            "LockedByLinks": false,
+            "RequiresAuthorizedUser": false,
+            "available": true
+          }
+        ]
+      }
+    }
+  },
+  "ClassName": "Multitool_Attachment",
+  "__ref": "753e218d-6368-4005-aee9-60f821aeebaa",
+  "__type": "EntityClassDefinition"
+}

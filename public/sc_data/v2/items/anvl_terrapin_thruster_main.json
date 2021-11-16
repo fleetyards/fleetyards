@@ -1,0 +1,30 @@
+{
+  "ClassName": "ANVL_Terrapin_Thruster_Main",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "MainThruster.FixedThruster",
+  "Name": "ANVL_Terrapin_Thruster_Main",
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "Thruster": {
+    "ThrustCapacity": 1756797.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Main",
+    "MaxThrustFuelRate": 21.9599625
+  },
+  "Durability": {
+    "Health": 6000.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 75.0
+  }
+}

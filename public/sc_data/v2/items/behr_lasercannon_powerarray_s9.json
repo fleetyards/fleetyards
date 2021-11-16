@@ -1,0 +1,8 @@
+{
+  "ClassName": "BEHR_LaserCannon_PowerArray_S9",
+  "Size": 3,
+  "Grade": 3,
+  "Type": "WeaponAttachment.PowerArray",
+  "Classification": "Ship.WeaponAttachment.PowerArray",
+  "Name": "BEHR_LaserCannon_PowerArray_S9"
+}

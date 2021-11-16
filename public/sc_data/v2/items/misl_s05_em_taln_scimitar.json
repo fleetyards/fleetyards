@@ -1,0 +1,27 @@
+{
+  "ClassName": "MISL_S05_EM_TALN_Scimitar",
+  "Size": 5,
+  "Grade": 1,
+  "Type": "Missile.Missile",
+  "Classification": "Ship.Missile.Missile",
+  "Name": "Scimitar V Missile",
+  "Description": "Manufacturer: Talon\nTracking Signal: Electromagnetic\nSize: 5\n\nThe Scimitar missile tracks targets via their EM signature to deliver a devastating size five payload.",
+  "Manufacturer": {
+    "Code": "TALN",
+    "Name": "Talon"
+  },
+  "Tags": [
+    "TALN",
+    "IR",
+    "flightReady"
+  ],
+  "Durability": {
+    "Health": 10.0
+  },
+  "Missile": {
+    "Damage": {
+      "Physical": 2595.635,
+      "Energy": 16382.54
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "ClassName": "MISC_Reliant_Sen",
+  "Name": "MISC Reliant Sen",
+  "Description": "Manufacturer: MISC\nFocus: Light Science\n\nMagellan, Pierce, Croshaw, names that echo through history thanks to their adventurous spirit, a curious nature, and a reliable ship. The Reliant Sen is a versatile mobile science platform; outfitted with long range capabilities to take you further, longer, and the advanced Samos sensor suite. Perfect for the aspiring explorer who wants to whisper their name into the halls of history.",
+  "Career": "Multi-Role",
+  "Role": "Light Science",
+  "Size": 3,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 39353.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "MIS",
+    "Name": "Musashi Industrial & Starflight Concern"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 3000.0,
+    "Body": 3000.0
+  },
+  "DamageBeforeDetach": {
+    "Wing_Left": 3000.0,
+    "Vertical_Stabilizer_Wing_Top_Left": 25.0,
+    "Vertical_Stabilizer_Wing_Bottom_Left": 25.0,
+    "Wing_Right": 3000.0,
+    "Vertical_Stabilizer_Wing_Top_Right": 25.0,
+    "Vertical_Stabilizer_Wing_Bottom_Right": 25.0,
+    "Engine_Left": 1180.0,
+    "Engine_Right": 1180.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 166.0,
+    "MaxSpeed": 1150.0,
+    "ZeroToScm": 5.220347711096666,
+    "ZeroToMax": 36.16505944434438,
+    "ScmToZero": "Infinity",
+    "MaxToZero": "Infinity",
+    "Acceleration": {
+      "Main": 31.798648133560338,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 239.99890224379334
+    },
+    "AccelerationG": {
+      "Main": 3.2425596517769555,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 24.473076767850436
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 105000.0,
+    "FuelIntakeRate": 8.0,
+    "FuelUsage": {
+      "Main": 15.6421525,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 118.05846000000001
+    },
+    "ThrustCapacity": {
+      "Main": 1251372.2,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 9444676.799999999
+    },
+    "IntakeToMainFuelRatio": 0.5114385632028584,
+    "IntakeToTankCapacityRatio": 7.619047619047618E-05,
+    "TimeForIntakesToFillTank": 13125.0,
+    "ManeuveringTimeTillEmpty": 1574.8885963179177
+  },
+  "QuantumTravel": {
+    "Speed": 89383080.0,
+    "SpoolTime": 7.75,
+    "FuelCapacity": 583.33,
+    "Range": 100574137931.0345,
+    "PortOlisarToArcCorpTime": 469.0748077824125,
+    "PortOlisarToArcCorpFuel": 243.178636206,
+    "PortOlisarToArcCorpAndBack": 1.1993857871335645
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": []
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": []
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

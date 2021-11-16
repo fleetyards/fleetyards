@@ -1,0 +1,33 @@
+{
+  "ClassName": "ANVL_Valkyrie_Thruster_Main_Front",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "MainThruster.FixedThruster",
+  "Name": "ANVL_Valkyrie_Thruster_Main_Front",
+  "Manufacturer": {
+    "Code": "MIS",
+    "Name": "Musashi Industrial & Starflight Concern"
+  },
+  "Tags": [
+    "flightready"
+  ],
+  "Thruster": {
+    "ThrustCapacity": 1912392.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Main",
+    "MaxThrustFuelRate": 23.9049
+  },
+  "Durability": {
+    "Health": 17600.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 45.0
+  }
+}

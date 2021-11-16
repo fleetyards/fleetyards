@@ -1,0 +1,49 @@
+{
+  "ClassName": "clda_env_armor_backpack_01_01_expo",
+  "Size": 3,
+  "Grade": 1,
+  "Type": "Char_Armor_Backpack.Personal",
+  "Name": "Novikov \"Expo\" Backpack",
+  "Description": "Item Type: Heavy Backpack\nCarrying Capacity: 120K µSCU\nCore Compatibility: Heavy\n\nConfidently explore cold environments while wearing the Novikov \"Expo\". Caldera designed a spacious backpack to compliment this advanced armor, so those venturing across unknown terrain can bring enough supplies to survive the journey. ",
+  "Manufacturer": {
+    "Code": "CLDA",
+    "Name": "Caldera "
+  },
+  "Tags": [
+    "Environment",
+    "Set_01",
+    "Color_expo",
+    "backpack",
+    "$environment",
+    "$$Pack++",
+    "SM_RestrictedArm"
+  ],
+  "Ports": [
+    {
+      "PortName": "wep_stocked_2",
+      "Size": 4,
+      "Types": [
+        "WeaponPersonal.Medium",
+        "WeaponPersonal.Large"
+      ],
+      "Flags": [
+        "body_attach",
+        "nophys",
+        "inventory"
+      ]
+    },
+    {
+      "PortName": "wep_stocked_3",
+      "Size": 5,
+      "Types": [
+        "WeaponPersonal.Medium",
+        "WeaponPersonal.Large"
+      ],
+      "Flags": [
+        "body_attach",
+        "nophys",
+        "inventory"
+      ]
+    }
+  ]
+}

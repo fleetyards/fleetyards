@@ -1,0 +1,133 @@
+{
+  "ClassName": "AEGS_Vanguard_Hoplite",
+  "Name": "Aegis Vanguard Hoplite",
+  "Description": "Manufacturer: Aegis Dynamics\nFocus: Dropship \n\nThe Vanguard Hoplite is a cross between the winning Vanguard deep space fighter and a dedicated boarding ship. Adapted from proven assault ship designs, the Hoplite is the perfect tool for inserting an armored strike team with enough firepower to get them out again.",
+  "Career": "Combat",
+  "Role": "Drop Ship",
+  "Size": 3,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 1,
+  "OperationsCrew": 0,
+  "Mass": 234870.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 6000.0,
+    "Body": 8000.0
+  },
+  "DamageBeforeDetach": {
+    "Engine_R": 7500.0,
+    "Tail_Fin_Right_Upper": 250.0,
+    "Tail_Fin_Right_Lower": 250.0,
+    "Wing_Right_Geo": 2000.0,
+    "Wing_Right_Flaps_Geo": 1200.0,
+    "Engine_L": 7500.0,
+    "Tail_Fin_Left_Upper": 250.0,
+    "Tail_Fin_Left_Lower": 250.0,
+    "Wing_Left_Geo": 2000.0,
+    "Wing_Left_Flaps_Geo": 1200.0,
+    "Wing_Back_Right": 3500.0,
+    "Wing_Back_Left": 3500.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 171.0,
+    "MaxSpeed": 1022.0,
+    "ZeroToScm": 2.288961322071235,
+    "ZeroToMax": 13.680224977525159,
+    "ScmToZero": 5.7162821678814355,
+    "MaxToZero": 34.16397880453115,
+    "Acceleration": {
+      "Main": 74.70637373866394,
+      "Retro": 29.914548473623707,
+      "Vtol": 0.0,
+      "Maneuvering": 67.54344956784604
+    },
+    "AccelerationG": {
+      "Main": 7.617929925766276,
+      "Retro": 3.0504349579353507,
+      "Vtol": 0.0,
+      "Maneuvering": 6.887514946881716
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 390000.0,
+    "FuelIntakeRate": 104.0,
+    "FuelUsage": {
+      "Main": 219.328575,
+      "Retro": 87.82537500000001,
+      "Vtol": 0.0,
+      "Maneuvering": 198.29912500000003
+    },
+    "ThrustCapacity": {
+      "Main": 17546286.0,
+      "Retro": 7026030.0,
+      "Vtol": 0.0,
+      "Maneuvering": 15863930.0
+    },
+    "IntakeToMainFuelRatio": 0.4741744207292643,
+    "IntakeToTankCapacityRatio": 0.0002666666666666667,
+    "TimeForIntakesToFillTank": 3750.0,
+    "ManeuveringTimeTillEmpty": 1818.367151756901
+  },
+  "QuantumTravel": {
+    "Speed": 235872000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 2500.0,
+    "Range": 120714630613.23033,
+    "PortOlisarToArcCorpTime": 177.75467656186407,
+    "PortOlisarToArcCorpFuel": 868.3154406596999,
+    "PortOlisarToArcCorpAndBack": 1.439569010831267
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    }
+  ],
+  "MannedTurrets": [
+    {
+      "Size": 6,
+      "Turret": true,
+      "WeaponSizes": [
+        2,
+        2
+      ]
+    }
+  ],
+  "RemoteTurrets": []
+}

@@ -1,0 +1,110 @@
+{
+  "ClassName": "ORIG_400i",
+  "Name": "Origin 400i",
+  "Description": "Manufacturer: Origin Jumpworks\nFocus: Pathfinder\n\nTo explore the stars is a most noble endeavor, and Origin Jumpworks has risen to the occasion in crafting the 400i high-performance pathfinder. With class-leading range, substantial defensive capabilities, and a factory-equipped scanning array, the 400i is ready to take on the harshest corners of the galaxy while maintaining the comfort and elegance Origin is known for. ",
+  "Career": "Exploration",
+  "Role": "Luxury",
+  "Size": 4,
+  "Cargo": 42,
+  "Crew": 3,
+  "WeaponCrew": 2,
+  "OperationsCrew": 0,
+  "Mass": 430057.06,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ORIG",
+    "Name": "Origin Jumpworks"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 20000.0,
+    "Bridge": 15000.0
+  },
+  "DamageBeforeDetach": {
+    "WingLeft": 14000.0,
+    "WingRight": 14000.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 185.0,
+    "MaxSpeed": 1250.0,
+    "ZeroToScm": 3.4952460680404025,
+    "ZeroToMax": 23.616527486759477,
+    "ScmToZero": 7.383554027915876,
+    "MaxToZero": 49.88887856699916,
+    "Acceleration": {
+      "Main": 52.92903457973693,
+      "Retro": 25.055684471265277,
+      "Vtol": 31.41096672148575,
+      "Maneuvering": 78.55887774519967
+    },
+    "AccelerationG": {
+      "Main": 5.397259380804568,
+      "Retro": 2.5549687261212086,
+      "Vtol": 3.20302715029271,
+      "Maneuvering": 8.010775998889672
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 5339744.0,
+    "FuelIntakeRate": 150.0,
+    "FuelUsage": {
+      "Main": 284.5313125,
+      "Retro": 134.69217500000002,
+      "Vtol": 168.85635000000002,
+      "Maneuvering": 422.31
+    },
+    "ThrustCapacity": {
+      "Main": 22762505.0,
+      "Retro": 10775374.0,
+      "Vtol": 13508508.0,
+      "Maneuvering": 33784800.0
+    },
+    "IntakeToMainFuelRatio": 0.5271827507561229,
+    "IntakeToTankCapacityRatio": 2.8091234336327733E-05,
+    "TimeForIntakesToFillTank": 35598.293333333335,
+    "ManeuveringTimeTillEmpty": 15446.790361420515
+  },
+  "QuantumTravel": {
+    "Speed": 132833200.0,
+    "SpoolTime": 5.5,
+    "FuelCapacity": 4920.0,
+    "Range": 414106556687.1476,
+    "PortOlisarToArcCorpTime": 315.63909527136286,
+    "PortOlisarToArcCorpFuel": 498.13885806266995,
+    "PortOlisarToArcCorpAndBack": 4.938382059908508
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 4,
+      "Fixed": true,
+      "WeaponSizes": [
+        4
+      ]
+    },
+    {
+      "Size": 4,
+      "Fixed": true,
+      "WeaponSizes": [
+        4
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": [
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    },
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": [
+        3,
+        3
+      ]
+    }
+  ]
+}

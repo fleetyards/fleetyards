@@ -1,0 +1,109 @@
+{
+  "ClassName": "MISC_Reliant_Mako",
+  "Name": "MISC Reliant Mako",
+  "Description": "Manufacturer: MISC\nFocus: Reporting\n\nThe Empire depends on up-to-the-second information, which is why reporters need to be able to go where the news is happening: wherever, whenever. Enter the Mako, all the flexibility and dependability of a MISC Reliant combined with a state-of-the-art Cernan camera package to capture every moment as it happens with the clarity and accuracy that makes headlines. ",
+  "Career": "Multi-Role",
+  "Role": "Reporting",
+  "Size": 3,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 39353.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "MIS",
+    "Name": "Musashi Industrial & Starflight Concern"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 3000.0,
+    "Body": 3000.0
+  },
+  "DamageBeforeDetach": {
+    "Wing_Left": 3000.0,
+    "Vertical_Stabilizer_Wing_Top_Left": 25.0,
+    "Vertical_Stabilizer_Wing_Bottom_Left": 25.0,
+    "Wing_Right": 3000.0,
+    "Vertical_Stabilizer_Wing_Top_Right": 25.0,
+    "Vertical_Stabilizer_Wing_Bottom_Right": 25.0,
+    "Engine_Left": 1180.0,
+    "Engine_Right": 1180.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 166.0,
+    "MaxSpeed": 1150.0,
+    "ZeroToScm": 5.220347711096666,
+    "ZeroToMax": 36.16505944434438,
+    "ScmToZero": "Infinity",
+    "MaxToZero": "Infinity",
+    "Acceleration": {
+      "Main": 31.798648133560338,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 239.99890224379334
+    },
+    "AccelerationG": {
+      "Main": 3.2425596517769555,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 24.473076767850436
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 105000.0,
+    "FuelIntakeRate": 8.0,
+    "FuelUsage": {
+      "Main": 15.6421525,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 118.05846000000001
+    },
+    "ThrustCapacity": {
+      "Main": 1251372.2,
+      "Retro": 0.0,
+      "Vtol": 0.0,
+      "Maneuvering": 9444676.799999999
+    },
+    "IntakeToMainFuelRatio": 0.5114385632028584,
+    "IntakeToTankCapacityRatio": 7.619047619047618E-05,
+    "TimeForIntakesToFillTank": 13125.0,
+    "ManeuveringTimeTillEmpty": 1574.8885963179177
+  },
+  "QuantumTravel": {
+    "Speed": 171317600.0,
+    "SpoolTime": 6.75,
+    "FuelCapacity": 583.33,
+    "Range": 35013805522.208885,
+    "PortOlisarToArcCorpTime": 244.73463946494698,
+    "PortOlisarToArcCorpFuel": 698.5096688262,
+    "PortOlisarToArcCorpAndBack": 0.41755327523257346
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": []
+    },
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 4,
+      "Gimballed": true,
+      "WeaponSizes": []
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

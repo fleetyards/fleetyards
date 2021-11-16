@@ -1,0 +1,66 @@
+{
+  "ClassName": "APAR_BallisticScatterGun_S6",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "APAR_BallisticScatterGun_S6",
+  "Description": "@LOC_PLACEHOLDER",
+  "Manufacturer": {
+    "Code": "APAR",
+    "Name": "Apocalypse Arms"
+  },
+  "Tags": [
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 1550.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 80.0,
+    "PowerDraw": 200.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 122.5
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 800.0,
+      "Range": 400.0,
+      "Size": 1.0,
+      "Capacity": 160.0,
+      "ImpactDamage": {
+        "Physical": 74.25
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[SEMI]",
+        "RoundsPerMinute": 60.0,
+        "FireType": "single",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Physical": 74.25
+        },
+        "DamagePerSecond": {
+          "Physical": 74.25
+        }
+      }
+    ]
+  },
+  "Ammunition": {
+    "Speed": 800.0,
+    "Range": 400.0,
+    "Size": 1.0,
+    "Capacity": 160.0,
+    "ImpactDamage": {
+      "Physical": 74.25
+    }
+  }
+}

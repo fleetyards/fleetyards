@@ -1,0 +1,13 @@
+{
+  "ClassName": "WeaponRegenPool_Turret_Pisces",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "WeaponRegenPool.UNDEFINED",
+  "Classification": "Ship.WeaponRegenPool",
+  "Name": "WeaponRegenPool_Turret_Pisces",
+  "WeaponRegenPool": {
+    "RegenFillRate": 100000.0,
+    "AmmoLoad": 60000,
+    "RespectsCapacitorAssignments": false
+  }
+}

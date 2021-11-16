@@ -1,0 +1,16 @@
+{
+  "ClassName": "Paint_Redeemer_Black_Yellow",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "Paint_Redeemer_Black_Yellow",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Aegis Dynamics"
+  },
+  "Tags": [
+    "Paint_Redeemer",
+    "@Paint_Redeemer_Black_Yellow"
+  ]
+}

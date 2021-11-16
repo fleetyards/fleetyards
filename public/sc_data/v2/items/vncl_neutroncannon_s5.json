@@ -1,0 +1,74 @@
+{
+  "ClassName": "VNCL_NeutronCannon_S5",
+  "Size": 5,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "'WAR' Cannon",
+  "Description": "Manufacturer: Vanduul / Esperia\nItem Type: Neutron Cannon\nSize: 5\n\nThis neutron cannon is typically found on Vanduul war ships and is commonly known by its UEE Navy designation of 'WAR'.",
+  "Manufacturer": {
+    "Code": "VNC",
+    "Name": "Vanduul Components - Generic"
+  },
+  "Tags": [
+    "VNCL",
+    "NeutronCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 2640.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 450.0,
+    "PowerDraw": 450.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 347.857
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 2800.0,
+      "Size": 1.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 1500.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 70.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 1500.0
+        },
+        "DamagePerSecond": {
+          "Energy": 1750.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 8750.0,
+      "Cooldown": 1.75,
+      "CostPerBullet": 750.0,
+      "RequestedAmmoLoad": 52500.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 2800.0,
+    "Size": 1.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 1500.0
+    }
+  }
+}

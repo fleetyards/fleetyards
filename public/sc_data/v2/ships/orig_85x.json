@@ -1,0 +1,104 @@
+{
+  "ClassName": "ORIG_85X",
+  "Name": "Origin 85X Limited",
+  "Description": "Manufacturer: Origin Jumpworks\nFocus: Touring\n\nElegantly styled and meticulously constructed, the 85X is a versatile and comprehensive away-vessel that features precision control in and out of atmosphere. Utilizing much of the same thruster technology as the 300 series, it has the power of a racer with the reliability of a touring ship. Whether descending down to the planet surface or taking in the sights of your system, this runabout continues Origin’s proud tradition of turning heads.",
+  "Career": "Exploration",
+  "Role": "Luxury",
+  "Size": 1,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 19833.5,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ORIG",
+    "Name": "Origin Jumpworks"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 1600.0
+  },
+  "DamageBeforeDetach": {
+    "Spoiler": 620.0,
+    "wing_left": 600.0,
+    "wing_right": 600.0,
+    "wing_rear_left": 380.0,
+    "wing_rear_right": 380.0,
+    "Canopy": 1220.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 190.0,
+    "MaxSpeed": 1183.0,
+    "ZeroToScm": 1.3029803133488607,
+    "ZeroToMax": 8.11276689837738,
+    "ScmToZero": 3.1948487545027064,
+    "MaxToZero": 19.892137245140535,
+    "Acceleration": {
+      "Main": 145.81954773489298,
+      "Retro": 59.47073385937934,
+      "Vtol": 0.0,
+      "Maneuvering": 263.3961933092999
+    },
+    "AccelerationG": {
+      "Main": 14.869455454192838,
+      "Retro": 6.064327051390219,
+      "Vtol": 0.0,
+      "Maneuvering": 26.858936432426013
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 45000.0,
+    "FuelIntakeRate": 5.0,
+    "FuelUsage": {
+      "Main": 36.1514,
+      "Retro": 14.743910000000001,
+      "Vtol": 0.0,
+      "Maneuvering": 65.300855
+    },
+    "ThrustCapacity": {
+      "Main": 2892112.0,
+      "Retro": 1179512.8,
+      "Vtol": 0.0,
+      "Maneuvering": 5224068.399999999
+    },
+    "IntakeToMainFuelRatio": 0.13830723014876325,
+    "IntakeToTankCapacityRatio": 0.00011111111111111112,
+    "TimeForIntakesToFillTank": 9000.0,
+    "ManeuveringTimeTillEmpty": 705.3089505939308
+  },
+  "QuantumTravel": {
+    "Speed": 253252000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 625.0,
+    "Range": 33566058002.148228,
+    "PortOlisarToArcCorpTime": 165.55585373462006,
+    "PortOlisarToArcCorpFuel": 780.6872769234001,
+    "PortOlisarToArcCorpAndBack": 0.40028832188930635
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 3,
+      "Gimballed": true,
+      "WeaponSizes": [
+        1,
+        1
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

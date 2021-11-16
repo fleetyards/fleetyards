@@ -1,0 +1,16 @@
+{
+  "ClassName": "Paint_Starfighter_Inferno_Ember_Black_Grey_Red",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "Ares Star Fighter Inferno Ember Livery",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Crusader Industries"
+  },
+  "Tags": [
+    "Paint_Starfighter",
+    "@Paint_Starfighter_Inferno_Ember_Black_Grey_Red"
+  ]
+}

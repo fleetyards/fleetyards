@@ -1,0 +1,29 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "8a1fdd48-7896-4774-a110-2466190e1a07"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Paints",
+        "SubType": "UNDEFINED",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "8071acb0-a46b-434f-9bda-9cba431d2584",
+        "Tags": "Paint_Carrack @Paint_Carrack_Expedition",
+        "RequiredTags": "Paint_Carrack",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_NameCarrack_Paint_Expedition_White",
+          "Description": "@item_DescCarrack_Paint_Expedition_White"
+        }
+      }
+    }
+  },
+  "ClassName": "Paint_Carrack_Expedition",
+  "__ref": "69cf58e0-4a96-431f-bd7a-f42837509a3e",
+  "__type": "EntityClassDefinition"
+}

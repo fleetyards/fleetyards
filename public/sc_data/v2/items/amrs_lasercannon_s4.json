@@ -1,0 +1,80 @@
+{
+  "ClassName": "AMRS_LaserCannon_S4",
+  "Size": 4,
+  "Grade": 1,
+  "Type": "WeaponGun.Gun",
+  "Classification": "Ship.Weapon.Gun",
+  "Name": "Omnisky XII Cannon",
+  "Description": "Manufacturer: Amon & Reese Co.\nItem Type: Laser Cannon\nSize: 4\n\nAmon & Reese's dependable line of laser autocannons continues with the Omnisky XII. Though slow firing, this size four laser is able to efficiently deliver devastating laser beam blasts from a considerable range.",
+  "Manufacturer": {
+    "Code": "AMRS",
+    "Name": "Amon & Reese Co."
+  },
+  "Tags": [
+    "AMRS",
+    "LaserCannon",
+    "flightReady",
+    "weaponMountUsable"
+  ],
+  "Durability": {
+    "Health": 1650.0,
+    "Lifetime": 20.0
+  },
+  "PowerConnection": {
+    "PowerBase": 250.0,
+    "PowerDraw": 250.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "CoolingRate": 248.947
+  },
+  "Weapon": {
+    "Ammunition": {
+      "Speed": 700.0,
+      "Range": 1225.0,
+      "Size": 4.0,
+      "Capacity": 0.0,
+      "ImpactDamage": {
+        "Energy": 210.0
+      }
+    },
+    "Modes": [
+      {
+        "Name": "Single",
+        "LocalisedName": "[AUTO]",
+        "RoundsPerMinute": 180.0,
+        "FireType": "sequence",
+        "AmmoPerShot": 1.0,
+        "PelletsPerShot": 1.0,
+        "DamagePerShot": {
+          "Energy": 210.0
+        },
+        "DamagePerSecond": {
+          "Energy": 630.0
+        }
+      }
+    ],
+    "Consumption": {
+      "RequestedRegenPerSec": 2500.0,
+      "Cooldown": 1.5,
+      "CostPerBullet": 105.0,
+      "RequestedAmmoLoad": 15000.0
+    }
+  },
+  "Ammunition": {
+    "Speed": 700.0,
+    "Range": 1225.0,
+    "Size": 4.0,
+    "Capacity": 0.0,
+    "ImpactDamage": {
+      "Energy": 210.0
+    }
+  },
+  "Ports": [
+    {
+      "PortName": "magazine_attach",
+      "Size": 0
+    }
+  ]
+}

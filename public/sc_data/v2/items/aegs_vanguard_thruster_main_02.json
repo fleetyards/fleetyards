@@ -1,0 +1,30 @@
+{
+  "ClassName": "AEGS_Vanguard_Thruster_Main_02",
+  "Size": 4,
+  "Grade": 1,
+  "Type": "MainThruster.FixedThruster",
+  "Name": "AEGS_Vanguard_Thruster_Main_02",
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "Thruster": {
+    "ThrustCapacity": 3448401.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Main",
+    "MaxThrustFuelRate": 43.1050125
+  },
+  "Durability": {
+    "Health": 16500.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 45.0
+  }
+}

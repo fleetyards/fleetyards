@@ -1,0 +1,30 @@
+{
+  "StaticEntityClassData": {},
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Radar",
+        "SubType": "ShortRangeRadar",
+        "Size": 1,
+        "Grade": 1,
+        "Manufacturer": "00000000-0000-0000-0000-000000000000",
+        "Tags": "",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@LOC_PLACEHOLDER",
+          "Description": "@LOC_EMPTY"
+        }
+      }
+    },
+    "SCItemRadarComponentParams": {
+      "detectionLifetime": 0.0,
+      "altitudeCeiling": 0.0,
+      "enableCrossSectionOcclusion": false
+    }
+  },
+  "ClassName": "test_PlayerRadar",
+  "__ref": "a107d68a-769f-4247-b388-42e18d0f328f",
+  "__type": "EntityClassDefinition"
+}

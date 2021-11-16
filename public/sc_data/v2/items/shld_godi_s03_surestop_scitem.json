@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_GODI_S03_SureStop_SCItem",
+  "Size": 3,
+  "Grade": 3,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "SureStop",
+  "Description": "Item Type: Shield Generator\nManufacturer: Gorgon Defender Industries\nSize: 3\nGrade: C\nClass: Military\n\nGorgon’s SureStop shield generator was initially developed for military applications, aiming for a middle-of-the-road alternative for circumstances that are anything but. Featuring new Envelop projection technology, the SureStop emphasizes performance and dependability over lower signature.",
+  "Manufacturer": {
+    "Code": "GODI",
+    "Name": "Gorgon Defender Industries"
+  },
+  "Shield": {
+    "Health": 100000.0,
+    "Regeneration": 1200.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 1125.0,
+    "Lifetime": 40.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 463333.3,
+    "ThermalEnergyDraw": 470000.0,
+    "CoolingRate": 144.2051
+  }
+}

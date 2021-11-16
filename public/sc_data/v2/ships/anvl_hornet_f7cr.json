@@ -1,0 +1,113 @@
+{
+  "ClassName": "ANVL_Hornet_F7CR",
+  "Name": "Anvil F7C-R Hornet Tracker",
+  "Description": "Manufacturer: Anvil Aerospace\nFocus: Pathfinder\n\nIf the Ghost is made to hide, the Tracker is made to seek. The F7C-R Tracker boasts an advanced radar suite making it ideal for deep-space explorers who require depth and accuracy in their scan packages. Local militia and larger merc units will also repurpose Trackers to act as mobile C&C ships for their squadrons.",
+  "Career": "Exploration",
+  "Role": "Pathfinder",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 74197.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ANVL",
+    "Name": "Anvil Aerospace"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 4000.0,
+    "Body": 4000.0
+  },
+  "DamageBeforeDetach": {
+    "WingRight_Debris": 3000.0,
+    "LG_Door_Rear_R": 100.0,
+    "Tail_Debris": 2500.0,
+    "WingRightRear": 800.0,
+    "WingLeft_Debris": 3000.0,
+    "LG_Door_Rear_L": 100.0,
+    "WingLeftRear": 800.0,
+    "Canopy": 80.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 192.0,
+    "MaxSpeed": 1229.0,
+    "ZeroToScm": 4.0557136561318154,
+    "ZeroToMax": 25.96079210096876,
+    "ScmToZero": 13.873133370508,
+    "MaxToZero": 88.80250475184548,
+    "Acceleration": {
+      "Main": 47.34062024071054,
+      "Retro": 13.839699718317451,
+      "Vtol": 0.0,
+      "Maneuvering": 94.56723587207028
+    },
+    "AccelerationG": {
+      "Main": 4.827399719569031,
+      "Retro": 1.411256595275282,
+      "Vtol": 0.0,
+      "Maneuvering": 9.643174204478877
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 120000.0,
+    "FuelIntakeRate": 30.0,
+    "FuelUsage": {
+      "Main": 43.90665,
+      "Retro": 12.8358025,
+      "Vtol": 0.0,
+      "Maneuvering": 87.70756500000002
+    },
+    "ThrustCapacity": {
+      "Main": 3512532.0,
+      "Retro": 1026864.2,
+      "Vtol": 0.0,
+      "Maneuvering": 7016605.199999999
+    },
+    "IntakeToMainFuelRatio": 0.6832677965638463,
+    "IntakeToTankCapacityRatio": 0.00025,
+    "TimeForIntakesToFillTank": 4000.0,
+    "ManeuveringTimeTillEmpty": 2077.546770447053
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 64003730524.46786,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.7632694278444891
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 5,
+      "Fixed": true,
+      "WeaponSizes": [
+        5
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

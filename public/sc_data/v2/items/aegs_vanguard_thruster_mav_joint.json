@@ -1,0 +1,30 @@
+{
+  "ClassName": "AEGS_Vanguard_Thruster_Mav_Joint",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "ManneuverThruster.JointThruster",
+  "Name": "AEGS_Vanguard_Thruster_Mav_Joint",
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "Thruster": {
+    "ThrustCapacity": 1586393.0,
+    "FuelRate": 1.25E-05,
+    "Type": "Maneuver",
+    "MaxThrustFuelRate": 19.829912500000002
+  },
+  "Durability": {
+    "Health": 14350.0,
+    "Lifetime": 720.0
+  },
+  "PowerConnection": {
+    "PowerBase": 20.0,
+    "PowerDraw": 24.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 500.0,
+    "ThermalEnergyDraw": 1250.0,
+    "CoolingRate": 42.0
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "ClassName": "AEGS_Avenger_Titan",
+  "Name": "Aegis Avenger Titan",
+  "Description": "Manufacturer: Aegis Dynamics\nFocus: Light Freight \n\nLacking the Prisoner Cells of the Stalker or the EMP Generator of the Warlock, the Titan’s hold is free to carry cargo. Couple that available space with the Avenger’s tried and true combat abilities and you’ve got a light cargo hauler that’s more than capable of handling itself in a fight.",
+  "Career": "Transporter",
+  "Role": "Courier",
+  "Size": 2,
+  "Cargo": 8,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 51362.68,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 2500.0,
+    "Body": 2500.0
+  },
+  "DamageBeforeDetach": {
+    "Canopy": 1500.0,
+    "Wing_Right": 680.0,
+    "Wing_Flap_Right": 10.0,
+    "WingTip_Right": 1000.0,
+    "Wing_Left": 680.0,
+    "Wing_Flap_Left": 10.0,
+    "WingTip_Left": 1000.0,
+    "HullTail_Right": 1000.0,
+    "Right_Tail_Fin_Flap": 10.0,
+    "HullTail_Left": 1000.0,
+    "Left_Tail_Fin_Flap": 10.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 189.0,
+    "MaxSpeed": 1113.0,
+    "ZeroToScm": 3.70119376318955,
+    "ZeroToMax": 21.795918827671798,
+    "ScmToZero": 20.491918781674453,
+    "MaxToZero": 120.67463282541623,
+    "Acceleration": {
+      "Main": 51.06460566310013,
+      "Retro": 9.223148013304602,
+      "Vtol": 0.0,
+      "Maneuvering": 88.44775233691078
+    },
+    "AccelerationG": {
+      "Main": 5.207140544516297,
+      "Retro": 0.9404993408743315,
+      "Vtol": 0.0,
+      "Maneuvering": 9.019160557185502
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 90000.0,
+    "FuelIntakeRate": 22.0,
+    "FuelUsage": {
+      "Main": 32.7851875,
+      "Retro": 5.92157,
+      "Vtol": 0.0,
+      "Maneuvering": 56.78642000000001
+    },
+    "ThrustCapacity": {
+      "Main": 2622815.0,
+      "Retro": 473725.6,
+      "Vtol": 0.0,
+      "Maneuvering": 4542913.600000001
+    },
+    "IntakeToMainFuelRatio": 0.671034747017994,
+    "IntakeToTankCapacityRatio": 0.00024444444444444443,
+    "TimeForIntakesToFillTank": 4090.909090909091,
+    "ManeuveringTimeTillEmpty": 2297.1843092867693
+  },
+  "QuantumTravel": {
+    "Speed": 148971800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 59523469387.755104,
+    "PortOlisarToArcCorpTime": 281.4448846694475,
+    "PortOlisarToArcCorpFuel": 410.888040486,
+    "PortOlisarToArcCorpAndBack": 0.7098405678953749
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 4,
+      "Fixed": true,
+      "WeaponSizes": [
+        4
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

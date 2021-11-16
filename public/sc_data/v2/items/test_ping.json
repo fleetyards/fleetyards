@@ -1,0 +1,12 @@
+{
+  "ClassName": "test_ping",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Ping.UNDEFINED",
+  "Classification": "Ship.Ping",
+  "Name": "Ping",
+  "Description": "Ping",
+  "Tags": [
+    "flightReady"
+  ]
+}

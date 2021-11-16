@@ -1,0 +1,18 @@
+{
+  "ClassName": "grin_refinery_backpack_01_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Backpack.UNDEFINED",
+  "Name": "ThermoWeave Breathing Apparatus",
+  "Description": "Carrying Capacity: 26K µSCU\n\nThe ThermoWeave breathing apparatus integrates with the hood to ensure a constant flow of breathable oxygen regardless of air quality conditions.",
+  "Manufacturer": {
+    "Code": "GRIN",
+    "Name": "Greycat Industrial"
+  },
+  "Tags": [
+    "backpack",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ]
+}

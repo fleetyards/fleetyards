@@ -1,0 +1,112 @@
+{
+  "StaticEntityClassData": {
+    "DefaultEntitlementEntityParams": {
+      "entitlementPolicy": "e6435b9a-1189-422a-aab1-5214566ab69d"
+    }
+  },
+  "tags": [],
+  "Components": {
+    "SAttachableComponentParams": {
+      "AttachDef": {
+        "Type": "Missile",
+        "SubType": "Missile",
+        "Size": 5,
+        "Grade": 1,
+        "Manufacturer": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+        "Tags": "TALN IR flightReady",
+        "RequiredTags": "",
+        "DisplayType": "",
+        "Localization": {
+          "Name": "@item_NameMISL_S05_IR_TALN_Valkyrie",
+          "Description": "@item_DescMISL_S05_IR_TALN_Valkyrie"
+        }
+      }
+    },
+    "SHealthComponentParams": {
+      "Health": 10.0,
+      "DamageResistances": {
+        "DamageResistance": {
+          "PhysicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "EnergyResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "DistortionResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "ThermalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "BiochemicalResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          },
+          "StunResistance": {
+            "Multiplier": 1.0,
+            "Threshold": 0
+          }
+        }
+      }
+    },
+    "SCItemMissileParams": {
+      "safeDistance": 0.0,
+      "igniteTime": 0.5,
+      "irSignalMinValue": 0.0,
+      "irSignalMaxValue": 0.0,
+      "irSignalRiseRate": 0.0,
+      "irSignalDecayRate": 0.0,
+      "projectileProximity": 1.0,
+      "targetingParams": {
+        "trackingSignalType": "Infrared",
+        "trackingSignalMin": 22.0,
+        "trackingDistanceMax": 0.0,
+        "trackingSignalAmplifier": 0.0,
+        "trackingSignalAmplifierSeeking": 0.0,
+        "trackingAngle": 0.0,
+        "trackingNoiseAmplifier": 0.0,
+        "lockTime": 1.0
+      },
+      "explosionParams": {
+        "friendlyFire": "None",
+        "minRadius": 8.0,
+        "maxRadius": 10.13,
+        "soundRadius": 50.0,
+        "minPhysRadius": 8.0,
+        "maxPhysRadius": 10.13,
+        "pressure": 5687.0,
+        "holeSize": 0.0,
+        "terrainHoleSize": 3.0,
+        "maxblurdist": 10.0,
+        "effectScale": 1.0,
+        "useRandomScale": 0.0,
+        "effectScaleMin": 2.0,
+        "effectScaleMax": 1.0,
+        "hitType": "explosion",
+        "damage": [
+          {
+            "DamagePhysical": 3866.24,
+            "DamageEnergy": 15464.96,
+            "DamageDistortion": 0.0,
+            "DamageThermal": 0.0,
+            "DamageBiochemical": 0.0,
+            "DamageStun": 0.0
+          }
+        ]
+      }
+    },
+    "SItemPortContainerComponentParams": {
+      "PortFlags": "",
+      "PortTags": "",
+      "RequiredItemTags": "",
+      "Ports": []
+    }
+  },
+  "ClassName": "MISL_S05_IR_TALN_Valkyrie",
+  "__ref": "b74c05cb-0f60-403a-92cf-663a12268830",
+  "__type": "EntityClassDefinition"
+}

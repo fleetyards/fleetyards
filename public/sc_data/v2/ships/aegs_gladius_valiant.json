@@ -1,0 +1,121 @@
+{
+  "ClassName": "AEGS_Gladius_Valiant",
+  "Name": "Aegis Gladius Valiant",
+  "Description": "Manufacturer: Aegis Dynamics\nFocus: Light Fighter \n\nCreated as part of the ‘Masters of Flight’ series in conjunction with the flight-sim Arena Commander, the Valiant pays tribute to famed defense pilot Condi Hillard for being the first Human on record to defeat a Vanduul in combat. This Gladius comes equipped with a specialized dogfighting focused loadout and a custom special edition livery honoring her iconic ship.",
+  "Career": "Combat",
+  "Role": "Light Fighter",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 501.51,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  },
+  "DamageBeforeDestruction": {
+    "Nose": 2500.0,
+    "Body": 2500.0
+  },
+  "DamageBeforeDetach": {
+    "FrontWing_Left": 50.0,
+    "FrontWing_Right": 50.0,
+    "Canopy": 1500.0,
+    "WingLeft": 800.0,
+    "WingLeft_Tip": 260.0,
+    "TipWing_Left_B": 50.0,
+    "TipWing_Left_A": 50.0,
+    "WingLeft_Mid_Flap": 50.0,
+    "WingRight": 800.0,
+    "WingRight_Tip": 260.0,
+    "TipWing_Right_A": 50.0,
+    "TipWing_Right_B": 50.0,
+    "WingRight_Mid_Flap": 50.0,
+    "Belly_Wing_Left": 150.0,
+    "Belly_Wing_Right": 150.0,
+    "Rudder_Right": 50.0,
+    "Rudder_Right_Flap": 50.0,
+    "RearWingRight": 50.0,
+    "RearWingRight_Flap": 50.0,
+    "RearWingLeft": 50.0,
+    "RearWingLeft_Flap": 50.0,
+    "Rudder_Left": 50.0,
+    "Rudder_Left_Flap": 50.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 208.0,
+    "MaxSpeed": 1236.0,
+    "ZeroToScm": 0.019897705644501364,
+    "ZeroToMax": 0.11823828931059464,
+    "ScmToZero": 0.06677822609246083,
+    "MaxToZero": 0.3968167665878922,
+    "Acceleration": {
+      "Main": 10453.46653107615,
+      "Retro": 3114.787741022113,
+      "Vtol": 0.0,
+      "Maneuvering": 9022.668341608342
+    },
+    "AccelerationG": {
+      "Main": 1065.956912774995,
+      "Retro": 317.6199507119411,
+      "Vtol": 0.0,
+      "Maneuvering": 920.0561040513892
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 90000.0,
+    "FuelIntakeRate": 42.0,
+    "FuelUsage": {
+      "Main": 65.531475,
+      "Retro": 19.526215,
+      "Vtol": 0.0,
+      "Maneuvering": 56.56198000000001
+    },
+    "ThrustCapacity": {
+      "Main": 5242518.0,
+      "Retro": 1562097.2,
+      "Vtol": 0.0,
+      "Maneuvering": 4524958.399999999
+    },
+    "IntakeToMainFuelRatio": 0.6409133931442867,
+    "IntakeToTankCapacityRatio": 0.00046666666666666666,
+    "TimeForIntakesToFillTank": 2142.8571428571427,
+    "ManeuveringTimeTillEmpty": 1737.0337427489696
+  },
+  "QuantumTravel": {
+    "Speed": 253252000.0,
+    "SpoolTime": 2.25,
+    "FuelCapacity": 583.33,
+    "Range": 31328141783.029003,
+    "PortOlisarToArcCorpTime": 165.55585373462006,
+    "PortOlisarToArcCorpFuel": 780.6872769234001,
+    "PortOlisarToArcCorpAndBack": 0.37360029889230256
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

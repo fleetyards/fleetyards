@@ -1,0 +1,107 @@
+{
+  "ClassName": "ORIG_350r",
+  "Name": "Origin 350r",
+  "Description": "Manufacturer: Origin Jumpworks\nFocus: Racing\n\nOrigin Jumpwork's 300 series is the ultimate fusion of elegance and astroengineering. Every component is individually calibrated to ensure your ship stays in perfect harmony. By far the fastest member of the family, the 350r refocus the 300's power and translates it into pure speed. ",
+  "Career": "Competition",
+  "Role": "Racing",
+  "Size": 2,
+  "Cargo": 4,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 88107.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "ORIG",
+    "Name": "Origin Jumpworks"
+  },
+  "DamageBeforeDestruction": {
+    "nose": 850.0,
+    "tail": 1200.0
+  },
+  "DamageBeforeDetach": {
+    "glass_canopy_front": 250.0,
+    "wing_left_bottom": 100.0,
+    "wing_b_left": 50.0,
+    "wing_left_top": 100.0,
+    "wing_flap_left": 100.0,
+    "wing_right_bottom": 100.0,
+    "wing_b_right": 100.0,
+    "wing_right_top": 100.0,
+    "wing_flap_right": 100.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 258.0,
+    "MaxSpeed": 1347.0,
+    "ZeroToScm": 2.5679960821904033,
+    "ZeroToMax": 13.407328382598735,
+    "ScmToZero": 6.856137453280216,
+    "MaxToZero": 35.795415308404856,
+    "Acceleration": {
+      "Main": 100.46744299544872,
+      "Retro": 37.63051743902301,
+      "Vtol": 0.0,
+      "Maneuvering": 153.99477907544235
+    },
+    "AccelerationG": {
+      "Main": 10.24482788091936,
+      "Retro": 3.8372448102435484,
+      "Vtol": 0.0,
+      "Maneuvering": 15.70309703472376
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 157500.0,
+    "FuelIntakeRate": 26.0,
+    "FuelUsage": {
+      "Main": 110.64856250000001,
+      "Retro": 41.4439,
+      "Vtol": 0.0,
+      "Maneuvering": 169.600225
+    },
+    "ThrustCapacity": {
+      "Main": 8851885.0,
+      "Retro": 3315512.0,
+      "Vtol": 0.0,
+      "Maneuvering": 13568018.0
+    },
+    "IntakeToMainFuelRatio": 0.23497819955862506,
+    "IntakeToTankCapacityRatio": 0.0001650793650793651,
+    "TimeForIntakesToFillTank": 6057.692307692308,
+    "ManeuveringTimeTillEmpty": 929.4849900714773
+  },
+  "QuantumTravel": {
+    "Speed": 138543800.0,
+    "SpoolTime": 5.0,
+    "FuelCapacity": 583.33,
+    "Range": 64003730524.46786,
+    "PortOlisarToArcCorpTime": 302.62885145347536,
+    "PortOlisarToArcCorpFuel": 382.12587765198,
+    "PortOlisarToArcCorpAndBack": 0.7632694278444891
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    },
+    {
+      "Size": 3,
+      "Fixed": true,
+      "WeaponSizes": [
+        3
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": []
+}

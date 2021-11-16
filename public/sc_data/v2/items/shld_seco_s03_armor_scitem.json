@@ -1,0 +1,58 @@
+{
+  "ClassName": "SHLD_SECO_S03_ARMOR_SCItem",
+  "Size": 3,
+  "Grade": 2,
+  "Type": "Shield.UNDEFINED",
+  "Classification": "Ship.Shield",
+  "Name": "ARMOR",
+  "Description": "Item Type: Shield Generator\nManufacturer: Seal Corporation\nSize: 3\nGrade: B\nClass: Civilian\n\nARMOR is Seal Corps’ top-of-the-line shield generator. It was used extensively by the military prior to its shield tech being declassified for civilian use. ",
+  "Manufacturer": {
+    "Code": "SECO",
+    "Name": "Seal Corporation"
+  },
+  "Shield": {
+    "Health": 110000.0,
+    "Regeneration": 1320.0,
+    "DownedDelay": 5.0,
+    "DamagedDelay": 5.0,
+    "Absorption": {
+      "Physical": {
+        "Minimum": 0.5,
+        "Maximum": 0.95
+      },
+      "Energy": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Distortion": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Thermal": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Biochemical": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      },
+      "Stun": {
+        "Minimum": 1.0,
+        "Maximum": 1.0
+      }
+    }
+  },
+  "Durability": {
+    "Health": 825.0,
+    "Lifetime": 44.0
+  },
+  "PowerConnection": {
+    "PowerBase": 2000.0,
+    "PowerDraw": 2500.0
+  },
+  "HeatConnection": {
+    "ThermalEnergyBase": 249409.1,
+    "ThermalEnergyDraw": 258500.0,
+    "CoolingRate": 78.97902
+  }
+}

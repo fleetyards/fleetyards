@@ -1,0 +1,16 @@
+{
+  "ClassName": "FPS_DefaultRadar",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Radar.UNDEFINED",
+  "Classification": "Ship.Radar",
+  "Name": "FPS_DefaultRadar",
+  "Tags": [
+    "flightReady"
+  ],
+  "Radar": {
+    "DetectionLifetime": 0.0,
+    "AltitudeCeiling": 0.0,
+    "CrossSectionOcclusion": false
+  }
+}

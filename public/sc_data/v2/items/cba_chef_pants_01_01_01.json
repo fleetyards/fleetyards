@@ -1,0 +1,29 @@
+{
+  "ClassName": "cba_chef_pants_01_01_01",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Char_Clothing_Legs.UNDEFINED",
+  "Name": "Grammercy Food Service Pants",
+  "Description": "Carrying Capacity: 0.5K µSCU\n\nThe Grammercy Food Service Pants are a standard food service accessory produced by Code Blue Apparel's professional division. Designed to merge style and functionality, the pants offer support for all members of a food service team and are constructed from a patented stain-resistant material that can be quickly cleaned. ",
+  "Manufacturer": {
+    "Code": "CBA",
+    "Name": "CBD"
+  },
+  "Tags": [
+    "cba_chef_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "Ports": [
+    {
+      "PortName": "Material_Variant",
+      "Size": 1,
+      "Types": [
+        "Paints"
+      ],
+      "Flags": [
+        "nontransferable"
+      ]
+    }
+  ]
+}
