@@ -34,6 +34,7 @@ declare global {
   interface Window {
     APP_VERSION: string
     STORE_VERSION: string
+    SC_DATA_VERSION: string
     APP_CODENAME: string
     API_ENDPOINT: string
     DATA_PREFILL: KeyValuePair

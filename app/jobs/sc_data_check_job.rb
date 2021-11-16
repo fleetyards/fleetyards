@@ -2,7 +2,7 @@
 
 class ScDataCheckJob < ApplicationJob
   def perform
-    new_version = YAML.safe_load(File.read(Rails.root.join('public/sc_data/version.yml')))
+    new_version = File.read(Rails.root.join('public/sc_data/.version')).strip
 
     version_file = Rails.root.join('.sc_data_version')
 

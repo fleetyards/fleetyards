@@ -116,6 +116,9 @@
           <i class="far fa-fingerprint" />
         </span>
       </div>
+      <div class="sc-data-version">
+        {{ $t('labels.scDataVersion') }}: {{ scDataVersion }}
+      </div>
     </div>
   </footer>
 </template>
@@ -134,6 +137,10 @@ import Btn from 'frontend/core/components/Btn'
 export default class AppFooter extends Vue {
   get copyrightOwner() {
     return window.COPYRIGHT_OWNER
+  }
+
+  get scDataVersion() {
+    return window.SC_DATA_VERSION
   }
 
   @Getter('online') online: boolean

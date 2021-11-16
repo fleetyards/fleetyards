@@ -22,6 +22,7 @@ export default {
   'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
   'groups': 'Groups',
   'fleetInviteToken': 'Fleet Invite',
+  'scDataVersion': 'Patch Version',
   'home': {
     search: 'Search for Ships...',
   },

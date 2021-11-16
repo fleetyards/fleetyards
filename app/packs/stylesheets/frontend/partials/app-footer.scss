@@ -119,6 +119,13 @@ $footerOuterBorderWidth: 2px;
     bottom: 15px;
     left: 15px;
   }
+
+  .sc-data-version {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    color: darken($text-color, 40%);
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {
@@ -138,6 +145,15 @@ $footerOuterBorderWidth: 2px;
     .app-footer-inner {
       padding-right: env(safe-area-inset-right);
       padding-left: env(safe-area-inset-left);
+    }
+
+    .sc-data-version {
+      position: relative;
+      padding-top: 5px;
+      padding-bottom: 15px;
+      text-align: center;
+      bottom: 0px;
+      right: 0px;
     }
   }
 
