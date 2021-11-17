@@ -106,7 +106,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.84375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 425.0
+    }
   },
   {
     "ClassName": "AEGS_Avenger_Titan",
@@ -215,7 +220,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.7875,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 395.0
+    }
   },
   {
     "ClassName": "AEGS_Avenger_Titan_Renegade",
@@ -324,7 +334,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.84375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 425.0
+    }
   },
   {
     "ClassName": "AEGS_Avenger_Warlock",
@@ -433,7 +448,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 1.0125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 510.0
+    }
   },
   {
     "ClassName": "AEGS_Eclipse",
@@ -536,7 +556,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 15.46875,
+      "ExpeditedClaimTime": 5.15625,
+      "ExpeditedCost": 7735.0
+    }
   },
   {
     "ClassName": "AEGS_Gladius",
@@ -657,7 +682,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 5.0625,
+      "ExpeditedClaimTime": 1.6875,
+      "ExpeditedCost": 2535.0
+    }
   },
   {
     "ClassName": "AEGS_Gladius_Valiant",
@@ -778,7 +808,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 5.0625,
+      "ExpeditedClaimTime": 1.6875,
+      "ExpeditedCost": 2535.0
+    }
   },
   {
     "ClassName": "AEGS_Hammerhead",
@@ -914,7 +949,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 45.0,
+      "ExpeditedClaimTime": 15.0,
+      "ExpeditedCost": 22500.0
+    }
   },
   {
     "ClassName": "AEGS_Idris",
@@ -1105,7 +1145,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 112.5,
+      "ExpeditedClaimTime": 37.5,
+      "ExpeditedCost": 56250.0
+    }
   },
   {
     "ClassName": "AEGS_Javelin",
@@ -1320,7 +1365,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 168.75,
+      "ExpeditedClaimTime": 56.25,
+      "ExpeditedCost": 84375.0
+    }
   },
   {
     "ClassName": "AEGS_Reclaimer",
@@ -1495,7 +1545,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 27.0,
+      "ExpeditedClaimTime": 9.0,
+      "ExpeditedCost": 13500.0
+    }
   },
   {
     "ClassName": "AEGS_Redeemer",
@@ -1642,7 +1697,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 17.55,
+      "ExpeditedClaimTime": 5.85,
+      "ExpeditedCost": 8775.0
+    }
   },
   {
     "ClassName": "AEGS_Retaliator",
@@ -1774,7 +1834,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 31.875,
+      "ExpeditedClaimTime": 10.625,
+      "ExpeditedCost": 15940.0
+    }
   },
   {
     "ClassName": "AEGS_Sabre",
@@ -1899,7 +1964,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "AEGS_Sabre_Comet",
@@ -2024,7 +2094,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "AEGS_Sabre_Raven",
@@ -2138,7 +2213,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.59375,
+      "ExpeditedClaimTime": 2.53125,
+      "ExpeditedCost": 3800.0
+    }
   },
   {
     "ClassName": "AEGS_Vanguard",
@@ -2271,7 +2351,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 10.125,
+      "ExpeditedClaimTime": 3.375,
+      "ExpeditedCost": 5065.0
+    }
   },
   {
     "ClassName": "AEGS_Vanguard_Harbinger",
@@ -2404,7 +2489,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 10.96875,
+      "ExpeditedClaimTime": 3.65625,
+      "ExpeditedCost": 5485.0
+    }
   },
   {
     "ClassName": "AEGS_Vanguard_Hoplite",
@@ -2537,7 +2627,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 9.28125,
+      "ExpeditedClaimTime": 3.09375,
+      "ExpeditedCost": 4645.0
+    }
   },
   {
     "ClassName": "AEGS_Vanguard_Sentinel",
@@ -2670,7 +2765,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 10.96875,
+      "ExpeditedClaimTime": 3.65625,
+      "ExpeditedCost": 5485.0
+    }
   },
   {
     "ClassName": "ANVL_Arrow",
@@ -2773,7 +2873,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "ANVL_C8X_Pisces_Expedition",
@@ -2879,7 +2984,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "ANVL_C8_Pisces",
@@ -2971,7 +3081,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "ANVL_Carrack",
@@ -3079,7 +3194,12 @@
           4
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 45.0,
+      "ExpeditedClaimTime": 15.0,
+      "ExpeditedCost": 22500.0
+    }
   },
   {
     "ClassName": "ANVL_Carrack_Expedition",
@@ -3187,7 +3307,12 @@
           4
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 45.0,
+      "ExpeditedClaimTime": 15.0,
+      "ExpeditedCost": 22500.0
+    }
   },
   {
     "ClassName": "ANVL_Gladiator",
@@ -3316,7 +3441,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.59375,
+      "ExpeditedClaimTime": 2.53125,
+      "ExpeditedCost": 3800.0
+    }
   },
   {
     "ClassName": "ANVL_Hawk",
@@ -3441,7 +3571,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 4.725,
+      "ExpeditedClaimTime": 1.575,
+      "ExpeditedCost": 2365.0
+    }
   },
   {
     "ClassName": "ANVL_Hornet_F7A",
@@ -3559,7 +3694,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 10.96875,
+      "ExpeditedClaimTime": 3.65625,
+      "ExpeditedCost": 5485.0
+    }
   },
   {
     "ClassName": "ANVL_Hornet_F7A_Mk1",
@@ -3786,7 +3926,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "ANVL_Hornet_F7CM",
@@ -3899,7 +4044,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.59375,
+      "ExpeditedClaimTime": 2.53125,
+      "ExpeditedCost": 3800.0
+    }
   },
   {
     "ClassName": "ANVL_Hornet_F7CM_Heartseeker",
@@ -4011,7 +4161,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.59375,
+      "ExpeditedClaimTime": 2.53125,
+      "ExpeditedCost": 3800.0
+    }
   },
   {
     "ClassName": "ANVL_Hornet_F7CR",
@@ -4124,7 +4279,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "ANVL_Hornet_F7CS",
@@ -4237,7 +4397,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "ANVL_Hornet_F7C_Wildfire",
@@ -4350,7 +4515,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "ANVL_Hurricane",
@@ -4465,7 +4635,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.59375,
+      "ExpeditedClaimTime": 2.53125,
+      "ExpeditedCost": 3800.0
+    }
   },
   {
     "ClassName": "ANVL_Lightning_F8",
@@ -4605,7 +4780,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 16.03125,
+      "ExpeditedClaimTime": 5.34375,
+      "ExpeditedCost": 8020.0
+    }
   },
   {
     "ClassName": "ANVL_Terrapin",
@@ -4709,7 +4889,12 @@
         "WeaponSizes": []
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.875,
+      "ExpeditedClaimTime": 2.625,
+      "ExpeditedCost": 3940.0
+    }
   },
   {
     "ClassName": "ANVL_Valkyrie",
@@ -4848,7 +5033,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 16.875,
+      "ExpeditedClaimTime": 5.625,
+      "ExpeditedCost": 8440.0
+    }
   },
   {
     "ClassName": "ARGO_MOLE",
@@ -5026,7 +5216,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.16875,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 205.0
+    }
   },
   {
     "ClassName": "ARGO_MPUV_Transport",
@@ -5105,7 +5300,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.16875,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 205.0
+    }
   },
   {
     "ClassName": "BANU_Defender",
@@ -5212,7 +5412,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 8.4375,
+      "ExpeditedClaimTime": 2.8125,
+      "ExpeditedCost": 4220.0
+    }
   },
   {
     "ClassName": "CNOU_Mustang_Alpha",
@@ -5334,7 +5539,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "CNOU_Mustang_Beta",
@@ -5456,7 +5666,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "CNOU_Mustang_Delta",
@@ -5578,7 +5793,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.84375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 425.0
+    }
   },
   {
     "ClassName": "CNOU_Mustang_Gamma",
@@ -5697,7 +5917,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "CNOU_Mustang_Omega",
@@ -5816,7 +6041,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "CNOU_Nomad",
@@ -5921,7 +6151,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "CRUS_Starfighter_Inferno",
@@ -6008,7 +6243,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 10.125,
+      "ExpeditedClaimTime": 3.375,
+      "ExpeditedCost": 5065.0
+    }
   },
   {
     "ClassName": "CRUS_Starfighter_Ion",
@@ -6095,7 +6335,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 10.125,
+      "ExpeditedClaimTime": 3.375,
+      "ExpeditedCost": 5065.0
+    }
   },
   {
     "ClassName": "CRUS_Starlifter_A2",
@@ -6271,7 +6516,12 @@
           4
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 41.0,
+      "ExpeditedClaimTime": 10.0,
+      "ExpeditedCost": 2100.0
+    }
   },
   {
     "ClassName": "CRUS_Starlifter_C2",
@@ -6396,7 +6646,12 @@
           4
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 22.5,
+      "ExpeditedClaimTime": 7.5,
+      "ExpeditedCost": 1610.0
+    }
   },
   {
     "ClassName": "CRUS_Starlifter_M2",
@@ -6536,7 +6791,12 @@
           4
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 25.0,
+      "ExpeditedClaimTime": 8.0,
+      "ExpeditedCost": 1810.0
+    }
   },
   {
     "ClassName": "CRUS_Star_Runner",
@@ -6639,7 +6899,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 14.4,
+      "ExpeditedClaimTime": 4.8,
+      "ExpeditedCost": 7200.0
+    }
   },
   {
     "ClassName": "DRAK_Buccaneer",
@@ -6765,7 +7030,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 5.4,
+      "ExpeditedClaimTime": 1.8,
+      "ExpeditedCost": 2700.0
+    }
   },
   {
     "ClassName": "DRAK_Caterpillar",
@@ -6884,7 +7154,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 18.0,
+      "ExpeditedClaimTime": 6.0,
+      "ExpeditedCost": 9000.0
+    }
   },
   {
     "ClassName": "DRAK_Cutlass_Black",
@@ -7012,7 +7287,12 @@
           4
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "DRAK_Cutlass_Blue",
@@ -7132,7 +7412,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.425,
+      "ExpeditedClaimTime": 2.475,
+      "ExpeditedCost": 3715.0
+    }
   },
   {
     "ClassName": "DRAK_Cutlass_Red",
@@ -7241,7 +7526,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 9.45,
+      "ExpeditedClaimTime": 3.15,
+      "ExpeditedCost": 4725.0
+    }
   },
   {
     "ClassName": "DRAK_Dragonfly",
@@ -7336,7 +7626,212 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.10125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 55.0
+    }
+  },
+  {
+    "ClassName": "DRAK_Dragonfly_Pink",
+    "Name": "Drake Dragonfly Star Kitten",
+    "Description": "Manufacturer: Drake Interplanetary\nFocus: Racing\n\nThe Drake Dragonfly is the perfect snub ship for anyone looking to live on the edge. With nothing separating the pilot from the dangers of space, the Dragonfly is as much an adventure as a ship! Dual-mode conversion allows the Dragonfly to operate on the ground or in space, and a rear-facing second seat means you can even take a passenger! This model features a custom paintjob of Genady Kuzo's beloved Star Kitten character.",
+    "Career": "Competition",
+    "Role": "Racing",
+    "Size": 1,
+    "Cargo": 0,
+    "Crew": 1,
+    "WeaponCrew": 0,
+    "OperationsCrew": 0,
+    "Mass": 2068.0,
+    "IsSpaceship": false,
+    "IsGravlev": true,
+    "Manufacturer": {
+      "Code": "DRAK",
+      "Name": "Drake Interplanetary"
+    },
+    "DamageBeforeDestruction": {
+      "Nose": 880.0
+    },
+    "DamageBeforeDetach": {
+      "nacelle_front_right_main": 160.0,
+      "nacelle_front_left_main": 160.0,
+      "nacelle_rear_left_main": 160.0,
+      "nacelle_rear_right_main": 160.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 105.0,
+      "MaxSpeed": 500.0,
+      "ZeroToScm": 2.4126666666666665,
+      "ZeroToMax": 11.488888888888889,
+      "ScmToZero": 2.71425,
+      "MaxToZero": 12.925,
+      "Acceleration": {
+        "Main": 43.520309477756285,
+        "Retro": 38.684719535783366,
+        "Vtol": 0.0,
+        "Maneuvering": 67.69825918762089
+      },
+      "AccelerationG": {
+        "Main": 4.437836443634327,
+        "Retro": 3.9447435054527356,
+        "Vtol": 0.0,
+        "Maneuvering": 6.903301134542287
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 15000.0,
+      "FuelIntakeRate": 1.0,
+      "FuelUsage": {
+        "Main": 1.125,
+        "Retro": 1.0,
+        "Vtol": 0.0,
+        "Maneuvering": 1.75
+      },
+      "ThrustCapacity": {
+        "Main": 90000.0,
+        "Retro": 80000.0,
+        "Vtol": 0.0,
+        "Maneuvering": 140000.0
+      },
+      "IntakeToMainFuelRatio": 0.8888888888888888,
+      "IntakeToTankCapacityRatio": 6.666666666666667E-05,
+      "TimeForIntakesToFillTank": 15000.0,
+      "ManeuveringTimeTillEmpty": 15000.0
+    },
+    "QuantumTravel": {
+      "Speed": 0.0,
+      "SpoolTime": 0.0,
+      "FuelCapacity": 0.0,
+      "Range": 0.0,
+      "PortOlisarToArcCorpTime": 0.0,
+      "PortOlisarToArcCorpFuel": 0.0,
+      "PortOlisarToArcCorpAndBack": 0.0
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      },
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      }
+    ],
+    "MannedTurrets": [],
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.10125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 55.0
+    }
+  },
+  {
+    "ClassName": "DRAK_Dragonfly_Yellow",
+    "Name": "Drake Dragonfly Yellowjacket",
+    "Description": "Manufacturer: Drake Interplanetary\nFocus: Racing\n\nThe Drake Dragonfly is the perfect snub ship for anyone looking to live on the edge. With nothing separating the pilot from the dangers of space, the Dragonfly is as much an adventure as a ship! Dual-mode conversion allows the Dragonfly to operate on the ground or in space, and a rear-facing second seat means you can even take a passenger! This model features a custom Yellowjacket paintjob.",
+    "Career": "Competition",
+    "Role": "Racing",
+    "Size": 1,
+    "Cargo": 0,
+    "Crew": 1,
+    "WeaponCrew": 0,
+    "OperationsCrew": 0,
+    "Mass": 2068.0,
+    "IsSpaceship": false,
+    "IsGravlev": true,
+    "Manufacturer": {
+      "Code": "DRAK",
+      "Name": "Drake Interplanetary"
+    },
+    "DamageBeforeDestruction": {
+      "Nose": 880.0
+    },
+    "DamageBeforeDetach": {
+      "nacelle_front_right_main": 160.0,
+      "nacelle_front_left_main": 160.0,
+      "nacelle_rear_left_main": 160.0,
+      "nacelle_rear_right_main": 160.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 105.0,
+      "MaxSpeed": 500.0,
+      "ZeroToScm": 2.4126666666666665,
+      "ZeroToMax": 11.488888888888889,
+      "ScmToZero": 2.71425,
+      "MaxToZero": 12.925,
+      "Acceleration": {
+        "Main": 43.520309477756285,
+        "Retro": 38.684719535783366,
+        "Vtol": 0.0,
+        "Maneuvering": 67.69825918762089
+      },
+      "AccelerationG": {
+        "Main": 4.437836443634327,
+        "Retro": 3.9447435054527356,
+        "Vtol": 0.0,
+        "Maneuvering": 6.903301134542287
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 15000.0,
+      "FuelIntakeRate": 1.0,
+      "FuelUsage": {
+        "Main": 1.125,
+        "Retro": 1.0,
+        "Vtol": 0.0,
+        "Maneuvering": 1.75
+      },
+      "ThrustCapacity": {
+        "Main": 90000.0,
+        "Retro": 80000.0,
+        "Vtol": 0.0,
+        "Maneuvering": 140000.0
+      },
+      "IntakeToMainFuelRatio": 0.8888888888888888,
+      "IntakeToTankCapacityRatio": 6.666666666666667E-05,
+      "TimeForIntakesToFillTank": 15000.0,
+      "ManeuveringTimeTillEmpty": 15000.0
+    },
+    "QuantumTravel": {
+      "Speed": 0.0,
+      "SpoolTime": 0.0,
+      "FuelCapacity": 0.0,
+      "Range": 0.0,
+      "PortOlisarToArcCorpTime": 0.0,
+      "PortOlisarToArcCorpFuel": 0.0,
+      "PortOlisarToArcCorpAndBack": 0.0
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      },
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      }
+    ],
+    "MannedTurrets": [],
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.10125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 55.0
+    }
   },
   {
     "ClassName": "DRAK_Herald",
@@ -7445,7 +7940,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 2.025,
+      "ExpeditedClaimTime": 0.675,
+      "ExpeditedCost": 1015.0
+    }
   },
   {
     "ClassName": "ESPR_Prowler",
@@ -7552,7 +8052,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 12.65625,
+      "ExpeditedClaimTime": 4.21875,
+      "ExpeditedCost": 6330.0
+    }
   },
   {
     "ClassName": "ESPR_Talon",
@@ -7696,7 +8201,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.75,
+      "ExpeditedClaimTime": 2.25,
+      "ExpeditedCost": 3375.0
+    }
   },
   {
     "ClassName": "ESPR_Talon_Shrike",
@@ -7840,7 +8350,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 9.28125,
+      "ExpeditedClaimTime": 3.09375,
+      "ExpeditedCost": 4645.0
+    }
   },
   {
     "ClassName": "KRIG_P52_Merlin",
@@ -7939,7 +8454,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.3375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 170.0
+    }
   },
   {
     "ClassName": "KRIG_P72_Archimedes",
@@ -8052,7 +8572,130 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.50625,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 255.0
+    }
+  },
+  {
+    "ClassName": "KRIG_P72_Archimedes_Emerald",
+    "Name": "Kruger P-72 Archimedes Emerald",
+    "Description": "Manufacturer: Kruger Intergalactic\nFocus: Racer\n\nWhether for added security, exploring a system or simply the joy of flying, the Kruger Intergalactic’s P-72 Archimedes snub craft was designed to deliver exceptional handling and nimble acceleration in a sleek and stylish package. ",
+    "Career": "Competition",
+    "Role": "Racing",
+    "Size": 2,
+    "Cargo": 0,
+    "Crew": 1,
+    "WeaponCrew": 0,
+    "OperationsCrew": 0,
+    "Mass": 8479.0,
+    "IsSpaceship": true,
+    "Manufacturer": {
+      "Code": "KRI",
+      "Name": "Kruger Intergalatic"
+    },
+    "DamageBeforeDestruction": {
+      "Body": 1250.0
+    },
+    "DamageBeforeDetach": {
+      "wing_left_animation_geo": 750.0,
+      "wing_right_animation_geo": 750.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 248.0,
+      "MaxSpeed": 1340.0,
+      "ZeroToScm": 1.7440262643326196,
+      "ZeroToMax": 9.423367718571413,
+      "ScmToZero": 5.5279315656924135,
+      "MaxToZero": 29.86866249204772,
+      "Acceleration": {
+        "Main": 142.19969336006605,
+        "Retro": 44.86307347564571,
+        "Vtol": 0.0,
+        "Maneuvering": 194.05530369147303
+      },
+      "AccelerationG": {
+        "Main": 14.500333040817843,
+        "Retro": 4.574760263261105,
+        "Vtol": 0.0,
+        "Maneuvering": 19.78813361248517
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 15000.0,
+      "FuelIntakeRate": 10.5,
+      "FuelUsage": {
+        "Main": 15.071390000000001,
+        "Retro": 4.754925,
+        "Vtol": 0.0,
+        "Maneuvering": 20.567436499999996
+      },
+      "ThrustCapacity": {
+        "Main": 1205711.2,
+        "Retro": 380394.0,
+        "Vtol": 0.0,
+        "Maneuvering": 1645394.92
+      },
+      "IntakeToMainFuelRatio": 0.6966842474383583,
+      "IntakeToTankCapacityRatio": 0.0007,
+      "TimeForIntakesToFillTank": 1428.5714285714287,
+      "ManeuveringTimeTillEmpty": 1009.7536650397683
+    },
+    "QuantumTravel": {
+      "Speed": 0.0,
+      "SpoolTime": 0.0,
+      "FuelCapacity": 0.0,
+      "Range": 0.0,
+      "PortOlisarToArcCorpTime": 0.0,
+      "PortOlisarToArcCorpFuel": 0.0,
+      "PortOlisarToArcCorpAndBack": 0.0
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 2,
+        "Fixed": true,
+        "WeaponSizes": [
+          2
+        ]
+      },
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      },
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      },
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      },
+      {
+        "Size": 1,
+        "Fixed": true,
+        "WeaponSizes": [
+          1
+        ]
+      }
+    ],
+    "MannedTurrets": [],
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.50625,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 255.0
+    }
   },
   {
     "ClassName": "MISC_Freelancer",
@@ -8160,7 +8803,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 9.9,
+      "ExpeditedClaimTime": 3.3,
+      "ExpeditedCost": 4950.0
+    }
   },
   {
     "ClassName": "MISC_Freelancer_DUR",
@@ -8272,7 +8920,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 10.8,
+      "ExpeditedClaimTime": 3.6,
+      "ExpeditedCost": 5400.0
+    }
   },
   {
     "ClassName": "MISC_Freelancer_MAX",
@@ -8380,7 +9033,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 11.7,
+      "ExpeditedClaimTime": 3.9,
+      "ExpeditedCost": 5850.0
+    }
   },
   {
     "ClassName": "MISC_Freelancer_MIS",
@@ -8488,7 +9146,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 12.6,
+      "ExpeditedClaimTime": 4.2,
+      "ExpeditedCost": 6300.0
+    }
   },
   {
     "ClassName": "MISC_Prospector",
@@ -8595,7 +9258,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 9.0,
+      "ExpeditedClaimTime": 3.0,
+      "ExpeditedCost": 3040.0
+    }
   },
   {
     "ClassName": "MISC_Prospector_Modifiers",
@@ -8804,7 +9472,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.075,
+      "ExpeditedClaimTime": 2.025,
+      "ExpeditedCost": 3040.0
+    }
   },
   {
     "ClassName": "MISC_Razor_EX",
@@ -8906,7 +9579,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.075,
+      "ExpeditedClaimTime": 2.025,
+      "ExpeditedCost": 3040.0
+    }
   },
   {
     "ClassName": "MISC_Razor_LX",
@@ -9008,7 +9686,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.075,
+      "ExpeditedClaimTime": 2.025,
+      "ExpeditedCost": 3040.0
+    }
   },
   {
     "ClassName": "MISC_Reliant",
@@ -9123,7 +9806,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "MISC_Reliant_Mako",
@@ -9232,7 +9920,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "MISC_Reliant_Sen",
@@ -9341,7 +10034,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "MISC_Reliant_Tana",
@@ -9454,7 +10152,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.84375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 425.0
+    }
   },
   {
     "ClassName": "MISC_Starfarer",
@@ -9575,7 +10278,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 18.0,
+      "ExpeditedClaimTime": 6.0,
+      "ExpeditedCost": 9000.0
+    }
   },
   {
     "ClassName": "MISC_Starfarer_Gemini",
@@ -9696,7 +10404,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 22.5,
+      "ExpeditedClaimTime": 7.5,
+      "ExpeditedCost": 11250.0
+    }
   },
   {
     "ClassName": "ORIG_100i",
@@ -9789,7 +10502,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 1.265625,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 635.0
+    }
   },
   {
     "ClassName": "ORIG_125a",
@@ -9882,7 +10600,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 1.265625,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 635.0
+    }
   },
   {
     "ClassName": "ORIG_135c",
@@ -9975,7 +10698,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 1.35,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 675.0
+    }
   },
   {
     "ClassName": "ORIG_300i",
@@ -10082,7 +10810,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.075,
+      "ExpeditedClaimTime": 2.025,
+      "ExpeditedCost": 3034.0
+    }
   },
   {
     "ClassName": "ORIG_315p",
@@ -10182,7 +10915,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.4125,
+      "ExpeditedClaimTime": 2.1375,
+      "ExpeditedCost": 3210.0
+    }
   },
   {
     "ClassName": "ORIG_325a",
@@ -10289,7 +11027,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.0875,
+      "ExpeditedClaimTime": 2.3625,
+      "ExpeditedCost": 3545.0
+    }
   },
   {
     "ClassName": "ORIG_350r",
@@ -10396,7 +11139,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 8.1,
+      "ExpeditedClaimTime": 2.7,
+      "ExpeditedCost": 4050.0
+    }
   },
   {
     "ClassName": "ORIG_400i",
@@ -10506,7 +11254,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 16.2,
+      "ExpeditedClaimTime": 5.4,
+      "ExpeditedCost": 8100.0
+    }
   },
   {
     "ClassName": "ORIG_600i",
@@ -10625,7 +11378,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 35.1,
+      "ExpeditedClaimTime": 11.7,
+      "ExpeditedCost": 17550.0
+    }
   },
   {
     "ClassName": "ORIG_600i_Executive_Edition",
@@ -10744,7 +11502,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 35.1,
+      "ExpeditedClaimTime": 11.7,
+      "ExpeditedCost": 17550.0
+    }
   },
   {
     "ClassName": "ORIG_600i_Touring",
@@ -10863,7 +11626,12 @@
           3
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 35.1,
+      "ExpeditedClaimTime": 11.7,
+      "ExpeditedCost": 17550.0
+    }
   },
   {
     "ClassName": "ORIG_85X",
@@ -10967,7 +11735,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 1.0125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 510.0
+    }
   },
   {
     "ClassName": "ORIG_890Jump",
@@ -11095,7 +11868,12 @@
         "Turret": true,
         "WeaponSizes": []
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 67.5,
+      "ExpeditedClaimTime": 22.5,
+      "ExpeditedCost": 33750.0
+    }
   },
   {
     "ClassName": "ORIG_m50",
@@ -11190,7 +11968,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 6.075,
+      "ExpeditedClaimTime": 2.025,
+      "ExpeditedCost": 3040.0
+    }
   },
   {
     "ClassName": "RSI_Aurora_CL",
@@ -11299,7 +12082,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "RSI_Aurora_ES",
@@ -11408,7 +12196,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.50625,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 255.0
+    }
   },
   {
     "ClassName": "RSI_Aurora_LN",
@@ -11517,7 +12310,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "RSI_Aurora_LX",
@@ -11626,7 +12424,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 1.0125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 510.0
+    }
   },
   {
     "ClassName": "RSI_Aurora_MR",
@@ -11735,7 +12538,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.675,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 340.0
+    }
   },
   {
     "ClassName": "RSI_Constellation_Andromeda",
@@ -11901,7 +12709,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 13.5,
+      "ExpeditedClaimTime": 4.5,
+      "ExpeditedCost": 6750.0
+    }
   },
   {
     "ClassName": "RSI_Constellation_Aquila",
@@ -12064,7 +12877,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 13.5,
+      "ExpeditedClaimTime": 4.5,
+      "ExpeditedCost": 6750.0
+    }
   },
   {
     "ClassName": "RSI_Constellation_Phoenix",
@@ -12230,7 +13048,183 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 21.6,
+      "ExpeditedClaimTime": 7.2,
+      "ExpeditedCost": 10800.0
+    }
+  },
+  {
+    "ClassName": "RSI_Constellation_Phoenix_Emerald",
+    "Name": "RSI Constellation Phoenix Emerald",
+    "Description": "Manufacturer: RSI \nFocus: Touring\n\nWhether you are a discerning socialite or a freewheeling party animal, the Constellation Phoenix Emerald is your personal passport to entertainment. With a swank interior cabin designed specifically for revelry, and a limited edition \"lucky\" paint job, the Emerald is the perfect venue to sip a glass of Radegast Gold or throw back a green Sleeping Tiger Malt while hurtling luxuriously through the stars. Just be sure to bring a designated pilot.",
+    "Career": "Multi-Role",
+    "Role": "Luxury",
+    "Size": 4,
+    "Cargo": 96,
+    "Crew": 1,
+    "WeaponCrew": 2,
+    "OperationsCrew": 0,
+    "Mass": 427001.0,
+    "IsSpaceship": true,
+    "Manufacturer": {
+      "Code": "RSI",
+      "Name": "Roberts Space Industries"
+    },
+    "DamageBeforeDestruction": {
+      "neck": 20000.0,
+      "nose": 20000.0,
+      "body": 20000.0,
+      "tail": 20000.0
+    },
+    "DamageBeforeDetach": {
+      "wing_left": 15000.0,
+      "turbine_cover_wingl_bot_front_out": 20.0,
+      "turbine_cover_wingl_bot_rear_out": 20.0,
+      "turbine_cover_wingl_bot_front_in": 20.0,
+      "turbine_cover_wingl_bot_rear_in": 20.0,
+      "turbine_cover_wingl_top_front_out": 20.0,
+      "turbine_cover_wingl_top_rear_out": 20.0,
+      "turbine_cover_wingl_top_front_in": 20.0,
+      "turbine_cover_wingl_top_rear_in": 20.0,
+      "wing_right": 15000.0,
+      "turbine_cover_wingr_top_rear_in": 20.0,
+      "turbine_cover_wingr_top_front_in": 20.0,
+      "turbine_cover_wingr_bot_rear_in": 20.0,
+      "turbine_cover_wingr_bot_front_out": 20.0,
+      "turbine_cover_wingr_top_rear_out": 20.0,
+      "turbine_cover_wingr_top_front_out": 20.0,
+      "turbine_cover_wingr_bot_front_in": 20.0,
+      "turbine_cover_wingr_bot_rear_out": 20.0,
+      "misslerack_arm_body_left_arm": 1750.0,
+      "misslerack_arm_body_right_arm": 1750.0,
+      "misslerack_arm_tail_left_arm": 1750.0,
+      "nacelle_tower_left": 1000.0,
+      "nacelle_tower_right": 1000.0,
+      "misslerack_arm_tail_right_arm": 1750.0,
+      "nacelle_bottom_right": 15000.0,
+      "turbine_cover_naceller_bot_front_in": 20.0,
+      "turbine_cover_naceller_bot_rear_in": 20.0,
+      "turbine_cover_naceller_bot_front_out": 20.0,
+      "turbine_cover_naceller_bot_rear_out": 20.0,
+      "turbine_cover_naceller_top_front_in": 20.0,
+      "turbine_cover_naceller_top_rear_in": 20.0,
+      "turbine_cover_naceller_top_front_out": 20.0,
+      "turbine_cover_naceller_top_rear_out": 20.0,
+      "nacelle_bottom_left": 15000.0,
+      "turbine_cover_nacellel_bot_front_out": 20.0,
+      "turbine_cover_nacellel_bot_rear_out": 20.0,
+      "turbine_cover_nacellel_bot_front_in": 20.0,
+      "turbine_cover_nacellel_bot_rear_in": 20.0,
+      "turbine_cover_nacellel_top_front_out": 20.0,
+      "turbine_cover_nacellel_top_rear_out": 20.0,
+      "turbine_cover_nacellel_top_front_in": 20.0,
+      "turbine_cover_nacellel_top_rear_in": 20.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 144.0,
+      "MaxSpeed": 911.0,
+      "ZeroToScm": 3.085845193795322,
+      "ZeroToMax": 19.522256746857902,
+      "ScmToZero": 6.175187390306521,
+      "MaxToZero": 39.06663689284195,
+      "Acceleration": {
+        "Main": 46.66468696794621,
+        "Retro": 23.319130400162997,
+        "Vtol": 11.437024269264006,
+        "Maneuvering": 22.023750764049733
+      },
+      "AccelerationG": {
+        "Main": 4.75847370899294,
+        "Retro": 2.377889494940232,
+        "Vtol": 1.1662518883238144,
+        "Maneuvering": 2.2457975354282382
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 660000.0,
+      "FuelIntakeRate": 176.0,
+      "FuelUsage": {
+        "Main": 249.07335,
+        "Retro": 124.46615,
+        "Vtol": 61.04525999999999,
+        "Maneuvering": 117.55204499999998
+      },
+      "ThrustCapacity": {
+        "Main": 19925868.0,
+        "Retro": 9957292.0,
+        "Vtol": 4883620.8,
+        "Maneuvering": 9404163.6
+      },
+      "IntakeToMainFuelRatio": 0.7066191545582857,
+      "IntakeToTankCapacityRatio": 0.0002666666666666667,
+      "TimeForIntakesToFillTank": 3750.0,
+      "ManeuveringTimeTillEmpty": 5005.712105304103
+    },
+    "QuantumTravel": {
+      "Speed": 74485900.0,
+      "SpoolTime": 7.75,
+      "FuelCapacity": 3000.0,
+      "Range": 458715596330.2752,
+      "PortOlisarToArcCorpTime": 562.889769338895,
+      "PortOlisarToArcCorpFuel": 274.2048759978,
+      "PortOlisarToArcCorpAndBack": 5.470362241158814
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 5,
+        "Fixed": true,
+        "WeaponSizes": [
+          5
+        ]
+      },
+      {
+        "Size": 5,
+        "Fixed": true,
+        "WeaponSizes": [
+          5
+        ]
+      },
+      {
+        "Size": 5,
+        "Gimballed": true,
+        "WeaponSizes": [
+          4
+        ]
+      },
+      {
+        "Size": 5,
+        "Gimballed": true,
+        "WeaponSizes": [
+          4
+        ]
+      }
+    ],
+    "MannedTurrets": [
+      {
+        "Size": 6,
+        "Turret": true,
+        "WeaponSizes": [
+          2,
+          2
+        ]
+      },
+      {
+        "Size": 6,
+        "Turret": true,
+        "WeaponSizes": [
+          2,
+          2
+        ]
+      }
+    ],
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 21.6,
+      "ExpeditedClaimTime": 7.2,
+      "ExpeditedCost": 10800.0
+    }
   },
   {
     "ClassName": "RSI_Constellation_Taurus",
@@ -12392,7 +13386,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 12.6,
+      "ExpeditedClaimTime": 4.2,
+      "ExpeditedCost": 6750.0
+    }
   },
   {
     "ClassName": "RSI_Mantis",
@@ -12498,7 +13497,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 13.5,
+      "ExpeditedClaimTime": 4.5,
+      "ExpeditedCost": 6750.0
+    }
   },
   {
     "ClassName": "VNCL_Blade",
@@ -12607,7 +13611,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 4.21875,
+      "ExpeditedClaimTime": 1.40625,
+      "ExpeditedCost": 2110.0
+    }
   },
   {
     "ClassName": "VNCL_Glaive",
@@ -12761,7 +13770,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 7.59375,
+      "ExpeditedClaimTime": 2.53125,
+      "ExpeditedCost": 3800.0
+    }
   },
   {
     "ClassName": "VNCL_Scythe",
@@ -12892,7 +13906,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 5.90625,
+      "ExpeditedClaimTime": 1.96875,
+      "ExpeditedCost": 2955.0
+    }
   },
   {
     "ClassName": "XIAN_Nox",
@@ -12987,7 +14006,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.10125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 55.0
+    }
   },
   {
     "ClassName": "XIAN_Nox_Kue",
@@ -13082,7 +14106,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.10125,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 55.0
+    }
   },
   {
     "ClassName": "XIAN_Scout",
@@ -13191,7 +14220,12 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 5.0625,
+      "ExpeditedClaimTime": 1.6875,
+      "ExpeditedCost": 2535.0
+    }
   },
   {
     "ClassName": "ANVL_Ballista",
@@ -13290,7 +14324,12 @@
         "Turret": true,
         "WeaponSizes": []
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 0.759375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 380.0
+    }
   },
   {
     "ClassName": "GRIN_PTV",
@@ -13370,7 +14409,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.03375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 20.0
+    }
   },
   {
     "ClassName": "GRIN_ROC",
@@ -13452,7 +14496,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.23625,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 120.0
+    }
   },
   {
     "ClassName": "GRIN_ROC_DS",
@@ -13537,7 +14586,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.23625,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 150.0
+    }
   },
   {
     "ClassName": "RSI_Ursa_Rover",
@@ -13634,7 +14688,114 @@
       }
     ],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.30375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 155.0
+    }
+  },
+  {
+    "ClassName": "RSI_Ursa_Rover_Emerald",
+    "Name": "RSI Ursa Rover Fortuna",
+    "Description": "Manufacturer: RSI\nFocus: Exploration\n\nFortune favors the bold. The most trusted name in all-terrain exploration embodies the essence of good fortune and success with this commemorative limited-edition Ursa Rover.",
+    "Career": "Ground",
+    "Role": "Ground",
+    "Size": 3,
+    "Cargo": 0,
+    "Crew": 2,
+    "WeaponCrew": 0,
+    "OperationsCrew": 0,
+    "Mass": 23356.629999999986,
+    "IsSpaceship": false,
+    "IsVehicle": true,
+    "Manufacturer": {
+      "Code": "RSI",
+      "Name": "Roberts Space Industries"
+    },
+    "DamageBeforeDestruction": {
+      "Body": 2500.0
+    },
+    "DamageBeforeDetach": {
+      "wheel1": 1500.0,
+      "wheel1_mudguard": 150.0,
+      "wheel2": 1500.0,
+      "wheel2_mudguard": 150.0,
+      "wheel3": 1500.0,
+      "wheel3_mudguard": 150.0,
+      "wheel4": 1500.0,
+      "wheel4_mudguard": 150.0,
+      "wheel5": 1500.0,
+      "wheel5_mudguard": 150.0,
+      "wheel6": 1500.0,
+      "wheel6_mudguard": 150.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 0.0,
+      "MaxSpeed": 0.0,
+      "ZeroToScm": "NaN",
+      "ZeroToMax": "NaN",
+      "ScmToZero": "NaN",
+      "MaxToZero": "NaN",
+      "Acceleration": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      },
+      "AccelerationG": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 0.0,
+      "FuelIntakeRate": 0.0,
+      "FuelUsage": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      },
+      "ThrustCapacity": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      },
+      "IntakeToMainFuelRatio": "NaN",
+      "IntakeToTankCapacityRatio": "NaN",
+      "TimeForIntakesToFillTank": "NaN",
+      "ManeuveringTimeTillEmpty": "NaN"
+    },
+    "QuantumTravel": {
+      "Speed": 0.0,
+      "SpoolTime": 0.0,
+      "FuelCapacity": 0.0,
+      "Range": 0.0,
+      "PortOlisarToArcCorpTime": 0.0,
+      "PortOlisarToArcCorpFuel": 0.0,
+      "PortOlisarToArcCorpAndBack": 0.0
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 6,
+        "Turret": true,
+        "WeaponSizes": [
+          1,
+          1
+        ]
+      }
+    ],
+    "MannedTurrets": [],
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.30375,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 155.0
+    }
   },
   {
     "ClassName": "TMBL_Cyclone",
@@ -13721,7 +14882,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.2025,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 105.0
+    }
   },
   {
     "ClassName": "TMBL_Cyclone_AA",
@@ -13808,7 +14974,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.2025,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 105.0
+    }
   },
   {
     "ClassName": "TMBL_Cyclone_MT",
@@ -13903,7 +15074,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.495,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 105.0
+    }
   },
   {
     "ClassName": "TMBL_Cyclone_RC",
@@ -13990,7 +15166,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.2025,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 105.0
+    }
   },
   {
     "ClassName": "TMBL_Cyclone_RN",
@@ -14077,7 +15258,12 @@
     },
     "PilotHardpoints": [],
     "MannedTurrets": [],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.2025,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 105.0
+    }
   },
   {
     "ClassName": "TMBL_Cyclone_TR",
@@ -14172,7 +15358,12 @@
         ]
       }
     ],
-    "RemoteTurrets": []
+    "RemoteTurrets": [],
+    "Insurance": {
+      "StandardClaimTime": 0.2025,
+      "ExpeditedClaimTime": 0.0,
+      "ExpeditedCost": 105.0
+    }
   },
   {
     "ClassName": "TMBL_Nova",
@@ -14276,6 +15467,11 @@
           2
         ]
       }
-    ]
+    ],
+    "Insurance": {
+      "StandardClaimTime": 1.139063,
+      "ExpeditedClaimTime": 0.3796875,
+      "ExpeditedCost": 570.0
+    }
   }
 ]

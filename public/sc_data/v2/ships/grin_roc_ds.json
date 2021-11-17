@@ -81,5 +81,10 @@
   },
   "PilotHardpoints": [],
   "MannedTurrets": [],
-  "RemoteTurrets": []
+  "RemoteTurrets": [],
+  "Insurance": {
+    "StandardClaimTime": 0.23625,
+    "ExpeditedClaimTime": 0.0,
+    "ExpeditedCost": 150.0
+  }
 }

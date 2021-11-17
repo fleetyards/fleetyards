@@ -124,5 +124,10 @@
       "Turret": true,
       "WeaponSizes": []
     }
-  ]
+  ],
+  "Insurance": {
+    "StandardClaimTime": 67.5,
+    "ExpeditedClaimTime": 22.5,
+    "ExpeditedCost": 33750.0
+  }
 }
