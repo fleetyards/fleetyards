@@ -103,5 +103,10 @@
         3
       ]
     }
-  ]
+  ],
+  "Insurance": {
+    "StandardClaimTime": 12.65625,
+    "ExpeditedClaimTime": 4.21875,
+    "ExpeditedCost": 6330.0
+  }
 }

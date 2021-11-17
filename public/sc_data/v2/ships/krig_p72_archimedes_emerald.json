@@ -1,0 +1,118 @@
+{
+  "ClassName": "KRIG_P72_Archimedes_Emerald",
+  "Name": "Kruger P-72 Archimedes Emerald",
+  "Description": "Manufacturer: Kruger Intergalactic\nFocus: Racer\n\nWhether for added security, exploring a system or simply the joy of flying, the Kruger Intergalactic’s P-72 Archimedes snub craft was designed to deliver exceptional handling and nimble acceleration in a sleek and stylish package. ",
+  "Career": "Competition",
+  "Role": "Racing",
+  "Size": 2,
+  "Cargo": 0,
+  "Crew": 1,
+  "WeaponCrew": 0,
+  "OperationsCrew": 0,
+  "Mass": 8479.0,
+  "IsSpaceship": true,
+  "Manufacturer": {
+    "Code": "KRI",
+    "Name": "Kruger Intergalatic"
+  },
+  "DamageBeforeDestruction": {
+    "Body": 1250.0
+  },
+  "DamageBeforeDetach": {
+    "wing_left_animation_geo": 750.0,
+    "wing_right_animation_geo": 750.0
+  },
+  "FlightCharacteristics": {
+    "ScmSpeed": 248.0,
+    "MaxSpeed": 1340.0,
+    "ZeroToScm": 1.7440262643326196,
+    "ZeroToMax": 9.423367718571413,
+    "ScmToZero": 5.5279315656924135,
+    "MaxToZero": 29.86866249204772,
+    "Acceleration": {
+      "Main": 142.19969336006605,
+      "Retro": 44.86307347564571,
+      "Vtol": 0.0,
+      "Maneuvering": 194.05530369147303
+    },
+    "AccelerationG": {
+      "Main": 14.500333040817843,
+      "Retro": 4.574760263261105,
+      "Vtol": 0.0,
+      "Maneuvering": 19.78813361248517
+    }
+  },
+  "Propulsion": {
+    "FuelCapacity": 15000.0,
+    "FuelIntakeRate": 10.5,
+    "FuelUsage": {
+      "Main": 15.071390000000001,
+      "Retro": 4.754925,
+      "Vtol": 0.0,
+      "Maneuvering": 20.567436499999996
+    },
+    "ThrustCapacity": {
+      "Main": 1205711.2,
+      "Retro": 380394.0,
+      "Vtol": 0.0,
+      "Maneuvering": 1645394.92
+    },
+    "IntakeToMainFuelRatio": 0.6966842474383583,
+    "IntakeToTankCapacityRatio": 0.0007,
+    "TimeForIntakesToFillTank": 1428.5714285714287,
+    "ManeuveringTimeTillEmpty": 1009.7536650397683
+  },
+  "QuantumTravel": {
+    "Speed": 0.0,
+    "SpoolTime": 0.0,
+    "FuelCapacity": 0.0,
+    "Range": 0.0,
+    "PortOlisarToArcCorpTime": 0.0,
+    "PortOlisarToArcCorpFuel": 0.0,
+    "PortOlisarToArcCorpAndBack": 0.0
+  },
+  "PilotHardpoints": [
+    {
+      "Size": 2,
+      "Fixed": true,
+      "WeaponSizes": [
+        2
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    },
+    {
+      "Size": 1,
+      "Fixed": true,
+      "WeaponSizes": [
+        1
+      ]
+    }
+  ],
+  "MannedTurrets": [],
+  "RemoteTurrets": [],
+  "Insurance": {
+    "StandardClaimTime": 0.50625,
+    "ExpeditedClaimTime": 0.0,
+    "ExpeditedCost": 255.0
+  }
+}

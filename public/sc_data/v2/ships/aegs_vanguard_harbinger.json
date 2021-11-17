@@ -129,5 +129,10 @@
       ]
     }
   ],
-  "RemoteTurrets": []
+  "RemoteTurrets": [],
+  "Insurance": {
+    "StandardClaimTime": 10.96875,
+    "ExpeditedClaimTime": 3.65625,
+    "ExpeditedCost": 5485.0
+  }
 }
