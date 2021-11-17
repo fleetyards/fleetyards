@@ -100,5 +100,10 @@
       "WeaponSizes": []
     }
   ],
-  "RemoteTurrets": []
+  "RemoteTurrets": [],
+  "Insurance": {
+    "StandardClaimTime": 7.875,
+    "ExpeditedClaimTime": 2.625,
+    "ExpeditedCost": 3940.0
+  }
 }
