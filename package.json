@@ -88,7 +88,7 @@
     "vuex-class": "^0.3.2",
     "vuex-persistedstate": "3.2.1",
     "webpack": "4.44.2",
-    "workbox-webpack-plugin": "^6.3.0"
+    "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
     "@commitlint/cli": "14.1.0",
