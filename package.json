@@ -88,7 +88,7 @@
     "vuex-class": "^0.3.2",
     "vuex-persistedstate": "3.2.1",
     "webpack": "4.44.2",
-    "workbox-webpack-plugin": "^6.3.0"
+    "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
     "@commitlint/cli": "15.0.0",
@@ -111,7 +111,7 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-typescript": "2.5.0",
     "eslint-import-resolver-webpack": "^0.13.2",
-    "eslint-plugin-compat": "3.13.0",
+    "eslint-plugin-compat": "4.0.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-import": "2.25.3",
     "eslint-plugin-jest": "25.2.4",
