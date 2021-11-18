@@ -1,0 +1,1446 @@
+[
+  {
+    "code": "ACAS",
+    "name": "Ace Astrogation",
+    "reference": "cfc0122d-5275-415a-a656-3dcb3346feb5"
+  },
+  {
+    "code": "ACDO",
+    "name": "Aciedo CommRelay",
+    "reference": "b99ddb18-b325-44de-abfa-ce2e978424e4"
+  },
+  {
+    "code": "ASAD",
+    "name": "[PH] PH Associated Science and Development",
+    "reference": "055fe7c5-2e02-4e3a-aacb-f289563fabbd"
+  },
+  {
+    "code": "BANU",
+    "name": "Banu",
+    "reference": "2b5ba252-e826-4356-ac0d-8d88007ea386"
+  },
+  {
+    "code": "BRRA",
+    "name": "Broad & Rabiee",
+    "reference": "ad865899-f5ba-4818-ae8c-fe80a55108b7"
+  },
+  {
+    "code": "CUR",
+    "name": "Curelife",
+    "reference": "f4a1ad63-43fb-483c-a90f-33dd50586e3a"
+  },
+  {
+    "code": "CRUS",
+    "name": "Crusader Industries",
+    "reference": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0"
+  },
+  {
+    "code": "ESPR",
+    "name": "Esperia",
+    "reference": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3"
+  },
+  {
+    "code": "FFSY",
+    "name": "Flashfire Systems",
+    "reference": "b9b97673-c585-4e0a-b229-a0a3c79668c3"
+  },
+  {
+    "code": "FSKI",
+    "name": "Aegis Dynamics",
+    "reference": "5f81335d-44e6-4104-841e-c5af9df06829"
+  },
+  {
+    "code": "GAT",
+    "name": "Gallenson Tactical Systems",
+    "reference": "a834198a-3465-4b02-86a5-887e922ec06d"
+  },
+  {
+    "code": "GEND",
+    "name": "[PH] PH Generic Drink",
+    "reference": "f80ab8de-4d04-4a1f-a8f2-ee2bb01fd125"
+  },
+  {
+    "code": "GENF",
+    "name": "[PH] PH Generic Food",
+    "reference": "1b6be99e-f430-459f-ab2a-a912fd6722f8"
+  },
+  {
+    "code": "GRIN",
+    "name": "Greycat Industrial",
+    "reference": "819545f4-18af-49a6-814e-ca4fd08f56e5"
+  },
+  {
+    "code": "HRST",
+    "name": "Hurston Dynamics",
+    "reference": "ee8b7bb3-d420-435c-924f-561e67e64588"
+  },
+  {
+    "code": "JOK",
+    "name": "Joker Engineering",
+    "reference": "19fbaf6d-d6dc-4e15-8fdf-67101934ff3c"
+  },
+  {
+    "code": "KBAR",
+    "name": "KnightBridge Arms",
+    "reference": "7b4402a1-f17f-4125-afcc-4a159dcd29e0"
+  },
+  {
+    "code": "KRON",
+    "name": "Kroneg",
+    "reference": "2a64f92e-8f6d-47ac-a6ed-643465e91d4b"
+  },
+  {
+    "code": "LOCO",
+    "name": "Lortell Computing",
+    "reference": "4ee4ba50-f4e3-4c54-9f44-9a6c5691c77e"
+  },
+  {
+    "code": "MIT",
+    "name": "microTech",
+    "reference": "9f0f7735-d389-4c7d-95f1-c4d0c57f7214"
+  },
+  {
+    "code": "MXOX",
+    "name": "Aegis Dynamics",
+    "reference": "de0d3594-9f18-42c0-8a90-6edd723d80f8"
+  },
+  {
+    "code": "NAVE",
+    "name": "Nav-E7 Gadgets",
+    "reference": "afff101e-eb2c-4f93-960f-cec9936b9f39"
+  },
+  {
+    "code": "NOVP",
+    "name": "Nova Pyrotechnica",
+    "reference": "67fd3077-ee8c-4a7c-8bad-91500b2a9509"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "f9a339fa-3f9e-4ad8-8b43-b8fdad0bb079"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "7baf4fc8-aeec-4c5c-ac15-109a3b9d4345"
+  },
+  {
+    "code": "",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "9daed090-21d2-4855-a9b8-6aeee414580a"
+  },
+  {
+    "code": "PRAR",
+    "name": "Aegis Dynamics",
+    "reference": "a2ba1db6-a7e8-49db-ba52-c61219693531"
+  },
+  {
+    "code": "ROO",
+    "name": "Sakura Sun",
+    "reference": "4835d29c-3cdd-4983-97b2-1af4674c4c00"
+  },
+  {
+    "code": "ACOM",
+    "name": "ACOM",
+    "reference": "5d616e6f-3257-4d19-90c3-11ab974f12e7"
+  },
+  {
+    "code": "AEG",
+    "name": "Aegis Dynamics",
+    "reference": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2"
+  },
+  {
+    "code": "AMRS",
+    "name": "Amon & Reese Co.",
+    "reference": "eccba58a-f6d9-42e8-95c6-d0a65763e583"
+  },
+  {
+    "code": "ANVL",
+    "name": "Anvil Aerospace",
+    "reference": "b922abdb-0634-4358-9eee-60118f3cf3a7"
+  },
+  {
+    "code": "APAR",
+    "name": "Apocalypse Arms",
+    "reference": "77f7999a-b23b-4812-94c2-09b5e15e1b0e"
+  },
+  {
+    "code": "ARCC",
+    "name": "ArcCorp",
+    "reference": "0ade6e45-ecdd-42a9-9046-3e96dbe4f5d0"
+  },
+  {
+    "code": "ARGO",
+    "name": "Argo Astronautics",
+    "reference": "9e1f5a35-edcc-4d19-bede-08e2730043c5"
+  },
+  {
+    "code": "ASAS",
+    "name": "Ascension Astro",
+    "reference": "abca0ae0-a819-4aeb-a1a7-f8f1d7e277cf"
+  },
+  {
+    "code": "BASL",
+    "name": "Basilisk",
+    "reference": "2948496b-45d2-41f8-bdff-97587f1e6981"
+  },
+  {
+    "code": "CNOU",
+    "name": "Consolidated Outland",
+    "reference": "ec227ef3-fb08-4897-abdb-579eb4e87c25"
+  },
+  {
+    "code": "CUR",
+    "name": "Curelife",
+    "reference": "dd55bc19-5212-4365-bbc8-73474f0257ed"
+  },
+  {
+    "code": "DRAK",
+    "name": "Drake Interplanetary",
+    "reference": "6116471c-891d-4830-8968-650b6deafc00"
+  },
+  {
+    "code": "GODI",
+    "name": "Gorgon Defender Industries",
+    "reference": "57bfcf3d-13f6-4c2c-b7c7-6bf8eacb8a24"
+  },
+  {
+    "code": "JSPN",
+    "name": "J-Span",
+    "reference": "6cf93625-789a-4e8f-a857-325d64a58c93"
+  },
+  {
+    "code": "JUST",
+    "name": "Juno Starwerk",
+    "reference": "d7cc897f-b760-4a73-93c0-27e23c52db0a"
+  },
+  {
+    "code": "KRI",
+    "name": "Kruger Intergalatic",
+    "reference": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2"
+  },
+  {
+    "code": "LPLT",
+    "name": "Lightning Power Ltd.",
+    "reference": "60d0f346-0c22-4869-81d3-1168b526a258"
+  },
+  {
+    "code": "MIS",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "b28a5c61-63a4-478b-8047-5fba545d5b8a"
+  },
+  {
+    "code": "ORIG",
+    "name": "Origin Jumpworks",
+    "reference": "1e47a9ec-a3f0-431d-be0e-377712e1ed84"
+  },
+  {
+    "code": "OUTL",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "7e8a8608-3b02-42cc-83ea-4efe430c60a8"
+  },
+  {
+    "code": "RACO",
+    "name": "RAMP Corporation",
+    "reference": "57432775-b421-45cc-8616-ac2d35018193"
+  },
+  {
+    "code": "RSI",
+    "name": "Roberts Space Industries",
+    "reference": "093e6eba-93fa-4dad-b3dd-38966934e34e"
+  },
+  {
+    "code": "SASU",
+    "name": "Sakura Sun",
+    "reference": "40c59850-8fb5-4a0e-ab61-7fd3871a632a"
+  },
+  {
+    "code": "SECO",
+    "name": "Seal Corporation",
+    "reference": "f91beb30-915c-42f6-9b1f-f5bd74633fd6"
+  },
+  {
+    "code": "TARS",
+    "name": "Tarsus",
+    "reference": "2b25a2dd-47ea-4ab0-8711-03d34be214b1"
+  },
+  {
+    "code": "TYDT",
+    "name": "Tyler Design & Tech",
+    "reference": "a2a97679-2a6e-4e89-80d8-439c88a01427"
+  },
+  {
+    "code": "UEE",
+    "name": "United Empire of Earth",
+    "reference": "2e06e775-940b-4c24-8974-31fb5617ea56"
+  },
+  {
+    "code": "VNC",
+    "name": "Vanduul Components - Generic",
+    "reference": "4668760a-d8a1-48d0-be4d-42304b702de0"
+  },
+  {
+    "code": "WCPR",
+    "name": "Wen/Cassel Propulsion",
+    "reference": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4"
+  },
+  {
+    "code": "WETK",
+    "name": "Wei-Tek",
+    "reference": "0f9ffe57-8542-4d83-a246-72568a5f2f91"
+  },
+  {
+    "code": "",
+    "name": "Aopoa",
+    "reference": "70ac7035-10a0-4bbb-90b0-9bddf047b504"
+  },
+  {
+    "code": "YORM",
+    "name": "Yorm",
+    "reference": "435366d8-8b47-4cbc-b0cf-688a95a0847d"
+  },
+  {
+    "code": "SHIN",
+    "name": "Shubin Interstellar",
+    "reference": "ab35f85f-919f-4457-8d58-4e885ea6c5c0"
+  },
+  {
+    "code": "TALN",
+    "name": "Talon",
+    "reference": "587fcede-4fe9-4fb4-85ec-124abc8542b0"
+  },
+  {
+    "code": "THCN",
+    "name": "Thermyte Concern",
+    "reference": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f"
+  },
+  {
+    "code": "TMBL",
+    "name": "Tumbril Land Systems",
+    "reference": "bb1024bc-b82e-491c-820c-36662c36feb3"
+  },
+  {
+    "code": "TRAS",
+    "name": "Aegis Dynamics",
+    "reference": "d70afa6f-c7aa-4a3f-b222-d2208e6c21a9"
+  },
+  {
+    "code": "TRMI",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "a2d3a876-d263-443a-bc16-39444072d787"
+  },
+  {
+    "code": "UNKN",
+    "name": "[PH] PH  Unknown Manufacturer",
+    "reference": "587a3cae-5e66-4f22-b0fc-1a47d41cafef"
+  },
+  {
+    "code": "XNAA",
+    "name": "Aopoa",
+    "reference": "06370f79-4741-4781-be08-d5acc9e28047"
+  },
+  {
+    "code": "CCC",
+    "name": "[PH] CC's Conversions",
+    "reference": "be4a26fd-0585-4aaf-bad9-d234091bd02e"
+  },
+  {
+    "code": "CLDA",
+    "name": "Caldera ",
+    "reference": "eddc1a94-7840-4855-9889-544821d4d739"
+  },
+  {
+    "code": "DOOM",
+    "name": "Doomsday",
+    "reference": "b495993e-c10a-41e4-876d-1de96de54e33"
+  },
+  {
+    "code": "HDTC",
+    "name": "[PH] Hardin Tactical",
+    "reference": "8368a760-84b4-4359-bda1-7b015dc0c884"
+  },
+  {
+    "code": "",
+    "name": "Quirinus Tech",
+    "reference": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad"
+  },
+  {
+    "code": "RRS",
+    "name": "Virgil",
+    "reference": "73a6ba90-8f53-423d-ad0b-96e81b7e18a5"
+  },
+  {
+    "code": "CDS",
+    "name": "Clark Defense Systems",
+    "reference": "8a7bd715-5b97-404f-b02e-0d0cc593f608"
+  },
+  {
+    "code": "KSAR",
+    "name": "Kastak Arms",
+    "reference": "709e8255-a0b1-4c5e-8b0e-28781be25984"
+  },
+  {
+    "code": "NVY",
+    "name": "UEE Navy",
+    "reference": "d133f90d-bc69-4273-9867-6c03631f0c4b"
+  },
+  {
+    "code": "VGL",
+    "name": "Virgil",
+    "reference": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709"
+  },
+  {
+    "code": "THP",
+    "name": "Virgil",
+    "reference": "c0bc7b2d-9c1a-4029-9715-f28b81122863"
+  },
+  {
+    "code": "UBA",
+    "name": "Universal Body Armor",
+    "reference": "04ded06f-7862-4771-b40f-aa310b74ee17"
+  },
+  {
+    "code": "987",
+    "name": "987",
+    "reference": "3b54a8cc-5700-45f1-940a-2436b213926f"
+  },
+  {
+    "code": "CBA",
+    "name": "CBD",
+    "reference": "d9179d05-55be-4eed-8b1b-93bb8450ff04"
+  },
+  {
+    "code": "DRN",
+    "name": "Derion",
+    "reference": "2ab62815-6273-44b9-bbc6-28d36fed6fd8"
+  },
+  {
+    "code": "DYL",
+    "name": "Dyna Lei",
+    "reference": "92b20988-dbf3-4e95-b4a9-7e5e22112516"
+  },
+  {
+    "code": "FIO",
+    "name": "Fiore",
+    "reference": "503b0974-5027-4c69-bce6-a38c42e87ebe"
+  },
+  {
+    "code": "GSB",
+    "name": "GSB",
+    "reference": "6d4b7375-8e0c-445a-a243-21f8f94f99cb"
+  },
+  {
+    "code": "GYS",
+    "name": "Gyson Inc.",
+    "reference": "d56a3985-2f29-4095-b2f2-542376cc74f4"
+  },
+  {
+    "code": "HDH",
+    "name": "Habidash",
+    "reference": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc"
+  },
+  {
+    "code": "MYM",
+    "name": "MYM",
+    "reference": "cc1731c4-8156-4750-a138-96838df79117"
+  },
+  {
+    "code": "NRS",
+    "name": "NorthStar",
+    "reference": "2d1922e0-f8dc-46d3-a453-6a85711f3771"
+  },
+  {
+    "code": "NVS",
+    "name": "[PH] CC's Conversions",
+    "reference": "f8efa046-7f79-4e09-b2fc-35d0df2429cf"
+  },
+  {
+    "code": "OCT",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "4a05001d-0511-415f-8e32-618fbd75242b"
+  },
+  {
+    "code": "OPS",
+    "name": "OpalSky",
+    "reference": "6f5af1a4-a50d-41e5-8bb0-c1acd89d4b9e"
+  },
+  {
+    "code": "RMB",
+    "name": "R6 Pro",
+    "reference": "e7489831-23c1-4629-ab36-221bb9bad06f"
+  },
+  {
+    "code": "ALB",
+    "name": "Alejo Brothers",
+    "reference": "dd14fd7f-eead-4f7d-8057-2d95405a0183"
+  },
+  {
+    "code": "CBD",
+    "name": "CBD",
+    "reference": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2"
+  },
+  {
+    "code": "CTL",
+    "name": "City Lights",
+    "reference": "5ca8a669-44c2-40e4-89b2-7a5da790b832"
+  },
+  {
+    "code": "DMC",
+    "name": "Denim Manufacturing Company",
+    "reference": "a53bbc2b-aa43-483d-967e-0cebc5600c04"
+  },
+  {
+    "code": "ELD",
+    "name": "Escar Limited",
+    "reference": "190a2e0e-6d60-4719-8238-ac7e1c746626"
+  },
+  {
+    "code": "EVL",
+    "name": "Evalight",
+    "reference": "c0635984-4973-41c6-ac27-0c9a39ae051d"
+  },
+  {
+    "code": "HWK",
+    "name": "Hawksworth's ",
+    "reference": "d7a8b196-8778-4e18-8c8c-38229eef01f1"
+  },
+  {
+    "code": "R6P",
+    "name": "R6 Pro",
+    "reference": "1ddcadf0-7bb0-4fa9-94f0-6af19432631c"
+  },
+  {
+    "code": "SPV",
+    "name": "Spar Van Miles",
+    "reference": "e7c9f9ee-a1db-40ee-bfa8-a8ffead4ac1d"
+  },
+  {
+    "code": "SCU",
+    "name": "SCU",
+    "reference": "20121812-97a6-4ce1-a6a4-88a5ed646c58"
+  },
+  {
+    "code": "UPS",
+    "name": "Upsiders",
+    "reference": "f444bb54-a422-44a0-abdb-a0384f0f5593"
+  },
+  {
+    "code": "",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "c7865487-2114-4863-b691-2d7d29ce1bfa"
+  },
+  {
+    "code": "REYO",
+    "name": "Revel & York",
+    "reference": "c4052a24-2547-4ebc-9137-aa9f09a907af"
+  },
+  {
+    "code": "SELA",
+    "name": "Self-Land",
+    "reference": "4526be72-2c19-453c-ab43-29cc23f77154"
+  },
+  {
+    "code": "VFGI",
+    "name": "VFG Industrial",
+    "reference": "3ce33ad8-82e7-4d8d-9ad1-bc95b976c17c"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "d595e38d-4a65-45be-9d95-93b41c57d2a3"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "8846a4a4-6aa9-435a-8f28-9ca433ee6503"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "2058ea19-0f9f-4f54-9ce4-5db9f3541db2"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "a1f72772-2e79-4af3-a1d1-23fc5147e573"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "1244444d-b901-4e2e-b8e1-77838fd563d2"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "358fa1a1-b6e7-4f24-877a-6bbbf4da4370"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "318fc3f5-5e6a-4c4e-a87b-07e31474abfd"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "15338981-c0b4-4e17-a79d-11c21cad26e6"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "2c6ce8c0-59e5-43c8-ad57-d6a149ca3704"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "ce6be594-983b-4c8b-a17c-4537774d1f6c"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "ee99e82b-3ece-4f60-8590-1a831a80811e"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "582feb16-11d4-4c7d-bbfd-43b6bb545908"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "68064481-93ce-427e-9192-8d3f6d9288fe"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "1add6d2a-e2d0-4486-aa3a-b4eee18eb763"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "6f5941aa-ab59-4441-936b-17c9f706d8fd"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "68a63acd-d678-4124-933a-1a28c66d59cd"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "d91a28fa-a957-4189-9cd0-ef5693504597"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "81841c4a-2abd-42d2-aefc-982b540576ac"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "ffb94ac4-c575-4af2-bd55-ec8129f3b3d6"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "5f893cd8-6fd2-4a41-bc9d-6e176d8db564"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "2b1996e8-3143-4767-bd4e-3df499421cc9"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "c7a2b240-6159-4614-a420-bdaaa609fc06"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "7c13cc98-3ce7-4eb8-b349-7afaa9056d10"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "d79b686d-5542-4c9c-9f23-e8533d0f3ee5"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "8ac88cf3-f2c5-4ccb-a389-515e599d1125"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "66c4b17b-7cfb-4669-8755-6b907757b3d7"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "aeef7008-04b1-4dd5-8e83-dfbba8bd815e"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "ca59737e-9f4c-492d-b712-187ee7e34b0e"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "cfa84c3a-39e9-47cd-aba6-db54c8856559"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "9d0d4372-deec-48ce-9c8a-cbba7a143859"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "bf399daa-bd59-4a4f-ac22-6a654e45b554"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "48df59c5-6327-4bac-a0f7-71e6eeb50495"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "3e1b1609-0fd2-4092-8880-667839f41bae"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "08a54880-dd7f-4d1d-816f-545acafb9fca"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "c1812173-fe42-4d17-8984-3467aa8c3fe9"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "0e69c8b1-1a09-45c7-92d8-7237c1e44270"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "8c8be9b5-8f65-4fa7-9398-32683661afa8"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "8071acb0-a46b-434f-9bda-9cba431d2584"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "0f0ac093-c0eb-43e8-b5dd-b32167eb23fc"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "5b57fb6f-4a45-48fb-a1b9-e680d2c9e0e9"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "cd8386c7-24c2-4806-a967-3bcc4334c19a"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "abe92ba8-97ed-4d8d-9e0f-54f22985280a"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "a4787abe-4939-418a-bcd7-6b314ade3a9e"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "ff80d229-b77f-4be0-88d6-37fc10ddcc1b"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "9b9fd22f-39c5-4c60-85ec-a571149e5a64"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "0c86915c-88b6-454c-9c33-8ce48dd89489"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "f07a37b5-0bad-489c-ba86-838fb3584639"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "920a9ddf-7dca-4f9b-836d-cbc579342b31"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "1842c9ea-2067-409d-91ac-5723548582e4"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "0168bcd0-6ccf-44a4-8a13-19e5ce7cdf51"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "aa57885d-0246-4598-af2d-fdecd458874a"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "b41905c3-665b-482d-8187-f0e1251e88c0"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "c9fc36cf-6582-4332-ab0b-530aa46b21e7"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "dba5ca22-0ba4-4a97-81bb-bff2fd857544"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "fe066bb1-3452-4188-a486-a2c2b64c6f52"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "3daf5697-ce6c-4027-a46c-897276f0046b"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "291a1832-08df-4d05-9c2f-c6be0d13ff0c"
+  },
+  {
+    "code": "",
+    "name": "Tumbril Land Systems",
+    "reference": "abe53599-feb8-4502-9c62-14d51ca80c7c"
+  },
+  {
+    "code": "",
+    "name": "Tumbril Land Systems",
+    "reference": "5803a5bc-72c0-4f09-ac63-199828f3b780"
+  },
+  {
+    "code": "",
+    "name": "Tumbril Land Systems",
+    "reference": "a6502eb3-edf0-46c7-8eb6-96b56dbb58aa"
+  },
+  {
+    "code": "",
+    "name": "Banu",
+    "reference": "209dad5e-a844-4a74-925a-72dbcc404b4f"
+  },
+  {
+    "code": "",
+    "name": "Banu",
+    "reference": "50b4f742-a2f1-4bbc-bb14-dcca9d5e905a"
+  },
+  {
+    "code": "",
+    "reference": "37f705b2-b12d-4688-8055-787e8cd82330"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "03d30194-9800-49c6-a18e-8bfa82fc98d2"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "fbe042de-31fa-4381-89db-5f42759672f6"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "1b2e3994-e890-4554-a23c-86f13f08cf01"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "d55b3732-924d-4afe-b505-7acce2bcc1cc"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "0d980e20-09f0-4f96-9bb7-cefb5e58eccc"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "9c81c42b-e9d5-4bce-a2d2-c3ec88436f89"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "81d604c4-be65-4eda-83a7-31f63e150be5"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "20878b35-0b19-4131-80e3-657e9ca5ef71"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "5411de04-c6cc-42a8-91a7-d70b198b0558"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "0b4c7adb-e919-4f72-bb9d-5b83dcae9c7e"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "e8f76b43-812c-4995-8a67-6d2052dd66e8"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "2281a3cf-868d-4264-95e4-3292face38c2"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "48fa8a86-e5ea-4682-a2ac-367996eeab7c"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "304e8d42-610c-448d-bc75-b2917053856c"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "6bf5b4b7-8be7-4722-9c3a-a6ae65b51656"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "758e049b-7694-4a21-9437-9a94c2c450cc"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "eaa938e4-de72-467d-b676-ec3c43f52f39"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "e011396a-bd19-441a-adaa-aa8cd57088aa"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "7696d514-de8b-46a7-a53c-82d18690577b"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "0a918c9b-47f4-4932-a5c5-387e361faa19"
+  },
+  {
+    "code": "",
+    "reference": "bb29e019-c2ed-4afd-9bf4-15b079a09939"
+  },
+  {
+    "code": "",
+    "reference": "a43acbe8-65ee-4c5a-9768-e4b0ccae9a27"
+  },
+  {
+    "code": "",
+    "reference": "2bdbe9b3-e2c1-4e81-99b3-2726089048ac"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "78c87ae9-e09b-403c-9bb9-e28e399046e3"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "c3b0060e-07d5-45b2-ad91-510a3f132532"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "8dc16fb2-77a2-48c2-b577-1e7780735a77"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "a0fd63fa-038f-400c-8007-bdfb3c6a1c7d"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "20399ab4-1530-4bd8-87cb-e300a58fc3b4"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "7884afbe-e2ff-4ebc-8133-3d8f8b177d73"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "a59b216c-385e-4c17-a8b3-46ce9d5ed4a4"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "9d252e3a-6f8b-4687-8a83-a90ed41bf313"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "df6e6e38-d2f3-4fd6-9741-bee2597fe574"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "92e9e484-527e-47d8-82c0-0e8124f45794"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "b1fa1a3e-c91b-48a2-b6e3-7db95614abc1"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "dd680564-554c-4f0b-b463-d7e3d3df9395"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "dfc8ddb1-808c-4a4f-8cff-1cdae68bc5fb"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "9f163dd4-9fea-4e9b-a2bb-6f9666c59a07"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "9bfb6f9c-6a82-489d-b28b-f4bd7c4a53f1"
+  },
+  {
+    "code": "",
+    "name": "Consolidated Outland",
+    "reference": "265816e3-a60b-4170-8f28-a7b35177ff9a"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "2dd848c1-5781-4072-9a76-9b541756d96e"
+  },
+  {
+    "code": "",
+    "name": "Tumbril Land Systems",
+    "reference": "91ae6db2-7819-46a2-8edb-c35fc93fa830"
+  },
+  {
+    "code": "",
+    "name": "Origin Jumpworks",
+    "reference": "83514bdb-7214-4597-9a3e-aae7862fc6a3"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "808ed9c3-f898-42d4-b367-5c6eb8b10836"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "fbd6db91-25f3-4f9c-a7e1-495bdcdf4112"
+  },
+  {
+    "code": "",
+    "reference": "228259b2-15ef-40d5-8052-2bdee7a1aed4"
+  },
+  {
+    "code": "",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "11dc1f3c-684f-49cb-a3a6-88c5edc51c76"
+  },
+  {
+    "code": "",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "593e8383-3341-4be0-90af-18962002dd48"
+  },
+  {
+    "code": "",
+    "name": "Esperia",
+    "reference": "1dfc110b-dcc0-4592-b815-22998f518b5d"
+  },
+  {
+    "code": "",
+    "name": "Esperia",
+    "reference": "10a2a75f-ba80-4f39-8233-66d03af8d2e2"
+  },
+  {
+    "code": "",
+    "name": "Esperia",
+    "reference": "1359e6ad-10d8-44c8-aebd-0492adb80ef8"
+  },
+  {
+    "code": "",
+    "name": "RAFT Anchor Livery",
+    "reference": "40c80194-3749-4c55-ac36-732e83ccedc8"
+  },
+  {
+    "code": "",
+    "name": "RAFT Anchor Livery",
+    "reference": "97b0441b-f5d7-4a49-aef0-cc887e4b6bd5"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "79fc4abc-4eed-4688-9f02-6435984fc69b"
+  },
+  {
+    "code": "",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "d181111e-44ab-481e-9703-19d58cc6f7dc"
+  },
+  {
+    "code": "",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "11cdb5e6-4a6c-4ddd-b238-7bd224afdbbc"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "79a997fd-ace7-436f-afb2-280bda1ba748"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "46daaebf-2220-49d6-b818-2d921bcc67ed"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "8655643e-1313-4c41-bcd1-de0418d49315"
+  },
+  {
+    "code": "",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "cbba3cd2-bd12-4562-b594-cdc8b03f0eca"
+  },
+  {
+    "code": "",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "4aa5ae3f-57d8-4497-ad93-2b6a506947a4"
+  },
+  {
+    "code": "",
+    "name": "Musashi Industrial & Starflight Concern",
+    "reference": "429e3fc3-72a1-4372-b135-786842058482"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "549aa80e-310b-4e1b-8892-b8c1c1c8877a"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "10b80dbb-e9b7-439d-8dea-25c13f5d91d8"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "dfd24d5e-cde9-455d-a73d-41282d16e080"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "985a44ea-3aad-4223-84a3-02173cfeb8ba"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "bdad6127-f6ed-4abe-8488-581882dfa152"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "44c1d84a-fd9f-47ef-ba27-e7da7e9898f1"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "0c4ac05e-5b6a-4549-8d87-84186cf958b2"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "e0301f80-983d-4901-93a6-5ea315c44fb6"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "11393dcd-0b9b-4c4c-a1dc-3676e2133e48"
+  },
+  {
+    "code": "",
+    "name": "Aopoa",
+    "reference": "888a6389-3a4d-4a6f-b9f0-4fce16482e03"
+  },
+  {
+    "code": "",
+    "name": "Aopoa",
+    "reference": "a31dae76-346b-4e04-9dfc-cf6754f22b15"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "ccb36630-2c7f-4c5f-9298-159bd1df51fe"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "b0fc1b8e-a69f-45f5-b922-2c95dd73afb1"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "ead93763-7fc8-4f11-806a-4da785c22bc2"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "6595f94c-2e2e-436d-a160-63030c498867"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "732de86d-5622-498b-a49e-ff2f07b39331"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "c1996a4f-c292-4536-a223-277d4b581766"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "a690f044-312a-48f1-bd80-ac6b44a7e776"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "2bc5f0e0-2d28-4e77-a0b7-3f4f44ff840e"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "4eb9befe-dd85-40bf-8e43-51f6f4b92af6"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "f10aac78-8131-4d5d-b395-5c3f1712f821"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "c47274f8-436b-400c-8779-467ddc5b582b"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "54dcfe30-baba-4dcb-b4ed-080c85f3bf44"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "1fdad0d9-352a-4913-ac40-526437e517de"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "b3c9ad1f-7f65-4ac5-8f41-756e5922bf44"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "ef646d32-2f24-4519-ab3f-0b445240222e"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "218ea68c-9776-4dc6-9b52-9bc12e0b5ee1"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "7abf1921-dcb8-4b6d-b5b5-ec36954cef87"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "54b6de34-263d-439b-bbad-fc65a7f43c76"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "af6719f1-382a-43cc-92e8-49e3e00e6b06"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "1c6c086c-6714-4979-bb36-60a80fde8c9a"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "e5145e1d-7442-481e-8b5d-55f19cd655f6"
+  },
+  {
+    "code": "",
+    "name": "Crusader Industries",
+    "reference": "6726e4de-0191-4376-b959-0e17a8198698"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "5f5d7ee4-6e8e-46e9-b27a-9abcea611c3c"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "ba42353a-8f9f-4fb2-807d-dd1dcdd5535b"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "20fda948-02e6-4fef-93a0-49aa8e405c41"
+  },
+  {
+    "code": "",
+    "name": "Roberts Space Industries",
+    "reference": "ca41220e-e274-4e00-a024-6d6f43466853"
+  },
+  {
+    "code": "",
+    "reference": "b8ddc5b7-f27a-47d4-a17d-935ddcc29d12"
+  },
+  {
+    "code": "",
+    "name": "Anvil Aerospace",
+    "reference": "b19fbf6a-e3c6-45b5-b6c7-188d86bb5085"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "10110608-e7cc-4914-8717-428be68e0d60"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "ebd1f747-3f6c-496d-b746-c100e7819de2"
+  },
+  {
+    "code": "",
+    "name": "Ace Astrogation",
+    "reference": "9c2246fe-e8e8-4f4c-8505-8ad1cf679e46"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "58a88baa-cfd1-42aa-9c67-483deb13e7f9"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "c9ed498b-7440-4920-bf1d-01567e5429db"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "35e47568-2239-4994-ab94-ee6538120345"
+  },
+  {
+    "code": "ARMA",
+    "name": "ArmaMod",
+    "reference": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a"
+  },
+  {
+    "code": "HDGW",
+    "name": "Hedeby Gunworks",
+    "reference": "9d3ee727-bb52-4ed2-bacf-47d93d8bb0d5"
+  },
+  {
+    "code": "",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "98bb2e9e-fcc7-46e5-9ba6-d34c42c414e0"
+  },
+  {
+    "code": "NVTC",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "f113387e-0905-489a-829d-8cebfdc19e66"
+  },
+  {
+    "code": "BEH",
+    "name": "Behring",
+    "reference": "65a5d887-3b21-4046-a718-6912c0c7c3be"
+  },
+  {
+    "code": "GEM",
+    "name": "Gemini",
+    "reference": "b33050cd-6ca9-4c57-baf8-f4114eb85237"
+  },
+  {
+    "code": "KLA",
+    "name": "Klaus & Werner",
+    "reference": "1aa076d5-ac29-4c61-a905-d3ea39cf167a"
+  },
+  {
+    "code": "UTFL",
+    "name": "UltiFlex",
+    "reference": "da264d7b-755b-48a2-9580-4adc17ff7ad5"
+  },
+  {
+    "code": "UIHI_A",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "d55cfa9f-5dab-4b8d-a105-cf2d16976003"
+  },
+  {
+    "code": "UILO_A",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "fa121997-f0c5-43f7-a8e0-d5afff541c9e"
+  },
+  {
+    "code": "UILO_B",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "e6ba6e48-e801-45a9-b07f-6a6c206bb4ba"
+  },
+  {
+    "code": "UIMI_A",
+    "name": "@LOC_PLACEHOLDER",
+    "reference": "e289a3ba-8d54-4887-90d6-f03aa3c7961f"
+  }
+]

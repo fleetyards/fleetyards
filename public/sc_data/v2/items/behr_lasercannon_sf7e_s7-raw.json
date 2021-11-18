@@ -207,12 +207,12 @@
           "mode": "Looping",
           "sequenceEntries": [
             {
-              "delay": 150.0,
+              "delay": 38.0,
               "unit": "RPM",
               "weaponAction": {
                 "SWeaponActionFireSingleParams": {
-                  "heatPerShot": 8000.0,
-                  "fireRate": 150.0,
+                  "heatPerShot": 16000.0,
+                  "fireRate": 38.0,
                   "launchParams": {
                     "SProjectileLauncher": {
                       "ammoCost": 1.0,
@@ -242,7 +242,7 @@
         {
           "requestedRegenPerSec": 18750.0,
           "regenerationCooldown": 2.25,
-          "regenerationCostPerBullet": 1000.0,
+          "regenerationCostPerBullet": 2960.0,
           "requestedAmmoLoad": 112500.0
         }
       ]

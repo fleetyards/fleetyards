@@ -84,7 +84,7 @@ AEGS_Redeemer
     missile_06_attach                             S2   Missile.Missile                                   MISL_S02_CS_THCN_StrikeForce                                     Missiles                                
     missile_07_attach                             S2   Missile.Missile                                   MISL_S02_CS_THCN_StrikeForce                                     Missiles                                
     missile_08_attach                             S2   Missile.Missile                                   MISL_S02_CS_THCN_StrikeForce                                     Missiles                                
-   hardpoint_weapon_gun_right                     S4   Turret.GunTurret, WeaponGun.Gun                   BEHR_BallisticCannon_S4                                          Weapon hardpoints                       
+   hardpoint_weapon_gun_right                     S4   Turret.Gun, Turret.GunTurret, WeaponGun.Gun       BEHR_BallisticCannon_S4                                          Weapon hardpoints                       
     magazine_attach                               S0                                                                                                                      UNKNOWN                                 
     hardpoint_thruster_wing_top_main_left         S1   MainThruster                                      AEGS_Redeemer_Thruster_Nutcracker                                Main thrusters                          
      hardpoint_thruster_mav_wing_bottom           S1   ManneuverThruster                                                                                                  Maneuvering thrusters                   
@@ -101,7 +101,7 @@ AEGS_Redeemer
     missile_06_attach                             S2   Missile.Missile                                   MISL_S02_CS_THCN_StrikeForce                                     Missiles                                
     missile_07_attach                             S2   Missile.Missile                                   MISL_S02_CS_THCN_StrikeForce                                     Missiles                                
     missile_08_attach                             S2   Missile.Missile                                   MISL_S02_CS_THCN_StrikeForce                                     Missiles                                
-   hardpoint_weapon_gun_left                      S4   Turret.GunTurret, WeaponGun.Gun                   BEHR_BallisticCannon_S4                                          Weapon hardpoints                       
+   hardpoint_weapon_gun_left                      S4   Turret.Gun, Turret.GunTurret, WeaponGun.Gun       BEHR_BallisticCannon_S4                                          Weapon hardpoints                       
     magazine_attach                               S0                                                                                                                      UNKNOWN                                 
    hardpoint_thruster_retro_left                  S1   ManneuverThruster                                 AEGS_Redeemer_Thruster_Retro                                     Retro thrusters                         
    hardpoint_thruster_rear_side_right             S1   ManneuverThruster                                 AEGS_Redeemer_Thruster_Mav_Fixed                                 Maneuvering thrusters                   

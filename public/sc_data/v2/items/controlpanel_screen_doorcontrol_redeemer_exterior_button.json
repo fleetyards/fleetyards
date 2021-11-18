@@ -3,5 +3,9 @@
   "Size": 1,
   "Grade": 1,
   "Type": "ControlPanel.DoorPart",
-  "Name": "ControlPanel_Screen_DoorControl_Redeemer_Exterior_Button"
+  "Name": "ControlPanel_Screen_DoorControl_Redeemer_Exterior_Button",
+  "Manufacturer": {
+    "Code": "AEG",
+    "Name": "Aegis Dynamics"
+  }
 }

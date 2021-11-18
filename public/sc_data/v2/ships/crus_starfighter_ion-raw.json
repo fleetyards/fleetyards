@@ -1522,7 +1522,7 @@
                   "minsize": 5,
                   "maxsize": 5,
                   "display_name": "port_NameMissileRack02",
-                  "flags": "Right",
+                  "flags": "CRUS_Starfighter Right",
                   "Types": [
                     {
                       "type": "MissileLauncher",
@@ -1549,7 +1549,7 @@
                   "minsize": 5,
                   "maxsize": 5,
                   "display_name": "port_NameMissileRack01",
-                  "flags": "Left",
+                  "flags": "CRUS_Starfighter Left",
                   "Types": [
                     {
                       "type": "MissileLauncher",

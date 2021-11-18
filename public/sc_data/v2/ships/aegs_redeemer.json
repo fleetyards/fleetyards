@@ -16,7 +16,7 @@
     "Name": "Aegis Dynamics"
   },
   "DamageBeforeDestruction": {
-    "Body": 45000.0
+    "Body": 20000.0
   },
   "DamageBeforeDetach": {
     "Wing_Right": 6600.0,
@@ -64,7 +64,7 @@
     }
   },
   "Propulsion": {
-    "FuelCapacity": 5400000.0,
+    "FuelCapacity": 750000.0,
     "FuelIntakeRate": 42.0,
     "FuelUsage": {
       "Main": 218.15362500000003,
@@ -79,9 +79,9 @@
       "Maneuvering": 17695200.0
     },
     "IntakeToMainFuelRatio": 0.1925248778240563,
-    "IntakeToTankCapacityRatio": 7.777777777777777E-06,
-    "TimeForIntakesToFillTank": 128571.42857142857,
-    "ManeuveringTimeTillEmpty": 18831.82526158582
+    "IntakeToTankCapacityRatio": 5.6E-05,
+    "TimeForIntakesToFillTank": 17857.14285714286,
+    "ManeuveringTimeTillEmpty": 2615.531286331364
   },
   "QuantumTravel": {
     "Speed": 235872000.0,

@@ -4,7 +4,8 @@
   "Grade": 1,
   "Type": "Paints.UNDEFINED",
   "Classification": "Ship.Paints",
-  "Name": "Paint_Redeemer_White_Black",
+  "Name": "Redeemer Seraphim Livery",
+  "Description": "The striking white Seraphim livery for the Redeemer helps make the ship both a beauty and a beast. ",
   "Manufacturer": {
     "Code": "",
     "Name": "Aegis Dynamics"

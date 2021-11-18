@@ -131,8 +131,8 @@
       "RecoveryTime": 1.35
     },
     "SAmmoContainerComponentParams": {
-      "initialAmmoCount": 2000.0,
-      "maxAmmoCount": 2000.0,
+      "initialAmmoCount": 3800.0,
+      "maxAmmoCount": 3800.0,
       "ammoParamsRecord": "56466133-70bc-4a89-b81e-9650f23eeb65"
     },
     "SCItemWeaponComponentParams": {
@@ -208,7 +208,7 @@
           "spinDownTime": 1.5,
           "spinParam": "spin_speed",
           "heatPerShot": 1500.0,
-          "fireRate": 650.0,
+          "fireRate": 1300.0,
           "launchParams": {
             "SProjectileLauncher": {
               "ammoCost": 1.0,

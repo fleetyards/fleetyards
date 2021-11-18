@@ -4,7 +4,8 @@
   "Grade": 1,
   "Type": "Paints.UNDEFINED",
   "Classification": "Ship.Paints",
-  "Name": "Paint_Redeemer_Black_Yellow",
+  "Name": "Redeemer Underworld Livery",
+  "Description": "Apply the Underworld livery to the Redeemer and it will be pitch black and ready to attack.",
   "Manufacturer": {
     "Code": "",
     "Name": "Aegis Dynamics"

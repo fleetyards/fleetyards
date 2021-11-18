@@ -726,7 +726,7 @@
               },
               {
                 "itemPortName": "hardpoint_air_traffic_controller",
-                "entityClassName": "AEGS_Redeemer_ShipATCDataManager",
+                "entityClassName": "",
                 "loadout": {}
               },
               {
@@ -955,7 +955,7 @@
         "Parts": [
           {
             "name": "Body",
-            "damageMax": 45000.0,
+            "damageMax": 20000.0,
             "damagemax": 0.0,
             "class": "AnimatedJoint",
             "detachRatio": 1.0,
@@ -1780,7 +1780,7 @@
               },
               {
                 "name": "Nose",
-                "damageMax": 7000.0,
+                "damageMax": 20000.0,
                 "damagemax": 0.0,
                 "class": "AnimatedJoint",
                 "Parts": [
@@ -2542,7 +2542,7 @@
                       "maxsize": 3,
                       "display_name": "",
                       "flags": "$uneditable",
-                      "defaultWeaponGroup": "2",
+                      "defaultWeaponGroup": "",
                       "id": "modParemote_front_turret_remote_turret",
                       "Types": [
                         {
@@ -3204,11 +3204,11 @@
                       "maxsize": 4,
                       "display_name": "port_NameWeaponRight",
                       "flags": "",
-                      "defaultWeaponGroup": "1",
+                      "defaultWeaponGroup": "",
                       "Types": [
                         {
                           "type": "Turret",
-                          "subtypes": "GunTurret"
+                          "subtypes": "Gun,GunTurret"
                         },
                         {
                           "type": "WeaponGun",
@@ -3405,11 +3405,11 @@
                       "maxsize": 4,
                       "display_name": "port_NameWeaponLeft",
                       "flags": "",
-                      "defaultWeaponGroup": "1",
+                      "defaultWeaponGroup": "",
                       "Types": [
                         {
                           "type": "Turret",
-                          "subtypes": "GunTurret"
+                          "subtypes": "Gun,GunTurret"
                         },
                         {
                           "type": "WeaponGun",
@@ -3500,6 +3500,11 @@
                     ]
                   }
                 ]
+              },
+              {
+                "name": "hardpoint_vehicle_destroyed",
+                "damagemax": 0.0,
+                "class": "ItemPort"
               },
               {
                 "name": "Tail",

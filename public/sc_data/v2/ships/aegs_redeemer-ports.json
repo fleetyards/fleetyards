@@ -85,6 +85,7 @@
         ]
       },
       "Types": [
+        "Turret.Gun",
         "Turret.GunTurret",
         "WeaponGun.Gun"
       ],
@@ -175,6 +176,7 @@
         ]
       },
       "Types": [
+        "Turret.Gun",
         "Turret.GunTurret",
         "WeaponGun.Gun"
       ],
@@ -249,24 +251,24 @@
                   "Speed": 700.0,
                   "Range": 2800.0,
                   "Size": 5.0,
-                  "Capacity": 1500.0,
+                  "Capacity": 2600.0,
                   "ImpactDamage": {
-                    "Physical": 168.75
+                    "Physical": 97.38
                   }
                 },
                 "Modes": [
                   {
                     "Name": "Rapid",
                     "LocalisedName": "[AUTO]",
-                    "RoundsPerMinute": 750.0,
+                    "RoundsPerMinute": 1300.0,
                     "FireType": "rapid",
                     "AmmoPerShot": 1.0,
                     "PelletsPerShot": 1.0,
                     "DamagePerShot": {
-                      "Physical": 168.75
+                      "Physical": 97.38
                     },
                     "DamagePerSecond": {
-                      "Physical": 2109.375
+                      "Physical": 2109.9
                     }
                   }
                 ]
@@ -275,15 +277,15 @@
                 "Speed": 700.0,
                 "Range": 2800.0,
                 "Size": 5.0,
-                "Capacity": 1500.0,
+                "Capacity": 2600.0,
                 "ImpactDamage": {
-                  "Physical": 168.75
+                  "Physical": 97.38
                 }
               },
               "Ports": [
                 {
                   "PortName": "BAR1",
-                  "Size": 4,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Barrel_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Barrel_S5",
@@ -303,7 +305,7 @@
                 },
                 {
                   "PortName": "MEC",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_FiringMechanism_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_FiringMechanism_S5",
@@ -323,7 +325,7 @@
                 },
                 {
                   "PortName": "POW",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_PowerArray_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_PowerArray_S5",
@@ -343,7 +345,7 @@
                 },
                 {
                   "PortName": "VEN",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Ventilation_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Ventilation_S5",
@@ -407,24 +409,24 @@
                   "Speed": 700.0,
                   "Range": 2800.0,
                   "Size": 5.0,
-                  "Capacity": 1500.0,
+                  "Capacity": 2600.0,
                   "ImpactDamage": {
-                    "Physical": 168.75
+                    "Physical": 97.38
                   }
                 },
                 "Modes": [
                   {
                     "Name": "Rapid",
                     "LocalisedName": "[AUTO]",
-                    "RoundsPerMinute": 750.0,
+                    "RoundsPerMinute": 1300.0,
                     "FireType": "rapid",
                     "AmmoPerShot": 1.0,
                     "PelletsPerShot": 1.0,
                     "DamagePerShot": {
-                      "Physical": 168.75
+                      "Physical": 97.38
                     },
                     "DamagePerSecond": {
-                      "Physical": 2109.375
+                      "Physical": 2109.9
                     }
                   }
                 ]
@@ -433,15 +435,15 @@
                 "Speed": 700.0,
                 "Range": 2800.0,
                 "Size": 5.0,
-                "Capacity": 1500.0,
+                "Capacity": 2600.0,
                 "ImpactDamage": {
-                  "Physical": 168.75
+                  "Physical": 97.38
                 }
               },
               "Ports": [
                 {
                   "PortName": "BAR1",
-                  "Size": 4,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Barrel_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Barrel_S5",
@@ -461,7 +463,7 @@
                 },
                 {
                   "PortName": "MEC",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_FiringMechanism_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_FiringMechanism_S5",
@@ -481,7 +483,7 @@
                 },
                 {
                   "PortName": "POW",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_PowerArray_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_PowerArray_S5",
@@ -501,7 +503,7 @@
                 },
                 {
                   "PortName": "VEN",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Ventilation_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Ventilation_S5",
@@ -607,24 +609,24 @@
                   "Speed": 700.0,
                   "Range": 2800.0,
                   "Size": 5.0,
-                  "Capacity": 1500.0,
+                  "Capacity": 2600.0,
                   "ImpactDamage": {
-                    "Physical": 168.75
+                    "Physical": 97.38
                   }
                 },
                 "Modes": [
                   {
                     "Name": "Rapid",
                     "LocalisedName": "[AUTO]",
-                    "RoundsPerMinute": 750.0,
+                    "RoundsPerMinute": 1300.0,
                     "FireType": "rapid",
                     "AmmoPerShot": 1.0,
                     "PelletsPerShot": 1.0,
                     "DamagePerShot": {
-                      "Physical": 168.75
+                      "Physical": 97.38
                     },
                     "DamagePerSecond": {
-                      "Physical": 2109.375
+                      "Physical": 2109.9
                     }
                   }
                 ]
@@ -633,15 +635,15 @@
                 "Speed": 700.0,
                 "Range": 2800.0,
                 "Size": 5.0,
-                "Capacity": 1500.0,
+                "Capacity": 2600.0,
                 "ImpactDamage": {
-                  "Physical": 168.75
+                  "Physical": 97.38
                 }
               },
               "Ports": [
                 {
                   "PortName": "BAR1",
-                  "Size": 4,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Barrel_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Barrel_S5",
@@ -661,7 +663,7 @@
                 },
                 {
                   "PortName": "MEC",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_FiringMechanism_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_FiringMechanism_S5",
@@ -681,7 +683,7 @@
                 },
                 {
                   "PortName": "POW",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_PowerArray_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_PowerArray_S5",
@@ -701,7 +703,7 @@
                 },
                 {
                   "PortName": "VEN",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Ventilation_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Ventilation_S5",
@@ -765,24 +767,24 @@
                   "Speed": 700.0,
                   "Range": 2800.0,
                   "Size": 5.0,
-                  "Capacity": 1500.0,
+                  "Capacity": 2600.0,
                   "ImpactDamage": {
-                    "Physical": 168.75
+                    "Physical": 97.38
                   }
                 },
                 "Modes": [
                   {
                     "Name": "Rapid",
                     "LocalisedName": "[AUTO]",
-                    "RoundsPerMinute": 750.0,
+                    "RoundsPerMinute": 1300.0,
                     "FireType": "rapid",
                     "AmmoPerShot": 1.0,
                     "PelletsPerShot": 1.0,
                     "DamagePerShot": {
-                      "Physical": 168.75
+                      "Physical": 97.38
                     },
                     "DamagePerSecond": {
-                      "Physical": 2109.375
+                      "Physical": 2109.9
                     }
                   }
                 ]
@@ -791,15 +793,15 @@
                 "Speed": 700.0,
                 "Range": 2800.0,
                 "Size": 5.0,
-                "Capacity": 1500.0,
+                "Capacity": 2600.0,
                 "ImpactDamage": {
-                  "Physical": 168.75
+                  "Physical": 97.38
                 }
               },
               "Ports": [
                 {
                   "PortName": "BAR1",
-                  "Size": 4,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Barrel_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Barrel_S5",
@@ -819,7 +821,7 @@
                 },
                 {
                   "PortName": "MEC",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_FiringMechanism_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_FiringMechanism_S5",
@@ -839,7 +841,7 @@
                 },
                 {
                   "PortName": "POW",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_PowerArray_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_PowerArray_S5",
@@ -859,7 +861,7 @@
                 },
                 {
                   "PortName": "VEN",
-                  "Size": 7,
+                  "Size": 5,
                   "Loadout": "BEHR_BallisticGatling_Ventilation_S5",
                   "InstalledItem": {
                     "ClassName": "BEHR_BallisticGatling_Ventilation_S5",
@@ -3531,7 +3533,7 @@
           "flightReady"
         ],
         "HydrogenFuelTank": {
-          "Capacity": 2700000.0
+          "Capacity": 375000.0
         }
       },
       "Types": [
@@ -3561,7 +3563,7 @@
           "flightReady"
         ],
         "HydrogenFuelTank": {
-          "Capacity": 2700000.0
+          "Capacity": 375000.0
         }
       },
       "Types": [

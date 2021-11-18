@@ -522,29 +522,29 @@
                     "Size": 7.0,
                     "Capacity": 0.0,
                     "ImpactDamage": {
-                      "Energy": 1500.0
+                      "Energy": 5920.0
                     }
                   },
                   "Modes": [
                     {
                       "Name": "Single",
                       "LocalisedName": "[AUTO]",
-                      "RoundsPerMinute": 150.0,
+                      "RoundsPerMinute": 38.0,
                       "FireType": "sequence",
                       "AmmoPerShot": 1.0,
                       "PelletsPerShot": 1.0,
                       "DamagePerShot": {
-                        "Energy": 1500.0
+                        "Energy": 5920.0
                       },
                       "DamagePerSecond": {
-                        "Energy": 3750.0
+                        "Energy": 3749.333333333333
                       }
                     }
                   ],
                   "Consumption": {
                     "RequestedRegenPerSec": 18750.0,
                     "Cooldown": 2.25,
-                    "CostPerBullet": 1000.0,
+                    "CostPerBullet": 2960.0,
                     "RequestedAmmoLoad": 112500.0
                   }
                 },
@@ -554,7 +554,7 @@
                   "Size": 7.0,
                   "Capacity": 0.0,
                   "ImpactDamage": {
-                    "Energy": 1500.0
+                    "Energy": 5920.0
                   }
                 },
                 "Ports": [
@@ -1243,7 +1243,7 @@
                   "flightReady"
                 ],
                 "QuantumFuelTank": {
-                  "Capacity": 583.33
+                  "Capacity": 2500.0
                 }
               },
               "Types": [
@@ -1273,7 +1273,7 @@
                   "flightReady"
                 ],
                 "QuantumFuelTank": {
-                  "Capacity": 583.33
+                  "Capacity": 2500.0
                 }
               },
               "Types": [
@@ -1481,6 +1481,7 @@
                 "MissileLauncher.MissileRack"
               ],
               "Flags": [
+                "CRUS_Starfighter",
                 "Right"
               ],
               "Category": "Missile racks"
@@ -1669,6 +1670,7 @@
                 "MissileLauncher.MissileRack"
               ],
               "Flags": [
+                "CRUS_Starfighter",
                 "Left"
               ],
               "Category": "Missile racks"

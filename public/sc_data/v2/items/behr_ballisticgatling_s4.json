@@ -34,24 +34,24 @@
       "Speed": 700.0,
       "Range": 1400.0,
       "Size": 4.0,
-      "Capacity": 1200.0,
+      "Capacity": 1950.0,
       "ImpactDamage": {
-        "Physical": 102.5
+        "Physical": 63.06
       }
     },
     "Modes": [
       {
         "Name": "Rapid",
         "LocalisedName": "[AUTO]",
-        "RoundsPerMinute": 800.0,
+        "RoundsPerMinute": 1300.0,
         "FireType": "rapid",
         "AmmoPerShot": 1.0,
         "PelletsPerShot": 1.0,
         "DamagePerShot": {
-          "Physical": 102.5
+          "Physical": 63.06
         },
         "DamagePerSecond": {
-          "Physical": 1366.6666666666667
+          "Physical": 1366.3000000000002
         }
       }
     ]
@@ -60,9 +60,9 @@
     "Speed": 700.0,
     "Range": 1400.0,
     "Size": 4.0,
-    "Capacity": 1200.0,
+    "Capacity": 1950.0,
     "ImpactDamage": {
-      "Physical": 102.5
+      "Physical": 63.06
     }
   },
   "Ports": [

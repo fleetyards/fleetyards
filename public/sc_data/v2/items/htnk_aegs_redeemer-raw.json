@@ -21,7 +21,7 @@
     "SCItemFuelTankParams": {
       "fillRate": 10000.0,
       "drainRate": 10000.0,
-      "capacity": 2700000.0
+      "capacity": 375000.0
     }
   },
   "ClassName": "HTNK_AEGS_Redeemer",

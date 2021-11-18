@@ -67,11 +67,11 @@
   "QuantumTravel": {
     "Speed": 235872000.0,
     "SpoolTime": 2.25,
-    "FuelCapacity": 1166.66,
-    "Range": 56333172380.49252,
+    "FuelCapacity": 5000.0,
+    "Range": 241429261226.46066,
     "PortOlisarToArcCorpTime": 177.75467656186407,
     "PortOlisarToArcCorpFuel": 868.3154406596999,
-    "PortOlisarToArcCorpAndBack": 0.6717950328705624
+    "PortOlisarToArcCorpAndBack": 2.879138021662534
   },
   "PilotHardpoints": [
     {
