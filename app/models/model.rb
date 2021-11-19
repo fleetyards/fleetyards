@@ -336,7 +336,7 @@ class Model < ApplicationRecord
   end
 
   def variants
-    return [] if model.rsi_chassis_id.nil?
+    return [] if rsi_chassis_id.nil?
 
     Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id)
   end
