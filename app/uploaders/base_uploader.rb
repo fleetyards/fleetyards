@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BaseUploader < CarrierWave::Uploader::Base
+  after :store, :update_model
+
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}#{uuid_path}"
   end
@@ -13,6 +15,11 @@ class BaseUploader < CarrierWave::Uploader::Base
     else
       "#{File.basename(original_filename, File.extname(original_filename))}-#{secure_token}.#{file.extension}"
     end
+  end
+
+  def update_model(*args)
+    # HACK to invalidate cache after upload
+    model.touch
   end
 
   private def uuid_path
