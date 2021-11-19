@@ -17,9 +17,11 @@ class BaseUploader < CarrierWave::Uploader::Base
     end
   end
 
-  def update_model(*args)
-    # HACK to invalidate cache after upload
+  def update_model(*_args)
+    # HACK: to invalidate cache after upload
+    # rubocop:disable Rails/SkipsModelValidations
     model.touch
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def uuid_path
