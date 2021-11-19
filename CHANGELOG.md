@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.23.0](https://github.com/fleetyards/fleetyards/compare/v4.22.7...v4.23.0) (2021-11-19)
+
+
+### Features
+
+* **SC-Data:** update SC Data to latest 3.15.1 PTU Build ([cfd23b3](https://github.com/fleetyards/fleetyards/commit/cfd23b33d8eaa2ef129697d84174112a679b0ecf))
+
+
+### Bug Fixes
+
+* **models:** variants ([0149e7e](https://github.com/fleetyards/fleetyards/commit/0149e7e14c16f2fa4d00a186c550c030047461f3))
+
 ### [4.22.7](https://github.com/fleetyards/fleetyards/compare/v4.22.6...v4.22.7) (2021-11-17)
 
 ### [4.22.6](https://github.com/fleetyards/fleetyards/compare/v4.22.5...v4.22.6) (2021-11-16)
