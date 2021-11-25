@@ -7,6 +7,7 @@
             v-if="fleet.logo"
             :avatar="fleet.logo"
             :transparent="!!fleet.logo"
+            :round="false"
             size="large"
             icon="fad fa-image"
           />

@@ -10,12 +10,11 @@
   height: 100px;
   overflow: hidden;
   background-color: $gray-darker;
-  border-radius: 50%;
   box-shadow: inset 0 0 0 3px rgba($gray-dark, .8);
 
   img {
     max-height: 100%;
-    border-radius: 50%;
+    max-width: 100%;
   }
 
   .no-avatar {
@@ -79,5 +78,13 @@
   &.avatar-transparent {
     background-color: transparent;
     box-shadow: none;
+  }
+
+  &.avatar-round {
+    border-radius: 50%;
+
+    img {
+      border-radius: 50%;
+    }
   }
 }

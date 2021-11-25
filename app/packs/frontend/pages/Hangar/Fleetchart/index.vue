@@ -29,6 +29,11 @@
           </div>
           <div v-if="!mobile" class="page-actions page-actions-right">
             <Starship42Btn :vehicles="collection.records" />
+            <ShareBtn
+              v-if="currentUser && currentUser.publicHangar"
+              :url="shareUrl"
+              :title="metaTitle"
+            />
           </div>
         </div>
       </div>
@@ -106,6 +111,7 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import FilteredList from 'frontend/core/components/FilteredList'
 import Btn from 'frontend/core/components/Btn'
 import Starship42Btn from 'frontend/components/Starship42Btn'
+import ShareBtn from 'frontend/components/ShareBtn'
 import PrimaryAction from 'frontend/core/components/PrimaryAction'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
@@ -133,6 +139,7 @@ import hangarGroupsCollection, {
     BreadCrumbs,
     BtnDropdown,
     Starship42Btn,
+    ShareBtn,
     PrimaryAction,
     DownloadScreenshotBtn,
     FleetChartStatusBtn,
@@ -154,6 +161,14 @@ export default class HangarFleetchart extends Vue {
     }
 
     return this.hangarStats.groups
+  }
+
+  get shareUrl() {
+    if (!this.currentUser) {
+      return null
+    }
+
+    return this.currentUser.publicHangarUrl
   }
 
   get hangarStats(): VehicleStats | null {

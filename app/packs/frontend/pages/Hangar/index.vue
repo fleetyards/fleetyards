@@ -40,13 +40,11 @@
               {{ $t('labels.hangarStats') }}
             </Btn>
 
-            <Btn
+            <ShareBtn
               v-if="currentUser && currentUser.publicHangar"
-              v-tooltip="$t('actions.share')"
-              @click.native="share"
-            >
-              <i class="fad fa-share-square" />
-            </Btn>
+              :url="shareUrl"
+              :title="metaTitle"
+            />
           </div>
         </div>
         <div
@@ -247,7 +245,6 @@ import { Component, Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredGrid from 'frontend/core/components/FilteredGrid'
-import copyText from 'frontend/utils/CopyText'
 import VehiclesTable from 'frontend/components/Vehicles/Table'
 import Btn from 'frontend/core/components/Btn'
 import PrimaryAction from 'frontend/core/components/PrimaryAction'
@@ -259,12 +256,13 @@ import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import GroupLabels from 'frontend/components/Vehicles/GroupLabels'
 import HangarGuideBox from 'frontend/components/HangarGuideBox'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
+import ShareBtn from 'frontend/components/ShareBtn'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { format } from 'date-fns'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
-import { displayAlert, displayConfirm, displaySuccess } from 'frontend/lib/Noty'
+import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 import debounce from 'lodash.debounce'
 
 @Component<Hangar>({
@@ -274,6 +272,7 @@ import debounce from 'lodash.debounce'
     VehiclesTable,
     Btn,
     PrimaryAction,
+    ShareBtn,
     BtnDropdown,
     HangarImportBtn,
     VehiclePanel,
@@ -464,43 +463,6 @@ export default class Hangar extends Vue {
     link.click()
 
     document.body.removeChild(link)
-  }
-
-  share() {
-    if (navigator.canShare && navigator.canShare({ url: this.shareUrl })) {
-      navigator
-        .share({
-          title: this.metaTitle,
-          url: this.shareUrl,
-        })
-        .then(() => console.info('Share was successful.'))
-        .catch(error => console.info('Sharing failed', error))
-    } else {
-      this.copyShareUrl()
-    }
-  }
-
-  copyShareUrl() {
-    if (!this.shareUrl) {
-      displayAlert({
-        text: this.$t('messages.copyShareUrl.failure'),
-      })
-    }
-
-    copyText(this.shareUrl).then(
-      () => {
-        displaySuccess({
-          text: this.$t('messages.copyShareUrl.success', {
-            url: this.shareUrl,
-          }),
-        })
-      },
-      () => {
-        displayAlert({
-          text: this.$t('messages.copyShareUrl.failure'),
-        })
-      },
-    )
   }
 
   async destroyAll() {
