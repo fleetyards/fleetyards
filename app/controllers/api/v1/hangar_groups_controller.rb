@@ -3,7 +3,7 @@
 module Api
   module V1
     class HangarGroupsController < ::Api::BaseController
-      before_action :authenticate_user!, except: [:public]
+      before_action :authenticate_user!, except: [:public_index]
 
       def index
         authorize! :index, :api_hangar_groups
@@ -12,7 +12,7 @@ module Api
           .all
       end
 
-      def public
+      def public_index
         authorize! :public, :api_hangar_groups
 
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)

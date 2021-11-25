@@ -93,7 +93,7 @@ v1_api_routes = lambda do
 
   resources :vehicles, only: %i[index create update destroy] do
     collection do
-      get 'quick-stats' => 'vehicles#quick_stats'
+      get 'quick-stats' => 'hangar_stats#index'
       get :fleetchart
       get :export
       put :import
@@ -103,20 +103,20 @@ v1_api_routes = lambda do
       get :embed
       get 'hangar-items' => 'vehicles#hangar_items'
       get :hangar
-      get ':username' => 'vehicles#public', as: :public
-      get ':username/quick-stats' => 'vehicles#public_quick_stats', as: :public_quick_stats
+      get ':username' => 'vehicles#public_index', as: :public
+      get ':username/quick-stats' => 'hangar_stats#public_index', as: :public_quick_stats
       get ':username/fleetchart' => 'vehicles#public_fleetchart', as: :public_fleetchart
-      get 'stats/models-by-size' => 'vehicles#models_by_size'
-      get 'stats/models-by-production-status' => 'vehicles#models_by_production_status'
-      get 'stats/models-by-manufacturer' => 'vehicles#models_by_manufacturer'
-      get 'stats/models-by-classification' => 'vehicles#models_by_classification'
+      get 'stats/models-by-size' => 'hangar_stats#models_by_size'
+      get 'stats/models-by-production-status' => 'hangar_stats#models_by_production_status'
+      get 'stats/models-by-manufacturer' => 'hangar_stats#models_by_manufacturer'
+      get 'stats/models-by-classification' => 'hangar_stats#models_by_classification'
       post 'check-serial'
     end
   end
 
   resources :hangar_groups, path: 'hangar-groups', only: %i[index create update destroy] do
     collection do
-      get ':username' => 'hangar_groups#public', as: :public
+      get ':username' => 'hangar_groups#public_index', as: :public
       put :sort
     end
   end
