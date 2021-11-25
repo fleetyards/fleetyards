@@ -1,12 +1,13 @@
 <template>
   <Btn
-    v-tooltip="$t('actions.share')"
+    v-tooltip="variant !== 'dropdown' && $t('actions.share')"
     :variant="variant"
     :size="size"
     :inline="inline"
     @click.native="share"
   >
     <i class="fad fa-share-square" />
+    <span v-if="variant === 'dropdown'">{{ $t('actions.share') }}</span>
   </Btn>
 </template>
 
