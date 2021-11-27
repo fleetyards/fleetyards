@@ -41,6 +41,7 @@
   .hardpoint-items {
     flex-grow: 1;
     min-width: 300px;
+    max-width: 100%;
   }
 }
 
@@ -157,5 +158,13 @@
   .hardpoint-item-component {
     flex-grow: 1;
     margin-right: 5px;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .hardpoint-type {
+    .hardpoint-items {
+      min-width: 0;
+    }
   }
 }

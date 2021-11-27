@@ -117,9 +117,12 @@
 
               <AddToHangar :model="model" />
 
-              <Btn v-if="!mobile" data-test="share" @click.native="share">
-                <i class="fad fa-share-square" />
-              </Btn>
+              <ShareBtn
+                v-if="!mobile"
+                data-test="share"
+                :url="shareUrl"
+                :title="metaTitle"
+              />
 
               <BtnDropdown data-test="model-dropdown">
                 <Btn
@@ -157,15 +160,13 @@
                   <i class="fal fa-exchange" />
                   <span>{{ $t('actions.compare.models') }}</span>
                 </Btn>
-                <Btn
+                <ShareBtn
                   v-if="mobile"
                   data-test="share"
                   variant="dropdown"
-                  @click.native="share"
-                >
-                  <i class="fad fa-share-square" />
-                  <span>{{ $t('actions.share') }}</span>
-                </Btn>
+                  :url="shareUrl"
+                  :title="metaTitle"
+                />
                 <Btn
                   v-if="model.salesPageUrl"
                   :href="model.salesPageUrl"
@@ -299,8 +300,7 @@ import HoloViewer from 'frontend/core/components/HoloViewer'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { modelRouteGuard } from 'frontend/utils/RouteGuards/Models'
 import modelsCollection from 'frontend/api/collections/Models'
-import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
-import copyText from 'frontend/utils/CopyText'
+import ShareBtn from 'frontend/components/ShareBtn'
 
 @Component<ModelDetail>({
   components: {
@@ -319,6 +319,7 @@ import copyText from 'frontend/utils/CopyText'
     BreadCrumbs,
     HoloViewer,
     Paints,
+    ShareBtn,
   },
   mixins: [MetaInfo, HangarItemsMixin],
   beforeRouteEnter: modelRouteGuard,
@@ -479,43 +480,6 @@ export default class ModelDetail extends Vue {
     this.loading = true
     this.model = await modelsCollection.findBySlug(this.$route.params.slug)
     this.loading = false
-  }
-
-  share() {
-    if (navigator.canShare && navigator.canShare({ url: this.shareUrl })) {
-      navigator
-        .share({
-          title: this.metaTitle,
-          url: this.shareUrl,
-        })
-        .then(() => console.info('Share was successful.'))
-        .catch(error => console.info('Sharing failed', error))
-    } else {
-      this.copyShareUrl()
-    }
-  }
-
-  copyShareUrl() {
-    if (!this.shareUrl) {
-      displayAlert({
-        text: this.$t('messages.copyShareUrl.failure'),
-      })
-    }
-
-    copyText(this.shareUrl).then(
-      () => {
-        displaySuccess({
-          text: this.$t('messages.copyShareUrl.success', {
-            url: this.shareUrl,
-          }),
-        })
-      },
-      () => {
-        displayAlert({
-          text: this.$t('messages.copyShareUrl.failure'),
-        })
-      },
-    )
   }
 }
 </script>

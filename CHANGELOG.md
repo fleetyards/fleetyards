@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.23.4](https://github.com/fleetyards/fleetyards/compare/v4.23.3...v4.23.4) (2021-11-27)
+
+
+### Bug Fixes
+
+* model loader for empty hardpoint names ([e1818d7](https://github.com/fleetyards/fleetyards/commit/e1818d7406d78c2c4ef3e4fc1091ea8edc140b54))
+
+### [4.23.3](https://github.com/fleetyards/fleetyards/compare/v4.23.2...v4.23.3) (2021-11-25)
+
+
+### Bug Fixes
+
+* share buttons and fleet logo ([e34067e](https://github.com/fleetyards/fleetyards/commit/e34067e9d9d6e6b80c9eeacd0cefc4cddcad6bd5))
+
 ### [4.23.2](https://github.com/fleetyards/fleetyards/compare/v4.23.1...v4.23.2) (2021-11-19)
 
 

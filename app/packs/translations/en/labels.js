@@ -132,6 +132,7 @@ export default {
   'none': '-',
   'search': {
     default: 'Search',
+    shareTitle: 'Search for: %{query}',
   },
   'unknownModel': '%{slug} Unknown',
   'not-available': 'N/A',

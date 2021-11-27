@@ -387,6 +387,7 @@ class Model < ApplicationRecord
 
   private def send_on_sale_notification
     return unless on_sale?
+    return if created_at > Time.zone.now - 24.hours
 
     Notifications::ModelOnSaleJob.perform_later(id)
 

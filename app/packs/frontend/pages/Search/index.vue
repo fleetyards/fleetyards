@@ -52,6 +52,9 @@
         :hash="$route.hash"
         :paginated="true"
       >
+        <template #actions>
+          <ShareBtn :url="shareUrl" :title="shareTitle" />
+        </template>
         <template #default="{ records }">
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
@@ -103,6 +106,7 @@ import Filters from 'frontend/mixins/Filters'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
+import ShareBtn from 'frontend/components/ShareBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
 import SearchPanel from 'frontend/components/Search/Panel'
 import FilteredList from 'frontend/core/components/FilteredList'
@@ -117,6 +121,7 @@ import searchCollection from 'frontend/api/collections/Search'
 @Component<Search>({
   components: {
     Btn,
+    ShareBtn,
     ModelPanel,
     SearchPanel,
     FilteredList,
@@ -135,28 +140,30 @@ export default class Search extends Vue {
     return !this.collection.records.length && !this.form.search
   }
 
-get filters() {
+  get filters() {
     return {
       filters: this.$route.query.q,
       page: this.$route.query.page || 1,
     }
   }
 
-get firstPage() {
+  get firstPage() {
     return !this.$route.query.page || this.$route.query.page === 1
   }
 
-collection: SearchCollection = searchCollection
+  get shareUrl() {
+    return window.location.href
+  }
+
+  get shareTitle() {
+    return this.$t('labels.search.shareTitle', { query: this.form.search })
+  }
+
+  collection: SearchCollection = searchCollection
 
   form: SearchFilter = {
     search: null
   }
-
-
-
-
-
-
 
   @Watch('$route')
   onRouteChange() {
