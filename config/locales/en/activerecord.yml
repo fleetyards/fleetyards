@@ -94,12 +94,13 @@ en:
           dockingport: Dockingport
           hangar: Hangar
         ship_sizes:
-          extra_small: Extra Small
-          small: Small
-          medium: Medium
-          large: Large
-          extra_large: Extra Large
-          capital: Capital
+          extra_extra_small: Snubcraft (XXS)
+          extra_small: Extra Small (XS)
+          small: Small  (S)
+          medium: Medium  (M)
+          large: Large  (L)
+          extra_large: Extra Large (XL)
+          capital: Capital (C)
       habitation:
         habitation_types:
           container: Container
