@@ -27,11 +27,28 @@
         <div
           v-for="model in models"
           :key="`${model.slug}-top-view`"
-          class="col-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item compare-row-item-top-view"
         >
           <FleetchartItemImage
             :label="model.name"
-            :src="model.fleetchartImage"
+            :src="model.sideView"
+            :length="model.length"
+            :scale="topViewScale"
+          />
+        </div>
+      </div>
+      <div class="row compare-row">
+        <div
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
+        />
+        <div
+          v-for="model in models"
+          :key="`${model.slug}-top-view`"
+          class="col-6 text-center compare-row-item compare-row-item-top-view"
+        >
+          <FleetchartItemImage
+            :label="model.name"
+            :src="model.topView"
             :length="model.length"
             :scale="topViewScale"
           />
@@ -68,14 +85,14 @@ export default class ModelsCompareTopView extends Vue {
     const maxLength = Math.max(...this.models.map((model) => model.length), 0)
 
     if (maxLength < 30) {
-      return 500
+      return 300
     }
 
     if (maxLength <= 250) {
-      return 100
+      return 80
     }
 
-    return 50
+    return 25
   }
 
   mounted() {
