@@ -1,0 +1,13 @@
+%tr{id: model.id}
+  %td
+    = model.rsi_id
+  %td
+    = model.pledge_price
+  %td
+    = model.last_pledge_price
+  %td.text-right
+    .btn-group
+      %button.reload-models.btn.btn-dark.ladda-button{data: {style: "expand-right", action: reload_one_admin_model_path(model), workerPath: admin_check_worker_state_path('ModelsWorker')}, onclick: "App.Models.reload($(this)); return false;"}
+        %i.fa.fa-sync
+      = link_to edit_admin_model_path(model), 'data-turbolinks': "false", title: I18n.t(:"actions.edit"), class: "btn btn-dark" do
+        %i.fa.fa-edit
