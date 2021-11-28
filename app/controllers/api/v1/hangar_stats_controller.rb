@@ -6,8 +6,14 @@ module Api
       include ChartHelper
       include HangarVehicles
 
-      skip_authorization_check only: %i[public_index]
-      before_action :authenticate_user!, except: %i[public_index]
+      skip_authorization_check only: %i[
+        public_index public_models_by_size public_models_by_production_status
+        public_models_by_manufacturer public_models_by_classification
+      ]
+      before_action :authenticate_user!, except: %i[
+        public_index public_models_by_size public_models_by_production_status
+        public_models_by_manufacturer public_models_by_classification
+      ]
 
       # rubocop:disable Metrics/CyclomaticComplexity
       def index
@@ -52,6 +58,7 @@ module Api
       end
       # rubocop:enable Metrics/CyclomaticComplexity
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       def public_index
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
@@ -67,6 +74,20 @@ module Api
         vehicles = @q.result
 
         models = vehicles.map(&:model)
+
+        metrics = nil
+        if user.public_hangar_stats?
+          models = vehicles.map(&:model)
+          upgrades = vehicles.map(&:model_upgrades).flatten
+          modules = vehicles.map(&:model_modules).flatten
+
+          metrics = {
+            total_money: models.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
+            total_min_crew: models.map(&:min_crew).sum(&:to_i),
+            total_max_crew: models.map(&:max_crew).sum(&:to_i),
+            total_cargo: models.map(&:cargo).sum(&:to_i)
+          }
+        end
 
         @quick_stats = QuickStats.new(
           total: vehicles.count,
@@ -84,9 +105,11 @@ module Api
               id: group.id,
               slug: group.slug
             )
-          end
+          end,
+          metrics: metrics
         )
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       def models_by_size
         authorize! :read, :api_stats
@@ -140,6 +163,76 @@ module Api
         )
 
         render json: models_by_classification.to_json
+      end
+
+      def public_models_by_size
+        if public_user.blank?
+          render json: []
+          return
+        end
+
+        models_by_size = transform_for_pie_chart(
+          public_user.models.visible.active
+               .group(:size).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge) || []
+        )
+
+        render json: models_by_size.to_json
+      end
+
+      def public_models_by_production_status
+        if public_user.blank?
+          render json: []
+          return
+        end
+
+        models_by_production_status = transform_for_pie_chart(
+          public_user.models.visible.active
+               .group(:production_status).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge) || []
+        )
+
+        render json: models_by_production_status.to_json
+      end
+
+      def public_models_by_manufacturer
+        if public_user.blank?
+          render json: []
+          return
+        end
+
+        models_by_manufacturer = transform_for_pie_chart(
+          public_user.manufacturers.uniq
+              .map do |manufacturer|
+                model_ids = manufacturer.model_ids
+                { manufacturer.name => current_user.vehicles.where(model_id: model_ids).count }
+              end
+              .reduce(:merge) || []
+        )
+
+        render json: models_by_manufacturer.to_json
+      end
+
+      def public_models_by_classification
+        if public_user.blank?
+          render json: []
+          return
+        end
+
+        models_by_classification = transform_for_pie_chart(
+          public_user.models.visible.active
+               .group(:classification).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge) || []
+        )
+
+        render json: models_by_classification.to_json
+      end
+
+      private def public_user
+        @public_user = User.where(public_hangar: true, public_hangar_stats: true).find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
       end
     end
   end

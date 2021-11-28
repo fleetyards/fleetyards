@@ -20,6 +20,7 @@ export default {
     stats: 'My Hangar Stats',
     import: 'Import',
     public: '%{user} Hangar',
+    publicStats: '%{user} Hangar Stats',
   },
   stations: 'Stations',
   shops: 'Shops',

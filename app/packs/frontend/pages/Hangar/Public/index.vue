@@ -93,6 +93,14 @@
               <i class="fad fa-starship" />
               {{ $t('labels.fleetchart') }}
             </Btn>
+
+            <Btn
+              v-if="user.publicHangarStats"
+              :to="{ name: 'hangar-public-stats' }"
+            >
+              <i class="fal fa-chart-bar" />
+              {{ $t('labels.hangarStats') }}
+            </Btn>
           </div>
         </div>
       </div>
@@ -106,6 +114,29 @@
       :hash="$route.hash"
       :paginated="true"
     >
+      <template v-if="mobile" slot="actions">
+        <BtnDropdown size="small">
+          <Btn
+            :to="{ name: 'hangar-public-fleetchart' }"
+            size="small"
+            variant="dropdown"
+          >
+            <i class="fad fa-starship" />
+            <span>{{ $t('labels.fleetchart') }}</span>
+          </Btn>
+
+          <Btn
+            v-if="user.publicHangarStats"
+            :to="{ name: 'hangar-public-stats' }"
+            size="small"
+            variant="dropdown"
+          >
+            <i class="fad fa-chart-bar" />
+            <span>{{ $t('labels.hangarStats') }}</span>
+          </Btn>
+        </BtnDropdown>
+      </template>
+
       <template #default="{ records, filterVisible, primaryKey }">
         <FilteredGrid
           :records="records"
@@ -141,6 +172,7 @@ import publicUserCollection from 'frontend/api/collections/PublicUser'
 import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import GroupLabels from 'frontend/components/Vehicles/GroupLabels'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import publicHangarGroupsCollection from 'frontend/api/collections/PublicHangarGroups'
 
 @Component<PublicHangar>({
@@ -151,6 +183,7 @@ import publicHangarGroupsCollection from 'frontend/api/collections/PublicHangarG
     FilteredList,
     FilteredGrid,
     VehiclePanel,
+    BtnDropdown,
     ModelClassLabels,
     Avatar,
     GroupLabels,

@@ -149,10 +149,7 @@
           </div>
         </transition>
 
-        <FleetchartList
-          :items="records"
-          :scale="fleetchartScale"
-        />
+        <FleetchartList :items="records" :scale="fleetchartScale" />
       </template>
     </FilteredList>
   </section>
@@ -162,6 +159,7 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
+import { publicHangarRouteGuard } from 'frontend/utils/RouteGuards/Hangar'
 import Btn from 'frontend/core/components/Btn'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
@@ -179,6 +177,7 @@ import publicUserCollection from 'frontend/api/collections/PublicUser'
 import FilteredList from 'frontend/core/components/FilteredList'
 
 @Component<PublicHangar>({
+  beforeRouteEnter: publicHangarRouteGuard,
   components: {
     Btn,
     Starship42Btn,

@@ -12,6 +12,16 @@ export class PublicUserCollection {
 
     return this.record
   }
+
+  async findByUsernameForStats(username: string): Promise<User | null> {
+    const response = await get(`users/${username}/stats`)
+
+    if (!response.error) {
+      this.record = response.data
+    }
+
+    return this.record
+  }
 }
 
 export default new PublicUserCollection()
