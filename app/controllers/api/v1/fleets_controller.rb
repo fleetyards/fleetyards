@@ -56,6 +56,16 @@ module Api
         render json: { taken: Fleet.exists?(['lower(fid) = :value', { value: (fleet_params[:fid] || '').downcase }]) }
       end
 
+      def find_by_invite
+        authorize! :check, :api_fleet
+
+        invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
+
+        @fleet = invite_url.fleet
+
+        render 'show'
+      end
+
       private def fleet
         @fleet ||= current_user.fleets.where(slug: params[:slug]).first!
       end
