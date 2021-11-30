@@ -559,21 +559,21 @@ module Api
             'name' => 'Dockingport 01',
             'group' => nil,
             'size' => 'medium',
-            'sizeLabel' => 'Medium',
+            'sizeLabel' => 'Medium (M)',
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }, {
             'name' => 'Landingpad 01',
             'group' => nil,
             'size' => 'large',
-            'sizeLabel' => 'Large',
+            'sizeLabel' => 'Large (L)',
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
           }, {
             'name' => 'Landingpad 02',
             'group' => nil,
             'size' => 'large',
-            'sizeLabel' => 'Large',
+            'sizeLabel' => 'Large (L)',
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
           }],
