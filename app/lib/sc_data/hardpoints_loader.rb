@@ -154,6 +154,7 @@ module ScData
         hardpoint_type: hardpoint_type,
         group: group_for_hardpoint_type(hardpoint_type),
         key: [
+          port_data['Loadout'],
           hardpoint_type,
           category,
           size
@@ -182,7 +183,8 @@ module ScData
 
       ports_data.reject do |port_data|
         port_data.dig('InstalledItem', 'Type')&.include?('WeaponAttachment') ||
-          (port_data['Types'] || []).any? { |type| type.include?('WeaponAttachment') }
+          (port_data['Types'] || []).any? { |type| type.include?('WeaponAttachment') } ||
+          port_data['PortName'] == 'magazine_attach'
       end.each do |port_data|
         loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data['PortName'])
 
