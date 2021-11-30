@@ -38,6 +38,7 @@
 #  model_paints_count       :integer          default(0)
 #  module_hardpoints_count  :integer          default(0)
 #  name                     :string(255)
+#  name_slug                :string
 #  notified                 :boolean          default(FALSE)
 #  on_sale                  :boolean          default(FALSE)
 #  pitch_max                :decimal(15, 2)
@@ -401,8 +402,15 @@ class Model < ApplicationRecord
   end
 
   private def update_slugs
-    super
+    self.slug = SlugHelper.generate_slug(slug_base_field)
     self.rsi_slug = SlugHelper.generate_slug(rsi_name)
+    self.name_slug = SlugHelper.generate_slug(name)
+  end
+
+  private def slug_base_field
+    return name if manufacturer.blank?
+
+    "#{manufacturer.code}-#{name}"
   end
 
   private def set_last_updated_at
