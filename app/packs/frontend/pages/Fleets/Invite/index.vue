@@ -7,7 +7,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import fleetsCollection from 'frontend/api/collections/Fleets'
-import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
+import { displayConfirm, displayAlert, displaySuccess } from 'frontend/lib/Noty'
 
 @Component<FleetInvite>()
 export default class FleetInvite extends Vue {
@@ -29,6 +29,36 @@ export default class FleetInvite extends Vue {
       return
     }
 
+    const fleet = await this.checkInvite()
+
+    if (!fleet) {
+      displayAlert({
+        text: this.$t('messages.fleetInvite.notFound'),
+      })
+
+      this.$router.push({
+        name: 'home',
+      })
+
+      return
+    }
+
+    displayConfirm({
+      text: this.$t('messages.fleetInvite.confirm', {
+        fleet: fleet.name,
+      }),
+      onConfirm: () => {
+        this.handleFleetInvite()
+      },
+      onClose: () => {
+        this.$router.push({
+          name: 'home',
+        })
+      },
+    })
+  }
+
+  async handleFleetInvite() {
     const member = await this.createMember()
 
     if (!member) {
@@ -53,6 +83,10 @@ export default class FleetInvite extends Vue {
       name: 'fleet',
       params: { slug: member.fleetSlug },
     })
+  }
+
+  checkInvite(): Promise<Fleet | null> {
+    return fleetsCollection.checkInvite(this.$route.params.token)
   }
 
   createMember(): Promise<FleetMember | null> {

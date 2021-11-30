@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "4.23.2",
+  "version": "4.23.5",
   "scripts": {
     "check-for-reinstalling": "./scripts/check-for-reinstalling.sh",
     "docs:old": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
@@ -42,7 +42,7 @@
     "clipboard": "^2.0.8",
     "core-js": "3.19.1",
     "css-loader": "5.2.7",
-    "date-fns": "2.25.0",
+    "date-fns": "2.26.0",
     "date-fns-tz": "1.1.6",
     "debounce": "1.2.1",
     "dom-to-image": "^2.6.0",

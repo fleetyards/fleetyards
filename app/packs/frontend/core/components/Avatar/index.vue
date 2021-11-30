@@ -5,6 +5,7 @@
       [`avatar-${size}`]: true,
       'avatar-editable': editable || creatable,
       'avatar-transparent': transparent,
+      'avatar-round': round,
     }"
   >
     <img v-if="avatar" :src="avatar" alt="avatar" />
@@ -54,6 +55,8 @@ export default class Avatar extends Vue {
   @Prop({ default: 'fad fa-user' }) icon!: string
 
   @Prop({ default: false }) transparent!: boolean
+
+  @Prop({ default: true }) round!: boolean
 
   emitClick() {
     if (this.avatar) {

@@ -27,7 +27,7 @@ import { Getter } from 'vuex-class'
     Btn,
   },
 })
-export default class Panel extends Btn {
+export default class Starship42Btn extends Btn {
   get basePath() {
     return 'https://starship42.com/fleetview/'
   }
@@ -51,6 +51,7 @@ export default class Panel extends Btn {
     const form = document.createElement('form')
     form.method = 'post'
     form.action = this.basePath
+    form.target = '_blank'
 
     const typeField = document.createElement('input')
     typeField.type = 'hidden'

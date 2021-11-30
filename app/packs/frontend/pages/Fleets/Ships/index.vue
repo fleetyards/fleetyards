@@ -27,14 +27,12 @@
             {{ $t('labels.fleetchart') }}
           </Btn>
 
-          <Btn
+          <ShareBtn
             v-if="fleet.myFleet && fleet.publicFleet"
-            v-tooltip="$t('actions.share')"
+            :url="shareUrl"
+            :title="metaTitle"
             :inline="true"
-            @click.native="copyShareUrl"
-          >
-            <i class="fad fa-share-square" />
-          </Btn>
+          />
         </div>
       </div>
     </div>
@@ -57,21 +55,21 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Avatar from 'frontend/core/components/Avatar'
-import copyText from 'frontend/utils/CopyText'
 import Btn from 'frontend/core/components/Btn'
+import ShareBtn from 'frontend/components/ShareBtn'
 import ShipsList from 'frontend/components/Fleets/ShipsList'
 import PublicShipsList from 'frontend/components/Fleets/PublicShipsList'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { publicFleetShipsRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from 'frontend/api/collections/Fleets'
-import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
 
 @Component<FleetShips>({
   beforeRouteEnter: publicFleetShipsRouteGuard,
   components: {
     Avatar,
     Btn,
+    ShareBtn,
     ShipsList,
     PublicShipsList,
   },
@@ -112,29 +110,6 @@ export default class FleetShips extends Vue {
 
   async fetch() {
     await fleetsCollection.findBySlug(this.$route.params.slug)
-  }
-
-  copyShareUrl() {
-    if (!this.shareUrl) {
-      displayAlert({
-        text: this.$t('messages.copyShareUrl.failure'),
-      })
-    }
-
-    copyText(this.shareUrl).then(
-      () => {
-        displaySuccess({
-          text: this.$t('messages.copyShareUrl.success', {
-            url: this.shareUrl,
-          }),
-        })
-      },
-      () => {
-        displayAlert({
-          text: this.$t('messages.copyShareUrl.failure'),
-        })
-      },
-    )
   }
 }
 </script>

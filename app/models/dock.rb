@@ -31,7 +31,7 @@ class Dock < ApplicationRecord
   ransacker :dock_type, formatter: proc { |v| Dock.dock_types[v] } do |parent|
     parent.table[:dock_type]
   end
-  enum ship_size: { extra_small: 0, small: 1, medium: 2, large: 3, extra_large: 4, capital: 5 }
+  enum ship_size: { extra_extra_small: -1, extra_small: 0, small: 1, medium: 2, large: 3, extra_large: 4, capital: 5 }
   ransacker :ship_size, formatter: proc { |v| Dock.ship_sizes[v] } do |parent|
     parent.table[:ship_size]
   end
