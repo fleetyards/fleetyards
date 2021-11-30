@@ -28,6 +28,8 @@ en:
     model:
       overview: Index
     models: Models
+    models_name_diff: Different RSI Name
+    models_price_diff: Outdated Pledge Price
     model_module_packages: Module Packages
     users: Users
     workers: Workers
@@ -119,6 +121,8 @@ en:
       index: Models
       images: Images
       new: New Model
+      name_diff: Models with different RSI Name
+      price_diff: Models with outdated Pledge price
     loaner_uploads:
       new: New Loaner Upload
     station:

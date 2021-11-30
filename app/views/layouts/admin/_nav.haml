@@ -2,9 +2,11 @@
   - if admin_user_signed_in?
     - unconfirmed_shop_commodities = ShopCommodity.where(confirmed: false).count
     - unconfirmed_commodity_prices = CommodityPrice.where(confirmed: false).count
+    - models_name_diff_count = Model.where('name != rsi_name AND rsi_id IS NOT NULL').count
+    - models_price_diff_count = Model.where('pledge_price != last_pledge_price AND rsi_id IS NOT NULL').count
     %li.nav-item{class: active_nav?('admin')}
       = link_to I18n.t(:"nav.home"), admin_root_path, class: 'nav-link'
-    %li.nav-item.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components admin-model_modules admin-model_upgrades))}
+    %li.nav-item.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components admin-model_modules admin-model_upgrades admin-models-name-diff admin-models-price-diff))}
       %a.nav-link.dropdown-toggle{href: '#', id: "navbar-models-dropdown", data: {toggle: 'dropdown'}}
         = Model.name.humanize.pluralize
         %b.caret
@@ -14,6 +16,14 @@
         = link_to ModelModule.name.humanize.pluralize, admin_model_modules_path, class: "dropdown-item #{active_nav?('admin-model_modules')}"
         = link_to ModelModulePackage.name.humanize.pluralize, admin_model_module_packages_path, class: "dropdown-item #{active_nav?('admin-model_module_packages')}"
         = link_to ModelUpgrade.name.humanize.pluralize, admin_model_upgrades_path, class: "dropdown-item #{active_nav?('admin-model_upgrades')}"
+        = link_to name_diff_admin_models_path, class: "dropdown-item #{active_nav?('admin-models-name-diff')}" do
+          = I18n.t(:"nav.models_name_diff")
+          %span.badge
+            = models_name_diff_count
+        = link_to price_diff_admin_models_path, class: "dropdown-item #{active_nav?('admin-models-price-diff')}" do
+          = I18n.t(:"nav.models_price_diff")
+          %span.badge
+            = models_price_diff_count
         .dropdown-divider
         = link_to Manufacturer.name.humanize.pluralize, admin_manufacturers_path, class: "dropdown-item #{active_nav?('admin-manufacturers')}"
         .dropdown-divider

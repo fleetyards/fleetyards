@@ -109,7 +109,8 @@ module ScData
 
       ports_data['MissileRacks'].each_with_index.map do |port_data, index|
         category = port_data['PortName'].include?('turret') ? 'missile_turret' : nil
-        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category)&.id
+        key_modifier = port_data.dig('InstalledItem', 'Ports', 0, 'Loadout')
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category, key_modifier)&.id
       end
 
       hardpoint_ids.compact
@@ -137,13 +138,14 @@ module ScData
       hardpoint_ids = []
 
       ports_data['PilotHardpoints'].each_with_index.map do |port_data, index|
-        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, nil, port_data['Loadout'])&.id
       end
 
       hardpoint_ids.compact
     end
 
-    private def extract_hardpoint(hardpoint_type, model_id, port_data, index, category = nil)
+    # rubocop:disable Metrics/ParameterLists
+    private def extract_hardpoint(hardpoint_type, model_id, port_data, index, category = nil, key_modifier = nil)
       size = size_for_type(hardpoint_type, port_data, category)
 
       component_data = port_data['InstalledItem'] || {}
@@ -154,6 +156,7 @@ module ScData
         hardpoint_type: hardpoint_type,
         group: group_for_hardpoint_type(hardpoint_type),
         key: [
+          key_modifier,
           hardpoint_type,
           category,
           size
@@ -176,13 +179,15 @@ module ScData
 
       hardpoint
     end
+    # rubocop:enable Metrics/ParameterLists
 
     private def extract_loadout(hardpoint, ports_data)
       loadout_ids = []
 
       ports_data.reject do |port_data|
         port_data.dig('InstalledItem', 'Type')&.include?('WeaponAttachment') ||
-          (port_data['Types'] || []).any? { |type| type.include?('WeaponAttachment') }
+          (port_data['Types'] || []).any? { |type| type.include?('WeaponAttachment') } ||
+          port_data['PortName'] == 'magazine_attach'
       end.each do |port_data|
         loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data['PortName'])
 

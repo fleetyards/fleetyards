@@ -6,8 +6,6 @@
         %th.preview
         %th.preview
         %th=sort_link(@q, :name)
-        %th=sort_link(@q, :manufacturer_name, 'Manufacturer')
-        %th=sort_link(@q, :focus, 'Role')
         %th.rsi-id=sort_link(@q, :rsi_id, 'RSI ID')
         %th=sort_link(@q, :hidden)
         %th=sort_link(@q, :active)
@@ -16,4 +14,4 @@
       = render partial: "admin/models/show", collection: @models, as: :model
 
       - if @models.blank?
-        = render "shared/tables/blank", count: 3, resource: "model"
+        = render "shared/tables/blank", count: 8, resource: "model"

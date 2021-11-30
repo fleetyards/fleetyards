@@ -12,11 +12,8 @@
     - elsif model.fleetchart_image.present?
       = image_tag model.fleetchart_image.url
   %td
-    = model.name
-  %td
     = model.manufacturer.code if model.manufacturer.present?
-  %td
-    = model.focus
+    = model.name
   %td
     = model.rsi_id
   %td

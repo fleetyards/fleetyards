@@ -42,6 +42,8 @@ namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), cons
 
   resources :models, except: [:show] do
     collection do
+      get :name_diff
+      get :price_diff
       put 'reload'
       put 'reload_data'
       resources :loaner_uploads, only: %i[new create]
