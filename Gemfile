@@ -95,6 +95,8 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
+gem 'sprockets-rails', '~> 3.3.0'
+
 gem 'nokogiri', '1.12.5'
 gem 'typhoeus'
 
