@@ -16,6 +16,34 @@ module Admin
         .per(40)
     end
 
+    def name_diff
+      authorize! :index, :admin_models
+
+      @active_nav = 'admin-models-name-diff'
+
+      @q = Model.where('name != rsi_name AND rsi_id IS NOT NULL').ransack(params[:q])
+
+      @q.sorts = 'name asc' if @q.sorts.empty?
+
+      @models = @q.result
+        .page(params.fetch(:page) { nil })
+        .per(40)
+    end
+
+    def price_diff
+      authorize! :index, :admin_models
+
+      @active_nav = 'admin-models-price-diff'
+
+      @q = Model.where('pledge_price != last_pledge_price AND rsi_id IS NOT NULL').ransack(params[:q])
+
+      @q.sorts = 'name asc' if @q.sorts.empty?
+
+      @models = @q.result
+        .page(params.fetch(:page) { nil })
+        .per(40)
+    end
+
     def new
       authorize! :create, :admin_models
       @model = Model.new

@@ -118,7 +118,7 @@ module Rsi
 
     private def extract_size(hardpoint_data)
       if hardpoint_data[:type] == 'missiles'
-        size_from_name = hardpoint_data[:name].scan(/MSD-(\d{1})\d{2}/).last&.first
+        size_from_name = (hardpoint_data[:name] || '').scan(/MSD-(\d{1})\d{2}/).last&.first
 
         return size_mapping(size_from_name || hardpoint_data[:size])
       end
