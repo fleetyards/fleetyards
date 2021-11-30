@@ -241,7 +241,7 @@ module Api
           'cargoHub' => nil,
           'habitationCounts' => [],
           'dockCounts' => [{
-            'size' => 'Small',
+            'size' => 'Small (S)',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
@@ -348,12 +348,12 @@ module Api
             'typeLabel' => 'Container'
           }],
           'dockCounts' => [{
-            'size' => 'Medium',
+            'size' => 'Medium (M)',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }, {
-            'size' => 'Large',
+            'size' => 'Large (L)',
             'count' => 2,
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
@@ -426,12 +426,12 @@ module Api
             'typeLabel' => 'Container'
           }],
           'dockCounts' => [{
-            'size' => 'Medium',
+            'size' => 'Medium (M)',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }, {
-            'size' => 'Large',
+            'size' => 'Large (L)',
             'count' => 2,
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
@@ -559,21 +559,21 @@ module Api
             'name' => 'Dockingport 01',
             'group' => nil,
             'size' => 'medium',
-            'sizeLabel' => 'Medium',
+            'sizeLabel' => 'Medium (M)',
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }, {
             'name' => 'Landingpad 01',
             'group' => nil,
             'size' => 'large',
-            'sizeLabel' => 'Large',
+            'sizeLabel' => 'Large (L)',
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
           }, {
             'name' => 'Landingpad 02',
             'group' => nil,
             'size' => 'large',
-            'sizeLabel' => 'Large',
+            'sizeLabel' => 'Large (L)',
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
           }],
