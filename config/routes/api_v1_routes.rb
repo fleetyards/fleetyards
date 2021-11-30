@@ -169,6 +169,7 @@ v1_api_routes = lambda do
       post :check
       get :invites
       get :current
+      get 'check-invite/:token' => 'fleets#find_by_invite'
       post 'use-invite' => 'fleet_memberships#create_by_invite'
     end
 

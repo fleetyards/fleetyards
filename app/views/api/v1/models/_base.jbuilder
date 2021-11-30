@@ -3,7 +3,7 @@
 json.id model.id
 json.name model.name
 json.sc_identifier model.sc_identifier
-json.erkul_identifier model.erkul_identifier || model.sc_identifier
+json.erkul_identifier (model.erkul_identifier.present? ? model.erkul_identifier : model.sc_identifier)
 json.rsi_name model.rsi_name
 json.slug model.slug
 json.rsi_slug model.rsi_slug

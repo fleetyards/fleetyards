@@ -152,7 +152,7 @@ module Rsi
       updates[:store_url] = data['url'] if (model_updated(model, data) && data['url'] != model.rsi_store_url) || model.store_url.blank?
 
       updates[:rsi_name] = data['name'].strip
-      updates[:name] = strip_name(data['name']) if model.name.blank?
+      updates[:name] = strip_name(data['name']) if (model_updated(model, data) && data['name'] != model.rsi_name) || model.name.blank?
 
       model.update(updates)
 

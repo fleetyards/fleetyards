@@ -19,6 +19,8 @@ en:
         images: Imageupload for %{model}
         index: Models
         new: New Model
+        name_diff: Models with different RSI Name
+        price_diff: Models with outdated Pledge price
       loaner_uploads:
         new: New Loaner Upload
       user:
