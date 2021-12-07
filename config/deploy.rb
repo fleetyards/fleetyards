@@ -237,8 +237,8 @@ namespace :db do
     on roles(:db) do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          info 'Seeding database'
-          execute('FLEETCHART_SEEDS=true SKIP_SEEDS=true bundle exec rails db:seed')
+          info 'Seeding fleetcharts'
+          execute(:rails, 'db:seed FLEETCHART_SEEDS=true SKIP_SEEDS=true')
         end
       end
     end

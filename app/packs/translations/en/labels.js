@@ -162,6 +162,7 @@ export default {
       '3x': '3x',
       '4x': '4x',
     },
+    gridSize: '%{size} meter per grid box',
   },
   'fleetStats': 'Stats',
   'hangarMetrics': {

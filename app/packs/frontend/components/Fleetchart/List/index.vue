@@ -78,7 +78,7 @@
           'fleetchart-grid-enabled': gridEnabled,
         }"
       >
-        {{ gridSizeLabel }} meter per grid box
+        {{ $t('labels.fleetchartApp.gridSize', { size: gridSizeLabel }) }}
       </div>
       <div ref="fleetchartWrapper" class="fleetchart-scroll-wrapper">
         <transition-group
@@ -264,7 +264,6 @@ export default class FleetchartList extends Vue {
       minZoom: this.minZoom,
       zoomSpeed: this.zoomSpeed,
       pinchSpeed: this.pinchSpeed,
-      bounds: true,
     })
 
     if (this.initialZoomData?.scale) {

@@ -52,13 +52,10 @@ class Fleetchart < Thor
 
   desc 'upload', 'Upload prepared seeds to server'
   def upload(export_folder, environment = 'stage')
-    archive_path = "#{export_folder}/seeds_fleetchart.zip"
     seeds_path = "#{export_folder}/seeds_fleetchart/"
 
-    run("zip -r \"#{archive_path}\" \"#{seeds_path}\"")
+    run("scp -r \"#{seeds_path}\" fleetyards@fleetyards.net:~/shared/db/seeds_fleetchart") if environment == 'live'
 
-    run("scp -r \"#{archive_path}\" fleetyards@fleetyards.net:~/shared/") if environment == 'live'
-
-    run("scp -r \"#{archive_path}\" fleetyards@stage.fleetyards.net:~/shared/") if environment == 'stage'
+    run("scp -r \"#{seeds_path}\" fleetyards@stage.fleetyards.net:~/shared/db/seeds_fleetchart") if environment == 'stage'
   end
 end
