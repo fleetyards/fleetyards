@@ -79,16 +79,9 @@ export const routes = [
   {
     path: '/hangar/fleetchart/',
     name: 'hangar-fleetchart',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.hangar-fleetchart" */ 'frontend/pages/Hangar/Fleetchart/index.vue'
-      ),
-    meta: {
-      needsAuthentication: true,
-      quickSearch: 'nameCont',
-      title: 'hangar.fleetchart',
-      primaryAction: true,
-      backgroundImage: 'bg-5',
+    redirect: {
+      name: 'hangar',
+      query: { fleetchart: true },
     },
   },
   {
@@ -118,12 +111,9 @@ export const routes = [
   {
     path: '/hangar/:username/fleetchart',
     name: 'hangar-public-fleetchart',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.hangar-public-fleetchart" */ 'frontend/pages/Hangar/PublicFleetchart/index.vue'
-      ),
-    meta: {
-      backgroundImage: 'bg-5',
+    redirect: {
+      name: 'hangar-public',
+      query: { fleetchart: true },
     },
   },
   {
@@ -141,13 +131,9 @@ export const routes = [
   {
     path: '/ships/fleetchart',
     name: 'models-fleetchart',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.ships-fleetchart" */ 'frontend/pages/Models/Fleetchart/index.vue'
-      ),
-    meta: {
-      title: 'models.fleetchart',
-      quickSearch: 'searchCont',
+    redirect: {
+      name: 'models',
+      query: { fleetchart: true },
     },
   },
   {

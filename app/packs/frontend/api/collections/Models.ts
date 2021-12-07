@@ -1,5 +1,6 @@
 import { get } from 'frontend/api/client'
 import { prefetch } from 'frontend/api/prefetch'
+import Store from 'frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class ModelsCollection extends BaseCollection {
@@ -8,6 +9,18 @@ export class ModelsCollection extends BaseCollection {
   record: Model | null = null
 
   params: ModelParams | null = null
+
+  get perPage(): number {
+    return Store.getters['models/perPage']
+  }
+
+  get perPageSteps(): (number | string)[] {
+    return [15, 30, 60, 120, 240]
+  }
+
+  updatePerPage(perPage) {
+    Store.dispatch('models/updatePerPage', perPage)
+  }
 
   async findAll(params: ModelParams): Promise<Model[]> {
     if (prefetch('models')) {
@@ -20,6 +33,7 @@ export class ModelsCollection extends BaseCollection {
     const response = await get('models', {
       q: params.filters,
       page: params.page,
+      perPage: this.perPage,
     })
 
     if (!response.error) {

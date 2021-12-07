@@ -18,6 +18,14 @@
     >
       <template slot="actions">
         <Btn
+          size="small"
+          data-test="fleetchart-link"
+          @click.native="toggleFleetchart"
+        >
+          <i class="fad fa-starship" />
+          {{ $t('labels.fleetchart') }}
+        </Btn>
+        <Btn
           :active="detailsVisible"
           :aria-label="toggleDetailsTooltip"
           size="small"
@@ -43,12 +51,18 @@
         </FilteredGrid>
       </template>
     </FilteredList>
+
+    <FleetchartApp
+      :items="collection.records"
+      namespace="models"
+      download-name="ships-fleetchart"
+    />
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
@@ -56,6 +70,7 @@ import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import ModelPanel from 'frontend/components/Models/Panel'
 import ModelsFilterForm from 'frontend/components/Models/FilterForm'
+import FleetchartApp from 'frontend/components/Fleetchart/App'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import modelsCollection, {
   ModelsCollection,
@@ -68,6 +83,7 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
     BtnDropdown,
     FilteredList,
     FilteredGrid,
+    FleetchartApp,
     ModelPanel,
     ModelsFilterForm,
   },
@@ -78,7 +94,11 @@ export default class Models extends Vue {
 
   @Action('toggleDetails', { namespace: 'models' }) toggleDetails: any
 
+  @Action('toggleFleetchart', { namespace: 'models' }) toggleFleetchart: any
+
   @Getter('detailsVisible', { namespace: 'models' }) detailsVisible
+
+  @Getter('perPage', { namespace: 'models' }) perPage
 
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
@@ -86,6 +106,18 @@ export default class Models extends Vue {
     }
 
     return this.$t('actions.showDetails')
+  }
+
+  get filters() {
+    return {
+      filters: this.$route.query.q,
+      page: this.$route.query.page,
+    }
+  }
+
+  @Watch('perPage')
+  onPerPageChange() {
+    this.collection.findAll(this.filters)
   }
 }
 </script>

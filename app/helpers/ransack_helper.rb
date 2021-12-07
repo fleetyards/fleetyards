@@ -5,12 +5,6 @@ module RansackHelper
     @query_params ||= ActionController::Parameters.new(parse_query_params).permit(filters)
   end
 
-  def per_page(model)
-    return params[:perPage].to_i if params[:perPage].present?
-
-    model.default_per_page
-  end
-
   def sort_by_name(fallback = 'name asc', minimum = 'name asc')
     if query_params['sorts'].present?
       sorts = query_params['sorts']

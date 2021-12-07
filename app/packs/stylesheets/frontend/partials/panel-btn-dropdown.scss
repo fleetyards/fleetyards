@@ -2,6 +2,7 @@
   position: relative;
   display: inline-block;
   margin-right: 10px;
+  height: 39px;
 
   &:last-child {
     margin-right: 0;
@@ -9,6 +10,15 @@
 
   > :first-child {
     margin-right: 0;
+  }
+
+
+  &.panel-btn-dropdown-small {
+    height: 34px;
+  }
+
+  &.panel-btn-dropdown-large {
+    height: 47px;
   }
 
   .panel-btn-dropdown-list {

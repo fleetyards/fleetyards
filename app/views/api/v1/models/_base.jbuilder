@@ -9,6 +9,7 @@ json.slug model.slug
 json.rsi_slug model.rsi_slug
 json.description model.description
 json.length model.length.to_f
+json.fleetchart_length (model.fleetchart_offset_length || model.length).to_f
 json.beam model.beam.to_f
 json.height model.height.to_f
 json.mass model.mass.to_f
@@ -36,7 +37,9 @@ json.store_image_medium model.store_image.medium.url
 json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url
 json.top_view model.top_view.url
+json.top_view_resized model.top_view.resized.url
 json.side_view model.side_view.url
+json.side_view_resized model.side_view.resized.url
 json.brochure model.brochure.url
 json.holo model.holo.url
 json.holo_colored model.holo_colored

@@ -22,8 +22,8 @@
     <FleetchartItemImage
       :label="name || modelName"
       :src="image"
-      :length="model.length"
-      :scale="scale"
+      :length="model.fleetchartLength"
+      :width="model.width"
     />
   </div>
 </template>
@@ -42,10 +42,6 @@ import FleetchartItemImage from './Image'
 })
 export default class FleetchartListItem extends Vue {
   @Prop() item!: Model | Vehicle
-
-  @Prop() scale!: number
-
-  @Prop({ default: false }) showStatus!: boolean
 
   @Prop({ default: 'side' }) viewpoint!: string
 
@@ -90,20 +86,20 @@ export default class FleetchartListItem extends Vue {
   get image() {
     if (this.paint && (this.paint.topView || this.paint.sideView)) {
       if (this.viewpointTop && this.paint.topView) {
-        return this.paint.topView
+        return this.topView(this.paint)
       }
 
       if (this.viewpointSide && this.paint.sideView) {
-        return this.paint.sideView
+        return this.sideView(this.paint)
       }
     }
 
     if (this.viewpointTop && this.model.topView) {
-      return this.model.topView
+      return this.topView(this.model)
     }
 
     if (this.viewpointSide && this.model.sideView) {
-      return this.model.sideView
+      return this.sideView(this.model)
     }
 
     return null
@@ -145,6 +141,14 @@ export default class FleetchartListItem extends Vue {
     }
 
     return `${this.model.manufacturer.code} ${this.model.name}`
+  }
+
+  sideView(model) {
+    return model.sideViewResized
+  }
+
+  topView(model) {
+    return model.topViewResized
   }
 }
 </script>

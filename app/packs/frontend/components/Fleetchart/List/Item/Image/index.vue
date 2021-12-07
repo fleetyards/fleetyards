@@ -3,7 +3,7 @@
     v-if="src"
     :src="src"
     :style="{
-      width: `${length * lengthMultiplicator}px`,
+      width: `${length * multiplicator}px`,
     }"
     :alt="label"
     class="fleetchart-item-image"
@@ -26,10 +26,8 @@ export default class FleetchartListItemImage extends Vue {
 
   @Prop() length!: number
 
-  @Prop() scale!: number
-
-  get lengthMultiplicator() {
-    return (this.scale / 100) * 4
+  get multiplicator() {
+    return 4
   }
 }
 </script>

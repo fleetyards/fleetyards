@@ -52,10 +52,6 @@ export default () => ({
     inviteToken(state) {
       return state.inviteToken
     },
-
-    perPage(state) {
-      return state.perPage
-    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -94,22 +90,6 @@ export default () => ({
 
     setGrouped(state, payload) {
       state.grouped = payload
-    },
-
-    setMoney(state, payload) {
-      state.money = payload
-    },
-
-    setPreview(state, payload) {
-      state.preview = !!payload
-    },
-
-    setInviteToken(state, payload) {
-      state.inviteToken = payload
-    },
-
-    setPerPage(state, payload) {
-      state.perPage = payload
     },
   },
   /* eslint-enable no-param-reassign */

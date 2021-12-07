@@ -4,7 +4,6 @@ export default {
   search: 'Search Results',
   models: {
     index: 'Ships',
-    fleetchart: 'Ships Fleetchart',
   },
   model: '%{name} - %{manufacturer}',
   modelImages: '%{name} Images',
@@ -15,7 +14,6 @@ export default {
   signUp: 'Sign Up',
   hangar: {
     index: 'My Hangar',
-    fleetchart: 'My Hangar Fleetchart',
     preview: 'My Hangar Preview',
     stats: 'My Hangar Stats',
     import: 'Import',

@@ -2,7 +2,6 @@ export default {
   home: 'Home',
   models: {
     index: 'Ships',
-    fleetchart: 'Fleetchart',
   },
   compare: {
     models: 'Compare',

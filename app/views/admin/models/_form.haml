@@ -96,6 +96,11 @@
       = form.number_field :length, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :length
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :fleetchart_offset_length)}
+      = form.label :fleetchart_offset_length
+      = form.number_field :fleetchart_offset_length, min: 0, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :fleetchart_offset_length
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :height)}
       = form.label :height
       = form.number_field :height, required: true, min: 0, step: 'any', class: 'form-control'

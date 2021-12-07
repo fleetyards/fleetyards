@@ -1,25 +1,90 @@
 .fleetchart-wrapper {
   width: 100px;
+  position: relative;
+
+  .fleetchart-controls {
+    position: fixed;
+    display: flex;
+    opacity: 0;
+    bottom: 10px;
+    right: 20px;
+    z-index: 1000;
+    transition: opacity $transition-base-speed ease;
+  }
+
+  .fleetchart-grid-label {
+    position: fixed;
+    opacity: 0;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    text-shadow: 0 0 2px black;
+    transition: opacity $transition-base-speed ease;
+  }
+
+  &:hover {
+    .fleetchart-controls {
+      opacity: 1;
+    }
+
+    .fleetchart-grid-label.fleetchart-grid-enabled {
+      opacity: 1;
+    }
+  }
 }
 
 .fleetchart-scroll-wrapper {
-  overflow-y: scroll;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  height: 100vh;
+  position: relative;
+}
+
+.fleetchart-grid {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  transition: opacity $transition-base-speed ease;
+
+  &.fleetchart-grid-enabled {
+    opacity: 1;
+  }
 }
 
 .fleetchart {
-  max-height: 100vh;
-
+  height: 90vh;
   align-content: flex-end;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column-reverse;
   flex-wrap: wrap-reverse;
   display: flex;
+  z-index: 1;
+  position: relative;
+
+
+  &.fleetchart-1_5x {
+    height: 135vh
+  }
+
+  &.fleetchart-2x {
+    height: 180vh
+  }
+
+  &.fleetchart-3x {
+    height: 270vh
+  }
+
+  &.fleetchart-4x {
+    height: 360vh
+  }
 
   .fleetchart-item {
     padding: 30px 20px;
+    min-width: 0;
     cursor: pointer;
     filter: drop-shadow(2px 4px 6px black);
     display: flex;
@@ -62,13 +127,16 @@
 
 .fleetchart-download-image {
   display: none;
-  width: 100%;
-  text-align: center;
 }
 
 .fleetchart-download {
   .fleetchart-download-image {
     display: block;
+    position: absolute;
+    bottom: 5px;
+    width: 120px;
+    height: 120px;
+    left: 5px;
 
     img {
       width: 120px;
@@ -89,6 +157,30 @@
 @media (max-width: $desktop-breakpoint) {
   .fleetchart {
     justify-content: center;
+  }
+
+  .fleetchart-wrapper {
+    .fleetchart-controls {
+      position: relative;
+      opacity: 1;
+      left: auto;
+      bottom: auto;
+      margin-left: 0;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .fleetchart-grid-label {
+      display: flex;
+      position: relative;
+      left: auto;
+      bottom: auto;
+      justify-content: center;
+
+      &.fleetchart-grid-enabled {
+        opacity: 1;
+      }
+    }
   }
 
   .fleetchart-slider {

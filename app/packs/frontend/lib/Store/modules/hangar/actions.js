@@ -35,14 +35,6 @@ export default {
     commit('setFilterVisible', !state.filterVisible)
   },
 
-  toggleFleetchart({ commit, state }) {
-    commit('setFleetchartVisible', !state.fleetchartVisible)
-  },
-
-  togglePublicFleetchart({ commit, state }) {
-    commit('setPublicFleetchartVisible', !state.publicFleetchartVisible)
-  },
-
   toggleMoney({ commit, state }) {
     commit('setMoney', !state.money)
   },
@@ -57,5 +49,9 @@ export default {
 
   toggleGridView({ commit, state }) {
     commit('setGridView', !state.gridView)
+  },
+
+  toggleFleetchart({ commit, state }) {
+    commit('setFleetchartVisible', !state.fleetchartVisible)
   },
 }

@@ -82,13 +82,9 @@ export const routes = [
   {
     path: ':slug/fleetchart/',
     name: 'fleet-fleetchart',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Fleetchart/index.vue'
-      ),
-    meta: {
-      backgroundImage: 'bg-8',
+    redirect: {
+      name: 'fleet-ships',
+      query: { fleetchart: true },
     },
   },
   {

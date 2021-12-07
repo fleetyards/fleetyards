@@ -1,5 +1,5 @@
 <template>
-  <BtnDropdown size="small" variant="dropdown" :block="true">
+  <BtnDropdown :size="size" :variant="variant" :mobile-block="true">
     <template #label>
       <template v-if="!mobile">{{ $t('labels.pagination.perPage') }}:</template>
       {{ perPage }}
@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
@@ -29,7 +28,7 @@ import Btn from 'frontend/core/components/Btn'
     Btn,
   },
 })
-export default class PerPageDropdown extends Vue {
+export default class PerPageDropdown extends BtnDropdown {
   @Prop({ required: true }) perPage!: number
 
   @Prop({

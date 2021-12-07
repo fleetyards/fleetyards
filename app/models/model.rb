@@ -18,6 +18,7 @@
 #  dock_size                :integer
 #  erkul_identifier         :string
 #  fleetchart_image         :string
+#  fleetchart_offset_length :decimal(15, 2)
 #  focus                    :string(255)
 #  ground                   :boolean          default(FALSE)
 #  ground_speed             :decimal(15, 2)
@@ -38,6 +39,7 @@
 #  model_paints_count       :integer          default(0)
 #  module_hardpoints_count  :integer          default(0)
 #  name                     :string(255)
+#  name_slug                :string
 #  notified                 :boolean          default(FALSE)
 #  on_sale                  :boolean          default(FALSE)
 #  pitch_max                :decimal(15, 2)
@@ -103,6 +105,9 @@ class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
   paginates_per 30
+  max_paginates_per 240
+
+  PAGINATION_OPTIONS = [15, 30, 60, 120, 240].freeze
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code],
              word_start: %i[name manufacturer_name]

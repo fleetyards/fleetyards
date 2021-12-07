@@ -153,6 +153,16 @@ export default {
   'public': 'Public',
   'hangarStats': 'Stats',
   'fleetchart': 'Fleetchart',
+  'fleetchartApp': {
+    screenHeight: 'Screen Height',
+    screenHeightOptions: {
+      '1x': '1x',
+      '1_5x': '1.5x',
+      '2x': '2x',
+      '3x': '3x',
+      '4x': '4x',
+    },
+  },
   'fleetStats': 'Stats',
   'hangarMetrics': {
     total: 'Total',

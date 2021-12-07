@@ -1,0 +1,37 @@
+.fleetchart-app {
+  background-color: #111;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  bottom: 0;
+  right: 0;
+  z-index: 2000;
+  overflow: hidden;
+  outline: 0;
+  transition: opacity $transition-base-speed ease-in-out, transform $transition-base-speed ease-in-out;
+
+  &.fade {
+    opacity: 0;
+    transform: scale(0);
+
+    &.in {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .fleetchart-app-close {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    z-index: 2001;
+  }
+}
+
+
+.nav-visible {
+  .fleetchart-app {
+
+  }
+}

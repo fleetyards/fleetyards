@@ -17,11 +17,9 @@
       >
         <div v-if="!mobile" class="page-actions">
           <Btn
-            :to="{
-              name: 'fleet-fleetchart',
-              params: { slug: fleet.slug },
-            }"
             :inline="true"
+            data-test="fleetchart-link"
+            @click.native="toggleFleetchart"
           >
             <i class="fad fa-starship" />
             {{ $t('labels.fleetchart') }}
@@ -43,7 +41,8 @@
       <ShipsList
         v-if="fleet.myFleet"
         :fleet="fleet"
-        :copy-public-url="copyShareUrl"
+        :share-url="shareUrl"
+        :meta-title="metaTitle"
       />
       <PublicShipsList v-else-if="fleet.publicFleet" :fleet="fleet" />
     </template>
@@ -53,7 +52,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, Action } from 'vuex-class'
 import Avatar from 'frontend/core/components/Avatar'
 import Btn from 'frontend/core/components/Btn'
 import ShareBtn from 'frontend/components/ShareBtn'
@@ -77,6 +76,8 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
 })
 export default class FleetShips extends Vue {
   @Getter('mobile') mobile
+
+  @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
 
   get fleet() {
     return fleetsCollection.record

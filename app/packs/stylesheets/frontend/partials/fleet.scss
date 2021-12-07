@@ -1,0 +1,20 @@
+.fleet-metrics {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  cursor: pointer;
+
+  .metrics-label,
+  .metrics-value {
+    display: inline-block;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleet-header {
+    .fleet-labels {
+      margin-bottom: 20px;
+    }
+  }
+}

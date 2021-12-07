@@ -9,14 +9,6 @@ export default () => ({
   actions,
 
   getters: {
-    detailsVisible(state) {
-      return state.detailsVisible
-    },
-
-    filterVisible(state) {
-      return state.filterVisible
-    },
-
     fleetchartVisible(state) {
       return state.fleetchartVisible
     },
@@ -36,42 +28,10 @@ export default () => ({
     fleetchartScreenHeight(state) {
       return state.fleetchartScreenHeight
     },
-
-    grouped(state) {
-      return state.grouped
-    },
-
-    money(state) {
-      return state.money
-    },
-
-    preview(state) {
-      return state.preview
-    },
-
-    inviteToken(state) {
-      return state.inviteToken
-    },
-
-    perPage(state) {
-      return state.perPage
-    },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
-    reset(state) {
-      Object.assign(state, getDefaultState())
-    },
-
-    setDetailsVisible(state, payload) {
-      state.detailsVisible = payload
-    },
-
-    setFilterVisible(state, payload) {
-      state.filterVisible = payload
-    },
-
     setFleetchartVisible(state, payload) {
       state.fleetchartVisible = payload
     },
@@ -90,26 +50,6 @@ export default () => ({
 
     setFleetchartScreenHeight(state, payload) {
       state.fleetchartScreenHeight = payload
-    },
-
-    setGrouped(state, payload) {
-      state.grouped = payload
-    },
-
-    setMoney(state, payload) {
-      state.money = payload
-    },
-
-    setPreview(state, payload) {
-      state.preview = !!payload
-    },
-
-    setInviteToken(state, payload) {
-      state.inviteToken = payload
-    },
-
-    setPerPage(state, payload) {
-      state.perPage = payload
     },
   },
   /* eslint-enable no-param-reassign */

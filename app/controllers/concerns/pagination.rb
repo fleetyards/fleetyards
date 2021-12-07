@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 module Pagination
+  class InvalidPerPage < StandardError; end
+
+  def per_page(model)
+    raise Pagination::InvalidPerPage if params[:perPage].present? && model::PAGINATION_OPTIONS.exclude?(params[:perPage].to_i)
+
+    return params[:perPage].to_i if params[:perPage].present?
+
+    model.default_per_page
+  end
+
   def pagination_header(name)
     scope = name
     scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)

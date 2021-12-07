@@ -16,14 +16,6 @@
         icon="fas fa-th"
         :exact="true"
       />
-      <NavItem
-        :to="{
-          name: 'models-fleetchart',
-          query: filterFor('models-fleetchart'),
-        }"
-        :label="$t('nav.models.fleetchart')"
-        icon="fad fa-starship"
-      />
       <NavItem :divider="true" />
       <NavItem
         :to="{
