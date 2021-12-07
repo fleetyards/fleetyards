@@ -67,7 +67,6 @@ import FleetchartItemImage from 'frontend/components/Fleetchart/List/Item/Image'
 @Component<ModelsCompareTopView>({
   components: {
     BCollapse,
-    FleetchartSlider,
     FleetchartItemImage,
   },
 })
