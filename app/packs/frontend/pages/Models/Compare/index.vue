@@ -130,6 +130,16 @@ import modelHardpointsCollection from 'frontend/api/collections/ModelHardpoints'
   mixins: [MetaInfo],
 })
 export default class ModelsCompare extends Vue {
+  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
+
+  modelsCollection: ModelsCollection = modelsCollection
+
+  newModel: Model | null = null
+
+  models: Model[] = []
+
+  form = {}
+
   get erkulUrl() {
     return 'https://www.erkul.games/calculator'
   }
@@ -172,16 +182,6 @@ export default class ModelsCompare extends Vue {
       },
     ]
   }
-
-  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
-
-  modelsCollection: ModelsCollection = modelsCollection
-
-  newModel: Model | null = null
-
-  models: Model[] = []
-
-  form = {}
 
   @Watch('form', { deep: true })
   onFormChange() {

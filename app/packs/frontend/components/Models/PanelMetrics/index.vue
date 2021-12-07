@@ -74,6 +74,8 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<PanelMetrics>({})
 export default class PanelMetrics extends Vue {
+  @Prop({ required: true }) model: Model
+
   get isGroundVehicle() {
     return this.model.classification === 'ground'
   }
@@ -139,7 +141,5 @@ export default class PanelMetrics extends Vue {
       .filter(item => item)
       .join(' - ')
   }
-
-  @Prop({ required: true }) model: Model
 }
 </script>

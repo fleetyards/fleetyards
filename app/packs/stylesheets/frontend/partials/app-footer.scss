@@ -122,8 +122,8 @@ $footerOuterBorderWidth: 2px;
 
   .sc-data-version {
     position: absolute;
-    bottom: 15px;
     right: 15px;
+    bottom: 15px;
     color: darken($text-color, 40%);
   }
 }
@@ -149,11 +149,11 @@ $footerOuterBorderWidth: 2px;
 
     .sc-data-version {
       position: relative;
+      right: 0;
+      bottom: 0;
       padding-top: 5px;
       padding-bottom: 15px;
       text-align: center;
-      bottom: 0px;
-      right: 0px;
     }
   }
 

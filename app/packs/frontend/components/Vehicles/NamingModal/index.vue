@@ -155,6 +155,14 @@ import { transformErrors } from 'frontend/api/helpers'
   },
 })
 export default class VehicleNamingModal extends Vue {
+  @Prop({ required: true }) vehicle: Vehicle
+
+  submitting: boolean = false
+
+  deleting: boolean = false
+
+  form: Object | null = null
+
   public get dirty() {
     return (
       !this.submitting &&
@@ -163,14 +171,6 @@ export default class VehicleNamingModal extends Vue {
       )
     )
   }
-
-  @Prop({ required: true }) vehicle: Vehicle
-
-  submitting: boolean = false
-
-  deleting: boolean = false
-
-  form: Object | null = null
 
   mounted() {
     this.setupForm()

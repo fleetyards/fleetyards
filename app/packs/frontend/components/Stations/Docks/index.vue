@@ -80,6 +80,10 @@ import DockItem from './Item'
   },
 })
 export default class Docks extends Vue {
+  @Prop({ required: true }) station: Station
+
+  @Prop({ default: false }) padding: boolean
+
   get hasGroup() {
     return this.station.docks.some(dock => !!dock.group)
   }
@@ -87,10 +91,6 @@ export default class Docks extends Vue {
   get docksByGroup() {
     return groupBy(sortBy(this.station.docks, 'name'), 'group')
   }
-
-  @Prop({ required: true }) station: Station
-
-  @Prop({ default: false }) padding: boolean
 
   docksBySize(docks) {
     return groupBy(docks, 'sizeLabel')

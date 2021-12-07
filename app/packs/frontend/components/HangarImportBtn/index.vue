@@ -41,10 +41,6 @@ import {
   },
 })
 export default class HangarImportBtn extends Vue {
-  get fileExtensionsList() {
-    return this.fileExtensions.split(',')
-  }
-
   fileExtensions = 'json'
 
   disabled = false
@@ -70,6 +66,10 @@ export default class HangarImportBtn extends Vue {
     },
   })
   size!: string
+
+  get fileExtensionsList() {
+    return this.fileExtensions.split(',')
+  }
 
   selectFile() {
     this.disabled = true

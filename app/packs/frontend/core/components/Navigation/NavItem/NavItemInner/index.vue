@@ -39,10 +39,6 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<NavItemInner>({})
 export default class NavItemInner extends Vue {
-  get firstLetter() {
-    return this.label.charAt(0)
-  }
-
   @Prop({ default: '' }) label: string
 
   @Prop({ default: null }) icon: string | null
@@ -50,6 +46,10 @@ export default class NavItemInner extends Vue {
   @Prop({ default: null }) image: string | null
 
   @Prop({ default: false }) slim: boolean
+
+  get firstLetter() {
+    return this.label.charAt(0)
+  }
 }
 </script>
 

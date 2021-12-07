@@ -127,6 +127,14 @@ import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
   },
 })
 export default class FleetFleetchart extends Vue {
+  collection: FleetVehiclesCollection = fleetVehiclesCollection
+
+  @Prop({ required: true }) fleet: Fleet
+
+  @Getter('fleetchartScale', { namespace: 'fleet' }) fleetchartScale
+
+  @Getter('mobile') mobile
+
   get fleetStats() {
     return this.collection.stats
   }
@@ -146,14 +154,6 @@ export default class FleetFleetchart extends Vue {
 
     return `${host}/fleets/${this.fleet.slug}/fleetchart`
   }
-
-  collection: FleetVehiclesCollection = fleetVehiclesCollection
-
-  @Prop({ required: true }) fleet: Fleet
-
-  @Getter('fleetchartScale', { namespace: 'fleet' }) fleetchartScale
-
-  @Getter('mobile') mobile
 
   mounted() {
     this.fetch()

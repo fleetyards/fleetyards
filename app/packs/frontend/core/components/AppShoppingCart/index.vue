@@ -33,6 +33,10 @@ import { sum as sumArray } from 'frontend/utils/Array'
   },
 })
 export default class ShoppingCart extends Vue {
+  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
+
+  @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
+
   get total() {
     return sumArray(
       this.cartItems.map(item => this.sum(item)).filter(item => item),
@@ -42,10 +46,6 @@ export default class ShoppingCart extends Vue {
   get cartItemCount() {
     return sumArray(this.cartItems.map(item => item.amount))
   }
-
-  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
-
-  @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
 
   sum(cartItem) {
     return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)

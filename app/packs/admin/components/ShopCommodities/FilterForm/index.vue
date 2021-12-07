@@ -84,10 +84,6 @@ import { getFilters, isFilterSelected } from 'frontend/utils/Filters'
   },
 })
 export default class ShopCommoditiesFilterForm extends Vue {
-  get isFilterSelected() {
-    return isFilterSelected(this.$route.query.filters)
-  }
-
   componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection = componentItemTypeFiltersCollection
 
   equipmentItemTypeFiltersCollection: EquipmentItemTypeFiltersCollection = equipmentItemTypeFiltersCollection
@@ -108,6 +104,10 @@ export default class ShopCommoditiesFilterForm extends Vue {
   }
 
   filter: Function = debounce(this.debouncedFilter, 500)
+
+  get isFilterSelected() {
+    return isFilterSelected(this.$route.query.filters)
+  }
 
   @Watch('form', {
     deep: true,
