@@ -51,7 +51,7 @@ if ENV['TEST_SEEDS'].present?
   return
 end
 
-unless ENV['SKIP_FLEETCHART_SEEDS'].present?
+if ENV['FLEETCHART_SEEDS'].present?
   Dir[File.join(Rails.root, 'db', 'seeds_fleetchart', '*')].sort.select do |file|
     File.directory?(file)
   end.each do |ship_dir|
