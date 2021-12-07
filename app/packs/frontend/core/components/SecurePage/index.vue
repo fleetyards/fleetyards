@@ -67,10 +67,6 @@ import sessionCollection from 'frontend/api/collections/Session'
   },
 })
 export default class Signup extends Vue {
-  get metaTitle() {
-    return this.$t(`title.confirmAccess`)
-  }
-
   @Getter('accessConfirmed', { namespace: 'session' }) accessConfirmed: boolean
 
   @Action('confirmAccess', { namespace: 'session' }) saveConfirmAccess: any
@@ -83,6 +79,10 @@ export default class Signup extends Vue {
   password: string = null
 
   confirmed: boolean = false
+
+  get metaTitle() {
+    return this.$t(`title.confirmAccess`)
+  }
 
   mounted() {
     this.$comlink.$on('access-confirmation-required', this.resetConfirmation)

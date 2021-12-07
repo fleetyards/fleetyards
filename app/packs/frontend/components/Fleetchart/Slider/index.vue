@@ -26,13 +26,13 @@ import VueSlider from 'vue-slider-component'
   },
 })
 export default class FleetchartSlider extends Vue {
-  get max() {
-    return this.mobile ? 100 : 300
-  }
-
   @Prop({ required: true }) initialScale: Number
 
   scale: Number = null
+
+  get max() {
+    return this.mobile ? 100 : 300
+  }
 
   mounted() {
     this.scale = this.initialScale

@@ -39,6 +39,11 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<HardpointItem>({})
 export default class HardpointItem extends Vue {
+  @Prop({ required: true }) hardpoint: Hardpoint
+
+  /* eslint-disable global-require */
+  loadoutListIcon = require('images/icons/loadout-list-icon.svg')
+
   /* eslint-enable global-require */
   get showComponent() {
     return this.loadout.component
@@ -55,10 +60,5 @@ export default class HardpointItem extends Vue {
 
     return this.hardpoint.loadouts[0]
   }
-
-  @Prop({ required: true }) hardpoint: Hardpoint
-
-  /* eslint-disable global-require */
-  loadoutListIcon = require('images/icons/loadout-list-icon.svg')
 }
 </script>

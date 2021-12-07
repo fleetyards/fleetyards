@@ -55,10 +55,10 @@ import stationsCollection from 'frontend/api/collections/Stations'
   mixins: [MetaInfo],
 })
 export default class Stations extends Vue {
+  collection: StationsCollection = stationsCollection
+
   get isSubRoute() {
     return this.$route.name !== 'stations'
   }
-
-  collection: StationsCollection = stationsCollection
 }
 </script>

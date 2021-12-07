@@ -46,10 +46,6 @@ import Btn from 'frontend/core/components/Btn'
   mixins: [Filters],
 })
 export default class FilterForm extends Vue {
-  get routeQuery() {
-    return this.$route.query.q || {}
-  }
-
   loading: boolean = false
 
   modelIdEq: string | null = null
@@ -59,6 +55,10 @@ export default class FilterForm extends Vue {
   form: GalleryFilters = {
     galleryIdEq: this.routeQuery.galleryIdEq,
     galleryTypeEq: this.routeQuery.galleryTypeEq,
+  }
+
+  get routeQuery() {
+    return this.$route.query.q || {}
   }
 
   @Watch('$route')

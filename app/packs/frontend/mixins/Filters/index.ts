@@ -14,6 +14,10 @@ const getQuery = function getQuery(formData: Object) {
 
 @Component<FiltersMixin>({})
 export default class FiltersMixin extends Vue {
+  form: Object = {}
+
+  filter: Function = debounce(this.debouncedFilter, 500)
+
   get isFilterSelected() {
     const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
@@ -23,10 +27,6 @@ export default class FiltersMixin extends Vue {
 
     return Object.keys(query).length > 0
   }
-
-  form: Object = {}
-
-  filter: Function = debounce(this.debouncedFilter, 500)
 
   @Watch('form', {
     deep: true,

@@ -65,10 +65,6 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
   mixins: [Updates],
 })
 export default class FrontendApp extends Vue {
-  get ahoyAccepted() {
-    return this.cookies.ahoy
-  }
-
   sessionRenewInterval: boolean = null
 
   @Getter('mobile') mobile
@@ -85,6 +81,10 @@ export default class FrontendApp extends Vue {
 
   @Getter('infoVisible', { namespace: 'cookies' })
   cookiesInfoVisible: boolean
+
+  get ahoyAccepted() {
+    return this.cookies.ahoy
+  }
 
   @Watch('navCollapsed')
   onNavCollapsedChange() {

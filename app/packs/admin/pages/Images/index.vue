@@ -40,6 +40,8 @@ import imagesCollection, {
   },
 })
 export default class AdminImages extends Vue {
+  collection: AdminImagesCollection = imagesCollection
+
   get toggleFiltersTooltip() {
     if (this.filterVisible) {
       return this.$t('actions.hideFilter')
@@ -58,8 +60,6 @@ export default class AdminImages extends Vue {
   get galleryType() {
     return this.query.galleryTypeEq
   }
-
-  collection: AdminImagesCollection = imagesCollection
 
   async fetch() {
     await this.collection.refresh()

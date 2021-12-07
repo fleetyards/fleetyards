@@ -76,6 +76,8 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
   mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class FleetShips extends Vue {
+  @Getter('mobile') mobile
+
   get fleet() {
     return fleetsCollection.record
   }
@@ -96,8 +98,6 @@ export default class FleetShips extends Vue {
 
     return `${host}/fleets/${this.fleet.slug}/ships`
   }
-
-  @Getter('mobile') mobile
 
   @Watch('$route')
   onRouteChange() {

@@ -135,14 +135,6 @@ import Btn from 'frontend/core/components/Btn'
   },
 })
 export default class AppFooter extends Vue {
-  get copyrightOwner() {
-    return window.COPYRIGHT_OWNER
-  }
-
-  get scDataVersion() {
-    return window.SC_DATA_VERSION
-  }
-
   @Getter('online') online: boolean
 
   @Getter('version', { namespace: 'app' }) version: string
@@ -150,6 +142,14 @@ export default class AppFooter extends Vue {
   @Getter('codename', { namespace: 'app' }) codename: string
 
   @Getter('gitRevision', { namespace: 'app' }) gitRevision: string
+
+  get copyrightOwner() {
+    return window.COPYRIGHT_OWNER
+  }
+
+  get scDataVersion() {
+    return window.SC_DATA_VERSION
+  }
 
   openSupportModal() {
     this.$comlink.$emit('open-modal', {

@@ -94,10 +94,6 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class GroupLabels extends Vue {
-  get sortIndex() {
-    return this.groups.map(item => item.id)
-  }
-
   groups: HangarGroup[] = []
 
   @Prop({
@@ -117,6 +113,10 @@ export default class GroupLabels extends Vue {
   @Prop({ default: false }) editable!: boolean
 
   @Getter('mobile') mobile
+
+  get sortIndex() {
+    return this.groups.map(item => item.id)
+  }
 
   mounted() {
     this.groups = this.hangarGroups

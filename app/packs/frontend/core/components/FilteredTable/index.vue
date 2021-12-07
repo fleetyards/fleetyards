@@ -131,27 +131,6 @@ export type FilteredTableColumn = {
   },
 })
 export default class FilteredTable extends Vue {
-  get uuid() {
-    return this._uid
-  }
-
-  get allSelected() {
-    if (!this.records.length) {
-      return false
-    }
-
-    return this.records
-      .map(record => record.id)
-      .every(recordId => this.internalSelected.includes(recordId))
-  }
-
-  get scopedSlots() {
-    const itemSlotPrefix = 'col.'
-    return Object.keys(this.$scopedSlots)
-      .filter(name => name.startsWith(itemSlotPrefix))
-      .map(name => name.substring(itemSlotPrefix.length))
-  }
-
   @Prop({ required: true }) records!: any[]
 
   @Prop({ required: true }) columns!: FilteredTableColumn[]
@@ -172,6 +151,27 @@ export default class FilteredTable extends Vue {
   internalSelected: string[] = []
 
   @Getter('mobile') mobile
+
+  get uuid() {
+    return this._uid
+  }
+
+  get allSelected() {
+    if (!this.records.length) {
+      return false
+    }
+
+    return this.records
+      .map(record => record.id)
+      .every(recordId => this.internalSelected.includes(recordId))
+  }
+
+  get scopedSlots() {
+    const itemSlotPrefix = 'col.'
+    return Object.keys(this.$scopedSlots)
+      .filter(name => name.startsWith(itemSlotPrefix))
+      .map(name => name.substring(itemSlotPrefix.length))
+  }
 
   @Watch('selected')
   onSelectedChange() {

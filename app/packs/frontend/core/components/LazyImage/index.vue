@@ -17,6 +17,14 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<LazyImage>({})
 export default class LazyImage extends Vue {
+  @Prop({ required: true }) src!: string
+
+  @Prop({ default: 'image' }) alt!: string
+
+  @Prop({ default: null }) href!: string
+
+  @Prop({ to: null }) to!: Object
+
   get uuid() {
     return this._uid
   }
@@ -46,13 +54,5 @@ export default class LazyImage extends Vue {
 
     return {}
   }
-
-  @Prop({ required: true }) src!: string
-
-  @Prop({ default: 'image' }) alt!: string
-
-  @Prop({ default: null }) href!: string
-
-  @Prop({ to: null }) to!: Object
 }
 </script>
