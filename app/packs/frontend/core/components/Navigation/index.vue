@@ -105,10 +105,6 @@ import { isFleetRoute } from 'frontend/utils/Routes/Fleets'
   mixins: [NavigationMixin],
 })
 export default class Navigation extends Vue {
-  get isFleetRoute() {
-    return isFleetRoute(this.$route.name)
-  }
-
   searchQuery = null
 
   @Getter('filters') filters
@@ -118,6 +114,10 @@ export default class Navigation extends Vue {
   @Getter('isUpdateAvailable', { namespace: 'app' }) isUpdateAvailable
 
   @Getter('preview', { namespace: 'hangar' }) hangarPreview
+
+  get isFleetRoute() {
+    return isFleetRoute(this.$route.name)
+  }
 
   @Watch('$route')
   onRouteChange() {

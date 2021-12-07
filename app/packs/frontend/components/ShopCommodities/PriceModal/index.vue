@@ -268,24 +268,6 @@ import commodityPricesCollction from 'frontend/api/collections/CommodityPrices'
   },
 })
 export default class PricesModal extends Vue {
-  get stationsCollectionFilter() {
-    return {
-      withShops: true,
-      commodityItemType: this.commodityItemType,
-    }
-  }
-
-  get shopsCollectionFilter() {
-    return {
-      stationIn: [this.internalStationSlug],
-      commodityItemType: this.commodityItemType,
-    }
-  }
-
-  get id() {
-    return (this.hangarGroup && this.hangarGroup.id) || 'new'
-  }
-
   @Prop({ default: null }) shopId!: string | null
 
   @Prop({ default: null }) stationSlug!: string | null
@@ -321,6 +303,24 @@ export default class PricesModal extends Vue {
   commodityPricesCollction: CommodityPricesCollction = commodityPricesCollction
 
   internalStationSlug: string = null
+
+  get stationsCollectionFilter() {
+    return {
+      withShops: true,
+      commodityItemType: this.commodityItemType,
+    }
+  }
+
+  get shopsCollectionFilter() {
+    return {
+      stationIn: [this.internalStationSlug],
+      commodityItemType: this.commodityItemType,
+    }
+  }
+
+  get id() {
+    return (this.hangarGroup && this.hangarGroup.id) || 'new'
+  }
 
   @Watch('internalStationSlug')
   onInternalStationSlugChange(value) {

@@ -20,10 +20,6 @@ import Vue from 'vue'
 
 @Component({})
 export default class FleetchartListItemImage extends Vue {
-  get lengthMultiplicator() {
-    return (this.scale / 100) * 4
-  }
-
   @Prop() src!: string
 
   @Prop() label!: string
@@ -31,5 +27,9 @@ export default class FleetchartListItemImage extends Vue {
   @Prop() length!: number
 
   @Prop() scale!: number
+
+  get lengthMultiplicator() {
+    return (this.scale / 100) * 4
+  }
 }
 </script>

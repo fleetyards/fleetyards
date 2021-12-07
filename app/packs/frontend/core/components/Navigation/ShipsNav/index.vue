@@ -50,13 +50,13 @@ import NavigationMixin from 'frontend/mixins/Navigation'
   mixins: [NavigationMixin],
 })
 export default class ShipsNav extends Vue {
+  @Getter('filters') filters
+
   get active() {
     return ['models', 'model', 'models-fleetchart', 'models-compare'].includes(
       this.$route.name,
     )
   }
-
-  @Getter('filters') filters
 
   filterFor(route) {
     // // TODO: disabled until vue-router supports navigation to same route

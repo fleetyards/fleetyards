@@ -122,6 +122,12 @@ import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
   },
 })
 export default class FleetVehiclePanel extends Vue {
+  @Prop({ required: true }) fleetVehicle: Vehicle | Model | null
+
+  @Prop({ default: false }) details: boolean
+
+  @Prop({ default: true }) showOwner: boolean
+
   get uuid() {
     return this._uid
   }
@@ -184,12 +190,6 @@ export default class FleetVehiclePanel extends Vue {
     }
     return `${this.vehicles.length}x `
   }
-
-  @Prop({ required: true }) fleetVehicle: Vehicle | Model | null
-
-  @Prop({ default: false }) details: boolean
-
-  @Prop({ default: true }) showOwner: boolean
 
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] }
