@@ -93,11 +93,6 @@
             'fleetchart-3x': screenHeight === '3x',
             'fleetchart-4x': screenHeight === '4x',
           }"
-          :style="{
-            width: fleetchartElementWidth
-              ? `${fleetchartElementWidth}px`
-              : null,
-          }"
         >
           <div key="made-by-the-community" class="fleetchart-download-image">
             <img
@@ -131,7 +126,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import FleetchartItem from 'frontend/components/Fleetchart/List/Item/index.vue'
 import panzoom from 'panzoom'
 import Btn from 'frontend/core/components/Btn'
@@ -139,6 +134,7 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
+import debounce from 'lodash.debounce'
 
 @Component({
   components: {
@@ -150,6 +146,34 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class FleetchartList extends Vue {
+  get fleetchartElement() {
+    return this.$refs.fleetchartWrapper?.children.item(0)
+  }
+
+  get gridSizeLabel() {
+    return (this.gridSize / (this.initialZoomData?.scale || 1) / 4)
+      .toFixed(2)
+      .replace('.00', '')
+  }
+
+  get initialZoomData() {
+    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
+  }
+
+  get viewpoint() {
+    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
+  }
+
+  get showLabels() {
+    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
+  }
+
+  get screenHeight() {
+    return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
+  }
+
+  updateZoomData: Function = debounce(this.debouncedUpdateZoomData, 300)
+
   screenHeightSteps: string[] = ['1x', '1_5x', '2x', '3x', '4x']
 
   showStatus: boolean = false
@@ -157,8 +181,6 @@ export default class FleetchartList extends Vue {
   selectedModel: Model | null = null
 
   selectedVehicle: Vehicle | null = null
-
-  fleetchartElementWidth: number | null = null
 
   zoomSpeed: number = 0.05
 
@@ -193,48 +215,6 @@ export default class FleetchartList extends Vue {
 
   @Prop({ default: null }) downloadName!: string
 
-  get fleetchartElement() {
-    return this.$refs.fleetchartWrapper?.children.item(0)
-  }
-
-  get gridSizeLabel() {
-    return (this.gridSize / (this.initialZoomData?.scale || 1) / 4)
-      .toFixed(2)
-      .replace('.00', '')
-  }
-
-  get initialZoomData() {
-    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
-  }
-
-  get viewpoint() {
-    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
-  }
-
-  get showLabels() {
-    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
-  }
-
-  get screenHeight() {
-    return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
-  }
-
-  @Watch('items')
-  onItemsChange() {
-    this.$nextTick(() => {
-      setTimeout(() => {
-        this.calculateFleetchartWidth()
-      }, 500)
-    })
-  }
-
-  @Watch('screenHeight')
-  onScreenHeightChange() {
-    this.$nextTick(() => {
-      this.calculateFleetchartWidth()
-    })
-  }
-
   mounted() {
     this.showStatus = !!this.$route.query?.showStatus
 
@@ -243,15 +223,10 @@ export default class FleetchartList extends Vue {
     this.setupZoom()
 
     this.drawGridLines()
-
-    window.addEventListener('resize', this.calculateFleetchartWidth)
-
-    this.calculateFleetchartWidth()
   }
 
   beforeDestroy() {
     this.$comlink.$off('fleetchart-toggle-status')
-    window.removeEventListener('resize', this.calculateFleetchartWidth)
 
     this.panzoomInstance.dispose()
 
@@ -279,23 +254,12 @@ export default class FleetchartList extends Vue {
     }
 
     this.panzoomInstance.on('zoom', _event => {
-      this.setZoomData()
+      this.updateZoomData()
     })
 
     this.panzoomInstance.on('pan', _event => {
-      this.setZoomData()
+      this.updateZoomData()
     })
-  }
-
-  calculateFleetchartWidth() {
-    const lastElement = this.fleetchartElement.children.item(1)
-
-    if (!lastElement) {
-      return
-    }
-
-    this.fleetchartElementWidth =
-      lastElement.offsetLeft + this.$refs.fleetchartWrapper.offsetWidth
   }
 
   resetZoom() {
@@ -326,8 +290,6 @@ export default class FleetchartList extends Vue {
 
   toggleStatus() {
     this.showStatus = !this.showStatus
-
-    this.calculateFleetchartWidth()
   }
 
   toggleLabels() {
@@ -335,11 +297,9 @@ export default class FleetchartList extends Vue {
       `${this.namespace}/setFleetchartLabels`,
       !this.showLabels,
     )
-
-    this.calculateFleetchartWidth()
   }
 
-  setZoomData() {
+  debouncedUpdateZoomData() {
     const transform = this.panzoomInstance.getTransform()
 
     this.$store.commit(`${this.namespace}/setFleetchartZoomData`, transform)
