@@ -67,58 +67,6 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component<FormInput>({})
 export default class FormInput extends Vue {
-  get innerId() {
-    return `${this.id}-${this._uid}`
-  }
-
-  get innerStep() {
-    if (this.type === 'number') {
-      return this.step
-    }
-
-    return null
-  }
-
-  get innerLabel() {
-    if (this.label) {
-      return this.label
-    }
-
-    if (this.translationKey) {
-      return this.$t(`labels.${this.translationKey}`)
-    }
-
-    return this.$t(`labels.${this.id}`)
-  }
-
-  get innerPlaceholder() {
-    if (this.noPlaceholder) {
-      return null
-    }
-
-    if (this.placeholder) {
-      return this.placeholder
-    }
-
-    if (this.translationKey) {
-      return this.$t(`placeholders.${this.translationKey}`)
-    }
-
-    return this.$t(`placeholders.${this.id}`)
-  }
-
-  get cssClasses() {
-    return {
-      'has-error has-feedback': this.error,
-      'form-input-large': this.size === 'large',
-      'form-input-clean': this.variant === 'clean',
-      'form-input-clearable': this.clearable,
-      'form-input-disabled': this.disabled,
-      'form-input-inline': this.inline,
-      [`form-input-${this.type}`]: true,
-    }
-  }
-
   @Prop({ required: true }) id!: string
 
   @Prop({ default: null }) icon!: string
@@ -184,6 +132,58 @@ export default class FormInput extends Vue {
   size!: string
 
   inputValue: any = null
+
+  get innerId() {
+    return `${this.id}-${this._uid}`
+  }
+
+  get innerStep() {
+    if (this.type === 'number') {
+      return this.step
+    }
+
+    return null
+  }
+
+  get innerLabel() {
+    if (this.label) {
+      return this.label
+    }
+
+    if (this.translationKey) {
+      return this.$t(`labels.${this.translationKey}`)
+    }
+
+    return this.$t(`labels.${this.id}`)
+  }
+
+  get innerPlaceholder() {
+    if (this.noPlaceholder) {
+      return null
+    }
+
+    if (this.placeholder) {
+      return this.placeholder
+    }
+
+    if (this.translationKey) {
+      return this.$t(`placeholders.${this.translationKey}`)
+    }
+
+    return this.$t(`placeholders.${this.id}`)
+  }
+
+  get cssClasses() {
+    return {
+      'has-error has-feedback': this.error,
+      'form-input-large': this.size === 'large',
+      'form-input-clean': this.variant === 'clean',
+      'form-input-clearable': this.clearable,
+      'form-input-disabled': this.disabled,
+      'form-input-inline': this.inline,
+      [`form-input-${this.type}`]: true,
+    }
+  }
 
   @Watch('value')
   onValueChange() {

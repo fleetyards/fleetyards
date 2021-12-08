@@ -39,15 +39,15 @@ import modelPaintsCollection from 'frontend/api/collections/ModelPaints'
   },
 })
 export default class ModelPaintList extends Vue {
-  get paints() {
-    return this.collection.records
-  }
-
   @Prop({ required: true }) model!: Model
 
   collection: ModelPaintsCollection = modelPaintsCollection
 
   loading: boolean = false
+
+  get paints() {
+    return this.collection.records
+  }
 
   @Watch('model')
   onModelChange() {

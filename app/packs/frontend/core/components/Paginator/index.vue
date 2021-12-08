@@ -72,6 +72,12 @@ import PerPageDropdown from 'frontend/core/components/Paginator/PerPageDropdown'
   },
 })
 export default class Paginator extends Vue {
+  @Prop({ default: null }) collection: any
+
+  @Prop({ default: 1 }) page: number
+
+  @Prop({ default: 1 }) total: number
+
   get innerTotal() {
     if (this.collection) {
       return this.collection.totalPages || 1
@@ -79,12 +85,6 @@ export default class Paginator extends Vue {
 
     return this.total
   }
-
-  @Prop({ default: null }) collection: any
-
-  @Prop({ default: 1 }) page: number
-
-  @Prop({ default: 1 }) total: number
 
   pageRoute(page) {
     return { query: { page, q: this.$route.query.q } }

@@ -4008,10 +4008,10 @@ core-js-compat@^3.18.0, core-js-compat@^3.19.0:
     browserslist "^4.17.5"
     semver "7.0.0"
 
-core-js@3.19.2, core-js@^3.16.2, core-js@^3.6.5:
-  version "3.19.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.2.tgz#ae216d7f4f7e924d9a2e3ff1e4b1940220f9157b"
-  integrity sha512-ciYCResnLIATSsXuXnIOH4CbdfgV+H1Ltg16hJFN7/v6OxqnFr/IFGeLacaZ+fHLAm0TBbXwNK9/DNBzBUrO/g==
+core-js@3.19.3, core-js@^3.16.2, core-js@^3.6.5:
+  version "3.19.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.3.tgz#6df8142a996337503019ff3235a7022d7cdf4559"
+  integrity sha512-LeLBMgEGSsG7giquSzvgBrTS7V5UL6ks3eQlUSbN8dJStlLFiRzUm5iqsRyzUB8carhfKjkJ2vzKqE6z1Vga9g==
 
 core-js@^2.4.0:
   version "2.6.11"
@@ -5154,10 +5154,10 @@ eslint-plugin-prettier@4.0.0:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-sort-class-members@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.14.0.tgz#dcbad3b6352c6c44ba2c59d4f90c57dc99b6c2c1"
-  integrity sha512-Bp/mML9epXy+ozZlKQPUTQhAkfuOc4v1UcIoMVvmRL3sprI4b1GG3DcW8jjadSrGWBzDVG/O3aGTLB2yF6DiFQ==
+eslint-plugin-sort-class-members@^1.14.1:
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.14.1.tgz#e701d6341e267ed0d0bf44c8293ff1e15b324e3c"
+  integrity sha512-/Q/cm3h4N9DBNYvJMQMhluucSmr3Yydr9U0BgGcXUQe/rgWdXKSymZ5Ewcf4vmAG0bbTmAYmekuMnYYrqlu9Rg==
 
 eslint-plugin-vue-types@2.1.0:
   version "2.1.0"

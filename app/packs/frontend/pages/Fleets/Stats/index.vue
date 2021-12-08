@@ -178,6 +178,12 @@ import membersCollection from 'frontend/api/collections/FleetMembers'
   mixins: [MetaInfoMixin],
 })
 export default class FleetStats extends Vue {
+  collection: FleetsCollection = fleetsCollection
+
+  vehiclesCollection: FleetVehiclesCollection = vehiclesCollection
+
+  membersCollection: FleetMembersCollection = membersCollection
+
   get fleet() {
     return this.collection.record
   }
@@ -259,12 +265,6 @@ export default class FleetStats extends Vue {
 
     return this.$t('title.fleets.stats', { fleet: this.fleet.name })
   }
-
-  collection: FleetsCollection = fleetsCollection
-
-  vehiclesCollection: FleetVehiclesCollection = vehiclesCollection
-
-  membersCollection: FleetMembersCollection = membersCollection
 
   mounted() {
     this.fetchFleet()

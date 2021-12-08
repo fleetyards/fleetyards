@@ -70,6 +70,8 @@ import Btn from 'frontend/core/components/Btn'
   },
 })
 export default class RoadmapItemModal extends Vue {
+  @Prop({ required: true }) item
+
   get storeImage() {
     if (this.item.storeImage) {
       return this.item.storeImage
@@ -125,8 +127,6 @@ export default class RoadmapItemModal extends Vue {
           update.key !== 'active' || (update.key === 'active' && update.old),
       )
   }
-
-  @Prop({ required: true }) item
 
   openImage() {
     window.open(this.storeImage, '_blank').focus()

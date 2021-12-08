@@ -135,6 +135,20 @@ import Btn from 'frontend/core/components/Btn'
   mixins: [MetaInfo],
 })
 export default class ShipsRoadmap extends Vue {
+  loading: boolean = true
+
+  onlyReleased: boolean = true
+
+  compact: boolean = true
+
+  roadmapItems = []
+
+  visible = []
+
+  unscheduledModels = []
+
+  roadmapChannel = null
+
   get toggleCompactTooltip() {
     if (this.compact) {
       return this.$t('actions.showDetails')
@@ -185,20 +199,6 @@ export default class ShipsRoadmap extends Vue {
       .map(item => item.model.id)
       .filter(item => item)
   }
-
-  loading: boolean = true
-
-  onlyReleased: boolean = true
-
-  compact: boolean = true
-
-  roadmapItems = []
-
-  visible = []
-
-  unscheduledModels = []
-
-  roadmapChannel = null
 
   mounted() {
     this.fetch()

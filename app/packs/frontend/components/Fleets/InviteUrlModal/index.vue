@@ -81,10 +81,6 @@ import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
   },
 })
 export default class MemberModal extends Vue {
-  get inviteUrls() {
-    return this.collection.records
-  }
-
   collection: FleetInviteUrlCollection = inviteUrlCollection
 
   @Prop({ required: true }) fleet: Fleet
@@ -152,6 +148,10 @@ export default class MemberModal extends Vue {
       value: 100,
     },
   ]
+
+  get inviteUrls() {
+    return this.collection.records
+  }
 
   mounted() {
     this.fetch()

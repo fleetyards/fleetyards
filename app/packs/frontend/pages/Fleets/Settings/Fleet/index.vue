@@ -285,6 +285,33 @@ import { transformErrors } from 'frontend/api/helpers'
   mixins: [MetaInfo],
 })
 export default class FleetSettings extends Vue {
+  leaving: boolean = false
+
+  submitting: boolean = false
+
+  deleting: boolean = false
+
+  files: any[] = []
+
+  fileExtensions: string = 'jpg,jpeg,png,webp'
+
+  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
+
+  form: FleetForm = {
+    fid: null,
+    name: null,
+    description: null,
+    rsiSid: null,
+    discord: null,
+    ts: null,
+    homepage: null,
+    twitch: null,
+    youtube: null,
+    guilded: null,
+    publicFleet: false,
+    removeLogo: false,
+  }
+
   get fleet() {
     return fleetsCollection.record
   }
@@ -337,33 +364,6 @@ export default class FleetSettings extends Vue {
     }
 
     return null
-  }
-
-  leaving: boolean = false
-
-  submitting: boolean = false
-
-  deleting: boolean = false
-
-  files: any[] = []
-
-  fileExtensions: string = 'jpg,jpeg,png,webp'
-
-  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
-
-  form: FleetForm = {
-    fid: null,
-    name: null,
-    description: null,
-    rsiSid: null,
-    discord: null,
-    ts: null,
-    homepage: null,
-    twitch: null,
-    youtube: null,
-    guilded: null,
-    publicFleet: false,
-    removeLogo: false,
   }
 
   @Watch('$route')
