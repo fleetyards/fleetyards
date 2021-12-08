@@ -111,9 +111,10 @@
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Btn
-              :to="{ name: 'hangar-fleetchart' }"
+              data-test="fleetchart-link"
               size="small"
               variant="dropdown"
+              @click.native="toggleFleetchart"
             >
               <i class="fad fa-starship" />
               <span>{{ $t('labels.fleetchart') }}</span>
