@@ -60,17 +60,5 @@ describe('Hangar', () => {
       .should('exist')
 
     cy.selectElement('fleetchart-link').click()
-
-    cy.url().should('include', '/fleetchart/')
-
-    cy.openContextMenu('300i')
-
-    cy.openShipMenuFromContext()
-
-    cy.removeShip()
-
-    cy.acceptConfirm()
-
-    cy.get('.fleetchart-item').should('have.length', 0)
   })
 })
