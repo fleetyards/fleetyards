@@ -26,12 +26,8 @@
     top: 15px;
     right: 5px;
     z-index: 2001;
-  }
-}
-
-
-.nav-visible {
-  .fleetchart-app {
-
+    margin-top: env(safe-area-inset-top);
+    margin-right: env(safe-area-inset-right);
+    margin-left: env(safe-area-inset-left);
   }
 }
