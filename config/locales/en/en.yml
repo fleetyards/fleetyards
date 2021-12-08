@@ -42,6 +42,8 @@ en:
     commodity_prices:
       confirmation: Confirm Price Submissions
     otp: Two Factor Auth
+    maintenance: Maintenance
+    pghero: PGHero
   title:
     frontend:
       home: Home

@@ -115,6 +115,9 @@ gem 'excon', '>= 0.71.0'
 
 gem 'appsignal'
 
+gem 'pghero'
+gem 'pg_query', '>= 0.9.0'
+
 group :development do
   gem 'annotate'
 
