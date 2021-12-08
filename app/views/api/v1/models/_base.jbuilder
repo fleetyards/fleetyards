@@ -38,8 +38,10 @@ json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url
 json.top_view model.top_view.url
 json.top_view_resized model.top_view.resized.url
+json.top_view_small model.top_view.small.url
 json.side_view model.side_view.url
 json.side_view_resized model.side_view.resized.url
+json.side_view_small model.side_view.small.url
 json.brochure model.brochure.url
 json.holo model.holo.url
 json.holo_colored model.holo_colored

@@ -31,7 +31,7 @@
         >
           <FleetchartItemImage
             :label="model.name"
-            :src="model.sideView"
+            :src="model.sideViewSmall"
             :length="model.length"
             :scale="topViewScale"
           />
@@ -48,7 +48,7 @@
         >
           <FleetchartItemImage
             :label="model.name"
-            :src="model.topView"
+            :src="model.topViewSmall"
             :length="model.length"
             :scale="topViewScale"
           />

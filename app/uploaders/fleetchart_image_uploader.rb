@@ -3,6 +3,10 @@
 class FleetchartImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
+  version :small do
+    process resize_to_limit: [600, 600]
+  end
+
   version :resized do
     process resize_to_limit: [1200, 1200], if: :size_small?
     process resize_to_limit: [2200, 2200], if: :size_medium?

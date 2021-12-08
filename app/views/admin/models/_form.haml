@@ -256,7 +256,7 @@
         = form.hidden_field :top_view_cache
       %br
       - if model.top_view?
-        = image_tag(model.top_view.url)
+        = image_tag(model.top_view.small.url)
         = form.check_box :remove_top_view
         Remove Image
       %small
@@ -269,7 +269,7 @@
         = form.hidden_field :side_view_cache
       %br
       - if model.side_view?
-        = image_tag(model.side_view.url)
+        = image_tag(model.side_view.small.url)
         = form.check_box :remove_side_view
         Remove Image
       %small
