@@ -5,11 +5,9 @@
   .fleetchart-controls {
     position: fixed;
     display: flex;
-    opacity: 0;
     bottom: 10px;
     right: 20px;
     z-index: 1000;
-    transition: opacity $transition-base-speed ease;
   }
 
   .fleetchart-grid-label {
@@ -20,14 +18,8 @@
     z-index: 1000;
     text-shadow: 0 0 2px black;
     transition: opacity $transition-base-speed ease;
-  }
 
-  &:hover {
-    .fleetchart-controls {
-      opacity: 1;
-    }
-
-    .fleetchart-grid-label.fleetchart-grid-enabled {
+    &.fleetchart-grid-enabled {
       opacity: 1;
     }
   }
@@ -64,6 +56,7 @@
   display: flex;
   z-index: 1;
   position: relative;
+  transition: height $transition-base-speed ease;
 
 
   &.fleetchart-1_5x {
@@ -132,7 +125,7 @@
     bottom: 5px;
     width: 120px;
     height: 120px;
-    left: 5px;
+    right: 5px;
 
     img {
       width: 120px;
@@ -142,24 +135,12 @@
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .fleetchart {
-    justify-content: center;
-  }
-
   .fleetchart-wrapper {
-    .fleetchart-controls {
-      opacity: 1;
-    }
-
     .fleetchart-grid-label {
       bottom: 90px;
       left: 10px;
       right: 10px;
       text-align: center;
-
-      &.fleetchart-grid-enabled {
-        opacity: 1;
-      }
     }
   }
 }
