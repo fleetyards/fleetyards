@@ -146,32 +146,6 @@ import debounce from 'lodash.debounce'
   },
 })
 export default class FleetchartList extends Vue {
-  get fleetchartElement() {
-    return this.$refs.fleetchartWrapper?.children.item(0)
-  }
-
-  get gridSizeLabel() {
-    return (this.gridSize / (this.initialZoomData?.scale || 1) / 4)
-      .toFixed(2)
-      .replace('.00', '')
-  }
-
-  get initialZoomData() {
-    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
-  }
-
-  get viewpoint() {
-    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
-  }
-
-  get showLabels() {
-    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
-  }
-
-  get screenHeight() {
-    return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
-  }
-
   updateZoomData: Function = debounce(this.debouncedUpdateZoomData, 300)
 
   screenHeightSteps: string[] = ['1x', '1_5x', '2x', '3x', '4x']
@@ -214,6 +188,32 @@ export default class FleetchartList extends Vue {
   @Prop({ default: false }) myShip!: boolean
 
   @Prop({ default: null }) downloadName!: string
+
+  get fleetchartElement() {
+    return this.$refs.fleetchartWrapper?.children.item(0)
+  }
+
+  get gridSizeLabel() {
+    return (this.gridSize / (this.initialZoomData?.scale || 1) / 4)
+      .toFixed(2)
+      .replace('.00', '')
+  }
+
+  get initialZoomData() {
+    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
+  }
+
+  get viewpoint() {
+    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
+  }
+
+  get showLabels() {
+    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
+  }
+
+  get screenHeight() {
+    return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
+  }
 
   mounted() {
     this.showStatus = !!this.$route.query?.showStatus

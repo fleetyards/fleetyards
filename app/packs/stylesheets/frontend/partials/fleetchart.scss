@@ -1,22 +1,22 @@
 .fleetchart-wrapper {
-  width: 100px;
   position: relative;
+  width: 100px;
 
   .fleetchart-controls {
     position: fixed;
-    display: flex;
-    bottom: 10px;
     right: 20px;
+    bottom: 10px;
     z-index: 1000;
+    display: flex;
   }
 
   .fleetchart-grid-label {
     position: fixed;
-    opacity: 0;
     bottom: 20px;
     left: 20px;
     z-index: 1000;
     text-shadow: 0 0 2px black;
+    opacity: 0;
     transition: opacity $transition-base-speed ease;
 
     &.fleetchart-grid-enabled {
@@ -26,19 +26,19 @@
 }
 
 .fleetchart-scroll-wrapper {
-  overflow: hidden;
-  height: 100vh;
   position: relative;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .fleetchart-grid {
   position: absolute;
-  opacity: 0;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
+  left: 0;
   z-index: 0;
+  opacity: 0;
   transition: opacity $transition-base-speed ease;
 
   &.fleetchart-grid-enabled {
@@ -47,42 +47,41 @@
 }
 
 .fleetchart {
-  height: 90vh;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: wrap-reverse;
   align-content: center;
   align-items: flex-start;
   justify-content: center;
-  flex-direction: column-reverse;
-  flex-wrap: wrap-reverse;
-  display: flex;
-  z-index: 1;
-  position: relative;
+  height: 90vh;
   transition: height $transition-base-speed ease;
 
-
   &.fleetchart-1_5x {
-    height: 135vh
+    height: 135vh;
   }
 
   &.fleetchart-2x {
-    height: 180vh
+    height: 180vh;
   }
 
   &.fleetchart-3x {
-    height: 270vh
+    height: 270vh;
   }
 
   &.fleetchart-4x {
-    height: 360vh
+    height: 360vh;
   }
 
   .fleetchart-item {
-    padding: 30px 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     min-width: 0;
+    padding: 30px 20px;
     cursor: pointer;
     filter: drop-shadow(2px 4px 6px black);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
 
     a {
       display: block;
@@ -93,10 +92,10 @@
     }
 
     .fleetchart-item-label {
-      font-size: 120%;
-      font-family: 'Orbitron', sans-serif;
       margin-right: 20px;
       color: darken($text-color, 10%);
+      font-size: 120%;
+      font-family: 'Orbitron', sans-serif;
 
       small {
         display: block;
@@ -120,12 +119,12 @@
 
 .fleetchart-download {
   .fleetchart-download-image {
-    display: block;
     position: absolute;
+    right: 5px;
     bottom: 5px;
+    display: block;
     width: 120px;
     height: 120px;
-    right: 5px;
 
     img {
       width: 120px;
@@ -137,9 +136,9 @@
 @media (max-width: $desktop-breakpoint) {
   .fleetchart-wrapper {
     .fleetchart-grid-label {
+      right: 10px;
       bottom: 90px;
       left: 10px;
-      right: 10px;
       text-align: center;
     }
   }

@@ -39,10 +39,6 @@ import Btn from 'frontend/core/components/Btn'
   },
 })
 export default class FleetchartApp extends Vue {
-  get visible() {
-    return this.$store.getters[`${this.namespace}/fleetchartVisible`]
-  }
-
   @Action('showOverlay', { namespace: 'app' }) showOverlay: any
 
   @Action('hideOverlay', { namespace: 'app' }) hideOverlay: any
@@ -65,6 +61,10 @@ export default class FleetchartApp extends Vue {
   @Prop({ default: false }) myShip!: boolean
 
   @Prop({ default: null }) downloadName!: string
+
+  get visible() {
+    return this.$store.getters[`${this.namespace}/fleetchartVisible`]
+  }
 
   @Watch('items')
   onItemsChange() {
