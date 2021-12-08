@@ -54,8 +54,8 @@ class Fleetchart < Thor
   def upload(export_folder, environment = 'stage')
     seeds_path = "#{export_folder}/seeds_fleetchart/"
 
-    run("scp -r \"#{seeds_path}\" fleetyards@fleetyards.net:~/shared/db/seeds_fleetchart") if environment == 'live'
+    run("scp -r \"#{seeds_path}\" fleetyards@fleetyards.net:~/shared/db") if environment == 'live'
 
-    run("scp -r \"#{seeds_path}\" fleetyards@stage.fleetyards.net:~/shared/db/seeds_fleetchart") if environment == 'stage'
+    run("scp -r \"#{seeds_path}\" fleetyards@stage.fleetyards.net:~/shared/db") if environment == 'stage'
   end
 end
