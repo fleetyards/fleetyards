@@ -223,6 +223,9 @@ export default class FleetchartList extends Vue {
     this.setupZoom()
 
     this.drawGridLines()
+
+    window.addEventListener('resize', this.updateCanvasSize)
+    window.addEventListener('deviceorientation', this.updateCanvasSize)
   }
 
   beforeDestroy() {
@@ -231,6 +234,14 @@ export default class FleetchartList extends Vue {
     this.panzoomInstance.dispose()
 
     this.panzoomInstance = null
+
+    window.removeEventListener('resize', this.updateCanvasSize)
+    window.removeEventListener('deviceorientation', this.updateCanvasSize)
+  }
+
+  updateCanvasSize() {
+    this.canvasWidth = this.$refs.fleetchartWrapper.clientWidth
+    this.canvasHeight = this.$refs.fleetchartWrapper.clientHeight
   }
 
   async setupZoom() {
@@ -310,8 +321,8 @@ export default class FleetchartList extends Vue {
       return
     }
 
-    this.canvasWidth = window.screen.width
-    this.canvasHeight = window.screen.height
+    this.canvasWidth = this.$refs.fleetchartWrapper.clientWidth
+    this.canvasHeight = this.$refs.fleetchartWrapper.clientHeight
 
     await this.$nextTick()
 
