@@ -1,6 +1,5 @@
 .fleetchart-wrapper {
   position: relative;
-  width: 100px;
 
   .fleetchart-controls {
     position: fixed;
@@ -28,6 +27,7 @@
 .fleetchart-scroll-wrapper {
   position: relative;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
 
@@ -55,7 +55,7 @@
   align-content: center;
   align-items: flex-start;
   justify-content: center;
-  height: 90vh;
+  height: 100vh;
   transition: height $transition-base-speed ease;
 
   &.fleetchart-1_5x {
