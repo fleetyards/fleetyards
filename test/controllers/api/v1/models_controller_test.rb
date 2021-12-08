@@ -23,13 +23,14 @@ module Api
         expected = [{
           'id' => origin.id,
           'name' => '600i',
-          'rsiName' => nil,
           'scIdentifier' => nil,
           'erkulIdentifier' => nil,
+          'rsiName' => nil,
           'slug' => '600i',
           'rsiSlug' => nil,
           'description' => nil,
           'length' => 20.0,
+          'fleetchartLength' => 20.0,
           'beam' => 0.0,
           'height' => 0.0,
           'mass' => 0.0,
@@ -57,7 +58,9 @@ module Api
           'storeImageSmall' => origin.store_image.small.url,
           'fleetchartImage' => nil,
           'topView' => nil,
+          'topViewResized' => nil,
           'sideView' => nil,
+          'sideViewResized' => nil,
           'brochure' => nil,
           'holo' => nil,
           'holoColored' => false,
@@ -217,13 +220,14 @@ module Api
         }, {
           'id' => Model.last.id,
           'name' => 'Andromeda',
-          'rsiName' => nil,
           'scIdentifier' => nil,
           'erkulIdentifier' => nil,
+          'rsiName' => nil,
           'slug' => 'andromeda',
           'rsiSlug' => nil,
           'description' => nil,
           'length' => 61.2,
+          'fleetchartLength' => 61.2,
           'beam' => 10.2,
           'height' => 10.2,
           'mass' => 1000.02,
@@ -251,7 +255,9 @@ module Api
           'storeImageSmall' => Model.last.store_image.small.url,
           'fleetchartImage' => nil,
           'topView' => nil,
+          'topViewResized' => nil,
           'sideView' => nil,
+          'sideViewResized' => nil,
           'brochure' => nil,
           'holo' => nil,
           'holoColored' => false,
@@ -361,12 +367,13 @@ module Api
       end
 
       it 'should be able to reduce per page size' do
-        get :index, params: { perPage: '1' }
+        get :index, params: { perPage: '15' }
 
         assert_response :ok
         json = JSON.parse response.body
 
-        assert_equal 1, json.count
+        # result count is 2 because there are only 2 models in the database
+        assert_equal 2, json.count
       end
     end
   end

@@ -71,7 +71,7 @@
   position: relative;
   left: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 20px 15px;
   transition: left ease $transition-base-speed,
     right ease $transition-base-speed, width ease $transition-base-speed;

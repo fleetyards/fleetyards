@@ -7,7 +7,7 @@
         'col-xxl-3 col-3xl-2dot4': filterVisible,
         'col-xl-3 col-xxl-2dot4 col-3xl-2': !filterVisible,
       }"
-      class="col-12 col-md-6 col-lg-4 fade-list-item"
+      class="col-12 col-sm-6 col-lg-4 fade-list-item"
     >
       <slot :record="record" :index="index" />
     </div>
