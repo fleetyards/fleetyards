@@ -38,10 +38,15 @@ vendor/assets/bower_components/sweetalert
 .byebug_history
 
 /node_modules
-yarn-error.log
-yarn-debug.log*
-.yarn-integrity
 build
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 .eslintcache
 
