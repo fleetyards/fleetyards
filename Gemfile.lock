@@ -97,7 +97,7 @@ GEM
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
     ansi (1.5.0)
-    appsignal (3.0.16)
+    appsignal (3.0.17)
       rack
     ast (2.4.2)
     attr_encrypted (3.1.0)
