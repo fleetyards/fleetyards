@@ -149,5 +149,6 @@
   },
   "gitHooks": {
     "commit-msg": "commitlint -E GIT_PARAMS"
-  }
+  },
+  "packageManager": "yarn@3.1.1"
 }
