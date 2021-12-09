@@ -26,6 +26,8 @@ jobs:
           path: |
             '**/.yarn/cache'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Setup yarn
+        run: yarn set version from sources
       - run: yarn install --verbose
 
   js-lint:
