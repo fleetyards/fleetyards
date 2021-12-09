@@ -26,6 +26,10 @@ jobs:
           path: |
             '**/.yarn/cache'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Setup yarn
+        run: npm install -g yarn
+      - name: set yarn v3
+        run: yarn set version berry
       - run: yarn install
 
   js-lint:
