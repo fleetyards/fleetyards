@@ -6,6 +6,7 @@
 #  active                   :boolean          default(TRUE)
 #  afterburner_ground_speed :decimal(15, 2)
 #  afterburner_speed        :decimal(15, 2)
+#  angled_view              :string
 #  beam                     :decimal(15, 2)   default(0.0), not null
 #  brochure                 :string
 #  cargo                    :decimal(15, 2)

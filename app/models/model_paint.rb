@@ -6,6 +6,7 @@
 #
 #  id                      :uuid             not null, primary key
 #  active                  :boolean          default(TRUE)
+#  angled_view             :string
 #  description             :string
 #  fleetchart_image        :string
 #  hidden                  :boolean          default(TRUE)
@@ -45,6 +46,7 @@ class ModelPaint < ApplicationRecord
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :top_view, FleetchartImageUploader
   mount_uploader :side_view, FleetchartImageUploader
+  mount_uploader :angled_view, FleetchartImageUploader
 
   before_save :update_slugs
 

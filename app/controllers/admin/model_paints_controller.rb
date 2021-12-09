@@ -76,6 +76,7 @@ module Admin
         :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
         :top_view, :top_view_cache, :remove_top_view,
         :side_view, :side_view_cache, :remove_side_view,
+        :angled_view, :angled_view_cache, :remove_angled_view,
         :pledge_price, :description, :model_id
       )
     end

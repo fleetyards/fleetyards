@@ -22,7 +22,7 @@
     <FleetchartItemImage
       :label="name || modelName"
       :src="image"
-      :length="model.fleetchartLength"
+      :length="length"
       :width="model.width"
     />
   </div>
@@ -41,13 +41,15 @@ import FleetchartItemImage from './Image'
   },
 })
 export default class FleetchartListItem extends Vue {
-  @Prop() item!: Model | Vehicle
+  @Prop({ required: true }) item!: Model | Vehicle
 
   @Prop({ default: 'side' }) viewpoint!: string
 
   @Prop({ default: false }) showLabel!: boolean
 
   @Prop({ default: false }) showStatus!: boolean
+
+  @Prop({ default: 1 }) sizeMultiplicator!: number
 
   get cssClasses() {
     const cssClasses = [`fleetchart-item-${this.model.slug}`]
@@ -92,6 +94,10 @@ export default class FleetchartListItem extends Vue {
       if (this.viewpointSide && this.paint.sideView) {
         return this.sideView(this.paint)
       }
+
+      if (this.viewpointAngled && this.paint.angledView) {
+        return this.angledView(this.paint)
+      }
     }
 
     if (this.viewpointTop && this.model.topView) {
@@ -100,6 +106,10 @@ export default class FleetchartListItem extends Vue {
 
     if (this.viewpointSide && this.model.sideView) {
       return this.sideView(this.model)
+    }
+
+    if (this.viewpointAngled && this.model.angledView) {
+      return this.angledView(this.model)
     }
 
     return null
@@ -111,6 +121,10 @@ export default class FleetchartListItem extends Vue {
 
   get viewpointSide() {
     return this.viewpoint === 'side'
+  }
+
+  get viewpointAngled() {
+    return this.viewpoint === 'angled'
   }
 
   get productionStatus() {
@@ -143,12 +157,20 @@ export default class FleetchartListItem extends Vue {
     return `${this.model.manufacturer.code} ${this.model.name}`
   }
 
-  sideView(model) {
-    return model.sideViewResized
+  get length() {
+    return this.model.fleetchartLength * this.sizeMultiplicator
   }
 
   topView(model) {
     return model.topViewResized
+  }
+
+  sideView(model) {
+    return model.sideViewResized
+  }
+
+  angledView(model) {
+    return model.angledViewResized
   }
 }
 </script>

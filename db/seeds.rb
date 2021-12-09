@@ -65,10 +65,12 @@ if ENV['FLEETCHART_SEEDS'].present?
 
     side_view = Pathname.new(ship_dir).join('side-fleetchart.png')
     top_view = Pathname.new(ship_dir).join('top-fleetchart.png')
+    angled_view = Pathname.new(ship_dir).join('angled-fleetchart.png')
     holo = Pathname.new(ship_dir).join('holo.gltf')
     model.update(
       side_view: (side_view.open if File.exist?(side_view)),
       top_view: (top_view.open if File.exist?(top_view)),
+      angled_view: (angled_view.open if File.exist?(angled_view)),
       holo: (holo.open if File.exist?(holo))
     )
 

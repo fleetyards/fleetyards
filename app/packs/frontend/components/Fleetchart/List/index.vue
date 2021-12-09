@@ -10,30 +10,34 @@
             {{ $t(`labels.fleetchartApp.screenHeightOptions.${screenHeight}`) }}
           </template>
           <Btn
-            v-for="(step, index) in screenHeightSteps"
-            :key="`fleetchart-screen-height-drowndown-${index}-${step}`"
+            v-for="(option, index) in screenHeightOptions"
+            :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
             size="small"
             variant="link"
-            :active="screenHeight === step"
-            @click.native="setScreenHeight(step)"
+            :active="screenHeight === option"
+            @click.native="setScreenHeight(option)"
           >
-            {{ $t(`labels.fleetchartApp.screenHeightOptions.${step}`) }}
+            {{ $t(`labels.fleetchartApp.screenHeightOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
-        <Btn
-          size="small"
-          :active="viewpoint === 'top'"
-          @click.native="setViewpointTop"
-        >
-          <i class="fad fa-arrow-to-bottom" />
-        </Btn>
-        <Btn
-          size="small"
-          :active="viewpoint === 'side'"
-          @click.native="setViewpointSide"
-        >
-          <i class="fad fa-arrow-to-left" />
-        </Btn>
+        <BtnDropdown size="small">
+          <template #label>
+            <template v-if="!mobile">
+              {{ $t('labels.fleetchartApp.viewpoint') }}:
+            </template>
+            {{ $t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
+          </template>
+          <Btn
+            v-for="(option, index) in viewpointOptions"
+            :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
+            size="small"
+            variant="link"
+            :active="viewpoint === option"
+            @click.native="setViewpoint(option)"
+          >
+            {{ $t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
+          </Btn>
+        </BtnDropdown>
         <Btn size="small" :active="gridEnabled" @click.native="toggleGrid">
           <i class="fad fa-th" />
         </Btn>
@@ -108,6 +112,7 @@
             :viewpoint="viewpoint"
             :show-label="showLabels"
             :show-status="showStatus"
+            :size-multiplicator="sizeMultiplicator"
           />
         </transition-group>
         <canvas
@@ -148,7 +153,9 @@ import debounce from 'lodash.debounce'
 export default class FleetchartList extends Vue {
   updateZoomData: Function = debounce(this.debouncedUpdateZoomData, 300)
 
-  screenHeightSteps: string[] = ['1x', '1_5x', '2x', '3x', '4x']
+  screenHeightOptions: string[] = ['1x', '1_5x', '2x', '3x', '4x']
+
+  viewpointOptions: string[] = ['side', 'top', 'angled']
 
   showStatus: boolean = false
 
@@ -193,8 +200,20 @@ export default class FleetchartList extends Vue {
     return this.$refs.fleetchartWrapper?.children.item(0)
   }
 
+  get sizeMultiplicator() {
+    if (this.viewpoint === 'angled') {
+      return 3
+    }
+
+    return 4
+  }
+
   get gridSizeLabel() {
-    return (this.gridSize / (this.initialZoomData?.scale || 1) / 4)
+    return (
+      this.gridSize /
+      (this.initialZoomData?.scale || 1) /
+      this.sizeMultiplicator
+    )
       .toFixed(2)
       .replace('.00', '')
   }
@@ -284,12 +303,8 @@ export default class FleetchartList extends Vue {
     this.drawGridLines()
   }
 
-  setViewpointTop() {
-    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, 'top')
-  }
-
-  setViewpointSide() {
-    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, 'side')
+  setViewpoint(viewpoint) {
+    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint)
   }
 
   setScreenHeight(screenHeight) {

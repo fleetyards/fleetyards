@@ -15,7 +15,14 @@ json.store_image_medium model_paint.store_image.medium.url
 json.store_image_small model_paint.store_image.small.url
 json.fleetchart_image model_paint.fleetchart_image.url
 json.top_view model_paint.top_view.url
+json.top_view_resized model_paint.top_view.resized.url
+json.top_view_small model_paint.top_view.small.url
 json.side_view model_paint.side_view.url
+json.side_view_resized model_paint.side_view.resized.url
+json.side_view_small model_paint.side_view.small.url
+json.angled_view model_paint.angled_view.url
+json.angled_view_resized model_paint.angled_view.resized.url
+json.angled_view_small model_paint.angled_view.small.url
 json.last_updated_at model_paint.last_updated_at&.utc&.iso8601
 json.last_updated_at_label((I18n.l(model_paint.last_updated_at.utc, format: :label) if model_paint.last_updated_at.present?))
 json.sold_at do

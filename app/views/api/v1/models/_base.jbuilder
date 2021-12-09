@@ -42,6 +42,9 @@ json.top_view_small model.top_view.small.url
 json.side_view model.side_view.url
 json.side_view_resized model.side_view.resized.url
 json.side_view_small model.side_view.small.url
+json.angled_view model.angled_view.url
+json.angled_view_resized model.angled_view.resized.url
+json.angled_view_small model.angled_view.small.url
 json.brochure model.brochure.url
 json.holo model.holo.url
 json.holo_colored model.holo_colored

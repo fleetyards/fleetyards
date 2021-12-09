@@ -8,6 +8,7 @@
 #  active                   :boolean          default(TRUE)
 #  afterburner_ground_speed :decimal(15, 2)
 #  afterburner_speed        :decimal(15, 2)
+#  angled_view              :string
 #  beam                     :decimal(15, 2)   default(0.0), not null
 #  brochure                 :string
 #  cargo                    :decimal(15, 2)
@@ -195,6 +196,7 @@ class Model < ApplicationRecord
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :top_view, FleetchartImageUploader
   mount_uploader :side_view, FleetchartImageUploader
+  mount_uploader :angled_view, FleetchartImageUploader
   mount_uploader :brochure, BrochureUploader
   mount_uploader :holo, HoloUploader
 

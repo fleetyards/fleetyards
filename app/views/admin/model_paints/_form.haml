@@ -97,4 +97,16 @@
       %small
         = form_errors model_paint, :side_view
 
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :angled_view)}
+      = form.label :angled_view
+      = form.file_field :angled_view, class: 'form-control'
+      = form.hidden_field :angled_view_cache
+      %br
+      - if model_paint.angled_view?
+        = image_tag(model_paint.angled_view.url)
+        = form.check_box :remove_angled_view
+        Remove Image
+      %small
+        = form_errors model_paint, :angled_view
+
   = render "shared/submit", path: admin_model_paints_path

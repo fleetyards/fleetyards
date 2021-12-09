@@ -275,6 +275,19 @@
       %small
         = form_errors model, :side_view
 
+    .col-12.col-md-4.form-group{class: form_error?(model, :angled_view)}
+      = form.label :angled_view
+      = form.file_field :angled_view, class: 'form-control'
+      - if model.angled_view_cache
+        = form.hidden_field :angled_view_cache
+      %br
+      - if model.angled_view?
+        = image_tag(model.angled_view.small.url)
+        = form.check_box :remove_angled_view
+        Remove Image
+      %small
+        = form_errors model, :angled_view
+
   .row
     .col-12.col-md-4.form-group{class: form_error?(model, :holo)}
       = form.label :holo

@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_190831) do
+ActiveRecord::Schema.define(version: 2021_12_09_084031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
+  enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -439,6 +440,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_190831) do
     t.string "fleetchart_image"
     t.string "top_view"
     t.string "side_view"
+    t.string "angled_view"
   end
 
   create_table "model_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -545,6 +547,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_190831) do
     t.string "erkul_identifier"
     t.string "name_slug"
     t.decimal "fleetchart_offset_length", precision: 15, scale: 2
+    t.string "angled_view"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
