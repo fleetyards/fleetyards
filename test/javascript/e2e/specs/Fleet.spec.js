@@ -11,7 +11,7 @@ describe('Fleet', () => {
 
     cy.url().should('include', '/fleets/preview/')
 
-    cy.select('login').click()
+    cy.selectElement('login').click()
 
     cy.url().should('include', '/login')
 
@@ -34,7 +34,7 @@ describe('Fleet', () => {
 
     cy.url().should('include', '/fleets/preview/')
 
-    cy.select('login').click()
+    cy.selectElement('login').click()
 
     cy.url().should('include', '/login')
 
@@ -54,10 +54,10 @@ describe('Fleet', () => {
 
     cy.url().should('include', '/fleets/add/')
 
-    cy.select('input-fid').type('TestFleet1')
-    cy.select('input-name').type('Test Fleet 1.')
+    cy.selectElement('input-fid').type('TestFleet1')
+    cy.selectElement('input-name').type('Test Fleet 1.')
 
-    cy.select('fleet-save').click()
+    cy.selectElement('fleet-save').click()
 
     cy.url().should('include', '/fleets/testfleet1/')
 
@@ -67,7 +67,7 @@ describe('Fleet', () => {
 
     cy.clickNav('fleet-settings')
 
-    cy.select('fleet-delete').click()
+    cy.selectElement('fleet-delete').click()
 
     cy.acceptConfirm()
 
