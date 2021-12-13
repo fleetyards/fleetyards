@@ -68,6 +68,10 @@ import imagesCollection from 'frontend/api/collections/Images'
   mixins: [MetaInfo],
 })
 export default class ModelImages extends Vue {
+  collection: ImagesCollection = imagesCollection
+
+  model: Model | null = null
+
   get metaTitle() {
     if (!this.model) {
       return null
@@ -104,10 +108,6 @@ export default class ModelImages extends Vue {
       },
     ]
   }
-
-  collection: ImagesCollection = imagesCollection
-
-  model: Model | null = null
 
   created() {
     this.fetchModel()

@@ -26,6 +26,12 @@ import FleetchartItemImage from './Image'
   },
 })
 export default class FleetchartListItem extends Vue {
+  @Prop() item!: Model | Vehicle
+
+  @Prop() scale!: number
+
+  @Prop({ default: false }) showStatus!: boolean
+
   get cssClasses() {
     const cssClasses = [`fleetchart-item-${this.model.slug}`]
 
@@ -95,12 +101,6 @@ export default class FleetchartListItem extends Vue {
 
     return this.modelLabel(this.model.name)
   }
-
-  @Prop() item!: Model | Vehicle
-
-  @Prop() scale!: number
-
-  @Prop({ default: false }) showStatus!: boolean
 
   modelLabel(name) {
     return `${this.model.manufacturer.code} ${name}`

@@ -149,10 +149,7 @@
           </div>
         </transition>
 
-        <FleetchartList
-          :items="records"
-          :scale="fleetchartScale"
-        />
+        <FleetchartList :items="records" :scale="fleetchartScale" />
       </template>
     </FilteredList>
   </section>
@@ -196,6 +193,17 @@ import FilteredList from 'frontend/core/components/FilteredList'
   mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
+  loading: boolean = false
+
+  collection: PublicVehiclesCollection = publicVehiclesCollection
+
+  userCollection: PublicUserCollection = publicUserCollection
+
+  @Getter('mobile') mobile
+
+  @Getter('publicFleetchartScale', { namespace: 'hangar' })
+  fleetchartScale
+
   get metaTitle() {
     return this.$t('title.hangar.public', { user: this.usernamePlural })
   }
@@ -230,17 +238,6 @@ export default class PublicHangar extends Vue {
   get userTitle() {
     return this.username[0].toUpperCase() + this.username.slice(1)
   }
-
-  loading: boolean = false
-
-  collection: PublicVehiclesCollection = publicVehiclesCollection
-
-  userCollection: PublicUserCollection = publicUserCollection
-
-  @Getter('mobile') mobile
-
-  @Getter('publicFleetchartScale', { namespace: 'hangar' })
-  fleetchartScale
 
   @Watch('$route')
   onRouteChange() {

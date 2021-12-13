@@ -245,6 +245,16 @@ import modelsCollection from 'frontend/api/collections/Models'
   mixins: [MetaInfo],
 })
 export default class TradeRoutes extends Vue {
+  collection: TradeRoutesCollection = tradeRoutesCollection
+
+  modelsCollection: ModelsCollection = modelsCollection
+
+  averagePrices: boolean = false
+
+  cargoShip: Model | null = null
+
+  @Getter('mobile') mobile
+
   get title(): string {
     if (this.cargoShip) {
       return this.$t('headlines.tools.tradeRoutes.withShip', {
@@ -299,16 +309,6 @@ export default class TradeRoutes extends Vue {
       this.sorts.includes('origin_shop_station_name desc')
     )
   }
-
-  collection: TradeRoutesCollection = tradeRoutesCollection
-
-  modelsCollection: ModelsCollection = modelsCollection
-
-  averagePrices: boolean = false
-
-  cargoShip: Model | null = null
-
-  @Getter('mobile') mobile
 
   @Watch('$route')
   onRouteChange() {

@@ -97,6 +97,16 @@ import publicFleetVehiclesCollection from 'frontend/api/collections/PublicFleetV
   },
 })
 export default class FleetPublicShipsList extends Vue {
+  collection: PublicFleetVehiclesCollection = publicFleetVehiclesCollection
+
+  @Prop({ required: true }) fleet: Fleet
+
+  @Getter('grouped', { namespace: 'fleet' }) grouped
+
+  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
+
+  @Getter('mobile') mobile
+
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
       return this.$t('actions.hideDetails')
@@ -118,16 +128,6 @@ export default class FleetPublicShipsList extends Vue {
       page: this.$route.query.page,
     }
   }
-
-  collection: PublicFleetVehiclesCollection = publicFleetVehiclesCollection
-
-  @Prop({ required: true }) fleet: Fleet
-
-  @Getter('grouped', { namespace: 'fleet' }) grouped
-
-  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
-
-  @Getter('mobile') mobile
 
   @Watch('grouped')
   onGroupedChange() {

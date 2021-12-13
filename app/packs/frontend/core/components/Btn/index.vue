@@ -23,56 +23,6 @@ import { RouteConfig } from 'vue-router'
   },
 })
 export default class Btn extends Vue {
-  get btnType() {
-    if (this.to && !this.disabled) return 'router-link'
-
-    if (this.href) return 'a'
-
-    return 'button'
-  }
-
-  get btnProps() {
-    if (this.to) {
-      return {
-        to: this.to,
-        exact: this.exact,
-        // event: this.disabled ? '' : 'click',
-        activeClass: this.routeActiveClass,
-      }
-    }
-
-    if (this.href) {
-      return {
-        href: this.href,
-        target: '_blank',
-        rel: 'noopener',
-      }
-    }
-
-    return {
-      type: this.type,
-    }
-  }
-
-  get cssClasses() {
-    return {
-      'panel-btn': true,
-      'panel-btn-submit': this.type === 'submit',
-      'panel-btn-transparent': this.variant === 'transparent',
-      'panel-btn-link': this.variant === 'link',
-      'panel-btn-danger': this.variant === 'danger',
-      'panel-btn-small': this.size === 'small',
-      'panel-btn-large': this.size === 'large',
-      'panel-btn-block': this.block,
-      'panel-btn-inline': this.inline,
-      'panel-btn-dropdown-link': this.variant === 'dropdown',
-      'panel-btn-text-inline': this.textInline,
-      'panel-btn-mobile-block': this.mobileBlock,
-      'active': this.active,
-      'disabled': this.disabled,
-    }
-  }
-
   @Prop({ default: false }) loading!: boolean
 
   @Prop({ default: null }) to!: RouteConfig
@@ -122,5 +72,55 @@ export default class Btn extends Vue {
   @Prop({ default: false }) disabled!: boolean
 
   @Prop({ default: null }) routeActiveClass!: boolean
+
+  get btnType() {
+    if (this.to && !this.disabled) return 'router-link'
+
+    if (this.href) return 'a'
+
+    return 'button'
+  }
+
+  get btnProps() {
+    if (this.to) {
+      return {
+        to: this.to,
+        exact: this.exact,
+        // event: this.disabled ? '' : 'click',
+        activeClass: this.routeActiveClass,
+      }
+    }
+
+    if (this.href) {
+      return {
+        href: this.href,
+        target: '_blank',
+        rel: 'noopener',
+      }
+    }
+
+    return {
+      type: this.type,
+    }
+  }
+
+  get cssClasses() {
+    return {
+      'panel-btn': true,
+      'panel-btn-submit': this.type === 'submit',
+      'panel-btn-transparent': this.variant === 'transparent',
+      'panel-btn-link': this.variant === 'link',
+      'panel-btn-danger': this.variant === 'danger',
+      'panel-btn-small': this.size === 'small',
+      'panel-btn-large': this.size === 'large',
+      'panel-btn-block': this.block,
+      'panel-btn-inline': this.inline,
+      'panel-btn-dropdown-link': this.variant === 'dropdown',
+      'panel-btn-text-inline': this.textInline,
+      'panel-btn-mobile-block': this.mobileBlock,
+      'active': this.active,
+      'disabled': this.disabled,
+    }
+  }
 }
 </script>

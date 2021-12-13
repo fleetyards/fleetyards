@@ -62,18 +62,6 @@ import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
   },
 })
 export default class FleetchartItemContextMenu extends Vue {
-  get hasAddons() {
-    return (
-      this.vehicle &&
-      (this.vehicle.modelModuleIds.length ||
-        this.vehicle.modelUpgradeIds.length)
-    )
-  }
-
-  get upgradable() {
-    return this.hasAddons && (this.model.hasModules || this.model.hasUpgrades)
-  }
-
   visible: boolean = false
 
   startEvent: MouseEvent | null = null
@@ -87,6 +75,18 @@ export default class FleetchartItemContextMenu extends Vue {
   vehicle: Vehicle = null
 
   myShip: boolean = false
+
+  get hasAddons() {
+    return (
+      this.vehicle &&
+      (this.vehicle.modelModuleIds.length ||
+        this.vehicle.modelUpgradeIds.length)
+    )
+  }
+
+  get upgradable() {
+    return this.hasAddons && (this.model.hasModules || this.model.hasUpgrades)
+  }
 
   created() {
     document.addEventListener('click', this.documentClick)

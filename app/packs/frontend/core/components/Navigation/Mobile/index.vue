@@ -142,6 +142,20 @@ import fleetsApiCollection from 'frontend/api/collections/Fleets'
   },
 })
 export default class NavigationHeader extends Vue {
+  @Getter('mobile') mobile
+
+  @Getter('filters') filters
+
+  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
+
+  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated!: boolean
+
+  @Getter('preview', { namespace: 'hangar' }) hangarPreview
+
+  @Action('toggleNav', { namespace: 'app' }) toggle
+
+  fleetsCollection: FleetsCollection = fleetsApiCollection
+
   get isFleetRoute() {
     return isFleetRoute(this.$route.name)
   }
@@ -157,20 +171,6 @@ export default class NavigationHeader extends Vue {
   get firstLetter() {
     return this.currentFleet?.name?.charAt(0)
   }
-
-  @Getter('mobile') mobile
-
-  @Getter('filters') filters
-
-  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
-
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated!: boolean
-
-  @Getter('preview', { namespace: 'hangar' }) hangarPreview
-
-  @Action('toggleNav', { namespace: 'app' }) toggle
-
-  fleetsCollection: FleetsCollection = fleetsApiCollection
 
   filterFor(route) {
     // // TODO: disabled until vue-router supports navigation to same route

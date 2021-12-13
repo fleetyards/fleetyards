@@ -128,14 +128,6 @@ import debounce from 'lodash.debounce'
   },
 })
 export default class ImageRow extends Vue {
-  get uuid() {
-    return this._uid
-  }
-
-  get uploaded() {
-    return !!this.internalImage.url
-  }
-
   @Prop({ required: true }) image!: Object
 
   deleting: boolean = false
@@ -145,6 +137,14 @@ export default class ImageRow extends Vue {
   internalImage: Object = null
 
   updateCaption: Function = debounce(this.debouncedUpdateCaption, 500)
+
+  get uuid() {
+    return this._uid
+  }
+
+  get uploaded() {
+    return !!this.internalImage.url
+  }
 
   @Watch('image')
   onImageChange() {

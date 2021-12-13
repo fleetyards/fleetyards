@@ -102,6 +102,18 @@ import EmptyBox from 'frontend/core/components/EmptyBox'
   mixins: [MetaInfo],
 })
 export default class RoadmapReleases extends Vue {
+  loading: boolean = true
+
+  onlyReleased: boolean = true
+
+  showRemoved: boolean = false
+
+  roadmapItems: any[] = []
+
+  visible: string[] = []
+
+  roadmapChannel = null
+
   get releasedToggleLabel() {
     if (this.onlyReleased) {
       return this.$t('actions.showReleased')
@@ -155,18 +167,6 @@ export default class RoadmapReleases extends Vue {
       .map(item => item.model.id)
       .filter(item => item)
   }
-
-  loading: boolean = true
-
-  onlyReleased: boolean = true
-
-  showRemoved: boolean = false
-
-  roadmapItems: any[] = []
-
-  visible: string[] = []
-
-  roadmapChannel = null
 
   mounted() {
     this.fetch()

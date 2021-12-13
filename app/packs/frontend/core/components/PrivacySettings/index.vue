@@ -160,17 +160,6 @@ import Btn from 'frontend/core/components/Btn'
   },
 })
 export default class PrivacySettings extends Vue {
-  get title() {
-    if (this.info) {
-      return this.$t(`privacySettings.info.${this.info}.title`)
-    }
-    if (this.internalSettings) {
-      return this.$t('privacySettings.title')
-    }
-
-    return this.$t('privacySettings.introduction.title')
-  }
-
   @Prop({ default: false }) settings: boolean
 
   info: any = null
@@ -185,6 +174,17 @@ export default class PrivacySettings extends Vue {
   @Getter('cookies', { namespace: 'cookies' }) cookies: any
 
   @Getter('infoVisible', { namespace: 'cookies' }) infoVisible: boolean
+
+  get title() {
+    if (this.info) {
+      return this.$t(`privacySettings.info.${this.info}.title`)
+    }
+    if (this.internalSettings) {
+      return this.$t('privacySettings.title')
+    }
+
+    return this.$t('privacySettings.introduction.title')
+  }
 
   @Watch('cookies', { deep: true })
   onCookiesChange() {

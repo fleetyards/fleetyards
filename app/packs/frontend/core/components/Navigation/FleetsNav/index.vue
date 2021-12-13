@@ -64,12 +64,6 @@ import fleetInvitesCollection from 'frontend/api/collections/FleetInvites'
   mixins: [NavigationMixin],
 })
 export default class FleetsNav extends Vue {
-  get active() {
-    return ['fleets', 'fleet-add', 'fleet-preview', 'fleet-invites'].includes(
-      this.$route.name,
-    )
-  }
-
   collection: FleetsCollection = fleetsCollection
 
   invitesCollection: FleetInvitesCollection = fleetInvitesCollection
@@ -77,6 +71,12 @@ export default class FleetsNav extends Vue {
   @Getter('preview', { namespace: 'fleet' }) fleetPreview
 
   @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
+
+  get active() {
+    return ['fleets', 'fleet-add', 'fleet-preview', 'fleet-invites'].includes(
+      this.$route.name,
+    )
+  }
 
   @Watch('$route')
   onRouteChange() {
