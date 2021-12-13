@@ -95,7 +95,7 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
-gem 'sprockets-rails', '~> 3.3.0'
+gem 'sprockets-rails', '~> 3.4.2'
 
 gem 'nokogiri', '1.12.5'
 gem 'typhoeus'
@@ -114,6 +114,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'excon', '>= 0.71.0'
 
 gem 'appsignal'
+
+gem 'pghero'
+gem 'pg_query', '>= 0.9.0'
 
 group :development do
   gem 'annotate'

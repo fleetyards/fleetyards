@@ -38,6 +38,7 @@ namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), cons
 
   authenticate :admin_user, (->(u) { u.present? }) do
     mount Sidekiq::Web => '/workers'
+    mount PgHero::Engine => '/pghero'
   end
 
   resources :models, except: [:show] do

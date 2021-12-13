@@ -81,6 +81,14 @@ import { isBefore, addHours } from 'date-fns'
   },
 })
 export default class RoadmapItem extends Vue {
+  @Prop({ required: true }) item!: Object
+
+  @Prop({ default: true }) compact!: boolean
+
+  @Prop({ default: true }) showProgress!: boolean
+
+  @Prop({ default: null }) active!: boolean
+
   get storeImage() {
     if (this.item.storeImageSmall) {
       return this.item.storeImageSmall
@@ -157,14 +165,6 @@ export default class RoadmapItem extends Vue {
           update.key !== 'active' || (update.key === 'active' && update.old),
       )
   }
-
-  @Prop({ required: true }) item!: Object
-
-  @Prop({ default: true }) compact!: boolean
-
-  @Prop({ default: true }) showProgress!: boolean
-
-  @Prop({ default: null }) active!: boolean
 
   openModal() {
     this.$comlink.$emit('open-modal', {

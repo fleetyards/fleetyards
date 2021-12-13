@@ -68,6 +68,38 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class HoloViewer extends Vue {
+  loading: boolean = false
+
+  debug: boolean = false
+
+  scene = null
+
+  camera = null
+
+  renderer = null
+
+  model = null
+
+  controls = null
+
+  modelColor: number = 0x428bca
+
+  windowColor: number = 0x1d3d59
+
+  autoRotate: boolean = true
+
+  autoRotateSpeed: number = 1.5
+
+  zoom: boolean = false
+
+  color: boolean = false
+
+  @Prop({ required: true }) holo: string
+
+  @Prop({ default: false }) colored: boolean
+
+  @Getter('mobile') mobile
+
   get element() {
     return this.$refs.modelViewer
   }
@@ -103,38 +135,6 @@ export default class HoloViewer extends Vue {
 
     return this.$t('actions.holoViewer.color.enable')
   }
-
-  loading: boolean = false
-
-  debug: boolean = false
-
-  scene = null
-
-  camera = null
-
-  renderer = null
-
-  model = null
-
-  controls = null
-
-  modelColor: number = 0x428bca
-
-  windowColor: number = 0x1d3d59
-
-  autoRotate: boolean = true
-
-  autoRotateSpeed: number = 1.5
-
-  zoom: boolean = false
-
-  color: boolean = false
-
-  @Prop({ required: true }) holo: string
-
-  @Prop({ default: false }) colored: boolean
-
-  @Getter('mobile') mobile
 
   @Watch('modelColor')
   onModelColorChange() {

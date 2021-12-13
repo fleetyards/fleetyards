@@ -96,6 +96,18 @@ import Btn from 'frontend/core/components/Btn'
   },
 })
 export default class BuyPricesModal extends Vue {
+  @Prop({ required: true }) shopId: string
+
+  @Prop({ required: true }) path: string
+
+  @Prop({ required: true }) shopCommodity: ShopCommodity
+
+  collection: CommodityPricesCollection = commodityPricesCollection
+
+  prices: ShopCommodityPrice[] = []
+
+  form: AdminCommodityPriceForm = null
+
   get title() {
     return this.$t(`headlines.modals.shopCommodity.${this.path}Prices`, {
       shopCommodity: this.shopCommodity.item.name,
@@ -109,18 +121,6 @@ export default class BuyPricesModal extends Vue {
       path: this.path,
     }
   }
-
-  @Prop({ required: true }) shopId: string
-
-  @Prop({ required: true }) path: string
-
-  @Prop({ required: true }) shopCommodity: ShopCommodity
-
-  collection: CommodityPricesCollection = commodityPricesCollection
-
-  prices: ShopCommodityPrice[] = []
-
-  form: AdminCommodityPriceForm = null
 
   mounted() {
     this.fetch()

@@ -141,12 +141,6 @@ import { displayConfirm } from 'frontend/lib/Noty'
   },
 })
 export default class AdminStationImages extends Vue {
-  get routeParams() {
-    return {
-      shopId: this.$route.params.shopId,
-    }
-  }
-
   collection: ShopCommoditiesCollection = shopCommoditiesCollection
 
   deleting: boolean = false
@@ -185,6 +179,12 @@ export default class AdminStationImages extends Vue {
     'rentalPrice30Days',
     'averageRentalPrice30Days',
   ]
+
+  get routeParams() {
+    return {
+      shopId: this.$route.params.shopId,
+    }
+  }
 
   mounted() {
     this.$comlink.$on('prices-update', this.fetch)

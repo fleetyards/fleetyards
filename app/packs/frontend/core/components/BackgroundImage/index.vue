@@ -13,27 +13,9 @@ import axios from 'axios'
 
 @Component<BackgroundImage>({})
 export default class BackgroundImage extends Vue {
-  get uuid() {
-    return this._uid
-  }
+  webpSupported: boolean = true
 
-get backgroundImageKey() {
-    if (this.$route.meta.backgroundImage) {
-      return this.$route.meta.backgroundImage
-    }
-
-    return 'bg-6'
-  }
-
-get backgroundImage() {
-    return this.backgroundImages[this.webpSupported ? 'webp' : 'jpg'][
-      this.backgroundImageKey
-    ]()
-  }
-
-webpSupported: boolean = true
-
-  backgroundImages: Fucntion[] = {
+backgroundImages: Fucntion[] = {
     /* eslint-disable global-require */
     webp: {
       'bg-0': () => require('images/bg-0.webp'),
@@ -55,6 +37,28 @@ webpSupported: boolean = true
     },
     /* eslint-enable global-require */
   }
+
+get uuid() {
+    return this._uid
+  }
+
+get backgroundImageKey() {
+    if (this.$route.meta.backgroundImage) {
+      return this.$route.meta.backgroundImage
+    }
+
+    return 'bg-6'
+  }
+
+get backgroundImage() {
+    return this.backgroundImages[this.webpSupported ? 'webp' : 'jpg'][
+      this.backgroundImageKey
+    ]()
+  }
+
+
+
+
 
 
 

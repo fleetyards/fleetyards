@@ -35,6 +35,10 @@ import Btn from 'frontend/core/components/Btn'
   },
 })
 export default class EmptyBox extends Vue {
+  @Prop({ required: true }) visible: boolean
+
+  @Prop({ default: false }) ignoreFilter: boolean
+
   get isPagePresent() {
     return !!this.$route.query.page
   }
@@ -42,10 +46,6 @@ export default class EmptyBox extends Vue {
   get isQueryPresent() {
     return !this.ignoreFilter && Object.keys(this.$route.query).length > 0
   }
-
-  @Prop({ required: true }) visible: boolean
-
-  @Prop({ default: false }) ignoreFilter: boolean
 
   resetPage() {
     const query = {

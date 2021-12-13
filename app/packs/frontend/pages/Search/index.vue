@@ -136,7 +136,13 @@ import searchCollection from 'frontend/api/collections/Search'
   mixins: [MetaInfo, Filters],
 })
 export default class Search extends Vue {
-  get historyVisible() {
+  collection: SearchCollection = searchCollection
+
+form: SearchFilter = {
+    search: null
+  }
+
+get historyVisible() {
     return !this.collection.records.length && !this.form.search
   }
 
@@ -159,11 +165,9 @@ export default class Search extends Vue {
     return this.$t('labels.search.shareTitle', { query: this.form.search })
   }
 
-  collection: SearchCollection = searchCollection
 
-  form: SearchFilter = {
-    search: null
-  }
+
+
 
   @Watch('$route')
   onRouteChange() {

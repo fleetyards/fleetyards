@@ -130,6 +130,30 @@ import NavigationMixin from 'frontend/mixins/Navigation'
   mixins: [NavigationMixin],
 })
 export default class NavItem extends Vue {
+  open: boolean = false
+
+  @Prop({ default: null }) to: Object | null
+
+  @Prop({ default: null }) action: Function | null
+
+  @Prop({ default: null }) href: string | null
+
+  @Prop({ default: '' }) label: string
+
+  @Prop({ default: null }) icon: string | null
+
+  @Prop({ default: null }) image: string | null
+
+  @Prop({ default: null }) menuKey: string | null
+
+  @Prop({ default: false }) exact: boolean
+
+  @Prop({ default: false }) divider: boolean
+
+  @Prop({ default: false }) active: boolean
+
+  @Prop({ default: false }) submenuActive: boolean
+
   get routeActive() {
     if (this.to) {
       return this.to.name === this.$route.name
@@ -172,30 +196,6 @@ export default class NavItem extends Vue {
 
     return 'nav-item'
   }
-
-  open: boolean = false
-
-  @Prop({ default: null }) to: Object | null
-
-  @Prop({ default: null }) action: Function | null
-
-  @Prop({ default: null }) href: string | null
-
-  @Prop({ default: '' }) label: string
-
-  @Prop({ default: null }) icon: string | null
-
-  @Prop({ default: null }) image: string | null
-
-  @Prop({ default: null }) menuKey: string | null
-
-  @Prop({ default: false }) exact: boolean
-
-  @Prop({ default: false }) divider: boolean
-
-  @Prop({ default: false }) active: boolean
-
-  @Prop({ default: false }) submenuActive: boolean
 
   @Watch('$route')
   onRouteChange() {

@@ -39,6 +39,15 @@ import { uniq as uniqArray } from 'frontend/utils/Array'
   },
 })
 export default class ModelPanel extends Vue {
+  @Prop({ default: null }) owner: string | null
+
+  @Prop({
+    default() {
+      return []
+    },
+  })
+  vehicles: Vehicle[]
+
   get firstOwner() {
     if (this.usernames.length > 0) {
       return this.usernames[0]
@@ -53,15 +62,6 @@ export default class ModelPanel extends Vue {
       .sort()
       .filter(uniqArray)
   }
-
-  @Prop({ default: null }) owner: string | null
-
-  @Prop({
-    default() {
-      return []
-    },
-  })
-  vehicles: Vehicle[]
 
   openOwnersModal() {
     this.$comlink.$emit('open-modal', {

@@ -34,15 +34,15 @@ import MembersListItem from './MembersListItem'
   },
 })
 export default class Memberslist extends Vue {
-  get isAdmin() {
-    return this.role === 'admin'
-  }
-
   @Prop({ required: true }) members: Member[]
 
   @Prop({ required: true }) role: string
 
   @Getter('currentUser', { namespace: 'session' }) currentUser
+
+  get isAdmin() {
+    return this.role === 'admin'
+  }
 
   canEdit(member) {
     if (member && this.currentUser) {

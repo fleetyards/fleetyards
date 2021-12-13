@@ -65,6 +65,12 @@
       = link_to Vehicle.name.humanize.pluralize, admin_vehicles_path, class: 'nav-link'
     %li.nav-item{class: active_nav?('admin-admin_users')}
       = link_to I18n.t(:"nav.admin_users"), admin_admin_users_path, class: 'nav-link'
-    %li.nav-item
-      %a.nav-link{href: admin_sidekiq_web_url, target: "_blank"}
-        = I18n.t(:"nav.workers")
+    %li.nav-item.dropdown
+      %a.nav-link.dropdown-toggle{href: '#', id: "navbar-maintenance-dropdown", data: { toggle: 'dropdown' }}
+        = I18n.t(:"nav.maintenance")
+        %b.caret
+      .dropdown-menu{"aria-labelledby": "navbar-maintenance-dropdown"}
+        %a.dropdown-item{href: admin_sidekiq_web_url, target: "_blank"}
+          = I18n.t(:"nav.workers")
+        %a.dropdown-item{href: admin_pg_hero_url, target: "_blank"}
+          = I18n.t(:"nav.pghero")

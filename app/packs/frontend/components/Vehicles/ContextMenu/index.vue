@@ -94,19 +94,6 @@ import vehiclesCollection from 'frontend/api/collections/Vehicles'
   },
 })
 export default class ContextMenu extends Vue {
-  get hasAddons() {
-    return (
-      this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length
-    )
-  }
-
-  get upgradable() {
-    return (
-      (this.editable || this.hasAddons) &&
-      (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
-    )
-  }
-
   deleting: boolean = false
 
   @Prop({ default: null }) vehicle: Vehicle | null
@@ -132,6 +119,19 @@ export default class ContextMenu extends Vue {
     },
   })
   size!: string
+
+  get hasAddons() {
+    return (
+      this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length
+    )
+  }
+
+  get upgradable() {
+    return (
+      (this.editable || this.hasAddons) &&
+      (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
+    )
+  }
 
   remove() {
     this.deleting = true
