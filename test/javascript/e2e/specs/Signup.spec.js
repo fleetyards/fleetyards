@@ -6,7 +6,7 @@ describe('Signup', () => {
 
     cy.clickNav('login')
 
-    cy.select('signup-link').click()
+    cy.selectElement('signup-link').click()
 
     cy.url().should('include', '/sign-up')
 
@@ -17,7 +17,7 @@ describe('Signup', () => {
       cy.selectInput('password').type(userData.new.password)
       cy.selectInput('passwordConfirmation').type(userData.new.password)
 
-      cy.select('submit-signup').click()
+      cy.selectElement('submit-signup').click()
 
       cy.success('Welcome to FleetYards.net')
 
@@ -26,7 +26,7 @@ describe('Signup', () => {
       cy.selectInput('login').type(userData.new.username)
       cy.selectInput('password').type(userData.new.password)
 
-      cy.select('submit-login').click()
+      cy.selectElement('submit-login').click()
 
       cy.location('pathname').should('eq', '/')
 
@@ -46,7 +46,7 @@ describe('Signup', () => {
       cy.selectInput('username').should('have.value', userData.new.username)
       cy.selectInput('email').should('have.value', userData.new.email)
 
-      cy.select('destroy-account').click()
+      cy.selectElement('destroy-account').click()
 
       cy.acceptConfirm()
 
@@ -101,7 +101,7 @@ describe('Signup', () => {
         .parents('.form-input')
         .should('not.have.class', 'has-error')
 
-      cy.select('submit-signup').click()
+      cy.selectElement('submit-signup').click()
     })
   })
 
@@ -110,7 +110,7 @@ describe('Signup', () => {
 
     cy.acceptCookies()
 
-    cy.select('submit-signup').click()
+    cy.selectElement('submit-signup').click()
 
     cy.selectInput('username')
       .parents('.form-input')

@@ -10,7 +10,7 @@ describe('Hangar', () => {
 
     cy.url().should('include', '/hangar/preview/')
 
-    cy.select('login').click()
+    cy.selectElement('login').click()
 
     cy.url().should('include', '/login')
 
@@ -48,7 +48,7 @@ describe('Hangar', () => {
 
     cy.openShipMenu('300i', 'edit-name')
 
-    cy.select('input-vehicle-name')
+    cy.selectElement('input-vehicle-name')
       .clear()
       .type('Enterprise')
 
@@ -59,7 +59,7 @@ describe('Hangar', () => {
       .contains('Enterprise')
       .should('exist')
 
-    cy.select('fleetchart-link').click()
+    cy.selectElement('fleetchart-link').click()
 
     cy.url().should('include', '/fleetchart/')
 
