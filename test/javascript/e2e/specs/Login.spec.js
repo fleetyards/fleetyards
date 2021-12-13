@@ -13,7 +13,7 @@ describe('Login', () => {
       cy.selectInput('login').type(userData.test.username)
       cy.selectInput('password').type(userData.test.password)
 
-      cy.select('submit-login').click()
+      cy.selectElement('submit-login').click()
 
       cy.location('pathname').should('eq', '/')
 
@@ -36,7 +36,7 @@ describe('Login', () => {
     cy.selectInput('login').type('invalidUsername')
     cy.selectInput('password').type('invalidPassword')
 
-    cy.select('submit-login').click()
+    cy.selectElement('submit-login').click()
 
     cy.alert('Invalid email or password')
   })
@@ -53,7 +53,7 @@ describe('Login', () => {
       cy.selectInput('login').type(userData.test.username)
       cy.selectInput('password').type(userData.test.password)
 
-      cy.select('submit-login').click()
+      cy.selectElement('submit-login').click()
 
       cy.url().should('include', '/settings')
     })

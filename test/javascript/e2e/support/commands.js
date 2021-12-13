@@ -1,20 +1,20 @@
-Cypress.Commands.add('select', id => cy.get(`[data-test="${id}"]`))
+Cypress.Commands.add('selectElement', id => cy.get(`[data-test="${id}"]`))
 Cypress.Commands.add('selectInput', id => cy.get(`[data-test="input-${id}"]`))
 
 Cypress.Commands.add('confirmAccess', password => {
   cy.selectInput('password').type(password)
 
-  cy.select('submit-confirm-access').click()
+  cy.selectElement('submit-confirm-access').click()
 
-  cy.select('confirm-access').should('not.exist')
+  cy.selectElement('confirm-access').should('not.exist')
 })
 
 Cypress.Commands.add('waitForPageToLoad', () => {
-  cy.select(`loader`).should('not.exist')
+  cy.selectElement(`loader`).should('not.exist')
 })
 
 Cypress.Commands.add('clickNav', name => {
-  cy.select(`nav-${name}`).click()
+  cy.selectElement(`nav-${name}`).click()
 })
 
 Cypress.Commands.add('acceptConfirm', () => {
@@ -74,17 +74,17 @@ Cypress.Commands.add('openShipMenu', (ship, entry = null) => {
 })
 
 Cypress.Commands.add('removeShip', () => {
-  cy.select('vehicle-remove').click()
+  cy.selectElement('vehicle-remove').click()
 })
 
 Cypress.Commands.add('saveShip', () => {
-  cy.select('vehicle-save').click()
+  cy.selectElement('vehicle-save').click()
 })
 
 Cypress.Commands.add('acceptCookies', () => {
-  cy.select('accept-cookies').should('exist')
-  cy.select('accept-cookies').click({ force: true })
-  cy.select('accept-cookies').should('not.exist')
+  cy.selectElement('accept-cookies').should('exist')
+  cy.selectElement('accept-cookies').click({ force: true })
+  cy.selectElement('accept-cookies').should('not.exist')
 })
 
 Cypress.Commands.add('login', () => {
@@ -97,7 +97,7 @@ Cypress.Commands.add('login', () => {
     cy.selectInput('login').type(userData.test.username)
     cy.selectInput('password').type(userData.test.password)
 
-    cy.select('submit-login').click()
+    cy.selectElement('submit-login').click()
 
     cy.contains('.username', userData.test.username).should('exist')
   })
