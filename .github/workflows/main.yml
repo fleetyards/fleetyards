@@ -14,7 +14,7 @@ on:
     branches:
       - '**'
 env:
-  RUBY_VERSION: 3.0.2
+  RUBY_VERSION: 3.0.3
 
 jobs:
   js-setup:
