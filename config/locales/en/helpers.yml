@@ -5,16 +5,49 @@ en:
       user:
         remember_me: Remember me
     placeholder:
-      name: Name
-      description: Description
-      trade_commodity:
-        sell: Sale?
-        buy: Buy?
       admin_user:
         email: Email
-        username: Username
         password: Password
         password_confirmation: Password Confirmation
+        username: Username
+      component:
+        grade: Grade
+        size: Size
+      description: Description
+      dock:
+        beam: Beam
+        height: Height
+        length: Length
+        name: Name
+      equipment:
+        damage_reduction: Damage Reduction
+        extras: Extras
+        grade: Grade
+        range: Range
+        rate_of_fire: Rate of Fire
+        size: Size
+        storage: storage
+        temperature_rating: Temp. Rating
+        volume: Volume
+      manufacturer:
+        code: Shortcode of Name
+        known_for: "..."
+      name: Name
+      shop_commodity:
+        buy_price: Buy Price
+        description: Description
+        name: Name
+        rental_price: Rental Prices
+        rental_price_1_day: 1 Day
+        rental_price_30_days: 30 Days
+        rental_price_3_days: 3 Days
+        rental_price_7_days: 7 Days
+        sell_price: Sell Price
+      station:
+        hidden: hidden?
+      trade_commodity:
+        buy: Buy?
+        sell: Sale?
       user:
         email: Email
         login: Username or email
@@ -24,70 +57,37 @@ en:
         username: Username
       video:
         url: URL or YouTube ID
-      station:
-        hidden: hidden?
-      dock:
-        name: Name
-        length: Length
-        height: Height
-        beam: Beam
-      shop_commodity:
-        name: Name
-        description: Description
-        buy_price: Buy Price
-        sell_price: Sell Price
-        rental_price: Rental Prices
-        rental_price_1_day: 1 Day
-        rental_price_3_days: 3 Days
-        rental_price_7_days: 7 Days
-        rental_price_30_days: 30 Days
-      component:
-        grade: Grade
-        size: Size
-      equipment:
-        grade: Grade
-        size: Size
-        damage_reduction: Damage Reduction
-        rate_of_fire: Rate of Fire
-        range: Range
-        extras: Extras
-        storage: storage
-        volume: Volume
-        temperature_rating: Temp. Rating
-      manufacturer:
-        known_for: ...
-        code: Shortcode of Name
     prompt:
-      video:
-        video_type: Please select a Video Type
-      trade_commodity:
-        commodity: Commodity
-      models:
-        dock_size: Please select a Dock size
+      celestial_object:
+        starsystem: Please select a Starsystem
+      commodity:
+        commodity_type: Please select a Type
+      component:
+        component_class: Please select a Component Class
+        item_class: Please select a Item Class
+        item_type: Please select a Item Type
+        manufacturer: Please select a Manufacturer
       docks:
         dock_type: Please select a Dock Type
         ship_size: Please select a Ship size
-      stations:
-        station_type: Please select a Station Type
-        celestial_object: Please select a Celestial Object
-      shops:
-        station: Please select a Station
-        shop_type: Plase select a Shop Type
-      shop_commodities:
-        commodity_item: Please select a Model/Component
-      celestial_object:
-        starsystem: Please select a Starsystem
-      component:
-        manufacturer: Please select a Manufacturer
-        item_type: Please select a Item Type
-        component_class: Please select a Component Class
-        item_class: Please select a Item Class
-      commodity:
-        commodity_type: Please select a Type
       equipment:
-        slot: Please select a Slot
-        equipment_type: Please select a Type
-        item_type: Please select a Item Type
-        weapon_class: Please select a Weapon Class
         backpack_compatibility: Backpack compatibility
         core_compatibility: Core compatibility
+        equipment_type: Please select a Type
+        item_type: Please select a Item Type
+        slot: Please select a Slot
+        weapon_class: Please select a Weapon Class
+      models:
+        dock_size: Please select a Dock size
+      shop_commodities:
+        commodity_item: Please select a Model/Component
+      shops:
+        shop_type: Plase select a Shop Type
+        station: Please select a Station
+      stations:
+        celestial_object: Please select a Celestial Object
+        station_type: Please select a Station Type
+      trade_commodity:
+        commodity: Commodity
+      video:
+        video_type: Please select a Video Type

@@ -1,30 +1,9 @@
 ---
 en:
   mailer:
-    hello: Hello %{username}
-    plain_hello: Hello
-    privacy: Privacy policy
-    notification_settings: Unsubscribe Notifications
     account:
       action: Manage Account Settings
-    security:
-      action: Manage Security Settings
-      info: If you did not initiate the change please contact us at info@fleetyards.net.
-    model:
-      new:
-        subject: New Ship/Vehicle
-        headline_part_1: "Allow me to introduce:"
-        headline_part_2: "The %{manufacturer}"
-    transmission_end: "--- incomming transmission ---"
-    transmission_start: "--- incomming transmission ---"
     admin:
-      weekly:
-        headline: FleetYards.net Command - Weekly
-        subject: FleetYards.net Command Weekly
-        registrations: "New Registrations"
-        ships: "New Ships"
-        vehicles: "New Vehicles"
-        fleets: "New Fleets"
       missing_loaners:
         headline: FleetYards.net Missing Loaners
         subject: FleetYards.net Missing Loaners
@@ -36,6 +15,73 @@ en:
         headline: FleetYards.net Command - Connection to RSI restored
         subject: Connection to RSI restored
         text: Automated updates from RSI using "%{url}" has been restored
+      weekly:
+        fleets: New Fleets
+        headline: FleetYards.net Command - Weekly
+        registrations: New Registrations
+        ships: New Ships
+        subject: FleetYards.net Command Weekly
+        vehicles: New Vehicles
+    fleet_membership:
+      fleet_accepted:
+        action: "%{fleet} Homepage"
+        body: 'To view the fleets Ships and other Members please click on the following link:'
+        headline: Your Membership Request to Join %{fleet} has been accepted
+        subject: "%{fleet} accepted your Membership Request"
+      member_accepted:
+        action: "%{fleet} Memberlist"
+        body: 'To look at the new members information please click on the following link:'
+        headline: "%{username} accepted his Fleet Invitation"
+        subject: New Fleet Member
+      member_requested:
+        action: "%{fleet} Memberlist"
+        body: 'To accept the request please click on the following link:'
+        headline: "%{username} wants to Join %{fleet}"
+        subject: New Fleet Membership Request
+      new_invite:
+        action: Join %{fleet}
+        body: 'To accept the invite please click on the following link:'
+        headline: You have been invited to Join %{fleet}
+        subject: New Fleet Invite
+    hello: Hello %{username}
+    model:
+      new:
+        headline_part_1: 'Allow me to introduce:'
+        headline_part_2: The %{manufacturer}
+        subject: New Ship/Vehicle
+    notification_settings: Unsubscribe Notifications
+    plain_hello: Hello
+    privacy: Privacy policy
+    progress_tracker:
+      admin:
+        body: There have been %{changes} changes on the Progress Tracker
+        headline: New changes on the Progress Tracker
+        subject: New changes on the Progress Tracker
+    roadmap:
+      admin:
+        body: There have been %{changes} changes to the Roadmap
+        headline: New changes on the Roadmap
+        subject: New changes on the Roadmap
+    security:
+      action: Manage Security Settings
+      info: If you did not initiate the change please contact us at info@fleetyards.net.
+    transmission_end: "--- incomming transmission ---"
+    transmission_start: "--- incomming transmission ---"
+    two_factor:
+      disabled:
+        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
+        subject: Two-factor disabled
+      enabled:
+        body: Great, you activated Two-factor Authentication for your Fleetyards.net Account.
+        subject: Two-factor enabled
+      login:
+        body: Please enter the following Code on the Login page to verify your identity.
+        headline: Two-factor Authentication Code
+        subject: Two-factor Authentication Code
+    user:
+      username_changed:
+        body: You changed your Fleetyards.net Account Username.
+        subject: Username changed
     vehicle:
       on_sale:
         headline:
@@ -43,49 +89,3 @@ en:
           part_two: is now on Sale!
         price: Starting at %{price}
         subject: "%{model} now on Sale!"
-    roadmap:
-      admin:
-        headline: New changes on the Roadmap
-        subject: New changes on the Roadmap
-        body: There have been %{changes} changes to the Roadmap
-    progress_tracker:
-      admin:
-        headline: New changes on the Progress Tracker
-        subject: New changes on the Progress Tracker
-        body: There have been %{changes} changes on the Progress Tracker
-    fleet_membership:
-      new_invite:
-        subject: New Fleet Invite
-        headline: You have been invited to Join %{fleet}
-        body: 'To accept the invite please click on the following link:'
-        action: Join %{fleet}
-      member_requested:
-        subject: New Fleet Membership Request
-        headline: "%{username} wants to Join %{fleet}"
-        body: 'To accept the request please click on the following link:'
-        action: "%{fleet} Memberlist"
-      fleet_accepted:
-        subject: "%{fleet} accepted your Membership Request"
-        headline: Your Membership Request to Join %{fleet} has been accepted
-        body: 'To view the fleets Ships and other Members please click on the following link:'
-        action: "%{fleet} Homepage"
-      member_accepted:
-        subject: New Fleet Member
-        headline: "%{username} accepted his Fleet Invitation"
-        body: 'To look at the new members information please click on the following link:'
-        action: "%{fleet} Memberlist"
-    two_factor:
-      enabled:
-        subject: Two-factor enabled
-        body: Great, you activated Two-factor Authentication for your Fleetyards.net Account.
-      disabled:
-        subject: Two-factor disabled
-        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
-      login:
-        subject: Two-factor Authentication Code
-        headline: Two-factor Authentication Code
-        body: Please enter the following Code on the Login page to verify your identity.
-    user:
-      username_changed:
-        subject: Username changed
-        body: You changed your Fleetyards.net Account Username.

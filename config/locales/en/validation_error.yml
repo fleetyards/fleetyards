@@ -2,13 +2,15 @@
 en:
   validation_error:
     change_pasword: Password Change failed.
+    commodity_price:
+      create: Price could not be created
+      destroy: Price could not be destroyed
+      update: Price could not be updated
     confirmation: Confirmation failed.
-    request_password: Request Password failed.
-    signup: Signup failed. Please resolve all Errors and try again.
     fleet:
       create: Fleet could not be created.
-      update: Fleet could not be updated.
       destroy: Fleet could not be destroyed.
+      update: Fleet could not be updated.
     fleet_memberships:
       create: Fleet Membership could not be created
       destroy: Fleet Membership could not be deleted.
@@ -17,7 +19,5 @@ en:
       create: Group could not be created
       destroy: Group could not be destroyed
       update: Group could not be updated
-    commodity_price:
-      create: Price could not be created
-      destroy: Price could not be destroyed
-      update: Price could not be updated
+    request_password: Request Password failed.
+    signup: Signup failed. Please resolve all Errors and try again.
