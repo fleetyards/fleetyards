@@ -1,110 +1,66 @@
 ---
 en:
-  app: FleetYards.net
   admin_app: FleetYards.net Command
-  copyright:  Copyright
+  app: FleetYards.net
+  copyright: Copyright
   error_pages:
     not_found: You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.
     server_error: The Page is currently not available. Please try again later.
     unprocessable_entity: Your Request could not be processed.
   meta:
-    description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
     admin_description: FleetYards.net Command App.
-    keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
     compare_ships:
       description:
-        default: "Compare your favorite Ships."
-        vs: "Compare %{models}."
+        default: Compare your favorite Ships.
+        vs: Compare %{models}.
+    description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
+    keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
     ship_images:
       description: "%{model} Images"
     ship_videos:
       description: "%{model} Videos"
   nav:
+    admin_users: Admins
+    celestial_objects: Celestial Objects
+    commodities: Commodities
+    commodity_prices:
+      confirmation: Confirm Price Submissions
     components: Components
     equipment: Equipment
     home: Home
     images: Images
+    maintenance: Maintenance
     manufacturers: Manufacturers
     model:
       overview: Index
+    model_module_packages: Module Packages
     models: Models
     models_name_diff: Different RSI Name
     models_price_diff: Outdated Pledge Price
-    model_module_packages: Module Packages
-    users: Users
-    workers: Workers
-    commodities: Commodities
-    celestial_objects: Celestial Objects
-    starsystems: Starsystems
-    admin_users: Admins
+    otp: Two Factor Auth
+    pghero: PGHero
     shop_commodities:
       confirmation: Confirm Shop Commodities
-    commodity_prices:
-      confirmation: Confirm Price Submissions
-    otp: Two Factor Auth
-    maintenance: Maintenance
-    pghero: PGHero
+    starsystems: Starsystems
+    users: Users
+    workers: Workers
   title:
-    frontend:
-      home: Home
-      search: Search Results
-      images: Images
-      tools_trade-routes: Trade Routes
-      tools_profit_calculator: Profit Calculator
-      ships: Ships
-      shops: Shops
-      stations: Stations
-      starsystems: Starsystems
-      starsystem: "%{starsystem} Starsystem"
-      celestial_object: "%{celestial_object} in the %{starsystem} System"
-      station: "%{station} near %{celestial_object}"
-      station_images: "Images of %{station} near %{celestial_object}"
-      shop: "%{shop} - %{station}"
-      ship_images: "%{model} Images"
-      ship_videos: "%{model} Videos"
-      commodities: Commodities
-      compare_ships: Compare Ships
-      settings: Settings
-      stats: Stats
-      fleets: 'Fleets'
-      fleets_add: 'Create new Fleet'
-      fleets_preview: 'Fleet Preview'
-      fleets_invites: 'Fleet Invites'
-      fleet_members: '%{fleet} Members'
-      fleet_stats: '%{fleet} Stats'
-      fleet_invite: 'Join %{fleet}'
-      fleet_settings: '%{fleet} Settings'
-      settings_account: Account
-      settings_profile: Profile Settings
-      settings_hangar: Hangar Settings
-      settings_notifications: Notification Settings
-      settings_change-password: Change Password
-      settings_security: Account Security
-      settings_security_two-factor_enable: Enable Two-factor Authentication
-      settings_security_two-factor_disable: Disable Two-factor Authentication
-      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
-      roadmap: Roadmap
-      roadmap_changes: Roadmap Changes
-      roadmap_ships: Ship-Roadmap
-      roadmap_progress-tracker: Progress Tracker
-      hangar: My Hangar
-      hangar_preview: My Hangar Preview
-      hangar_import: Import
-      hangar_stats: My Hangar Stats
-      public_hangar: "%{user} Hangar"
-      impressum: Impressum
-      privacy-policy: Privacy Policy
-      cookie-policy: Cookie Policy
-      login: Login
-      sign-up: Sign Up
-      confirm: Confirm Account
-      password_request: Request Password
-      password_change: Change Password
     admin: FleetYards.net Command
     admin_short: FltYrd Command
-    otp: 2-Factor-Auth
-    devise:
-      otp: 2-Factor-Authentication
+    admin_user:
+      edit: Edit Admin User
+      index: Admin Users
+      new: New Admin User
+    celestial_object:
+      edit: Edit Celestial Object
+      index: Celestial Objects
+      new: New Planet
+    commodity:
+      edit: Edit Commodity
+      index: Commodities
+      new: New Commodity
+    commodity_price:
+      confirmation: Confirm submitted Prices
     component:
       edit: Edit Component
       index: Components
@@ -112,56 +68,82 @@ en:
     confirm: Confirm Account
     default: FleetYards.net
     default_short: FleetYards
+    devise:
+      otp: 2-Factor-Authentication
+    equipment:
+      edit: Edit Equipment
+      index: Equipment
+      new: New Equipment
+    frontend:
+      celestial_object: "%{celestial_object} in the %{starsystem} System"
+      commodities: Commodities
+      compare_ships: Compare Ships
+      confirm: Confirm Account
+      cookie-policy: Cookie Policy
+      fleet_invite: Join %{fleet}
+      fleet_members: "%{fleet} Members"
+      fleet_settings: "%{fleet} Settings"
+      fleet_stats: "%{fleet} Stats"
+      fleets: Fleets
+      fleets_add: Create new Fleet
+      fleets_invites: Fleet Invites
+      fleets_preview: Fleet Preview
+      hangar: My Hangar
+      hangar_import: Import
+      hangar_preview: My Hangar Preview
+      hangar_stats: My Hangar Stats
+      home: Home
+      images: Images
+      impressum: Impressum
+      login: Login
+      password_change: Change Password
+      password_request: Request Password
+      privacy-policy: Privacy Policy
+      public_hangar: "%{user} Hangar"
+      roadmap: Roadmap
+      roadmap_changes: Roadmap Changes
+      roadmap_progress-tracker: Progress Tracker
+      roadmap_ships: Ship-Roadmap
+      search: Search Results
+      settings: Settings
+      settings_account: Account
+      settings_change-password: Change Password
+      settings_hangar: Hangar Settings
+      settings_notifications: Notification Settings
+      settings_profile: Profile Settings
+      settings_security: Account Security
+      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
+      settings_security_two-factor_disable: Disable Two-factor Authentication
+      settings_security_two-factor_enable: Enable Two-factor Authentication
+      ship_images: "%{model} Images"
+      ship_videos: "%{model} Videos"
+      ships: Ships
+      shop: "%{shop} - %{station}"
+      shops: Shops
+      sign-up: Sign Up
+      starsystem: "%{starsystem} Starsystem"
+      starsystems: Starsystems
+      station: "%{station} near %{celestial_object}"
+      station_images: Images of %{station} near %{celestial_object}
+      stations: Stations
+      stats: Stats
+      tools_profit_calculator: Profit Calculator
+      tools_trade-routes: Trade Routes
     image:
       index: All Images
+    loaner_uploads:
+      new: New Loaner Upload
     manufacturer:
       edit: Edit Manufacturer
       index: Manufacturers
       new: New Manufacturer
     model:
       edit: Edit Model
+      images: Images
       index: Models
-      images: Images
-      new: New Model
       name_diff: Models with different RSI Name
+      new: New Model
       price_diff: Models with outdated Pledge price
-    loaner_uploads:
-      new: New Loaner Upload
-    station:
-      edit: Edit Station
-      index: Stations
-      images: Images
-      new: New Station
-    shop:
-      edit: Edit Shop
-      index: Shops
-      new: New Shop
-    commodity:
-      edit: Edit Commodity
-      index: Commodities
-      new: New Commodity
-    shop_commodity:
-      confirmation: Confirm submitted Shop Commodities
-    shop_commodities:
-      index: Shop Commodities
-    commodity_price:
-      confirmation: Confirm submitted Prices
-    equipment:
-      edit: Edit Equipment
-      index: Equipment
-      new: New Equipment
-    celestial_object:
-      edit: Edit Celestial Object
-      index: Celestial Objects
-      new: New Planet
-    starsystem:
-      edit: Edit Starsystem
-      index: Starsystems
-      new: New Starsystem
-    model_paint:
-      edit: Edit Paint
-      index: Paints
-      new: New Paint
     model_module:
       edit: Edit Module
       index: Modules
@@ -170,23 +152,41 @@ en:
       edit: Edit Module Package
       index: Module Packages
       new: New Module Package
+    model_paint:
+      edit: Edit Paint
+      index: Paints
+      new: New Paint
     model_upgrade:
       edit: Edit Upgrade
       index: Upgrades
       new: New Upgrade
     not_found: 404
-    sign_in: Login
+    otp: 2-Factor-Auth
     password:
       edit: Change Password
       new: Forgot your Password?
     server_error: 500
+    shop:
+      edit: Edit Shop
+      index: Shops
+      new: New Shop
+    shop_commodities:
+      index: Shop Commodities
+    shop_commodity:
+      confirmation: Confirm submitted Shop Commodities
+    sign_in: Login
+    starsystem:
+      edit: Edit Starsystem
+      index: Starsystems
+      new: New Starsystem
+    station:
+      edit: Edit Station
+      images: Images
+      index: Stations
+      new: New Station
     unlock: Unlock Account
     unprocessable_entity: 422
     user:
       edit: Edit User
       index: Users
       new: New User
-    admin_user:
-      edit: Edit Admin User
-      index: Admin Users
-      new: New Admin User
