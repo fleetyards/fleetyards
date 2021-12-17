@@ -1,16 +1,19 @@
 ---
 en:
   actions:
-    more: More Entries
     add: Add
-    add_video: Add Video
-    add_trade_commodity: Add Commodity
+    add_commodity: Add Commodity
+    add_dock: Add Dock
     add_module_hardpoint: Add Model
     add_module_package_item: Add Module
+    add_trade_commodity: Add Commodity
     add_upgrade_kit: Add Model
-    add_dock: Add Dock
-    add_commodity: Add Commodity
+    add_video: Add Video
     admin:
+      celestial_object:
+        new: Create new Celestial Object
+      commodity:
+        new: Create new Commodity
       component:
         new: Create new Component
       equipment:
@@ -20,48 +23,45 @@ en:
       model:
         new: Create new Model
         new_loaner_upload: Loaner Upload
-      user:
-        new: Create new User
-      commodity:
-        new: Create new Commodity
-      station:
-        new: Create new Station
-      shop:
-        new: Create new Shop
-      celestial_object:
-        new: Create new Celestial Object
-      starsystem:
-        new: Create new Starsystem
       model_module:
         new: Create new Module
       model_module_package:
         new: Create new Module Package
-      model_upgrade:
-        new: Create new Upgrade
       model_paint:
         new: Create new Paint
+      model_upgrade:
+        new: Create new Upgrade
+      shop:
+        new: Create new Shop
+      starsystem:
+        new: Create new Starsystem
+      station:
+        new: Create new Station
+      user:
+        new: Create new User
     back: Back
     cancel: Cancel
     confirm: Confirm Account
-    resend_confirmation: Resend Confirmation
+    copy: Copy
     delete: Delete
     edit: Edit
-    copy: Copy
     loading: Please wait...
     model:
       images: Images
       reload: Reload Models
       reload_data: Reload Models Data
       use_rsi_image: Use RSI Image
-    station:
-      images: Images
+    more: More Entries
     ok: OK
+    prefill_attachments: Add all Attachments
+    prefill_utilities: Add all Utilities
+    prefill_weapons: Add all Weapons
+    resend_confirmation: Resend Confirmation
     reset_password: Forgot password?
     save: Save
     save_password: Save password
     sign_in: Login
     sign_out: Logout
+    station:
+      images: Images
     unlock: Unlock Account
-    prefill_attachments: Add all Attachments
-    prefill_weapons: Add all Weapons
-    prefill_utilities: Add all Utilities

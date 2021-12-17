@@ -3,13 +3,33 @@ en:
   headlines:
     account: My Information
     admin:
+      admin_user:
+        edit: Edit %{admin_user}
+        index: Admin Users
+        new: New Admin User
+      celestial_object:
+        edit: Celestial Object %{celestial_object}
+        index: Celestial Objects
+        new: New Celestial Object
+      commodity:
+        edit: Commodity %{commodity}
+        index: Commodities
+        new: New Commodity
+      commodity_price:
+        confirmation: Confirm submitted Prices
       component:
         edit: Edit %{component}
         index: Component
         new: New Component
       dashboard: Dashboard
+      equipment:
+        edit: Equipment %{equipment}
+        index: Equipment
+        new: New Equipment
       image:
         index: Images
+      loaner_uploads:
+        new: New Loaner Upload
       manufacturer:
         edit: Edit %{manufacturer}
         index: Manufacturer
@@ -18,54 +38,9 @@ en:
         edit: Edit %{model}
         images: Imageupload for %{model}
         index: Models
-        new: New Model
         name_diff: Models with different RSI Name
+        new: New Model
         price_diff: Models with outdated Pledge price
-      loaner_uploads:
-        new: New Loaner Upload
-      user:
-        edit: Edit %{user}
-        index: Users
-        new: New User
-      admin_user:
-        edit: Edit %{admin_user}
-        index: Admin Users
-        new: New Admin User
-      commodity:
-        edit: Commodity %{commodity}
-        index: Commodities
-        new: New Commodity
-      equipment:
-        edit: Equipment %{equipment}
-        index: Equipment
-        new: New Equipment
-      station:
-        edit: Station %{station}
-        images: Imageupload for %{station}
-        index: Stations
-        new: New Station
-      shop_commodity:
-        confirmation: Confirm submitted Shop Commodities
-      commodity_price:
-        confirmation: Confirm submitted Prices
-      shop:
-        edit: Shop %{shop}
-        index: Shops
-        new: New Shop
-      shop_commodities:
-        index: Shop Commodities for %{shop}
-      celestial_object:
-        edit: Celestial Object %{celestial_object}
-        index: Celestial Objects
-        new: New Celestial Object
-      starsystem:
-        edit: Starsystem %{starsystem}
-        index: Starsystems
-        new: New Starsystem
-      model_paint:
-        edit: Paint %{model_paint}
-        index: Paints
-        new: New Paint
       model_module:
         edit: Module %{model_module}
         index: Modules
@@ -74,10 +49,35 @@ en:
         edit: Module Package %{model_module_package}
         index: Module Packages
         new: New Module Package
+      model_paint:
+        edit: Paint %{model_paint}
+        index: Paints
+        new: New Paint
       model_upgrade:
         edit: Upgrade %{model_upgrade}
         index: Upgrades
         new: New Upgrade
+      shop:
+        edit: Shop %{shop}
+        index: Shops
+        new: New Shop
+      shop_commodities:
+        index: Shop Commodities for %{shop}
+      shop_commodity:
+        confirmation: Confirm submitted Shop Commodities
+      starsystem:
+        edit: Starsystem %{starsystem}
+        index: Starsystems
+        new: New Starsystem
+      station:
+        edit: Station %{station}
+        images: Imageupload for %{station}
+        index: Stations
+        new: New Station
+      user:
+        edit: Edit %{user}
+        index: Users
+        new: New User
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

@@ -1,6 +1,10 @@
 ---
 en:
   messages:
+    background_disabled:
+      success: "%{resource} not used for Background."
+    background_enabled:
+      success: "%{resource} used for Background."
     confirm:
       delete: Are you sure you want to delete this entry?
       resend_confirmation: Are you sure you want to resend confirmation instructions for this user?
@@ -9,39 +13,35 @@ en:
       success: "%{resource} created."
     destroy:
       success: "%{resource} successfully deleted."
-    resend_confirmation:
-      failure: "%{resource} could not resend confirmation."
-      success: "%{resource} confirmation send."
     disabled:
       success: "%{resource} disabled."
     enabled:
       success: "%{resource} enabled."
-    background_disabled:
-      success: "%{resource} not used for Background."
-    background_enabled:
-      success: "%{resource} used for Background."
     fleet:
       join:
         success: Fleet Join Request received.
+    loaner_upload:
+      failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
+      success: Loaner Upload successfull.
     record_not_found:
       base: No Entry found
-      model: No Model found
       fleet: No Fleet found
+      model: No Model found
     reload:
       startet: "%{resource} reload startet."
       success: "%{resource} successfully reloaded."
+    resend_confirmation:
+      failure: "%{resource} could not resend confirmation."
+      success: "%{resource} confirmation send."
+    rsi_verification:
+      failure: Account could not be verified.
+      success: Account successfully verified.
+    signup:
+      reserved_username: The Username is reserved/forbidden on FleetYards.net. Please choose something else!
     update:
       failure: "%{resource} could not be edited."
       success: "%{resource} edited successfully."
-    rsi_verification:
-      success: "Account successfully verified."
-      failure: "Account could not be verified."
-    signup:
-      reserved_username: "The Username is reserved/forbidden on FleetYards.net. Please choose something else!"
     user:
-      requires_access_confirmation: 'Access confirmation pending'
+      requires_access_confirmation: Access confirmation pending
       two_factor_setup:
         active: Two-factor Authentication already active
-    loaner_upload:
-      success: Loaner Upload successfull.
-      failure: "Loaner Upload failed! Bad file_data: %{class_name} %{content}"

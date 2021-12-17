@@ -2,55 +2,225 @@
 en:
   activerecord:
     attributes:
+      celestial_object:
+        hidden: hidden?
+        location_prefix:
+          default: in the %{starsystem} System
+      commodity:
+        commodity_types:
+          agricultural_supply: Agricultural Supply
+          consumer_goods: Consumer Goods
+          food: Food
+          gas: Gas
+          harvestable: Harvestable
+          medical_supply: Medical Supply
+          metal: Metal
+          mineral: Mineral
+          non_metals: Non-Metals
+          processed_goods: Processed Goods
+          scrap: Scrap
+          vice: Vice
+          waste: Waste
+      commodity_rental_price:
+        time_ranges:
+          1-day: 1 Day
+          3-days: 3 Days
+          30-days: 30 Days
+          7-days: 7 Days
+      component:
+        component_classes:
+          RSIAvionic: Avionic
+          RSIModular: Modular
+          RSIPropulsion: Propulsion
+          RSIThruster: Thruster
+          RSIWeapon: Weapon
+        item_classes:
+          civilian: Civilian
+          competition: Competition
+          industrial: Industrial
+          military: Military
+          stealth: Stealth
+        item_types:
+          cargo_grids: Cargogrids
+          coolers: Coolers
+          countermeasure_launcher: Countermeasure Launcher
+          fixed_thrusters: Fixed Thrusters
+          fuel_intakes: Fuel Intakes
+          fuel_tanks: Fuel Tanks
+          joint_thrusters: Joint Thrusters
+          manned_turrets: Manned Turrets
+          mid_range_radar: Midrange Radar
+          mining_lasers: Mining Lasers
+          missile_racks: Missle Racks
+          missile_turrets: Missile Turrets
+          missiles: Missiles
+          power_plants: Power Plants
+          quantum_drives: Quantum Drives
+          quantum_fuel_tanks: Quantum Fuel Tanks
+          remote_turrets: Remote Turrets
+          scanners: Scanners
+          shield_generators: Shield Generators
+          thrusters: Thrusters
+          turrets: Turrets
+          weapon_defensive: Weapon Defensive
+          weapons: Ship Weapons
+        tracking_signals:
+          cross_section: Cross Section
+          electromagnetic: Electromagnetic
+          infrared: infrared
+      dock:
+        dock_types:
+          dockingport: Dockingport
+          garage: Garage
+          hangar: Hangar
+          landingpad: Landingpad
+          vehiclepad: Vehiclepad
+        ship_sizes:
+          capital: Capital (C)
+          extra_extra_small: Snubcraft (XXS)
+          extra_large: Extra Large (XL)
+          extra_small: Extra Small (XS)
+          large: Large (L)
+          medium: Medium (M)
+          small: Small (S)
+      equipment:
+        backpack_compatibilities:
+          all: All
+          light: Light
+          light_medium: Light & Medium
+        core_compatibilities:
+          all: All
+          heavy: Heavy
+          medium_heavy: Medium & Heavy
+        equipment_types:
+          armor: Armor
+          clothing: Clothing
+          hacking_tool: Hacking Tool
+          medical: Medical
+          tool: Tool
+          undersuit: Undersuit
+          weapon: Weapon
+          weapon_attachment: Weapon Attachment
+        hidden: hidden?
+        item_types:
+          assault_rifle: Assault Rifle
+          backpack: Backpack
+          battery: Battery
+          flightsuit: Flightsuit
+          grenade: Grenade
+          grenade_launcher: Grenade Launcher
+          heavy_armor: Heavy Armor
+          heavy_backpack: Heavy Backpack
+          knife: Knife
+          light_armor: Light Armor
+          light_backpack: Light Backpack
+          lmg: LMG
+          magazine: Magazine
+          medium_armor: Medium Armor
+          medium_backpack: Medium Backpack
+          pistol: Pistol
+          rifle: Rifle
+          rocket_launcher: Rocket Launcher
+          shotgun: Shotgun
+          smg: SMG
+          sniper_rifle: Sniper Rifle
+          special_railgun: Special - Railgun
+          utility: Utility
+          weapon_scope: Scope
+        slots:
+          arms: Arms
+          backpack: Backpack
+          footwear: Footwear
+          gloves: Gloves
+          hat: Hat
+          helmet: Helmet
+          jacket: Jacket
+          legs: Legs
+          pants: Pants
+          shirt: Shirt
+          torso: Torso
+          undersuit: Undersuit
+        temperature_rating: Temp.
+        types:
+          additional: Additional Equipment
+          powerplant: Powerplant
+          primary_thrusters: Primary Thrusters
+          shield: Shields
+          thrusters: Maneuvering Thrusters
+        weapon_classes:
+          ballistic: Ballistic
+          energy: Energy
+          frag: Frag
+      fleet_membership:
+        roles:
+          admin: Admin
+          member: Member
+          officer: Officer
+        user_id: Member
+      habitation:
+        habitation_types:
+          container: Container
+          large_apartment: Large Apartment
+          medium_apartment: Medium Apartment
+          small_apartment: Small Apartment
+          suite: Suite
+      manufacturer:
+        code: CODE
+        known_for: Known for?
       model:
+        active: active?
         beam: Beam
-        on_sale: On sale?
         cargo: Cargo
         crew: Crew
         equipment: Equipment
+        ground: Ground Vehicle?
         hardpoints: Hardpoints
         height: Height
+        hidden: hidden?
+        holo_colored: 3D File has colored Materials?
         length: Length
         manufacturer: Manufacturer
         mass: Mass
         max_upgrades: Upgrades
+        on_sale: On sale?
         production_status: Production Status
         variants: Variants
         weapons: Weapons
-        hidden: hidden?
-        active: active?
-        ground: Ground Vehicle?
-        holo_colored: 3D File has colored Materials?
       model_hardpoint:
         categories:
-          main: Main Thruster
-          retro: Retro Thruster
-          vtol: VTOL Thruster
           fixed: Fixed Maneuvering Thruster
           gimbal: Gimbal Maneuvering Thruster
           joint: Joint Maneuvering Thruster
+          main: Main Thruster
           manned_turret: Manned Turret
-          remote_turret: Remote Turret
           missile_turret: Missile Turret
+          remote_turret: Remote Turret
+          retro: Retro Thruster
+          vtol: VTOL Thruster
         sizes:
-          tbd: TBD
-          one: 1
-          two: 2
-          three: 3
-          four: 4
-          five: 5
-          six: 6
-          seven: 7
-          eight: 8
-          nine: 9
-          ten: 10
-          eleven: 11
-          twelve: 12
-          vehicle: V (0)
-          small: S (1)
-          medium: M (2)
-          large: L (3)
           capital: C (4)
+          eight: 8
+          eleven: 11
+          five: 5
+          four: 4
+          large: L (3)
+          medium: M (2)
+          nine: 9
+          one: 1
+          seven: 7
+          six: 6
+          small: S (1)
+          tbd: TBD
+          ten: 10
+          three: 3
+          twelve: 12
+          two: 2
+          vehicle: V (0)
+      progress_tracker_item:
+        statuses:
+          done: Done
+          in_progress: In Progress
+          planned: Planned
       setting:
         base:
           registration: Registration active?
@@ -60,19 +230,92 @@ en:
           password: SMPT Password or Token
           port: SMTP Port
           user: SMTP User
-      manufacturer:
-        known_for: Known for?
-        code: CODE
+      shop:
+        buying: Does buy Items?
+        hidden: hidden?
+        location_prefix:
+          default: at
+        refinery_terminal: Has a Refinery Terminal?
+        rental: Does offer Rentals?
+        selling: Does sell Items?
+        shop_types:
+          admin: Admin Office
+          armor: Armor Store
+          armor_and_weapons: Armor & Weapons Store
+          bar: Bar
+          blackmarket: Blackmarket
+          cargo: Cargo Center
+          clothing: Clothing Store
+          components: Components Store
+          computers: Computer Store
+          courier: Courier
+          equipment: Equipment
+          hospital: Hospital
+          kiosk: Kiosk
+          mining_equipment: Mining Equipment
+          pharmacy: pharmacy
+          refinery: Refinery
+          rental: Rental
+          resources: Resources Broker
+          salvage: Salvage Yard
+          ship_customizations: Ship & Vehicle Customizations
+          ships: Ship Store
+          souvenirs: Souvenirs
+          superstore: Superstore
+          weapons: Weapons Store
+      shop_commodity:
+        commodity_item_types:
+          Commodity: Commodities
+          Component: Components
+          Equipment: Equipment
+          Model: Ships
+          ModelModule: Ship Modules
+          ModelPaint: Ship Paints
+        location_prefix:
+          default: sold at
+        price_per_unit: Price per Unit?
+      station:
+        cargo_hub: Has Cargo Hub?
+        classifications:
+          city: City
+          drug_lab: Drug lab
+          farming: Farming
+          mining: Mining
+          poi: Point of Interest
+          rest_stop: Rest Stop
+          salvaging: Salvaging
+          science: Science
+          security: Security
+          settlement: Settlement
+          town: Town
+          trading: Trading
+        hidden: hidden?
+        location_prefix:
+          asteriod: on asteroid near
+          default: 'on'
+          near: near
+          orbit: in orbit around
+        refinery: Has Refinery Station?
+        station_types:
+          aid_shelter: Aid Shelter
+          asteroid_station: Asteriod Station
+          district: District
+          landing_zone: Landing Zone
+          outpost: Outpost
+          station: Station
+      trade_commodity:
+        buy: Buy?
+        sell: Sale?
       updated_at: "%{time} ago"
       user:
         admin: Admin?
         confirmation_token: Token
+        current_password: Password
         email: Email
         enabled: Active?
         gravatar: Gravatar email Address
         login: Username or email
         username: Username
-        current_password: Password
       weapon:
         classes:
           class1: Class 1
@@ -83,249 +326,6 @@ en:
           class6: Class 6
           class7: Class 7
           class8: Class 8
-      trade_commodity:
-        sell: Sale?
-        buy: Buy?
-      dock:
-        dock_types:
-          vehiclepad: Vehiclepad
-          garage: Garage
-          landingpad: Landingpad
-          dockingport: Dockingport
-          hangar: Hangar
-        ship_sizes:
-          extra_extra_small: Snubcraft (XXS)
-          extra_small: Extra Small (XS)
-          small: Small (S)
-          medium: Medium (M)
-          large: Large (L)
-          extra_large: Extra Large (XL)
-          capital: Capital (C)
-      habitation:
-        habitation_types:
-          container: Container
-          small_apartment: Small Apartment
-          medium_apartment: Medium Apartment
-          large_apartment: Large Apartment
-          suite: Suite
-      component:
-        item_types:
-          weapons: Ship Weapons
-          turrets: Turrets
-          missiles: Missiles
-          shield_generators: Shield Generators
-          coolers: Coolers
-          power_plants: Power Plants
-          quantum_drives: Quantum Drives
-          mining_lasers: Mining Lasers
-          missile_racks: Missle Racks
-          manned_turrets: Manned Turrets
-          remote_turrets: Remote Turrets
-          missile_turrets: Missile Turrets
-          fuel_intakes: Fuel Intakes
-          fuel_tanks: Fuel Tanks
-          quantum_fuel_tanks: Quantum Fuel Tanks
-          scanners: Scanners
-          mid_range_radar: Midrange Radar
-          thrusters: Thrusters
-          joint_thrusters: Joint Thrusters
-          fixed_thrusters: Fixed Thrusters
-          weapon_defensive: Weapon Defensive
-          countermeasure_launcher: Countermeasure Launcher
-          cargo_grids: Cargogrids
-        item_classes:
-          stealth: Stealth
-          civilian: Civilian
-          industrial: Industrial
-          military: Military
-          competition: Competition
-        tracking_signals:
-          infrared: infrared
-          cross_section: Cross Section
-          electromagnetic: Electromagnetic
-        component_classes:
-          RSIModular: Modular
-          RSIWeapon: Weapon
-          RSIAvionic: Avionic
-          RSIPropulsion: Propulsion
-          RSIThruster: Thruster
-      equipment:
-        types:
-          additional: Additional Equipment
-          powerplant: Powerplant
-          primary_thrusters: Primary Thrusters
-          shield: Shields
-          thrusters: Maneuvering Thrusters
-        hidden: hidden?
-        slots:
-          undersuit: Undersuit
-          arms: Arms
-          helmet: Helmet
-          torso: Torso
-          legs: Legs
-          footwear: Footwear
-          hat: Hat
-          gloves: Gloves
-          pants: Pants
-          shirt: Shirt
-          jacket: Jacket
-          backpack: Backpack
-        equipment_types:
-          undersuit: Undersuit
-          armor: Armor
-          weapon: Weapon
-          weapon_attachment: Weapon Attachment
-          clothing: Clothing
-          tool: Tool
-          medical: Medical
-          hacking_tool: Hacking Tool
-        weapon_classes:
-          energy: Energy
-          ballistic: Ballistic
-          frag: Frag
-        item_types:
-          flightsuit: Flightsuit
-          light_armor: Light Armor
-          medium_armor: Medium Armor
-          heavy_armor: Heavy Armor
-          magazine: Magazine
-          battery: Battery
-          pistol: Pistol
-          smg: SMG
-          grenade: Grenade
-          rifle: Rifle
-          shotgun: Shotgun
-          lmg: LMG
-          sniper_rifle: Sniper Rifle
-          special_railgun: Special - Railgun
-          assault_rifle: Assault Rifle
-          weapon_scope: Scope
-          utility: Utility
-          rocket_launcher: Rocket Launcher
-          grenade_launcher: Grenade Launcher
-          knife: Knife
-          backpack: Backpack
-          light_backpack: Light Backpack
-          medium_backpack: Medium Backpack
-          heavy_backpack: Heavy Backpack
-        backpack_compatibilities:
-          all: All
-          light_medium: Light & Medium
-          light: Light
-        core_compatibilities:
-          all: All
-          medium_heavy: Medium & Heavy
-          heavy: Heavy
-        temperature_rating: Temp.
-      fleet_membership:
-        user_id: Member
-        roles:
-          admin: Admin
-          officer: Officer
-          member: Member
-      shop:
-        location_prefix:
-          default: 'at'
-        hidden: hidden?
-        rental: Does offer Rentals?
-        buying: Does buy Items?
-        selling: Does sell Items?
-        refinery_terminal: Has a Refinery Terminal?
-        shop_types:
-          clothing: Clothing Store
-          armor: Armor Store
-          weapons: Weapons Store
-          components: Components Store
-          armor_and_weapons: Armor & Weapons Store
-          superstore: Superstore
-          ships: Ship Store
-          admin: Admin Office
-          bar: Bar
-          hospital: Hospital
-          salvage: Salvage Yard
-          resources: Resources Broker
-          rental: Rental
-          computers: Computer Store
-          blackmarket: Blackmarket
-          mining_equipment: Mining Equipment
-          equipment: Equipment
-          courier: Courier
-          refinery: Refinery
-          pharmacy: pharmacy
-          cargo: Cargo Center
-          souvenirs: Souvenirs
-          kiosk: Kiosk
-          ship_customizations: Ship & Vehicle Customizations
-      celestial_object:
-        hidden: hidden?
-        location_prefix:
-          default: 'in the %{starsystem} System'
-      station:
-        hidden: hidden?
-        refinery: Has Refinery Station?
-        cargo_hub: Has Cargo Hub?
-        location_prefix:
-          default: 'on'
-          asteriod: 'on asteroid near'
-          orbit: 'in orbit around'
-          near: 'near'
-        station_types:
-          landing_zone: Landing Zone
-          station: Station
-          asteroid_station: Asteriod Station
-          district: District
-          outpost: Outpost
-          aid_shelter: Aid Shelter
-        classifications:
-          rest_stop: Rest Stop
-          mining: Mining
-          trading: Trading
-          salvaging: Salvaging
-          farming: Farming
-          science: Science
-          security: Security
-          drug_lab: Drug lab
-          poi: Point of Interest
-          city: City
-          town: Town
-          settlement: Settlement
-      commodity:
-        commodity_types:
-          gas: Gas
-          metal: Metal
-          mineral: Mineral
-          non_metals: Non-Metals
-          agricultural_supply: Agricultural Supply
-          food: Food
-          medical_supply: Medical Supply
-          processed_goods: Processed Goods
-          waste: Waste
-          scrap: Scrap
-          vice: Vice
-          harvestable: Harvestable
-          consumer_goods: Consumer Goods
-      shop_commodity:
-        location_prefix:
-          default: 'sold at'
-        price_per_unit: Price per Unit?
-        commodity_item_types:
-          Model: 'Ships'
-          ModelModule: 'Ship Modules'
-          ModelPaint: 'Ship Paints'
-          Component: 'Components'
-          Commodity: 'Commodities'
-          Equipment: 'Equipment'
-      commodity_rental_price:
-        time_ranges:
-          1-day: 1 Day
-          3-days: 3 Days
-          7-days: 7 Days
-          30-days: 30 Days
-      progress_tracker_item:
-        statuses:
-          planned: Planned
-          in_progress: In Progress
-          done: Done
     errors:
       messages:
         blank: can't be blank
