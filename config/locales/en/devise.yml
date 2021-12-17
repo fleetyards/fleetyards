@@ -1,25 +1,6 @@
 ---
 en:
   devise:
-    otp:
-      title: '2-Factor-Authentication'
-      explain: 'To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with <a href="%{google_auth_link}" target="_blank">Google Authenticator</a>, <a href="%{one_password_link}" target="_blank">1Password</a> or <a href="%{authy_link}" target="_blank">Authy</a>.'
-      enable_explain: 'Scan the QR-Code and enter a generated Token.'
-      disable_explain: 'To disable 2-Factor-Auth just enter a valid Token.'
-      backup_explain: 'Copy the Backup Codes and keep them save and secure.'
-      backup_codes: 'Generate Backup Codes'
-      enable: 'Enable'
-      disable: 'Disable'
-      otp_token: 'Token'
-      otp_enabled: '2-Factor-Authentication enabled?'
-      messages:
-        backup_codes: "Backup Codes generated."
-        enable:
-          failure: "Please enter a valid Token."
-          success: "2-Factor-Authentication is now enabled."
-        disable:
-          failure: "Please enter a valid Token."
-          success: "2-Factor-Authentication is now disabled."
     confirmations:
       confirmed: Your account was successfully confirmed.
       send_instructions: You will receive an email with instructions about how to confirm your account in a few minutes.
@@ -38,12 +19,19 @@ en:
     mailer:
       confirmation_instructions:
         content:
-          confirm_link: Activate Account
           confirm_email_link: Confirm email
-          confirm_text: 'To activate your Account please click on the following link:'
           confirm_email_text: 'To confirm your new email please click on the following link:'
+          confirm_link: Activate Account
+          confirm_text: 'To activate your Account please click on the following link:'
           welcome: Welcome %{username}
         subject: Confirmation instructions
+      email_changed:
+        content:
+          text_confirmed: We're contacting you to notify you that your email has been changed to %{email}.
+          text_unconfirmed: We're contacting you to notify you that your email is being changed to %{email}.
+      password_change:
+        content:
+          text: We're contacting you to notify you that your password has been changed.
       reset_password_instructions:
         content:
           change_link: Change my Password
@@ -54,16 +42,28 @@ en:
         subject: Reset password instructions
       unlock_instructions:
         subject: Unlock Instructions
-      email_changed:
-        content:
-          text_unconfirmed: We're contacting you to notify you that your email is being changed to %{email}.
-          text_confirmed: We're contacting you to notify you that your email has been changed to %{email}.
-      password_change:
-        content:
-          text: We're contacting you to notify you that your password has been changed.
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
       success: Successfully authenticated from %{kind} account.
+    otp:
+      backup_codes: Generate Backup Codes
+      backup_explain: Copy the Backup Codes and keep them save and secure.
+      disable: Disable
+      disable_explain: To disable 2-Factor-Auth just enter a valid Token.
+      enable: Enable
+      enable_explain: Scan the QR-Code and enter a generated Token.
+      explain: To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with <a href="%{google_auth_link}" target="_blank">Google Authenticator</a>, <a href="%{one_password_link}" target="_blank">1Password</a> or <a href="%{authy_link}" target="_blank">Authy</a>.
+      messages:
+        backup_codes: Backup Codes generated.
+        disable:
+          failure: Please enter a valid Token.
+          success: 2-Factor-Authentication is now disabled.
+        enable:
+          failure: Please enter a valid Token.
+          success: 2-Factor-Authentication is now enabled.
+      otp_enabled: 2-Factor-Authentication enabled?
+      otp_token: Token
+      title: 2-Factor-Authentication
     passwords:
       no_token: You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided.
       send_instructions: You will receive an email with instructions about how to reset your password in a few minutes.

@@ -2,19 +2,19 @@
 en:
   filter:
     all: All
-    shop_commodities:
-      sub_categories:
-        class: "Component"
-        classification: "Ship"
-        equipment_type: "Equipment"
-    image:
-      model:
-        title: Model
     component:
       class:
         items:
-          rsimodular: System
-          rsiweapon: Weapon
           rsiavionic: Avionic
+          rsimodular: System
           rsipropulsion: Propulsion
           rsithruster: Thruster
+          rsiweapon: Weapon
+    image:
+      model:
+        title: Model
+    shop_commodities:
+      sub_categories:
+        class: Component
+        classification: Ship
+        equipment_type: Equipment
