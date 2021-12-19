@@ -4453,10 +4453,10 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-fns-tz@1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-1.1.6.tgz#93cbf354e2aeb2cd312ffa32e462c1943cf20a8e"
-  integrity sha512-nyy+URfFI3KUY7udEJozcoftju+KduaqkVfwyTIE0traBiVye09QnyWKLZK7drRr5h9B7sPJITmQnS3U6YOdQg==
+date-fns-tz@1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-1.1.7.tgz#17d86054d18829b5052bfbe4ed5c394f40d2b615"
+  integrity sha512-xfL918kXO528DJ17Sao60H07rYv5L/X0Bp6zojDssuZAR/acYETDS9PaICKAnodcO9XVHL/0bpLRGKd7kNnvcQ==
 
 date-fns@2.27.0:
   version "2.27.0"

@@ -43,7 +43,7 @@
     "core-js": "3.20.0",
     "css-loader": "5.2.7",
     "date-fns": "2.27.0",
-    "date-fns-tz": "1.1.6",
+    "date-fns-tz": "1.1.7",
     "debounce": "1.2.1",
     "dom-to-image": "^2.6.0",
     "downloadjs": "1.4.7",
