@@ -35,7 +35,7 @@ export class ShopsCollection extends BaseCollection {
     }
 
     const response = await get(
-      `stations/${params?.stationSlug}/shops/${params?.slug}`,
+      `stations/${params?.stationSlug}/shops/${params?.slug}`
     )
 
     if (!response.errors) {

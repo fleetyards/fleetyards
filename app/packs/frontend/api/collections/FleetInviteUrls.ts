@@ -9,7 +9,7 @@ export class FleetInviteUrlsCollection extends BaseCollection {
   params: FleetInviteUrlParams | null = null
 
   async findAll(
-    params: FleetInviteUrlParams | null,
+    params: FleetInviteUrlParams | null
   ): Promise<FleetInviteUrl[]> {
     const response = await get(`fleets/${params?.fleetSlug}/invite-urls/`)
 
@@ -24,7 +24,7 @@ export class FleetInviteUrlsCollection extends BaseCollection {
 
   async checkToken(fleetSlug: string, token: string): Promise<boolean> {
     const response = await get(
-      `fleets/${fleetSlug}/invite-urls/${token}/exists`,
+      `fleets/${fleetSlug}/invite-urls/${token}/exists`
     )
 
     if (!response.error) {
@@ -36,7 +36,7 @@ export class FleetInviteUrlsCollection extends BaseCollection {
 
   async findByToken(
     fleetSlug: string,
-    token: string,
+    token: string
   ): Promise<FleetInviteUrl | null> {
     const response = await get(`fleets/${fleetSlug}/invite-urls/${token}`)
 

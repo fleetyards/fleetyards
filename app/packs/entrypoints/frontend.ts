@@ -61,17 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
         scope: '/',
       })
       .then(
-        registration => {
+        (registration) => {
           // Registration was successful
           console.info(
             'ServiceWorker registration successful with scope: ',
-            registration.scope,
+            registration.scope
           )
         },
-        err => {
+        (err) => {
           // registration failed :(
           console.error('ServiceWorker registration failed: ', err)
-        },
+        }
       )
   }
 
@@ -87,6 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#app',
     router,
     store,
-    render: h => h(App),
+    render: (h) => h(App),
   })
 })

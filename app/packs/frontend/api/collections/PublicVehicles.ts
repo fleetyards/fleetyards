@@ -33,7 +33,7 @@ export class PublicVehiclesCollection extends BaseCollection {
   }
 
   async findAllFleetchart(
-    params: PublicVehicleParams | null,
+    params: PublicVehicleParams | null
   ): Promise<Vehicle[]> {
     if (!params?.username) {
       return []
@@ -56,7 +56,7 @@ export class PublicVehiclesCollection extends BaseCollection {
 
   async findStatsByUsername(
     username: string,
-    params: PublicVehicleParams | null,
+    params: PublicVehicleParams | null
   ): Promise<PublicVehicleStats | null> {
     const response = await get(`vehicles/${username}/quick-stats`, {
       q: params?.filters,

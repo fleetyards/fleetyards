@@ -67,11 +67,11 @@ export default class AddonsModal extends Vue {
 
     this.internalValue = [...this.value]
 
-    package.modules.forEach(module => {
+    package.modules.forEach((module) => {
       const additionalPackageModules = package.modules.filter(
-        packageModule => packageModule.id === module.id,
+        (packageModule) => packageModule.id === module.id
       )
-      const foundModules = this.internalValue.filter(id => id === module.id)
+      const foundModules = this.internalValue.filter((id) => id === module.id)
 
       if (
         !foundModules.length ||
@@ -85,7 +85,7 @@ export default class AddonsModal extends Vue {
   selectedPackage(package) {
     return (
       JSON.stringify([...this.value].sort()) ===
-      JSON.stringify(package.modules.map(module => module.id).sort())
+      JSON.stringify(package.modules.map((module) => module.id).sort())
     )
   }
 }

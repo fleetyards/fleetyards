@@ -26,7 +26,7 @@
         position: absolute;
         top: 0;
         right: 20px;
-        transition: all .5s ease;
+        transition: all 0.5s ease;
       }
 
       .released-label {
@@ -85,13 +85,13 @@
 
     .item-body {
       position: relative;
-      flex: .8;
+      flex: 0.8;
       padding: 15px;
     }
 
     .item-image {
       position: relative;
-      flex: .2;
+      flex: 0.2;
       width: 120px;
       background-repeat: no-repeat;
       background-position: center;
@@ -99,7 +99,7 @@
       border-top-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
       cursor: pointer;
-      opacity: .8;
+      opacity: 0.8;
 
       .roadmap-item-updated {
         position: absolute;
@@ -154,7 +154,7 @@
     }
 
     &.inactive {
-      opacity: .5;
+      opacity: 0.5;
     }
   }
 }

@@ -61,7 +61,7 @@ export default class PriceModalBtn extends Vue {
         commodityItemType: this.commodityItemType,
         shopTypes: this.shopTypes,
         pathOptions: this.pathOptions.filter(
-          item => item.value !== 'rental' || this.withoutRental,
+          (item) => item.value !== 'rental' || this.withoutRental
         ),
       },
     })

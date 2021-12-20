@@ -8,7 +8,7 @@
   display: none;
   align-items: flex-start;
   overflow-y: auto;
-  background-color: rgba(black, .7);
+  background-color: rgba(black, 0.7);
   outline: 0;
   transition: opacity $transition-base-speed ease-in-out;
 
@@ -66,7 +66,7 @@
   }
 
   .modal-footer {
-    padding: .75rem 0;
+    padding: 0.75rem 0;
     border-top: none;
     border-radius: 0;
   }
@@ -113,7 +113,8 @@
       width: 100%;
       margin: 0;
       margin-top: auto !important;
-      margin-bottom: $navigation-mobile-height + $navigation-mobile-bottom-offset;
+      margin-bottom: $navigation-mobile-height +
+        $navigation-mobile-bottom-offset;
       padding: 20px 0;
 
       > :first-child {

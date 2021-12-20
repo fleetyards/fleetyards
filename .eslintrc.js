@@ -82,16 +82,6 @@ module.exports = {
     'no-useless-constructor': 'off',
     'no-useless-escape': 'off',
     'no-use-before-define': 'off',
-    'prettier/prettier': [
-      'warn',
-      {
-        semi: false,
-        quoteProps: 'consistent',
-        trailingComma: 'all',
-        singleQuote: true,
-        htmlWhitespaceSensitivity: 'ignore',
-      },
-    ],
     'semi': ['error', 'never'],
     'sort-class-members/sort-class-members': [
       2,

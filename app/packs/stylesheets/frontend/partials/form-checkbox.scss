@@ -52,7 +52,7 @@
 
   &:disabled + label {
     cursor: not-allowed;
-    opacity: .5;
+    opacity: 0.5;
 
     &::before {
       box-shadow: 0 0 0 1px $gray inset;

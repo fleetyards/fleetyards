@@ -45,7 +45,7 @@ export default class AddToHangar extends Vue {
   @Getter('ships', { namespace: 'hangar' }) ships
 
   get inHangar() {
-    return !!(this.ships || []).find(item => item === this.model.slug)
+    return !!(this.ships || []).find((item) => item === this.model.slug)
   }
 
   get btnVariant() {

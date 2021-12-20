@@ -6,9 +6,9 @@ import { routes as initialRoutes } from 'frontend/routes'
 
 Vue.use(Router)
 
-const addTrailingSlashToAllRoutes = routes =>
+const addTrailingSlashToAllRoutes = (routes) =>
   [].concat(
-    ...routes.map(route => {
+    ...routes.map((route) => {
       if (['*', '/'].includes(route.path)) {
         return [route]
       }
@@ -34,14 +34,14 @@ const addTrailingSlashToAllRoutes = routes =>
         modifiedRoute,
         {
           path,
-          redirect: to => ({
+          redirect: (to) => ({
             name: route.name,
             params: to.params || null,
             query: to.query || null,
           }),
         },
       ]
-    }),
+    })
   )
 
 const router = new Router({
@@ -50,7 +50,7 @@ const router = new Router({
   linkExactActiveClass: 'active-exact',
 
   scrollBehavior: (to, _from, savedPosition) =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
       setTimeout(() => {
         if (to.hash) {
           resolve(false)
@@ -74,7 +74,7 @@ const router = new Router({
   routes: addTrailingSlashToAllRoutes(initialRoutes),
 })
 
-const validateAndResolveNewRoute = to => {
+const validateAndResolveNewRoute = (to) => {
   if (
     to.meta.needsAuthentication &&
     !Store.getters['session/isAuthenticated']

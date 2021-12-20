@@ -6,8 +6,10 @@ export const transformErrors = function transformErrors(errors) {
 
   const errorData = {}
 
-  errors.forEach(error => {
-    errorData[error.attribute] = error.messages.map(message => message.message)
+  errors.forEach((error) => {
+    errorData[error.attribute] = error.messages.map(
+      (message) => message.message
+    )
   })
 
   return errorData

@@ -58,7 +58,7 @@ export default class ModelPanel extends Vue {
 
   get usernames() {
     return this.vehicles
-      .map(vehicle => vehicle.username)
+      .map((vehicle) => vehicle.username)
       .sort()
       .filter(uniqArray)
   }

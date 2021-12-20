@@ -97,7 +97,7 @@ export default class Hardpoints extends Vue {
   }
 
   hardpointsForGroup(group) {
-    return this.hardpoints.filter(hardpoint => hardpoint.group === group)
+    return this.hardpoints.filter((hardpoint) => hardpoint.group === group)
   }
 
   @Watch('model')

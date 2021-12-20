@@ -79,7 +79,7 @@ export default class VehicleModal extends Vue {
   changeGroup(group) {
     if (this.hangarGroupIds.includes(group.id)) {
       const index = this.hangarGroupIds.findIndex(
-        groupId => groupId === group.id,
+        (groupId) => groupId === group.id
       )
       if (index > -1) {
         this.hangarGroupIds.splice(index, 1)
@@ -95,7 +95,7 @@ export default class VehicleModal extends Vue {
     if (
       await vehiclesCollection.updateHangarGroupsBulk(
         this.vehicleIds,
-        this.hangarGroupIds,
+        this.hangarGroupIds
       )
     ) {
       this.$comlink.$emit('close-modal')

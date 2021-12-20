@@ -4,7 +4,8 @@
   left: 50%;
   margin-left: 150px;
   transform: translateX(-50%);
-  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
+  transition: left ease $transition-base-speed,
+    right ease $transition-base-speed, width ease $transition-base-speed;
 
   &.panel-btn .panel-btn-inner {
     text-align: left;
@@ -33,7 +34,7 @@
     width: 20px;
     height: 20px;
     color: $gray-dark;
-    font-size: $font-size-base * .85;
+    font-size: $font-size-base * 0.85;
     background-color: $text-color;
     border-radius: 50%;
   }

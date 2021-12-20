@@ -14,8 +14,7 @@ export default {
       'By clicking the "Accept" button you agree to the usage of cookies on this website. Alternative you can update your settings by clicking on "Configure settings"',
     paragraph3: 'Find more information in our',
   },
-  text:
-    'This site uses services and tools to improve the overall user experience. You can update your preferences below to enable or disable those services and tools.',
+  text: 'This site uses services and tools to improve the overall user experience. You can update your preferences below to enable or disable those services and tools.',
   info: {
     why: 'Why?',
     dataCollected: 'Data Collected',

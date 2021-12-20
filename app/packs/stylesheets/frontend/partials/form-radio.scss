@@ -52,7 +52,7 @@ $color2: #3197ee;
     }
 
     &:disabled + .radio-label::before {
-      opacity: .9;
+      opacity: 0.9;
     }
 
     &:disabled:checked + .radio-label::before {

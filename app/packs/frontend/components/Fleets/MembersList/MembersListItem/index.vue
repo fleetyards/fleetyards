@@ -9,9 +9,7 @@
           <a
             v-if="member.rsiHandle"
             v-tooltip="$t('nav.rsiProfile')"
-            :href="
-              `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
-            "
+            :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
             target="_blank"
             rel="noopener"
           >
@@ -24,9 +22,7 @@
         <a
           v-if="member.rsiHandle"
           v-tooltip="$t('nav.rsiProfile')"
-          :href="
-            `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
-          "
+          :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
           target="_blank"
           rel="noopener"
         >
@@ -82,9 +78,7 @@
         <a
           v-if="member.rsiHandle"
           v-tooltip="$t('nav.rsiProfile')"
-          :href="
-            `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
-          "
+          :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
           target="_blank"
           rel="noopener"
         >
@@ -217,7 +211,7 @@ export default class MembersListItem extends Vue {
       text: this.$t('messages.confirm.fleet.members.destroy'),
       onConfirm: async () => {
         const response = await this.$api.destroy(
-          `fleets/${this.$route.params.slug}/members/${member.username}`,
+          `fleets/${this.$route.params.slug}/members/${member.username}`
         )
 
         if (!response.error) {
@@ -242,7 +236,7 @@ export default class MembersListItem extends Vue {
     this.updating = true
 
     const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/demote`,
+      `fleets/${this.$route.params.slug}/members/${member.username}/demote`
     )
 
     this.updating = false
@@ -263,7 +257,7 @@ export default class MembersListItem extends Vue {
     this.updating = true
 
     const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/promote`,
+      `fleets/${this.$route.params.slug}/members/${member.username}/promote`
     )
 
     this.updating = false
@@ -285,7 +279,7 @@ export default class MembersListItem extends Vue {
 
     const success = await this.collection.acceptRequest(
       this.$route.params.slug,
-      member.username,
+      member.username
     )
 
     this.updating = false
@@ -307,7 +301,7 @@ export default class MembersListItem extends Vue {
 
     const success = await this.collection.declineRequest(
       this.$route.params.slug,
-      member.username,
+      member.username
     )
 
     this.updating = false

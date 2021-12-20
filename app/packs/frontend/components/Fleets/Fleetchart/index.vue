@@ -180,7 +180,7 @@ export default class FleetFleetchart extends Vue {
         displayAlert({
           text: this.$t('messages.copyPublicUrl.failure'),
         })
-      },
+      }
     )
   }
 }

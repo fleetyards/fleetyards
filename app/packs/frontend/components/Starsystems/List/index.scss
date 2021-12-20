@@ -25,12 +25,12 @@ $borderRadius: 16px;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, 0.6);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     border-radius: $borderRadius;
-    opacity: .7;
+    opacity: 0.7;
   }
 
   .panel-stats {

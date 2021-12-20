@@ -29,7 +29,7 @@ declare global {
   }
 }
 
-Vue.filter('formatSize', size => {
+Vue.filter('formatSize', (size) => {
   if (size > 1024 * 1024 * 1024 * 1024) {
     return `${(size / 1024 / 1024 / 1024 / 1024).toFixed(2)} TB`
   }
@@ -63,6 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#app',
     router,
     store,
-    render: h => h(App),
+    render: (h) => h(App),
   })
 })

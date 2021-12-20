@@ -12,9 +12,10 @@
     "test:watch": "jest --watch --notify",
     "test:e2e": "cypress run --browser chrome --headless",
     "test:e2e:report": "generate-mochawesome-report --jsonDir test/reports/e2e --output test/reports/e2e/html --charts",
-    "lint": "yarn run lint:js && yarn run lint:style",
+    "lint": "yarn run lint:js && yarn run lint:prettier",
     "lint:js": "eslint --ext .js,.ts,.vue --fix app/packs test/javascript",
-    "lint:style": "stylelint \"app/packs/**/*.scss\" \"app/packs/**/*.vue\" \"app/assets/**/*.scss\" --fix",
+    "lint:prettier": "prettier app/packs --check",
+    "lint:prettier:fix": "prettier app/packs --write",
     "webpack:analyze": "mkdir -p public/packs && node_modules/.bin/webpack --config config/webpack/production.js --profile --json > public/packs/stats.json && node_modules/.bin/webpack-bundle-analyzer public/packs/stats.json"
   },
   "dependencies": {
@@ -121,12 +122,8 @@
     "eslint-plugin-vue-types": "2.1.0",
     "jest": "27.4.5",
     "jest-serializer-vue": "2.0.2",
+    "prettier": "2.5.1",
     "standard-version": "9.3.2",
-    "stylelint": "13.13.1",
-    "stylelint-config-prettier": "9.0.3",
-    "stylelint-config-rational-order": "^0.1.2",
-    "stylelint-config-standard": "22.0.0",
-    "stylelint-order": "^5.0.0",
     "ts-jest": "^27.1.2",
     "tslint": "^6.1.3",
     "tslint-config-airbnb": "^5.11.2",
@@ -145,7 +142,11 @@
     "set-value": ">=4.0.1",
     "nth-check": ">=2.0.1",
     "is-svg": ">=4.2.2",
-    "color-string": ">=1.5.5"
+    "color-string": ">=1.5.5",
+    "trim": ">=0.0.3",
+    "trim-newlines": ">=3.0.1",
+    "yargs-parser": ">=13.1.2",
+    "validator": ">=13.7.0"
   },
   "gitHooks": {
     "commit-msg": "commitlint -E GIT_PARAMS"

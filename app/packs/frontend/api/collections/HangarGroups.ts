@@ -18,7 +18,7 @@ export class HangarGroupsCollection extends BaseCollection {
 
   async create(
     form: HangarGroupForm,
-    refetch: boolean = false,
+    refetch: boolean = false
   ): Promise<HangarGroup | null> {
     const response = await post('hangar-groups', form)
 

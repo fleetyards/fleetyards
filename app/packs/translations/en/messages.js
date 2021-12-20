@@ -187,8 +187,7 @@ export default {
     },
   },
   fleetInvite: {
-    used:
-      '<b>Join request for %{fleet} send!</b><br>Once your Membership is accepted you will be notified via email',
+    used: '<b>Join request for %{fleet} send!</b><br>Once your Membership is accepted you will be notified via email',
     failure: 'Invite could not be used.',
     notFound: 'Invite not found.',
     confirm: 'Are you sure you want to join the Fleet: "%{fleet}"?',

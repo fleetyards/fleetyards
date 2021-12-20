@@ -5,7 +5,7 @@ import { Route, NavigationGuardNext } from 'vue-router'
 export const shopRouteGuard = async function shopRouteGuard(
   to: Route,
   _from: Route,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) {
   const shop = await shopsCollection.findBySlugAndStation(to.params)
 

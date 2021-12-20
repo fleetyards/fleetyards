@@ -118,7 +118,7 @@ $panel-content-border-radius: 6px;
   }
 
   &[disabled] {
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &:last-child {
@@ -135,7 +135,7 @@ $panel-content-border-radius: 6px;
 
   &:active:not([disabled]) {
     animation-name: flash;
-    animation-duration: .5s;
+    animation-duration: 0.5s;
   }
 
   &.panel-btn-danger {
@@ -154,7 +154,7 @@ $panel-content-border-radius: 6px;
 
   25%,
   75% {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 

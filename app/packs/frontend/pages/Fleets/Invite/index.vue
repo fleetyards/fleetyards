@@ -13,7 +13,8 @@ import { displayConfirm, displayAlert, displaySuccess } from 'frontend/lib/Noty'
 export default class FleetInvite extends Vue {
   @Getter('currentUser', { namespace: 'session' }) currentUser: User
 
-  @Action('resetInviteToken', { namespace: 'fleet' }) resetFleetInviteToken: any
+  @Action('resetInviteToken', { namespace: 'fleet' })
+  resetFleetInviteToken: any
 
   @Watch('currentUser')
   onCurrentUserChange() {

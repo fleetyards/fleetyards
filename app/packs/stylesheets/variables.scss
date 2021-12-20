@@ -27,9 +27,9 @@ $large-desktop-breakpoint: 1800px;
 
 $border-radius-base: 4px;
 
-$panel-bg: rgba($gray-darker, .9);
+$panel-bg: rgba($gray-darker, 0.9);
 $panel-outer-border: lighten(#555, 10%);
-$panel-inner-border: rgba(#c8c8c8, .9);
+$panel-inner-border: rgba(#c8c8c8, 0.9);
 $panel-border-width: 2px;
 $panel-border-radius: 10px;
 $panel-content-border-radius: 6px;
@@ -40,7 +40,7 @@ $panelContentBorderRadius: 16px;
 $navigation-mobile-height: 60px;
 $navigation-mobile-bottom-offset: 20px;
 
-$transition-base-speed: .5s;
+$transition-base-speed: 0.5s;
 
 // bootstrap overrides
 $grid-breakpoints: (
@@ -64,13 +64,13 @@ $container-max-widths: (
 );
 
 $font-size-base: 1rem;
-$h1-large-font-size:                $font-size-base * 2.5;
-$h1-font-size:                $font-size-base * 2.15;
-$h2-font-size:                $font-size-base * 1.7;
-$h3-font-size:                $font-size-base * 1.25;
-$h4-font-size:                $font-size-base;
-$h5-font-size:                $font-size-base * .85;
-$h6-font-size:                $font-size-base * .85;
+$h1-large-font-size: $font-size-base * 2.5;
+$h1-font-size: $font-size-base * 2.15;
+$h2-font-size: $font-size-base * 1.7;
+$h3-font-size: $font-size-base * 1.25;
+$h4-font-size: $font-size-base;
+$h5-font-size: $font-size-base * 0.85;
+$h6-font-size: $font-size-base * 0.85;
 
 $body-bg: $background;
 $body-color: $text-color;

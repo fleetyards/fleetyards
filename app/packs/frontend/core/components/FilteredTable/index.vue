@@ -66,9 +66,7 @@
               </div>
               <template v-for="(column, colIndex) in columns">
                 <div
-                  :key="
-                    `filtered-table-item-${uuid}-${colIndex}-${column.name}`
-                  "
+                  :key="`filtered-table-item-${uuid}-${colIndex}-${column.name}`"
                   :class="column.class"
                   :style="{
                     'flex-grow': column.flexGrow,
@@ -162,15 +160,15 @@ export default class FilteredTable extends Vue {
     }
 
     return this.records
-      .map(record => record.id)
-      .every(recordId => this.internalSelected.includes(recordId))
+      .map((record) => record.id)
+      .every((recordId) => this.internalSelected.includes(recordId))
   }
 
   get scopedSlots() {
     const itemSlotPrefix = 'col.'
     return Object.keys(this.$scopedSlots)
-      .filter(name => name.startsWith(itemSlotPrefix))
-      .map(name => name.substring(itemSlotPrefix.length))
+      .filter((name) => name.startsWith(itemSlotPrefix))
+      .map((name) => name.substring(itemSlotPrefix.length))
   }
 
   @Watch('selected')
@@ -187,11 +185,12 @@ export default class FilteredTable extends Vue {
     if (value) {
       this.internalSelected = [
         ...this.internalSelected,
-        ...this.records.map(record => record.id),
+        ...this.records.map((record) => record.id),
       ].filter(uniqArray)
     } else {
       this.internalSelected = [...this.internalSelected].filter(
-        selected => !this.records.map(record => record.id).includes(selected),
+        (selected) =>
+          !this.records.map((record) => record.id).includes(selected)
       )
     }
   }

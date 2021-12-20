@@ -65,7 +65,7 @@ export default class ModelsCompareTopView extends Vue {
       return 0
     }
 
-    const maxLength = Math.max(...this.models.map(model => model.length), 0)
+    const maxLength = Math.max(...this.models.map((model) => model.length), 0)
 
     if (maxLength < 30) {
       return 500

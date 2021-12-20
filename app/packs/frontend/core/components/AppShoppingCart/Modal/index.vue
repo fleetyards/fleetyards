@@ -48,9 +48,7 @@
                   {{ listedAt.stationName }}
                   <span class="text-muted">{{ listedAt.shopName }}</span>
                 </div>
-                <span class="price-label">
-                  -
-                </span>
+                <span class="price-label">-</span>
               </li>
             </ul>
           </div>
@@ -160,7 +158,7 @@ export default class ShoppingCart extends Vue {
 
   get total() {
     return sumArray(
-      this.cartItems.map(item => this.sum(item)).filter(item => item),
+      this.cartItems.map((item) => this.sum(item)).filter((item) => item)
     )
   }
 
@@ -176,12 +174,12 @@ export default class ShoppingCart extends Vue {
     const items = await collection.findAll({
       filters: {
         idIn: this.cartItems
-          .filter(item => item.type === type)
-          .map(item => item.id),
+          .filter((item) => item.type === type)
+          .map((item) => item.id),
       },
     })
 
-    items.forEach(item => this.updateInCart({ item, type }))
+    items.forEach((item) => this.updateInCart({ item, type }))
   }
 
   async refresh() {

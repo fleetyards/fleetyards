@@ -177,7 +177,7 @@ export default class GroupModal extends Vue {
   async update() {
     const success = await hangarGroupsCollection.update(
       this.hangarGroup.id,
-      this.form,
+      this.form
     )
 
     this.submitting = false

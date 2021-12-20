@@ -54,7 +54,7 @@ export default class ShipsNav extends Vue {
 
   get active() {
     return ['models', 'model', 'models-fleetchart', 'models-compare'].includes(
-      this.$route.name,
+      this.$route.name
     )
   }
 

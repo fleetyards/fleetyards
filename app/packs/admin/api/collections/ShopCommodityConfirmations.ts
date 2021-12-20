@@ -9,7 +9,7 @@ export class AdminShopCommodityConfirmationsCollection extends BaseCollection {
   params: AdminShopCommodityParams | null = null
 
   async findAll(
-    params: AdminShopCommodityParams | null,
+    params: AdminShopCommodityParams | null
   ): Promise<AdminShopCommodity[]> {
     this.params = params
 

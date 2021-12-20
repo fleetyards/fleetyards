@@ -76,7 +76,7 @@ export default {
 
   computed: {
     galleryItems() {
-      return this.items.map(item => ({
+      return this.items.map((item) => ({
         src: item.url,
         w: item.width,
         h: item.height,
@@ -110,7 +110,7 @@ export default {
           displayAlert({
             text: this.$t('messages.copyImageUrl.failure'),
           })
-        },
+        }
       )
     },
 
@@ -144,7 +144,7 @@ export default {
         pswpElement,
         PhotoSwipeUIDefault,
         this.galleryItems,
-        this.options,
+        this.options
       )
 
       this.gallery.listen('close', this.onClose)

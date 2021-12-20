@@ -5,9 +5,7 @@
     size="small"
     class="labels-dropdown"
   >
-    <template slot="label">
-      Classifications
-    </template>
+    <template slot="label">Classifications</template>
     <template slot="default">
       <Btn
         v-for="classification in countData"
@@ -85,7 +83,7 @@ export default {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
       if ((query[this.filterKey] || []).includes(filter)) {
-        const index = query[this.filterKey].findIndex(item => item === filter)
+        const index = query[this.filterKey].findIndex((item) => item === filter)
         if (index > -1) {
           query[this.filterKey].splice(index, 1)
         }

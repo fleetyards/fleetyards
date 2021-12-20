@@ -64,6 +64,6 @@ setTimeout(() => {
         }
       },
     },
-    render: h => h(FleetyardsView),
+    render: (h) => h(FleetyardsView),
   })
 }, 2000)

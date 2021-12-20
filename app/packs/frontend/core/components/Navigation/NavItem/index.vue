@@ -182,7 +182,7 @@ export default class NavItem extends Vue {
   }
 
   get matchedRoutes() {
-    return this.$route.matched.map(route => route.name)
+    return this.$route.matched.map((route) => route.name)
   }
 
   get navKey() {

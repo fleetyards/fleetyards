@@ -105,7 +105,7 @@ export default {
 
       const response = await this.$api.put(
         `password/update/${this.$route.params.token}`,
-        this.form,
+        this.form
       )
 
       this.submitting = false

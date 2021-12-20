@@ -35,7 +35,7 @@ const methods = {
       count = value
         // @ts-ignore
         .split(' - ')
-        .map(item => I18n.l('number', item))
+        .map((item) => I18n.l('number', item))
         .join(' - ')
     }
     if (!value || (['speed', 'rotation'].includes(units) && value <= 0)) {
@@ -89,7 +89,7 @@ export { I18n }
 export default {
   // tslint:disable-next-line variable-name
   install(Vue: any) {
-    Object.keys(methods).forEach(methodName => {
+    Object.keys(methods).forEach((methodName) => {
       // eslint-disable-next-line no-param-reassign
       Vue.prototype[`$${methodName}`] = methods[methodName]
     })

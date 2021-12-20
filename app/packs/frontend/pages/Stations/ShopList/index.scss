@@ -34,12 +34,12 @@ $borderRadius: 16px;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, 0.6);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     border-radius: $borderRadius;
-    opacity: .7;
+    opacity: 0.7;
 
     &::before {
       position: absolute;
@@ -47,7 +47,7 @@ $borderRadius: 16px;
       right: 0;
       bottom: 70%;
       left: 0;
-      background: linear-gradient(to bottom, rgba(black, .5) 50%, transparent);
+      background: linear-gradient(to bottom, rgba(black, 0.5) 50%, transparent);
       border-top-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
       content: '';

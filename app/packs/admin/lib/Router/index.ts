@@ -11,7 +11,7 @@ const router = new Router({
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
   scrollBehavior: (to, _from, savedPosition) =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
       setTimeout(() => {
         if (to.hash) {
           resolve()

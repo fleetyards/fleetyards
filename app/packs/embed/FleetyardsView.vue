@@ -142,12 +142,12 @@ export default {
     ungroupedModels() {
       if (this.ships.length) {
         return this.ships
-          .map(slug => ({
+          .map((slug) => ({
             slug,
-            model: this.models.find(model => model.slug === slug),
+            model: this.models.find((model) => model.slug === slug),
           }))
           .map(this.mapModel)
-          .filter(item => item)
+          .filter((item) => item)
           .sort(this.sortByName)
       }
 
@@ -170,7 +170,7 @@ export default {
       if (this.users) {
         return [...this.models].filter((item, pos) => {
           const model = this.models.find(
-            modelItem => modelItem.slug === item.slug,
+            (modelItem) => modelItem.slug === item.slug
           )
           return this.models.indexOf(model) === pos
         })
@@ -203,7 +203,7 @@ export default {
     },
 
     vehicles() {
-      this.models = this.vehicles.map(vehicle => vehicle.model)
+      this.models = this.vehicles.map((vehicle) => vehicle.model)
     },
   },
 
@@ -279,10 +279,10 @@ export default {
       }
 
       if (this.users) {
-        return this.models.filter(model => model.slug === slug).length
+        return this.models.filter((model) => model.slug === slug).length
       }
 
-      return this.ships.filter(item => item === slug).length
+      return this.ships.filter((item) => item === slug).length
     },
 
     async fetchShips() {

@@ -6,12 +6,12 @@
   width: 59px;
   height: 59px;
   font-size: 1.75rem;
-  background-color: rgba($gray-darker, .9);
+  background-color: rgba($gray-darker, 0.9);
   border: $panel-border-width solid $panel-inner-border;
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(black, .5);
+  box-shadow: 0 0 6px rgba(black, 0.5);
   cursor: pointer;
-  transition: all ease .5s;
+  transition: all ease 0.5s;
 
   .primary-action-inner {
     display: flex;
@@ -25,7 +25,7 @@
   }
 
   &[disabled] {
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &:hover:not([disabled]),
@@ -38,7 +38,7 @@
 
   &:active:not([disabled]) {
     animation-name: flash;
-    animation-duration: .5s;
+    animation-duration: 0.5s;
   }
 }
 

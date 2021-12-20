@@ -190,7 +190,7 @@ export default class ModelsCompare extends Vue {
 
   mounted() {
     this.setupForm()
-    this.form.models.forEach(async slug => {
+    this.form.models.forEach(async (slug) => {
       const model = await this.fetchModel(slug)
       this.models.push(model)
     })
@@ -230,8 +230,8 @@ export default class ModelsCompare extends Vue {
       this.form.models.splice(index, 1)
     }
 
-    if (this.models.findIndex(item => item.slug === model.slug) >= 0) {
-      const index = this.models.findIndex(item => item.slug === model.slug)
+    if (this.models.findIndex((item) => item.slug === model.slug) >= 0) {
+      const index = this.models.findIndex((item) => item.slug === model.slug)
       this.models.splice(index, 1)
     }
   }

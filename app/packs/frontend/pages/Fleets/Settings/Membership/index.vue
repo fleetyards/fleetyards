@@ -213,7 +213,7 @@ export default class FleetMembershipSettings extends Vue {
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}/members`,
-      this.form,
+      this.form
     )
 
     this.submitting = false

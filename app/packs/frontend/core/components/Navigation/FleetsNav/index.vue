@@ -74,7 +74,7 @@ export default class FleetsNav extends Vue {
 
   get active() {
     return ['fleets', 'fleet-add', 'fleet-preview', 'fleet-invites'].includes(
-      this.$route.name,
+      this.$route.name
     )
   }
 

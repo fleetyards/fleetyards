@@ -10,7 +10,7 @@
   display: none;
   align-items: center;
   overflow-y: auto;
-  background-color: rgba(black, .7);
+  background-color: rgba(black, 0.7);
   outline: 0;
 
   .modal-dialog {
@@ -60,7 +60,7 @@
   }
 
   .modal-footer {
-    padding: .75rem 0;
+    padding: 0.75rem 0;
     border-top: none;
     border-radius: 0;
   }

@@ -12,7 +12,7 @@ import privacySettings from './en/privacySettings'
 import validationError from './en/validationError'
 
 const validations = {}
-Object.keys(validationMessages).forEach(key => {
+Object.keys(validationMessages).forEach((key) => {
   validations[key] = validationMessages[key].replace(/\{/g, '%{')
 })
 

@@ -65,7 +65,7 @@ export default class EmptyBox extends Vue {
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(_err => {})
+      .catch((_err) => {})
   }
 }
 </script>

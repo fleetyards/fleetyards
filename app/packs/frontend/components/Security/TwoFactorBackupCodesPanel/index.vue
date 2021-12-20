@@ -51,7 +51,7 @@ export default class TwoFactorBackupCodesPanel extends Vue {
         displayAlert({
           text: this.$t('messages.copyBackupCodes.failure'),
         })
-      },
+      }
     )
   }
 }

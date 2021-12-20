@@ -100,8 +100,8 @@ export default class RoadmapItemModal extends Vue {
     }
 
     return ['committed', 'release', 'released', 'active']
-      .filter(key => lastVersion[key])
-      .map(key => {
+      .filter((key) => lastVersion[key])
+      .map((key) => {
         const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
 
         return {
@@ -113,18 +113,16 @@ export default class RoadmapItemModal extends Vue {
         }
       })
       .filter(
-        update =>
-          update.key !== 'released' ||
-          (update.key === 'released' && update.old),
+        (update) =>
+          update.key !== 'released' || (update.key === 'released' && update.old)
       )
       .filter(
-        update =>
-          update.key !== 'commited' ||
-          (update.key === 'commited' && update.old),
+        (update) =>
+          update.key !== 'commited' || (update.key === 'commited' && update.old)
       )
       .filter(
-        update =>
-          update.key !== 'active' || (update.key === 'active' && update.old),
+        (update) =>
+          update.key !== 'active' || (update.key === 'active' && update.old)
       )
   }
 

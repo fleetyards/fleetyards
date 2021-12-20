@@ -43,7 +43,7 @@ li.nav-item {
       background: $primary;
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
-      box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
+      box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
       content: '';
     }
   }
