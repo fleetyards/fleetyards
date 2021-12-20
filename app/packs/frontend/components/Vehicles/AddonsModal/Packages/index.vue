@@ -69,7 +69,7 @@ export default class AddonsModal extends Vue {
 
     package.modules.forEach((module) => {
       const additionalPackageModules = package.modules.filter(
-        (packageModule) => packageModule.id === module.id,
+        (packageModule) => packageModule.id === module.id
       )
       const foundModules = this.internalValue.filter((id) => id === module.id)
 

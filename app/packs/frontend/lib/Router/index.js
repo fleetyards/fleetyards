@@ -41,7 +41,7 @@ const addTrailingSlashToAllRoutes = (routes) =>
           }),
         },
       ]
-    }),
+    })
   )
 
 const router = new Router({

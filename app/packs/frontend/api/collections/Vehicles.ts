@@ -96,7 +96,7 @@ export class VehiclesCollection extends BaseCollection {
 
   async create(
     form: VehicleForm,
-    refresh: boolean = false,
+    refresh: boolean = false
   ): Promise<Vehicle | null> {
     const response = await post('vehicles', form)
 
@@ -113,7 +113,7 @@ export class VehiclesCollection extends BaseCollection {
 
   async update(
     id: string,
-    form: VehicleForm,
+    form: VehicleForm
   ): Promise<ApiResponse | ApiErrorResponse> {
     const response = await put(`vehicles/${id}`, form)
 
@@ -171,7 +171,7 @@ export class VehiclesCollection extends BaseCollection {
 
   async updateHangarGroupsBulk(
     ids: string,
-    hangarGroupIds: string[],
+    hangarGroupIds: string[]
   ): Promise<boolean> {
     const response = await put(`vehicles/bulk`, {
       hangarGroupIds,

@@ -33,7 +33,7 @@ export class AdminImagesCollection extends BaseCollection {
       `${params.galleryType}/${params.galleryId}/images`,
       {
         page: params.page,
-      },
+      }
     )
 
     if (!response.error) {

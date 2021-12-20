@@ -64,7 +64,7 @@
                   <h3 class="text-uppercase">
                     {{
                       $t(
-                        `labels.model.productionStatus.${model.productionStatus}`,
+                        `labels.model.productionStatus.${model.productionStatus}`
                       )
                     }}
                   </h3>
@@ -433,7 +433,7 @@ export default class ModelDetail extends Vue {
   async fetchModules() {
     this.loadingModules = true
     const response = await this.$api.get(
-      `models/${this.$route.params.slug}/modules`,
+      `models/${this.$route.params.slug}/modules`
     )
     this.loadingModules = false
     if (!response.error) {
@@ -444,7 +444,7 @@ export default class ModelDetail extends Vue {
   async fetchUpgrades() {
     this.loadingUpgrades = true
     const response = await this.$api.get(
-      `models/${this.$route.params.slug}/upgrades`,
+      `models/${this.$route.params.slug}/upgrades`
     )
     this.loadingUpgrades = false
     if (!response.error) {
@@ -455,7 +455,7 @@ export default class ModelDetail extends Vue {
   async fetchVariants() {
     this.loadingVariants = true
     const response = await this.$api.get(
-      `models/${this.$route.params.slug}/variants`,
+      `models/${this.$route.params.slug}/variants`
     )
     this.loadingVariants = false
     if (!response.error) {
@@ -466,7 +466,7 @@ export default class ModelDetail extends Vue {
   async fetchLoaners() {
     this.loadingLoaners = true
     const response = await this.$api.get(
-      `models/${this.$route.params.slug}/loaners`,
+      `models/${this.$route.params.slug}/loaners`
     )
     this.loadingLoaners = false
     if (!response.error) {

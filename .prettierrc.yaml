@@ -1,5 +1,4 @@
-trailingComma: "all"
+trailingComma: "es5"
 semi: false
 quoteProps: 'consistent'
 singleQuote: true
-htmlWhitespaceSensitivity: 'ignore'

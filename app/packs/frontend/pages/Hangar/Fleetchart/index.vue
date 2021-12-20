@@ -246,7 +246,7 @@ export default class HangarFleetchart extends Vue {
       },
       {
         received: this.fetch,
-      },
+      }
     )
   }
 }

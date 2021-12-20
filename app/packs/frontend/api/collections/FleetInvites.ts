@@ -7,7 +7,7 @@ export class FleetInvitesCollection extends BaseCollection {
   records: FleetInvite[] = []
 
   async findAllForCurrent(
-    identifier: string = 'default',
+    identifier: string = 'default'
   ): Promise<FleetInvite[]> {
     const response = await get(`fleets/invites`, {
       [identifier]: true,

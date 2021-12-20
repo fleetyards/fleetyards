@@ -29,7 +29,7 @@ describe('ShipPanel', () => {
   it('renders heading with ship name and manufacturer', () => {
     expect(cmp.vm.$el.querySelector('h2').textContent).toContain(model.name)
     expect(cmp.vm.$el.querySelector('h2').textContent).toContain(
-      model.manufacturer.name,
+      model.manufacturer.name
     )
   })
 })

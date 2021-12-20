@@ -108,7 +108,7 @@ export default class RoadmapItem extends Vue {
   get recentlyUpdated() {
     return isBefore(
       new Date(),
-      addHours(new Date(this.item.lastVersionChangedAt), 24),
+      addHours(new Date(this.item.lastVersionChangedAt), 24)
     )
   }
 
@@ -152,17 +152,15 @@ export default class RoadmapItem extends Vue {
       })
       .filter(
         (update) =>
-          update.key !== 'released' ||
-          (update.key === 'released' && update.old),
+          update.key !== 'released' || (update.key === 'released' && update.old)
       )
       .filter(
         (update) =>
-          update.key !== 'commited' ||
-          (update.key === 'commited' && update.old),
+          update.key !== 'commited' || (update.key === 'commited' && update.old)
       )
       .filter(
         (update) =>
-          update.key !== 'active' || (update.key === 'active' && update.old),
+          update.key !== 'active' || (update.key === 'active' && update.old)
       )
   }
 

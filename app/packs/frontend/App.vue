@@ -205,14 +205,14 @@ export default class FrontendApp extends Vue {
   async fetchCurrentUser() {
     await this.$store.commit(
       'session/setCurrentUser',
-      await userCollection.current(),
+      await userCollection.current()
     )
   }
 
   async checkVersion() {
     await this.$store.dispatch(
       'app/updateVersion',
-      await versionCollection.current(),
+      await versionCollection.current()
     )
   }
 }

@@ -170,7 +170,7 @@ export default {
       if (this.users) {
         return [...this.models].filter((item, pos) => {
           const model = this.models.find(
-            (modelItem) => modelItem.slug === item.slug,
+            (modelItem) => modelItem.slug === item.slug
           )
           return this.models.indexOf(model) === pos
         })

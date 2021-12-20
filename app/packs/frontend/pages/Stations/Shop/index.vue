@@ -449,7 +449,7 @@ export default class Shop extends Vue {
       {
         stationSlug: this.shop.station.slug,
         shopSlug: this.shop.slug,
-      },
+      }
     )
 
     if (!response.error) {

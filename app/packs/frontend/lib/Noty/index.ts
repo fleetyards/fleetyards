@@ -61,7 +61,7 @@ const notifyPermissionGranted = function notifyPermissionGranted() {
 }
 
 const displayDesktopNotification = function displayDesktopNotification(
-  message,
+  message
 ) {
   // eslint-disable-next-line compat/compat
   const notification = new window.Notification(message, {
@@ -88,7 +88,7 @@ const displayNativeNotification = function displayNativeNotification(message) {
       },
       () => {
         displayDesktopNotification(message)
-      },
+      }
     )
   } else {
     displayDesktopNotification(message)
@@ -198,7 +198,7 @@ export const displayConfirm = function displayConfirm(options) {
           n.close()
           defaults.onConfirm()
         },
-        { 'data-status': 'ok' },
+        { 'data-status': 'ok' }
       ),
       Noty.button(
         I18n.t('actions.cancel'),
@@ -207,7 +207,7 @@ export const displayConfirm = function displayConfirm(options) {
           // @ts-ignore
           n.close()
           defaults.onCancel()
-        },
+        }
       ),
     ],
     callbacks: {

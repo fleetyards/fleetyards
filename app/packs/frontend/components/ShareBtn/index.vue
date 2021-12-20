@@ -60,7 +60,7 @@ export default class ShareBtn extends Btn {
         displayAlert({
           text: this.$t('messages.copyShareUrl.failure'),
         })
-      },
+      }
     )
   }
 }

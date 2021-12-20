@@ -195,7 +195,7 @@ export default class HoloViewer extends Vue {
       35,
       this.elementWidth / this.elementHeight,
       1,
-      1000,
+      1000
     )
 
     if (this.mobile) {
@@ -307,7 +307,7 @@ export default class HoloViewer extends Vue {
       null,
       (error) => {
         console.error(error)
-      },
+      }
     )
   }
 

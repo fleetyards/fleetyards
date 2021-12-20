@@ -77,7 +77,7 @@ export default class FormInput extends Vue {
     default: 'text',
     validator(value) {
       return ['text', 'number', 'password', 'email', 'url', 'color'].includes(
-        value,
+        value
       )
     },
   })

@@ -16,7 +16,7 @@ export class ShopCommoditiesCollection extends BaseCollection {
       {
         q: params.filters,
         page: params.page,
-      },
+      }
     )
 
     if (!response.error) {

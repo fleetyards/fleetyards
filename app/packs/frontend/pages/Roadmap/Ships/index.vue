@@ -222,7 +222,7 @@ export default class ShipsRoadmap extends Vue {
       },
       {
         received: this.fetch,
-      },
+      }
     )
   }
 

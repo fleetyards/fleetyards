@@ -28,7 +28,7 @@ export default class HangarItemsMixin extends Vue {
 
     await this.$store.dispatch(
       'hangar/saveHangar',
-      await HangarItemsCollection.findAll(),
+      await HangarItemsCollection.findAll()
     )
   }
 }

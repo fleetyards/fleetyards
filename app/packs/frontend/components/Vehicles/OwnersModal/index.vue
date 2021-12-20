@@ -46,7 +46,7 @@ export default class OwnersModal extends Vue {
 
   get sortedVehicles() {
     return sortBy(this.vehicles, 'username').filter(
-      uniqByFieldArray('username'),
+      uniqByFieldArray('username')
     )
   }
 }

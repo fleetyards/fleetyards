@@ -211,7 +211,7 @@ export default class MemberModal extends Vue {
         displayAlert({
           text: this.$t('messages.copyInviteUrl.failure'),
         })
-      },
+      }
     )
   }
 }

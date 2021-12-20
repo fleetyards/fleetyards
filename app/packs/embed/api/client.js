@@ -20,7 +20,7 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
       currentPage: parseInt(params.page || 1, 10),
       totalPages: parseInt(
         (links.last && links.last.page) || params.page || 1,
-        10,
+        10
       ),
     }
   }
@@ -64,7 +64,7 @@ export async function get(path, params = {}, silent = false) {
         params,
       }),
       params,
-      silent,
+      silent
     )
   } catch (error) {
     return handleError(error, silent)

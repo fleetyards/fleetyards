@@ -59,7 +59,7 @@ export default {
 
       return this.$toNumber(
         [minCrew, maxCrew].filter((item) => item).join(' - '),
-        'people',
+        'people'
       )
     },
 

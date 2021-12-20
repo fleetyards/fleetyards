@@ -77,7 +77,7 @@ export default {
           disconnected: () => {
             this.disconnected('appVersion')
           },
-        },
+        }
       )
     },
 
@@ -97,7 +97,7 @@ export default {
           disconnected: () => {
             this.disconnected('hangarCreate')
           },
-        },
+        }
       )
     },
 
@@ -117,7 +117,7 @@ export default {
           disconnected: () => {
             this.disconnected('hangarDestroy')
           },
-        },
+        }
       )
     },
 
@@ -137,7 +137,7 @@ export default {
           disconnected: () => {
             this.disconnected('onSaleHangar')
           },
-        },
+        }
       )
     },
 
@@ -157,7 +157,7 @@ export default {
           disconnected: () => {
             this.disconnected('onSale')
           },
-        },
+        }
       )
     },
 

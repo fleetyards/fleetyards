@@ -190,7 +190,7 @@ export default class FilteredTable extends Vue {
     } else {
       this.internalSelected = [...this.internalSelected].filter(
         (selected) =>
-          !this.records.map((record) => record.id).includes(selected),
+          !this.records.map((record) => record.id).includes(selected)
       )
     }
   }

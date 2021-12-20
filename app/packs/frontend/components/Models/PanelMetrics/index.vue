@@ -97,7 +97,7 @@ export default class PanelMetrics extends Vue {
 
     return this.$toNumber(
       [minCrew, maxCrew].filter((item) => item).join(' - '),
-      'people',
+      'people'
     )
   }
 

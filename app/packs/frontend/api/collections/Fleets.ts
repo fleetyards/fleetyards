@@ -76,7 +76,7 @@ export class FleetsCollection extends BaseCollection {
 
   async findModelsByProductionStatusBySlug(slug: string): Promise<ChartData[]> {
     const response = await get(
-      `fleets/${slug}/stats/models-by-production-status`,
+      `fleets/${slug}/stats/models-by-production-status`
     )
 
     if (!response.error) {

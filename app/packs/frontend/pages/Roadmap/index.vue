@@ -222,7 +222,7 @@ export default class RoadmapReleases extends Vue {
       },
       {
         received: this.fetch,
-      },
+      }
     )
   }
 
