@@ -145,7 +145,11 @@
     "set-value": ">=4.0.1",
     "nth-check": ">=2.0.1",
     "is-svg": ">=4.2.2",
-    "color-string": ">=1.5.5"
+    "color-string": ">=1.5.5",
+    "trim": ">=0.0.3",
+    "trim-newlines": ">=3.0.1",
+    "yargs-parser": ">=13.1.2",
+    "validator": ">=13.7.0"
   },
   "gitHooks": {
     "commit-msg": "commitlint -E GIT_PARAMS"
