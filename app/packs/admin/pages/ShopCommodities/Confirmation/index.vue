@@ -78,7 +78,8 @@ import { displayConfirm } from 'frontend/lib/Noty'
   },
 })
 export default class AdminShopCommodities extends Vue {
-  collection: ShopCommodityConfirmationsCollection = shopCommodityConfirmationsCollection
+  collection: ShopCommodityConfirmationsCollection =
+    shopCommodityConfirmationsCollection
 
   deleting: boolean = false
 

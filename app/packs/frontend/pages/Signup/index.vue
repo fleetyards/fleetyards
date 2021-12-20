@@ -140,7 +140,8 @@ import { transformErrors } from 'frontend/api/helpers'
 export default class Signup extends Vue {
   @Getter('inviteToken', { namespace: 'fleet' }) fleetInviteToken
 
-  @Action('resetInviteToken', { namespace: 'fleet' }) resetFleetInviteToken: any
+  @Action('resetInviteToken', { namespace: 'fleet' })
+  resetFleetInviteToken: any
 
   form: SignupForm | null = null
 

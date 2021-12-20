@@ -81,7 +81,7 @@
       v-if="hangarGroupsOptions.length > 0"
       v-model="form.hangarGroupsIn"
       :options="
-        hangarGroupsOptions.map(item => {
+        hangarGroupsOptions.map((item) => {
           return {
             value: item.slug,
             name: item.name,

@@ -1,12 +1,12 @@
 import ViewNotFound from 'frontend/pages/NotFound'
 
-export default componentImport => async () => {
+export default (componentImport) => async () => {
   const { default: component } = await componentImport()
 
   const props = component.props || {}
 
   if (component.mixins) {
-    component.mixins.forEach(mixin => {
+    component.mixins.forEach((mixin) => {
       if (mixin.props) {
         Object.assign(props, mixin.props)
       }

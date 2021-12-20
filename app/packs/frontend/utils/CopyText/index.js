@@ -12,11 +12,11 @@ const copyText = function copyText(text, container) {
       },
       container: typeof container === 'object' ? container : document.body,
     })
-    clipboard.on('success', e => {
+    clipboard.on('success', (e) => {
       clipboard.destroy()
       resolve(e)
     })
-    clipboard.on('error', e => {
+    clipboard.on('error', (e) => {
       clipboard.destroy()
       reject(e)
     })

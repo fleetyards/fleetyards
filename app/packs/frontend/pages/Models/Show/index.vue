@@ -8,9 +8,7 @@
             <h1>
               {{ model.name }}
               <small class="text-muted manufacturer">
-                <span class="manufacturer-prefix">
-                  from
-                </span>
+                <span class="manufacturer-prefix">from</span>
                 <span v-html="model.manufacturer.name" />
                 <img
                   v-if="model.manufacturer && model.manufacturer.logo"
@@ -100,7 +98,7 @@
               <Btn
                 v-if="model.onSale"
                 :href="`${model.storeUrl}#buying-options`"
-                style="flex-grow: 3;"
+                style="flex-grow: 3"
               >
                 {{
                   $t('actions.model.onSale', {
@@ -111,7 +109,7 @@
                   {{ $t('labels.taxExcluded') }}
                 </small>
               </Btn>
-              <Btn v-else :href="model.storeUrl" style="flex-grow: 3;">
+              <Btn v-else :href="model.storeUrl" style="flex-grow: 3">
                 {{ $t('actions.model.store') }}
               </Btn>
 

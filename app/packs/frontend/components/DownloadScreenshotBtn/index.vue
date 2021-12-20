@@ -53,7 +53,7 @@ export default class DownloadScreenshotBtn extends Btn {
       backgroundColor: null,
       useCORS: true,
     })
-      .then(canvas => {
+      .then((canvas) => {
         element.classList.remove('fleetchart-download')
         this.downloading = false
         download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)

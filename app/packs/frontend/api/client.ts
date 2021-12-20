@@ -29,7 +29,7 @@ const client = axios.create({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   },
-  paramsSerializer: params =>
+  paramsSerializer: (params) =>
     Qs.stringify(params, {
       arrayFormat: 'brackets',
       encode: false,

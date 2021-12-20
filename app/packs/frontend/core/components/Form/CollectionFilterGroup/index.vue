@@ -232,18 +232,18 @@ export default class CollectionFilterGroup extends Vue {
   get selectedOptions() {
     if (this.multiple) {
       return this.availableOptions.filter(
-        item => this.value && this.value.includes(item[this.valueAttr]),
+        (item) => this.value && this.value.includes(item[this.valueAttr]),
       )
     }
     const selectedOption = this.availableOptions.find(
-      item => item[this.valueAttr] === this.value,
+      (item) => item[this.valueAttr] === this.value,
     )
     return selectedOption ? [selectedOption] : []
   }
 
   get filteredOptions() {
     if (this.search) {
-      return this.availableOptions.filter(item =>
+      return this.availableOptions.filter((item) =>
         item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase()),
       )
     }
@@ -409,10 +409,10 @@ export default class CollectionFilterGroup extends Vue {
   }
 
   addOptions(newOptions) {
-    newOptions.forEach(item => {
+    newOptions.forEach((item) => {
       if (
         !this.availableOptions.find(
-          option => option[this.valueAttr] === item[this.valueAttr],
+          (option) => option[this.valueAttr] === item[this.valueAttr],
         )
       ) {
         this.fetchedOptions.push(item)
@@ -439,7 +439,7 @@ export default class CollectionFilterGroup extends Vue {
       if (this.multiple) {
         this.$emit(
           'input',
-          this.value.filter(item => item !== option),
+          this.value.filter((item) => item !== option),
         )
       } else if (this.nullable) {
         this.$emit('input', null)
@@ -458,7 +458,7 @@ export default class CollectionFilterGroup extends Vue {
   unselect(option) {
     this.$emit(
       'input',
-      this.value.filter(item => item !== option),
+      this.value.filter((item) => item !== option),
     )
   }
 

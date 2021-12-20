@@ -229,11 +229,14 @@ export default class VehicleModal extends Vue {
 
   modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection
 
-  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection = componentItemTypeFiltersCollection
+  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
+    componentItemTypeFiltersCollection
 
-  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection = equipmentTypeFiltersCollection
+  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
+    equipmentTypeFiltersCollection
 
-  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection = equipmentSlotFiltersCollection
+  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
+    equipmentSlotFiltersCollection
 
   submitting: boolean = false
 

@@ -59,7 +59,7 @@ export default class Starship42Btn extends Btn {
     typeField.value = 'matrix'
     form.appendChild(typeField)
 
-    this.vehicles.forEach(vehicle => {
+    this.vehicles.forEach((vehicle) => {
       const shipField = document.createElement('input')
       shipField.type = 'hidden'
       shipField.name = 's[]'

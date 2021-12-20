@@ -148,7 +148,8 @@ export default class NavigationHeader extends Vue {
 
   @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
 
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated!: boolean
+  @Getter('isAuthenticated', { namespace: 'session' })
+  isAuthenticated!: boolean
 
   @Getter('preview', { namespace: 'hangar' }) hangarPreview
 

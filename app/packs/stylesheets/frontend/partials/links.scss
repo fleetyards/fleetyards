@@ -1,7 +1,7 @@
 a {
   color: $text-color;
   text-decoration: none;
-  transition: all ease .5s;
+  transition: all ease 0.5s;
 
   &:hover {
     color: white;
@@ -17,6 +17,6 @@ a {
     color: $text-color;
     background-color: transparent;
     cursor: default;
-    opacity: .5;
+    opacity: 0.5;
   }
 }

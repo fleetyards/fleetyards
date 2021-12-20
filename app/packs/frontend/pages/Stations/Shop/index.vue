@@ -422,7 +422,7 @@ export default class Shop extends Vue {
             },
           },
         })
-        .catch(err => {
+        .catch((err) => {
           console.info(err)
         })
     } else {
@@ -437,7 +437,7 @@ export default class Shop extends Vue {
             },
           },
         })
-        .catch(err => {
+        .catch((err) => {
           console.info(err)
         })
     }

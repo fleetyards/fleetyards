@@ -22,9 +22,7 @@
       <NavItem :divider="true" />
       <template v-if="currentUser.rsiHandle">
         <NavItem
-          :href="
-            `https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`
-          "
+          :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
           :label="$t('nav.rsiProfile')"
           :image="require('images/rsi_logo.png')"
         />

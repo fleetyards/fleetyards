@@ -90,7 +90,7 @@ export default class HangarImportBtn extends Vue {
   inputFilter(newFile, oldFile, prevent) {
     if (newFile && !oldFile) {
       if (
-        !this.fileExtensionsList.some(extension =>
+        !this.fileExtensionsList.some((extension) =>
           newFile.name.endsWith(extension),
         )
       ) {

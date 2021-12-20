@@ -17,9 +17,7 @@
       <template v-if="showComponent">
         {{ hardpoint.component.name }}
       </template>
-      <template v-else-if="hardpoint.itemSlots > 1">
-        TBD
-      </template>
+      <template v-else-if="hardpoint.itemSlots > 1">TBD</template>
     </div>
     <div
       v-if="hardpoint.categoryLabel && showCategory"

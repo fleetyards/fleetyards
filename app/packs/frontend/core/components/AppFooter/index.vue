@@ -25,9 +25,7 @@
         <router-link :to="{ name: 'impressum' }">
           {{ $t('nav.impressum') }}
         </router-link>
-        <span class="d-xs-none">
-          |
-        </span>
+        <span class="d-xs-none">|</span>
         <br class="d-sm-none" />
         <a
           v-tooltip="'Twitter'"

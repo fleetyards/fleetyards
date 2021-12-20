@@ -81,7 +81,7 @@
               <CollectionFilterGroup
                 v-if="
                   form.commodityItemType === 'Commodity' ||
-                    !form.commodityItemType
+                  !form.commodityItemType
                 "
                 key="commodity-filter-group"
                 v-model="form.commodityItemId"
@@ -286,7 +286,8 @@ export default class PricesModal extends Vue {
 
   shopsCollection: shopsCollection = shopsCollection
 
-  shopCommodityTypesCollection: ShopCommodityTypesCollection = shopCommodityTypesCollection
+  shopCommodityTypesCollection: ShopCommodityTypesCollection =
+    shopCommodityTypesCollection
 
   modelsCollection: ModelsCollection = modelsCollection
 

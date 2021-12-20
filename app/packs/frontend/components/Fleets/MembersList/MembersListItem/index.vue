@@ -9,9 +9,7 @@
           <a
             v-if="member.rsiHandle"
             v-tooltip="$t('nav.rsiProfile')"
-            :href="
-              `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
-            "
+            :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
             target="_blank"
             rel="noopener"
           >
@@ -24,9 +22,7 @@
         <a
           v-if="member.rsiHandle"
           v-tooltip="$t('nav.rsiProfile')"
-          :href="
-            `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
-          "
+          :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
           target="_blank"
           rel="noopener"
         >
@@ -82,9 +78,7 @@
         <a
           v-if="member.rsiHandle"
           v-tooltip="$t('nav.rsiProfile')"
-          :href="
-            `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
-          "
+          :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
           target="_blank"
           rel="noopener"
         >

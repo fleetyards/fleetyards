@@ -6,7 +6,7 @@ $footerOuterBorderWidth: 2px;
   left: 0;
   padding-top: ($footerOuterBorderWidth * 2);
   text-align: center;
-  transition: left ease .5s, right ease .5s;
+  transition: left ease 0.5s, right ease 0.5s;
 
   .app-footer-border {
     position: absolute;
@@ -16,7 +16,7 @@ $footerOuterBorderWidth: 2px;
 
   .git-revision {
     cursor: pointer;
-    opacity: .5;
+    opacity: 0.5;
 
     &.online {
       opacity: 1;
@@ -57,7 +57,7 @@ $footerOuterBorderWidth: 2px;
     position: relative;
     padding-top: 30px;
     padding-bottom: 30px;
-    background-color: rgba($gray-darker, .7);
+    background-color: rgba($gray-darker, 0.7);
     border-top: $footerInnerBorderWidth solid $panel-inner-border;
 
     .app-footer-inner-border {
@@ -102,7 +102,7 @@ $footerOuterBorderWidth: 2px;
     left: 25px;
     width: 100px;
     height: 100px;
-    opacity: .7;
+    opacity: 0.7;
 
     img {
       max-width: 100%;

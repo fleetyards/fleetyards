@@ -43,7 +43,7 @@ export default {
     },
 
     disconnectUpdates() {
-      Object.keys(this.channels).forEach(channel => {
+      Object.keys(this.channels).forEach((channel) => {
         this.unsubscribeChannel(channel)
       })
 

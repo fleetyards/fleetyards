@@ -235,11 +235,14 @@ export default class VehicleModal extends Vue {
 
   modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection
 
-  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection = componentItemTypeFiltersCollection
+  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
+    componentItemTypeFiltersCollection
 
-  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection = equipmentTypeFiltersCollection
+  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
+    equipmentTypeFiltersCollection
 
-  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection = equipmentSlotFiltersCollection
+  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
+    equipmentSlotFiltersCollection
 
   submitting: boolean = false
 
@@ -308,7 +311,7 @@ export default class VehicleModal extends Vue {
     this.submitting = true
 
     await Promise.all(
-      this.items.map(async item => {
+      this.items.map(async (item) => {
         await shopCommodityCollection.create(this.shopId, {
           commodityItemId: item.id,
           ...this.form,

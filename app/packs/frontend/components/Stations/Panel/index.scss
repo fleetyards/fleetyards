@@ -23,12 +23,12 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, 0.6);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     border-radius: $panelContentBorderRadius;
-    opacity: .7;
+    opacity: 0.7;
 
     &::after {
       position: absolute;
@@ -36,7 +36,7 @@
       right: 60%;
       bottom: 0;
       left: 0;
-      background: linear-gradient(to right, rgba(black, .5) 50%, transparent);
+      background: linear-gradient(to right, rgba(black, 0.5) 50%, transparent);
       border-top-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
       content: '';

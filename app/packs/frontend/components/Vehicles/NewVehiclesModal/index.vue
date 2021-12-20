@@ -95,7 +95,7 @@ export default class NewVehiclesModal extends Vue {
   async save() {
     this.submitting = true
 
-    await this.form.vehicles.forEach(async item => {
+    await this.form.vehicles.forEach(async (item) => {
       await vehiclesCollection.create({ modelId: item.model.id })
     })
 

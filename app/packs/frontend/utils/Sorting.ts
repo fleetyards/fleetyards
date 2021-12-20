@@ -21,7 +21,7 @@ export const sortByToggle = function sortByToggle(
 ) {
   const currentSort = (currentRoute.query?.q || {}).sorts
 
-  const oppositeDirection = ['asc', 'desc'].find(item => item !== direction)
+  const oppositeDirection = ['asc', 'desc'].find((item) => item !== direction)
 
   if (!oppositeDirection) {
     throw Error(

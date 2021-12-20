@@ -47,7 +47,7 @@ $contentBorderRadius: $panelContentBorderRadius;
   background-color: $panel-bg;
   border: $innerBorderWidth solid $panel-inner-border;
   border-radius: $innerBorderRadius;
-  box-shadow: 0 1px 1px rgba(#000, .05);
+  box-shadow: 0 1px 1px rgba(#000, 0.05);
 
   &::before {
     position: absolute;
@@ -84,7 +84,7 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   &.panel-transparency-more {
-    background-color: rgba($panel-bg, .6);
+    background-color: rgba($panel-bg, 0.6);
   }
 
   &.panel-transparency-complete {
@@ -127,7 +127,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     font-size: 75%;
     line-height: 1;
     text-align: center;
-    border-bottom: 1px solid rgba(0, 0, 0, .6);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
   }
 
   .panel-heading {
@@ -192,7 +192,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     position: relative;
     height: 200px;
     overflow: hidden;
-    border-bottom: 1px solid rgba(0, 0, 0, .6);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
     transition: border-radius $transition-base-speed ease;
 
     & > a {
@@ -200,7 +200,7 @@ $contentBorderRadius: $panelContentBorderRadius;
       display: block;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, .6);
+      background-color: rgba(0, 0, 0, 0.6);
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;

@@ -35,7 +35,7 @@ export default class ShareBtn extends Btn {
           url: this.url,
         })
         .then(() => console.info('Share was successful.'))
-        .catch(error => console.info('Sharing failed', error))
+        .catch((error) => console.info('Sharing failed', error))
     } else {
       this.copyShareUrl()
     }

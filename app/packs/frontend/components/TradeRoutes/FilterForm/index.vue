@@ -138,7 +138,8 @@ import starsystemCollection from 'frontend/api/collections/Starsystems'
   mixins: [Filters],
 })
 export default class TradeRoutesFilterForm extends Vue {
-  celestialObjectCollection: CelestialObjectCollection = celestialObjectCollection
+  celestialObjectCollection: CelestialObjectCollection =
+    celestialObjectCollection
 
   starsystemCollection: StarsystemCollection = starsystemCollection
 

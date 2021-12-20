@@ -87,7 +87,8 @@ import { displayConfirm } from 'frontend/lib/Noty'
   },
 })
 export default class AdminCommodityPrices extends Vue {
-  collection: CommodityPriceConfirmationsCollection = commodityPriceConfirmationsCollection
+  collection: CommodityPriceConfirmationsCollection =
+    commodityPriceConfirmationsCollection
 
   deleting: boolean = false
 

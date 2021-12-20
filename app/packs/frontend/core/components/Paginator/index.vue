@@ -27,7 +27,7 @@
       >
         <i class="fa fa-chevron-left" />
       </Btn>
-      <span class="pagination-pages" style="flex-grow: none;">
+      <span class="pagination-pages" style="flex-grow: none">
         {{
           $t('labels.pagination.pages', {
             page,
