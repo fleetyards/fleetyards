@@ -17,6 +17,7 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
   get 'hangar/stats' => 'base#index'
   get 'hangar/:username' => 'hangar#index', as: :public_hangar
   get 'hangar/:username/fleetchart' => 'hangar#index'
+  get 'hangar/:username/stats' => 'hangar#index'
 
   get 'compare/ships' => 'base#compare_models'
 

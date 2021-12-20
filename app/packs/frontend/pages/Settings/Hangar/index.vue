@@ -25,6 +25,21 @@
         <div class="col-12 col-md-6">
           <ValidationProvider
             v-slot="{ errors }"
+            vid="publicHangarStats"
+            :name="$t('labels.user.publicHangarStats')"
+            :slim="true"
+          >
+            <Checkbox
+              id="publicHangarStats"
+              v-model="form.publicHangarStats"
+              :label="$t('labels.user.publicHangarStats')"
+              :class="{ 'has-error has-feedback': errors[0] }"
+            />
+          </ValidationProvider>
+        </div>
+        <div class="col-12 col-md-6">
+          <ValidationProvider
+            v-slot="{ errors }"
             vid="publicHangarLoaners"
             :name="$t('labels.user.publicHangarLoaners')"
             :slim="true"
@@ -84,6 +99,7 @@ export default class SettingsHangar extends Vue {
   setupForm() {
     this.form = {
       publicHangar: this.currentUser.publicHangar,
+      publicHangarStats: this.currentUser.publicHangarStats,
       publicHangarLoaners: this.currentUser.publicHangarLoaners,
     }
   }

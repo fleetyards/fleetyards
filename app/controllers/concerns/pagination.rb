@@ -5,6 +5,8 @@ module Pagination
     scope = name
     scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
 
+    return if instance_variable_get("@#{scope}").is_a?(Array)
+
     headers['Link'] = pagination_links(instance_variable_get("@#{scope}")).filter_map do |k, v|
       next if v.blank?
 

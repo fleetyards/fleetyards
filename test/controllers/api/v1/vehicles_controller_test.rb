@@ -5,7 +5,11 @@ require 'test_helper'
 module Api
   module V1
     class VehiclesControllerTest < ActionController::TestCase
+      let(:data) { users :data }
+
       setup do
+        data
+
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
       end
@@ -21,36 +25,6 @@ module Api
           assert_equal 'unauthorized', json['code']
         end
 
-        it 'should render 403 for quick-stats' do
-          get :quick_stats
-
-          assert_response :unauthorized
-          json = JSON.parse response.body
-          assert_equal 'unauthorized', json['code']
-        end
-
-        it 'should render 200 for public quick-stats' do
-          get :public_quick_stats, params: { username: 'data' }
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          expected = {
-            'total' => 2,
-            'classifications' => [{
-              'name' => 'explorer',
-              'label' => 'Explorer',
-              'count' => 1
-            }, {
-              'name' => 'multi_role',
-              'label' => 'Multi role',
-              'count' => 1
-            }],
-            'groups' => []
-          }
-          assert_equal expected, json
-        end
-
         it 'should render 403 for hangar-items' do
           get :hangar_items
 
@@ -61,7 +35,6 @@ module Api
       end
 
       describe 'with session' do
-        let(:data) { users :data }
         let(:explorer) { data.vehicles.includes(:model).find_by(models: { name: '600i' }) }
         let(:enterprise) { data.vehicles.includes(:model).find_by(models: { name: 'Andromeda' }) }
 
@@ -628,62 +601,6 @@ module Api
             'createdAt' => enterprise.created_at.utc.iso8601,
             'updatedAt' => enterprise.updated_at.utc.iso8601
           }]
-          assert_equal expected, json
-        end
-
-        it 'should return counts for quick-stats' do
-          get :quick_stats
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          expected = {
-            'total' => 2,
-            'classifications' => [{
-              'name' => 'explorer',
-              'label' => 'Explorer',
-              'count' => 1
-            }, {
-              'name' => 'multi_role',
-              'label' => 'Multi role',
-              'count' => 1
-            }],
-            'groups' => [],
-            'metrics' => {
-              'totalMoney' => 625,
-              'totalMinCrew' => 5,
-              'totalMaxCrew' => 10,
-              'totalCargo' => 130
-            }
-          }
-          assert_equal expected, json
-        end
-
-        it 'should return counts for quick-stats' do
-          get :quick_stats, params: { q: '{ "classificationIn": ["combat"] }' }
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          expected = {
-            'total' => 0,
-            'classifications' => [{
-              'name' => 'explorer',
-              'label' => 'Explorer',
-              'count' => 0
-            }, {
-              'name' => 'multi_role',
-              'label' => 'Multi role',
-              'count' => 0
-            }],
-            'groups' => [],
-            'metrics' => {
-              'totalMoney' => 0,
-              'totalMinCrew' => 0,
-              'totalMaxCrew' => 0,
-              'totalCargo' => 0
-            }
-          }
           assert_equal expected, json
         end
 

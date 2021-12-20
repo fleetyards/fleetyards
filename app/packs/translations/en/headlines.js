@@ -21,6 +21,7 @@ export default {
     alternativeNames: 'Alternative Names',
     stats: 'My Hangar Stats',
     public: '%{user} Hangar',
+    publicStats: '%{user} Hangar Stats',
     import: 'Import',
   },
   editMyVehicle: 'Edit my %{vehicle}',

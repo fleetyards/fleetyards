@@ -16,6 +16,11 @@ module Api
         @user = User.where(public_hangar: true).find_by!(['lower(username) = :value', { value: params[:username].downcase }])
       end
 
+      def public_stats
+        authorize! :read_public, :api_user
+        @user = User.where(public_hangar: true, public_hangar_stats: true).find_by!(['lower(username) = :value', { value: params[:username].downcase }])
+      end
+
       def update
         authorize! :update, current_user
 
@@ -104,7 +109,7 @@ module Api
         @user_params ||= params.transform_keys(&:underscore)
           .permit(
             :avatar, :remove_avatar, :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage,
-            :youtube, :twitch, :guilded, :public_hangar_loaners
+            :youtube, :twitch, :guilded, :public_hangar_loaners, :public_hangar_stats
           )
       end
 

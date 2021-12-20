@@ -333,6 +333,7 @@ export default {
     unconfirmedEmail: 'Unconfirmed email',
     saleNotify: 'I want to receive Sale Notifications',
     publicHangar: 'Public Hangar enabled',
+    publicHangarStats: 'Show Hangar Stats on Public Hangar',
     publicHangarLoaners: 'Show Loaners Hint on Public Hangar',
   },
   'vehicle': {

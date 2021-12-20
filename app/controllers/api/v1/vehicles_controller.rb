@@ -5,11 +5,11 @@ require 'hangar_importer'
 module Api
   module V1
     class VehiclesController < ::Api::BaseController
-      include ChartHelper
+      include HangarVehicles
 
-      skip_authorization_check only: %i[public public_quick_stats public_fleetchart embed]
-      before_action :authenticate_user!, except: %i[public public_quick_stats public_fleetchart embed]
-      after_action -> { pagination_header(:vehicles) }, only: %i[index public]
+      skip_authorization_check only: %i[public_index public_fleetchart embed]
+      before_action :authenticate_user!, except: %i[public_index public_fleetchart embed]
+      after_action -> { pagination_header(:vehicles) }, only: %i[index public_index]
 
       def index
         authorize! :index, :api_hangar
@@ -31,11 +31,16 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
+        result = @q.result(distinct: true)
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
           .joins(model: [:manufacturer])
-          .page(params[:page])
-          .per(per_page(Vehicle))
+
+        @vehicles = if params[:fleetchart].present?
+                      result.sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+                    else
+                      result.page(params[:page])
+                        .per(per_page(Vehicle))
+                    end
       end
 
       def export
@@ -64,79 +69,18 @@ module Api
 
       def fleetchart
         authorize! :index, :api_hangar
-        scope = current_user.vehicles.visible
 
-        scope = loaner_included?(scope)
+        params[:fleetchart] = true
 
-        @q = scope.ransack(vehicle_query_params)
+        index
 
-        @vehicles = @q.result(distinct: true)
-          .includes(model: [:manufacturer])
-          .joins(model: [:manufacturer])
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+        render 'index'
       end
 
-      # rubocop:disable Metrics/CyclomaticComplexity
-      def quick_stats
-        authorize! :index, :api_hangar
-        scope = current_user.vehicles.visible.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
-
-        scope = loaner_included?(scope)
-
-        @q = scope.ransack(vehicle_query_params)
-
-        @q.sorts = ['model_classification asc']
-
-        vehicles = @q.result
-        models = vehicles.map(&:model)
-        upgrades = vehicles.map(&:model_upgrades).flatten
-        modules = vehicles.map(&:model_modules).flatten
-
-        @quick_stats = QuickStats.new(
-          total: vehicles.count,
-          classifications: Model.classifications.map do |classification|
-            ClassificationCount.new(
-              classification_count: models.count { |model| model.classification == classification },
-
-              name: classification,
-              label: classification.humanize
-            )
-          end,
-          groups: HangarGroup.where(user: current_user).order([{ sort: :asc, name: :asc }]).map do |group|
-            HangarGroupCount.new(
-              group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
-              id: group.id,
-              slug: group.slug
-            )
-          end,
-          metrics: {
-            total_money: models.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
-            total_min_crew: models.map(&:min_crew).sum(&:to_i),
-            total_max_crew: models.map(&:max_crew).sum(&:to_i),
-            total_cargo: models.map(&:cargo).sum(&:to_i)
-          }
-        )
-      end
-      # rubocop:enable Metrics/CyclomaticComplexity
-
-      def public
+      def public_index
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
         vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'name asc', 'model_name asc'], 'model_name asc')
-
-        @q = user.vehicles
-          .public
-          .ransack(vehicle_query_params)
-
-        @vehicles = @q.result(distinct: true)
-          .includes(:model)
-          .joins(:model)
-          .page(params[:page])
-          .per(per_page(Vehicle))
-      end
-
-      def public_fleetchart
-        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
         @q = user.vehicles
           .visible
@@ -146,46 +90,24 @@ module Api
         @vehicles = []
         return unless user.public_hangar?
 
-        @vehicles = @q.result(distinct: true)
+        result = @q.result(distinct: true)
           .includes(:model)
           .joins(:model)
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+
+        @vehicles = if params[:fleetchart].present?
+                      result.sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+                    else
+                      result.page(params[:page])
+                        .per(per_page(Vehicle))
+                    end
       end
 
-      def public_quick_stats
-        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+      def public_fleetchart
+        params[:fleetchart] = true
 
-        scope = user.vehicles
-          .includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
-          .public
-          .where(loaner: false)
+        public_index
 
-        @q = scope.ransack(vehicle_query_params)
-
-        @q.sorts = ['model_classification asc']
-
-        vehicles = @q.result
-
-        models = vehicles.map(&:model)
-
-        @quick_stats = QuickStats.new(
-          total: vehicles.count,
-          classifications: Model.classifications.map do |classification|
-            ClassificationCount.new(
-              classification_count: models.count { |model| model.classification == classification },
-
-              name: classification,
-              label: classification.humanize
-            )
-          end,
-          groups: HangarGroup.where(user: user, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
-            HangarGroupCount.new(
-              group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
-              id: group.id,
-              slug: group.slug
-            )
-          end
-        )
+        render 'public_index'
       end
 
       def embed
@@ -310,60 +232,6 @@ module Api
         end
       end
 
-      def models_by_size
-        authorize! :read, :api_stats
-
-        models_by_size = transform_for_pie_chart(
-          current_user.models.visible.active
-               .group(:size).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge) || []
-        )
-
-        render json: models_by_size.to_json
-      end
-
-      def models_by_production_status
-        authorize! :read, :api_stats
-
-        models_by_production_status = transform_for_pie_chart(
-          current_user.models.visible.active
-               .group(:production_status).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge) || []
-        )
-
-        render json: models_by_production_status.to_json
-      end
-
-      def models_by_manufacturer
-        authorize! :read, :api_stats
-
-        models_by_manufacturer = transform_for_pie_chart(
-          current_user.manufacturers.uniq
-              .map do |manufacturer|
-                model_ids = manufacturer.model_ids
-                { manufacturer.name => current_user.vehicles.where(model_id: model_ids).count }
-              end
-              .reduce(:merge) || []
-        )
-
-        render json: models_by_manufacturer.to_json
-      end
-
-      def models_by_classification
-        authorize! :read, :api_stats
-
-        models_by_classification = transform_for_pie_chart(
-          current_user.models.visible.active
-               .group(:classification).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge) || []
-        )
-
-        render json: models_by_classification.to_json
-      end
-
       def check_serial
         authorize! :check_serial, :api_vehicles
 
@@ -434,29 +302,6 @@ module Api
         price_in = vehicle_query_params.delete('price_in')
         price_in = price_in.to_s.split unless price_in.is_a?(Array)
         price_in
-      end
-
-      private def loaner_included?(scope)
-        if vehicle_query_params['loaner_eq'].blank?
-          scope = scope.where(loaner: false)
-        elsif vehicle_query_params['loaner_eq'] == 'true'
-          vehicle_query_params.delete('loaner_eq')
-        else
-          scope = scope.where(loaner: true)
-        end
-
-        scope
-      end
-
-      private def vehicle_query_params
-        @vehicle_query_params ||= query_params(
-          :name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq, :public_eq,
-          :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
-          :pledge_price_lteq, :loaner_eq,
-          manufacturer_in: [], classification_in: [], focus_in: [],
-          size_in: [], price_in: [], pledge_price_in: [],
-          production_status_in: [], hangar_groups_in: [], hangar_groups_not_in: []
-        )
       end
     end
   end

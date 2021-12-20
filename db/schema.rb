@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_16_131746) do
+ActiveRecord::Schema.define(version: 2021_11_28_144607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -785,6 +785,7 @@ ActiveRecord::Schema.define(version: 2021_11_16_131746) do
     t.boolean "otp_required_for_login"
     t.string "otp_backup_codes", array: true
     t.boolean "public_hangar_loaners", default: false
+    t.boolean "public_hangar_stats", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

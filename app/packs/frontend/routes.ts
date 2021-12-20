@@ -127,6 +127,17 @@ export const routes = [
     },
   },
   {
+    path: '/hangar/:username/stats/',
+    name: 'hangar-public-stats',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.hangar-public-stats" */ 'frontend/pages/Hangar/PublicStats/index.vue'
+      ),
+    meta: {
+      backgroundImage: 'bg-5',
+    },
+  },
+  {
     path: '/ships/',
     name: 'models',
     component: () =>
