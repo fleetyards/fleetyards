@@ -241,7 +241,7 @@ module Api
           'cargoHub' => nil,
           'habitationCounts' => [],
           'dockCounts' => [{
-            'size' => 'Small',
+            'size' => 'Small (S)',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
@@ -348,12 +348,12 @@ module Api
             'typeLabel' => 'Container'
           }],
           'dockCounts' => [{
-            'size' => 'Medium',
+            'size' => 'Medium (M)',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }, {
-            'size' => 'Large',
+            'size' => 'Large (L)',
             'count' => 2,
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
@@ -426,12 +426,12 @@ module Api
             'typeLabel' => 'Container'
           }],
           'dockCounts' => [{
-            'size' => 'Medium',
+            'size' => 'Medium (M)',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }, {
-            'size' => 'Large',
+            'size' => 'Large (L)',
             'count' => 2,
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
