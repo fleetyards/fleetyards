@@ -51,7 +51,7 @@
     semver "^6.3.0"
     source-map "^0.5.0"
 
-"@babel/core@^7.1.0", "@babel/core@^7.11.1", "@babel/core@^7.15.0", "@babel/core@^7.2.2", "@babel/core@^7.7.2", "@babel/core@^7.7.5":
+"@babel/core@^7.1.0", "@babel/core@^7.11.1", "@babel/core@^7.15.0", "@babel/core@^7.7.2", "@babel/core@^7.7.5":
   version "7.16.0"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.16.0.tgz#c4ff44046f5fe310525cc9eb4ef5147f0c5374d4"
   integrity sha512-mYZEvshBRHGsIAiyH5PzCFTCfbWfoYbO/jcSdXQSUQu1/pW0xDZAUP7KEc32heqWTAfAHhV9j1vH8Sav7l+JNQ==
@@ -12497,13 +12497,6 @@ vue-upload-component@2.8.22:
   version "2.8.22"
   resolved "https://registry.yarnpkg.com/vue-upload-component/-/vue-upload-component-2.8.22.tgz#7a1573149a4afa5ca6e8c7e0bc70533925fe26b7"
   integrity sha512-AJpETqiZrgqs8bwJQpWTFrRg3i6s7cUodRRZVnb1f94Jvpd0YYfzGY4zluBqPmssNSkUaYu7EteXaK8aW17Osw==
-
-vue-zoom-scroll@^1.0.29:
-  version "1.0.29"
-  resolved "https://registry.yarnpkg.com/vue-zoom-scroll/-/vue-zoom-scroll-1.0.29.tgz#456356e9d673fd3e58f5229b82cf321132e5bb0e"
-  integrity sha512-s/SSFN9OYsHjzaQxfLqO3LYVU7lGV0XLGjniUPpFOWxKnRa8YzeQ1+nzQJWiuYPBa+F2eeqpCfKnbBkr0evBNQ==
-  dependencies:
-    "@babel/core" "^7.2.2"
 
 vue@2.6.14:
   version "2.6.14"
