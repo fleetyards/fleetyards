@@ -140,7 +140,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import FleetchartItem from 'frontend/components/Fleetchart/List/Item/index.vue'
 // import panzoom from 'panzoom'
 import Btn from 'frontend/core/components/Btn'
@@ -150,7 +150,7 @@ import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
 // import debounce from 'lodash.debounce'
 // import WZoom from 'vanilla-js-wheel-zoom'
-import { fabric } from 'fabric'
+// import { fabric } from 'fabric'
 import Loader from 'frontend/core/components/Loader'
 import download from 'downloadjs'
 
@@ -662,7 +662,7 @@ export default class FleetchartList extends Vue {
     return model.topViewResized
   }
 
-  sideView(model, zoom) {
+  sideView(model, _zoom) {
     // if (zoom > 10) {
     //   return model.sideView
     // }
