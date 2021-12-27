@@ -1,0 +1,17 @@
+{
+  "ClassName": "Paint_ROC_Hadinite_Pink",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "ROC Hadinite Livery",
+  "Description": "The Hadanite livery for your ROC gives the ship a distinct pink hue that mirrors the look of the gemstone of the same name.",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Argo Astronautics"
+  },
+  "Tags": [
+    "Paint_ROC",
+    "@Paint_ROC_Hadinite_Pink"
+  ]
+}
