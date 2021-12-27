@@ -1,0 +1,17 @@
+{
+  "ClassName": "Paint_ROC_Dolivine_Green",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "ROC Dolivine Livery",
+  "Description": "Sharing the name with a gemstone prized for its beauty and industrial applications, the Dolivine livery blends shades of light green to give your ROC a unique look. ",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Argo Astronautics"
+  },
+  "Tags": [
+    "Paint_ROC",
+    "@Paint_ROC_Dolivine_Green"
+  ]
+}

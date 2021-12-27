@@ -7,7 +7,7 @@
   "Size": 3,
   "Cargo": 46,
   "Crew": 1,
-  "WeaponCrew": 2,
+  "WeaponCrew": 1,
   "OperationsCrew": 0,
   "Mass": 246577.0,
   "IsSpaceship": true,
@@ -16,16 +16,16 @@
     "Name": "Drake Interplanetary"
   },
   "DamageBeforeDestruction": {
-    "Body": 8600.0,
-    "Tail": 8600.0
+    "Tail": 8600.0,
+    "Body": 8600.0
   },
   "DamageBeforeDetach": {
-    "Wing_Right": 1880.0,
-    "Wing_Left": 1880.0,
-    "Missile_Housing_Left": 900.0,
-    "Missile_Housing_Right": 900.0,
+    "Thruster_Main_Left": 1200.0,
     "Thruster_Main_Right": 1200.0,
-    "Thruster_Main_Left": 1200.0
+    "Missile_Housing_Right": 900.0,
+    "Missile_Housing_Left": 900.0,
+    "Wing_Left": 1880.0,
+    "Wing_Right": 1880.0
   },
   "FlightCharacteristics": {
     "ScmSpeed": 165.0,
@@ -116,15 +116,7 @@
       ]
     }
   ],
-  "RemoteTurrets": [
-    {
-      "Size": 4,
-      "Fixed": true,
-      "WeaponSizes": [
-        4
-      ]
-    }
-  ],
+  "RemoteTurrets": [],
   "Insurance": {
     "StandardClaimTime": 6.75,
     "ExpeditedClaimTime": 2.25,
