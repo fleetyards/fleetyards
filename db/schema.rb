@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_084031) do
+ActiveRecord::Schema.define(version: 2021_12_21_191455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -441,6 +441,14 @@ ActiveRecord::Schema.define(version: 2021_12_09_084031) do
     t.string "top_view"
     t.string "side_view"
     t.string "angled_view"
+    t.integer "fleetchart_image_height"
+    t.integer "fleetchart_image_width"
+    t.integer "angled_view_height"
+    t.integer "angled_view_width"
+    t.integer "top_view_height"
+    t.integer "top_view_width"
+    t.integer "side_view_height"
+    t.integer "side_view_width"
   end
 
   create_table "model_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -548,6 +556,14 @@ ActiveRecord::Schema.define(version: 2021_12_09_084031) do
     t.string "name_slug"
     t.decimal "fleetchart_offset_length", precision: 15, scale: 2
     t.string "angled_view"
+    t.integer "fleetchart_image_height"
+    t.integer "fleetchart_image_width"
+    t.integer "angled_view_height"
+    t.integer "angled_view_width"
+    t.integer "top_view_height"
+    t.integer "top_view_width"
+    t.integer "side_view_height"
+    t.integer "side_view_width"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

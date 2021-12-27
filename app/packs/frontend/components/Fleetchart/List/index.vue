@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div v-show="loaded" class="row">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
         <BtnDropdown size="small">
@@ -7,14 +7,18 @@
             <template v-if="!mobile">
               {{ $t('labels.fleetchartApp.screenHeight') }}:
             </template>
-            {{ $t(`labels.fleetchartApp.screenHeightOptions.${screenHeight}`) }}
+            {{
+              $t(
+                `labels.fleetchartApp.screenHeightOptions.${selectedScreenHeight}`
+              )
+            }}
           </template>
           <Btn
             v-for="(option, index) in screenHeightOptions"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
             size="small"
             variant="link"
-            :active="screenHeight === option"
+            :active="selectedScreenHeight === option"
             @click.native="setScreenHeight(option)"
           >
             {{ $t(`labels.fleetchartApp.screenHeightOptions.${option}`) }}
@@ -52,13 +56,7 @@
 
             <hr />
           </template>
-
-          <Btn
-            size="small"
-            variant="dropdown"
-            :active="showLabels"
-            @click.native="toggleLabels"
-          >
+          <Btn size="small" variant="dropdown" @click.native="toggleLabels">
             <i class="fad fa-tags" />
             <span v-if="showLabels">
               {{ $t('actions.hideLabels') }}
@@ -70,7 +68,7 @@
 
           <FleetChartStatusBtn variant="dropdown" size="small" />
 
-          <Btn size="small" variant="dropdown" @click.native="resetZoom">
+          <Btn size="small" variant="dropdown" @click.native="markForReset">
             <i class="fad fa-undo" />
             <span>{{ $t('actions.resetZoom') }}</span>
           </Btn>
@@ -84,48 +82,56 @@
       >
         {{ $t('labels.fleetchartApp.gridSize', { size: gridSizeLabel }) }}
       </div>
-      <div ref="fleetchartWrapper" class="fleetchart-scroll-wrapper">
-        <transition-group
-          id="fleetchart"
-          name="fade-list"
-          class="fleetchart"
-          tag="div"
-          :appear="true"
-          :class="{
-            'fleetchart-1_5x': screenHeight === '1_5x',
-            'fleetchart-2x': screenHeight === '2x',
-            'fleetchart-3x': screenHeight === '3x',
-            'fleetchart-4x': screenHeight === '4x',
-          }"
-        >
-          <div key="made-by-the-community" class="fleetchart-download-image">
-            <img
-              :src="require('images/community-logo.png')"
-              alt="made-by-the-community"
+      <div class="fleetchart-scroll-wrapper">
+        <div id="fleetchart" ref="fleetchart" class="fleetchart">
+          <transition-group
+            v-for="(items, index) in fleetchartColumns"
+            :key="`fleetchart-col-${index}`"
+            name="fade-list"
+            :appear="true"
+            class="fleetchart-column"
+          >
+            <FleetchartItem
+              v-for="item in items"
+              :key="item.id"
+              :item="item"
+              :viewpoint="viewpoint"
+              :show-label="showLabels"
+              :show-status="showStatus"
+              :size-multiplicator="sizeMultiplicator"
+              :scale="scale"
             />
-          </div>
+          </transition-group>
 
-          <FleetchartItem
-            v-for="item in items"
-            :key="item.id"
-            :item="item"
-            :viewpoint="viewpoint"
-            :show-label="showLabels"
-            :show-status="showStatus"
-            :size-multiplicator="sizeMultiplicator"
-          />
-        </transition-group>
+          <transition-group
+            name="fade-list"
+            tag="div"
+            :appear="true"
+            class="fleetchart-download-image"
+          >
+            <div
+              key="made-by-the-community"
+              class="fleetchart-item fade-list-item"
+            >
+              <img
+                :src="require('images/community-logo.png')"
+                alt="made-by-the-community"
+              />
+            </div>
+          </transition-group>
+        </div>
         <canvas
           ref="fleetchartGrid"
           class="fleetchart-grid"
           :class="{
             'fleetchart-grid-enabled': gridEnabled,
           }"
-          :width="canvasWidth"
-          :height="canvasHeight"
+          :width="screenWidth"
+          :height="screenHeight"
         />
       </div>
     </div>
+    <Loader v-if="!loaded" :loading="!loaded" :fixed="true" />
   </div>
 </template>
 
@@ -139,6 +145,7 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
+import Loader from 'frontend/core/components/Loader'
 import debounce from 'lodash.debounce'
 
 @Component({
@@ -148,10 +155,13 @@ import debounce from 'lodash.debounce'
     DownloadScreenshotBtn,
     FleetChartStatusBtn,
     FleetchartItem,
+    Loader,
   },
 })
 export default class FleetchartList extends Vue {
   updateZoomData: Function = debounce(this.debouncedUpdateZoomData, 300)
+
+  checkReset: Function = debounce(this.debouncedCheckReset, 300)
 
   screenHeightOptions: string[] = ['1x', '1_5x', '2x', '3x', '4x']
 
@@ -159,27 +169,37 @@ export default class FleetchartList extends Vue {
 
   showStatus: boolean = false
 
-  selectedModel: Model | null = null
-
-  selectedVehicle: Vehicle | null = null
-
   zoomSpeed: number = 0.05
 
-  maxZoom: number = 10
+  maxZoom: number = 20
 
-  minZoom: number = 0.5
+  minZoom: number = 0.2
 
-  pinchSpeed: number = 2
+  pinchSpeed: number = 3
 
-  panzoomInstance = null
+  margin: number = 80
+
+  innerMargin: number = 60
+
+  marginBottom: number = 80
+
+  loaded: boolean = true
 
   gridEnabled: boolean = false
 
-  canvasWidth: number = 300
+  screenWidth: number | null = null
 
-  canvasHeight: number = 300
+  screenHeight: number | null = null
 
   gridSize: number = 80.0
+
+  panzoomInstance = null
+
+  fleetchartColumns = {}
+
+  markedForReset: boolean = false
+
+  sizeMultiplicator: number = 4
 
   @Getter('mobile') mobile
 
@@ -196,18 +216,6 @@ export default class FleetchartList extends Vue {
 
   @Prop({ default: null }) downloadName!: string
 
-  get fleetchartElement() {
-    return this.$refs.fleetchartWrapper?.children.item(0)
-  }
-
-  get sizeMultiplicator() {
-    if (this.viewpoint === 'angled') {
-      return 3
-    }
-
-    return 4
-  }
-
   get gridSizeLabel() {
     return (
       this.gridSize /
@@ -218,10 +226,6 @@ export default class FleetchartList extends Vue {
       .replace('.00', '')
   }
 
-  get initialZoomData() {
-    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
-  }
-
   get viewpoint() {
     return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
   }
@@ -230,8 +234,46 @@ export default class FleetchartList extends Vue {
     return this.$store.getters[`${this.namespace}/fleetchartLabels`]
   }
 
-  get screenHeight() {
+  get selectedScreenHeight() {
     return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
+  }
+
+  get viewpointTop() {
+    return this.viewpoint === 'top'
+  }
+
+  get viewpointSide() {
+    return this.viewpoint === 'side'
+  }
+
+  get viewpointAngled() {
+    return this.viewpoint === 'angled'
+  }
+
+  get screenHeightFactor() {
+    return {
+      '1x': 1,
+      '1_5x': 1.5,
+      '2x': 2,
+      '3x': 3,
+      '4x': 4,
+    }[this.selectedScreenHeight]
+  }
+
+  get maxColHeight() {
+    return (
+      this.screenHeight * this.screenHeightFactor -
+      this.margin -
+      this.marginBottom
+    )
+  }
+
+  get initialZoomData() {
+    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
+  }
+
+  get scale() {
+    return this.initialZoomData?.scale || 1
   }
 
   mounted() {
@@ -239,12 +281,16 @@ export default class FleetchartList extends Vue {
 
     this.$comlink.$on('fleetchart-toggle-status', this.toggleStatus)
 
-    this.setupZoom()
+    this.updateScreenSize()
 
     this.drawGridLines()
 
-    window.addEventListener('resize', this.updateCanvasSize)
-    window.addEventListener('deviceorientation', this.updateCanvasSize)
+    this.setupColumns()
+
+    this.setupZoom()
+
+    window.addEventListener('resize', this.updateScreenSize)
+    window.addEventListener('deviceorientation', this.updateScreenSize)
   }
 
   beforeDestroy() {
@@ -254,17 +300,18 @@ export default class FleetchartList extends Vue {
 
     this.panzoomInstance = null
 
-    window.removeEventListener('resize', this.updateCanvasSize)
-    window.removeEventListener('deviceorientation', this.updateCanvasSize)
+    window.removeEventListener('resize', this.updateScreenSize)
+    window.removeEventListener('deviceorientation', this.updateScreenSize)
   }
 
-  updateCanvasSize() {
-    this.canvasWidth = this.$refs.fleetchartWrapper.clientWidth
-    this.canvasHeight = this.$refs.fleetchartWrapper.clientHeight
+  debouncedUpdateZoomData() {
+    const transform = this.panzoomInstance.getTransform()
+
+    this.$store.commit(`${this.namespace}/setFleetchartZoomData`, transform)
   }
 
   async setupZoom() {
-    this.panzoomInstance = panzoom(this.fleetchartElement, {
+    this.panzoomInstance = panzoom(this.$refs.fleetchart, {
       maxZoom: this.maxZoom,
       minZoom: this.minZoom,
       zoomSpeed: this.zoomSpeed,
@@ -278,23 +325,79 @@ export default class FleetchartList extends Vue {
       setTimeout(() => {
         this.panzoomInstance.moveTo(
           this.initialZoomData.x,
-          this.initialZoomData.y,
+          this.initialZoomData.y
         )
       }, 300)
     }
 
-    this.panzoomInstance.on('zoom', _event => {
+    this.panzoomInstance.on('zoom', (_event) => {
       this.updateZoomData()
     })
 
-    this.panzoomInstance.on('pan', _event => {
+    this.panzoomInstance.on('pan', (_event) => {
       this.updateZoomData()
+    })
+
+    this.panzoomInstance.on('transform', (_event) => {
+      this.checkReset()
     })
   }
 
-  resetZoom() {
-    this.panzoomInstance.moveTo(0, 0)
-    this.panzoomInstance.zoomAbs(0, 0, 1)
+  modelName(item) {
+    const model = item.model || item
+
+    return model.name
+  }
+
+  productionStatus(item) {
+    const model = item.model || item
+
+    return this.$t(`labels.model.productionStatus.${model.productionStatus}`)
+  }
+
+  debouncedCheckReset() {
+    if (this.markedForReset) {
+      this.markedForReset = false
+
+      this.resetZoom()
+    }
+  }
+
+  updateScreenSize() {
+    this.screenWidth = window.innerWidth
+    this.screenHeight = window.innerHeight
+  }
+
+  setupColumns() {
+    this.fleetchartColumns = {}
+    let index = 0
+    let colHeight = 0
+
+    this.items.forEach((item) => {
+      const model = item.model || item
+      const length = model.fleetchartLength * this.sizeMultiplicator
+
+      const height =
+        (length * this.imageMaxHeight(model)) / this.imageMaxWidth(model)
+
+      if (Number.isNaN(height)) {
+        return
+      }
+
+      colHeight += height
+
+      if (colHeight > this.maxColHeight) {
+        colHeight = height
+        index += 1
+      }
+
+      colHeight += this.innerMargin
+
+      this.fleetchartColumns[index] = [
+        ...(this.fleetchartColumns[index] || []),
+        item,
+      ]
+    })
   }
 
   toggleGrid() {
@@ -310,8 +413,10 @@ export default class FleetchartList extends Vue {
   setScreenHeight(screenHeight) {
     this.$store.commit(
       `${this.namespace}/setFleetchartScreenHeight`,
-      screenHeight,
+      screenHeight
     )
+
+    this.setupColumns()
   }
 
   toggleStatus() {
@@ -321,23 +426,14 @@ export default class FleetchartList extends Vue {
   toggleLabels() {
     this.$store.commit(
       `${this.namespace}/setFleetchartLabels`,
-      !this.showLabels,
+      !this.showLabels
     )
-  }
-
-  debouncedUpdateZoomData() {
-    const transform = this.panzoomInstance.getTransform()
-
-    this.$store.commit(`${this.namespace}/setFleetchartZoomData`, transform)
   }
 
   async drawGridLines() {
     if (!this.gridEnabled) {
       return
     }
-
-    this.canvasWidth = this.$refs.fleetchartWrapper.clientWidth
-    this.canvasHeight = this.$refs.fleetchartWrapper.clientHeight
 
     await this.$nextTick()
 
@@ -368,6 +464,98 @@ export default class FleetchartList extends Vue {
         ctx.drawHorizontalLine(0, i, canvas.width, lineColor)
       }
     }
+  }
+
+  image(item) {
+    const model = item.model || item
+
+    if (model.paint && (model.paint.topView || model.paint.sideView)) {
+      const url = this.extractUrlFromModel(model.paint)
+      if (url) {
+        return url
+      }
+    }
+
+    return this.extractUrlFromModel(model)
+  }
+
+  extractUrlFromModel(model) {
+    if (this.viewpointTop && model.topView) {
+      return this.topView(model)
+    }
+
+    if (this.viewpointSide && model.sideView) {
+      return this.sideView(model)
+    }
+
+    if (this.viewpointAngled && model.angledView) {
+      return this.angledView(model)
+    }
+
+    return null
+  }
+
+  resetZoom() {
+    this.panzoomInstance.zoomAbs(0, 0, 1)
+    this.panzoomInstance.moveTo(0, 0)
+  }
+
+  markForReset() {
+    this.markedForReset = true
+
+    setTimeout(() => {
+      this.checkReset()
+    }, 300)
+  }
+
+  topView(model) {
+    return model.topViewResized
+  }
+
+  sideView(model) {
+    return model.sideViewResized
+  }
+
+  angledView(model) {
+    return model.angledViewResized
+  }
+
+  extractMaxWidthFromModel(model) {
+    return Math.max(
+      model.topViewWidth,
+      model.sideViewWidth,
+      model.angledViewWidth
+    )
+  }
+
+  extractMaxHeightFromModel(model) {
+    return Math.max(
+      model.topViewHeight,
+      model.sideViewHeight,
+      model.angledViewHeight
+    )
+  }
+
+  imageMaxHeight(model) {
+    if (model.paint && (model.paint.topView || model.paint.sideView)) {
+      const height = this.extractMaxHeightFromModel(model.paint)
+      if (height) {
+        return height
+      }
+    }
+
+    return this.extractMaxHeightFromModel(model)
+  }
+
+  imageMaxWidth(model) {
+    if (model.paint && (model.paint.topView || model.paint.sideView)) {
+      const width = this.extractMaxWidthFromModel(model.paint)
+      if (width) {
+        return width
+      }
+    }
+
+    return this.extractMaxWidthFromModel(model)
   }
 }
 </script>

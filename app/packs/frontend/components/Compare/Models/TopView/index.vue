@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="compareTopView">
     <div class="row compare-row compare-section">
       <div class="col-12 compare-row-label sticky-left">
         <div
@@ -32,8 +32,7 @@
           <FleetchartItemImage
             :label="model.name"
             :src="model.sideViewSmall"
-            :length="model.length"
-            :scale="topViewScale"
+            :width="length(model)"
           />
         </div>
       </div>
@@ -49,8 +48,7 @@
           <FleetchartItemImage
             :label="model.name"
             :src="model.topViewSmall"
-            :length="model.length"
-            :scale="topViewScale"
+            :width="length(model)"
           />
         </div>
       </div>
@@ -75,22 +73,29 @@ export default class ModelsCompareTopView extends Vue {
 
   visible: boolean = false
 
-  get topViewScale() {
+  get maxWidth() {
+    if (!this.$refs.compareTopView) {
+      return 0
+    }
+
+    return this.$refs.compareTopView.offsetWidth / 4
+  }
+
+  get scale() {
     if (this.models.length <= 0) {
       return 0
     }
 
-    const maxLength = Math.max(...this.models.map((model) => model.length), 0)
+    const maxLength = Math.max(
+      ...this.models.map((model) => model.fleetchartLength),
+      0
+    )
 
-    if (maxLength < 30) {
-      return 300
-    }
+    return this.maxWidth / (maxLength * 3)
+  }
 
-    if (maxLength <= 250) {
-      return 80
-    }
-
-    return 25
+  length(model) {
+    return model.fleetchartLength * 3 * this.scale
   }
 
   mounted() {

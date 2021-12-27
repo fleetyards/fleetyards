@@ -269,7 +269,7 @@
         = form.hidden_field :side_view_cache
       %br
       - if model.side_view?
-        = image_tag(model.side_view.small.url)
+        = image_tag(model.side_view.url)
         = form.check_box :remove_side_view
         Remove Image
       %small

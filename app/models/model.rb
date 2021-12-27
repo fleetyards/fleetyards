@@ -9,6 +9,8 @@
 #  afterburner_ground_speed :decimal(15, 2)
 #  afterburner_speed        :decimal(15, 2)
 #  angled_view              :string
+#  angled_view_height       :integer
+#  angled_view_width        :integer
 #  beam                     :decimal(15, 2)   default(0.0), not null
 #  brochure                 :string
 #  cargo                    :decimal(15, 2)
@@ -19,6 +21,8 @@
 #  dock_size                :integer
 #  erkul_identifier         :string
 #  fleetchart_image         :string
+#  fleetchart_image_height  :integer
+#  fleetchart_image_width   :integer
 #  fleetchart_offset_length :decimal(15, 2)
 #  focus                    :string(255)
 #  ground                   :boolean          default(FALSE)
@@ -78,6 +82,8 @@
 #  sc_identifier            :string
 #  scm_speed                :decimal(15, 2)
 #  side_view                :string
+#  side_view_height         :integer
+#  side_view_width          :integer
 #  size                     :string
 #  slug                     :string(255)
 #  speed                    :decimal(15, 2)
@@ -85,6 +91,8 @@
 #  store_images_updated_at  :datetime
 #  store_url                :string(255)
 #  top_view                 :string
+#  top_view_height          :integer
+#  top_view_width           :integer
 #  upgrade_kits_count       :integer          default(0)
 #  videos_count             :integer          default(0)
 #  xaxis_acceleration       :decimal(15, 2)

@@ -10,13 +10,14 @@
     <Btn
       size="large"
       variant="link"
-      class="fleetchart-app-close "
+      class="fleetchart-app-close"
       @click.native="hide"
     >
       <i class="fal fa-times" />
     </Btn>
 
     <FleetchartList
+      v-if="innerItems.length"
       :items="innerItems"
       :my-ship="myShip"
       :namespace="namespace"
@@ -96,22 +97,22 @@ export default class FleetchartApp extends Vue {
     this.innerItems = JSON.parse(JSON.stringify(this.items)).sort((a, b) => {
       if (a.model) {
         if (a.model.length < b.model.length) {
-          return 1
+          return -1
         }
 
         if (a.model.length > b.model.length) {
-          return -1
+          return 1
         }
 
         return 0
       }
 
       if (a.length < b.length) {
-        return 1
+        return -1
       }
 
       if (a.length > b.length) {
-        return -1
+        return 1
       }
 
       return 0

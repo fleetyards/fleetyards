@@ -3,29 +3,34 @@
 class FleetchartImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
+  process :store_dimensions
+
   version :small do
-    process resize_to_limit: [600, 600]
+    process resize_to_limit: [500, 500]
   end
 
-  version :resized do
-    process resize_to_limit: [1200, 1200], if: :size_small?
-    process resize_to_limit: [2200, 2200], if: :size_medium?
-    process resize_to_limit: [4000, 4000], if: :size_large?
+  version :medium do
+    process resize_to_limit: [1000, 1000]
   end
 
-  def size_small?(_new_file)
-    model.length < 40
+  version :large do
+    process resize_to_limit: [2000, 2000]
   end
 
-  def size_medium?(_new_file)
-    model.length < 100
-  end
-
-  def size_large?(_new_file)
-    model.length >= 100
+  version :xlarge do
+    process resize_to_limit: [3000, 3000]
   end
 
   def extension_allowlist
-    %w[png]
+    %w[png webp]
+  end
+
+  private def store_dimensions
+    return unless file || model
+
+    width, height = ::MiniMagick::Image.open(file.file)[:dimensions]
+
+    model.send("#{mounted_as}_width=", width)
+    model.send("#{mounted_as}_height=", height)
   end
 end

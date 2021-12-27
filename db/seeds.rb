@@ -52,6 +52,8 @@ if ENV['TEST_SEEDS'].present?
 end
 
 if ENV['FLEETCHART_SEEDS'].present?
+  CarrierWave.clean_cached_files!
+
   Dir[File.join(Rails.root, 'db', 'seeds_fleetchart', '*')].sort.select do |file|
     File.directory?(file)
   end.each do |ship_dir|
@@ -73,6 +75,8 @@ if ENV['FLEETCHART_SEEDS'].present?
       angled_view: (angled_view.open if File.exist?(angled_view)),
       holo: (holo.open if File.exist?(holo))
     )
+
+    CarrierWave.clean_cached_files!
 
     puts "#{slug} imported"
   end
