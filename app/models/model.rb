@@ -8,6 +8,9 @@
 #  active                   :boolean          default(TRUE)
 #  afterburner_ground_speed :decimal(15, 2)
 #  afterburner_speed        :decimal(15, 2)
+#  angled_view              :string
+#  angled_view_height       :integer
+#  angled_view_width        :integer
 #  beam                     :decimal(15, 2)   default(0.0), not null
 #  brochure                 :string
 #  cargo                    :decimal(15, 2)
@@ -18,6 +21,9 @@
 #  dock_size                :integer
 #  erkul_identifier         :string
 #  fleetchart_image         :string
+#  fleetchart_image_height  :integer
+#  fleetchart_image_width   :integer
+#  fleetchart_offset_length :decimal(15, 2)
 #  focus                    :string(255)
 #  ground                   :boolean          default(FALSE)
 #  ground_speed             :decimal(15, 2)
@@ -38,6 +44,7 @@
 #  model_paints_count       :integer          default(0)
 #  module_hardpoints_count  :integer          default(0)
 #  name                     :string(255)
+#  name_slug                :string
 #  notified                 :boolean          default(FALSE)
 #  on_sale                  :boolean          default(FALSE)
 #  pitch_max                :decimal(15, 2)
@@ -75,6 +82,8 @@
 #  sc_identifier            :string
 #  scm_speed                :decimal(15, 2)
 #  side_view                :string
+#  side_view_height         :integer
+#  side_view_width          :integer
 #  size                     :string
 #  slug                     :string(255)
 #  speed                    :decimal(15, 2)
@@ -82,6 +91,8 @@
 #  store_images_updated_at  :datetime
 #  store_url                :string(255)
 #  top_view                 :string
+#  top_view_height          :integer
+#  top_view_width           :integer
 #  upgrade_kits_count       :integer          default(0)
 #  videos_count             :integer          default(0)
 #  xaxis_acceleration       :decimal(15, 2)
@@ -103,6 +114,9 @@ class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
   paginates_per 30
+  max_paginates_per 240
+
+  PAGINATION_OPTIONS = [15, 30, 60, 120, 240].freeze
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code],
              word_start: %i[name manufacturer_name]
@@ -190,6 +204,7 @@ class Model < ApplicationRecord
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :top_view, FleetchartImageUploader
   mount_uploader :side_view, FleetchartImageUploader
+  mount_uploader :angled_view, FleetchartImageUploader
   mount_uploader :brochure, BrochureUploader
   mount_uploader :holo, HoloUploader
 

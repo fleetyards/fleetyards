@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="compareTopView">
     <div class="row compare-row compare-section">
       <div class="col-12 compare-row-label sticky-left">
         <div
@@ -27,13 +27,28 @@
         <div
           v-for="model in models"
           :key="`${model.slug}-top-view`"
-          class="col-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item compare-row-item-top-view"
         >
           <FleetchartItemImage
             :label="model.name"
-            :src="model.fleetchartImage"
-            :length="model.length"
-            :scale="topViewScale"
+            :src="model.sideViewSmall"
+            :width="length(model)"
+          />
+        </div>
+      </div>
+      <div class="row compare-row">
+        <div
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
+        />
+        <div
+          v-for="model in models"
+          :key="`${model.slug}-top-view`"
+          class="col-6 text-center compare-row-item compare-row-item-top-view"
+        >
+          <FleetchartItemImage
+            :label="model.name"
+            :src="model.topViewSmall"
+            :width="length(model)"
           />
         </div>
       </div>
@@ -45,13 +60,11 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
-import FleetchartSlider from 'frontend/components/Fleetchart/Slider'
 import FleetchartItemImage from 'frontend/components/Fleetchart/List/Item/Image'
 
 @Component<ModelsCompareTopView>({
   components: {
     BCollapse,
-    FleetchartSlider,
     FleetchartItemImage,
   },
 })
@@ -60,22 +73,29 @@ export default class ModelsCompareTopView extends Vue {
 
   visible: boolean = false
 
-  get topViewScale() {
+  get maxWidth() {
+    if (!this.$refs.compareTopView) {
+      return 0
+    }
+
+    return this.$refs.compareTopView.offsetWidth / 4
+  }
+
+  get scale() {
     if (this.models.length <= 0) {
       return 0
     }
 
-    const maxLength = Math.max(...this.models.map((model) => model.length), 0)
+    const maxLength = Math.max(
+      ...this.models.map((model) => model.fleetchartLength),
+      0
+    )
 
-    if (maxLength < 30) {
-      return 500
-    }
+    return this.maxWidth / (maxLength * 3)
+  }
 
-    if (maxLength <= 250) {
-      return 100
-    }
-
-    return 50
+  length(model) {
+    return model.fleetchartLength * 3 * this.scale
   }
 
   mounted() {

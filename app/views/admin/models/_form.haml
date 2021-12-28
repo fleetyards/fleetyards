@@ -96,6 +96,11 @@
       = form.number_field :length, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :length
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :fleetchart_offset_length)}
+      = form.label :fleetchart_offset_length
+      = form.number_field :fleetchart_offset_length, min: 0, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :fleetchart_offset_length
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :height)}
       = form.label :height
       = form.number_field :height, required: true, min: 0, step: 'any', class: 'form-control'
@@ -251,7 +256,7 @@
         = form.hidden_field :top_view_cache
       %br
       - if model.top_view?
-        = image_tag(model.top_view.url)
+        = image_tag(model.top_view.small.url)
         = form.check_box :remove_top_view
         Remove Image
       %small
@@ -269,6 +274,19 @@
         Remove Image
       %small
         = form_errors model, :side_view
+
+    .col-12.col-md-4.form-group{class: form_error?(model, :angled_view)}
+      = form.label :angled_view
+      = form.file_field :angled_view, class: 'form-control'
+      - if model.angled_view_cache
+        = form.hidden_field :angled_view_cache
+      %br
+      - if model.angled_view?
+        = image_tag(model.angled_view.small.url)
+        = form.check_box :remove_angled_view
+        Remove Image
+      %small
+        = form_errors model, :angled_view
 
   .row
     .col-12.col-md-4.form-group{class: form_error?(model, :holo)}

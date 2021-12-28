@@ -1,8 +1,10 @@
 export default () => ({
   detailsVisible: false,
-  fleetchartVisible: false,
-  fleetchartScale: 100,
   holoviewerVisible: false,
+  fleetchartVisible: false,
+  fleetchartZoomData: null,
   fleetchartViewpoint: 'side',
   fleetchartLabels: false,
+  fleetchartScreenHeight: '1x',
+  perPage: 30,
 })

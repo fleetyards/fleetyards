@@ -9,6 +9,7 @@ json.slug model.slug
 json.rsi_slug model.rsi_slug
 json.description model.description
 json.length model.length.to_f
+json.fleetchart_length (model.fleetchart_offset_length || model.length).to_f
 json.beam model.beam.to_f
 json.height model.height.to_f
 json.mass model.mass.to_f
@@ -36,7 +37,26 @@ json.store_image_medium model.store_image.medium.url
 json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url
 json.top_view model.top_view.url
+json.top_view_small model.top_view.small.url
+json.top_view_medium model.top_view.medium.url
+json.top_view_large model.top_view.large.url
+json.top_view_xlarge model.top_view.xlarge.url
+json.top_view_width model.top_view_width
+json.top_view_height model.top_view_height
 json.side_view model.side_view.url
+json.side_view_small model.side_view.small.url
+json.side_view_medium model.side_view.medium.url
+json.side_view_large model.side_view.large.url
+json.side_view_xlarge model.side_view.xlarge.url
+json.side_view_width model.side_view_width
+json.side_view_height model.side_view_height
+json.angled_view model.angled_view.url
+json.angled_view_small model.angled_view.small.url
+json.angled_view_medium model.angled_view.medium.url
+json.angled_view_large model.angled_view.large.url
+json.angled_view_xlarge model.angled_view.xlarge.url
+json.angled_view_width model.angled_view_width
+json.angled_view_height model.angled_view_height
 json.brochure model.brochure.url
 json.holo model.holo.url
 json.holo_colored model.holo_colored

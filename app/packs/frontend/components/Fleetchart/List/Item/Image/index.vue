@@ -3,7 +3,8 @@
     v-if="src"
     :src="src"
     :style="{
-      height: `${length * lengthMultiplicator}px`,
+      'width': `${width}px`,
+      'max-height': height ? `${height}px` : null,
     }"
     :alt="label"
     class="fleetchart-item-image"
@@ -16,20 +17,21 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
+import LazyImage from 'embed/components/LazyImage'
 import Vue from 'vue'
 
-@Component({})
+@Component({
+  components: {
+    LazyImage,
+  },
+})
 export default class FleetchartListItemImage extends Vue {
-  @Prop() src!: string
+  @Prop({ required: true }) src!: string
 
-  @Prop() label!: string
+  @Prop({ required: true }) label!: string
 
-  @Prop() length!: number
+  @Prop({ required: true }) width!: number
 
-  @Prop() scale!: number
-
-  get lengthMultiplicator() {
-    return (this.scale / 100) * 4
-  }
+  @Prop({ default: null }) height!: number | null
 }
 </script>

@@ -153,6 +153,23 @@ export default {
   'public': 'Public',
   'hangarStats': 'Stats',
   'fleetchart': 'Fleetchart',
+  'fleetchartApp': {
+    screenHeight: 'Screen Height',
+    viewpoint: 'Viewpoint',
+    screenHeightOptions: {
+      '1x': '1x',
+      '1_5x': '1.5x',
+      '2x': '2x',
+      '3x': '3x',
+      '4x': '4x',
+    },
+    viewpointOptions: {
+      side: 'Side',
+      top: 'Top',
+      angled: 'Angled',
+    },
+    gridSize: '%{size} meter per grid box',
+  },
   'fleetStats': 'Stats',
   'hangarMetrics': {
     total: 'Total',

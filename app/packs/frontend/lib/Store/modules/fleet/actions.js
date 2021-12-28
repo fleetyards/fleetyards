@@ -11,10 +11,6 @@ export default {
     commit('setFilterVisible', !state.filterVisible)
   },
 
-  toggleFleetchart({ commit, state }) {
-    commit('setFleetchartVisible', !state.fleetchartVisible)
-  },
-
   toggleGrouped({ commit, state }) {
     commit('setGrouped', !state.grouped)
   },
@@ -33,5 +29,13 @@ export default {
 
   resetInviteToken({ commit }) {
     commit('setInviteToken', null)
+  },
+
+  toggleFleetchart({ commit, state }) {
+    commit('setFleetchartVisible', !state.fleetchartVisible)
+  },
+
+  updatePerPage({ commit }, payload) {
+    commit('setPerPage', payload)
   },
 }

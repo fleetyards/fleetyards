@@ -1,15 +1,40 @@
 <template>
   <div
-    v-tooltip.bottom="tooltip"
     class="fleetchart-item fade-list-item"
+    :style="{
+      'min-height': `${height}px`,
+    }"
     :class="cssClasses"
   >
-    <FleetchartItemImage
-      :label="label"
-      :src="image"
-      :length="model.length"
-      :scale="scale"
-    />
+    <div v-if="showLabel" class="fleetchart-item-label">
+      <template v-if="name">
+        <span>{{ name }}</span>
+        <small>
+          <span>{{ modelName }}</span>
+          <template v-if="showStatus"><br />{{ productionStatus }}</template>
+        </small>
+      </template>
+      <template v-else>
+        <span>{{ modelName }}</span>
+        <small v-if="showStatus">
+          {{ productionStatus }}
+        </small>
+      </template>
+    </div>
+    <div
+      class="fleetchart-item-image-wrapper"
+      :style="{
+        width: `${length}px`,
+        height: `${height}px`,
+      }"
+    >
+      <FleetchartItemImage
+        :label="name || modelName"
+        :src="image"
+        :width="imageWidth"
+        :height="height"
+      />
+    </div>
   </div>
 </template>
 
@@ -26,17 +51,27 @@ import FleetchartItemImage from './Image'
   },
 })
 export default class FleetchartListItem extends Vue {
-  @Prop() item!: Model | Vehicle
+  @Prop({ required: true }) item!: Model | Vehicle
 
-  @Prop() scale!: number
+  @Prop({ default: 'side' }) viewpoint!: string
+
+  @Prop({ default: false }) showLabel!: boolean
 
   @Prop({ default: false }) showStatus!: boolean
+
+  @Prop({ default: 1 }) sizeMultiplicator!: number
+
+  @Prop({ default: 1 }) scale!: number
 
   get cssClasses() {
     const cssClasses = [`fleetchart-item-${this.model.slug}`]
 
     if (this.showStatus) {
       cssClasses.push(`status-${this.model.productionStatus}`)
+    }
+
+    if (this.showLabel) {
+      cssClasses.push('fleetchart-item-with-labels')
     }
 
     return cssClasses
@@ -67,11 +102,45 @@ export default class FleetchartListItem extends Vue {
   }
 
   get image() {
-    if (this.paint && this.paint.fleetchartImage) {
-      return this.paint.fleetchartImage
+    if (this.paint && (this.paint.topView || this.paint.sideView)) {
+      if (this.viewpointTop && this.paint.topView) {
+        return this.topView(this.paint)
+      }
+
+      if (this.viewpointSide && this.paint.sideView) {
+        return this.sideView(this.paint)
+      }
+
+      if (this.viewpointAngled && this.paint.angledView) {
+        return this.angledView(this.paint)
+      }
     }
 
-    return this.model.fleetchartImage
+    if (this.viewpointTop && this.model.topView) {
+      return this.topView(this.model)
+    }
+
+    if (this.viewpointSide && this.model.sideView) {
+      return this.sideView(this.model)
+    }
+
+    if (this.viewpointAngled && this.model.angledView) {
+      return this.angledView(this.model)
+    }
+
+    return null
+  }
+
+  get viewpointTop() {
+    return this.viewpoint === 'top'
+  }
+
+  get viewpointSide() {
+    return this.viewpoint === 'side'
+  }
+
+  get viewpointAngled() {
+    return this.viewpoint === 'angled'
   }
 
   get productionStatus() {
@@ -82,28 +151,211 @@ export default class FleetchartListItem extends Vue {
 
   get tooltip() {
     if (this.showStatus) {
-      return `${this.label} (${this.productionStatus})`
+      return `${this.label}<small>${this.productionStatus}`
     }
 
     return this.label
   }
 
-  get label() {
-    if (this.vehicle) {
-      if (this.vehicle.name) {
-        return this.vehicle.name
-      }
+  get name() {
+    if (this.vehicle && this.vehicle.name) {
+      return this.vehicle.name
+    }
 
-      if (this.paint && this.paint.rsiId) {
-        return this.modelLabel(this.paint.name)
+    return null
+  }
+
+  get modelName() {
+    if (this.paint && this.paint.rsiId) {
+      return `${this.model.manufacturer.code} ${this.paint.name}`
+    }
+
+    return `${this.model.manufacturer.code} ${this.model.name}`
+  }
+
+  get length() {
+    return this.model.fleetchartLength * this.sizeMultiplicator
+  }
+
+  get height() {
+    return (this.length * this.sourceImageHeightMax) / this.sourceImageWidthMax
+  }
+
+  get imageWidth() {
+    return Math.min(
+      (this.height * this.sourceImageWidth) / this.sourceImageHeight,
+      this.length
+    )
+  }
+
+  get sourceImageHeightMax() {
+    if (
+      this.model.paint &&
+      (this.model.paint.topView || this.model.paint.sideView)
+    ) {
+      const height = this.extractMaxHeightFromModel(this.model.paint)
+      if (height) {
+        return height
       }
     }
 
-    return this.modelLabel(this.model.name)
+    return this.extractMaxHeightFromModel(this.model)
   }
 
-  modelLabel(name) {
-    return `${this.model.manufacturer.code} ${name}`
+  get sourceImageHeight() {
+    if (this.paint && (this.paint.topView || this.paint.sideView)) {
+      if (this.viewpointTop && this.paint.topView) {
+        return this.paint.topViewHeight
+      }
+
+      if (this.viewpointSide && this.paint.sideView) {
+        return this.paint.sideViewHeight
+      }
+
+      if (this.viewpointAngled && this.paint.angledView) {
+        return this.paint.angledViewHeight
+      }
+    }
+
+    if (this.viewpointTop && this.model.topView) {
+      return this.model.topViewHeight
+    }
+
+    if (this.viewpointSide && this.model.sideView) {
+      return this.model.sideViewHeight
+    }
+
+    if (this.viewpointAngled && this.model.angledView) {
+      return this.model.angledViewHeight
+    }
+
+    return null
+  }
+
+  get sourceImageWidth() {
+    if (this.paint && (this.paint.topView || this.paint.sideView)) {
+      if (this.viewpointTop && this.paint.topView) {
+        return this.paint.topViewWidth
+      }
+
+      if (this.viewpointSide && this.paint.sideView) {
+        return this.paint.sideViewWidth
+      }
+
+      if (this.viewpointAngled && this.paint.angledView) {
+        return this.paint.angledViewWidth
+      }
+    }
+
+    if (this.viewpointTop && this.model.topView) {
+      return this.model.topViewWidth
+    }
+
+    if (this.viewpointSide && this.model.sideView) {
+      return this.model.sideViewWidth
+    }
+
+    if (this.viewpointAngled && this.model.angledView) {
+      return this.model.angledViewWidth
+    }
+
+    return null
+  }
+
+  get sourceImageWidthMax() {
+    if (
+      this.model.paint &&
+      (this.model.paint.topView || this.model.paint.sideView)
+    ) {
+      const width = this.extractMaxWidthFromModel(this.model.paint)
+      if (width) {
+        return width
+      }
+    }
+
+    return this.extractMaxWidthFromModel(this.model)
+  }
+
+  extractMaxWidthFromModel(model) {
+    return Math.max(
+      model.topViewWidth,
+      model.sideViewWidth,
+      model.angledViewWidth
+    )
+  }
+
+  extractMaxHeightFromModel(model) {
+    return Math.max(
+      model.topViewHeight,
+      model.sideViewHeight,
+      model.angledViewHeight
+    )
+  }
+
+  topView(model) {
+    const width = this.length * this.sizeMultiplicator * this.scale
+
+    if (width > 2900) {
+      return model.topView
+    }
+
+    if (width > 1900) {
+      return model.topViewXlarge
+    }
+
+    if (width > 900) {
+      return model.topViewLarge
+    }
+
+    if (width > 400) {
+      return model.topViewMedium
+    }
+
+    return model.topViewSmall
+  }
+
+  sideView(model) {
+    const width = this.length * this.sizeMultiplicator * this.scale
+
+    if (width > 2900) {
+      return model.sideView
+    }
+
+    if (width > 1900) {
+      return model.sideViewXlarge
+    }
+
+    if (width > 900) {
+      return model.sideViewLarge
+    }
+
+    if (width > 400) {
+      return model.sideViewMedium
+    }
+
+    return model.sideViewSmall
+  }
+
+  angledView(model) {
+    const width = this.length * this.sizeMultiplicator * this.scale
+
+    if (width > 2900) {
+      return model.angledView
+    }
+
+    if (width > 1900) {
+      return model.angledViewXlarge
+    }
+
+    if (width > 900) {
+      return model.angledViewLarge
+    }
+
+    if (width > 400) {
+      return model.angledViewMedium
+    }
+
+    return model.angledViewSmall
   }
 }
 </script>

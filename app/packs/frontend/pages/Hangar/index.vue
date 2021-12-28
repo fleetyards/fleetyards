@@ -27,10 +27,7 @@
             />
           </div>
           <div v-if="!mobile" class="page-actions page-actions-right">
-            <Btn
-              :to="{ name: 'hangar-fleetchart' }"
-              data-test="fleetchart-link"
-            >
+            <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
               <i class="fad fa-starship" />
               {{ $t('labels.fleetchart') }}
             </Btn>
@@ -114,9 +111,10 @@
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Btn
-              :to="{ name: 'hangar-fleetchart' }"
+              data-test="fleetchart-link"
               size="small"
               variant="dropdown"
+              @click.native="toggleFleetchart"
             >
               <i class="fad fa-starship" />
               <span>{{ $t('labels.fleetchart') }}</span>
@@ -127,15 +125,13 @@
               <span>{{ $t('labels.hangarStats') }}</span>
             </Btn>
 
-            <Btn
+            <ShareBtn
               v-if="currentUser && currentUser.publicHangar"
+              :url="shareUrl"
+              :title="metaTitle"
               size="small"
               variant="dropdown"
-              @click.native="share"
-            >
-              <i class="fad fa-share-square" />
-              <span>{{ $t('actions.share') }}</span>
-            </Btn>
+            />
 
             <hr />
           </template>
@@ -236,6 +232,12 @@
     </FilteredList>
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
+
+    <FleetchartApp
+      :items="collection.records"
+      namespace="hangar"
+      download-name="my-hangar-fleetchart"
+    />
   </section>
 </template>
 
@@ -254,6 +256,7 @@ import HangarImportBtn from 'frontend/components/HangarImportBtn'
 import VehiclesFilterForm from 'frontend/components/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import GroupLabels from 'frontend/components/Vehicles/GroupLabels'
+import FleetchartApp from 'frontend/components/Fleetchart/App'
 import HangarGuideBox from 'frontend/components/HangarGuideBox'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import ShareBtn from 'frontend/components/ShareBtn'
@@ -281,6 +284,7 @@ import debounce from 'lodash.debounce'
     GroupLabels,
     HangarGuideBox,
     AddonsModal,
+    FleetchartApp,
   },
   mixins: [MetaInfo, HangarItemsMixin],
 })
@@ -316,6 +320,8 @@ export default class Hangar extends Vue {
   @Action('toggleMoney', { namespace: 'hangar' }) toggleMoney: any
 
   @Action('toggleGridView', { namespace: 'hangar' }) toggleGridView: any
+
+  @Action('toggleFleetchart', { namespace: 'hangar' }) toggleFleetchart: any
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {

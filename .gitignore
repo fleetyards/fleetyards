@@ -8,6 +8,8 @@ data/*
 
 pids/*
 
+db/seeds_fleetchart
+
 # config files
 config/credentials/*.key
 config/*.key

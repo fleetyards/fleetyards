@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper" class="panel-btn-dropdown">
+  <div ref="wrapper" class="panel-btn-dropdown" :class="cssClasses">
     <Btn
       :size="size"
       :variant="variant"
@@ -70,6 +70,13 @@ export default class BtnDropdown extends Vue {
   @Prop({ default: false }) mobileBlock!: boolean
 
   @Prop({ default: false }) inline!: boolean
+
+  get cssClasses() {
+    return {
+      'panel-btn-small': this.size === 'small',
+      'panel-btn-large': this.size === 'large',
+    }
+  }
 
   created() {
     document.addEventListener('click', this.documentClick)

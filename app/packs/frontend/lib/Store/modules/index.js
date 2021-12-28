@@ -2,7 +2,9 @@ import app from 'frontend/lib/Store/modules/app'
 import session from 'frontend/lib/Store/modules/session'
 import cookies from 'frontend/lib/Store/modules/cookies'
 import fleet from 'frontend/lib/Store/modules/fleet'
+import publicFleet from 'frontend/lib/Store/modules/publicFleet'
 import hangar from 'frontend/lib/Store/modules/hangar'
+import publicHangar from 'frontend/lib/Store/modules/publicHangar'
 import models from 'frontend/lib/Store/modules/models'
 import stations from 'frontend/lib/Store/modules/stations'
 import shops from 'frontend/lib/Store/modules/shops'
@@ -15,7 +17,9 @@ export default () => ({
   session: session(),
   cookies: cookies(),
   fleet: fleet(),
+  publicFleet: publicFleet(),
   hangar: hangar(),
+  publicHangar: publicHangar(),
   models: models(),
   stations: stations(),
   shops: shops(),

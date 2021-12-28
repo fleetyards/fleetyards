@@ -21,8 +21,8 @@ export default () => ({
       return state.fleetchartVisible
     },
 
-    fleetchartScale(state) {
-      return state.fleetchartScale
+    fleetchartZoomData(state) {
+      return state.fleetchartZoomData
     },
 
     fleetchartViewpoint(state) {
@@ -33,16 +33,8 @@ export default () => ({
       return state.fleetchartLabels
     },
 
-    publicFleetchartScale(state) {
-      return state.publicFleetchartScale
-    },
-
-    publicFleetchartViewpoint(state) {
-      return state.publicFleetchartViewpoint
-    },
-
-    publicFleetchartLabels(state) {
-      return state.publicFleetchartLabels
+    fleetchartScreenHeight(state) {
+      return state.fleetchartScreenHeight
     },
 
     grouped(state) {
@@ -59,6 +51,10 @@ export default () => ({
 
     inviteToken(state) {
       return state.inviteToken
+    },
+
+    perPage(state) {
+      return state.perPage
     },
   },
 
@@ -80,8 +76,8 @@ export default () => ({
       state.fleetchartVisible = payload
     },
 
-    setFleetchartScale(state, payload) {
-      state.fleetchartScale = payload
+    setFleetchartZoomData(state, payload) {
+      state.fleetchartZoomData = payload
     },
 
     setFleetchartViewpoint(state, payload) {
@@ -92,16 +88,8 @@ export default () => ({
       state.fleetchartLabels = payload
     },
 
-    setPublicFleetchartScale(state, payload) {
-      state.publicFleetchartScale = payload
-    },
-
-    setPublicFleetchartViewpoint(state, payload) {
-      state.publicFleetchartViewpoint = payload
-    },
-
-    setPublicFleetchartLabels(state, payload) {
-      state.publicFleetchartLabels = payload
+    setFleetchartScreenHeight(state, payload) {
+      state.fleetchartScreenHeight = payload
     },
 
     setGrouped(state, payload) {
@@ -118,6 +106,10 @@ export default () => ({
 
     setInviteToken(state, payload) {
       state.inviteToken = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
     },
   },
   /* eslint-enable no-param-reassign */

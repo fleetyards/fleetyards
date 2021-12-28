@@ -11,3 +11,6 @@ en:
       message: Server Error
     unprocessable_entity:
       message: Unprocessable Entity
+
+    pagination:
+      invalid_per_page: Invalid per Page option provided

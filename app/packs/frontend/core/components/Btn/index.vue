@@ -2,6 +2,7 @@
   <component
     :is="btnType"
     v-bind="btnProps"
+    class="panel-btn"
     :class="cssClasses"
     :disabled="disabled || loading"
   >
@@ -106,7 +107,6 @@ export default class Btn extends Vue {
 
   get cssClasses() {
     return {
-      'panel-btn': true,
       'panel-btn-submit': this.type === 'submit',
       'panel-btn-transparent': this.variant === 'transparent',
       'panel-btn-link': this.variant === 'link',

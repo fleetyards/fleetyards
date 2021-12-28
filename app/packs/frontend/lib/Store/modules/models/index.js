@@ -17,8 +17,8 @@ export default () => ({
       return state.fleetchartVisible
     },
 
-    fleetchartScale(state) {
-      return state.fleetchartScale
+    fleetchartZoomData(state) {
+      return state.fleetchartZoomData
     },
 
     fleetchartViewpoint(state) {
@@ -29,8 +29,16 @@ export default () => ({
       return state.fleetchartLabels
     },
 
+    fleetchartScreenHeight(state) {
+      return state.fleetchartScreenHeight
+    },
+
     holoviewerVisible(state) {
       return state.holoviewerVisible
+    },
+
+    perPage(state) {
+      return state.perPage
     },
   },
 
@@ -48,8 +56,8 @@ export default () => ({
       state.fleetchartVisible = payload
     },
 
-    setFleetchartScale(state, payload) {
-      state.fleetchartScale = payload
+    setFleetchartZoomData(state, payload) {
+      state.fleetchartZoomData = payload
     },
 
     setFleetchartViewpoint(state, payload) {
@@ -60,8 +68,16 @@ export default () => ({
       state.fleetchartLabels = payload
     },
 
+    setFleetchartScreenHeight(state, payload) {
+      state.fleetchartScreenHeight = payload
+    },
+
     setHoloviewerVisible(state, payload) {
       state.holoviewerVisible = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
     },
   },
   /* eslint-enable no-param-reassign */

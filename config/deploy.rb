@@ -13,7 +13,7 @@ set :conditionally_migrate, true
 
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
-set :bundler_version, '2.2.3'
+set :bundler_version, '2.2.23'
 set :bundle_check_before_install, false # FIX: created failed deploys because dependencies where missing.
 
 set :initial_deploy, false
@@ -27,6 +27,7 @@ set :linked_dirs, [
   'tmp/cache',
   'tmp/pids',
   'tmp/sockets',
+  'db/seeds_fleetchart',
   'dumps'
 ]
 
@@ -227,6 +228,17 @@ namespace :db do
         with rails_env: fetch(:rails_env) do
           info 'Seeding database'
           execute(:rails, 'db:seed')
+        end
+      end
+    end
+  end
+
+  task :seed_fleetchart do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Seeding fleetcharts'
+          execute(:rails, 'db:seed FLEETCHART_SEEDS=true SKIP_SEEDS=true')
         end
       end
     end

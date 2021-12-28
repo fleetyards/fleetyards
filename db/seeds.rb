@@ -51,7 +51,42 @@ if ENV['TEST_SEEDS'].present?
   return
 end
 
-Dir[File.join(Rails.root, 'db', 'seeds', '**', '*.rb')].sort.each do |seed|
-  puts seed.remove("#{Rails.root}/db/seeds/")
-  load seed
+if ENV['FLEETCHART_SEEDS'].present?
+  CarrierWave.clean_cached_files!
+
+  Dir[File.join(Rails.root, 'db', 'seeds_fleetchart', '*')].sort.select do |file|
+    File.directory?(file)
+  end.each do |ship_dir|
+    slug = File.basename(ship_dir)
+
+    puts "Importing #{slug}..."
+
+    model = Model.find_by(slug: slug)
+
+    next if model.blank?
+
+    side_view = Pathname.new(ship_dir).join('side-fleetchart.png')
+    top_view = Pathname.new(ship_dir).join('top-fleetchart.png')
+    angled_view = Pathname.new(ship_dir).join('angled-fleetchart.png')
+    holo = Pathname.new(ship_dir).join('holo.gltf')
+    model.update(
+      side_view: (side_view.open if File.exist?(side_view)),
+      top_view: (top_view.open if File.exist?(top_view)),
+      angled_view: (angled_view.open if File.exist?(angled_view)),
+      holo: (holo.open if File.exist?(holo))
+    )
+
+    CarrierWave.clean_cached_files!
+
+    puts "#{slug} imported"
+  end
+
+  puts "Models missing: #{Model.active.visible.where(top_view: nil).count}"
+end
+
+unless ENV['SKIP_SEEDS'].present?
+  Dir[File.join(Rails.root, 'db', 'seeds', '**', '*.rb')].sort.each do |seed|
+    puts seed.remove("#{Rails.root}/db/seeds/")
+    load seed
+  end
 end

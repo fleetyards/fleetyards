@@ -6,8 +6,13 @@
 #
 #  id                      :uuid             not null, primary key
 #  active                  :boolean          default(TRUE)
+#  angled_view             :string
+#  angled_view_height      :integer
+#  angled_view_width       :integer
 #  description             :string
 #  fleetchart_image        :string
+#  fleetchart_image_height :integer
+#  fleetchart_image_width  :integer
 #  hidden                  :boolean          default(TRUE)
 #  last_pledge_price       :decimal(15, 2)
 #  last_updated_at         :datetime
@@ -22,11 +27,15 @@
 #  rsi_store_image         :string
 #  rsi_store_url           :string
 #  side_view               :string
+#  side_view_height        :integer
+#  side_view_width         :integer
 #  slug                    :string
 #  store_image             :string
 #  store_images_updated_at :datetime
 #  store_url               :string
 #  top_view                :string
+#  top_view_height         :integer
+#  top_view_width          :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  model_id                :uuid
@@ -45,6 +54,7 @@ class ModelPaint < ApplicationRecord
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :top_view, FleetchartImageUploader
   mount_uploader :side_view, FleetchartImageUploader
+  mount_uploader :angled_view, FleetchartImageUploader
 
   before_save :update_slugs
 

@@ -31,6 +31,10 @@ module Api
       render json: { code: 'not_found', message: I18n.t('errors.not_found.message') }, status: :not_found
     end
 
+    rescue_from Pagination::InvalidPerPage do |_exception|
+      render json: { code: 'pagination.invalid_per_page', message: I18n.t('errors.pagination.invalid_per_page') }, status: :bad_request
+    end
+
     def current_ability
       @current_ability ||= Ability.new(current_user)
     end

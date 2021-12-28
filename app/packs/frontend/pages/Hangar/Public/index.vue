@@ -82,12 +82,7 @@
             />
           </div>
           <div v-if="!mobile" class="page-actions page-actions-right">
-            <Btn
-              :to="{
-                name: 'hangar-public-fleetchart',
-                params: { slug: username },
-              }"
-            >
+            <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
               <i class="fad fa-starship" />
               {{ $t('labels.fleetchart') }}
             </Btn>
@@ -120,19 +115,22 @@
         </FilteredGrid>
       </template>
     </FilteredList>
+
+    <FleetchartApp :items="collection.records" namespace="publicHangar" />
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, Action } from 'vuex-class'
 import { publicHangarRouteGuard } from 'frontend/utils/RouteGuards/Hangar'
 import Btn from 'frontend/core/components/Btn'
 import VehiclePanel from 'frontend/components/Vehicles/Panel'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
+import FleetchartApp from 'frontend/components/Fleetchart/App'
 import Avatar from 'frontend/core/components/Avatar'
 import publicVehiclesCollection from 'frontend/api/collections/PublicVehicles'
 import publicUserCollection from 'frontend/api/collections/PublicUser'
@@ -148,6 +146,7 @@ import publicHangarGroupsCollection from 'frontend/api/collections/PublicHangarG
     AddonsModal,
     FilteredList,
     FilteredGrid,
+    FleetchartApp,
     VehiclePanel,
     ModelClassLabels,
     Avatar,
@@ -167,6 +166,9 @@ export default class PublicHangar extends Vue {
   groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection
 
   @Getter('mobile') mobile
+
+  @Action('toggleFleetchart', { namespace: 'publicHangar' })
+  toggleFleetchart: any
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {

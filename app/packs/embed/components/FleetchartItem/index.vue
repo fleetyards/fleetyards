@@ -4,7 +4,7 @@
       <FleetchartItemImage
         v-if="model.fleetchartImage"
         :src="model.fleetchartImage"
-        :length="model.length"
+        :length="model.fleetchartLength"
         :label="model.name"
         :scale="scale"
       />

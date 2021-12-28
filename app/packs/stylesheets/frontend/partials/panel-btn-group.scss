@@ -51,7 +51,12 @@
     border-radius: 0 !important;
   }
 
-  > .panel-btn {
+  > .panel-btn-dropdown {
+    height: 34px;
+  }
+
+  > .panel-btn,
+  > .panel-btn-dropdown > .panel-btn {
     padding: 0;
 
     .panel-btn-inner {

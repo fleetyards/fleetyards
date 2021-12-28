@@ -1,6 +1,7 @@
 .panel-btn-dropdown {
   position: relative;
   display: inline-block;
+  height: 39px;
   margin-right: 10px;
 
   &:last-child {
@@ -9,6 +10,14 @@
 
   > :first-child {
     margin-right: 0;
+  }
+
+  &.panel-btn-dropdown-small {
+    height: 34px;
+  }
+
+  &.panel-btn-dropdown-large {
+    height: 47px;
   }
 
   .panel-btn-dropdown-list {

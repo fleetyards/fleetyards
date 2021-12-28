@@ -6,7 +6,7 @@
   %td.preview.text-center
     - if model.top_view.present? || model.side_view.present?
       - if model.top_view.present?
-        = image_tag model.top_view.url
+        = image_tag model.top_view.small.url
       - if model.side_view.present?
         = image_tag model.side_view.url
     - elsif model.fleetchart_image.present?
