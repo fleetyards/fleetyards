@@ -10,8 +10,7 @@
     "Name": "Argo Astronautics"
   },
   "Tags": [
-    "MOLE_Base",
-    "MOLE_Paint",
+    "Paint_MOLE",
     "@MoleOrange"
   ]
 }

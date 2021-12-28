@@ -376,6 +376,60 @@
             }
           },
           {
+            "Name": "hardpoint_personal_storage_01",
+            "Port": {
+              "PortName": "hardpoint_personal_storage_01",
+              "Size": 1,
+              "Loadout": "PersonalStorage_DRAK_Cutlass_01",
+              "InstalledItem": {
+                "ClassName": "PersonalStorage_DRAK_Cutlass_01",
+                "Size": 1,
+                "Grade": 1,
+                "Type": "Cargo.UNDEFINED",
+                "Name": "PersonalStorage_DRAK_Cutlass_01",
+                "Durability": {
+                  "Health": 1000.0
+                }
+              },
+              "Types": [
+                "Cargo"
+              ],
+              "Flags": [
+                "selfphys",
+                "uneditable"
+              ],
+              "Category": "Cargo grids",
+              "Uneditable": true
+            }
+          },
+          {
+            "Name": "hardpoint_personal_storage_02",
+            "Port": {
+              "PortName": "hardpoint_personal_storage_02",
+              "Size": 1,
+              "Loadout": "PersonalStorage_DRAK_Cutlass_02",
+              "InstalledItem": {
+                "ClassName": "PersonalStorage_DRAK_Cutlass_02",
+                "Size": 1,
+                "Grade": 1,
+                "Type": "Cargo.UNDEFINED",
+                "Name": "PersonalStorage_DRAK_Cutlass_02",
+                "Durability": {
+                  "Health": 1000.0
+                }
+              },
+              "Types": [
+                "Cargo"
+              ],
+              "Flags": [
+                "selfphys",
+                "uneditable"
+              ],
+              "Category": "Cargo grids",
+              "Uneditable": true
+            }
+          },
+          {
             "Name": "Wing_Right",
             "MaximumDamage": 1880.0,
             "Parts": [
@@ -2783,21 +2837,6 @@
             }
           },
           {
-            "Name": "hardpoint_toilet",
-            "Port": {
-              "PortName": "hardpoint_toilet",
-              "Size": 1,
-              "Types": [
-                "Usable"
-              ],
-              "Flags": [
-                "uneditable"
-              ],
-              "Category": "Usables",
-              "Uneditable": true
-            }
-          },
-          {
             "Name": "hardpoint_weapon_rack",
             "Port": {
               "PortName": "hardpoint_weapon_rack",
@@ -3040,22 +3079,6 @@
             }
           },
           {
-            "Name": "hardpoint_controller_missile",
-            "Port": {
-              "PortName": "hardpoint_controller_missile",
-              "Size": 1,
-              "Types": [
-                "MissileController"
-              ],
-              "Flags": [
-                "invisible",
-                "uneditable"
-              ],
-              "Category": "UNKNOWN",
-              "Uneditable": true
-            }
-          },
-          {
             "Name": "hardpoint_weapon_regen_pool",
             "Port": {
               "PortName": "hardpoint_weapon_regen_pool",
@@ -3131,6 +3154,22 @@
               },
               "Types": [
                 "CapacitorAssignmentController"
+              ],
+              "Flags": [
+                "invisible",
+                "uneditable"
+              ],
+              "Category": "UNKNOWN",
+              "Uneditable": true
+            }
+          },
+          {
+            "Name": "hardpoint_controller_missile",
+            "Port": {
+              "PortName": "hardpoint_controller_missile",
+              "Size": 1,
+              "Types": [
+                "MissileController"
               ],
               "Flags": [
                 "invisible",
@@ -3810,32 +3849,17 @@
             }
           },
           {
-            "Name": "hardpoint_MedBed_Left",
-            "Port": {
-              "PortName": "hardpoint_MedBed_Left",
-              "Size": 1,
-              "Types": [
-                "Usable"
-              ],
-              "Flags": [
-                "uneditable"
-              ],
-              "Category": "Usables",
-              "Uneditable": true
-            }
-          },
-          {
             "Name": "hardpoint_door_rear",
             "Port": {
               "PortName": "hardpoint_door_rear",
               "Size": 1,
-              "Loadout": "Door_Ship_Ext_Dmg_DRAK_Cutlass_Red_Rear",
+              "Loadout": "Door_Ship_Ext_Dmg_DRAK_Cutlass_Blue_Rear",
               "InstalledItem": {
-                "ClassName": "Door_Ship_Ext_Dmg_DRAK_Cutlass_Red_Rear",
+                "ClassName": "Door_Ship_Ext_Dmg_DRAK_Cutlass_Blue_Rear",
                 "Size": 1,
                 "Grade": 1,
                 "Type": "Door.UNDEFINED",
-                "Name": "Door_Ship_Ext_Dmg_DRAK_Cutlass_Red_Rear",
+                "Name": "Door_Ship_Ext_Dmg_DRAK_Cutlass_Blue_Rear",
                 "Durability": {
                   "Health": 200.0
                 },
@@ -3943,13 +3967,13 @@
                   {
                     "PortName": "hardpoint_ext",
                     "Size": 0,
-                    "Loadout": "DRAK_Cutlass_Door_Rear_Ext_Red",
+                    "Loadout": "DRAK_Cutlass_Door_Rear_Ext_Blue",
                     "InstalledItem": {
-                      "ClassName": "DRAK_Cutlass_Door_Rear_Ext_Red",
+                      "ClassName": "DRAK_Cutlass_Door_Rear_Ext_Blue",
                       "Size": 1,
                       "Grade": 1,
                       "Type": "Container.UNDEFINED",
-                      "Name": "DRAK_Cutlass_Door_Rear_Ext_Red",
+                      "Name": "DRAK_Cutlass_Door_Rear_Ext_Blue",
                       "Manufacturer": {
                         "Code": "DRAK",
                         "Name": "Drake Interplanetary"
@@ -4974,6 +4998,77 @@
                 "right"
               ],
               "Category": "Doors",
+              "Uneditable": true
+            }
+          },
+          {
+            "Name": "hardpoint_ramp_panel_ext",
+            "Port": {
+              "PortName": "hardpoint_ramp_panel_ext",
+              "Size": 1,
+              "Loadout": "DRAK_Cutlass_Switch_Ramp",
+              "InstalledItem": {
+                "ClassName": "DRAK_Cutlass_Switch_Ramp",
+                "Size": 1,
+                "Grade": 1,
+                "Type": "Usable.UNDEFINED",
+                "Name": "DRAK_Cutlass_Switch_Ramp",
+                "Manufacturer": {
+                  "Code": "DRAK",
+                  "Name": "Drake Interplanetary"
+                }
+              },
+              "Types": [
+                "Usable"
+              ],
+              "Flags": [
+                "uneditable",
+                "Ext"
+              ],
+              "Category": "Usables",
+              "Uneditable": true
+            }
+          },
+          {
+            "Name": "hardpoint_ramp_panel_ext_02",
+            "Port": {
+              "PortName": "hardpoint_ramp_panel_ext_02",
+              "Size": 1,
+              "Loadout": "DRAK_Cutlass_Switch_Ramp",
+              "InstalledItem": {
+                "ClassName": "DRAK_Cutlass_Switch_Ramp",
+                "Size": 1,
+                "Grade": 1,
+                "Type": "Usable.UNDEFINED",
+                "Name": "DRAK_Cutlass_Switch_Ramp",
+                "Manufacturer": {
+                  "Code": "DRAK",
+                  "Name": "Drake Interplanetary"
+                }
+              },
+              "Types": [
+                "Usable"
+              ],
+              "Flags": [
+                "uneditable",
+                "Ext"
+              ],
+              "Category": "Usables",
+              "Uneditable": true
+            }
+          },
+          {
+            "Name": "hardpoint_MedBed_Left",
+            "Port": {
+              "PortName": "hardpoint_MedBed_Left",
+              "Size": 1,
+              "Types": [
+                "Usable"
+              ],
+              "Flags": [
+                "uneditable"
+              ],
+              "Category": "Usables",
               "Uneditable": true
             }
           }

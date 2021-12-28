@@ -817,6 +817,11 @@
   {
     "code": "",
     "name": "Drake Interplanetary",
+    "reference": "e8e6eb8e-be07-4852-a6f5-c6c7307b76c8"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
     "reference": "fe066bb1-3452-4188-a486-a2c2b64c6f52"
   },
   {
@@ -828,6 +833,16 @@
     "code": "",
     "name": "Ace Astrogation",
     "reference": "291a1832-08df-4d05-9c2f-c6be0d13ff0c"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "4a39f3e6-987e-4172-8411-b995e4299bfc"
+  },
+  {
+    "code": "",
+    "name": "Drake Interplanetary",
+    "reference": "b332d6d2-6371-4ead-bf22-83073bf7283b"
   },
   {
     "code": "",
@@ -1003,6 +1018,21 @@
   {
     "code": "",
     "name": "Argo Astronautics",
+    "reference": "ac87c5a1-28c9-42ef-8cdc-0ec6c2e38507"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "c5b352f7-237e-4b5e-8fcb-c0bfd9c8589c"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "fbd7bccc-af03-4761-930c-4d390dcf14ac"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
     "reference": "a59b216c-385e-4c17-a8b3-46ce9d5ed4a4"
   },
   {
@@ -1081,6 +1111,21 @@
   },
   {
     "code": "",
+    "name": "Argo Astronautics",
+    "reference": "750f9f18-108a-4968-887d-8c5a1f11b61b"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "f99a21fb-01b0-4899-a7e1-fab65c3a23ec"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "40353f10-d886-40a9-ba35-4607d2233302"
+  },
+  {
+    "code": "",
     "name": "Musashi Industrial & Starflight Concern",
     "reference": "11dc1f3c-684f-49cb-a3a6-88c5edc51c76"
   },
@@ -1132,6 +1177,21 @@
   {
     "code": "",
     "name": "Aegis Dynamics",
+    "reference": "4d493af3-be85-4914-b63b-34f49412876f"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "765f7fe2-ebcc-4e64-86c3-062b9ce4d93d"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
+    "reference": "6ff069d6-3655-4c7a-a4a0-f2dc4b295ca8"
+  },
+  {
+    "code": "",
+    "name": "Aegis Dynamics",
     "reference": "79a997fd-ace7-436f-afb2-280bda1ba748"
   },
   {
@@ -1176,8 +1236,23 @@
   },
   {
     "code": "",
+    "name": "Argo Astronautics",
+    "reference": "3bd41375-a8ad-4cff-baa3-5e398405b9a9"
+  },
+  {
+    "code": "",
     "name": "Ace Astrogation",
     "reference": "985a44ea-3aad-4223-84a3-02173cfeb8ba"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "229bf3fd-4f2b-4e3d-95a4-cfd63efb7f9b"
+  },
+  {
+    "code": "",
+    "name": "Argo Astronautics",
+    "reference": "fc51ee84-6c48-4051-ae53-35b0355a405f"
   },
   {
     "code": "",
