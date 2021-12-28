@@ -61,7 +61,6 @@ class Vehicle < ApplicationRecord
   has_many :vehicle_upgrades, dependent: :destroy
   has_many :model_upgrades, through: :vehicle_upgrades
 
-  validates :model_id, presence: true
   validates :serial, uniqueness: { scope: :user_id }, allow_nil: true
 
   NULL_ATTRS = %w[name serial].freeze
