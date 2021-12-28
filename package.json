@@ -92,8 +92,8 @@
     "workbox-webpack-plugin": "^6.4.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "15.0.0",
-    "@commitlint/config-conventional": "15.0.0",
+    "@commitlint/cli": "16.0.0",
+    "@commitlint/config-conventional": "16.0.0",
     "@types/i18n-js": "3.8.2",
     "@types/jest": "27.0.3",
     "@typescript-eslint/eslint-plugin": "5.8.0",
