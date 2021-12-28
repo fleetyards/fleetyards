@@ -182,7 +182,7 @@ export default {
     async fetch() {
       this.loading = true
       const response = await this.$api.get(
-        `celestial-objects/${this.$route.params.slug}`,
+        `celestial-objects/${this.$route.params.slug}`
       )
       this.loading = false
       if (!response.error) {

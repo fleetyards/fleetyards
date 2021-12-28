@@ -130,7 +130,7 @@ export default {
     },
 
     idsForAddon(addonId) {
-      const ids = this.internalAddons.filter(item => item === addonId)
+      const ids = this.internalAddons.filter((item) => item === addonId)
       if (ids.length) {
         return ids
       }
@@ -144,7 +144,7 @@ export default {
 
       if (this.internalAddons.includes(addonId)) {
         const index = this.internalAddons.findIndex(
-          itemId => itemId === addonId,
+          (itemId) => itemId === addonId
         )
         if (index > -1) {
           this.internalAddons.splice(index, 1)

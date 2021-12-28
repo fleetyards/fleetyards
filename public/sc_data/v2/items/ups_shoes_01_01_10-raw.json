@@ -35,11 +35,11 @@
         "Size": 1,
         "Grade": 1,
         "Manufacturer": "f444bb54-a422-44a0-abdb-a0384f0f5593",
-        "Tags": "ups_shoes Set_01 Color_01",
+        "Tags": "ups_shoes Set_01 Color_10",
         "RequiredTags": "",
         "DisplayType": "",
         "Localization": {
-          "Name": "@item_Name_UPS_Shoes_01_01_01",
+          "Name": "@item_Name_UPS_Shoes_01_01_10",
           "Description": "@item_Desc_UPS_Shoes_01_01_01"
         }
       }

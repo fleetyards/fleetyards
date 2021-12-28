@@ -9,7 +9,7 @@ export class AdminCommodityPricesCollection extends BaseCollection {
   params: AdminCommodityPriceParams | null = null
 
   async findAll(
-    params: AdminCommodityPriceParams | null,
+    params: AdminCommodityPriceParams | null
   ): Promise<AdminCommodityPrice[]> {
     this.params = params
 
@@ -17,7 +17,7 @@ export class AdminCommodityPricesCollection extends BaseCollection {
       `shops/${params?.shopId}/commodities/${params?.shopCommodityId}/${params?.path}-prices`,
       {
         page: params?.page,
-      },
+      }
     )
 
     if (!response.error) {
@@ -29,7 +29,7 @@ export class AdminCommodityPricesCollection extends BaseCollection {
   }
 
   async create(
-    form: AdminCommodityPriceForm,
+    form: AdminCommodityPriceForm
   ): Promise<AdminCommodityPrice | null> {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const { path, ...cleanForm } = form

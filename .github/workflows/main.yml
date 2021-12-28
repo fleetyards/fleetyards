@@ -40,7 +40,7 @@ jobs:
       - run: yarn install
       - run: yarn run lint:js
 
-  style-lint:
+  prettier:
     needs: js-setup
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +50,7 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
-      - run: yarn run lint:style
+      - run: yarn run lint:prettier
 
   js-tests:
     needs: js-setup
@@ -305,7 +305,7 @@ jobs:
 
   deploy-to-stage:
     if: github.ref == 'refs/heads/main'
-    needs: [rubocop, ruby-tests, js-tests, js-lint, style-lint, seeds, e2e-test]
+    needs: [rubocop, ruby-tests, js-tests, js-lint, prettier, seeds, e2e-test]
     runs-on: ubuntu-latest
 
     environment:

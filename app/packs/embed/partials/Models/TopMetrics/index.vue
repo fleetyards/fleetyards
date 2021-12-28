@@ -58,8 +58,8 @@ export default {
       }
 
       return this.$toNumber(
-        [minCrew, maxCrew].filter(item => item).join(' - '),
-        'people',
+        [minCrew, maxCrew].filter((item) => item).join(' - '),
+        'people'
       )
     },
 
@@ -85,7 +85,7 @@ export default {
         afterburnerSpeed = null
       }
 
-      return [scmSpeed, afterburnerSpeed].filter(item => item).join(' - ')
+      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
     },
 
     groundSpeeds() {
@@ -100,7 +100,7 @@ export default {
       }
 
       return [groundSpeed, afterburnerGroundSpeed]
-        .filter(item => item)
+        .filter((item) => item)
         .join(' - ')
     },
   },

@@ -24,7 +24,7 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
   }
 
   async findAllFleetchart(
-    params: FleetVehicleParams,
+    params: FleetVehicleParams
   ): Promise<(Vehicle | Model)[]> {
     const response = await get(`fleets/${params.slug}/public-fleetchart`, {
       q: params?.filters,
@@ -38,7 +38,7 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
   }
 
   async findStats(
-    params: FleetVehicleParams,
+    params: FleetVehicleParams
   ): Promise<FleetVehicleStats | null> {
     const response = await get(`fleets/${params.slug}/quick-stats`, {
       q: params?.filters,

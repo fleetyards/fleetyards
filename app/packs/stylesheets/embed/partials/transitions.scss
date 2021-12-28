@@ -1,11 +1,11 @@
 .col-animated {
-  transition: width .4s ease, max-width .4s ease;
+  transition: width 0.4s ease, max-width 0.4s ease;
 }
 
 .slide-enter-active,
 .slide-leave-active {
   overflow: hidden;
-  transition: width .5s ease, max-width .5s ease, padding .5s ease;
+  transition: width 0.5s ease, max-width 0.5s ease, padding 0.5s ease;
 
   label,
   .filter-group-title {
@@ -26,11 +26,11 @@
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .fade-enter-active {
-  transition-delay: .5s;
+  transition-delay: 0.5s;
 }
 
 .fade-enter,
@@ -53,7 +53,7 @@
 }
 
 .fade-list-item {
-  transition: all .5s;
+  transition: all 0.5s;
 }
 
 .fade-list-enter,
@@ -71,15 +71,15 @@
 }
 
 .fade-list-enter-active {
-  transition-delay: .5s;
+  transition-delay: 0.5s;
 }
 
 .fade-nav-enter-active {
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 .fade-nav-leave-active {
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 .fade-nav-enter,

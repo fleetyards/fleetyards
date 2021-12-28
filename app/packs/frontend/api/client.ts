@@ -29,7 +29,7 @@ const client = axios.create({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   },
-  paramsSerializer: params =>
+  paramsSerializer: (params) =>
     Qs.stringify(params, {
       arrayFormat: 'brackets',
       encode: false,
@@ -39,7 +39,7 @@ const client = axios.create({
 
 const extractMetaInfo = function extractMetaInfo(
   headers: any,
-  params: any,
+  params: any
 ): ApiResponseMeta | null {
   const links = linkHeaderParser(headers.link)
 
@@ -50,7 +50,7 @@ const extractMetaInfo = function extractMetaInfo(
       currentPage: parseInt(params.page || 1, 10),
       totalPages: parseInt(
         (links.last && links.last.page) || params.page || 1,
-        10,
+        10
       ),
     }
   }
@@ -61,7 +61,7 @@ const extractMetaInfo = function extractMetaInfo(
 const handleError = async function handleError(
   error: any,
   params: any,
-  silent: boolean,
+  silent: boolean
 ): Promise<ApiErrorResponse> {
   if (!silent) {
     nprogress.done()
@@ -86,7 +86,7 @@ const handleError = async function handleError(
 const handleResponse = function handleResponse(
   response: AxiosResponse,
   params: any,
-  silent: boolean,
+  silent: boolean
 ): ApiResponse {
   if (!silent) {
     nprogress.done()
@@ -105,7 +105,7 @@ const handleResponse = function handleResponse(
 export async function get(
   path: string,
   params: any = {},
-  silent: boolean = false,
+  silent: boolean = false
 ) {
   if (!silent) {
     nprogress.start()
@@ -145,7 +145,7 @@ export async function put(path: string, body = {}, silent: boolean = false) {
 export async function destroy(
   path: string,
   data = {},
-  silent: boolean = false,
+  silent: boolean = false
 ) {
   if (!silent) {
     nprogress.start()
@@ -171,7 +171,7 @@ export async function upload(path: string, body = {}, silent: boolean = false) {
     return handleResponse(
       await client.put(path, body, { headers }),
       body,
-      silent,
+      silent
     )
   } catch (error) {
     return handleError(error, body, silent)
@@ -181,7 +181,7 @@ export async function upload(path: string, body = {}, silent: boolean = false) {
 export async function download(
   path: string,
   params = {},
-  silent: boolean = false,
+  silent: boolean = false
 ) {
   if (!silent) {
     nprogress.start()
@@ -193,7 +193,7 @@ export async function download(
         responseType: 'blob',
       }),
       {},
-      silent,
+      silent
     )
   } catch (error) {
     return handleError(error, params, silent)

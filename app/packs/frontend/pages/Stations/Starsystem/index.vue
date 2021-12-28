@@ -172,7 +172,7 @@ export default {
   methods: {
     async fetch() {
       const response = await this.$api.get(
-        `starsystems/${this.$route.params.slug}`,
+        `starsystems/${this.$route.params.slug}`
       )
       if (!response.error) {
         this.starsystem = response.data

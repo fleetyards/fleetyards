@@ -251,7 +251,7 @@ export default class FleetShipsList extends Vue {
       },
       {
         received: debounce(this.fetch, 500),
-      },
+      }
     )
   }
 

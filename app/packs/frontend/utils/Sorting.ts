@@ -17,15 +17,15 @@ interface FleetYardsLocation extends Location {
 export const sortByToggle = function sortByToggle(
   currentRoute: FleetYardsLocation,
   field: string,
-  direction: string = 'asc',
+  direction: string = 'asc'
 ) {
   const currentSort = (currentRoute.query?.q || {}).sorts
 
-  const oppositeDirection = ['asc', 'desc'].find(item => item !== direction)
+  const oppositeDirection = ['asc', 'desc'].find((item) => item !== direction)
 
   if (!oppositeDirection) {
     throw Error(
-      'Invalid Direction provided! Direction can only be one of asc|desc',
+      'Invalid Direction provided! Direction can only be one of asc|desc'
     )
   }
 
@@ -60,7 +60,7 @@ export const sortByToggle = function sortByToggle(
 export const sortBy = function sortBy(
   currentRoute: FleetYardsLocation,
   field: string,
-  direction: string = 'asc',
+  direction: string = 'asc'
 ) {
   return {
     name: currentRoute.name,

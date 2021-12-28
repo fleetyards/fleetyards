@@ -169,10 +169,10 @@ export default class ShipsRoadmap extends Vue {
   }
 
   get filteredItems() {
-    const items = this.roadmapItems.filter(item => item.model)
+    const items = this.roadmapItems.filter((item) => item.model)
 
     if (this.onlyReleased) {
-      return items.filter(item => !item.released)
+      return items.filter((item) => !item.released)
     }
 
     return items
@@ -195,9 +195,9 @@ export default class ShipsRoadmap extends Vue {
 
   get modelsOnRoadmap() {
     return this.roadmapItems
-      .filter(item => item.model)
-      .map(item => item.model.id)
-      .filter(item => item)
+      .filter((item) => item.model)
+      .map((item) => item.model.id)
+      .filter((item) => item)
   }
 
   mounted() {
@@ -222,7 +222,7 @@ export default class ShipsRoadmap extends Vue {
       },
       {
         received: this.fetch,
-      },
+      }
     )
   }
 
@@ -244,7 +244,7 @@ export default class ShipsRoadmap extends Vue {
   }
 
   openReleased() {
-    Object.keys(this.groupedByRelease).forEach(release => {
+    Object.keys(this.groupedByRelease).forEach((release) => {
       const items = this.groupedByRelease[release]
       if (items.length && !items[0].released) {
         this.visible.push(release)

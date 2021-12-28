@@ -13,7 +13,9 @@
     width: 10px;
     min-width: 0;
     font-size: 12px;
-    transition: width ease $transition-base-speed, left ease $transition-base-speed, right ease $transition-base-speed, font-size ease $transition-base-speed;
+    transition: width ease $transition-base-speed,
+      left ease $transition-base-speed, right ease $transition-base-speed,
+      font-size ease $transition-base-speed;
   }
 
   :first-child {

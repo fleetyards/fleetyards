@@ -32,9 +32,7 @@
               {{ entry.search }}
             </div>
           </template>
-          <div v-else class="search-history-empty">
-            ...
-          </div>
+          <div v-else class="search-history-empty">...</div>
         </div>
       </Panel>
       <div class="text-center">

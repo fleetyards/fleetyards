@@ -2,7 +2,7 @@
   <div>
     <div class="metrics-label">{{ docks.length }}x {{ size }}:</div>
     <div class="metrics-value">
-      {{ sortedDocks.map(dock => dock.name).join(', ') }}
+      {{ sortedDocks.map((dock) => dock.name).join(', ') }}
     </div>
   </div>
 </template>

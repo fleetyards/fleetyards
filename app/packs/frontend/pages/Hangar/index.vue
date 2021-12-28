@@ -50,9 +50,9 @@
         <div
           v-if="
             collection.records.length &&
-              hangarStats &&
-              hangarStats.metrics &&
-              !mobile
+            hangarStats &&
+            hangarStats.metrics &&
+            !mobile
           "
           class="row"
         >
@@ -432,7 +432,7 @@ export default class Hangar extends Vue {
       },
       {
         received: debounce(this.fetch, 500),
-      },
+      }
     )
   }
 
@@ -454,8 +454,8 @@ export default class Hangar extends Vue {
       'download',
       `fleetyards-${this.currentUser.username}-hangar-${format(
         new Date(),
-        'yyyy-MM-dd',
-      )}.json`,
+        'yyyy-MM-dd'
+      )}.json`
     )
 
     document.body.appendChild(link)

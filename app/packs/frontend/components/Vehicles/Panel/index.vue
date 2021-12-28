@@ -271,7 +271,7 @@ export default class VehiclePanel extends Vue {
   get loanersTooltip() {
     return [
       this.$t('labels.vehicle.hasLoaners'),
-      this.model.loaners.map(loaner => loaner.name).join(', '),
+      this.model.loaners.map((loaner) => loaner.name).join(', '),
     ].join(': ')
   }
 

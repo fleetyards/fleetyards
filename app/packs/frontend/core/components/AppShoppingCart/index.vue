@@ -39,12 +39,12 @@ export default class ShoppingCart extends Vue {
 
   get total() {
     return sumArray(
-      this.cartItems.map(item => this.sum(item)).filter(item => item),
+      this.cartItems.map((item) => this.sum(item)).filter((item) => item)
     )
   }
 
   get cartItemCount() {
-    return sumArray(this.cartItems.map(item => item.amount))
+    return sumArray(this.cartItems.map((item) => item.amount))
   }
 
   sum(cartItem) {

@@ -263,7 +263,9 @@
           right: 0;
           border-top-left-radius: 2px;
           border-bottom-left-radius: 2px;
-          box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
+          box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9),
+            0 3px 10px rgba(darken($primary, 20%), 0.9),
+            0 -3px 10px rgba(darken($primary, 20%), 0.9);
         }
       }
 
@@ -274,7 +276,9 @@
           left: 0;
           border-top-right-radius: 2px;
           border-bottom-right-radius: 2px;
-          box-shadow: 3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
+          box-shadow: 3px 0 10px rgba(darken($primary, 20%), 0.9),
+            0 3px 10px rgba(darken($primary, 20%), 0.9),
+            0 -3px 10px rgba(darken($primary, 20%), 0.9);
         }
       }
     }

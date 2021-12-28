@@ -1,0 +1,17 @@
+{
+  "ClassName": "Paint_Reclaimer_Dolivine_Green",
+  "Size": 1,
+  "Grade": 1,
+  "Type": "Paints.UNDEFINED",
+  "Classification": "Ship.Paints",
+  "Name": "Reclaimer Dolivine Livery",
+  "Description": "Sharing the name with a gemstone prized for its beauty and industrial applications, the Dolivine livery blends shades of light green to give your Reclaimer a unique look. ",
+  "Manufacturer": {
+    "Code": "",
+    "Name": "Aegis Dynamics"
+  },
+  "Tags": [
+    "Paint_Reclaimer",
+    "@Reclaimer_Dolivine_Green"
+  ]
+}

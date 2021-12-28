@@ -152,7 +152,7 @@ export default class RoadmapChanges extends Vue {
       },
       {
         received: this.fetch,
-      },
+      }
     )
   }
 
@@ -181,7 +181,7 @@ export default class RoadmapChanges extends Vue {
     this.loading = false
 
     if (!response.error) {
-      this.roadmapChanges = response.data.filter(item => item.lastVersion)
+      this.roadmapChanges = response.data.filter((item) => item.lastVersion)
     }
   }
 }

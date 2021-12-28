@@ -20,6 +20,13 @@
             = form.label :hidden do
               = I18n.t(:"activerecord.attributes.model.hidden")
 
+        - if model.new_record?
+          .col-12.col-sm-6.col-md-4
+            .form-group
+              = form.check_box :notified, placeholder: I18n.t(:"helpers.placeholder.model.notified"), class: 'checkbox'
+              = form.label :notified do
+                = I18n.t(:"activerecord.attributes.model.notified")
+
         .col-12.col-sm-6.col-md-4
           .form-group
             = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active"), class: 'checkbox'

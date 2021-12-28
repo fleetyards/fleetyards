@@ -10,7 +10,7 @@ Noty.overrideDefaults({
           <div class="noty_body">${this.options.text}</div>
         `
         const buttons = []
-        this.options.buttons.forEach(button => {
+        this.options.buttons.forEach((button) => {
           const inner = document.createElement('div')
           inner.setAttribute('class', 'panel-btn-inner')
           inner.textContent = button.dom.textContent
@@ -61,7 +61,7 @@ const notifyPermissionGranted = function notifyPermissionGranted() {
 }
 
 const displayDesktopNotification = function displayDesktopNotification(
-  message,
+  message
 ) {
   // eslint-disable-next-line compat/compat
   const notification = new window.Notification(message, {
@@ -76,7 +76,7 @@ const displayNativeNotification = function displayNativeNotification(message) {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker.ready.then(
-      registration => {
+      (registration) => {
         if (!registration.showNotification) {
           return
         }
@@ -88,7 +88,7 @@ const displayNativeNotification = function displayNativeNotification(message) {
       },
       () => {
         displayDesktopNotification(message)
-      },
+      }
     )
   } else {
     displayDesktopNotification(message)
@@ -198,7 +198,7 @@ export const displayConfirm = function displayConfirm(options) {
           n.close()
           defaults.onConfirm()
         },
-        { 'data-status': 'ok' },
+        { 'data-status': 'ok' }
       ),
       Noty.button(
         I18n.t('actions.cancel'),
@@ -207,7 +207,7 @@ export const displayConfirm = function displayConfirm(options) {
           // @ts-ignore
           n.close()
           defaults.onCancel()
-        },
+        }
       ),
     ],
     callbacks: {
@@ -224,7 +224,7 @@ export function requestPermission() {
   }
 
   // eslint-disable-next-line compat/compat
-  window.Notification.requestPermission(permission => {
+  window.Notification.requestPermission((permission) => {
     if (permission === 'granted') {
       displayNativeNotification(I18n.t('messages.notification.granted'))
     }

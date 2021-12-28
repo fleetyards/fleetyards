@@ -21,15 +21,9 @@
           <transition-group name="fade" class="flex-list" tag="div" appear>
             <div key="heading" class="fade-list-item col-12 flex-list-heading">
               <div class="flex-list-row">
-                <div class="name">
-                  Name
-                </div>
-                <div class="manufacturer">
-                  Manufacturer
-                </div>
-                <div class="state">
-                  Status
-                </div>
+                <div class="name">Name</div>
+                <div class="manufacturer">Manufacturer</div>
+                <div class="state">Status</div>
               </div>
             </div>
             <div
@@ -147,14 +141,14 @@ export default {
           Papa.parse(event.target.result, {
             header: true,
             skipEmptyLines: true,
-          }).data,
-        ),
+          }).data
+        )
       )
     },
 
     async parseJSON(event) {
       this.data = await this.matchWithHangar(
-        this.transformData(JSON.parse(event.target.result)),
+        this.transformData(JSON.parse(event.target.result))
       )
     },
 
@@ -174,7 +168,7 @@ export default {
         return result
       }
 
-      return result.map(item => ({
+      return result.map((item) => ({
         ...item,
         model: item.name,
         modelSlug: this.transformSlug(item.name),
@@ -184,16 +178,16 @@ export default {
     async matchWithHangar(items) {
       const currentHangar = JSON.parse(JSON.stringify(this.ships))
 
-      const matchedItems = await items.map(item => {
+      const matchedItems = await items.map((item) => {
         const found = currentHangar.find(
-          vehicle => vehicle.modelSlug === item.modelSlug,
+          (vehicle) => vehicle.modelSlug === item.modelSlug
         )
 
         let state = 'new'
 
         if (found) {
           const index = currentHangar.findIndex(
-            vehicle => vehicle.modelSlug === found.modelSlug,
+            (vehicle) => vehicle.modelSlug === found.modelSlug
           )
           currentHangar.splice(index, 1)
           state = 'replace'
@@ -206,7 +200,7 @@ export default {
         }
       })
 
-      matchedItems.forEach(async item => {
+      matchedItems.forEach(async (item) => {
         if (item.found) {
           return
         }
@@ -219,7 +213,7 @@ export default {
 
       return [
         ...matchedItems,
-        ...currentHangar.map(vehicle => ({
+        ...currentHangar.map((vehicle) => ({
           ...vehicle,
           state: 'destroy',
         })),

@@ -25,7 +25,7 @@ export default () => ({
 
       const diff = differenceInMinutes(
         new Date(),
-        parseISO(state.accessConfirmed),
+        parseISO(state.accessConfirmed)
       )
 
       return diff < 10

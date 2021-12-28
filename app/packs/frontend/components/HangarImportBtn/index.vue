@@ -52,7 +52,7 @@ export default class HangarImportBtn extends Vue {
     validator(value) {
       return (
         ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
-          value,
+          value
         ) !== -1
       )
     },
@@ -90,8 +90,8 @@ export default class HangarImportBtn extends Vue {
   inputFilter(newFile, oldFile, prevent) {
     if (newFile && !oldFile) {
       if (
-        !this.fileExtensionsList.some(extension =>
-          newFile.name.endsWith(extension),
+        !this.fileExtensionsList.some((extension) =>
+          newFile.name.endsWith(extension)
         )
       ) {
         displayAlert({

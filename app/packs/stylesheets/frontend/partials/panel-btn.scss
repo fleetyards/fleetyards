@@ -51,7 +51,7 @@
 
   &[disabled] {
     cursor: default;
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &:last-child {
@@ -76,7 +76,7 @@
 
   &:active:not([disabled]) {
     animation-name: flash;
-    animation-duration: .5s;
+    animation-duration: 0.5s;
   }
 
   &.panel-btn-danger {
@@ -177,7 +177,7 @@
 
   25%,
   75% {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 

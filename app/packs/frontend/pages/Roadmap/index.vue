@@ -140,7 +140,7 @@ export default class RoadmapReleases extends Vue {
 
   get filteredItems() {
     if (this.onlyReleased) {
-      return this.roadmapItems.filter(item => !item.released)
+      return this.roadmapItems.filter((item) => !item.released)
     }
 
     return this.roadmapItems
@@ -163,9 +163,9 @@ export default class RoadmapReleases extends Vue {
 
   get modelsOnRoadmap() {
     return this.roadmapItems
-      .filter(item => item.model)
-      .map(item => item.model.id)
-      .filter(item => item)
+      .filter((item) => item.model)
+      .map((item) => item.model.id)
+      .filter((item) => item)
   }
 
   mounted() {
@@ -186,14 +186,14 @@ export default class RoadmapReleases extends Vue {
 
   tasks(items) {
     return items
-      .filter(item => item.active)
-      .map(item => Math.max(0, item.tasks))
+      .filter((item) => item.active)
+      .map((item) => Math.max(0, item.tasks))
       .reduce((ac, count) => ac + count, 0)
   }
 
   completed(items) {
     return items
-      .map(item => Math.max(0, item.completed))
+      .map((item) => Math.max(0, item.completed))
       .reduce((ac, count) => ac + count, 0)
   }
 
@@ -222,7 +222,7 @@ export default class RoadmapReleases extends Vue {
       },
       {
         received: this.fetch,
-      },
+      }
     )
   }
 
@@ -247,7 +247,7 @@ export default class RoadmapReleases extends Vue {
   }
 
   openReleased() {
-    Object.keys(this.groupedByRelease).forEach(release => {
+    Object.keys(this.groupedByRelease).forEach((release) => {
       const items = this.groupedByRelease[release]
 
       if (items.length && !items[0].released) {

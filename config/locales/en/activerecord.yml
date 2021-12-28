@@ -182,6 +182,7 @@ en:
         manufacturer: Manufacturer
         mass: Mass
         max_upgrades: Upgrades
+        notified: Suppress "New Ship" Notification?
         on_sale: On sale?
         production_status: Production Status
         variants: Variants

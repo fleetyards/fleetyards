@@ -167,7 +167,7 @@ export default class VehicleNamingModal extends Vue {
     return (
       !this.submitting &&
       Object.keys(this.$refs.form.fields).some(
-        field => this.$refs.form.fields[field].dirty,
+        (field) => this.$refs.form.fields[field].dirty
       )
     )
   }

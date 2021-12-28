@@ -44,7 +44,7 @@ export default class PanelGroups extends Vue {
     const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
     if ((query.hangarGroupsIn || []).includes(filter)) {
-      const index = query.hangarGroupsIn.findIndex(item => item === filter)
+      const index = query.hangarGroupsIn.findIndex((item) => item === filter)
       if (index > -1) {
         query.hangarGroupsIn.splice(index, 1)
       }

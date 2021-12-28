@@ -43,7 +43,7 @@ import NavigationMixin from 'frontend/mixins/Navigation'
 export default class RoadmapNav extends Vue {
   get active() {
     return ['roadmap', 'roadmap-changes', 'roadmap-ships'].includes(
-      this.$route.name,
+      this.$route.name
     )
   }
 }

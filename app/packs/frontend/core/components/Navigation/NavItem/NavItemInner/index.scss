@@ -11,7 +11,8 @@
     margin-right: 3px;
     margin-left: 3px;
     vertical-align: middle;
-    transition: max-width ease $transition-base-speed, margin ease $transition-base-speed;
+    transition: max-width ease $transition-base-speed,
+      margin ease $transition-base-speed;
   }
 
   .nav-item-image-empty {

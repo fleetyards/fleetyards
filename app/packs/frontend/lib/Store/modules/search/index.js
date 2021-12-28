@@ -22,7 +22,7 @@ export default () => ({
     addToHistory(state, payload) {
       // eslint-disable-next-line no-param-reassign
       state.history = state.history.filter(
-        item => item.search !== payload.search,
+        (item) => item.search !== payload.search
       )
 
       if (state.history.length >= 20) {

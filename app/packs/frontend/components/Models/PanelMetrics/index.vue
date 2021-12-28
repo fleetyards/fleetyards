@@ -96,8 +96,8 @@ export default class PanelMetrics extends Vue {
     }
 
     return this.$toNumber(
-      [minCrew, maxCrew].filter(item => item).join(' - '),
-      'people',
+      [minCrew, maxCrew].filter((item) => item).join(' - '),
+      'people'
     )
   }
 
@@ -123,7 +123,7 @@ export default class PanelMetrics extends Vue {
       afterburnerSpeed = null
     }
 
-    return [scmSpeed, afterburnerSpeed].filter(item => item).join(' - ')
+    return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
   }
 
   get groundSpeeds() {
@@ -138,7 +138,7 @@ export default class PanelMetrics extends Vue {
     }
 
     return [groundSpeed, afterburnerGroundSpeed]
-      .filter(item => item)
+      .filter((item) => item)
       .join(' - ')
   }
 }

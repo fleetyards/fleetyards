@@ -20,9 +20,7 @@
         <template v-if="showComponent">
           {{ loadout.component.name }}
         </template>
-        <template v-else>
-          TBD
-        </template>
+        <template v-else>TBD</template>
       </div>
       <div
         v-if="loadout && loadout.component && loadout.component.manufacturer"

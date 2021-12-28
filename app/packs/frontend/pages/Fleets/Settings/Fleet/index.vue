@@ -427,7 +427,7 @@ export default class FleetSettings extends Vue {
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}`,
-      this.form,
+      this.form
     )
 
     this.submitting = false
@@ -460,7 +460,7 @@ export default class FleetSettings extends Vue {
 
     const response = await this.$api.upload(
       `fleets/${this.$route.params.slug}`,
-      uploadData,
+      uploadData
     )
 
     if (!response.error) {
@@ -500,7 +500,7 @@ export default class FleetSettings extends Vue {
       text: this.$t('messages.confirm.fleet.destroy'),
       onConfirm: async () => {
         const response = await this.$api.destroy(
-          `fleets/${this.$route.params.slug}`,
+          `fleets/${this.$route.params.slug}`
         )
 
         if (!response.error) {

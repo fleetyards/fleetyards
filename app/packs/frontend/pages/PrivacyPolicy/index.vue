@@ -54,9 +54,7 @@
               As a registered User on {{ appName }} we only collect, besides the
               Information a Guest provides to us in the case of an Error, the
               Information you provide to us via the
-              <router-link :to="{ name: 'signup' }">
-                Signup form
-              </router-link>
+              <router-link :to="{ name: 'signup' }">Signup form</router-link>
               .
             </p>
             <br />

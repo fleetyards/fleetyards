@@ -85,7 +85,7 @@ export default class Docks extends Vue {
   @Prop({ default: false }) padding: boolean
 
   get hasGroup() {
-    return this.station.docks.some(dock => !!dock.group)
+    return this.station.docks.some((dock) => !!dock.group)
   }
 
   get docksByGroup() {

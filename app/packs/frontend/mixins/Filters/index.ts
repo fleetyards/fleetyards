@@ -6,8 +6,8 @@ const getQuery = function getQuery(formData: Object) {
   const q = JSON.parse(JSON.stringify(formData))
 
   Object.keys(q)
-    .filter(key => !q[key] || q[key].length === 0)
-    .forEach(key => delete q[key])
+    .filter((key) => !q[key] || q[key].length === 0)
+    .forEach((key) => delete q[key])
 
   return q
 }
@@ -22,8 +22,8 @@ export default class FiltersMixin extends Vue {
     const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
     Object.keys(query)
-      .filter(key => !query[key] || query[key].length === 0)
-      .forEach(key => delete query[key])
+      .filter((key) => !query[key] || query[key].length === 0)
+      .forEach((key) => delete query[key])
 
     return Object.keys(query).length > 0
   }
@@ -42,7 +42,7 @@ export default class FiltersMixin extends Vue {
         query: {},
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(_err => {})
+      .catch((_err) => {})
   }
 
   debouncedFilter() {
@@ -55,6 +55,6 @@ export default class FiltersMixin extends Vue {
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(_err => {})
+      .catch((_err) => {})
   }
 }

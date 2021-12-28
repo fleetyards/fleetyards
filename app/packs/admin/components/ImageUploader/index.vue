@@ -172,7 +172,7 @@ export default class ImageUploader extends Vue {
   }
 
   get activeImages() {
-    return this.newImages.filter(item => item.active)
+    return this.newImages.filter((item) => item.active)
   }
 
   get progress() {
@@ -181,12 +181,12 @@ export default class ImageUploader extends Vue {
     }
 
     const pendingProgress = this.newImages
-      .map(item => parseFloat(item.progress))
+      .map((item) => parseFloat(item.progress))
       .reduce((pv, cv) => pv + cv, 0)
     const completedUploads = this.uploadCount - this.newImages.length
 
     return Math.ceil(
-      (pendingProgress + completedUploads * 100) / this.uploadCount,
+      (pendingProgress + completedUploads * 100) / this.uploadCount
     )
   }
 
@@ -197,7 +197,7 @@ export default class ImageUploader extends Vue {
 
     return (
       this.activeImages
-        .map(item => parseFloat(item.speed))
+        .map((item) => parseFloat(item.speed))
         .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
     )
   }
@@ -235,7 +235,7 @@ export default class ImageUploader extends Vue {
     this.directory = true
     input.onclick = null
     input.click()
-    input.onclick = _e => {
+    input.onclick = (_e) => {
       this.directory = false
       input.directory = false
       input.webkitdirectory = false

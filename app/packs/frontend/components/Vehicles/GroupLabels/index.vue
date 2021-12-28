@@ -115,7 +115,7 @@ export default class GroupLabels extends Vue {
   @Getter('mobile') mobile
 
   get sortIndex() {
-    return this.groups.map(item => item.id)
+    return this.groups.map((item) => item.id)
   }
 
   mounted() {
@@ -136,7 +136,7 @@ export default class GroupLabels extends Vue {
 
   groupCount(group) {
     return (
-      this.hangarGroupCounts.find(count => count.id === group.id) || {
+      this.hangarGroupCounts.find((count) => count.id === group.id) || {
         count: 0,
       }
     )
@@ -151,12 +151,12 @@ export default class GroupLabels extends Vue {
       }
       query.hangarGroupsNotIn.push(filter)
 
-      const index = query.hangarGroupsIn.findIndex(item => item === filter)
+      const index = query.hangarGroupsIn.findIndex((item) => item === filter)
       if (index > -1) {
         query.hangarGroupsIn.splice(index, 1)
       }
     } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
-      const index = query.hangarGroupsNotIn.findIndex(item => item === filter)
+      const index = query.hangarGroupsNotIn.findIndex((item) => item === filter)
       if (index > -1) {
         query.hangarGroupsNotIn.splice(index, 1)
       }

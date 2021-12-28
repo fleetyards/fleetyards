@@ -84,13 +84,17 @@ import { getFilters, isFilterSelected } from 'frontend/utils/Filters'
   },
 })
 export default class ShopCommoditiesFilterForm extends Vue {
-  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection = componentItemTypeFiltersCollection
+  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
+    componentItemTypeFiltersCollection
 
-  equipmentItemTypeFiltersCollection: EquipmentItemTypeFiltersCollection = equipmentItemTypeFiltersCollection
+  equipmentItemTypeFiltersCollection: EquipmentItemTypeFiltersCollection =
+    equipmentItemTypeFiltersCollection
 
-  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection = equipmentTypeFiltersCollection
+  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
+    equipmentTypeFiltersCollection
 
-  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection = equipmentSlotFiltersCollection
+  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
+    equipmentSlotFiltersCollection
 
   loading: boolean = false
 
@@ -128,7 +132,7 @@ export default class ShopCommoditiesFilterForm extends Vue {
         query: {},
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(_err => {})
+      .catch((_err) => {})
   }
 
   debouncedFilter() {
@@ -142,7 +146,7 @@ export default class ShopCommoditiesFilterForm extends Vue {
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(_err => {})
+      .catch((_err) => {})
   }
 
   mounted() {

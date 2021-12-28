@@ -41,7 +41,7 @@
 
     .model-panel-body {
       display: flex;
-      flex: .5;
+      flex: 0.5;
       align-items: center;
       justify-content: flex-end;
       min-height: 80px;
@@ -49,13 +49,13 @@
     }
 
     .model-panel-image {
-      flex: .5;
+      flex: 0.5;
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
       border-top-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
-      opacity: .8;
+      opacity: 0.8;
     }
 
     h3 {

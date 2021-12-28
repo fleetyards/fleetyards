@@ -1,7 +1,7 @@
 .erkul-link {
   small {
     color: darken($text-color, 20%);
-    transition: all ease .5s;
+    transition: all ease 0.5s;
   }
 
   i {
@@ -12,7 +12,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
-    transition: all ease .5s;
+    transition: all ease 0.5s;
   }
 
   &:hover {

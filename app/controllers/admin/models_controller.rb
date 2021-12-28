@@ -143,17 +143,17 @@ module Admin
 
     private def model_params
       @model_params ||= params.require(:model).permit(
-        :name, :hidden, :active, :ground, :store_image, :store_image_cache, :remove_store_image,
-        :rsi_store_image, :remove_rsi_store_image, :quantum_fuel_tank_size, :hydrogen_fuel_tank_size,
-        :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
-        :top_view, :top_view_cache, :remove_top_view, :side_view, :side_view_cache, :remove_side_view,
-        :brochure, :brochure_cache, :remove_brochure, :store_url, :base_model_id, :holo_colored,
-        :holo, :holo_cache, :remove_holo, :beam, :length, :height, :mass, :cargo, :pledge_price,
-        :on_sale, :manufacturer_id, :focus, :classification, :description, :production_status,
-        :production_note, :size, :scm_speed, :afterburner_speed, :cruise_speed, :ground_speed,
-        :afterburner_ground_speed, :pitch_max, :yaw_max, :roll_max, :max_crew, :min_crew, :price,
-        :last_pledge_price, :rsi_id, :dock_size, :sc_identifier, :erkul_identifier,
-        :sales_page_url,
+        :name, :hidden, :notified, :active, :ground, :store_image, :store_image_cache,
+        :remove_store_image, :rsi_store_image, :remove_rsi_store_image, :quantum_fuel_tank_size,
+        :hydrogen_fuel_tank_size, :fleetchart_image, :fleetchart_image_cache,
+        :remove_fleetchart_image, :top_view, :top_view_cache, :remove_top_view, :side_view,
+        :side_view_cache, :remove_side_view, :brochure, :brochure_cache, :remove_brochure,
+        :store_url, :base_model_id, :holo_colored, :holo, :holo_cache, :remove_holo, :beam,
+        :length, :height, :mass, :cargo, :pledge_price, :on_sale, :manufacturer_id, :focus,
+        :classification, :description, :production_status, :production_note, :size, :scm_speed,
+        :afterburner_speed, :cruise_speed, :ground_speed, :afterburner_ground_speed, :pitch_max,
+        :yaw_max, :roll_max, :max_crew, :min_crew, :price, :last_pledge_price, :rsi_id, :dock_size,
+        :sc_identifier, :erkul_identifier, :sales_page_url,
         videos_attributes: %i[id url video_type _destroy],
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )
