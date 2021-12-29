@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.1](https://github.com/fleetyards/fleetyards/compare/v5.0.0...v5.0.1) (2021-12-29)
+
+
+### Bug Fixes
+
+* max per page check ([f75e34f](https://github.com/fleetyards/fleetyards/commit/f75e34f8217405f1095e94f7b52075a8fc9d583b))
+* panel-dropdown ([4438b75](https://github.com/fleetyards/fleetyards/commit/4438b757bbe580e4f74c2cc53d8bdab32fcbee8c))
+
 ## [5.0.0](https://github.com/fleetyards/fleetyards/compare/v4.23.5...v5.0.0) (2021-12-29)
 
 
