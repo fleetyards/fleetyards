@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/fleetyards/fleetyards/compare/v4.23.5...v5.0.0) (2021-12-29)
+
+
+### Bug Fixes
+
+* **fleetchart-v2:** remove scroll view ([780162b](https://github.com/fleetyards/fleetyards/commit/780162bf46e3bc5180a7fc438d58405f1d07e045))
+* sc_data hardpoint generation ([d4888e7](https://github.com/fleetyards/fleetyards/commit/d4888e7708ac747a932b3fd1e946d6e9048dce25))
+
 ### [4.23.5](https://github.com/fleetyards/fleetyards/compare/v4.23.4...v4.23.5) (2021-11-27)
 
 
