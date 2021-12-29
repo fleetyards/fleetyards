@@ -154,7 +154,7 @@ module Admin
         :afterburner_speed, :cruise_speed, :ground_speed, :afterburner_ground_speed, :pitch_max,
         :yaw_max, :roll_max, :max_crew, :min_crew, :price, :last_pledge_price, :rsi_id, :dock_size,
         :sc_identifier, :erkul_identifier, :sales_page_url, :angled_view, :angled_view_cache,
-        :remove_angled_view,
+        :remove_angled_view, :fleetchart_offset_length,
         videos_attributes: %i[id url video_type _destroy],
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )

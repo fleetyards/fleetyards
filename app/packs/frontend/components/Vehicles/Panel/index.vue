@@ -3,7 +3,7 @@
     <Panel
       v-if="vehicle && model"
       :id="id"
-      class="model-panel"
+      class="model-panel vehicle-panel"
       :class="`model-panel-${model.slug}`"
       :highlight="vehicle.flagship || highlight"
     >
@@ -304,7 +304,3 @@ export default class VehiclePanel extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

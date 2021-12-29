@@ -4,7 +4,7 @@
       :size="size"
       :variant="variant"
       :active="visible"
-      :inline="inline"
+      :inline="true"
       :mobile-block="mobileBlock"
       @click.native="toggle"
     >
@@ -73,8 +73,7 @@ export default class BtnDropdown extends Vue {
 
   get cssClasses() {
     return {
-      'panel-btn-small': this.size === 'small',
-      'panel-btn-large': this.size === 'large',
+      'panel-btn-dropdown-inline': this.inline,
     }
   }
 

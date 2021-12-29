@@ -1,8 +1,8 @@
 .panel-btn-dropdown {
   position: relative;
   display: inline-block;
-  height: 39px;
   margin-right: 10px;
+  margin-bottom: 20px;
 
   &:last-child {
     margin-right: 0;
@@ -12,17 +12,10 @@
     margin-right: 0;
   }
 
-  &.panel-btn-dropdown-small {
-    height: 34px;
-  }
-
-  &.panel-btn-dropdown-large {
-    height: 47px;
-  }
-
   .panel-btn-dropdown-list {
     position: absolute;
-    top: 50px;
+    top: 100%;
+    margin-top: 10px;
     left: 0;
     z-index: 1000;
     display: none;
@@ -39,7 +32,8 @@
 
     &.expand-top {
       top: auto;
-      bottom: 50px;
+      bottom: 100%;
+      margin-bottom: 10px;
     }
 
     &.expand-left {
@@ -97,6 +91,10 @@
         flex: 1 1;
       }
     }
+  }
+
+  &.panel-btn-dropdown-inline {
+    margin-bottom: 0px;
   }
 }
 
