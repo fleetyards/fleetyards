@@ -13,4 +13,4 @@ en:
       message: Unprocessable Entity
 
     pagination:
-      invalid_per_page: Invalid per Page option provided
+      max_per_page_reached: Max per Page reached

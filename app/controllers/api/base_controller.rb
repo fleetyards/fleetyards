@@ -31,8 +31,8 @@ module Api
       render json: { code: 'not_found', message: I18n.t('errors.not_found.message') }, status: :not_found
     end
 
-    rescue_from Pagination::InvalidPerPage do |_exception|
-      render json: { code: 'pagination.invalid_per_page', message: I18n.t('errors.pagination.invalid_per_page') }, status: :bad_request
+    rescue_from Pagination::MaxPerPageReached do |_exception|
+      render json: { code: 'pagination.max_per_page_reached', message: I18n.t('errors.pagination.max_per_page_reached') }, status: :bad_request
     end
 
     def current_ability

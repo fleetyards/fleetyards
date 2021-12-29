@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module Pagination
-  class InvalidPerPage < StandardError; end
+  class MaxPerPageReached < StandardError; end
 
   def per_page(model)
-    raise Pagination::InvalidPerPage if params[:perPage].present? && model::PAGINATION_OPTIONS.exclude?(params[:perPage].to_i)
+    raise Pagination::MaxPerPageReached if params[:perPage].present? && params[:perPage].to_i > model.max_per_page
 
     return params[:perPage].to_i if params[:perPage].present?
 
