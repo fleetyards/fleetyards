@@ -2,4 +2,4 @@
 
 set -eu
 
-aws s3 sync "s3://fleetyards" ./public
+s3cmd sync "s3://fleetyards" ./public

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_21_191455) do
+ActiveRecord::Schema.define(version: 2022_01_02_124400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -396,6 +396,15 @@ ActiveRecord::Schema.define(version: 2021_12_21_191455) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "pledge_price", precision: 15, scale: 2
+    t.string "angled_view"
+    t.integer "angled_view_height"
+    t.integer "angled_view_width"
+    t.string "top_view"
+    t.integer "top_view_height"
+    t.integer "top_view_width"
+    t.string "side_view"
+    t.integer "side_view_height"
+    t.integer "side_view_width"
   end
 
   create_table "model_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -846,6 +855,7 @@ ActiveRecord::Schema.define(version: 2021_12_21_191455) do
     t.boolean "notify", default: true
     t.string "serial"
     t.string "alternative_names"
+    t.uuid "module_package_id"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"

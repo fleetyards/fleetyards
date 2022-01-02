@@ -19,4 +19,8 @@ json.hangar_group_ids vehicle.public_hangar_group_ids
 json.hangar_groups do
   json.array! vehicle.public_hangar_groups, partial: 'api/v1/vehicles/hangar_group', as: :hangar_group
 end
+json.module_package do
+  json.partial! 'api/v1/model_module_packages/minimal', module_package: vehicle.module_package if vehicle.module_package.present?
+end
+json.module_package nil if vehicle.module_package.blank?
 json.partial! 'api/shared/dates', record: vehicle

@@ -234,7 +234,7 @@ module Api
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        @model_module_packages = model.module_packages
+        @module_packages = model.module_packages
           .visible
           .active
           .page(params[:page])
