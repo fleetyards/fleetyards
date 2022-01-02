@@ -48,7 +48,7 @@ gem 'useragent'
 
 gem 'redis-actionpack'
 
-gem 'ransack', '~> 2.4.2'
+gem 'ransack'
 
 gem 'jbuilder'
 gem 'oj'
@@ -57,7 +57,7 @@ gem 'rails-i18n'
 
 gem 'dalli'
 
-gem 'kaminari'
+gem 'kaminari', '<= 1.2.1'
 gem 'url_plumber'
 
 gem 'dynamic_fields_for_rails'
