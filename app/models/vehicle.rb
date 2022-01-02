@@ -44,7 +44,8 @@ class Vehicle < ApplicationRecord
   belongs_to :model_paint, optional: true
   belongs_to :user
   belongs_to :module_package,
-             class_name: 'ModelModulePackage'
+             class_name: 'ModelModulePackage',
+             optional: true
 
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces
