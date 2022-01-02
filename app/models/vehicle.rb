@@ -179,9 +179,9 @@ class Vehicle < ApplicationRecord
       (package.model_module_ids - model_module_ids).size.zero?
     end
 
-    packages.sort_by do |package|
+    packages.min_by do |package|
       model_module_ids.size - package.model_module_ids.size
-    end.first
+    end
   end
 
   def to_json(*_args)
