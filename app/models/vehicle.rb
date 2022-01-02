@@ -171,9 +171,17 @@ class Vehicle < ApplicationRecord
   def set_module_package
     return if model_modules.blank?
 
-    self.module_package_id = model.module_packages.max do |package_a, package_b|
-      (package_a.model_module_ids & model_module_ids).size <=> (package_b.model_module_ids & model_module_ids).size
-    end&.id
+    self.module_package_id = main_module_package&.id
+  end
+
+  def main_module_package
+    packages = model.module_packages.select do |package|
+      (package.model_module_ids - model_module_ids).size.zero?
+    end
+
+    packages.sort_by do |package|
+      model_module_ids.size - package.model_module_ids.size
+    end.first
   end
 
   def to_json(*_args)
