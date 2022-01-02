@@ -8,9 +8,9 @@
         %h1
           = I18n.t(:"headlines.admin.model_module_package.index")
           %small.text-muted
-            = @model_module_packages.count
+            = @module_packages.count
             of
-            = @model_module_packages.total_count
+            = @module_packages.total_count
 
       .col-12.col-md-4
         .d-flex.justify-content-end
@@ -19,12 +19,12 @@
 
     .row
       .col-12.d-flex.justify-content-center
-        = paginate @model_module_packages
+        = paginate @module_packages
 
     .row.mb-3
       .col-12.col-md-9
         .panel.panel-default
-          = render partial: "admin/model_module_packages/table", :@model_module_packages => @model_module_packages
+          = render partial: "admin/model_module_packages/table", :@module_packages => @module_packages
 
       .col-12.col-md-3
         = search_form_for [:admin, @q] do |f|
@@ -41,4 +41,4 @@
 
     .row
       .col-12.d-flex.justify-content-center
-        = paginate @model_module_packages
+        = paginate @module_packages

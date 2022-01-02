@@ -378,7 +378,7 @@ export default class FleetchartList extends Vue {
       const length = model.fleetchartLength * this.sizeMultiplicator
 
       const height =
-        (length * this.imageMaxHeight(model)) / this.imageMaxWidth(model)
+        (length * this.imageMaxHeight(item)) / this.imageMaxWidth(item)
 
       if (Number.isNaN(height)) {
         return
@@ -469,8 +469,23 @@ export default class FleetchartList extends Vue {
   image(item) {
     const model = item.model || item
 
-    if (model.paint && (model.paint.topView || model.paint.sideView)) {
-      const url = this.extractUrlFromModel(model.paint)
+    if (
+      item.modulePackage &&
+      (item.modulePackage.topView ||
+        item.modulePackage.sideView ||
+        item.modulePackage.angledView)
+    ) {
+      const url = this.extractUrlFromModel(item.modulePackage)
+      if (url) {
+        return url
+      }
+    }
+
+    if (
+      item.paint &&
+      (item.paint.topView || item.paint.sideView || item.paint.angledView)
+    ) {
+      const url = this.extractUrlFromModel(item.paint)
       if (url) {
         return url
       }
@@ -536,9 +551,26 @@ export default class FleetchartList extends Vue {
     )
   }
 
-  imageMaxHeight(model) {
-    if (model.paint && (model.paint.topView || model.paint.sideView)) {
-      const height = this.extractMaxHeightFromModel(model.paint)
+  imageMaxHeight(item) {
+    const model = item.model || item
+
+    if (
+      item.modulePackage &&
+      (item.modulePackage.topView ||
+        item.modulePackage.sideView ||
+        item.modulePackage.angledView)
+    ) {
+      const height = this.extractMaxHeightFromModel(item.modulePackage)
+      if (height) {
+        return height
+      }
+    }
+
+    if (
+      item.paint &&
+      (item.paint.topView || item.paint.sideView || item.paint.angledView)
+    ) {
+      const height = this.extractMaxHeightFromModel(item.paint)
       if (height) {
         return height
       }
@@ -547,9 +579,26 @@ export default class FleetchartList extends Vue {
     return this.extractMaxHeightFromModel(model)
   }
 
-  imageMaxWidth(model) {
-    if (model.paint && (model.paint.topView || model.paint.sideView)) {
-      const width = this.extractMaxWidthFromModel(model.paint)
+  imageMaxWidth(item) {
+    const model = item.model || item
+
+    if (
+      item.modulePackage &&
+      (item.modulePackage.topView ||
+        item.modulePackage.sideView ||
+        item.modulePackage.angledView)
+    ) {
+      const width = this.extractMaxWidthFromModel(item.modulePackage)
+      if (width) {
+        return width
+      }
+    }
+
+    if (
+      item.paint &&
+      (item.paint.topView || item.paint.sideView || item.paint.angledView)
+    ) {
+      const width = this.extractMaxWidthFromModel(item.paint)
       if (width) {
         return width
       }

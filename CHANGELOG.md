@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/fleetyards/fleetyards/compare/v5.0.1...v5.1.0) (2022-01-02)
+
+
+### Features
+
+* **fleetchart-v2:** add views for module packages ([f5b937b](https://github.com/fleetyards/fleetyards/commit/f5b937b35772f543ae77fbf976ef6b5fd8e03e68))
+
+
+### Bug Fixes
+
+* vehicle relation to module_package ([8d2ea5e](https://github.com/fleetyards/fleetyards/commit/8d2ea5ef9ee9adb976cf976cc683b79f21c54690))
+
 ### [5.0.1](https://github.com/fleetyards/fleetyards/compare/v5.0.0...v5.0.1) (2021-12-29)
 
 
@@ -12,10 +24,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [5.0.0](https://github.com/fleetyards/fleetyards/compare/v4.23.5...v5.0.0) (2021-12-29)
 
+### Features
+
+* **fleetchart-v2:** new fleetchart in modal for top, side and angled views
 
 ### Bug Fixes
 
-* **fleetchart-v2:** remove scroll view ([780162b](https://github.com/fleetyards/fleetyards/commit/780162bf46e3bc5180a7fc438d58405f1d07e045))
 * sc_data hardpoint generation ([d4888e7](https://github.com/fleetyards/fleetyards/commit/d4888e7708ac747a932b3fd1e946d6e9048dce25))
 
 ### [4.23.5](https://github.com/fleetyards/fleetyards/compare/v4.23.4...v4.23.5) (2021-11-27)
