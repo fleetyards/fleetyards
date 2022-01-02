@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.2.0](https://github.com/fleetyards/fleetyards/compare/v5.0.1...v5.2.0) (2022-01-02)
+
+
+### Features
+
+* **fleetchart-v2:** add views to module packages ([f5b937b](https://github.com/fleetyards/fleetyards/commit/f5b937b35772f543ae77fbf976ef6b5fd8e03e68))
+
+
+### Bug Fixes
+
+* module packages ([4c1a579](https://github.com/fleetyards/fleetyards/commit/4c1a579f56bcd9d4c02c9480c983b3d70aa212f0))
+* vehicle relation to module_package ([8d2ea5e](https://github.com/fleetyards/fleetyards/commit/8d2ea5ef9ee9adb976cf976cc683b79f21c54690))
+
 ## [5.1.0](https://github.com/fleetyards/fleetyards/compare/v5.0.1...v5.1.0) (2022-01-02)
 
 
