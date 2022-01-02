@@ -19,9 +19,7 @@ module TradingData
 
       data = map_data(extract_data(page), locations)
 
-      File.open(json_file_path, 'w') do |f|
-        f.write(data.to_json)
-      end
+      File.write(json_file_path, data.to_json)
 
       data
     end

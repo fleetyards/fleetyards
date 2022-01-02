@@ -34,7 +34,7 @@ class ModelHardpoint < ApplicationRecord
   belongs_to :component, optional: true
   has_many :model_hardpoint_loadouts, dependent: :destroy
 
-  validates :model_id, :source, :key, :hardpoint_type, :group, presence: true
+  validates :source, :key, :hardpoint_type, :group, presence: true
 
   enum source: { ship_matrix: 0, game_files: 1 }
 

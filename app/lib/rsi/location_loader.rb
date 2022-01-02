@@ -50,9 +50,7 @@ module Rsi
 
       begin
         starsystems_data = JSON.parse(response.body)
-        File.open(json_file_path, 'w') do |f|
-          f.write(starsystems_data.to_json)
-        end
+        File.write(json_file_path, starsystems_data.to_json)
         starsystems_data['data']['resultset']
       rescue JSON::ParserError => e
         Raven.capture_exception(e)
@@ -88,9 +86,7 @@ module Rsi
 
       begin
         starsystem_data = JSON.parse(response.body)
-        File.open(json_file_path, 'w') do |f|
-          f.write(starsystem_data.to_json)
-        end
+        File.write(json_file_path, starsystem_data.to_json)
         starsystem = starsystem_data['data']['resultset'].first
         if starsystem.present?
           starsystem['celestial_objects']

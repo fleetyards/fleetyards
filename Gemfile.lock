@@ -102,16 +102,11 @@ GEM
     ast (2.4.2)
     attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
-    autoprefixer-rails (10.3.3.0)
-      execjs (~> 2)
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.1.0)
     bindex (0.8.1)
     bootsnap (1.9.3)
       msgpack (~> 1.0)
-    bootstrap-sass (3.4.1)
-      autoprefixer-rails (>= 5.2.1)
-      sassc (>= 2.0.0)
     bourbon (7.0.0)
       thor (~> 1.0)
     bower-rails (0.12.0)
@@ -280,7 +275,7 @@ GEM
       concurrent-ruby (~> 1.0)
     i18n-js (3.9.0)
       i18n (>= 0.6.6)
-    i18n-tasks (0.9.36)
+    i18n-tasks (0.9.37)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
@@ -308,18 +303,18 @@ GEM
       railties (>= 4)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    kaminari (1.2.1)
+    kaminari (1.2.2)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.1)
-      kaminari-activerecord (= 1.2.1)
-      kaminari-core (= 1.2.1)
-    kaminari-actionview (1.2.1)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
       actionview
-      kaminari-core (= 1.2.1)
-    kaminari-activerecord (1.2.1)
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
       activerecord
-      kaminari-core (= 1.2.1)
-    kaminari-core (1.2.1)
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     knapsack (4.0.0)
       rake
     listen (3.7.0)
@@ -480,23 +475,23 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
-    rubocop (1.23.0)
+    rubocop (1.24.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 1.12.0, < 2.0)
+      rubocop-ast (>= 1.15.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.15.0)
+    rubocop-ast (1.15.1)
       parser (>= 3.0.1.1)
     rubocop-minitest (0.11.1)
       rubocop (>= 0.90, < 2.0)
-    rubocop-performance (1.12.0)
+    rubocop-performance (1.13.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    rubocop-rails (2.12.4)
+    rubocop-rails (2.13.0)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
@@ -620,7 +615,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.5.1)
+    zeitwerk (2.5.3)
 
 PLATFORMS
   ruby
@@ -633,7 +628,6 @@ DEPENDENCIES
   appsignal
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
-  bootstrap-sass
   bourbon
   bower-rails
   bullet
@@ -694,9 +688,9 @@ DEPENDENCIES
   rack-cors
   rails (= 6.1.4.4)
   rails-erd
-  rails-i18n
+  rails-i18n (~> 6.0)
   rails-perftest
-  ransack
+  ransack (~> 2.4.2)
   redcarpet
   redis-actionpack
   rollups
@@ -741,4 +735,4 @@ RUBY VERSION
    ruby 3.0.3
 
 BUNDLED WITH
-   2.2.23
+   2.2.32

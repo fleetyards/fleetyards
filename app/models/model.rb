@@ -227,7 +227,7 @@ class Model < ApplicationRecord
   end
 
   def self.production_status_filters
-    Model.visible.active.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:production_status).compact_blank.compact.uniq.map do |item|
       Filter.new(
         category: 'productionStatus',
         name: item.humanize,
@@ -247,11 +247,11 @@ class Model < ApplicationRecord
   end
 
   def self.classifications
-    Model.visible.active.order(classification: :asc).all.map(&:classification).reject(&:blank?).compact.uniq
+    Model.visible.active.order(classification: :asc).all.map(&:classification).compact_blank.compact.uniq
   end
 
   def self.focus_filters
-    Model.visible.active.all.map(&:focus).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:focus).compact_blank.compact.uniq.map do |item|
       Filter.new(
         category: 'focus',
         name: item.humanize,
@@ -402,7 +402,7 @@ class Model < ApplicationRecord
 
   private def send_on_sale_notification
     return unless on_sale?
-    return if created_at > Time.zone.now - 24.hours
+    return if created_at > 24.hours.ago
 
     Notifications::ModelOnSaleJob.perform_later(id)
 

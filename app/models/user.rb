@@ -144,7 +144,7 @@ class User < ApplicationRecord
   def resend_confirmation
     return if confirmed?
 
-    return if confirmation_sent_at.present? && confirmation_sent_at > (Time.zone.now - 10.minutes)
+    return if confirmation_sent_at.present? && confirmation_sent_at > (10.minutes.ago)
 
     send_confirmation_instructions
   end
@@ -196,7 +196,7 @@ class User < ApplicationRecord
     # See https://github.com/heartcombo/devise/issues/4673 for more details.
     return if new_record?
 
-    return if updated_at < Time.zone.now + 1.minute
+    return if updated_at < 1.minute.from_now
 
     update_tracked_fields(request)
     save(validate: false)

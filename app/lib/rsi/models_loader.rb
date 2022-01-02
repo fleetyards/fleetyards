@@ -48,9 +48,7 @@ module Rsi
 
       begin
         model_data = JSON.parse(response.body)
-        File.open(json_file_path, 'w') do |f|
-          f.write(model_data.to_json)
-        end
+        File.write(json_file_path, model_data.to_json)
         model_data['data']
       rescue JSON::ParserError => e
         Raven.capture_exception(e)
