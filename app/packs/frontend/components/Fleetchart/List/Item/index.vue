@@ -101,34 +101,38 @@ export default class FleetchartListItem extends Vue {
     return null
   }
 
-  get image() {
-    if (this.paint && (this.paint.topView || this.paint.sideView)) {
-      if (this.viewpointTop && this.paint.topView) {
-        return this.topView(this.paint)
-      }
-
-      if (this.viewpointSide && this.paint.sideView) {
-        return this.sideView(this.paint)
-      }
-
-      if (this.viewpointAngled && this.paint.angledView) {
-        return this.angledView(this.paint)
-      }
-    }
-
-    if (this.viewpointTop && this.model.topView) {
-      return this.topView(this.model)
-    }
-
-    if (this.viewpointSide && this.model.sideView) {
-      return this.sideView(this.model)
-    }
-
-    if (this.viewpointAngled && this.model.angledView) {
-      return this.angledView(this.model)
+  get modulePackage() {
+    if (this.vehicle && this.vehicle.modulePackage) {
+      return this.vehicle.modulePackage
     }
 
     return null
+  }
+
+  get image() {
+    if (
+      this.modulePackage &&
+      (this.modulePackage.topView ||
+        this.modulePackage.sideView ||
+        this.modulePackage.angledView)
+    ) {
+      const url = this.extractImageFromModel(this.modulePackage)
+      if (url) {
+        return url
+      }
+    }
+
+    if (
+      this.paint &&
+      (this.paint.topView || this.paint.sideView || this.paint.angledView)
+    ) {
+      const url = this.extractImageFromModel(this.paint)
+      if (url) {
+        return url
+      }
+    }
+
+    return this.extractImageFromModel(this.model)
   }
 
   get viewpointTop() {
@@ -190,10 +194,22 @@ export default class FleetchartListItem extends Vue {
 
   get sourceImageHeightMax() {
     if (
-      this.model.paint &&
-      (this.model.paint.topView || this.model.paint.sideView)
+      this.modulePackage &&
+      (this.modulePackage.topView ||
+        this.modulePackage.sideView ||
+        this.modulePackage.angledView)
     ) {
-      const height = this.extractMaxHeightFromModel(this.model.paint)
+      const height = this.extractMaxHeightFromModel(this.modulePackage)
+      if (height) {
+        return height
+      }
+    }
+
+    if (
+      this.paint &&
+      (this.paint.topView || this.paint.sideView || this.paint.angledView)
+    ) {
+      const height = this.extractMaxHeightFromModel(this.paint)
       if (height) {
         return height
       }
@@ -203,77 +219,97 @@ export default class FleetchartListItem extends Vue {
   }
 
   get sourceImageHeight() {
-    if (this.paint && (this.paint.topView || this.paint.sideView)) {
-      if (this.viewpointTop && this.paint.topView) {
-        return this.paint.topViewHeight
-      }
-
-      if (this.viewpointSide && this.paint.sideView) {
-        return this.paint.sideViewHeight
-      }
-
-      if (this.viewpointAngled && this.paint.angledView) {
-        return this.paint.angledViewHeight
+    if (
+      this.modulePackage &&
+      (this.modulePackage.topView ||
+        this.modulePackage.sideView ||
+        this.modulePackage.angledView)
+    ) {
+      const height = this.extractImageHeightFromModel(this.modulePackage)
+      if (height) {
+        return height
       }
     }
 
-    if (this.viewpointTop && this.model.topView) {
-      return this.model.topViewHeight
+    if (
+      this.paint &&
+      (this.paint.topView || this.paint.sideView || this.paint.angledView)
+    ) {
+      const height = this.extractImageHeightFromModel(this.paint)
+      if (height) {
+        return height
+      }
     }
 
-    if (this.viewpointSide && this.model.sideView) {
-      return this.model.sideViewHeight
-    }
-
-    if (this.viewpointAngled && this.model.angledView) {
-      return this.model.angledViewHeight
-    }
-
-    return null
+    return this.extractImageHeightFromModel(this.model)
   }
 
   get sourceImageWidth() {
-    if (this.paint && (this.paint.topView || this.paint.sideView)) {
-      if (this.viewpointTop && this.paint.topView) {
-        return this.paint.topViewWidth
-      }
-
-      if (this.viewpointSide && this.paint.sideView) {
-        return this.paint.sideViewWidth
-      }
-
-      if (this.viewpointAngled && this.paint.angledView) {
-        return this.paint.angledViewWidth
+    if (
+      this.modulePackage &&
+      (this.modulePackage.topView ||
+        this.modulePackage.sideView ||
+        this.modulePackage.angledView)
+    ) {
+      const height = this.extractImageWidthFromModel(this.modulePackage)
+      if (height) {
+        return height
       }
     }
 
-    if (this.viewpointTop && this.model.topView) {
-      return this.model.topViewWidth
+    if (
+      this.paint &&
+      (this.paint.topView || this.paint.sideView || this.paint.angledView)
+    ) {
+      const width = this.extractImageWidthFromModel(this.paint)
+      if (width) {
+        return width
+      }
     }
 
-    if (this.viewpointSide && this.model.sideView) {
-      return this.model.sideViewWidth
-    }
-
-    if (this.viewpointAngled && this.model.angledView) {
-      return this.model.angledViewWidth
-    }
-
-    return null
+    return this.extractImageWidthFromModel(this.model)
   }
 
   get sourceImageWidthMax() {
     if (
-      this.model.paint &&
-      (this.model.paint.topView || this.model.paint.sideView)
+      this.modulePackage &&
+      (this.modulePackage.topView ||
+        this.modulePackage.sideView ||
+        this.modulePackage.angledView)
     ) {
-      const width = this.extractMaxWidthFromModel(this.model.paint)
+      const width = this.extractMaxWidthFromModel(this.modulePackage)
+      if (width) {
+        return width
+      }
+    }
+
+    if (
+      this.paint &&
+      (this.paint.topView || this.paint.sideView || this.paint.angledView)
+    ) {
+      const width = this.extractMaxWidthFromModel(this.paint)
       if (width) {
         return width
       }
     }
 
     return this.extractMaxWidthFromModel(this.model)
+  }
+
+  extractImageFromModel(model) {
+    if (this.viewpointTop && model.topView) {
+      return this.topView(model)
+    }
+
+    if (this.viewpointSide && model.sideView) {
+      return this.sideView(model)
+    }
+
+    if (this.viewpointAngled && model.angledView) {
+      return this.angledView(model)
+    }
+
+    return null
   }
 
   extractMaxWidthFromModel(model) {
@@ -290,6 +326,38 @@ export default class FleetchartListItem extends Vue {
       model.sideViewHeight,
       model.angledViewHeight
     )
+  }
+
+  extractImageHeightFromModel(model) {
+    if (this.viewpointTop && model.topView) {
+      return model.topViewHeight
+    }
+
+    if (this.viewpointSide && model.sideView) {
+      return model.sideViewHeight
+    }
+
+    if (this.viewpointAngled && model.angledView) {
+      return model.angledViewHeight
+    }
+
+    return null
+  }
+
+  extractImageWidthFromModel(model) {
+    if (this.viewpointTop && model.topView) {
+      return model.topViewWidth
+    }
+
+    if (this.viewpointSide && model.sideView) {
+      return model.sideViewWidth
+    }
+
+    if (this.viewpointAngled && model.angledView) {
+      return model.angledViewWidth
+    }
+
+    return null
   }
 
   topView(model) {

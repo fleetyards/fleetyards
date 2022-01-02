@@ -1,22 +1,22 @@
-= form_for [:admin, model_module_package], html: { multipart: true } do |form|
+= form_for [:admin, module_package], html: { multipart: true } do |form|
   .row
-    .col-12.col-md-6.form-group{class: form_error?(model_module_package, :name)}
+    .col-12.col-md-6.form-group{class: form_error?(module_package, :name)}
       = form.label :name
       = form.text_field :name, class: 'form-control'
       %small
-        = form_errors model_module_package, :name
-    .col-12.col-md-6.form-group{class: form_error?(model_module_package, :description)}
+        = form_errors module_package, :name
+    .col-12.col-md-6.form-group{class: form_error?(module_package, :description)}
       = form.label :description
       = form.text_area :description, class: 'form-control'
       %small
-        = form_errors model_module_package, :description
+        = form_errors module_package, :description
 
   .row
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module_package, :model_id)}
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(module_package, :model_id)}
       = form.label :model_id
-      = form.select :model_id, options_from_collection_for_select(Model.all.order(:name), :id, :name, model_module_package.model_id), { include_blank: true }, {class: 'form-control'}
+      = form.select :model_id, options_from_collection_for_select(Model.all.order(:name), :id, :name, module_package.model_id), { include_blank: true }, {class: 'form-control'}
       %small
-        = form_errors model_module_package, :model_id
+        = form_errors module_package, :model_id
 
   .row
     .col-12.col-sm-6.col-md-3
@@ -31,31 +31,70 @@
         = form.label :active do
           = I18n.t(:"activerecord.attributes.model.active")
 
-    .col-12.col-sm-6.col-md-3.form-group{class: form_error?(model_module_package, :pledge_price)}
+    .col-12.col-sm-6.col-md-3.form-group{class: form_error?(module_package, :pledge_price)}
       = form.label :pledge_price
       = form.text_field :pledge_price, class: 'form-control'
       %small
-        = form_errors model_module_package, :pledge_price
+        = form_errors module_package, :pledge_price
 
   .row
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module_package, :store_image)}
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(module_package, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache
       %br
-      - if model_module_package.store_image?
-        = image_tag(model_module_package.store_image.url)
+      - if module_package.store_image?
+        = image_tag(module_package.store_image.url)
         = form.check_box :remove_store_image
         Remove Image
       %small
-        = form_errors model_module_package, :store_image
+        = form_errors module_package, :store_image
+
+    .col-12.col-md-4.form-group{class: form_error?(module_package, :top_view)}
+      = form.label :top_view
+      = form.file_field :top_view, class: 'form-control'
+      - if module_package.top_view_cache
+        = form.hidden_field :top_view_cache
+      %br
+      - if module_package.top_view?
+        = image_tag(module_package.top_view.small.url)
+        = form.check_box :remove_top_view
+        Remove Image
+      %small
+        = form_errors module_package, :top_view
+
+    .col-12.col-md-4.form-group{class: form_error?(module_package, :side_view)}
+      = form.label :side_view
+      = form.file_field :side_view, class: 'form-control'
+      - if module_package.side_view_cache
+        = form.hidden_field :side_view_cache
+      %br
+      - if module_package.side_view?
+        = image_tag(module_package.side_view.url)
+        = form.check_box :remove_side_view
+        Remove Image
+      %small
+        = form_errors module_package, :side_view
+
+    .col-12.col-md-4.form-group{class: form_error?(module_package, :angled_view)}
+      = form.label :angled_view
+      = form.file_field :angled_view, class: 'form-control'
+      - if module_package.angled_view_cache
+        = form.hidden_field :angled_view_cache
+      %br
+      - if module_package.angled_view?
+        = image_tag(module_package.angled_view.small.url)
+        = form.check_box :remove_angled_view
+        Remove Image
+      %small
+        = form_errors module_package, :angled_view
 
   %fieldset
     %legend
       Modules:
     #module_items
-      - if model_module_package.module_package_items.any?
-        = form.fields_for :module_package_items, model_module_package.module_package_items do |builder|
+      - if module_package.module_package_items.any?
+        = form.fields_for :module_package_items, module_package.module_package_items do |builder|
           = render 'model_module_packages/module_package_item_fields', fields: builder
 
     .d-flex.justify-content-end

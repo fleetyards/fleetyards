@@ -28,4 +28,8 @@ json.hangar_groups do
 end
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
+json.module_package do
+  json.partial! 'api/v1/model_module_packages/minimal', module_package: vehicle.module_package if vehicle.module_package.present?
+end
+json.module_package nil if vehicle.module_package.blank?
 json.partial! 'api/shared/dates', record: vehicle

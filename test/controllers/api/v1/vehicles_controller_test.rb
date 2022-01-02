@@ -314,6 +314,7 @@ module Api
             end,
             'modelModuleIds' => explorer.model_module_ids,
             'modelUpgradeIds' => explorer.model_upgrade_ids,
+            'modulePackage' => nil,
             'createdAt' => explorer.created_at.utc.iso8601,
             'updatedAt' => explorer.updated_at.utc.iso8601
           }, {
@@ -493,6 +494,7 @@ module Api
             end,
             'modelModuleIds' => enterprise.model_module_ids,
             'modelUpgradeIds' => enterprise.model_upgrade_ids,
+            'modulePackage' => nil,
             'createdAt' => enterprise.created_at.utc.iso8601,
             'updatedAt' => enterprise.updated_at.utc.iso8601
           }]
@@ -685,6 +687,7 @@ module Api
             end,
             'modelModuleIds' => enterprise.model_module_ids,
             'modelUpgradeIds' => enterprise.model_upgrade_ids,
+            'modulePackage' => nil,
             'createdAt' => enterprise.created_at.utc.iso8601,
             'updatedAt' => enterprise.updated_at.utc.iso8601
           }]
