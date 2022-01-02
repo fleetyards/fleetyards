@@ -24,6 +24,8 @@ class HangarGroup < ApplicationRecord
   has_many :task_forces, dependent: :destroy
   has_many :vehicles, through: :task_forces
 
+  validates :name, :color, presence: true
+
   before_save :update_slugs
   after_save :touch_vehicles
   after_commit :broadcast_update
