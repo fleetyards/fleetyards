@@ -18,6 +18,7 @@
 #  updated_at        :datetime
 #  model_id          :uuid
 #  model_paint_id    :uuid
+#  module_package_id :uuid
 #  user_id           :uuid
 #  vehicle_id        :uuid
 #
