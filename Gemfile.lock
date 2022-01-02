@@ -102,16 +102,11 @@ GEM
     ast (2.4.2)
     attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
-    autoprefixer-rails (10.4.0.0)
-      execjs (~> 2)
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.1.0)
     bindex (0.8.1)
     bootsnap (1.9.3)
       msgpack (~> 1.0)
-    bootstrap-sass (3.4.1)
-      autoprefixer-rails (>= 5.2.1)
-      sassc (>= 2.0.0)
     bourbon (7.0.0)
       thor (~> 1.0)
     bower-rails (0.12.0)
@@ -633,7 +628,6 @@ DEPENDENCIES
   appsignal
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
-  bootstrap-sass
   bourbon
   bower-rails
   bullet

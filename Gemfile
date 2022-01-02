@@ -69,8 +69,6 @@ gem 'coffee-rails'
 gem 'sass-rails'
 gem 'webpacker', '~> 5.x'
 
-gem 'bootstrap-sass'
-
 gem 'jquery-rails'
 gem 'js-routes'
 
