@@ -1,5 +1,10 @@
 <template>
-  <BtnDropdown :size="size" :variant="variant" :mobile-block="true">
+  <BtnDropdown
+    :size="size"
+    :variant="variant"
+    :mobile-block="true"
+    :inline="true"
+  >
     <template #label>
       <template v-if="!mobile">{{ $t('labels.pagination.perPage') }}:</template>
       {{ perPage }}
