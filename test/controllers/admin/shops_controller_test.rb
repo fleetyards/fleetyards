@@ -34,11 +34,7 @@ module Admin
         sign_in jeanluc
       end
 
-      it 'should render index' do
-        get :index
-
-        assert_response :ok
-      end
+      it 'should render index'
     end
   end
 end
