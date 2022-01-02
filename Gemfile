@@ -53,7 +53,7 @@ gem 'ransack', '~> 2.4.2'
 gem 'jbuilder'
 gem 'oj'
 
-gem 'rails-i18n'
+gem 'rails-i18n', '~> 6.0'
 
 gem 'dalli'
 
