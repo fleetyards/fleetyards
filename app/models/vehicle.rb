@@ -20,6 +20,7 @@
 #  updated_at        :datetime
 #  model_id          :uuid
 #  model_paint_id    :uuid
+#  module_package_id :uuid
 #  user_id           :uuid
 #  vehicle_id        :uuid
 #
@@ -42,6 +43,8 @@ class Vehicle < ApplicationRecord
   belongs_to :model
   belongs_to :model_paint, optional: true
   belongs_to :user
+  belongs_to :module_package,
+             class_name: 'ModelModulePackage'
 
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces
@@ -64,6 +67,7 @@ class Vehicle < ApplicationRecord
 
   before_validation :normalize_serial
   before_save :nil_if_blank
+  before_save :set_module_package
 
   after_create :add_loaners, :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
@@ -161,6 +165,14 @@ class Vehicle < ApplicationRecord
       .find_each do |vehicle|
       vehicle.update(flagship: false)
     end
+  end
+
+  def set_module_package
+    return if model_modules.blank?
+
+    self.module_package_id = model.module_packages.max do |package|
+      (package.model_module_ids & model_module_ids).size
+    end&.id
   end
 
   def to_json(*_args)
