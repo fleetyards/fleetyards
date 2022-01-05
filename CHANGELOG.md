@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.3.0](https://github.com/fleetyards/fleetyards/compare/v5.2.1...v5.3.0) (2022-01-05)
+
+
+### Features
+
+* **fleetchart-v2:** add classic mode with scale slider ([39801bd](https://github.com/fleetyards/fleetyards/commit/39801bd939f6e2c519449b3962e542334dc4c539))
+
+
+### Bug Fixes
+
+* **fleetchart-v2:** rerender grid on orientation change or screen resize ([b1905ad](https://github.com/fleetyards/fleetyards/commit/b1905adfc1c25cf5e59812536a98c69cc300f51b))
+* pagination ([ac5e262](https://github.com/fleetyards/fleetyards/commit/ac5e26262209bc8d35ba78bcd9962d34ebd83efe))
+
 ### [5.2.1](https://github.com/fleetyards/fleetyards/compare/v5.2.0...v5.2.1) (2022-01-02)
 
 
