@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.3.1](https://github.com/fleetyards/fleetyards/compare/v5.3.0...v5.3.1) (2022-01-05)
+
+
+### Bug Fixes
+
+* **fleetchart-v2:** screenshot for classic mode ([1b44d55](https://github.com/fleetyards/fleetyards/commit/1b44d5551c789dc8e42e130dac65b8c070e74cd6))
+
 ## [5.3.0](https://github.com/fleetyards/fleetyards/compare/v5.2.1...v5.3.0) (2022-01-05)
 
 
