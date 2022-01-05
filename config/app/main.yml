@@ -2,7 +2,7 @@ production: &defaults
   name: <%= ENV["APP_NAME"] || 'Fleetyards.net' %>
   copyright_owner: <%= ENV["COPYRIGHT_OWNER"] || 'Torlek Maru' %>
 
-  store_version: <%= ENV["APP_STORE_VERSION"] || 10.3 %>
+  store_version: <%= ENV["APP_STORE_VERSION"] || 11.0 %>
   embed_store_version: <%= ENV["APP_EMBED_STORE_VERSION"] || 2.0 %>
 
   domain: <%= ENV["DOMAIN"] || "localhost:#{ENV["PORT"] || 3000}" %>

@@ -33,6 +33,14 @@ export default () => ({
       return state.fleetchartScreenHeight
     },
 
+    fleetchartMode(state) {
+      return state.fleetchartMode
+    },
+
+    fleetchartScale(state) {
+      return state.fleetchartScale
+    },
+
     holoviewerVisible(state) {
       return state.holoviewerVisible
     },
@@ -70,6 +78,14 @@ export default () => ({
 
     setFleetchartScreenHeight(state, payload) {
       state.fleetchartScreenHeight = payload
+    },
+
+    setFleetchartMode(state, payload) {
+      state.fleetchartMode = payload
+    },
+
+    setFleetchartScale(state, payload) {
+      state.fleetchartScale = payload
     },
 
     setHoloviewerVisible(state, payload) {

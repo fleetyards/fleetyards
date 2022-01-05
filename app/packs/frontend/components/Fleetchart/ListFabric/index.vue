@@ -141,7 +141,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import FleetchartItem from 'frontend/components/Fleetchart/List/Item/index.vue'
+import FleetchartItem from 'frontend/components/Fleetchart/Item/index.vue'
 // import panzoom from 'panzoom'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
@@ -164,7 +164,7 @@ import download from 'downloadjs'
     Loader,
   },
 })
-export default class FleetchartList extends Vue {
+export default class FleetchartListFabric extends Vue {
   viewpointOptions: string[] = ['side', 'top', 'angled']
 
   showStatus: boolean = false

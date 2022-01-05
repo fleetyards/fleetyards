@@ -178,7 +178,7 @@ export default class FleetchartListItem extends Vue {
   }
 
   get length() {
-    return this.model.fleetchartLength * this.sizeMultiplicator * this.scale
+    return this.model.fleetchartLength * this.sizeMultiplicator
   }
 
   get height() {
