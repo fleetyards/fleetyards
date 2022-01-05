@@ -58,6 +58,7 @@
 
       <div class="fleetchart-scroll-wrapper">
         <transition-group
+          id="fleetchart"
           name="fade-list"
           :appear="true"
           tag="div"
