@@ -24,8 +24,8 @@
 
   .fleetchart-app-mode {
     position: fixed;
-    top: 40px;
-    left: 40px;
+    left: 20px;
+    top: 20px;
     z-index: 1000;
   }
 
@@ -37,5 +37,14 @@
     margin-top: env(safe-area-inset-top);
     margin-right: env(safe-area-inset-right);
     margin-left: env(safe-area-inset-left);
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-app {
+    .fleetchart-app-mode {
+      top: auto;
+      bottom: 0;
+    }
   }
 }

@@ -172,7 +172,7 @@ export default {
     mode: 'Mode',
     modeOptions: {
       classic: 'Classic',
-      panzoom: 'Scroll to Zoom',
+      panzoom: 'v2',
     },
   },
   'fleetStats': 'Stats',

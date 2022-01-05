@@ -6,7 +6,7 @@
       :min="minScale"
       :max="maxScale"
       :interval="interval"
-      :marks="mark"
+      :marks="marks"
       dot-size="20"
       :tooltip-formatter="label"
       :process="false"
@@ -20,6 +20,7 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueSlider from 'vue-slider-component'
+import { Getter } from 'vuex-class'
 
 @Component({
   components: {
@@ -37,6 +38,14 @@ export default class FleetchartSlider extends Vue {
 
   @Prop({ default: 0.5 }) interval!: number
 
+  @Prop({ default: 2 }) mark!: number
+
+  @Getter('mobile') mobile
+
+  get innerMark() {
+    return this.mobile ? 5 : this.mark
+  }
+
   @Watch('value')
   onValueChange() {
     this.innerValue = this.value
@@ -50,8 +59,8 @@ export default class FleetchartSlider extends Vue {
     this.$emit('input', value)
   }
 
-  mark(value) {
-    if (value % 2 === 0) {
+  marks(value) {
+    if (value % this.innerMark === 0) {
       return {
         label: this.label(value),
       }

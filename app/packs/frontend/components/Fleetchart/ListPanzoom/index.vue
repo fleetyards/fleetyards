@@ -283,8 +283,6 @@ export default class FleetchartListPanzoom extends Vue {
 
     this.updateScreenSize()
 
-    this.drawGridLines()
-
     this.setupColumns()
 
     this.setupZoom()
@@ -366,6 +364,8 @@ export default class FleetchartListPanzoom extends Vue {
   updateScreenSize() {
     this.screenWidth = window.innerWidth
     this.screenHeight = window.innerHeight
+
+    this.drawGridLines()
   }
 
   setupColumns() {

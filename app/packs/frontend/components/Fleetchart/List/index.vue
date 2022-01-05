@@ -200,8 +200,6 @@ export default class FleetchartList extends Vue {
 
     this.updateScreenSize()
 
-    this.drawGridLines()
-
     window.addEventListener('resize', this.updateScreenSize)
     window.addEventListener('deviceorientation', this.updateScreenSize)
   }
@@ -228,6 +226,8 @@ export default class FleetchartList extends Vue {
   updateScreenSize() {
     this.screenWidth = window.innerWidth
     this.screenHeight = window.innerHeight
+
+    this.drawGridLines()
   }
 
   toggleGrid() {

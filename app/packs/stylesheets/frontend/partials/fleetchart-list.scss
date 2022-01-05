@@ -69,10 +69,27 @@
     }
   }
 
+  .fleetchart-slider {
+    width: 50%;
+    position: fixed;
+    top: 40px;
+    left: 25%;
+    z-index: 1000;
+  }
+
   .fleetchart-scroll-wrapper {
     position: relative;
     width: 100vw;
     height: 100vh;
     overflow: auto;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-list {
+    .fleetchart-slider {
+      width: 70%;
+      left: 15%;
+    }
   }
 }
