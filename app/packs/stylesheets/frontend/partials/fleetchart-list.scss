@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    padding: 80px;
+    padding: 60px;
     transition: height $transition-base-speed ease;
     overflow: auto;
 
@@ -15,7 +15,7 @@
       align-items: flex-start;
       justify-content: space-between;
       min-width: 0;
-      padding: 30px 20px;
+      padding: 10px;
       cursor: pointer;
       filter: drop-shadow(2px 4px 6px black);
 
