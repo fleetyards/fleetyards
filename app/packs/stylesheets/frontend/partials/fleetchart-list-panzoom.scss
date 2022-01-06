@@ -11,11 +11,11 @@
     z-index: 1;
     display: inline-flex;
     flex-wrap: nowrap;
-    padding: 80px;
+    padding: 40px;
     transition: height $transition-base-speed ease;
 
     .fleetchart-column {
-      margin-left: 40px;
+      margin-left: 30px;
       display: flex;
       flex-direction: column-reverse;
       justify-content: flex-end;
@@ -29,7 +29,7 @@
         align-items: flex-start;
         justify-content: flex-end;
         min-width: 0;
-        padding: 30px 20px;
+        padding: 10px;
         cursor: pointer;
         filter: drop-shadow(2px 4px 6px black);
 

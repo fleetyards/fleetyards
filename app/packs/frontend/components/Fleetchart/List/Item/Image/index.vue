@@ -17,14 +17,9 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import LazyImage from 'embed/components/LazyImage'
 import Vue from 'vue'
 
-@Component({
-  components: {
-    LazyImage,
-  },
-})
+@Component({})
 export default class FleetchartListItemImage extends Vue {
   @Prop({ required: true }) src!: string
 
