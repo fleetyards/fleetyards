@@ -363,67 +363,43 @@ export default class FleetchartListItem extends Vue {
   topView(model) {
     const width = this.length * this.sizeMultiplicator * this.scale
 
-    if (width > 2900) {
-      return model.topView
-    }
-
     if (width > 1900) {
-      return model.topViewXlarge
+      return model.topView
     }
 
     if (width > 900) {
       return model.topViewLarge
     }
 
-    if (width > 400) {
-      return model.topViewMedium
-    }
-
-    return model.topViewSmall
+    return model.topViewMedium
   }
 
   sideView(model) {
     const width = this.length * this.sizeMultiplicator * this.scale
 
-    if (width > 2900) {
-      return model.sideView
-    }
-
     if (width > 1900) {
-      return model.sideViewXlarge
+      return model.sideView
     }
 
     if (width > 900) {
       return model.sideViewLarge
     }
 
-    if (width > 400) {
-      return model.sideViewMedium
-    }
-
-    return model.sideViewSmall
+    return model.sideViewMedium
   }
 
   angledView(model) {
     const width = this.length * this.sizeMultiplicator * this.scale
 
-    if (width > 2900) {
-      return model.angledView
-    }
-
     if (width > 1900) {
-      return model.angledViewXlarge
+      return model.angledView
     }
 
     if (width > 900) {
       return model.angledViewLarge
     }
 
-    if (width > 400) {
-      return model.angledViewMedium
-    }
-
-    return model.angledViewSmall
+    return model.angledViewMedium
   }
 }
 </script>

@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-md-4 col-lg-3">
+          <div class="col-12 col-sm-6 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -26,7 +26,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-4 col-lg-3">
+          <div class="col-12 col-sm-6 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -41,7 +41,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-4 col-lg-3">
+          <div class="col-12 col-sm-6 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -56,7 +56,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-4 col-lg-3">
+          <div class="col-12 col-sm-6 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -71,7 +71,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-12 col-md-4 col-lg-3">
+          <div class="col-12 col-sm-6 col-lg-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -88,7 +88,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-md-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
@@ -103,7 +103,7 @@
               />
             </Panel>
           </div>
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-md-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
@@ -120,7 +120,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-lg-4">
+          <div class="col-12 col-md-5">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
@@ -135,7 +135,7 @@
               />
             </Panel>
           </div>
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-md-7">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">

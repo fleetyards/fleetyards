@@ -169,7 +169,7 @@ export default class FleetchartListPanzoom extends Vue {
 
   showStatus: boolean = false
 
-  zoomSpeed: number = 0.05
+  zoomSpeed: number = 0.5
 
   maxZoom: number = 20
 
@@ -179,9 +179,9 @@ export default class FleetchartListPanzoom extends Vue {
 
   margin: number = 80
 
-  innerMargin: number = 60
+  innerMargin: number = 20
 
-  marginBottom: number = 80
+  marginBottom: number = 40
 
   loaded: boolean = true
 
