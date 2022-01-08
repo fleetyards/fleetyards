@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_02_124400) do
+ActiveRecord::Schema.define(version: 2022_01_08_211734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2022_01_02_124400) do
     t.datetime "time"
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["properties"], name: "index_ahoy_events_on_properties_jsonb_path_ops", opclass: :jsonb_path_ops, using: :gin
+    t.index ["time"], name: "index_ahoy_events_on_time"
     t.index ["user_id"], name: "index_ahoy_events_on_user_id"
     t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
   end
@@ -562,7 +563,6 @@ ActiveRecord::Schema.define(version: 2022_01_02_124400) do
     t.string "top_view"
     t.string "side_view"
     t.string "erkul_identifier"
-    t.string "name_slug"
     t.decimal "fleetchart_offset_length", precision: 15, scale: 2
     t.string "angled_view"
     t.integer "fleetchart_image_height"
@@ -764,7 +764,6 @@ ActiveRecord::Schema.define(version: 2022_01_02_124400) do
     t.index ["destination_station_id"], name: "index_trade_routes_on_destination_station_id"
     t.index ["origin_celestial_object_id"], name: "index_trade_routes_on_origin_celestial_object_id"
     t.index ["origin_id", "destination_id"], name: "index_trade_routes_on_origin_id_and_destination_id", unique: true
-    t.index ["origin_id"], name: "index_trade_routes_on_origin_id"
     t.index ["origin_starsystem_id"], name: "index_trade_routes_on_origin_starsystem_id"
     t.index ["origin_station_id"], name: "index_trade_routes_on_origin_station_id"
   end
@@ -815,7 +814,8 @@ ActiveRecord::Schema.define(version: 2022_01_02_124400) do
     t.boolean "otp_required_for_login"
     t.string "otp_backup_codes", array: true
     t.boolean "public_hangar_loaners", default: false
-    t.boolean "public_hangar_stats", default: false
+    t.string "normalized_username"
+    t.string "normalized_email"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
