@@ -119,8 +119,6 @@ import InfiniteLoading from 'vue-infinite-loading'
 export default class FilterGroup extends Vue {
   @Prop({ required: true }) name!: string
 
-  @Prop({ default: null }) error!: string
-
   @Prop({
     default: () => [],
   })
