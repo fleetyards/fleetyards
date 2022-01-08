@@ -27,7 +27,6 @@
 #  index_trade_routes_on_destination_starsystem_id        (destination_starsystem_id)
 #  index_trade_routes_on_destination_station_id           (destination_station_id)
 #  index_trade_routes_on_origin_celestial_object_id       (origin_celestial_object_id)
-#  index_trade_routes_on_origin_id                        (origin_id)
 #  index_trade_routes_on_origin_id_and_destination_id     (origin_id,destination_id) UNIQUE
 #  index_trade_routes_on_origin_starsystem_id             (origin_starsystem_id)
 #  index_trade_routes_on_origin_station_id                (origin_station_id)

@@ -25,11 +25,12 @@
 #  last_sign_in_ip           :string(255)
 #  locale                    :string(255)
 #  locked_at                 :datetime
+#  normalized_email          :string
+#  normalized_username       :string
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
-#  public_hangar_stats       :boolean          default(FALSE)
 #  remember_created_at       :datetime
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
@@ -94,9 +95,10 @@ class User < ApplicationRecord
   attr_accessor :login
 
   before_validation :clean_username
-
+  before_validation :set_normalized_login_fields
   before_validation :update_urls
   before_create :setup_otp_secret
+
   after_update :notify_user
   after_save :touch_fleet_memberships
 
@@ -107,7 +109,7 @@ class User < ApplicationRecord
     login = conditions.delete(:login)
     if login.present?
       where(conditions.to_h)
-        .find_by(['lower(username) = :value OR lower(email) = :value', { value: login.downcase }])
+        .find_by(['normalized_username = :value OR normalized_email = :value', { value: login.downcase }])
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
@@ -119,6 +121,11 @@ class User < ApplicationRecord
 
   def self.unconfirmed
     where(confirmed_at: nil)
+  end
+
+  def set_normalized_login_fields
+    self.normalized_email = email.downcase
+    self.normalized_username = username.downcase
   end
 
   def update_urls(force: false)

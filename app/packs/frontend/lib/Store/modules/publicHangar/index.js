@@ -28,6 +28,14 @@ export default () => ({
     fleetchartScreenHeight(state) {
       return state.fleetchartScreenHeight
     },
+
+    fleetchartMode(state) {
+      return state.fleetchartMode
+    },
+
+    fleetchartScale(state) {
+      return state.fleetchartScale
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -50,6 +58,14 @@ export default () => ({
 
     setFleetchartScreenHeight(state, payload) {
       state.fleetchartScreenHeight = payload
+    },
+
+    setFleetchartMode(state, payload) {
+      state.fleetchartMode = payload
+    },
+
+    setFleetchartScale(state, payload) {
+      state.fleetchartScale = payload
     },
   },
   /* eslint-enable no-param-reassign */

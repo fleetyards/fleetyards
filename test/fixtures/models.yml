@@ -42,7 +42,6 @@
 #  model_paints_count       :integer          default(0)
 #  module_hardpoints_count  :integer          default(0)
 #  name                     :string(255)
-#  name_slug                :string
 #  notified                 :boolean          default(FALSE)
 #  on_sale                  :boolean          default(FALSE)
 #  pitch_max                :decimal(15, 2)
