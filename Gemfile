@@ -48,12 +48,12 @@ gem 'useragent'
 
 gem 'redis-actionpack'
 
-gem 'ransack'
+gem 'ransack', '~> 2.4.2'
 
 gem 'jbuilder'
 gem 'oj'
 
-gem 'rails-i18n'
+gem 'rails-i18n', '~> 6.0'
 
 gem 'dalli'
 
@@ -68,8 +68,6 @@ gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
 gem 'webpacker', '~> 5.x'
-
-gem 'bootstrap-sass'
 
 gem 'jquery-rails'
 gem 'js-routes'
@@ -97,7 +95,7 @@ gem 'mini_magick'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
-gem 'nokogiri', '1.12.5'
+gem 'nokogiri', '1.13.0'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'

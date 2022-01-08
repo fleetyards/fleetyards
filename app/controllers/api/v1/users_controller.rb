@@ -13,7 +13,7 @@ module Api
 
       def public
         authorize! :read_public, :api_user
-        @user = User.where(public_hangar: true).find_by!(['lower(username) = :value', { value: params[:username].downcase }])
+        @user = User.find_by!(normalized_username: params[:username].downcase, public_hangar: true)
       end
 
       def update
@@ -75,12 +75,12 @@ module Api
 
       def check_email
         authorize! :check, :api_users
-        render json: { emailTaken: User.exists?(['lower(email) = :value', { value: (user_create_params[:email] || '').downcase }]) }
+        render json: { emailTaken: User.exists?(normalized_email: (user_create_params[:email] || '').downcase) }
       end
 
       def check_username
         authorize! :check, :api_users
-        render json: { usernameTaken: User.exists?(['lower(username) = :value', { value: (user_create_params[:username] || '').downcase }]) }
+        render json: { usernameTaken: User.exists?(normalized_username: (user_create_params[:username] || '').downcase) }
       end
 
       def destroy

@@ -49,6 +49,14 @@ export default () => ({
       return state.fleetchartScreenHeight
     },
 
+    fleetchartMode(state) {
+      return state.fleetchartMode
+    },
+
+    fleetchartScale(state) {
+      return state.fleetchartScale
+    },
+
     money(state) {
       return state.money
     },
@@ -106,6 +114,14 @@ export default () => ({
 
     setFleetchartScreenHeight(state, payload) {
       state.fleetchartScreenHeight = payload
+    },
+
+    setFleetchartMode(state, payload) {
+      state.fleetchartMode = payload
+    },
+
+    setFleetchartScale(state, payload) {
+      state.fleetchartScale = payload
     },
 
     setShips(state, payload) {

@@ -6,6 +6,8 @@ export default () => ({
   fleetchartViewpoint: 'side',
   fleetchartLabels: false,
   fleetchartScreenHeight: '1x',
+  fleetchartMode: 'panzoom',
+  fleetchartScale: 1,
   perPage: 30,
   grouped: true,
   money: true,

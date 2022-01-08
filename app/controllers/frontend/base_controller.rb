@@ -90,7 +90,7 @@ module Frontend
     end
 
     def starsystem
-      @starsystem = Starsystem.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      @starsystem = Starsystem.find_by(['slug = :value', { value: (params[:slug] || '').downcase }])
       if @starsystem.present?
         @title = I18n.t('title.frontend.starsystem', starsystem: @starsystem.name)
         # @description = @station.description
@@ -102,7 +102,7 @@ module Frontend
     end
 
     def station
-      @station = Station.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      @station = Station.find_by(['slug = :value', { value: (params[:slug] || '').downcase }])
       if @station.present?
         @title = I18n.t('title.frontend.station', station: @station.name, celestial_object: @station.celestial_object.name)
         # @description = @station.description
@@ -114,7 +114,7 @@ module Frontend
     end
 
     def station_images
-      @station = Station.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      @station = Station.find_by(['slug = :value', { value: (params[:slug] || '').downcase }])
       if @station.present?
         @title = I18n.t('title.frontend.station_images', station: @station.name, celestial_object: @station.celestial_object.name)
         # @description = @station.description
@@ -126,7 +126,7 @@ module Frontend
     end
 
     def celestial_object
-      @celestial_object = CelestialObject.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      @celestial_object = CelestialObject.find_by(['slug = :value', { value: (params[:slug] || '').downcase }])
       if @celestial_object.present?
         @title = I18n.t('title.frontend.celestial_object', starsystem: @celestial_object.starsystem.name, celestial_object: @celestial_object.name)
         # @description = @station.description
@@ -138,7 +138,7 @@ module Frontend
     end
 
     def shop
-      @shop = Shop.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      @shop = Shop.find_by(['slug = :value', { value: (params[:slug] || '').downcase }])
       if @shop.present?
         @title =  I18n.t('title.frontend.shop', station: @shop.station.name, shop: @shop.name)
         # @description = @station.description
@@ -226,7 +226,7 @@ module Frontend
     end
 
     private def model_record(slug = params[:slug])
-      Model.where(['lower(slug) = :value', { value: (slug || '').downcase }])
+      Model.where(slug: (slug || '').downcase)
     end
 
     private def check_short_domain

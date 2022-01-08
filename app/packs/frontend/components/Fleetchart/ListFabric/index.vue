@@ -141,15 +141,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import FleetchartItem from 'frontend/components/Fleetchart/List/Item/index.vue'
-// import panzoom from 'panzoom'
+import FleetchartItem from 'frontend/components/Fleetchart/ListPanzoom/Item/index.vue'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
-// import debounce from 'lodash.debounce'
-// import WZoom from 'vanilla-js-wheel-zoom'
 // import { fabric } from 'fabric'
 import Loader from 'frontend/core/components/Loader'
 import download from 'downloadjs'
@@ -164,7 +161,7 @@ import download from 'downloadjs'
     Loader,
   },
 })
-export default class FleetchartList extends Vue {
+export default class FleetchartListFabric extends Vue {
   viewpointOptions: string[] = ['side', 'top', 'angled']
 
   showStatus: boolean = false

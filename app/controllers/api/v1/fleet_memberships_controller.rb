@@ -14,7 +14,7 @@ module Api
       end
 
       def create
-        user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
+        user = User.find_by!(normalized_username: params[:username].downcase)
 
         @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: current_user.id)
 
@@ -29,7 +29,7 @@ module Api
 
       def create_by_invite
         invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
-        user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
+        user = User.find_by!(normalized_username: params[:username].downcase)
 
         @member = invite_url.fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
 
@@ -133,8 +133,7 @@ module Api
         @member ||= fleet.fleet_memberships
           .includes(:user)
           .joins(:user)
-          .where(['lower(users.username) = :value', { value: params[:username].downcase }])
-          .first!
+          .find_by!(normalized_username: params[:username].downcase)
       end
 
       private def my_membership

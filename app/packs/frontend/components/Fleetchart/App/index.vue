@@ -7,6 +7,25 @@
       show: isShow,
     }"
   >
+    <BtnDropdown size="small" class="fleetchart-app-mode">
+      <template #label>
+        <template v-if="!mobile">
+          {{ $t('labels.fleetchartApp.mode') }}:
+        </template>
+        {{ $t(`labels.fleetchartApp.modeOptions.${mode}`) }}
+      </template>
+      <Btn
+        v-for="(option, index) in modeOptions"
+        :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
+        size="small"
+        variant="link"
+        :active="mode === option"
+        @click.native="setMode(option)"
+      >
+        {{ $t(`labels.fleetchartApp.modeOptions.${option}`) }}
+      </Btn>
+    </BtnDropdown>
+
     <Btn
       size="large"
       variant="link"
@@ -16,33 +35,48 @@
       <i class="fal fa-times" />
     </Btn>
 
-    <FleetchartList
-      v-if="innerItems.length"
-      :items="innerItems"
-      :my-ship="myShip"
-      :namespace="namespace"
-      :download-name="downloadName"
-    />
+    <template v-if="innerItems.length">
+      <FleetchartListPanzoom
+        v-if="mode == 'panzoom'"
+        :items="innerItems"
+        :my-ship="myShip"
+        :namespace="namespace"
+        :download-name="downloadName"
+      />
+      <FleetchartList
+        v-else
+        :items="innerItems"
+        :my-ship="myShip"
+        :namespace="namespace"
+        :download-name="downloadName"
+      />
+    </template>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
+import FleetchartListPanzoom from 'frontend/components/Fleetchart/ListPanzoom'
 import FleetchartList from 'frontend/components/Fleetchart/List'
 import Btn from 'frontend/core/components/Btn'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 
 @Component({
   components: {
+    FleetchartListPanzoom,
     FleetchartList,
     Btn,
+    BtnDropdown,
   },
 })
 export default class FleetchartApp extends Vue {
   @Action('showOverlay', { namespace: 'app' }) showOverlay: any
 
   @Action('hideOverlay', { namespace: 'app' }) hideOverlay: any
+
+  modeOptions: string[] = ['panzoom', 'classic']
 
   innerItems: Vehiclep[] | Model[] = []
 
@@ -63,8 +97,14 @@ export default class FleetchartApp extends Vue {
 
   @Prop({ default: null }) downloadName!: string
 
+  @Getter('mobile') mobile
+
   get visible() {
     return this.$store.getters[`${this.namespace}/fleetchartVisible`]
+  }
+
+  get mode() {
+    return this.$store.getters[`${this.namespace}/fleetchartMode`]
   }
 
   @Watch('items')
@@ -136,6 +176,10 @@ export default class FleetchartApp extends Vue {
 
   hide() {
     this.$store.commit(`${this.namespace}/setFleetchartVisible`, false)
+  }
+
+  setMode(mode) {
+    this.$store.commit(`${this.namespace}/setFleetchartMode`, mode)
   }
 
   close() {

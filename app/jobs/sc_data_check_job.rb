@@ -12,8 +12,6 @@ class ScDataCheckJob < ApplicationJob
 
     Loaders::ScDataShipsJob.perform_later
 
-    File.open(version_file, 'w') do |file|
-      file.write(new_version)
-    end
+    File.write(version_file, new_version)
   end
 end

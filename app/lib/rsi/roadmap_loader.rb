@@ -29,9 +29,7 @@ module Rsi
 
       begin
         roadmap_data = JSON.parse(response.body)
-        File.open(json_file_path, 'w') do |f|
-          f.write(roadmap_data.to_json)
-        end
+        File.write(json_file_path, roadmap_data.to_json)
         roadmap_data['data']['releases']
       rescue JSON::ParserError => e
         Raven.capture_exception(e)
@@ -154,7 +152,7 @@ module Rsi
         if item.changeset.keys.count == 1
           roadmap_item = item.item
           item.destroy
-          updated_at = roadmap_item.reload.versions.last&.created_at || (Time.zone.now - 8.days)
+          updated_at = roadmap_item.reload.versions.last&.created_at || 8.days.ago
           roadmap_item.update(updated_at: updated_at)
         else
           changes = item.changeset.except('release')

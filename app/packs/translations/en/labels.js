@@ -169,6 +169,11 @@ export default {
       angled: 'Angled',
     },
     gridSize: '%{size} meter per grid box',
+    mode: 'Mode',
+    modeOptions: {
+      classic: 'Classic',
+      panzoom: 'v2',
+    },
   },
   'fleetStats': 'Stats',
   'hangarMetrics': {

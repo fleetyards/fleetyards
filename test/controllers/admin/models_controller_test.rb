@@ -10,7 +10,11 @@ module Admin
     let(:jeanluc) { admin_users :jeanluc }
 
     describe 'without session' do
-      it 'should render not_found for index'
+      it 'should redirect to login for index' do
+        get :index
+
+        assert_redirected_to new_admin_user_session_url
+      end
       it 'should render not_found for show'
       it 'should render not_found for new'
       it 'should render not_found for create'
@@ -24,7 +28,11 @@ module Admin
         sign_in data
       end
 
-      it 'should render not_found for index'
+      it 'should redirect to login for index' do
+        get :index
+
+        assert_redirected_to new_admin_user_session_url
+      end
       it 'should render not_found for show'
       it 'should render not_found for new'
       it 'should render not_found for create'
