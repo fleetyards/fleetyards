@@ -77,7 +77,6 @@ export default {
           },
         },
         xAxis: {
-          gridLineColor: '#707073',
           labels: {
             style: {
               fontSize: '12px',
@@ -87,6 +86,7 @@ export default {
           lineColor: '#707073',
           minorGridLineColor: '#505053',
           tickColor: '#707073',
+          tickWidth: 1,
           title: {
             text: null,
             style: {
@@ -96,6 +96,7 @@ export default {
         },
         yAxis: {
           gridLineColor: '#707073',
+          gridLineWidth: 1,
           labels: {
             style: {
               fontSize: '12px',
@@ -356,8 +357,14 @@ export default {
           type: this.type,
           height: this.height,
         },
-        xAxis: this.xAxis,
-        yAxis: this.yAxis,
+        xAxis: {
+          ...this.theme.xAxis,
+          ...this.xAxis,
+        },
+        yAxis: {
+          ...this.theme.yAxis,
+          ...this.yAxis,
+        },
         legend: this.legend,
         tooltip: {
           ...this.theme.tooltip,
