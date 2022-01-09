@@ -2,7 +2,7 @@
   <div class="row fleetchart-list">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
-        <Starship42Btn size="small" v-if="!mobile" :items="items" />
+        <Starship42Btn v-if="!mobile" size="small" :items="items" />
 
         <BtnDropdown size="small">
           <template #label>
@@ -127,8 +127,8 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
-import FleetchartItem from './Item/index.vue'
 import Starship42Btn from 'frontend/components/Starship42Btn'
+import FleetchartItem from './Item/index.vue'
 
 @Component({
   components: {
