@@ -1,6 +1,6 @@
 describe('Signup', () => {
   it('Allows Signup/Login/Account deletion', () => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
 
@@ -61,7 +61,7 @@ describe('Signup', () => {
   })
 
   it('Validates all fields', () => {
-    cy.visit('/sign-up')
+    cy.visitApp('/sign-up')
 
     cy.acceptCookies()
 
@@ -106,7 +106,7 @@ describe('Signup', () => {
   })
 
   it('Validates all fields on submit', () => {
-    cy.visit('/sign-up')
+    cy.visitApp('/sign-up')
 
     cy.acceptCookies()
 

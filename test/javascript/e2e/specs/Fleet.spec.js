@@ -1,6 +1,6 @@
 describe('Fleet', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
   })
@@ -20,7 +20,7 @@ describe('Fleet', () => {
 
     cy.url().should('include', '/login')
 
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.clickNav('fleets-menu')
     cy.clickNav('fleet-add')
@@ -43,7 +43,7 @@ describe('Fleet', () => {
 
     cy.url().should('include', '/login')
 
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.clickNav('fleets-menu')
     cy.clickNav('fleet-add')

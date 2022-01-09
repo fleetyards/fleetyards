@@ -1,6 +1,6 @@
 describe('Ship', () => {
   it('Loads', () => {
-    cy.visit('/ships')
+    cy.visitApp('/ships')
 
     cy.acceptCookies()
 

@@ -1,6 +1,6 @@
 describe('Stats', () => {
   it('Loads', () => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
 

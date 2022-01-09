@@ -1,6 +1,6 @@
 describe('Roadmap', () => {
   it('Loads overview', () => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
 
@@ -13,7 +13,7 @@ describe('Roadmap', () => {
   })
 
   it('Loads ships', () => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
 
@@ -24,7 +24,7 @@ describe('Roadmap', () => {
   })
 
   it('Loads changes', () => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
 

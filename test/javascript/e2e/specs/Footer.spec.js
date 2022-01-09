@@ -1,6 +1,6 @@
 describe('Footer', () => {
   it('Is present', () => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
 

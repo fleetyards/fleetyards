@@ -1,3 +1,12 @@
+Cypress.Commands.add('visitApp', url => {
+  cy.visit(url)
+  cy.document().then(document => {
+    const node = document.createElement('style')
+    node.innerHTML = 'html { scroll-behavior: inherit !important; }'
+    document.body.appendChild(node)
+  })
+})
+
 Cypress.Commands.add('selectElement', id => cy.get(`[data-test="${id}"]`))
 Cypress.Commands.add('selectInput', id => cy.get(`[data-test="input-${id}"]`))
 

@@ -1,6 +1,6 @@
 describe('Hangar', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
   })
@@ -18,7 +18,7 @@ describe('Hangar', () => {
 
     cy.url().should('include', '/login')
 
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.clickNav('hangar')
 

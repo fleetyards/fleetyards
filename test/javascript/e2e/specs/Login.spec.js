@@ -1,6 +1,6 @@
 describe('Login', () => {
   it('Loads and excepts valid credentials', () => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
 
@@ -27,7 +27,7 @@ describe('Login', () => {
   })
 
   it('Shows error message with wrong credentails', () => {
-    cy.visit('/login')
+    cy.visitApp('/login')
 
     cy.acceptCookies()
 
@@ -42,7 +42,7 @@ describe('Login', () => {
   })
 
   it('Redirects to login when visiting restricted page', () => {
-    cy.visit('/settings')
+    cy.visitApp('/settings')
 
     cy.acceptCookies()
 

@@ -1,6 +1,6 @@
 describe('Home', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visitApp('/')
 
     cy.acceptCookies()
   })
@@ -18,7 +18,7 @@ describe('Home', () => {
 
     cy.get('.panel .panel-title', { timeout: 10000 }).should(
       'contain',
-      '600i Explorer',
+      '600i Explorer'
     )
   })
 
