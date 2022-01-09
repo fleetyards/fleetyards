@@ -259,7 +259,7 @@ export default class HoloViewer extends Vue {
       side: DoubleSide,
     })
 
-    this.model.traverse(node => {
+    this.model.traverse((node) => {
       if (!node.isMesh) return
 
       if (this.color) {
@@ -285,7 +285,7 @@ export default class HoloViewer extends Vue {
 
     loader.load(
       this.holo,
-      geometry => {
+      (geometry) => {
         this.loading = false
         this.model = geometry.scene
 
@@ -307,7 +307,7 @@ export default class HoloViewer extends Vue {
         this.animate()
       },
       null,
-      error => {
+      (error) => {
         console.error(error)
       }
     )
