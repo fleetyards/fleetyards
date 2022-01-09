@@ -67,6 +67,8 @@
 
 <script>
 export default {
+  name: 'ShopsBaseMetrics',
+
   props: {
     shop: {
       type: Object,

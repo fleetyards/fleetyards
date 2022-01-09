@@ -141,6 +141,8 @@
 
 <script>
 export default {
+  name: 'ModelBaseMetrics',
+
   props: {
     model: {
       type: Object,

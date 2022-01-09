@@ -19,6 +19,8 @@
 
 <script>
 export default {
+  name: 'LoaderComponent',
+
   props: {
     loading: {
       type: Boolean,

@@ -6,6 +6,8 @@
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
+  name: 'ConfirmAccount',
+
   created() {
     this.fetch()
   },

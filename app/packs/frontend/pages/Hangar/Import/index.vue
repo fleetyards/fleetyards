@@ -70,6 +70,8 @@ import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import { displayAlert } from 'frontend/lib/Noty'
 
 export default {
+  name: 'HangarImport',
+
   components: {
     Panel,
     LazyImage,

@@ -131,6 +131,8 @@
 import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
 
 export default {
+  name: 'ShopsItemRow',
+
   components: {
     AddToCartBtn,
   },

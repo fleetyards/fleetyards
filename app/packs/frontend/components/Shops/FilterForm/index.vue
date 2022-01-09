@@ -119,12 +119,16 @@ import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
 
 export default {
+  name: 'ShopsFilterForm',
+
   components: {
     FilterGroup,
     FormInput,
     Btn,
   },
+
   mixins: [Filters],
+
   data() {
     const query = this.$route.query.q || {}
     return {
@@ -142,6 +146,7 @@ export default {
       },
     }
   },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -158,6 +163,7 @@ export default {
       }
     },
   },
+
   methods: {
     fetchShopTypes() {
       return this.$api.get('shops/shop-types')

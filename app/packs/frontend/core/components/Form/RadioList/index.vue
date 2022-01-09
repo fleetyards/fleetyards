@@ -42,6 +42,8 @@
 
 <script>
 export default {
+  name: 'RadioList',
+
   props: {
     name: {
       type: String,

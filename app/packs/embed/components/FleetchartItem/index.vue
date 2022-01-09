@@ -16,6 +16,8 @@
 import FleetchartItemImage from 'embed/partials/Fleetchart/Image'
 
 export default {
+  name: 'FleetchartItemImage',
+
   components: {
     FleetchartItemImage,
   },

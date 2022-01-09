@@ -110,7 +110,7 @@ import Pagination from 'frontend/mixins/Pagination'
 import { scrollToAnchor } from 'frontend/utils/scrolling'
 
 export default {
-  name: 'Starsystems',
+  name: 'StarsystemsIndex',
 
   components: {
     Loader,

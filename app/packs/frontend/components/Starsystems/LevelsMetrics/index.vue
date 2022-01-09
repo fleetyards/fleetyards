@@ -37,6 +37,8 @@
 
 <script>
 export default {
+  name: 'StarsystemsLevelsMetrics',
+
   props: {
     starsystem: {
       type: Object,

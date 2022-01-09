@@ -150,7 +150,7 @@ import Panel from 'frontend/core/components/Panel'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 
 export default {
-  name: 'Stats',
+  name: 'HangarStats',
 
   components: {
     Chart,

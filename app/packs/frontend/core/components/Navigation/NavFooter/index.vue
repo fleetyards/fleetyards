@@ -28,6 +28,8 @@ import { mapGetters } from 'vuex'
 import NavItem from 'frontend/core/components/Navigation/NavItem'
 
 export default {
+  name: 'NavFooter',
+
   components: {
     NavItem,
   },
