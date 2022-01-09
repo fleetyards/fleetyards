@@ -57,6 +57,8 @@
 import LocationLabel from 'frontend/components/Stations/LocationLabel'
 
 export default {
+  name: 'StationsBaseMetrics',
+
   components: {
     LocationLabel,
   },

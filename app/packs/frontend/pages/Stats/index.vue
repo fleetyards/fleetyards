@@ -137,7 +137,7 @@ import Chart from 'frontend/core/components/Chart'
 import Panel from 'frontend/core/components/Panel'
 
 export default {
-  name: 'Stats',
+  name: 'StatsIndex',
 
   components: {
     Chart,

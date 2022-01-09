@@ -10,6 +10,8 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'NetworkStatus',
+
   computed: {
     ...mapGetters(['online']),
   },

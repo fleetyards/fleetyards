@@ -32,6 +32,8 @@
 import { groupBy } from 'frontend/lib/Helpers'
 
 export default {
+  name: 'StationsHabitations',
+
   props: {
     station: {
       type: Object,

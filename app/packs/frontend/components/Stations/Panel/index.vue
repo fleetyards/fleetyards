@@ -42,6 +42,8 @@ import Panel from 'frontend/core/components/Panel'
 import Stats from 'frontend/components/Stations/ListStats'
 
 export default {
+  name: 'StationsPanel',
+
   components: {
     Panel,
     Stats,

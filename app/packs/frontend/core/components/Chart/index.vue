@@ -12,6 +12,8 @@
 import { chart } from 'highcharts'
 
 export default {
+  name: 'ChartComponent',
+
   props: {
     type: {
       type: String,

@@ -11,6 +11,8 @@
 
 <script>
 export default {
+  name: 'BtnInner',
+
   props: {
     loading: {
       type: Boolean,

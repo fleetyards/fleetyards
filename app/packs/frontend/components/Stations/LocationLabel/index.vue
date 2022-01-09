@@ -37,6 +37,8 @@
 
 <script>
 export default {
+  name: 'StationsLocatioLabel',
+
   props: {
     station: {
       type: Object,

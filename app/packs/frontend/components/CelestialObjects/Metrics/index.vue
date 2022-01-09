@@ -87,6 +87,8 @@
 
 <script>
 export default {
+  name: 'CelestialObjectMetrics',
+
   props: {
     celestialObject: {
       type: Object,

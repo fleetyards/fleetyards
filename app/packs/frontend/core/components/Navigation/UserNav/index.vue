@@ -45,6 +45,8 @@ import NavigationMixin from 'frontend/mixins/Navigation'
 import sessionCollection from 'frontend/api/collections/Session'
 
 export default {
+  name: 'UserNav',
+
   components: {
     NavItem,
     Avatar,

@@ -11,6 +11,8 @@
 import { sortBy } from 'frontend/lib/Helpers'
 
 export default {
+  name: 'StationsDocksItem',
+
   props: {
     docks: {
       type: Array,

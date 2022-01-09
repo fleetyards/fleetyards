@@ -18,6 +18,8 @@
 import VueSlider from 'vue-slider-component'
 
 export default {
+  name: 'SliderComponent',
+
   components: {
     VueSlider,
   },
