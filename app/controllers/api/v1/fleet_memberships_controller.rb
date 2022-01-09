@@ -133,7 +133,7 @@ module Api
         @member ||= fleet.fleet_memberships
           .includes(:user)
           .joins(:user)
-          .find_by!(normalized_username: params[:username].downcase)
+          .find_by!(users: { normalized_username: params[:username].downcase })
       end
 
       private def my_membership
