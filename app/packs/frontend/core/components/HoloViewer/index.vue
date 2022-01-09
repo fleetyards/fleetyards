@@ -60,7 +60,6 @@ import {
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { Getter } from 'vuex-class'
 
 @Component<HoloViewer>({
   components: {
@@ -99,8 +98,6 @@ export default class HoloViewer extends Vue {
   @Prop({ required: true }) holo: string
 
   @Prop({ default: false }) colored: boolean
-
-  @Getter('mobile') mobile
 
   get element() {
     return this.$refs.modelViewer
