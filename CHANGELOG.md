@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.3.3](https://github.com/fleetyards/fleetyards/compare/v5.3.2...v5.3.3) (2022-01-09)
+
+
+### Bug Fixes
+
+* **fleetchart-v2:** readd starship42 links to fleetcharts ([dcecd62](https://github.com/fleetyards/fleetyards/commit/dcecd62476458648279fb2b2428ee312c89c1d6d))
+* column chart ([c2d21de](https://github.com/fleetyards/fleetyards/commit/c2d21de64bf705dd5e1c000c8aae33e799417ef4))
+
 ### [5.3.2](https://github.com/fleetyards/fleetyards/compare/v5.3.1...v5.3.2) (2022-01-06)
 
 ### [5.3.1](https://github.com/fleetyards/fleetyards/compare/v5.3.0...v5.3.1) (2022-01-05)
