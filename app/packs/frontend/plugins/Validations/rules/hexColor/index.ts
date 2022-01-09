@@ -1,6 +1,6 @@
 import { I18n } from 'frontend/lib/I18n'
 
-const pattern = new RegExp('^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$')
+const pattern = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
 
 export default {
   validate: (str) => !!pattern.test(str),
