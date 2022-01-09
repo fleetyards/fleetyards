@@ -15,6 +15,7 @@
       :route-query="$route.query"
       :hash="$route.hash"
       :paginated="true"
+      :hide-loading="fleetchartVisible"
     >
       <template slot="actions">
         <Btn
@@ -41,7 +42,6 @@
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
           :records="records"
-          :loading="loading"
           :filter-visible="filterVisible"
           :primary-key="primaryKey"
         >
@@ -49,14 +49,15 @@
             <ModelPanel :model="record" :details="detailsVisible" />
           </template>
         </FilteredGrid>
+
+        <FleetchartApp
+          :items="records"
+          namespace="models"
+          :loading="loading"
+          download-name="ships-fleetchart"
+        />
       </template>
     </FilteredList>
-
-    <FleetchartApp
-      :items="collection.records"
-      namespace="models"
-      download-name="ships-fleetchart"
-    />
   </section>
 </template>
 
@@ -92,13 +93,15 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
 export default class Models extends Vue {
   collection: ModelsCollection = modelsCollection
 
+  @Getter('detailsVisible', { namespace: 'models' }) detailsVisible
+
+  @Getter('fleetchartVisible', { namespace: 'models' }) fleetchartVisible
+
+  @Getter('perPage', { namespace: 'models' }) perPage
+
   @Action('toggleDetails', { namespace: 'models' }) toggleDetails: any
 
   @Action('toggleFleetchart', { namespace: 'models' }) toggleFleetchart: any
-
-  @Getter('detailsVisible', { namespace: 'models' }) detailsVisible
-
-  @Getter('perPage', { namespace: 'models' }) perPage
 
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {

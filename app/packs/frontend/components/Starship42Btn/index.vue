@@ -1,6 +1,6 @@
 <template>
   <Btn
-    v-if="vehicles && vehicles.length"
+    v-if="items && items.length"
     v-tooltip="tooltip"
     :variant="variant"
     :size="size"
@@ -28,7 +28,7 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class Starship42Btn extends Btn {
-  @Prop({ required: true }) vehicles!: Vehicle[]
+  @Prop({ required: true }) items!: Vehicle[] | Model[]
 
   @Prop({ default: false }) withIcon!: boolean
 
@@ -59,11 +59,12 @@ export default class Starship42Btn extends Btn {
     typeField.value = 'matrix'
     form.appendChild(typeField)
 
-    this.vehicles.forEach((vehicle) => {
+    this.items.forEach(item => {
+      const model = item.model || item
       const shipField = document.createElement('input')
       shipField.type = 'hidden'
       shipField.name = 's[]'
-      shipField.value = vehicle.model.rsiName
+      shipField.value = model.rsiName
 
       form.appendChild(shipField)
     })

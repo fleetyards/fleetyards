@@ -1,7 +1,9 @@
 <template>
-  <div v-show="loaded" class="row fleetchart-list">
+  <div class="row fleetchart-list">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
+        <Starship42Btn size="small" v-if="!mobile" :items="items" />
+
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
@@ -20,9 +22,11 @@
             {{ $t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
+
         <Btn size="small" :active="gridEnabled" @click.native="toggleGrid">
           <i class="fad fa-th" />
         </Btn>
+
         <BtnDropdown size="small">
           <template v-if="downloadName">
             <DownloadScreenshotBtn
@@ -34,6 +38,15 @@
 
             <hr />
           </template>
+
+          <Starship42Btn
+            v-if="mobile"
+            :items="items"
+            size="small"
+            variant="dropdown"
+            :with-icon="true"
+          />
+
           <Btn size="small" variant="dropdown" @click.native="toggleLabels">
             <i class="fad fa-tags" />
             <span v-if="showLabels">
@@ -47,6 +60,7 @@
           <FleetChartStatusBtn variant="dropdown" size="small" />
         </BtnDropdown>
       </div>
+
       <div
         class="fleetchart-grid-label"
         :class="{
@@ -101,7 +115,6 @@
         :max-scale="maxScale"
       />
     </div>
-    <Loader v-if="!loaded" :loading="!loaded" :fixed="true" />
   </div>
 </template>
 
@@ -114,8 +127,8 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
-import Loader from 'frontend/core/components/Loader'
 import FleetchartItem from './Item/index.vue'
+import Starship42Btn from 'frontend/components/Starship42Btn'
 
 @Component({
   components: {
@@ -125,15 +138,13 @@ import FleetchartItem from './Item/index.vue'
     FleetChartStatusBtn,
     FleetchartItem,
     FleetchartSlider,
-    Loader,
+    Starship42Btn,
   },
 })
 export default class FleetchartList extends Vue {
   viewpointOptions: string[] = ['side', 'top', 'angled']
 
   showStatus: boolean = false
-
-  loaded: boolean = true
 
   gridEnabled: boolean = false
 
@@ -151,8 +162,6 @@ export default class FleetchartList extends Vue {
 
   minScale: number = 0.5
 
-  @Getter('mobile') mobile
-
   @Prop({ required: true }) namespace!: string
 
   @Prop({
@@ -165,6 +174,8 @@ export default class FleetchartList extends Vue {
   @Prop({ default: false }) myShip!: boolean
 
   @Prop({ default: null }) downloadName!: string
+
+  @Getter('mobile') mobile
 
   get gridSizeLabel() {
     return (this.gridSize / this.scale / this.sizeMultiplicator)

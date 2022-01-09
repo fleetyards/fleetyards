@@ -1,7 +1,9 @@
 <template>
-  <div v-show="loaded" class="row fleetchart-list-panzoom">
+  <div class="row fleetchart-list-panzoom">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
+        <Starship42Btn size="small" v-if="!mobile" :items="items" />
+
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
@@ -24,6 +26,7 @@
             {{ $t(`labels.fleetchartApp.screenHeightOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
+
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
@@ -42,9 +45,11 @@
             {{ $t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
+
         <Btn size="small" :active="gridEnabled" @click.native="toggleGrid">
           <i class="fad fa-th" />
         </Btn>
+
         <BtnDropdown size="small">
           <template v-if="downloadName">
             <DownloadScreenshotBtn
@@ -56,6 +61,15 @@
 
             <hr />
           </template>
+
+          <Starship42Btn
+            v-if="mobile"
+            :items="items"
+            size="small"
+            variant="dropdown"
+            :with-icon="true"
+          />
+
           <Btn size="small" variant="dropdown" @click.native="toggleLabels">
             <i class="fad fa-tags" />
             <span v-if="showLabels">
@@ -131,7 +145,6 @@
         />
       </div>
     </div>
-    <Loader v-if="!loaded" :loading="!loaded" :fixed="true" />
   </div>
 </template>
 
@@ -144,9 +157,9 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
-import Loader from 'frontend/core/components/Loader'
 import debounce from 'lodash.debounce'
 import FleetchartItem from './Item/index.vue'
+import Starship42Btn from 'frontend/components/Starship42Btn'
 
 @Component({
   components: {
@@ -155,7 +168,7 @@ import FleetchartItem from './Item/index.vue'
     DownloadScreenshotBtn,
     FleetChartStatusBtn,
     FleetchartItem,
-    Loader,
+    Starship42Btn,
   },
 })
 export default class FleetchartListPanzoom extends Vue {
@@ -182,8 +195,6 @@ export default class FleetchartListPanzoom extends Vue {
   innerMargin: number = 20
 
   marginBottom: number = 40
-
-  loaded: boolean = true
 
   gridEnabled: boolean = false
 
@@ -328,15 +339,15 @@ export default class FleetchartListPanzoom extends Vue {
       }, 300)
     }
 
-    this.panzoomInstance.on('zoom', (_event) => {
+    this.panzoomInstance.on('zoom', _event => {
       this.updateZoomData()
     })
 
-    this.panzoomInstance.on('pan', (_event) => {
+    this.panzoomInstance.on('pan', _event => {
       this.updateZoomData()
     })
 
-    this.panzoomInstance.on('transform', (_event) => {
+    this.panzoomInstance.on('transform', _event => {
       this.checkReset()
     })
   }
@@ -373,7 +384,7 @@ export default class FleetchartListPanzoom extends Vue {
     let index = 0
     let colHeight = 0
 
-    this.items.forEach((item) => {
+    this.items.forEach(item => {
       const model = item.model || item
       const length = model.fleetchartLength * this.sizeMultiplicator
 

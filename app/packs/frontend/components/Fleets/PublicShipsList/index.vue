@@ -8,6 +8,7 @@
       :params="routeParams"
       :hash="$route.hash"
       :paginated="true"
+      :hide-loading="fleetchartVisible"
     >
       <template slot="actions">
         <BtnDropdown size="small">
@@ -53,7 +54,6 @@
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
           :records="records"
-          :loading="loading"
           :filter-visible="filterVisible"
           :primary-key="primaryKey"
         >
@@ -65,14 +65,15 @@
             />
           </template>
         </FilteredGrid>
+
+        <FleetchartApp
+          :items="records"
+          namespace="publicFleet"
+          :loading="loading"
+          :download-name="`${fleet.slug}-fleetchart`"
+        />
       </template>
     </FilteredList>
-
-    <FleetchartApp
-      :items="collection.records"
-      namespace="publicFleet"
-      :download-name="`${fleet.slug}-fleetchart`"
-    />
   </div>
 </template>
 
@@ -114,6 +115,8 @@ export default class FleetPublicShipsList extends Vue {
   @Getter('grouped', { namespace: 'fleet' }) grouped
 
   @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
+
+  @Getter('fleetchartVisible', { namespace: 'fleet' }) fleetchartVisible
 
   @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
 
