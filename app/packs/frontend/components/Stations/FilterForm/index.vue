@@ -85,6 +85,8 @@ import Btn from 'frontend/core/components/Btn'
 import { booleanOptions } from 'frontend/utils/FilterOptions'
 
 export default {
+  name: 'StationsFilterForm',
+
   components: {
     FilterGroup,
     RadioList,

@@ -81,6 +81,8 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'HangarGuide',
+
   computed: {
     ...mapGetters('hangar', ['empty']),
   },

@@ -31,6 +31,8 @@ import NavItem from 'frontend/core/components/Navigation/NavItem'
 import NavigationMixin from 'frontend/mixins/Navigation'
 
 export default {
+  name: 'StationsNav',
+
   components: {
     NavItem,
   },

@@ -29,6 +29,8 @@
 import Panel from 'frontend/core/components/Panel'
 
 export default {
+  name: 'PanelsList',
+
   components: {
     Panel,
   },

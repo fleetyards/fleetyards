@@ -21,6 +21,8 @@
 import Panel from 'frontend/core/components/Panel'
 
 export default {
+  name: 'StationsItem',
+
   components: {
     Panel,
   },

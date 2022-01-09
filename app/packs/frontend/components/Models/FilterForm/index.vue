@@ -177,6 +177,8 @@ import {
 } from 'frontend/utils/FilterOptions'
 
 export default {
+  name: 'ModelFilterForm',
+
   components: {
     RadioList,
     FilterGroup,

@@ -48,6 +48,8 @@ import Btn from 'frontend/core/components/Btn'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'ModelClassLabels',
+
   components: {
     BtnDropdown,
     Btn,

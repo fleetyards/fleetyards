@@ -70,6 +70,8 @@ import { mapGetters } from 'vuex'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
+  name: 'ChangePassword',
+
   components: {
     FormInput,
     Btn,

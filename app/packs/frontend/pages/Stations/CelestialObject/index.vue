@@ -95,6 +95,8 @@ import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import CelestialObjectMetrics from 'frontend/components/CelestialObjects/Metrics'
 
 export default {
+  name: 'CelestialObjectDetail',
+
   components: {
     Loader,
     Panel,

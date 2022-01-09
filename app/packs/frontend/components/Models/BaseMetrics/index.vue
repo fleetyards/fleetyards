@@ -163,8 +163,8 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 
-@Component<BaseMetrics>({})
-export default class BaseMetrics extends Vue {
+@Component<ModelBaseMetrics>({})
+export default class ModelBaseMetrics extends Vue {
   @Prop({ required: true }) model: Model
 
   shopRoute(shopCommodity) {

@@ -26,6 +26,8 @@
 
 <script>
 export default {
+  name: 'ModelTopMetrics',
+
   props: {
     model: {
       type: Object,

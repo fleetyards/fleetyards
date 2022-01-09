@@ -31,6 +31,8 @@
 
 <script>
 export default {
+  name: 'StarsystemsBaseMetrics',
+
   props: {
     starsystem: {
       type: Object,

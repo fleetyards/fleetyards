@@ -28,8 +28,8 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 
-@Component<CrewMetrics>({})
-export default class CrewMetrics extends Vue {
+@Component<ModelCrewMetrics>({})
+export default class ModelCrewMetrics extends Vue {
   @Prop({ required: true }) model: Model
 }
 </script>

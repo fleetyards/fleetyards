@@ -74,12 +74,12 @@ import { Component, Prop } from 'vue-property-decorator'
 import { groupBy, sortBy } from 'frontend/lib/Helpers'
 import DockItem from './Item'
 
-@Component<Docks>({
+@Component<StationsDocks>({
   components: {
     DockItem,
   },
 })
-export default class Docks extends Vue {
+export default class StationsDocks extends Vue {
   @Prop({ required: true }) station: Station
 
   @Prop({ default: false }) padding: boolean

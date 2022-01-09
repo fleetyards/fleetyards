@@ -104,7 +104,7 @@ import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import { scrollToAnchor } from 'frontend/utils/scrolling'
 
 export default {
-  name: 'Starsystem',
+  name: 'StarsystemDetail',
 
   components: {
     Loader,

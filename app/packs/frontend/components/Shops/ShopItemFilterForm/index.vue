@@ -71,6 +71,8 @@ import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
 
 export default {
+  name: 'ShopsItemFilterForm',
+
   components: {
     FilterGroup,
     FormInput,

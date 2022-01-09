@@ -63,6 +63,8 @@ import ModelBaseMetrics from 'embed/partials/Models/BaseMetrics'
 import LazyImage from 'embed/components/LazyImage'
 
 export default {
+  name: 'ModelsPanel',
+
   components: {
     Panel,
     PanelDetails,

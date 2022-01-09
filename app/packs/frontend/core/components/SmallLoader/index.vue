@@ -10,6 +10,8 @@
 
 <script>
 export default {
+  name: 'SmallLoader',
+
   props: {
     loading: {
       type: Boolean,

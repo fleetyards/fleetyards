@@ -21,9 +21,12 @@
 import Panel from 'frontend/core/components/Panel'
 
 export default {
+  name: 'PlanetsPanel',
+
   components: {
     Panel,
   },
+
   props: {
     item: {
       type: Object,

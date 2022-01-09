@@ -34,6 +34,8 @@ import Panel from 'frontend/core/components/Panel'
 import LazyImage from 'frontend/core/components/LazyImage'
 
 export default {
+  name: 'CelestalObjectPanel',
+
   components: {
     Panel,
     LazyImage,
