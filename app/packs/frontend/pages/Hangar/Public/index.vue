@@ -27,9 +27,7 @@
             <a
               v-if="user.rsiHandle"
               v-tooltip="$t('nav.rsiProfile')"
-              :href="
-                `https://robertsspaceindustries.com/citizens/${user.rsiHandle}`
-              "
+              :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
               target="_blank"
               rel="noopener"
             >

@@ -47,9 +47,9 @@
         <div
           v-if="
             collection.records.length &&
-              hangarStats &&
-              hangarStats.metrics &&
-              !mobile
+            hangarStats &&
+            hangarStats.metrics &&
+            !mobile
           "
           class="row"
         >
