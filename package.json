@@ -136,6 +136,7 @@
     "webpack-dev-server": "^3.11.3"
   },
   "resolutions": {
+    "ansi-regex": ">=5.0.1",
     "serialize-javascript": ">=6.0.0",
     "glob-parent": ">=5.1.2",
     "set-value": ">=4.0.1",
