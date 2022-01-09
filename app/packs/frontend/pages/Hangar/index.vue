@@ -47,9 +47,9 @@
         <div
           v-if="
             collection.records.length &&
-            hangarStats &&
-            hangarStats.metrics &&
-            !mobile
+              hangarStats &&
+              hangarStats.metrics &&
+              !mobile
           "
           class="row"
         >
@@ -106,6 +106,7 @@
       :route-query="$route.query"
       :hash="$route.hash"
       :paginated="true"
+      :hide-loading="fleetchartVisible"
     >
       <template slot="actions">
         <BtnDropdown size="small">
@@ -206,7 +207,7 @@
 
       <HangarGuideBox v-if="isGuideVisible" />
 
-      <template #default="{ records, filterVisible, primaryKey }">
+      <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
           v-if="gridView"
           :records="records"
@@ -222,22 +223,24 @@
             />
           </template>
         </FilteredGrid>
+
         <VehiclesTable
           v-else
           :vehicles="records"
           :primary-key="primaryKey"
           :editable="true"
         />
+
+        <FleetchartApp
+          :items="records"
+          namespace="hangar"
+          :loading="loading"
+          download-name="my-hangar-fleetchart"
+        />
       </template>
     </FilteredList>
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
-
-    <FleetchartApp
-      :items="collection.records"
-      namespace="hangar"
-      download-name="my-hangar-fleetchart"
-    />
   </section>
 </template>
 
@@ -314,6 +317,8 @@ export default class Hangar extends Vue {
   @Getter('money', { namespace: 'hangar' }) money
 
   @Getter('starterGuideVisible', { namespace: 'hangar' }) starterGuideVisible
+
+  @Getter('fleetchartVisible', { namespace: 'hangar' }) fleetchartVisible
 
   @Action('toggleDetails', { namespace: 'hangar' }) toggleDetails: any
 

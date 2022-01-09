@@ -37,7 +37,7 @@
                 {{ $t('labels.3dView') }}
               </Btn>
               <a
-                v-show="holoviewerVisible && !model.holo"
+                v-show="holoviewerVisible"
                 :href="starship42Url"
                 class="starship42-link"
                 target="_blank"

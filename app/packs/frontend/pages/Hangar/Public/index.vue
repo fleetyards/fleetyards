@@ -27,7 +27,9 @@
             <a
               v-if="user.rsiHandle"
               v-tooltip="$t('nav.rsiProfile')"
-              :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
+              :href="
+                `https://robertsspaceindustries.com/citizens/${user.rsiHandle}`
+              "
               target="_blank"
               rel="noopener"
             >
@@ -98,8 +100,9 @@
       :params="$route.params"
       :hash="$route.hash"
       :paginated="true"
+      :hide-loading="fleetchartVisible"
     >
-      <template #default="{ records, filterVisible, primaryKey }">
+      <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
           :records="records"
           :filter-visible="filterVisible"
@@ -113,10 +116,14 @@
             />
           </template>
         </FilteredGrid>
+
+        <FleetchartApp
+          :items="records"
+          :loading="loading"
+          namespace="publicHangar"
+        />
       </template>
     </FilteredList>
-
-    <FleetchartApp :items="collection.records" namespace="publicHangar" />
   </section>
 </template>
 
@@ -166,6 +173,8 @@ export default class PublicHangar extends Vue {
   groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection
 
   @Getter('mobile') mobile
+
+  @Getter('fleetchartVisible', { namespace: 'publicHangar' }) fleetchartVisible
 
   @Action('toggleFleetchart', { namespace: 'publicHangar' })
   toggleFleetchart: any

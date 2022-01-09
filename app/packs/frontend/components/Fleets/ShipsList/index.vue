@@ -65,6 +65,7 @@
         :params="routeParams"
         :hash="$route.hash"
         :paginated="true"
+        :hide-loading="fleetchartVisible"
       >
         <template slot="actions">
           <BtnDropdown size="small">
@@ -118,7 +119,6 @@
         <template #default="{ records, loading, filterVisible, primaryKey }">
           <FilteredGrid
             :records="records"
-            :loading="loading"
             :filter-visible="filterVisible"
             :primary-key="primaryKey"
           >
@@ -129,14 +129,15 @@
               />
             </template>
           </FilteredGrid>
+
+          <FleetchartApp
+            :items="records"
+            namespace="fleet"
+            :loading="loading"
+            :download-name="`${fleet.slug}-fleetchart`"
+          />
         </template>
       </FilteredList>
-
-      <FleetchartApp
-        :items="collection.records"
-        namespace="fleet"
-        :download-name="`${fleet.slug}-fleetchart`"
-      />
     </div>
   </div>
 </template>
@@ -179,7 +180,11 @@ export default class FleetShipsList extends Vue {
 
   @Prop({ required: true }) fleet: Fleet
 
-  @Prop({ required: true }) copyPublicUrl: Function
+  @Prop({ required: true }) shareUrl: string
+
+  @Prop({ required: true }) metaTitle: string
+
+  @Getter('mobile') mobile
 
   @Getter('grouped', { namespace: 'fleet' }) grouped
 
@@ -187,13 +192,9 @@ export default class FleetShipsList extends Vue {
 
   @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
 
-  @Getter('mobile') mobile
-
-  @Prop({ required: true }) shareUrl: string
-
-  @Prop({ required: true }) metaTitle: string
-
   @Getter('perPage', { namespace: 'fleet' }) perPage
+
+  @Getter('fleetchartVisible', { namespace: 'fleet' }) fleetchartVisible
 
   @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
 

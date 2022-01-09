@@ -35,7 +35,7 @@
       <i class="fal fa-times" />
     </Btn>
 
-    <template v-if="innerItems.length">
+    <template v-if="innerItems.length && !loading">
       <FleetchartListPanzoom
         v-if="mode == 'panzoom'"
         :items="innerItems"
@@ -51,6 +51,8 @@
         :download-name="downloadName"
       />
     </template>
+
+    <Loader v-else :loading="loading" :fixed="true" />
   </div>
 </template>
 
@@ -62,6 +64,7 @@ import FleetchartListPanzoom from 'frontend/components/Fleetchart/ListPanzoom'
 import FleetchartList from 'frontend/components/Fleetchart/List'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
+import Loader from 'frontend/core/components/Loader'
 
 @Component({
   components: {
@@ -69,6 +72,7 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
     FleetchartList,
     Btn,
     BtnDropdown,
+    Loader,
   },
 })
 export default class FleetchartApp extends Vue {
@@ -96,6 +100,8 @@ export default class FleetchartApp extends Vue {
   @Prop({ default: false }) myShip!: boolean
 
   @Prop({ default: null }) downloadName!: string
+
+  @Prop({ default: true }) loading!: boolean
 
   @Getter('mobile') mobile
 
