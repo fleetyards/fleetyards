@@ -21,7 +21,7 @@
       >
         <i class="fal fa-search-plus" />
       </Btn>
-      <!-- <Btn
+      <Btn
         v-if="colored"
         v-tooltip="colorTooltip"
         size="small"
@@ -31,7 +31,7 @@
         @click.native="toggleColor"
       >
         <i class="fad fa-fill-drip" />
-      </Btn> -->
+      </Btn>
     </BtnGroup>
 
     <Loader v-if="loading" :loading="loading" />
@@ -54,6 +54,8 @@ import {
   DirectionalLight,
   DoubleSide,
   MeshPhongMaterial,
+  Box3,
+  Vector3,
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
@@ -86,7 +88,7 @@ export default class HoloViewer extends Vue {
 
   windowColor: number = 0x1d3d59
 
-  autoRotate: boolean = true
+  autoRotate: boolean = false
 
   autoRotateSpeed: number = 1.5
 
@@ -161,8 +163,6 @@ export default class HoloViewer extends Vue {
   }
 
   async mounted() {
-    this.color = this.colored
-
     this.loading = true
 
     this.scene = this.setupScene()
@@ -198,12 +198,6 @@ export default class HoloViewer extends Vue {
       1000
     )
 
-    if (this.mobile) {
-      camera.position.set(0, 40, 80)
-    } else {
-      camera.position.set(0, 40, 130)
-    }
-
     return camera
   }
 
@@ -221,6 +215,8 @@ export default class HoloViewer extends Vue {
 
     controls.autoRotate = this.autoRotate
     controls.autoRotateSpeed = this.autoRotateSpeed
+
+    controls.listenToKeyEvents(window)
 
     controls.update()
 
@@ -266,7 +262,7 @@ export default class HoloViewer extends Vue {
       side: DoubleSide,
     })
 
-    this.model.traverse((node) => {
+    this.model.traverse(node => {
       if (!node.isMesh) return
 
       if (this.color) {
@@ -292,20 +288,29 @@ export default class HoloViewer extends Vue {
 
     loader.load(
       this.holo,
-      (geometry) => {
+      geometry => {
         this.loading = false
         this.model = geometry.scene
+
+        this.model.rotation.set(0, 45, 0)
 
         this.updateModelMaterial()
 
         this.scene.add(this.model)
+
+        const box = new Box3().setFromObject(this.model)
+        const size = box.getSize(new Vector3())
+
+        const maxValue = Math.max(size.x, size.y)
+
+        this.camera.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2))
 
         this.camera.add(this.setupDirectionalLight(this.model))
 
         this.animate()
       },
       null,
-      (error) => {
+      error => {
         console.error(error)
       }
     )
