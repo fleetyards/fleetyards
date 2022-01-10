@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.4.4'
+gem 'rails', '7.0.1'
 
 gem 'pg', '~> 1.0'
 
@@ -41,19 +41,19 @@ gem 'premailer-rails'
 gem 'cancancan'
 
 gem 'devise'
-gem 'devise-two-factor', github: 'tinfoil/devise-two-factor'
+gem 'devise-two-factor', github: 'mortik/devise-two-factor'
 gem 'rqrcode'
 
 gem 'useragent'
 
-gem 'redis-actionpack'
+# gem 'redis-actionpack'
 
-gem 'ransack', '~> 2.4.2'
+gem 'ransack'
 
 gem 'jbuilder'
 gem 'oj'
 
-gem 'rails-i18n', '~> 6.0'
+gem 'rails-i18n'
 
 gem 'dalli'
 
@@ -117,7 +117,7 @@ gem 'pghero'
 gem 'pg_query', '>= 0.9.0'
 
 group :development do
-  gem 'annotate'
+  gem 'annotate', github: 'dabit/annotate_models', branch: 'rails-7'
 
   gem 'i18n-tasks', '~> 0.9.18'
   gem 'listen'
@@ -148,7 +148,7 @@ end
 group :test do
   gem 'faker'
   gem 'minitest-ci'
-  gem 'minitest-rails'
+  # gem 'minitest-rails'
   gem 'mocha', require: false
   gem 'rails-perftest'
   gem 'ruby-prof'
