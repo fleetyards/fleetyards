@@ -80,8 +80,6 @@ gem 'redcarpet'
 gem 'puma'
 gem 'rack-attack'
 
-gem 'bower-rails'
-
 gem 'highline'
 gem 'thor'
 
