@@ -40,7 +40,7 @@ gem 'premailer-rails'
 
 gem 'cancancan'
 
-gem "attr_encrypted", github: "PagerTree/attr_encrypted", branch: "rails-7-0-support"
+gem 'attr_encrypted', github: 'PagerTree/attr_encrypted', branch: 'rails-7-0-support'
 gem 'devise'
 gem 'devise-two-factor', github: 'mortik/devise-two-factor'
 gem 'rqrcode'
@@ -93,7 +93,7 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
-gem 'sprockets-rails', '~> 3.4.2'
+gem 'sprockets-rails'
 
 gem 'nokogiri', '1.13.1'
 gem 'typhoeus'

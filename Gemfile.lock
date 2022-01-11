@@ -757,7 +757,7 @@ DEPENDENCIES
   slim-rails
   spring
   spring-watcher-listen
-  sprockets-rails (~> 3.4.2)
+  sprockets-rails
   state_machine
   thor
   timecop
