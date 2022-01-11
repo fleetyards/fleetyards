@@ -31,6 +31,7 @@
     "@babel/preset-env": "7.16.10",
     "@babel/preset-typescript": "^7.16.7",
     "@rails/actioncable": "^7.0.2",
+    "@rails/request.js": "^0.0.6",
     "@rails/webpacker": "5.4.3",
     "@sentry/browser": "6.17.7",
     "@sentry/integrations": "6.17.7",
