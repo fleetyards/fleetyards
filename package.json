@@ -103,7 +103,7 @@
     "babel-eslint": "10.1.0",
     "babel-jest": "27.4.6",
     "babel-preset-vue": "2.0.2",
-    "cypress": "9.2.0",
+    "cypress": "9.2.1",
     "cypress-mochawesome-reporter": "^2.3.0",
     "eslint": "8.6.0",
     "eslint-config-airbnb-base": "15.0.0",
