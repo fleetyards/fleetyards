@@ -52,7 +52,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Getter } from 'vuex-class'
 import Avatar from 'frontend/core/components/Avatar'
 import Btn from 'frontend/core/components/Btn'
 import ShareBtn from 'frontend/components/ShareBtn'
@@ -76,8 +76,6 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
 })
 export default class FleetShips extends Vue {
   @Getter('mobile') mobile
-
-  @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
 
   get fleet() {
     return fleetsCollection.record
@@ -107,6 +105,14 @@ export default class FleetShips extends Vue {
 
   mounted() {
     this.fetch()
+  }
+
+  toggleFleetchart() {
+    if (this.fleet.myFleet) {
+      this.$store.dispatch('fleet/toggleFleetchart')
+    } else {
+      this.$store.dispatch('publicFleet/toggleFleetchart')
+    }
   }
 
   async fetch() {

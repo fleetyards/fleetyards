@@ -36,6 +36,10 @@ export default () => ({
     fleetchartScale(state) {
       return state.fleetchartScale
     },
+
+    perPage(state) {
+      return state.perPage
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -66,6 +70,10 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
     },
   },
   /* eslint-enable no-param-reassign */

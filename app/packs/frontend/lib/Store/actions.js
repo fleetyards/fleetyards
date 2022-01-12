@@ -9,7 +9,9 @@ export default {
     }
 
     dispatch('fleet/reset')
+    dispatch('publicFleet/reset')
     dispatch('hangar/reset')
+    dispatch('publicHangar/reset')
     dispatch('models/reset')
     dispatch('search/reset')
     dispatch('shop/reset')
