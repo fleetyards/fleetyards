@@ -6,4 +6,5 @@ export default () => ({
   fleetchartScreenHeight: '1x',
   fleetchartMode: 'panzoom',
   fleetchartScale: 1,
+  perPage: 30,
 })

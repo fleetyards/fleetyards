@@ -112,13 +112,20 @@ export default class FleetPublicShipsList extends Vue {
 
   @Getter('mobile') mobile
 
-  @Getter('grouped', { namespace: 'fleet' }) grouped
+  @Getter('grouped', { namespace: 'publicFleet' }) grouped
 
-  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
+  @Getter('detailsVisible', { namespace: 'publicFleet' }) detailsVisible
 
-  @Getter('fleetchartVisible', { namespace: 'fleet' }) fleetchartVisible
+  @Getter('fleetchartVisible', { namespace: 'publicFleet' }) fleetchartVisible
 
-  @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
+  @Getter('perPage', { namespace: 'publicFleet' }) perPage
+
+  @Action('toggleFleetchart', { namespace: 'publicFleet' })
+  toggleFleetchart: any
+
+  @Action('toggleDetails', { namespace: 'publicFleet' }) toggleDetails: any
+
+  @Action('toggleGrouped', { namespace: 'publicFleet' }) toggleGrouped: any
 
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
@@ -144,15 +151,16 @@ export default class FleetPublicShipsList extends Vue {
 
   @Watch('grouped')
   onGroupedChange() {
-    this.collection.findAll(this.filters)
+    this.fetch()
   }
 
-  toggleDetails() {
-    this.$store.dispatch('fleet/toggleDetails')
+  @Watch('perPage')
+  onPerPageChange() {
+    this.fetch()
   }
 
-  toggleGrouped() {
-    this.$store.dispatch('fleet/toggleGrouped')
+  async fetch() {
+    await this.collection.findAll(this.filters)
   }
 }
 </script>

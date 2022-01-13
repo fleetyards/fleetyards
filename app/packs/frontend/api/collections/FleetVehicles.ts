@@ -14,7 +14,7 @@ export class FleetVehiclesCollection extends BaseCollection {
   }
 
   get perPageSteps(): (number | string)[] {
-    return [15, 30, 60, 120, 240]
+    return [15, 30, 60, 120, 240, 'all']
   }
 
   updatePerPage(perPage) {
