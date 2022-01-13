@@ -34,4 +34,8 @@ export default {
   toggleFleetchart({ commit, state }) {
     commit('setFleetchartVisible', !state.fleetchartVisible)
   },
+
+  updatePerPage({ commit }, payload) {
+    commit('setPerPage', payload)
+  },
 }

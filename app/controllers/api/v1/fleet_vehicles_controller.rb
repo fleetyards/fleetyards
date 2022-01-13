@@ -30,24 +30,19 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         if ActiveModel::Type::Boolean.new.cast(params['grouped'])
-          model_ids = @q.result
-            .includes(:model)
-            .joins(:model)
-            .pluck(:model_id)
+          model_ids = @q.result.includes(:model).joins(:model).pluck(:model_id)
 
-          @models = fleet.models(fleet_vehicle_filters)
+          result = fleet.models(fleet_vehicle_filters)
             .where(id: model_ids)
             .order(name: :asc)
-            .page(params[:page])
-            .per(per_page(Model))
+
+          @models = result_with_pagination(result, per_page(Model))
 
           render 'api/v1/fleet_vehicles/models'
         else
-          @vehicles = @q.result(distinct: true)
-            .includes(:model)
-            .joins(:model)
-            .page(params[:page])
-            .per(per_page(Vehicle))
+          result = @q.result(distinct: true).includes(:model).joins(:model)
+
+          @vehicles = result_with_pagination(result, per_page(Vehicle))
         end
       end
 
@@ -68,24 +63,21 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         if ActiveModel::Type::Boolean.new.cast(params['grouped'])
-          model_ids = @q.result
-            .includes(:model)
-            .joins(:model)
-            .pluck(:model_id)
+          model_ids = @q.result.includes(:model).joins(:model).pluck(:model_id)
 
-          @models = fleet.models(loaner: loaner_included?)
+          result = fleet.models(loaner: loaner_included?)
             .where(id: model_ids)
             .order(name: :asc)
-            .page(params[:page])
-            .per(per_page(Model))
+
+          @models = result_with_pagination(result, per_page(Model))
 
           render 'api/v1/fleet_vehicles/public_models'
         else
-          @vehicles = @q.result(distinct: true)
+          result = @q.result(distinct: true)
             .includes(:model)
             .joins(:model)
-            .page(params[:page])
-            .per(per_page(Vehicle))
+
+          @vehicles = result_with_pagination(result, per_page(Vehicle))
         end
       end
 

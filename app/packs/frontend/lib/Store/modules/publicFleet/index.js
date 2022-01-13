@@ -60,6 +60,10 @@ export default () => ({
     inviteToken(state) {
       return state.inviteToken
     },
+
+    perPage(state) {
+      return state.perPage
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -106,6 +110,10 @@ export default () => ({
 
     setGrouped(state, payload) {
       state.grouped = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
     },
   },
   /* eslint-enable no-param-reassign */

@@ -1,4 +1,5 @@
 import { get } from 'frontend/api/client'
+import Store from 'frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class PublicVehiclesCollection extends BaseCollection {
@@ -12,6 +13,18 @@ export class PublicVehiclesCollection extends BaseCollection {
 
   username: string | null = null
 
+  get perPage(): number | string {
+    return Store.getters['publicHangar/perPage']
+  }
+
+  get perPageSteps(): (number | string)[] {
+    return [15, 30, 60, 120, 240, 'all']
+  }
+
+  updatePerPage(perPage) {
+    Store.dispatch('publicHangar/updatePerPage', perPage)
+  }
+
   async findAll(params: PublicVehicleParams | null): Promise<Vehicle[]> {
     if (!params?.username) {
       return []
@@ -22,6 +35,7 @@ export class PublicVehiclesCollection extends BaseCollection {
     const response = await get(`vehicles/${params?.username}`, {
       q: params?.filters,
       page: params?.page,
+      perPage: this.perPage,
     })
 
     if (!response.error) {
