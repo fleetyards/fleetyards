@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.4.0](https://github.com/fleetyards/fleetyards/compare/v5.3.4...v5.4.0) (2022-01-12)
+
+
+### Features
+
+* **fleetchart-v2:** add all option for pagination of hangar and fleetchart ([9e300d7](https://github.com/fleetyards/fleetyards/commit/9e300d71d209769a2e3df0f452ffcfb1c1036c0c))
+
 ### [5.3.4](https://github.com/fleetyards/fleetyards/compare/v5.3.3...v5.3.4) (2022-01-09)
 
 ### [5.3.3](https://github.com/fleetyards/fleetyards/compare/v5.3.2...v5.3.3) (2022-01-09)

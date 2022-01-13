@@ -4,14 +4,16 @@ module Pagination
   class MaxPerPageReached < StandardError; end
 
   def per_page(model)
-    raise Pagination::MaxPerPageReached if params[:perPage].present? && params[:perPage].to_i > model.max_per_page
+    return model.default_per_page if params[:perPage].blank?
 
-    return params[:perPage].to_i if params[:perPage].present?
+    raise Pagination::MaxPerPageReached if params[:perPage].to_i > model.max_per_page
 
-    model.default_per_page
+    params[:perPage].to_i
   end
 
   def pagination_header(name)
+    return if params[:perPage] == 'all'
+
     scope = name
     scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
 
@@ -20,6 +22,15 @@ module Pagination
 
       "<#{v}>; rel=\"#{k}\""
     end.join(', ')
+  end
+
+  private def result_with_pagination(result, per_page)
+    if params[:perPage] == 'all'
+      result.all
+    else
+      result.page(params[:page])
+        .per(per_page)
+    end
   end
 
   private def pagination_links(scope)

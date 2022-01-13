@@ -174,6 +174,8 @@ export default class PublicHangar extends Vue {
 
   @Getter('fleetchartVisible', { namespace: 'publicHangar' }) fleetchartVisible
 
+  @Getter('perPage', { namespace: 'publicHangar' }) perPage
+
   @Action('toggleFleetchart', { namespace: 'publicHangar' })
   toggleFleetchart: any
 
@@ -227,6 +229,11 @@ export default class PublicHangar extends Vue {
 
   @Watch('$route')
   onRouteChange() {
+    this.fetch()
+  }
+
+  @Watch('perPage')
+  onPerPageChange() {
     this.fetch()
   }
 
