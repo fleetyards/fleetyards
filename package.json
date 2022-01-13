@@ -146,6 +146,7 @@
     "trim": ">=0.0.3",
     "trim-newlines": ">=3.0.1",
     "yargs-parser": ">=13.1.2",
-    "validator": ">=13.7.0"
+    "validator": ">=13.7.0",
+    "follow-redirects": ">=1.14.7"
   }
 }
