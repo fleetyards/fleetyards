@@ -55,7 +55,7 @@ class HangarImporter
         name: item[:ship_name] || item[:custom_name],
         serial: item[:ship_serial],
         flagship: item[:flagship] || false,
-        purchased: item[:purchased] || false,
+        purchased: item[:purchased] || true,
         public: item[:public] || false,
         name_visible: item[:name_visible] || false,
         sale_notify: item[:sale_notify] || false,
