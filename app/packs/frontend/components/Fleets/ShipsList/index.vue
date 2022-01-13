@@ -198,6 +198,12 @@ export default class FleetShipsList extends Vue {
 
   @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
 
+  @Action('toggleDetails', { namespace: 'fleet' }) toggleDetails: any
+
+  @Action('toggleGrouped', { namespace: 'fleet' }) toggleGrouped: any
+
+  @Action('toggleMoney', { namespace: 'fleet' }) toggleMoney: any
+
   get fleetStats() {
     return this.collection.stats
   }
@@ -248,18 +254,6 @@ export default class FleetShipsList extends Vue {
   mounted() {
     this.fetchStats()
     this.setupUpdates()
-  }
-
-  toggleDetails() {
-    this.$store.dispatch('fleet/toggleDetails')
-  }
-
-  toggleGrouped() {
-    this.$store.dispatch('fleet/toggleGrouped')
-  }
-
-  toggleMoney() {
-    this.$store.dispatch('fleet/toggleMoney')
   }
 
   setupUpdates() {

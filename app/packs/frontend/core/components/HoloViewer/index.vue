@@ -45,18 +45,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import Loader from 'frontend/core/components/Loader'
 import BtnGroup from 'frontend/core/components/BtnGroup'
 import Btn from 'frontend/core/components/Btn'
-import {
-  WebGLRenderer,
-  Scene,
-  PerspectiveCamera,
-  sRGBEncoding,
-  PCFSoftShadowMap,
-  DirectionalLight,
-  DoubleSide,
-  MeshPhongMaterial,
-  Box3,
-  Vector3,
-} from 'three'
+import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -87,7 +76,7 @@ export default class HoloViewer extends Vue {
 
   windowColor: number = 0x1d3d59
 
-  autoRotate: boolean = false
+  autoRotate: boolean = true
 
   autoRotateSpeed: number = 1.5
 
@@ -180,7 +169,7 @@ export default class HoloViewer extends Vue {
   }
 
   setupScene() {
-    const scene = new Scene()
+    const scene = new THREE.Scene()
 
     scene.background = null
 
@@ -188,10 +177,10 @@ export default class HoloViewer extends Vue {
   }
 
   setupCamera() {
-    const camera = new PerspectiveCamera(
+    const camera = new THREE.PerspectiveCamera(
       35,
       this.elementWidth / this.elementHeight,
-      1,
+      0.1,
       1000
     )
 
@@ -221,18 +210,18 @@ export default class HoloViewer extends Vue {
   }
 
   setupRenderer() {
-    const renderer = new WebGLRenderer({
+    const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
     })
 
     renderer.physicallyCorrectLights = true
-    renderer.outputEncoding = sRGBEncoding
+    renderer.outputEncoding = THREE.sRGBEncoding
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.toneMappingExposure = 1
     renderer.setSize(this.elementWidth, this.elementHeight)
     renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = PCFSoftShadowMap
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
     this.element.appendChild(renderer.domElement)
 
@@ -240,7 +229,7 @@ export default class HoloViewer extends Vue {
   }
 
   setupDirectionalLight(model) {
-    const directionalLight = new DirectionalLight(0x404040, 5)
+    const directionalLight = new THREE.DirectionalLight(0x404040, 5)
 
     directionalLight.target = model
     directionalLight.castShadow = true
@@ -249,14 +238,15 @@ export default class HoloViewer extends Vue {
   }
 
   updateModelMaterial() {
-    const material = new MeshPhongMaterial({
+    const material = new THREE.MeshPhongMaterial({
       color: this.modelColor,
-      side: DoubleSide,
+      side: THREE.DoubleSide,
     })
 
-    const windowMaterial = new MeshPhongMaterial({
+    const windowMaterial = new THREE.MeshPhongMaterial({
       color: this.windowColor,
-      side: DoubleSide,
+      opacity: 0.8,
+      transparent: true,
     })
 
     this.model.traverse((node) => {
@@ -295,8 +285,8 @@ export default class HoloViewer extends Vue {
 
         this.scene.add(this.model)
 
-        const box = new Box3().setFromObject(this.model)
-        const size = box.getSize(new Vector3())
+        const box = new THREE.Box3().setFromObject(this.model)
+        const size = box.getSize(new THREE.Vector3())
 
         const maxValue = Math.max(size.x, size.y)
 

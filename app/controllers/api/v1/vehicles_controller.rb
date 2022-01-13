@@ -31,11 +31,11 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
+        result = @q.result(distinct: true)
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
           .joins(model: [:manufacturer])
-          .page(params[:page])
-          .per(per_page(Vehicle))
+
+        @vehicles = result_with_pagination(result, per_page(Vehicle))
       end
 
       def export
@@ -128,11 +128,11 @@ module Api
           .public
           .ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
+        result = @q.result(distinct: true)
           .includes(:model)
           .joins(:model)
-          .page(params[:page])
-          .per(per_page(Vehicle))
+
+        @vehicles = result_with_pagination(result, per_page(Vehicle))
       end
 
       def public_fleetchart

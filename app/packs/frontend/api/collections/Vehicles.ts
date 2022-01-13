@@ -21,12 +21,12 @@ export class VehiclesCollection extends BaseCollection {
 
   lastUsedMethod: string = 'findAll'
 
-  get perPage(): number {
+  get perPage(): number | string {
     return Store.getters['hangar/perPage']
   }
 
-  get perPageSteps(): number[] {
-    return [15, 30, 60, 120, 240]
+  get perPageSteps(): (number | string)[] {
+    return [15, 30, 60, 120, 240, 'all']
   }
 
   updatePerPage(perPage) {

@@ -52,6 +52,8 @@ class Station < ApplicationRecord
     !hidden
   end
 
+  belongs_to :celestial_object
+
   has_many :shops, dependent: :destroy
   has_many :docks,
            -> { order(ship_size: :asc) },
@@ -66,8 +68,6 @@ class Station < ApplicationRecord
            as: :gallery,
            dependent: :destroy,
            inverse_of: :gallery
-
-  belongs_to :celestial_object
 
   enum station_type: {
     landing_zone: 0, station: 1, asteroid_station: 2, district: 3, outpost: 4, aid_shelter: 5
@@ -90,7 +90,7 @@ class Station < ApplicationRecord
   ransack_alias :name, :name_or_slug
   ransack_alias :search, :name_or_slug_or_celestial_object_starsystem_slug_or_celestial_object_slug
 
-  validates :name, :station_type, :celestial_object, presence: true
+  validates :name, :station_type, presence: true
   validates :name, uniqueness: true
 
   before_save :update_slugs
