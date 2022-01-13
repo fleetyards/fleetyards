@@ -24,7 +24,7 @@ class Habitation < ApplicationRecord
     parent.table[:habitation_type]
   end
 
-  validates :habitation_type, :station_id, presence: true
+  validates :habitation_type, presence: true
 
   def habitation_type_label
     Habitation.human_enum_name(:habitation_type, habitation_type)

@@ -46,9 +46,10 @@ class Shop < ApplicationRecord
   end
 
   belongs_to :station, touch: true
+
   has_many :shop_commodities, dependent: :destroy
 
-  validates :name, :station, :shop_type, presence: true
+  validates :name, :shop_type, presence: true
 
   mount_uploader :store_image, StoreImageUploader
 
