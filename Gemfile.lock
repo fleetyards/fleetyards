@@ -359,7 +359,7 @@ GEM
     net-ssh (6.1.0)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.0)
+    nokogiri (1.13.1)
       mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
     oj (3.13.11)
@@ -678,7 +678,7 @@ DEPENDENCIES
   minitest-ci
   minitest-rails
   mocha
-  nokogiri (= 1.13.0)
+  nokogiri (= 1.13.1)
   oj
   paper_trail
   pg (~> 1.0)
