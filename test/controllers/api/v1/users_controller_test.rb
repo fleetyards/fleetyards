@@ -5,37 +5,31 @@ require 'test_helper'
 module Api
   module V1
     class UsersControllerTest < ActionController::TestCase
+      tests Api::V1::UsersController
+
       setup do
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
+
+        @data = users :data
       end
 
-      tests Api::V1::UsersController
+      test 'should render 401 for destroy' do
+        get :destroy
 
-      describe 'without session' do
-        it 'should render 401 for destroy' do
-          get :destroy
-
-          assert_response :unauthorized
-          json = JSON.parse response.body
-          assert_equal 'unauthorized', json['code']
-        end
+        assert_response :unauthorized
+        json = JSON.parse response.body
+        assert_equal 'unauthorized', json['code']
       end
 
-      describe 'with session' do
-        let(:data) { users :data }
+      test 'should delete the current user' do
+        sign_in @data
 
-        before do
-          sign_in data
-        end
+        delete :destroy
 
-        it 'should delete the current user' do
-          get :destroy
+        assert_response :ok
 
-          assert_response :ok
-
-          assert_nil User.find_by(id: data.id)
-        end
+        assert_nil User.find_by(id: @data.id)
       end
     end
   end

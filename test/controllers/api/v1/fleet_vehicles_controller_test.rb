@@ -5,12 +5,12 @@ require 'test_helper'
 module Api
   module V1
     class FleetVehiclesControllerTest < ActionController::TestCase
+      tests Api::V1::FleetVehiclesController
+
       setup do
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
       end
-
-      tests Api::V1::FleetVehiclesController
 
       let(:starfleet) { fleets :starfleet }
 

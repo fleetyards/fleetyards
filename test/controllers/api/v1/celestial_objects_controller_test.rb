@@ -5,406 +5,72 @@ require 'test_helper'
 module Api
   module V1
     class CelestialObjectsControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
       tests Api::V1::CelestialObjectsController
 
-      let(:crusader) { celestial_objects :crusader }
-      let(:hurston) { celestial_objects :hurston }
-      let(:yela) { celestial_objects :yela }
-      let(:daymar) { celestial_objects :daymar }
-      let(:index_result) do
-        [{
-          'name' => 'Hurston',
-          'slug' => 'hurston',
-          'type' => nil,
-          'designation' => '1',
-          'storeImage' => hurston.store_image.url,
-          'storeImageLarge' => hurston.store_image.large.url,
-          'storeImageMedium' => hurston.store_image.medium.url,
-          'storeImageSmall' => hurston.store_image.small.url,
-          'description' => nil,
-          'habitable' => nil,
-          'fairchanceact' => nil,
-          'subType' => nil,
-          'size' => nil,
-          'danger' => nil,
-          'economy' => nil,
-          'population' => nil,
-          'locationLabel' => hurston.location_label,
-          'starsystem' => {
-            'name' => 'Stanton',
-            'slug' => 'stanton',
-            'storeImage' => hurston.starsystem.store_image.url,
-            'storeImageLarge' => hurston.starsystem.store_image.large.url,
-            'storeImageMedium' => hurston.starsystem.store_image.medium.url,
-            'storeImageSmall' => hurston.starsystem.store_image.small.url,
-            'mapX' => nil,
-            'mapY' => nil,
-            'description' => nil,
-            'type' => nil,
-            'size' => nil,
-            'population' => nil,
-            'economy' => nil,
-            'danger' => nil,
-            'status' => nil,
-            'locationLabel' => hurston.starsystem.location_label,
-          },
-          'moons' => [],
-          'createdAt' => hurston.created_at.utc.iso8601,
-          'updatedAt' => hurston.updated_at.utc.iso8601
-        }, {
-          'name' => 'Crusader',
-          'slug' => 'crusader',
-          'type' => nil,
-          'designation' => '2',
-          'storeImage' => crusader.store_image.url,
-          'storeImageLarge' => crusader.store_image.large.url,
-          'storeImageMedium' => crusader.store_image.medium.url,
-          'storeImageSmall' => crusader.store_image.small.url,
-          'description' => nil,
-          'habitable' => nil,
-          'fairchanceact' => nil,
-          'subType' => nil,
-          'size' => nil,
-          'danger' => nil,
-          'economy' => nil,
-          'population' => nil,
-          'locationLabel' => crusader.location_label,
-          'starsystem' => {
-            'name' => 'Stanton',
-            'slug' => 'stanton',
-            'storeImage' => crusader.starsystem.store_image.url,
-            'storeImageLarge' => crusader.starsystem.store_image.large.url,
-            'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-            'storeImageSmall' => crusader.starsystem.store_image.small.url,
-            'mapX' => nil,
-            'mapY' => nil,
-            'description' => nil,
-            'type' => nil,
-            'size' => nil,
-            'population' => nil,
-            'economy' => nil,
-            'danger' => nil,
-            'status' => nil,
-            'locationLabel' => crusader.starsystem.location_label,
-          },
-          'moons' => [{
-            'name' => 'Yela',
-            'slug' => 'yela',
-            'type' => nil,
-            'designation' => '3',
-            'storeImage' => crusader.moons.first.store_image.url,
-            'storeImageLarge' => crusader.moons.first.store_image.large.url,
-            'storeImageMedium' => crusader.moons.first.store_image.medium.url,
-            'storeImageSmall' => crusader.moons.first.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => crusader.moons.first.location_label,
-            'parent' => {
-              'name' => 'Crusader',
-              'slug' => 'crusader',
-              'type' => nil,
-              'designation' => '2',
-              'storeImage' => crusader.store_image.url,
-              'storeImageLarge' => crusader.store_image.large.url,
-              'storeImageMedium' => crusader.store_image.medium.url,
-              'storeImageSmall' => crusader.store_image.small.url,
-              'description' => nil,
-              'habitable' => nil,
-              'fairchanceact' => nil,
-              'subType' => nil,
-              'size' => nil,
-              'danger' => nil,
-              'economy' => nil,
-              'population' => nil,
-              'locationLabel' => crusader.location_label,
-              'starsystem' => {
-                'name' => 'Stanton',
-                'slug' => 'stanton',
-                'storeImage' => crusader.starsystem.store_image.url,
-                'storeImageLarge' => crusader.starsystem.store_image.large.url,
-                'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-                'storeImageSmall' => crusader.starsystem.store_image.small.url,
-                'mapX' => nil,
-                'mapY' => nil,
-                'description' => nil,
-                'type' => nil,
-                'size' => nil,
-                'population' => nil,
-                'economy' => nil,
-                'danger' => nil,
-                'status' => nil,
-                'locationLabel' => crusader.starsystem.location_label,
-              },
-            },
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => yela.starsystem.store_image.url,
-              'storeImageLarge' => yela.starsystem.store_image.large.url,
-              'storeImageMedium' => yela.starsystem.store_image.medium.url,
-              'storeImageSmall' => yela.starsystem.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => yela.starsystem.location_label,
-            },
-          }, {
-            'name' => 'Daymar',
-            'slug' => 'daymar',
-            'type' => nil,
-            'designation' => '4',
-            'storeImage' => crusader.moons.last.store_image.url,
-            'storeImageLarge' => crusader.moons.last.store_image.large.url,
-            'storeImageMedium' => crusader.moons.last.store_image.medium.url,
-            'storeImageSmall' => crusader.moons.last.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => crusader.moons.last.location_label,
-            'parent' => {
-              'name' => 'Crusader',
-              'slug' => 'crusader',
-              'type' => nil,
-              'designation' => '2',
-              'storeImage' => crusader.store_image.url,
-              'storeImageLarge' => crusader.store_image.large.url,
-              'storeImageMedium' => crusader.store_image.medium.url,
-              'storeImageSmall' => crusader.store_image.small.url,
-              'description' => nil,
-              'habitable' => nil,
-              'fairchanceact' => nil,
-              'subType' => nil,
-              'size' => nil,
-              'danger' => nil,
-              'economy' => nil,
-              'population' => nil,
-              'locationLabel' => crusader.location_label,
-              'starsystem' => {
-                'name' => 'Stanton',
-                'slug' => 'stanton',
-                'storeImage' => crusader.starsystem.store_image.url,
-                'storeImageLarge' => crusader.starsystem.store_image.large.url,
-                'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-                'storeImageSmall' => crusader.starsystem.store_image.small.url,
-                'mapX' => nil,
-                'mapY' => nil,
-                'description' => nil,
-                'type' => nil,
-                'size' => nil,
-                'population' => nil,
-                'economy' => nil,
-                'danger' => nil,
-                'status' => nil,
-                'locationLabel' => crusader.starsystem.location_label,
-              },
-            },
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => daymar.starsystem.store_image.url,
-              'storeImageLarge' => daymar.starsystem.store_image.large.url,
-              'storeImageMedium' => daymar.starsystem.store_image.medium.url,
-              'storeImageSmall' => daymar.starsystem.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => daymar.starsystem.location_label,
-            },
-          }],
-          'createdAt' => crusader.created_at.utc.iso8601,
-          'updatedAt' => crusader.updated_at.utc.iso8601
-        }, {
-          'name' => 'Yela',
-          'slug' => 'yela',
-          'type' => nil,
-          'designation' => '3',
-          'storeImage' => yela.store_image.url,
-          'storeImageLarge' => yela.store_image.large.url,
-          'storeImageMedium' => yela.store_image.medium.url,
-          'storeImageSmall' => yela.store_image.small.url,
-          'description' => nil,
-          'habitable' => nil,
-          'fairchanceact' => nil,
-          'subType' => nil,
-          'size' => nil,
-          'danger' => nil,
-          'economy' => nil,
-          'population' => nil,
-          'locationLabel' => yela.location_label,
-          'parent' => {
-            'name' => 'Crusader',
-            'slug' => 'crusader',
-            'type' => nil,
-            'designation' => '2',
-            'storeImage' => crusader.store_image.url,
-            'storeImageLarge' => crusader.store_image.large.url,
-            'storeImageMedium' => crusader.store_image.medium.url,
-            'storeImageSmall' => crusader.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => crusader.location_label,
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => crusader.starsystem.store_image.url,
-              'storeImageLarge' => crusader.starsystem.store_image.large.url,
-              'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-              'storeImageSmall' => crusader.starsystem.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => crusader.starsystem.location_label,
-            },
-          },
-          'starsystem' => {
-            'name' => 'Stanton',
-            'slug' => 'stanton',
-            'storeImage' => yela.starsystem.store_image.url,
-            'storeImageLarge' => yela.starsystem.store_image.large.url,
-            'storeImageMedium' => yela.starsystem.store_image.medium.url,
-            'storeImageSmall' => yela.starsystem.store_image.small.url,
-            'mapX' => nil,
-            'mapY' => nil,
-            'description' => nil,
-            'type' => nil,
-            'size' => nil,
-            'population' => nil,
-            'economy' => nil,
-            'danger' => nil,
-            'status' => nil,
-            'locationLabel' => yela.starsystem.location_label,
-          },
-          'moons' => [],
-          'createdAt' => yela.created_at.utc.iso8601,
-          'updatedAt' => yela.updated_at.utc.iso8601
-        }, {
-          'name' => 'Daymar',
-          'slug' => 'daymar',
-          'type' => nil,
-          'designation' => '4',
-          'storeImage' => daymar.store_image.url,
-          'storeImageLarge' => daymar.store_image.large.url,
-          'storeImageMedium' => daymar.store_image.medium.url,
-          'storeImageSmall' => daymar.store_image.small.url,
-          'description' => nil,
-          'habitable' => nil,
-          'fairchanceact' => nil,
-          'subType' => nil,
-          'size' => nil,
-          'danger' => nil,
-          'economy' => nil,
-          'population' => nil,
-          'locationLabel' => daymar.location_label,
-          'parent' => {
-            'name' => 'Crusader',
-            'slug' => 'crusader',
-            'type' => nil,
-            'designation' => '2',
-            'storeImage' => crusader.store_image.url,
-            'storeImageLarge' => crusader.store_image.large.url,
-            'storeImageMedium' => crusader.store_image.medium.url,
-            'storeImageSmall' => crusader.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => crusader.location_label,
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => crusader.starsystem.store_image.url,
-              'storeImageLarge' => crusader.starsystem.store_image.large.url,
-              'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-              'storeImageSmall' => crusader.starsystem.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => crusader.starsystem.location_label,
-            },
-          },
-          'starsystem' => {
-            'name' => 'Stanton',
-            'slug' => 'stanton',
-            'storeImage' => daymar.starsystem.store_image.url,
-            'storeImageLarge' => daymar.starsystem.store_image.large.url,
-            'storeImageMedium' => daymar.starsystem.store_image.medium.url,
-            'storeImageSmall' => daymar.starsystem.store_image.small.url,
-            'mapX' => nil,
-            'mapY' => nil,
-            'description' => nil,
-            'type' => nil,
-            'size' => nil,
-            'population' => nil,
-            'economy' => nil,
-            'danger' => nil,
-            'status' => nil,
-            'locationLabel' => daymar.starsystem.location_label,
-          },
-          'moons' => [],
-          'createdAt' => daymar.created_at.utc.iso8601,
-          'updatedAt' => daymar.updated_at.utc.iso8601
-        }]
+      setup do
+        @data = users(:data)
+
+        @crusader = celestial_objects(:crusader)
+        @hurston = celestial_objects(:hurston)
+        @yela = celestial_objects(:yela)
+        @daymar = celestial_objects(:daymar)
       end
-      let(:show_result) do
+
+      test 'should return list for index' do
+        get :index
+
+        assert_response :ok
+
+        json = JSON.parse response.body
+        result_slugs = json.map { |item| item['slug'] }
+
+        assert_equal [@hurston.slug, @crusader.slug, @yela.slug, @daymar.slug], result_slugs
+      end
+
+      test 'should return a single record for show' do
+        get :show, params: { slug: @crusader.slug }
+
+        assert_response :ok
+        json = JSON.parse response.body
+
+        assert_equal show_result, json
+      end
+
+      test 'with session should return list for index' do
+        sign_in(@data)
+
+        get :index
+
+        assert_response :ok
+
+        json = JSON.parse response.body
+        result_slugs = json.map { |item| item['slug'] }
+
+        assert_equal [@hurston.slug, @crusader.slug, @yela.slug, @daymar.slug], result_slugs
+      end
+
+      test 'with session should return a single record for show' do
+        sign_in(@data)
+
+        get :show, params: { slug: @crusader.slug }
+
+        assert_response :ok
+        json = JSON.parse response.body
+
+        assert_equal show_result, json
+      end
+
+      # rubocop:disable Metrics/MethodLength
+      def show_result
         {
           'name' => 'Crusader',
           'slug' => 'crusader',
           'type' => nil,
           'designation' => '2',
-          'storeImage' => crusader.store_image.url,
-          'storeImageLarge' => crusader.store_image.large.url,
-          'storeImageMedium' => crusader.store_image.medium.url,
-          'storeImageSmall' => crusader.store_image.small.url,
+          'storeImage' => @crusader.store_image.url,
+          'storeImageLarge' => @crusader.store_image.large.url,
+          'storeImageMedium' => @crusader.store_image.medium.url,
+          'storeImageSmall' => @crusader.store_image.small.url,
           'description' => nil,
           'habitable' => nil,
           'fairchanceact' => nil,
@@ -413,14 +79,14 @@ module Api
           'danger' => nil,
           'economy' => nil,
           'population' => nil,
-          'locationLabel' => crusader.location_label,
+          'locationLabel' => @crusader.location_label,
           'starsystem' => {
             'name' => 'Stanton',
             'slug' => 'stanton',
-            'storeImage' => crusader.starsystem.store_image.url,
-            'storeImageLarge' => crusader.starsystem.store_image.large.url,
-            'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-            'storeImageSmall' => crusader.starsystem.store_image.small.url,
+            'storeImage' => @crusader.starsystem.store_image.url,
+            'storeImageLarge' => @crusader.starsystem.store_image.large.url,
+            'storeImageMedium' => @crusader.starsystem.store_image.medium.url,
+            'storeImageSmall' => @crusader.starsystem.store_image.small.url,
             'mapX' => nil,
             'mapY' => nil,
             'description' => nil,
@@ -430,17 +96,17 @@ module Api
             'economy' => nil,
             'danger' => nil,
             'status' => nil,
-            'locationLabel' => crusader.starsystem.location_label,
+            'locationLabel' => @crusader.starsystem.location_label,
           },
           'moons' => [{
             'name' => 'Yela',
             'slug' => 'yela',
             'type' => nil,
             'designation' => '3',
-            'storeImage' => crusader.moons.first.store_image.url,
-            'storeImageLarge' => crusader.moons.first.store_image.large.url,
-            'storeImageMedium' => crusader.moons.first.store_image.medium.url,
-            'storeImageSmall' => crusader.moons.first.store_image.small.url,
+            'storeImage' => @crusader.moons.first.store_image.url,
+            'storeImageLarge' => @crusader.moons.first.store_image.large.url,
+            'storeImageMedium' => @crusader.moons.first.store_image.medium.url,
+            'storeImageSmall' => @crusader.moons.first.store_image.small.url,
             'description' => nil,
             'habitable' => nil,
             'fairchanceact' => nil,
@@ -449,16 +115,16 @@ module Api
             'danger' => nil,
             'economy' => nil,
             'population' => nil,
-            'locationLabel' => crusader.moons.first.location_label,
+            'locationLabel' => @crusader.moons.first.location_label,
             'parent' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
               'type' => nil,
               'designation' => '2',
-              'storeImage' => crusader.store_image.url,
-              'storeImageLarge' => crusader.store_image.large.url,
-              'storeImageMedium' => crusader.store_image.medium.url,
-              'storeImageSmall' => crusader.store_image.small.url,
+              'storeImage' => @crusader.store_image.url,
+              'storeImageLarge' => @crusader.store_image.large.url,
+              'storeImageMedium' => @crusader.store_image.medium.url,
+              'storeImageSmall' => @crusader.store_image.small.url,
               'description' => nil,
               'habitable' => nil,
               'fairchanceact' => nil,
@@ -467,14 +133,14 @@ module Api
               'danger' => nil,
               'economy' => nil,
               'population' => nil,
-              'locationLabel' => crusader.location_label,
+              'locationLabel' => @crusader.location_label,
               'starsystem' => {
                 'name' => 'Stanton',
                 'slug' => 'stanton',
-                'storeImage' => crusader.starsystem.store_image.url,
-                'storeImageLarge' => crusader.starsystem.store_image.large.url,
-                'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-                'storeImageSmall' => crusader.starsystem.store_image.small.url,
+                'storeImage' => @crusader.starsystem.store_image.url,
+                'storeImageLarge' => @crusader.starsystem.store_image.large.url,
+                'storeImageMedium' => @crusader.starsystem.store_image.medium.url,
+                'storeImageSmall' => @crusader.starsystem.store_image.small.url,
                 'mapX' => nil,
                 'mapY' => nil,
                 'description' => nil,
@@ -484,16 +150,16 @@ module Api
                 'economy' => nil,
                 'danger' => nil,
                 'status' => nil,
-                'locationLabel' => crusader.starsystem.location_label,
+                'locationLabel' => @crusader.starsystem.location_label,
               },
             },
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => crusader.starsystem.store_image.url,
-              'storeImageLarge' => crusader.starsystem.store_image.large.url,
-              'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-              'storeImageSmall' => crusader.starsystem.store_image.small.url,
+              'storeImage' => @crusader.starsystem.store_image.url,
+              'storeImageLarge' => @crusader.starsystem.store_image.large.url,
+              'storeImageMedium' => @crusader.starsystem.store_image.medium.url,
+              'storeImageSmall' => @crusader.starsystem.store_image.small.url,
               'mapX' => nil,
               'mapY' => nil,
               'description' => nil,
@@ -503,17 +169,17 @@ module Api
               'economy' => nil,
               'danger' => nil,
               'status' => nil,
-              'locationLabel' => crusader.starsystem.location_label,
+              'locationLabel' => @crusader.starsystem.location_label,
             },
           }, {
             'name' => 'Daymar',
             'slug' => 'daymar',
             'type' => nil,
             'designation' => '4',
-            'storeImage' => crusader.moons.last.store_image.url,
-            'storeImageLarge' => crusader.moons.last.store_image.large.url,
-            'storeImageMedium' => crusader.moons.last.store_image.medium.url,
-            'storeImageSmall' => crusader.moons.last.store_image.small.url,
+            'storeImage' => @crusader.moons.last.store_image.url,
+            'storeImageLarge' => @crusader.moons.last.store_image.large.url,
+            'storeImageMedium' => @crusader.moons.last.store_image.medium.url,
+            'storeImageSmall' => @crusader.moons.last.store_image.small.url,
             'description' => nil,
             'habitable' => nil,
             'fairchanceact' => nil,
@@ -522,16 +188,16 @@ module Api
             'danger' => nil,
             'economy' => nil,
             'population' => nil,
-            'locationLabel' => crusader.moons.last.location_label,
+            'locationLabel' => @crusader.moons.last.location_label,
             'parent' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
               'type' => nil,
               'designation' => '2',
-              'storeImage' => crusader.store_image.url,
-              'storeImageLarge' => crusader.store_image.large.url,
-              'storeImageMedium' => crusader.store_image.medium.url,
-              'storeImageSmall' => crusader.store_image.small.url,
+              'storeImage' => @crusader.store_image.url,
+              'storeImageLarge' => @crusader.store_image.large.url,
+              'storeImageMedium' => @crusader.store_image.medium.url,
+              'storeImageSmall' => @crusader.store_image.small.url,
               'description' => nil,
               'habitable' => nil,
               'fairchanceact' => nil,
@@ -540,14 +206,14 @@ module Api
               'danger' => nil,
               'economy' => nil,
               'population' => nil,
-              'locationLabel' => crusader.location_label,
+              'locationLabel' => @crusader.location_label,
               'starsystem' => {
                 'name' => 'Stanton',
                 'slug' => 'stanton',
-                'storeImage' => crusader.starsystem.store_image.url,
-                'storeImageLarge' => crusader.starsystem.store_image.large.url,
-                'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-                'storeImageSmall' => crusader.starsystem.store_image.small.url,
+                'storeImage' => @crusader.starsystem.store_image.url,
+                'storeImageLarge' => @crusader.starsystem.store_image.large.url,
+                'storeImageMedium' => @crusader.starsystem.store_image.medium.url,
+                'storeImageSmall' => @crusader.starsystem.store_image.small.url,
                 'mapX' => nil,
                 'mapY' => nil,
                 'description' => nil,
@@ -557,16 +223,16 @@ module Api
                 'economy' => nil,
                 'danger' => nil,
                 'status' => nil,
-                'locationLabel' => crusader.starsystem.location_label,
+                'locationLabel' => @crusader.starsystem.location_label,
               },
             },
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => crusader.starsystem.store_image.url,
-              'storeImageLarge' => crusader.starsystem.store_image.large.url,
-              'storeImageMedium' => crusader.starsystem.store_image.medium.url,
-              'storeImageSmall' => crusader.starsystem.store_image.small.url,
+              'storeImage' => @crusader.starsystem.store_image.url,
+              'storeImageLarge' => @crusader.starsystem.store_image.large.url,
+              'storeImageMedium' => @crusader.starsystem.store_image.medium.url,
+              'storeImageSmall' => @crusader.starsystem.store_image.small.url,
               'mapX' => nil,
               'mapY' => nil,
               'description' => nil,
@@ -576,59 +242,14 @@ module Api
               'economy' => nil,
               'danger' => nil,
               'status' => nil,
-              'locationLabel' => crusader.starsystem.location_label,
+              'locationLabel' => @crusader.starsystem.location_label,
             },
           }],
-          'createdAt' => crusader.created_at.utc.iso8601,
-          'updatedAt' => crusader.updated_at.utc.iso8601
+          'createdAt' => @crusader.created_at.utc.iso8601,
+          'updatedAt' => @crusader.updated_at.utc.iso8601
         }
       end
-
-      describe 'without session' do
-        it 'should return list for index' do
-          get :index
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          assert_equal index_result, json
-        end
-
-        it 'should return a single record for show' do
-          get :show, params: { slug: crusader.slug }
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          assert_equal show_result, json
-        end
-      end
-
-      describe 'with session' do
-        let(:data) { users :data }
-
-        before do
-          sign_in data
-        end
-
-        it 'should return list for index' do
-          get :index
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          assert_equal index_result, json
-        end
-
-        it 'should return a single record for show' do
-          get :show, params: { slug: crusader.slug }
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          assert_equal show_result, json
-        end
-      end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end
