@@ -299,7 +299,7 @@ jobs:
               printf '.'
               sleep 5
           done
-      - run: cypress install
+      - run: ./node_modules/.bin/cypress install
       - name: Run E2E Tests
         run: yarn run test:e2e --record --parallel
 
