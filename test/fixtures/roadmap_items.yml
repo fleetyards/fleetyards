@@ -28,7 +28,7 @@ one:
   rsi_id: 1
   rsi_category_id: 1
   rsi_release_id: 1
-  release: 4.1
+  release: 4.0
   name: MyString
   body: MyText
   description: MyText
@@ -40,10 +40,10 @@ one:
 
 two:
   rsi_id: 1
-  rsi_category_id: 1
+  rsi_category_id: 2
   rsi_release_id: 1
-  release: 4.0
-  name: MyString
+  release: 4.1
+  name: MyStringB
   body: MyText
   description: MyText
   released: false
