@@ -7,7 +7,7 @@ module Api
     class FleetVehiclesControllerTest < ActionController::TestCase
       tests Api::V1::FleetVehiclesController
 
-      setup do
+      def setup
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
 

@@ -36,18 +36,18 @@
 class CelestialObject < ApplicationRecord
   paginates_per 30
 
-  searchkick searchable: %i[name starsystem],
+  searchkick searchable: %i[name starsystem parent designation],
              word_start: %i[name]
 
   def search_data
     {
       name: name,
-      starsystem: starsystem&.name
+      starsystem: starsystem&.slug,
+      parent: parent&.slug,
+      designation: designation,
+      main: parent.blank?,
+      visible: !hidden
     }
-  end
-
-  def should_index?
-    !hidden
   end
 
   belongs_to :starsystem, optional: true
@@ -70,9 +70,6 @@ class CelestialObject < ApplicationRecord
   before_save :update_slugs
 
   mount_uploader :store_image, StoreImageUploader
-
-  ransack_alias :starsystem, :starsystem_slug
-  ransack_alias :search, :name_or_slug_or_starsystem_slug
 
   def self.main
     where(parent_id: nil)

@@ -7,7 +7,7 @@ module Api
     class ShopsControllerTest < ActionController::TestCase
       tests Api::V1::ShopsController
 
-      setup do
+      def setup
         @admin_daymar = shops(:admin_daymar)
         @admin_yela = shops(:admin_yela)
         @admin_olisar = shops(:admin_olisar)

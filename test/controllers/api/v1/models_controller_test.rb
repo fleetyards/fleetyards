@@ -7,7 +7,7 @@ module Api
     class ModelsControllerTest < ActionController::TestCase
       tests Api::V1::ModelsController
 
-      setup do
+      def setup
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
 

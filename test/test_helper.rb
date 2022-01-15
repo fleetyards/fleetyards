@@ -56,6 +56,7 @@ class ActionController::TestCase
   parallelize_setup do |worker|
     Searchkick.index_suffix = worker
 
+    CelestialObject.reindex
     ShopCommodity.reindex
 
     # and disable callbacks

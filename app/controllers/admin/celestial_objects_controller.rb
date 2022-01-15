@@ -8,9 +8,9 @@ module Admin
     def index
       authorize! :index, :admin_celestial_objects
 
-      query_params['sorts'] = sort_by_name
+      @q = CelestialObject.ransack(params[:q])
 
-      @q = CelestialObject.ransack(query_params)
+      @q.sorts = 'name asc' if @q.sorts.empty?
 
       @celestial_objects = @q.result
         .page(params.fetch(:page) { nil })

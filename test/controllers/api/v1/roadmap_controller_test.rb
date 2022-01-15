@@ -7,7 +7,7 @@ module Api
     class RoadmapControllerTest < ActionController::TestCase
       tests Api::V1::RoadmapController
 
-      setup do
+      def setup
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
       end

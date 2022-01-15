@@ -184,7 +184,7 @@ export default {
       const response = await this.$api.get('celestial-objects', {
         q: {
           ...this.$route.query.q,
-          starsystemEq: this.$route.params.slug,
+          starsystem: [this.$route.params.slug],
           main: true,
         },
         page: this.$route.query.page,

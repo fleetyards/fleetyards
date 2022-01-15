@@ -35,8 +35,8 @@
 class ShopCommodity < ApplicationRecord
   paginates_per 30
 
-  searchkick word_start: %i[name manufacturer_name],
-             searchable: %i[name manufacturer_name created_at]
+  searchkick searchable: %i[name manufacturer_name created_at],
+             word_start: %i[name manufacturer_name]
 
   def search_data
     {
@@ -58,6 +58,7 @@ class ShopCommodity < ApplicationRecord
       equipment_type: (commodity_item.equipment_type if commodity_item_type == 'Equipment'),
       equipment_slot: (commodity_item.slot if commodity_item_type == 'Equipment'),
       confirmed: confirmed,
+      visible: !shop.hidden,
       created_at: created_at
     }
   end
@@ -129,12 +130,6 @@ class ShopCommodity < ApplicationRecord
   after_save :update_model_price
 
   attr_accessor :commodity_item_selected
-
-  # ransack_alias :name, :model_name_or_component_name_or_commodity_name_or_equipment_name_or_model_module_name
-  # ransack_alias :category, :commodity_item_type
-  # ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
-  # ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug
-  # ransack_alias :price, :sell_price_or_buy_price_or_rent_price
 
   def self.commodity_item_types
     %w[Model Equipment Commodity Component ModelModule ModelPaint]
