@@ -5,249 +5,90 @@ require 'test_helper'
 module Api
   module V1
     class TradeRoutesControllerTest < ActionController::TestCase
+      tests Api::V1::TradeRoutesController
+
       setup do
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
+
+        @data = users :data
+
+        @gold_yela_daymar = trade_routes :gold_yela_daymar
+        @titan_daymar_yela = trade_routes :titan_daymar_yela
+        @titan_daymar_olisar = trade_routes :titan_daymar_olisar
       end
 
-      tests Api::V1::TradeRoutesController
+      test 'should return list for index' do
+        get :index
 
-      let(:gold_yela_daymar) { trade_routes :gold_yela_daymar }
-      let(:titan_daymar_yela) { trade_routes :titan_daymar_yela }
-      let(:titan_daymar_olisar) { trade_routes :titan_daymar_olisar }
-      let(:index_result) do
-        [{
-          'id' => titan_daymar_yela.id,
-          'origin' => {
-            'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Daymar',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Daymar',
-            'planetSlug' => 'daymar',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'destination' => {
-            'name' => 'ArcCorp 002',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Yela',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Yela',
-            'planetSlug' => 'yela',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'commodity' => {
-            'name' => 'Titan',
-            'slug' => 'titan',
-            'type' => nil
-          },
-          'buyPrice' => '10.0',
-          'averageBuyPrice' => '10.0',
-          'sellPrice' => '20.0',
-          'averageSellPrice' => '20.0',
-          'profitPerUnit' => '10.0',
-          'averageProfitPerUnit' => '10.0',
-          'profitPerUnitPercent' => '50.0',
-          'averageProfitPerUnitPercent' => '50.0',
-          'createdAt' => titan_daymar_yela.created_at.utc.iso8601,
-          'updatedAt' => titan_daymar_yela.updated_at.utc.iso8601
-        }, {
-          'id' => titan_daymar_olisar.id,
-          'origin' => {
-            'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Daymar',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Daymar',
-            'planetSlug' => 'daymar',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'destination' => {
-            'name' => 'Port Olisar',
-            'slug' => 'port-olisar',
-            'type' => 'station',
-            'locationLabel' => 'in orbit around Crusader',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Crusader',
-            'planetSlug' => 'crusader',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'commodity' => {
-            'name' => 'Titan',
-            'slug' => 'titan',
-            'type' => nil
-          },
-          'buyPrice' => '10.0',
-          'averageBuyPrice' => '10.0',
-          'sellPrice' => '17.0',
-          'averageSellPrice' => '17.0',
-          'profitPerUnit' => '7.0',
-          'averageProfitPerUnit' => '7.0',
-          'profitPerUnitPercent' => '70.0',
-          'averageProfitPerUnitPercent' => '70.0',
-          'createdAt' => titan_daymar_olisar.created_at.utc.iso8601,
-          'updatedAt' => titan_daymar_olisar.updated_at.utc.iso8601
-        }, {
-          'id' => gold_yela_daymar.id,
-          'origin' => {
-            'name' => 'ArcCorp 002',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Yela',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Yela',
-            'planetSlug' => 'yela',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'destination' => {
-            'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Daymar',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Daymar',
-            'planetSlug' => 'daymar',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'commodity' => {
-            'name' => 'Gold',
-            'slug' => 'gold',
-            'type' => nil
-          },
-          'buyPrice' => '5.0',
-          'averageBuyPrice' => '5.0',
-          'sellPrice' => '10.0',
-          'averageSellPrice' => '10.0',
-          'profitPerUnit' => '5.0',
-          'averageProfitPerUnit' => '5.0',
-          'profitPerUnitPercent' => '50.0',
-          'averageProfitPerUnitPercent' => '50.0',
-          'createdAt' => gold_yela_daymar.created_at.utc.iso8601,
-          'updatedAt' => gold_yela_daymar.updated_at.utc.iso8601
-        }]
-      end
-      let(:filtered_index_result) do
-        [{
-          'id' => gold_yela_daymar.id,
-          'origin' => {
-            'name' => 'ArcCorp 002',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Yela',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Yela',
-            'planetSlug' => 'yela',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'destination' => {
-            'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Daymar',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Daymar',
-            'planetSlug' => 'daymar',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'commodity' => {
-            'name' => 'Gold',
-            'slug' => 'gold',
-            'type' => nil
-          },
-          'buyPrice' => '5.0',
-          'averageBuyPrice' => '5.0',
-          'sellPrice' => '10.0',
-          'averageSellPrice' => '10.0',
-          'profitPerUnit' => '5.0',
-          'averageProfitPerUnit' => '5.0',
-          'profitPerUnitPercent' => '50.0',
-          'averageProfitPerUnitPercent' => '50.0',
-          'createdAt' => gold_yela_daymar.created_at.utc.iso8601,
-          'updatedAt' => gold_yela_daymar.updated_at.utc.iso8601
-        }]
+        assert_response :ok
+
+        json = JSON.parse response.body
+        result = json.map { |item| item['id'] }
+
+        assert_equal [@titan_daymar_yela.id, @titan_daymar_olisar.id, @gold_yela_daymar.id], result
       end
 
-      describe 'without session' do
-        it 'should return list for index' do
-          get :index
+      test 'with session should return list for index' do
+        sign_in(@data)
 
-          assert_response :ok
-          json = JSON.parse response.body
+        get :index
 
-          assert_equal index_result, json
-        end
+        assert_response :ok
+
+        json = JSON.parse response.body
+        result = json.map { |item| item['id'] }
+
+        assert_equal [@titan_daymar_yela.id, @titan_daymar_olisar.id, @gold_yela_daymar.id], result
       end
 
-      describe 'with session' do
-        let(:data) { users :data }
+      test 'with session should return a filtered list for index' do
+        sign_in(@data)
 
-        before do
-          sign_in data
-        end
+        get :index, params: { q: { commodityIn: ['gold'] } }
 
-        it 'should return list for index' do
-          get :index
+        assert_response :ok
 
-          assert_response :ok
-          json = JSON.parse response.body
+        json = JSON.parse response.body
+        result = json.map { |item| item['id'] }
 
-          assert_equal index_result, json
-        end
+        assert_equal [@gold_yela_daymar.id], result
+      end
 
-        it 'should return a filtered list for index' do
-          get :index, params: { q: { commodityIn: ['gold'] } }
+      test 'with session should return an empty list for different commodity' do
+        sign_in(@data)
 
-          assert_response :ok
-          json = JSON.parse response.body
+        get :index, params: { q: { commodityIn: ['dilithium'] } }
 
-          assert_equal filtered_index_result, json
-        end
+        assert_response :ok
 
-        it 'should return an empty list for different commodity' do
-          get :index, params: { q: { commodityIn: ['dilithium'] } }
+        json = JSON.parse response.body
 
-          assert_response :ok
-          json = JSON.parse response.body
+        assert_empty json
+      end
 
-          assert_empty json
-        end
+      test 'with session should return an filtered list for origin' do
+        sign_in(@data)
 
-        it 'should return an filtered list for planet' do
-          get :index, params: { q: { originCelestialObjectIn: ['yela'] } }
+        get :index, params: { q: { originCelestialObjectIn: ['yela'] } }
 
-          assert_response :ok
-          json = JSON.parse response.body
+        assert_response :ok
 
-          assert_equal 1, json.size
-        end
+        json = JSON.parse response.body
 
-        it 'should return an filtered list for planet' do
-          get :index, params: { q: { destinationCelestialObjectIn: ['yela'] } }
+        assert_equal 1, json.size
+      end
 
-          assert_response :ok
-          json = JSON.parse response.body
+      test 'with session should return an filtered list for destination' do
+        sign_in(@data)
 
-          assert_equal 1, json.size
-        end
+        get :index, params: { q: { destinationCelestialObjectIn: ['yela'] } }
+
+        assert_response :ok
+
+        json = JSON.parse response.body
+
+        assert_equal 1, json.size
       end
     end
   end

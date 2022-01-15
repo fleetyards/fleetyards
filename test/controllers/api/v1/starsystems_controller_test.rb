@@ -5,270 +5,69 @@ require 'test_helper'
 module Api
   module V1
     class StarsystemsControllerTest < ActionController::TestCase
+      tests Api::V1::StarsystemsController
+
       setup do
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
+
+        @data = users :data
       end
 
-      tests Api::V1::StarsystemsController
+      test 'should return list for index' do
+        stanton = starsystems :stanton
+        oberon = starsystems :oberon
 
-      let(:stanton) { starsystems :stanton }
-      let(:oberon) { starsystems :oberon }
-      let(:index_result) do
-        [{
-          'name' => 'Oberon',
-          'slug' => 'oberon',
-          'storeImage' => oberon.store_image.url,
-          'storeImageLarge' => oberon.store_image.large.url,
-          'storeImageMedium' => oberon.store_image.medium.url,
-          'storeImageSmall' => oberon.store_image.small.url,
-          'mapX' => nil,
-          'mapY' => nil,
-          'description' => nil,
-          'type' => nil,
-          'size' => nil,
-          'population' => nil,
-          'economy' => nil,
-          'danger' => nil,
-          'status' => nil,
-          'locationLabel' => oberon.location_label,
-          'celestialObjects' => [],
-          'createdAt' => oberon.created_at.utc.iso8601,
-          'updatedAt' => oberon.updated_at.utc.iso8601
-        }, {
-          'name' => 'Stanton',
-          'slug' => 'stanton',
-          'storeImage' => stanton.store_image.url,
-          'storeImageLarge' => stanton.store_image.large.url,
-          'storeImageMedium' => stanton.store_image.medium.url,
-          'storeImageSmall' => stanton.store_image.small.url,
-          'description' => nil,
-          'mapX' => nil,
-          'mapY' => nil,
-          'type' => nil,
-          'size' => nil,
-          'population' => nil,
-          'economy' => nil,
-          'danger' => nil,
-          'status' => nil,
-          'locationLabel' => stanton.location_label,
-          'celestialObjects' => [{
-            'name' => 'Hurston',
-            'slug' => 'hurston',
-            'type' => nil,
-            'designation' => '1',
-            'storeImage' => stanton.celestial_objects.first.store_image.url,
-            'storeImageLarge' => stanton.celestial_objects.first.store_image.large.url,
-            'storeImageMedium' => stanton.celestial_objects.first.store_image.medium.url,
-            'storeImageSmall' => stanton.celestial_objects.first.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => stanton.celestial_objects.first.location_label,
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => stanton.store_image.url,
-              'storeImageLarge' => stanton.store_image.large.url,
-              'storeImageMedium' => stanton.store_image.medium.url,
-              'storeImageSmall' => stanton.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => stanton.location_label,
-            },
-          }, {
-            'name' => 'Crusader',
-            'slug' => 'crusader',
-            'type' => nil,
-            'designation' => '2',
-            'storeImage' => stanton.celestial_objects.last.store_image.url,
-            'storeImageLarge' => stanton.celestial_objects.last.store_image.large.url,
-            'storeImageMedium' => stanton.celestial_objects.last.store_image.medium.url,
-            'storeImageSmall' => stanton.celestial_objects.last.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => stanton.celestial_objects.last.location_label,
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => stanton.store_image.url,
-              'storeImageLarge' => stanton.store_image.large.url,
-              'storeImageMedium' => stanton.store_image.medium.url,
-              'storeImageSmall' => stanton.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => stanton.location_label,
-            },
-          }],
-          'createdAt' => stanton.created_at.utc.iso8601,
-          'updatedAt' => stanton.updated_at.utc.iso8601
-        }]
-      end
-      let(:show_result) do
-        {
-          'name' => 'Stanton',
-          'slug' => 'stanton',
-          'storeImage' => stanton.store_image.url,
-          'storeImageLarge' => stanton.store_image.large.url,
-          'storeImageMedium' => stanton.store_image.medium.url,
-          'storeImageSmall' => stanton.store_image.small.url,
-          'mapX' => nil,
-          'mapY' => nil,
-          'description' => nil,
-          'type' => nil,
-          'size' => nil,
-          'population' => nil,
-          'economy' => nil,
-          'danger' => nil,
-          'status' => nil,
-          'locationLabel' => stanton.location_label,
-          'celestialObjects' => [{
-            'name' => 'Hurston',
-            'slug' => 'hurston',
-            'type' => nil,
-            'designation' => '1',
-            'storeImage' => stanton.celestial_objects.first.store_image.url,
-            'storeImageLarge' => stanton.celestial_objects.first.store_image.large.url,
-            'storeImageMedium' => stanton.celestial_objects.first.store_image.medium.url,
-            'storeImageSmall' => stanton.celestial_objects.first.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => stanton.celestial_objects.first.location_label,
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => stanton.store_image.url,
-              'storeImageLarge' => stanton.store_image.large.url,
-              'storeImageMedium' => stanton.store_image.medium.url,
-              'storeImageSmall' => stanton.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => stanton.location_label,
-            },
-          }, {
-            'name' => 'Crusader',
-            'slug' => 'crusader',
-            'type' => nil,
-            'designation' => '2',
-            'storeImage' => stanton.celestial_objects.last.store_image.url,
-            'storeImageLarge' => stanton.celestial_objects.last.store_image.large.url,
-            'storeImageMedium' => stanton.celestial_objects.last.store_image.medium.url,
-            'storeImageSmall' => stanton.celestial_objects.last.store_image.small.url,
-            'description' => nil,
-            'habitable' => nil,
-            'fairchanceact' => nil,
-            'subType' => nil,
-            'size' => nil,
-            'danger' => nil,
-            'economy' => nil,
-            'population' => nil,
-            'locationLabel' => stanton.celestial_objects.last.location_label,
-            'starsystem' => {
-              'name' => 'Stanton',
-              'slug' => 'stanton',
-              'storeImage' => stanton.store_image.url,
-              'storeImageLarge' => stanton.store_image.large.url,
-              'storeImageMedium' => stanton.store_image.medium.url,
-              'storeImageSmall' => stanton.store_image.small.url,
-              'mapX' => nil,
-              'mapY' => nil,
-              'description' => nil,
-              'type' => nil,
-              'size' => nil,
-              'population' => nil,
-              'economy' => nil,
-              'danger' => nil,
-              'status' => nil,
-              'locationLabel' => stanton.location_label,
-            },
-          }],
-          'createdAt' => stanton.created_at.utc.iso8601,
-          'updatedAt' => stanton.updated_at.utc.iso8601
-        }
+        get :index
+
+        assert_response :ok
+
+        json = JSON.parse response.body
+        result = json.map { |item| item['name'] }
+
+        assert_equal [oberon.name, stanton.name], result
       end
 
-      describe 'without session' do
-        it 'should return list for index' do
-          get :index
+      test 'should return a single record for show' do
+        stanton = starsystems :stanton
 
-          assert_response :ok
-          json = JSON.parse response.body
+        get :show, params: { slug: stanton.slug }
 
-          assert_equal index_result, json
-        end
+        assert_response :ok
 
-        it 'should return a single record for show' do
-          get :show, params: { slug: stanton.slug }
+        json = JSON.parse response.body
 
-          assert_response :ok
-          json = JSON.parse response.body
-
-          assert_equal show_result, json
-        end
+        assert_equal stanton.name, json['name']
       end
 
-      describe 'with session' do
-        let(:data) { users :data }
+      test 'with session should return list for index' do
+        sign_in(@data)
 
-        before do
-          sign_in data
-        end
+        stanton = starsystems :stanton
+        oberon = starsystems :oberon
 
-        it 'should return list for index' do
-          get :index
+        get :index
 
-          assert_response :ok
-          json = JSON.parse response.body
+        assert_response :ok
 
-          assert_equal index_result, json
-        end
+        json = JSON.parse response.body
+        result = json.map { |item| item['name'] }
 
-        it 'should return a single record for show' do
-          get :show, params: { slug: stanton.slug }
+        assert_equal [oberon.name, stanton.name], result
+      end
 
-          assert_response :ok
-          json = JSON.parse response.body
+      test 'with session should return a single record for show' do
+        sign_in(@data)
 
-          assert_equal show_result, json
-        end
+        stanton = starsystems :stanton
+
+        get :show, params: { slug: stanton.slug }
+
+        assert_response :ok
+
+        json = JSON.parse response.body
+
+        assert_equal stanton.name, json['name']
       end
     end
   end

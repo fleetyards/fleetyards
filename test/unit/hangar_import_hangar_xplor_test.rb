@@ -14,7 +14,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
   test 'imports all data' do
     expectation = {
       missing: [
-        'Rover',
+        'Rover'
       ],
       imported: [
         '100i',

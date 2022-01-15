@@ -22,7 +22,9 @@ module Api
         get :index, params: { fleet_slug: @starfleet.slug }
 
         assert_response :unauthorized
+
         json = JSON.parse response.body
+
         assert_equal 'unauthorized', json['code']
       end
 
@@ -30,7 +32,9 @@ module Api
         post :create, params: { fleet_slug: @starfleet.slug }
 
         assert_response :unauthorized
+
         json = JSON.parse response.body
+
         assert_equal 'unauthorized', json['code']
       end
 
@@ -38,7 +42,9 @@ module Api
         delete :destroy, params: { fleet_slug: @starfleet.slug, token: @fleet_invite_url.token }
 
         assert_response :unauthorized
+
         json = JSON.parse response.body
+
         assert_equal 'unauthorized', json['code']
       end
 
@@ -51,21 +57,7 @@ module Api
 
         json = JSON.parse response.body
 
-        expectation = [
-          {
-            'token' => @fleet_invite_url.token,
-            'url' => @fleet_invite_url.url,
-            'expiresAfter' => @fleet_invite_url.expires_after&.utc&.iso8601,
-            'expiresAfterLabel' => @fleet_invite_url.expires_after_label,
-            'expired' => @fleet_invite_url.expired?,
-            'limit' => @fleet_invite_url.limit,
-            'limitReached' => @fleet_invite_url.limit_reached?,
-            'createdAt' => @fleet_invite_url.created_at.utc.iso8601,
-            'updatedAt' => @fleet_invite_url.updated_at.utc.iso8601
-          }
-        ]
-
-        assert_equal expectation, json
+        assert_equal @fleet_invite_url.token, json.first['token']
       end
 
       test 'with session should render 403 for create' do
@@ -74,7 +66,9 @@ module Api
         post :create, params: { fleet_slug: @starfleet.slug }
 
         assert_response :forbidden
+
         json = JSON.parse response.body
+
         assert_equal 'forbidden', json['code']
       end
 
@@ -84,7 +78,9 @@ module Api
         delete :destroy, params: { fleet_slug: @starfleet.slug, token: @fleet_invite_url.token }
 
         assert_response :forbidden
+
         json = JSON.parse response.body
+
         assert_equal 'forbidden', json['code']
       end
 
@@ -97,21 +93,7 @@ module Api
 
         json = JSON.parse response.body
 
-        expectation = [
-          {
-            'token' => @fleet_invite_url.token,
-            'url' => @fleet_invite_url.url,
-            'expiresAfter' => @fleet_invite_url.expires_after&.utc&.iso8601,
-            'expiresAfterLabel' => @fleet_invite_url.expires_after_label,
-            'expired' => @fleet_invite_url.expired?,
-            'limit' => @fleet_invite_url.limit,
-            'limitReached' => @fleet_invite_url.limit_reached?,
-            'createdAt' => @fleet_invite_url.created_at.utc.iso8601,
-            'updatedAt' => @fleet_invite_url.updated_at.utc.iso8601
-          }
-        ]
-
-        assert_equal expectation, json
+        assert_equal @fleet_invite_url.token, json.first['token']
       end
 
       test 'with admin session should create new invite url' do
