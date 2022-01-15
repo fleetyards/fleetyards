@@ -9,16 +9,15 @@ module Api
       def index
         authorize! :index, :api_celestial_objects
 
-        sorts = ['parent_id desc', 'designation asc']
-        celestial_object_query_params['sorts'] = sort_by_name(sorts, sorts)
-
-        @q = CelestialObject.includes(:starsystem, :parent)
-          .visible
-          .ransack(celestial_object_query_params)
-
-        @celestial_objects = @q.result(distinct: true)
-          .page(params[:page])
-          .per(per_page(CelestialObject))
+        @celestial_objects = CelestialObject.search(
+          search_params || '*',
+          fields: [{ name: :word_start }],
+          where: query_params.merge({ visible: true }),
+          order: sort_params,
+          page: params[:page],
+          per_page: per_page(CelestialObject),
+          includes: %i[starsystem parent]
+        )
       end
 
       def show
@@ -27,19 +26,36 @@ module Api
         @celestial_object = CelestialObject.visible.find_by!(slug: params[:slug])
       end
 
-      private def celestial_object_query_params
-        @celestial_object_query_params ||= begin
-          permitted_query_params = query_params(
-            :starsystem_eq, :main, :name_cont, :search_cont,
-            name_in: []
+      private def search_params
+        @search_params ||= params.permit(:search)[:search]
+      end
+
+      private def query_params
+        @query_params ||= begin
+          permitted_params = params.permit(
+            q: [
+              :main, { name: [], starsystem: [], parent: [] }
+            ]
           )
 
-          if permitted_query_params[:main].present?
-            permitted_query_params.delete(:main)
-            permitted_query_params[:parent_id_null] = true
-          end
+          permitted_params[:q] || {}
+        end
+      end
 
-          permitted_query_params
+      private def sort_params
+        @sort_params ||= begin
+          permitted_params = params.permit(
+            sort: [
+              :parent,
+              :designation,
+              :name
+            ]
+          )
+
+          permitted_params[:sort] || {
+            parent: { order: :desc, missing: :_first },
+            designation: :asc
+          }
         end
       end
     end

@@ -36,20 +36,20 @@ hurston:
   name: Hurston
   slug: hurston
   starsystem: stanton
-  designation: 1
+  designation: Stanton I
   hidden: false
 
 crusader:
   name: Crusader
   slug: crusader
-  designation: 2
+  designation: Stanton II
   starsystem: stanton
   hidden: false
 
 yela:
   name: Yela
   slug: yela
-  designation: 3
+  designation: Stanton 2c
   parent: crusader
   starsystem: stanton
   hidden: false
@@ -57,7 +57,7 @@ yela:
 daymar:
   name: Daymar
   slug: daymar
-  designation: 4
+  designation: Stanton 2b
   parent: crusader
   starsystem: stanton
   hidden: false

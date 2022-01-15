@@ -7,17 +7,28 @@ module Api
     class CelestialObjectsControllerTest < ActionController::TestCase
       tests Api::V1::CelestialObjectsController
 
+      def setup
+        Searchkick.enable_callbacks
+
+        @request.headers['Accept'] = Mime[:json]
+        @request.headers['Content-Type'] = Mime[:json].to_s
+      end
+
+      def teardown
+        Searchkick.disable_callbacks
+      end
+
       test 'should return list for index' do
-        get :index
+        VCR.use_cassette('celestial_objects_index') do
+          get :index
 
-        assert_response :ok
+          assert_response :ok
 
-        json = JSON.parse response.body
-        result = json.map { |item| item['slug'] }
+          json = JSON.parse response.body
+          result = json.map { |item| item['slug'] }
 
-        expectation = CelestialObject.visible.order('parent_id desc', 'designation asc').pluck(:slug)
-
-        assert_equal expectation, result
+          assert_equal ['hurston', 'crusader', 'daymar', 'yela'], result
+        end
       end
 
       test 'should return a single record for show' do
@@ -37,16 +48,16 @@ module Api
 
         sign_in(data)
 
-        get :index
+        VCR.use_cassette('celestial_objects_index') do
+          get :index
 
-        assert_response :ok
+          assert_response :ok
 
-        json = JSON.parse response.body
-        result = json.map { |item| item['slug'] }
+          json = JSON.parse response.body
+          result = json.map { |item| item['slug'] }
 
-        expectation = CelestialObject.visible.order('parent_id desc', 'designation asc').pluck(:slug)
-
-        assert_equal expectation, result
+          assert_equal ['hurston', 'crusader', 'daymar', 'yela'], result
+        end
       end
 
       test 'with session should return a single record for show' do

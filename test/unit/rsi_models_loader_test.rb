@@ -4,13 +4,13 @@ require 'test_helper'
 require 'rsi/models_loader'
 
 class RsiModelsLoaderTest < ActiveSupport::TestCase
-  setup do
+  def setup
     @loader = ::Rsi::ModelsLoader.new
 
     Timecop.freeze('2017-01-01 14:00:00')
   end
 
-  teardown do
+  def teardown
     Timecop.return
   end
 

@@ -5,7 +5,7 @@ require 'hangar_importer'
 require 'rsi/models_loader'
 
 class HangarImporterHangarXplorTest < ActiveSupport::TestCase
-  setup do
+  def setup
     VCR.use_cassette('rsi_models_loader_all') do
       ::Rsi::ModelsLoader.new.all
     end

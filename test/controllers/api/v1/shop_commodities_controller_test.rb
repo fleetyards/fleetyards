@@ -7,7 +7,7 @@ module Api
     class ShopCommoditiesControllerTest < ActionController::TestCase
       tests Api::V1::ShopCommoditiesController
 
-      setup do
+      def setup
         Searchkick.enable_callbacks
 
         @request.headers['Accept'] = Mime[:json]

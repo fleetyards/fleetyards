@@ -14,7 +14,7 @@ module Api
           fields: [{ name: :word_start }],
           where: deprecated_query_params.merge(query_params)
                                         .merge(price_params)
-                                        .merge({ shop_id: shop.id }),
+                                        .merge({ shop_id: shop.id, visible: true }),
           order: order_params,
           page: params[:page],
           per_page: per_page(ShopCommodity),

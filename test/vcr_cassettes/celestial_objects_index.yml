@@ -1,0 +1,94 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:9200/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - 'elasticsearch-ruby/7.16.1 (RUBY_VERSION: 3.0.3; darwin x86_64; Faraday v1.9.3)'
+      Content-Type:
+      - application/json
+      X-Elastic-Client-Meta:
+      - es=7.16.1,rb=3.0.3,t=7.16.1,fd=1.9.3,ty=1.4.0
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Elastic-Product:
+      - Elasticsearch
+      Warning:
+      - 299 Elasticsearch-7.15.2-93d5a7f6192e8a1a12e154a2b81bf6fa7309da0c "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.15/security-minimal-setup.html
+        to enable security."
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '540'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "name" : "corvus",
+          "cluster_name" : "elasticsearch_brew",
+          "cluster_uuid" : "J03eo7rVRsiDQg7LMphO1g",
+          "version" : {
+            "number" : "7.15.2",
+            "build_flavor" : "default",
+            "build_type" : "tar",
+            "build_hash" : "93d5a7f6192e8a1a12e154a2b81bf6fa7309da0c",
+            "build_date" : "2021-11-04T14:04:42.515624022Z",
+            "build_snapshot" : false,
+            "lucene_version" : "8.9.0",
+            "minimum_wire_compatibility_version" : "6.8.0",
+            "minimum_index_compatibility_version" : "6.0.0-beta1"
+          },
+          "tagline" : "You Know, for Search"
+        }
+  recorded_at: Sat, 15 Jan 2022 22:30:29 GMT
+- request:
+    method: post
+    uri: http://localhost:9200/fleetyards-test_celestial_objects_test/_search
+    body:
+      encoding: UTF-8
+      string: '{"query":{"bool":{"must":{"match_all":{}},"filter":[{"term":{"visible":{"value":true}}}]}},"sort":{"parent":{"order":"desc","missing":"_first"},"designation":"asc"},"timeout":"11s","_source":false,"size":30}'
+    headers:
+      User-Agent:
+      - 'elasticsearch-ruby/7.16.1 (RUBY_VERSION: 3.0.3; darwin x86_64; Faraday v1.9.3)'
+      Content-Type:
+      - application/json
+      X-Elastic-Client-Meta:
+      - es=7.16.1,rb=3.0.3,t=7.16.1,fd=1.9.3,ty=1.4.0
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Elastic-Product:
+      - Elasticsearch
+      Warning:
+      - 299 Elasticsearch-7.15.2-93d5a7f6192e8a1a12e154a2b81bf6fa7309da0c "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.15/security-minimal-setup.html
+        to enable security."
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '854'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"took":1,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":4,"relation":"eq"},"max_score":null,"hits":[{"_index":"fleetyards-test_celestial_objects_test_20220115232758118","_type":"_doc","_id":"0b76741a-7eec-5ba5-a11f-923809593193","_score":null,"sort":[null,"Stanton
+        I"]},{"_index":"fleetyards-test_celestial_objects_test_20220115232758118","_type":"_doc","_id":"cfc1023f-05ca-56c9-9d8d-284282d2236a","_score":null,"sort":[null,"Stanton
+        II"]},{"_index":"fleetyards-test_celestial_objects_test_20220115232758118","_type":"_doc","_id":"baf764f5-e925-5336-a87d-2356dbeb320e","_score":null,"sort":["crusader","Stanton
+        2b"]},{"_index":"fleetyards-test_celestial_objects_test_20220115232758118","_type":"_doc","_id":"909541a8-1681-5ca9-9edf-37cddafa34fc","_score":null,"sort":["crusader","Stanton
+        2c"]}]}}'
+  recorded_at: Sat, 15 Jan 2022 22:30:29 GMT
+recorded_with: VCR 6.0.0

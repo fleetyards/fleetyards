@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class ScDataLoaderTest < ActiveSupport::TestCase
-  setup do
+  def setup
     Timecop.freeze('2017-01-01 14:00:00')
 
     @constellation_rsi_id = 45
@@ -13,7 +13,7 @@ class ScDataLoaderTest < ActiveSupport::TestCase
     end
   end
 
-  teardown do
+  def teardown
     Timecop.return
   end
 
