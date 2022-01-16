@@ -45,10 +45,10 @@ module Api
       private def sort_params
         @sort_params ||= begin
           permitted_params = params.permit(
-            sort: [
-              :parent,
-              :designation,
-              :name
+            sort: %i[
+              parent
+              designation
+              name
             ]
           )
 
