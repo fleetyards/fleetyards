@@ -27,7 +27,7 @@ module Api
           json = JSON.parse response.body
           result = json.map { |item| item['slug'] }
 
-          assert_equal ['hurston', 'crusader', 'daymar', 'yela'], result
+          assert_equal %w[hurston crusader daymar yela], result
         end
       end
 
@@ -56,7 +56,7 @@ module Api
           json = JSON.parse response.body
           result = json.map { |item| item['slug'] }
 
-          assert_equal ['hurston', 'crusader', 'daymar', 'yela'], result
+          assert_equal %w[hurston crusader daymar yela], result
         end
       end
 
