@@ -35,7 +35,7 @@
     "@sentry/browser": "6.16.1",
     "@sentry/integrations": "6.16.1",
     "ahoy.js": "0.4.0",
-    "axios": "0.24.0",
+    "axios": "0.25.0",
     "babel-loader": "8.2.3",
     "babel-preset-typescript-vue": "^1.1.1",
     "bootstrap": "4.6.0",
