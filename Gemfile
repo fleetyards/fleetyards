@@ -25,6 +25,7 @@ gem 'sassc-rails'
 gem 'selectize-rails'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
+gem 'tailwindcss-rails'
 gem 'turbo-rails'
 
 gem 'bootstrap'

@@ -125,5 +125,13 @@ module.exports = {
         'import/prefer-default-export': 'off',
       },
     },
+    {
+      files: ['config/**/*.js'],
+      rules: {
+        'import/no-unresolved': 'off',
+        'import/prefer-default-export': 'off',
+        'global-require': 'off',
+      },
+    },
   ],
 }

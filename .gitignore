@@ -50,3 +50,6 @@ REVISION
 cypress/*
 
 .sc_data_version
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

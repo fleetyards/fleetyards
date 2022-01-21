@@ -1,0 +1,4 @@
+<%= render('shared/nav-item', label: I18n.t(:"nav.maintenance"), collapsed: collapsed, icon: 'fad fa-cogs', submenu: 'maintenance') do %>
+  <%= render('shared/nav-sub-item', label: I18n.t(:"nav.workers"), path: admin_sidekiq_web_url, icon: 'fad fa-layer-group', external: true) %>
+  <%= render('shared/nav-sub-item', label: I18n.t(:"nav.pghero"), path: admin_pg_hero_url, icon: 'fad fa-database', external: true) %>
+<% end %>
