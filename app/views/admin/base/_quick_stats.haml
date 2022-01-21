@@ -1,9 +1,8 @@
-
-javascript:
-  window.App.Dashboard.quickstats = {
-    url: '#{quick_stats_admin_api_v1_stats_url}',
+.row{data: {
+    controller: 'quickstats',
+    'quickstats-url-value': quick_stats_admin_api_v1_stats_url
   }
-.row
+}
   .col-12.col-md-6
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
@@ -11,11 +10,11 @@ javascript:
           .panel-heading
             .row
               .col-3.d-flex.align-items-center
-                i.fad.fa-user.fa-4x
+                %i.fad.fa-user.fa-4x
               .col-9.text-right
-                .text-huge#online-count
+                .text-huge#online-count{data: { 'quickstats-target': 'onlineCount' }}
                   = online_count
-                div
+                %div
                   = I18n.t('labels.panels.online_count')
 
   .col-12.col-md-6
@@ -25,11 +24,11 @@ javascript:
           .panel-heading
             .row
               .col-3.d-flex.align-items-center
-                i.fad.fa-users.fa-4x
+                %i.fad.fa-users.fa-4x
               .col-9.text-right
-                .text-huge#users-count-total
+                .text-huge#users-count-total{data: { 'quickstats-target': 'usersCountTotal' }}
                   = User.count
-                div
+                %div
                   = I18n.t('labels.panels.users_count_total')
 
   .col-12.col-md-6
@@ -39,11 +38,11 @@ javascript:
           .panel-heading
             .row
               .col-3.d-flex.align-items-center
-                i.fad.fa-rocket-launch.fa-4x
+                %i.fad.fa-rocket-launch.fa-4x
               .col-9.text-right
-                .text-huge#ships-count-year
+                .text-huge#ships-count-year{data: { 'quickstats-target': 'shipsCountYear' }}
                   = Model.year(Time.current.year).count
-                div
+                %div
                   = I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year)
 
   .col-12.col-md-6
@@ -53,11 +52,11 @@ javascript:
           .panel-heading
             .row
               .col-3.d-flex.align-items-center
-                i.fad.fa-starship.fa-4x
+                %i.fad.fa-starship.fa-4x
               .col-9.text-right
-                .text-huge#ships-count-total
+                .text-huge#ships-count-total{data: { 'quickstats-target': 'shipsCountTotal' }}
                   = Model.count
-                div
+                %div
                   = I18n.t('labels.panels.ships_count_total')
 
   .col-12.col-md-6
@@ -67,10 +66,10 @@ javascript:
           .panel-heading
             .row
               .col-3.d-flex.align-items-center
-                i.fad.fa-users-class.fa-4x
+                %i.fad.fa-users-class.fa-4x
               .col-9.text-right
-                .text-huge#fleets-count-total
+                .text-huge#fleets-count-total{data: { 'quickstats-target': 'fleetsCountTotal' }}
                   = Fleet.count
-                div
+                %div
                   = I18n.t('labels.panels.fleets_count_total')
 

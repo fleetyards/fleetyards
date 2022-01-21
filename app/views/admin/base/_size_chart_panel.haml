@@ -1,0 +1,16 @@
+.panel-wrapper.panel-outer-spacing
+  .panel
+    .panel-inner
+      .panel-heading
+        %h2.panel-title
+          = I18n.t(:"labels.panels.models_by_size")
+      .panel-body
+        %div{data: {
+            controller: "chart",
+            'chart-url-value': api_url(models_by_size_api_v1_stats_path),
+            'chart-type-value': "pie",
+            'chart-height-value': "453px",
+            'chart-tooltip-value': "ship-pie"
+          },
+          style: 'height: 453px;'
+        }

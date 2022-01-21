@@ -1,5 +1,7 @@
 import '@hotwired/turbo-rails'
 import 'highcharts-options'
+import 'popper'
+import 'bootstrap'
 import 'admin-app'
 
 // $(document).on('show.bs.collapse', '.navbar-collapse', () => {
