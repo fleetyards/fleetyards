@@ -5,14 +5,14 @@
 
     .row
       .col-12
-        h2= I18n.t(:title, scope: 'devise.otp')
+        %h2= I18n.t(:title, scope: 'devise.otp')
 
     .row
       .col-12
         .panel.panel-default
           .panel-inner
             .panel-body
-              p
+              %p
                 == I18n.t(:explain, scope: 'devise.otp',
                           google_auth_link: 'https://support.google.com/accounts/answer/1066447?hl=de',
                           one_password_link: 'https://agilebits.com/onepassword',
@@ -20,48 +20,48 @@
 
               - if current_user.reload.otp_required_for_login?
                 - if @codes.present?
-                  p
+                  %p
                     = I18n.t(:backup_explain, scope: 'devise.otp')
                   .row
                     .col-12.col-md-4
-                      pre
+                      %pre
                         == @codes.join("<br>")
                 - else
-                  p
+                  %p
                     = link_to I18n.t(:backup_codes, scope: 'devise.otp'), otp_backup_codes_admin_me_path, method: :post, class: "btn btn-warning"
 
-                hr
+                %hr
 
                 = form_for(current_user, url: [:disable_otp_admin, "me"], html: { method: :post }) do |f|
-                  p
+                  %p
                     = I18n.t(:disable_explain, scope: 'devise.otp')
                   .row
                     .col-12.col-md-4
                       = f.text_field :otp_attempt, autocomplete: :off, placeholder: I18n.t(:otp_token, scope: 'devise.otp'), class: "form-control"
 
-                  hr
+                  %hr
                   .btn-group-responsive
-                    button.btn.btn-primary.btn-lg
+                    %button.btn.btn-primary.btn-lg
                       = I18n.t(:disable, scope: 'devise.otp')
-                  br
+                  %br
               - else
                 = form_for(current_user, url: [:enable_otp_admin, "me"], html: { method: :post }) do |f|
-                  p
+                  %p
                     = I18n.t(:enable_explain, scope: 'devise.otp')
                   .row
                     .col-12.col-md-6
-                      pre
+                      %pre
                         = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.configuration.app.name)
-                      pre
-                        center
+                      %pre
+                        %center
                           = image_tag otp_qrcode_admin_me_url, class: "otp-qrcode"
-                  br
+                  %br
                   .row
                     .col-12.col-md-4
                       = f.text_field :otp_attempt, autocomplete: :off, placeholder: I18n.t(:otp_token, scope: 'devise.otp'), class: "form-control"
 
-                  hr
+                  %hr
                   .btn-group-responsive
-                    button.btn.btn-primary.btn-lg
+                    %button.btn.btn-primary.btn-lg
                       = I18n.t(:enable, scope: 'devise.otp')
-                  br
+                  %br
