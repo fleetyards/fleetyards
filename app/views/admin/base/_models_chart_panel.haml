@@ -1,0 +1,16 @@
+.panel-wrapper.panel-outer-spacing
+  .panel
+    .panel-inner
+      .panel-heading
+        %h2.panel-title
+          = I18n.t(:"labels.panels.models_per_month")
+      .panel-body
+        %div{data: {
+            controller: "chart",
+            'chart-url-value': api_url(models_per_month_api_v1_stats_path),
+            'chart-type-value': "column",
+            'chart-height-value': "344px",
+            'chart-tooltip-value': "ship"
+          },
+          style: 'height: 344px;'
+        }
