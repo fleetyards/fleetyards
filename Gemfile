@@ -27,6 +27,16 @@ gem 'sprockets-rails'
 gem 'stimulus-rails'
 gem 'turbo-rails'
 
+gem 'bootstrap'
+gem 'i18n-js'
+gem 'importmap-rails'
+gem 'js-routes'
+gem 'sassc-rails'
+gem 'selectize-rails'
+gem 'sprockets-rails'
+gem 'stimulus-rails'
+gem 'turbo-rails'
+
 gem 'graphql-client'
 
 gem 'searchkick'
