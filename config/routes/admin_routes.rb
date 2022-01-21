@@ -97,5 +97,7 @@ namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), cons
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 
+  get 'manifest.json' => 'base#manifest', format: false, as: :manifest
+
   root to: 'base#index'
 end

@@ -5,6 +5,7 @@
 # Table name: admin_users
 #
 #  id                        :uuid             not null, primary key
+#  avatar                    :string
 #  consumed_timestep         :integer
 #  current_sign_in_at        :datetime
 #  current_sign_in_ip        :string(255)
@@ -37,4 +38,10 @@ class AdminUser < ApplicationRecord
          :timeoutable, :rememberable,
          authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
          otp_backup_code_length: 32, otp_number_of_backup_codes: 10
+
+  mount_uploader :avatar, AvatarUploader
+
+  def shortname
+    username.slice(0, 2)
+  end
 end

@@ -4,6 +4,9 @@ module Admin
   class BaseController < ::Admin::ApplicationController
     layout 'admin/application'
 
+    before_action :authenticate_admin_user!, except: %i[manifest]
+    skip_authorization_check only: %i[manifest]
+
     def index
       authorize! :show, :admin
       @active_nav = 'admin'
@@ -12,6 +15,8 @@ module Admin
       @latest_manufacturers = Manufacturer.unscoped.order(updated_at: :desc).limit(8)
       @latest_components = Component.unscoped.order(updated_at: :desc).limit(8)
     end
+
+    def manifest; end
 
     private def online_count
       Ahoy::Event.without_users(tracking_blocklist)

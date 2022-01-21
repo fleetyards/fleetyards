@@ -86,6 +86,8 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
   get 'embed-v2-username-test' => 'embed#test_v2_username'
   get 'embed-v2-fleet-test' => 'embed#test_v2_fleet'
 
+  get 'manifest.json' => 'base#manifest', format: false, as: :manifest
+
   match '404' => 'base#not_found', via: :all
 
   root to: 'base#index'

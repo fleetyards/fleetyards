@@ -11,9 +11,6 @@ window.App.unloadSelect = () ->
   selectize = $selectize[0].selectize if $selectize
   selectize.destroy() if selectize
 
-$(document).on 'click', 'a.disabled', (evt) ->
-  false
-
 $(document).on 'dynamicFieldsFor.add', () ->
   App.initSelect()
 

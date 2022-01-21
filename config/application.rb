@@ -61,6 +61,7 @@ module Fleetyards
 
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
+    config.middleware.use I18n::JS::Middleware
 
     config.app = config_for('app/main')
     config.maintainer = config_for('app/maintainer')

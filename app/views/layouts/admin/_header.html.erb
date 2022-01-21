@@ -1,0 +1,36 @@
+<nav id="main-nav" class="navbar navbar-dark fixed-top bg-dark navbar-expand-lg" role="navigation">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="<%= admin_root_path %>">
+      <%= I18n.t(:"title.admin") %>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="<%= I18n.t(:"nav.header.toggle") %>">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <%= render "layouts/admin/nav" %>
+
+      <div class="navbar-nav environment-label me-3">
+        <%
+          css_classes = {
+            development: 'success',
+            staging: 'warning',
+            production: 'danger'
+          }
+        %>
+        <span class="pill pill-<%= css_classes[Rails.env.to_sym] %>">
+          <i class="far fa-info-circle"></i>
+          <%= Rails.env.upcase %>
+        </span>
+
+        <span class="pill pill-<%= css_classes[Rails.env.to_sym] %>">
+          <i class="far fa-fingerprint"></i>
+          <%= Git.revision_short %>
+        </span>
+      </div>
+
+      <%= render "layouts/admin/user_nav" %>
+    </div>
+  </div>
+</div>
