@@ -1,0 +1,48 @@
+<div class="panel-wrapper panel-outer-spacing">
+  <div class="panel">
+    <div class="panel-inner">
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <%= I18n.t(:"labels.panels.latest_manufacturers") %>
+        </h2>
+      </div>
+      <div class="table-responsive" style="height: 427px;">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th><%= I18n.t(:"labels.table.name") %></th>
+              <th><%= I18n.t(:"labels.table.updated_at") %></th>
+              <th class="actions actions-one"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @latest_manufacturers.each do |manufacturer| %>
+              <tr>
+                <td>
+                  <%= manufacturer.name.html_safe %>
+                </td>
+                <td>
+                  <%= I18n.l(manufacturer.updated_at, format: :short) %>
+                <td>
+                <td>
+                  <div class="btn-group">
+                    <%= link_to edit_admin_manufacturer_path(manufacturer), title: I18n.t(:"actions.edit"), class: "btn btn-dark" do %>
+                      <i class="fa fa-edit"></i>
+                    <% end %>
+                  </div>
+                <td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel-footer text-right">
+        <%= link_to admin_manufacturers_path do %>
+          <%= I18n.t('actions.more') %>
+          <i class="fa fa-angle-right"></i>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
