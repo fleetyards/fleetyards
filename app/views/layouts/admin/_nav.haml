@@ -1,4 +1,4 @@
-%ul.navbar-nav.mr-auto
+%ul.navbar-nav.me-auto
   - if admin_user_signed_in?
     - unconfirmed_shop_commodities = ShopCommodity.where(confirmed: false).count
     - unconfirmed_commodity_prices = CommodityPrice.where(confirmed: false).count

@@ -1,0 +1,41 @@
+//= require vendor/noty
+//= require vendor/ladda.min
+//= require_self
+
+// @import 'bootstrap';
+
+.chart {
+  position: relative;
+
+  &.loading::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    margin-top: -25px;
+    margin-left: -25px;
+    background-image: image-url('loading.svg');
+    background-position: center;
+    background-size: 100%;
+    content: '';
+  }
+}
+
+.background-image {
+  position: fixed;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  background-image: image-url('bg-6.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.4;
+  transition: background-image ease 0.5s;
+
+  &.webp {
+    background-image: image-url('bg-6.webp');
+  }
+}

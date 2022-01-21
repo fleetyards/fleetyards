@@ -18,11 +18,18 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
+gem 'bootstrap'
+gem 'importmap-rails'
+gem 'js-routes'
+gem 'sassc-rails'
+gem 'selectize-rails'
+gem 'sprockets-rails'
+gem 'stimulus-rails'
+gem 'turbo-rails'
+
 gem 'searchkick'
 
 gem 'discordrb-webhooks'
-
-gem 'selectize-rails'
 
 gem 'ahoy_matey'
 gem 'groupdate'
@@ -32,11 +39,8 @@ gem 'i18n', '1.8.11'
 gem 'i18n-js'
 gem 'rails-i18n', '~> 7.0.0'
 
-gem 'js_cookie_rails'
-
-gem 'inky-rb', require: 'inky'
-# Stylesheet inlining for email **
 gem 'foundation_emails'
+gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
 
 gem 'griddler'
@@ -68,12 +72,7 @@ gem 'dynamic_fields_for_rails'
 
 gem 'state_machine'
 
-gem 'coffee-rails'
-gem 'sass-rails'
 gem 'webpacker', '~> 5.x'
-
-gem 'jquery-rails'
-gem 'js-routes'
 
 gem 'uglifier'
 
@@ -94,9 +93,8 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
-gem 'sprockets-rails'
-
 gem 'nokogiri', '1.13.3'
+
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'

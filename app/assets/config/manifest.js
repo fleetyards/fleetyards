@@ -1,6 +1,6 @@
 //= link_tree ../images
-//= link application.css
-//= link application.js
+//= link admin.css
 //= link email.css
-//= link manifest.json
-//= link admin/manifest.json
+//= link i18n.js
+//= link_tree ../../javascript .js
+//= link_tree ../../../vendor/javascript .js

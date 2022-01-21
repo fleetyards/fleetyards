@@ -32,19 +32,19 @@ form {
     }
 
     ::-webkit-input-placeholder {
-      color: $form-feedback-invalid-color;
+      color: $danger;
     }
 
     :-moz-placeholder {
-      color: $form-feedback-invalid-color;
+      color: $danger;
     }
 
     ::-moz-placeholder {
-      color: $form-feedback-invalid-color;
+      color: $danger;
     }
 
     :-ms-input-placeholder {
-      color: $form-feedback-invalid-color;
+      color: $danger;
     }
   }
 

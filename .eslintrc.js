@@ -118,5 +118,12 @@ module.exports = {
         'jest/expect-expect': 'off',
       },
     },
+    {
+      files: ['app/javascript/**/*.js'],
+      rules: {
+        'import/no-unresolved': 'off',
+        'import/prefer-default-export': 'off',
+      },
+    },
   ],
 }

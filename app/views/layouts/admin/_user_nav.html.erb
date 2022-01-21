@@ -1,0 +1,23 @@
+<ul class="navbar-nav me-3">
+  <% if admin_user_signed_in? %>
+    <li class="dropdown <%= active_nav?(%w(admin-users admin-otp)) %>">
+      <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <span class="user-login">
+          <%= current_user.username %>
+        </span>
+        <b class="caret"></b>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <%= link_to I18n.t(:"nav.otp"), otp_admin_me_path, class: "dropdown-item #{active_nav?('admin-otp')}" %>
+
+        <div class="dropdown-divider"></div>
+
+        <%= link_to I18n.t(:"actions.sign_out"), destroy_admin_user_session_path, method: :delete, class: "dropdown-item" %>
+      </div>
+    </li>
+  <% else %>
+    <li class="<%= active_nav?(%w(sessions users)) %>">
+      <%= link_to I18n.t(:"actions.sign_in"), new_admin_user_session_path %>
+    </li>
+  <% end %>
+</ul>
