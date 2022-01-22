@@ -37,6 +37,7 @@ en:
     models: Models
     models_name_diff: Different RSI Name
     models_price_diff: Outdated Pledge Price
+    planets_and_stations: Planets & Stations
     otp: Two Factor Auth
     pghero: PGHero
     shop_commodities:

@@ -1,0 +1,47 @@
+<dl
+  data-controller="quickstats"
+  data-quickstats-url-value="<%= quick_stats_admin_api_v1_stats_url %>"
+  class="grid grid-cols-3 gap-4"
+>
+  <%= render 'shared/metrics', icon: 'fad fa-user', label: I18n.t('labels.panels.online_count') do %>
+    <span data-quickstats-target="onlineCount">
+      <%= online_count %>
+    </span>
+    <% if false %>
+      <p class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+        <!-- Heroicon name: solid/arrow-sm-up -->
+        <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+        <span class="sr-only">
+          Increased by
+        </span>
+        122
+      </p>
+    <% end %>
+  <% end %>
+
+  <%= render 'shared/metrics', icon: 'fad fa-users', label: I18n.t('labels.panels.users_count_total') do %>
+    <span data-quickstats-target="usersCountTotal">
+      <%= User.count %>
+    </span>
+  <% end %>
+
+  <%= render 'shared/metrics', icon: 'fad fa-rocket-launch', label: I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year) do %>
+    <span data-quickstats-target="shipsCountYear">
+      <%= Model.year(Time.current.year).count %>
+    </span>
+  <% end %>
+
+  <%= render 'shared/metrics', icon: 'fad fa-starship', label: I18n.t('labels.panels.ships_count_total') do %>
+    <span data-quickstats-target="shipsCountTotal">
+      <%= Model.count %>
+    </span>
+  <% end %>
+
+  <%= render 'shared/metrics', icon: 'fad fa-users-crown', label: I18n.t('labels.panels.fleets_count_total') do %>
+    <span data-quickstats-target="fleetsCountTotal">
+      <%= Fleet.count %>
+    </span>
+  <% end %>
+</dl>

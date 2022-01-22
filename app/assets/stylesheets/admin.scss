@@ -2,8 +2,6 @@
 //= require vendor/ladda.min
 //= require_self
 
-@import 'bootstrap';
-
 .chart {
   position: relative;
 
@@ -37,5 +35,13 @@
 
   &.webp {
     background-image: image-url('bg-6.webp');
+  }
+
+  &.error {
+    background-image: image-url('bg-404.jpg');
+
+    &.webp {
+      background-image: image-url('bg-404.webp');
+    }
   }
 }

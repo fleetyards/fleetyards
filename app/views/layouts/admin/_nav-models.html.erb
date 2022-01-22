@@ -1,0 +1,17 @@
+<%
+  active = active_nav?(%w(admin-models admin-model_paints admin-model_modules admin-model_module_packages admin-model_upgrades admin-manufacturers admin-components admin-models-name-diff admin-models-price-diff))
+  models_name_diff_count = Model.where('name != rsi_name AND rsi_id IS NOT NULL').count
+  models_price_diff_count = Model.where('pledge_price != last_pledge_price AND rsi_id IS NOT NULL').count
+%>
+<%= render('shared/nav-item', label: Model.name.humanize.pluralize, active: active, collapsed: collapsed, icon: 'fad fa-starship', submenu: 'models') do %>
+  <%= render('shared/nav-sub-item', label: Model.name.humanize.pluralize, icon: 'fad fa-starship', href: admin_models_path, active: active_nav?('admin-models')) %>
+  <% if false %>
+  <%= render('shared/nav-sub-item', label: ModelPaint.name.humanize.pluralize, icon: 'fad fa-palette', href: admin_model_paints_path, active: active_nav?('admin-model_paints')) %>
+  <%= render('shared/nav-sub-item', label: ModelModule.name.humanize.pluralize, icon: 'fad fa-tablet-rugged', href: admin_model_modules_path, active: active_nav?('admin-model_modules')) %>
+  <%= render('shared/nav-sub-item', label: ModelModulePackage.name.humanize.pluralize, icon: 'fad fa-container-storage', href: admin_model_module_packages_path, active: active_nav?('admin-model_module_packages')) %>
+  <%= render('shared/nav-sub-item', label: ModelUpgrade.name.humanize.pluralize, icon: 'fad fa-angle-double-up', href: admin_model_upgrades_path, active: active_nav?('admin-model_upgrades')) %>
+  <%= render('shared/nav-sub-item', label: I18n.t(:"nav.models_name_diff"), icon: 'fa fa-signature', badge: models_name_diff_count, href: name_diff_admin_models_path, active: active_nav?('admin-models-name-diff')) %>
+  <%= render('shared/nav-sub-item', label: I18n.t(:"nav.models_price_diff"), icon: 'fad fa-tags', badge: models_price_diff_count, href: price_diff_admin_models_path, active: active_nav?('admin-models-price-diff')) %>
+  <%= render('shared/nav-sub-item', label: Component.name.humanize.pluralize, icon: 'fad fa-microchip', href: admin_components_path, active: active_nav?('admin-components')) %>
+  <% end %>
+<% end %>

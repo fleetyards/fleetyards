@@ -1,0 +1,110 @@
+<div class="flex items-center flex-shrink-0 px-4<%= collapsed ? ' justify-center' : '' %>">
+  <div class="flex-shrink-0 self-center<%= collapsed ? '' : ' mr-4' %>">
+    <img class="h-11 w-auto" src="<%= asset_path('icon-512.png') %>" alt="Logo">
+  </div>
+  <% unless collapsed %>
+  <div>
+    <h1 class="font-hero text-lg text-neutral-300 font-normal">
+      <%= I18n.t(:"title.admin") %>
+    </h1>
+  </div>
+  <% end %>
+</div>
+<div class="mt-5 flex-1 flex flex-col">
+  <nav class="flex-1 space-y-1">
+    <%= render(
+          'shared/nav-item',
+          href: admin_root_path,
+          collapsed: collapsed,
+          active: active_nav?('admin'),
+          label: I18n.t(:"nav.home"),
+          icon: 'fad fa-home'
+        )
+    %>
+    <%= render(
+          'shared/nav-item',
+          href: admin_models_path,
+          collapsed: collapsed,
+          active: active_nav?('admin-models'),
+          label: Model.name.humanize.pluralize,
+          icon: 'fad fa-starship',
+        )
+    %>
+    <%= render(
+          'shared/nav-item',
+          href: admin_manufacturers_path,
+          collapsed: collapsed,
+          active: active_nav?('admin-manufacturers'),
+          label: Manufacturer.name.humanize.pluralize,
+          icon: 'fad fa-industry'
+        )
+    %>
+    <%= render('layouts/admin/nav-stations', collapsed: collapsed) %>
+    <%=
+      render(
+        'shared/nav-item',
+        href: admin_images_path,
+        collapsed: collapsed,
+        active: active_nav?('admin-images'),
+        label: I18n.t(:"nav.images"),
+        icon: 'fad fa-image'
+      )
+    %>
+    <%=
+      render(
+        'shared/nav-item',
+        href: admin_users_path,
+        collapsed: collapsed,
+        active: active_nav?('admin-users'),
+        label: I18n.t(:"nav.users"),
+        icon: 'fad fa-users'
+      )
+    %>
+    <%=
+      render(
+        'shared/nav-item',
+        href: admin_vehicles_path,
+        collapsed: collapsed,
+        active: active_nav?('admin-vehicles'),
+        label: Vehicle.name.humanize.pluralize,
+        icon: 'fad fa-starfighter'
+      )
+    %>
+    <%=
+      render(
+        'shared/nav-item',
+        href: admin_admin_users_path,
+        collapsed: collapsed,
+        active: active_nav?('admin-admin_users'),
+        label: I18n.t(:"nav.admin_users"),
+        icon: 'fad fa-users-crown'
+      )
+    %>
+    <%= render('layouts/admin/nav-maintenance', collapsed: collapsed) %>
+  </nav>
+</div>
+<div class="flex-shrink-0 flex bg-gray-700 p-4">
+  <a href="#" class="flex-shrink-0 w-full group block">
+    <div class="flex items-center<%= collapsed ? ' justify-center' : '' %>">
+      <div class="relative">
+        <% if current_user.avatar.present? %>
+          <img class="inline-block h-9 w-9 rounded-full" src="<%= current_user.avatar.url %>" alt="Avatar">
+        <% else %>
+        <span class="inline-flex items-center justify-center h-9 w-9 rounded-full bg-gray-500">
+          <span class="text-sm font-medium leading-none text-white">
+            <%= current_user.shortname %>
+          </span>
+        </span>
+        <% end %>
+        <span class="absolute top-0 right-0 block h-2.5 w-2.5 transform -translate-y-1/2 translate-x-1/2 rounded-full ring-2 ring-white bg-red-400"></span>
+      </div>
+      <% unless collapsed %>
+      <div class="ml-3">
+        <p class="text-sm font-medium text-white">
+          <%= current_user.username %>
+        </p>
+      </div>
+      <% end %>
+    </div>
+  </a>
+</div>

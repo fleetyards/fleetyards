@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
+<html lang="<%= I18n.locale %>" class="h-full bg-white dark:bg-black">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
@@ -31,60 +31,39 @@
     <link rel="preconnect" href="https://kit-pro.fontawesome.com">
 
     <script src="https://kit.fontawesome.com/b2f310e2cd.js" crossorigin="anonymous"></script>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900&display=swap" crossorigin>
+    <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900&display=swap" crossorigin>
 
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
-    <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
-
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" %>
-    <%= stylesheet_pack_tag 'admin.css', rel: 'preload', as: 'style' %>
-    <%= stylesheet_pack_tag 'admin.css' %>
 
     <%= javascript_include_tag "i18n" %>
     <%= javascript_include_tag "translations", skip_pipeline: true %>
     <%= javascript_importmap_tags 'admin' %>
   </head>
-  <body data-success="<%= notice %>" data-info="<%= alert %>" data-error="<%= flash[:error] %>" data-warning="<%= flash[:warning] %>" class="page-admin">
-    <div class="admin-app-body">
-      <div class="background-image"></div>
+  <body data-controller="base" class="h-full text-slate-900 dark:text-slate-300">
+    <div class="turbo-progress-bar"></div>
+    <div class="background-image"></div>
 
-      <%= render "layouts/admin/header" %>
+    <% if admin_user_signed_in? %>
+      <%
+        collapsed = false
+      %>
+      <%= render "layouts/admin/navigation", collapsed: collapsed %>
 
-      <div class="container-fluid app-body">
+      <div class="flex flex-col flex-1<%= collapsed ? ' md:pl-20' : ' md:pl-72' %>">
+        <%= render "layouts/admin/header-new" %>
+
+        <main class="min-h-screen">
+          <%= yield %>
+        </main>
+
+        <%= render "layouts/admin/footer-new" %>
+      </div>
+    <% else %>
+      <main class="min-h-screen">
         <%= yield %>
-      </div>
-
-      <div class="<%= app_enabled? ? 'app-wrapper' : 'hidden' %>">
-        <div id="app">
-          <div
-            style="background-image: url(<%= image_path 'bg-6.jpg' %>)"
-            class="background-image"
-          >
-          </div>
-          <div class="app-intro">
-            <h1>
-              <%= image_tag 'admin/logo.png', class: 'logo' %>
-              <%= I18n.t(:"title.admin") %>
-            </h1>
-            <div>
-              <div class="loader">
-                <div class="cube1 cube"></div>
-                <div class="cube2 cube"></div>
-                <div class="cube4 cube"></div>
-                <div class="cube3 cube"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <%= render "layouts/admin/footer" %>
-
-    <script>
-      window.API_ENDPOINT = '<%= Rails.configuration.app.admin_api_endpoint %>'
-      window.ON_SUBDOMAIN = '<%= Rails.configuration.app.subdomain %>'
-    </script>
-
-    <%= javascript_packs_with_chunks_tag 'admin' %>
+      </main>
+    <% end %>
   </body>
 </html>

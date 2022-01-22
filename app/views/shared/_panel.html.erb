@@ -1,0 +1,14 @@
+<%= render('shared/ui_border', classes: 'mb-4') do %>
+  <div class="border-3 border-brand-grayBorder/90 rounded-panel bg-white/70 dark:bg-brand-grayBackground/80 overflow-hidden">
+    <% if defined?(title) %>
+    <div class="px-4 py-5 sm:px-6">
+      <h2 class="text-slate-900 dark:text-slate-300 font-hero text-xl">
+        <%= title %>
+      </h2>
+    </div>
+    <% end %>
+    <div class="px-4 py-5 sm:p-6">
+      <%= yield %>
+    </div>
+  </div>
+<% end %>
