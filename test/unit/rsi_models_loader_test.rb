@@ -4,19 +4,19 @@ require 'test_helper'
 require 'rsi/models_loader'
 
 class RsiModelsLoaderTest < ActiveSupport::TestCase
-  let(:loader) { ::Rsi::ModelsLoader.new }
+  setup do
+    @loader = ::Rsi::ModelsLoader.new
 
-  before do
     Timecop.freeze('2017-01-01 14:00:00')
   end
 
-  after do
+  teardown do
     Timecop.return
   end
 
   test '#all' do
     VCR.use_cassette('rsi_models_loader_all') do
-      loader.all
+      @loader.all
 
       expectations = {
         hardpoints: 5140,
@@ -39,13 +39,13 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
   test '#updates only when needed' do
     VCR.use_cassette('rsi_models_loader_all') do
-      loader.one(7)
+      @loader.one(7)
 
       model = Model.find_by(name: '300i')
 
       Timecop.travel(1.day)
 
-      loader.one(model.rsi_id)
+      @loader.one(model.rsi_id)
       model.reload
 
       assert_not_equal(model.updated_at.day, Time.zone.now.day)
@@ -55,7 +55,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
   test '#updates production status only when time_modified changes' do
     VCR.use_cassette('rsi_models_loader_all') do
-      loader.one(7)
+      @loader.one(7)
 
       model = Model.find_by(name: '300i')
 
@@ -65,7 +65,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       Timecop.travel(1.day)
 
-      loader.one(model.rsi_id)
+      @loader.one(model.rsi_id)
       model.reload
 
       assert_equal('in-concept', model.production_status)
@@ -85,7 +85,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       Timecop.travel(1.day)
 
-      loader.one(116)
+      @loader.one(116)
 
       model_polaris.reload
 
@@ -96,7 +96,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
   test '#saves hardpoint data' do
     VCR.use_cassette('rsi_models_loader_all') do
-      loader.one(7)
+      @loader.one(7)
 
       model = Model.find_by(name: '300i')
 
