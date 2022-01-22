@@ -30,7 +30,7 @@ gem 'rollups'
 
 gem 'i18n', '1.8.11'
 gem 'i18n-js'
-gem 'rails-i18n', '~> 6.0'
+gem 'rails-i18n', '~> 7.0.0'
 
 gem 'js_cookie_rails'
 
@@ -45,13 +45,14 @@ gem 'postmark-rails'
 
 gem 'cancancan'
 
+gem "attr_encrypted", github: "PagerTree/attr_encrypted", branch: "rails-7-0-support"
 gem 'devise'
 gem 'devise-two-factor', github: 'mortik/devise-two-factor'
 gem 'rqrcode'
 
 gem 'useragent'
 
-# gem 'redis-actionpack'
+gem 'redis-actionpack', github: 'redis-store/redis-actionpack'
 
 gem 'ransack'
 
@@ -67,7 +68,6 @@ gem 'dynamic_fields_for_rails'
 
 gem 'state_machine'
 
-gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
 gem 'webpacker', '~> 5.x'
@@ -153,7 +153,6 @@ end
 group :test do
   gem 'faker'
   gem 'minitest-ci'
-  # gem 'minitest-rails'
   gem 'mocha', require: false
   gem 'rails-perftest'
   gem 'ruby-prof'

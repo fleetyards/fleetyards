@@ -57,16 +57,15 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  let(:user_data) { users :data }
-  let(:url) { 'foo.bar' }
-  let(:url_slash) { '//foo.bar' }
-  let(:url_http) { 'http://foo.bar' }
-  let(:url_https) { 'https://foo.bar' }
-  let(:expected_url) { 'foo.bar' }
-  let(:expected_ts_url) { 'ts3server://foo.bar' }
+  setup do
+    @user_data = users(:data)
+    @expected_url = 'foo.bar'
+  end
 
   test 'ensure valid urls are saved' do
-    user_data.update(
+    url = 'foo.bar'
+
+    @user_data.update(
       guilded: url,
       homepage: url,
       discord: url,
@@ -74,17 +73,19 @@ class UserTest < ActiveSupport::TestCase
       youtube: url
     )
 
-    user_data.reload
+    @user_data.reload
 
-    assert_equal(expected_url, user_data.guilded)
-    assert_equal(expected_url, user_data.homepage)
-    assert_equal(expected_url, user_data.discord)
-    assert_equal(expected_url, user_data.twitch)
-    assert_equal(expected_url, user_data.youtube)
+    assert_equal(@expected_url, @user_data.guilded)
+    assert_equal(@expected_url, @user_data.homepage)
+    assert_equal(@expected_url, @user_data.discord)
+    assert_equal(@expected_url, @user_data.twitch)
+    assert_equal(@expected_url, @user_data.youtube)
   end
 
   test 'ensure valid urls are saved with slashes' do
-    user_data.update(
+    url_slash = '//foo.bar'
+
+    @user_data.update(
       guilded: url_slash,
       homepage: url_slash,
       discord: url_slash,
@@ -92,17 +93,19 @@ class UserTest < ActiveSupport::TestCase
       youtube: url_slash
     )
 
-    user_data.reload
+    @user_data.reload
 
-    assert_equal(expected_url, user_data.guilded)
-    assert_equal(expected_url, user_data.homepage)
-    assert_equal(expected_url, user_data.discord)
-    assert_equal(expected_url, user_data.twitch)
-    assert_equal(expected_url, user_data.youtube)
+    assert_equal(@expected_url, @user_data.guilded)
+    assert_equal(@expected_url, @user_data.homepage)
+    assert_equal(@expected_url, @user_data.discord)
+    assert_equal(@expected_url, @user_data.twitch)
+    assert_equal(@expected_url, @user_data.youtube)
   end
 
   test 'ensure valid urls are saved with http' do
-    user_data.update(
+    url_http = 'http://foo.bar'
+
+    @user_data.update(
       guilded: url_http,
       homepage: url_http,
       discord: url_http,
@@ -110,17 +113,19 @@ class UserTest < ActiveSupport::TestCase
       youtube: url_http
     )
 
-    user_data.reload
+    @user_data.reload
 
-    assert_equal(expected_url, user_data.guilded)
-    assert_equal(expected_url, user_data.homepage)
-    assert_equal(expected_url, user_data.discord)
-    assert_equal(expected_url, user_data.twitch)
-    assert_equal(expected_url, user_data.youtube)
+    assert_equal(@expected_url, @user_data.guilded)
+    assert_equal(@expected_url, @user_data.homepage)
+    assert_equal(@expected_url, @user_data.discord)
+    assert_equal(@expected_url, @user_data.twitch)
+    assert_equal(@expected_url, @user_data.youtube)
   end
 
   test 'ensure valid urls are saved with https' do
-    user_data.update(
+    url_https = 'https://foo.bar'
+
+    @user_data.update(
       guilded: url_https,
       homepage: url_https,
       discord: url_https,
@@ -128,12 +133,12 @@ class UserTest < ActiveSupport::TestCase
       youtube: url_https
     )
 
-    user_data.reload
+    @user_data.reload
 
-    assert_equal(expected_url, user_data.guilded)
-    assert_equal(expected_url, user_data.homepage)
-    assert_equal(expected_url, user_data.discord)
-    assert_equal(expected_url, user_data.twitch)
-    assert_equal(expected_url, user_data.youtube)
+    assert_equal(@expected_url, @user_data.guilded)
+    assert_equal(@expected_url, @user_data.homepage)
+    assert_equal(@expected_url, @user_data.discord)
+    assert_equal(@expected_url, @user_data.twitch)
+    assert_equal(@expected_url, @user_data.youtube)
   end
 end

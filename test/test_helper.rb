@@ -17,13 +17,9 @@ ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../config/environment', __dir__)
 
 require 'rails/test_help'
-require 'minitest/rails'
 require 'minitest/pride'
 
 require 'knapsack'
-
-# https://github.com/rails/rails/issues/31324
-Minitest::Rails::TestUnit = Rails::TestUnit if ActionPack::VERSION::STRING >= '5.2.0'
 
 require 'faker'
 
@@ -84,7 +80,7 @@ class ActiveSupport::TestCase
 
   fixtures :all
 
-  after do
+  def teardown
     Sidekiq::Worker.clear_all
   end
 

@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/PagerTree/attr_encrypted.git
+  revision: eafd77a11f69f92c2e0de7ddb60f98630a8c9f2f
+  branch: rails-7-0-support
+  specs:
+    attr_encrypted (3.1.0)
+      encryptor (~> 3.0.0)
+
+GIT
   remote: https://github.com/dabit/annotate_models.git
   revision: f38741d005052045e4d4c2c26b009d3ade0864f3
   branch: rails-7
@@ -33,6 +41,15 @@ GIT
       devise (~> 4.0)
       railties (< 8)
       rotp (~> 6.0)
+
+GIT
+  remote: https://github.com/redis-store/redis-actionpack.git
+  revision: daf349101adfb395654be687d46c0f5c0c734e99
+  specs:
+    redis-actionpack (5.2.0)
+      actionpack (>= 5, < 8)
+      redis-rack (>= 2.1.0, < 3)
+      redis-store (>= 1.1.0, < 2)
 
 GEM
   remote: https://rubygems.org/
@@ -119,15 +136,11 @@ GEM
     appsignal (3.0.20)
       rack
     ast (2.4.2)
-    attr_encrypted (3.1.0)
-      encryptor (~> 3.0.0)
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.1.0)
     bindex (0.8.1)
     bootsnap (1.10.3)
       msgpack (~> 1.2)
-    bourbon (7.0.0)
-      thor (~> 1.0)
     bower-rails (0.12.0)
     builder (3.2.4)
     bullet (7.0.1)
@@ -682,9 +695,9 @@ DEPENDENCIES
   ahoy_matey
   annotate!
   appsignal
+  attr_encrypted!
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
-  bourbon
   bower-rails
   bullet
   bundler-audit
@@ -747,10 +760,11 @@ DEPENDENCIES
   rack-cors
   rails (= 7.0.1)
   rails-erd
-  rails-i18n
+  rails-i18n (~> 7.0.0)
   rails-perftest
   ransack
   redcarpet
+  redis-actionpack!
   rollups
   rqrcode
   rubocop
