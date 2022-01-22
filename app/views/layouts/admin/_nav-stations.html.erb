@@ -4,19 +4,15 @@
   unconfirmed_commodity_prices = CommodityPrice.where(confirmed: false).count
   unconfirmed_items = unconfirmed_commodity_prices + unconfirmed_shop_commodities
 %>
-<%= render('shared/nav-item', label: Station.name.humanize.pluralize, collapsed: collapsed, active: active, icon: 'fad fa-planet-ringed', submenu: 'stations', devide: true) do %>
-  <div class="space-y-3">
-    <%= render('shared/nav-sub-item', label: Station.name.humanize.pluralize, path: admin_stations_path, icon: 'fad fa-space-station-moon', active: active_nav?('admin-stations')) %>
-    <%= render('shared/nav-sub-item', label: I18n.t(:"nav.celestial_objects"), path: admin_celestial_objects_path, icon: 'fad fa-planet-ringed', active: active_nav?('admin-celestial_objects')) %>
-    <%= render('shared/nav-sub-item', label: I18n.t(:"nav.starsystems"), path: admin_starsystems_path, icon: 'fad fa-solar-system', active: active_nav?('admin-starsystems')) %>
-  </div>
-  <div class="space-y-3">
-    <%= render('shared/nav-sub-item', label: Shop.name.humanize.pluralize, path: admin_shops_path, icon: 'fad fa-store-alt', active: active_nav?('admin-shops')) %>
-    <%= render('shared/nav-sub-item', label: I18n.t(:"nav.commodities"), path: admin_commodities_path, icon: 'fad fa-boxes-alt', active: active_nav?('admin-commodities')) %>
-    <%= render('shared/nav-sub-item', label: I18n.t(:"nav.equipment"), path: admin_equipment_index_path, icon: 'fad fa-tools', active: active_nav?('admin-equipment')) %>
-  </div>
-  <div class="space-y-3">
-    <%= render('shared/nav-sub-item', label: I18n.t(:"nav.shop_commodities.confirmation"), path: confirmation_admin_shop_commodities_path, icon: 'fad fa-box-alt', badge: unconfirmed_shop_commodities, active: active_nav?('admin-shop_commodities-confirmation')) %>
-    <%= render('shared/nav-sub-item', label: I18n.t(:"nav.commodity_prices.confirmation"), path: confirmation_admin_commodity_prices_path, icon: 'fad fa-tags', badge: unconfirmed_commodity_prices, active: active_nav?('admin-commodity_prices-confirmation')) %>
-  </div>
+<%= render('shared/nav-item', label: I18n.t("nav.planets_and_stations"), collapsed: collapsed, active: active, icon: 'fad fa-solar-system', submenu: 'stations') do %>
+  <%= render('shared/nav-sub-item', label: I18n.t("nav.starsystems"), href: admin_starsystems_path, icon: 'fad fa-solar-system', active: active_nav?('admin-starsystems')) %>
+  <%= render('shared/nav-sub-item', label: I18n.t("nav.celestial_objects"), href: admin_celestial_objects_path, icon: 'fad fa-planet-ringed', active: active_nav?('admin-celestial_objects')) %>
+  <%= render('shared/nav-sub-item', label: Station.name.humanize.pluralize, href: admin_stations_path, icon: 'fad fa-space-station-moon', active: active_nav?('admin-stations')) %>
+  <%= render('shared/nav-sub-item', label: Shop.name.humanize.pluralize, href: admin_shops_path, icon: 'fad fa-store-alt', active: active_nav?('admin-shops')) %>
+  <% if false %>
+    <%= render('shared/nav-sub-item', label: I18n.t("nav.commodities"), href: admin_commodities_path, icon: 'fad fa-boxes-alt', active: active_nav?('admin-commodities')) %>
+    <%= render('shared/nav-sub-item', label: I18n.t("nav.equipment"), href: admin_equipment_index_path, icon: 'fad fa-tools', active: active_nav?('admin-equipment')) %>
+    <%= render('shared/nav-sub-item', label: I18n.t("nav.shop_commodities.confirmation"), href: confirmation_admin_shop_commodities_path, icon: 'fad fa-box-alt', badge: unconfirmed_shop_commodities, active: active_nav?('admin-shop_commodities-confirmation')) %>
+    <%= render('shared/nav-sub-item', label: I18n.t("nav.commodity_prices.confirmation"), href: confirmation_admin_commodity_prices_path, icon: 'fad fa-tags', badge: unconfirmed_commodity_prices, active: active_nav?('admin-commodity_prices-confirmation')) %>
+  <% end %>
 <% end %>

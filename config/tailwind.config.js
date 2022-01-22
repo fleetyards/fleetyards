@@ -25,6 +25,7 @@ module.exports = {
       },
       borderRadius: {
         panel: '1.25rem',
+        button: '0.625rem;',
       },
       height: {
         '3px': '3px',

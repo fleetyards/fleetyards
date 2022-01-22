@@ -1,0 +1,20 @@
+<%
+  classes = %{
+    relative inline-flex items-center rounded-button bg-brand-grayBackground/90 border-2 border-brand-grayBorder/90 p-0.5
+  }
+%>
+<a
+  href="<%= defined?(href) ? href : nil %>"
+  onclick="<%= defined?(onclick) ? onclick : nil %>"
+  class="<%= classes %>"
+>
+  <div class="absolute -top-0.5 h-0.5 left-3.5 right-3.5 bg-neutral-700"></div>
+  <div class="overflow-hidden rounded-md rounded-md px-3.5 py-1.5 hover:bg-brand-grayBorder/90 hover:text-brand-grayBackground/90">
+    <% if (block = yield).present? %>
+      <%= block %>
+    <% else %>
+      <%= label %>
+    <% end %>
+  </div>
+  <div class="absolute -bottom-0.5 h-0.5 left-3.5 right-3.5 bg-neutral-700"></div>
+</a>

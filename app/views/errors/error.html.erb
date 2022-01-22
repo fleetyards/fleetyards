@@ -1,0 +1,23 @@
+<%
+  content_for(:title) do
+    I18n.t("title.#{params[:action]}")
+  end
+%>
+<div class="p-4 sm:flex">
+  <p class="text-4xl font-extrabold text-brand-primary sm:text-5xl">
+    <%= I18n.t("title.#{params[:action]}") %>
+  </p>
+  <div class="sm:ml-6">
+    <div class="sm:border-l sm:border-gray-200 sm:pl-6">
+      <h1 class="text-4xl font-extrabold text-gray-400 tracking-tight sm:text-5xl">
+        <%= I18n.t("headlines.#{params[:action]}") %>
+      </h1>
+      <p class="mt-1 text-base text-gray-400/90">
+        <%= I18n.t("error_pages.#{params[:action]}") %>
+      </p>
+    </div>
+    <div class="mt-10 flex space-x-3 sm:border-l sm:border-transparent sm:pl-6">
+      <%= render('shared/btn_a', href: admin_root_path, label: I18n.t("actions.back_to_home")) %>
+    </div>
+  </div>
+</div>

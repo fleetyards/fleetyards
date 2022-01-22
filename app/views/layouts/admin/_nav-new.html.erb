@@ -14,19 +14,36 @@
   <nav class="flex-1 space-y-1">
     <%= render(
           'shared/nav-item',
-          url: admin_root_path,
+          href: admin_root_path,
           collapsed: collapsed,
           active: active_nav?('admin'),
           label: I18n.t(:"nav.home"),
           icon: 'fad fa-home'
         )
     %>
-    <%= render('layouts/admin/nav-models', collapsed: collapsed) %>
+    <%= render(
+          'shared/nav-item',
+          href: admin_models_path,
+          collapsed: collapsed,
+          active: active_nav?('admin-models'),
+          label: Model.name.humanize.pluralize,
+          icon: 'fad fa-starship',
+        )
+    %>
+    <%= render(
+          'shared/nav-item',
+          href: admin_manufacturers_path,
+          collapsed: collapsed,
+          active: active_nav?('admin-manufacturers'),
+          label: Manufacturer.name.humanize.pluralize,
+          icon: 'fad fa-industry'
+        )
+    %>
     <%= render('layouts/admin/nav-stations', collapsed: collapsed) %>
     <%=
       render(
         'shared/nav-item',
-        url: admin_images_path,
+        href: admin_images_path,
         collapsed: collapsed,
         active: active_nav?('admin-images'),
         label: I18n.t(:"nav.images"),
@@ -36,7 +53,7 @@
     <%=
       render(
         'shared/nav-item',
-        url: admin_users_path,
+        href: admin_users_path,
         collapsed: collapsed,
         active: active_nav?('admin-users'),
         label: I18n.t(:"nav.users"),
@@ -46,7 +63,7 @@
     <%=
       render(
         'shared/nav-item',
-        url: admin_vehicles_path,
+        href: admin_vehicles_path,
         collapsed: collapsed,
         active: active_nav?('admin-vehicles'),
         label: Vehicle.name.humanize.pluralize,
@@ -56,7 +73,7 @@
     <%=
       render(
         'shared/nav-item',
-        url: admin_admin_users_path,
+        href: admin_admin_users_path,
         collapsed: collapsed,
         active: active_nav?('admin-admin_users'),
         label: I18n.t(:"nav.admin_users"),

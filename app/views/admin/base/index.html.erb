@@ -1,14 +1,8 @@
 <div data-controller="dashboard">
   <%= render('shared/page-header', title: I18n.t(:"headlines.admin.dashboard")) do %>
     <% if can? :reload, :models %>
-      <span class="relative z-0 inline-flex shadow-sm rounded-md">
-        <button class="relative rounded-l-md btn-default" data-style="expand-right" data-action="<%= reload_admin_models_path %>" data-workerPath="<%= admin_check_worker_state_path('fleetyards_model_loader') %>" onclick="App.Models.reload($(this)); return false;">
-          <%= I18n.t(:"actions.model.reload") %>
-        </button>
-        <button class="-ml-px relative rounded-r-md btn-default" data-style="expand-right" data-action="<%= reload_data_admin_models_path %>" data-workerPath="<%= admin_check_worker_state_path('fleetyards_sc_data_ship_loader') %>" onclick="App.Models.reload($(this)); return false;">
-          <%= I18n.t(:"actions.model.reload_data") %>
-        </button>
-      </span>
+      <%= render('shared/btn_a', onclick: 'App.Models.reload($(this)); return false;', label: I18n.t("actions.model.reload"), data: { action: reload_admin_models_path, workerPath: admin_check_worker_state_path('fleetyards_model_loader') }) %>
+      <%= render('shared/btn_a', onclick: 'App.Models.reload($(this)); return false;', label: I18n.t("actions.model.reload_data"), data: { action: reload_data_admin_models_path, workerPath: admin_check_worker_state_path('fleetyards_sc_data_ship_loader') }) %>
     <% end %>
   <% end %>
 

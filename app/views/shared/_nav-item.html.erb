@@ -1,9 +1,9 @@
 <%
   active ||= false
   collapsed ||= false
-  buttonClasses = "flex py-4 rounded-md w-full items-center text-lg font-normal focus:outline-none focus:ring-2 focus:ring-brand-primary/50 hover:text-neutral-400 transition-colors duration-300 ease-in#{active ? ' text-neutral-400' : ' text-neutral-300'}#{collapsed ? ' justify-center px-3' : ' text-left pl-4 pr-2'}"
+  buttonClasses = "flex py-3 rounded-md w-full items-center text-lg font-normal focus:outline-none focus:ring-2 focus:ring-brand-primary/50 hover:text-neutral-400 transition-colors duration-300 ease-in#{active ? ' text-neutral-400' : ' text-neutral-300'}#{collapsed ? ' justify-center px-3' : ' text-left pl-4 pr-2'}"
 %>
-<div class="relative group px-2 py-0.5">
+<div class="relative group px-2">
   <div class="absolute left-0 top-0 bottom-0 w-1 rounded-r-md transition-all duration-300 ease-in<%= active ? ' bg-brand-primary' : ' group-hover:bg-brand-primary' %>"></div>
   <% if (block = yield).present? && defined?(submenu) %>
   <div
@@ -23,7 +23,7 @@
     </div>
   </div>
   <% else %>
-  <a href="<%= url %>" class="<%= buttonClasses %>"<%= defined?(external) ? ' target="_blank"' : ''%>>
+  <a href="<%= defined?(href) ? href : nil %>" class="<%= buttonClasses %>"<%= defined?(external) ? ' target="_blank"' : ''%>>
     <i class="flex-shrink-0 h-6 w-6 <%= icon %><%= collapsed ? '' : ' mr-3' %>"></i>
     <% unless collapsed %>
     <span><%= label %></span>

@@ -30,6 +30,7 @@ Sidekiq::Testing.fake!
 
 require 'vcr'
 VCR.configure do |config|
+  config.ignore_hosts '127.0.0.1', 'localhost'
   config.cassette_library_dir = 'test/vcr_cassettes'
   config.hook_into :webmock # or :fakeweb
 end
@@ -62,6 +63,8 @@ class ActionController::TestCase
     # and disable callbacks
     Searchkick.disable_callbacks
   end
+
+  parallelize(workers: :number_of_processors)
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
