@@ -3,20 +3,9 @@
     :label="$t('nav.fleets.index')"
     :submenu-active="active"
     menu-key="fleets-menu"
-    icon="fad fa-planet-ringed"
+    icon="fad fa-users"
+    prefix="04"
   >
-    <span
-      :class="{
-        'fleets-nav-item-icon-slim': slim,
-      }"
-      class="fleets-nav-item-icon"
-    >
-      <i class="fad fa-rocket-launch" />
-      <i class="fad fa-rocket-launch" />
-    </span>
-    <transition name="fade-nav">
-      <span v-if="!slim">{{ $t('nav.fleets.index') }}</span>
-    </transition>
     <template slot="submenu">
       <NavItem
         v-for="fleet in collection.records"

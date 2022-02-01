@@ -4,45 +4,24 @@
   position: relative;
   display: inline-block;
   width: 30px;
-  height: 18px;
-  transition: height ease $transition-base-speed;
+  height: 24px;
+  margin-right: 10px;
 
   :first-child,
   :last-child {
     position: absolute;
-    width: 10px;
+      width: 14px;
     min-width: 0;
-    font-size: 12px;
-    transition: width ease $transition-base-speed,
-      left ease $transition-base-speed, right ease $transition-base-speed,
-      font-size ease $transition-base-speed;
+      font-size: 16px;
   }
 
   :first-child {
     top: 0;
-    left: 3px;
+    left: 0;
   }
 
   :last-child {
-    right: 7px;
+    right: 4px;
     bottom: -6px;
-  }
-
-  &.fleets-nav-item-icon-slim {
-    height: 24px;
-
-    :first-child,
-    :last-child {
-      width: 14px;
-      font-size: 16px;
-    }
-
-    :first-child {
-      left: 0;
-    }
-
-    :last-child {
-      right: 4px;
-    }
   }
 }

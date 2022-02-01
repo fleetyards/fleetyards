@@ -5,31 +5,32 @@
       'nav-item-inner-slim': slim,
     }"
   >
-    <img
-      v-if="image"
-      :src="image"
-      :alt="`${label} image`"
-      class="nav-item-image"
-    />
-    <i
-      v-else-if="icon"
-      :class="{
-        [icon]: true,
-      }"
-    />
-    <span v-else class="nav-item-image-empty">
-      {{ firstLetter }}
-    </span>
-    <transition name="fade-nav">
-      <span
-        v-if="!slim"
+    <span class="nav-item-icon">
+      <img
+        v-if="image"
+        :src="image"
+        :alt="`${label} image`"
+        class="nav-item-image"
+        :class="{ 'nav-item-image-avatar': avatar }"
+      />
+      <i
+        v-else-if="icon"
         :class="{
-          'nav-item-text': !icon && !image,
+          [icon]: true,
         }"
-      >
-        {{ label }}
+      />
+      <span v-else class="nav-item-image-empty">
+        {{ firstLetter }}
       </span>
-    </transition>
+    </span>
+    <span
+      v-if="!slim"
+      :class="{
+        'nav-item-text': !icon && !image,
+      }"
+    >
+      {{ label }}
+    </span>
   </div>
 </template>
 
@@ -44,6 +45,8 @@ export default class NavItemInner extends Vue {
   @Prop({ default: null }) icon: string | null
 
   @Prop({ default: null }) image: string | null
+
+  @Prop({ default: false }) avatar: boolean
 
   @Prop({ default: false }) slim: boolean
 

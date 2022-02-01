@@ -10,22 +10,38 @@
     :data-test="`nav-${navKey}`"
     class="nav-item sub-menu"
   >
-    <a v-tooltip="tooltip" @click="toggleMenu">
+    <BCollapse
+      v-if="submenuDirection === 'up'"
+      :id="`${menuKey}-sub-menu`"
+      :visible="open"
+      tag="ul"
+    >
+      <slot name="submenu" />
+    </BCollapse>
+    <button v-tooltip="tooltip" @click="toggleMenu">
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
         :label="label"
         :icon="icon"
         :image="image"
+        :avatar="avatar"
         :slim="slim"
       />
-      <transition name="fade-nav">
-        <span v-if="!slim" class="submenu-icon">
-          <i class="fa fa-chevron-right" />
-        </span>
-      </transition>
-    </a>
-    <BCollapse :id="`${menuKey}-sub-menu`" :visible="open" tag="ul">
+      <span
+        v-if="!slim"
+        class="submenu-icon"
+        :class="{ 'submenu-icon-up': submenuDirection === 'up' }"
+      >
+        <i class="fal fa-chevron-right" />
+      </span>
+    </button>
+    <BCollapse
+      v-if="submenuDirection === 'down'"
+      :id="`${menuKey}-sub-menu`"
+      :visible="open"
+      tag="ul"
+    >
       <slot name="submenu" />
     </BCollapse>
   </li>
@@ -45,6 +61,7 @@
         :label="label"
         :icon="icon"
         :image="image"
+        :avatar="avatar"
         :slim="slim"
       />
     </a>
@@ -70,6 +87,7 @@
           :label="label"
           :icon="icon"
           :image="image"
+          :avatar="avatar"
           :slim="slim"
         />
       </a>
@@ -90,6 +108,7 @@
         :label="label"
         :icon="icon"
         :image="image"
+        :avatar="avatar"
         :slim="slim"
       />
     </a>
@@ -108,6 +127,7 @@
         :label="label"
         :icon="icon"
         :image="image"
+        :avatar="avatar"
         :slim="slim"
       />
     </span>
@@ -144,6 +164,8 @@ export default class NavItem extends Vue {
 
   @Prop({ default: null }) image: string | null
 
+  @Prop({ default: false }) avatar: boolean
+
   @Prop({ default: null }) menuKey: string | null
 
   @Prop({ default: false }) exact: boolean
@@ -153,6 +175,8 @@ export default class NavItem extends Vue {
   @Prop({ default: false }) active: boolean
 
   @Prop({ default: false }) submenuActive: boolean
+
+  @Prop({ default: 'down' }) submenuDirection: string
 
   get routeActive() {
     if (this.to) {

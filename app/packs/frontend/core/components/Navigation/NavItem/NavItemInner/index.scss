@@ -2,51 +2,47 @@
 
 .nav-item-inner {
   position: relative;
-  height: 24px;
+  height: 30px;
   white-space: nowrap;
-  transition: height ease $transition-base-speed;
+  display: flex;
+  align-items: center;
+
+  .nav-item-icon {
+    margin-inline-end: 15px;
+    // color: $text-color;
+  }
+
+  .nav-item-prefix {
+    min-width: 30px;
+    font-family: 'Major Mono Display', monospace;
+    margin-inline-end: 15px;
+    font-weight: bold;
+    // color: $text-color;
+  }
 
   .nav-item-image {
-    max-width: 24px;
-    margin-right: 3px;
-    margin-left: 3px;
+    max-width: 30px;
     vertical-align: middle;
-    transition: max-width ease $transition-base-speed,
-      margin ease $transition-base-speed;
+
+    &.nav-item-image-avatar {
+      margin: -5px;
+      height: 40px;
+      width: 40px;
+      max-width: 40px;
+      border-radius: 50%;
+    }
   }
 
   .nav-item-image-empty {
-    position: absolute;
-    left: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     overflow: hidden;
     font-size: 70%;
     font-family: 'Orbitron', sans-serif;
     background-color: $gray-darker;
     border-radius: 50%;
-  }
-
-  .nav-item-text {
-    margin-left: 34px;
-  }
-
-  &.nav-item-inner-slim {
-    height: 30px;
-
-    .nav-item-image {
-      max-width: 30px;
-      margin: 0;
-      vertical-align: top;
-    }
-
-    .nav-item-image-empty {
-      left: 0;
-      width: 30px;
-      height: 30px;
-    }
   }
 }

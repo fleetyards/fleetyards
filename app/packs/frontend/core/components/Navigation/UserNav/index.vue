@@ -1,23 +1,20 @@
 <template>
   <NavItem
     v-if="currentUser"
-    :class="{
-      'user-menu-slim': slim,
-    }"
     :submenu-active="active"
+    submenu-direction="up"
     menu-key="user-menu"
+    :image="currentUser.avatar"
+    :avatar="true"
+    :label="currentUser.username"
     class="user-menu"
   >
-    <Avatar :avatar="currentUser.avatar" size="small" />
-    <span v-if="!slim" class="username">
-      {{ currentUser.username }}
-    </span>
     <template slot="submenu">
       <NavItem
         :to="{ name: 'settings' }"
         :active="active"
         :label="$t('nav.settings.index')"
-        icon="fad fa-cog"
+        icon="fal fa-cog"
       />
       <NavItem :divider="true" />
       <template v-if="currentUser.rsiHandle">
@@ -32,7 +29,7 @@
         :action="logout"
         menu-key="logout"
         :label="$t('nav.logout')"
-        icon="fad fa-sign-out"
+        icon="fal fa-sign-out"
       />
     </template>
   </NavItem>
@@ -60,6 +57,7 @@ export default {
         'settings-profile',
         'settings-account',
         'settings-hangar',
+        'settings-notifications',
         'settings-security-status',
         'settings-two-factor-enable',
         'settings-two-factor-disable',
@@ -78,6 +76,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'index';
 </style>

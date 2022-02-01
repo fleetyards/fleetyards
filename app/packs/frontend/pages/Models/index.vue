@@ -1,10 +1,32 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-12">
-        <h1 class="sr-only">
-          {{ $t('headlines.models.index') }}
-        </h1>
+      <div class="col-12 col-lg-12">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="sr-only">
+              {{ $t('headlines.models.index') }}
+            </h1>
+          </div>
+        </div>
+        <div class="page-actions page-actions-right">
+          <Btn
+            data-test="model-compare-link"
+            :to="{
+              name: 'models-compare',
+            }"
+          >
+            <i class="fad fa-exchange" />
+            {{ $t('nav.compare.models') }}
+          </Btn>
+          <Btn
+            data-test="fleetchart-link"
+            @click.native="toggleFleetchart"
+          >
+            <i class="fad fa-starship" />
+            {{ $t('labels.fleetchart') }}
+          </Btn>
+        </div>
       </div>
     </div>
 
@@ -18,23 +40,18 @@
       :hide-loading="fleetchartVisible"
     >
       <template slot="actions">
-        <Btn
-          size="small"
-          data-test="fleetchart-link"
-          @click.native="toggleFleetchart"
-        >
-          <i class="fad fa-starship" />
-          {{ $t('labels.fleetchart') }}
-        </Btn>
-        <Btn
-          :active="detailsVisible"
-          :aria-label="toggleDetailsTooltip"
-          size="small"
-          @click.native="toggleDetails"
-        >
-          <i class="fad fa-info-square" />
-          {{ toggleDetailsTooltip }}
-        </Btn>
+        <BtnDropdown size="small">
+          <Btn
+            :active="detailsVisible"
+            :aria-label="toggleDetailsTooltip"
+            size="small"
+            variant="dropdown"
+            @click.native="toggleDetails"
+          >
+            <i class="fad fa-info-square" />
+            <span>{{ toggleDetailsTooltip }}</span>
+          </Btn>
+        </BtnDropdown>
       </template>
 
       <ModelsFilterForm slot="filter" />
