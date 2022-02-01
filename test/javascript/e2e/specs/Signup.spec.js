@@ -11,7 +11,7 @@ describe('Signup', () => {
     cy.url().should('include', '/sign-up')
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then(userData => {
+    cy.fixture('users').then((userData) => {
       cy.selectInput('username').type(userData.new.username)
       cy.selectInput('email').type(userData.new.email)
       cy.selectInput('password').type(userData.new.password)
@@ -30,14 +30,12 @@ describe('Signup', () => {
 
       cy.location('pathname').should('eq', '/')
 
-      cy.contains('.username', userData.new.username).click()
+      cy.contains('.user-menu', userData.new.username).click()
       cy.clickNav('settings')
 
       cy.url().should('include', '/settings')
 
-      cy.get('.tabs a')
-        .contains('Account')
-        .click()
+      cy.get('.tabs a').contains('Account').click()
 
       cy.url().should('include', '/settings/account')
 
@@ -54,9 +52,7 @@ describe('Signup', () => {
 
       cy.success('Your Account has been destroyed')
 
-      cy.get('nav a')
-        .contains('nav a', 'Login')
-        .should('exist')
+      cy.get('nav a').contains('nav a', 'Login').should('exist')
     })
   })
 
@@ -66,15 +62,13 @@ describe('Signup', () => {
     cy.acceptCookies()
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then(userData => {
+    cy.fixture('users').then((userData) => {
       cy.selectInput('username').type(userData.test.username)
       cy.selectInput('username')
         .parents('.form-input')
         .should('have.class', 'has-error')
 
-      cy.selectInput('email')
-        .type('foo')
-        .clear()
+      cy.selectInput('email').type('foo').clear()
       cy.selectInput('email')
         .parents('.form-input')
         .should('have.class', 'has-error')
@@ -83,16 +77,12 @@ describe('Signup', () => {
       cy.selectInput('password')
         .parents('.form-input')
         .should('have.class', 'has-error')
-      cy.selectInput('password')
-        .clear()
-        .type(userData.test.password)
+      cy.selectInput('password').clear().type(userData.test.password)
       cy.selectInput('password')
         .parents('.form-input')
         .should('not.have.class', 'has-error')
 
-      cy.selectInput('passwordConfirmation')
-        .type('bar')
-        .clear()
+      cy.selectInput('passwordConfirmation').type('bar').clear()
       cy.selectInput('passwordConfirmation')
         .parents('.form-input')
         .should('have.class', 'has-error')

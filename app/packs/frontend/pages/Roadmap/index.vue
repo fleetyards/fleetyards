@@ -11,15 +11,11 @@
     <div class="row">
       <div class="col-12">
         <div class="page-actions page-actions-right">
-          <Btn
-            :to="{ name: 'roadmap-changes' }"
-          >
+          <Btn :to="{ name: 'roadmap-changes' }">
             <i class="fad fa-tasks" />
             {{ $t('nav.roadmap.changes') }}
           </Btn>
-          <Btn
-            :to="{ name: 'roadmap-ships' }"
-          >
+          <Btn :to="{ name: 'roadmap-ships' }">
             <i class="fad fa-starship" />
             {{ $t('nav.roadmap.ships') }}
           </Btn>
@@ -40,23 +36,23 @@
       </div>
       <div class="col-3">
         <div class="d-flex justify-content-end">
-        <BtnDropdown size="small">
-          <Btn
-            size="small"
-            variant="dropdown"
-            :active="showRemoved"
-            :aria-label="toggleRemovedTooltip"
-            @click.native="togglerShowRemoved"
-          >
-            <span v-if="showRemoved">
-              <i class="fad fa-eye-slash"></i>
-            </span>
-            <span v-else>
-              <i class="fad fa-eye"></i>
-            </span>
-            <span>{{ toggleRemovedTooltip }}</span>
-          </Btn>
-        </BtnDropdown>
+          <BtnDropdown size="small">
+            <Btn
+              size="small"
+              variant="dropdown"
+              :active="showRemoved"
+              :aria-label="toggleRemovedTooltip"
+              @click.native="togglerShowRemoved"
+            >
+              <span v-if="showRemoved">
+                <i class="fad fa-eye-slash"></i>
+              </span>
+              <span v-else>
+                <i class="fad fa-eye"></i>
+              </span>
+              <span>{{ toggleRemovedTooltip }}</span>
+            </Btn>
+          </BtnDropdown>
         </div>
       </div>
     </div>

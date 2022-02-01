@@ -19,10 +19,7 @@
             <i class="fad fa-exchange" />
             {{ $t('nav.compare.models') }}
           </Btn>
-          <Btn
-            data-test="fleetchart-link"
-            @click.native="toggleFleetchart"
-          >
+          <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
             <i class="fad fa-starship" />
             {{ $t('labels.fleetchart') }}
           </Btn>
