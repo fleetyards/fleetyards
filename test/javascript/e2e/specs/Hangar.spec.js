@@ -32,7 +32,6 @@ describe('Hangar', () => {
 
     cy.url().should('include', '/')
 
-    cy.clickNav('models-menu')
     cy.clickNav('models')
 
     cy.url().should('include', '/ships/')
@@ -48,9 +47,7 @@ describe('Hangar', () => {
 
     cy.openShipMenu('300i', 'edit-name')
 
-    cy.selectElement('input-vehicle-name')
-      .clear()
-      .type('Enterprise')
+    cy.selectElement('input-vehicle-name').clear().type('Enterprise')
 
     cy.saveShip()
 
