@@ -1,5 +1,6 @@
 export default {
   home: 'Home',
+  back: 'Back',
   models: {
     index: 'Ships',
   },

@@ -2,38 +2,49 @@
 
 li.nav-item {
   > a,
+  > button,
   > span {
+    background: transparent;
+    border: 0;
     position: relative;
-    display: block;
-    padding: 10px 15px 10px 30px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px 10px 25px;
     color: darken($text-color, 10%);
     font-size: 18px;
     white-space: nowrap;
-    transition: all ease $transition-base-speed;
+    text-transform: uppercase;
+    width: 100%;
 
     i:not(.fa-chevron-right),
     svg:not(.fa-chevron-right) {
       min-width: 30px;
+      font-size: 24px;
       text-align: center;
+      vertical-align: middle;
     }
 
     &::after {
       opacity: 1;
-      transition: all ease $transition-base-speed;
     }
   }
 
-  > a {
+  > a,
+  > button {
     cursor: pointer;
   }
 
-  &:hover > a {
+  &:hover > a,
+  &:active > a,
+  &.active > a,
+  &:hover > button,
+  &:active > button,
+  &.active > button {
     color: lighten($text-color, 10%);
   }
 
-  &.active > a {
-    color: lighten($text-color, 20%);
-
+  &.active > a,
+  &.active > button {
     &::after {
       position: absolute;
       top: 10%;
@@ -56,7 +67,8 @@ li.nav-item {
   }
 
   &.sub-menu {
-    > a {
+    > a,
+    > button {
       .submenu-icon {
         position: absolute;
         top: 50%;
@@ -83,17 +95,26 @@ li.nav-item {
     }
 
     &.open {
-      &.active > a {
+      &.active > a,
+      &.active > button {
         &::after {
           opacity: 0;
         }
       }
 
-      > a {
+      > a,
+      > button {
         .submenu-icon {
           i.fa-chevron-right,
           svg.fa-chevron-right {
             transform: rotate(90deg);
+          }
+
+          &.submenu-icon-up {
+            i.fa-chevron-right,
+            svg.fa-chevron-right {
+              transform: rotate(-90deg);
+            }
           }
         }
       }
@@ -101,15 +122,9 @@ li.nav-item {
   }
 
   &.nav-item-slim {
-    > a {
-      padding: 10px 10px 10px 25px;
-      font-size: 24px;
-    }
-
     &.sub-menu {
       ul > li > a {
         padding-left: 25px;
-        font-size: 20px;
       }
     }
   }

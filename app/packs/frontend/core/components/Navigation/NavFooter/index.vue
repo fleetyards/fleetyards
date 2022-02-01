@@ -8,31 +8,32 @@
         slim ? 'fal fa-chevron-double-right' : 'fal fa-chevron-double-left'
       "
     />
-    <NavItem class="logo-menu">
-      <img
-        v-lazy="require('images/favicon-small.png')"
-        class="logo-menu-image"
-        alt="logo"
-      />
-      <transition name="fade-nav">
-        <span v-if="!slim" class="logo-menu-label">
-          {{ $t('app') }}
-        </span>
-      </transition>
-    </NavItem>
+    <UserNav v-if="isAuthenticated" />
+    <NavItem
+      v-else
+      key="user-menu-guest"
+      :to="{ name: 'login' }"
+      :label="$t('nav.login')"
+      icon="fal fa-sign-in"
+    />
   </ul>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import NavItem from 'frontend/core/components/Navigation/NavItem'
+import UserNav from 'frontend/core/components/Navigation/UserNav'
+import NavigationMixin from 'frontend/mixins/Navigation'
 
 export default {
   name: 'NavFooter',
 
   components: {
     NavItem,
+    UserNav,
   },
+
+  mixins: [NavigationMixin],
 
   computed: {
     ...mapGetters(['mobile']),

@@ -12,11 +12,16 @@
       <div class="col-12">
         <div class="page-actions page-actions-right">
           <Btn
-            :active="showRemoved"
-            :aria-label="toggleRemovedTooltip"
-            @click.native="togglerShowRemoved"
+            :to="{ name: 'roadmap-changes' }"
           >
-            {{ toggleRemovedTooltip }}
+            <i class="fad fa-tasks" />
+            {{ $t('nav.roadmap.changes') }}
+          </Btn>
+          <Btn
+            :to="{ name: 'roadmap-ships' }"
+          >
+            <i class="fad fa-starship" />
+            {{ $t('nav.roadmap.ships') }}
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
@@ -25,11 +30,33 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12">
+      <div class="col-3"></div>
+      <div class="col-6">
         <div class="text-center">
           <a class="show-released" @click="toggleReleased">
             - {{ releasedToggleLabel }} -
           </a>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="d-flex justify-content-end">
+        <BtnDropdown size="small">
+          <Btn
+            size="small"
+            variant="dropdown"
+            :active="showRemoved"
+            :aria-label="toggleRemovedTooltip"
+            @click.native="togglerShowRemoved"
+          >
+            <span v-if="showRemoved">
+              <i class="fad fa-eye-slash"></i>
+            </span>
+            <span v-else>
+              <i class="fad fa-eye"></i>
+            </span>
+            <span>{{ toggleRemovedTooltip }}</span>
+          </Btn>
+        </BtnDropdown>
         </div>
       </div>
     </div>
@@ -90,6 +117,7 @@ import Loader from 'frontend/core/components/Loader'
 import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
 import Btn from 'frontend/core/components/Btn'
 import EmptyBox from 'frontend/core/components/EmptyBox'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 
 @Component<RoadmapReleases>({
   components: {
@@ -98,6 +126,7 @@ import EmptyBox from 'frontend/core/components/EmptyBox'
     EmptyBox,
     RoadmapItem,
     Btn,
+    BtnDropdown,
   },
   mixins: [MetaInfo],
 })

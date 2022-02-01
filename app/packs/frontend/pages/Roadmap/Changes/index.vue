@@ -2,6 +2,7 @@
   <section class="container roadmap">
     <div class="row">
       <div class="col-12">
+        <BreadCrumbs :crumbs="crumbs" />
         <h1 class="sr-only">
           {{ $t('headlines.roadmap') }}
         </h1>
@@ -73,6 +74,7 @@ import Loader from 'frontend/core/components/Loader'
 import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/core/components/EmptyBox'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 
 @Component<RoadmapChanges>({
   components: {
@@ -81,6 +83,7 @@ import EmptyBox from 'frontend/core/components/EmptyBox'
     FilterGroup,
     EmptyBox,
     RoadmapItem,
+    BreadCrumbs,
   },
 
   mixins: [MetaInfo],
@@ -127,6 +130,17 @@ export default class RoadmapChanges extends Vue {
 
       return value
     }, {})
+  }
+
+  get crumbs() {
+    return [
+      {
+        to: {
+          name: 'roadmap',
+        },
+        label: this.$t('nav.roadmap.index'),
+      },
+    ]
   }
 
   async mounted() {
