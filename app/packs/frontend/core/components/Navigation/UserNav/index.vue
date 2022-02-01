@@ -37,7 +37,6 @@
 
 <script>
 import NavItem from 'frontend/core/components/Navigation/NavItem'
-import Avatar from 'frontend/core/components/Avatar'
 import NavigationMixin from 'frontend/mixins/Navigation'
 import sessionCollection from 'frontend/api/collections/Session'
 
@@ -46,7 +45,6 @@ export default {
 
   components: {
     NavItem,
-    Avatar,
   },
 
   mixins: [NavigationMixin],
