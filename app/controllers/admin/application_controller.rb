@@ -7,7 +7,7 @@ module Admin
     layout 'admin/application'
 
     before_action :configure_permitted_parameters, if: :devise_controller?
-    before_action :authenticate_admin_user!, :set_default_nav
+    before_action :authenticate_admin_user!, :set_default_nav, :set_navigation_state
 
     protect_from_forgery with: :exception
 
@@ -20,6 +20,12 @@ module Admin
     rescue_from ActionController::InvalidAuthenticityToken do
       @action_name = 'unprocessable_entity'
       render 'errors/error', status: :unprocessable_entity
+    end
+
+    def set_navigation_state
+      session[:navigation_state] = params[:navigation_state] if params[:navigation_state].present? && %w[expanded collapsed].include?(params[:navigation_state])
+
+      @navigation_state = session[:navigation_state]
     end
 
     def worker_running?(name)

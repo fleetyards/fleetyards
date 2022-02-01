@@ -1,6 +1,13 @@
 %tr{id: user.id}
   %td
-    = user.username
+    .flex.items-center
+      - if user.avatar.present?
+        %img{src: user.avatar.url, class: 'w-12 h-12 object-cover rounded-full bg-brand-grayBackground/80'}
+      - else
+        %span{class: 'flex justify-center items-center w-12 h-12 bg-brand-grayBackground/80 rounded-full'}
+          = user.shortname
+      .ml-2
+        = user.username
   %td
     = user.email
   %td

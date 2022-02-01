@@ -1,0 +1,12 @@
+= render('shared/page-header', title: I18n.t('headlines.admin.dashboard')) do
+  div(class="inline-flex space-x-2")
+    = fy_btn(I18n.t('actions.model.reload'),
+        onclick: 'App.Models.reload($(this)); return false;',
+        data: { action: reload_admin_models_path,
+                workerPath: admin_check_worker_state_path('fleetyards_model_loader') },
+      )
+    = fy_btn(I18n.t('actions.model.reload_data'),
+        onclick: 'App.Models.reload($(this)); return false;',
+        data: { action: reload_data_admin_models_path,
+                workerPath: admin_check_worker_state_path('fleetyards_sc_data_ship_loader') },
+      )

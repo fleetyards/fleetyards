@@ -31,6 +31,7 @@
     <link rel="preconnect" href="https://kit-pro.fontawesome.com">
 
     <script src="https://kit.fontawesome.com/b2f310e2cd.js" crossorigin="anonymous"></script>
+
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900&display=swap" crossorigin>
     <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900&display=swap" crossorigin>
 
@@ -41,29 +42,26 @@
     <%= javascript_include_tag "translations", skip_pipeline: true %>
     <%= javascript_importmap_tags 'admin' %>
   </head>
-  <body data-controller="base" class="h-full text-slate-900 dark:text-slate-300">
+  <body data-controller="base" class="h-full min-h-screen text-gray-900 dark:text-gray-300">
     <div class="turbo-progress-bar"></div>
     <div class="background-image"></div>
 
+    <%
+      collapsed = @navigation_state == 'collapsed'
+    %>
+
     <% if admin_user_signed_in? %>
-      <%
-        collapsed = false
-      %>
       <%= render "layouts/admin/navigation", collapsed: collapsed %>
+    <% end %>
 
-      <div class="flex flex-col flex-1<%= collapsed ? ' md:pl-20' : ' md:pl-72' %>">
-        <%= render "layouts/admin/header-new" %>
+    <div class="md:flex md:flex-col md:flex-1 transition-all duration-300 ease-in<%= collapsed ? ' md:pl-20' : ' md:pl-72' %>" data-base-target="body">
+      <%# <%= render "layouts/admin/header-new" %>
 
-        <main class="min-h-screen">
-          <%= yield %>
-        </main>
-
-        <%= render "layouts/admin/footer-new" %>
-      </div>
-    <% else %>
       <main class="min-h-screen">
         <%= yield %>
       </main>
-    <% end %>
+
+      <%= render "layouts/admin/footer-new" %>
+    </div>
   </body>
 </html>

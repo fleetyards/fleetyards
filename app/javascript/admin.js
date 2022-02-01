@@ -10,9 +10,20 @@ import 'admin-app'
 //   $(this)[0].scrollIntoView(true)
 // })
 
-window.addEventListener('turbo:before-render', () => {
-  console.log('page load foo')
+document.addEventListener('turbo:before-render', async (event) => {
+  console.log('page load', event)
   // $('.btn.btn-primary[data-loading-text]').click(() => {
   //   $(this).button('loading')
   // })
+})
+
+document.addEventListener('turbo:before-fetch-request', async (event) => {
+  event.preventDefault()
+
+  console.log('render', event)
+
+  // const token = await getSessionToken(window.app)
+  // event.detail.fetchOptions.headers['Authorization'] = `Bearer ${token}`
+
+  event.detail.resume()
 })

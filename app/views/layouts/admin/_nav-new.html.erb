@@ -1,9 +1,9 @@
-<div class="flex items-center flex-shrink-0 px-4<%= collapsed ? ' justify-center' : '' %>">
-  <div class="flex-shrink-0 self-center<%= collapsed ? '' : ' mr-4' %>">
+<div class="flex items-center flex-shrink-0 px-4<%= collapsed ? ' justify-center' : '' %>" data-base-target="navHeadline">
+  <div class="flex-shrink-0 self-center<%= collapsed ? '' : ' mr-4' %>" data-base-target="navLogo">
     <img class="h-11 w-auto" src="<%= asset_path('icon-512.png') %>" alt="Logo">
   </div>
   <% unless collapsed %>
-  <div>
+  <div data-base-target="navTitle">
     <h1 class="font-hero text-lg text-neutral-300 font-normal">
       <%= I18n.t(:"title.admin") %>
     </h1>
@@ -83,9 +83,26 @@
     <%= render('layouts/admin/nav-maintenance', collapsed: collapsed) %>
   </nav>
 </div>
-<div class="flex-shrink-0 flex bg-gray-700 p-4">
+<% if collapsed %>
+  <div class="flex justify-center">
+    <%= link_to url_for(navigation_state: 'expanded'), remote: true, class: 'p-4 text-lg font-normal focus:outline-none focus:ring-2
+      focus:ring-brand-primary/50 hover:text-neutral-400 transition-colors duration-300 ease-in' do %>
+      <i class="fa fa-chevron-double-right"></i>
+      <span class="sr-only">Expand</span>
+    <% end  %>
+  </div>
+<% else %>
+  <div class="flex">
+    <%= link_to url_for(navigation_state: 'collapsed'), remote: true, class: 'p-4 w-full items-center text-lg font-normal focus:outline-none focus:ring-2
+      focus:ring-brand-primary/50 hover:text-neutral-400 transition-colors duration-300 ease-in' do %>
+      <i class="fa fa-chevron-double-left"></i>
+      <span>Collapse</span>
+    <% end %>
+  </div>
+<% end %>
+<div class="flex-shrink-0 flex flex-col p-4">
   <a href="#" class="flex-shrink-0 w-full group block">
-    <div class="flex items-center<%= collapsed ? ' justify-center' : '' %>">
+    <div class="flex items-center<%= collapsed ? ' justify-center' : '' %>" data-base-target="navUserNav">
       <div class="relative">
         <% if current_user.avatar.present? %>
           <img class="inline-block h-9 w-9 rounded-full" src="<%= current_user.avatar.url %>" alt="Avatar">
@@ -99,7 +116,7 @@
         <span class="absolute top-0 right-0 block h-2.5 w-2.5 transform -translate-y-1/2 translate-x-1/2 rounded-full ring-2 ring-white bg-red-400"></span>
       </div>
       <% unless collapsed %>
-      <div class="ml-3">
+      <div class="ml-3" data-base-target="navItemLabel">
         <p class="text-sm font-medium text-white">
           <%= current_user.username %>
         </p>

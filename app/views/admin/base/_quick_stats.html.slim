@@ -1,0 +1,45 @@
+div(class="xl:-mx-2 h-full")
+  dl(
+    data-controller="quickstats"
+    data-quickstats-url-value="#{quick_stats_admin_api_v1_stats_url}"
+    class="flex flex-wrap h-full content-between"
+  )
+    = render('shared/metrics', \
+      icon: 'fad fa-user', \
+      label: I18n.t('labels.panels.online_count'), \
+      classes: 'mb-4 xl:mb-0 xl:w-6/12 xl:px-2' \
+    ) do
+      span[data-quickstats-target="onlineCount"]
+        = online_count
+
+    = render('shared/metrics', \
+      icon: 'fad fa-users', \
+      label: I18n.t('labels.panels.users_count_total'), \
+      classes: 'mb-4 xl:mb-0 xl:w-6/12 xl:px-2' \
+    ) do
+      span[data-quickstats-target="usersCountTotal"]
+        = User.count
+
+    = render('shared/metrics', \
+      icon: 'fad fa-rocket-launch', \
+      label: I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year), \
+      classes: 'mb-4 xl:mb-0 xl:w-6/12 xl:px-2' \
+    ) do
+      span[data-quickstats-target="shipsCountYear"]
+        = Model.year(Time.current.year).count
+
+    = render('shared/metrics', \
+      icon: 'fad fa-starship', \
+      label: I18n.t('labels.panels.ships_count_total'), \
+      classes: 'mb-4 xl:mb-0 xl:w-6/12 xl:px-2' \
+    ) do
+      span[data-quickstats-target="shipsCountTotal"]
+        = Model.count
+
+    = render('shared/metrics', \
+      icon: 'fad fa-users-crown', \
+      label: I18n.t('labels.panels.fleets_count_total'), \
+      classes: 'mb-4 xl:mb-0 xl:w-6/12 xl:px-2' \
+    ) do
+      span[data-quickstats-target="fleetsCountTotal"]
+        = Fleet.count

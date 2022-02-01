@@ -37,7 +37,7 @@ en:
       online_count: Users Online
       registrations: Registrations per Month
       ships_count_total: Total Ships
-      ships_count_year: New Ships in %{year}
+      ships_count_year: Ships in %{year}
       users_count_total: Total Users
       visits_per_day: Visits per Day
       visits_per_month: Visits per Month

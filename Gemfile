@@ -16,6 +16,7 @@ gem 'paper_trail'
 
 gem 'haml'
 gem 'haml-rails'
+gem 'slim-rails'
 
 gem 'importmap-rails'
 gem 'js-routes'
@@ -64,7 +65,6 @@ gem 'oj'
 gem 'dalli'
 
 gem 'kaminari'
-gem 'url_plumber'
 
 gem 'dynamic_fields_for_rails'
 

@@ -1,57 +1,44 @@
 - content_for :title do
   = I18n.t(:"title.model.index")
-.row#models
-  .col-12.col-md-12
-    .row
-      .col-12.col-md-8
-        %h1
-          = I18n.t(:"headlines.admin.model.index")
+= render 'admin/models/header'
 
-          %small.text-muted
-            = @models.count
-            of
-            = @models.total_count
+%div{class: "mx-auto px-4 sm:px-6 md:px-8"}
+  .row#models
+    .col-12.col-md-12
+      .row
+        .col-12.d-flex.justify-content-center
+          = paginate @models
 
-      .col-12.col-md-4
-        .d-flex.justify-content-end
-          .btn-group
-            = link_to I18n.t(:"actions.admin.model.new_loaner_upload"), new_admin_loaner_upload_path, 'data-turbolinks': "false", class: "btn btn-dark"
-            = link_to I18n.t(:"actions.admin.model.new"), new_admin_model_path, 'data-turbolinks': "false", class: "btn btn-dark"
+      .row.mb-3
+        .col-12.col-md-9
+          .panel.panel-default
+            = render partial: "admin/models/table", :@models => @models
 
-    .row
-      .col-12.d-flex.justify-content-center
-        = paginate @models
+        .col-12.col-md-3
+          = search_form_for [:admin, @q] do |f|
+            .form-group
+              = f.label :name_or_slug_cont
+              = f.search_field :name_or_slug_cont, class: 'form-control'
 
-    .row.mb-3
-      .col-12.col-md-9
-        .panel.panel-default
-          = render partial: "admin/models/table", :@models => @models
+            .form-group
+              = f.label :manufacturer_id_eq
+              = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, { class: 'form-control' }
 
-      .col-12.col-md-3
-        = search_form_for [:admin, @q] do |f|
-          .form-group
-            = f.label :name_or_slug_cont
-            = f.search_field :name_or_slug_cont, class: 'form-control'
+            .form-group
+              = f.label :fleetchart_image_null
+              = f.select :fleetchart_image_null, [true, false], { include_blank: true }, { class: 'form-control' }
 
-          .form-group
-            = f.label :manufacturer_id_eq
-            = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, { class: 'form-control' }
+            .form-group
+              = f.label :holo_null
+              = f.select :holo_null, [true, false], { include_blank: true }, { class: 'form-control' }
 
-          .form-group
-            = f.label :fleetchart_image_null
-            = f.select :fleetchart_image_null, [true, false], { include_blank: true }, { class: 'form-control' }
+            .btn-group
+              %button.btn.btn-primary
+                Filter
+              - if params[:q].present?
+                %a.btn.btn-dark{href: request.path, title: "Clear Search"}
+                  %i.fa.fa-times
 
-          .form-group
-            = f.label :holo_null
-            = f.select :holo_null, [true, false], { include_blank: true }, { class: 'form-control' }
-
-          .btn-group
-            %button.btn.btn-primary
-              Filter
-            - if params[:q].present?
-              %a.btn.btn-dark{href: request.path, title: "Clear Search"}
-                %i.fa.fa-times
-
-    .row
-      .col-12.d-flex.justify-content-center
-        = paginate @models
+      .row
+        .col-12.d-flex.justify-content-center
+          = paginate @models

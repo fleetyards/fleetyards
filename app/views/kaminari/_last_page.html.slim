@@ -1,0 +1,12 @@
+ruby:
+  # Link to the "Last" page
+  #- available local variables
+  #  url:           url to the last page
+  #  current_page:  a page object for the currently displayed page
+  #  total_pages:   total number of pages
+  #  per_page:      number of items to fetch per page
+  #  remote:        data-remote
+= fy_btn(url, remote: remote, rel: 'last', disabled: current_page.last?, group_end: true) do
+  span(class="sr-only")
+    Last
+  i(class="fa fa-chevron-double-right")

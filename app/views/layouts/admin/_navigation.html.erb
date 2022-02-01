@@ -1,3 +1,4 @@
+<% if false %>
 <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
 <div class="fixed inset-0 flex z-40 md:hidden" role="dialog" aria-modal="true">
   <!--
@@ -21,7 +22,7 @@
       From: "translate-x-0"
       To: "-translate-x-full"
   -->
-  <div class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-brand-grayBackground/80">
+  <div class="relative flex-1 flex flex-col -translate-x-full max-w-xs w-full pt-5 bg-brand-grayBackground/80">
     <!--
       Close button, show/hide based on off-canvas menu state.
 
@@ -50,9 +51,22 @@
     <!-- Dummy element to force sidebar to shrink to fit close icon -->
   </div>
 </div>
+<% end %>
+
+<div class="fixed flex justify-between md:hidden bottom-0 left-0 right-0 h-20 z-10 bg-brand-grayBackground/95 shadow">
+  <a class="flex-1 flex justify-center items-center text-xl">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </svg>
+  </a>
+  <a class="flex-1 flex justify-center items-center text-xl"><i class="fad fa-home"></i></a>
+  <a class="flex-1 flex justify-center items-center text-xl"><i class="fad fa-home"></i></a>
+  <a class="flex-1 flex justify-center items-center text-xl"><i class="fad fa-home"></i></a>
+  <a class="flex-1 flex justify-center items-center text-xl"><i class="fad fa-home"></i></a>
+</div>
 
 <!-- Static sidebar for desktop -->
-<div class="hidden md:flex md:flex-col md:fixed md:inset-y-0<%= collapsed ? ' md:w-20' : ' md:w-72' %>">
+<div class="hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ease-in<%= collapsed ? ' md:w-20' : ' md:w-72' %>" data-base-target="nav">
   <!-- Sidebar component, swap this element with another sidebar if you like -->
   <div class="flex flex-col flex-grow pt-5 bg-brand-grayBackground/50 overflow-y-auto shadow">
     <%= render 'layouts/admin/nav-new', collapsed: collapsed %>

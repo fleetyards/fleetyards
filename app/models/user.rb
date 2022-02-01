@@ -208,4 +208,8 @@ class User < ApplicationRecord
     update_tracked_fields(request)
     save(validate: false)
   end
+
+  def shortname
+    username.slice(0, 2)
+  end
 end
