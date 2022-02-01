@@ -9,7 +9,7 @@ describe('Login', () => {
     cy.url().should('include', '/login')
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then(userData => {
+    cy.fixture('users').then((userData) => {
       cy.selectInput('login').type(userData.test.username)
       cy.selectInput('password').type(userData.test.password)
 
@@ -17,7 +17,7 @@ describe('Login', () => {
 
       cy.location('pathname').should('eq', '/')
 
-      cy.contains('.username', userData.test.username).click()
+      cy.contains('.user-menu', userData.test.username).click()
       cy.clickNav('logout')
 
       cy.contains('nav a', 'Login').should('exist')
@@ -49,7 +49,7 @@ describe('Login', () => {
     cy.url().should('include', '/login')
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then(userData => {
+    cy.fixture('users').then((userData) => {
       cy.selectInput('login').type(userData.test.username)
       cy.selectInput('password').type(userData.test.password)
 
