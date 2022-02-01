@@ -1,16 +1,16 @@
-Cypress.Commands.add('visitApp', url => {
+Cypress.Commands.add('visitApp', (url) => {
   cy.visit(url)
-  cy.document().then(document => {
+  cy.document().then((document) => {
     const node = document.createElement('style')
     node.innerHTML = 'html { scroll-behavior: inherit !important; }'
     document.body.appendChild(node)
   })
 })
 
-Cypress.Commands.add('selectElement', id => cy.get(`[data-test="${id}"]`))
-Cypress.Commands.add('selectInput', id => cy.get(`[data-test="input-${id}"]`))
+Cypress.Commands.add('selectElement', (id) => cy.get(`[data-test="${id}"]`))
+Cypress.Commands.add('selectInput', (id) => cy.get(`[data-test="input-${id}"]`))
 
-Cypress.Commands.add('confirmAccess', password => {
+Cypress.Commands.add('confirmAccess', (password) => {
   cy.selectInput('password').type(password)
 
   cy.selectElement('submit-confirm-access').click()
@@ -22,7 +22,7 @@ Cypress.Commands.add('waitForPageToLoad', () => {
   cy.selectElement(`loader`).should('not.exist')
 })
 
-Cypress.Commands.add('clickNav', name => {
+Cypress.Commands.add('clickNav', (name) => {
   cy.selectElement(`nav-${name}`).click()
 })
 
@@ -34,14 +34,14 @@ Cypress.Commands.add('cancelConfirm', () => {
   cy.get('#noty-confirm .noty_buttons button:last-child').click()
 })
 
-Cypress.Commands.add('alert', message => {
-  cy.get('.noty_type__error .noty_body', { timeout: 10000 }).then($noty => {
+Cypress.Commands.add('alert', (message) => {
+  cy.get('.noty_type__error .noty_body', { timeout: 10000 }).then(($noty) => {
     expect($noty).to.contain(message)
   })
 })
 
-Cypress.Commands.add('success', message => {
-  cy.get('.noty_type__success .noty_body', { timeout: 10000 }).then($noty => {
+Cypress.Commands.add('success', (message) => {
+  cy.get('.noty_type__success .noty_body', { timeout: 10000 }).then(($noty) => {
     expect($noty).to.contain(message)
     cy.get($noty).click()
   })
@@ -56,10 +56,8 @@ Cypress.Commands.add('addToHangar', (ship, purchased = false) => {
   }
 })
 
-Cypress.Commands.add('openContextMenu', ship => {
-  cy.get(`.fleetchart-item.fleetchart-item-${ship}`)
-    .first()
-    .click()
+Cypress.Commands.add('openContextMenu', (ship) => {
+  cy.get(`.fleetchart-item.fleetchart-item-${ship}`).first().click()
 })
 
 Cypress.Commands.add('openShipMenuFromContext', (entry = null) => {
@@ -102,12 +100,12 @@ Cypress.Commands.add('login', () => {
   cy.wait(500)
 
   // eslint-disable-next-line jest/valid-expect-in-promise
-  cy.fixture('users').then(userData => {
+  cy.fixture('users').then((userData) => {
     cy.selectInput('login').type(userData.test.username)
     cy.selectInput('password').type(userData.test.password)
 
     cy.selectElement('submit-login').click()
 
-    cy.contains('.username', userData.test.username).should('exist')
+    cy.contains('.user-menu', userData.test.username).should('exist')
   })
 })

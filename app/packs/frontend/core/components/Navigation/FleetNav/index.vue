@@ -1,17 +1,25 @@
 <template>
   <div v-if="currentFleet">
     <NavItem
+      :to="{ name: 'home' }"
+      :label="$t('nav.back')"
+      icon="fal fa-chevron-left"
+      :exact="true"
+    />
+    <NavItem
       :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
       :label="currentFleet.name"
       :image="currentFleet.logo"
       :active="$route.name === 'fleet'"
-      exact
+      prefix="00"
+      :exact="true"
     />
     <NavItem
       v-if="currentFleet.publicFleet || currentFleet.myFleet"
       :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
       :label="$t('nav.fleets.ships')"
       :active="shipsNavActive"
+      prefix="01"
       icon="fad fa-starship"
     />
     <template v-if="currentFleet.myFleet">
@@ -20,18 +28,21 @@
         :label="$t('nav.fleets.members')"
         :active="$route.name === 'fleet-members'"
         icon="fad fa-users"
+        prefix="02"
       />
       <NavItem
         :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
         :label="$t('nav.fleets.stats')"
         :active="$route.name === 'fleet-stats'"
         icon="fad fa-chart-bar"
+        prefix="03"
       />
       <NavItem
         :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
         :label="$t('nav.fleets.settings.index')"
         :active="$route.name === 'fleet-settings'"
         icon="fad fa-cogs"
+        prefix="04"
       />
     </template>
   </div>

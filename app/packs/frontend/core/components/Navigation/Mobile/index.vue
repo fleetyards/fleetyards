@@ -96,7 +96,7 @@
             query: filterFor('hangar'),
           }"
         >
-          <i class="fad fa-bookmark" />
+          <i class="fad fa-warehouse" />
         </Btn>
         <Btn
           v-else
@@ -105,7 +105,7 @@
           :inline="true"
           :to="{ name: 'hangar-preview' }"
         >
-          <i class="fad fa-bookmark" />
+          <i class="fal fa-warehouse" />
         </Btn>
       </template>
       <button

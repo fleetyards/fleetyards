@@ -367,11 +367,7 @@ export default class FleetchartListItem extends Vue {
       return model.topView
     }
 
-    if (width > 900) {
-      return model.topViewLarge
-    }
-
-    return model.topViewMedium
+    return model.topViewLarge
   }
 
   sideView(model) {
@@ -381,11 +377,7 @@ export default class FleetchartListItem extends Vue {
       return model.sideView
     }
 
-    if (width > 900) {
-      return model.sideViewLarge
-    }
-
-    return model.sideViewMedium
+    return model.sideViewLarge
   }
 
   angledView(model) {
@@ -395,11 +387,7 @@ export default class FleetchartListItem extends Vue {
       return model.angledView
     }
 
-    if (width > 900) {
-      return model.angledViewLarge
-    }
-
-    return model.angledViewMedium
+    return model.angledViewLarge
   }
 }
 </script>

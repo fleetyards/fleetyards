@@ -15,22 +15,24 @@
     >
       <div class="nav-container-inner">
         <ul>
-          <UserNav v-if="isAuthenticated" />
-          <NavItem
-            v-else
-            key="user-menu-guest"
-            :to="{ name: 'login' }"
-            :label="$t('nav.login')"
-            icon="fad fa-sign-in"
-          />
-          <NavItem
-            :to="{ name: 'home' }"
-            :label="$t('nav.home')"
-            :icon="isFleetRoute ? 'fal fa-chevron-left' : 'fad fa-home-alt'"
-            :exact="true"
-          />
+          <NavItem class="logo-menu">
+            <img
+              v-lazy="require('images/favicon-small.png')"
+              class="logo-menu-image"
+              alt="logo"
+            />
+            <span v-if="!slim" class="logo-menu-label">
+              {{ $t('app') }}
+            </span>
+          </NavItem>
           <FleetNav v-if="isFleetRoute" />
           <template v-else>
+            <NavItem
+              :to="{ name: 'home' }"
+              :label="$t('nav.home')"
+              icon="fad fa-home-alt"
+              :exact="true"
+            />
             <NavItem
               v-if="isAuthenticated || !hangarPreview"
               :to="{
@@ -38,15 +40,23 @@
                 query: filterFor('hangar'),
               }"
               :label="$t('nav.hangar')"
-              icon="fad fa-bookmark"
+              icon="fad fa-warehouse"
             />
             <NavItem
               v-else
               :to="{ name: 'hangar-preview' }"
               :label="$t('nav.hangar')"
-              icon="fal fa-bookmark"
+              icon="fal fa-warehouse"
             />
-            <ShipsNav />
+            <NavItem
+              :to="{
+                name: 'models',
+                query: filterFor('models'),
+              }"
+              :label="$t('nav.models.index')"
+              :active="isModelRoute"
+              icon="fad fa-starship"
+            />
             <StationsNav />
             <FleetsNav />
             <NavItem
@@ -62,7 +72,12 @@
               :label="$t('nav.tradeRoutes')"
               icon="fad fa-pallet-alt"
             />
-            <RoadmapNav />
+            <NavItem
+              :to="{ name: 'roadmap' }"
+              :label="$t('nav.roadmap.index')"
+              icon="fad fa-tasks-alt"
+              :active="isRoadmapRoute"
+            />
             <NavItem
               :to="{ name: 'stats' }"
               :label="$t('nav.stats')"
@@ -81,12 +96,9 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import NavItem from 'frontend/core/components/Navigation/NavItem'
-import UserNav from 'frontend/core/components/Navigation/UserNav'
 import FleetNav from 'frontend/core/components/Navigation/FleetNav'
 import FleetsNav from 'frontend/core/components/Navigation/FleetsNav'
-import ShipsNav from 'frontend/core/components/Navigation/ShipsNav'
 import StationsNav from 'frontend/core/components/Navigation/StationsNav'
-import RoadmapNav from 'frontend/core/components/Navigation/RoadmapNav'
 import NavFooter from 'frontend/core/components/Navigation/NavFooter'
 import NavigationMixin from 'frontend/mixins/Navigation'
 import { isFleetRoute } from 'frontend/utils/Routes/Fleets'
@@ -94,12 +106,9 @@ import { isFleetRoute } from 'frontend/utils/Routes/Fleets'
 @Component<Navigation>({
   components: {
     NavItem,
-    UserNav,
     FleetNav,
     FleetsNav,
-    ShipsNav,
     StationsNav,
-    RoadmapNav,
     NavFooter,
   },
   mixins: [NavigationMixin],
@@ -117,6 +126,22 @@ export default class Navigation extends Vue {
 
   get isFleetRoute() {
     return isFleetRoute(this.$route.name)
+  }
+
+  get isRoadmapRoute() {
+    if (!this.$route.name) {
+      return false
+    }
+
+    return this.$route.name.includes('roadmap')
+  }
+
+  get isModelRoute() {
+    if (!this.$route.name) {
+      return false
+    }
+
+    return this.$route.name.includes('model')
   }
 
   @Watch('$route')

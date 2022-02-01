@@ -22,8 +22,6 @@
       margin-right: 3px;
       margin-left: 3px;
       vertical-align: middle;
-      transition: max-width ease $transition-base-speed,
-        margin ease $transition-base-speed;
     }
 
     > button {
@@ -73,8 +71,6 @@
   display: flex;
   justify-content: center;
   padding: 20px 15px;
-  transition: left ease $transition-base-speed,
-    right ease $transition-base-speed, width ease $transition-base-speed;
 
   .environment-label {
     position: fixed;
@@ -174,13 +170,13 @@ nav {
     overflow-y: auto;
     background-color: rgba($gray-darker, 0.5);
     border-right: 1px solid rgba(30, 34, 38, 0.5);
-    transition: left ease $transition-base-speed,
-      right ease $transition-base-speed, width ease $transition-base-speed;
 
     .nav-container-inner {
       position: relative;
       min-height: 100%;
-      padding-bottom: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
 
       > :first-child {
         padding-top: 20px;
@@ -189,6 +185,10 @@ nav {
       > :last-child {
         padding-bottom: 20px;
       }
+    }
+
+    a {
+      transition: none;
     }
 
     ul {
@@ -203,9 +203,8 @@ nav {
       .logo-menu-image {
         position: absolute;
         top: 10px;
-        left: 30px;
+        left: 20px;
         width: 40px;
-        // transition: left ease $transition-base-speed;
       }
 
       .logo-menu-label {
@@ -217,22 +216,12 @@ nav {
       }
     }
 
-    .nav-bottom {
-      position: absolute;
-      bottom: 0;
-    }
-
     &.nav-container-slim {
       width: 80px;
 
       .logo-menu {
         > :first-child {
           min-height: 60px;
-        }
-
-        .logo-menu-image {
-          top: auto;
-          left: 20px;
         }
       }
     }
@@ -249,6 +238,7 @@ nav {
     right: 0;
     left: auto;
     flex-direction: row-reverse;
+    transition: right ease $transition-base-speed;
 
     .nav-toggle {
       margin-right: 0;
@@ -275,6 +265,8 @@ nav {
       max-height: 100vh;
       padding-top: env(safe-area-inset-top);
       padding-left: env(safe-area-inset-left);
+      transition: left ease $transition-base-speed,
+        right ease $transition-base-speed, width ease $transition-base-speed;
 
       .nav-container-inner {
         > :first-child {
