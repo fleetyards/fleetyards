@@ -120,6 +120,16 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 7.12.0
       - run: mkdir -p log
       - run: bundle exec rails db:create db:schema:load
       - name: Run tests
@@ -281,7 +291,7 @@ jobs:
       - name: Runs Elasticsearch
         uses: elastic/elastic-github-actions/elasticsearch@master
         with:
-          stack-version: 7.6.0
+          stack-version: 7.12.0
       - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
