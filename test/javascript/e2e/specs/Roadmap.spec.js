@@ -4,7 +4,6 @@ describe('Roadmap', () => {
 
     cy.acceptCookies()
 
-    cy.clickNav('roadmap-menu')
     cy.clickNav('roadmap')
 
     cy.url().should('include', '/roadmap')
@@ -17,7 +16,7 @@ describe('Roadmap', () => {
 
     cy.acceptCookies()
 
-    cy.clickNav('roadmap-menu')
+    cy.clickNav('roadmap')
     cy.clickNav('roadmap-ships')
 
     cy.url().should('include', '/roadmap/ships')
@@ -28,7 +27,7 @@ describe('Roadmap', () => {
 
     cy.acceptCookies()
 
-    cy.clickNav('roadmap-menu')
+    cy.clickNav('roadmap')
     cy.clickNav('roadmap-changes')
 
     cy.url().should('include', '/roadmap/changes')
