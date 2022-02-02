@@ -11,11 +11,14 @@
     <div class="row">
       <div class="col-12">
         <div class="page-actions page-actions-right">
-          <Btn :to="{ name: 'roadmap-changes' }">
+          <Btn
+            :to="{ name: 'roadmap-changes' }"
+            data-test="nav-roadmap-changes"
+          >
             <i class="fad fa-tasks" />
             {{ $t('nav.roadmap.changes') }}
           </Btn>
-          <Btn :to="{ name: 'roadmap-ships' }">
+          <Btn :to="{ name: 'roadmap-ships' }" data-test="nav-roadmap-ships">
             <i class="fad fa-starship" />
             {{ $t('nav.roadmap.ships') }}
           </Btn>
