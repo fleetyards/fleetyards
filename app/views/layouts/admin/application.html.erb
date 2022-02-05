@@ -17,14 +17,14 @@
 
     <link rel="manifest" href="<%= admin_manifest_path %>" />
 
-    <%= favicon_link_tag 'admin/icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>
-    <%= favicon_link_tag 'admin/icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
-    <%= favicon_link_tag 'admin/icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' %>
-    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' %>
-    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' -%>
+    <%= favicon_link_tag 'admin/icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' -%>
+    <%= favicon_link_tag 'admin/icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' -%>
+    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' -%>
+    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png' -%>
 
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <%= csrf_meta_tags -%>
+    <%= csp_meta_tag -%>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://storage.googleapis.com">
@@ -35,33 +35,33 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900&display=swap" crossorigin>
     <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900&display=swap" crossorigin>
 
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" -%>
+    <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" -%>
 
-    <%= javascript_include_tag "i18n" %>
-    <%= javascript_include_tag "translations", skip_pipeline: true %>
-    <%= javascript_importmap_tags 'admin' %>
+    <%= javascript_include_tag "i18n" -%>
+    <%= javascript_include_tag "translations", skip_pipeline: true -%>
+    <%= javascript_importmap_tags 'admin' -%>
   </head>
   <body data-controller="base" class="h-full min-h-screen text-gray-900 dark:text-gray-300">
     <div class="turbo-progress-bar"></div>
     <div class="background-image"></div>
 
-    <%
+    <%-
       collapsed = @navigation_state == 'collapsed'
-    %>
+    -%>
 
-    <% if admin_user_signed_in? %>
-      <%= render "layouts/admin/navigation", collapsed: collapsed %>
-    <% end %>
+    <%- if admin_user_signed_in? -%>
+      <%= render "layouts/admin/navigation", collapsed: collapsed -%>
+    <%- end -%>
 
     <div class="md:flex md:flex-col md:flex-1 transition-all duration-300 ease-in<%= collapsed ? ' md:pl-20' : ' md:pl-72' %>" data-base-target="body">
-      <%# <%= render "layouts/admin/header-new" %>
+      <%# <%= render "layouts/admin/header-new" -%>
 
       <main class="min-h-screen">
-        <%= yield %>
+        <%= yield -%>
       </main>
 
-      <%= render "layouts/admin/footer-new" %>
+      <%= render "layouts/admin/footer-new" -%>
     </div>
   </body>
 </html>

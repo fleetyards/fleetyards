@@ -1,0 +1,99 @@
+<div data-controller="dashboard">
+  <%= render('admin/base/header') %>
+
+  <div class="mx-auto px-4 sm:px-6 md:px-8">
+    <div class="flex mb-6">
+      <div class="min-w-0 flex-col mr-6 w-4/12 pb-4">
+        <%= render 'quick_stats' %>
+      </div>
+      <div class="min-w-0 flex-1 flex-col">
+        <%= render('shared/panel', title: I18n.t(:"labels.panels.visits_per_day")) do %>
+          <div
+            data-controller="chart"
+            data-chart-url-value="<%= visits_per_day_admin_api_v1_stats_url %>"
+            data-chart-type-value="area"
+            data-chart-height-value="315px"
+            data-chart-tooltip-value="visit"
+            data-chart-refresh-value="true"
+            style="height: 315px;"
+          >
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto px-4 sm:px-6 md:px-8">
+    <div class="flex mb-6">
+      <div class="min-w-0 flex-col mr-6 w-5/12">
+        <%= render('shared/panel', title: I18n.t(:"labels.panels.most_viewed_pages")) do %>
+          <div
+            data-controller="chart"
+            data-chart-url-value="<%= most_viewed_pages_admin_api_v1_stats_url %>"
+            data-chart-type-value="bar"
+            data-chart-height-value="344px"
+            data-chart-tooltip-value="view"
+            data-chart-refresh-value="true"
+            style="height: 344px;"
+          >
+          </div>
+        <% end %>
+      </div>
+
+      <div class="min-w-0 flex-1 flex-col">
+        <%= render('shared/panel', title: I18n.t(:"labels.panels.visits_per_month")) do %>
+          <div
+            data-controller="chart"
+            data-chart-url-value="<%= visits_per_month_admin_api_v1_stats_url %>"
+            data-chart-type-value="column"
+            data-chart-height-value="344px"
+            data-chart-tooltip-value="visit"
+            data-chart-refresh-value="true"
+            style="height: 344px;"
+          >
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto px-4 sm:px-6 md:px-8">
+    <%= render 'users_panel' %>
+  </div>
+
+  <div class="mx-auto px-4 sm:px-6 md:px-8">
+    <div class="col-12 col-md-6">
+      <%= render 'classification_chart_panel' %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= render 'latest_models_panel' %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= render 'production_status_chart_panel' %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= render 'size_chart_panel' %>
+    </div>
+    <div class="col-12">
+      <%= render 'models_chart_panel' %>
+    </div>
+  </div>
+
+  <div class="mx-auto px-4 sm:px-6 md:px-8">
+    <div class="col-12 col-md-6">
+      <%= render 'manufacturers_chart_panel' %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= render 'latest_manufacturers_panel' %>
+    </div>
+  </div>
+
+  <div class="mx-auto px-4 sm:px-6 md:px-8">
+    <div class="col-12 col-md-6">
+      <%= render 'latest_components_panel' %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= render 'components_chart_panel' %>
+    </div>
+  </div>
+</div>

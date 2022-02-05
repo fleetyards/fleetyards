@@ -1,0 +1,11 @@
+<div class="<%= defined?(classes) ? " #{classes}" : '' %>">
+  <div class="relative">
+    <div class="border-2 rounded-3xl border-neutral-500 flex-1 p-0.5">
+      <div class="absolute top-0 h-0.5 left-20 right-20 bg-neutral-700"></div>
+      <div class="absolute top-1 h-3px left-10 right-10 bg-neutral-700"></div>
+      <%= yield -%>
+      <div class="absolute bottom-1 h-3px left-10 right-10 bg-neutral-700"></div>
+      <div class="absolute bottom-0 h-0.5 left-20 right-20 bg-neutral-700"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<%-
+  classes = defined?(classes) && classes
+  name = defined?(name) && name
+  icon = defined?(icon) && icon
+-%>
+<%= render('shared/ui_border', classes: classes) do -%>
+  <div class="border-3 border-brand-grayBorder/90 rounded-panel bg-brand-primary flex py-3 px-2 sm:p-4 overflow-hidden">
+    <div class="mr-4 flex-shrink-0 flex justify-center items-center h-full self-center  w-4/12">
+      <i class="<%= icon %> w-full h-full"></i>
+    </div>
+    <div class="flex flex-col flex-1 justify-center content-end w-8/12">
+      <dd class="mb-4 flex justify-end items-baseline">
+        <p class="text-4xl font-semibold dark:text-neutral-300">
+          <%= yield -%>
+        </p>
+      </dd>
+      <dt class="flex justify-end">
+        <p class="text-sm font-medium dark:text-neutral-300 truncate">
+          <%= name -%>
+        </p>
+      </dt>
+    </div>
+  </div>
+<%- end -%>

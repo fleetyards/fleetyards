@@ -1,5 +1,5 @@
 <ul class="navbar-nav me-3">
-  <% if admin_user_signed_in? %>
+  <% if admin_user_signed_in? -%>
     <li class="dropdown <%= active_nav?(%w(admin-users admin-otp)) %>">
       <a class="dropdown-toggle" href="#" data-toggle="dropdown">
         <span class="user-login">

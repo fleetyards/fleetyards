@@ -16,7 +16,6 @@ gem 'paper_trail'
 
 gem 'haml'
 gem 'haml-rails'
-gem 'slim-rails'
 
 gem 'importmap-rails'
 gem 'js-routes'

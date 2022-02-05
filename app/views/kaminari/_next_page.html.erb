@@ -1,4 +1,4 @@
-ruby:
+<%-
   # Link to the "Next" page
   #- available local variables
   #  url:           url to the next page
@@ -6,7 +6,10 @@ ruby:
   #  total_pages:   total number of pages
   #  per_page:      number of items to fetch per page
   #  remote:        data-remote
-= fy_btn(url, remote: remote, rel: 'next', disabled: current_page.last?, group: true) do
-  span(class="sr-only")
+-%>
+<%= fy_btn(url, remote: remote, rel: 'next', disabled: current_page.last?, group: true) do -%>
+  <span class="sr-only">
     Next
-  i(class="fa fa-chevron-right")
+  </span>
+  <i class="fa fa-chevron-right"></i>
+<%- end -%>

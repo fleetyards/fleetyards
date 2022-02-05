@@ -1,4 +1,4 @@
-<% if false %>
+<%- if false -%>
 <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
 <div class="fixed inset-0 flex z-40 md:hidden" role="dialog" aria-modal="true">
   <!--
@@ -43,7 +43,7 @@
       </button>
     </div>
 
-    <%= render 'layouts/admin/nav-new', collapsed: collapsed %>
+    <%= render 'layouts/admin/nav-new', collapsed: collapsed -%>
   </div>
 
 
@@ -51,7 +51,7 @@
     <!-- Dummy element to force sidebar to shrink to fit close icon -->
   </div>
 </div>
-<% end %>
+<%- end -%>
 
 <div class="fixed flex justify-between md:hidden bottom-0 left-0 right-0 h-20 z-10 bg-brand-grayBackground/95 shadow">
   <a class="flex-1 flex justify-center items-center text-xl">
@@ -69,6 +69,6 @@
 <div class="hidden md:flex md:flex-col md:fixed md:inset-y-0 transition-all duration-300 ease-in<%= collapsed ? ' md:w-20' : ' md:w-72' %>" data-base-target="nav">
   <!-- Sidebar component, swap this element with another sidebar if you like -->
   <div class="flex flex-col flex-grow pt-5 bg-brand-grayBackground/50 overflow-y-auto shadow">
-    <%= render 'layouts/admin/nav-new', collapsed: collapsed %>
+    <%= render 'layouts/admin/nav-new', collapsed: collapsed -%>
   </div>
 </div>

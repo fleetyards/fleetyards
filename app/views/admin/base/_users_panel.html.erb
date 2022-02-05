@@ -1,0 +1,56 @@
+<div class="flex mb-6">
+  <div class="min-w-0 flex-1 mr-6 flex-col">
+    <%= render('shared/panel', title: I18n.t(:"labels.panels.registrations")) do -%>
+      <div
+        data-controller="chart"
+        data-chart-url-value="<%= registrations_per_month_admin_api_v1_stats_url %>"
+        data-chart-type-value="column"
+        data-chart-height-value="344px"
+        data-chart-tooltip-value="user"
+      ></div>
+    <%- end -%>
+  </div>
+
+  <div class="min-w-0 flex-col w-5/12">
+    <%= render('shared/panel', title: I18n.t(:"labels.panels.latest_users")) do -%>
+      <ul role="list" class="divide-y divide-gray-700 -my-5 -mx-4 sm:-m-6 overflow-scroll" style="height: 319px;">
+        <li class="flex justify-between px-2 py-3 border-b-2 border-gray-500">
+          <div class="w-2/6">
+            <%= I18n.t(:"labels.table.user.username") -%>
+          </div>
+          <div class="w-2/6 text-right">
+            <%= I18n.t(:"labels.table.user.last_sign_in_at") -%>
+          </div>
+          <div class="w-2/6 text-right">
+            <%= I18n.t(:"labels.table.user.created_at") -%>
+          </div>
+        </li>
+        <%- @latest_users.each do |user| -%>
+          <li class="flex justify-between px-2 py-3">
+            <div class="w-2/6 truncate">
+              <%= user.username -%>
+            </div>
+            <div class="w-2/6 truncate text-right">
+              <%- if user.current_sign_in_at.present? -%>
+                <%= time_ago_in_words(user.current_sign_in_at) -%>
+              <%- else -%>
+                -
+              <%- end -%>
+            </div>
+            <div class="w-2/6 truncate text-right">
+              <%= I18n.l(user.created_at, format: :short) -%>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <%- content_for(:footer) do -%>
+        <div class="px-4 py-5 sm:p-6 border-t text-right border-gray-700">
+          <%= link_to admin_users_path do -%>
+            <%= I18n.t('actions.more') %>
+            <i class="fa fa-angle-right"></i>
+          <%- end -%>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="panel-wrapper panel-outer-spacing">
+  <div class="panel">
+    <div class="panel-inner">
+      <div class="panel-heading">
+        <h2 class="panel-title"><%= I18n.t(:"labels.panels.models_by_production_status") -%></h2>
+      </div>
+      <div class="panel-body">
+        <div
+          data-controller="chart"
+          data-chart-url-value="<%= api_url(models_by_production_status_api_v1_stats_path) %>"
+          data-chart-type-value="pie"
+          data-chart-height-value="453px"
+          data-chart-tooltip-value="ship-pie"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

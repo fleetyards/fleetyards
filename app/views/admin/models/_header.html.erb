@@ -1,0 +1,10 @@
+<%= render(
+    'shared/page-header',
+    title: I18n.t("headlines.admin.model.index"),
+    subline: "#{@models.count} of #{@models.total_count}") do
+-%>
+  <div class="inline-flex space-x-2">
+    <%= fy_btn(I18n.t(:"actions.admin.model.new_loaner_upload"), new_admin_loaner_upload_path) -%>
+    <%= fy_btn(I18n.t(:"actions.admin.model.new"), new_admin_model_path) -%>
+  </div>
+<%- end -%>
