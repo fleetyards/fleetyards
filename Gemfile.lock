@@ -44,9 +44,9 @@ GIT
 
 GIT
   remote: https://github.com/redis-store/redis-actionpack.git
-  revision: daf349101adfb395654be687d46c0f5c0c734e99
+  revision: aa27fdbd8e1ee28cdba840ee87cc06608c582ef7
   specs:
-    redis-actionpack (5.2.0)
+    redis-actionpack (5.3.0)
       actionpack (>= 5, < 8)
       redis-rack (>= 2.1.0, < 3)
       redis-store (>= 1.1.0, < 2)
@@ -504,10 +504,6 @@ GEM
       psych (>= 4.0.0)
     redcarpet (3.5.1)
     redis (4.6.0)
-    redis-actionpack (5.3.0)
-      actionpack (>= 5, < 8)
-      redis-rack (>= 2.1.0, < 3)
-      redis-store (>= 1.1.0, < 2)
     redis-rack (2.1.4)
       rack (>= 2.0.8, < 3)
       redis-store (>= 1.2, < 2)
