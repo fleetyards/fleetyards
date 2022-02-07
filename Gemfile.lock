@@ -8,6 +8,13 @@ GIT
       tilt (~> 2.0)
 
 GIT
+  remote: https://github.com/r38y/griddler-postmark.git
+  revision: 55904355a44066d94c24b49613a22e1face387a5
+  specs:
+    griddler-postmark (1.0.0)
+      griddler
+
+GIT
   remote: https://github.com/tinfoil/devise-two-factor.git
   revision: ecd182e97e8e92436bd908af30165c18f17fe67e
   specs:
@@ -255,8 +262,6 @@ GEM
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
-    griddler-postmark (1.0.0)
-      griddler
     groupdate (6.0.1)
       activesupport (>= 5.2)
     haml (5.2.2)
@@ -672,7 +677,7 @@ DEPENDENCIES
   foundation_emails
   graphql-client
   griddler
-  griddler-postmark
+  griddler-postmark!
   groupdate
   haml
   haml-rails
