@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   draw :frontend_routes
   draw :short_routes if Rails.configuration.app.short_domain.present?
 
+  mount_griddler('email/inbound')
+
   match '404' => 'errors#not_found', via: :all
   match '405' => 'errors#method_not_allowed', via: :all
   match '422' => 'errors#unprocessable_entity', via: :all
