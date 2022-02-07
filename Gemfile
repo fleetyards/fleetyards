@@ -146,7 +146,7 @@ group :development do
   gem 'capistrano-rbenv', '~> 2.1', require: false
   gem 'ed25519', require: false
 
-  gem "letter_opener"
+  gem 'letter_opener'
 end
 
 group :test do

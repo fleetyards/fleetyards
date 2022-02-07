@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: messages
@@ -10,7 +12,7 @@
 #  updated_at :datetime         not null
 #  user_id    :uuid
 #
-require "test_helper"
+require 'test_helper'
 
 class MessageTest < ActiveSupport::TestCase
   # test "the truth" do
