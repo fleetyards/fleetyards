@@ -252,6 +252,11 @@ GEM
     graphql-client (0.17.0)
       activesupport (>= 3.0)
       graphql (~> 1.10)
+    griddler (1.5.2)
+      htmlentities
+      rails (>= 3.2.0)
+    griddler-postmark (1.0.0)
+      griddler
     groupdate (6.0.1)
       activesupport (>= 5.2)
     haml (5.2.2)
@@ -307,6 +312,7 @@ GEM
       railties (>= 4)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
+    json (2.6.1)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -321,6 +327,10 @@ GEM
     kaminari-core (1.2.2)
     knapsack (4.0.0)
       rake
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -375,6 +385,11 @@ GEM
       google-protobuf (>= 3.19.2)
     pghero (2.8.2)
       activerecord (>= 5)
+    postmark (1.22.0)
+      json
+    postmark-rails (0.22.0)
+      actionmailer (>= 3.0.0)
+      postmark (>= 1.21.3, < 2.0)
     premailer (1.15.0)
       addressable
       css_parser (>= 1.6.0)
@@ -652,11 +667,12 @@ DEPENDENCIES
   dotenv-rails
   dynamic_fields_for_rails
   ed25519
-  excon (>= 0.71.0)
   faker
   fog-aws
   foundation_emails
   graphql-client
+  griddler
+  griddler-postmark
   groupdate
   haml
   haml-rails
@@ -672,6 +688,7 @@ DEPENDENCIES
   js_cookie_rails
   kaminari
   knapsack
+  letter_opener
   listen
   lograge
   metadown
@@ -685,6 +702,7 @@ DEPENDENCIES
   pg (~> 1.0)
   pg_query (>= 0.9.0)
   pghero
+  postmark-rails
   premailer-rails
   pry-byebug
   pry-rails

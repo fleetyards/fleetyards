@@ -41,6 +41,10 @@ gem 'inky-rb', require: 'inky'
 gem 'foundation_emails'
 gem 'premailer-rails'
 
+gem 'griddler'
+gem 'griddler-postmark'
+gem 'postmark-rails'
+
 gem 'cancancan'
 
 gem 'devise'
@@ -109,9 +113,6 @@ gem 'pry-rails'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
-# Audit Issues
-gem 'excon', '>= 0.71.0'
-
 gem 'appsignal'
 
 gem 'pghero'
@@ -144,6 +145,8 @@ group :development do
   gem 'capistrano-rails-console', require: false
   gem 'capistrano-rbenv', '~> 2.1', require: false
   gem 'ed25519', require: false
+
+  gem 'letter_opener'
 end
 
 group :test do

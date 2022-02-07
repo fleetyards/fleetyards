@@ -38,16 +38,10 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.deliver_later_queue_name = 'mailers'
   config.action_mailer.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
   config.action_mailer.asset_host = Rails.configuration.app.frontend_endpoint
-  config.action_mailer.smtp_settings = {
-    address: '127.0.0.1',
-    port: 1025,
-    enable_starttls_auto: true,
-    domain: Rails.configuration.app.domain
-  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
