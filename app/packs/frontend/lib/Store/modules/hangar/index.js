@@ -72,6 +72,10 @@ export default () => ({
     gridView(state) {
       return state.gridView
     },
+
+    tableSlim(state) {
+      return state.tableSlim
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -146,6 +150,10 @@ export default () => ({
 
     setGridView(state, payload) {
       state.gridView = payload
+    },
+
+    setTableSlim(state, payload) {
+      state.tableSlim = payload
     },
   },
   /* eslint-enable no-param-reassign */

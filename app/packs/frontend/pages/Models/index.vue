@@ -39,6 +39,30 @@
       <template slot="actions">
         <BtnDropdown size="small">
           <Btn
+            :aria-label="toggleGridViewTooltip"
+            size="small"
+            variant="dropdown"
+            @click.native="toggleGridView"
+          >
+            <i v-if="gridView" class="fad fa-list" />
+            <i v-else class="fas fa-th" />
+            <span>{{ toggleGridViewTooltip }}</span>
+          </Btn>
+
+          <Btn
+            v-if="!gridView"
+            :aria-label="toggleTableSlimTooltip"
+            size="small"
+            variant="dropdown"
+            @click.native="toggleTableSlim"
+          >
+            <i v-if="tableSlim" class="fas fa-bars" />
+            <i v-else class="fal fa-bars" />
+            <span>{{ toggleTableSlimTooltip }}</span>
+          </Btn>
+
+          <Btn
+            v-if="gridView"
             :active="detailsVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
@@ -55,6 +79,7 @@
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
+          v-if="gridView"
           :records="records"
           :filter-visible="filterVisible"
           :primary-key="primaryKey"
@@ -63,6 +88,13 @@
             <ModelPanel :model="record" :details="detailsVisible" />
           </template>
         </FilteredGrid>
+
+        <ModelsTable
+          v-else
+          :models="records"
+          :primary-key="primaryKey"
+          :slim="tableSlim"
+        />
 
         <FleetchartApp
           :items="records"
@@ -84,6 +116,7 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import ModelPanel from 'frontend/components/Models/Panel'
+import ModelsTable from 'frontend/components/Models/Table'
 import ModelsFilterForm from 'frontend/components/Models/FilterForm'
 import FleetchartApp from 'frontend/components/Fleetchart/App'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -101,6 +134,7 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
     FleetchartApp,
     ModelPanel,
     ModelsFilterForm,
+    ModelsTable,
   },
   mixins: [MetaInfo, HangarItemsMixin],
 })
@@ -113,7 +147,15 @@ export default class Models extends Vue {
 
   @Getter('perPage', { namespace: 'models' }) perPage
 
+  @Getter('gridView', { namespace: 'models' }) gridView
+
+  @Getter('tableSlim', { namespace: 'models' }) tableSlim
+
   @Action('toggleDetails', { namespace: 'models' }) toggleDetails: any
+
+  @Action('toggleGridView', { namespace: 'models' }) toggleGridView: any
+
+  @Action('toggleTableSlim', { namespace: 'models' }) toggleTableSlim: any
 
   @Action('toggleFleetchart', { namespace: 'models' }) toggleFleetchart: any
 
@@ -123,6 +165,22 @@ export default class Models extends Vue {
     }
 
     return this.$t('actions.showDetails')
+  }
+
+  get toggleGridViewTooltip() {
+    if (this.gridView) {
+      return this.$t('actions.showTableView')
+    }
+
+    return this.$t('actions.showGridView')
+  }
+
+  get toggleTableSlimTooltip() {
+    if (this.tableSlim) {
+      return this.$t('actions.showExpandedList')
+    }
+
+    return this.$t('actions.showCompactList')
   }
 
   get filters() {

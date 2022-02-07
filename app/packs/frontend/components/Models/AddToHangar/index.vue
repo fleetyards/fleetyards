@@ -30,15 +30,15 @@ import { displayWarning } from 'frontend/lib/Noty'
   },
 })
 export default class AddToHangar extends Vue {
-  @Prop({ required: true }) model: Model
+  @Prop({ required: true }) model!: Model
 
   @Prop({
     default: 'default',
     validator(value) {
-      return ['default', 'panel', 'menu'].includes(value)
+      return ['default', 'panel', 'menu', 'list'].includes(value)
     },
   })
-  variant: string
+  variant!: string
 
   @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
 
@@ -57,7 +57,7 @@ export default class AddToHangar extends Vue {
   }
 
   get btnSize() {
-    if (['panel', 'menu'].includes(this.variant)) {
+    if (['panel', 'menu', 'list'].includes(this.variant)) {
       return 'small'
     }
 

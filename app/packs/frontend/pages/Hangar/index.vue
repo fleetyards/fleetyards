@@ -138,7 +138,7 @@
           </template>
 
           <Btn
-            :aria-label="toggleGridView"
+            :aria-label="toggleGridViewTooltip"
             size="small"
             variant="dropdown"
             @click.native="toggleGridView"
@@ -146,6 +146,18 @@
             <i v-if="gridView" class="fad fa-list" />
             <i v-else class="fas fa-th" />
             <span>{{ toggleGridViewTooltip }}</span>
+          </Btn>
+
+          <Btn
+            v-if="!gridView"
+            :aria-label="toggleTableSlimTooltip"
+            size="small"
+            variant="dropdown"
+            @click.native="toggleTableSlim"
+          >
+            <i v-if="tableSlim" class="fas fa-bars" />
+            <i v-else class="fal fa-bars" />
+            <span>{{ toggleTableSlimTooltip }}</span>
           </Btn>
 
           <Btn
@@ -229,6 +241,7 @@
           :vehicles="records"
           :primary-key="primaryKey"
           :editable="true"
+          :slim="tableSlim"
         />
 
         <FleetchartApp
@@ -298,7 +311,7 @@ export default class Hangar extends Vue {
 
   vehiclesChannel = null
 
-  highlightedGroup: string = null
+  highlightedGroup: string | null = null
 
   collection: VehiclesCollection = vehiclesCollection
 
@@ -311,6 +324,8 @@ export default class Hangar extends Vue {
   @Getter('detailsVisible', { namespace: 'hangar' }) detailsVisible
 
   @Getter('gridView', { namespace: 'hangar' }) gridView
+
+  @Getter('tableSlim', { namespace: 'hangar' }) tableSlim
 
   @Getter('perPage', { namespace: 'hangar' }) perPage
 
@@ -325,6 +340,8 @@ export default class Hangar extends Vue {
   @Action('toggleMoney', { namespace: 'hangar' }) toggleMoney: any
 
   @Action('toggleGridView', { namespace: 'hangar' }) toggleGridView: any
+
+  @Action('toggleTableSlim', { namespace: 'hangar' }) toggleTableSlim: any
 
   @Action('toggleFleetchart', { namespace: 'hangar' }) toggleFleetchart: any
 
@@ -344,6 +361,7 @@ export default class Hangar extends Vue {
     if (this.detailsVisible) {
       return this.$t('actions.hideDetails')
     }
+
     return this.$t('actions.showDetails')
   }
 
@@ -351,13 +369,23 @@ export default class Hangar extends Vue {
     if (this.gridView) {
       return this.$t('actions.showTableView')
     }
+
     return this.$t('actions.showGridView')
+  }
+
+  get toggleTableSlimTooltip() {
+    if (this.tableSlim) {
+      return this.$t('actions.showExpandedList')
+    }
+
+    return this.$t('actions.showCompactList')
   }
 
   get toggleGuideTooltip() {
     if (this.guideVisible) {
       return this.$t('actions.hideGuide')
     }
+
     return this.$t('actions.showGuide')
   }
 

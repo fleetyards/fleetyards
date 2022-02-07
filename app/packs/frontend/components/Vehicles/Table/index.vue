@@ -5,12 +5,14 @@
     :columns="tableColumns"
     :selectable="editable"
     :selected="selected"
+    list-classes="vehicles-table"
+    list-item-classes="vehicles-table-row"
     @selected-change="onSelectedChange"
   >
     <template #selected-actions>
       <div class="d-flex">
         <BtnGroup :inline="true">
-          <span>{{ $t('labels.public') }}</span>
+          <span>{{ $t('labels.visibility') }}</span>
           <Btn
             v-tooltip="$t('actions.hangar.showOnPublicHangar')"
             size="small"
@@ -53,71 +55,123 @@
       </div>
     </template>
     <template #col-store_image="{ record }">
-      <div
-        :key="record.model.storeImageSmall"
-        v-lazy:background-image="record.model.storeImageSmall"
-        class="image lazy"
-        alt="storeImage"
-      />
+      <router-link
+        :to="{
+          name: 'model',
+          params: {
+            slug: record.model.slug,
+          },
+        }"
+      >
+        <div
+          :key="record.model.storeImageSmall"
+          v-lazy:background-image="record.model.storeImageSmall"
+          class="image lazy"
+          alt="storeImage"
+          :class="{
+            'image-highlight-gold': record.flagship,
+          }"
+        />
+      </router-link>
     </template>
     <template #col-name="{ record }">
-      <div class="name">
-        <router-link
-          :to="{
-            name: 'model',
-            params: {
-              slug: record.model.slug,
-            },
-          }"
-        >
-          <span v-if="record.name">
-            {{ record.name }}
-          </span>
+      <router-link
+        :to="{
+          name: 'model',
+          params: {
+            slug: record.model.slug,
+          },
+        }"
+      >
+        <span v-if="record.name">
+          {{ record.name }}
+        </span>
 
-          <span v-else>{{ record.model.name }}</span>
-        </router-link>
-        <br />
-        <small>
-          <span v-html="record.model.manufacturer.name" />
-          <template v-if="record.name">
-            {{ record.model.name }}
-          </template>
-        </small>
+        <span v-else>{{ record.model.name }}</span>
+
+        <transition name="fade" appear>
+          <small
+            v-if="record && record.flagship"
+            v-tooltip.right="$t('labels.yourFlagship')"
+          >
+            <i class="fad fa-certificate flagship-icon" />
+          </small>
+        </transition>
+      </router-link>
+      <br v-if="!slim" />
+      <small>
+        <span v-html="record.model.manufacturer.name" />
+        <template v-if="record.name">
+          {{ record.model.name }}
+        </template>
+      </small>
+    </template>
+    <template #col-metrics="{ record }">
+      <div class="vehicle-focus">
+        {{ record.model.focus }}
       </div>
+      <div class="vehicle-length">
+        {{ record.model.length }}
+      </div>
+      <template v-if="!slim">
+        <div class="vehicle-beam">
+          {{ record.model.beam }}
+        </div>
+        <div class="vehicle-height">
+          {{ record.model.height }}
+        </div>
+      </template>
     </template>
     <template #col-states="{ record }">
-      <div class="vehicle-states">
-        <i
-          v-if="record.flagship"
-          v-tooltip="$t('labels.vehicle.flagship')"
-          class="fad fa-certificate flagship-icon"
-        />
-        <i
-          v-if="record.model.onSale"
-          v-tooltip="$t('labels.model.onSale')"
-          class="fad fa-dollar-sign on-sale"
-        />
-        <i
-          v-if="record.purchased"
-          v-tooltip="$t('labels.vehicle.purchased')"
-          class="fas fa-check"
-        />
-        <i
-          v-if="record.purchased && record.public && record.nameVisible"
-          v-tooltip="$t('labels.vehicle.fullPublic')"
-          class="fad fa-eye-evil full-public-icon"
-        />
-        <i
-          v-else-if="record.purchased && record.public"
-          v-tooltip="$t('labels.vehicle.public')"
-          class="fad fa-eye"
-        />
-        <i
-          v-if="record.saleNotify && !record.purchased"
-          v-tooltip="$t('labels.vehicle.saleNotify')"
-          class="fad fa-bell"
-        />
-      </div>
+      <span
+        v-if="record.model.onSale"
+        v-tooltip="$t('labels.model.onSale')"
+        class="on-sale vehicle-states-item"
+      >
+        <i class="fad fa-dollar-sign" />
+      </span>
+      <span
+        v-if="record.purchased"
+        v-tooltip="$t('labels.vehicle.purchased')"
+        class="vehicle-states-item"
+      >
+        <i class="fas fa-check" />
+      </span>
+      <span
+        v-else-if="record.saleNotify"
+        v-tooltip="$t('labels.vehicle.saleNotify')"
+        class="vehicle-states-item"
+      >
+        <i class="fad fa-bell" />
+      </span>
+      <span
+        v-else
+        v-tooltip="$t('labels.vehicle.saleNotifyDisabled')"
+        class="vehicle-states-item vehicle-states-item-disabled"
+      >
+        <i class="fad fa-bell-slash" />
+      </span>
+      <span
+        v-if="record.purchased && record.public && record.nameVisible"
+        v-tooltip="$t('labels.vehicle.fullPublic')"
+        class="full-public-icon vehicle-states-item"
+      >
+        <i class="fad fa-eye-evil" />
+      </span>
+      <span
+        v-else-if="record.purchased && record.public"
+        v-tooltip="$t('labels.vehicle.public')"
+        class="vehicle-states-item"
+      >
+        <i class="fad fa-eye" />
+      </span>
+      <span
+        v-else
+        v-tooltip="$t('labels.vehicle.hidden')"
+        class="vehicle-states-item vehicle-states-item-disabled"
+      >
+        <i class="fad fa-eye-slash" />
+      </span>
     </template>
     <template #col-groups="{ record }">
       <HangarGroups :groups="record.hangarGroups" size="large" />
@@ -144,7 +198,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import FilteredTable from 'frontend/core/components/FilteredTable'
+import FilteredTable, {
+  FilteredTableColumn,
+} from 'frontend/core/components/FilteredTable'
 import Btn from 'frontend/core/components/Btn'
 import BtnGroup from 'frontend/core/components/BtnGroup'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
@@ -168,33 +224,46 @@ export default class FilteredGrid extends Vue {
 
   @Prop({ default: false }) editable!: boolean
 
+  @Prop({ default: false }) slim!: boolean
+
   selected: string[] = []
 
   deleting: boolean = false
 
   updating: boolean = false
 
-  tableColumns: FilteredTableColumn[] = [
-    {
-      name: 'store_image',
-      class: 'store-image wide',
-      type: 'store-image',
-    },
-    {
-      name: 'name',
-      width: '40%',
-    },
-    {
-      name: 'states',
-      width: '10%',
-    },
-    {
-      name: 'groups',
-      label: this.$t('labels.vehicle.hangarGroups'),
-      width: '10%',
-    },
-    { name: 'actions', label: this.$t('labels.actions'), width: '10%' },
-  ]
+  get tableColumns(): FilteredTableColumn[] {
+    return [
+      {
+        name: 'store_image',
+        class: `store-image wide ${this.slim ? 'small' : ''}`,
+        type: 'store-image',
+      },
+      {
+        name: 'name',
+        class: 'vehicle-name name',
+        flexGrow: 1,
+      },
+      {
+        name: 'metrics',
+        class: 'vehicle-metrics',
+      },
+      {
+        name: 'states',
+        class: 'vehicle-states',
+      },
+      {
+        name: 'groups',
+        class: 'vehicle-groups',
+        label: this.$t('labels.vehicle.hangarGroups'),
+      },
+      {
+        name: 'actions',
+        class: 'actions',
+        label: this.$t('labels.actions'),
+      },
+    ]
+  }
 
   mounted() {
     this.$comlink.$on('vehicles-delete-all', this.resetSelected)
@@ -285,6 +354,6 @@ export default class FilteredGrid extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'index';
 </style>

@@ -8,24 +8,22 @@
   >
     <BackgroundImage />
 
-    <div class="app-content">
-      <transition name="fade" mode="out-in">
-        <NavigationMobile v-if="mobile" />
-      </transition>
-      <transition name="fade" mode="out-in">
-        <Navigation />
-      </transition>
-      <div class="main-wrapper">
-        <div class="main-inner">
-          <NavigationHeader />
+    <transition name="fade" mode="out-in">
+      <NavigationMobile v-if="mobile" />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <Navigation />
+    </transition>
+    <div class="main-wrapper" :class="{ 'slim-nav': this.navSlim }">
+      <div class="main-inner">
+        <NavigationHeader />
 
-          <transition name="fade" mode="out-in">
-            <router-view :key="$route.path" class="main" />
-          </transition>
-        </div>
-
-        <AppFooter />
+        <transition name="fade" mode="out-in">
+          <router-view :key="$route.path" class="main" />
+        </transition>
       </div>
+
+      <AppFooter />
     </div>
 
     <AppShoppingCart />
@@ -70,6 +68,8 @@ export default class FrontendApp extends Vue {
   @Getter('mobile') mobile
 
   @Getter('navCollapsed', { namespace: 'app' }) navCollapsed: boolean
+
+  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
 
   @Getter('overlayVisible', { namespace: 'app' }) overlayVisible: boolean
 

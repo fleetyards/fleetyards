@@ -9,4 +9,6 @@ export default () => ({
   fleetchartMode: 'panzoom',
   fleetchartScale: 1,
   perPage: 30,
+  gridView: true,
+  tableSlim: false,
 })

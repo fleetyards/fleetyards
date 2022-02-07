@@ -13,4 +13,6 @@ export default () => ({
   money: true,
   preview: true,
   inviteToken: null,
+  gridView: true,
+  tableSlim: false,
 })

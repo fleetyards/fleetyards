@@ -1,106 +1,109 @@
 <template>
-  <Panel>
-    <transition-group
-      name="fade"
-      class="filtered-table"
-      tag="div"
-      :appear="true"
-    >
-      <div
-        v-if="internalSelected.length"
-        key="selected-header"
-        class="fade-list-item col-12 filtered-table-selected"
+  <Panel :class="listClasses">
+    <div class="filtered-table-wrapper">
+      <transition-group
+        name="fade"
+        class="filtered-table"
+        tag="div"
+        :appear="true"
       >
-        <div class="filtered-table-row">
-          <div class="selected-count">
-            {{
-              $t('labels.table.selected', { count: internalSelected.length })
-            }}
-            <Btn
-              v-tooltip="$t('actions.unselect')"
-              size="small"
-              variant="link"
-              :inline="true"
-              @click.native="resetSelected"
-            >
-              <i class="fal fa-times" />
-            </Btn>
-          </div>
-          <slot
-            :selectedCount="internalSelected.length"
-            name="selected-actions"
-          />
-        </div>
-      </div>
-      <div key="heading" class="fade-list-item col-12 filtered-table-heading">
-        <div class="filtered-table-row">
-          <div v-if="selectable && !mobile">
-            <Checkbox :value="allSelected" @input="onAllSelectedChange" />
-          </div>
-          <div
-            v-for="(column, index) in columns"
-            :key="`filtered-table-heading-${uuid}-${index}-${column.name}`"
-            :class="column.class"
-            :style="{
-              'flex-grow': column.flexGrow,
-              'width': column.width,
-            }"
-          >
-            {{ column.label }}
-          </div>
-        </div>
-      </div>
-      <template v-if="records.length">
         <div
-          v-for="(record, index) in records"
-          :key="record[primaryKey]"
-          class="fade-list-item col-12 filtered-table-item"
+          v-if="internalSelected.length"
+          key="selected-header"
+          class="fade-list-item filtered-table-selected"
         >
-          <slot :record="record" :index="index">
-            <div class="filtered-table-row">
-              <div v-if="selectable && !mobile">
-                <Checkbox
-                  v-model="internalSelected"
-                  :checkbox-value="record.id"
-                />
-              </div>
-              <template v-for="(column, colIndex) in columns">
-                <div
-                  :key="`filtered-table-item-${uuid}-${colIndex}-${column.name}`"
-                  :class="column.class"
-                  :style="{
-                    'flex-grow': column.flexGrow,
-                    'width': column.width,
-                  }"
-                >
-                  <slot :record="record" :name="`col-${column.name}`">
-                    {{ record[column.field || column.name] }}
-                  </slot>
-                </div>
-              </template>
+          <div class="filtered-table-row">
+            <div class="selected-count">
+              {{
+                $t('labels.table.selected', { count: internalSelected.length })
+              }}
+              <Btn
+                v-tooltip="$t('actions.unselect')"
+                size="small"
+                variant="link"
+                :inline="true"
+                @click.native="resetSelected"
+              >
+                <i class="fal fa-times" />
+              </Btn>
             </div>
-          </slot>
+            <slot
+              :selectedCount="internalSelected.length"
+              name="selected-actions"
+            />
+          </div>
         </div>
-      </template>
-      <div
-        v-if="loading"
-        key="loading-row"
-        class="fade-list-item col-12 filtered-table-loader"
-      >
-        <div class="filtered-table-row">
-          <Loader :loading="loading" :inline="true" />
+        <div key="heading" class="fade-list-item filtered-table-heading">
+          <div class="filtered-table-row">
+            <div v-if="selectable && !mobile">
+              <Checkbox :value="allSelected" @input="onAllSelectedChange" />
+            </div>
+            <div
+              v-for="(column, index) in columns"
+              :key="`filtered-table-heading-${uuid}-${index}-${column.name}`"
+              :class="column.class"
+              :style="{
+                'flex-grow': column.flexGrow,
+                'width': column.width,
+              }"
+            >
+              {{ column.label }}
+            </div>
+          </div>
         </div>
-      </div>
-      <div
-        v-else-if="emptyBoxVisible"
-        key="empty-row"
-        class="fade-list-item col-12 filtered-table-empty"
-      >
-        <div class="filtered-table-row">
-          {{ $t('texts.empty.info') }}
+        <template v-if="records.length">
+          <div
+            v-for="(record, index) in records"
+            :key="record[primaryKey]"
+            class="fade-list-item filtered-table-item"
+            :class="listItemClasses"
+          >
+            <slot :record="record" :index="index">
+              <div class="filtered-table-row">
+                <div v-if="selectable && !mobile">
+                  <Checkbox
+                    v-model="internalSelected"
+                    :checkbox-value="record.id"
+                  />
+                </div>
+                <template v-for="(column, colIndex) in columns">
+                  <div
+                    :key="`filtered-table-item-${uuid}-${colIndex}-${column.name}`"
+                    :class="column.class"
+                    :style="{
+                      'flex-grow': column.flexGrow,
+                      'width': column.width,
+                    }"
+                  >
+                    <slot :record="record" :name="`col-${column.name}`">
+                      {{ record[column.field || column.name] }}
+                    </slot>
+                  </div>
+                </template>
+              </div>
+            </slot>
+          </div>
+        </template>
+        <div
+          v-if="loading"
+          key="loading-row"
+          class="fade-list-item filtered-table-loader"
+        >
+          <div class="filtered-table-row">
+            <Loader :loading="loading" :inline="true" />
+          </div>
         </div>
-      </div>
-    </transition-group>
+        <div
+          v-else-if="emptyBoxVisible"
+          key="empty-row"
+          class="fade-list-item filtered-table-empty"
+        >
+          <div class="filtered-table-row">
+            {{ $t('texts.empty.info') }}
+          </div>
+        </div>
+      </transition-group>
+    </div>
   </Panel>
 </template>
 
@@ -116,8 +119,11 @@ import { uniq as uniqArray } from 'frontend/utils/Array'
 
 export type FilteredTableColumn = {
   name: string
-  class: maybe<string>
-  label: string
+  class?: string
+  label?: string
+  type?: string
+  width?: string
+  flexGrow?: number
 }
 
 @Component<FilteredTable>({
@@ -140,6 +146,10 @@ export default class FilteredTable extends Vue {
   @Prop({ default: false }) emptyBoxVisible!: boolean
 
   @Prop({ default: false }) selectable!: boolean
+
+  @Prop({ default: null }) listClasses!: string[] | string | object
+
+  @Prop({ default: null }) listItemClasses!: string[] | string | object
 
   @Prop({
     default: () => [],

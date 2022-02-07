@@ -151,6 +151,7 @@ export default {
   'taxExcluded': 'excl. VAT',
   'hangar': 'Hangar',
   'public': 'Public',
+  'visibility': 'Visibility',
   'hangarStats': 'Stats',
   'fleetchart': 'Fleetchart',
   'fleetchartApp': {
@@ -365,10 +366,12 @@ export default {
     purchased: 'Purchased',
     loaner: 'Loaner',
     public: 'Public Visible',
+    hidden: 'Hidden',
     fullPublic: 'Public Visible including Name',
     publicShort: 'Public',
     nameVisible: 'Public Visible',
     saleNotify: 'I want to receive Sale Notifications',
+    saleNotifyDisabled: 'No Sale Notifications',
     hangarGroups: 'Groups',
     selectGroup: 'Select a Group',
     modelPaintSelect: {

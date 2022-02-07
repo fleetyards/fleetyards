@@ -1,9 +1,10 @@
-.filtered-table {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
+.filtered-table-wrapper {
+  //max-width: 100%;
+  //overflow-x: auto;
+  //position: relative;
+}
 
+.filtered-table {
   .filtered-table-item > .filtered-table-row,
   .filtered-table-heading > .filtered-table-row,
   .filtered-table-selected > .filtered-table-row,
@@ -23,6 +24,8 @@
 
     .actions {
       min-width: 150px;
+      flex-shrink: 0;
+      flex-grow: 0;
 
       &.actions-1x {
         min-width: 90px;
@@ -31,37 +34,61 @@
 
     .store-image {
       width: 178px;
+      min-width: 178px;
       max-width: 100%;
 
       .image {
         position: relative;
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        margin: 5px 0;
+        width: 100px;
+        min-width: 100px;
+        height: 100px;
         vertical-align: middle;
         background-color: black;
         background-position: center;
         background-size: cover;
         border-radius: $border-radius-base;
         box-shadow: 0 0 5px black;
+
+        &.image-highlight-gold {
+          border: 2px solid $gold;
+        }
+
+        &.image-highlight-blue {
+          border: 2px solid $primary;
+        }
       }
 
       &.wide {
-        width: 278px;
+        width: 228px;
+        min-width: 228px;
 
         .image {
-          width: 250px;
-          height: 100px;
+          width: 200px;
+          min-width: 200px;
+          height: 80px;
         }
       }
 
       &.small {
-        width: 128px;
+        width: 68px;
+        min-width: 68px;
 
         .image {
-          width: 100px;
-          height: 100px;
+          width: 50px;
+          min-width: 50px;
+          height: 50px;
+        }
+
+        &.wide {
+          width: 148px;
+          min-width: 148px;
+
+          .image {
+            width: 125px;
+            min-width: 125px;
+            height: 50px;
+          }
         }
       }
     }
@@ -232,6 +259,8 @@
       & > div {
         width: 100% !important;
         padding: 10px;
+        flex-basis: auto !important;
+        min-width: 0 !important;
       }
 
       .store-image {

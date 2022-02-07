@@ -78,6 +78,8 @@ export default {
   'addUpgrade': 'Add another Upgrade',
   'showTableView': 'Display as List',
   'showGridView': 'Display as Grid',
+  'showCompactList': 'Compact List',
+  'showExpandedList': 'Expanded List',
   'compare': {
     models: 'Compare',
   },

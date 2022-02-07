@@ -1,39 +1,67 @@
 @import '~stylesheets/variables';
 
-.vehicle-states {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  font-size: 150%;
-
-  > * {
-    margin: 0 5px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-
-    &:first-child {
-      margin-left: 0;
-    }
-  }
-
-  .on-sale {
-    color: $success;
-  }
-
+.vehicles-table {
   .flagship-icon {
     color: $gold;
   }
 
-  .full-public-icon {
-    color: $gray-lighter;
+  .vehicle-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vehicle-metrics {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .vehicle-states {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    font-size: 120%;
+    min-width: 146px;
+    width: 146px;
+
+    .vehicle-states-item {
+      padding: 5px;
+      background-color: $primary;
+      transform: skew(-15deg);
+      text-align: center;
+      width: 2.5rem;
+      overflow: hidden;
+      margin-right: 3px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.on-sale {
+        background-color: $success;
+      }
+
+      &.full-public-icon {
+        color: $gray-lighter;
+      }
+
+      &.vehicle-states-item-disabled {
+        background-color: $gray-dark;
+      }
+    }
+  }
+
+  .vehicle-groups {
+    width: 108px;
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .vehicle-states,
-  .hangar-groups {
-    justify-content: center;
+  .vehicles-table {
+    .vehicle-states,
+    .hangar-groups {
+      justify-content: center;
+    }
   }
 }

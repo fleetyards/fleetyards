@@ -47,11 +47,15 @@ export default {
     commit('setPerPage', payload)
   },
 
+  toggleFleetchart({ commit, state }) {
+    commit('setFleetchartVisible', !state.fleetchartVisible)
+  },
+
   toggleGridView({ commit, state }) {
     commit('setGridView', !state.gridView)
   },
 
-  toggleFleetchart({ commit, state }) {
-    commit('setFleetchartVisible', !state.fleetchartVisible)
+  toggleTableSlim({ commit, state }) {
+    commit('setTableSlim', !state.tableSlim)
   },
 }

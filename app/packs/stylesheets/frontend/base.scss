@@ -44,26 +44,25 @@ body {
 }
 
 .app-body {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
-
-  .app-content {
-    display: flex;
-    align-items: stretch;
-  }
 
   .main-wrapper {
     display: flex;
-    flex: 1;
     flex-direction: column;
     justify-content: space-between;
-    max-width: 100%;
     height: 100%;
+    position: relative;
+    max-width: 100%;
+    margin-left: 300px;
+
+    &.slim-nav {
+      margin-left: 80px;
+    }
   }
 
   .main-inner {
     min-height: 100vh;
+    max-width: 100%;
   }
 
   .main {
@@ -140,6 +139,11 @@ hr {
       padding-top: env(safe-area-inset-top);
       padding-right: env(safe-area-inset-right);
       padding-left: env(safe-area-inset-left);
+      margin-left: 0;
+
+      &.slim-nav {
+        margin-left: 0;
+      }
     }
 
     .main {
