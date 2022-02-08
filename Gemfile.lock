@@ -255,10 +255,6 @@ GEM
     globalid (1.0.0)
       activesupport (>= 5.0)
     google-protobuf (3.19.4)
-    graphql (1.13.8)
-    graphql-client (0.17.0)
-      activesupport (>= 3.0)
-      graphql (~> 1.10)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
@@ -675,7 +671,6 @@ DEPENDENCIES
   faker
   fog-aws
   foundation_emails
-  graphql-client
   griddler
   griddler-postmark!
   groupdate
