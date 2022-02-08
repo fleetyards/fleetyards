@@ -25,6 +25,8 @@ gem 'stimulus-rails'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
 
+gem 'terser'
+
 gem 'searchkick'
 
 gem 'discordrb-webhooks'
