@@ -25,13 +25,6 @@ GIT
       tilt (~> 2.0)
 
 GIT
-  remote: https://github.com/r38y/griddler-postmark.git
-  revision: 55904355a44066d94c24b49613a22e1face387a5
-  specs:
-    griddler-postmark (1.0.0)
-      griddler
-
-GIT
   remote: https://github.com/mortik/devise-two-factor.git
   revision: 72296ae8abe062e3cdc58d62f3141d379cff6883
   specs:
@@ -41,6 +34,13 @@ GIT
       devise (~> 4.0)
       railties (< 8)
       rotp (~> 6.0)
+
+GIT
+  remote: https://github.com/r38y/griddler-postmark.git
+  revision: 55904355a44066d94c24b49613a22e1face387a5
+  specs:
+    griddler-postmark (1.0.0)
+      griddler
 
 GIT
   remote: https://github.com/redis-store/redis-actionpack.git
@@ -331,8 +331,6 @@ GEM
       activesupport (>= 5.0.0)
     js-routes (2.2.2)
       railties (>= 4)
-    js_cookie_rails (2.2.0)
-      railties (>= 3.1)
     json (2.6.1)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -423,7 +421,6 @@ GEM
     postmark-rails (0.22.0)
       actionmailer (>= 3.0.0)
       postmark (>= 1.21.3, < 2.0)
-    popper_js (2.9.3)
     premailer (1.15.0)
       addressable
       css_parser (>= 1.6.0)
