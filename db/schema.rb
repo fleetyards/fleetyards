@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_07_215559) do
+ActiveRecord::Schema.define(version: 2022_02_08_123524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -322,6 +322,13 @@ ActiveRecord::Schema.define(version: 2022_02_07_215559) do
     t.string "code"
   end
 
+  create_table "message_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.binary "payload"
+    t.uuid "message_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "from"
     t.uuid "user_id"
@@ -329,6 +336,11 @@ ActiveRecord::Schema.define(version: 2022_02_07_215559) do
     t.text "body"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "read", default: false
+    t.boolean "archived", default: false
+    t.string "email"
+    t.text "to"
+    t.text "from_raw"
   end
 
   create_table "model_additions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

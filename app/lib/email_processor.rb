@@ -8,10 +8,15 @@ class EmailProcessor
   def process
     user = User.find_by(email: @email.from[:email])
 
-    Message.create(
+    Message.create!(
       subject: @email.subject,
       body: @email.body,
-      from: @email.from[:email],
+      email: @email.from[:email],
+      from_raw: @email.from,
+      to: @email.to,
+      message_attachments: @email.attachments.map do |attachment|
+        MessageAttachment.new(payload: attachment.read)
+      end,
       user_id: user&.id
     )
   end
