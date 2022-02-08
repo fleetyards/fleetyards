@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 import axios from 'axios'
 
-export default class extends Controller {
+export default class QuickstatsController extends Controller {
   static targets = [
     'onlineCount',
     'shipsCountYear',

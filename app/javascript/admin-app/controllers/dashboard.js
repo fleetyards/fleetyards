@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 
-export default class extends Controller {
+export default class DashboardController extends Controller {
   connect() {
     console.info('DashboardController connect')
     // this.element.textContent = 'Hello World!'

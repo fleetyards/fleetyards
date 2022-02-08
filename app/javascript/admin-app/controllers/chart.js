@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import Highcharts from 'highcharts'
 import axios from 'axios'
 
-export default class extends Controller {
+export default class ChartController extends Controller {
   static values = {
     url: String,
     type: String,
