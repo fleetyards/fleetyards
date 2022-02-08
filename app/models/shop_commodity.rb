@@ -35,7 +35,7 @@
 class ShopCommodity < ApplicationRecord
   paginates_per 30
 
-  searchkick index_prefix: -> { },
+  searchkick index_prefix: -> {},
              searchable: %i[name manufacturer_name created_at],
              word_start: %i[name manufacturer_name]
 

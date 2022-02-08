@@ -40,8 +40,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import FilteredTable, { FilteredTableColumn } from 'frontend/core/components/FilteredTable/index.vue'
-import AddToHangar from "frontend/components/Models/AddToHangar/index.vue"
+import FilteredTable, {
+  FilteredTableColumn,
+} from 'frontend/core/components/FilteredTable/index.vue'
+import AddToHangar from 'frontend/components/Models/AddToHangar/index.vue'
 
 @Component<FilteredGrid>({
   components: {
@@ -67,7 +69,7 @@ export default class FilteredGrid extends Vue {
         name: 'name',
         flexGrow: 1,
       },
-      {name: 'actions', label: this.$t('labels.actions'), width: '10%'},
+      { name: 'actions', label: this.$t('labels.actions'), width: '10%' },
     ]
   }
 }
