@@ -10,6 +10,8 @@ module Api
       def setup
         Searchkick.enable_callbacks
 
+        ShopCommodity.reindex
+
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
       end
@@ -21,18 +23,16 @@ module Api
       test 'should return list for index' do
         new_deal = shops :new_deal
 
-        VCR.use_cassette('shop_commodities_index') do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+        get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
+        assert_response :ok
 
-          json = JSON.parse response.body
-          result = json.map { |item| item['id'] }
+        json = JSON.parse response.body
+        result = json.map { |item| item['id'] }
 
-          expectation = new_deal.shop_commodities.pluck(:id)
+        expectation = new_deal.shop_commodities.pluck(:id)
 
-          assert_equal expectation, result
-        end
+        assert_equal expectation, result
       end
 
       test 'with session should return list for index' do
@@ -40,18 +40,16 @@ module Api
 
         new_deal = shops :new_deal
 
-        VCR.use_cassette('shop_commodities_index') do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+        get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
+        assert_response :ok
 
-          json = JSON.parse response.body
-          result = json.map { |item| item['id'] }
+        json = JSON.parse response.body
+        result = json.map { |item| item['id'] }
 
-          expectation = new_deal.shop_commodities.pluck(:id)
+        expectation = new_deal.shop_commodities.pluck(:id)
 
-          assert_equal expectation, result
-        end
+        assert_equal expectation, result
       end
     end
   end

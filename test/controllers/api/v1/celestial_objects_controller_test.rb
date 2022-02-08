@@ -10,6 +10,8 @@ module Api
       def setup
         Searchkick.enable_callbacks
 
+        CelestialObject.reindex
+
         @request.headers['Accept'] = Mime[:json]
         @request.headers['Content-Type'] = Mime[:json].to_s
       end
@@ -19,16 +21,14 @@ module Api
       end
 
       test 'should return list for index' do
-        VCR.use_cassette('celestial_objects_index') do
-          get :index
+        get :index
 
-          assert_response :ok
+        assert_response :ok
 
-          json = JSON.parse response.body
-          result = json.map { |item| item['slug'] }
+        json = JSON.parse response.body
+        result = json.map { |item| item['slug'] }
 
-          assert_equal %w[hurston crusader daymar yela], result
-        end
+        assert_equal %w[hurston crusader daymar yela], result
       end
 
       test 'should return a single record for show' do
@@ -48,16 +48,14 @@ module Api
 
         sign_in(data)
 
-        VCR.use_cassette('celestial_objects_index') do
-          get :index
+        get :index
 
-          assert_response :ok
+        assert_response :ok
 
-          json = JSON.parse response.body
-          result = json.map { |item| item['slug'] }
+        json = JSON.parse response.body
+        result = json.map { |item| item['slug'] }
 
-          assert_equal %w[hurston crusader daymar yela], result
-        end
+        assert_equal %w[hurston crusader daymar yela], result
       end
 
       test 'with session should return a single record for show' do
