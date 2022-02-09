@@ -263,8 +263,6 @@ nav {
       bottom: 0;
       left: auto;
       width: 300px;
-      height: 100vh;
-      max-height: 100vh;
       padding-top: env(safe-area-inset-top);
       padding-left: env(safe-area-inset-left);
       transition: left ease $transition-base-speed,
