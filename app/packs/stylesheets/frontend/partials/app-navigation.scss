@@ -183,7 +183,9 @@ nav {
       }
 
       > :last-child {
+        padding-top: 30px;
         padding-bottom: 20px;
+        margin-bottom: env(safe-area-inset-bottom);
       }
     }
 
