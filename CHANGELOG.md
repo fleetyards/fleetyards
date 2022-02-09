@@ -10,13 +10,9 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * **hangar-import:** mark all imported ships as purchased by default ([#2057](https://github.com/fleetyards/fleetyards/issues/2057)) ([22f6a9c](https://github.com/fleetyards/fleetyards/commit/22f6a9c5b643d8664f6466475a07c41622634b28))
+* **fleetchart** update image resolutions for small sizes
+* **navigation** cleanup links and minor styling updates (moved user menu to the bottom)
 
-
-### Bug Fixes
-
-* e2e ([6799550](https://github.com/fleetyards/fleetyards/commit/67995507fab3cd63c29119c01af7ef6c3e443f21))
-* e2e specs ([8d27b90](https://github.com/fleetyards/fleetyards/commit/8d27b90a42e50bed643edd230317d9d34daadcae))
-* e2e specs ([27e356a](https://github.com/fleetyards/fleetyards/commit/27e356a8c8b6ae5b2aa98cc6e1cbfb03565fad72))
 
 ## [5.4.0](https://github.com/fleetyards/fleetyards/compare/v5.3.4...v5.4.0) (2022-01-12)
 
