@@ -4,8 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [5.5.1](https://github.com/fleetyards/fleetyards/compare/v5.5.0...v5.5.1) (2022-02-09)
 
-## [5.5.0](https://github.com/fleetyards/fleetyards/compare/v5.4.0...v5.5.0) (2022-02-09)
+### Bugfixes
 
+* **navigation** update sidebar height for iOS Browsers
+
+
+## [5.5.0](https://github.com/fleetyards/fleetyards/compare/v5.4.0...v5.5.0) (2022-02-09)
 
 ### Features
 
