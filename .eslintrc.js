@@ -21,13 +21,7 @@ module.exports = {
     parser: '@typescript-eslint/parser',
   },
 
-  plugins: [
-    '@typescript-eslint',
-    'cypress',
-    'import',
-    'prettier',
-    'sort-class-members',
-  ],
+  plugins: ['@typescript-eslint', 'cypress', 'prettier', 'sort-class-members'],
 
   settings: {
     'html/indent': 'tab',
