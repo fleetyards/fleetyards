@@ -16,7 +16,7 @@
     "lint:js": "eslint --ext .js,.ts,.vue --fix app/packs test/javascript",
     "lint:prettier": "prettier app/packs --check",
     "lint:prettier:fix": "prettier app/packs --write",
-    "webpack:analyze": "mkdir -p public/packs && node_modules/.bin/webpack --config config/webpack/production.js --profile --json > public/packs/stats.json && node_modules/.bin/webpack-bundle-analyzer public/packs/stats.json"
+    "webpack:analyze": "mkdir -p public/packs && node_modules/.bin/webpack --config config/webpack/webpack.config.js --profile --json > public/packs/stats.json && node_modules/.bin/webpack-bundle-analyzer public/packs/stats.json"
   },
   "dependencies": {
     "@babel/core": "7",

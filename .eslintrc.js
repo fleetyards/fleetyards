@@ -40,7 +40,7 @@ module.exports = {
     ],
     'import/resolver': {
       webpack: {
-        config: 'config/webpack/development.js',
+        config: 'config/webpack/webpack.config.js',
       },
       alias: {
         map: [['helpers', './test/javascript/unit/helpers']],
