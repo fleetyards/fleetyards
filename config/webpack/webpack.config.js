@@ -28,6 +28,7 @@ const overrides = {
     extensions: ['.css', '.vue'],
     alias: {
       vue: 'vue/dist/vue.esm',
+      process: 'process/browser',
     },
   },
 }
