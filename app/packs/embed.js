@@ -1,4 +1,4 @@
-import 'stylesheets/embed-v2'
+import 'stylesheets/embed.scss'
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
@@ -17,7 +17,8 @@ Vue.use(VTooltip, {
   defaultContainer: '#fleetyards-view',
 })
 
-window.FleetYardsFleetchart = null
+// eslint-disable-next-line no-undef
+const config = fleetyards_config()
 
 setTimeout(() => {
   if (store.state.storeVersion !== window.STORE_VERSION) {
@@ -27,42 +28,15 @@ setTimeout(() => {
     store.commit('setStoreVersion', window.STORE_VERSION)
   }
 
-  // eslint-disable-next-line no-undef
-  const config = window.FleetYardsFleetchartConfig || {}
-
   // eslint-disable-next-line no-new
-  window.FleetYardsFleetchart = new Vue({
+  new Vue({
     el: '#fleetyards-view',
     store,
     data: {
       ships: config.ships || [],
-      users: config.users || [],
-      fleetID: config.fleetID || null,
       groupedButton: config.groupedButton || false,
       fleetchartSlider: config.fleetchartSlider || false,
       frontendEndpoint: window.FRONTEND_ENDPOINT,
-    },
-    methods: {
-      updateShips(ships) {
-        const fleetview = (this.$children || [])[0]
-        if (fleetview) {
-          fleetview.updateShips(ships)
-        }
-      },
-
-      updateUsers(users) {
-        const fleetview = (this.$children || [])[0]
-        if (fleetview) {
-          fleetview.updateUsers(users)
-        }
-      },
-
-      updateFleet(fleetID) {
-        const fleetview = (this.$children || [])[0]
-        if (fleetview) {
-          fleetview.updateFleet(fleetID)
-        }
-      },
     },
     render: (h) => h(FleetyardsView),
   })

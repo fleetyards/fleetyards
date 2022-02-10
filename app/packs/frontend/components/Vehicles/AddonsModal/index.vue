@@ -179,14 +179,14 @@ export default class AddonsModal extends Vue {
     await modelUpgradesCollection.findAll(this.vehicle.model.slug)
   }
 
-  activatePackage(package) {
+  activatePackage(modulePackage) {
     if (!this.editable) {
       return
     }
 
-    package.modules.forEach((module) => {
-      const additionalPackageModules = package.modules.filter(
-        (packageModule) => packageModule.id === module.id
+    modulePackage.modules.forEach((module) => {
+      const additionalModulePackages = modulePackage.modules.filter(
+        (additionalModulePackage) => additionalModulePackage.id === module.id
       )
       const foundModules = this.form.modelModuleIds.filter(
         (id) => id === module.id
@@ -194,7 +194,7 @@ export default class AddonsModal extends Vue {
 
       if (
         !foundModules.length ||
-        foundModules.length < additionalPackageModules.length
+        foundModules.length < additionalModulePackages.length
       ) {
         this.form.modelModuleIds.push(module.id)
       }

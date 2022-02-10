@@ -60,32 +60,32 @@ export default class AddonsModal extends Vue {
     this.$emit('input', this.internalValue)
   }
 
-  activatePackage(package) {
+  activatePackage(modulePackage) {
     if (!this.editable) {
       return
     }
 
     this.internalValue = [...this.value]
 
-    package.modules.forEach((module) => {
-      const additionalPackageModules = package.modules.filter(
-        (packageModule) => packageModule.id === module.id
+    modulePackage.modules.forEach((module) => {
+      const additionalModulePackages = modulePackage.modules.filter(
+        (additionalModulePackage) => additionalModulePackage.id === module.id
       )
       const foundModules = this.internalValue.filter((id) => id === module.id)
 
       if (
         !foundModules.length ||
-        foundModules.length < additionalPackageModules.length
+        foundModules.length < additionalModulePackages.length
       ) {
         this.internalValue.push(module.id)
       }
     })
   }
 
-  selectedPackage(package) {
+  selectedPackage(modulePackage) {
     return (
       JSON.stringify([...this.value].sort()) ===
-      JSON.stringify(package.modules.map((module) => module.id).sort())
+      JSON.stringify(modulePackage.modules.map((module) => module.id).sort())
     )
   }
 }

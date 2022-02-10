@@ -32,13 +32,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import VueTrix from 'vue-trix'
 
-@Component<FormTextarea>({
-  components: {
-    VueTrix,
-  },
-})
+@Component<FormTextarea>({})
 export default class FormTextarea extends Vue {
   @Prop({ required: true }) id!: string
 

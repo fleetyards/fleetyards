@@ -1,4 +1,4 @@
-import 'stylesheets/frontend'
+import 'stylesheets/frontend.scss'
 import Vue from 'vue'
 import App from 'frontend/App.vue'
 import router from 'frontend/lib/Router'

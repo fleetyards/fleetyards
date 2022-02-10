@@ -1,4 +1,4 @@
-import 'stylesheets/admin'
+import 'stylesheets/admin.scss'
 import Vue from 'vue'
 import App from 'admin/App.vue'
 import ApiClient from 'frontend/api/client'

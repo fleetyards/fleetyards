@@ -1,4 +1,4 @@
-import { messages as validationMessages } from 'vee-validate/dist/locale/en.json'
+import veeValidateMessages from 'vee-validate/dist/locale/en.json'
 import actions from './en/actions'
 import headlines from './en/headlines'
 import labels from './en/labels'
@@ -10,6 +10,8 @@ import texts from './en/texts'
 import title from './en/title'
 import privacySettings from './en/privacySettings'
 import validationError from './en/validationError'
+
+const validationMessages = veeValidateMessages.messages
 
 const validations = {}
 Object.keys(validationMessages).forEach((key) => {
