@@ -10,7 +10,6 @@ describe('Signup', () => {
 
     cy.url().should('include', '/sign-up')
 
-    // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.selectInput('username').type(userData.new.username)
       cy.selectInput('email').type(userData.new.email)
@@ -61,7 +60,6 @@ describe('Signup', () => {
 
     cy.acceptCookies()
 
-    // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.selectInput('username').type(userData.test.username)
       cy.selectInput('username')

@@ -52,19 +52,6 @@ jobs:
       - run: yarn install
       - run: yarn run lint:prettier
 
-  js-tests:
-    needs: js-setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-      - name: Run Javascript Tests
-        run: yarn test:ci
-
   ruby-setup:
     runs-on: ubuntu-latest
     steps:
@@ -204,7 +191,7 @@ jobs:
   #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
   #     - run: yarn install
   #     - run: mkdir -p log
-  #     - name: Webpacker & Assets Compile
+  #     - name: Assets Compile
   #       run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
   #     - name: Set up QEMU
   #       uses: docker/setup-qemu-action@v1
@@ -297,7 +284,7 @@ jobs:
         run: bundle exec rails db:create db:schema:load
       - name: Create ES Index
         run: bundle exec thor search:index
-      - name: Webpacker & Assets Compile
+      - name: Assets Compile
         run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
@@ -315,7 +302,7 @@ jobs:
 
   deploy-to-stage:
     if: github.ref == 'refs/heads/main'
-    needs: [rubocop, ruby-tests, js-tests, js-lint, prettier, seeds, e2e-test]
+    needs: [rubocop, ruby-tests, js-lint, prettier, seeds, e2e-test]
     runs-on: ubuntu-latest
 
     environment:

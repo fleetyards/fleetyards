@@ -1,0 +1,74 @@
+import { get, post, destroy } from '@/frontend/api/client'
+import BaseCollection from './Base'
+
+export class FleetInviteUrlsCollection extends BaseCollection {
+  primaryKey = 'token'
+
+  records = []
+
+  params = null
+
+  async findAll(params) {
+    const response = await get(`fleets/${params?.fleetSlug}/invite-urls/`)
+
+    this.params = params
+
+    if (!response.error) {
+      this.records = response.data
+    }
+
+    return this.records
+  }
+
+  async checkToken(fleetSlug, token) {
+    const response = await get(
+      `fleets/${fleetSlug}/invite-urls/${token}/exists`
+    )
+
+    if (!response.error) {
+      return true
+    }
+
+    return false
+  }
+
+  async findByToken(fleetSlug, token) {
+    const response = await get(`fleets/${fleetSlug}/invite-urls/${token}`)
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return null
+  }
+
+  async create(form, refetch = false) {
+    const response = await post(`fleets/${form.fleetSlug}/invite-urls`, form)
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
+  }
+
+  async destroy(fleetSlug, token, refetch = false) {
+    const response = await destroy(`fleets/${fleetSlug}/invite-urls/${token}`)
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
+  }
+}
+
+export default new FleetInviteUrlsCollection()

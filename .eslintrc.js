@@ -2,66 +2,33 @@ module.exports = {
   root: true,
 
   env: {
-    'node': true,
-    'jest': true,
-    'cypress/globals': true,
+    browser: true,
+    es2021: true,
+    node: true,
   },
 
   extends: [
-    'airbnb-base',
-    'plugin:compat/recommended',
-    'plugin:jest/recommended',
+    'eslint:recommended',
     'plugin:vue/recommended',
-    'plugin:vue-types/strongly-recommended',
-    'prettier',
-    '@vue/typescript',
+    'plugin:prettier/recommended',
   ],
+
+  plugins: ['prettier'],
 
   parserOptions: {
-    parser: '@typescript-eslint/parser',
-  },
-
-  plugins: [
-    '@typescript-eslint',
-    'cypress',
-    'import',
-    'prettier',
-    'sort-class-members',
-  ],
-
-  settings: {
-    'html/indent': 'tab',
-    'polyfills': [
-      'Promise',
-      'Object.assign',
-      'Object.entries',
-      'Object.values',
-      'Array.iterator',
-    ],
-    'import/resolver': {
-      webpack: {
-        config: 'config/webpack/development.js',
-      },
-      alias: {
-        map: [['helpers', './test/javascript/unit/helpers']],
-      },
-    },
+    ecmaVersion: 'latest',
   },
 
   rules: {
-    '@typescript-eslint/no-useless-constructor': 'error',
-    '@typescript-eslint/no-empty-function': 'error',
-    '@typescript-eslint/no-unused-vars': [
+    'vue/component-name-in-template-casing': 'error',
+    'vue/no-v-html': 'off',
+    // 'class-methods-use-this': 'off',
+    'no-unused-vars': [
       'error',
       {
         argsIgnorePattern: '^_',
       },
     ],
-    'class-methods-use-this': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/extensions': 'off',
-    'jest/expect-expect': 'off',
-    'jest/no-mocks-import': 'off',
     'no-bitwise': 'off',
     'no-console': [
       'error',
@@ -69,67 +36,32 @@ module.exports = {
         allow: ['info', 'warn', 'error'],
       },
     ],
-    'no-empty-function': 'off',
-    'no-param-reassign': 'off',
-    'no-underscore-dangle': 'off',
-    'no-undef': 'off',
-    'no-unused-vars': [
-      'error',
-      {
-        argsIgnorePattern: '^_',
+    // 'no-empty-function': 'off',
+    // 'no-param-reassign': 'off',
+    // 'no-underscore-dangle': 'off',
+    // 'no-undef': 'off',
+    // 'no-useless-constructor': 'off',
+    // 'no-useless-escape': 'off',
+    // 'no-use-before-define': 'off',
+    // 'semi': ['error', 'never'],
+  },
+
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', 'app/frontend']],
       },
-    ],
-    'no-useless-constructor': 'off',
-    'no-useless-escape': 'off',
-    'no-use-before-define': 'off',
-    'semi': ['error', 'never'],
-    'sort-class-members/sort-class-members': [
-      2,
-      {
-        order: [
-          '[static-properties]',
-          '[static-methods]',
-          '[properties]',
-          'constructor',
-          '[getters]',
-          '[everything-else]',
-        ],
-      },
-    ],
-    'space-before-function-paren': 'off',
-    'spaced-comment': [
-      2,
-      'always',
-      {
-        exceptions: ['-'],
-        markers: ['/'],
-      },
-    ],
-    'vue/component-name-in-template-casing': 'error',
-    'vue/no-v-html': 'off',
+    },
   },
 
   overrides: [
     {
-      files: ['**/e2e/**/*.js'],
-      rules: {
-        'jest/valid-expect': 'off',
-        'jest/no-standalone-expect': 'off',
-        'jest/expect-expect': 'off',
+      files: ['test/**/*.js'],
+      env: {
+        'cypress/globals': true,
       },
-    },
-    {
-      files: ['app/javascript/**/*.js'],
+      plugins: ['cypress'],
       rules: {
-        'import/no-unresolved': 'off',
-        'import/prefer-default-export': 'off',
-      },
-    },
-    {
-      files: ['config/**/*.js'],
-      rules: {
-        'import/no-unresolved': 'off',
-        'import/prefer-default-export': 'off',
         'global-require': 'off',
       },
     },

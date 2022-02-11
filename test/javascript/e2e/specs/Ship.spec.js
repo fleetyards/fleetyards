@@ -12,7 +12,7 @@ describe('Ship', () => {
 
     cy.url().should('include', '/ships/100i')
 
-    cy.get('h1').should($h1 => {
+    cy.get('h1').should(($h1) => {
       expect($h1).to.contain('100i')
     })
 

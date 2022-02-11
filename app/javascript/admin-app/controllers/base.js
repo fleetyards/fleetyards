@@ -23,8 +23,6 @@ export default class BaseController extends Controller {
     document.addEventListener('turbo:before-fetch-request', async (event) => {
       event.preventDefault()
 
-      console.log('render', event.detail.url.search)
-
       // const token = await getSessionToken(window.app)
       // event.detail.fetchOptions.headers['Authorization'] = `Bearer ${token}`
 
@@ -54,7 +52,6 @@ export default class BaseController extends Controller {
   }
 
   collapseNavigation() {
-    console.log('foo')
     this.navTarget.classList.remove('md:w-72')
     this.navTarget.classList.add('md:w-20')
     this.bodyTarget.classList.remove('md:pl-72')
@@ -75,7 +72,6 @@ export default class BaseController extends Controller {
     })
 
     localStorage.setItem('navigation', 'collapsed')
-    setCookie('navigationCollapsed', true)
   }
 
   expandNavigation() {
@@ -97,7 +93,5 @@ export default class BaseController extends Controller {
     this.navItemIconTargets.forEach((navItemIcon) => {
       navItemIcon.classList.add('mr-3')
     })
-
-    setCookie('navigationCollapsed', false)
   }
 }

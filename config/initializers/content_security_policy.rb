@@ -28,7 +28,9 @@ Rails.application.config.content_security_policy do |policy|
     'https://ga.jspm.io'
   ]
 
-  connect_src.concat ['ws://localhost:3035', 'http://localhost:3035'] if Rails.env.development?
+  connect_src.concat [
+    'ws://localhost:3036', 'http://localhost:3036', "ws://#{URI.parse(Rails.configuration.app.frontend_endpoint).host}:3036"
+  ] if Rails.env.development?
 
   script_src = [
     :self, :data, :blob, :unsafe_inline, :unsafe_eval, 'https://www.youtube.com/iframe_api', 'https://s.ytimg.com',
@@ -71,8 +73,20 @@ Rails.application.config.content_security_policy do |policy|
   policy.manifest_src :self
   policy.form_action(*form_src)
   policy.connect_src(*connect_src)
+    # Allow @vite/client to hot reload changes in development
+#    policy.connect_src *policy.connect_src, "ws://#{ ViteRuby.config.host_with_port }" if Rails.env.development?
+
   policy.script_src(*script_src)
+    # Allow @vite/client to hot reload javascript changes in development
+#    policy.script_src *policy.script_src, :unsafe_eval, "http://#{ ViteRuby.config.host_with_port }" if Rails.env.development?
+
+    # You may need to enable this in production as well depending on your setup.
+#    policy.script_src *policy.script_src, :blob if Rails.env.test?
+
   policy.style_src(*style_src)
+    # Allow @vite/client to hot reload style changes in development
+#    policy.style_src *policy.style_src, :unsafe_inline if Rails.env.development?
+
   policy.img_src(*img_src)
   policy.font_src(*font_src)
   policy.frame_src(*frame_src)

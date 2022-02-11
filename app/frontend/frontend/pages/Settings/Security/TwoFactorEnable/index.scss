@@ -1,0 +1,18 @@
+.two-factor-form {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+
+  .two-factor-form-inner {
+    width: 300px;
+  }
+}
+
+.two-factor-qrcode {
+  margin-bottom: 20px;
+  text-align: center;
+
+  img {
+    max-width: 250px;
+  }
+}

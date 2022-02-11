@@ -46,7 +46,7 @@ jobs:
   #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
   #     - run: yarn install
   #     - run: mkdir -p log
-  #     - name: Webpacker & Assets Compile
+  #     - name: Assets Compile
   #       run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
   #     - name: Set up QEMU
   #       uses: docker/setup-qemu-action@v1

@@ -25,6 +25,8 @@ gem 'stimulus-rails'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
 
+gem 'vite_rails'
+
 gem 'terser'
 
 gem 'searchkick'
@@ -69,8 +71,6 @@ gem 'kaminari'
 gem 'dynamic_fields_for_rails'
 
 gem 'state_machine'
-
-gem 'webpacker', '~> 5.x'
 
 gem 'uglifier'
 

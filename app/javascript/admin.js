@@ -10,8 +10,7 @@ import 'admin-app'
 //   $(this)[0].scrollIntoView(true)
 // })
 
-document.addEventListener('turbo:before-render', async (event) => {
-  console.log('page load', event)
+document.addEventListener('turbo:before-render', async (_event) => {
   // $('.btn.btn-primary[data-loading-text]').click(() => {
   //   $(this).button('loading')
   // })
@@ -19,8 +18,6 @@ document.addEventListener('turbo:before-render', async (event) => {
 
 document.addEventListener('turbo:before-fetch-request', async (event) => {
   event.preventDefault()
-
-  console.log('render', event)
 
   // const token = await getSessionToken(window.app)
   // event.detail.fetchOptions.headers['Authorization'] = `Bearer ${token}`

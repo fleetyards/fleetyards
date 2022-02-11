@@ -1,4 +1,4 @@
-import { Application } from '@hotwired/stimulus'
+import Stimulus, { Application } from '@hotwired/stimulus'
 import BaseController from './controllers/base'
 import DashboardController from './controllers/dashboard'
 import ChartController from './controllers/chart'

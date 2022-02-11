@@ -1,0 +1,14 @@
+.two-factor-form {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+
+  .two-factor-form-inner {
+    width: 300px;
+  }
+}
+
+.two-factor-form-inner {
+  display: flex;
+  flex-direction: column;
+}
