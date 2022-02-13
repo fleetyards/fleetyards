@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.5.2](https://github.com/fleetyards/fleetyards/compare/v5.5.1...v5.5.2) (2022-02-13)
+
+
+### Bug Fixes
+
+* solve infinite loading issue for some filters ([b9246ba](https://github.com/fleetyards/fleetyards/commit/b9246ba35c353d07bce10c1040fd587d43bedbe8))
+
 ### [5.5.1](https://github.com/fleetyards/fleetyards/compare/v5.5.0...v5.5.1) (2022-02-09)
 
 ### Bugfixes
