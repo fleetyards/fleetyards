@@ -1,4 +1,3 @@
-import '@/stylesheets/frontend.scss'
 import Vue from 'vue'
 import App from '@/frontend/App.vue'
 import router from '@/frontend/lib/Router'
@@ -69,9 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // eslint-disable-next-line no-new
   new Vue({
-    el: '#app',
     router,
     store,
     render: (h) => h(App),
-  })
+  }).$mount('#app')
 })

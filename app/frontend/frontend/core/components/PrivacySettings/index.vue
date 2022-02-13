@@ -243,5 +243,5 @@ export default class PrivacySettings extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import 'index.scss';
 </style>

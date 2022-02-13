@@ -4,19 +4,24 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'BtnGroup',
 
-@Component({})
-export default class BtnGroup extends Vue {
-  @Prop({ default: false }) inline!: boolean
+  props: {
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  get cssClasses() {
-    return {
-      'panel-btn-group': true,
-      'panel-btn-group-inline': this.inline,
-    }
-  }
+  computed: {
+    cssClasses() {
+      return {
+        'panel-btn-group': true,
+        'panel-btn-group-inline': this.inline,
+      }
+    },
+  },
 }
 </script>

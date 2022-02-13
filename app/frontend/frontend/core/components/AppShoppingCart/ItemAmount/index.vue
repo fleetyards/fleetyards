@@ -15,17 +15,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+<script>
+import { mapActions } from 'vuex'
 
-@Component<ShoppingCartItemAmount>({})
-export default class ShoppingCartItemAmount extends Vue {
-  @Prop({ required: true }) cartItem!: CartItem
+export default {
+  name: 'ShoppingCartItemAmount',
 
-  @Action('reduceAmount', { namespace: 'shoppingCart' }) reduceAmount: any
+  props: {
+    cartItem: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  @Action('increaseAmount', { namespace: 'shoppingCart' }) increaseAmount: any
+  methods: {
+    ...mapActions('shoppingCart', ['reduceAmount', 'increaseAmount']),
+  },
 }
 </script>

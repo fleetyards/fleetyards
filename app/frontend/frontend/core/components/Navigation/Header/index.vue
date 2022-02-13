@@ -21,46 +21,48 @@
   </header>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+<script>
+import { mapGetters, mapActions } from 'vuex'
 import QuickSearch from '@/frontend/core/components/Navigation/QuickSearch/index.vue'
 import Search from '@/frontend/core/components/Navigation/Search/index.vue'
 
-@Component<NavigationHeader>({
+export default {
+  name: 'NavigationHeader',
+
   components: {
     QuickSearch,
     Search,
   },
-})
-export default class NavigationHeader extends Vue {
-  @Getter('mobile') mobile!: boolean
 
-  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
+  computed: {
+    ...mapGetters(['mobile']),
+    ...mapGetters('app', ['navCollapsed', 'gitRevision']),
 
-  @Getter('gitRevision', { namespace: 'app' }) gitRevision!: string
+    environmentLabelClasses() {
+      const cssClasses = ['pill']
 
-  @Action('toggleNav', { namespace: 'app' }) toggle
+      if (window.NODE_ENV === 'staging') {
+        cssClasses.push('pill-warning')
+      } else if (window.NODE_ENV === 'production') {
+        cssClasses.push('pill-danger')
+      }
 
-  get environmentLabelClasses() {
-    const cssClasses = ['pill']
+      return cssClasses
+    },
 
-    if (window.NODE_ENV === 'staging') {
-      cssClasses.push('pill-warning')
-    } else if (window.NODE_ENV === 'production') {
-      cssClasses.push('pill-danger')
-    }
+    nodeEnv() {
+      if (window.NODE_ENV === 'production') {
+        return null
+      }
 
-    return cssClasses
-  }
+      return (window.NODE_ENV || '').toUpperCase()
+    },
+  },
 
-  get nodeEnv() {
-    if (window.NODE_ENV === 'production') {
-      return null
-    }
-
-    return (window.NODE_ENV || '').toUpperCase()
-  }
+  methods: {
+    ...mapActions('app', {
+      toggle: 'toggleNav',
+    }),
+  },
 }
 </script>

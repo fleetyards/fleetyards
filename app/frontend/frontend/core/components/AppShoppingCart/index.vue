@@ -20,43 +20,48 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+<script>
+import { mapGetters } from 'vuex'
 import Btn from '@/frontend/core/components/Btn/index.vue'
 import { sum as sumArray } from '@/frontend/utils/Array'
 
-@Component<ShoppingCart>({
+export default {
+  name: 'AppShoppingCart',
+
   components: {
     Btn,
   },
-})
-export default class ShoppingCart extends Vue {
-  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
 
-  @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
+  computed: {
+    ...mapGetters('app', ['navSlim']),
 
-  get total() {
-    return sumArray(
-      this.cartItems.map((item) => this.sum(item)).filter((item) => item)
-    )
-  }
+    ...mapGetters('shoppingCart', {
+      cartItems: 'items',
+    }),
 
-  get cartItemCount() {
-    return sumArray(this.cartItems.map((item) => item.amount))
-  }
+    total() {
+      return sumArray(
+        this.cartItems.map((item) => this.sum(item)).filter((item) => item)
+      )
+    },
 
-  sum(cartItem) {
-    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
-  }
+    cartItemCount() {
+      return sumArray(this.cartItems.map((item) => item.amount))
+    },
+  },
 
-  openModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () =>
-        import('@/frontend/core/components/AppShoppingCart/Modal'),
-      wide: true,
-    })
-  }
+  methods: {
+    sum(cartItem) {
+      return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
+    },
+
+    openModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/core/components/AppShoppingCart/Modal'),
+        wide: true,
+      })
+    },
+  },
 }
 </script>

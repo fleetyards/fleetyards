@@ -11,31 +11,46 @@
   />
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import LazyImage from '@/frontend/core/components/LazyImage'
 
-@Component<GalleryImage>({
+export default {
+  name: 'GalleryImage',
+
   components: {
     LazyImage,
   },
-})
-export default class GalleryImage extends Vue {
-  @Prop({ required: true }) src!: string
 
-  @Prop({ default: 'image' }) alt!: string
+  props: {
+    src: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ default: null }) title!: string
+    alt: {
+      type: String,
+      default: 'image',
+    },
 
-  @Prop({ default: null }) href!: string
+    title: {
+      type: String,
+      default: null,
+    },
 
-  openInNewTab(url) {
-    window.open(url, '_blank')
-  }
+    href: {
+      type: String,
+      default: null,
+    },
+  },
+
+  methods: {
+    openInNewTab(url) {
+      window.open(url, '_blank')
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import 'index.scss';
 </style>

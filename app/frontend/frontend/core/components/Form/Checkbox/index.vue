@@ -25,6 +25,7 @@
 <script>
 export default {
   name: 'FormCheckbox',
+
   props: {
     id: {
       type: String,

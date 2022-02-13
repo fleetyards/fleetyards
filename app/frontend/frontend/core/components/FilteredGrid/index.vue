@@ -14,16 +14,25 @@
   </transition-group>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'FilteredGrid',
 
-@Component<FilteredGrid>({})
-export default class FilteredGrid extends Vue {
-  @Prop({ required: true }) records!: any[]
+  props: {
+    records: {
+      type: Array,
+      required: true,
+    },
 
-  @Prop({ required: true }) primaryKey!: string
+    primaryKey: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ required: true }) filterVisible!: boolean
+    filterVisible: {
+      type: Boolean,
+      required: true,
+    },
+  },
 }
 </script>

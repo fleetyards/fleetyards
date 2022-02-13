@@ -32,10 +32,7 @@ export const routes = [
   {
     path: '/privacy-policy/',
     name: 'privacy-policy',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.privacy" */ '@/frontend/pages/PrivacyPolicy/index.vue'
-      ),
+    component: () => import('@/frontend/pages/PrivacyPolicy/index.vue'),
     meta: {
       title: 'privacyPolicy',
     },
@@ -43,10 +40,7 @@ export const routes = [
   {
     path: '/hangar/',
     name: 'hangar',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.hangar" */ '@/frontend/pages/Hangar/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Hangar/index.vue'),
     meta: {
       needsAuthentication: true,
       quickSearch: 'nameCont',
@@ -58,10 +52,7 @@ export const routes = [
   {
     path: '/hangar/preview',
     name: 'hangar-preview',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.hangar-preview" */ '@/frontend/pages/Hangar/Preview/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Hangar/Preview/index.vue'),
     meta: {
       title: 'hangar.preview',
       backgroundImage: 'bg-5',
@@ -78,10 +69,7 @@ export const routes = [
   {
     path: '/hangar/stats/',
     name: 'hangar-stats',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.hangar-stats" */ '@/frontend/pages/Hangar/Stats/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Hangar/Stats/index.vue'),
     meta: {
       needsAuthentication: true,
       title: 'hangar.stats',
@@ -91,10 +79,7 @@ export const routes = [
   {
     path: '/hangar/:username/',
     name: 'hangar-public',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.hangar-public" */ '@/frontend/pages/Hangar/Public/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Hangar/Public/index.vue'),
     meta: {
       backgroundImage: 'bg-5',
     },
@@ -110,10 +95,7 @@ export const routes = [
   {
     path: '/ships/',
     name: 'models',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.ships" */ '@/frontend/pages/Models/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Models/index.vue'),
     meta: {
       title: 'models.index',
       quickSearch: 'searchCont',
@@ -130,10 +112,7 @@ export const routes = [
   {
     path: '/ships/compare/',
     name: 'models-compare',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.ships-compare" */ '@/frontend/pages/Models/Compare/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Models/Compare/index.vue'),
     meta: {
       title: 'compare.models',
     },
@@ -141,26 +120,17 @@ export const routes = [
   {
     path: '/ships/:slug/',
     name: 'model',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.ships-detail" */ '@/frontend/pages/Models/Show/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Models/Show/index.vue'),
   },
   {
     path: '/ships/:slug/images/',
     name: 'model-images',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.ships-images" */ '@/frontend/pages/Models/Show/Images/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Models/Show/Images/index.vue'),
   },
   {
     path: '/ships/:slug/videos/',
     name: 'model-videos',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.ships-videos" */ '@/frontend/pages/Models/Show/Videos/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Models/Show/Videos/index.vue'),
   },
   {
     path: '/stats/',
@@ -173,10 +143,7 @@ export const routes = [
   {
     path: '/fleets/',
     name: 'fleets',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets" */ '@/frontend/pages/Fleets/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/index.vue'),
     children: FleetsRoutes,
     redirect: { name: FleetsRoutes[0].name },
     meta: {
@@ -187,10 +154,7 @@ export const routes = [
   {
     path: '/images/',
     name: 'images',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.images" */ '@/frontend/pages/Images/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Images/index.vue'),
     meta: {
       title: 'images',
     },
@@ -198,10 +162,7 @@ export const routes = [
   {
     path: '/stations/',
     name: 'stations',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ '@/frontend/pages/Stations/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Stations/index.vue'),
     children: StationsRoutes,
     meta: {
       title: 'stations',
@@ -212,10 +173,7 @@ export const routes = [
   {
     path: '/tools/',
     name: 'tools',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.tools" */ '@/frontend/pages/Tools/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Tools/index.vue'),
     children: ToolsRoutes,
     redirect: { name: ToolsRoutes[0].name },
     meta: {
@@ -227,10 +185,7 @@ export const routes = [
     path: '/roadmap/',
     name: 'roadmap',
     children: RoadmapRoutes,
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.roadmap" */ '@/frontend/pages/Roadmap/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Roadmap/index.vue'),
     meta: {
       title: 'roadmap.index',
     },
@@ -238,10 +193,7 @@ export const routes = [
   {
     path: '/settings/',
     name: 'settings',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.settings" */ '@/frontend/pages/Settings/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Settings/index.vue'),
     meta: {
       needsAuthentication: true,
     },
@@ -253,10 +205,7 @@ export const routes = [
   {
     path: '/sign-up/',
     name: 'signup',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.signup" */ '@/frontend/pages/Signup/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Signup/index.vue'),
     meta: {
       title: 'signUp',
     },
@@ -264,10 +213,7 @@ export const routes = [
   {
     path: '/login/',
     name: 'login',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.login" */ '@/frontend/pages/Login/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Login/index.vue'),
     meta: {
       title: 'login',
     },
@@ -275,10 +221,7 @@ export const routes = [
   {
     path: '/password/request/',
     name: 'request-password',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.password" */ '@/frontend/pages/RequestPassword/index.vue'
-      ),
+    component: () => import('@/frontend/pages/RequestPassword/index.vue'),
     meta: {
       title: 'requestPassword',
     },
@@ -286,10 +229,7 @@ export const routes = [
   {
     path: '/password/update/:token/',
     name: 'change-password',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.password" */ '@/frontend/pages/ChangePassword/index.vue'
-      ),
+    component: () => import('@/frontend/pages/ChangePassword/index.vue'),
     meta: {
       title: 'changePassword',
     },
@@ -297,18 +237,12 @@ export const routes = [
   {
     path: '/confirm/:token/',
     name: 'confirm',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.signup" */ '@/frontend/pages/Confirm/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Confirm/index.vue'),
   },
   {
     path: '/404/',
     name: '404',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.404" */ '@/frontend/pages/NotFound/index.vue'
-      ),
+    component: () => import('@/frontend/pages/NotFound/index.vue'),
     meta: {
       title: 'notFound',
       backgroundImage: 'bg-404',
@@ -316,10 +250,7 @@ export const routes = [
   },
   {
     path: '*',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.404" */ '@/frontend/pages/NotFound/index.vue'
-      ),
+    component: () => import('@/frontend/pages/NotFound/index.vue'),
     meta: {
       title: 'notFound',
       backgroundImage: 'bg-404',

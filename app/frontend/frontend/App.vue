@@ -1,11 +1,5 @@
 <template>
-  <div
-    id="app"
-    :class="{
-      [`page-${$route.name}`]: true,
-    }"
-    class="app-body"
-  >
+  <div id="app" :class="classes" class="app-body">
     <BackgroundImage />
 
     <transition name="fade" mode="out-in">
@@ -81,8 +75,12 @@ export default {
       infoVisible: 'cookiesInfoVisible',
     }),
 
-    get ahoyAccepted() {
+    ahoyAccepted() {
       return this.cookies.ahoy
+    },
+
+    classes() {
+      return [`page-${this.$route.name}`]
     },
   },
 

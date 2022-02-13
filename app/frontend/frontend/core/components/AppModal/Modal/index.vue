@@ -22,22 +22,27 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Panel from '@/frontend/core/components/Panel'
 
-@Component<Modal>({
+export default {
+  name: 'ModalComponent',
+
   components: {
     Panel,
   },
-})
-export default class Modal extends Vue {
-  @Prop({ required: true })
-  private title!: string
 
-  close() {
-    this.$comlink.$emit('close-modal')
-  }
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+
+  methods: {
+    close() {
+      this.$comlink.$emit('close-modal')
+    },
+  },
 }
 </script>

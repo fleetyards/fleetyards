@@ -22,50 +22,61 @@
   </transition>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Box from '@/frontend/core/components/Box'
 import Btn from '@/frontend/core/components/Btn'
 
-@Component<EmptyBox>({
+export default {
+  name: 'EmptyBox',
+
   components: {
     Box,
     Btn,
   },
-})
-export default class EmptyBox extends Vue {
-  @Prop({ required: true }) visible: boolean
 
-  @Prop({ default: false }) ignoreFilter: boolean
+  props: {
+    visible: {
+      type: Boolean,
+      required: true,
+    },
 
-  get isPagePresent() {
-    return !!this.$route.query.page
-  }
+    ignoreFilter: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  get isQueryPresent() {
-    return !this.ignoreFilter && Object.keys(this.$route.query).length > 0
-  }
+  computed: {
+    isPagePresent() {
+      return !!this.$route.query.page
+    },
 
-  resetPage() {
-    const query = {
-      ...JSON.parse(JSON.stringify(this.$route.query)),
-    }
+    isQueryPresent() {
+      return !this.ignoreFilter && Object.keys(this.$route.query).length > 0
+    },
+  },
 
-    if (query.page) {
-      delete query.page
-    }
+  methods: {
+    resetPage() {
+      const query = {
+        ...JSON.parse(JSON.stringify(this.$route.query)),
+      }
 
-    this.$router
-      .replace({
-        name: this.$route.name,
-        query: {
-          ...query,
-          q: this.$route.query.q || {},
-        },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
-  }
+      if (query.page) {
+        delete query.page
+      }
+
+      this.$router
+        .replace({
+          name: this.$route.name,
+          query: {
+            ...query,
+            q: this.$route.query.q || {},
+          },
+        })
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch((_err) => {})
+    },
+  },
 }
 </script>

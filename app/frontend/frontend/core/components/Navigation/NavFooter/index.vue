@@ -23,7 +23,6 @@
 import { mapGetters } from 'vuex'
 import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
 import UserNav from '@/frontend/core/components/Navigation/UserNav/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
 
 export default {
   name: 'NavFooter',
@@ -33,12 +32,12 @@ export default {
     UserNav,
   },
 
-  mixins: [NavigationMixin],
-
   computed: {
     ...mapGetters(['mobile']),
 
     ...mapGetters('app', ['navSlim']),
+
+    ...mapGetters('session', ['isAuthenticated']),
 
     slim() {
       return this.navSlim && !this.mobile

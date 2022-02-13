@@ -67,8 +67,14 @@
       window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.configuration.maintainer.address[:country] %>'
       window.COPYRIGHT_OWNER = '<%= Rails.configuration.app.copyright_owner %>'
     </script>
+    <%- importmaps = false -%>
     <%= vite_client_tag %>
+    <%- if importmaps -%>
+    <%= javascript_importmap_tags 'frontend' -%>
+    <%- else -%>
     <%= vite_javascript_tag 'frontend' %>
+    <%- end -%>
+    <%= vite_stylesheet_tag 'frontend.scss' %>
   </head>
   <body>
     <div id="app">

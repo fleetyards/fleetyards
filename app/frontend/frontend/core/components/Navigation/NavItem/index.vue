@@ -134,114 +134,171 @@
   </li>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
+import { mapGetters } from 'vuex'
 import { BCollapse } from 'bootstrap-vue'
 import NavItemInner from '@/frontend/core/components/Navigation/NavItem/NavItemInner/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
 
-@Component<NavItem>({
+export default {
+  name: 'NavItem',
+
   components: {
     BCollapse,
     NavItemInner,
   },
 
-  mixins: [NavigationMixin],
-})
-export default class NavItem extends Vue {
-  open = false
+  props: {
+    to: {
+      type: Object,
+      default: null,
+    },
 
-  @Prop({ default: null }) to
+    action: {
+      type: [Object, Function],
+      default: null,
+    },
 
-  @Prop({ default: null }) action
+    href: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: null }) href: string | null
+    label: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: '' }) label: string
+    icon: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: null }) icon: string | null
+    image: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: null }) image: string | null
+    avatar: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) avatar: boolean
+    menuKey: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: null }) menuKey: string | null
+    exact: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) exact: boolean
+    divider: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) divider: boolean
+    active: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) active: boolean
+    submenuActive: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) submenuActive: boolean
+    submenuDirection: {
+      type: String,
+      default: 'down',
+      validator(value) {
+        return ['down', 'up'].indexOf(value) !== -1
+      },
+    },
+  },
 
-  @Prop({ default: 'down' }) submenuDirection: string
-
-  get routeActive() {
-    if (this.to) {
-      return this.to.name === this.$route.name
-    }
-    return false
-  }
-
-  get tooltip() {
-    if (!this.slim) {
-      return null
-    }
-
+  data() {
     return {
-      content: this.label,
-      classes: 'nav-item-tooltip',
-      placement: 'right',
+      open: false,
     }
-  }
+  },
 
-  get hasDefaultSlot() {
-    return !!this.$slots.default
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  get hasSubmenuSlot() {
-    return !!this.$slots.submenu
-  }
+    ...mapGetters('app', ['navSlim']),
 
-  get matchedRoutes() {
-    return this.$route.matched.map((route) => route.name)
-  }
+    slim() {
+      return this.navSlim && !this.mobile
+    },
 
-  get navKey() {
-    if (this.menuKey) {
-      return this.menuKey
-    }
+    routeActive() {
+      if (this.to) {
+        return this.to.name === this.$route.name
+      }
+      return false
+    },
 
-    if (this.to) {
-      return this.to.name
-    }
+    tooltip() {
+      if (!this.slim) {
+        return null
+      }
 
-    return 'nav-item'
-  }
+      return {
+        content: this.label,
+        classes: 'nav-item-tooltip',
+        placement: 'right',
+      }
+    },
 
-  @Watch('$route')
-  onRouteChange() {
-    this.checkRoutes()
-  }
+    hasDefaultSlot() {
+      return !!this.$slots.default
+    },
 
-  @Watch('submenuActive')
-  onSubmenuActiveChange() {
-    this.checkRoutes()
-  }
+    hasSubmenuSlot() {
+      return !!this.$slots.submenu
+    },
+
+    matchedRoutes() {
+      return this.$route.matched.map((route) => route.name)
+    },
+
+    navKey() {
+      if (this.menuKey) {
+        return this.menuKey
+      }
+
+      if (this.to) {
+        return this.to.name
+      }
+
+      return 'nav-item'
+    },
+  },
+
+  watch: {
+    $route() {
+      this.checkRoutes()
+    },
+
+    submenuActive() {
+      this.checkRoutes()
+    },
+  },
 
   mounted() {
     this.checkRoutes()
-  }
+  },
 
-  checkRoutes() {
-    this.open = this.submenuActive
-  }
+  methods: {
+    checkRoutes() {
+      this.open = this.submenuActive
+    },
 
-  toggleMenu() {
-    this.open = !this.open
-  }
+    toggleMenu() {
+      this.open = !this.open
+    },
+  },
 }
 </script>
 

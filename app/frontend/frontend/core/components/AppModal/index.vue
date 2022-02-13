@@ -15,106 +15,93 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Ref } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+<script>
+import { mapActions } from 'vuex'
 import { displayConfirm } from '@/frontend/lib/Noty'
 
-type AppModalOptions = {
-  component: Promise<VueComponent>
-  title: string
-  wide: boolean
-  fixed: boolean
-  props: any
-}
+export default {
+  name: 'AppModal',
 
-@Component<AppModal>({})
-export default class AppModal extends Vue {
-  @Action('showOverlay', { namespace: 'app' }) showOverlay: any
-
-  @Action('hideOverlay', { namespace: 'app' }) hideOverlay: any
-
-  @Ref('modal') readonly modal!: HTMLElement
-
-  component: string = null
-
-  props: any = null
-
-  wide = false
-
-  fixed = false
-
-  isShow = false
-
-  isOpen = false
-
-  title: string = null
+  data() {
+    return {
+      component: null,
+      props: null,
+      wide: false,
+      fixed: false,
+      isShow: false,
+      isOpen: false,
+      title: null,
+    }
+  },
 
   mounted() {
     this.$comlink.$on('open-modal', this.open)
     this.$comlink.$on('close-modal', this.close)
-  }
+  },
 
   beforeDestroy() {
     this.$comlink.$off('open-modal')
     this.$comlink.$off('close-modal')
-  }
+  },
 
-  public open(options: AppModalOptions) {
-    this.props = options.props
-    this.wide = !!options.wide
-    this.fixed = !!options.fixed
-    this.dirty = !!options.dirty
-    this.component = options.component
+  methods: {
+    ...mapActions('app', ['showOverlay', 'hideOverlay']),
 
-    this.isShow = true
-    this.showOverlay()
+    open(options) {
+      this.props = options.props
+      this.wide = !!options.wide
+      this.fixed = !!options.fixed
+      this.dirty = !!options.dirty
+      this.component = options.component
 
-    this.$nextTick(() => {
-      // make sure the component is present
-      setTimeout(() => {
-        // make sure initial animations have enough time
-        this.isOpen = true
+      this.isShow = true
+      this.showOverlay()
 
-        if (this.$refs.modal) {
-          this.$refs.modal.focus()
-        }
+      this.$nextTick(() => {
+        // make sure the component is present
+        setTimeout(() => {
+          // make sure initial animations have enough time
+          this.isOpen = true
 
-        this.$emit('modal-opened')
-      }, 100)
-    })
-  }
+          if (this.$refs.modal) {
+            this.$refs.modal.focus()
+          }
 
-  public close(force = false) {
-    if (this.fixed && !force) {
-      return
-    }
-
-    if (this.$refs.modelComponent?.dirty) {
-      displayConfirm({
-        text: this.$t('messages.confirm.modal.dirty'),
-        onConfirm: () => {
-          this.internalClose()
-        },
+          this.$emit('modal-opened')
+        }, 100)
       })
-    } else {
-      this.internalClose()
-    }
-  }
+    },
 
-  internalClose() {
-    this.isOpen = false
-    this.hideOverlay()
+    close(force = false) {
+      if (this.fixed && !force) {
+        return
+      }
 
-    this.$nextTick(function onClose() {
-      setTimeout(() => {
-        this.isShow = false
-        this.component = null
-        this.props = null
-        this.$emit('modal-closed')
-      }, 300)
-    })
-  }
+      if (this.$refs.modelComponent?.dirty) {
+        displayConfirm({
+          text: this.$t('messages.confirm.modal.dirty'),
+          onConfirm: () => {
+            this.internalClose()
+          },
+        })
+      } else {
+        this.internalClose()
+      }
+    },
+
+    internalClose() {
+      this.isOpen = false
+      this.hideOverlay()
+
+      this.$nextTick(function onClose() {
+        setTimeout(() => {
+          this.isShow = false
+          this.component = null
+          this.props = null
+          this.$emit('modal-closed')
+        }, 300)
+      })
+    },
+  },
 }
 </script>

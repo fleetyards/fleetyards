@@ -9,28 +9,41 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+<script>
+import { mapGetters, mapActions } from 'vuex'
 import Btn from '@/frontend/core/components/Btn'
 
-@Component<AddToCartBtn>({
+export default {
+  name: 'AddToCartBtn',
+
   components: {
     Btn,
   },
-})
-export default class AddToCartBtn extends Vue {
-  @Prop({ required: true }) item!: any
 
-  @Prop({ required: true }) type!: any
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
 
-  @Getter('mobile') mobile: boolean
+    type: {
+      type: String,
+      required: true,
+    },
+  },
 
-  @Action('add', { namespace: 'shoppingCart' }) addToCart: any
+  computed: {
+    ...mapGetters(['mobile']),
+  },
+
+  methods: {
+    ...mapActions('shoppingCart', {
+      addToCart: 'add',
+    }),
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import 'index.scss';
 </style>

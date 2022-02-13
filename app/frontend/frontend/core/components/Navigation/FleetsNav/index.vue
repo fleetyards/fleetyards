@@ -40,7 +40,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
 import fleetInvitesCollection from '@/frontend/api/collections/FleetInvites'
 
@@ -50,8 +49,6 @@ export default {
   components: {
     NavItem,
   },
-
-  mixins: [NavigationMixin],
 
   data() {
     return {

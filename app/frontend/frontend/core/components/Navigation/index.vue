@@ -118,13 +118,15 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['mobile']),
+    ...mapGetters(['mobile', 'filters']),
 
     ...mapGetters('app', ['navSlim', 'navCollapsed', 'isUpdateAvailable']),
 
     ...mapGetters('session', ['currentUser', 'isAuthenticated']),
 
-    ...mapGetters('hangar', ['preview']),
+    ...mapGetters('hangar', {
+      hangarPreview: 'preview',
+    }),
 
     slim() {
       return this.navSlim && !this.mobile

@@ -128,78 +128,82 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+<script>
+import { mapGetters, mapActions } from 'vuex'
 import Btn from '@/frontend/core/components/Btn/index.vue'
 import { isFleetRoute } from '@/frontend/utils/Routes/Fleets'
 import fleetsApiCollection from '@/frontend/api/collections/Fleets'
 
-@Component<NavigationHeader>({
+export default {
+  name: 'NavigationMobile',
+
   components: {
     Btn,
   },
-})
-export default class NavigationHeader extends Vue {
-  @Getter('mobile') mobile
 
-  @Getter('filters') filters
-
-  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
-
-  @Getter('isAuthenticated', { namespace: 'session' })
-  isAuthenticated!: boolean
-
-  @Getter('preview', { namespace: 'hangar' }) hangarPreview
-
-  @Action('toggleNav', { namespace: 'app' }) toggle
-
-  fleetsCollection: FleetsCollection = fleetsApiCollection
-
-  get isFleetRoute() {
-    return isFleetRoute(this.$route.name)
-  }
-
-  get currentFleet(): Fleet | null {
-    return this.fleetsCollection.record
-  }
-
-  get shipsNavActive() {
-    return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
-  }
-
-  get firstLetter() {
-    return this.currentFleet?.name?.charAt(0)
-  }
-
-  filterFor(route) {
-    // // TODO: disabled until vue-router supports navigation to same route
-    // return null
-    if (!this.filters[route]) {
-      return null
-    }
-
+  data() {
     return {
-      q: this.filters[route],
+      fleetsCollection: fleetsApiCollection,
     }
-  }
+  },
 
-  routeActive(route) {
-    return route === this.$route.name
-  }
+  computed: {
+    ...mapGetters(['mobile', 'filters']),
+    ...mapGetters('app', ['navCollapsed']),
+    ...mapGetters('session', ['isAuthenticated']),
+    ...mapGetters('hangar', {
+      hangarPreview: 'preview',
+    }),
+
+    isFleetRoute() {
+      return isFleetRoute(this.$route.name)
+    },
+    currentFleet() {
+      return this.fleetsCollection.record
+    },
+
+    shipsNavActive() {
+      return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
+    },
+
+    firstLetter() {
+      return this.currentFleet?.name?.charAt(0)
+    },
+  },
 
   mounted() {
     this.fetchFleet()
     this.$comlink.$on('fleet-update', this.fetchFleet)
-  }
+  },
 
-  async fetchFleet() {
-    if (!this.isFleetRoute) {
-      return
-    }
+  methods: {
+    ...mapActions('app', {
+      toggle: 'toggleNav',
+    }),
 
-    await this.fleetsCollection.findBySlug(this.$route.params.slug)
-  }
+    filterFor(route) {
+      // // TODO: disabled until vue-router supports navigation to same route
+      // return null
+      if (!this.filters[route]) {
+        return null
+      }
+
+      return {
+        q: this.filters[route],
+      }
+    },
+
+    routeActive(route) {
+      return route === this.$route.name
+    },
+
+    async fetchFleet() {
+      if (!this.isFleetRoute) {
+        return
+      }
+
+      await this.fleetsCollection.findBySlug(this.$route.params.slug)
+    },
+  },
 }
 </script>

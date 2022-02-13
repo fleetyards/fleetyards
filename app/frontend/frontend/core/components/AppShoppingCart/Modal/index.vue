@@ -116,10 +116,8 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+<script>
+import { mapGetters, mapActions } from 'vuex'
 import Modal from '@/frontend/core/components/AppModal/Modal'
 import Btn from '@/frontend/core/components/Btn'
 import { sum as sumArray } from '@/frontend/utils/Array'
@@ -132,69 +130,76 @@ import ModelsCollection from '@/frontend/api/collections/Models'
 // import ModelPaintsCollection from '@/frontend/api/collections/ModelPaints'
 // import ModelModulesCollection from '@/frontend/api/collections/ModelModules'
 
-@Component<ShoppingCart>({
+export default {
+  name: 'ShoppingCartModal',
+
   components: {
     Modal,
     Btn,
     ItemAmount,
   },
-})
-export default class ShoppingCart extends Vue {
-  @Getter('mobile') mobile: boolean
 
-  @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
+  data() {
+    return {
+      loading: false,
+    }
+  },
 
-  @Action('clear', { namespace: 'shoppingCart' }) clearCart: any
+  computed: {
+    ...mapGetters(['mobile']),
+    ...mapGetters('shoppingCart', ['items']),
 
-  @Action('update', { namespace: 'shoppingCart' }) updateInCart: any
+    sortedItems() {
+      return sortBy(this.cartItems, 'name')
+    },
 
-  @Action('remove', { namespace: 'shoppingCart' }) removeFromCart: any
+    total() {
+      return sumArray(
+        this.cartItems.map((item) => this.sum(item)).filter((item) => item)
+      )
+    },
+  },
+  methods: {
+    ...mapActions('shoppingCart', {
+      clearCart: 'clear',
+      updateInCart: 'update',
+      removeFromCart: 'remove',
+    }),
 
-  loading = false
+    sum(cartItem) {
+      return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
+    },
 
-  get sortedItems() {
-    return sortBy(this.cartItems, 'name')
-  }
+    closeModal() {
+      this.$comlink.$emit('close-modal')
+    },
 
-  get total() {
-    return sumArray(
-      this.cartItems.map((item) => this.sum(item)).filter((item) => item)
-    )
-  }
+    async refreshForType(collection, type) {
+      const items = await collection.findAll({
+        filters: {
+          idIn: this.cartItems
+            .filter((item) => item.type === type)
+            .map((item) => item.id),
+        },
+      })
 
-  sum(cartItem) {
-    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
-  }
+      items.forEach((item) => this.updateInCart({ item, type }))
+    },
 
-  closeModal() {
-    this.$comlink.$emit('close-modal')
-  }
-
-  async refreshForType(collection, type) {
-    const items = await collection.findAll({
-      filters: {
-        idIn: this.cartItems
-          .filter((item) => item.type === type)
-          .map((item) => item.id),
-      },
-    })
-
-    items.forEach((item) => this.updateInCart({ item, type }))
-  }
-
-  async refresh() {
-    this.loading = true
-    await this.refreshForType(ComponentsCollection, 'Component')
-    await this.refreshForType(CommoditiesCollection, 'Commodity')
-    await this.refreshForType(EquipmentCollection, 'Equipment')
-    await this.refreshForType(ModelsCollection, 'Model')
-    // await this.refreshForType(ModelPaintsCollection, 'ModelPaint')
-    // await this.refreshForType(ModelModulesCollection, 'ModelModule')
-    this.loading = false
-  }
+    async refresh() {
+      this.loading = true
+      await this.refreshForType(ComponentsCollection, 'Component')
+      await this.refreshForType(CommoditiesCollection, 'Commodity')
+      await this.refreshForType(EquipmentCollection, 'Equipment')
+      await this.refreshForType(ModelsCollection, 'Model')
+      // await this.refreshForType(ModelPaintsCollection, 'ModelPaint')
+      // await this.refreshForType(ModelModulesCollection, 'ModelModule')
+      this.loading = false
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import 'index.scss';
 </style>

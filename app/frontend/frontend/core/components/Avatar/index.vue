@@ -32,42 +32,60 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'AvatarComponent',
 
-@Component<Avatar>()
-export default class Avatar extends Vue {
-  @Prop({ default: null }) avatar!: string
-
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+  props: {
+    avatar: {
+      type: String,
+      default: null,
     },
-  })
-  size!: string
 
-  @Prop({ default: false }) editable!: boolean
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
 
-  @Prop({ default: false }) creatable!: boolean
+    editable: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: 'fad fa-user' }) icon!: string
+    creatable: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) transparent!: boolean
+    icon: {
+      type: String,
+      default: 'fad fa-user',
+    },
 
-  @Prop({ default: true }) round!: boolean
-
-  emitClick() {
-    if (this.avatar) {
-      this.$emit('destroy')
-    } else {
-      this.$emit('upload')
-    }
-  }
+    transparent: {
+      type: Boolean,
+      default: false,
+    },
+    round: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  methods: {
+    emitClick() {
+      if (this.avatar) {
+        this.$emit('destroy')
+      } else {
+        this.$emit('upload')
+      }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import 'index.scss';
 </style>
