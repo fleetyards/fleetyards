@@ -325,6 +325,8 @@ export default class FilterGroup extends Vue {
     } else if (args.page && this.paginated) {
       query.page = args.page
     }
+
+    return query
   }
 
   buildNewQuery(args) {
@@ -385,9 +387,13 @@ export default class FilterGroup extends Vue {
   async fetchMore($state) {
     this.loading = true
     this.page += 1
+
     const response = await this.internalFetch({ page: this.page })
+
     $state.loaded()
+
     this.loading = false
+
     if (!response.error) {
       if (response.data.length === 0) {
         $state.complete()
