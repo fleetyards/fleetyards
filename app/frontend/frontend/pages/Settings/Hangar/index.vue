@@ -48,11 +48,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { displaySuccess } from '@/frontend/lib/Noty'
-import Btn from '@/frontend/core/components/Btn'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import userCollection from '@/frontend/api/collections/User'
+import { displaySuccess } from '@/frontend/lib/Noty'
 
 export default {
   name: 'SettingsHangar',

@@ -63,109 +63,105 @@
   </form>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { debounce } from 'ts-debounce'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import debounce from 'lodash.debounce'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import componentItemTypeFiltersCollection from '@/admin/api/collections/ComponentItemTypeFilters'
 import equipmentItemTypeFiltersCollection from '@/admin/api/collections/EquipmentItemTypeFilters'
 import equipmentTypeFiltersCollection from '@/admin/api/collections/EquipmentTypeFilters'
 import equipmentSlotFiltersCollection from '@/admin/api/collections/EquipmentSlotFilters'
 import { getFilters, isFilterSelected } from '@/frontend/utils/Filters'
 
-@Component<ShopCommoditiesFilterForm>({
+export default {
+  name: 'ShopCommoditiesFilterForm',
+
   components: {
     CollectionFilterGroup,
     FormInput,
     Btn,
   },
-})
-export default class ShopCommoditiesFilterForm extends Vue {
-  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
-    componentItemTypeFiltersCollection
 
-  equipmentItemTypeFiltersCollection: EquipmentItemTypeFiltersCollection =
-    equipmentItemTypeFiltersCollection
+  data() {
+    return {
+      componentItemTypeFiltersCollection: componentItemTypeFiltersCollection,
+      equipmentItemTypeFiltersCollection: equipmentItemTypeFiltersCollection,
+      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
+      equipmentSlotFiltersCollection: equipmentSlotFiltersCollection,
+      loading: false,
+      search: null,
+      form: {
+        component_item_type: [],
+        equipment_item_type: [],
+        equipment_type: [],
+        equipment_slot: [],
+      },
+      filter: debounce(this.debouncedFilter, 500),
+    }
+  },
 
-  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
-    equipmentTypeFiltersCollection
+  computed: {
+    isFilterSelected() {
+      return isFilterSelected(this.$route.query.filters)
+    },
+  },
 
-  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
-    equipmentSlotFiltersCollection
+  watch: {
+    form: {
+      deep: true,
+      handler() {
+        this.filter()
+      },
+    },
 
-  loading = false
+    search() {
+      this.filter()
+    },
 
-  search: string = null
-
-  form = {
-    component_item_type: [],
-    equipment_item_type: [],
-    equipment_type: [],
-    equipment_slot: [],
-  }
-
-  filter = debounce(this.debouncedFilter, 500)
-
-  get isFilterSelected() {
-    return isFilterSelected(this.$route.query.filters)
-  }
-
-  @Watch('form', {
-    deep: true,
-  })
-  onFormChange() {
-    this.filter()
-  }
-
-  @Watch('search')
-  onSearchChange() {
-    this.filter()
-  }
-
-  resetFilter() {
-    this.$router
-      .replace({
-        name: this.$route.name || undefined,
-        query: {},
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
-  }
-
-  debouncedFilter() {
-    this.$router
-      .replace({
-        name: this.$route.name || undefined,
-        query: {
-          ...this.$route.query,
-          search: this.search || undefined,
-          filters: getFilters(this.form),
-        },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
-  }
+    $route() {
+      this.setupForm()
+    },
+  },
 
   mounted() {
     this.setupForm()
-  }
+  },
 
-  @Watch('$route')
-  onRouteChange() {
-    this.setupForm()
-  }
+  methods: {
+    resetFilter() {
+      this.$router
+        .replace({
+          name: this.$route.name || undefined,
+          query: {},
+        })
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch((_err) => {})
+    },
 
-  setupForm() {
-    const filters = this.$route.query.filters || {}
-    this.form = {
-      component_item_type: filters.component_item_type || [],
-      equipment_item_type: filters.equipment_item_type || [],
-      equipment_type: filters.equipment_type || [],
-      equipment_slot: filters.equipment_slot || [],
-    }
-  }
+    debouncedFilter() {
+      this.$router
+        .replace({
+          name: this.$route.name || undefined,
+          query: {
+            ...this.$route.query,
+            search: this.search || undefined,
+            filters: getFilters(this.form),
+          },
+        })
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch((_err) => {})
+    },
+
+    setupForm() {
+      const filters = this.$route.query.filters || {}
+      this.form = {
+        component_item_type: filters.component_item_type || [],
+        equipment_item_type: filters.equipment_item_type || [],
+        equipment_type: filters.equipment_type || [],
+        equipment_slot: filters.equipment_slot || [],
+      }
+    },
+  },
 }
 </script>

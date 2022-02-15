@@ -22,35 +22,44 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Panel from '@/frontend/core/components/Panel'
 import LazyImage from '@/frontend/core/components/LazyImage'
 import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations'
 
-@Component<ComponentPanel>({
+export default {
+  name: 'ComponentPanel',
+
   components: {
     Panel,
     LazyImage,
     ShopCommodityLocations,
   },
-})
-export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) commodity!: Component
 
-  @Prop({ default: true }) showStats!: boolean
+  props: {
+    commodity: {
+      type: Object,
+      required: true,
+    },
 
-  get tradeRouteRoute() {
-    return {
-      name: 'trade-routes',
-      query: {
-        q: {
-          commodityIn: [this.commodity.slug],
+    showStats: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
+  computed: {
+    tradeRouteRoute() {
+      return {
+        name: 'trade-routes',
+        query: {
+          q: {
+            commodityIn: [this.commodity.slug],
+          },
         },
-      },
-    }
-  }
+      }
+    },
+  },
 }
 </script>
 

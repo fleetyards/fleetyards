@@ -4,13 +4,11 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminCommodityPriceConfirmationsCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminCommodityPrice[] = []
+  records = []
 
-  params: AdminCommodityPriceParams | null = null
+  params = null
 
-  async findAll(
-    params: AdminCommodityPriceParams | null
-  ): Promise<AdminCommodityPrice[]> {
+  async findAll(params) {
     this.params = params
 
     const response = await get('commodity-prices', {
@@ -28,11 +26,11 @@ export class AdminCommodityPriceConfirmationsCollection extends BaseCollection {
     return this.records
   }
 
-  async refresh(): Promise<void> {
+  async refresh() {
     await this.findAll(this.params)
   }
 
-  async confirm(id: string): Promise<boolean> {
+  async confirm(id) {
     const response = await put(`commodity-prices/${id}/confirm`)
     if (!response.error) {
       this.findAll(this.params)
@@ -43,7 +41,7 @@ export class AdminCommodityPriceConfirmationsCollection extends BaseCollection {
     return false
   }
 
-  async destroy(id: string): Promise<boolean> {
+  async destroy(id) {
     const response = await destroy(`commodity-prices/${id}`)
 
     if (!response.error) {

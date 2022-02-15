@@ -45,60 +45,66 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
 import { BCollapse } from 'bootstrap-vue'
 import HardpointGroup from '@/frontend/components/Models/Hardpoints/Group'
 
-@Component<ModelsCompareCategories>({
+export default {
+  name: 'ModelsCompareCategories',
+
   components: {
     BCollapse,
     HardpointGroup,
   },
-})
-export default class ModelsCompareCategories extends Vue {
-  @Prop({ required: true }) models!: Model[]
 
-  groups = ['avionic', 'system', 'propulsion', 'thruster', 'weapon']
+  props: {
+    models: {
+      type: Array,
+      required: true,
+    },
+  },
 
-  avionicVisible = false
+  data() {
+    return {
+      groups: ['avionic', 'system', 'propulsion', 'thruster', 'weapon'],
+      avionicVisible: false,
+      systemVisible: false,
+      propulsionVisible: false,
+      thrusterVisible: false,
+      weaponVisible: false,
+    }
+  },
 
-  systemVisible = false
-
-  propulsionVisible = false
-
-  thrusterVisible = false
-
-  weaponVisible = false
-
-  @Watch('models')
-  onModelsChange() {
-    this.setupVisibles()
-  }
+  watch: {
+    models() {
+      this.setupVisibles()
+    },
+  },
 
   mounted() {
     this.setupVisibles()
-  }
+  },
 
-  setupVisibles() {
-    this.avionicVisible = this.models.length > 0
-    this.systemVisible = this.models.length > 0
-    this.propulsionVisible = this.models.length > 0
-    this.thrusterVisible = this.models.length > 0
-    this.weaponVisible = this.models.length > 0
-  }
+  methods: {
+    setupVisibles() {
+      this.avionicVisible = this.models.length > 0
+      this.systemVisible = this.models.length > 0
+      this.propulsionVisible = this.models.length > 0
+      this.thrusterVisible = this.models.length > 0
+      this.weaponVisible = this.models.length > 0
+    },
 
-  isVisible(group) {
-    return this[`${group}Visible`]
-  }
+    isVisible(group) {
+      return this[`${group}Visible`]
+    },
 
-  toggle(group) {
-    this[`${group}Visible`] = !this[`${group}Visible`]
-  }
+    toggle(group) {
+      this[`${group}Visible`] = !this[`${group}Visible`]
+    },
 
-  hardpointsForGroup(group, hardpoints) {
-    return (hardpoints || []).filter((hardpoint) => hardpoint.group === group)
-  }
+    hardpointsForGroup(group, hardpoints) {
+      return (hardpoints || []).filter((hardpoint) => hardpoint.group === group)
+    },
+  },
 }
 </script>

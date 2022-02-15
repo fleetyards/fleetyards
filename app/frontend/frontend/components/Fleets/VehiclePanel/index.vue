@@ -101,99 +101,111 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Panel from '@/frontend/core/components/Panel'
 import PanelDetails from '@/frontend/core/components/Panel/PanelDetails'
 import LazyImage from '@/frontend/core/components/LazyImage'
-import AddToHangar from '@/frontend/components/Models/AddToHangar'
 import VehicleOwner from '@/frontend/components/Vehicles/OwnerLabel'
 import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics'
 
-@Component<FleetVehiclePanel>({
+export default {
+  name: 'FleetVehiclePanel',
+
   components: {
     Panel,
     PanelDetails,
     LazyImage,
-    AddToHangar,
     VehicleOwner,
     ModelPanelMetrics,
   },
-})
-export default class FleetVehiclePanel extends Vue {
-  @Prop({ required: true }) fleetVehicle: Vehicle | Model | null
 
-  @Prop({ default: false }) details: boolean
+  props: {
+    fleetVehicle: {
+      type: Object,
+      required: true,
+    },
 
-  @Prop({ default: true }) showOwner: boolean
+    details: {
+      type: Boolean,
+      default: false,
+    },
 
-  get uuid() {
-    return this._uid
-  }
+    showOwner: {
+      type: Boolean,
+      default: true,
+    },
+  },
 
-  get storeImage() {
-    if (this.fleetVehicle.paint) {
-      return this.fleetVehicle.paint.storeImageMedium
-    }
+  computed: {
+    uuid() {
+      return this._uid
+    },
 
-    if (this.fleetVehicle.upgrade) {
-      return this.fleetVehicle.upgrade.storeImageMedium
-    }
+    storeImage() {
+      if (this.fleetVehicle.paint) {
+        return this.fleetVehicle.paint.storeImageMedium
+      }
 
-    return this.model.storeImageMedium
-  }
+      if (this.fleetVehicle.upgrade) {
+        return this.fleetVehicle.upgrade.storeImageMedium
+      }
 
-  get modelName() {
-    if (!this.fleetVehicle.model) {
-      return this.fleetVehicle.name
-    }
+      return this.model.storeImageMedium
+    },
 
-    return this.fleetVehicle.model.name
-  }
+    modelName() {
+      if (!this.fleetVehicle.model) {
+        return this.fleetVehicle.name
+      }
 
-  get model() {
-    if (this.fleetVehicle.model) {
-      return this.fleetVehicle.model
-    }
+      return this.fleetVehicle.model.name
+    },
 
-    return this.fleetVehicle
-  }
+    model() {
+      if (this.fleetVehicle.model) {
+        return this.fleetVehicle.model
+      }
 
-  get id() {
-    if (this.fleetVehicle) {
-      return this.fleetVehicle.id
-    }
+      return this.fleetVehicle
+    },
 
-    return this.model.slug
-  }
+    id() {
+      if (this.fleetVehicle) {
+        return this.fleetVehicle.id
+      }
 
-  get customName() {
-    if (this.fleetVehicle.model && this.fleetVehicle.name) {
-      return this.fleetVehicle.name
-    }
+      return this.model.slug
+    },
 
-    return null
-  }
+    customName() {
+      if (this.fleetVehicle.model && this.fleetVehicle.name) {
+        return this.fleetVehicle.name
+      }
 
-  get vehicles() {
-    if (!this.fleetVehicle.vehicles) {
-      return []
-    }
+      return null
+    },
 
-    return this.fleetVehicle.vehicles
-  }
+    vehicles() {
+      if (!this.fleetVehicle.vehicles) {
+        return []
+      }
 
-  get countLabel() {
-    if (!this.vehicles.length) {
-      return ''
-    }
-    return `${this.vehicles.length}x `
-  }
+      return this.fleetVehicle.vehicles
+    },
 
-  filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] }
-  }
+    countLabel() {
+      if (!this.vehicles.length) {
+        return ''
+      }
+      return `${this.vehicles.length}x `
+    },
+  },
+
+  methods: {
+    filterManufacturerQuery(manufacturer) {
+      return { manufacturerIn: [manufacturer] }
+    },
+  },
 }
 </script>
 

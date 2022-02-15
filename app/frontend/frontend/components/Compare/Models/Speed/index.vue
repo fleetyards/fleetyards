@@ -184,32 +184,43 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
 import { BCollapse } from 'bootstrap-vue'
 
-@Component<ModelsCompareSpeed>({
+export default {
+  name: 'ModelsCompareSpeed',
+
   components: {
     BCollapse,
   },
-})
-export default class ModelsCompareSpeed extends Vue {
-  @Prop({ required: true }) models!: Model[]
 
-  visible = false
+  props: {
+    models: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      visible: false,
+    }
+  },
+
+  watch: {
+    models() {
+      this.visible = this.models.length > 0
+    },
+  },
 
   mounted() {
     this.visible = this.models.length > 0
-  }
+  },
 
-  @Watch('models')
-  onModelsChange() {
-    this.visible = this.models.length > 0
-  }
-
-  toggle() {
-    this.visible = !this.visible
-  }
+  methods: {
+    toggle() {
+      this.visible = !this.visible
+    },
+  },
 }
 </script>

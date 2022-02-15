@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import AppModal from '@/@/frontend/core/components/AppModal'
+import AppModal from '@/@/frontend/core/components/AppModal/index.vue'
 
 export default {
   components: {

@@ -15,4 +15,4 @@ pin 'process', to: 'https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.14/nodelibs/bro
 pin 'noty', to: 'https://ga.jspm.io/npm:noty@3.2.0-beta-deprecated/lib/noty.js'
 pin 'ladda', to: 'https://ga.jspm.io/npm:ladda@2.0.3/js/ladda.js'
 pin 'spin.js', to: 'https://ga.jspm.io/npm:spin.js@4.1.1/spin.js'
-pin "vue", to: "https://ga.jspm.io/npm:vue@2.6.14/dist/vue.esm.browser.js"
+pin 'vue', to: 'https://ga.jspm.io/npm:vue@2.6.14/dist/vue.esm.browser.js'

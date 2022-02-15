@@ -16,55 +16,72 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
 import Btn from '@/frontend/core/components/Btn/index.vue'
 import SmallLoader from '@/frontend/core/components/SmallLoader/index.vue'
 
-@Component<DownloadScreenshotBtn>({
+export default {
+  name: 'DownloadScreenshotBtn',
+
   components: {
     SmallLoader,
     Btn,
   },
-})
-export default class DownloadScreenshotBtn extends Btn {
-  @Prop({ required: true }) element!: string
 
-  @Prop({ default: true }) withLabel!: boolean
+  props: {
+    element: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ default: 'fleetyards-screenshot' }) filename!: string
+    withLabel: {
+      type: Boolean,
+      default: true,
+    },
 
-  downloading = false
+    filename: {
+      type: String,
+      default: 'fleetyards-screenshot',
+    },
+  },
 
-  async download() {
-    this.downloading = true
-
-    const element = document.querySelector(this.element)
-
-    if (!element) {
-      return
+  data() {
+    return {
+      downloading: false,
     }
+  },
 
-    element.classList.add('fleetchart-download')
+  methods: {
+    async download() {
+      this.downloading = true
 
-    html2canvas(element, {
-      backgroundColor: null,
-      useCORS: true,
-      windowWidth: element.parentNode.scrollWidth,
-      windowHeight: element.parentNode.scrollHeight + 100,
-    })
-      .then((canvas) => {
-        element.classList.remove('fleetchart-download')
-        this.downloading = false
-        download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
+      const element = document.querySelector(this.element)
+
+      if (!element) {
+        return
+      }
+
+      element.classList.add('fleetchart-download')
+
+      html2canvas(element, {
+        backgroundColor: null,
+        useCORS: true,
+        windowWidth: element.parentNode.scrollWidth,
+        windowHeight: element.parentNode.scrollHeight + 100,
       })
-      .catch(() => {
-        element.classList.remove('fleetchart-download')
-        this.downloading = false
-      })
-  }
+        .then((canvas) => {
+          element.classList.remove('fleetchart-download')
+          this.downloading = false
+          download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
+        })
+        .catch(() => {
+          element.classList.remove('fleetchart-download')
+          this.downloading = false
+        })
+    },
+  },
 }
 </script>
 

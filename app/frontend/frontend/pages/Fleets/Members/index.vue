@@ -71,17 +71,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import FleetMembersFilterForm from '@/frontend/components/Fleets/MembersFilterForm'
-import MetaInfoMixin from '@/frontend/mixins/MetaInfo'
-import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
-import FleetMembersList from '@/frontend/components/Fleets/MembersList'
-import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
 import debounce from 'lodash.debounce'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import FleetMembersFilterForm from '@/frontend/components/Fleets/MembersFilterForm/index.vue'
+import fleetMembersCollection from '@/frontend/api/collections/FleetMembers/index.vue'
+import FleetMembersList from '@/frontend/components/Fleets/MembersList/index.vue'
+import MetaInfoMixin from '@/frontend/mixins/MetaInfo'
+import fleetsCollection from '@/frontend/api/collections/Fleets'
+import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 
 export default {
   name: 'FleetMembers',

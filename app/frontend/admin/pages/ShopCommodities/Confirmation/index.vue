@@ -59,72 +59,82 @@
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredTable from '@/frontend/core/components/FilteredTable'
-import BtnGroup from '@/frontend/core/components/BtnGroup'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import shopCommodityConfirmationsCollection from '@/admin/api/collections/ShopCommodityConfirmations'
 import { displayConfirm } from '@/frontend/lib/Noty'
 
-@Component<AdminShopCommodities>({
+export default {
+  name: 'AdminShopCommodities',
+
   components: {
     FilteredList,
     FilteredTable,
     BtnGroup,
     Btn,
   },
-})
-export default class AdminShopCommodities extends Vue {
-  collection: ShopCommodityConfirmationsCollection =
-    shopCommodityConfirmationsCollection
 
-  deleting = false
+  data() {
+    return {
+      collection: shopCommodityConfirmationsCollection,
+      deleting: false,
+      tableColumns: [
+        {
+          name: 'item',
+          label: this.$t('labels.shopCommodity.item'),
+          width: '20%',
+        },
+        {
+          name: 'shop',
+          label: this.$t('labels.shopCommodity.shop'),
+          width: '20%',
+        },
+        {
+          name: 'submitter',
+          label: this.$t('labels.shopCommodity.submittedBy'),
+          width: '20%',
+        },
+        { name: 'actions', label: this.$t('labels.actions'), width: '12%' },
+      ],
+    }
+  },
 
-  tableColumns = [
-    { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '20%' },
-    { name: 'shop', label: this.$t('labels.shopCommodity.shop'), width: '20%' },
-    {
-      name: 'submitter',
-      label: this.$t('labels.shopCommodity.submittedBy'),
-      width: '20%',
+  methods: {
+    async fetch() {
+      await this.collection.refresh()
     },
-    { name: 'actions', label: this.$t('labels.actions'), width: '12%' },
-  ]
 
-  async fetch() {
-    await this.collection.refresh()
-  }
+    async confirm(shopCommodity) {
+      if (await this.collection.confirm(shopCommodity.id)) {
+        this.fetch()
+      }
 
-  async confirm(shopCommodity) {
-    if (await this.collection.confirm(shopCommodity.id)) {
-      this.fetch()
-    }
+      this.deleting = false
+    },
 
-    this.deleting = false
-  }
+    remove(shopCommodity) {
+      this.deleting = true
+      displayConfirm({
+        text: this.$t('messages.confirm.shopCommodity.destroy'),
+        onConfirm: () => {
+          this.destroy(shopCommodity)
+        },
+        onClose: () => {
+          this.deleting = false
+        },
+      })
+    },
 
-  remove(shopCommodity) {
-    this.deleting = true
-    displayConfirm({
-      text: this.$t('messages.confirm.shopCommodity.destroy'),
-      onConfirm: () => {
-        this.destroy(shopCommodity)
-      },
-      onClose: () => {
-        this.deleting = false
-      },
-    })
-  }
+    async destroy(shopCommodity) {
+      if (await this.collection.destroy(shopCommodity.id)) {
+        this.fetch()
+      }
 
-  async destroy(shopCommodity) {
-    if (await this.collection.destroy(shopCommodity.id)) {
-      this.fetch()
-    }
-
-    this.deleting = false
-  }
+      this.deleting = false
+    },
+  },
 }
 </script>

@@ -142,10 +142,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+<script>
+import { mapGetters, mapActions } from 'vuex'
 import FilteredList from '@/frontend/core/components/FilteredList'
 import FilteredGrid from '@/frontend/core/components/FilteredGrid'
 import Btn from '@/frontend/core/components/Btn'
@@ -155,11 +153,12 @@ import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel'
 import FleetVehiclesFilterForm from '@/frontend/components/Fleets/FilterForm'
 import FleetchartApp from '@/frontend/components/Fleetchart/App'
 import ModelClassLabels from '@/frontend/components/Models/ClassLabels'
-import AddonsModal from '@/frontend/components/Vehicles/AddonsModal'
 import fleetVehiclesCollection from '@/frontend/api/collections/FleetVehicles'
 import debounce from 'lodash.debounce'
 
-@Component<FleetShipsList>({
+export default {
+  name: 'FleetShipsList',
+
   components: {
     Btn,
     BtnDropdown,
@@ -167,117 +166,127 @@ import debounce from 'lodash.debounce'
     FilteredGrid,
     FleetVehiclePanel,
     ModelClassLabels,
-    AddonsModal,
     FleetchartApp,
     FleetVehiclesFilterForm,
     ShareBtn,
   },
-})
-export default class FleetShipsList extends Vue {
-  collection: FleetVehiclesCollection = fleetVehiclesCollection
 
-  fleetVehiclesChannel = null
+  props: {
+    fleet: {
+      type: Object,
+      required: true,
+    },
 
-  @Prop({ required: true }) fleet: Fleet
+    shareUrl: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ required: true }) shareUrl: string
+    metaTitle: {
+      type: String,
+      required: true,
+    },
+  },
 
-  @Prop({ required: true }) metaTitle: string
-
-  @Getter('mobile') mobile
-
-  @Getter('grouped', { namespace: 'fleet' }) grouped
-
-  @Getter('money', { namespace: 'fleet' }) money
-
-  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
-
-  @Getter('perPage', { namespace: 'fleet' }) perPage
-
-  @Getter('fleetchartVisible', { namespace: 'fleet' }) fleetchartVisible
-
-  @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
-
-  @Action('toggleDetails', { namespace: 'fleet' }) toggleDetails: any
-
-  @Action('toggleGrouped', { namespace: 'fleet' }) toggleGrouped: any
-
-  @Action('toggleMoney', { namespace: 'fleet' }) toggleMoney: any
-
-  get fleetStats() {
-    return this.collection.stats
-  }
-
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t('actions.hideDetails')
-    }
-    return this.$t('actions.showDetails')
-  }
-
-  get routeParams() {
+  data() {
     return {
-      ...this.$route.params,
-      grouped: this.grouped,
+      collection: fleetVehiclesCollection,
+      fleetVehiclesChannel: null,
     }
-  }
+  },
 
-  get filters() {
-    return {
-      slug: this.fleet.slug,
-      filters: this.$route.query.q,
-      grouped: this.grouped,
-      page: this.$route.query.page,
-    }
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  @Watch('perPage')
-  onPerPageChange() {
-    this.fetch()
-  }
+    ...mapActions('fleet', [
+      'grouped',
+      'money',
+      'detailsVisible',
+      'perPage',
+      'fleetchartVisible',
+    ]),
 
-  @Watch('grouped')
-  onGroupedChange() {
-    this.fetch()
-  }
+    fleetStats() {
+      return this.collection.stats
+    },
 
-  @Watch('$route')
-  onRouteChange() {
-    this.fetchStats()
-  }
+    toggleDetailsTooltip() {
+      if (this.detailsVisible) {
+        return this.$t('actions.hideDetails')
+      }
+      return this.$t('actions.showDetails')
+    },
 
-  @Watch('fleet')
-  onFleetChange() {
-    this.fetchStats()
-  }
+    routeParams() {
+      return {
+        ...this.$route.params,
+        grouped: this.grouped,
+      }
+    },
+
+    filters() {
+      return {
+        slug: this.fleet.slug,
+        filters: this.$route.query.q,
+        grouped: this.grouped,
+        page: this.$route.query.page,
+      }
+    },
+  },
+
+  watch: {
+    perPage() {
+      this.fetch()
+    },
+    grouped() {
+      this.fetch()
+    },
+
+    $route() {
+      this.fetchStats()
+    },
+
+    fleet() {
+      this.fetchStats()
+    },
+  },
 
   mounted() {
     this.fetchStats()
     this.setupUpdates()
-  }
+  },
 
-  setupUpdates() {
-    if (this.fleetVehiclesChannel) {
-      this.fleetVehiclesChannel.unsubscribe()
-    }
+  methods: {
+    ...mapActions('fleet', [
+      'toggleFleetchart',
+      'toggleDetails',
+      'toggleGrouped',
+      'toggleMoney',
+    ]),
 
-    this.fleetVehiclesChannel = this.$cable.consumer.subscriptions.create(
-      {
-        channel: 'FleetVehiclesChannel',
-      },
-      {
-        received: debounce(this.fetch, 500),
+    setupUpdates() {
+      if (this.fleetVehiclesChannel) {
+        this.fleetVehiclesChannel.unsubscribe()
       }
-    )
-  }
 
-  async fetch() {
-    await this.collection.findAll(this.filters)
-    await this.fetchStats()
-  }
+      this.fleetVehiclesChannel = this.$cable.consumer.subscriptions.create(
+        {
+          channel: 'FleetVehiclesChannel',
+        },
+        {
+          received: debounce(this.fetch, 500),
+        }
+      )
+    },
 
-  async fetchStats() {
-    await this.collection.findStats(this.filters)
-  }
+    async fetch() {
+      await this.collection.findAll(this.filters)
+      await this.fetchStats()
+    },
+
+    async fetchStats() {
+      await this.collection.findStats(this.filters)
+    },
+  },
 }
 </script>

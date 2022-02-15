@@ -199,18 +199,18 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import ShopBaseMetrics from '@/frontend/components/Shops/BaseMetrics/index.vue'
+import PriceModalBtn from '@/frontend/components/ShopCommodities/PriceModalBtn/index.vue'
+import FilterForm from '@/frontend/components/Shops/ShopItemFilterForm/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Panel from '@/frontend/core/components/Panel'
-import ShopBaseMetrics from '@/frontend/components/Shops/BaseMetrics'
-import PriceModalBtn from '@/frontend/components/ShopCommodities/PriceModalBtn'
-import FilterForm from '@/frontend/components/Shops/ShopItemFilterForm'
-import Btn from '@/frontend/core/components/Btn'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredTable from '@/frontend/core/components/FilteredTable'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
-import shopCommoditiesCollection from '@/frontend/api/collections/ShopCommodities'
 import shopsCollection from '@/frontend/api/collections/Shops'
-import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn'
+import shopCommoditiesCollection from '@/frontend/api/collections/ShopCommodities'
 import { shopRouteGuard } from '@/frontend/utils/RouteGuards/Shops'
 
 export default {

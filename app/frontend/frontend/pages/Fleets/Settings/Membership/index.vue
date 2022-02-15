@@ -79,15 +79,15 @@
 </template>
 
 <script>
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
-import Btn from '@/frontend/core/components/Btn'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
-import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
+import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 
 export default {
   name: 'FleetMembershipSettings',

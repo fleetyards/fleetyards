@@ -80,13 +80,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { disabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
-import twoFactorCollection from '@/frontend/api/collections/TwoFactor'
+import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
+import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import SecurePage from '@/frontend/core/components/SecurePage'
-import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import twoFactorCollection from '@/frontend/api/collections/TwoFactor'
+import { disabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 
 export default {

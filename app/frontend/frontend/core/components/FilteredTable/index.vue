@@ -107,106 +107,130 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+<script>
+import { mapGetters } from 'vuex'
 import Panel from '@/frontend/core/components/Panel'
 import Checkbox from '@/frontend/core/components/Form/Checkbox'
 import Loader from '@/frontend/core/components/Loader'
 import Btn from '@/frontend/core/components/Btn'
 import { uniq as uniqArray } from '@/frontend/utils/Array'
 
-export type FilteredTableColumn = {
-  name: string
-  class?: string
-  label?: string
-  type?: string
-  width?: string
-  flexGrow?: number
-}
+export default {
+  name: 'FilteredTable',
 
-@Component<FilteredTable>({
   components: {
     Panel,
     Loader,
     Checkbox,
     Btn,
   },
-})
-export default class FilteredTable extends Vue {
-  @Prop({ required: true }) records!: any[]
 
-  @Prop({ required: true }) columns!: FilteredTableColumn[]
+  props: {
+    records: {
+      type: Array,
+      required: true,
+    },
 
-  @Prop({ required: true }) primaryKey!: string
+    columns: {
+      type: Object,
+      required: true,
+    },
 
-  @Prop({ default: false }) loading!: boolean
+    primaryKey: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ default: false }) emptyBoxVisible!: boolean
+    loading: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) selectable!: boolean
+    emptyBoxVisible: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: null }) listClasses!: string[] | string | object
+    selectable: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: null }) listItemClasses!: string[] | string | object
+    listClasses: {
+      type: Array,
+      default: null,
+    },
 
-  @Prop({
-    default: () => [],
-  })
-  selected!: string[]
+    listItemClasses: {
+      type: Array,
+      default: null,
+    },
 
-  internalSelected: string[] = []
+    selected: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+  },
 
-  @Getter('mobile') mobile
-
-  get uuid() {
-    return this._uid
-  }
-
-  get allSelected() {
-    if (!this.records.length) {
-      return false
+  data() {
+    return {
+      internalSelected: [],
     }
+  },
 
-    return this.records
-      .map((record) => record.id)
-      .every((recordId) => this.internalSelected.includes(recordId))
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  get scopedSlots() {
-    const itemSlotPrefix = 'col.'
-    return Object.keys(this.$scopedSlots)
-      .filter((name) => name.startsWith(itemSlotPrefix))
-      .map((name) => name.substring(itemSlotPrefix.length))
-  }
+    get uuid() {
+      return this._uid
+    },
+    allSelected() {
+      if (!this.records.length) {
+        return false
+      }
 
-  @Watch('selected')
-  onSelectedChange() {
-    this.internalSelected = this.selected
-  }
+      return this.records
+        .map((record) => record.id)
+        .every((recordId) => this.internalSelected.includes(recordId))
+    },
+    scopedSlots() {
+      const itemSlotPrefix = 'col.'
+      return Object.keys(this.$scopedSlots)
+        .filter((name) => name.startsWith(itemSlotPrefix))
+        .map((name) => name.substring(itemSlotPrefix.length))
+    },
+  },
 
-  @Watch('internalSelected')
-  onInternalSelectedChange() {
-    this.$emit('selected-change', this.internalSelected)
-  }
+  watch: {
+    selected() {
+      this.internalSelected = this.selected
+    },
 
-  onAllSelectedChange(value) {
-    if (value) {
-      this.internalSelected = [
-        ...this.internalSelected,
-        ...this.records.map((record) => record.id),
-      ].filter(uniqArray)
-    } else {
-      this.internalSelected = [...this.internalSelected].filter(
-        (selected) =>
-          !this.records.map((record) => record.id).includes(selected)
-      )
-    }
-  }
+    internalSelected() {
+      this.$emit('selected-change', this.internalSelected)
+    },
+  },
 
-  resetSelected() {
-    this.internalSelected = []
-  }
+  methods: {
+    onAllSelectedChange(value) {
+      if (value) {
+        this.internalSelected = [
+          ...this.internalSelected,
+          ...this.records.map((record) => record.id),
+        ].filter(uniqArray)
+      } else {
+        this.internalSelected = [...this.internalSelected].filter(
+          (selected) =>
+            !this.records.map((record) => record.id).includes(selected)
+        )
+      }
+    },
+
+    resetSelected() {
+      this.internalSelected = []
+    },
+  },
 }
 </script>

@@ -26,95 +26,114 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Btn from '@/frontend/core/components/Btn/index.vue'
 
-@Component<BtnDropdown>({
+export default {
+  name: 'BtnDropdown',
+
   components: {
     Btn,
   },
-})
-export default class BtnDropdown extends Vue {
-  visible = false
 
-  innerExpandLeft = false
-
-  innerExpandTop = false
-
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+  props: {
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
     },
-  })
-  size!: string
 
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return (
-        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
-          value
-        ) !== -1
-      )
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return (
+          ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+            value
+          ) !== -1
+        )
+      },
     },
-  })
-  variant!: string
 
-  @Prop({ default: false }) expandLeft!: boolean
+    expandLeft: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) expandTop!: boolean
+    expandTop: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) mobileBlock!: boolean
+    mobileBlock: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) inline!: boolean
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  get cssClasses() {
+  data() {
     return {
-      'panel-btn-dropdown-inline': this.inline,
+      visible: false,
+      innerExpandLeft: false,
+      innerExpandTop: false,
     }
-  }
+  },
+
+  computed: {
+    cssClasses() {
+      return {
+        'panel-btn-dropdown-inline': this.inline,
+      }
+    },
+  },
 
   created() {
     document.addEventListener('click', this.documentClick)
-  }
+  },
 
   mounted() {
     this.innerExpandLeft = this.expandLeft
     this.innerExpandTop = this.expandTop
-  }
+  },
 
   destroyed() {
     document.removeEventListener('click', this.documentClick)
-  }
+  },
 
-  toggle(event: MouseEvent) {
-    const { target } = event
-    // @ts-ignore
-    const bounding = target.getBoundingClientRect()
+  methods: {
+    toggle(event) {
+      const { target } = event
+      // @ts-ignore
+      const bounding = target.getBoundingClientRect()
 
-    this.innerExpandLeft =
-      this.expandLeft || window.innerWidth - bounding.left < 200
-    this.innerExpandTop = window.innerHeight - bounding.top < 200
+      this.innerExpandLeft =
+        this.expandLeft || window.innerWidth - bounding.left < 200
+      this.innerExpandTop = window.innerHeight - bounding.top < 200
 
-    this.visible = !this.visible
-  }
+      this.visible = !this.visible
+    },
 
-  documentClick(event: MouseEvent) {
-    if (!this.visible) return
+    documentClick(event) {
+      if (!this.visible) return
 
-    const { wrapper, btnList } = this.$refs
-    const { target } = event
+      const { wrapper, btnList } = this.$refs
+      const { target } = event
 
-    // @ts-ignore
-    if (
-      target !== wrapper &&
-      (!wrapper.contains(target) || btnList.contains(target))
-    ) {
-      this.visible = false
-    }
-  }
+      // @ts-ignore
+      if (
+        target !== wrapper &&
+        (!wrapper.contains(target) || btnList.contains(target))
+      ) {
+        this.visible = false
+      }
+    },
+  },
 }
 </script>

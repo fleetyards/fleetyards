@@ -68,9 +68,9 @@
 </template>
 
 <script>
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
 

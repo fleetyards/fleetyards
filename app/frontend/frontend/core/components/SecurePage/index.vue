@@ -14,7 +14,7 @@
               v-slot="{ handleSubmit }"
               :small="true"
             >
-              <form @submit.prevent="handleSubmit(confirmAccess)">
+              <form @submit.prevent="handleSubmit(submit)">
                 <h1>{{ $t('headlines.confirmAccess') }}</h1>
 
                 <ValidationProvider
@@ -51,83 +51,86 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+<script>
+import { mapGetters, mapActions } from 'vuex'
 import Btn from '@/frontend/core/components/Btn'
 import FormInput from '@/frontend/core/components/Form/FormInput'
 import { displayAlert } from '@/frontend/lib/Noty'
 import sessionCollection from '@/frontend/api/collections/Session'
 
-@Component<Signup>({
+export default {
+  name: 'SecurePageForm',
+
   components: {
     Btn,
     FormInput,
   },
-})
-export default class Signup extends Vue {
-  @Getter('accessConfirmed', { namespace: 'session' }) accessConfirmed: boolean
 
-  @Action('confirmAccess', { namespace: 'session' }) saveConfirmAccess: any
+  data() {
+    return {
+      submitting: false,
+      password: null,
+      confirmed: false,
+    }
+  },
 
-  @Action('resetConfirmAccess', { namespace: 'session' })
-  resetConfirmAccess: any
+  computed: {
+    ...mapGetters('session', ['accessConfirmed']),
 
-  submitting = false
+    metaTitle() {
+      return this.$t(`title.confirmAccess`)
+    },
+  },
 
-  password: string = null
-
-  confirmed = false
-
-  get metaTitle() {
-    return this.$t(`title.confirmAccess`)
-  }
+  watch: {
+    confirmed() {
+      if (this.confirmed) {
+        this.$comlink.$emit('access-confirmed')
+      }
+    },
+  },
 
   mounted() {
     this.$comlink.$on('access-confirmation-required', this.resetConfirmation)
-  }
+  },
 
   created() {
     if (this.accessConfirmed) {
       this.confirmed = true
     }
-  }
+  },
 
   beforeDestroy() {
     this.$comlink.$off('access-confirmation-required')
-  }
+  },
 
-  @Watch('confirmed')
-  onConfirmedChange() {
-    if (this.confirmed) {
-      this.$comlink.$emit('access-confirmed')
-    }
-  }
+  methods: {
+    ...mapActions('session', ['confirmAccess', 'resetConfirmAccess']),
 
-  resetConfirmation() {
-    this.confirmed = false
-    this.resetConfirmAccess()
-  }
+    resetConfirmation() {
+      this.confirmed = false
+      this.resetConfirmAccess()
+    },
 
-  async confirmAccess() {
-    this.submitting = true
+    async submit() {
+      this.submitting = true
 
-    const response = await sessionCollection.confirmAccess(this.password)
+      const response = await sessionCollection.confirmAccess(this.password)
 
-    this.password = null
+      this.password = null
 
-    this.submitting = false
+      this.submitting = false
 
-    if (response) {
-      this.confirmed = true
-      this.saveConfirmAccess()
-    } else {
-      displayAlert({
-        text: this.$t('messages.confirmAccess.failure'),
-      })
-    }
-  }
+      if (response) {
+        this.confirmed = true
+        this.confirmAccess()
+      } else {
+        displayAlert({
+          text: this.$t('messages.confirmAccess.failure'),
+        })
+      }
+    },
+  },
 }
 </script>
 

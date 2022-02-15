@@ -120,10 +120,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 import { transformErrors } from '@/frontend/api/helpers'
 

@@ -99,20 +99,20 @@
 </template>
 
 <script>
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
+import ModelPanel from '@/frontend/components/Models/Panel/index.vue'
+import SearchPanel from '@/frontend/components/Search/Panel/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import CelestialObjectsPanel from '@/frontend/components/CelestialObjects/Panel/index.vue'
+import ShopCommodityPanel from '@/frontend/components/ShopCommodities/Panel/index.vue'
+import ComponentPanel from '@/frontend/components/Components/Panel/index.vue'
+import CommodityPanel from '@/frontend/components/Commodities/Panel/index.vue'
+import EquipmentPanel from '@/frontend/components/Equipment/Panel/index.vue'
+import SearchHistory from '@/frontend/components/Search/History/index.vue'
 import Filters from '@/frontend/mixins/Filters'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
-import ShareBtn from '@/frontend/components/ShareBtn'
-import ModelPanel from '@/frontend/components/Models/Panel'
-import SearchPanel from '@/frontend/components/Search/Panel'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import CelestialObjectsPanel from '@/frontend/components/CelestialObjects/Panel'
-import ShopCommodityPanel from '@/frontend/components/ShopCommodities/Panel'
-import ComponentPanel from '@/frontend/components/Components/Panel'
-import CommodityPanel from '@/frontend/components/Commodities/Panel'
-import EquipmentPanel from '@/frontend/components/Equipment/Panel'
-import SearchHistory from '@/frontend/components/Search/History'
 import searchCollection from '@/frontend/api/collections/Search'
 
 export default {

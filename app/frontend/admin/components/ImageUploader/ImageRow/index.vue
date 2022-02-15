@@ -114,102 +114,114 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
+<script>
 import debounce from 'lodash.debounce'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 
-@Component<ImageRow>({
+export default {
+  name: 'ImageRow',
+
   components: {
     Btn,
     FormInput,
   },
-})
-export default class ImageRow extends Vue {
-  @Prop({ required: true }) image
 
-  deleting = false
+  props: {
+    image: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  updating = false
+  data() {
+    return {
+      deleting: false,
+      updating: false,
+      internalImage: null,
+      updateCaption: debounce(this.debouncedUpdateCaption, 500),
+    }
+  },
 
-  internalImage = null
+  computed: {
+    uuid() {
+      return this._uid
+    },
 
-  updateCaption = debounce(this.debouncedUpdateCaption, 500)
+    uploaded() {
+      return !!this.internalImage.url
+    },
+  },
 
-  get uuid() {
-    return this._uid
-  }
-
-  get uploaded() {
-    return !!this.internalImage.url
-  }
-
-  @Watch('image')
-  onImageChange() {
-    this.internalImage = this.image
-  }
+  watch: {
+    image() {
+      this.internalImage = this.image
+    },
+  },
 
   mounted() {
     this.internalImage = this.image
-  }
+  },
 
-  start() {
-    this.$emit('start', this.internalImage)
-  }
+  methods: {
+    start() {
+      this.$emit('start', this.internalImage)
+    },
 
-  cancel() {
-    this.$emit('cancel', this.internalImage)
-  }
+    cancel() {
+      this.$emit('cancel', this.internalImage)
+    },
 
-  async toggleEnabled() {
-    this.updating = true
-    this.internalImage.enabled = !this.internalImage.enabled
-    const response = await this.$api.put(`images/${this.internalImage.id}`, {
-      enabled: this.internalImage.enabled,
-    })
-
-    this.updating = false
-
-    if (response.error) {
+    async toggleEnabled() {
+      this.updating = true
       this.internalImage.enabled = !this.internalImage.enabled
-    }
-  }
+      const response = await this.$api.put(`images/${this.internalImage.id}`, {
+        enabled: this.internalImage.enabled,
+      })
 
-  async toggleGlobal() {
-    this.updating = true
-    this.internalImage.global = !this.internalImage.global
-    const response = await this.$api.put(`images/${this.internalImage.id}`, {
-      global: this.internalImage.global,
-    })
+      this.updating = false
 
-    this.updating = false
+      if (response.error) {
+        this.internalImage.enabled = !this.internalImage.enabled
+      }
+    },
 
-    if (response.error) {
+    async toggleGlobal() {
+      this.updating = true
       this.internalImage.global = !this.internalImage.global
-    }
-  }
+      const response = await this.$api.put(`images/${this.internalImage.id}`, {
+        global: this.internalImage.global,
+      })
 
-  async deleteImage() {
-    this.deleting = true
-    const response = await this.$api.destroy(`images/${this.internalImage.id}`)
+      this.updating = false
 
-    if (!response.error) {
-      this.$emit('image-deleted', this.internalImage)
-      this.deleting = false
-    }
-  }
+      if (response.error) {
+        this.internalImage.global = !this.internalImage.global
+      }
+    },
 
-  async debouncedUpdateCaption() {
-    this.updating = true
+    async deleteImage() {
+      this.deleting = true
+      const response = await this.$api.destroy(
+        `images/${this.internalImage.id}`
+      )
 
-    await this.$api.put(`images/${this.internalImage.id}`, {
-      caption: this.internalImage.caption,
-    })
+      if (!response.error) {
+        this.$emit('image-deleted', this.internalImage)
+        this.deleting = false
+      }
+    },
 
-    this.updating = false
-  }
+    async debouncedUpdateCaption() {
+      this.updating = true
+
+      await this.$api.put(`images/${this.internalImage.id}`, {
+        caption: this.internalImage.caption,
+      })
+
+      this.updating = false
+    },
+  },
 }
 </script>
 

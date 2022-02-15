@@ -61,9 +61,7 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import copyText from '@/frontend/utils/CopyText'
 import Modal from '@/frontend/core/components/AppModal/Modal'
 import Btn from '@/frontend/core/components/Btn'
@@ -72,148 +70,161 @@ import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
 import inviteUrlCollection from '@/frontend/api/collections/FleetInviteUrls'
 import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
 
-@Component<MemberModal>({
+export default {
+  name: 'MemberModal',
+
   components: {
     Modal,
     Btn,
     FormInput,
     FilterGroup,
   },
-})
-export default class MemberModal extends Vue {
-  collection: FleetInviteUrlCollection = inviteUrlCollection
 
-  @Prop({ required: true }) fleet: Fleet
+  props: {
+    fleet: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  form: InviteUrlForm | null = null
+  data() {
+    return {
+      collection: inviteUrlCollection,
+      form: null,
+      expiresAfterOptions: [
+        {
+          name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.infinite'),
+          value: null,
+        },
+        {
+          name: this.$t(
+            'labels.fleet.inviteUrls.expiresAfterOptions.30_minutes'
+          ),
+          value: 30,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.1_hour'),
+          value: 60,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.6_hours'),
+          value: 6 * 60,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.12_hours'),
+          value: 12 * 60,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.1_day'),
+          value: 24 * 60,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.7_days'),
+          value: 24 * 60 * 7,
+        },
+      ],
+      limitOptions: [
+        {
+          name: this.$t('labels.fleet.inviteUrls.limitOptions.infinite'),
+          value: null,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.limitOptions.1'),
+          value: 1,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.limitOptions.5'),
+          value: 5,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.limitOptions.10'),
+          value: 10,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.limitOptions.25'),
+          value: 25,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.limitOptions.50'),
+          value: 50,
+        },
+        {
+          name: this.$t('labels.fleet.inviteUrls.limitOptions.100'),
+          value: 100,
+        },
+      ],
+    }
+  },
 
-  expiresAfterOptions = [
-    {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.infinite'),
-      value: null,
+  computed: {
+    inviteUrls() {
+      return this.collection.records
     },
-    {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.30_minutes'),
-      value: 30,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.1_hour'),
-      value: 60,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.6_hours'),
-      value: 6 * 60,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.12_hours'),
-      value: 12 * 60,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.1_day'),
-      value: 24 * 60,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.7_days'),
-      value: 24 * 60 * 7,
-    },
-  ]
-
-  limitOptions = [
-    {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.infinite'),
-      value: null,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.1'),
-      value: 1,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.5'),
-      value: 5,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.10'),
-      value: 10,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.25'),
-      value: 25,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.50'),
-      value: 50,
-    },
-    {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.100'),
-      value: 100,
-    },
-  ]
-
-  get inviteUrls() {
-    return this.collection.records
-  }
+  },
 
   mounted() {
     this.fetch()
     this.setupForm()
-  }
+  },
 
-  setupForm() {
-    this.form = {
-      expiresAfterMinutes: null,
-      limit: null,
-      fleetSlug: this.fleet.slug,
-    }
-  }
-
-  async fetch() {
-    await this.collection.findAll({
-      fleetSlug: this.fleet.slug,
-    })
-  }
-
-  async create() {
-    await this.collection.create(this.form, true)
-  }
-
-  async remove(inviteUrl) {
-    await this.collection.destroy(this.fleet.slug, inviteUrl.token, true)
-  }
-
-  inviteCount(inviteUrl) {
-    if (inviteUrl.inviteCount > 999) {
-      return '+999'
-    }
-
-    return inviteUrl.inviteCount
-  }
-
-  usesLeft(inviteUrl) {
-    if (!inviteUrl.limit && inviteUrl.limit !== 0) {
-      return this.$t('labels.fleet.inviteUrls.noLimit')
-    }
-
-    return this.$t('labels.fleet.inviteUrls.usesLeft', {
-      count: inviteUrl.limit,
-    })
-  }
-
-  copy(inviteUrl) {
-    copyText(inviteUrl.url).then(
-      () => {
-        displaySuccess({
-          text: this.$t('messages.copyInviteUrl.success', {
-            url: inviteUrl.url,
-          }),
-        })
-      },
-      () => {
-        displayAlert({
-          text: this.$t('messages.copyInviteUrl.failure'),
-        })
+  methods: {
+    setupForm() {
+      this.form = {
+        expiresAfterMinutes: null,
+        limit: null,
+        fleetSlug: this.fleet.slug,
       }
-    )
-  }
+    },
+
+    async fetch() {
+      await this.collection.findAll({
+        fleetSlug: this.fleet.slug,
+      })
+    },
+
+    async create() {
+      await this.collection.create(this.form, true)
+    },
+
+    async remove(inviteUrl) {
+      await this.collection.destroy(this.fleet.slug, inviteUrl.token, true)
+    },
+
+    inviteCount(inviteUrl) {
+      if (inviteUrl.inviteCount > 999) {
+        return '+999'
+      }
+
+      return inviteUrl.inviteCount
+    },
+
+    usesLeft(inviteUrl) {
+      if (!inviteUrl.limit && inviteUrl.limit !== 0) {
+        return this.$t('labels.fleet.inviteUrls.noLimit')
+      }
+
+      return this.$t('labels.fleet.inviteUrls.usesLeft', {
+        count: inviteUrl.limit,
+      })
+    },
+
+    copy(inviteUrl) {
+      copyText(inviteUrl.url).then(
+        () => {
+          displaySuccess({
+            text: this.$t('messages.copyInviteUrl.success', {
+              url: inviteUrl.url,
+            }),
+          })
+        },
+        () => {
+          displayAlert({
+            text: this.$t('messages.copyInviteUrl.failure'),
+          })
+        }
+      )
+    },
+  },
 }
 </script>
 

@@ -109,14 +109,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid'
-import ModelPanel from '@/frontend/components/Models/Panel'
-import ModelsTable from '@/frontend/components/Models/Table'
-import ModelsFilterForm from '@/frontend/components/Models/FilterForm'
-import FleetchartApp from '@/frontend/components/Fleetchart/App'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import ModelPanel from '@/frontend/components/Models/Panel/index.vue'
+import ModelsTable from '@/frontend/components/Models/Table/index.vue'
+import ModelsFilterForm from '@/frontend/components/Models/FilterForm/index.vue'
+import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import modelsCollection from '@/frontend/api/collections/Models'
 

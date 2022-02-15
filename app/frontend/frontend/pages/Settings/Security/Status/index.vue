@@ -55,8 +55,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Btn from '@/frontend/core/components/Btn'
-import ChangePasswordForm from '@/frontend/components/Security/ChangePasswordForm'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import ChangePasswordForm from '@/frontend/components/Security/ChangePasswordForm/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import { displayConfirm } from '@/frontend/lib/Noty'
 

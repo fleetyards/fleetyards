@@ -84,15 +84,15 @@
 </template>
 
 <script>
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader'
-import Panel from '@/frontend/core/components/Panel'
-import StationPanel from '@/frontend/components/Stations/Panel'
-import ItemPanel from '@/frontend/components/Stations/Item'
-import { scrollToAnchor } from '@/frontend/utils/scrolling'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import StationPanel from '@/frontend/components/Stations/Panel/index.vue'
+import ItemPanel from '@/frontend/components/Stations/Item/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import CelestialObjectMetrics from '@/frontend/components/CelestialObjects/Metrics/index.vue'
 import Pagination from '@/frontend/mixins/Pagination'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
-import CelestialObjectMetrics from '@/frontend/components/CelestialObjects/Metrics'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import { scrollToAnchor } from '@/frontend/utils/scrolling'
 
 export default {
   name: 'CelestialObjectDetail',

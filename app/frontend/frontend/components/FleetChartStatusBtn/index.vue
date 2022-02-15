@@ -25,36 +25,47 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Btn from '@/frontend/core/components/Btn/index.vue'
 
-@Component<FleetChartStatusBtn>({
+export default {
+  name: 'FleetChartStatusBtn',
+
   components: {
     Btn,
   },
-})
-export default class FleetChartStatusBtn extends Btn {
-  @Prop({ default: true }) withLabel!: boolean
 
-  showStatus = false
+  props: {
+    withLabel: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
+  data() {
+    return {
+      showStatus: false,
+    }
+  },
 
   mounted() {
     this.showStatus = !!this.$route.query?.showStatus
 
     this.$comlink.$on('fleetchart-toggle-status', this.setShowStatus)
-  }
+  },
 
   beforeDestroy() {
     this.$comlink.$off('fleetchart-toggle-status')
-  }
+  },
 
-  setShowStatus() {
-    this.showStatus = !this.showStatus
-  }
+  methods: {
+    setShowStatus() {
+      this.showStatus = !this.showStatus
+    },
 
-  toggleStatus() {
-    this.$comlink.$emit('fleetchart-toggle-status')
-  }
+    toggleStatus() {
+      this.$comlink.$emit('fleetchart-toggle-status')
+    },
+  },
 }
 </script>

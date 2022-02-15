@@ -14,9 +14,9 @@
 </template>
 
 <script>
+import Box from '@/frontend/core/components/Box/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Box from '@/frontend/core/components/Box'
-import Btn from '@/frontend/core/components/Btn'
 
 export default {
   name: 'NotFound',

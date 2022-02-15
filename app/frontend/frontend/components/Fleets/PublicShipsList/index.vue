@@ -77,10 +77,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+<script>
+import { mapGetters, mapActions } from 'vuex'
 import FilteredList from '@/frontend/core/components/FilteredList'
 import FilteredGrid from '@/frontend/core/components/FilteredGrid'
 import Btn from '@/frontend/core/components/Btn'
@@ -88,79 +86,87 @@ import BtnDropdown from '@/frontend/core/components/BtnDropdown'
 import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel'
 import FleetchartApp from '@/frontend/components/Fleetchart/App'
 import PublicFleetVehiclesFilterForm from '@/frontend/components/Fleets/PublicFilterForm'
-import ModelClassLabels from '@/frontend/components/Models/ClassLabels'
-import AddonsModal from '@/frontend/components/Vehicles/AddonsModal'
 import publicFleetVehiclesCollection from '@/frontend/api/collections/PublicFleetVehicles'
 
-@Component<FleetPublicShipsList>({
+export default {
+  name: 'FleetPublicShipsList',
+
   components: {
     Btn,
     BtnDropdown,
     FilteredList,
     FilteredGrid,
     FleetVehiclePanel,
-    ModelClassLabels,
-    AddonsModal,
     PublicFleetVehiclesFilterForm,
     FleetchartApp,
   },
-})
-export default class FleetPublicShipsList extends Vue {
-  collection: PublicFleetVehiclesCollection = publicFleetVehiclesCollection
 
-  @Prop({ required: true }) fleet: Fleet
+  props: {
+    fleet: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  @Getter('mobile') mobile
-
-  @Getter('grouped', { namespace: 'publicFleet' }) grouped
-
-  @Getter('detailsVisible', { namespace: 'publicFleet' }) detailsVisible
-
-  @Getter('fleetchartVisible', { namespace: 'publicFleet' }) fleetchartVisible
-
-  @Getter('perPage', { namespace: 'publicFleet' }) perPage
-
-  @Action('toggleFleetchart', { namespace: 'publicFleet' })
-  toggleFleetchart: any
-
-  @Action('toggleDetails', { namespace: 'publicFleet' }) toggleDetails: any
-
-  @Action('toggleGrouped', { namespace: 'publicFleet' }) toggleGrouped: any
-
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t('actions.hideDetails')
-    }
-    return this.$t('actions.showDetails')
-  }
-
-  get routeParams() {
+  data() {
     return {
-      ...this.$route.params,
-      grouped: this.grouped,
+      collection: publicFleetVehiclesCollection,
     }
-  }
+  },
 
-  get filters() {
-    return {
-      slug: this.fleet.slug,
-      grouped: this.grouped,
-      page: this.$route.query.page,
-    }
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  @Watch('grouped')
-  onGroupedChange() {
-    this.fetch()
-  }
+    ...mapGetters('publicFleet', [
+      'grouped',
+      'detailsVisible',
+      'fleetchartVisible',
+      'perPage',
+    ]),
 
-  @Watch('perPage')
-  onPerPageChange() {
-    this.fetch()
-  }
+    toggleDetailsTooltip() {
+      if (this.detailsVisible) {
+        return this.$t('actions.hideDetails')
+      }
+      return this.$t('actions.showDetails')
+    },
 
-  async fetch() {
-    await this.collection.findAll(this.filters)
-  }
+    routeParams() {
+      return {
+        ...this.$route.params,
+        grouped: this.grouped,
+      }
+    },
+
+    filters() {
+      return {
+        slug: this.fleet.slug,
+        grouped: this.grouped,
+        page: this.$route.query.page,
+      }
+    },
+  },
+
+  watch: {
+    grouped() {
+      this.fetch()
+    },
+
+    perPage() {
+      this.fetch()
+    },
+  },
+
+  methods: {
+    ...mapActions('publicFleet', [
+      'toggleFleetchart',
+      'toggleDetails',
+      'toggleGrouped',
+    ]),
+
+    async fetch() {
+      await this.collection.findAll(this.filters)
+    },
+  },
 }
 </script>

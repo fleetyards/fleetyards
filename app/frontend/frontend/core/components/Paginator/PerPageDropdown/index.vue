@@ -21,34 +21,62 @@
   </BtnDropdown>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+<script>
+import { mapGetters } from 'vuex'
 import BtnDropdown from '@/frontend/core/components/BtnDropdown'
 import Btn from '@/frontend/core/components/Btn'
 
-@Component<PerPageDropdown>({
+export default {
+  name: 'PerPageDropdown',
+
   components: {
     BtnDropdown,
     Btn,
   },
-})
-export default class PerPageDropdown extends BtnDropdown {
-  @Prop({ required: true }) perPage!: number
 
-  @Prop({
-    default: () => [10, 20, 50, 100],
-  })
-  steps!: number[]
+  props: {
+    perPage: {
+      type: Number,
+      required: true,
+    },
+    steps: {
+      type: Array,
+      default: () => [10, 20, 50, 100],
+    },
 
-  @Getter('mobile') mobile
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
 
-  get uuid() {
-    return this._uid
-  }
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return (
+          ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+            value
+          ) !== -1
+        )
+      },
+    },
+  },
 
-  update(step) {
-    this.$emit('change', step)
-  }
+  computed: {
+    ...mapGetters(['mobile']),
+
+    uuid() {
+      return this._uid
+    },
+  },
+
+  methods: {
+    update(step) {
+      this.$emit('change', step)
+    },
+  },
 }
 </script>

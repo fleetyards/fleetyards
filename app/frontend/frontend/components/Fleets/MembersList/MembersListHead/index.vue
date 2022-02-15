@@ -24,17 +24,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import { sortByToggle } from '@/frontend/utils/Sorting'
 
-@Component<MembersListHead>()
-export default class MembersListHead extends Vue {
-  @Prop({ default: false }) editable: boolean
+export default {
+  name: 'MembersListHead',
 
-  sortByToggle(field) {
-    return sortByToggle(field, this.$route)
-  }
+  props: {
+    editable: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  methods: {
+    sortByToggle(field) {
+      return sortByToggle(field, this.$route)
+    },
+  },
 }
 </script>

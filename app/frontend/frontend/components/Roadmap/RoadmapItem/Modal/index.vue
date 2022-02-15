@@ -57,90 +57,99 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
-@Component<AddToHangarModal>({
+export default {
+  name: 'RoadmapItemModal',
+
   components: {
     Modal,
     Btn,
   },
-})
-export default class RoadmapItemModal extends Vue {
-  @Prop({ required: true }) item
 
-  get storeImage() {
-    if (this.item.storeImage) {
-      return this.item.storeImage
-    }
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
 
-    return `https://robertsspaceindustries.com${this.item.image}`
-  }
+  computed: {
+    storeImage() {
+      if (this.item.storeImage) {
+        return this.item.storeImage
+      }
 
-  get description() {
-    if (this.item.body) {
-      return this.item.body
-    }
+      return `https://robertsspaceindustries.com${this.item.image}`
+    },
 
-    return this.item.description
-  }
+    description() {
+      if (this.item.body) {
+        return this.item.body
+      }
 
-  get updates() {
-    if (!this.item) {
-      return []
-    }
+      return this.item.description
+    },
 
-    const { lastVersion } = this.item
+    updates() {
+      if (!this.item) {
+        return []
+      }
 
-    if (!lastVersion) {
-      return []
-    }
+      const { lastVersion } = this.item
 
-    return ['committed', 'release', 'released', 'active']
-      .filter((key) => lastVersion[key])
-      .map((key) => {
-        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+      if (!lastVersion) {
+        return []
+      }
 
-        return {
-          key,
-          change: count < 0 ? 'decreased' : 'increased',
-          old: lastVersion[key][0],
-          new: lastVersion[key][1],
-          count,
-        }
-      })
-      .filter(
-        (update) =>
-          update.key !== 'released' || (update.key === 'released' && update.old)
-      )
-      .filter(
-        (update) =>
-          update.key !== 'commited' || (update.key === 'commited' && update.old)
-      )
-      .filter(
-        (update) =>
-          update.key !== 'active' || (update.key === 'active' && update.old)
-      )
-  }
+      return ['committed', 'release', 'released', 'active']
+        .filter((key) => lastVersion[key])
+        .map((key) => {
+          const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
 
-  openImage() {
-    window.open(this.storeImage, '_blank').focus()
-  }
+          return {
+            key,
+            change: count < 0 ? 'decreased' : 'increased',
+            old: lastVersion[key][0],
+            new: lastVersion[key][1],
+            count,
+          }
+        })
+        .filter(
+          (update) =>
+            update.key !== 'released' ||
+            (update.key === 'released' && update.old)
+        )
+        .filter(
+          (update) =>
+            update.key !== 'commited' ||
+            (update.key === 'commited' && update.old)
+        )
+        .filter(
+          (update) =>
+            update.key !== 'active' || (update.key === 'active' && update.old)
+        )
+    },
+  },
 
-  openDetail() {
-    this.$comlink.$emit('close-modal')
-    this.$router
-      .push({
-        name: 'model',
-        params: {
-          slug: this.item.model.slug,
-        },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(() => {})
-  }
+  methods: {
+    openImage() {
+      window.open(this.storeImage, '_blank').focus()
+    },
+
+    openDetail() {
+      this.$comlink.$emit('close-modal')
+      this.$router
+        .push({
+          name: 'model',
+          params: {
+            slug: this.item.model.slug,
+          },
+        })
+        .catch(() => {})
+    },
+  },
 }
 </script>

@@ -144,10 +144,10 @@
 </template>
 
 <script>
+import Chart from '@/frontend/core/components/Chart/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Chart from '@/frontend/core/components/Chart'
-import Panel from '@/frontend/core/components/Panel'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
 
 export default {
   name: 'HangarStats',

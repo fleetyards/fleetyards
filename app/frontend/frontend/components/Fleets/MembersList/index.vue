@@ -18,38 +18,49 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+<script>
+import { mapGetters } from 'vuex'
 import Panel from '@/frontend/core/components/Panel'
 import MembersListHead from './MembersListHead'
 import MembersListItem from './MembersListItem'
 
-@Component<MembersList>({
+export default {
+  name: 'MembersList',
+
   components: {
     Panel,
     MembersListHead,
     MembersListItem,
   },
-})
-export default class Memberslist extends Vue {
-  @Prop({ required: true }) members: Member[]
 
-  @Prop({ required: true }) role: string
+  props: {
+    members: {
+      type: Array,
+      required: true,
+    },
 
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+    role: {
+      type: String,
+      required: true,
+    },
+  },
 
-  get isAdmin() {
-    return this.role === 'admin'
-  }
+  computed: {
+    ...mapGetters('session', ['currentUser']),
 
-  canEdit(member) {
-    if (member && this.currentUser) {
-      return this.isAdmin && member.username !== this.currentUser.username
-    }
+    isAdmin() {
+      return this.role === 'admin'
+    },
+  },
 
-    return false
-  }
+  methods: {
+    canEdit(member) {
+      if (member && this.currentUser) {
+        return this.isAdmin && member.username !== this.currentUser.username
+      }
+
+      return false
+    },
+  },
 }
 </script>

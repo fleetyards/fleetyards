@@ -17,67 +17,75 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+<script>
+import { mapGetters } from 'vuex'
 import Btn from '@/frontend/core/components/Btn'
 import { displayWarning } from '@/frontend/lib/Noty'
 
-@Component<AddToHangar>({
+export default {
+  name: 'AddToHangar',
+
   components: {
     Btn,
   },
-})
-export default class AddToHangar extends Vue {
-  @Prop({ required: true }) model!: Model
 
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return ['default', 'panel', 'menu', 'list'].includes(value)
+  props: {
+    model: {
+      type: Object,
+      required: true,
     },
-  })
-  variant!: string
 
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
-
-  @Getter('ships', { namespace: 'hangar' }) ships
-
-  get inHangar() {
-    return !!(this.ships || []).find((item) => item === this.model.slug)
-  }
-
-  get btnVariant() {
-    if (['panel', 'menu'].includes(this.variant)) {
-      return 'link'
-    }
-
-    return 'default'
-  }
-
-  get btnSize() {
-    if (['panel', 'menu', 'list'].includes(this.variant)) {
-      return 'small'
-    }
-
-    return 'default'
-  }
-
-  async add() {
-    if (!this.isAuthenticated) {
-      displayWarning({
-        text: this.$t('messages.error.hangar.accountRequired'),
-      })
-      return
-    }
-
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Models/AddToHangarModal'),
-      props: {
-        model: this.model,
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'panel', 'menu', 'list'].includes(value)
       },
-    })
-  }
+    },
+  },
+
+  computed: {
+    ...mapGetters('session', ['isAuthenticated']),
+    ...mapGetters('hangar', ['ships']),
+
+    inHangar() {
+      return !!(this.ships || []).find((item) => item === this.model.slug)
+    },
+
+    btnVariant() {
+      if (['panel', 'menu'].includes(this.variant)) {
+        return 'link'
+      }
+
+      return 'default'
+    },
+
+    btnSize() {
+      if (['panel', 'menu', 'list'].includes(this.variant)) {
+        return 'small'
+      }
+
+      return 'default'
+    },
+  },
+
+  methods: {
+    async add() {
+      if (!this.isAuthenticated) {
+        displayWarning({
+          text: this.$t('messages.error.hangar.accountRequired'),
+        })
+        return
+      }
+
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Models/AddToHangarModal'),
+        props: {
+          model: this.model,
+        },
+      })
+    },
+  },
 }
 </script>

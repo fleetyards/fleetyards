@@ -175,10 +175,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+<script>
+import { mapGetters } from 'vuex'
 import Avatar from '@/frontend/core/components/Avatar'
 import Btn from '@/frontend/core/components/Btn'
 import {
@@ -188,139 +186,157 @@ import {
 } from '@/frontend/lib/Noty'
 import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
 
-@Component<MembersListItem>({
+export default {
+  name: 'MembersListItem',
+
   components: {
     Avatar,
     Btn,
   },
-})
-export default class MembersListItem extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection
 
-  deleting = false
+  props: {
+    member: {
+      type: Object,
+      required: true,
+    },
 
-  updating = false
+    editable: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Getter('mobile') mobile
+    editableMember: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  @Prop({ required: true }) member: Member
+  data() {
+    return {
+      collection: fleetMembersCollection,
+      deleting: false,
+      updating: false,
+    }
+  },
 
-  @Prop({ default: false }) editable: boolean
+  computed: {
+    ...mapGetters(['mobile']),
+  },
 
-  @Prop({ default: false }) editableMember: boolean
+  methods: {
+    async removeMember(member) {
+      this.deleting = true
+      displayConfirm({
+        text: this.$t('messages.confirm.fleet.members.destroy'),
+        onConfirm: async () => {
+          const response = await this.$api.destroy(
+            `fleets/${this.$route.params.slug}/members/${member.username}`
+          )
 
-  async removeMember(member) {
-    this.deleting = true
-    displayConfirm({
-      text: this.$t('messages.confirm.fleet.members.destroy'),
-      onConfirm: async () => {
-        const response = await this.$api.destroy(
-          `fleets/${this.$route.params.slug}/members/${member.username}`
-        )
-
-        if (!response.error) {
-          this.$comlink.$emit('fleet-member-update')
-          displaySuccess({
-            text: this.$t('messages.fleet.members.destroy.success'),
-          })
-        } else {
-          displayAlert({
-            text: this.$t('messages.fleet.members.destroy.failure'),
-          })
+          if (!response.error) {
+            this.$comlink.$emit('fleet-member-update')
+            displaySuccess({
+              text: this.$t('messages.fleet.members.destroy.success'),
+            })
+          } else {
+            displayAlert({
+              text: this.$t('messages.fleet.members.destroy.failure'),
+            })
+            this.deleting = false
+          }
+        },
+        onClose: () => {
           this.deleting = false
-        }
-      },
-      onClose: () => {
-        this.deleting = false
-      },
-    })
-  }
-
-  async demoteMember(member) {
-    this.updating = true
-
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/demote`
-    )
-
-    this.updating = false
-
-    if (!response.error) {
-      this.$comlink.$emit('fleet-member-update')
-      displaySuccess({
-        text: this.$t('messages.fleet.members.demote.success'),
+        },
       })
-    } else {
-      displayAlert({
-        text: this.$t('messages.fleet.members.demote.failure'),
-      })
-    }
-  }
+    },
 
-  async promoteMember(member) {
-    this.updating = true
+    async demoteMember(member) {
+      this.updating = true
 
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/promote`
-    )
+      const response = await this.$api.put(
+        `fleets/${this.$route.params.slug}/members/${member.username}/demote`
+      )
 
-    this.updating = false
+      this.updating = false
 
-    if (!response.error) {
-      this.$comlink.$emit('fleet-member-update')
-      displaySuccess({
-        text: this.$t('messages.fleet.members.promote.success'),
-      })
-    } else {
-      displayAlert({
-        text: this.$t('messages.fleet.members.promote.failure'),
-      })
-    }
-  }
+      if (!response.error) {
+        this.$comlink.$emit('fleet-member-update')
+        displaySuccess({
+          text: this.$t('messages.fleet.members.demote.success'),
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.members.demote.failure'),
+        })
+      }
+    },
 
-  async acceptRequest(member) {
-    this.updating = true
+    async promoteMember(member) {
+      this.updating = true
 
-    const success = await this.collection.acceptRequest(
-      this.$route.params.slug,
-      member.username
-    )
+      const response = await this.$api.put(
+        `fleets/${this.$route.params.slug}/members/${member.username}/promote`
+      )
 
-    this.updating = false
+      this.updating = false
 
-    if (success) {
-      this.$comlink.$emit('fleet-member-update')
-      displaySuccess({
-        text: this.$t('messages.fleet.members.accept.success'),
-      })
-    } else {
-      displayAlert({
-        text: this.$t('messages.fleet.members.accept.failure'),
-      })
-    }
-  }
+      if (!response.error) {
+        this.$comlink.$emit('fleet-member-update')
+        displaySuccess({
+          text: this.$t('messages.fleet.members.promote.success'),
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.members.promote.failure'),
+        })
+      }
+    },
 
-  async declineRequest(member) {
-    this.updating = true
+    async acceptRequest(member) {
+      this.updating = true
 
-    const success = await this.collection.declineRequest(
-      this.$route.params.slug,
-      member.username
-    )
+      const success = await this.collection.acceptRequest(
+        this.$route.params.slug,
+        member.username
+      )
 
-    this.updating = false
+      this.updating = false
 
-    if (success) {
-      this.$comlink.$emit('fleet-member-update')
-      displaySuccess({
-        text: this.$t('messages.fleet.members.decline.success'),
-      })
-    } else {
-      displayAlert({
-        text: this.$t('messages.fleet.members.decline.failure'),
-      })
-    }
-  }
+      if (success) {
+        this.$comlink.$emit('fleet-member-update')
+        displaySuccess({
+          text: this.$t('messages.fleet.members.accept.success'),
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.members.accept.failure'),
+        })
+      }
+    },
+
+    async declineRequest(member) {
+      this.updating = true
+
+      const success = await this.collection.declineRequest(
+        this.$route.params.slug,
+        member.username
+      )
+
+      this.updating = false
+
+      if (success) {
+        this.$comlink.$emit('fleet-member-update')
+        displaySuccess({
+          text: this.$t('messages.fleet.members.decline.success'),
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.members.decline.failure'),
+        })
+      }
+    },
+  },
 }
 </script>
 

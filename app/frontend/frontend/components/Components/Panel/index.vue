@@ -58,37 +58,44 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Panel from '@/frontend/core/components/Panel'
 import LazyImage from '@/frontend/core/components/LazyImage'
-import Btn from '@/frontend/core/components/Btn'
 import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn'
 import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations'
 
-@Component<ComponentPanel>({
+export default {
+  name: 'ComponentPanel',
+
   components: {
     Panel,
     LazyImage,
-    Btn,
     AddToCartBtn,
     ShopCommodityLocations,
   },
-})
-export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) component!: Component
 
-  @Prop({ default: true }) showMetrics!: boolean
+  props: {
+    component: {
+      type: Object,
+      required: true,
+    },
 
-  get image() {
-    if (this.component.storeImageIsFallback) {
-      return (
-        this.component.manufacturer?.logo || this.component.storeImageMedium
-      )
-    }
+    showMetrics: {
+      type: Boolean,
+      default: true,
+    },
+  },
 
-    return this.component.storeImageMedium
-  }
+  computed: {
+    image() {
+      if (this.component.storeImageIsFallback) {
+        return (
+          this.component.manufacturer?.logo || this.component.storeImageMedium
+        )
+      }
+
+      return this.component.storeImageMedium
+    },
+  },
 }
 </script>

@@ -188,13 +188,12 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
 import shopCommodityCollection from '@/admin/api/collections/ShopCommodities'
 import modelsCollection from '@/admin/api/collections/Models'
 import commoditiesCollection from '@/admin/api/collections/Commodities'
@@ -205,9 +204,10 @@ import modelPaintsCollection from '@/admin/api/collections/ModelPaints'
 import componentItemTypeFiltersCollection from '@/admin/api/collections/ComponentItemTypeFilters'
 import equipmentTypeFiltersCollection from '@/admin/api/collections/EquipmentTypeFilters'
 import equipmentSlotFiltersCollection from '@/admin/api/collections/EquipmentSlotFilters'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel'
 
-@Component<VehicleModal>({
+export default {
+  name: 'NewVehicleModal',
+
   components: {
     Modal,
     FilterGroup,
@@ -215,123 +215,123 @@ import TeaserPanel from '@/frontend/core/components/TeaserPanel'
     Btn,
     TeaserPanel,
   },
-})
-export default class VehicleModal extends Vue {
-  @Prop({ required: true }) shopId: string
 
-  @Prop({ default: null }) commodityItemType: string | null
-
-  @Prop({ default: null }) itemTypeFilter: string | null
-
-  modelsCollection: ModelsCollection = modelsCollection
-
-  commoditiesCollection: CommoditiesCollection = commoditiesCollection
-
-  componentsCollection: ComponentsCollection = componentsCollection
-
-  equipmentCollection: EquipmentCollection = equipmentCollection
-
-  modelModulesCollection: ModelModulesCollection = modelModulesCollection
-
-  modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection
-
-  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
-    componentItemTypeFiltersCollection
-
-  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
-    equipmentTypeFiltersCollection
-
-  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
-    equipmentSlotFiltersCollection
-
-  submitting = false
-
-  componentItemTypeFilter: string | null = null
-
-  equipmentTypeFilter: string | null = null
-
-  equipmentSlotFilter: string | null = null
-
-  form = null
-
-  items = []
-
-  commodityTypeOptions: FilterGroupItem[] = [
-    {
-      value: 'Commodity',
-      name: 'Commodity',
+  props: {
+    shopId: {
+      type: String,
+      required: true,
     },
-    {
-      value: 'Component',
-      name: 'Component',
-    },
-    {
-      value: 'Equipment',
-      name: 'Equipment',
-    },
-    {
-      value: 'Model',
-      name: 'Model',
-    },
-    {
-      value: 'ModelModule',
-      name: 'Model Module',
-    },
-    {
-      value: 'ModelPaint',
-      name: 'Model Paint',
-    },
-  ]
 
-  get formId() {
-    return 'shopCommodity-new'
-  }
+    commodityItemType: {
+      type: String,
+      default: null,
+    },
 
-  get title() {
-    return this.$t('headlines.modals.shopCommodity.create')
-  }
+    itemTypeFilter: {
+      type: String,
+      default: null,
+    },
+  },
+
+  data() {
+    return {
+      modelsCollection: modelsCollection,
+      commoditiesCollection: commoditiesCollection,
+      componentsCollection: componentsCollection,
+      equipmentCollection: equipmentCollection,
+      modelModulesCollection: modelModulesCollection,
+      modelPaintsCollection: modelPaintsCollection,
+      componentItemTypeFiltersCollection: componentItemTypeFiltersCollection,
+      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
+      equipmentSlotFiltersCollection: equipmentSlotFiltersCollection,
+      submitting: false,
+      componentItemTypeFilter: null,
+      equipmentTypeFilter: null,
+      equipmentSlotFilter: null,
+      form: null,
+      items: [],
+      commodityTypeOptions: [
+        {
+          value: 'Commodity',
+          name: 'Commodity',
+        },
+        {
+          value: 'Component',
+          name: 'Component',
+        },
+        {
+          value: 'Equipment',
+          name: 'Equipment',
+        },
+        {
+          value: 'Model',
+          name: 'Model',
+        },
+        {
+          value: 'ModelModule',
+          name: 'Model Module',
+        },
+        {
+          value: 'ModelPaint',
+          name: 'Model Paint',
+        },
+      ],
+    }
+  },
+
+  computed: {
+    formId() {
+      return 'shopCommodity-new'
+    },
+
+    title() {
+      return this.$t('headlines.modals.shopCommodity.create')
+    },
+  },
 
   mounted() {
     this.componentItemTypeFilter = this.itemTypeFilter
 
     this.setupForm()
-  }
+  },
 
-  fetchSubCategories() {
-    return this.$api.get('filters/shop-commodities/sub-categories')
-  }
+  methods: {
+    fetchSubCategories() {
+      return this.$api.get('filters/shop-commodities/sub-categories')
+    },
 
-  setupForm() {
-    this.form = {
-      commodityItemType: this.commodityItemType,
-    }
-  }
+    setupForm() {
+      this.form = {
+        commodityItemType: this.commodityItemType,
+      }
+    },
 
-  async submit() {
-    this.submitting = true
+    async submit() {
+      this.submitting = true
 
-    await Promise.all(
-      this.items.map(async (item) => {
-        await shopCommodityCollection.create(this.shopId, {
-          commodityItemId: item.id,
-          ...this.form,
+      await Promise.all(
+        this.items.map(async (item) => {
+          await shopCommodityCollection.create(this.shopId, {
+            commodityItemId: item.id,
+            ...this.form,
+          })
         })
-      })
-    )
+      )
 
-    this.$comlink.$emit('commodities-update')
+      this.$comlink.$emit('commodities-update')
 
-    this.$comlink.$emit('close-modal')
+      this.$comlink.$emit('close-modal')
 
-    this.submitting = false
-  }
+      this.submitting = false
+    },
 
-  add(value) {
-    this.items.push(value)
-  }
+    add(value) {
+      this.items.push(value)
+    },
 
-  removeItem(index) {
-    this.items.splice(index, 1)
-  }
+    removeItem(index) {
+      this.items.splice(index, 1)
+    },
+  },
 }
 </script>

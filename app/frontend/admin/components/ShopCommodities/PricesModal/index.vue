@@ -78,83 +78,99 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
+<script>
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import commodityPricesCollection from '@/admin/api/collections/CommodityPrices'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import Btn from '@/frontend/core/components/Btn'
 
-@Component<BuyPricesModal>({
+export default {
+  name: 'BuyPricesModal',
+
   components: {
     Modal,
     FormInput,
     Btn,
     CollectionFilterGroup,
   },
-})
-export default class BuyPricesModal extends Vue {
-  @Prop({ required: true }) shopId: string
 
-  @Prop({ required: true }) path: string
+  props: {
+    shopId: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ required: true }) shopCommodity: ShopCommodity
+    path: {
+      type: String,
+      required: true,
+    },
 
-  collection: CommodityPricesCollection = commodityPricesCollection
+    shopCommodity: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  prices: ShopCommodityPrice[] = []
-
-  form: AdminCommodityPriceForm = null
-
-  get title() {
-    return this.$t(`headlines.modals.shopCommodity.${this.path}Prices`, {
-      shopCommodity: this.shopCommodity.item.name,
-    })
-  }
-
-  get params() {
+  data() {
     return {
-      shopId: this.shopId,
-      shopCommodityId: this.shopCommodity.id,
-      path: this.path,
+      collection: commodityPricesCollection,
+      prices: [],
+      form: null,
     }
-  }
+  },
+
+  computed: {
+    title() {
+      return this.$t(`headlines.modals.shopCommodity.${this.path}Prices`, {
+        shopCommodity: this.shopCommodity.item.name,
+      })
+    },
+
+    params() {
+      return {
+        shopId: this.shopId,
+        shopCommodityId: this.shopCommodity.id,
+        path: this.path,
+      }
+    },
+  },
 
   mounted() {
     this.fetch()
     this.setupForm()
-  }
+  },
 
-  setupForm() {
-    this.form = {
-      shopCommodityId: this.shopCommodity.id,
-      path: this.path,
-      price: null,
-    }
-  }
+  methods: {
+    setupForm() {
+      this.form = {
+        shopCommodityId: this.shopCommodity.id,
+        path: this.path,
+        price: null,
+      }
+    },
 
-  async fetch() {
-    await this.collection.findAll(this.params)
-  }
+    async fetch() {
+      await this.collection.findAll(this.params)
+    },
 
-  async create() {
-    await this.collection.create(this.form)
+    async create() {
+      await this.collection.create(this.form)
 
-    this.$comlink.$emit('prices-update')
+      this.$comlink.$emit('prices-update')
 
-    this.newPrice = null
+      this.newPrice = null
 
-    this.$comlink.$emit('close-modal')
-  }
+      this.$comlink.$emit('close-modal')
+    },
 
-  async destroy(record) {
-    await this.collection.destroy(record.id)
+    async destroy(record) {
+      await this.collection.destroy(record.id)
 
-    this.$comlink.$emit('prices-update')
+      this.$comlink.$emit('prices-update')
 
-    this.fetch()
-  }
+      this.fetch()
+    },
+  },
 }
 </script>

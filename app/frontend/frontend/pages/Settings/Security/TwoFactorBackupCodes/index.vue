@@ -23,9 +23,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import SecurePage from '@/frontend/core/components/SecurePage'
-import Btn from '@/frontend/core/components/Btn'
-import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel'
+import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import { enabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
 import twoFactorCollection from '@/frontend/api/collections/TwoFactor'

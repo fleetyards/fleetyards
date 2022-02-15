@@ -93,14 +93,14 @@
 
 <script>
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader'
-import Panel from '@/frontend/core/components/Panel'
-import PlanetList from '@/frontend/components/Planets/List'
-import MoonPanel from '@/frontend/components/Planets/Panel'
-import StarsystemBaseMetrics from '@/frontend/components/Starsystems/BaseMetrics'
-import StarsystemLevelsMetrics from '@/frontend/components/Starsystems/LevelsMetrics'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import PlanetList from '@/frontend/components/Planets/List/index.vue'
+import MoonPanel from '@/frontend/components/Planets/Panel/index.vue'
+import StarsystemBaseMetrics from '@/frontend/components/Starsystems/BaseMetrics/index.vue'
+import StarsystemLevelsMetrics from '@/frontend/components/Starsystems/LevelsMetrics/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
 import Pagination from '@/frontend/mixins/Pagination'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
 import { scrollToAnchor } from '@/frontend/utils/scrolling'
 
 export default {

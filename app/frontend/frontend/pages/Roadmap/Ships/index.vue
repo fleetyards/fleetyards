@@ -116,12 +116,12 @@
 
 <script>
 import { BCollapse } from 'bootstrap-vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem/index.vue'
+import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader'
-import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem'
-import EmptyBox from '@/frontend/core/components/EmptyBox'
-import Btn from '@/frontend/core/components/Btn'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
 
 export default {
   name: 'ShipsRoadmap',

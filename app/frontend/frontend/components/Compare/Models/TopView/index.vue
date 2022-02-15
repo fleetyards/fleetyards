@@ -56,59 +56,72 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
 import { BCollapse } from 'bootstrap-vue'
 import FleetchartItemImage from '@/frontend/components/Fleetchart/List/Item/Image'
 
-@Component<ModelsCompareTopView>({
+export default {
+  name: 'ModelsCompareTopView',
+
   components: {
     BCollapse,
     FleetchartItemImage,
   },
-})
-export default class ModelsCompareTopView extends Vue {
-  @Prop({ required: true }) models!: Model[]
 
-  visible = false
+  props: {
+    models: {
+      type: Array,
+      required: true,
+    },
+  },
 
-  get maxWidth() {
-    if (!this.$refs.compareTopView) {
-      return 0
+  data() {
+    return {
+      visible: false,
     }
+  },
 
-    return this.$refs.compareTopView.offsetWidth / 4
-  }
+  computed: {
+    maxWidth() {
+      if (!this.$refs.compareTopView) {
+        return 0
+      }
 
-  get scale() {
-    if (this.models.length <= 0) {
-      return 0
-    }
+      return this.$refs.compareTopView.offsetWidth / 4
+    },
 
-    const maxLength = Math.max(
-      ...this.models.map((model) => model.fleetchartLength),
-      0
-    )
+    scale() {
+      if (this.models.length <= 0) {
+        return 0
+      }
 
-    return this.maxWidth / (maxLength * 3)
-  }
+      const maxLength = Math.max(
+        ...this.models.map((model) => model.fleetchartLength),
+        0
+      )
 
-  length(model) {
-    return model.fleetchartLength * 3 * this.scale
-  }
+      return this.maxWidth / (maxLength * 3)
+    },
+  },
+
+  watch: {
+    models() {
+      this.visible = this.models.length > 0
+    },
+  },
 
   mounted() {
     this.visible = this.models.length > 0
-  }
+  },
 
-  @Watch('models')
-  onModelsChange() {
-    this.visible = this.models.length > 0
-  }
+  methods: {
+    length(model) {
+      return model.fleetchartLength * 3 * this.scale
+    },
 
-  toggle() {
-    this.visible = !this.visible
-  }
+    toggle() {
+      this.visible = !this.visible
+    },
+  },
 }
 </script>

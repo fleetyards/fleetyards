@@ -83,10 +83,10 @@
 </template>
 
 <script>
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Panel from '@/frontend/core/components/Panel'
-import Loader from '@/frontend/core/components/Loader'
-import Btn from '@/frontend/core/components/Btn'
 import {
   displaySuccess,
   displayAlert,

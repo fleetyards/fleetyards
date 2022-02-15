@@ -35,10 +35,10 @@
 
 <script>
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FilterForm from '@/frontend/components/Shops/FilterForm'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid'
-import ShopPanel from '@/frontend/components/Shops/Panel'
+import FilterForm from '@/frontend/components/Shops/FilterForm/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import ShopPanel from '@/frontend/components/Shops/Panel/index.vue'
 import shopsCollection from '@/frontend/api/collections/Shops'
 
 export default {

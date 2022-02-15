@@ -31,103 +31,113 @@
   </form>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
+<script>
 import Filters from '@/frontend/mixins/Filters'
 import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 import Btn from '@/frontend/core/components/Btn/index.vue'
 
-@Component<FilterForm>({
+export default {
+  name: 'AdminComponentsImagesFilterForm',
+
   components: {
     FilterGroup,
     Btn,
   },
+
   mixins: [Filters],
-})
-export default class FilterForm extends Vue {
-  loading = false
 
-  modelIdEq: string | null = null
+  data() {
+    return {
+      loading: false,
+      modelIdEq: null,
+      stationIdEq: null,
+      form: {},
+    }
+  },
 
-  stationIdEq: string | null = null
+  computed: {
+    routeQuery() {
+      return this.$route.query.q || {}
+    },
+  },
 
-  form: GalleryFilters = {
-    galleryIdEq: this.routeQuery.galleryIdEq,
-    galleryTypeEq: this.routeQuery.galleryTypeEq,
-  }
+  watch: {
+    $route() {
+      const query = this.$route.query.q || {}
+      this.form = {
+        galleryIdEq: query.galleryIdEq,
+        galleryTypeEq: query.galleryTypeEq,
+      }
+    },
 
-  get routeQuery() {
-    return this.$route.query.q || {}
-  }
+    modelIdEq(value) {
+      if (value) {
+        this.stationIdEq = null
+        this.form.galleryIdEq = value
+        this.form.galleryTypeEq = 'Model'
+      } else if (!this.stationIdEq) {
+        this.form.galleryIdEq = null
+        this.form.galleryTypeEq = null
+      }
+    },
 
-  @Watch('$route')
-  onRouteChange() {
-    const query = this.$route.query.q || {}
+    stationIdEq(value) {
+      if (value) {
+        this.modelIdEq = null
+        this.form.galleryIdEq = value
+        this.form.galleryTypeEq = 'Station'
+      } else if (!this.modelIdEq) {
+        this.form.galleryIdEq = null
+        this.form.galleryTypeEq = null
+      }
+    },
+
+    form: {
+      deep: true,
+      handler() {
+        if (!this.form.galleryIdEq && !this.form.galleryTypeEq) {
+          this.modelIdEq = null
+          this.stationIdEq = null
+        }
+      },
+    },
+  },
+
+  mounted() {
     this.form = {
-      galleryIdEq: query.galleryIdEq,
-      galleryTypeEq: query.galleryTypeEq,
+      galleryIdEq: this.routeQuery.galleryIdEq,
+      galleryTypeEq: this.routeQuery.galleryTypeEq,
     }
-  }
+  },
 
-  @Watch('modelIdEq')
-  onModelIdFilterChange(value) {
-    if (value) {
-      this.stationIdEq = null
-      this.form.galleryIdEq = value
-      this.form.galleryTypeEq = 'Model'
-    } else if (!this.stationIdEq) {
-      this.form.galleryIdEq = null
-      this.form.galleryTypeEq = null
-    }
-  }
+  methods: {
+    fetchModels({ page, search, missingValue }) {
+      const query = {
+        q: {},
+      }
+      if (search) {
+        query.q.nameCont = search
+      } else if (missingValue) {
+        query.q.nameIn = missingValue
+      } else if (page) {
+        query.page = page
+      }
+      return this.$api.get('models/options', query)
+    },
 
-  @Watch('stationIdEq')
-  onStationIdFitlerChange(value) {
-    if (value) {
-      this.modelIdEq = null
-      this.form.galleryIdEq = value
-      this.form.galleryTypeEq = 'Station'
-    } else if (!this.modelIdEq) {
-      this.form.galleryIdEq = null
-      this.form.galleryTypeEq = null
-    }
-  }
-
-  @Watch('form', { deep: true })
-  onFormChange() {
-    if (!this.form.galleryIdEq && !this.form.galleryTypeEq) {
-      this.modelIdEq = null
-      this.stationIdEq = null
-    }
-  }
-
-  fetchModels({ page, search, missingValue }) {
-    const query = {
-      q: {},
-    }
-    if (search) {
-      query.q.nameCont = search
-    } else if (missingValue) {
-      query.q.nameIn = missingValue
-    } else if (page) {
-      query.page = page
-    }
-    return this.$api.get('models/options', query)
-  }
-
-  fetchStations({ page, search, missingValue }) {
-    const query = {
-      q: {},
-    }
-    if (search) {
-      query.q.nameCont = search
-    } else if (missingValue) {
-      query.q.nameIn = missingValue
-    } else if (page) {
-      query.page = page
-    }
-    return this.$api.get('stations/options', query)
-  }
+    fetchStations({ page, search, missingValue }) {
+      const query = {
+        q: {},
+      }
+      if (search) {
+        query.q.nameCont = search
+      } else if (missingValue) {
+        query.q.nameIn = missingValue
+      } else if (page) {
+        query.page = page
+      }
+      return this.$api.get('stations/options', query)
+    },
+  },
 }
 </script>

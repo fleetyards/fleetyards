@@ -625,6 +625,7 @@ GEM
     stringio (3.0.1)
     stimulus-rails (1.0.2)
       railties (>= 6.0.0)
+    stringio (3.0.1)
     strscan (3.0.1)
     tailwindcss-rails (2.0.5)
       railties (>= 6.0.0)
@@ -755,6 +756,7 @@ DEPENDENCIES
   rails-i18n (~> 7.0.0)
   rails-perftest
   ransack
+  rdoc
   redcarpet
   redis-actionpack!
   rollups

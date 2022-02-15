@@ -154,13 +154,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import Btn from '@/frontend/core/components/Btn'
-import Avatar from '@/frontend/core/components/Avatar'
-import FormInput from '@/frontend/core/components/Form/FormInput'
 import VueUploadComponent from 'vue-upload-component'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import userCollection from '@/frontend/api/collections/User'
+import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 
 export default {
   name: 'SettingsAccount',

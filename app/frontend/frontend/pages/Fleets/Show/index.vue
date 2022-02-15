@@ -91,10 +91,10 @@
 </template>
 
 <script>
-import Avatar from '@/frontend/core/components/Avatar'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import { publicFleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
+import { publicFleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 
 export default {
   name: 'FleetDetail',

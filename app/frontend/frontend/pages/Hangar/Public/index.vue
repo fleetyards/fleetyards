@@ -127,18 +127,18 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { publicHangarRouteGuard } from '@/frontend/utils/RouteGuards/Hangar'
-import Btn from '@/frontend/core/components/Btn'
-import VehiclePanel from '@/frontend/components/Vehicles/Panel'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import VehiclePanel from '@/frontend/components/Vehicles/Panel/index.vue'
+import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import GroupLabels from '@/frontend/components/Vehicles/GroupLabels/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FleetchartApp from '@/frontend/components/Fleetchart/App'
-import Avatar from '@/frontend/core/components/Avatar'
 import publicVehiclesCollection from '@/frontend/api/collections/PublicVehicles'
 import publicUserCollection from '@/frontend/api/collections/PublicUser'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid'
-import GroupLabels from '@/frontend/components/Vehicles/GroupLabels'
 import publicHangarGroupsCollection from '@/frontend/api/collections/PublicHangarGroups'
+import { publicHangarRouteGuard } from '@/frontend/utils/RouteGuards/Hangar'
 
 export default {
   name: 'PublicHangar',

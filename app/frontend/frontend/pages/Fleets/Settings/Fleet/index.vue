@@ -257,13 +257,13 @@
 
 <script>
 import VueUploadComponent from 'vue-upload-component'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import FormTextarea from '@/frontend/core/components/Form/FormTextarea/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import FormTextarea from '@/frontend/core/components/Form/FormTextarea'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Avatar from '@/frontend/core/components/Avatar'
 import {
   displaySuccess,
   displayAlert,

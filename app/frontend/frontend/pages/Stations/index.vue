@@ -39,9 +39,9 @@
 
 <script>
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import StationPanel from '@/frontend/components/Stations/Panel'
-import FilterForm from '@/frontend/components/Stations/FilterForm'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import StationPanel from '@/frontend/components/Stations/Panel/index.vue'
+import FilterForm from '@/frontend/components/Stations/FilterForm/index.vue'
 import stationsCollection from '@/frontend/api/collections/Stations'
 
 export default {

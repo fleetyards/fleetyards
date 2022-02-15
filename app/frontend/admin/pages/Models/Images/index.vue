@@ -22,44 +22,49 @@
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import ImageUploader from '@/admin/components/ImageUploader'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import imagesCollection, {
-  AdminImagesCollection,
-} from '@/admin/api/collections/Images'
+<script>
+import ImageUploader from '@/admin/components/ImageUploader/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import imagesCollection from '@/admin/api/collections/Images'
 
-@Component<AdminModelImages>({
+export default {
+  name: 'AdminModelImages',
+
   components: {
     ImageUploader,
     FilteredList,
   },
-})
-export default class AdminModelImages extends Vue {
-  collection: AdminImagesCollection = imagesCollection
 
-  get galleryId() {
-    return this.$route.params.uuid
-  }
-
-  get routeParams() {
+  data() {
     return {
-      galleryType: 'models',
-      galleryId: this.galleryId,
+      collection: imagesCollection,
     }
-  }
+  },
 
-  get filters() {
-    return {
-      ...this.routeParams,
-      page: this.$route.query.page,
-    }
-  }
+  computed: {
+    galleryId() {
+      return this.$route.params.uuid
+    },
 
-  async fetch() {
-    await this.collection.findAllForGallery(this.filters)
-  }
+    grouteParams() {
+      return {
+        galleryType: 'models',
+        galleryId: this.galleryId,
+      }
+    },
+
+    filters() {
+      return {
+        ...this.routeParams,
+        page: this.$route.query.page,
+      }
+    },
+  },
+
+  methods: {
+    async fetch() {
+      await this.collection.findAllForGallery(this.filters)
+    },
+  },
 }
 </script>

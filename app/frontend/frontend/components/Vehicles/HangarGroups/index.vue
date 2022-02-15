@@ -18,50 +18,55 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'PanelGroups',
 
-@Component<PanelGroups>({})
-export default class PanelGroups extends Vue {
-  @Prop({ required: true }) groups: HangarGroup[]
-
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return ['default', 'large'].indexOf(value) !== -1
+  props: {
+    groups: {
+      type: Array,
+      required: true,
     },
-  })
-  size!: string
 
-  filter(event, filter) {
-    event.preventDefault()
-
-    if (!filter) {
-      return
-    }
-
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
-
-    if ((query.hangarGroupsIn || []).includes(filter)) {
-      const index = query.hangarGroupsIn.findIndex((item) => item === filter)
-      if (index > -1) {
-        query.hangarGroupsIn.splice(index, 1)
-      }
-    } else {
-      if (!query.hangarGroupsIn) {
-        query.hangarGroupsIn = []
-      }
-      query.hangarGroupsIn.push(filter)
-    }
-
-    this.$router.replace({
-      name: this.$route.name,
-      query: {
-        q: query,
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'large'].indexOf(value) !== -1
       },
-    })
-  }
+    },
+  },
+
+  methods: {
+    filter(event, filter) {
+      event.preventDefault()
+
+      if (!filter) {
+        return
+      }
+
+      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+
+      if ((query.hangarGroupsIn || []).includes(filter)) {
+        const index = query.hangarGroupsIn.findIndex((item) => item === filter)
+        if (index > -1) {
+          query.hangarGroupsIn.splice(index, 1)
+        }
+      } else {
+        if (!query.hangarGroupsIn) {
+          query.hangarGroupsIn = []
+        }
+        query.hangarGroupsIn.push(filter)
+      }
+
+      this.$router.replace({
+        name: this.$route.name,
+        query: {
+          q: query,
+        },
+      })
+    },
+  },
 }
 </script>
 

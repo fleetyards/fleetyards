@@ -69,109 +69,128 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Panel from '@/frontend/core/components/Panel'
 import { isBefore, addHours } from 'date-fns'
 
-@Component<RoadmapItem>({
+export default {
+  name: 'RoadmapItem',
+
   components: {
     Panel,
   },
-})
-export default class RoadmapItem extends Vue {
-  @Prop({ required: true }) item
 
-  @Prop({ default: true }) compact!: boolean
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
 
-  @Prop({ default: true }) showProgress!: boolean
+    compact: {
+      type: Boolean,
+      default: true,
+    },
 
-  @Prop({ default: null }) active!: boolean
+    showProgress: {
+      type: Boolean,
+      default: true,
+    },
 
-  get storeImage() {
-    if (this.item.storeImageSmall) {
-      return this.item.storeImageSmall
-    }
+    active: {
+      type: Boolean,
+      default: null,
+    },
+  },
 
-    return `https://robertsspaceindustries.com${this.item.image}`
-  }
+  computed: {
+    storeImage() {
+      if (this.item.storeImageSmall) {
+        return this.item.storeImageSmall
+      }
 
-  get description() {
-    if (this.item.body) {
-      return this.item.body
-    }
+      return `https://robertsspaceindustries.com${this.item.image}`
+    },
 
-    return this.item.description
-  }
+    description() {
+      if (this.item.body) {
+        return this.item.body
+      }
 
-  get recentlyUpdated() {
-    return isBefore(
-      new Date(),
-      addHours(new Date(this.item.lastVersionChangedAt), 24)
-    )
-  }
+      return this.item.description
+    },
 
-  get cssClasses() {
-    return {
-      compact: this.compact,
-      inactive: !this.item.active && !this.active,
-    }
-  }
+    recentlyUpdated() {
+      return isBefore(
+        new Date(),
+        addHours(new Date(this.item.lastVersionChangedAt), 24)
+      )
+    },
 
-  get inactiveTooltip() {
-    if (!this.item.active) {
-      return this.$t('texts.roadmap.inactive')
-    }
-    return null
-  }
+    cssClasses() {
+      return {
+        compact: this.compact,
+        inactive: !this.item.active && !this.active,
+      }
+    },
 
-  get updates() {
-    if (!this.item) {
-      return []
-    }
+    inactiveTooltip() {
+      if (!this.item.active) {
+        return this.$t('texts.roadmap.inactive')
+      }
+      return null
+    },
 
-    const { lastVersion } = this.item
+    updates() {
+      if (!this.item) {
+        return []
+      }
 
-    if (!lastVersion) {
-      return []
-    }
+      const { lastVersion } = this.item
 
-    return ['committed', 'release', 'released', 'active']
-      .filter((key) => lastVersion[key])
-      .map((key) => {
-        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+      if (!lastVersion) {
+        return []
+      }
 
-        return {
-          key,
-          change: count < 0 ? 'decreased' : 'increased',
-          old: lastVersion[key][0],
-          new: lastVersion[key][1],
-          count,
-        }
+      return ['committed', 'release', 'released', 'active']
+        .filter((key) => lastVersion[key])
+        .map((key) => {
+          const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+
+          return {
+            key,
+            change: count < 0 ? 'decreased' : 'increased',
+            old: lastVersion[key][0],
+            new: lastVersion[key][1],
+            count,
+          }
+        })
+        .filter(
+          (update) =>
+            update.key !== 'released' ||
+            (update.key === 'released' && update.old)
+        )
+        .filter(
+          (update) =>
+            update.key !== 'commited' ||
+            (update.key === 'commited' && update.old)
+        )
+        .filter(
+          (update) =>
+            update.key !== 'active' || (update.key === 'active' && update.old)
+        )
+    },
+  },
+
+  methods: {
+    openModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Roadmap/RoadmapItem/Modal'),
+        props: {
+          item: this.item,
+        },
       })
-      .filter(
-        (update) =>
-          update.key !== 'released' || (update.key === 'released' && update.old)
-      )
-      .filter(
-        (update) =>
-          update.key !== 'commited' || (update.key === 'commited' && update.old)
-      )
-      .filter(
-        (update) =>
-          update.key !== 'active' || (update.key === 'active' && update.old)
-      )
-  }
-
-  openModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () =>
-        import('@/frontend/components/Roadmap/RoadmapItem/Modal'),
-      props: {
-        item: this.item,
-      },
-    })
-  }
+    },
+  },
 }
 </script>

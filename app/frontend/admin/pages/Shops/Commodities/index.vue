@@ -118,19 +118,19 @@
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredTable from '@/frontend/core/components/FilteredTable'
-import FilterForm from '@/admin/components/ShopCommodities/FilterForm'
-import BtnGroup from '@/frontend/core/components/BtnGroup'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
+import FilterForm from '@/admin/components/ShopCommodities/FilterForm/index.vue'
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import shopCommoditiesCollection from '@/admin/api/collections/ShopCommodities'
 import { displayConfirm } from '@/frontend/lib/Noty'
 
-@Component<AdminStationImages>({
+export default {
+  name: 'AdminStationImages',
+
   components: {
     FilteredList,
     FilteredTable,
@@ -139,153 +139,164 @@ import { displayConfirm } from '@/frontend/lib/Noty'
     BtnDropdown,
     Btn,
   },
-})
-export default class AdminStationImages extends Vue {
-  collection: ShopCommoditiesCollection = shopCommoditiesCollection
 
-  deleting = false
-
-  tableColumns = [
-    { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '30%' },
-    {
-      name: 'prices',
-      label: this.$t('labels.shopCommodity.prices.label'),
-      width: '20%',
-    },
-    {
-      name: 'confirmed',
-      label: this.$t('labels.shopCommodity.confirmed'),
-      width: '10%',
-    },
-    {
-      name: 'actions',
-      label: this.$t('labels.actions'),
-      width: '10%',
-      class: 'actions',
-    },
-  ]
-
-  prices = [
-    'buyPrice',
-    'averageBuyPrice',
-    'sellPrice',
-    'averageSellPrice',
-    'rentalPrice1Day',
-    'averageRentalPrice1Day',
-    'rentalPrice3Days',
-    'averageRentalPrice3Days',
-    'rentalPrice7Days',
-    'averageRentalPrice7Days',
-    'rentalPrice30Days',
-    'averageRentalPrice30Days',
-  ]
-
-  get routeParams() {
+  data() {
     return {
-      shopId: this.$route.params.shopId,
+      collection: shopCommoditiesCollection,
+      deleting: false,
+      tableColumns: [
+        {
+          name: 'item',
+          label: this.$t('labels.shopCommodity.item'),
+          width: '30%',
+        },
+        {
+          name: 'prices',
+          label: this.$t('labels.shopCommodity.prices.label'),
+          width: '20%',
+        },
+        {
+          name: 'confirmed',
+          label: this.$t('labels.shopCommodity.confirmed'),
+          width: '10%',
+        },
+        {
+          name: 'actions',
+          label: this.$t('labels.actions'),
+          width: '10%',
+          class: 'actions',
+        },
+      ],
+      prices: [
+        'buyPrice',
+        'averageBuyPrice',
+        'sellPrice',
+        'averageSellPrice',
+        'rentalPrice1Day',
+        'averageRentalPrice1Day',
+        'rentalPrice3Days',
+        'averageRentalPrice3Days',
+        'rentalPrice7Days',
+        'averageRentalPrice7Days',
+        'rentalPrice30Days',
+        'averageRentalPrice30Days',
+      ],
     }
-  }
+  },
+
+  computed: {
+    routeParams() {
+      return {
+        shopId: this.$route.params.shopId,
+      }
+    },
+  },
 
   mounted() {
     this.$comlink.$on('prices-update', this.fetch)
     this.$comlink.$on('commodities-update', this.fetch)
-  }
+  },
 
   beforeDestroy() {
     this.$comlink.$off('prices-update')
     this.$comlink.$off('commodities-update')
-  }
+  },
 
-  async fetch() {
-    await this.collection.refresh()
-  }
+  methods: {
+    async fetch() {
+      await this.collection.refresh()
+    },
 
-  openEditModal(shopCommodity) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/admin/components/ShopCommodities/Modal'),
-      props: {
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    })
-  }
+    openEditModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () => import('@/admin/components/ShopCommodities/Modal'),
+        props: {
+          shopId: this.routeParams.shopId,
+          shopCommodity,
+        },
+      })
+    },
 
-  openSellPricesModal(shopCommodity) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/admin/components/ShopCommodities/PricesModal'),
-      props: {
-        path: 'sell',
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    })
-  }
+    openSellPricesModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/PricesModal'),
+        props: {
+          path: 'sell',
+          shopId: this.routeParams.shopId,
+          shopCommodity,
+        },
+      })
+    },
 
-  openBuyPricesModal(shopCommodity) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/admin/components/ShopCommodities/PricesModal'),
-      props: {
-        path: 'buy',
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    })
-  }
+    openBuyPricesModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/PricesModal'),
+        props: {
+          path: 'buy',
+          shopId: this.routeParams.shopId,
+          shopCommodity,
+        },
+      })
+    },
 
-  openRentalPricesModal(shopCommodity) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/admin/components/ShopCommodities/PricesModal'),
-      props: {
-        path: 'rental',
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    })
-  }
+    openRentalPricesModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/PricesModal'),
+        props: {
+          path: 'rental',
+          shopId: this.routeParams.shopId,
+          shopCommodity,
+        },
+      })
+    },
 
-  openAddModal(commodityItemType) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/admin/components/ShopCommodities/NewModal'),
-      props: {
-        shopId: this.routeParams.shopId,
-        commodityItemType,
-      },
-    })
-  }
+    openAddModal(commodityItemType) {
+      this.$comlink.$emit('open-modal', {
+        component: () => import('@/admin/components/ShopCommodities/NewModal'),
+        props: {
+          shopId: this.routeParams.shopId,
+          commodityItemType,
+        },
+      })
+    },
 
-  openComponentModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/admin/components/ShopCommodities/NewModal'),
-      props: {
-        shopId: this.routeParams.shopId,
-        commodityItemType: 'Component',
-        itemTypeFilter: (this.$route.query.filters?.component_item_type ||
-          [])[0],
-      },
-    })
-  }
+    openComponentModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () => import('@/admin/components/ShopCommodities/NewModal'),
+        props: {
+          shopId: this.routeParams.shopId,
+          commodityItemType: 'Component',
+          itemTypeFilter: (this.$route.query.filters?.component_item_type ||
+            [])[0],
+        },
+      })
+    },
 
-  remove(shopCommodity) {
-    this.deleting = true
-    displayConfirm({
-      text: this.$t('messages.confirm.shopCommodity.destroy'),
-      onConfirm: () => {
-        this.destroy(shopCommodity)
-      },
-      onClose: () => {
-        this.deleting = false
-      },
-    })
-  }
+    remove(shopCommodity) {
+      this.deleting = true
+      displayConfirm({
+        text: this.$t('messages.confirm.shopCommodity.destroy'),
+        onConfirm: () => {
+          this.destroy(shopCommodity)
+        },
+        onClose: () => {
+          this.deleting = false
+        },
+      })
+    },
 
-  async destroy(shopCommodity) {
-    if (
-      await this.collection.destroy(this.routeParams.shopId, shopCommodity.id)
-    ) {
-      this.fetch()
-    }
+    async destroy(shopCommodity) {
+      if (
+        await this.collection.destroy(this.routeParams.shopId, shopCommodity.id)
+      ) {
+        this.fetch()
+      }
 
-    this.deleting = false
-  }
+      this.deleting = false
+    },
+  },
 }
 </script>

@@ -148,7 +148,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import VueScrollTo from 'vue-scrollto'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
 import Loader from '@/frontend/core/components/Loader/index.vue'
 import Panel from '@/frontend/core/components/Panel/index.vue'
 import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
@@ -156,6 +155,7 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import Support from '@/frontend/components/Support/index.vue'
 import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
 import modelsCollection from '@/frontend/api/collections/Models'
 import imagesCollection from '@/frontend/api/collections/Images'
 

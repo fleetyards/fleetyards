@@ -46,12 +46,12 @@
 </template>
 
 <script>
+import Gallery from '@/frontend/core/components/Gallery/index.vue'
+import GalleryImage from '@/frontend/core/components/Gallery/Image/index.vue'
+import imagesCollection from '@/frontend/api/collections/Images/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Gallery from '@/frontend/core/components/Gallery'
-import GalleryImage from '@/frontend/core/components/Gallery/Image'
-import imagesCollection from '@/frontend/api/collections/Images'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid'
 
 export default {
   name: 'ImagesPage',

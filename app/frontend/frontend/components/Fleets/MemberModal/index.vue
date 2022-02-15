@@ -42,54 +42,63 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import Modal from '@/frontend/core/components/AppModal/Modal'
 import FormInput from '@/frontend/core/components/Form/FormInput'
 import Btn from '@/frontend/core/components/Btn'
 import memberCollection from '@/frontend/api/collections/FleetMembers'
 import { displayAlert } from '@/frontend/lib/Noty'
 
-@Component<MemberModal>({
+export default {
+  name: 'MemberModal',
+
   components: {
     Modal,
     FormInput,
     Btn,
   },
-})
-export default class MemberModal extends Vue {
-  @Prop({ required: true }) fleet: Fleet
 
-  submitting = false
+  props: {
+    fleet: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  form: FleetMemberForm | null = null
+  data() {
+    return {
+      submitting: false,
+      form: null,
+    }
+  },
 
   mounted() {
     this.setupForm()
-  }
+  },
 
-  setupForm() {
-    this.form = {
-      username: null,
-    }
-  }
+  methods: {
+    setupForm() {
+      this.form = {
+        username: null,
+      }
+    },
 
-  async save() {
-    this.submitting = true
+    async save() {
+      this.submitting = true
 
-    const response = await memberCollection.create(this.fleet.slug, this.form)
+      const response = await memberCollection.create(this.fleet.slug, this.form)
 
-    this.submitting = false
+      this.submitting = false
 
-    if (!response.error) {
-      this.$comlink.$emit('fleet-member-invited', response.data)
-      this.$comlink.$emit('close-modal')
-    } else {
-      displayAlert({
-        text: this.$t(response.error),
-      })
-    }
-  }
+      if (!response.error) {
+        this.$comlink.$emit('fleet-member-invited', response.data)
+        this.$comlink.$emit('close-modal')
+      } else {
+        displayAlert({
+          text: this.$t(response.error),
+        })
+      }
+    },
+  },
 }
 </script>

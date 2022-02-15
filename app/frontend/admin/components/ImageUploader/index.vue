@@ -110,19 +110,19 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import VueUploadComponent from 'vue-upload-component'
-import ImageRow from '@/admin/components/ImageUploader/ImageRow'
-import Loader from '@/frontend/core/components/Loader'
-import EmptyBox from '@/frontend/core/components/EmptyBox'
-import Btn from '@/frontend/core/components/Btn'
-import Panel from '@/frontend/core/components/Panel'
-import { displayAlert } from '@/frontend/lib/Noty'
 import Cookies from 'js-cookie'
+import ImageRow from '@/admin/components/ImageUploader/ImageRow/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import { displayAlert } from '@/frontend/lib/Noty'
 
-@Component<ImageUploader>({
+export default {
+  name: 'ImageUploader',
+
   components: {
     Loader,
     VueUploadComponent,
@@ -131,171 +131,189 @@ import Cookies from 'js-cookie'
     Btn,
     Panel,
   },
-})
-export default class ImageUploader extends Vue {
-  @Prop({ required: true }) images: Image[]
 
-  @Prop({ default: null }) galleryId: string | null
+  props: {
+    images: {
+      type: Array,
+      required: true,
+    },
 
-  @Prop({ default: null }) galleryType: string | null
+    galleryId: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: false }) loading: boolean
+    galleryType: {
+      type: String,
+      default: null,
+    },
 
-  newImages = []
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  postAction = `${window.API_ENDPOINT}/images`
-
-  uploadCount = 1
-
-  headers = {
-    'Accept': 'application/json',
-    'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
-  }
-
-  get isUploadActive() {
-    return !!this.galleryId && !!this.galleryType
-  }
-
-  get allImages() {
-    return [...this.newImages, ...this.images]
-  }
-
-  get metaData() {
+  data() {
     return {
-      galleryId: this.galleryId,
-      galleryType: this.galleryType,
+      newImages: [],
+      postAction: `${window.API_ENDPOINT}/images`,
+      uploadCount: 1,
+      headers: {
+        'Accept': 'application/json',
+        'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
+      },
     }
-  }
+  },
 
-  get emptyBoxVisible() {
-    return !this.loading && !this.allImages.length
-  }
+  computed: {
+    isUploadActive() {
+      return !!this.galleryId && !!this.galleryType
+    },
 
-  get activeImages() {
-    return this.newImages.filter((item) => item.active)
-  }
+    allImages() {
+      return [...this.newImages, ...this.images]
+    },
 
-  get progress() {
-    if (!this.newImages.length) {
-      return 0
-    }
+    metaData() {
+      return {
+        galleryId: this.galleryId,
+        galleryType: this.galleryType,
+      }
+    },
 
-    const pendingProgress = this.newImages
-      .map((item) => parseFloat(item.progress))
-      .reduce((pv, cv) => pv + cv, 0)
-    const completedUploads = this.uploadCount - this.newImages.length
+    emptyBoxVisible() {
+      return !this.loading && !this.allImages.length
+    },
 
-    return Math.ceil(
-      (pendingProgress + completedUploads * 100) / this.uploadCount
-    )
-  }
+    activeImages() {
+      return this.newImages.filter((item) => item.active)
+    },
 
-  get speed() {
-    if (!this.activeImages.length) {
-      return 0
-    }
+    progress() {
+      if (!this.newImages.length) {
+        return 0
+      }
 
-    return (
-      this.activeImages
-        .map((item) => parseFloat(item.speed))
-        .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
-    )
-  }
+      const pendingProgress = this.newImages
+        .map((item) => parseFloat(item.progress))
+        .reduce((pv, cv) => pv + cv, 0)
+      const completedUploads = this.uploadCount - this.newImages.length
+
+      return Math.ceil(
+        (pendingProgress + completedUploads * 100) / this.uploadCount
+      )
+    },
+
+    speed() {
+      if (!this.activeImages.length) {
+        return 0
+      }
+
+      return (
+        this.activeImages
+          .map((item) => parseFloat(item.speed))
+          .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
+      )
+    },
+  },
 
   mounted() {
     document.addEventListener('paste', this.addFileFromClipboard)
-  }
+  },
 
   destroyed() {
     document.removeEventListener('paste')
-  }
+  },
 
-  addFileFromClipboard(event) {
-    if (event.clipboardData && event.clipboardData.files.length > 0) {
-      this.$refs.upload.add(event.clipboardData.files[0])
-    }
-  }
-
-  selectImages() {
-    this.$refs.upload.$el.querySelector('input').click()
-  }
-
-  selectFolder() {
-    if (!this.$refs.upload.features.directory) {
-      displayAlert({
-        text: 'Your browser does not support',
-      })
-
-      return
-    }
-
-    const input = this.$refs.upload.$el.querySelector('input')
-    input.directory = true
-    input.webkitdirectory = true
-    this.directory = true
-    input.onclick = null
-    input.click()
-    input.onclick = (_e) => {
-      this.directory = false
-      input.directory = false
-      input.webkitdirectory = false
-    }
-  }
-
-  setUploadCount() {
-    this.uploadCount = this.newImages.length
-  }
-
-  startUpload() {
-    this.setUploadCount()
-    this.$refs.upload.active = true
-  }
-
-  startSingleUpload(image) {
-    this.$refs.upload.update(image, { active: true })
-  }
-
-  cancelUpload() {
-    this.newImages = []
-  }
-
-  cancelSingleUpload(image) {
-    this.$refs.upload.remove(image)
-  }
-
-  async inputImage(newImage, oldImage) {
-    if (newImage && oldImage && !newImage.active && oldImage.active) {
-      if (newImage.xhr && newImage.xhr.status === 200) {
-        this.$emit('image-uploaded', newImage)
-        const index = this.newImages.indexOf(newImage)
-        this.newImages.splice(index, 1)
+  methods: {
+    addFileFromClipboard(event) {
+      if (event.clipboardData && event.clipboardData.files.length > 0) {
+        this.$refs.upload.add(event.clipboardData.files[0])
       }
-    }
-  }
+    },
 
-  inputFilter(newImage, oldImage, prevent) {
-    if (newImage && !oldImage) {
-      if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
-        prevent()
+    selectImages() {
+      this.$refs.upload.$el.querySelector('input').click()
+    },
+
+    selectFolder() {
+      if (!this.$refs.upload.features.directory) {
+        displayAlert({
+          text: 'Your browser does not support',
+        })
+
+        return
       }
-    }
 
-    if (!newImage) {
-      return
-    }
+      const input = this.$refs.upload.$el.querySelector('input')
+      input.directory = true
+      input.webkitdirectory = true
+      this.directory = true
+      input.onclick = null
+      input.click()
+      input.onclick = (_e) => {
+        this.directory = false
+        input.directory = false
+        input.webkitdirectory = false
+      }
+    },
 
-    /* eslint-disable no-param-reassign */
-    newImage.blob = ''
-    const URL = window.URL || window.webkitURL
-    if (URL && URL.createObjectURL) {
-      newImage.blob = URL.createObjectURL(newImage.file)
-    }
-    newImage.smallUrl = ''
-    if (newImage.blob && newImage.type.substr(0, 6) === 'image/') {
-      newImage.smallUrl = newImage.blob
-    }
-    /* eslint-enable no-param-reassign */
-  }
+    setUploadCount() {
+      this.uploadCount = this.newImages.length
+    },
+
+    startUpload() {
+      this.setUploadCount()
+      this.$refs.upload.active = true
+    },
+
+    startSingleUpload(image) {
+      this.$refs.upload.update(image, { active: true })
+    },
+
+    cancelUpload() {
+      this.newImages = []
+    },
+
+    cancelSingleUpload(image) {
+      this.$refs.upload.remove(image)
+    },
+
+    async inputImage(newImage, oldImage) {
+      if (newImage && oldImage && !newImage.active && oldImage.active) {
+        if (newImage.xhr && newImage.xhr.status === 200) {
+          this.$emit('image-uploaded', newImage)
+          const index = this.newImages.indexOf(newImage)
+          this.newImages.splice(index, 1)
+        }
+      }
+    },
+
+    inputFilter(newImage, oldImage, prevent) {
+      if (newImage && !oldImage) {
+        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
+          prevent()
+        }
+      }
+
+      if (!newImage) {
+        return
+      }
+
+      /* eslint-disable no-param-reassign */
+      newImage.blob = ''
+      const URL = window.URL || window.webkitURL
+      if (URL && URL.createObjectURL) {
+        newImage.blob = URL.createObjectURL(newImage.file)
+      }
+      newImage.smallUrl = ''
+      if (newImage.blob && newImage.type.substr(0, 6) === 'image/') {
+        newImage.smallUrl = newImage.blob
+      }
+      /* eslint-enable no-param-reassign */
+    },
+  },
 }
 </script>
 

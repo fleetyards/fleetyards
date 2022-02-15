@@ -58,9 +58,9 @@
 </template>
 
 <script>
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import AppContact from '@/frontend/core/components/AppContact/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Panel from '@/frontend/core/components/Panel'
-import AppContact from '@/frontend/core/components/AppContact'
 
 export default {
   name: 'ImpressumPage',

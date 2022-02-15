@@ -69,61 +69,72 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
 import Modal from '@/frontend/core/components/AppModal/Modal'
-import FormInput from '@/frontend/core/components/Form/FormInput'
 import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
 import Checkbox from '@/frontend/core/components/Form/Checkbox'
 import Btn from '@/frontend/core/components/Btn'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 
-@Component<VehicleModal>({
+export default {
+  name: 'VehicleModal',
+
   components: {
     Modal,
     Checkbox,
-    FormInput,
     FilterGroup,
     Btn,
   },
-})
-export default class VehicleModal extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle
 
-  submitting = false
+  props: {
+    vehicle: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  form = null
+  data() {
+    return {
+      submitting: false,
+      form: null,
+    }
+  },
+
+  watch: {
+    vehicle() {
+      this.setupForm()
+    },
+  },
 
   mounted() {
     this.setupForm()
-  }
+  },
 
-  @Watch('vehicle')
-  onVehicleChange() {
-    this.setupForm()
-  }
+  methods: {
+    setupForm() {
+      this.form = {
+        purchased: this.vehicle.purchased,
+        flagship: this.vehicle.flagship,
+        public: this.vehicle.public,
+        saleNotify: this.vehicle.saleNotify,
+        modelPaintId: this.vehicle.paint?.id || null,
+      }
+    },
 
-  setupForm() {
-    this.form = {
-      purchased: this.vehicle.purchased,
-      flagship: this.vehicle.flagship,
-      public: this.vehicle.public,
-      saleNotify: this.vehicle.saleNotify,
-      modelPaintId: this.vehicle.paint?.id || null,
-    }
-  }
+    async save() {
+      this.submitting = true
 
-  async save() {
-    this.submitting = true
+      const response = await vehiclesCollection.update(
+        this.vehicle.id,
+        this.form
+      )
 
-    const response = await vehiclesCollection.update(this.vehicle.id, this.form)
+      this.submitting = false
 
-    this.submitting = false
-
-    if (!response.error) {
-      this.$comlink.$emit('close-modal')
-    }
-  }
+      if (!response.error) {
+        this.$comlink.$emit('close-modal')
+      }
+    },
+  },
 }
 </script>
