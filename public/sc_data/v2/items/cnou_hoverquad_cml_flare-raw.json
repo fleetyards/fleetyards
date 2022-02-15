@@ -71,8 +71,8 @@
       "WarningDisplayTime": 8.0
     },
     "SAmmoContainerComponentParams": {
-      "initialAmmoCount": 6.0,
-      "maxAmmoCount": 6.0,
+      "initialAmmoCount": 12.0,
+      "maxAmmoCount": 12.0,
       "ammoParamsRecord": "9621efe3-86b7-4da3-ac4a-430394f53bf4"
     },
     "SCItemWeaponComponentParams": {
@@ -144,7 +144,7 @@
       },
       "fireActions": [
         {
-          "shotCount": 5.0,
+          "shotCount": 3.0,
           "heatPerShot": 0.0,
           "fireRate": 450.0,
           "launchParams": {
