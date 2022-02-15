@@ -138,7 +138,8 @@ module ScData
       hardpoint_ids = []
 
       ports_data['PilotHardpoints'].each_with_index.map do |port_data, index|
-        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, nil, port_data['Loadout'])&.id
+        key_modifier = "#{port_data['Loadout']}_#{port_data.dig('InstalledItem', 'Ports', 0, 'Loadout')}"
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, nil, key_modifier)&.id
       end
 
       hardpoint_ids.compact
@@ -150,23 +151,25 @@ module ScData
 
       component_data = port_data['InstalledItem'] || {}
 
+      key = [key_modifier, hardpoint_type, category, size].compact.join('-')
+
+      puts key if hardpoint_type == :weapons
+
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,
         model_id: model_id,
-        hardpoint_type: hardpoint_type,
-        group: group_for_hardpoint_type(hardpoint_type),
-        key: [
-          key_modifier,
-          hardpoint_type,
-          category,
-          size
-        ].compact.join('-'),
-        loadout_identifier: component_data['Name'],
-        category: category,
+        key: key,
         name: port_data['PortName'],
         item_slot: index,
-        size: size
-      )
+        loadout_identifier: component_data['Name'],
+        group: group_for_hardpoint_type(hardpoint_type)
+      ) do |new_hardpoint|
+        new_hardpoint.hardpoint_type = hardpoint_type
+        new_hardpoint.category = category
+        new_hardpoint.size = size
+      end
+
+      puts group_for_hardpoint_type(hardpoint_type) if hardpoint_type == :weapons
 
       component = components_loader.extract_component!(component_data)
 

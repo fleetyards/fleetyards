@@ -86,6 +86,8 @@ module ScData
     end
 
     private def extract_manufacturer(manufacturer_data)
+      return if manufacturer_data.blank?
+
       manufacturer = Manufacturer.find_by(code: manufacturer_data['Code'])
       manufacturer = Manufacturer.find_by(name: manufacturer_data['Name']) if manufacturer.blank?
 
