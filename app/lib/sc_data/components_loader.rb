@@ -29,8 +29,7 @@ module ScData
         name: name
       )
 
-      manufacturer_name = component_data.dig('Manufacturer', 'Name')
-      manufacturer = Manufacturer.find_or_create_by!(name: manufacturer_name) if manufacturer_name.present?
+      manufacturer = extract_manufacturer(component_data['Manufacturer'])
 
       description = component_data['Description']
       description = translations_loader.translate(description) if needs_translation?(description)
@@ -84,6 +83,15 @@ module ScData
       return false if string.blank?
 
       string.start_with?('@')
+    end
+
+    private def extraact_manufacturer(manufacturer_data)
+      manufacturer = Manufacturer.find_by(code: manufacturer_data['Code'])
+      manufacturer = Manufacturer.find_by(name: manufacturer_data['Name']) if manufacturer.blank?
+
+      return manufacturer if manufacturer.present?
+
+      Manufacturer.create!(name: manufacturer_data['Name'], code: manufacturer_data['Code'])
     end
   end
 end
