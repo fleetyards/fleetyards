@@ -153,8 +153,6 @@ module ScData
 
       key = [key_modifier, hardpoint_type, category, size].compact.join('-')
 
-      puts key if hardpoint_type == :weapons
-
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,
         model_id: model_id,
@@ -168,8 +166,6 @@ module ScData
         new_hardpoint.category = category
         new_hardpoint.size = size
       end
-
-      puts group_for_hardpoint_type(hardpoint_type) if hardpoint_type == :weapons
 
       component = components_loader.extract_component!(component_data)
 
