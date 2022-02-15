@@ -38,7 +38,7 @@
         aria-expanded="false"
         data-base-target="navItem"
       >
-        <span class="flex-shrink-0 h-6 w-6 <%= collapsed ? '' : ' mr-3' %>" data-base-target="navItemIcon">
+        <span class="flex justify-center items-center flex-shrink-0 h-6 w-6 <%= collapsed ? '' : ' mr-3' %>" data-base-target="navItemIcon">
           <i class="<%= icon %>"></i>
         </span>
         <%- unless collapsed -%>
@@ -68,7 +68,7 @@
       target="<%= defined?(external) ? '_blank' : nil %>"
       data-base-target="navItem"
     >
-      <span class="flex-shrink-0 h-6 w-6 <%= collapsed ? '' : ' mr-3' %>" data-base-target="navItemIcon">
+      <span class="flex justify-center items-center flex-shrink-0 h-6 w-6 <%= collapsed ? '' : ' mr-3' %>" data-base-target="navItemIcon">
         <i class="<%= icon %>"></i>
       </span>
       <%- unless collapsed -%>

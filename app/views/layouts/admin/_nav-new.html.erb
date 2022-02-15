@@ -83,23 +83,20 @@
     <%= render('layouts/admin/nav-maintenance', collapsed: collapsed) -%>
   </nav>
 </div>
-<% if collapsed -%>
-  <div class="flex justify-center">
-    <%= link_to url_for(navigation_state: 'expanded'), remote: true, class: 'p-4 text-lg font-normal focus:outline-none focus:ring-2
-      focus:ring-brand-primary/50 hover:text-neutral-400 transition-colors duration-300 ease-in' do -%>
-      <i class="fa fa-chevron-double-right"></i>
-      <span class="sr-only">Expand</span>
-    <% end -%>
-  </div>
-<% else -%>
-  <div class="flex">
-    <%= link_to url_for(navigation_state: 'collapsed'), remote: true, class: 'p-4 w-full items-center text-lg font-normal focus:outline-none focus:ring-2
-      focus:ring-brand-primary/50 hover:text-neutral-400 transition-colors duration-300 ease-in' do -%>
-      <i class="fa fa-chevron-double-left"></i>
-      <span>Collapse</span>
-    <% end -%>
-  </div>
-<% end -%>
+
+<div class="mt-5 flex flex-col">
+  <nav class="flex-1 space-y-1">
+    <%=
+      render(
+        'shared/nav-item',
+        href: collapsed ? url_for(navigation_state: 'expanded') : url_for(navigation_state: 'collapsed'),
+        collapsed: collapsed,
+        name: collapsed ? 'Expand' : 'Collapse',
+        icon: collapsed ? 'fa fa-chevron-double-right' : 'fa fa-chevron-double-left'
+      )
+    -%>
+  </nav>
+</div>
 <div class="flex-shrink-0 flex flex-col p-4">
   <a href="#" class="flex-shrink-0 w-full group block">
     <div class="flex items-center<%= collapsed ? ' justify-center' : '' %>" data-base-target="navUserNav">
