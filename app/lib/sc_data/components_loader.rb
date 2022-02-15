@@ -85,7 +85,7 @@ module ScData
       string.start_with?('@')
     end
 
-    private def extraact_manufacturer(manufacturer_data)
+    private def extract_manufacturer(manufacturer_data)
       manufacturer = Manufacturer.find_by(code: manufacturer_data['Code'])
       manufacturer = Manufacturer.find_by(name: manufacturer_data['Name']) if manufacturer.blank?
 
