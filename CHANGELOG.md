@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.6.0](https://github.com/fleetyards/fleetyards/compare/v5.5.2...v5.6.0) (2022-02-15)
+
+
+### Features
+
+* **sc_data:** update to version 3.16.1-LIVE.7939065 ([8436795](https://github.com/fleetyards/fleetyards/commit/8436795fa9bc759d4e690ab1b255835dc5a8dde8))
+
 ### [5.5.2](https://github.com/fleetyards/fleetyards/compare/v5.5.1...v5.5.2) (2022-02-13)
 
 
