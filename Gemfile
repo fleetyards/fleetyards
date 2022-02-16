@@ -28,7 +28,7 @@ gem 'ahoy_matey'
 gem 'groupdate'
 gem 'rollups'
 
-gem 'i18n', '1.8.11'
+gem 'i18n', '1.10.0'
 gem 'i18n-js'
 gem 'rails-i18n', '~> 6.0'
 
