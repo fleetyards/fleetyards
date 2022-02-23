@@ -98,7 +98,7 @@ gem 'mini_magick'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
-gem 'nokogiri', '1.13.1'
+gem 'nokogiri', '1.13.3'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
