@@ -192,6 +192,12 @@ export default {
     notFound: 'Invite not found.',
     confirm: 'Are you sure you want to join the Fleet: "%{fleet}"?',
   },
+  holoViewer: {
+    modelLoader: {
+      failure:
+        'We could not load the requested 3D model! Please try again later.',
+    },
+  },
   confirm: {
     vehicle: {
       destroy: 'Are you sure you want to remove this Ship from you Hangar?',

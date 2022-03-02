@@ -34,7 +34,7 @@
       </Btn>
     </BtnGroup>
 
-    <Loader v-if="loading" :loading="loading" />
+    <Loader v-if="loading" :loading="loading" :progress="progress" />
     <input v-if="debug" v-model="modelColor" type="color" />
   </div>
 </template>
@@ -49,6 +49,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { displayAlert } from 'frontend/lib/Noty'
 
 @Component<HoloViewer>({
   components: {
@@ -81,6 +82,8 @@ export default class HoloViewer extends Vue {
   autoRotateSpeed: number = 1.5
 
   zoom: boolean = false
+
+  progress: number = 0
 
   color: boolean = false
 
@@ -150,6 +153,7 @@ export default class HoloViewer extends Vue {
 
   async mounted() {
     this.loading = true
+    this.progress = 0
 
     this.scene = this.setupScene()
     this.camera = this.setupCamera()
@@ -273,34 +277,51 @@ export default class HoloViewer extends Vue {
     dracoLoader.setDecoderPath('/vendor/js/draco/')
     loader.setDRACOLoader(dracoLoader)
 
-    loader.load(
-      this.holo,
-      (geometry) => {
-        this.loading = false
-        this.model = geometry.scene
+    try {
+      loader.load(
+        this.holo,
+        (geometry) => {
+          this.loading = false
 
-        this.model.rotation.set(0, 45, 0)
+          this.model = geometry.scene
 
-        this.updateModelMaterial()
+          this.model.rotation.set(0, 45, 0)
 
-        this.scene.add(this.model)
+          this.updateModelMaterial()
 
-        const box = new THREE.Box3().setFromObject(this.model)
-        const size = box.getSize(new THREE.Vector3())
+          this.scene.add(this.model)
 
-        const maxValue = Math.max(size.x, size.y)
+          const box = new THREE.Box3().setFromObject(this.model)
+          const size = box.getSize(new THREE.Vector3())
 
-        this.camera.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2))
+          const maxValue = Math.max(size.x, size.y)
 
-        this.camera.add(this.setupDirectionalLight(this.model))
+          this.camera.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2))
 
-        this.animate()
-      },
-      null,
-      (error) => {
-        console.error(error)
-      }
-    )
+          this.camera.add(this.setupDirectionalLight(this.model))
+
+          this.animate()
+        },
+        (xhr) => {
+          this.progress = (xhr.loaded / xhr.total) * 100
+        },
+        (error) => {
+          this.handleError(error)
+        }
+      )
+    } catch (error) {
+      this.handleError(error)
+    }
+  }
+
+  handleError(error) {
+    this.loading = false
+
+    console.error(error)
+
+    displayAlert({
+      text: this.$t('messages.holoViewer.modelLoader.failure'),
+    })
   }
 
   toggleZoom() {
