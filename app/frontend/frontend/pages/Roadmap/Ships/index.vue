@@ -125,50 +125,39 @@ import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 export default {
   name: 'ShipsRoadmap',
-
   components: {
     BCollapse,
-    Loader,
-    EmptyBox,
-    RoadmapItem,
-    Btn,
     BreadCrumbs,
+    Btn,
+    EmptyBox,
+    Loader,
+    RoadmapItem,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      loading: true,
-
-      onlyReleased: true,
-
       compact: true,
-
-      roadmapItems: [],
-
-      visible: [],
-
-      unscheduledModels: [],
-
+      loading: true,
+      onlyReleased: true,
       roadmapChannel: null,
+      roadmapItems: [],
+      unscheduledModels: [],
+      visible: [],
     }
   },
 
   computed: {
-    toggleCompactTooltip() {
-      if (this.compact) {
-        return this.$t('actions.showDetails')
-      }
-
-      return this.$t('actions.hideDetails')
-    },
-
-    releasedToggleLabel() {
-      if (this.onlyReleased) {
-        return this.$t('actions.showReleased')
-      }
-      return this.$t('actions.hideReleased')
+    crumbs() {
+      return [
+        {
+          label: this.$t('nav.roadmap.index'),
+          to: {
+            name: 'roadmap',
+          },
+        },
+      ]
     },
 
     emptyBoxVisible() {
@@ -196,10 +185,6 @@ export default {
       }, {})
     },
 
-    otherModels() {
-      return this.models
-    },
-
     modelsOnRoadmap() {
       return this.roadmapItems
         .filter((item) => item.model)
@@ -207,21 +192,24 @@ export default {
         .filter((item) => item)
     },
 
-    crumbs() {
-      return [
-        {
-          to: {
-            name: 'roadmap',
-          },
-          label: this.$t('nav.roadmap.index'),
-        },
-      ]
+    otherModels() {
+      return this.models
     },
-  },
 
-  mounted() {
-    this.fetch()
-    this.setupUpdates()
+    releasedToggleLabel() {
+      if (this.onlyReleased) {
+        return this.$t('actions.showReleased')
+      }
+      return this.$t('actions.hideReleased')
+    },
+
+    toggleCompactTooltip() {
+      if (this.compact) {
+        return this.$t('actions.showDetails')
+      }
+
+      return this.$t('actions.hideDetails')
+    },
   },
 
   beforeDestroy() {
@@ -230,54 +218,18 @@ export default {
     }
   },
 
+  mounted() {
+    this.fetch()
+    this.setupUpdates()
+  },
+
   methods: {
-    setupUpdates() {
-      if (this.roadmapChannel) {
-        this.roadmapChannel.unsubscribe()
-      }
-
-      this.roadmapChannel = this.$cable.consumer.subscriptions.create(
-        {
-          channel: 'RoadmapChannel',
-        },
-        {
-          received: this.fetch,
-        }
-      )
-    },
-
-    toggleReleased() {
-      this.onlyReleased = !this.onlyReleased
-    },
-
-    toggleCompact() {
-      this.compact = !this.compact
-    },
-
-    toggle(release) {
-      if (this.visible.includes(release)) {
-        const index = this.visible.indexOf(release)
-        this.visible.splice(index, 1)
-        return null
-      }
-      return this.visible.push(release)
-    },
-
-    openReleased() {
-      Object.keys(this.groupedByRelease).forEach((release) => {
-        const items = this.groupedByRelease[release]
-        if (items.length && !items[0].released) {
-          this.visible.push(release)
-        }
-      })
-    },
-
     async fetch() {
       this.loading = true
       const response = await this.$api.get('roadmap?ships=1', {
         q: {
-          rsiCategoryIdIn: [6],
           activeEq: true,
+          rsiCategoryIdIn: [6],
         },
       })
       this.loading = false
@@ -294,6 +246,47 @@ export default {
       if (!response.error) {
         this.unscheduledModels = response.data
       }
+    },
+
+    openReleased() {
+      Object.keys(this.groupedByRelease).forEach((release) => {
+        const items = this.groupedByRelease[release]
+        if (items.length && !items[0].released) {
+          this.visible.push(release)
+        }
+      })
+    },
+
+    setupUpdates() {
+      if (this.roadmapChannel) {
+        this.roadmapChannel.unsubscribe()
+      }
+
+      this.roadmapChannel = this.$cable.consumer.subscriptions.create(
+        {
+          channel: 'RoadmapChannel',
+        },
+        {
+          received: this.fetch,
+        }
+      )
+    },
+
+    toggle(release) {
+      if (this.visible.includes(release)) {
+        const index = this.visible.indexOf(release)
+        this.visible.splice(index, 1)
+        return null
+      }
+      return this.visible.push(release)
+    },
+
+    toggleCompact() {
+      this.compact = !this.compact
+    },
+
+    toggleReleased() {
+      this.onlyReleased = !this.onlyReleased
     },
   },
 }

@@ -76,7 +76,6 @@ import fleetsCollection from '@/frontend/api/collections/Fleets'
 
 export default {
   name: 'FleetAdd',
-
   components: {
     Btn,
     FormInput,

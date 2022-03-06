@@ -23,10 +23,10 @@ export class FleetVehiclesCollection extends BaseCollection {
 
   async findAll(params) {
     const response = await get(`fleets/${params.slug}/vehicles`, {
-      q: params?.filters,
+      grouped: params?.grouped,
       page: params?.page,
       perPage: this.perPage,
-      grouped: params?.grouped,
+      q: params?.filters,
     })
 
     if (!response.error) {

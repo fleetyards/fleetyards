@@ -90,16 +90,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'SpeedMetrics',
 
-@Component<SpeedMetrics>({})
-export default class SpeedMetrics extends Vue {
-  @Prop({ required: true }) model: Model
-
-  get isGroundVehicle() {
-    return this.model.classification === 'ground'
-  }
+  props: {
+    model: {
+      required: true,
+      type: Object,
+    },
+  },
+  computed: {
+    isGroundVehicle() {
+      return this.model.classification === 'ground'
+    },
+  },
 }
 </script>

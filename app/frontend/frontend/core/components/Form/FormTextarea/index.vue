@@ -34,57 +34,69 @@ export default {
   name: 'FormTextarea',
 
   props: {
-    id: {
-      type: String,
-      required: true,
-    },
-    icon: {
-      type: String,
-      default: null,
-    },
-    value: {
-      type: [String, Number],
-      default: null,
-    },
-    error: {
-      type: String,
-      default: null,
-    },
-    translationKey: {
-      type: String,
-      default: null,
-    },
-    autoFocus: {
-      type: Boolean,
+    autofocus: {
       default: false,
-    },
-    label: {
-      type: String,
-      default: null,
-    },
-    noLabel: {
       type: Boolean,
-      default: false,
     },
-    hideLabelOnEmpty: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: null,
-    },
-    noPlaceholder: {
-      type: Boolean,
-      default: false,
-    },
+
     clearable: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
+
     disabled: {
-      type: Boolean,
       default: false,
+      type: Boolean,
+    },
+
+    error: {
+      default: null,
+      type: String,
+    },
+
+    hideLabelOnEmpty: {
+      default: false,
+      type: Boolean,
+    },
+
+    icon: {
+      default: null,
+      type: String,
+    },
+
+    id: {
+      required: true,
+      type: String,
+    },
+
+    label: {
+      default: null,
+      type: String,
+    },
+
+    noLabel: {
+      default: false,
+      type: Boolean,
+    },
+
+    noPlaceholder: {
+      default: false,
+      type: Boolean,
+    },
+
+    placeholder: {
+      default: null,
+      type: String,
+    },
+
+    translationKey: {
+      default: null,
+      type: String,
+    },
+
+    value: {
+      default: null,
+      type: [String, Number],
     },
   },
 
@@ -95,6 +107,13 @@ export default {
   },
 
   computed: {
+    cssClasses() {
+      return {
+        'form-input-clearable': this.clearable,
+        'has-error has-feedback': this.error,
+      }
+    },
+
     innerId() {
       return `${this.id}-${this._uid}`
     },
@@ -126,13 +145,6 @@ export default {
 
       return this.$t(`placeholders.${this.id}`)
     },
-
-    cssClasses() {
-      return {
-        'has-error has-feedback': this.error,
-        'form-input-clearable': this.clearable,
-      }
-    },
   },
 
   watch: {
@@ -146,6 +158,11 @@ export default {
   },
 
   methods: {
+    clear() {
+      this.$emit('input', null)
+      this.$emit('clear')
+    },
+
     setFocus() {
       if (this.$refs.input) {
         this.$refs.input.focus()
@@ -154,11 +171,6 @@ export default {
 
     update() {
       this.$emit('input', this.inputValue)
-    },
-
-    clear() {
-      this.$emit('input', null)
-      this.$emit('clear')
     },
   },
 }

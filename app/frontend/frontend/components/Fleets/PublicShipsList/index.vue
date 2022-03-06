@@ -79,13 +79,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel'
-import FleetchartApp from '@/frontend/components/Fleetchart/App'
-import PublicFleetVehiclesFilterForm from '@/frontend/components/Fleets/PublicFilterForm'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel/index.vue'
+import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
+import PublicFleetVehiclesFilterForm from '@/frontend/components/Fleets/PublicFilterForm/index.vue'
 import publicFleetVehiclesCollection from '@/frontend/api/collections/PublicFleetVehicles'
 
 export default {
@@ -94,17 +94,17 @@ export default {
   components: {
     Btn,
     BtnDropdown,
-    FilteredList,
     FilteredGrid,
+    FilteredList,
+    FleetchartApp,
     FleetVehiclePanel,
     PublicFleetVehiclesFilterForm,
-    FleetchartApp,
   },
 
   props: {
     fleet: {
-      type: Object,
       required: true,
+      type: Object,
     },
   },
 
@@ -124,11 +124,12 @@ export default {
       'perPage',
     ]),
 
-    toggleDetailsTooltip() {
-      if (this.detailsVisible) {
-        return this.$t('actions.hideDetails')
+    filters() {
+      return {
+        grouped: this.grouped,
+        page: this.$route.query.page,
+        slug: this.fleet.slug,
       }
-      return this.$t('actions.showDetails')
     },
 
     routeParams() {
@@ -138,12 +139,11 @@ export default {
       }
     },
 
-    filters() {
-      return {
-        slug: this.fleet.slug,
-        grouped: this.grouped,
-        page: this.$route.query.page,
+    toggleDetailsTooltip() {
+      if (this.detailsVisible) {
+        return this.$t('actions.hideDetails')
       }
+      return this.$t('actions.showDetails')
     },
   },
 

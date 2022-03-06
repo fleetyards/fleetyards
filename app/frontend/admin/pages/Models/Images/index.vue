@@ -29,10 +29,9 @@ import imagesCollection from '@/admin/api/collections/Images'
 
 export default {
   name: 'AdminModelImages',
-
   components: {
-    ImageUploader,
     FilteredList,
+    ImageUploader,
   },
 
   data() {
@@ -42,21 +41,21 @@ export default {
   },
 
   computed: {
+    filters() {
+      return {
+        ...this.routeParams,
+        page: this.$route.query.page,
+      }
+    },
+
     galleryId() {
       return this.$route.params.uuid
     },
 
     grouteParams() {
       return {
-        galleryType: 'models',
         galleryId: this.galleryId,
-      }
-    },
-
-    filters() {
-      return {
-        ...this.routeParams,
-        page: this.$route.query.page,
+        galleryType: 'models',
       }
     },
   },

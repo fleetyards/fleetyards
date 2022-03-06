@@ -15,8 +15,8 @@ export class ShopsCollection extends BaseCollection {
     this.params = params
 
     const response = await get('shops', {
-      q: params.filters,
       page: params.page,
+      q: params.filters,
     })
 
     if (!response.error) {

@@ -1,6 +1,6 @@
 import '@hotwired/turbo-rails'
-import 'highcharts-options'
-import 'admin-app'
+import './highcharts-options'
+import './admin-app'
 
 // $(document).on('show.bs.collapse', '.navbar-collapse', () => {
 //   $('.navbar-collapse.in').not(this).collapse('hide')

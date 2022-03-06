@@ -46,13 +46,13 @@ export default {
   name: 'FrontendApp',
 
   components: {
+    AppFooter,
+    AppModal,
+    AppShoppingCart,
     BackgroundImage,
     Navigation,
     NavigationHeader,
     NavigationMobile,
-    AppFooter,
-    AppModal,
-    AppShoppingCart,
   },
 
   mixins: [Updates],
@@ -85,29 +85,6 @@ export default {
   },
 
   watch: {
-    navCollapsed() {
-      this.setNoScroll()
-    },
-
-    overlayVisible() {
-      this.setNoScroll()
-    },
-
-    isAuthenticated() {
-      if (this.isAuthenticated) {
-        requestPermission()
-        this.fetchCurrentUser()
-      } else {
-        if (this.sessionRenewInterval) {
-          clearInterval(this.sessionRenewInterval)
-        }
-
-        if (this.$route.meta.needsAuthentication) {
-          this.$router.push({ name: 'login' }).catch(() => {})
-        }
-      }
-    },
-
     $route() {
       if (this.cookiesInfoVisible && this.$route.name !== 'privacy-policy') {
         this.openPrivacySettings()
@@ -128,6 +105,29 @@ export default {
       } else {
         window.location.reload(true)
       }
+    },
+
+    isAuthenticated() {
+      if (this.isAuthenticated) {
+        requestPermission()
+        this.fetchCurrentUser()
+      } else {
+        if (this.sessionRenewInterval) {
+          clearInterval(this.sessionRenewInterval)
+        }
+
+        if (this.$route.meta.needsAuthentication) {
+          this.$router.push({ name: 'login' }).catch(() => {})
+        }
+      }
+    },
+
+    navCollapsed() {
+      this.setNoScroll()
+    },
+
+    overlayVisible() {
+      this.setNoScroll()
     },
   },
 
@@ -169,21 +169,36 @@ export default {
   },
 
   methods: {
-    openPrivacySettings(settings = false) {
-      this.$comlink.$emit('open-modal', {
-        component: () => import('@/frontend/core/components/PrivacySettings'),
-        fixed: true,
-        props: {
-          settings,
-        },
-      })
-    },
-
     checkMobile() {
       this.$store.commit(
         'setMobile',
         document.documentElement.clientWidth < 992
       )
+    },
+
+    async checkVersion() {
+      await this.$store.dispatch(
+        'app/updateVersion',
+        await versionCollection.current()
+      )
+    },
+
+    async fetchCurrentUser() {
+      await this.$store.commit(
+        'session/setCurrentUser',
+        await userCollection.current()
+      )
+    },
+
+    openPrivacySettings(settings = false) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/core/components/PrivacySettings/index.vue'),
+        fixed: true,
+        props: {
+          settings,
+        },
+      })
     },
 
     setNoScroll() {
@@ -198,20 +213,6 @@ export default {
       } else {
         document.body.classList.remove('no-scroll')
       }
-    },
-
-    async fetchCurrentUser() {
-      await this.$store.commit(
-        'session/setCurrentUser',
-        await userCollection.current()
-      )
-    },
-
-    async checkVersion() {
-      await this.$store.dispatch(
-        'app/updateVersion',
-        await versionCollection.current()
-      )
     },
   },
 }

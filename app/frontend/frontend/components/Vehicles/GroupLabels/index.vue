@@ -77,162 +77,177 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
+import { mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { displayAlert } from '@/frontend/lib/Noty'
-import { Getter } from 'vuex-class'
 
-@Component<GroupLabels>({
+export default {
+  name: 'GroupLabels',
+
   components: {
-    BtnDropdown,
     Btn,
+    BtnDropdown,
     draggable,
   },
-})
-export default class GroupLabels extends Vue {
-  groups: HangarGroup[] = []
 
-  @Prop({
-    default() {
-      return []
+  props: {
+    editable: {
+      default: false,
+      type: Boolean,
     },
-  })
-  hangarGroups: HangarGroup[]
 
-  @Prop({
-    default() {
-      return []
+    hangarGroupCounts: {
+      type: Array,
+      default() {
+        return []
+      },
     },
-  })
-  hangarGroupCounts: Array
 
-  @Prop({ default: false }) editable!: boolean
+    hangarGroups: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+  },
 
-  @Getter('mobile') mobile
+  data() {
+    return {
+      groups: [],
+    }
+  },
 
-  get sortIndex() {
-    return this.groups.map((item) => item.id)
-  }
+  computed: {
+    ...mapGetters(['mobile']),
+
+    sortIndex() {
+      return this.groups.map((item) => item.id)
+    },
+  },
+
+  watch: {
+    groups() {
+      if (this.groups !== this.hangarGroups) {
+        this.updateSort()
+      }
+    },
+
+    hangarGroups() {
+      this.groups = this.hangarGroups
+    },
+  },
 
   mounted() {
     this.groups = this.hangarGroups
-  }
+  },
 
-  @Watch('hangarGroups')
-  onHangarGroupsChange() {
-    this.groups = this.hangarGroups
-  }
+  methods: {
+    filter(filter) {
+      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
-  @Watch('groups')
-  onGroupsFake() {
-    if (this.groups !== this.hangarGroups) {
-      this.updateSort()
-    }
-  }
+      if ((query.hangarGroupsIn || []).includes(filter)) {
+        if (!query.hangarGroupsNotIn) {
+          query.hangarGroupsNotIn = []
+        }
+        query.hangarGroupsNotIn.push(filter)
 
-  groupCount(group) {
-    return (
-      this.hangarGroupCounts.find((count) => count.id === group.id) || {
-        count: 0,
+        const index = query.hangarGroupsIn.findIndex((item) => item === filter)
+        if (index > -1) {
+          query.hangarGroupsIn.splice(index, 1)
+        }
+      } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
+        const index = query.hangarGroupsNotIn.findIndex(
+          (item) => item === filter
+        )
+        if (index > -1) {
+          query.hangarGroupsNotIn.splice(index, 1)
+        }
+      } else {
+        if (!query.hangarGroupsIn) {
+          query.hangarGroupsIn = []
+        }
+        query.hangarGroupsIn.push(filter)
       }
-    )
-  }
 
-  filter(filter) {
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
-
-    if ((query.hangarGroupsIn || []).includes(filter)) {
-      if (!query.hangarGroupsNotIn) {
-        query.hangarGroupsNotIn = []
-      }
-      query.hangarGroupsNotIn.push(filter)
-
-      const index = query.hangarGroupsIn.findIndex((item) => item === filter)
-      if (index > -1) {
-        query.hangarGroupsIn.splice(index, 1)
-      }
-    } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
-      const index = query.hangarGroupsNotIn.findIndex((item) => item === filter)
-      if (index > -1) {
-        query.hangarGroupsNotIn.splice(index, 1)
-      }
-    } else {
-      if (!query.hangarGroupsIn) {
-        query.hangarGroupsIn = []
-      }
-      query.hangarGroupsIn.push(filter)
-    }
-
-    this.$router.replace({
-      name: this.$route.name,
-      query: {
-        q: query,
-      },
-    })
-  }
-
-  isActive(group) {
-    if (!this.$route.query.q) {
-      return false
-    }
-
-    const filter = this.$route.query.q.hangarGroupsIn
-    if (!filter) {
-      return false
-    }
-
-    if (filter.includes(group)) {
-      return true
-    }
-
-    return false
-  }
-
-  isInverted(group) {
-    if (!this.$route.query.q) {
-      return false
-    }
-
-    const filter = this.$route.query.q.hangarGroupsNotIn
-    if (!filter) {
-      return false
-    }
-
-    if (filter.includes(group)) {
-      return true
-    }
-
-    return false
-  }
-
-  async updateSort() {
-    const response = await this.$api.put('hangar-groups/sort', {
-      sorting: this.sortIndex,
-    })
-
-    if (response.error) {
-      displayAlert({
-        text: response.error.response.data.message,
+      this.$router.replace({
+        name: this.$route.name,
+        query: {
+          q: query,
+        },
       })
-    }
-  }
+    },
 
-  openGroupModal(hangarGroup) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/GroupModal'),
-      props: {
-        hangarGroup,
-      },
-    })
-  }
+    groupCount(group) {
+      return (
+        this.hangarGroupCounts.find((count) => count.id === group.id) || {
+          count: 0,
+        }
+      )
+    },
 
-  highlight(group) {
-    this.$emit('highlight', group)
-  }
+    highlight(group) {
+      this.$emit('highlight', group)
+    },
+
+    isActive(group) {
+      if (!this.$route.query.q) {
+        return false
+      }
+
+      const filter = this.$route.query.q.hangarGroupsIn
+      if (!filter) {
+        return false
+      }
+
+      if (filter.includes(group)) {
+        return true
+      }
+
+      return false
+    },
+
+    isInverted(group) {
+      if (!this.$route.query.q) {
+        return false
+      }
+
+      const filter = this.$route.query.q.hangarGroupsNotIn
+      if (!filter) {
+        return false
+      }
+
+      if (filter.includes(group)) {
+        return true
+      }
+
+      return false
+    },
+
+    openGroupModal(hangarGroup) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/GroupModal/index.vue'),
+        props: {
+          hangarGroup,
+        },
+      })
+    },
+
+    async updateSort() {
+      const response = await this.$api.put('hangar-groups/sort', {
+        sorting: this.sortIndex,
+      })
+
+      if (response.error) {
+        displayAlert({
+          text: response.error.response.data.message,
+        })
+      }
+    },
+  },
 }
 </script>
 

@@ -4,11 +4,11 @@ import axios from 'axios'
 
 export default class ChartController extends Controller {
   static values = {
-    url: String,
-    type: String,
-    tooltip: String,
     height: String,
-    refresh: { type: Boolean, default: false },
+    refresh: { default: false, type: Boolean },
+    tooltip: String,
+    type: String,
+    url: String,
   }
 
   chart = null
@@ -61,8 +61,8 @@ export default class ChartController extends Controller {
 
     this.chart = Highcharts.chart(this.element, {
       chart: {
-        type: this.typeValue,
         height: this.heightValue,
+        type: this.typeValue,
       },
       ...this.chartOptions(),
     })
@@ -104,26 +104,26 @@ export default class ChartController extends Controller {
     const tooltip = this.tooltipValue
 
     return {
-      xAxis: {
-        categories: this.chartData.map((item) => item.label),
-      },
-      yAxis: {
-        allowDecimals: false,
-      },
-      tooltip: {
-        formatter() {
-          return window.I18n.t(`labels.charts.${tooltip}`, {
-            label: this.key,
-            count: this.y,
-          })
-        },
-      },
       legend: false,
       series: [
         {
           data: this.chartData.map((item) => [item.tooltip, item.count]),
         },
       ],
+      tooltip: {
+        formatter() {
+          return window.I18n.t(`labels.charts.${tooltip}`, {
+            count: this.y,
+            label: this.key,
+          })
+        },
+      },
+      xAxis: {
+        categories: this.chartData.map((item) => item.label),
+      },
+      yAxis: {
+        allowDecimals: false,
+      },
     }
   }
 
@@ -131,20 +131,20 @@ export default class ChartController extends Controller {
     const tooltip = this.tooltipValue
 
     return {
-      tooltip: {
-        formatter() {
-          return window.I18n.t(`labels.charts.${tooltip}`, {
-            label: this.key,
-            count: this.y,
-            percentage: Math.round(this.percentage),
-          })
-        },
-      },
       series: [
         {
           data: this.chartData,
         },
       ],
+      tooltip: {
+        formatter() {
+          return window.I18n.t(`labels.charts.${tooltip}`, {
+            count: this.y,
+            label: this.key,
+            percentage: Math.round(this.percentage),
+          })
+        },
+      },
     }
   }
 }

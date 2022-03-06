@@ -4,13 +4,11 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminCommodityPricesCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminCommodityPrice[] = []
+  records = []
 
-  params: AdminCommodityPriceParams | null = null
+  params = null
 
-  async findAll(
-    params: AdminCommodityPriceParams | null
-  ): Promise<AdminCommodityPrice[]> {
+  async findAll(params) {
     this.params = params
 
     const response = await get(
@@ -28,10 +26,7 @@ export class AdminCommodityPricesCollection extends BaseCollection {
     return this.records
   }
 
-  async create(
-    form: AdminCommodityPriceForm
-  ): Promise<AdminCommodityPrice | null> {
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  async create(form) {
     const { path, ...cleanForm } = form
 
     const response = await post(`commodity-prices/create-${path}-price`, {
@@ -47,7 +42,7 @@ export class AdminCommodityPricesCollection extends BaseCollection {
     return null
   }
 
-  async destroy(id: string): Promise<boolean> {
+  async destroy(id) {
     const response = await destroy(`commodity-prices/${id}`)
 
     if (!response.error) {
@@ -59,7 +54,7 @@ export class AdminCommodityPricesCollection extends BaseCollection {
     return false
   }
 
-  async timeRanges(): Promise<FilterGroupItem[]> {
+  async timeRanges() {
     const response = await get('commodity-prices/time-ranges')
 
     if (!response.error) {

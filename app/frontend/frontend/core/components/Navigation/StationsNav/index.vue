@@ -31,7 +31,6 @@ import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
 
 export default {
   name: 'StationsNav',
-
   components: {
     NavItem,
   },

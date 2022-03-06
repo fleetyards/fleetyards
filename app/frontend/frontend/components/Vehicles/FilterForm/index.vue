@@ -210,10 +210,10 @@
 
 <script>
 import Filters from '@/frontend/mixins/Filters'
-import RadioList from '@/frontend/core/components/Form/RadioList'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import RadioList from '@/frontend/core/components/Form/RadioList/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import {
   booleanOptions,
   priceOptions,
@@ -224,20 +224,20 @@ export default {
   name: 'VehiclesFilterForm',
 
   components: {
-    RadioList,
+    Btn,
     FilterGroup,
     FormInput,
-    Btn,
+    RadioList,
   },
 
   mixins: [Filters],
 
   props: {
     hangarGroupsOptions: {
-      type: Array,
       default() {
         return []
       },
+      type: Array,
     },
   },
 
@@ -245,26 +245,26 @@ export default {
     const query = this.$route.query.q || {}
     return {
       form: {
-        nameCont: query.nameCont,
-        onSaleEq: query.onSaleEq,
-        purchasedEq: query.purchasedEq,
-        loanerEq: query.loanerEq,
-        publicEq: query.publicEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
         hangarGroupsIn: query.hangarGroupsIn || [],
         hangarGroupsNotIn: query.hangarGroupsNotIn || [],
+        lengthGteq: query.lengthGteq,
+        lengthLteq: query.lengthLteq,
+        loanerEq: query.loanerEq,
+        manufacturerIn: query.manufacturerIn || [],
+        nameCont: query.nameCont,
+        onSaleEq: query.onSaleEq,
+        pledgePriceGteq: query.pledgePriceGteq,
+        pledgePriceIn: query.pledgePriceIn || [],
+        pledgePriceLteq: query.pledgePriceLteq,
+        priceGteq: query.priceGteq,
+        priceIn: query.priceIn || [],
+        priceLteq: query.priceLteq,
+        productionStatusIn: query.productionStatusIn || [],
+        publicEq: query.publicEq,
+        purchasedEq: query.purchasedEq,
+        sizeIn: query.sizeIn || [],
       },
     }
   },
@@ -274,12 +274,12 @@ export default {
       return booleanOptions
     },
 
-    priceOptions() {
-      return priceOptions
-    },
-
     pledgePriceOptions() {
       return pledgePriceOptions
+    },
+
+    priceOptions() {
+      return priceOptions
     },
   },
 
@@ -287,26 +287,26 @@ export default {
     $route() {
       const query = this.$route.query.q || {}
       this.form = {
-        nameCont: query.nameCont,
-        onSaleEq: query.onSaleEq,
-        purchasedEq: query.purchasedEq,
-        loanerEq: query.loanerEq,
-        publicEq: query.publicEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
         hangarGroupsIn: query.hangarGroupsIn || [],
         hangarGroupsNotIn: query.hangarGroupsNotIn || [],
+        lengthGteq: query.lengthGteq,
+        lengthLteq: query.lengthLteq,
+        loanerEq: query.loanerEq,
+        manufacturerIn: query.manufacturerIn || [],
+        nameCont: query.nameCont,
+        onSaleEq: query.onSaleEq,
+        pledgePriceGteq: query.pledgePriceGteq,
+        pledgePriceIn: query.pledgePriceIn || [],
+        pledgePriceLteq: query.pledgePriceLteq,
+        priceGteq: query.priceGteq,
+        priceIn: query.priceIn || [],
+        priceLteq: query.priceLteq,
+        productionStatusIn: query.productionStatusIn || [],
+        publicEq: query.publicEq,
+        purchasedEq: query.purchasedEq,
+        sizeIn: query.sizeIn || [],
       }
     },
   },

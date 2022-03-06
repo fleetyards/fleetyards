@@ -41,37 +41,37 @@ export default {
   name: 'TeaserPanel',
 
   components: {
-    Panel,
     LazyImage,
+    Panel,
   },
 
   props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-
-    to: {
-      type: Object,
-      default: null,
-    },
-
-    withDescription: {
-      type: Boolean,
-      default: true,
-    },
-
     fullscreen: {
       type: Boolean,
       default: false,
     },
 
+    item: {
+      required: true,
+      type: Object,
+    },
+
+    to: {
+      default: null,
+      type: Object,
+    },
+
     variant: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return ['default', 'text'].indexOf(value) !== -1
       },
+    },
+
+    withDescription: {
+      type: Boolean,
+      default: true,
     },
   },
 

@@ -114,17 +114,17 @@
 
 <script>
 import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 export default {
   name: 'ShopsFilterForm',
 
   components: {
+    Btn,
     FilterGroup,
     FormInput,
-    Btn,
   },
 
   mixins: [Filters],
@@ -132,18 +132,18 @@ export default {
   data() {
     const query = this.$route.query.q || {}
     return {
-      loading: false,
       form: {
-        nameCont: query.nameCont,
-        modelIn: query.modelIn || [],
-        commodityIn: query.commodityIn || [],
-        equipmentIn: query.equipmentIn || [],
-        componentIn: query.componentIn || [],
-        stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
+        commodityIn: query.commodityIn || [],
+        componentIn: query.componentIn || [],
+        equipmentIn: query.equipmentIn || [],
+        modelIn: query.modelIn || [],
+        nameCont: query.nameCont,
         shopTypeIn: query.shopTypeIn || [],
+        starsystemIn: query.starsystemIn || [],
+        stationIn: query.stationIn || [],
       },
+      loading: false,
     }
   },
 
@@ -151,15 +151,15 @@ export default {
     $route() {
       const query = this.$route.query.q || {}
       this.form = {
-        nameCont: query.nameCont,
-        modelIn: query.modelIn || [],
-        commodityIn: query.commodityIn || [],
-        equipmentIn: query.equipmentIn || [],
-        componentIn: query.componentIn || [],
-        stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
+        commodityIn: query.commodityIn || [],
+        componentIn: query.componentIn || [],
+        equipmentIn: query.equipmentIn || [],
+        modelIn: query.modelIn || [],
+        nameCont: query.nameCont,
         shopTypeIn: query.shopTypeIn || [],
+        starsystemIn: query.starsystemIn || [],
+        stationIn: query.stationIn || [],
       }
     },
   },

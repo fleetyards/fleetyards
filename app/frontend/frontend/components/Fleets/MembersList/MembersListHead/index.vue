@@ -32,11 +32,10 @@ export default {
 
   props: {
     editable: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
   },
-
   methods: {
     sortByToggle(field) {
       return sortByToggle(field, this.$route)

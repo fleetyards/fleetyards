@@ -79,114 +79,134 @@
   </BtnDropdown>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+<script>
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
 import { displayConfirm } from '@/frontend/lib/Noty'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 
-@Component<GroupModal>({
+export default {
+  name: 'ContextMenu',
+
   components: {
     Btn,
     BtnDropdown,
   },
-})
-export default class ContextMenu extends Vue {
-  deleting = false
 
-  @Prop({ default: null }) vehicle: Vehicle | null
+  props: {
+    editable: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) editable!: boolean
+    size: {
+      type: String,
+      default: 'small',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
 
-  @Prop({
-    default: 'link',
-    validator(value) {
+    variant: {
+      type: String,
+      default: 'link',
+      validator(value) {
+        return (
+          ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+            value
+          ) !== -1
+        )
+      },
+    },
+
+    vehicle: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      deleting: false,
+    }
+  },
+
+  computed: {
+    hasAddons() {
       return (
-        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
-          value
-        ) !== -1
+        this.vehicle.modelModuleIds.length ||
+        this.vehicle.modelUpgradeIds.length
       )
     },
-  })
-  variant!: string
 
-  @Prop({
-    default: 'small',
-    validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+    upgradable() {
+      return (
+        (this.editable || this.hasAddons) &&
+        (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
+      )
     },
-  })
-  size!: string
+  },
 
-  get hasAddons() {
-    return (
-      this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length
-    )
-  }
+  methods: {
+    async destroy() {
+      await vehiclesCollection.destroy(this.vehicle.id)
 
-  get upgradable() {
-    return (
-      (this.editable || this.hasAddons) &&
-      (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
-    )
-  }
+      this.deleting = false
+    },
 
-  remove() {
-    this.deleting = true
-    displayConfirm({
-      text: this.$t('messages.confirm.vehicle.destroy'),
-      onConfirm: () => {
-        this.destroy()
-      },
-      onClose: () => {
-        this.deleting = false
-      },
-    })
-  }
+    openAddonsModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/AddonsModal/index.vue'),
+        props: {
+          editable: this.editable,
+          vehicle: this.vehicle,
+        },
+      })
+    },
 
-  async destroy() {
-    await vehiclesCollection.destroy(this.vehicle.id)
+    openEditGroupsModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/GroupsModal/index.vue'),
+        props: {
+          vehicle: this.vehicle,
+        },
+      })
+    },
 
-    this.deleting = false
-  }
+    openEditModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/Modal/index.vue'),
+        props: {
+          vehicle: this.vehicle,
+        },
+      })
+    },
 
-  openEditModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/Modal'),
-      props: {
-        vehicle: this.vehicle,
-      },
-    })
-  }
+    openNamingModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/NamingModal/index.vue'),
+        props: {
+          vehicle: this.vehicle,
+        },
+      })
+    },
 
-  openNamingModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/NamingModal'),
-      props: {
-        vehicle: this.vehicle,
-      },
-    })
-  }
-
-  openEditGroupsModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/GroupsModal'),
-      props: {
-        vehicle: this.vehicle,
-      },
-    })
-  }
-
-  openAddonsModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/AddonsModal'),
-      props: {
-        vehicle: this.vehicle,
-        editable: this.editable,
-      },
-    })
-  }
+    remove() {
+      this.deleting = true
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
+        },
+        onConfirm: () => {
+          this.destroy()
+        },
+        text: this.$t('messages.confirm.vehicle.destroy'),
+      })
+    },
+  },
 }
 </script>

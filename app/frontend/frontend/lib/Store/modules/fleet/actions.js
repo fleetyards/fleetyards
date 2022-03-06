@@ -1,6 +1,18 @@
 export default {
+  hidePreview({ commit }) {
+    commit('setPreview', false)
+  },
+
   reset({ commit }) {
     commit('reset')
+  },
+
+  resetInviteToken({ commit }) {
+    commit('setInviteToken', null)
+  },
+
+  saveInviteToken({ commit }, payload) {
+    commit('setInviteToken', payload)
   },
 
   toggleDetails({ commit, state }) {
@@ -11,6 +23,14 @@ export default {
     commit('setFilterVisible', !state.filterVisible)
   },
 
+  toggleFleetchart({ commit, state }) {
+    commit('setFleetchartVisible', !state.fleetchartVisible)
+  },
+
+  toggleGridView({ commit, state }) {
+    commit('setGridView', !state.gridView)
+  },
+
   toggleGrouped({ commit, state }) {
     commit('setGrouped', !state.grouped)
   },
@@ -19,31 +39,11 @@ export default {
     commit('setMoney', !state.money)
   },
 
-  hidePreview({ commit }) {
-    commit('setPreview', false)
-  },
-
-  saveInviteToken({ commit }, payload) {
-    commit('setInviteToken', payload)
-  },
-
-  resetInviteToken({ commit }) {
-    commit('setInviteToken', null)
-  },
-
-  toggleFleetchart({ commit, state }) {
-    commit('setFleetchartVisible', !state.fleetchartVisible)
+  toggleTableSlim({ commit, state }) {
+    commit('setTableSlim', !state.tableSlim)
   },
 
   updatePerPage({ commit }, payload) {
     commit('setPerPage', payload)
-  },
-
-  toggleGridView({ commit, state }) {
-    commit('setGridView', !state.gridView)
-  },
-
-  toggleTableSlim({ commit, state }) {
-    commit('setTableSlim', !state.tableSlim)
   },
 }

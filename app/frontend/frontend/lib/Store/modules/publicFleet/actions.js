@@ -1,6 +1,18 @@
 export default {
+  hidePreview({ commit }) {
+    commit('setPreview', false)
+  },
+
   reset({ commit }) {
     commit('reset')
+  },
+
+  resetInviteToken({ commit }) {
+    commit('setInviteToken', null)
+  },
+
+  saveInviteToken({ commit }, payload) {
+    commit('setInviteToken', payload)
   },
 
   toggleDetails({ commit, state }) {
@@ -11,28 +23,16 @@ export default {
     commit('setFilterVisible', !state.filterVisible)
   },
 
+  toggleFleetchart({ commit, state }) {
+    commit('setFleetchartVisible', !state.fleetchartVisible)
+  },
+
   toggleGrouped({ commit, state }) {
     commit('setGrouped', !state.grouped)
   },
 
   toggleMoney({ commit, state }) {
     commit('setMoney', !state.money)
-  },
-
-  hidePreview({ commit }) {
-    commit('setPreview', false)
-  },
-
-  saveInviteToken({ commit }, payload) {
-    commit('setInviteToken', payload)
-  },
-
-  resetInviteToken({ commit }) {
-    commit('setInviteToken', null)
-  },
-
-  toggleFleetchart({ commit, state }) {
-    commit('setFleetchartVisible', !state.fleetchartVisible)
   },
 
   updatePerPage({ commit }, payload) {

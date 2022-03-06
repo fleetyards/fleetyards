@@ -11,13 +11,6 @@ const getQuery = function getQuery(formData) {
 }
 
 export default {
-  data() {
-    return {
-      filter: debounce(this.debouncedFilter, 500),
-      form: {},
-    }
-  },
-
   computed: {
     isFilterSelected() {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
@@ -30,25 +23,14 @@ export default {
     },
   },
 
-  watch: {
-    form: {
-      deep: true,
-      handler() {
-        this.filter()
-      },
-    },
+  data() {
+    return {
+      filter: debounce(this.debouncedFilter, 500),
+      form: {},
+    }
   },
 
   methods: {
-    resetFilter() {
-      this.$router
-        .replace({
-          name: this.$route.name || undefined,
-          query: {},
-        })
-        .catch((_err) => {})
-    },
-
     debouncedFilter() {
       this.$router
         .replace({
@@ -59,6 +41,24 @@ export default {
           },
         })
         .catch((_err) => {})
+    },
+
+    resetFilter() {
+      this.$router
+        .replace({
+          name: this.$route.name || undefined,
+          query: {},
+        })
+        .catch((_err) => {})
+    },
+  },
+
+  watch: {
+    form: {
+      deep: true,
+      handler() {
+        this.filter()
+      },
     },
   },
 }

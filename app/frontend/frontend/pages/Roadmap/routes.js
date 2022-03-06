@@ -1,25 +1,25 @@
 export const routes = [
   {
-    path: 'changes/',
-    name: 'roadmap-changes',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.roadmap" */ '@/frontend/pages/Roadmap/Changes'
+        /* webpackChunkName: "frontend.page.roadmap" */ '@/frontend/pages/Roadmap/Changes/index.vue'
       ),
     meta: {
       title: 'roadmap.changes',
     },
+    name: 'roadmap-changes',
+    path: 'changes/',
   },
   {
-    path: 'ships/',
-    name: 'roadmap-ships',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.roadmap.ships" */ '@/frontend/pages/Roadmap/Ships'
+        /* webpackChunkName: "frontend.page.roadmap.ships" */ '@/frontend/pages/Roadmap/Ships/index.vue'
       ),
     meta: {
       title: 'roadmap.ships',
     },
+    name: 'roadmap-ships',
+    path: 'ships/',
   },
 ]
 

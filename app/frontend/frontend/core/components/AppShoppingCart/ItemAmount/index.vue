@@ -23,8 +23,8 @@ export default {
 
   props: {
     cartItem: {
-      type: Object,
       required: true,
+      type: Object,
     },
   },
 

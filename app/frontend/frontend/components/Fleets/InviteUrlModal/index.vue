@@ -63,10 +63,10 @@
 
 <script>
 import copyText from '@/frontend/utils/CopyText'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 import inviteUrlCollection from '@/frontend/api/collections/FleetInviteUrls'
 import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
 
@@ -74,10 +74,10 @@ export default {
   name: 'MemberModal',
 
   components: {
-    Modal,
     Btn,
-    FormInput,
     FilterGroup,
+    FormInput,
+    Modal,
   },
 
   props: {
@@ -90,7 +90,6 @@ export default {
   data() {
     return {
       collection: inviteUrlCollection,
-      form: null,
       expiresAfterOptions: [
         {
           name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.infinite'),
@@ -123,6 +122,7 @@ export default {
           value: 24 * 60 * 7,
         },
       ],
+      form: null,
       limitOptions: [
         {
           name: this.$t('labels.fleet.inviteUrls.limitOptions.infinite'),
@@ -168,46 +168,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        expiresAfterMinutes: null,
-        limit: null,
-        fleetSlug: this.fleet.slug,
-      }
-    },
-
-    async fetch() {
-      await this.collection.findAll({
-        fleetSlug: this.fleet.slug,
-      })
-    },
-
-    async create() {
-      await this.collection.create(this.form, true)
-    },
-
-    async remove(inviteUrl) {
-      await this.collection.destroy(this.fleet.slug, inviteUrl.token, true)
-    },
-
-    inviteCount(inviteUrl) {
-      if (inviteUrl.inviteCount > 999) {
-        return '+999'
-      }
-
-      return inviteUrl.inviteCount
-    },
-
-    usesLeft(inviteUrl) {
-      if (!inviteUrl.limit && inviteUrl.limit !== 0) {
-        return this.$t('labels.fleet.inviteUrls.noLimit')
-      }
-
-      return this.$t('labels.fleet.inviteUrls.usesLeft', {
-        count: inviteUrl.limit,
-      })
-    },
-
     copy(inviteUrl) {
       copyText(inviteUrl.url).then(
         () => {
@@ -223,6 +183,46 @@ export default {
           })
         }
       )
+    },
+
+    async create() {
+      await this.collection.create(this.form, true)
+    },
+
+    async fetch() {
+      await this.collection.findAll({
+        fleetSlug: this.fleet.slug,
+      })
+    },
+
+    inviteCount(inviteUrl) {
+      if (inviteUrl.inviteCount > 999) {
+        return '+999'
+      }
+
+      return inviteUrl.inviteCount
+    },
+
+    async remove(inviteUrl) {
+      await this.collection.destroy(this.fleet.slug, inviteUrl.token, true)
+    },
+
+    setupForm() {
+      this.form = {
+        expiresAfterMinutes: null,
+        fleetSlug: this.fleet.slug,
+        limit: null,
+      }
+    },
+
+    usesLeft(inviteUrl) {
+      if (!inviteUrl.limit && inviteUrl.limit !== 0) {
+        return this.$t('labels.fleet.inviteUrls.noLimit')
+      }
+
+      return this.$t('labels.fleet.inviteUrls.usesLeft', {
+        count: inviteUrl.limit,
+      })
     },
   },
 }

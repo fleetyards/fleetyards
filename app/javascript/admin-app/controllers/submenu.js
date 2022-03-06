@@ -4,7 +4,10 @@ export default class SubmenuController extends Controller {
   static targets = ['submenu', 'arrow']
 
   static values = {
-    active: { type: Boolean, default: false },
+    active: {
+      default: false,
+      type: Boolean,
+    },
   }
 
   submenuHeight = null

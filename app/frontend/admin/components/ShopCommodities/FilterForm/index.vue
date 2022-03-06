@@ -76,28 +76,27 @@ import { getFilters, isFilterSelected } from '@/frontend/utils/Filters'
 
 export default {
   name: 'ShopCommoditiesFilterForm',
-
   components: {
+    Btn,
     CollectionFilterGroup,
     FormInput,
-    Btn,
   },
 
   data() {
     return {
       componentItemTypeFiltersCollection: componentItemTypeFiltersCollection,
       equipmentItemTypeFiltersCollection: equipmentItemTypeFiltersCollection,
-      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
       equipmentSlotFiltersCollection: equipmentSlotFiltersCollection,
-      loading: false,
-      search: null,
+      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
+      filter: debounce(this.debouncedFilter, 500),
       form: {
         component_item_type: [],
         equipment_item_type: [],
-        equipment_type: [],
         equipment_slot: [],
+        equipment_type: [],
       },
-      filter: debounce(this.debouncedFilter, 500),
+      loading: false,
+      search: null,
     }
   },
 
@@ -108,6 +107,10 @@ export default {
   },
 
   watch: {
+    $route() {
+      this.setupForm()
+    },
+
     form: {
       deep: true,
       handler() {
@@ -118,10 +121,6 @@ export default {
     search() {
       this.filter()
     },
-
-    $route() {
-      this.setupForm()
-    },
   },
 
   mounted() {
@@ -129,27 +128,25 @@ export default {
   },
 
   methods: {
-    resetFilter() {
-      this.$router
-        .replace({
-          name: this.$route.name || undefined,
-          query: {},
-        })
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch((_err) => {})
-    },
-
     debouncedFilter() {
       this.$router
         .replace({
           name: this.$route.name || undefined,
           query: {
             ...this.$route.query,
-            search: this.search || undefined,
             filters: getFilters(this.form),
+            search: this.search || undefined,
           },
         })
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch((_err) => {})
+    },
+
+    resetFilter() {
+      this.$router
+        .replace({
+          name: this.$route.name || undefined,
+          query: {},
+        })
         .catch((_err) => {})
     },
 
@@ -158,8 +155,8 @@ export default {
       this.form = {
         component_item_type: filters.component_item_type || [],
         equipment_item_type: filters.equipment_item_type || [],
-        equipment_type: filters.equipment_type || [],
         equipment_slot: filters.equipment_slot || [],
+        equipment_type: filters.equipment_type || [],
       }
     },
   },

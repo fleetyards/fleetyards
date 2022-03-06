@@ -18,29 +18,28 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
 export default {
   name: 'StationsItem',
-
   components: {
     Panel,
   },
 
   props: {
+    id: {
+      default: null,
+      type: String,
+    },
+
     item: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     route: {
-      type: Object,
       required: true,
-    },
-
-    id: {
-      type: String,
-      default: null,
+      type: Object,
     },
   },
 }

@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line no-new
   new Vue({
     el: '#app',
+    render: (h) => h(App),
     router,
     store,
-    render: (h) => h(App),
   })
 })

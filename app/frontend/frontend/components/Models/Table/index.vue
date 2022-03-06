@@ -37,40 +37,50 @@
   </FilteredTable>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import FilteredTable, {
-  FilteredTableColumn,
-} from '@/frontend/core/components/FilteredTable/index.vue'
+<script>
+import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
 import AddToHangar from '@/frontend/components/Models/AddToHangar/index.vue'
 
-@Component<FilteredGrid>({
+export default {
+  name: 'FilteredGrid',
+
   components: {
-    FilteredTable,
     AddToHangar,
+    FilteredTable,
   },
-})
-export default class FilteredGrid extends Vue {
-  @Prop({ required: true }) models!: Model[]
 
-  @Prop({ required: true }) primaryKey!: string
+  props: {
+    models: {
+      required: true,
+      type: Array,
+    },
 
-  @Prop({ default: false }) slim!: boolean
+    primaryKey: {
+      required: true,
+      type: String,
+    },
 
-  get tableColumns(): FilteredTableColumn[] {
-    return [
-      {
-        name: 'store_image',
-        class: `store-image wide ${this.slim ? 'small' : ''}`,
-        type: 'store-image',
-      },
-      {
-        name: 'name',
-        flexGrow: 1,
-      },
-      { name: 'actions', label: this.$t('labels.actions'), width: '10%' },
-    ]
-  }
+    slim: {
+      default: false,
+      type: Boolean,
+    },
+  },
+
+  computed: {
+    tableColumns() {
+      return [
+        {
+          class: `store-image wide ${this.slim ? 'small' : ''}`,
+          name: 'store_image',
+          type: 'store-image',
+        },
+        {
+          flexGrow: 1,
+          name: 'name',
+        },
+        { label: this.$t('labels.actions'), name: 'actions', width: '10%' },
+      ]
+    },
+  },
 }
 </script>

@@ -10,11 +10,10 @@ export default {
 
   props: {
     inline: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
   },
-
   computed: {
     cssClasses() {
       return {

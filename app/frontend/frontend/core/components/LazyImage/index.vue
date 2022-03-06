@@ -11,48 +11,62 @@
   </component>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'LazyImage',
 
-@Component<LazyImage>({})
-export default class LazyImage extends Vue {
-  @Prop({ required: true }) src!: string
+  props: {
+    alt: {
+      default: 'image',
+      type: String,
+    },
 
-  @Prop({ default: 'image' }) alt!: string
+    href: {
+      default: null,
+      type: String,
+    },
 
-  @Prop({ default: null }) href!: string
+    src: {
+      required: true,
+      type: String,
+    },
 
-  @Prop({ to: null }) to
+    to: {
+      default: null,
+      type: Object,
+    },
+  },
 
-  get uuid() {
-    return this._uid
-  }
-
-  get componentType() {
-    if (this.to) {
-      return 'router-link'
-    }
-    if (this.href) {
-      return 'a'
-    }
-    return 'div'
-  }
-
-  get componentArgs() {
-    if (this.to) {
-      return {
-        to: this.to,
+  computed: {
+    componentArgs() {
+      if (this.to) {
+        return {
+          to: this.to,
+        }
       }
-    }
 
-    if (this.href) {
-      return {
-        href: this.href,
+      if (this.href) {
+        return {
+          href: this.href,
+        }
       }
-    }
 
-    return {}
-  }
+      return {}
+    },
+
+    componentType() {
+      if (this.to) {
+        return 'router-link'
+      }
+      if (this.href) {
+        return 'a'
+      }
+      return 'div'
+    },
+
+    uuid() {
+      return this._uid
+    },
+  },
 }
 </script>

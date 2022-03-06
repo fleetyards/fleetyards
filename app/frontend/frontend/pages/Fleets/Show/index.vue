@@ -98,7 +98,6 @@ import { publicFleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 
 export default {
   name: 'FleetDetail',
-
   components: {
     Avatar,
   },
@@ -108,16 +107,16 @@ export default {
   beforeRouteEnter: publicFleetRouteGuard,
 
   computed: {
-    fleet() {
-      return fleetsCollection.record
-    },
-
     description() {
       if (!this.fleet || !this.fleet.description) {
         return null
       }
 
       return this.fleet.description.replaceAll('\n', '<br>')
+    },
+
+    fleet() {
+      return fleetsCollection.record
     },
 
     metaTitle() {

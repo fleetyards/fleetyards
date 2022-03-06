@@ -4,20 +4,18 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminShopCommodityConfirmationsCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminShopCommodity[] = []
+  records = []
 
-  params: AdminShopCommodityParams | null = null
+  params = null
 
-  async findAll(
-    params: AdminShopCommodityParams | null
-  ): Promise<AdminShopCommodity[]> {
+  async findAll(params) {
     this.params = params
 
     const response = await get('shop-commodities', {
-      page: params?.page,
       filters: {
         confirmed: false,
       },
+      page: params?.page,
     })
 
     if (!response.error) {
@@ -28,11 +26,11 @@ export class AdminShopCommodityConfirmationsCollection extends BaseCollection {
     return this.records
   }
 
-  async refresh(): Promise<void> {
+  async refresh() {
     await this.findAll(this.params)
   }
 
-  async confirm(id: string): Promise<boolean> {
+  async confirm(id) {
     const response = await put(`shop-commodities/${id}/confirm`)
     if (!response.error) {
       this.findAll(this.params)
@@ -43,7 +41,7 @@ export class AdminShopCommodityConfirmationsCollection extends BaseCollection {
     return false
   }
 
-  async destroy(id: string): Promise<boolean> {
+  async destroy(id) {
     const response = await destroy(`shop-commodities/${id}`)
 
     if (!response.error) {

@@ -26,7 +26,6 @@ import UserNav from '@/frontend/core/components/Navigation/UserNav/index.vue'
 
 export default {
   name: 'NavFooter',
-
   components: {
     NavItem,
     UserNav,

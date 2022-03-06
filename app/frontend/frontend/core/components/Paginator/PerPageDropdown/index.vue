@@ -23,38 +23,39 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 export default {
   name: 'PerPageDropdown',
 
   components: {
-    BtnDropdown,
     Btn,
+    BtnDropdown,
   },
 
   props: {
     perPage: {
-      type: Number,
       required: true,
-    },
-    steps: {
-      type: Array,
-      default: () => [10, 20, 50, 100],
+      type: [String, Number],
     },
 
     size: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return ['default', 'small', 'large'].indexOf(value) !== -1
       },
     },
 
+    steps: {
+      default: () => [10, 20, 50, 100],
+      type: Array,
+    },
+
     variant: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return (
           ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(

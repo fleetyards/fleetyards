@@ -19,7 +19,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { displayWarning } from '@/frontend/lib/Noty'
 
 export default {
@@ -31,13 +31,13 @@ export default {
 
   props: {
     model: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     variant: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return ['default', 'panel', 'menu', 'list'].includes(value)
       },
@@ -48,8 +48,12 @@ export default {
     ...mapGetters('session', ['isAuthenticated']),
     ...mapGetters('hangar', ['ships']),
 
-    inHangar() {
-      return !!(this.ships || []).find((item) => item === this.model.slug)
+    btnSize() {
+      if (['panel', 'menu', 'list'].includes(this.variant)) {
+        return 'small'
+      }
+
+      return 'default'
     },
 
     btnVariant() {
@@ -60,12 +64,8 @@ export default {
       return 'default'
     },
 
-    btnSize() {
-      if (['panel', 'menu', 'list'].includes(this.variant)) {
-        return 'small'
-      }
-
-      return 'default'
+    inHangar() {
+      return !!(this.ships || []).find((item) => item === this.model.slug)
     },
   },
 
@@ -80,7 +80,7 @@ export default {
 
       this.$comlink.$emit('open-modal', {
         component: () =>
-          import('@/frontend/components/Models/AddToHangarModal'),
+          import('@/frontend/components/Models/AddToHangarModal/index.vue'),
         props: {
           model: this.model,
         },

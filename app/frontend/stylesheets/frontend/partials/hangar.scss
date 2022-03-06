@@ -19,6 +19,10 @@
   .metrics-value {
     display: inline-block;
   }
+
+  .metrics-label {
+    margin-right: 5px;
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {

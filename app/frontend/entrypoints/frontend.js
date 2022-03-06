@@ -23,8 +23,8 @@ Vue.use(Validations)
 Vue.use(PortalVue)
 
 Vue.use(Meta, {
-  keyName: 'head',
   attribute: 'data-vue-meta',
+  keyName: 'head',
   ssrAttribute: 'data-vue-meta-server-rendered',
   tagIDKeyName: 'vmid',
 })
@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // eslint-disable-next-line no-new
   new Vue({
+    render: (h) => h(App),
     router,
     store,
-    render: (h) => h(App),
   }).$mount('#app')
 })

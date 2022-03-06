@@ -1,19 +1,19 @@
 import { get } from '@/frontend/api/client'
 import BaseCollection from '@/frontend/api/collections/Base'
 
-export class AdminModelsCollection extends BaseCollection {
+export class AdminModelModulesCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminModel[] = []
+  records = []
 
-  params: AdminAdminModelParams | null = null
+  params = null
 
-  async findAll(params: AdminAdminModelParams): Promise<AdminModel[]> {
+  async findAll(params) {
     this.params = params
 
-    const response = await get('models', {
+    const response = await get('model-modules', {
+      page: params?.page,
       q: params.filters,
-      page: params.page,
     })
 
     if (!response.error) {
@@ -25,4 +25,4 @@ export class AdminModelsCollection extends BaseCollection {
   }
 }
 
-export default new AdminModelsCollection()
+export default new AdminModelModulesCollection()

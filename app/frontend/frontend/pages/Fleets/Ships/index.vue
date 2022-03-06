@@ -62,13 +62,12 @@ import { publicFleetShipsRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 
 export default {
   name: 'FleetShips',
-
   components: {
     Avatar,
     Btn,
+    PublicShipsList,
     ShareBtn,
     ShipsList,
-    PublicShipsList,
   },
 
   mixins: [MetaInfo],
@@ -110,16 +109,16 @@ export default {
   },
 
   methods: {
+    async fetch() {
+      await fleetsCollection.findBySlug(this.$route.params.slug)
+    },
+
     toggleFleetchart() {
       if (this.fleet.myFleet) {
         this.$store.dispatch('fleet/toggleFleetchart')
       } else {
         this.$store.dispatch('publicFleet/toggleFleetchart')
       }
-    },
-
-    async fetch() {
-      await fleetsCollection.findBySlug(this.$route.params.slug)
     },
   },
 }

@@ -61,7 +61,6 @@ import { BCollapse } from 'bootstrap-vue'
 
 export default {
   name: 'ModelsCompareCrew',
-
   components: {
     BCollapse,
   },

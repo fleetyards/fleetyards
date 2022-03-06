@@ -217,7 +217,6 @@ import { BCollapse } from 'bootstrap-vue'
 
 export default {
   name: 'ModelsCompareBase',
-
   components: {
     BCollapse,
   },

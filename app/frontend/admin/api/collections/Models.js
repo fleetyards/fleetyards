@@ -1,7 +1,7 @@
 import { get } from '@/frontend/api/client'
 import BaseCollection from '@/frontend/api/collections/Base'
 
-export class ComponentsCollection extends BaseCollection {
+export class AdminModelsCollection extends BaseCollection {
   primaryKey = 'id'
 
   records = []
@@ -11,8 +11,8 @@ export class ComponentsCollection extends BaseCollection {
   async findAll(params) {
     this.params = params
 
-    const response = await get('components', {
-      page: params?.page,
+    const response = await get('models', {
+      page: params.page,
       q: params.filters,
     })
 
@@ -25,4 +25,4 @@ export class ComponentsCollection extends BaseCollection {
   }
 }
 
-export default new ComponentsCollection()
+export default new AdminModelsCollection()

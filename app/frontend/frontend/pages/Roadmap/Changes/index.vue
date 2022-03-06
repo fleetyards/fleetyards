@@ -77,48 +77,42 @@ import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 export default {
   name: 'RoadmapChanges',
-
   components: {
-    Btn,
-    Loader,
-    FilterGroup,
-    EmptyBox,
-    RoadmapItem,
     BreadCrumbs,
+    Btn,
+    EmptyBox,
+    FilterGroup,
+    Loader,
+    RoadmapItem,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      loading: true,
       compact: false,
-      roadmapChanges: [],
+      loading: true,
       options: [],
+      roadmapChanges: [],
       roadmapChannel: null,
       selectedWeek: 0,
     }
   },
 
   computed: {
-    toggleCompactTooltip() {
-      if (this.compact) {
-        return this.$t('actions.showDetails')
-      }
-
-      return this.$t('actions.hideDetails')
+    crumbs() {
+      return [
+        {
+          label: this.$t('nav.roadmap.index'),
+          to: {
+            name: 'roadmap',
+          },
+        },
+      ]
     },
 
     emptyBoxVisible() {
       return !this.loading && this.roadmapChanges.length === 0
-    },
-
-    query() {
-      if (!this.options.length) {
-        return null
-      }
-
-      return this.options[this.selectedWeek].query
     },
 
     groupedByRelease() {
@@ -132,22 +126,21 @@ export default {
       }, {})
     },
 
-    crumbs() {
-      return [
-        {
-          to: {
-            name: 'roadmap',
-          },
-          label: this.$t('nav.roadmap.index'),
-        },
-      ]
-    },
-  },
+    query() {
+      if (!this.options.length) {
+        return null
+      }
 
-  async mounted() {
-    await this.fetchOptions()
-    this.fetch()
-    this.setupUpdates()
+      return this.options[this.selectedWeek].query
+    },
+
+    toggleCompactTooltip() {
+      if (this.compact) {
+        return this.$t('actions.showDetails')
+      }
+
+      return this.$t('actions.hideDetails')
+    },
   },
 
   beforeDestroy() {
@@ -156,7 +149,38 @@ export default {
     }
   },
 
+  async mounted() {
+    await this.fetchOptions()
+    this.fetch()
+    this.setupUpdates()
+  },
+
   methods: {
+    async fetch() {
+      if (!this.query) {
+        return
+      }
+
+      this.loading = true
+      const response = await this.$api.get('roadmap?changes=1', {
+        q: this.query,
+      })
+
+      this.loading = false
+
+      if (!response.error) {
+        this.roadmapChanges = response.data.filter((item) => item.lastVersion)
+      }
+    },
+
+    async fetchOptions() {
+      const response = await this.$api.get('roadmap/weeks')
+
+      if (!response.error) {
+        this.options = response.data
+      }
+    },
+
     setupUpdates() {
       if (this.roadmapChannel) {
         this.roadmapChannel.unsubscribe()
@@ -174,31 +198,6 @@ export default {
 
     toggleCompact() {
       this.compact = !this.compact
-    },
-
-    async fetchOptions() {
-      const response = await this.$api.get('roadmap/weeks')
-
-      if (!response.error) {
-        this.options = response.data
-      }
-    },
-
-    async fetch() {
-      if (!this.query) {
-        return
-      }
-
-      this.loading = true
-      const response = await this.$api.get('roadmap?changes=1', {
-        q: this.query,
-      })
-
-      this.loading = false
-
-      if (!response.error) {
-        this.roadmapChanges = response.data.filter((item) => item.lastVersion)
-      }
     },
   },
 }

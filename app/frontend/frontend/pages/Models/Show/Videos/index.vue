@@ -81,23 +81,43 @@ export default {
   name: 'ModelVideos',
 
   components: {
-    Loader,
-    Btn,
     BreadCrumbs,
+    Btn,
+    Loader,
   },
 
   mixins: [MetaInfo, Pagination],
 
   data() {
     return {
-      videos: [],
-      model: null,
       loading: false,
+      model: null,
+      videos: [],
     }
   },
 
   computed: {
     ...mapGetters('cookies', ['cookies']),
+
+    crumbs() {
+      if (!this.model) {
+        return null
+      }
+
+      return [
+        {
+          label: this.$t('nav.models.index'),
+          to: {
+            hash: `#${this.model.slug}`,
+            name: 'models',
+          },
+        },
+        {
+          label: this.model.name,
+          to: { name: 'model', param: { slug: this.$route.params.slug } },
+        },
+      ]
+    },
 
     metaTitle() {
       if (!this.model) {
@@ -107,26 +127,6 @@ export default {
       return this.$t('title.modelVideos', {
         name: this.model.name,
       })
-    },
-
-    crumbs() {
-      if (!this.model) {
-        return null
-      }
-
-      return [
-        {
-          to: {
-            name: 'models',
-            hash: `#${this.model.slug}`,
-          },
-          label: this.$t('nav.models.index'),
-        },
-        {
-          to: { name: 'model', param: { slug: this.$route.params.slug } },
-          label: this.model.name,
-        },
-      ]
     },
 
     youtubeEnabled() {

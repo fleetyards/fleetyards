@@ -66,17 +66,17 @@
 
 <script>
 import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 export default {
   name: 'ShopsItemFilterForm',
 
   components: {
+    Btn,
     FilterGroup,
     FormInput,
-    Btn,
   },
 
   mixins: [Filters],
@@ -85,15 +85,6 @@ export default {
     const query = this.$route.query.q || {}
 
     return {
-      loading: false,
-      form: {
-        nameCont: query.nameCont,
-        categoryIn: query.categoryIn || [],
-        subCategoryIn: query.subCategoryIn || [],
-        manufacturerIn: query.manufacturerIn || [],
-        priceGteq: query.priceGteq,
-        priceLteq: query.priceLteq,
-      },
       categoryOptions: [
         {
           name: 'Ship',
@@ -116,6 +107,17 @@ export default {
           value: 'ModelModule',
         },
       ],
+
+      form: {
+        categoryIn: query.categoryIn || [],
+        manufacturerIn: query.manufacturerIn || [],
+        nameCont: query.nameCont,
+        priceGteq: query.priceGteq,
+        priceLteq: query.priceLteq,
+        subCategoryIn: query.subCategoryIn || [],
+      },
+
+      loading: false,
     }
   },
 
@@ -123,21 +125,17 @@ export default {
     $route() {
       const query = this.$route.query.q || {}
       this.form = {
-        nameCont: query.nameCont,
         categoryIn: query.categoryIn || [],
-        subCategoryIn: query.subCategoryIn || [],
         manufacturerIn: query.manufacturerIn || [],
+        nameCont: query.nameCont,
         priceGteq: query.priceGteq,
         priceLteq: query.priceLteq,
+        subCategoryIn: query.subCategoryIn || [],
       }
     },
   },
 
   methods: {
-    fetchSubCategories() {
-      return this.$api.get('filters/shop-commodities/sub-categories')
-    },
-
     fetchCommodityManufacturers({ page, search, missingValue }) {
       const query = {
         q: {},
@@ -150,6 +148,10 @@ export default {
         query.page = page
       }
       return this.$api.get('manufacturers', query)
+    },
+
+    fetchSubCategories() {
+      return this.$api.get('filters/shop-commodities/sub-categories')
     },
   },
 }

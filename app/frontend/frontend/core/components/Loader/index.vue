@@ -16,17 +16,17 @@
 
       <transition name="fade">
         <div
+          v-if="progress != null && progress < 100"
           class="progress progress-left"
           :style="{ width: `${progress}%` }"
-          v-if="progress != null && progress < 100"
         ></div>
       </transition>
 
       <transition name="fade">
         <div
+          v-if="progress != null && progress < 100"
           class="progress progress-right"
           :style="{ height: `${progress}%` }"
-          v-if="progress != null && progress < 100"
         ></div>
       </transition>
     </div>
@@ -38,24 +38,24 @@ export default {
   name: 'LoaderComponent',
 
   props: {
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-
     fixed: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
 
     inline: {
-      type: Boolean,
       default: false,
+      type: Boolean,
+    },
+
+    loading: {
+      default: false,
+      type: Boolean,
     },
 
     progress: {
-      type: Number,
       default: null,
+      type: Number,
     },
   },
 }

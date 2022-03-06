@@ -16,7 +16,6 @@ import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 export default {
   name: 'ProfitCalculator',
-
   mixins: [MetaInfo],
 }
 </script>

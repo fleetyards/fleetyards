@@ -170,9 +170,9 @@ export default {
   name: 'FleetStats',
 
   components: {
+    BreadCrumbs,
     Chart,
     Panel,
-    BreadCrumbs,
   },
 
   mixins: [MetaInfoMixin],
@@ -182,26 +182,72 @@ export default {
   data() {
     return {
       collection: fleetsCollection,
-      vehiclesCollection: vehiclesCollection,
       membersCollection: membersCollection,
+      vehiclesCollection: vehiclesCollection,
     }
   },
 
   computed: {
+    crumbs() {
+      if (!this.fleet) {
+        return []
+      }
+
+      return [
+        {
+          label: this.fleet.name,
+          to: {
+            name: 'fleet',
+            params: {
+              slug: this.fleet.slug,
+            },
+          },
+        },
+      ]
+    },
+
     fleet() {
       return this.collection.record
+    },
+
+    maxCrew() {
+      if (!this.vehicleStats) {
+        return this.$toNumber(0, 'people')
+      }
+
+      return this.$toNumber(this.vehicleStats.metrics.totalMaxCrew, 'people')
+    },
+
+    memberStats() {
+      return this.membersCollection.stats
+    },
+
+    metaTitle() {
+      if (!this.fleet) {
+        return null
+      }
+
+      return this.$t('title.fleets.stats', { fleet: this.fleet.name })
+    },
+
+    minCrew() {
+      if (!this.vehicleStats) {
+        return this.$toNumber(0, 'people')
+      }
+
+      return this.$toNumber(this.vehicleStats.metrics.totalMinCrew, 'people')
     },
 
     slug() {
       return this.$route.params.slug
     },
 
-    vehicleStats() {
-      return this.vehiclesCollection.stats
-    },
+    totalCargo() {
+      if (!this.vehicleStats) {
+        return this.$toNumber(0, 'cargo')
+      }
 
-    memberStats() {
-      return this.membersCollection.stats
+      return this.$toNumber(this.vehicleStats.metrics.totalCargo, 'cargo')
     },
 
     totalMemberCount() {
@@ -220,54 +266,8 @@ export default {
       return this.vehicleStats.total
     },
 
-    minCrew() {
-      if (!this.vehicleStats) {
-        return this.$toNumber(0, 'people')
-      }
-
-      return this.$toNumber(this.vehicleStats.metrics.totalMinCrew, 'people')
-    },
-
-    maxCrew() {
-      if (!this.vehicleStats) {
-        return this.$toNumber(0, 'people')
-      }
-
-      return this.$toNumber(this.vehicleStats.metrics.totalMaxCrew, 'people')
-    },
-
-    totalCargo() {
-      if (!this.vehicleStats) {
-        return this.$toNumber(0, 'cargo')
-      }
-
-      return this.$toNumber(this.vehicleStats.metrics.totalCargo, 'cargo')
-    },
-
-    crumbs() {
-      if (!this.fleet) {
-        return []
-      }
-
-      return [
-        {
-          to: {
-            name: 'fleet',
-            params: {
-              slug: this.fleet.slug,
-            },
-          },
-          label: this.fleet.name,
-        },
-      ]
-    },
-
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
-
-      return this.$t('title.fleets.stats', { fleet: this.fleet.name })
+    vehicleStats() {
+      return this.vehiclesCollection.stats
     },
   },
 
@@ -277,17 +277,12 @@ export default {
   },
 
   methods: {
-    loadQuickStats() {
-      this.vehiclesCollection.findStats({ slug: this.slug })
-      this.membersCollection.findStats({ slug: this.slug })
+    async fetchFleet() {
+      await this.collection.findBySlug(this.$route.params.slug)
     },
 
     loadModelsByClassification() {
       return this.collection.findModelsByClassificationBySlug(this.slug)
-    },
-
-    loadModelsBySize() {
-      return this.collection.findModelsBySizeBySlug(this.slug)
     },
 
     loadModelsByManufacturer() {
@@ -298,8 +293,13 @@ export default {
       return this.collection.findModelsByProductionStatusBySlug(this.slug)
     },
 
-    async fetchFleet() {
-      await this.collection.findBySlug(this.$route.params.slug)
+    loadModelsBySize() {
+      return this.collection.findModelsBySizeBySlug(this.slug)
+    },
+
+    loadQuickStats() {
+      this.vehiclesCollection.findStats({ slug: this.slug })
+      this.membersCollection.findStats({ slug: this.slug })
     },
   },
 }

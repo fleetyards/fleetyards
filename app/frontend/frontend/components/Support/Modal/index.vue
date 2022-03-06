@@ -42,17 +42,16 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
-@Component<SupportModal>({
+export default {
+  name: 'SupportModal',
+
   components: {
-    Modal,
     Btn,
+    Modal,
   },
-})
-export default class SupportModal extends Vue {}
+}
 </script>

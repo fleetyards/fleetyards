@@ -118,34 +118,62 @@
   </form>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
+<script>
+import { mapGetters } from 'vuex'
 import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import Btn from '@/frontend/core/components/Btn'
-import { Getter } from 'vuex-class'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import celestialObjectCollection from '@/frontend/api/collections/CelestialObjects'
 import starsystemCollection from '@/frontend/api/collections/Starsystems'
 
-@Component<TradeRoutesFilterForm>({
+export default {
+  name: 'TradeRoutesFilterForm',
+
   components: {
-    FilterGroup,
-    CollectionFilterGroup,
     Btn,
+    CollectionFilterGroup,
+    FilterGroup,
   },
+
   mixins: [Filters],
-})
-export default class TradeRoutesFilterForm extends Vue {
-  celestialObjectCollection: CelestialObjectCollection =
-    celestialObjectCollection
 
-  starsystemCollection: StarsystemCollection = starsystemCollection
+  data() {
+    return {
+      celestialObjectCollection: celestialObjectCollection,
+      form: {},
+      starsystemCollection: starsystemCollection,
+    }
+  },
 
-  form: TradeRoutesFilters
+  computed: {
+    ...mapGetters(['mobile']),
+  },
 
-  @Getter('mobile') mobile
+  watch: {
+    $route() {
+      const query = this.$route.query.q || {}
+
+      this.form = {
+        cargoShip: query.cargoShip || null,
+        commodityIn: query.commodityIn || [],
+        commodityTypeNotIn: query.commodityTypeNotIn || [],
+        destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
+        destinationStarsystemIn: query.destinationStarsystemIn || [],
+        destinationStationIn: query.destinationStationIn || [],
+        originCelestialObjectIn: query.originCelestialObjectIn || [],
+        originStarsystemIn: query.originStarsystemIn || [],
+        originStationIn: query.originStationIn || [],
+        sorts: query.sorts || [],
+      }
+
+      const storedFilters = JSON.parse(JSON.stringify(this.form))
+
+      if (!storedFilters.cargoShip) {
+        delete storedFilters.cargoShip
+      }
+    },
+  },
 
   mounted() {
     const query = this.$route.query.q || {}
@@ -154,38 +182,14 @@ export default class TradeRoutesFilterForm extends Vue {
       cargoShip: query.cargoShip || null,
       commodityIn: query.commodityIn || [],
       commodityTypeNotIn: query.commodityTypeNotIn || [],
-      originStationIn: query.originStationIn || [],
+      destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
+      destinationStarsystemIn: query.destinationStarsystemIn || [],
       destinationStationIn: query.destinationStationIn || [],
       originCelestialObjectIn: query.originCelestialObjectIn || [],
-      destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
       originStarsystemIn: query.originStarsystemIn || [],
-      destinationStarsystemIn: query.destinationStarsystemIn || [],
-      sorts: query.sorts || [],
-    }
-  }
-
-  @Watch('$route')
-  onRouteChange() {
-    const query = this.$route.query.q || {}
-
-    this.form = {
-      cargoShip: query.cargoShip || null,
-      commodityIn: query.commodityIn || [],
-      commodityTypeNotIn: query.commodityTypeNotIn || [],
       originStationIn: query.originStationIn || [],
-      destinationStationIn: query.destinationStationIn || [],
-      originCelestialObjectIn: query.originCelestialObjectIn || [],
-      destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
-      originStarsystemIn: query.originStarsystemIn || [],
-      destinationStarsystemIn: query.destinationStarsystemIn || [],
       sorts: query.sorts || [],
     }
-
-    const storedFilters = JSON.parse(JSON.stringify(this.form))
-
-    if (!storedFilters.cargoShip) {
-      delete storedFilters.cargoShip
-    }
-  }
+  },
 }
 </script>

@@ -23,10 +23,10 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
 
   async findAll(params) {
     const response = await get(`fleets/${params.slug}/public-vehicles`, {
-      q: params?.filters,
-      page: params?.page,
       grouped: params?.grouped,
+      page: params?.page,
       perPage: this.perPage,
+      q: params?.filters,
     })
 
     if (!response.error) {

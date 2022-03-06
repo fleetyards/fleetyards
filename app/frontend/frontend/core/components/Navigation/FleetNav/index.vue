@@ -54,7 +54,6 @@ import fleetsCollection from '@/frontend/api/collections/Fleets'
 
 export default {
   name: 'FleetNav',
-
   components: {
     NavItem,
   },

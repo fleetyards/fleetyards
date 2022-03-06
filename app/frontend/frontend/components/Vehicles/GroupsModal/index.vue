@@ -38,79 +38,90 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
 
-@Component<VehicleModal>({
+export default {
+  name: 'VehicleGroupsModal',
+
   components: {
-    Modal,
-    Checkbox,
-    FormInput,
-    FilterGroup,
     Btn,
+    Checkbox,
+    Modal,
   },
-})
-export default class VehicleGroupsModal extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle
 
-  submitting = false
+  props: {
+    vehicle: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  form = null
+  data() {
+    return {
+      form: null,
+      submitting: false,
+    }
+  },
 
-  get hangarGroups() {
-    return hangarGroupsCollection.records
-  }
+  computed: {
+    hangarGroups() {
+      return hangarGroupsCollection.records
+    },
+  },
+
+  watch: {
+    vehicle() {
+      this.setupForm()
+    },
+  },
 
   mounted() {
     this.setupForm()
-  }
+  },
 
-  @Watch('vehicle')
-  onVehicleChange() {
-    this.setupForm()
-  }
-
-  setupForm() {
-    this.form = {
-      hangarGroupIds: this.vehicle.hangarGroupIds,
-    }
-  }
-
-  selected(groupId) {
-    return (this.form.hangarGroupIds || []).includes(groupId)
-  }
-
-  changeGroup(group) {
-    if (this.form.hangarGroupIds.includes(group.id)) {
-      const index = this.form.hangarGroupIds.findIndex(
-        (groupId) => groupId === group.id
-      )
-      if (index > -1) {
-        this.form.hangarGroupIds.splice(index, 1)
+  methods: {
+    changeGroup(group) {
+      if (this.form.hangarGroupIds.includes(group.id)) {
+        const index = this.form.hangarGroupIds.findIndex(
+          (groupId) => groupId === group.id
+        )
+        if (index > -1) {
+          this.form.hangarGroupIds.splice(index, 1)
+        }
+      } else {
+        this.form.hangarGroupIds.push(group.id)
       }
-    } else {
-      this.form.hangarGroupIds.push(group.id)
-    }
-  }
+    },
 
-  async save() {
-    this.submitting = true
+    async save() {
+      this.submitting = true
 
-    const response = await vehiclesCollection.update(this.vehicle.id, this.form)
+      const response = await vehiclesCollection.update(
+        this.vehicle.id,
+        this.form
+      )
 
-    this.submitting = false
+      this.submitting = false
 
-    if (!response.error) {
-      this.$comlink.$emit('close-modal')
-    }
-  }
+      if (!response.error) {
+        this.$comlink.$emit('close-modal')
+      }
+    },
+
+    selected(groupId) {
+      return (this.form.hangarGroupIds || []).includes(groupId)
+    },
+
+    setupForm() {
+      this.form = {
+        hangarGroupIds: this.vehicle.hangarGroupIds,
+      }
+    },
+  },
 }
 </script>

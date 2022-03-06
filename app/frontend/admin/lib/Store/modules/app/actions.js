@@ -1,6 +1,14 @@
 export default {
+  hideOverlay({ commit }) {
+    commit('setOverlayVisible', false)
+  },
+
   reset({ commit }) {
     commit('reset')
+  },
+
+  showOverlay({ commit }) {
+    commit('setOverlayVisible', true)
   },
 
   updateVersion({ state, commit }, payload = {}) {
@@ -8,13 +16,5 @@ export default {
       commit('setVersion', payload.version)
       commit('setCodename', payload.codename)
     }
-  },
-
-  showOverlay({ commit }) {
-    commit('setOverlayVisible', true)
-  },
-
-  hideOverlay({ commit }) {
-    commit('setOverlayVisible', false)
   },
 }

@@ -66,8 +66,8 @@ export default {
   name: 'ImpressumPage',
 
   components: {
-    Panel,
     AppContact,
+    Panel,
   },
 
   mixins: [MetaInfo],

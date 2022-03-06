@@ -12,12 +12,30 @@ I18n.translations.en = en
 I18n.translations.de = de
 
 const methods = {
+  l(value, dateFormat = 'datetime.formats.default') {
+    return format(parseISO(value), I18n.t(dateFormat))
+  },
+
   t(key, options) {
     return I18n.t(key, options)
   },
 
-  l(value, dateFormat = 'datetime.formats.default') {
-    return format(parseISO(value), I18n.t(dateFormat))
+  toAu(value) {
+    if (!value) {
+      return '-'
+    }
+    return I18n.toCurrency(value, {
+      format: '%n %u',
+      precision: 2,
+      unit: I18n.t('labels.au'),
+    })
+  },
+
+  toDollar(value) {
+    return I18n.toCurrency(value, {
+      precision: 2,
+      unit: '$',
+    })
   },
 
   toNumber(value, units) {
@@ -43,24 +61,6 @@ const methods = {
     })
   },
 
-  toDollar(value) {
-    return I18n.toCurrency(value, {
-      precision: 2,
-      unit: '$',
-    })
-  },
-
-  toAu(value) {
-    if (!value) {
-      return '-'
-    }
-    return I18n.toCurrency(value, {
-      precision: 2,
-      unit: I18n.t('labels.au'),
-      format: '%n %u',
-    })
-  },
-
   toUEC(value, unit) {
     if (!unit) {
       // eslint-disable-next-line no-param-reassign
@@ -72,9 +72,9 @@ const methods = {
     }
 
     return I18n.toCurrency(value, {
+      format: '%n <span class="text-muted">%u</span>',
       precision: 2,
       unit,
-      format: '%n <span class="text-muted">%u</span>',
     })
   },
 }

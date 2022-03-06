@@ -40,14 +40,14 @@ export default {
   name: 'StarsystemsLevelsMetrics',
 
   props: {
-    starsystem: {
-      type: Object,
-      required: true,
+    padding: {
+      default: false,
+      type: Boolean,
     },
 
-    padding: {
-      type: Boolean,
-      default: false,
+    starsystem: {
+      required: true,
+      type: Object,
     },
   },
 }

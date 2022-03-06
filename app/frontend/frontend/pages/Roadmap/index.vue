@@ -118,14 +118,13 @@ import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 export default {
   name: 'RoadmapReleases',
-
   components: {
     BCollapse,
-    Loader,
-    EmptyBox,
-    RoadmapItem,
     Btn,
     BtnDropdown,
+    EmptyBox,
+    Loader,
+    RoadmapItem,
   },
 
   mixins: [MetaInfo],
@@ -133,40 +132,15 @@ export default {
   data() {
     return {
       loading: true,
-
       onlyReleased: true,
-
-      showRemoved: false,
-
-      roadmapItems: [],
-
-      visible: [],
-
       roadmapChannel: null,
+      roadmapItems: [],
+      showRemoved: false,
+      visible: [],
     }
   },
 
   computed: {
-    releasedToggleLabel() {
-      if (this.onlyReleased) {
-        return this.$t('actions.showReleased')
-      }
-
-      return this.$t('actions.hideReleased')
-    },
-
-    toggleRemovedTooltip() {
-      if (this.showRemoved) {
-        return this.$t('actions.roadmap.hideRemoved')
-      }
-
-      return this.$t('actions.roadmap.showRemoved')
-    },
-
-    isSubRoute() {
-      return this.$route.name !== 'roadmap'
-    },
-
     emptyBoxVisible() {
       return !this.loading && this.roadmapItems.length === 0
     },
@@ -190,8 +164,8 @@ export default {
       }, {})
     },
 
-    otherModels() {
-      return this.models
+    isSubRoute() {
+      return this.$route.name !== 'roadmap'
     },
 
     modelsOnRoadmap() {
@@ -199,6 +173,26 @@ export default {
         .filter((item) => item.model)
         .map((item) => item.model.id)
         .filter((item) => item)
+    },
+
+    otherModels() {
+      return this.models
+    },
+
+    releasedToggleLabel() {
+      if (this.onlyReleased) {
+        return this.$t('actions.showReleased')
+      }
+
+      return this.$t('actions.hideReleased')
+    },
+
+    toggleRemovedTooltip() {
+      if (this.showRemoved) {
+        return this.$t('actions.roadmap.hideRemoved')
+      }
+
+      return this.$t('actions.roadmap.showRemoved')
     },
   },
 
@@ -220,23 +214,10 @@ export default {
   },
 
   methods: {
-    tasks(items) {
-      return items
-        .filter((item) => item.active)
-        .map((item) => Math.max(0, item.tasks))
-        .reduce((ac, count) => ac + count, 0)
-    },
-
     completed(items) {
       return items
         .map((item) => Math.max(0, item.completed))
         .reduce((ac, count) => ac + count, 0)
-    },
-
-    progressLabel(items) {
-      return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', {
-        count: this.tasks(items),
-      })}`
     },
 
     completedPercent(items) {
@@ -245,51 +226,6 @@ export default {
       }
 
       return Math.round((100 * this.completed(items)) / this.tasks(items))
-    },
-
-    setupUpdates() {
-      if (this.roadmapChannel) {
-        this.roadmapChannel.unsubscribe()
-      }
-
-      this.roadmapChannel = this.$cable.consumer.subscriptions.create(
-        {
-          channel: 'RoadmapChannel',
-        },
-        {
-          received: this.fetch,
-        }
-      )
-    },
-
-    toggleReleased() {
-      this.onlyReleased = !this.onlyReleased
-    },
-
-    togglerShowRemoved() {
-      this.showRemoved = !this.showRemoved
-      this.fetch()
-    },
-
-    toggle(release) {
-      if (this.visible.includes(release)) {
-        const index = this.visible.indexOf(release)
-        this.visible.splice(index, 1)
-
-        return null
-      }
-
-      return this.visible.push(release)
-    },
-
-    openReleased() {
-      Object.keys(this.groupedByRelease).forEach((release) => {
-        const items = this.groupedByRelease[release]
-
-        if (items.length && !items[0].released) {
-          this.visible.push(release)
-        }
-      })
     },
 
     async fetch() {
@@ -308,6 +244,64 @@ export default {
         this.roadmapItems = response.data
         this.openReleased()
       }
+    },
+
+    openReleased() {
+      Object.keys(this.groupedByRelease).forEach((release) => {
+        const items = this.groupedByRelease[release]
+
+        if (items.length && !items[0].released) {
+          this.visible.push(release)
+        }
+      })
+    },
+
+    progressLabel(items) {
+      return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', {
+        count: this.tasks(items),
+      })}`
+    },
+
+    setupUpdates() {
+      if (this.roadmapChannel) {
+        this.roadmapChannel.unsubscribe()
+      }
+
+      this.roadmapChannel = this.$cable.consumer.subscriptions.create(
+        {
+          channel: 'RoadmapChannel',
+        },
+        {
+          received: this.fetch,
+        }
+      )
+    },
+
+    tasks(items) {
+      return items
+        .filter((item) => item.active)
+        .map((item) => Math.max(0, item.tasks))
+        .reduce((ac, count) => ac + count, 0)
+    },
+
+    toggle(release) {
+      if (this.visible.includes(release)) {
+        const index = this.visible.indexOf(release)
+        this.visible.splice(index, 1)
+
+        return null
+      }
+
+      return this.visible.push(release)
+    },
+
+    toggleReleased() {
+      this.onlyReleased = !this.onlyReleased
+    },
+
+    togglerShowRemoved() {
+      this.showRemoved = !this.showRemoved
+      this.fetch()
     },
   },
 }

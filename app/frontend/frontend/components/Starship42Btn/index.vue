@@ -17,60 +17,97 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+import { mapGetters } from 'vuex'
 import Btn from '@/frontend/core/components/Btn/index.vue'
-import { Getter } from 'vuex-class'
 
-@Component({
+export default {
+  name: 'Starship42Btn',
+
   components: {
     Btn,
   },
-})
-export default class Starship42Btn extends Btn {
-  @Prop({ required: true }) items!: Vehicle[] | Model[]
 
-  @Prop({ default: false }) withIcon!: boolean
+  props: {
+    inline: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Getter('mobile') mobile
+    items: {
+      type: Array,
+      required: true,
+    },
 
-  get basePath() {
-    return 'https://starship42.com/fleetview/'
-  }
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
 
-  get tooltip() {
-    if (this.mobile) {
-      return null
-    }
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return (
+          ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+            value
+          ) !== -1
+        )
+      },
+    },
 
-    // @ts-ignore
-    return this.$t('labels.poweredByStarship42')
-  }
+    withIcon: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  openStarship42() {
-    const form = document.createElement('form')
-    form.method = 'post'
-    form.action = this.basePath
-    form.target = '_blank'
+  computed: {
+    ...mapGetters(['mobile']),
 
-    const typeField = document.createElement('input')
-    typeField.type = 'hidden'
-    typeField.name = 'type'
-    typeField.value = 'matrix'
-    form.appendChild(typeField)
+    basePath() {
+      return 'https://starship42.com/fleetview/'
+    },
 
-    this.items.forEach((item) => {
-      const model = item.model || item
-      const shipField = document.createElement('input')
-      shipField.type = 'hidden'
-      shipField.name = 's[]'
-      shipField.value = model.rsiName
+    tooltip() {
+      if (this.mobile) {
+        return null
+      }
 
-      form.appendChild(shipField)
-    })
+      // @ts-ignore
+      return this.$t('labels.poweredByStarship42')
+    },
+  },
 
-    document.body.appendChild(form)
-    form.submit()
-  }
+  methods: {
+    openStarship42() {
+      const form = document.createElement('form')
+      form.method = 'post'
+      form.action = this.basePath
+      form.target = '_blank'
+
+      const typeField = document.createElement('input')
+      typeField.type = 'hidden'
+      typeField.name = 'type'
+      typeField.value = 'matrix'
+      form.appendChild(typeField)
+
+      this.items.forEach((item) => {
+        const model = item.model || item
+        const shipField = document.createElement('input')
+        shipField.type = 'hidden'
+        shipField.name = 's[]'
+        shipField.value = model.rsiName
+
+        form.appendChild(shipField)
+      })
+
+      document.body.appendChild(form)
+      form.submit()
+    },
+  },
 }
 </script>

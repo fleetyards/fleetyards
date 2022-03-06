@@ -25,28 +25,51 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'PanelComponent',
 
-@Component
-export default class Panel extends Vue {
-  @Prop({ default: true }) outerSpacing!: boolean
+  props: {
+    forText: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: 'default' }) transparency!: 'default' | 'more' | 'complete'
+    highlight: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) highlight!: boolean
+    outerSpacing: {
+      type: Boolean,
+      default: true,
+    },
 
-  @Prop({ default: false }) forText!: boolean
+    transparency: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'more', 'complete'].indexOf(value) !== -1
+      },
+    },
 
-  @Prop({ default: 'default' }) variant!: 'default' | 'primary' | 'success'
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'primary', 'success'].indexOf(value) !== -1
+      },
+    },
+  },
 
-  private get variantClass() {
-    return `panel-${this.variant}`
-  }
+  computed: {
+    transparencyClass() {
+      return `panel-transparency-${this.transparency}`
+    },
 
-  private get transparencyClass() {
-    return `panel-transparency-${this.transparency}`
-  }
+    variantClass() {
+      return `panel-${this.variant}`
+    },
+  },
 }
 </script>

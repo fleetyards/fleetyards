@@ -43,65 +43,73 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
 
-@Component<VehicleModal>({
+export default {
+  name: 'VehicleModal',
   components: {
-    Modal,
-    Checkbox,
-    FormInput,
     Btn,
+    Checkbox,
+    Modal,
   },
-})
-export default class VehicleModal extends Vue {
-  @Prop({ required: true }) vehicleIds: string[]
 
-  submitting = false
+  props: {
+    vehicleIds: {
+      type: Array,
+      required: true,
+    },
+  },
 
-  hangarGroupIds: string[] = []
+  data() {
+    return {
+      hangarGroupIds: [],
+      submitting: false,
+    }
+  },
 
-  get hangarGroups() {
-    return hangarGroupsCollection.records
-  }
+  computed: {
+    hangarGroups() {
+      return hangarGroupsCollection.records
+    },
+  },
 
-  selected(groupId) {
-    return this.hangarGroupIds.includes(groupId)
-  }
-
-  changeGroup(group) {
-    if (this.hangarGroupIds.includes(group.id)) {
-      const index = this.hangarGroupIds.findIndex(
-        (groupId) => groupId === group.id
-      )
-      if (index > -1) {
-        this.hangarGroupIds.splice(index, 1)
+  methods: {
+    changeGroup(group) {
+      if (this.hangarGroupIds.includes(group.id)) {
+        const index = this.hangarGroupIds.findIndex(
+          (groupId) => groupId === group.id
+        )
+        if (index > -1) {
+          this.hangarGroupIds.splice(index, 1)
+        }
+      } else {
+        this.hangarGroupIds.push(group.id)
       }
-    } else {
-      this.hangarGroupIds.push(group.id)
-    }
-  }
+    },
 
-  async save() {
-    this.submitting = true
+    async save() {
+      this.submitting = true
 
-    if (
-      await vehiclesCollection.updateHangarGroupsBulk(
-        this.vehicleIds,
-        this.hangarGroupIds
-      )
-    ) {
-      this.$comlink.$emit('close-modal')
-    }
+      if (
+        await vehiclesCollection.updateHangarGroupsBulk(
+          this.vehicleIds,
+          this.hangarGroupIds
+        )
+      ) {
+        this.$comlink.$emit('close-modal')
+      }
 
-    this.submitting = false
-  }
+      this.submitting = false
+    },
+
+    selected(groupId) {
+      return this.hangarGroupIds.includes(groupId)
+    },
+  },
 }
 </script>

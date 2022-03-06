@@ -2,53 +2,53 @@ import SecurityRoutes from './Security/routes'
 
 export const routes = [
   {
-    path: 'profile/',
-    name: 'settings-profile',
     component: () => import('@/frontend/pages/Settings/Profile/index.vue'),
     meta: {
-      title: 'settings.index',
       needsAuthentication: true,
+      title: 'settings.index',
     },
+    name: 'settings-profile',
+    path: 'profile/',
   },
   {
-    path: 'account/',
-    name: 'settings-account',
     component: () => import('@/frontend/pages/Settings/Account/index.vue'),
     meta: {
-      title: 'settings.account',
       needsAuthentication: true,
+      title: 'settings.account',
     },
+    name: 'settings-account',
+    path: 'account/',
   },
   {
-    path: 'notifications/',
-    name: 'settings-notifications',
     component: () =>
       import('@/frontend/pages/Settings/Notifications/index.vue'),
     meta: {
-      title: 'settings.notifications',
       needsAuthentication: true,
+      title: 'settings.notifications',
     },
+    name: 'settings-notifications',
+    path: 'notifications/',
   },
   {
-    path: 'hangar/',
-    name: 'settings-hangar',
     component: () => import('@/frontend/pages/Settings/Hangar/index.vue'),
     meta: {
-      title: 'settings.hangar',
       needsAuthentication: true,
+      title: 'settings.hangar',
     },
+    name: 'settings-hangar',
+    path: 'hangar/',
   },
   {
-    path: 'security/',
-    name: 'settings-security',
+    children: SecurityRoutes,
     component: () => import('@/frontend/pages/Settings/Security/index.vue'),
     meta: {
       needsAuthentication: true,
     },
+    name: 'settings-security',
+    path: 'security/',
     redirect: {
       name: 'settings-security-status',
     },
-    children: SecurityRoutes,
   },
 ]
 

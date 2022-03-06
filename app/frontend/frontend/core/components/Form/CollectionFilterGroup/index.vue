@@ -1,5 +1,10 @@
 <template>
-  <div ref="filterGroup" class="filter-group" :class="cssClasses">
+  <div
+    v-if="collection"
+    ref="filterGroup"
+    class="filter-group"
+    :class="cssClasses"
+  >
     <transition name="fade">
       <label v-show="labelVisible" v-if="innerLabel && !noLabel" :for="id">
         {{ innerLabel }}
@@ -101,8 +106,8 @@
 
 <script>
 import { BCollapse } from 'bootstrap-vue'
-import SmallLoader from '@/frontend/core/components/SmallLoader'
-import FormInput from '@/frontend/core/components/Form/FormInput'
+import SmallLoader from '@/frontend/core/components/SmallLoader/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import debounce from 'lodash.debounce'
 import InfiniteLoading from 'vue-infinite-loading'
 
@@ -111,20 +116,20 @@ export default {
 
   components: {
     BCollapse,
-    SmallLoader,
-    InfiniteLoading,
     FormInput,
+    InfiniteLoading,
+    SmallLoader,
   },
 
   props: {
+    bigIcon: {
+      type: Boolean,
+      default: false,
+    },
+
     // eslint-disable-next-line vue/require-prop-types
     collection: {
       required: true,
-    },
-
-    collectionMehtod: {
-      type: String,
-      default: 'findAll',
     },
 
     collectionFilter: {
@@ -134,9 +139,84 @@ export default {
       },
     },
 
+    collectionMethod: {
+      type: String,
+      default: 'findAll',
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+
+    error: {
+      type: String,
+      default: null,
+    },
+
+    hideLabelOnEmpty: {
+      type: Boolean,
+      default: false,
+    },
+
+    iconAttr: {
+      type: String,
+      default: 'icon',
+    },
+
+    label: {
+      type: String,
+      default: null,
+    },
+
+    labelAttr: {
+      type: String,
+      default: 'name',
+    },
+
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+
     name: {
       required: true,
       type: String,
+    },
+
+    noLabel: {
+      type: Boolean,
+      default: false,
+    },
+
+    nullable: {
+      type: Boolean,
+      default: true,
+    },
+
+    paginated: {
+      type: Boolean,
+      default: false,
+    },
+
+    returnObject: {
+      type: Boolean,
+      default: false,
+    },
+
+    searchable: {
+      type: Boolean,
+      default: false,
+    },
+
+    searchLabel: {
+      type: String,
+      default: null,
+    },
+
+    translationKey: {
+      type: String,
+      default: 'filterGroup',
     },
 
     value: {
@@ -154,97 +234,64 @@ export default {
       type: String,
       default: 'value',
     },
-
-    labelAttr: {
-      type: String,
-      default: 'name',
-    },
-
-    iconAttr: {
-      type: String,
-      default: 'icon',
-    },
-
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
-
-    disabeld: {
-      type: Boolean,
-      default: false,
-    },
-
-    searchable: {
-      type: Boolean,
-      default: false,
-    },
-
-    error: {
-      type: String,
-      default: null,
-    },
-
-    returnObject: {
-      type: Boolean,
-      default: false,
-    },
-
-    nullable: {
-      type: Boolean,
-      default: true,
-    },
-
-    paginated: {
-      type: Boolean,
-      default: false,
-    },
-
-    hideLabelOnEmpty: {
-      type: Boolean,
-      default: false,
-    },
-
-    label: {
-      type: String,
-      default: null,
-    },
-
-    translationKey: {
-      type: String,
-      default: 'filterGroup',
-    },
-
-    noLabel: {
-      type: Boolean,
-      default: false,
-    },
-
-    bigIcon: {
-      type: Boolean,
-      default: false,
-    },
-
-    searchLabel: {
-      type: String,
-      default: null,
-    },
   },
 
   data() {
     return {
-      visible: false,
-      search: null,
-      page: 1,
-      loading: false,
-      selectedId: null,
-      id: null,
       fetchedOptions: [],
+      id: null,
+      loading: false,
       onSearch: debounce(this.debouncedOnSearch, 500),
+      page: 1,
+      search: null,
+      selectedId: null,
+      visible: false,
     }
   },
 
   computed: {
+    availableOptions() {
+      if (this.paginated) {
+        return this.sort(this.fetchedOptions)
+      }
+      return this.fetchedOptions
+    },
+
+    cssClasses() {
+      return {
+        'has-error has-feedback': this.error,
+      }
+    },
+
+    filteredOptions() {
+      if (this.search) {
+        return this.availableOptions.filter((item) =>
+          item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase())
+        )
+      }
+      return this.availableOptions
+    },
+
+    groupID() {
+      return `${this.name}-${this._uid.toString()}`
+    },
+
+    innerLabel() {
+      if (this.label) {
+        return this.label
+      }
+
+      if (this.translationKey && this.translationKey !== 'filterGroup') {
+        return this.$t(`labels.${this.translationKey}.label`)
+      }
+
+      return this.$t(`labels.${this.id}`)
+    },
+
+    labelVisible() {
+      return !this.hideLabelOnEmpty || this.selectedOptions.length > 0
+    },
+
     prompt() {
       if (this.multiple) {
         return this.label
@@ -260,29 +307,7 @@ export default {
 
       return this.$t(`labels.${this.translationKey}.prompt`)
     },
-    labelVisible() {
-      return !this.hideLabelOnEmpty || this.selectedOptions.length > 0
-    },
-    innerLabel() {
-      if (this.label) {
-        return this.label
-      }
 
-      if (this.translationKey && this.translationKey !== 'filterGroup') {
-        return this.$t(`labels.${this.translationKey}.label`)
-      }
-
-      return this.$t(`labels.${this.id}`)
-    },
-    groupID() {
-      return `${this.name}-${this._uid.toString()}`
-    },
-    availableOptions() {
-      if (this.paginated) {
-        return this.sort(this.fetchedOptions)
-      }
-      return this.fetchedOptions
-    },
     selectedOptions() {
       if (this.multiple) {
         return this.availableOptions.filter(
@@ -293,21 +318,6 @@ export default {
         (item) => item[this.valueAttr] === this.value
       )
       return selectedOption ? [selectedOption] : []
-    },
-
-    filteredOptions() {
-      if (this.search) {
-        return this.availableOptions.filter((item) =>
-          item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase())
-        )
-      }
-      return this.availableOptions
-    },
-
-    cssClasses() {
-      return {
-        'has-error has-feedback': this.error,
-      }
     },
   },
 
@@ -324,6 +334,7 @@ export default {
         }
       },
     },
+
     disabled() {
       this.fetchOptions()
     },
@@ -336,39 +347,29 @@ export default {
     document.addEventListener('click', this.documentClick)
   },
 
-  mounted() {
-    this.fetchOptions()
-  },
-
   destroyed() {
     document.removeEventListener('click', this.documentClick)
   },
 
-  methods: {
-    queryParams(args) {
-      const query = {
-        filters: {
-          ...this.collectionFilter,
-        },
-      }
-      if (args.search && this.searchable) {
-        query.filters.nameCont = args.search
-      } else if (args.missingValue && this.paginated) {
-        query.filters[`${this.valueAttr}Eq`] = args.missingValue
-      } else if (args.page && this.paginated) {
-        query.page = args.page
-      }
+  mounted() {
+    this.fetchOptions()
+  },
 
-      return query
+  methods: {
+    addOptions(newOptions) {
+      newOptions.forEach((item) => {
+        if (
+          !this.availableOptions.find(
+            (option) => option[this.valueAttr] === item[this.valueAttr]
+          )
+        ) {
+          this.fetchedOptions.push(item)
+        }
+      })
     },
 
-    documentClick(event) {
-      const element = this.$refs.filterGroup
-      const { target } = event
-
-      if (element !== target && !element.contains(target)) {
-        this.visible = false
-      }
+    clearSearch() {
+      this.search = null
     },
 
     debouncedOnSearch() {
@@ -378,33 +379,12 @@ export default {
       }
     },
 
-    async fetchOptions() {
-      if (this.disabled) {
-        this.fetchMissingOption()
-        return
-      }
+    documentClick(event) {
+      const element = this.$refs.filterGroup
+      const { target } = event
 
-      this.loading = true
-
-      const options = await this.collection[this.collectionMethod]({
-        ...this.queryParams({
-          page: this.page,
-          search: this.search,
-        }),
-        cacheId: this.groupID,
-      })
-
-      this.$emit('loaded', options)
-
-      this.loading = false
-
-      if (this.$refs.infiniteLoading) {
-        this.$refs.infiniteLoading.$emit('infinite-loading-reset')
-      }
-
-      if (options) {
-        this.addOptions(options)
-        this.fetchMissingOption()
+      if (element !== target && !element.contains(target)) {
+        this.visible = false
       }
     },
 
@@ -453,41 +433,61 @@ export default {
       }
     },
 
-    sort(options) {
-      const sortedOptions = JSON.parse(JSON.stringify(options))
-      return sortedOptions.sort((a, b) => {
-        if (a[this.labelAttr] < b[this.labelAttr]) {
-          return -1
-        }
-        if (a[this.labelAttr] > b[this.labelAttr]) {
-          return 1
-        }
-        return 0
-      })
-    },
-
-    addOptions(newOptions) {
-      newOptions.forEach((item) => {
-        if (
-          !this.availableOptions.find(
-            (option) => option[this.valueAttr] === item[this.valueAttr]
-          )
-        ) {
-          this.fetchedOptions.push(item)
-        }
-      })
-    },
-
-    clearSearch() {
-      this.search = null
-    },
-
-    selected(option) {
-      if (this.multiple) {
-        return this.value && this.value.includes(option)
+    async fetchOptions() {
+      if (this.disabled) {
+        this.fetchMissingOption()
+        return
       }
 
-      return this.value === option
+      this.loading = true
+
+      const options = await this.collection[this.collectionMethod]({
+        ...this.queryParams({
+          page: this.page,
+          search: this.search,
+        }),
+        cacheId: this.groupID,
+      })
+
+      this.$emit('loaded', options)
+
+      this.loading = false
+
+      if (this.$refs.infiniteLoading) {
+        this.$refs.infiniteLoading.$emit('infinite-loading-reset')
+      }
+
+      if (options) {
+        this.addOptions(options)
+        this.fetchMissingOption()
+      }
+    },
+
+    focusSearch() {
+      if (this.searchable && this.visible) {
+        this.$nextTick(() => {
+          if (this.$refs.searchInput) {
+            this.$refs.searchInput.setFocus()
+          }
+        })
+      }
+    },
+
+    queryParams(args) {
+      const query = {
+        filters: {
+          ...this.collectionFilter,
+        },
+      }
+      if (args.search && this.searchable) {
+        query.filters.nameCont = args.search
+      } else if (args.missingValue && this.paginated) {
+        query.filters[`${this.valueAttr}Eq`] = args.missingValue
+      } else if (args.page && this.paginated) {
+        query.page = args.page
+      }
+
+      return query
     },
 
     select(option) {
@@ -513,11 +513,25 @@ export default {
       }
     },
 
-    unselect(option) {
-      this.$emit(
-        'input',
-        this.value.filter((item) => item !== option)
-      )
+    selected(option) {
+      if (this.multiple) {
+        return this.value && this.value.includes(option)
+      }
+
+      return this.value === option
+    },
+
+    sort(options) {
+      const sortedOptions = JSON.parse(JSON.stringify(options))
+      return sortedOptions.sort((a, b) => {
+        if (a[this.labelAttr] < b[this.labelAttr]) {
+          return -1
+        }
+        if (a[this.labelAttr] > b[this.labelAttr]) {
+          return 1
+        }
+        return 0
+      })
     },
 
     toggle() {
@@ -529,14 +543,11 @@ export default {
       this.focusSearch()
     },
 
-    focusSearch() {
-      if (this.searchable && this.visible) {
-        this.$nextTick(() => {
-          if (this.$refs.searchInput) {
-            this.$refs.searchInput.setFocus()
-          }
-        })
-      }
+    unselect(option) {
+      this.$emit(
+        'input',
+        this.value.filter((item) => item !== option)
+      )
     },
   },
 }

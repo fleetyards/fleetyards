@@ -1,7 +1,7 @@
-import Highcharts from 'highcharts'
-
-Highcharts.setOptions({
+export default {
+  // special colors for some of the
   background2: '#505053',
+
   chart: {
     backgroundColor: 'transparent',
     plotBorderColor: '#606063',
@@ -9,6 +9,7 @@ Highcharts.setOptions({
       fontSize: '11px',
     },
   },
+
   colors: [
     '#428bca',
     '#90ee7e',
@@ -22,11 +23,15 @@ Highcharts.setOptions({
     '#7798BF',
     '#aaeeee',
   ],
+
   contrastTextColor: '#F0F0F3',
+
   credits: {
     enabled: false,
   },
+
   dataLabelsColor: '#B0B0B3',
+
   drilldown: {
     activeAxisLabelStyle: {
       color: '#F0F0F3',
@@ -34,10 +39,6 @@ Highcharts.setOptions({
     activeDataLabelStyle: {
       color: '#F0F0F3',
     },
-  },
-
-  global: {
-    allowDecimals: false,
   },
 
   labels: {
@@ -60,7 +61,6 @@ Highcharts.setOptions({
     },
   },
 
-  // special colors for some of the
   legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
 
   maskColor: 'rgba(255,255,255,0.3)',
@@ -201,25 +201,6 @@ Highcharts.setOptions({
     },
   },
   xAxis: {
-    gridLineColor: '#707073',
-    labels: {
-      style: {
-        color: '#E0E0E3',
-        fontSize: '12px',
-      },
-    },
-    lineColor: '#707073',
-    minorGridLineColor: '#505053',
-    tickColor: '#707073',
-    title: {
-      style: {
-        color: '#A0A0A3',
-      },
-      text: null,
-    },
-  },
-  yAxis: {
-    gridLineColor: '#707073',
     labels: {
       style: {
         color: '#E0E0E3',
@@ -237,4 +218,24 @@ Highcharts.setOptions({
       text: null,
     },
   },
-})
+  yAxis: {
+    gridLineColor: '#707073',
+    gridLineWidth: 1,
+    labels: {
+      style: {
+        color: '#E0E0E3',
+        fontSize: '12px',
+      },
+    },
+    lineColor: '#707073',
+    minorGridLineColor: '#505053',
+    tickColor: '#707073',
+    tickWidth: 1,
+    title: {
+      style: {
+        color: '#A0A0A3',
+      },
+      text: null,
+    },
+  },
+}

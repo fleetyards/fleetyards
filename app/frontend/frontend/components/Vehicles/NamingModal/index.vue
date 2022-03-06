@@ -135,10 +135,10 @@
 </template>
 
 <script>
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Btn from '@/frontend/core/components/Btn'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import { transformErrors } from '@/frontend/api/helpers'
 
@@ -146,10 +146,10 @@ export default {
   name: 'VehicleModal',
 
   components: {
-    Modal,
+    Btn,
     Checkbox,
     FormInput,
-    Btn,
+    Modal,
   },
 
   props: {
@@ -161,9 +161,9 @@ export default {
 
   data() {
     return {
-      submitting: false,
       deleting: false,
       form: null,
+      submitting: false,
     }
   },
 
@@ -197,23 +197,6 @@ export default {
       this.form.alternativeNames.splice(index, 1)
     },
 
-    useName(index) {
-      const newName = this.form.alternativeNames[index]
-      this.form.alternativeNames[index] = this.form.name
-      this.form.name = newName
-    },
-
-    setupForm() {
-      const initialData = JSON.parse(JSON.stringify(this.vehicle || {}))
-
-      this.form = {
-        name: initialData.name,
-        serial: initialData.serial,
-        nameVisible: initialData.nameVisible,
-        alternativeNames: initialData.alternativeNames,
-      }
-    },
-
     async save() {
       this.submitting = true
 
@@ -234,6 +217,23 @@ export default {
       }
 
       this.submitting = false
+    },
+
+    setupForm() {
+      const initialData = JSON.parse(JSON.stringify(this.vehicle || {}))
+
+      this.form = {
+        alternativeNames: initialData.alternativeNames,
+        name: initialData.name,
+        nameVisible: initialData.nameVisible,
+        serial: initialData.serial,
+      }
+    },
+
+    useName(index) {
+      const newName = this.form.alternativeNames[index]
+      this.form.alternativeNames[index] = this.form.name
+      this.form.name = newName
     },
   },
 }

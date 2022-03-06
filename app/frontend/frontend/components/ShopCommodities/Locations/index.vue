@@ -57,23 +57,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'ShopCommodityLocations',
 
-@Component<ShopCommodityLocations>({})
-export default class ShopCommodityLocations extends Vue {
-  @Prop({ required: true }) item!: any
+  props: {
+    item: {
+      required: true,
+      type: Object,
+    },
+  },
 
-  shopRoute(shop) {
-    return {
-      name: 'shop',
-      params: {
-        stationSlug: shop.station.slug,
-        slug: shop.slug,
-      },
-    }
-  }
+  methods: {
+    shopRoute(shop) {
+      return {
+        name: 'shop',
+        params: {
+          slug: shop.slug,
+          stationSlug: shop.station.slug,
+        },
+      }
+    },
+  },
 }
 </script>
 

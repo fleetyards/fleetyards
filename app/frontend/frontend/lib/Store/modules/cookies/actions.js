@@ -1,10 +1,10 @@
 export default {
-  reset({ commit }) {
-    commit('reset')
-  },
-
   hideInfo({ commit }) {
     commit('setInfoVisible', false)
+  },
+
+  reset({ commit }) {
+    commit('reset')
   },
 
   updateAcceptedCookies({ commit }, payload) {

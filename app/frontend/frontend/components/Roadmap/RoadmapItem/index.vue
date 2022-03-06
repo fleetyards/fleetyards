@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 import { isBefore, addHours } from 'date-fns'
 
 export default {
@@ -81,9 +81,9 @@ export default {
   },
 
   props: {
-    item: {
-      type: Object,
-      required: true,
+    active: {
+      type: Boolean,
+      default: null,
     },
 
     compact: {
@@ -91,24 +91,23 @@ export default {
       default: true,
     },
 
+    item: {
+      type: Object,
+      required: true,
+    },
+
     showProgress: {
       type: Boolean,
       default: true,
     },
-
-    active: {
-      type: Boolean,
-      default: null,
-    },
   },
 
   computed: {
-    storeImage() {
-      if (this.item.storeImageSmall) {
-        return this.item.storeImageSmall
+    cssClasses() {
+      return {
+        compact: this.compact,
+        inactive: !this.item.active && !this.active,
       }
-
-      return `https://robertsspaceindustries.com${this.item.image}`
     },
 
     description() {
@@ -119,6 +118,13 @@ export default {
       return this.item.description
     },
 
+    inactiveTooltip() {
+      if (!this.item.active) {
+        return this.$t('texts.roadmap.inactive')
+      }
+      return null
+    },
+
     recentlyUpdated() {
       return isBefore(
         new Date(),
@@ -126,18 +132,12 @@ export default {
       )
     },
 
-    cssClasses() {
-      return {
-        compact: this.compact,
-        inactive: !this.item.active && !this.active,
+    storeImage() {
+      if (this.item.storeImageSmall) {
+        return this.item.storeImageSmall
       }
-    },
 
-    inactiveTooltip() {
-      if (!this.item.active) {
-        return this.$t('texts.roadmap.inactive')
-      }
-      return null
+      return `https://robertsspaceindustries.com${this.item.image}`
     },
 
     updates() {
@@ -157,11 +157,11 @@ export default {
           const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
 
           return {
-            key,
             change: count < 0 ? 'decreased' : 'increased',
-            old: lastVersion[key][0],
-            new: lastVersion[key][1],
             count,
+            key,
+            new: lastVersion[key][1],
+            old: lastVersion[key][0],
           }
         })
         .filter(
@@ -185,7 +185,7 @@ export default {
     openModal() {
       this.$comlink.$emit('open-modal', {
         component: () =>
-          import('@/frontend/components/Roadmap/RoadmapItem/Modal'),
+          import('@/frontend/components/Roadmap/RoadmapItem/Modal/index.vue'),
         props: {
           item: this.item,
         },

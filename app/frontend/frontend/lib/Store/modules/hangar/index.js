@@ -2,51 +2,23 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
-    ships(state) {
-      return state.ships
-    },
-
-    preview(state) {
-      return state.preview
+    detailsVisible(state) {
+      return state.detailsVisible
     },
 
     empty(state) {
       return state.ships.length === 0
     },
 
-    detailsVisible(state) {
-      return state.detailsVisible
-    },
-
     filterVisible(state) {
       return state.filterVisible
     },
 
-    fleetchartVisible(state) {
-      return state.fleetchartVisible
-    },
-
-    fleetchartZoomData(state) {
-      return state.fleetchartZoomData
-    },
-
-    fleetchartViewpoint(state) {
-      return state.fleetchartViewpoint
-    },
-
     fleetchartLabels(state) {
       return state.fleetchartLabels
-    },
-
-    fleetchartScreenHeight(state) {
-      return state.fleetchartScreenHeight
     },
 
     fleetchartMode(state) {
@@ -57,20 +29,44 @@ export default () => ({
       return state.fleetchartScale
     },
 
-    money(state) {
-      return state.money
+    fleetchartScreenHeight(state) {
+      return state.fleetchartScreenHeight
     },
 
-    starterGuideVisible(state) {
-      return state.starterGuideVisible
+    fleetchartViewpoint(state) {
+      return state.fleetchartViewpoint
+    },
+
+    fleetchartVisible(state) {
+      return state.fleetchartVisible
+    },
+
+    fleetchartZoomData(state) {
+      return state.fleetchartZoomData
+    },
+
+    gridView(state) {
+      return state.gridView
+    },
+
+    money(state) {
+      return state.money
     },
 
     perPage(state) {
       return state.perPage
     },
 
-    gridView(state) {
-      return state.gridView
+    preview(state) {
+      return state.preview
+    },
+
+    ships(state) {
+      return state.ships
+    },
+
+    starterGuideVisible(state) {
+      return state.starterGuideVisible
     },
 
     tableSlim(state) {
@@ -80,16 +76,16 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
-    reset(state) {
-      Object.assign(state, getDefaultState())
-    },
-
     add(state, payload) {
       state.ships.push(payload)
     },
 
     remove(state, payload) {
       state.ships.splice(state.ships.indexOf(payload), 1)
+    },
+
+    reset(state) {
+      Object.assign(state, getDefaultState())
     },
 
     setDetailsVisible(state, payload) {
@@ -100,24 +96,8 @@ export default () => ({
       state.filterVisible = payload
     },
 
-    setFleetchartVisible(state, payload) {
-      state.fleetchartVisible = payload
-    },
-
-    setFleetchartZoomData(state, payload) {
-      state.fleetchartZoomData = payload
-    },
-
-    setFleetchartViewpoint(state, payload) {
-      state.fleetchartViewpoint = payload
-    },
-
     setFleetchartLabels(state, payload) {
       state.fleetchartLabels = payload
-    },
-
-    setFleetchartScreenHeight(state, payload) {
-      state.fleetchartScreenHeight = payload
     },
 
     setFleetchartMode(state, payload) {
@@ -128,33 +108,53 @@ export default () => ({
       state.fleetchartScale = payload
     },
 
-    setShips(state, payload) {
-      state.ships = payload
+    setFleetchartScreenHeight(state, payload) {
+      state.fleetchartScreenHeight = payload
     },
 
-    setPreview(state, payload) {
-      state.preview = !!payload
+    setFleetchartViewpoint(state, payload) {
+      state.fleetchartViewpoint = payload
     },
 
-    setMoney(state, payload) {
-      state.money = payload
+    setFleetchartVisible(state, payload) {
+      state.fleetchartVisible = payload
     },
 
-    setStarterGuideVisible(state, payload) {
-      state.starterGuideVisible = payload
-    },
-
-    setPerPage(state, payload) {
-      state.perPage = payload
+    setFleetchartZoomData(state, payload) {
+      state.fleetchartZoomData = payload
     },
 
     setGridView(state, payload) {
       state.gridView = payload
     },
 
+    setMoney(state, payload) {
+      state.money = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
+    },
+
+    setPreview(state, payload) {
+      state.preview = !!payload
+    },
+
+    setShips(state, payload) {
+      state.ships = payload
+    },
+
+    setStarterGuideVisible(state, payload) {
+      state.starterGuideVisible = payload
+    },
+
     setTableSlim(state, payload) {
       state.tableSlim = payload
     },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

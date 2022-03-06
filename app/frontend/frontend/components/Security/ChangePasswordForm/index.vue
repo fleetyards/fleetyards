@@ -57,55 +57,58 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 
-@Component<ChangePasswordForm>({
-  components: {
-    FormInput,
-    Btn,
-  },
-})
-export default class ChangePasswordForm extends Vue {
-  submitting = false
+export default {
+  name: 'ChangePasswordForm',
 
-  form: ChangePasswordForm | null = null
+  components: {
+    Btn,
+    FormInput,
+  },
+
+  data() {
+    return {
+      form: null,
+      submitting: false,
+    }
+  },
 
   mounted() {
     this.setupForm()
-  }
+  },
 
-  setupForm() {
-    this.form = {
-      currentPassword: null,
-      password: null,
-      passwordConfirmation: null,
-    }
-  }
+  methods: {
+    async changePassword() {
+      this.submitting = true
 
-  async changePassword() {
-    this.submitting = true
+      const response = await this.$api.put('password/update', this.form)
 
-    const response = await this.$api.put('password/update', this.form)
+      this.submitting = false
 
-    this.submitting = false
+      if (!response.error) {
+        displaySuccess({
+          text: this.$t('messages.changePassword.success'),
+        })
 
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t('messages.changePassword.success'),
-      })
+        this.$router.push('/').catch(() => {})
+      } else {
+        displayAlert({
+          text: this.$t('messages.changePassword.failure'),
+        })
+      }
+    },
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push('/').catch(() => {})
-    } else {
-      displayAlert({
-        text: this.$t('messages.changePassword.failure'),
-      })
-    }
-  }
+    setupForm() {
+      this.form = {
+        currentPassword: null,
+        password: null,
+        passwordConfirmation: null,
+      }
+    },
+  },
 }
 </script>

@@ -277,13 +277,13 @@ export default {
   name: 'FleetSettings',
 
   components: {
-    VueUploadComponent,
+    Avatar,
     BreadCrumbs,
     Btn,
+    Checkbox,
     FormInput,
     FormTextarea,
-    Checkbox,
-    Avatar,
+    VueUploadComponent,
   },
 
   mixins: [MetaInfo],
@@ -292,56 +292,34 @@ export default {
 
   data() {
     return {
-      leaving: false,
-
-      submitting: false,
-
-      deleting: false,
-
-      files: [],
-
-      fileExtensions: 'jpg,jpeg,png,webp',
-
       acceptedMimeTypes: 'image/png,image/jpeg,image/webp',
-
+      deleting: false,
+      fileExtensions: 'jpg,jpeg,png,webp',
+      files: [],
       form: {
-        fid: null,
-        name: null,
         description: null,
-        rsiSid: null,
         discord: null,
-        ts: null,
-        homepage: null,
-        twitch: null,
-        youtube: null,
+        fid: null,
         guilded: null,
+        homepage: null,
+        name: null,
         publicFleet: false,
         removeLogo: false,
+        rsiSid: null,
+        ts: null,
+        twitch: null,
+        youtube: null,
       },
+      leaving: false,
+      submitting: false,
     }
   },
 
   computed: {
-    fleet() {
-      return fleetsCollection.record
+    canEdit() {
+      return this.fleet?.myRole === 'admin'
     },
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
 
-      return this.$t('title.fleets.settings', { fleet: this.fleet.name })
-    },
-    logoUrl() {
-      if (this.fleet) {
-        return this.newLogo.url || this.fleet.logo
-      }
-
-      return this.newLogo.url
-    },
-    newLogo() {
-      return (this.files && this.files[0]) || {}
-    },
     crumbs() {
       if (!this.fleet) {
         return []
@@ -349,25 +327,47 @@ export default {
 
       return [
         {
+          label: this.fleet.name,
           to: {
             name: 'fleet',
             params: {
               slug: this.fleet.slug,
             },
           },
-          label: this.fleet.name,
         },
       ]
     },
-    canEdit() {
-      return this.fleet?.myRole === 'admin'
+
+    fleet() {
+      return fleetsCollection.record
     },
+
     leaveTooltip() {
       if (this.canEdit) {
         return this.$t('texts.fleets.leaveInfo')
       }
 
       return null
+    },
+
+    logoUrl() {
+      if (this.fleet) {
+        return this.newLogo.url || this.fleet.logo
+      }
+
+      return this.newLogo.url
+    },
+
+    metaTitle() {
+      if (!this.fleet) {
+        return null
+      }
+
+      return this.$t('title.fleets.settings', { fleet: this.fleet.name })
+    },
+
+    newLogo() {
+      return (this.files && this.files[0]) || {}
     },
   },
 
@@ -398,9 +398,74 @@ export default {
   },
 
   methods: {
-    selectLogo() {
-      this.form.removeLogo = false
-      this.$refs.upload.$el.querySelector('input').click()
+    async destroy() {
+      this.deleting = true
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
+        },
+        onConfirm: async () => {
+          const response = await this.$api.destroy(
+            `fleets/${this.$route.params.slug}`
+          )
+
+          if (!response.error) {
+            this.$router.push({ name: 'home' }).catch(() => {})
+
+            this.$comlink.$emit('fleet-update')
+
+            displaySuccess({
+              text: this.$t('messages.fleet.destroy.success'),
+            })
+          } else {
+            displayAlert({
+              text: this.$t('messages.fleet.destroy.failure'),
+            })
+            this.deleting = false
+          }
+        },
+        text: this.$t('messages.confirm.fleet.destroy'),
+      })
+    },
+
+    async fetch() {
+      await fleetsCollection.findBySlug(this.$route.params.slug)
+    },
+
+    handleUpdateError(error) {
+      if (error.response && error.response.data) {
+        const { data: errorData } = error.response
+
+        this.$refs.form.setErrors(transformErrors(errorData.errors))
+
+        displayAlert({
+          text: errorData.message,
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.update.failure'),
+        })
+      }
+    },
+
+    inputFilter(newFile, oldFile, prevent) {
+      if (newFile && !oldFile) {
+        if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
+          this.alert('Your choice is not a picture')
+          return prevent()
+        }
+      }
+      if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+        // eslint-disable-next-line no-param-reassign
+        newFile.url = ''
+        const URL = window.URL || window.webkitURL
+        if (URL && URL.createObjectURL) {
+          // eslint-disable-next-line no-param-reassign
+          newFile.url = URL.createObjectURL(newFile.file)
+        }
+      }
+
+      return null
     },
 
     removeLogo() {
@@ -409,20 +474,25 @@ export default {
       this.form.removeLogo = true
     },
 
+    selectLogo() {
+      this.form.removeLogo = false
+      this.$refs.upload.$el.querySelector('input').click()
+    },
+
     setupForm() {
       this.form = {
-        fid: this.fleet.fid,
-        rsiSid: this.fleet.rsiSid,
-        name: this.fleet.name,
         description: this.fleet.description,
         discord: this.fleet.discord,
-        ts: this.fleet.ts,
-        homepage: this.fleet.homepage,
-        twitch: this.fleet.twitch,
-        youtube: this.fleet.youtube,
+        fid: this.fleet.fid,
         guilded: this.fleet.guilded,
+        homepage: this.fleet.homepage,
+        name: this.fleet.name,
         publicFleet: this.fleet.publicFleet,
         removeLogo: false,
+        rsiSid: this.fleet.rsiSid,
+        ts: this.fleet.ts,
+        twitch: this.fleet.twitch,
+        youtube: this.fleet.youtube,
       }
     },
 
@@ -456,6 +526,10 @@ export default {
       }
     },
 
+    updatedValue(value) {
+      this.files = value
+    },
+
     async uploadLogo() {
       if (!this.newLogo || !this.newLogo.file) {
         return
@@ -482,80 +556,6 @@ export default {
       } else {
         this.handleUpdateError(response.error)
       }
-    },
-
-    handleUpdateError(error) {
-      if (error.response && error.response.data) {
-        const { data: errorData } = error.response
-
-        this.$refs.form.setErrors(transformErrors(errorData.errors))
-
-        displayAlert({
-          text: errorData.message,
-        })
-      } else {
-        displayAlert({
-          text: this.$t('messages.fleet.update.failure'),
-        })
-      }
-    },
-
-    async destroy() {
-      this.deleting = true
-      displayConfirm({
-        text: this.$t('messages.confirm.fleet.destroy'),
-        onConfirm: async () => {
-          const response = await this.$api.destroy(
-            `fleets/${this.$route.params.slug}`
-          )
-
-          if (!response.error) {
-            this.$router.push({ name: 'home' }).catch(() => {})
-
-            this.$comlink.$emit('fleet-update')
-
-            displaySuccess({
-              text: this.$t('messages.fleet.destroy.success'),
-            })
-          } else {
-            displayAlert({
-              text: this.$t('messages.fleet.destroy.failure'),
-            })
-            this.deleting = false
-          }
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-
-    updatedValue(value) {
-      this.files = value
-    },
-
-    inputFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-          this.alert('Your choice is not a picture')
-          return prevent()
-        }
-      }
-      if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-        // eslint-disable-next-line no-param-reassign
-        newFile.url = ''
-        const URL = window.URL || window.webkitURL
-        if (URL && URL.createObjectURL) {
-          // eslint-disable-next-line no-param-reassign
-          newFile.url = URL.createObjectURL(newFile.file)
-        }
-      }
-
-      return null
-    },
-
-    async fetch() {
-      await fleetsCollection.findBySlug(this.$route.params.slug)
     },
   },
 }

@@ -2,17 +2,9 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
-    version(state) {
-      return state.version
-    },
-
     codename(state) {
       return state.codename
     },
@@ -36,20 +28,28 @@ export default () => ({
     overlayVisible(state) {
       return state.overlayVisible
     },
+
+    version(state) {
+      return state.version
+    },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    closeNav(state) {
+      state.navCollapsed = true
+    },
+
+    openNav(state) {
+      state.navCollapsed = false
+    },
+
     reset(state) {
       Object.assign(state, getDefaultState())
     },
 
     setCheckVersionIntervalHandle(state, payload) {
       state.checkVersionIntervalHandle = payload
-    },
-
-    setVersion(state, payload) {
-      state.version = payload
     },
 
     setCodename(state, payload) {
@@ -60,21 +60,21 @@ export default () => ({
       state.navCollapsed = payload
     },
 
-    toggleSlimNav(state) {
-      state.navSlim = !state.navSlim
-    },
-
-    openNav(state) {
-      state.navCollapsed = false
-    },
-
-    closeNav(state) {
-      state.navCollapsed = true
-    },
-
     setOverlayVisible(state, payload) {
       state.overlayVisible = payload
     },
+
+    setVersion(state, payload) {
+      state.version = payload
+    },
+
+    toggleSlimNav(state) {
+      state.navSlim = !state.navSlim
+    },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

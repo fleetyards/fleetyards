@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
 export default {
   name: 'PlanetsPanel',
@@ -28,17 +28,19 @@ export default {
   },
 
   props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-    route: {
-      type: Object,
-      required: true,
-    },
     id: {
-      type: String,
       default: null,
+      type: String,
+    },
+
+    item: {
+      required: true,
+      type: Object,
+    },
+
+    route: {
+      required: true,
+      type: Object,
     },
   },
 }

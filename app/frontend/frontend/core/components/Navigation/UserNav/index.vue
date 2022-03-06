@@ -42,7 +42,6 @@ import sessionCollection from '@/frontend/api/collections/Session'
 
 export default {
   name: 'UserNav',
-
   components: {
     NavItem,
   },

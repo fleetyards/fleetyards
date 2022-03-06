@@ -58,16 +58,16 @@ export default {
   name: 'RequestPassword',
 
   components: {
-    FormInput,
     Btn,
+    FormInput,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      submitting: false,
       form: null,
+      submitting: false,
     }
   },
 
@@ -80,12 +80,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        email: null,
-      }
-    },
-
     async requestPassword() {
       this.submitting = true
 
@@ -98,6 +92,12 @@ export default {
       })
 
       this.$router.push('/').catch(() => {})
+    },
+
+    setupForm() {
+      this.form = {
+        email: null,
+      }
     },
   },
 }

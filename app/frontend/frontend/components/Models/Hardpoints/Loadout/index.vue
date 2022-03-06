@@ -31,32 +31,40 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+import loadoutListIcon from '@/images/icons/loadout-list-icon.svg'
 
-@Component<HardpointItem>({})
-export default class HardpointItem extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint
+export default {
+  name: 'HardpointItem',
 
-  /* eslint-disable global-require */
-  loadoutListIcon = require('images/icons/loadout-list-icon.svg')
-
-  /* eslint-enable global-require */
-  get showComponent() {
-    return this.loadout.component
-  }
-
-  get loadoutsCount() {
-    return this.hardpoint.loadouts.length
-  }
-
-  get loadout() {
-    if (!this.hardpoint.loadouts.length) {
-      return null
+  props: {
+    hardpoint: {
+      required: true,
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      loadoutListIcon: loadoutListIcon,
     }
+  },
 
-    return this.hardpoint.loadouts[0]
-  }
+  computed: {
+    loadout() {
+      if (!this.hardpoint.loadouts.length) {
+        return null
+      }
+
+      return this.hardpoint.loadouts[0]
+    },
+
+    loadoutsCount() {
+      return this.hardpoint.loadouts.length
+    },
+
+    showComponent() {
+      return this.loadout.component
+    },
+  },
 }
 </script>

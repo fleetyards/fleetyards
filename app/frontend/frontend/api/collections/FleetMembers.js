@@ -14,8 +14,8 @@ export class FleetMembersCollection extends BaseCollection {
 
   async findAll(params) {
     const response = await get(`fleets/${params?.slug}/members`, {
-      q: params?.filters,
       page: params?.page,
+      q: params?.filters,
     })
 
     this.params = params

@@ -120,7 +120,6 @@ import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 export default {
   name: 'FleetPreview',
-
   components: {
     Btn,
     Panel,

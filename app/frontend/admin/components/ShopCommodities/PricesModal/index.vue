@@ -89,18 +89,13 @@ export default {
   name: 'BuyPricesModal',
 
   components: {
-    Modal,
-    FormInput,
     Btn,
     CollectionFilterGroup,
+    FormInput,
+    Modal,
   },
 
   props: {
-    shopId: {
-      type: String,
-      required: true,
-    },
-
     path: {
       type: String,
       required: true,
@@ -110,29 +105,34 @@ export default {
       type: Object,
       required: true,
     },
+
+    shopId: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
     return {
       collection: commodityPricesCollection,
-      prices: [],
       form: null,
+      prices: [],
     }
   },
 
   computed: {
+    params() {
+      return {
+        path: this.path,
+        shopCommodityId: this.shopCommodity.id,
+        shopId: this.shopId,
+      }
+    },
+
     title() {
       return this.$t(`headlines.modals.shopCommodity.${this.path}Prices`, {
         shopCommodity: this.shopCommodity.item.name,
       })
-    },
-
-    params() {
-      return {
-        shopId: this.shopId,
-        shopCommodityId: this.shopCommodity.id,
-        path: this.path,
-      }
     },
   },
 
@@ -142,18 +142,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        shopCommodityId: this.shopCommodity.id,
-        path: this.path,
-        price: null,
-      }
-    },
-
-    async fetch() {
-      await this.collection.findAll(this.params)
-    },
-
     async create() {
       await this.collection.create(this.form)
 
@@ -170,6 +158,18 @@ export default {
       this.$comlink.$emit('prices-update')
 
       this.fetch()
+    },
+
+    async fetch() {
+      await this.collection.findAll(this.params)
+    },
+
+    setupForm() {
+      this.form = {
+        path: this.path,
+        price: null,
+        shopCommodityId: this.shopCommodity.id,
+      }
     },
   },
 }

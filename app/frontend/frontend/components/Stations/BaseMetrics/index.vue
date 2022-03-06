@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import LocationLabel from '@/frontend/components/Stations/LocationLabel'
+import LocationLabel from '@/frontend/components/Stations/LocationLabel/index.vue'
 
 export default {
   name: 'StationsBaseMetrics',
@@ -64,14 +64,14 @@ export default {
   },
 
   props: {
-    station: {
-      type: Object,
-      required: true,
+    padding: {
+      default: false,
+      type: Boolean,
     },
 
-    padding: {
-      type: Boolean,
-      default: false,
+    station: {
+      required: true,
+      type: Object,
     },
   },
 }

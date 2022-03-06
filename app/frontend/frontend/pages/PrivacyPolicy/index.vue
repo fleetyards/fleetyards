@@ -217,9 +217,9 @@ export default {
   name: 'PrivacyPolicy',
 
   components: {
-    Panel,
-    Btn,
     AppContact,
+    Btn,
+    Panel,
   },
 
   mixins: [MetaInfo],

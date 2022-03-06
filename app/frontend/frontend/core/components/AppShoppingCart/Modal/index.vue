@@ -118,11 +118,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Btn from '@/frontend/core/components/Btn'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { sum as sumArray } from '@/frontend/utils/Array'
 import { sortBy } from '@/frontend/lib/Helpers'
-import ItemAmount from '@/frontend/core/components/AppShoppingCart/ItemAmount'
+import ItemAmount from '@/frontend/core/components/AppShoppingCart/ItemAmount/index.vue'
 import ComponentsCollection from '@/frontend/api/collections/Components'
 import CommoditiesCollection from '@/frontend/api/collections/Commodities'
 import EquipmentCollection from '@/frontend/api/collections/Equipment'
@@ -134,9 +134,9 @@ export default {
   name: 'ShoppingCartModal',
 
   components: {
-    Modal,
     Btn,
     ItemAmount,
+    Modal,
   },
 
   data() {
@@ -159,19 +159,27 @@ export default {
       )
     },
   },
+
   methods: {
     ...mapActions('shoppingCart', {
       clearCart: 'clear',
-      updateInCart: 'update',
       removeFromCart: 'remove',
+      updateInCart: 'update',
     }),
-
-    sum(cartItem) {
-      return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
-    },
 
     closeModal() {
       this.$comlink.$emit('close-modal')
+    },
+
+    async refresh() {
+      this.loading = true
+      await this.refreshForType(ComponentsCollection, 'Component')
+      await this.refreshForType(CommoditiesCollection, 'Commodity')
+      await this.refreshForType(EquipmentCollection, 'Equipment')
+      await this.refreshForType(ModelsCollection, 'Model')
+      // await this.refreshForType(ModelPaintsCollection, 'ModelPaint')
+      // await this.refreshForType(ModelModulesCollection, 'ModelModule')
+      this.loading = false
     },
 
     async refreshForType(collection, type) {
@@ -186,15 +194,8 @@ export default {
       items.forEach((item) => this.updateInCart({ item, type }))
     },
 
-    async refresh() {
-      this.loading = true
-      await this.refreshForType(ComponentsCollection, 'Component')
-      await this.refreshForType(CommoditiesCollection, 'Commodity')
-      await this.refreshForType(EquipmentCollection, 'Equipment')
-      await this.refreshForType(ModelsCollection, 'Model')
-      // await this.refreshForType(ModelPaintsCollection, 'ModelPaint')
-      // await this.refreshForType(ModelModulesCollection, 'ModelModule')
-      this.loading = false
+    sum(cartItem) {
+      return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
     },
   },
 }

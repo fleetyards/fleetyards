@@ -31,75 +31,103 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import { groupBy, sortBy } from '@/frontend/lib/Helpers'
-import Panel from '@/frontend/core/components/Panel'
-import HardpointItems from '../Items'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import HardpointItems from '../Items/index.vue'
+import computersIcon from '@/images/hardpoints/computers.svg'
+import coolersIcon from '@/images/hardpoints/coolers.svg'
+import fuelIntakesIcon from '@/images/hardpoints/fuel_intakes.svg'
+import fuelTanksIcon from '@/images/hardpoints/fuel_tanks.svg'
+import jumpModulesIcon from '@/images/hardpoints/jump_modules.svg'
+import mainThrustersIcon from '@/images/hardpoints/main_thrusters.svg'
+import maneuveringThrustersIcon from '@/images/hardpoints/maneuvering_thrusters.svg'
+import missilesIcon from '@/images/hardpoints/missiles.svg'
+import powerPlantsIcon from '@/images/hardpoints/power_plants.svg'
+import quantumDrivesIcon from '@/images/hardpoints/quantum_drives.svg'
+import quantumFuelTanksIcon from '@/images/hardpoints/quantum_fuel_tanks.svg'
+import radarIcon from '@/images/hardpoints/radar.svg'
+import shieldGeneratorsIcon from '@/images/hardpoints/shield_generators.svg'
+import turretsIcon from '@/images/hardpoints/turrets.svg'
+import utilityItemsIcon from '@/images/hardpoints/utility_items.svg'
+import weaponsIcon from '@/images/hardpoints/weapons.svg'
 
-@Component<HardpointGroup>({
+export default {
+  name: 'HardpointGroup',
+
   components: {
     HardpointItems,
     Panel,
   },
-})
-export default class HardpointGroup extends Vue {
-  @Prop({ required: true }) group: HardpointGroup
 
-  @Prop({ required: true }) hardpoints: ModelHardpoint[]
+  props: {
+    group: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ default: false }) withoutTitle: boolean
+    hardpoints: {
+      type: Array,
+      required: true,
+    },
 
-  icons = {
-    /* eslint-disable global-require */
-    radar: require('images/hardpoints/radar.svg'),
-    computers: require('images/hardpoints/computers.svg'),
-    power_plants: require('images/hardpoints/power_plants.svg'),
-    coolers: require('images/hardpoints/coolers.svg'),
-    shield_generators: require('images/hardpoints/shield_generators.svg'),
-    fuel_intakes: require('images/hardpoints/fuel_intakes.svg'),
-    fuel_tanks: require('images/hardpoints/fuel_tanks.svg'),
-    quantum_drives: require('images/hardpoints/quantum_drives.svg'),
-    jump_modules: require('images/hardpoints/jump_modules.svg'),
-    quantum_fuel_tanks: require('images/hardpoints/quantum_fuel_tanks.svg'),
-    main_thrusters: require('images/hardpoints/main_thrusters.svg'),
-    maneuvering_thrusters: require('images/hardpoints/maneuvering_thrusters.svg'),
-    weapons: require('images/hardpoints/weapons.svg'),
-    turrets: require('images/hardpoints/turrets.svg'),
-    missiles: require('images/hardpoints/missiles.svg'),
-    utility_items: require('images/hardpoints/utility_items.svg'),
-    /* eslint-enable global-require */
-  }
+    withoutTitle: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  grouped(type) {
-    return ['main_thrusters', 'maneuvering_thrusters'].includes(type)
-  }
-
-  groupByType(hardpoints) {
-    return groupBy(sortBy(hardpoints, 'type'), 'type')
-  }
-
-  groupByKey(hardpoints) {
-    return groupBy(sortBy(hardpoints, 'category'), 'key')
-  }
-
-  // groupByCategory(hardpoints) {
-  //   return groupBy(sortBy(hardpoints, 'category'), 'category')
-  // }
-
-  openComponentModal(hardpoint) {
-    if (!hardpoint.component) {
-      return
-    }
-
-    this.$comlink.$emit('open-modal', {
-      component: () =>
-        import('@/frontend/components/Models/Hardpoints/ComponentModal'),
-      props: {
-        hardpoint,
+  data() {
+    return {
+      icons: {
+        computers: computersIcon,
+        coolers: coolersIcon,
+        fuel_intakes: fuelIntakesIcon,
+        fuel_tanks: fuelTanksIcon,
+        jump_modules: jumpModulesIcon,
+        main_thrusters: mainThrustersIcon,
+        maneuvering_thrusters: maneuveringThrustersIcon,
+        missiles: missilesIcon,
+        power_plants: powerPlantsIcon,
+        quantum_drives: quantumDrivesIcon,
+        quantum_fuel_tanks: quantumFuelTanksIcon,
+        radar: radarIcon,
+        shield_generators: shieldGeneratorsIcon,
+        turrets: turretsIcon,
+        utility_items: utilityItemsIcon,
+        weapons: weaponsIcon,
       },
-    })
-  }
+    }
+  },
+
+  methods: {
+    groupByKey(hardpoints) {
+      return groupBy(sortBy(hardpoints, 'category'), 'key')
+    },
+
+    groupByType(hardpoints) {
+      return groupBy(sortBy(hardpoints, 'type'), 'type')
+    },
+
+    grouped(type) {
+      return ['main_thrusters', 'maneuvering_thrusters'].includes(type)
+    },
+
+    openComponentModal(hardpoint) {
+      if (!hardpoint.component) {
+        return
+      }
+
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import(
+            '@/frontend/components/Models/Hardpoints/ComponentModal/index.vue'
+          ),
+        props: {
+          hardpoint,
+        },
+      })
+    },
+  },
 }
 </script>

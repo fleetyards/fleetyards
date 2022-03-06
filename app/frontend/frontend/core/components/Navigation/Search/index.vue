@@ -26,8 +26,8 @@ export default {
 
   data() {
     return {
-      form: {},
       filter: debounce(this.debouncedFilter, 500),
+      form: {},
     }
   },
 
@@ -36,15 +36,15 @@ export default {
   },
 
   watch: {
+    $route() {
+      this.setupSearch()
+    },
+
     form: {
       deep: true,
       handler() {
         this.filter()
       },
-    },
-
-    $route() {
-      this.setupSearch()
     },
   },
 
@@ -53,13 +53,6 @@ export default {
   },
 
   methods: {
-    setupSearch() {
-      this.form = {
-        [this.$route.meta.search]:
-          this.$route.query[this.$route.meta.search] || null,
-      }
-    },
-
     debouncedFilter() {
       const query = {
         ...this.$route.query,
@@ -76,6 +69,13 @@ export default {
           query,
         })
         .catch((_err) => {})
+    },
+
+    setupSearch() {
+      this.form = {
+        [this.$route.meta.search]:
+          this.$route.query[this.$route.meta.search] || null,
+      }
     },
   },
 }

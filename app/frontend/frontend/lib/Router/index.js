@@ -19,11 +19,11 @@ const addTrailingSlashToAllRoutes = (routes) =>
 
       const modifiedRoute = {
         ...route,
+        path: `${path}/`,
         pathToRegexpOptions: {
           ...pathToRegexpOptions,
           strict: true,
         },
-        path: `${path}/`,
       }
 
       if (route.children && route.children.length > 0) {
@@ -45,9 +45,15 @@ const addTrailingSlashToAllRoutes = (routes) =>
   )
 
 const router = new Router({
-  mode: 'history',
   linkActiveClass: 'active',
   linkExactActiveClass: 'active-exact',
+  mode: 'history',
+
+  parseQuery(query) {
+    return qs.parse(query)
+  },
+
+  routes: addTrailingSlashToAllRoutes(initialRoutes),
 
   scrollBehavior: (to, _from, savedPosition) =>
     new Promise((resolve) => {
@@ -62,16 +68,10 @@ const router = new Router({
       }, 600)
     }),
 
-  parseQuery(query) {
-    return qs.parse(query)
-  },
-
   stringifyQuery(query) {
     const result = qs.stringify(query, { arrayFormat: 'brackets' })
     return result ? `?${result}` : ''
   },
-
-  routes: addTrailingSlashToAllRoutes(initialRoutes),
 })
 
 const validateAndResolveNewRoute = (to) => {

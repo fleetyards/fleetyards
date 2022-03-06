@@ -24,19 +24,18 @@ export default {
 
   props: {
     groups: {
-      type: Array,
       required: true,
+      type: Array,
     },
 
     size: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return ['default', 'large'].indexOf(value) !== -1
       },
     },
   },
-
   methods: {
     filter(event, filter) {
       event.preventDefault()

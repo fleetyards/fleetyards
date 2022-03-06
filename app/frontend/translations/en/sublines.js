@@ -1,20 +1,20 @@
 export default {
   hangarGuide: {
-    headline: 'maybe we should change that ;)',
     add: 'How to add a ship?',
     edit: 'How to edit a ship?',
     fleetchart: 'Fleetchart?',
-    public: 'Public URL?',
     groups: 'How to create and update groups?',
+    headline: 'maybe we should change that ;)',
+    public: 'Public URL?',
   },
   impressum: {
-    general: 'General Information (according to § 5 TMG)',
-    disclaimer: 'Disclaimer',
     copyright: 'Copyright',
-    thirdpartycontent: 'Credits',
-    sponsors: 'Sponsors',
-    liabilityInternal: 'Limitation of liability for internal content',
+    disclaimer: 'Disclaimer',
+    general: 'General Information (according to § 5 TMG)',
     liabilityExternal: 'Limitation of liability for external links',
+    liabilityInternal: 'Limitation of liability for internal content',
+    sponsors: 'Sponsors',
+    thirdpartycontent: 'Credits',
   },
   settings: {
     rsiData: 'RSI Information',

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
-import FleetyardsView from '@/embed/FleetyardsView'
+import FleetyardsView from '@/embed/FleetyardsView.vue'
 import store from '@/embed/lib/Store'
 import I18nPlugin from '@/frontend/lib/I18n'
 import ApiClient from '@/embed/api/client'
@@ -30,13 +30,13 @@ setTimeout(() => {
   // eslint-disable-next-line no-new
   new Vue({
     el: '#fleetyards-view',
-    store,
     data: {
-      ships: config.ships || [],
-      groupedButton: config.groupedButton || false,
       fleetchartSlider: config.fleetchartSlider || false,
       frontendEndpoint: window.FRONTEND_ENDPOINT,
+      groupedButton: config.groupedButton || false,
+      ships: config.ships || [],
     },
     render: (h) => h(FleetyardsView),
+    store,
   })
 }, 2000)

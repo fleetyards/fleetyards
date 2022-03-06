@@ -41,7 +41,6 @@ import { displaySuccess } from '@/frontend/lib/Noty'
 
 export default {
   name: 'SettingsNotifications',
-
   components: {
     Btn,
     Checkbox,

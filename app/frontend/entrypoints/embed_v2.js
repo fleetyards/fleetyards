@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
-import FleetyardsView from '@/embed/FleetyardsView'
+import FleetyardsView from '@/embed/FleetyardsView.vue'
 import store from '@/embed/lib/Store'
 import I18nPlugin from '@/frontend/lib/I18n'
 import ApiClient from '@/embed/api/client'
@@ -32,16 +32,23 @@ setTimeout(() => {
   // eslint-disable-next-line no-new
   window.FleetYardsFleetchart = new Vue({
     el: '#fleetyards-view',
-    store,
     data: {
+      fleetchartSlider: config.fleetchartSlider || false,
+      fleetID: config.fleetID || null,
+      frontendEndpoint: window.FRONTEND_ENDPOINT,
+      groupedButton: config.groupedButton || false,
       ships: config.ships || [],
       users: config.users || [],
-      fleetID: config.fleetID || null,
-      groupedButton: config.groupedButton || false,
-      fleetchartSlider: config.fleetchartSlider || false,
-      frontendEndpoint: window.FRONTEND_ENDPOINT,
     },
+
     methods: {
+      updateFleet(fleetID) {
+        const fleetview = (this.$children || [])[0]
+        if (fleetview) {
+          fleetview.updateFleet(fleetID)
+        }
+      },
+
       updateShips(ships) {
         const fleetview = (this.$children || [])[0]
         if (fleetview) {
@@ -55,14 +62,8 @@ setTimeout(() => {
           fleetview.updateUsers(users)
         }
       },
-
-      updateFleet(fleetID) {
-        const fleetview = (this.$children || [])[0]
-        if (fleetview) {
-          fleetview.updateFleet(fleetID)
-        }
-      },
     },
     render: (h) => h(FleetyardsView),
+    store,
   })
 }, 2000)

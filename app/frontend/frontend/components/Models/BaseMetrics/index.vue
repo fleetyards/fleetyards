@@ -159,26 +159,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'ModelBaseMetrics',
 
-@Component<ModelBaseMetrics>({})
-export default class ModelBaseMetrics extends Vue {
-  @Prop({ required: true }) model: Model
+  props: {
+    model: {
+      required: true,
+      type: Object,
+    },
+  },
 
-  shopRoute(shopCommodity) {
-    return {
-      name: 'shop',
-      params: {
-        stationSlug: shopCommodity.shop?.station?.slug,
-        slug: shopCommodity.shop?.slug,
-      },
-    }
-  }
+  methods: {
+    shopName(shopCommodity) {
+      return shopCommodity.shop?.name
+    },
 
-  shopName(shopCommodity) {
-    return shopCommodity.shop?.name
-  }
+    shopRoute(shopCommodity) {
+      return {
+        name: 'shop',
+        params: {
+          slug: shopCommodity.shop?.slug,
+          stationSlug: shopCommodity.shop?.station?.slug,
+        },
+      }
+    },
+  },
 }
 </script>

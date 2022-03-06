@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import LazyImage from '@/frontend/core/components/LazyImage'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
 
 export default {
   name: 'GalleryImage',
@@ -22,22 +22,22 @@ export default {
   },
 
   props: {
-    src: {
-      type: String,
-      required: true,
-    },
-
     alt: {
       type: String,
       default: 'image',
     },
 
-    title: {
+    href: {
       type: String,
       default: null,
     },
 
-    href: {
+    src: {
+      type: String,
+      required: true,
+    },
+
+    title: {
       type: String,
       default: null,
     },

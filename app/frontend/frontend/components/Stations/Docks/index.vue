@@ -68,36 +68,47 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import { groupBy, sortBy } from '@/frontend/lib/Helpers'
-import DockItem from './Item'
+import DockItem from './Item/index.vue'
 
-@Component<StationsDocks>({
+export default {
+  name: 'StationsDocks',
+
   components: {
     DockItem,
   },
-})
-export default class StationsDocks extends Vue {
-  @Prop({ required: true }) station: Station
 
-  @Prop({ default: false }) padding: boolean
+  props: {
+    padding: {
+      type: Boolean,
+      default: false,
+    },
 
-  get hasGroup() {
-    return this.station.docks.some((dock) => !!dock.group)
-  }
+    station: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  get docksByGroup() {
-    return groupBy(sortBy(this.station.docks, 'name'), 'group')
-  }
+  computed: {
+    docksByGroup() {
+      return groupBy(sortBy(this.station.docks, 'name'), 'group')
+    },
 
-  docksBySize(docks) {
-    return groupBy(docks, 'sizeLabel')
-  }
+    hasGroup() {
+      return this.station.docks.some((dock) => !!dock.group)
+    },
+  },
 
-  docksByType(docks) {
-    return groupBy(docks, 'typeLabel')
-  }
+  methods: {
+    docksBySize(docks) {
+      return groupBy(docks, 'sizeLabel')
+    },
+
+    docksByType(docks) {
+      return groupBy(docks, 'typeLabel')
+    },
+  },
 }
 </script>

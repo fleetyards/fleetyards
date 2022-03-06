@@ -20,28 +20,28 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Panel from '@/frontend/core/components/Panel'
-import MembersListHead from './MembersListHead'
-import MembersListItem from './MembersListItem'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import MembersListHead from './MembersListHead/index.vue'
+import MembersListItem from './MembersListItem/index.vue'
 
 export default {
   name: 'MembersList',
 
   components: {
-    Panel,
     MembersListHead,
     MembersListItem,
+    Panel,
   },
 
   props: {
     members: {
-      type: Array,
       required: true,
+      type: Array,
     },
 
     role: {
-      type: String,
       required: true,
+      type: String,
     },
   },
 

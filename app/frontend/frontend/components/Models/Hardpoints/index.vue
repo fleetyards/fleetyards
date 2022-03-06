@@ -50,75 +50,86 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
-import Loader from '@/frontend/core/components/Loader'
+<script>
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
 import modelHardpointsCollection from '@/frontend/api/collections/ModelHardpoints'
-import HardpointGroup from './Group'
+import HardpointGroup from './Group/index.vue'
 
-@Component<Hardpoints>({
+export default {
+  name: 'ModelHardpoints',
   components: {
+    Btn,
     HardpointGroup,
     Loader,
-    Btn,
   },
-})
-export default class Hardpoints extends Vue {
-  @Prop({ required: true }) model!: Model
 
-  collection: ModelHardpointsCollection = modelHardpointsCollection
+  props: {
+    model: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  loading = false
-
-  get hardpoints() {
-    return this.collection.records || []
-  }
-
-  get erkulUrl(): string | null {
-    if (
-      !this.model ||
-      this.model.productionStatus !== 'flight-ready' ||
-      !this.model.erkulIdentifier
-    ) {
-      return null
+  data() {
+    return {
+      collection: modelHardpointsCollection,
+      loading: false,
     }
+  },
 
-    return `https://www.erkul.games/ship/${this.model.erkulIdentifier}`
-  }
+  computed: {
+    erkulUrl() {
+      if (
+        !this.model ||
+        this.model.productionStatus !== 'flight-ready' ||
+        !this.model.erkulIdentifier
+      ) {
+        return null
+      }
 
-  get scunpackedUrl(): string | null {
-    if (!this.model.scIdentifier) {
-      return null
-    }
+      return `https://www.erkul.games/ship/${this.model.erkulIdentifier}`
+    },
 
-    return `https://scunpacked.com/ships/${this.model.scIdentifier}`
-  }
+    hardpoints() {
+      return this.collection.records || []
+    },
 
-  hardpointsForGroup(group) {
-    return this.hardpoints.filter((hardpoint) => hardpoint.group === group)
-  }
+    scunpackedUrl() {
+      if (!this.model.scIdentifier) {
+        return null
+      }
 
-  @Watch('model')
-  onModelChange() {
-    this.fetch()
-  }
+      return `https://scunpacked.com/ships/${this.model.scIdentifier}`
+    },
+  },
+
+  watch: {
+    model() {
+      this.fetch()
+    },
+  },
 
   mounted() {
     this.fetch()
-  }
+  },
 
-  async fetch() {
-    if (!this.model) {
-      return
-    }
+  methods: {
+    async fetch() {
+      if (!this.model) {
+        return
+      }
 
-    this.loading = true
+      this.loading = true
 
-    await this.collection.findAllByModel(this.model.slug)
+      await this.collection.findAllByModel(this.model.slug)
 
-    this.loading = false
-  }
+      this.loading = false
+    },
+
+    hardpointsForGroup(group) {
+      return this.hardpoints.filter((hardpoint) => hardpoint.group === group)
+    },
+  },
 }
 </script>

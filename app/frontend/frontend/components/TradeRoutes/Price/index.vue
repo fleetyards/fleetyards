@@ -8,40 +8,54 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'TradeRoutePrice',
 
-@Component<TradeRoutePrice>({})
-export default class TradeRoutePrice extends Vue {
-  @Prop({ required: true }) tradeRoute!: TradeRoute
+  props: {
+    availableCargo: {
+      default: null,
+      type: Number,
+    },
+    average: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: 'buy' }) priceType!: string
+    priceType: {
+      default: 'buy',
+      type: String,
+    },
 
-  @Prop({ default: null }) availableCargo!: number
+    tradeRoute: {
+      required: true,
+      type: Object,
+    },
+  },
+  computed: {
+    price() {
+      if (this.average) {
+        return this.tradeRoute[`average${this.priceTypeCapitalized}Price`]
+      }
 
-  @Prop({ default: false }) average!: ToTextBooleanArg
+      return this.tradeRoute[`${this.priceType}Price`]
+    },
 
-  get priceTypeCapitalized() {
-    return this.priceType.charAt(0).toUpperCase() + this.priceType.slice(1)
-  }
+    priceTypeCapitalized() {
+      return this.priceType.charAt(0).toUpperCase() + this.priceType.slice(1)
+    },
+  },
 
-  get price() {
-    if (this.average) {
-      return this.tradeRoute[`average${this.priceTypeCapitalized}Price`]
-    }
+  methods: {
+    tPrice(price) {
+      return this.$toUEC(price, this.$t('labels.uecPerUnit'))
+    },
 
-    return this.tradeRoute[`${this.priceType}Price`]
-  }
-
-  tPrice(price) {
-    return this.$toUEC(price, this.$t('labels.uecPerUnit'))
-  }
-
-  tPriceLong(price) {
-    return this.$t(`labels.tradeRoutes.${this.priceType}`, {
-      uec: this.tPrice(price),
-    })
-  }
+    tPriceLong(price) {
+      return this.$t(`labels.tradeRoutes.${this.priceType}`, {
+        uec: this.tPrice(price),
+      })
+    },
+  },
 }
 </script>

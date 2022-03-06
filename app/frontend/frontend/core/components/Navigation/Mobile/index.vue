@@ -155,19 +155,20 @@ export default {
       hangarPreview: 'preview',
     }),
 
-    isFleetRoute() {
-      return isFleetRoute(this.$route.name)
-    },
     currentFleet() {
       return this.fleetsCollection.record
     },
 
-    shipsNavActive() {
-      return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
-    },
-
     firstLetter() {
       return this.currentFleet?.name?.charAt(0)
+    },
+
+    isFleetRoute() {
+      return isFleetRoute(this.$route.name)
+    },
+
+    shipsNavActive() {
+      return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
     },
   },
 
@@ -180,6 +181,14 @@ export default {
     ...mapActions('app', {
       toggle: 'toggleNav',
     }),
+
+    async fetchFleet() {
+      if (!this.isFleetRoute) {
+        return
+      }
+
+      await this.fleetsCollection.findBySlug(this.$route.params.slug)
+    },
 
     filterFor(route) {
       // // TODO: disabled until vue-router supports navigation to same route
@@ -195,14 +204,6 @@ export default {
 
     routeActive(route) {
       return route === this.$route.name
-    },
-
-    async fetchFleet() {
-      if (!this.isFleetRoute) {
-        return
-      }
-
-      await this.fleetsCollection.findBySlug(this.$route.params.slug)
     },
   },
 }

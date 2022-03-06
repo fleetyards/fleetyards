@@ -38,356 +38,379 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FleetchartItemImage from './Image'
+<script>
+import FleetchartItemImage from './Image/index.vue'
 
-@Component({
+export default {
+  name: 'FleetchartListItem',
+
   components: {
-    Btn,
     FleetchartItemImage,
   },
-})
-export default class FleetchartListItem extends Vue {
-  @Prop({ required: true }) item!: Model | Vehicle
 
-  @Prop({ default: 'side' }) viewpoint!: string
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
 
-  @Prop({ default: false }) showLabel!: boolean
+    scale: {
+      type: Number,
+      default: 1,
+    },
 
-  @Prop({ default: false }) showStatus!: boolean
+    showLabel: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: 1 }) sizeMultiplicator!: number
+    showStatus: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: 1 }) scale!: number
+    sizeMultiplicator: {
+      type: Number,
+      default: 1,
+    },
 
-  get cssClasses() {
-    const cssClasses = [`fleetchart-item-${this.model.slug}`]
+    viewpoint: {
+      type: String,
+      default: 'side',
+    },
+  },
 
-    if (this.showStatus) {
-      cssClasses.push(`status-${this.model.productionStatus}`)
-    }
+  computed: {
+    cssClasses() {
+      const cssClasses = [`fleetchart-item-${this.model.slug}`]
 
-    if (this.showLabel) {
-      cssClasses.push('fleetchart-item-with-labels')
-    }
+      if (this.showStatus) {
+        cssClasses.push(`status-${this.model.productionStatus}`)
+      }
 
-    return cssClasses
-  }
+      if (this.showLabel) {
+        cssClasses.push('fleetchart-item-with-labels')
+      }
 
-  get model() {
-    if (this.item && this.item.model) {
-      return this.item.model
-    }
+      return cssClasses
+    },
 
-    return this.item
-  }
+    height() {
+      return (
+        (this.length * this.sourceImageHeightMax) / this.sourceImageWidthMax
+      )
+    },
 
-  get vehicle() {
-    if (this.item && this.item.model) {
+    image() {
+      if (
+        this.modulePackage &&
+        (this.modulePackage.topView ||
+          this.modulePackage.sideView ||
+          this.modulePackage.angledView)
+      ) {
+        const url = this.extractImageFromModel(this.modulePackage)
+        if (url) {
+          return url
+        }
+      }
+
+      if (
+        this.paint &&
+        (this.paint.topView || this.paint.sideView || this.paint.angledView)
+      ) {
+        const url = this.extractImageFromModel(this.paint)
+        if (url) {
+          return url
+        }
+      }
+
+      return this.extractImageFromModel(this.model)
+    },
+
+    imageWidth() {
+      return Math.min(
+        (this.height * this.sourceImageWidth) / this.sourceImageHeight,
+        this.length
+      )
+    },
+
+    length() {
+      return this.model.fleetchartLength * this.sizeMultiplicator * this.scale
+    },
+
+    model() {
+      if (this.item && this.item.model) {
+        return this.item.model
+      }
+
       return this.item
-    }
+    },
 
-    return null
-  }
-
-  get paint() {
-    if (this.vehicle && this.vehicle.paint) {
-      return this.vehicle.paint
-    }
-
-    return null
-  }
-
-  get modulePackage() {
-    if (this.vehicle && this.vehicle.modulePackage) {
-      return this.vehicle.modulePackage
-    }
-
-    return null
-  }
-
-  get image() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const url = this.extractImageFromModel(this.modulePackage)
-      if (url) {
-        return url
+    modelName() {
+      if (this.paint && this.paint.rsiId) {
+        return `${this.model.manufacturer.code} ${this.paint.name}`
       }
-    }
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const url = this.extractImageFromModel(this.paint)
-      if (url) {
-        return url
+      return `${this.model.manufacturer.code} ${this.model.name}`
+    },
+
+    modulePackage() {
+      if (this.vehicle && this.vehicle.modulePackage) {
+        return this.vehicle.modulePackage
       }
-    }
 
-    return this.extractImageFromModel(this.model)
-  }
+      return null
+    },
 
-  get viewpointTop() {
-    return this.viewpoint === 'top'
-  }
-
-  get viewpointSide() {
-    return this.viewpoint === 'side'
-  }
-
-  get viewpointAngled() {
-    return this.viewpoint === 'angled'
-  }
-
-  get productionStatus() {
-    return this.$t(
-      `labels.model.productionStatus.${this.model.productionStatus}`
-    )
-  }
-
-  get tooltip() {
-    if (this.showStatus) {
-      return `${this.label}<small>${this.productionStatus}`
-    }
-
-    return this.label
-  }
-
-  get name() {
-    if (this.vehicle && this.vehicle.name) {
-      return this.vehicle.name
-    }
-
-    return null
-  }
-
-  get modelName() {
-    if (this.paint && this.paint.rsiId) {
-      return `${this.model.manufacturer.code} ${this.paint.name}`
-    }
-
-    return `${this.model.manufacturer.code} ${this.model.name}`
-  }
-
-  get length() {
-    return this.model.fleetchartLength * this.sizeMultiplicator * this.scale
-  }
-
-  get height() {
-    return (this.length * this.sourceImageHeightMax) / this.sourceImageWidthMax
-  }
-
-  get imageWidth() {
-    return Math.min(
-      (this.height * this.sourceImageWidth) / this.sourceImageHeight,
-      this.length
-    )
-  }
-
-  get sourceImageHeightMax() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(this.modulePackage)
-      if (height) {
-        return height
+    name() {
+      if (this.vehicle && this.vehicle.name) {
+        return this.vehicle.name
       }
-    }
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(this.paint)
-      if (height) {
-        return height
+      return null
+    },
+
+    paint() {
+      if (this.vehicle && this.vehicle.paint) {
+        return this.vehicle.paint
       }
-    }
 
-    return this.extractMaxHeightFromModel(this.model)
-  }
+      return null
+    },
 
-  get sourceImageHeight() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractImageHeightFromModel(this.modulePackage)
-      if (height) {
-        return height
+    productionStatus() {
+      return this.$t(
+        `labels.model.productionStatus.${this.model.productionStatus}`
+      )
+    },
+
+    sourceImageHeight() {
+      if (
+        this.modulePackage &&
+        (this.modulePackage.topView ||
+          this.modulePackage.sideView ||
+          this.modulePackage.angledView)
+      ) {
+        const height = this.extractImageHeightFromModel(this.modulePackage)
+        if (height) {
+          return height
+        }
       }
-    }
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const height = this.extractImageHeightFromModel(this.paint)
-      if (height) {
-        return height
+      if (
+        this.paint &&
+        (this.paint.topView || this.paint.sideView || this.paint.angledView)
+      ) {
+        const height = this.extractImageHeightFromModel(this.paint)
+        if (height) {
+          return height
+        }
       }
-    }
 
-    return this.extractImageHeightFromModel(this.model)
-  }
+      return this.extractImageHeightFromModel(this.model)
+    },
 
-  get sourceImageWidth() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractImageWidthFromModel(this.modulePackage)
-      if (height) {
-        return height
+    sourceImageHeightMax() {
+      if (
+        this.modulePackage &&
+        (this.modulePackage.topView ||
+          this.modulePackage.sideView ||
+          this.modulePackage.angledView)
+      ) {
+        const height = this.extractMaxHeightFromModel(this.modulePackage)
+        if (height) {
+          return height
+        }
       }
-    }
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const width = this.extractImageWidthFromModel(this.paint)
-      if (width) {
-        return width
+      if (
+        this.paint &&
+        (this.paint.topView || this.paint.sideView || this.paint.angledView)
+      ) {
+        const height = this.extractMaxHeightFromModel(this.paint)
+        if (height) {
+          return height
+        }
       }
-    }
 
-    return this.extractImageWidthFromModel(this.model)
-  }
+      return this.extractMaxHeightFromModel(this.model)
+    },
 
-  get sourceImageWidthMax() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(this.modulePackage)
-      if (width) {
-        return width
+    sourceImageWidth() {
+      if (
+        this.modulePackage &&
+        (this.modulePackage.topView ||
+          this.modulePackage.sideView ||
+          this.modulePackage.angledView)
+      ) {
+        const height = this.extractImageWidthFromModel(this.modulePackage)
+        if (height) {
+          return height
+        }
       }
-    }
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(this.paint)
-      if (width) {
-        return width
+      if (
+        this.paint &&
+        (this.paint.topView || this.paint.sideView || this.paint.angledView)
+      ) {
+        const width = this.extractImageWidthFromModel(this.paint)
+        if (width) {
+          return width
+        }
       }
-    }
 
-    return this.extractMaxWidthFromModel(this.model)
-  }
+      return this.extractImageWidthFromModel(this.model)
+    },
 
-  extractImageFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return this.topView(model)
-    }
+    sourceImageWidthMax() {
+      if (
+        this.modulePackage &&
+        (this.modulePackage.topView ||
+          this.modulePackage.sideView ||
+          this.modulePackage.angledView)
+      ) {
+        const width = this.extractMaxWidthFromModel(this.modulePackage)
+        if (width) {
+          return width
+        }
+      }
 
-    if (this.viewpointSide && model.sideView) {
-      return this.sideView(model)
-    }
+      if (
+        this.paint &&
+        (this.paint.topView || this.paint.sideView || this.paint.angledView)
+      ) {
+        const width = this.extractMaxWidthFromModel(this.paint)
+        if (width) {
+          return width
+        }
+      }
 
-    if (this.viewpointAngled && model.angledView) {
-      return this.angledView(model)
-    }
+      return this.extractMaxWidthFromModel(this.model)
+    },
 
-    return null
-  }
+    tooltip() {
+      if (this.showStatus) {
+        return `${this.label}<small>${this.productionStatus}`
+      }
 
-  extractMaxWidthFromModel(model) {
-    return Math.max(
-      model.topViewWidth,
-      model.sideViewWidth,
-      model.angledViewWidth
-    )
-  }
+      return this.label
+    },
 
-  extractMaxHeightFromModel(model) {
-    return Math.max(
-      model.topViewHeight,
-      model.sideViewHeight,
-      model.angledViewHeight
-    )
-  }
+    vehicle() {
+      if (this.item && this.item.model) {
+        return this.item
+      }
 
-  extractImageHeightFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return model.topViewHeight
-    }
+      return null
+    },
 
-    if (this.viewpointSide && model.sideView) {
-      return model.sideViewHeight
-    }
+    viewpointAngled() {
+      return this.viewpoint === 'angled'
+    },
 
-    if (this.viewpointAngled && model.angledView) {
-      return model.angledViewHeight
-    }
+    viewpointSide() {
+      return this.viewpoint === 'side'
+    },
 
-    return null
-  }
+    viewpointTop() {
+      return this.viewpoint === 'top'
+    },
+  },
 
-  extractImageWidthFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return model.topViewWidth
-    }
+  methods: {
+    angledView(model) {
+      const width = this.length * this.sizeMultiplicator * this.scale
 
-    if (this.viewpointSide && model.sideView) {
-      return model.sideViewWidth
-    }
+      if (width > 1900) {
+        return model.angledView
+      }
 
-    if (this.viewpointAngled && model.angledView) {
-      return model.angledViewWidth
-    }
+      return model.angledViewLarge
+    },
 
-    return null
-  }
+    extractImageFromModel(model) {
+      if (this.viewpointTop && model.topView) {
+        return this.topView(model)
+      }
 
-  topView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale
+      if (this.viewpointSide && model.sideView) {
+        return this.sideView(model)
+      }
 
-    if (width > 1900) {
-      return model.topView
-    }
+      if (this.viewpointAngled && model.angledView) {
+        return this.angledView(model)
+      }
 
-    return model.topViewLarge
-  }
+      return null
+    },
 
-  sideView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale
+    extractImageHeightFromModel(model) {
+      if (this.viewpointTop && model.topView) {
+        return model.topViewHeight
+      }
 
-    if (width > 1900) {
-      return model.sideView
-    }
+      if (this.viewpointSide && model.sideView) {
+        return model.sideViewHeight
+      }
 
-    return model.sideViewLarge
-  }
+      if (this.viewpointAngled && model.angledView) {
+        return model.angledViewHeight
+      }
 
-  angledView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale
+      return null
+    },
 
-    if (width > 1900) {
-      return model.angledView
-    }
+    extractImageWidthFromModel(model) {
+      if (this.viewpointTop && model.topView) {
+        return model.topViewWidth
+      }
 
-    return model.angledViewLarge
-  }
+      if (this.viewpointSide && model.sideView) {
+        return model.sideViewWidth
+      }
+
+      if (this.viewpointAngled && model.angledView) {
+        return model.angledViewWidth
+      }
+
+      return null
+    },
+
+    extractMaxHeightFromModel(model) {
+      return Math.max(
+        model.topViewHeight,
+        model.sideViewHeight,
+        model.angledViewHeight
+      )
+    },
+
+    extractMaxWidthFromModel(model) {
+      return Math.max(
+        model.topViewWidth,
+        model.sideViewWidth,
+        model.angledViewWidth
+      )
+    },
+
+    sideView(model) {
+      const width = this.length * this.sizeMultiplicator * this.scale
+
+      if (width > 1900) {
+        return model.sideView
+      }
+
+      return model.sideViewLarge
+    },
+
+    topView(model) {
+      const width = this.length * this.sizeMultiplicator * this.scale
+
+      if (width > 1900) {
+        return model.topView
+      }
+
+      return model.topViewLarge
+    },
+  },
 }
 </script>

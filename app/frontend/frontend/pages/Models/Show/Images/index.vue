@@ -59,9 +59,9 @@ export default {
   name: 'ModelImages',
 
   components: {
-    FilteredList,
-    FilteredGrid,
     BreadCrumbs,
+    FilteredGrid,
+    FilteredList,
     Gallery,
     GalleryImage,
   },
@@ -76,6 +76,26 @@ export default {
   },
 
   computed: {
+    crumbs() {
+      if (!this.model) {
+        return null
+      }
+
+      return [
+        {
+          label: this.$t('nav.models.index'),
+          to: {
+            hash: `#${this.model.slug}`,
+            name: 'models',
+          },
+        },
+        {
+          label: this.model.name,
+          to: { name: 'model', param: { slug: this.$route.params.slug } },
+        },
+      ]
+    },
+
     metaTitle() {
       if (!this.model) {
         return null
@@ -92,26 +112,6 @@ export default {
         galleryType: 'models',
       }
     },
-
-    crumbs() {
-      if (!this.model) {
-        return null
-      }
-
-      return [
-        {
-          to: {
-            name: 'models',
-            hash: `#${this.model.slug}`,
-          },
-          label: this.$t('nav.models.index'),
-        },
-        {
-          to: { name: 'model', param: { slug: this.$route.params.slug } },
-          label: this.model.name,
-        },
-      ]
-    },
   },
 
   created() {
@@ -119,10 +119,6 @@ export default {
   },
 
   methods: {
-    openGallery(index) {
-      this.$refs.gallery.open(index)
-    },
-
     async fetchModel() {
       const response = await this.$api.get(`models/${this.$route.params.slug}`)
 
@@ -131,6 +127,10 @@ export default {
       } else if (response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
+    },
+
+    openGallery(index) {
+      this.$refs.gallery.open(index)
     },
   },
 }

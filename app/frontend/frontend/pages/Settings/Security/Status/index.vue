@@ -79,17 +79,17 @@ export default {
       this.backupCodesWaiting = true
 
       displayConfirm({
-        text: this.$t('messages.confirm.twoFactor.generateBackupCodes'),
+        onClose: () => {
+          this.backupCodesWaiting = false
+          this.deleting = false
+        },
         onConfirm: () => {
           this.backupCodesWaiting = false
           this.$router
             .push({ name: 'settings-two-factor-backup-codes' })
             .catch(() => {})
         },
-        onClose: () => {
-          this.backupCodesWaiting = false
-          this.deleting = false
-        },
+        text: this.$t('messages.confirm.twoFactor.generateBackupCodes'),
       })
     },
   },

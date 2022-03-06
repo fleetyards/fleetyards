@@ -137,19 +137,19 @@ export default {
   data() {
     return {
       deleting: false,
-      updating: false,
       internalImage: null,
       updateCaption: debounce(this.debouncedUpdateCaption, 500),
+      updating: false,
     }
   },
 
   computed: {
-    uuid() {
-      return this._uid
-    },
-
     uploaded() {
       return !!this.internalImage.url
+    },
+
+    uuid() {
+      return this._uid
     },
   },
 
@@ -164,12 +164,34 @@ export default {
   },
 
   methods: {
-    start() {
-      this.$emit('start', this.internalImage)
-    },
-
     cancel() {
       this.$emit('cancel', this.internalImage)
+    },
+
+    async debouncedUpdateCaption() {
+      this.updating = true
+
+      await this.$api.put(`images/${this.internalImage.id}`, {
+        caption: this.internalImage.caption,
+      })
+
+      this.updating = false
+    },
+
+    async deleteImage() {
+      this.deleting = true
+      const response = await this.$api.destroy(
+        `images/${this.internalImage.id}`
+      )
+
+      if (!response.error) {
+        this.$emit('image-deleted', this.internalImage)
+        this.deleting = false
+      }
+    },
+
+    start() {
+      this.$emit('start', this.internalImage)
     },
 
     async toggleEnabled() {
@@ -198,28 +220,6 @@ export default {
       if (response.error) {
         this.internalImage.global = !this.internalImage.global
       }
-    },
-
-    async deleteImage() {
-      this.deleting = true
-      const response = await this.$api.destroy(
-        `images/${this.internalImage.id}`
-      )
-
-      if (!response.error) {
-        this.$emit('image-deleted', this.internalImage)
-        this.deleting = false
-      }
-    },
-
-    async debouncedUpdateCaption() {
-      this.updating = true
-
-      await this.$api.put(`images/${this.internalImage.id}`, {
-        caption: this.internalImage.caption,
-      })
-
-      this.updating = false
     },
   },
 }

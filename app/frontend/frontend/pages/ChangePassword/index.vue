@@ -73,20 +73,20 @@ export default {
   name: 'ChangePassword',
 
   components: {
-    FormInput,
     Btn,
+    FormInput,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      submitting: false,
       form: {
         currentPassword: null,
         password: null,
         passwordConfirmation: null,
       },
+      submitting: false,
     }
   },
 

@@ -46,42 +46,53 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+import turretIcon from '@/images/hardpoints/turrets-dark.svg'
 
-@Component<HardpointItem>({})
-export default class HardpointItem extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint
+export default {
+  name: 'HardpointItem',
 
-  /* eslint-disable global-require */
-  turretIcon = require('images/hardpoints/turrets-dark.svg')
+  props: {
+    hardpoint: {
+      required: true,
+      type: Object,
+    },
+  },
 
-  /* eslint-enable global-require */
-  get tooltip() {
-    if (
-      !this.showCategory &&
-      this.hardpoint.categoryLabel !== this.hardpoint?.component?.name
-    ) {
-      return this.hardpoint.categoryLabel
+  data() {
+    return {
+      turretIcon: turretIcon,
     }
+  },
 
-    return this.hardpoint.details
-  }
+  computed: {
+    isMissileTurret() {
+      return this.hardpoint.category === 'missile_turret'
+    },
 
-  get isMissileTurret() {
-    return this.hardpoint.category === 'missile_turret'
-  }
+    showCategory() {
+      return this.hardpoint.type !== 'turrets'
+    },
 
-  get showCategory() {
-    return this.hardpoint.type !== 'turrets'
-  }
+    showComponent() {
+      return (
+        this.hardpoint.component &&
+        !['main_thrusters', 'maneuvering_thrusters'].includes(
+          this.hardpoint.type
+        )
+      )
+    },
 
-  get showComponent() {
-    return (
-      this.hardpoint.component &&
-      !['main_thrusters', 'maneuvering_thrusters'].includes(this.hardpoint.type)
-    )
-  }
+    tooltip() {
+      if (
+        !this.showCategory &&
+        this.hardpoint.categoryLabel !== this.hardpoint?.component?.name
+      ) {
+        return this.hardpoint.categoryLabel
+      }
+
+      return this.hardpoint.details
+    },
+  },
 }
 </script>

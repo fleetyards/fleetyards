@@ -20,7 +20,6 @@ import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 export default {
   name: 'NotFound',
-
   components: {
     Box,
     Btn,

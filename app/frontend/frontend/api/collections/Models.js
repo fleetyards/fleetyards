@@ -31,9 +31,9 @@ export class ModelsCollection extends BaseCollection {
     this.params = params
 
     const response = await get('models', {
-      q: params.filters,
       page: params.page,
       perPage: this.perPage,
+      q: params.filters,
     })
 
     if (!response.error) {

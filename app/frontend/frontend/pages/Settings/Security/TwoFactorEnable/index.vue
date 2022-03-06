@@ -91,12 +91,11 @@ import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 
 export default {
   name: 'TwoFactorEnable',
-
   components: {
-    SecurePage,
     BackupCodesPanel,
-    FormInput,
     Btn,
+    FormInput,
+    SecurePage,
   },
 
   mixins: [MetaInfo],
@@ -105,9 +104,9 @@ export default {
 
   data() {
     return {
-      submitting: false,
       backupCodes: null,
       form: null,
+      submitting: false,
     }
   },
 
@@ -120,12 +119,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        twoFactorCode: null,
-      }
-    },
-
     async enable() {
       this.submitting = true
 
@@ -149,6 +142,12 @@ export default {
         displayAlert({
           text: this.$t('messages.twoFactor.enable.failure'),
         })
+      }
+    },
+
+    setupForm() {
+      this.form = {
+        twoFactorCode: null,
       }
     },
   },

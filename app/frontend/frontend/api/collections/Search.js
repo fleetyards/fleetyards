@@ -10,8 +10,8 @@ export class SearchCollection extends BaseCollection {
     this.params = params
 
     const response = await get('search', {
-      q: params.filters,
       page: params.page,
+      q: params.filters,
     })
 
     if (!response.error) {

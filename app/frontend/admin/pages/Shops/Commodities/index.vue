@@ -132,41 +132,18 @@ export default {
   name: 'AdminStationImages',
 
   components: {
+    Btn,
+    BtnDropdown,
+    BtnGroup,
     FilteredList,
     FilteredTable,
     FilterForm,
-    BtnGroup,
-    BtnDropdown,
-    Btn,
   },
 
   data() {
     return {
       collection: shopCommoditiesCollection,
       deleting: false,
-      tableColumns: [
-        {
-          name: 'item',
-          label: this.$t('labels.shopCommodity.item'),
-          width: '30%',
-        },
-        {
-          name: 'prices',
-          label: this.$t('labels.shopCommodity.prices.label'),
-          width: '20%',
-        },
-        {
-          name: 'confirmed',
-          label: this.$t('labels.shopCommodity.confirmed'),
-          width: '10%',
-        },
-        {
-          name: 'actions',
-          label: this.$t('labels.actions'),
-          width: '10%',
-          class: 'actions',
-        },
-      ],
       prices: [
         'buyPrice',
         'averageBuyPrice',
@@ -181,6 +158,29 @@ export default {
         'rentalPrice30Days',
         'averageRentalPrice30Days',
       ],
+      tableColumns: [
+        {
+          label: this.$t('labels.shopCommodity.item'),
+          name: 'item',
+          width: '30%',
+        },
+        {
+          label: this.$t('labels.shopCommodity.prices.label'),
+          name: 'prices',
+          width: '20%',
+        },
+        {
+          label: this.$t('labels.shopCommodity.confirmed'),
+          name: 'confirmed',
+          width: '10%',
+        },
+        {
+          class: 'actions',
+          label: this.$t('labels.actions'),
+          name: 'actions',
+          width: '10%',
+        },
+      ],
     }
   },
 
@@ -192,102 +192,17 @@ export default {
     },
   },
 
-  mounted() {
-    this.$comlink.$on('prices-update', this.fetch)
-    this.$comlink.$on('commodities-update', this.fetch)
-  },
-
   beforeDestroy() {
     this.$comlink.$off('prices-update')
     this.$comlink.$off('commodities-update')
   },
 
+  mounted() {
+    this.$comlink.$on('prices-update', this.fetch)
+    this.$comlink.$on('commodities-update', this.fetch)
+  },
+
   methods: {
-    async fetch() {
-      await this.collection.refresh()
-    },
-
-    openEditModal(shopCommodity) {
-      this.$comlink.$emit('open-modal', {
-        component: () => import('@/admin/components/ShopCommodities/Modal'),
-        props: {
-          shopId: this.routeParams.shopId,
-          shopCommodity,
-        },
-      })
-    },
-
-    openSellPricesModal(shopCommodity) {
-      this.$comlink.$emit('open-modal', {
-        component: () =>
-          import('@/admin/components/ShopCommodities/PricesModal'),
-        props: {
-          path: 'sell',
-          shopId: this.routeParams.shopId,
-          shopCommodity,
-        },
-      })
-    },
-
-    openBuyPricesModal(shopCommodity) {
-      this.$comlink.$emit('open-modal', {
-        component: () =>
-          import('@/admin/components/ShopCommodities/PricesModal'),
-        props: {
-          path: 'buy',
-          shopId: this.routeParams.shopId,
-          shopCommodity,
-        },
-      })
-    },
-
-    openRentalPricesModal(shopCommodity) {
-      this.$comlink.$emit('open-modal', {
-        component: () =>
-          import('@/admin/components/ShopCommodities/PricesModal'),
-        props: {
-          path: 'rental',
-          shopId: this.routeParams.shopId,
-          shopCommodity,
-        },
-      })
-    },
-
-    openAddModal(commodityItemType) {
-      this.$comlink.$emit('open-modal', {
-        component: () => import('@/admin/components/ShopCommodities/NewModal'),
-        props: {
-          shopId: this.routeParams.shopId,
-          commodityItemType,
-        },
-      })
-    },
-
-    openComponentModal() {
-      this.$comlink.$emit('open-modal', {
-        component: () => import('@/admin/components/ShopCommodities/NewModal'),
-        props: {
-          shopId: this.routeParams.shopId,
-          commodityItemType: 'Component',
-          itemTypeFilter: (this.$route.query.filters?.component_item_type ||
-            [])[0],
-        },
-      })
-    },
-
-    remove(shopCommodity) {
-      this.deleting = true
-      displayConfirm({
-        text: this.$t('messages.confirm.shopCommodity.destroy'),
-        onConfirm: () => {
-          this.destroy(shopCommodity)
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-
     async destroy(shopCommodity) {
       if (
         await this.collection.destroy(this.routeParams.shopId, shopCommodity.id)
@@ -296,6 +211,94 @@ export default {
       }
 
       this.deleting = false
+    },
+
+    async fetch() {
+      await this.collection.refresh()
+    },
+
+    openAddModal(commodityItemType) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/NewModal/index.vue'),
+        props: {
+          commodityItemType,
+          shopId: this.routeParams.shopId,
+        },
+      })
+    },
+
+    openBuyPricesModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/PricesModal/index.vue'),
+        props: {
+          path: 'buy',
+          shopCommodity,
+          shopId: this.routeParams.shopId,
+        },
+      })
+    },
+
+    openComponentModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/NewModal/index.vue'),
+        props: {
+          commodityItemType: 'Component',
+          itemTypeFilter: (this.$route.query.filters?.component_item_type ||
+            [])[0],
+          shopId: this.routeParams.shopId,
+        },
+      })
+    },
+
+    openEditModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/Modal/index.vue'),
+        props: {
+          shopCommodity,
+          shopId: this.routeParams.shopId,
+        },
+      })
+    },
+
+    openRentalPricesModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/PricesModal/index.vue'),
+        props: {
+          path: 'rental',
+          shopCommodity,
+          shopId: this.routeParams.shopId,
+        },
+      })
+    },
+
+    openSellPricesModal(shopCommodity) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/admin/components/ShopCommodities/PricesModal/index.vue'),
+        props: {
+          path: 'sell',
+          shopCommodity,
+          shopId: this.routeParams.shopId,
+        },
+      })
+    },
+
+    remove(shopCommodity) {
+      this.deleting = true
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
+        },
+        onConfirm: () => {
+          this.destroy(shopCommodity)
+        },
+        text: this.$t('messages.confirm.shopCommodity.destroy'),
+      })
     },
   },
 }

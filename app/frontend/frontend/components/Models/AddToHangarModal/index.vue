@@ -22,48 +22,56 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import { mapActions } from 'vuex'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { displaySuccess } from '@/frontend/lib/Noty'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 
-@Component<AddToHangarModal>({
+export default {
+  name: 'AddToHangarModal',
+
   components: {
-    Modal,
     Btn,
+    Modal,
   },
-})
-export default class AddToHangarModal extends Vue {
-  @Prop({ required: true }) model: Model
 
-  @Action('add', { namespace: 'hangar' }) addToHangar
+  props: {
+    model: {
+      required: true,
+      type: Object,
+    },
+  },
 
-  saveVehicleAsPurchase() {
-    this.saveVehicle({ purchased: true })
-  }
+  methods: {
+    ...mapActions('hangar', {
+      addToHangar: 'add',
+    }),
 
-  async saveVehicle(params = {}) {
-    const success = await vehiclesCollection.create({
-      ...params,
-      modelId: this.model.id,
-    })
-
-    if (success) {
-      await this.addToHangar(this.model.slug)
-
-      displaySuccess({
-        text: this.$t('messages.vehicle.add.success', {
-          model: this.model.name,
-        }),
-        icon: this.model.storeImageSmall,
+    async saveVehicle(params = {}) {
+      const success = await vehiclesCollection.create({
+        ...params,
+        modelId: this.model.id,
       })
 
-      this.$comlink.$emit('close-modal')
-    }
-  }
+      if (success) {
+        await this.addToHangar(this.model.slug)
+
+        displaySuccess({
+          icon: this.model.storeImageSmall,
+          text: this.$t('messages.vehicle.add.success', {
+            model: this.model.name,
+          }),
+        })
+
+        this.$comlink.$emit('close-modal')
+      }
+    },
+
+    saveVehicleAsPurchase() {
+      this.saveVehicle({ purchased: true })
+    },
+  },
 }
 </script>

@@ -27,49 +27,57 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { uniq as uniqArray } from '@/frontend/utils/Array'
 
-@Component<ModelPanel>({
+export default {
+  name: 'ModelPanel',
   components: {
     Btn,
   },
-})
-export default class ModelPanel extends Vue {
-  @Prop({ default: null }) owner: string | null
 
-  @Prop({
-    default() {
-      return []
+  props: {
+    owner: {
+      type: String,
+      default: null,
     },
-  })
-  vehicles: Vehicle[]
 
-  get firstOwner() {
-    if (this.usernames.length > 0) {
-      return this.usernames[0]
-    }
-
-    return null
-  }
-
-  get usernames() {
-    return this.vehicles
-      .map((vehicle) => vehicle.username)
-      .sort()
-      .filter(uniqArray)
-  }
-
-  openOwnersModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/OwnersModal'),
-      props: {
-        vehicles: this.vehicles,
+    vehicles: {
+      type: Array,
+      default() {
+        return []
       },
-    })
-  }
+    },
+  },
+
+  computed: {
+    firstOwner() {
+      if (this.usernames.length > 0) {
+        return this.usernames[0]
+      }
+
+      return null
+    },
+
+    usernames() {
+      return this.vehicles
+        .map((vehicle) => vehicle.username)
+        .sort()
+        .filter(uniqArray)
+    },
+  },
+
+  methods: {
+    openOwnersModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/OwnersModal/index.vue'),
+        props: {
+          vehicles: this.vehicles,
+        },
+      })
+    },
+  },
 }
 </script>

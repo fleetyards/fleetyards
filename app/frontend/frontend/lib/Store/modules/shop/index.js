@@ -2,10 +2,6 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
@@ -24,5 +20,9 @@ export default () => ({
       state.filterVisible = payload
     },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

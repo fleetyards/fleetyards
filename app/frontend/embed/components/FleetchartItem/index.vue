@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import FleetchartItemImage from '@/embed/partials/Fleetchart/Image'
+import FleetchartItemImage from '@/embed/partials/Fleetchart/Image/index.vue'
 
 export default {
   name: 'FleetchartItemImage',
@@ -21,22 +21,26 @@ export default {
   components: {
     FleetchartItemImage,
   },
+
   props: {
     model: {
+      required: true,
       type: Object,
-      required: true,
     },
+
     scale: {
-      type: Number,
       required: true,
+      type: Number,
     },
   },
+
   computed: {
-    url() {
-      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
-    },
     label() {
       return `${this.model.manufacturer.code} ${this.model.name}`
+    },
+
+    url() {
+      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
     },
   },
 }

@@ -4,67 +4,91 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import { mapGetters } from 'vuex'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { displayWarning } from '@/frontend/lib/Noty'
 
-@Component<PriceModalBtn>({
+export default {
+  name: 'PriceModalBtn',
+
   components: {
     Btn,
   },
-})
-export default class PriceModalBtn extends Vue {
-  @Prop({ default: null }) stationSlug!: string
 
-  @Prop({ default: null }) shopId!: string
-
-  @Prop({ default: null }) shopTypes!: string[] | null
-
-  @Prop({ default: null }) commodityItemType!: string
-
-  @Prop({ default: false }) withoutRental!: boolean
-
-  pathOptions: FilterGroupItem[] = [
-    {
-      value: 'sell',
-      name: this.$t('labels.shop.sellPrice'),
+  props: {
+    commodityItemType: {
+      type: String,
+      default: null,
     },
-    {
-      value: 'buy',
-      name: this.$t('labels.shop.buyPrice'),
-    },
-    {
-      value: 'rental',
-      name: this.$t('labels.shop.rentalPrice'),
-    },
-  ]
 
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
+    shopId: {
+      type: String,
+      default: null,
+    },
 
-  openPriceModal() {
-    if (!this.isAuthenticated) {
-      displayWarning({
-        text: this.$t('messages.error.commodityPrice.accountRequired'),
-      })
-      return
+    shopTypes: {
+      type: Array,
+      default: null,
+    },
+
+    stationSlug: {
+      type: String,
+      default: null,
+    },
+
+    withoutRental: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      pathOptions: [
+        {
+          name: this.$t('labels.shop.sellPrice'),
+          value: 'sell',
+        },
+        {
+          name: this.$t('labels.shop.buyPrice'),
+          value: 'buy',
+        },
+        {
+          name: this.$t('labels.shop.rentalPrice'),
+          value: 'rental',
+        },
+      ],
     }
+  },
 
-    this.$comlink.$emit('open-modal', {
-      component: () =>
-        import('@/frontend/components/ShopCommodities/PriceModal/index.vue'),
-      props: {
-        stationSlug: this.stationSlug,
-        shopId: this.shopId,
-        commodityItemType: this.commodityItemType,
-        shopTypes: this.shopTypes,
-        pathOptions: this.pathOptions.filter(
-          (item) => item.value !== 'rental' || this.withoutRental
-        ),
-      },
-    })
-  }
+  computed: {
+    ...mapGetters('session', ['isAuthenticated']),
+  },
+
+  methods: {
+    openPriceModal() {
+      if (!this.isAuthenticated) {
+        displayWarning({
+          text: this.$t('messages.error.commodityPrice.accountRequired'),
+        })
+        return
+      }
+
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/ShopCommodities/PriceModal/index.vue'),
+        props: {
+          commodityItemType: this.commodityItemType,
+          pathOptions: this.pathOptions.filter(
+            (item) => item.value !== 'rental' || this.withoutRental
+          ),
+          shopId: this.shopId,
+          shopTypes: this.shopTypes,
+          stationSlug: this.stationSlug,
+        },
+      })
+    },
+  },
 }
 </script>

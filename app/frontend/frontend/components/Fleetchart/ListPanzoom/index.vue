@@ -99,14 +99,14 @@
       <div class="fleetchart-scroll-wrapper">
         <div id="fleetchart" ref="fleetchart" class="fleetchart">
           <transition-group
-            v-for="(items, index) in fleetchartColumns"
+            v-for="(columnItems, index) in fleetchartColumns"
             :key="`fleetchart-col-${index}`"
             name="fade-list"
             :appear="true"
             class="fleetchart-column"
           >
             <FleetchartItem
-              v-for="item in items"
+              v-for="item in columnItems"
               :key="item.id"
               :item="item"
               :viewpoint="viewpoint"
@@ -128,7 +128,7 @@
               class="fleetchart-item fade-list-item"
             >
               <img
-                :src="require('images/community-logo.png')"
+                :src="require('@/images/community-logo.png')"
                 alt="made-by-the-community"
               />
             </div>
@@ -148,144 +148,141 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+import { mapGetters } from 'vuex'
 import panzoom from 'panzoom'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
-import { Getter } from 'vuex-class'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn/index.vue'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn/index.vue'
 import debounce from 'lodash.debounce'
-import Starship42Btn from '@/frontend/components/Starship42Btn'
+import Starship42Btn from '@/frontend/components/Starship42Btn/index.vue'
 import FleetchartItem from './Item/index.vue'
 
-@Component({
+export default {
+  name: 'FleetchartListPanzoom',
+
   components: {
     Btn,
     BtnDropdown,
     DownloadScreenshotBtn,
-    FleetChartStatusBtn,
     FleetchartItem,
+    FleetChartStatusBtn,
     Starship42Btn,
   },
-})
-export default class FleetchartListPanzoom extends Vue {
-  updateZoomData = debounce(this.debouncedUpdateZoomData, 300)
 
-  checkReset = debounce(this.debouncedCheckReset, 300)
-
-  screenHeightOptions: string[] = ['1x', '1_5x', '2x', '3x', '4x']
-
-  viewpointOptions: string[] = ['side', 'top', 'angled']
-
-  showStatus = false
-
-  zoomSpeed = 0.5
-
-  maxZoom = 20
-
-  minZoom = 0.2
-
-  pinchSpeed = 3
-
-  margin = 80
-
-  innerMargin = 20
-
-  marginBottom = 40
-
-  gridEnabled = false
-
-  screenWidth: number | null = null
-
-  screenHeight: number | null = null
-
-  gridSize = 80.0
-
-  panzoomInstance = null
-
-  fleetchartColumns = {}
-
-  markedForReset = false
-
-  sizeMultiplicator = 4
-
-  @Getter('mobile') mobile
-
-  @Prop({ required: true }) namespace!: string
-
-  @Prop({
-    default() {
-      return []
+  props: {
+    downloadName: {
+      type: String,
+      default: null,
     },
-  })
-  items!: Vehicle[] | Model[]
 
-  @Prop({ default: false }) myShip!: boolean
+    items: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
 
-  @Prop({ default: null }) downloadName!: string
+    myShip: {
+      type: Boolean,
+      default: false,
+    },
 
-  get gridSizeLabel() {
-    return (
-      this.gridSize /
-      (this.initialZoomData?.scale || 1) /
-      this.sizeMultiplicator
-    )
-      .toFixed(2)
-      .replace('.00', '')
-  }
+    namespace: {
+      type: String,
+      required: true,
+    },
+  },
 
-  get viewpoint() {
-    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
-  }
-
-  get showLabels() {
-    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
-  }
-
-  get selectedScreenHeight() {
-    return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
-  }
-
-  get viewpointTop() {
-    return this.viewpoint === 'top'
-  }
-
-  get viewpointSide() {
-    return this.viewpoint === 'side'
-  }
-
-  get viewpointAngled() {
-    return this.viewpoint === 'angled'
-  }
-
-  get screenHeightFactor() {
+  data() {
     return {
-      '1x': 1,
-      '1_5x': 1.5,
-      '2x': 2,
-      '3x': 3,
-      '4x': 4,
-    }[this.selectedScreenHeight]
-  }
+      checkReset: debounce(this.debouncedCheckReset, 300),
+      fleetchartColumns: {},
+      gridEnabled: false,
+      gridSize: 80.0,
+      innerMargin: 20,
+      margin: 80,
+      marginBottom: 40,
+      markedForReset: false,
+      maxZoom: 20,
+      minZoom: 0.2,
+      panzoomInstance: null,
+      pinchSpeed: 3,
+      screenHeight: null,
+      screenHeightOptions: ['1x', '1_5x', '2x', '3x', '4x'],
+      screenWidth: null,
+      showStatus: false,
+      sizeMultiplicator: 4,
+      updateZoomData: debounce(this.debouncedUpdateZoomData, 300),
+      viewpointOptions: ['side', 'top', 'angled'],
+      zoomSpeed: 0.5,
+    }
+  },
 
-  get maxColHeight() {
-    return (
-      this.screenHeight * this.screenHeightFactor -
-      this.margin -
-      this.marginBottom
-    )
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  get initialZoomData() {
-    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
-  }
+    gridSizeLabel() {
+      return (
+        this.gridSize /
+        (this.initialZoomData?.scale || 1) /
+        this.sizeMultiplicator
+      )
+        .toFixed(2)
+        .replace('.00', '')
+    },
 
-  get scale() {
-    return this.initialZoomData?.scale || 1
-  }
+    initialZoomData() {
+      return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
+    },
+
+    maxColHeight() {
+      return (
+        this.screenHeight * this.screenHeightFactor -
+        this.margin -
+        this.marginBottom
+      )
+    },
+
+    scale() {
+      return this.initialZoomData?.scale || 1
+    },
+
+    screenHeightFactor() {
+      return {
+        '1_5x': 1.5,
+        '1x': 1,
+        '2x': 2,
+        '3x': 3,
+        '4x': 4,
+      }[this.selectedScreenHeight]
+    },
+
+    selectedScreenHeight() {
+      return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
+    },
+
+    showLabels() {
+      return this.$store.getters[`${this.namespace}/fleetchartLabels`]
+    },
+
+    viewpoint() {
+      return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
+    },
+
+    viewpointAngled() {
+      return this.viewpoint === 'angled'
+    },
+
+    viewpointSide() {
+      return this.viewpoint === 'side'
+    },
+
+    viewpointTop() {
+      return this.viewpoint === 'top'
+    },
+  },
 
   mounted() {
     this.showStatus = !!this.$route.query?.showStatus
@@ -300,7 +297,7 @@ export default class FleetchartListPanzoom extends Vue {
 
     window.addEventListener('resize', this.updateScreenSize)
     window.addEventListener('deviceorientation', this.updateScreenSize)
-  }
+  },
 
   beforeDestroy() {
     this.$comlink.$off('fleetchart-toggle-status')
@@ -311,311 +308,313 @@ export default class FleetchartListPanzoom extends Vue {
 
     window.removeEventListener('resize', this.updateScreenSize)
     window.removeEventListener('deviceorientation', this.updateScreenSize)
-  }
+  },
 
-  debouncedUpdateZoomData() {
-    const transform = this.panzoomInstance.getTransform()
+  methods: {
+    angledView(model) {
+      return model.angledViewResized
+    },
 
-    this.$store.commit(`${this.namespace}/setFleetchartZoomData`, transform)
-  }
+    debouncedCheckReset() {
+      if (this.markedForReset) {
+        this.markedForReset = false
 
-  async setupZoom() {
-    this.panzoomInstance = panzoom(this.$refs.fleetchart, {
-      maxZoom: this.maxZoom,
-      minZoom: this.minZoom,
-      zoomSpeed: this.zoomSpeed,
-      pinchSpeed: this.pinchSpeed,
-    })
+        this.resetZoom()
+      }
+    },
 
-    if (this.initialZoomData?.scale) {
-      this.panzoomInstance.zoomAbs(0, 0, this.initialZoomData.scale)
+    debouncedUpdateZoomData() {
+      const transform = this.panzoomInstance.getTransform()
 
-      // hack to apply latest location after zooming.
-      setTimeout(() => {
-        this.panzoomInstance.moveTo(
-          this.initialZoomData.x,
-          this.initialZoomData.y
-        )
-      }, 300)
-    }
+      this.$store.commit(`${this.namespace}/setFleetchartZoomData`, transform)
+    },
 
-    this.panzoomInstance.on('zoom', (_event) => {
-      this.updateZoomData()
-    })
-
-    this.panzoomInstance.on('pan', (_event) => {
-      this.updateZoomData()
-    })
-
-    this.panzoomInstance.on('transform', (_event) => {
-      this.checkReset()
-    })
-  }
-
-  modelName(item) {
-    const model = item.model || item
-
-    return model.name
-  }
-
-  productionStatus(item) {
-    const model = item.model || item
-
-    return this.$t(`labels.model.productionStatus.${model.productionStatus}`)
-  }
-
-  debouncedCheckReset() {
-    if (this.markedForReset) {
-      this.markedForReset = false
-
-      this.resetZoom()
-    }
-  }
-
-  updateScreenSize() {
-    this.screenWidth = window.innerWidth
-    this.screenHeight = window.innerHeight
-
-    this.drawGridLines()
-  }
-
-  setupColumns() {
-    this.fleetchartColumns = {}
-    let index = 0
-    let colHeight = 0
-
-    this.items.forEach((item) => {
-      const model = item.model || item
-      const length = model.fleetchartLength * this.sizeMultiplicator
-
-      const height =
-        (length * this.imageMaxHeight(item)) / this.imageMaxWidth(item)
-
-      if (Number.isNaN(height)) {
+    async drawGridLines() {
+      if (!this.gridEnabled) {
         return
       }
 
-      colHeight += height
+      await this.$nextTick()
 
-      if (colHeight > this.maxColHeight) {
-        colHeight = height
-        index += 1
+      const canvas = this.$refs.fleetchartGrid
+
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d')
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        ctx.drawVerticalLine = (left, top, height, color) => {
+          ctx.fillStyle = color
+          ctx.fillRect(left, top, 1, height)
+        }
+
+        ctx.drawHorizontalLine = (left, top, width, color) => {
+          ctx.fillStyle = color
+          ctx.fillRect(left, top, width, 1)
+        }
+
+        const lineColor = 'rgba(255, 255, 255, 0.5)'
+
+        for (let i = 0; i < canvas.width; i += this.gridSize) {
+          ctx.drawVerticalLine(i, 0, canvas.height, lineColor)
+        }
+
+        for (let i = 0; i < canvas.height; i += this.gridSize) {
+          ctx.drawHorizontalLine(0, i, canvas.width, lineColor)
+        }
+      }
+    },
+
+    extractMaxHeightFromModel(model) {
+      return Math.max(
+        model.topViewHeight,
+        model.sideViewHeight,
+        model.angledViewHeight
+      )
+    },
+
+    extractMaxWidthFromModel(model) {
+      return Math.max(
+        model.topViewWidth,
+        model.sideViewWidth,
+        model.angledViewWidth
+      )
+    },
+
+    extractUrlFromModel(model) {
+      if (this.viewpointTop && model.topView) {
+        return this.topView(model)
       }
 
-      colHeight += this.innerMargin
-
-      this.fleetchartColumns[index] = [
-        ...(this.fleetchartColumns[index] || []),
-        item,
-      ]
-    })
-  }
-
-  toggleGrid() {
-    this.gridEnabled = !this.gridEnabled
-
-    this.drawGridLines()
-  }
-
-  setViewpoint(viewpoint) {
-    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint)
-  }
-
-  setScreenHeight(screenHeight) {
-    this.$store.commit(
-      `${this.namespace}/setFleetchartScreenHeight`,
-      screenHeight
-    )
-
-    this.setupColumns()
-  }
-
-  toggleStatus() {
-    this.showStatus = !this.showStatus
-  }
-
-  toggleLabels() {
-    this.$store.commit(
-      `${this.namespace}/setFleetchartLabels`,
-      !this.showLabels
-    )
-  }
-
-  async drawGridLines() {
-    if (!this.gridEnabled) {
-      return
-    }
-
-    await this.$nextTick()
-
-    const canvas = this.$refs.fleetchartGrid
-
-    if (canvas.getContext) {
-      const ctx = canvas.getContext('2d')
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      ctx.drawVerticalLine = (left, top, height, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, 1, height)
+      if (this.viewpointSide && model.sideView) {
+        return this.sideView(model)
       }
 
-      ctx.drawHorizontalLine = (left, top, width, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, width, 1)
+      if (this.viewpointAngled && model.angledView) {
+        return this.angledView(model)
       }
 
-      const lineColor = 'rgba(255, 255, 255, 0.5)'
+      return null
+    },
 
-      for (let i = 0; i < canvas.width; i += this.gridSize) {
-        ctx.drawVerticalLine(i, 0, canvas.height, lineColor)
+    image(item) {
+      const model = item.model || item
+
+      if (
+        item.modulePackage &&
+        (item.modulePackage.topView ||
+          item.modulePackage.sideView ||
+          item.modulePackage.angledView)
+      ) {
+        const url = this.extractUrlFromModel(item.modulePackage)
+        if (url) {
+          return url
+        }
       }
 
-      for (let i = 0; i < canvas.height; i += this.gridSize) {
-        ctx.drawHorizontalLine(0, i, canvas.width, lineColor)
+      if (
+        item.paint &&
+        (item.paint.topView || item.paint.sideView || item.paint.angledView)
+      ) {
+        const url = this.extractUrlFromModel(item.paint)
+        if (url) {
+          return url
+        }
       }
-    }
-  }
 
-  image(item) {
-    const model = item.model || item
+      return this.extractUrlFromModel(model)
+    },
 
-    if (
-      item.modulePackage &&
-      (item.modulePackage.topView ||
-        item.modulePackage.sideView ||
-        item.modulePackage.angledView)
-    ) {
-      const url = this.extractUrlFromModel(item.modulePackage)
-      if (url) {
-        return url
+    imageMaxHeight(item) {
+      const model = item.model || item
+
+      if (
+        item.modulePackage &&
+        (item.modulePackage.topView ||
+          item.modulePackage.sideView ||
+          item.modulePackage.angledView)
+      ) {
+        const height = this.extractMaxHeightFromModel(item.modulePackage)
+        if (height) {
+          return height
+        }
       }
-    }
 
-    if (
-      item.paint &&
-      (item.paint.topView || item.paint.sideView || item.paint.angledView)
-    ) {
-      const url = this.extractUrlFromModel(item.paint)
-      if (url) {
-        return url
+      if (
+        item.paint &&
+        (item.paint.topView || item.paint.sideView || item.paint.angledView)
+      ) {
+        const height = this.extractMaxHeightFromModel(item.paint)
+        if (height) {
+          return height
+        }
       }
-    }
 
-    return this.extractUrlFromModel(model)
-  }
+      return this.extractMaxHeightFromModel(model)
+    },
 
-  extractUrlFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return this.topView(model)
-    }
+    imageMaxWidth(item) {
+      const model = item.model || item
 
-    if (this.viewpointSide && model.sideView) {
-      return this.sideView(model)
-    }
-
-    if (this.viewpointAngled && model.angledView) {
-      return this.angledView(model)
-    }
-
-    return null
-  }
-
-  resetZoom() {
-    this.panzoomInstance.zoomAbs(0, 0, 1)
-    this.panzoomInstance.moveTo(0, 0)
-  }
-
-  markForReset() {
-    this.markedForReset = true
-
-    setTimeout(() => {
-      this.checkReset()
-    }, 300)
-  }
-
-  topView(model) {
-    return model.topViewResized
-  }
-
-  sideView(model) {
-    return model.sideViewResized
-  }
-
-  angledView(model) {
-    return model.angledViewResized
-  }
-
-  extractMaxWidthFromModel(model) {
-    return Math.max(
-      model.topViewWidth,
-      model.sideViewWidth,
-      model.angledViewWidth
-    )
-  }
-
-  extractMaxHeightFromModel(model) {
-    return Math.max(
-      model.topViewHeight,
-      model.sideViewHeight,
-      model.angledViewHeight
-    )
-  }
-
-  imageMaxHeight(item) {
-    const model = item.model || item
-
-    if (
-      item.modulePackage &&
-      (item.modulePackage.topView ||
-        item.modulePackage.sideView ||
-        item.modulePackage.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(item.modulePackage)
-      if (height) {
-        return height
+      if (
+        item.modulePackage &&
+        (item.modulePackage.topView ||
+          item.modulePackage.sideView ||
+          item.modulePackage.angledView)
+      ) {
+        const width = this.extractMaxWidthFromModel(item.modulePackage)
+        if (width) {
+          return width
+        }
       }
-    }
 
-    if (
-      item.paint &&
-      (item.paint.topView || item.paint.sideView || item.paint.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(item.paint)
-      if (height) {
-        return height
+      if (
+        item.paint &&
+        (item.paint.topView || item.paint.sideView || item.paint.angledView)
+      ) {
+        const width = this.extractMaxWidthFromModel(item.paint)
+        if (width) {
+          return width
+        }
       }
-    }
 
-    return this.extractMaxHeightFromModel(model)
-  }
+      return this.extractMaxWidthFromModel(model)
+    },
 
-  imageMaxWidth(item) {
-    const model = item.model || item
+    markForReset() {
+      this.markedForReset = true
 
-    if (
-      item.modulePackage &&
-      (item.modulePackage.topView ||
-        item.modulePackage.sideView ||
-        item.modulePackage.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(item.modulePackage)
-      if (width) {
-        return width
+      setTimeout(() => {
+        this.checkReset()
+      }, 300)
+    },
+
+    modelName(item) {
+      const model = item.model || item
+
+      return model.name
+    },
+
+    productionStatus(item) {
+      const model = item.model || item
+
+      return this.$t(`labels.model.productionStatus.${model.productionStatus}`)
+    },
+
+    resetZoom() {
+      this.panzoomInstance.zoomAbs(0, 0, 1)
+      this.panzoomInstance.moveTo(0, 0)
+    },
+
+    setScreenHeight(screenHeight) {
+      this.$store.commit(
+        `${this.namespace}/setFleetchartScreenHeight`,
+        screenHeight
+      )
+
+      this.setupColumns()
+    },
+
+    setupColumns() {
+      this.fleetchartColumns = {}
+      let index = 0
+      let colHeight = 0
+
+      this.items.forEach((item) => {
+        const model = item.model || item
+        const length = model.fleetchartLength * this.sizeMultiplicator
+
+        const height =
+          (length * this.imageMaxHeight(item)) / this.imageMaxWidth(item)
+
+        if (Number.isNaN(height)) {
+          return
+        }
+
+        colHeight += height
+
+        if (colHeight > this.maxColHeight) {
+          colHeight = height
+          index += 1
+        }
+
+        colHeight += this.innerMargin
+
+        this.fleetchartColumns[index] = [
+          ...(this.fleetchartColumns[index] || []),
+          item,
+        ]
+      })
+    },
+
+    async setupZoom() {
+      this.panzoomInstance = panzoom(this.$refs.fleetchart, {
+        maxZoom: this.maxZoom,
+        minZoom: this.minZoom,
+        pinchSpeed: this.pinchSpeed,
+        zoomSpeed: this.zoomSpeed,
+      })
+
+      if (this.initialZoomData?.scale) {
+        this.panzoomInstance.zoomAbs(0, 0, this.initialZoomData.scale)
+
+        // hack to apply latest location after zooming.
+        setTimeout(() => {
+          this.panzoomInstance.moveTo(
+            this.initialZoomData.x,
+            this.initialZoomData.y
+          )
+        }, 300)
       }
-    }
 
-    if (
-      item.paint &&
-      (item.paint.topView || item.paint.sideView || item.paint.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(item.paint)
-      if (width) {
-        return width
-      }
-    }
+      this.panzoomInstance.on('zoom', (_event) => {
+        this.updateZoomData()
+      })
 
-    return this.extractMaxWidthFromModel(model)
-  }
+      this.panzoomInstance.on('pan', (_event) => {
+        this.updateZoomData()
+      })
+
+      this.panzoomInstance.on('transform', (_event) => {
+        this.checkReset()
+      })
+    },
+
+    setViewpoint(viewpoint) {
+      this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint)
+    },
+
+    sideView(model) {
+      return model.sideViewResized
+    },
+
+    toggleGrid() {
+      this.gridEnabled = !this.gridEnabled
+
+      this.drawGridLines()
+    },
+
+    toggleLabels() {
+      this.$store.commit(
+        `${this.namespace}/setFleetchartLabels`,
+        !this.showLabels
+      )
+    },
+
+    toggleStatus() {
+      this.showStatus = !this.showStatus
+    },
+
+    topView(model) {
+      return model.topViewResized
+    },
+
+    updateScreenSize() {
+      this.screenWidth = window.innerWidth
+      this.screenHeight = window.innerHeight
+
+      this.drawGridLines()
+    },
+  },
 }
 </script>

@@ -209,19 +209,14 @@ export default {
   name: 'NewVehicleModal',
 
   components: {
-    Modal,
-    FilterGroup,
-    CollectionFilterGroup,
     Btn,
+    CollectionFilterGroup,
+    FilterGroup,
+    Modal,
     TeaserPanel,
   },
 
   props: {
-    shopId: {
-      type: String,
-      required: true,
-    },
-
     commodityItemType: {
       type: String,
       default: null,
@@ -231,51 +226,56 @@ export default {
       type: String,
       default: null,
     },
+
+    shopId: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
     return {
-      modelsCollection: modelsCollection,
       commoditiesCollection: commoditiesCollection,
-      componentsCollection: componentsCollection,
-      equipmentCollection: equipmentCollection,
-      modelModulesCollection: modelModulesCollection,
-      modelPaintsCollection: modelPaintsCollection,
-      componentItemTypeFiltersCollection: componentItemTypeFiltersCollection,
-      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
-      equipmentSlotFiltersCollection: equipmentSlotFiltersCollection,
-      submitting: false,
-      componentItemTypeFilter: null,
-      equipmentTypeFilter: null,
-      equipmentSlotFilter: null,
-      form: null,
-      items: [],
       commodityTypeOptions: [
         {
-          value: 'Commodity',
           name: 'Commodity',
+          value: 'Commodity',
         },
         {
-          value: 'Component',
           name: 'Component',
+          value: 'Component',
         },
         {
-          value: 'Equipment',
           name: 'Equipment',
+          value: 'Equipment',
         },
         {
-          value: 'Model',
           name: 'Model',
+          value: 'Model',
         },
         {
-          value: 'ModelModule',
           name: 'Model Module',
+          value: 'ModelModule',
         },
         {
-          value: 'ModelPaint',
           name: 'Model Paint',
+          value: 'ModelPaint',
         },
       ],
+      componentItemTypeFilter: null,
+      componentItemTypeFiltersCollection: componentItemTypeFiltersCollection,
+      componentsCollection: componentsCollection,
+      equipmentCollection: equipmentCollection,
+      equipmentSlotFilter: null,
+      equipmentSlotFiltersCollection: equipmentSlotFiltersCollection,
+      equipmentTypeFilter: null,
+      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
+      form: null,
+      items: [],
+      modelModulesCollection: modelModulesCollection,
+      modelPaintsCollection: modelPaintsCollection,
+      modelsCollection: modelsCollection,
+      submitting: false,
     }
   },
 
@@ -296,8 +296,16 @@ export default {
   },
 
   methods: {
+    add(value) {
+      this.items.push(value)
+    },
+
     fetchSubCategories() {
       return this.$api.get('filters/shop-commodities/sub-categories')
+    },
+
+    removeItem(index) {
+      this.items.splice(index, 1)
     },
 
     setupForm() {
@@ -323,14 +331,6 @@ export default {
       this.$comlink.$emit('close-modal')
 
       this.submitting = false
-    },
-
-    add(value) {
-      this.items.push(value)
-    },
-
-    removeItem(index) {
-      this.items.splice(index, 1)
     },
   },
 }

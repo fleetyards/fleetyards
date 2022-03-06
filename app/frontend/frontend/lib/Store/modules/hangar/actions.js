@@ -1,4 +1,24 @@
 export default {
+  add({ commit, state }, payload) {
+    commit('add', payload)
+
+    if (state.starterGuideVisible) {
+      commit('setStarterGuideVisible', false)
+    }
+  },
+
+  enableStarterGuide({ commit }) {
+    commit('setStarterGuideVisible', true)
+  },
+
+  hidePreview({ commit }) {
+    commit('setPreview', false)
+  },
+
+  remove({ commit }, payload) {
+    commit('remove', payload)
+  },
+
   reset({ commit }) {
     commit('reset')
   },
@@ -11,40 +31,12 @@ export default {
     }
   },
 
-  hidePreview({ commit }) {
-    commit('setPreview', false)
-  },
-
-  add({ commit, state }, payload) {
-    commit('add', payload)
-
-    if (state.starterGuideVisible) {
-      commit('setStarterGuideVisible', false)
-    }
-  },
-
-  remove({ commit }, payload) {
-    commit('remove', payload)
-  },
-
   toggleDetails({ commit, state }) {
     commit('setDetailsVisible', !state.detailsVisible)
   },
 
   toggleFilter({ commit, state }) {
     commit('setFilterVisible', !state.filterVisible)
-  },
-
-  toggleMoney({ commit, state }) {
-    commit('setMoney', !state.money)
-  },
-
-  enableStarterGuide({ commit }) {
-    commit('setStarterGuideVisible', true)
-  },
-
-  updatePerPage({ commit }, payload) {
-    commit('setPerPage', payload)
   },
 
   toggleFleetchart({ commit, state }) {
@@ -55,7 +47,15 @@ export default {
     commit('setGridView', !state.gridView)
   },
 
+  toggleMoney({ commit, state }) {
+    commit('setMoney', !state.money)
+  },
+
   toggleTableSlim({ commit, state }) {
     commit('setTableSlim', !state.tableSlim)
+  },
+
+  updatePerPage({ commit }, payload) {
+    commit('setPerPage', payload)
   },
 }

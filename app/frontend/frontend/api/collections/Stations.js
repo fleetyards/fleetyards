@@ -13,11 +13,11 @@ export class StationsCollection extends BaseCollection {
     this.params = params
 
     const response = await get('stations', {
+      page: params.page,
       q: {
         ...params.filters,
         sorts: ['station_type asc', 'name asc'],
       },
-      page: params.page,
     })
 
     if (!response.error) {

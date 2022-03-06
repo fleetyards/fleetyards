@@ -12,8 +12,8 @@ export class TradeRoutesCollection extends BaseCollection {
     this.params = params
 
     const response = await get('trade-routes', {
-      q: params?.filters,
       page: params?.page,
+      q: params?.filters,
     })
 
     if (!response.error) {

@@ -3,21 +3,9 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
-    isAuthenticated(state) {
-      return state.authenticated
-    },
-
-    currentUser(state) {
-      return state.currentUser
-    },
-
     accessConfirmed(state) {
       if (!state.accessConfirmed) {
         return false
@@ -30,12 +18,24 @@ export default () => ({
 
       return diff < 10
     },
+
+    currentUser(state) {
+      return state.currentUser
+    },
+
+    isAuthenticated(state) {
+      return state.authenticated
+    },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
       Object.assign(state, getDefaultState())
+    },
+
+    setAccessConfirmed(state, payload) {
+      state.accessConfirmed = payload
     },
 
     setAuthenticated(state, payload) {
@@ -49,10 +49,10 @@ export default () => ({
         state.currentUser = null
       }
     },
-
-    setAccessConfirmed(state, payload) {
-      state.accessConfirmed = payload
-    },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

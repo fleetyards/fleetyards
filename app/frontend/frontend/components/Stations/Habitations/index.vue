@@ -35,17 +35,16 @@ export default {
   name: 'StationsHabitations',
 
   props: {
-    station: {
-      type: Object,
-      required: true,
+    padding: {
+      default: false,
+      type: Boolean,
     },
 
-    padding: {
-      type: Boolean,
-      default: false,
+    station: {
+      required: true,
+      type: Object,
     },
   },
-
   computed: {
     habitationsByName() {
       return groupBy(this.station.habitations, 'habitationName')

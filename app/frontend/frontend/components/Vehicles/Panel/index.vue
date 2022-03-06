@@ -154,153 +154,174 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Panel from '@/frontend/core/components/Panel'
-import PanelDetails from '@/frontend/core/components/Panel/PanelDetails'
-import LazyImage from '@/frontend/core/components/LazyImage'
-import AddToHangar from '@/frontend/components/Models/AddToHangar'
-import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics'
+<script>
+import { mapGetters } from 'vuex'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import PanelDetails from '@/frontend/core/components/Panel/PanelDetails/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import AddToHangar from '@/frontend/components/Models/AddToHangar/index.vue'
+import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
-import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu'
-import HangarGroups from '@/frontend/components/Vehicles/HangarGroups'
+import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu/index.vue'
+import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
 
-@Component<VehiclePanel>({
+export default {
+  name: 'VehiclePanel',
+
   components: {
+    AddToHangar,
+    HangarGroups,
+    LazyImage,
+    ModelPanelMetrics,
     Panel,
     PanelDetails,
     VehicleContextMenu,
-    LazyImage,
-    AddToHangar,
-    ModelPanelMetrics,
-    HangarGroups,
   },
-})
-export default class VehiclePanel extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle | null
 
-  @Prop({ default: false }) details: boolean
+  props: {
+    details: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: false }) editable: boolean
+    editable: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: false }) highlight: boolean
+    highlight: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: false }) loanersHintVisible: boolean
+    loanersHintVisible: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Getter('mobile') mobile
+    vehicle: {
+      required: true,
+      type: Object,
+    },
+  },
 
-  get uuid() {
-    return this._uid
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  get storeImage() {
-    if (this.vehicle && this.vehicle.paint) {
-      return this.vehicle.paint.storeImageMedium
-    }
+    customName() {
+      if (this.vehicle && this.vehicle.name) {
+        return this.vehicle.name
+      }
 
-    if (this.vehicle && this.vehicle.upgrade) {
-      return this.vehicle.upgrade.storeImageMedium
-    }
-
-    return this.model.storeImageMedium
-  }
-
-  get modelName() {
-    return this.model.name
-  }
-
-  get model() {
-    if (!this.vehicle) {
       return null
-    }
+    },
 
-    return this.vehicle.model
-  }
+    flagshipTooltip() {
+      if (!this.vehicle) {
+        return ''
+      }
+      if (this.$route.name === 'hangar') {
+        return this.$t('labels.yourFlagship')
+      }
+      return this.$t('labels.flagship')
+    },
 
-  get id() {
-    if (this.vehicle) {
-      return this.vehicle.id
-    }
+    hasAddons() {
+      return (
+        this.vehicle &&
+        (this.vehicle.modelModuleIds.length ||
+          this.vehicle.modelUpgradeIds.length)
+      )
+    },
 
-    return this.model.slug
-  }
+    hasLoaners() {
+      return this.model?.loaners?.length
+    },
 
-  get customName() {
-    if (this.vehicle && this.vehicle.name) {
-      return this.vehicle.name
-    }
+    id() {
+      if (this.vehicle) {
+        return this.vehicle.id
+      }
 
-    return null
-  }
+      return this.model.slug
+    },
 
-  get flagshipTooltip() {
-    if (!this.vehicle) {
-      return ''
-    }
-    if (this.$route.name === 'hangar') {
-      return this.$t('labels.yourFlagship')
-    }
-    return this.$t('labels.flagship')
-  }
+    loanersTooltip() {
+      return [
+        this.$t('labels.vehicle.hasLoaners'),
+        this.model.loaners.map((loaner) => loaner.name).join(', '),
+      ].join(': ')
+    },
 
-  get hasAddons() {
-    return (
-      this.vehicle &&
-      (this.vehicle.modelModuleIds.length ||
-        this.vehicle.modelUpgradeIds.length)
-    )
-  }
+    model() {
+      if (!this.vehicle) {
+        return null
+      }
 
-  get upgradable() {
-    return (
-      (this.editable || this.hasAddons) &&
-      (this.model.hasModules || this.model.hasUpgrades)
-    )
-  }
+      return this.vehicle.model
+    },
 
-  get purchasedLabel() {
-    if (this.vehicle.purchased) {
-      return this.$t('labels.vehicle.purchased')
-    }
+    modelName() {
+      return this.model.name
+    },
 
-    return this.$t('actions.markAsPurchased')
-  }
+    purchasedLabel() {
+      if (this.vehicle.purchased) {
+        return this.$t('labels.vehicle.purchased')
+      }
 
-  get loanersTooltip() {
-    return [
-      this.$t('labels.vehicle.hasLoaners'),
-      this.model.loaners.map((loaner) => loaner.name).join(', '),
-    ].join(': ')
-  }
+      return this.$t('actions.markAsPurchased')
+    },
 
-  get hasLoaners() {
-    return this.model?.loaners?.length
-  }
+    storeImage() {
+      if (this.vehicle && this.vehicle.paint) {
+        return this.vehicle.paint.storeImageMedium
+      }
 
-  filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] }
-  }
+      if (this.vehicle && this.vehicle.upgrade) {
+        return this.vehicle.upgrade.storeImageMedium
+      }
 
-  async togglePurchased() {
-    if (!this.editable || this.vehicle.loaner) {
-      return
-    }
+      return this.model.storeImageMedium
+    },
 
-    await vehiclesCollection.update(this.vehicle.id, {
-      purchased: !this.vehicle.purchased,
-    })
-  }
+    upgradable() {
+      return (
+        (this.editable || this.hasAddons) &&
+        (this.model.hasModules || this.model.hasUpgrades)
+      )
+    },
 
-  openAddonsModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/AddonsModal'),
-      props: {
-        vehicle: this.vehicle,
-        editable: this.editable,
-      },
-    })
-  }
+    uuid() {
+      return this._uid
+    },
+  },
+
+  methods: {
+    filterManufacturerQuery(manufacturer) {
+      return { manufacturerIn: [manufacturer] }
+    },
+
+    openAddonsModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/AddonsModal/index.vue'),
+        props: {
+          editable: this.editable,
+          vehicle: this.vehicle,
+        },
+      })
+    },
+
+    async togglePurchased() {
+      if (!this.editable || this.vehicle.loaner) {
+        return
+      }
+
+      await vehiclesCollection.update(this.vehicle.id, {
+        purchased: !this.vehicle.purchased,
+      })
+    },
+  },
 }
 </script>

@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn'
+import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
 
 export default {
   name: 'ShopsItemRow',
@@ -136,43 +136,30 @@ export default {
   components: {
     AddToCartBtn,
   },
+
   props: {
-    commodity: {
-      type: Object,
-      required: true,
-    },
-    rental: {
-      type: Boolean,
-      default: false,
-    },
-    selling: {
-      type: Boolean,
-      default: false,
-    },
     buying: {
       type: Boolean,
       default: false,
     },
+
+    commodity: {
+      required: true,
+      type: Object,
+    },
+
+    rental: {
+      default: false,
+      type: Boolean,
+    },
+
+    selling: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   computed: {
-    showStats() {
-      return ['equipment', 'component'].includes(this.commodity.category)
-    },
-    manufacturer() {
-      if (!this.commodity.item || !this.commodity.item.manufacturer) {
-        return null
-      }
-      return this.commodity.item.manufacturer
-    },
-    name() {
-      if (this.manufacturer) {
-        if (this.manufacturer.code) {
-          return `${this.manufacturer.code} ${this.commodity.name}`
-        }
-        return `${this.manufacturer.name} ${this.commodity.name}`
-      }
-      return this.commodity.name
-    },
     link() {
       if (this.commodity.category !== 'model') {
         return null
@@ -183,6 +170,27 @@ export default {
           slug: this.commodity.slug,
         },
       }
+    },
+
+    manufacturer() {
+      if (!this.commodity.item || !this.commodity.item.manufacturer) {
+        return null
+      }
+      return this.commodity.item.manufacturer
+    },
+
+    name() {
+      if (this.manufacturer) {
+        if (this.manufacturer.code) {
+          return `${this.manufacturer.code} ${this.commodity.name}`
+        }
+        return `${this.manufacturer.name} ${this.commodity.name}`
+      }
+      return this.commodity.name
+    },
+
+    showStats() {
+      return ['equipment', 'component'].includes(this.commodity.category)
     },
   },
 }

@@ -284,32 +284,32 @@ export default {
   name: 'HangarPage',
 
   components: {
-    FilteredList,
-    FilteredGrid,
-    VehiclesTable,
     Btn,
-    PrimaryAction,
-    ShareBtn,
     BtnDropdown,
-    HangarImportBtn,
-    VehiclePanel,
-    VehiclesFilterForm,
-    ModelClassLabels,
+    FilteredGrid,
+    FilteredList,
+    FleetchartApp,
     GroupLabels,
     HangarGuideBox,
-    FleetchartApp,
+    HangarImportBtn,
+    ModelClassLabels,
+    PrimaryAction,
+    ShareBtn,
+    VehiclePanel,
+    VehiclesFilterForm,
+    VehiclesTable,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      deleting: false,
-      guideVisible: false,
-      vehiclesChannel: null,
-      highlightedGroup: null,
       collection: vehiclesCollection,
+      deleting: false,
       groupsCollection: hangarGroupsCollection,
+      guideVisible: false,
+      highlightedGroup: null,
+      vehiclesChannel: null,
     }
   },
 
@@ -326,6 +326,12 @@ export default {
       'fleetchartVisible',
     ]),
 
+    filters() {
+      return {
+        filters: this.$route.query.q,
+        page: this.$route.query.page,
+      }
+    },
     hangarGroupCounts() {
       if (!this.hangarStats) {
         return []
@@ -335,6 +341,16 @@ export default {
     },
     hangarStats() {
       return this.collection.stats
+    },
+    isGuideVisible() {
+      return this.starterGuideVisible || this.guideVisible
+    },
+    shareUrl() {
+      if (!this.currentUser) {
+        return null
+      }
+
+      return this.currentUser.publicHangarUrl
     },
     toggleDetailsTooltip() {
       if (this.detailsVisible) {
@@ -350,13 +366,6 @@ export default {
 
       return this.$t('actions.showGridView')
     },
-    toggleTableSlimTooltip() {
-      if (this.tableSlim) {
-        return this.$t('actions.showExpandedList')
-      }
-
-      return this.$t('actions.showCompactList')
-    },
     toggleGuideTooltip() {
       if (this.guideVisible) {
         return this.$t('actions.hideGuide')
@@ -364,24 +373,16 @@ export default {
 
       return this.$t('actions.showGuide')
     },
-    shareUrl() {
-      if (!this.currentUser) {
-        return null
+
+    toggleTableSlimTooltip() {
+      if (this.tableSlim) {
+        return this.$t('actions.showExpandedList')
       }
 
-      return this.currentUser.publicHangarUrl
-    },
-    isGuideVisible() {
-      return this.starterGuideVisible || this.guideVisible
-    },
-
-    filters() {
-      return {
-        filters: this.$route.query.q,
-        page: this.$route.query.page,
-      }
+      return this.$t('actions.showCompactList')
     },
   },
+
   watch: {
     $route() {
       this.fetch()
@@ -417,45 +418,22 @@ export default {
       'toggleTableSlim',
       'toggleFleetchart',
     ]),
-    toggleGuide() {
-      this.guideVisible = !this.guideVisible
-    },
+    async destroyAll() {
+      this.deleting = true
 
-    showNewModal() {
-      this.$comlink.$emit('open-modal', {
-        component: () =>
-          import('@/frontend/components/Vehicles/NewVehiclesModal'),
-      })
-    },
-
-    highlightGroup(group) {
-      if (!group) {
-        this.highlightedGroup = null
-        return
-      }
-
-      this.highlightedGroup = group.id
-    },
-
-    async fetch() {
-      await this.collection.findAll(this.filters)
-      await this.groupsCollection.findAll()
-      await this.collection.findStats(this.filters)
-    },
-
-    setupUpdates() {
-      if (this.vehiclesChannel) {
-        this.vehiclesChannel.unsubscribe()
-      }
-
-      this.vehiclesChannel = this.$cable.consumer.subscriptions.create(
-        {
-          channel: 'HangarChannel',
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
         },
-        {
-          received: debounce(this.fetch, 500),
-        }
-      )
+        onConfirm: async () => {
+          await this.collection.destroyAll()
+
+          this.$comlink.$emit('vehicles-delete-all')
+
+          this.deleting = false
+        },
+        text: this.$t('messages.confirm.hangar.destroyAll'),
+      })
     },
 
     async exportJson() {
@@ -485,22 +463,45 @@ export default {
       document.body.removeChild(link)
     },
 
-    async destroyAll() {
-      this.deleting = true
+    async fetch() {
+      await this.collection.findAll(this.filters)
+      await this.groupsCollection.findAll()
+      await this.collection.findStats(this.filters)
+    },
 
-      displayConfirm({
-        text: this.$t('messages.confirm.hangar.destroyAll'),
-        onConfirm: async () => {
-          await this.collection.destroyAll()
+    highlightGroup(group) {
+      if (!group) {
+        this.highlightedGroup = null
+        return
+      }
 
-          this.$comlink.$emit('vehicles-delete-all')
+      this.highlightedGroup = group.id
+    },
 
-          this.deleting = false
+    setupUpdates() {
+      if (this.vehiclesChannel) {
+        this.vehiclesChannel.unsubscribe()
+      }
+
+      this.vehiclesChannel = this.$cable.consumer.subscriptions.create(
+        {
+          channel: 'HangarChannel',
         },
-        onClose: () => {
-          this.deleting = false
-        },
+        {
+          received: debounce(this.fetch, 500),
+        }
+      )
+    },
+
+    showNewModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/NewVehiclesModal/index.vue'),
       })
+    },
+
+    toggleGuide() {
+      this.guideVisible = !this.guideVisible
     },
   },
 }

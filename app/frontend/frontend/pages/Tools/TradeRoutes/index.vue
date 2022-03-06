@@ -228,15 +228,14 @@ import modelsCollection from '@/frontend/api/collections/Models'
 
 export default {
   name: 'TradeRoutes',
-
   components: {
-    FilteredList,
     Btn,
-    BtnGroup,
-    PriceModalBtn,
     BtnDropdown,
-    Panel,
+    BtnGroup,
+    FilteredList,
     FilterForm,
+    Panel,
+    PriceModalBtn,
     QuickFilter,
     TradeRoutePrice,
     TradeRouteProfit,
@@ -246,33 +245,18 @@ export default {
 
   data() {
     return {
-      collection: tradeRoutesCollection,
-      modelsCollection: modelsCollection,
       averagePrices: false,
       cargoShip: null,
+      collection: tradeRoutesCollection,
+      modelsCollection: modelsCollection,
     }
   },
 
   computed: {
     ...mapGetters(['mobile']),
 
-    title() {
-      if (this.cargoShip) {
-        return this.$t('headlines.tools.tradeRoutes.withShip', {
-          name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
-          cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
-        })
-      }
-
-      return this.$t('headlines.tools.tradeRoutes.index')
-    },
-
     availableCargo() {
       return this.cargoShip ? this.cargoShip.cargo * 100 : null
-    },
-
-    sorts() {
-      return this.$route.query.q?.sorts || []
     },
 
     sortByAveragePercent() {
@@ -282,17 +266,17 @@ export default {
       )
     },
 
-    sortByPercent() {
-      return (
-        this.sorts.includes('profit_per_unit_percent asc') ||
-        this.sorts.includes('profit_per_unit_percent desc')
-      )
-    },
-
     sortByAverageProfit() {
       return (
         this.sorts.includes('average_profit_per_unit asc') ||
         this.sorts.includes('average_profit_per_unit desc')
+      )
+    },
+
+    sortByPercent() {
+      return (
+        this.sorts.includes('profit_per_unit_percent asc') ||
+        this.sorts.includes('profit_per_unit_percent desc')
       )
     },
 
@@ -310,6 +294,21 @@ export default {
         this.sorts.includes('origin_shop_station_name desc')
       )
     },
+
+    sorts() {
+      return this.$route.query.q?.sorts || []
+    },
+
+    title() {
+      if (this.cargoShip) {
+        return this.$t('headlines.tools.tradeRoutes.withShip', {
+          cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
+          name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
+        })
+      }
+
+      return this.$t('headlines.tools.tradeRoutes.index')
+    },
   },
 
   watch: {
@@ -324,22 +323,15 @@ export default {
   },
 
   methods: {
-    sortBy(field, direction) {
-      return sortBy(this.$route, field, direction)
-    },
+    async fetchCargoShip() {
+      const query = this.$route.query.q || {}
 
-    showLatestPrices() {
-      this.averagePrices = false
-
-      if (this.sortByProfit || this.sortByAverageProfit) {
-        this.$router
-          .push(this.sortBy('profit_per_unit', 'desc'))
-          .catch(() => {})
-      } else if (this.sortByPercent || this.sortByAveragePercent) {
-        this.$router
-          .push(this.sortBy('profit_per_unit_percent', 'desc'))
-          .catch(() => {})
+      if (!query.cargoShip) {
+        this.cargoShip = null
+        return
       }
+
+      this.cargoShip = await modelsCollection.findBySlug(query.cargoShip)
     },
 
     showAveragePrices() {
@@ -356,15 +348,22 @@ export default {
       }
     },
 
-    async fetchCargoShip() {
-      const query = this.$route.query.q || {}
+    showLatestPrices() {
+      this.averagePrices = false
 
-      if (!query.cargoShip) {
-        this.cargoShip = null
-        return
+      if (this.sortByProfit || this.sortByAverageProfit) {
+        this.$router
+          .push(this.sortBy('profit_per_unit', 'desc'))
+          .catch(() => {})
+      } else if (this.sortByPercent || this.sortByAveragePercent) {
+        this.$router
+          .push(this.sortBy('profit_per_unit_percent', 'desc'))
+          .catch(() => {})
       }
+    },
 
-      this.cargoShip = await modelsCollection.findBySlug(query.cargoShip)
+    sortBy(field, direction) {
+      return sortBy(this.$route, field, direction)
     },
   },
 }

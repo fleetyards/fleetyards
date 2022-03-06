@@ -35,28 +35,28 @@ export default {
       return window.APP_NAME
     },
 
-    maintainerName() {
-      return window.MAINTAINER_NAME
-    },
-
-    maintainerMail() {
-      return window.MAINTAINER_MAIL
-    },
-
-    maintainerAddressStreet() {
-      return window.MAINTAINER_ADDRESS_STREET
-    },
-
-    maintainerAddressPostalcode() {
-      return window.MAINTAINER_ADDRESS_POSTALCODE
-    },
-
     maintainerAddressCity() {
       return window.MAINTAINER_ADDRESS_CITY
     },
 
     maintainerAddressCountry() {
       return window.MAINTAINER_ADDRESS_COUNTRY
+    },
+
+    maintainerAddressPostalcode() {
+      return window.MAINTAINER_ADDRESS_POSTALCODE
+    },
+
+    maintainerAddressStreet() {
+      return window.MAINTAINER_ADDRESS_STREET
+    },
+
+    maintainerMail() {
+      return window.MAINTAINER_MAIL
+    },
+
+    maintainerName() {
+      return window.MAINTAINER_NAME
     },
   },
 }

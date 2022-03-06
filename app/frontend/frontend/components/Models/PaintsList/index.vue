@@ -25,49 +25,61 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Loader from '@/frontend/core/components/Loader'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel'
+<script>
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
 import modelPaintsCollection from '@/frontend/api/collections/ModelPaints'
 
-@Component<ModelPaintList>({
+export default {
+  name: 'ModelPaintList',
+
   components: {
     Loader,
     TeaserPanel,
   },
-})
-export default class ModelPaintList extends Vue {
-  @Prop({ required: true }) model!: Model
 
-  collection: ModelPaintsCollection = modelPaintsCollection
+  props: {
+    model: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  loading = false
+  data() {
+    return {
+      collection: modelPaintsCollection,
+      loading: false,
+    }
+  },
 
-  get paints() {
-    return this.collection.records
-  }
+  computed: {
+    paints() {
+      return this.collection.records
+    },
+  },
 
-  @Watch('model')
-  onModelChange() {
-    this.fetch()
-  }
+  watch: {
+    model() {
+      this.fetch()
+    },
+  },
 
   mounted() {
     this.fetch()
-  }
+  },
 
-  async fetch() {
-    if (!this.model) {
-      return
-    }
+  methods: {
+    async fetch() {
+      if (!this.model) {
+        return
+      }
 
-    this.loading = true
+      this.loading = true
 
-    await this.collection.findAllByModel(this.model.slug)
+      await this.collection.findAllByModel(this.model.slug)
 
-    this.loading = false
-  }
+      this.loading = false
+    },
+  },
 }
 </script>

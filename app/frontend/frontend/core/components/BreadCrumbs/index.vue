@@ -19,10 +19,10 @@ export default {
 
   props: {
     crumbs: {
-      type: Array,
       default() {
         return []
       },
+      type: Array,
     },
   },
 }

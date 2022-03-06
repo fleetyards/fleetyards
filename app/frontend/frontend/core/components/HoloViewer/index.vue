@@ -39,117 +39,110 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Loader from '@/frontend/core/components/Loader'
-import BtnGroup from '@/frontend/core/components/BtnGroup'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Loader from '@/frontend/core/components/Loader/index.vue'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { displayAlert } from 'frontend/lib/Noty'
+import { displayAlert } from '@/frontend/lib/Noty'
 
-@Component<HoloViewer>({
+export default {
+  name: 'HoloViewer',
   components: {
     Loader,
-    BtnGroup,
-    Btn,
   },
-})
-export default class HoloViewer extends Vue {
-  loading = false
 
-  debug = false
+  props: {
+    colored: {
+      type: Boolean,
+      default: false,
+    },
 
-  scene = null
+    holo: {
+      type: String,
+      required: true,
+    },
+  },
 
-  camera = null
-
-  renderer = null
-
-  model = null
-
-  controls = null
-
-  modelColor = 0x428bca
-
-  windowColor = 0x1d3d59
-
-  autoRotate = true
-
-  autoRotateSpeed = 1.5
-
-  zoom = false
-
-  progress = 0
-
-  color = false
-
-  @Prop({ required: true }) holo: string
-
-  @Prop({ default: false }) colored: boolean
-
-  get element() {
-    return this.$refs.modelViewer
-  }
-
-  get elementWidth() {
-    return this.element.clientWidth
-  }
-
-  get elementHeight() {
-    return this.element.clientHeight
-  }
-
-  get autoRotateTooltip() {
-    if (this.autoRotate) {
-      return this.$t('actions.holoViewer.autoRotate.disable')
+  data() {
+    return {
+      autoRotate: true,
+      autoRotateSpeed: 1.5,
+      camera: null,
+      color: false,
+      controls: null,
+      debug: false,
+      loading: false,
+      model: null,
+      modelColor: 0x428bca,
+      progress: 0,
+      renderer: null,
+      scene: null,
+      windowColor: 0x1d3d59,
+      zoom: false,
     }
+  },
 
-    return this.$t('actions.holoViewer.autoRotate.enable')
-  }
+  computed: {
+    autoRotateTooltip() {
+      if (this.autoRotate) {
+        return this.$t('actions.holoViewer.autoRotate.disable')
+      }
 
-  get zoomTooltip() {
-    if (this.zoom) {
-      return this.$t('actions.holoViewer.zoom.disable')
-    }
+      return this.$t('actions.holoViewer.autoRotate.enable')
+    },
 
-    return this.$t('actions.holoViewer.zoom.enable')
-  }
+    colorTooltip() {
+      if (this.color) {
+        return this.$t('actions.holoViewer.color.disable')
+      }
 
-  get colorTooltip() {
-    if (this.color) {
-      return this.$t('actions.holoViewer.color.disable')
-    }
+      return this.$t('actions.holoViewer.color.enable')
+    },
 
-    return this.$t('actions.holoViewer.color.enable')
-  }
+    element() {
+      return this.$refs.modelViewer
+    },
 
-  @Watch('modelColor')
-  onModelColorChange() {
-    this.updateModelMaterial()
-  }
+    elementHeight() {
+      return this.element.clientHeight
+    },
 
-  @Watch('zoom')
-  onZoomChange() {
-    this.controls.enableZoom = this.zoom
-    this.controls.update()
-  }
+    elementWidth() {
+      return this.element.clientWidth
+    },
 
-  @Watch('color')
-  onColorChange() {
-    if (this.model) {
+    zoomTooltip() {
+      if (this.zoom) {
+        return this.$t('actions.holoViewer.zoom.disable')
+      }
+
+      return this.$t('actions.holoViewer.zoom.enable')
+    },
+  },
+
+  watch: {
+    autoRotate() {
+      this.controls.autoRotate = this.autoRotate
+      this.controls.update()
+    },
+
+    color() {
+      if (this.model) {
+        this.updateModelMaterial()
+      }
+    },
+
+    modelColor() {
       this.updateModelMaterial()
-    }
-  }
+    },
 
-  @Watch('autoRotate')
-  onAutoRotateChange() {
-    this.controls.autoRotate = this.autoRotate
-    this.controls.update()
-  }
+    zoom() {
+      this.controls.enableZoom = this.zoom
+      this.controls.update()
+    },
+  },
 
   async mounted() {
     this.loading = true
@@ -162,179 +155,185 @@ export default class HoloViewer extends Vue {
     this.controls = this.setupControls(this.camera, this.renderer.domElement)
 
     this.loadModel()
-  }
+  },
 
-  animate() {
-    this.controls.update()
+  methods: {
+    animate() {
+      this.controls.update()
 
-    requestAnimationFrame(this.animate)
+      requestAnimationFrame(this.animate)
 
-    this.renderer.render(this.scene, this.camera)
-  }
+      this.renderer.render(this.scene, this.camera)
+    },
 
-  setupScene() {
-    const scene = new THREE.Scene()
+    handleError(error) {
+      this.loading = false
 
-    scene.background = null
+      console.error(error)
 
-    return scene
-  }
+      displayAlert({
+        text: this.$t('messages.holoViewer.modelLoader.failure'),
+      })
+    },
 
-  setupCamera() {
-    const camera = new THREE.PerspectiveCamera(
-      35,
-      this.elementWidth / this.elementHeight,
-      0.1,
-      1000
-    )
+    loadModel() {
+      const loader = new GLTFLoader()
 
-    return camera
-  }
+      const dracoLoader = new DRACOLoader()
+      dracoLoader.setDecoderPath('/vendor/js/draco/')
+      loader.setDRACOLoader(dracoLoader)
 
-  setupControls(camera, domElement) {
-    const controls = new OrbitControls(camera, domElement)
+      try {
+        loader.load(
+          this.holo,
+          (geometry) => {
+            this.loading = false
 
-    controls.enableDamping = true
-    controls.dampingFactor = 0.25
+            this.model = geometry.scene
 
-    controls.enablePan = false
+            this.model.rotation.set(0, 45, 0)
 
-    controls.enableZoom = this.zoom
-    controls.minDistance = 50
-    controls.maxDistance = 250
+            this.updateModelMaterial()
 
-    controls.autoRotate = this.autoRotate
-    controls.autoRotateSpeed = this.autoRotateSpeed
+            this.scene.add(this.model)
 
-    controls.listenToKeyEvents(window)
+            const box = new THREE.Box3().setFromObject(this.model)
+            const size = box.getSize(new THREE.Vector3())
 
-    controls.update()
+            const maxValue = Math.max(size.x, size.y)
 
-    return controls
-  }
+            this.camera.position.set(
+              0,
+              40,
+              Math.max(maxValue * 1.2, size.y * 2)
+            )
 
-  setupRenderer() {
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    })
+            this.camera.add(this.setupDirectionalLight(this.model))
 
-    renderer.physicallyCorrectLights = true
-    renderer.outputEncoding = THREE.sRGBEncoding
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.toneMappingExposure = 1
-    renderer.setSize(this.elementWidth, this.elementHeight)
-    renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap
-
-    this.element.appendChild(renderer.domElement)
-
-    return renderer
-  }
-
-  setupDirectionalLight(model) {
-    const directionalLight = new THREE.DirectionalLight(0x404040, 5)
-
-    directionalLight.target = model
-    directionalLight.castShadow = true
-
-    return directionalLight
-  }
-
-  updateModelMaterial() {
-    const material = new THREE.MeshPhongMaterial({
-      color: this.modelColor,
-      side: THREE.DoubleSide,
-    })
-
-    const windowMaterial = new THREE.MeshPhongMaterial({
-      color: this.windowColor,
-      opacity: 0.8,
-      transparent: true,
-    })
-
-    this.model.traverse((node) => {
-      if (!node.isMesh) return
-
-      if (this.color) {
-        if (node.backupMaterial) {
-          node.material = node.backupMaterial
-        }
-      } else if (node.name.includes('window')) {
-        node.backupMaterial = node.material
-        node.material = windowMaterial
-      } else {
-        node.backupMaterial = node.material
-        node.material = material
+            this.animate()
+          },
+          (xhr) => {
+            this.progress = (xhr.loaded / xhr.total) * 100
+          },
+          (error) => {
+            this.handleError(error)
+          }
+        )
+      } catch (error) {
+        this.handleError(error)
       }
-    })
-  }
+    },
 
-  loadModel() {
-    const loader = new GLTFLoader()
-
-    const dracoLoader = new DRACOLoader()
-    dracoLoader.setDecoderPath('/vendor/js/draco/')
-    loader.setDRACOLoader(dracoLoader)
-
-    try {
-      loader.load(
-        this.holo,
-        (geometry) => {
-          this.loading = false
-
-          this.model = geometry.scene
-
-          this.model.rotation.set(0, 45, 0)
-
-          this.updateModelMaterial()
-
-          this.scene.add(this.model)
-
-          const box = new THREE.Box3().setFromObject(this.model)
-          const size = box.getSize(new THREE.Vector3())
-
-          const maxValue = Math.max(size.x, size.y)
-
-          this.camera.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2))
-
-          this.camera.add(this.setupDirectionalLight(this.model))
-
-          this.animate()
-        },
-        (xhr) => {
-          this.progress = (xhr.loaded / xhr.total) * 100
-        },
-        (error) => {
-          this.handleError(error)
-        }
+    setupCamera() {
+      const camera = new THREE.PerspectiveCamera(
+        35,
+        this.elementWidth / this.elementHeight,
+        0.1,
+        1000
       )
-    } catch (error) {
-      this.handleError(error)
-    }
-  }
 
-  handleError(error) {
-    this.loading = false
+      return camera
+    },
 
-    console.error(error)
+    setupControls(camera, domElement) {
+      const controls = new OrbitControls(camera, domElement)
 
-    displayAlert({
-      text: this.$t('messages.holoViewer.modelLoader.failure'),
-    })
-  }
+      controls.enableDamping = true
+      controls.dampingFactor = 0.25
 
-  toggleZoom() {
-    this.zoom = !this.zoom
-  }
+      controls.enablePan = false
 
-  toggleColor() {
-    this.color = !this.color
-  }
+      controls.enableZoom = this.zoom
+      controls.minDistance = 50
+      controls.maxDistance = 250
 
-  toggleAutoRotate() {
-    this.autoRotate = !this.autoRotate
-  }
+      controls.autoRotate = this.autoRotate
+      controls.autoRotateSpeed = this.autoRotateSpeed
+
+      controls.listenToKeyEvents(window)
+
+      controls.update()
+
+      return controls
+    },
+
+    setupDirectionalLight(model) {
+      const directionalLight = new THREE.DirectionalLight(0x404040, 5)
+
+      directionalLight.target = model
+      directionalLight.castShadow = true
+
+      return directionalLight
+    },
+
+    setupRenderer() {
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+      })
+
+      renderer.physicallyCorrectLights = true
+      renderer.outputEncoding = THREE.sRGBEncoding
+      renderer.setPixelRatio(window.devicePixelRatio)
+      renderer.toneMappingExposure = 1
+      renderer.setSize(this.elementWidth, this.elementHeight)
+      renderer.shadowMap.enabled = true
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
+      this.element.appendChild(renderer.domElement)
+
+      return renderer
+    },
+
+    setupScene() {
+      const scene = new THREE.Scene()
+
+      scene.background = null
+
+      return scene
+    },
+
+    toggleAutoRotate() {
+      this.autoRotate = !this.autoRotate
+    },
+
+    toggleColor() {
+      this.color = !this.color
+    },
+
+    toggleZoom() {
+      this.zoom = !this.zoom
+    },
+
+    updateModelMaterial() {
+      const material = new THREE.MeshPhongMaterial({
+        color: this.modelColor,
+        side: THREE.DoubleSide,
+      })
+
+      const windowMaterial = new THREE.MeshPhongMaterial({
+        color: this.windowColor,
+        opacity: 0.8,
+        transparent: true,
+      })
+
+      this.model.traverse((node) => {
+        if (!node.isMesh) return
+
+        if (this.color) {
+          if (node.backupMaterial) {
+            node.material = node.backupMaterial
+          }
+        } else if (node.name.includes('window')) {
+          node.backupMaterial = node.material
+          node.material = windowMaterial
+        } else {
+          node.backupMaterial = node.material
+          node.material = material
+        }
+      })
+    },
+  },
 }
 </script>
 

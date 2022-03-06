@@ -166,10 +166,10 @@
 
 <script>
 import Filters from '@/frontend/mixins/Filters'
-import RadioList from '@/frontend/core/components/Form/RadioList'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
+import RadioList from '@/frontend/core/components/Form/RadioList/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import {
   booleanOptions,
   priceOptions,
@@ -180,10 +180,10 @@ export default {
   name: 'ModelFilterForm',
 
   components: {
-    RadioList,
-    FilterGroup,
     Btn,
+    FilterGroup,
     FormInput,
+    RadioList,
   },
 
   mixins: [Filters],
@@ -191,26 +191,26 @@ export default {
   data() {
     const query = this.$route.query.q || {}
     return {
-      loading: false,
       form: {
-        searchCont: query.searchCont,
-        nameCont: query.nameCont,
-        onSaleEq: query.onSaleEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        willItFit: query.willItFit,
-        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-        priceIn: query.priceIn || [],
+        lengthGteq: query.lengthGteq,
+        lengthLteq: query.lengthLteq,
+        manufacturerIn: query.manufacturerIn || [],
+        nameCont: query.nameCont,
+        onSaleEq: query.onSaleEq,
+        pledgePriceGteq: query.pledgePriceGteq,
         pledgePriceIn: query.pledgePriceIn || [],
+        pledgePriceLteq: query.pledgePriceLteq,
+        priceGteq: query.priceGteq,
+        priceIn: query.priceIn || [],
+        priceLteq: query.priceLteq,
+        productionStatusIn: query.productionStatusIn || [],
+        searchCont: query.searchCont,
         sizeIn: query.sizeIn || [],
+        willItFit: query.willItFit,
       },
+      loading: false,
     }
   },
 
@@ -219,12 +219,12 @@ export default {
       return booleanOptions
     },
 
-    priceOptions() {
-      return priceOptions
-    },
-
     pledgePriceOptions() {
       return pledgePriceOptions
+    },
+
+    priceOptions() {
+      return priceOptions
     },
   },
 
@@ -233,23 +233,23 @@ export default {
       const query = this.$route.query.q || {}
 
       this.form = {
-        searchCont: query.searchCont,
-        nameCont: query.nameCont,
-        onSaleEq: query.onSaleEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        willItFit: query.willItFit,
-        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-        priceIn: query.priceIn || [],
+        lengthGteq: query.lengthGteq,
+        lengthLteq: query.lengthLteq,
+        manufacturerIn: query.manufacturerIn || [],
+        nameCont: query.nameCont,
+        onSaleEq: query.onSaleEq,
+        pledgePriceGteq: query.pledgePriceGteq,
         pledgePriceIn: query.pledgePriceIn || [],
+        pledgePriceLteq: query.pledgePriceLteq,
+        priceGteq: query.priceGteq,
+        priceIn: query.priceIn || [],
+        priceLteq: query.priceLteq,
+        productionStatusIn: query.productionStatusIn || [],
+        searchCont: query.searchCont,
         sizeIn: query.sizeIn || [],
+        willItFit: query.willItFit,
       }
     },
   },

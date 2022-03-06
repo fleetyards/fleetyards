@@ -119,19 +119,17 @@ export default {
 
   components: {
     Btn,
-    FormInput,
     Checkbox,
+    FormInput,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      submitting: false,
-
-      twoFactorRequired: false,
-
       form: null,
+      submitting: false,
+      twoFactorRequired: false,
     }
   },
 
@@ -140,15 +138,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        rememberMe: false,
-        password: null,
-        login: null,
-        twoFactorCode: null,
-      }
-    },
-
     async login() {
       this.submitting = true
 
@@ -175,6 +164,15 @@ export default {
         displayAlert({
           text: response.error.response.data.message,
         })
+      }
+    },
+
+    setupForm() {
+      this.form = {
+        login: null,
+        password: null,
+        rememberMe: false,
+        twoFactorCode: null,
       }
     },
   },

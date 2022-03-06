@@ -58,7 +58,7 @@
 
 <script>
 import { BCollapse } from 'bootstrap-vue'
-import FleetchartItemImage from '@/frontend/components/Fleetchart/List/Item/Image'
+import FleetchartItemImage from '@/frontend/components/Fleetchart/List/Item/Image/index.vue'
 
 export default {
   name: 'ModelsCompareTopView',

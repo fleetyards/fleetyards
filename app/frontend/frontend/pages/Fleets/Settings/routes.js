@@ -1,21 +1,22 @@
 export const routes = [
   {
-    path: 'fleet/',
-    name: 'fleet-settings-fleet',
-    component: () => import('@/frontend/pages/Fleets/Settings/Fleet'),
+    component: () => import('@/frontend/pages/Fleets/Settings/Fleet/index.vue'),
     meta: {
-      title: 'fleet.settings.fleet',
       needsAuthentication: true,
+      title: 'fleet.settings.fleet',
     },
+    name: 'fleet-settings-fleet',
+    path: 'fleet/',
   },
   {
-    path: 'membership/',
-    name: 'fleet-settings-membership',
-    component: () => import('@/frontend/pages/Fleets/Settings/Membership'),
+    component: () =>
+      import('@/frontend/pages/Fleets/Settings/Membership/index.vue'),
     meta: {
-      title: 'fleet.settings.membership',
       needsAuthentication: true,
+      title: 'fleet.settings.membership',
     },
+    name: 'fleet-settings-membership',
+    path: 'membership/',
   },
 ]
 

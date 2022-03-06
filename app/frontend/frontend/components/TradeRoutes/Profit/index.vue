@@ -6,36 +6,48 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'TradeRouteProfit',
 
-@Component<TradeRouteProfit>({})
-export default class TradeRouteProfit extends Vue {
-  @Prop({ required: true }) tradeRoute!: TradeRoute
+  props: {
+    availableCargo: {
+      default: null,
+      type: Number,
+    },
 
-  @Prop({ default: null }) availableCargo!: number
+    average: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: false }) average!: ToTextBooleanArg
+    tradeRoute: {
+      required: true,
+      type: Object,
+    },
+  },
+  computed: {
+    profit() {
+      if (this.average) {
+        return this.tradeRoute.averageProfitPerUnit
+      }
 
-  get profit() {
-    if (this.average) {
-      return this.tradeRoute.averageProfitPerUnit
-    }
+      return this.tradeRoute.profitPerUnit
+    },
 
-    return this.tradeRoute.profitPerUnit
-  }
+    profitPerUnitPercent() {
+      if (this.average) {
+        return this.tradeRoute.averageProfitPerUnitPercent
+      }
 
-  get profitPerUnitPercent() {
-    if (this.average) {
-      return this.tradeRoute.averageProfitPerUnitPercent
-    }
+      return this.tradeRoute.profitPerUnitPercent
+    },
+  },
 
-    return this.tradeRoute.profitPerUnitPercent
-  }
-
-  tPrice(price) {
-    return this.$toUEC(price, this.$t('labels.uecPerUnit'))
-  }
+  methods: {
+    tPrice(price) {
+      return this.$toUEC(price, this.$t('labels.uecPerUnit'))
+    },
+  },
 }
 </script>

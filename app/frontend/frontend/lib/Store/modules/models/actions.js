@@ -1,37 +1,37 @@
 export default {
-  reset({ commit }) {
-    commit('reset')
+  enableHoloviewer({ commit }) {
+    commit('setHoloviewerVisible', true)
   },
 
-  toggleFilter({ commit, state }) {
-    commit('setFilterVisible', !state.filterVisible)
+  reset({ commit }) {
+    commit('reset')
   },
 
   toggleDetails({ commit, state }) {
     commit('setDetailsVisible', !state.detailsVisible)
   },
 
-  toggleHoloviewer({ commit, state }) {
-    commit('setHoloviewerVisible', !state.holoviewerVisible)
-  },
-
-  enableHoloviewer({ commit }) {
-    commit('setHoloviewerVisible', true)
+  toggleFilter({ commit, state }) {
+    commit('setFilterVisible', !state.filterVisible)
   },
 
   toggleFleetchart({ commit, state }) {
     commit('setFleetchartVisible', !state.fleetchartVisible)
   },
 
-  updatePerPage({ commit }, payload) {
-    commit('setPerPage', payload)
-  },
-
   toggleGridView({ commit, state }) {
     commit('setGridView', !state.gridView)
   },
 
+  toggleHoloviewer({ commit, state }) {
+    commit('setHoloviewerVisible', !state.holoviewerVisible)
+  },
+
   toggleTableSlim({ commit, state }) {
     commit('setTableSlim', !state.tableSlim)
+  },
+
+  updatePerPage({ commit }, payload) {
+    commit('setPerPage', payload)
   },
 }

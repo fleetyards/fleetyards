@@ -117,20 +117,19 @@ import searchCollection from '@/frontend/api/collections/Search'
 
 export default {
   name: 'SearchPage',
-
   components: {
     Btn,
-    ShareBtn,
-    ModelPanel,
-    SearchPanel,
-    FilteredList,
     CelestialObjectsPanel,
-    ShopCommodityPanel,
-    ComponentPanel,
     CommodityPanel,
+    ComponentPanel,
     EquipmentPanel,
+    FilteredList,
     FormInput,
+    ModelPanel,
     SearchHistory,
+    SearchPanel,
+    ShareBtn,
+    ShopCommodityPanel,
   },
 
   mixins: [MetaInfo, Filters],
@@ -145,10 +144,6 @@ export default {
   },
 
   computed: {
-    historyVisible() {
-      return !this.collection.records.length && !this.form.search
-    },
-
     filters() {
       return {
         filters: this.$route.query.q,
@@ -160,12 +155,16 @@ export default {
       return !this.$route.query.page || this.$route.query.page === 1
     },
 
-    shareUrl() {
-      return window.location.href
+    historyVisible() {
+      return !this.collection.records.length && !this.form.search
     },
 
     shareTitle() {
       return this.$t('labels.search.shareTitle', { query: this.form.search })
+    },
+
+    shareUrl() {
+      return window.location.href
     },
   },
 
@@ -185,22 +184,42 @@ export default {
   },
 
   methods: {
+    async fetch() {
+      await this.collection.findAll(this.filters)
+
+      if (
+        this.collection.records.length &&
+        this.firstPage &&
+        this.form.search
+      ) {
+        this.$store.dispatch('search/save', {
+          createdAt: new Date(),
+          search: this.form.search,
+        })
+      }
+    },
+
+    restoreSearch(search) {
+      this.form.search = search
+      this.filter()
+    },
+
     routeForResult(result) {
       switch (result.resultType) {
         case 'celestial_object':
           return {
             name: 'celestial-object',
             params: {
-              starsystem: result.starsystem.slug,
               slug: result.slug,
+              starsystem: result.starsystem.slug,
             },
           }
         case 'shop':
           return {
             name: 'shop',
             params: {
-              stationSlug: result.station.slug,
               slug: result.slug,
+              stationSlug: result.station.slug,
             },
           }
         case 'starsystem':
@@ -217,26 +236,6 @@ export default {
 
     search() {
       this.filter()
-    },
-
-    restoreSearch(search) {
-      this.form.search = search
-      this.filter()
-    },
-
-    async fetch() {
-      await this.collection.findAll(this.filters)
-
-      if (
-        this.collection.records.length &&
-        this.firstPage &&
-        this.form.search
-      ) {
-        this.$store.dispatch('search/save', {
-          search: this.form.search,
-          createdAt: new Date(),
-        })
-      }
     },
   },
 }

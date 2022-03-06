@@ -12,8 +12,8 @@ export class EquipmentCollection extends BaseCollection {
     this.params = params
 
     const response = await get('equipment', {
-      q: params.filters,
       page: params?.page,
+      q: params.filters,
     })
 
     if (!response.error) {

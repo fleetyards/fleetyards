@@ -1,4 +1,4 @@
-import ViewNotFound from '@/frontend/pages/NotFound'
+import ViewNotFound from '@/frontend/pages/NotFound/index.vue'
 
 export default (componentImport) => async () => {
   const { default: component } = await componentImport()
@@ -14,32 +14,32 @@ export default (componentImport) => async () => {
   }
 
   return {
-    name: 'NotFound',
-
-    props,
+    computed: {
+      is404() {
+        return this.$route.meta.httpCode === 404
+      },
+    },
 
     metaInfo() {
       if (this.is404) {
         return {
-          title: 'Seite nicht gefunden (Error 404)',
           meta: [
             {
-              vmid: 'robots',
-              name: 'robots',
               content: 'noindex,follow',
+              name: 'robots',
+              vmid: 'robots',
             },
           ],
+          title: 'Seite nicht gefunden (Error 404)',
         }
       }
 
       return {}
     },
 
-    computed: {
-      is404() {
-        return this.$route.meta.httpCode === 404
-      },
-    },
+    name: 'NotFound',
+
+    props,
 
     render(h) {
       return this.is404

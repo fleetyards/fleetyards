@@ -4,9 +4,9 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminEquipmentSlotFiltersCollection extends BaseCollection {
   primaryKey = 'value'
 
-  records: FilterGroupItem[] = []
+  records = []
 
-  async findAll(): Promise<FilterGroupItem[]> {
+  async findAll() {
     const response = await get('equipment/slot_filters')
 
     if (!response.error) {

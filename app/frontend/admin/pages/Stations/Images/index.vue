@@ -31,8 +31,8 @@ export default {
   name: 'AdminStationImages',
 
   components: {
-    ImageUploader,
     FilteredList,
+    ImageUploader,
   },
 
   data() {
@@ -42,21 +42,21 @@ export default {
   },
 
   computed: {
+    filters() {
+      return {
+        ...this.routeParams,
+        page: this.$route.query.page,
+      }
+    },
+
     galleryId() {
       return this.$route.params.uuid
     },
 
     routeParams() {
       return {
-        galleryType: 'stations',
         galleryId: this.galleryId,
-      }
-    },
-
-    filters() {
-      return {
-        ...this.routeParams,
-        page: this.$route.query.page,
+        galleryType: 'stations',
       }
     },
   },

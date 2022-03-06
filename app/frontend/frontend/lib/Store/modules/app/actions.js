@@ -1,6 +1,18 @@
 export default {
+  hideOverlay({ commit }) {
+    commit('setOverlayVisible', false)
+  },
+
   reset({ commit }) {
     commit('reset')
+  },
+
+  showOverlay({ commit }) {
+    commit('setOverlayVisible', true)
+  },
+
+  toggleNav({ state, commit }) {
+    commit('setNavCollapsed', !state.navCollapsed)
   },
 
   updateVersion({ state, commit }, payload = {}) {
@@ -8,17 +20,5 @@ export default {
       commit('setVersion', payload.version)
       commit('setCodename', payload.codename)
     }
-  },
-
-  showOverlay({ commit }) {
-    commit('setOverlayVisible', true)
-  },
-
-  hideOverlay({ commit }) {
-    commit('setOverlayVisible', false)
-  },
-
-  toggleNav({ state, commit }) {
-    commit('setNavCollapsed', !state.navCollapsed)
   },
 }

@@ -14,11 +14,10 @@ export default {
 
   props: {
     visible: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
   },
-
   data() {
     return {
       height: 0,

@@ -12,115 +12,149 @@
   </component>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import BtnInner from '@/frontend/core/components/Btn/Inner/index.vue'
-import { RouteConfig } from 'vue-router'
 
-@Component<Btn>({
+export default {
+  name: 'BtnComponent',
   components: {
     BtnInner,
   },
-})
-export default class Btn extends Vue {
-  @Prop({ default: false }) loading!: boolean
 
-  @Prop({ default: null }) to!: RouteConfig
-
-  @Prop({ default: null }) href!: string
-
-  @Prop({
-    default: 'button',
-    validator(value) {
-      return ['button', 'submit'].indexOf(value) !== -1
+  props: {
+    active: {
+      type: Boolean,
+      default: false,
     },
-  })
-  type!: string
 
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return (
-        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
-          value
-        ) !== -1
-      )
+    block: {
+      type: Boolean,
+      default: false,
     },
-  })
-  variant!: string
 
-  @Prop({
-    default: 'default',
-    validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+    disabled: {
+      default: false,
+      type: Boolean,
     },
-  })
-  size!: string
 
-  @Prop({ default: false }) exact!: boolean
+    exact: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) block!: boolean
+    href: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: false }) mobileBlock!: boolean
+    inline: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) inline!: boolean
+    loading: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: false }) textInline!: boolean
+    mobileBlock: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) active!: boolean
+    routeActiveClass: {
+      default: null,
+      type: String,
+    },
 
-  @Prop({ default: false }) disabled!: boolean
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
 
-  @Prop({ default: null }) routeActiveClass!: boolean
+    textInline: {
+      type: Boolean,
+      default: false,
+    },
 
-  get btnType() {
-    if (this.to && !this.disabled) return 'router-link'
+    to: {
+      type: Object,
+      default: null,
+    },
 
-    if (this.href) return 'a'
+    type: {
+      default: 'button',
+      type: String,
+      validator(value) {
+        return ['button', 'submit'].indexOf(value) !== -1
+      },
+    },
 
-    return 'button'
-  }
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return (
+          ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+            value
+          ) !== -1
+        )
+      },
+    },
+  },
 
-  get btnProps() {
-    if (this.to) {
-      return {
-        to: this.to,
-        exact: this.exact,
-        // event: this.disabled ? '' : 'click',
-        activeClass: this.routeActiveClass,
+  computed: {
+    btnProps() {
+      if (this.to) {
+        return {
+          activeClass: this.routeActiveClass,
+          // event: this.disabled ? '' : 'click',
+          exact: this.exact,
+          to: this.to,
+        }
       }
-    }
 
-    if (this.href) {
-      return {
-        href: this.href,
-        target: '_blank',
-        rel: 'noopener',
+      if (this.href) {
+        return {
+          href: this.href,
+          rel: 'noopener',
+          target: '_blank',
+        }
       }
-    }
 
-    return {
-      type: this.type,
-    }
-  }
+      return {
+        type: this.type,
+      }
+    },
 
-  get cssClasses() {
-    return {
-      'panel-btn-submit': this.type === 'submit',
-      'panel-btn-transparent': this.variant === 'transparent',
-      'panel-btn-link': this.variant === 'link',
-      'panel-btn-danger': this.variant === 'danger',
-      'panel-btn-small': this.size === 'small',
-      'panel-btn-large': this.size === 'large',
-      'panel-btn-block': this.block,
-      'panel-btn-inline': this.inline,
-      'panel-btn-dropdown-link': this.variant === 'dropdown',
-      'panel-btn-text-inline': this.textInline,
-      'panel-btn-mobile-block': this.mobileBlock,
-      'active': this.active,
-      'disabled': this.disabled,
-    }
-  }
+    btnType() {
+      if (this.to && !this.disabled) return 'router-link'
+
+      if (this.href) return 'a'
+
+      return 'button'
+    },
+
+    cssClasses() {
+      return {
+        'active': this.active,
+        'disabled': this.disabled,
+        'panel-btn-block': this.block,
+        'panel-btn-danger': this.variant === 'danger',
+        'panel-btn-dropdown-link': this.variant === 'dropdown',
+        'panel-btn-inline': this.inline,
+        'panel-btn-large': this.size === 'large',
+        'panel-btn-link': this.variant === 'link',
+        'panel-btn-mobile-block': this.mobileBlock,
+        'panel-btn-small': this.size === 'small',
+        'panel-btn-submit': this.type === 'submit',
+        'panel-btn-text-inline': this.textInline,
+        'panel-btn-transparent': this.variant === 'transparent',
+      }
+    },
+  },
 }
 </script>

@@ -51,9 +51,9 @@ const handleError = async function handleError(error, params, silent) {
 
   return {
     data: null,
-    params,
-    meta: null,
     error,
+    meta: null,
+    params,
   }
 }
 
@@ -66,9 +66,9 @@ const handleResponse = function handleResponse(response, params, silent) {
 
   return {
     data: response.data,
-    params,
-    meta,
     error: null,
+    meta,
+    params,
   }
 }
 
@@ -159,12 +159,12 @@ export async function download(path, params = {}, silent = false) {
 }
 
 const apiClient = {
+  client,
+  destroy,
+  download,
   get,
   post,
   put,
-  destroy,
-  download,
-  client,
   upload,
 }
 

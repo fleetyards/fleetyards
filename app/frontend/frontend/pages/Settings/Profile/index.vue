@@ -166,20 +166,20 @@ export default {
   name: 'SettingsAccount',
 
   components: {
-    VueUploadComponent,
-    FormInput,
-    Btn,
     Avatar,
+    Btn,
+    FormInput,
+    VueUploadComponent,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      form: null,
-      files: [],
-      fileExtensions: 'jpg,jpeg,png,webp',
       acceptedMimeTypes: 'image/png,image/jpeg,image/webp',
+      fileExtensions: 'jpg,jpeg,png,webp',
+      files: [],
+      form: null,
       submitting: false,
     }
   },
@@ -191,12 +191,12 @@ export default {
       return this.newAvatar.url || (this.currentUser && this.currentUser.avatar)
     },
 
-    newAvatar() {
-      return (this.files && this.files[0]) || {}
-    },
-
     fileExtensionsList() {
       return this.fileExtensions.split(',')
+    },
+
+    newAvatar() {
+      return (this.files && this.files[0]) || {}
     },
   },
 
@@ -213,68 +213,6 @@ export default {
   },
 
   methods: {
-    selectAvatar() {
-      this.form.removeAvatar = false
-      this.$refs.upload.$el.querySelector('input').click()
-    },
-
-    removeAvatar() {
-      this.files = []
-      this.currentUser.avatar = null
-      this.form.removeAvatar = true
-    },
-
-    setupForm() {
-      this.form = {
-        rsiHandle: this.currentUser.rsiHandle,
-        homepage: this.currentUser.homepage,
-        discord: this.currentUser.discord,
-        youtube: this.currentUser.youtube,
-        twitch: this.currentUser.twitch,
-        guilded: this.currentUser.guilded,
-        removeAvatar: false,
-      }
-    },
-
-    async submit() {
-      this.submitting = true
-
-      const uploadResponse = await this.uploadAvatar()
-
-      const response = await userCollection.updateProfile(this.form)
-
-      this.submitting = false
-
-      if (!uploadResponse.error && !response.error) {
-        this.$comlink.$emit('user-update')
-
-        setTimeout(() => {
-          this.files = []
-        }, 1000)
-
-        displaySuccess({
-          text: this.$t('messages.updateProfile.success'),
-        })
-      }
-    },
-
-    async uploadAvatar() {
-      let uploadResponse = { error: null }
-
-      if (this.newAvatar && this.newAvatar.file) {
-        const uploadData = new FormData()
-        uploadData.append('avatar', this.newAvatar.file)
-
-        uploadResponse = await this.$api.upload('users/current', uploadData)
-      }
-
-      return uploadResponse
-    },
-
-    updatedValue(value) {
-      this.files = value
-    },
-
     inputFilter(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
         if (
@@ -301,6 +239,68 @@ export default {
       }
 
       return null
+    },
+
+    removeAvatar() {
+      this.files = []
+      this.currentUser.avatar = null
+      this.form.removeAvatar = true
+    },
+
+    selectAvatar() {
+      this.form.removeAvatar = false
+      this.$refs.upload.$el.querySelector('input').click()
+    },
+
+    setupForm() {
+      this.form = {
+        discord: this.currentUser.discord,
+        guilded: this.currentUser.guilded,
+        homepage: this.currentUser.homepage,
+        removeAvatar: false,
+        rsiHandle: this.currentUser.rsiHandle,
+        twitch: this.currentUser.twitch,
+        youtube: this.currentUser.youtube,
+      }
+    },
+
+    async submit() {
+      this.submitting = true
+
+      const uploadResponse = await this.uploadAvatar()
+
+      const response = await userCollection.updateProfile(this.form)
+
+      this.submitting = false
+
+      if (!uploadResponse.error && !response.error) {
+        this.$comlink.$emit('user-update')
+
+        setTimeout(() => {
+          this.files = []
+        }, 1000)
+
+        displaySuccess({
+          text: this.$t('messages.updateProfile.success'),
+        })
+      }
+    },
+
+    updatedValue(value) {
+      this.files = value
+    },
+
+    async uploadAvatar() {
+      let uploadResponse = { error: null }
+
+      if (this.newAvatar && this.newAvatar.file) {
+        const uploadData = new FormData()
+        uploadData.append('avatar', this.newAvatar.file)
+
+        uploadResponse = await this.$api.upload('users/current', uploadData)
+      }
+
+      return uploadResponse
     },
   },
 }

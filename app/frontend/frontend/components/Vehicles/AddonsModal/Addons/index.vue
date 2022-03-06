@@ -54,19 +54,29 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 
 export default {
   name: 'VehicleAddonsModal',
 
   components: {
-    Panel,
     FilterGroup,
+    Panel,
   },
 
   props: {
     addons: {
+      type: Array,
+      required: true,
+    },
+
+    editable: {
+      type: Boolean,
+      default: false,
+    },
+
+    initialAddons: {
       type: Array,
       required: true,
     },
@@ -80,16 +90,6 @@ export default {
       type: Array,
       required: true,
     },
-
-    initialAddons: {
-      type: Array,
-      required: true,
-    },
-
-    editable: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   data() {
@@ -100,12 +100,6 @@ export default {
   },
 
   watch: {
-    value() {
-      if (this.internalAddons !== this.value) {
-        this.internalAddons = [...this.value]
-      }
-    },
-
     addons() {
       this.internalAddons = [...this.value]
     },
@@ -113,30 +107,21 @@ export default {
     internalAddons() {
       this.$emit('input', this.internalAddons)
     },
+
+    value() {
+      if (this.internalAddons !== this.value) {
+        this.internalAddons = [...this.value]
+      }
+    },
   },
 
   methods: {
-    selectTooltip(addonId) {
-      if (this.internalAddons.includes(addonId)) {
-        return this.$t('labels.deselect')
-      }
-      return null
-    },
-
     addAddon() {
       if (!this.addonToAdd) {
         return
       }
       this.internalAddons.push(this.addonToAdd)
       this.addonToAdd = null
-    },
-
-    idsForAddon(addonId) {
-      const ids = this.internalAddons.filter((item) => item === addonId)
-      if (ids.length) {
-        return ids
-      }
-      return [addonId]
     },
 
     changeAddon(addonId) {
@@ -156,8 +141,23 @@ export default {
       }
     },
 
+    idsForAddon(addonId) {
+      const ids = this.internalAddons.filter((item) => item === addonId)
+      if (ids.length) {
+        return ids
+      }
+      return [addonId]
+    },
+
     selectedAddon(addonId) {
       return this.internalAddons.includes(addonId)
+    },
+
+    selectTooltip(addonId) {
+      if (this.internalAddons.includes(addonId)) {
+        return this.$t('labels.deselect')
+      }
+      return null
     },
   },
 }

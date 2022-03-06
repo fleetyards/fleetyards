@@ -124,20 +124,15 @@ export default {
   name: 'ImageUploader',
 
   components: {
-    Loader,
-    VueUploadComponent,
-    ImageRow,
-    EmptyBox,
     Btn,
+    EmptyBox,
+    ImageRow,
+    Loader,
     Panel,
+    VueUploadComponent,
   },
 
   props: {
-    images: {
-      type: Array,
-      required: true,
-    },
-
     galleryId: {
       type: String,
       default: null,
@@ -148,6 +143,11 @@ export default {
       default: null,
     },
 
+    images: {
+      type: Array,
+      required: true,
+    },
+
     loading: {
       type: Boolean,
       default: false,
@@ -156,23 +156,31 @@ export default {
 
   data() {
     return {
-      newImages: [],
-      postAction: `${window.API_ENDPOINT}/images`,
-      uploadCount: 1,
       headers: {
         'Accept': 'application/json',
         'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
       },
+      newImages: [],
+      postAction: `${window.API_ENDPOINT}/images`,
+      uploadCount: 1,
     }
   },
 
   computed: {
-    isUploadActive() {
-      return !!this.galleryId && !!this.galleryType
+    activeImages() {
+      return this.newImages.filter((item) => item.active)
     },
 
     allImages() {
       return [...this.newImages, ...this.images]
+    },
+
+    emptyBoxVisible() {
+      return !this.loading && !this.allImages.length
+    },
+
+    isUploadActive() {
+      return !!this.galleryId && !!this.galleryType
     },
 
     metaData() {
@@ -180,14 +188,6 @@ export default {
         galleryId: this.galleryId,
         galleryType: this.galleryType,
       }
-    },
-
-    emptyBoxVisible() {
-      return !this.loading && !this.allImages.length
-    },
-
-    activeImages() {
-      return this.newImages.filter((item) => item.active)
     },
 
     progress() {
@@ -218,12 +218,12 @@ export default {
     },
   },
 
-  mounted() {
-    document.addEventListener('paste', this.addFileFromClipboard)
-  },
-
   destroyed() {
     document.removeEventListener('paste')
+  },
+
+  mounted() {
+    document.addEventListener('paste', this.addFileFromClipboard)
   },
 
   methods: {
@@ -233,61 +233,12 @@ export default {
       }
     },
 
-    selectImages() {
-      this.$refs.upload.$el.querySelector('input').click()
-    },
-
-    selectFolder() {
-      if (!this.$refs.upload.features.directory) {
-        displayAlert({
-          text: 'Your browser does not support',
-        })
-
-        return
-      }
-
-      const input = this.$refs.upload.$el.querySelector('input')
-      input.directory = true
-      input.webkitdirectory = true
-      this.directory = true
-      input.onclick = null
-      input.click()
-      input.onclick = (_e) => {
-        this.directory = false
-        input.directory = false
-        input.webkitdirectory = false
-      }
-    },
-
-    setUploadCount() {
-      this.uploadCount = this.newImages.length
-    },
-
-    startUpload() {
-      this.setUploadCount()
-      this.$refs.upload.active = true
-    },
-
-    startSingleUpload(image) {
-      this.$refs.upload.update(image, { active: true })
-    },
-
-    cancelUpload() {
-      this.newImages = []
-    },
-
     cancelSingleUpload(image) {
       this.$refs.upload.remove(image)
     },
 
-    async inputImage(newImage, oldImage) {
-      if (newImage && oldImage && !newImage.active && oldImage.active) {
-        if (newImage.xhr && newImage.xhr.status === 200) {
-          this.$emit('image-uploaded', newImage)
-          const index = this.newImages.indexOf(newImage)
-          this.newImages.splice(index, 1)
-        }
-      }
+    cancelUpload() {
+      this.newImages = []
     },
 
     inputFilter(newImage, oldImage, prevent) {
@@ -312,6 +263,55 @@ export default {
         newImage.smallUrl = newImage.blob
       }
       /* eslint-enable no-param-reassign */
+    },
+
+    async inputImage(newImage, oldImage) {
+      if (newImage && oldImage && !newImage.active && oldImage.active) {
+        if (newImage.xhr && newImage.xhr.status === 200) {
+          this.$emit('image-uploaded', newImage)
+          const index = this.newImages.indexOf(newImage)
+          this.newImages.splice(index, 1)
+        }
+      }
+    },
+
+    selectFolder() {
+      if (!this.$refs.upload.features.directory) {
+        displayAlert({
+          text: 'Your browser does not support',
+        })
+
+        return
+      }
+
+      const input = this.$refs.upload.$el.querySelector('input')
+      input.directory = true
+      input.webkitdirectory = true
+      this.directory = true
+      input.onclick = null
+      input.click()
+      input.onclick = (_e) => {
+        this.directory = false
+        input.directory = false
+        input.webkitdirectory = false
+      }
+    },
+
+    selectImages() {
+      this.$refs.upload.$el.querySelector('input').click()
+    },
+
+    setUploadCount() {
+      this.uploadCount = this.newImages.length
+    },
+
+    startSingleUpload(image) {
+      this.$refs.upload.update(image, { active: true })
+    },
+
+    startUpload() {
+      this.setUploadCount()
+      this.$refs.upload.active = true
     },
   },
 }

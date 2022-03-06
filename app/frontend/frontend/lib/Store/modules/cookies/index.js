@@ -2,19 +2,15 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
-    infoVisible(state) {
-      return state.infoVisible
-    },
-
     cookies(state) {
       return state.cookies
+    },
+
+    infoVisible(state) {
+      return state.infoVisible
     },
   },
 
@@ -24,13 +20,17 @@ export default () => ({
       Object.assign(state, getDefaultState())
     },
 
-    setInfoVisible(state, payload) {
-      state.infoVisible = payload
-    },
-
     setCookies(state, payload) {
       state.cookies = payload
     },
+
+    setInfoVisible(state, payload) {
+      state.infoVisible = payload
+    },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

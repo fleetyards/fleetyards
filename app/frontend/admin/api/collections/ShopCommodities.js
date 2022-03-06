@@ -4,16 +4,14 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminShopCommoditiesCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminShopCommodity[] = []
+  records = []
 
-  params: AdminShopCommodityParams | null = null
+  params = null
 
-  async findAll(
-    params: AdminShopCommodityParams | null
-  ): Promise<AdminShopCommodity[]> {
+  async findAll(params) {
     this.params = params
 
-    const response = await get(`shops/${params!.shopId}/commodities`, params)
+    const response = await get(`shops/${params.shopId}/commodities`, params)
 
     if (!response.error) {
       this.records = response.data
@@ -23,17 +21,13 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
     return this.records
   }
 
-  async refresh(): Promise<void> {
+  async refresh() {
     setTimeout(async () => {
       await this.findAll(this.params)
     }, 500)
   }
 
-  async create(
-    shopId: string,
-    form: AdminShopCommodityForm,
-    refetch = false
-  ): Promise<AdminShopCommodity | null> {
+  async create(shopId, form, refetch = false) {
     const response = await post(`shops/${shopId}/commodities`, form)
 
     if (!response.error) {
@@ -47,11 +41,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
     return null
   }
 
-  async update(
-    shopId: string,
-    id: string,
-    form: AdminShopCommodityForm
-  ): Promise<boolean> {
+  async update(shopId, id, form) {
     const response = await put(`shops/${shopId}/commodities/${id}`, form)
     if (!response.error) {
       this.refresh()
@@ -62,7 +52,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
     return false
   }
 
-  async destroy(shopId: string, id: string): Promise<boolean> {
+  async destroy(shopId, id) {
     const response = await destroy(`shops/${shopId}/commodities/${id}`)
 
     if (!response.error) {

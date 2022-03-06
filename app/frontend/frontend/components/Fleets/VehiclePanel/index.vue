@@ -102,32 +102,32 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import PanelDetails from '@/frontend/core/components/Panel/PanelDetails'
-import LazyImage from '@/frontend/core/components/LazyImage'
-import VehicleOwner from '@/frontend/components/Vehicles/OwnerLabel'
-import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import PanelDetails from '@/frontend/core/components/Panel/PanelDetails/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import VehicleOwner from '@/frontend/components/Vehicles/OwnerLabel/index.vue'
+import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.vue'
 
 export default {
   name: 'FleetVehiclePanel',
 
   components: {
+    LazyImage,
+    ModelPanelMetrics,
     Panel,
     PanelDetails,
-    LazyImage,
     VehicleOwner,
-    ModelPanelMetrics,
   },
 
   props: {
-    fleetVehicle: {
-      type: Object,
-      required: true,
-    },
-
     details: {
       type: Boolean,
       default: false,
+    },
+
+    fleetVehicle: {
+      type: Object,
+      required: true,
     },
 
     showOwner: {
@@ -137,8 +137,43 @@ export default {
   },
 
   computed: {
-    uuid() {
-      return this._uid
+    countLabel() {
+      if (!this.vehicles.length) {
+        return ''
+      }
+      return `${this.vehicles.length}x `
+    },
+
+    customName() {
+      if (this.fleetVehicle.model && this.fleetVehicle.name) {
+        return this.fleetVehicle.name
+      }
+
+      return null
+    },
+
+    id() {
+      if (this.fleetVehicle) {
+        return this.fleetVehicle.id
+      }
+
+      return this.model.slug
+    },
+
+    model() {
+      if (this.fleetVehicle.model) {
+        return this.fleetVehicle.model
+      }
+
+      return this.fleetVehicle
+    },
+
+    modelName() {
+      if (!this.fleetVehicle.model) {
+        return this.fleetVehicle.name
+      }
+
+      return this.fleetVehicle.model.name
     },
 
     storeImage() {
@@ -153,36 +188,8 @@ export default {
       return this.model.storeImageMedium
     },
 
-    modelName() {
-      if (!this.fleetVehicle.model) {
-        return this.fleetVehicle.name
-      }
-
-      return this.fleetVehicle.model.name
-    },
-
-    model() {
-      if (this.fleetVehicle.model) {
-        return this.fleetVehicle.model
-      }
-
-      return this.fleetVehicle
-    },
-
-    id() {
-      if (this.fleetVehicle) {
-        return this.fleetVehicle.id
-      }
-
-      return this.model.slug
-    },
-
-    customName() {
-      if (this.fleetVehicle.model && this.fleetVehicle.name) {
-        return this.fleetVehicle.name
-      }
-
-      return null
+    uuid() {
+      return this._uid
     },
 
     vehicles() {
@@ -191,13 +198,6 @@ export default {
       }
 
       return this.fleetVehicle.vehicles
-    },
-
-    countLabel() {
-      if (!this.vehicles.length) {
-        return ''
-      }
-      return `${this.vehicles.length}x `
     },
   },
 

@@ -33,71 +33,81 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Ref } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+<script>
+import { mapActions } from 'vuex'
 import Panel from '@/frontend/core/components/Panel/index.vue'
 
-@Component({
+export default {
+  name: 'ModalComponent',
+
   components: {
     Panel,
   },
-})
-export default class Modal extends Vue {
-  @Action('showOverlay', { namespace: 'app' }) showOverlay: any
 
-  @Action('hideOverlay', { namespace: 'app' }) hideOverlay: any
+  props: {
+    closable: {
+      type: Boolean,
+      default: true,
+    },
 
-  @Ref('modal') readonly modal!: HTMLElement
+    title: {
+      type: String,
+      required: true,
+    },
 
-  isShow = false
+    visible: {
+      type: Boolean,
+      default: false,
+    },
 
-  isOpen = false
+    wide: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  @Prop({ required: true })
-  private title!: string
-
-  @Prop({ default: false })
-  private visible!: boolean
-
-  @Prop({ default: false })
-  private wide!: boolean
-
-  @Prop({ default: true })
-  private closable!: boolean
+  data() {
+    return {
+      isOpen: false,
+      isShow: false,
+    }
+  },
 
   created() {
     this.isShow = this.visible
     this.isOpen = this.visible
-  }
+  },
 
-  public open() {
-    this.isShow = true
-    this.showOverlay()
+  methods: {
+    ...mapActions('app', ['showOverlay', 'hideOverlay']),
 
-    this.$nextTick(() => {
-      this.isOpen = true
-      this.$refs.modal.focus()
-      this.$emit('open')
-    })
-  }
+    close(force = false) {
+      if (!this.closable && !force) {
+        return
+      }
 
-  public close(force = false) {
-    if (!this.closable && !force) {
-      return
-    }
+      this.isOpen = false
+      this.hideOverlay()
 
-    this.isOpen = false
-    this.hideOverlay()
+      this.$nextTick(function onClose() {
+        setTimeout(() => {
+          this.isShow = false
+          this.$emit('close')
+        }, 500)
+      })
+    },
 
-    this.$nextTick(function onClose() {
-      setTimeout(() => {
-        this.isShow = false
-        this.$emit('close')
-      }, 500)
-    })
-  }
+    open() {
+      this.isShow = true
+      this.showOverlay()
+
+      this.$nextTick(() => {
+        this.isOpen = true
+        this.$refs.modal.focus()
+        this.$emit('open')
+      })
+    },
+  },
 }
 </script>
 

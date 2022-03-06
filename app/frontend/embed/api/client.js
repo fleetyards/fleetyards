@@ -34,8 +34,8 @@ const handleError = async function handleError(error, silent) {
 
   return {
     data: null,
-    meta: null,
     error,
+    meta: null,
   }
 }
 
@@ -72,8 +72,8 @@ export async function get(path, params = {}, silent = false) {
 }
 
 const apiClient = {
-  get,
   client,
+  get,
 }
 
 export default {

@@ -19,19 +19,19 @@ export default {
   name: 'FilteredGrid',
 
   props: {
-    records: {
-      type: Array,
+    filterVisible: {
       required: true,
+      type: Boolean,
     },
 
     primaryKey: {
-      type: String,
       required: true,
+      type: String,
     },
 
-    filterVisible: {
-      type: Boolean,
+    records: {
       required: true,
+      type: Array,
     },
   },
 }

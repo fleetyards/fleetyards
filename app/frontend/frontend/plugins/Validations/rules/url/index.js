@@ -11,8 +11,8 @@ const pattern = new RegExp(
 )
 
 export default {
-  validate: (str) => !!pattern.test(str),
   message() {
     return I18n.t('messages.error.urlInvalid')
   },
+  validate: (str) => !!pattern.test(str),
 }

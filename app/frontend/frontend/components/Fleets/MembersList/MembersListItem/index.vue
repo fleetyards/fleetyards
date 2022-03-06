@@ -177,8 +177,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Avatar from '@/frontend/core/components/Avatar'
-import Btn from '@/frontend/core/components/Btn'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import {
   displaySuccess,
   displayAlert,
@@ -195,11 +195,6 @@ export default {
   },
 
   props: {
-    member: {
-      type: Object,
-      required: true,
-    },
-
     editable: {
       type: Boolean,
       default: false,
@@ -208,6 +203,11 @@ export default {
     editableMember: {
       type: Boolean,
       default: false,
+    },
+
+    member: {
+      type: Object,
+      required: true,
     },
   },
 
@@ -224,31 +224,48 @@ export default {
   },
 
   methods: {
-    async removeMember(member) {
-      this.deleting = true
-      displayConfirm({
-        text: this.$t('messages.confirm.fleet.members.destroy'),
-        onConfirm: async () => {
-          const response = await this.$api.destroy(
-            `fleets/${this.$route.params.slug}/members/${member.username}`
-          )
+    async acceptRequest(member) {
+      this.updating = true
 
-          if (!response.error) {
-            this.$comlink.$emit('fleet-member-update')
-            displaySuccess({
-              text: this.$t('messages.fleet.members.destroy.success'),
-            })
-          } else {
-            displayAlert({
-              text: this.$t('messages.fleet.members.destroy.failure'),
-            })
-            this.deleting = false
-          }
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
+      const success = await this.collection.acceptRequest(
+        this.$route.params.slug,
+        member.username
+      )
+
+      this.updating = false
+
+      if (success) {
+        this.$comlink.$emit('fleet-member-update')
+        displaySuccess({
+          text: this.$t('messages.fleet.members.accept.success'),
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.members.accept.failure'),
+        })
+      }
+    },
+
+    async declineRequest(member) {
+      this.updating = true
+
+      const success = await this.collection.declineRequest(
+        this.$route.params.slug,
+        member.username
+      )
+
+      this.updating = false
+
+      if (success) {
+        this.$comlink.$emit('fleet-member-update')
+        displaySuccess({
+          text: this.$t('messages.fleet.members.decline.success'),
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.members.decline.failure'),
+        })
+      }
     },
 
     async demoteMember(member) {
@@ -293,48 +310,31 @@ export default {
       }
     },
 
-    async acceptRequest(member) {
-      this.updating = true
+    async removeMember(member) {
+      this.deleting = true
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
+        },
+        onConfirm: async () => {
+          const response = await this.$api.destroy(
+            `fleets/${this.$route.params.slug}/members/${member.username}`
+          )
 
-      const success = await this.collection.acceptRequest(
-        this.$route.params.slug,
-        member.username
-      )
-
-      this.updating = false
-
-      if (success) {
-        this.$comlink.$emit('fleet-member-update')
-        displaySuccess({
-          text: this.$t('messages.fleet.members.accept.success'),
-        })
-      } else {
-        displayAlert({
-          text: this.$t('messages.fleet.members.accept.failure'),
-        })
-      }
-    },
-
-    async declineRequest(member) {
-      this.updating = true
-
-      const success = await this.collection.declineRequest(
-        this.$route.params.slug,
-        member.username
-      )
-
-      this.updating = false
-
-      if (success) {
-        this.$comlink.$emit('fleet-member-update')
-        displaySuccess({
-          text: this.$t('messages.fleet.members.decline.success'),
-        })
-      } else {
-        displayAlert({
-          text: this.$t('messages.fleet.members.decline.failure'),
-        })
-      }
+          if (!response.error) {
+            this.$comlink.$emit('fleet-member-update')
+            displaySuccess({
+              text: this.$t('messages.fleet.members.destroy.success'),
+            })
+          } else {
+            displayAlert({
+              text: this.$t('messages.fleet.members.destroy.failure'),
+            })
+            this.deleting = false
+          }
+        },
+        text: this.$t('messages.confirm.fleet.members.destroy'),
+      })
     },
   },
 }

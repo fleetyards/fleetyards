@@ -70,14 +70,14 @@ export default {
   name: 'ShopsBaseMetrics',
 
   props: {
-    shop: {
-      type: Object,
-      required: true,
+    padding: {
+      default: false,
+      type: Boolean,
     },
 
-    padding: {
-      type: Boolean,
-      default: false,
+    shop: {
+      required: true,
+      type: Object,
     },
   },
 }

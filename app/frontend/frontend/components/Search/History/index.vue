@@ -46,8 +46,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Btn from '@/frontend/core/components/Btn'
-import Panel from '@/frontend/core/components/Panel'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
 export default {
   name: 'SearchHistory',
@@ -75,16 +75,16 @@ export default {
   },
 
   methods: {
+    resetHistory() {
+      this.$store.dispatch('search/reset')
+    },
+
     restore(search) {
       this.$emit('restore', search)
     },
 
     showMore() {
       this.page += 1
-    },
-
-    resetHistory() {
-      this.$store.dispatch('search/reset')
     },
   },
 }

@@ -32,9 +32,9 @@ export default {
   name: 'AdminImages',
 
   components: {
-    ImageUploader,
-    FilterForm,
     FilteredList,
+    FilterForm,
+    ImageUploader,
   },
 
   data() {
@@ -44,23 +44,23 @@ export default {
   },
 
   computed: {
-    toggleFiltersTooltip() {
-      if (this.filterVisible) {
-        return this.$t('actions.hideFilter')
-      }
-      return this.$t('actions.showFilter')
-    },
-
-    query() {
-      return this.$route.query.q || {}
-    },
-
     galleryId() {
       return this.query.galleryIdEq
     },
 
     galleryType() {
       return this.query.galleryTypeEq
+    },
+
+    query() {
+      return this.$route.query.q || {}
+    },
+
+    toggleFiltersTooltip() {
+      if (this.filterVisible) {
+        return this.$t('actions.hideFilter')
+      }
+      return this.$t('actions.showFilter')
     },
   },
 

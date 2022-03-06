@@ -126,8 +126,8 @@ export default {
   components: {
     Btn,
     BtnDropdown,
-    FilteredList,
     FilteredGrid,
+    FilteredList,
     FleetchartApp,
     ModelPanel,
     ModelsFilterForm,
@@ -151,6 +151,13 @@ export default {
       'tableSlim',
     ]),
 
+    filters() {
+      return {
+        filters: this.$route.query.q,
+        page: this.$route.query.page,
+      }
+    },
+
     toggleDetailsTooltip() {
       if (this.detailsVisible) {
         return this.$t('actions.hideDetails')
@@ -173,13 +180,6 @@ export default {
       }
 
       return this.$t('actions.showCompactList')
-    },
-
-    filters() {
-      return {
-        filters: this.$route.query.q,
-        page: this.$route.query.page,
-      }
     },
   },
 

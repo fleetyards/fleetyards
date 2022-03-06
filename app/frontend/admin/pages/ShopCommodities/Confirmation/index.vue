@@ -71,10 +71,10 @@ export default {
   name: 'AdminShopCommodities',
 
   components: {
+    Btn,
+    BtnGroup,
     FilteredList,
     FilteredTable,
-    BtnGroup,
-    Btn,
   },
 
   data() {
@@ -83,30 +83,26 @@ export default {
       deleting: false,
       tableColumns: [
         {
-          name: 'item',
           label: this.$t('labels.shopCommodity.item'),
+          name: 'item',
           width: '20%',
         },
         {
-          name: 'shop',
           label: this.$t('labels.shopCommodity.shop'),
+          name: 'shop',
           width: '20%',
         },
         {
-          name: 'submitter',
           label: this.$t('labels.shopCommodity.submittedBy'),
+          name: 'submitter',
           width: '20%',
         },
-        { name: 'actions', label: this.$t('labels.actions'), width: '12%' },
+        { label: this.$t('labels.actions'), name: 'actions', width: '12%' },
       ],
     }
   },
 
   methods: {
-    async fetch() {
-      await this.collection.refresh()
-    },
-
     async confirm(shopCommodity) {
       if (await this.collection.confirm(shopCommodity.id)) {
         this.fetch()
@@ -115,25 +111,29 @@ export default {
       this.deleting = false
     },
 
-    remove(shopCommodity) {
-      this.deleting = true
-      displayConfirm({
-        text: this.$t('messages.confirm.shopCommodity.destroy'),
-        onConfirm: () => {
-          this.destroy(shopCommodity)
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-
     async destroy(shopCommodity) {
       if (await this.collection.destroy(shopCommodity.id)) {
         this.fetch()
       }
 
       this.deleting = false
+    },
+
+    async fetch() {
+      await this.collection.refresh()
+    },
+
+    remove(shopCommodity) {
+      this.deleting = true
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
+        },
+        onConfirm: () => {
+          this.destroy(shopCommodity)
+        },
+        text: this.$t('messages.confirm.shopCommodity.destroy'),
+      })
     },
   },
 }

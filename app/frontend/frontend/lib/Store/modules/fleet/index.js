@@ -2,10 +2,6 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
@@ -17,24 +13,8 @@ export default () => ({
       return state.filterVisible
     },
 
-    fleetchartVisible(state) {
-      return state.fleetchartVisible
-    },
-
-    fleetchartZoomData(state) {
-      return state.fleetchartZoomData
-    },
-
-    fleetchartViewpoint(state) {
-      return state.fleetchartViewpoint
-    },
-
     fleetchartLabels(state) {
       return state.fleetchartLabels
-    },
-
-    fleetchartScreenHeight(state) {
-      return state.fleetchartScreenHeight
     },
 
     fleetchartMode(state) {
@@ -45,28 +25,44 @@ export default () => ({
       return state.fleetchartScale
     },
 
+    fleetchartScreenHeight(state) {
+      return state.fleetchartScreenHeight
+    },
+
+    fleetchartViewpoint(state) {
+      return state.fleetchartViewpoint
+    },
+
+    fleetchartVisible(state) {
+      return state.fleetchartVisible
+    },
+
+    fleetchartZoomData(state) {
+      return state.fleetchartZoomData
+    },
+
+    gridView(state) {
+      return state.gridView
+    },
+
     grouped(state) {
       return state.grouped
-    },
-
-    money(state) {
-      return state.money
-    },
-
-    preview(state) {
-      return state.preview
     },
 
     inviteToken(state) {
       return state.inviteToken
     },
 
+    money(state) {
+      return state.money
+    },
+
     perPage(state) {
       return state.perPage
     },
 
-    gridView(state) {
-      return state.gridView
+    preview(state) {
+      return state.preview
     },
 
     tableSlim(state) {
@@ -88,24 +84,8 @@ export default () => ({
       state.filterVisible = payload
     },
 
-    setFleetchartVisible(state, payload) {
-      state.fleetchartVisible = payload
-    },
-
-    setFleetchartZoomData(state, payload) {
-      state.fleetchartZoomData = payload
-    },
-
-    setFleetchartViewpoint(state, payload) {
-      state.fleetchartViewpoint = payload
-    },
-
     setFleetchartLabels(state, payload) {
       state.fleetchartLabels = payload
-    },
-
-    setFleetchartScreenHeight(state, payload) {
-      state.fleetchartScreenHeight = payload
     },
 
     setFleetchartMode(state, payload) {
@@ -116,33 +96,53 @@ export default () => ({
       state.fleetchartScale = payload
     },
 
-    setGrouped(state, payload) {
-      state.grouped = payload
+    setFleetchartScreenHeight(state, payload) {
+      state.fleetchartScreenHeight = payload
     },
 
-    setMoney(state, payload) {
-      state.money = payload
+    setFleetchartViewpoint(state, payload) {
+      state.fleetchartViewpoint = payload
     },
 
-    setPreview(state, payload) {
-      state.preview = !!payload
+    setFleetchartVisible(state, payload) {
+      state.fleetchartVisible = payload
     },
 
-    setInviteToken(state, payload) {
-      state.inviteToken = payload
-    },
-
-    setPerPage(state, payload) {
-      state.perPage = payload
+    setFleetchartZoomData(state, payload) {
+      state.fleetchartZoomData = payload
     },
 
     setGridView(state, payload) {
       state.gridView = payload
     },
 
+    setGrouped(state, payload) {
+      state.grouped = payload
+    },
+
+    setInviteToken(state, payload) {
+      state.inviteToken = payload
+    },
+
+    setMoney(state, payload) {
+      state.money = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
+    },
+
+    setPreview(state, payload) {
+      state.preview = !!payload
+    },
+
     setTableSlim(state, payload) {
       state.tableSlim = payload
     },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

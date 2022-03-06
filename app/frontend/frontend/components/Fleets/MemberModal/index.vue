@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import memberCollection from '@/frontend/api/collections/FleetMembers'
 import { displayAlert } from '@/frontend/lib/Noty'
 
@@ -53,9 +53,9 @@ export default {
   name: 'MemberModal',
 
   components: {
-    Modal,
-    FormInput,
     Btn,
+    FormInput,
+    Modal,
   },
 
   props: {
@@ -67,8 +67,8 @@ export default {
 
   data() {
     return {
-      submitting: false,
       form: null,
+      submitting: false,
     }
   },
 
@@ -77,12 +77,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        username: null,
-      }
-    },
-
     async save() {
       this.submitting = true
 
@@ -97,6 +91,12 @@ export default {
         displayAlert({
           text: this.$t(response.error),
         })
+      }
+    },
+
+    setupForm() {
+      this.form = {
+        username: null,
       }
     },
   },

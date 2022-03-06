@@ -18,8 +18,8 @@ export class StarsystemCollection extends BaseCollection {
     this.params = params
 
     const response = await get('starsystems', {
-      q: params.filters,
       page: params.page,
+      q: params.filters,
     })
 
     if (!response.error) {

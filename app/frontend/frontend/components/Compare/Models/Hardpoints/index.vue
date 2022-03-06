@@ -47,7 +47,7 @@
 
 <script>
 import { BCollapse } from 'bootstrap-vue'
-import HardpointGroup from '@/frontend/components/Models/Hardpoints/Group'
+import HardpointGroup from '@/frontend/components/Models/Hardpoints/Group/index.vue'
 
 export default {
   name: 'ModelsCompareCategories',
@@ -66,10 +66,10 @@ export default {
 
   data() {
     return {
-      groups: ['avionic', 'system', 'propulsion', 'thruster', 'weapon'],
       avionicVisible: false,
-      systemVisible: false,
+      groups: ['avionic', 'system', 'propulsion', 'thruster', 'weapon'],
       propulsionVisible: false,
+      systemVisible: false,
       thrusterVisible: false,
       weaponVisible: false,
     }
@@ -86,6 +86,14 @@ export default {
   },
 
   methods: {
+    hardpointsForGroup(group, hardpoints) {
+      return (hardpoints || []).filter((hardpoint) => hardpoint.group === group)
+    },
+
+    isVisible(group) {
+      return this[`${group}Visible`]
+    },
+
     setupVisibles() {
       this.avionicVisible = this.models.length > 0
       this.systemVisible = this.models.length > 0
@@ -94,16 +102,8 @@ export default {
       this.weaponVisible = this.models.length > 0
     },
 
-    isVisible(group) {
-      return this[`${group}Visible`]
-    },
-
     toggle(group) {
       this[`${group}Visible`] = !this[`${group}Visible`]
-    },
-
-    hardpointsForGroup(group, hardpoints) {
-      return (hardpoints || []).filter((hardpoint) => hardpoint.group === group)
     },
   },
 }

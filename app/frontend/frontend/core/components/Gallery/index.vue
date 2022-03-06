@@ -62,13 +62,12 @@ export default {
 
   props: {
     items: {
-      type: Array,
       default() {
         return []
       },
+      type: Array,
     },
   },
-
   data() {
     return {
       gallery: null,
@@ -79,23 +78,23 @@ export default {
   computed: {
     galleryItems() {
       return this.items.map((item) => ({
-        src: item.url,
-        w: item.width,
+        el: document.querySelector(`[href="${item.url}"]`),
         h: item.height,
         msrc: item.smallUrl,
-        el: document.querySelector(`[href="${item.url}"]`),
+        src: item.url,
+        w: item.width,
       }))
     },
 
     options() {
       return {
-        getThumbBoundsFn: this.getThumbBounds,
-        index: this.index,
-        showHideOpacity: true,
-        loop: true,
-        history: false,
         counterEl: false,
+        getThumbBoundsFn: this.getThumbBounds,
+        history: false,
+        index: this.index,
+        loop: true,
         shareEl: false,
+        showHideOpacity: true,
       }
     },
   },
@@ -118,14 +117,18 @@ export default {
 
     getThumbBounds(index) {
       if (!this.galleryItems[index] || !this.galleryItems[index].el) {
-        return { x: 0, y: 0, w: 0 }
+        return { w: 0, x: 0, y: 0 }
       }
 
       const pageYScroll =
         window.pageYOffset || document.documentElement.scrollTop
       const rect = this.galleryItems[index].el.getBoundingClientRect()
 
-      return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }
+      return { w: rect.width, x: rect.left, y: rect.top + pageYScroll }
+    },
+
+    onClose() {
+      this.$store.dispatch('app/hideOverlay')
     },
 
     open(index = 0) {
@@ -133,10 +136,6 @@ export default {
       this.$store.dispatch('app/showOverlay')
       this.setup()
       this.gallery.init()
-    },
-
-    onClose() {
-      this.$store.dispatch('app/hideOverlay')
     },
 
     setup() {

@@ -18,9 +18,9 @@ export class CelestialObjectCollection extends BaseCollection {
     this.params = params
 
     const response = await get('celestial-objects', {
-      q: params.filters,
-      page: params.page,
       cacheId: params.cacheId,
+      page: params.page,
+      q: params.filters,
     })
 
     if (!response.error) {

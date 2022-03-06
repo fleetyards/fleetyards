@@ -4,16 +4,16 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminEquipmentCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminEquipment[] = []
+  records = []
 
-  params: AdminEquipmentParams | null = null
+  params = null
 
-  async findAll(params: AdminEquipmentParams): Promise<AdminEquipment[]> {
+  async findAll(params) {
     this.params = params
 
     const response = await get('equipment', {
-      q: params.filters,
       page: params?.page,
+      q: params.filters,
     })
 
     if (!response.error) {

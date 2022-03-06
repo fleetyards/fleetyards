@@ -70,20 +70,20 @@
 </template>
 
 <script>
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Btn from '@/frontend/core/components/Btn'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 
 export default {
   name: 'VehicleModal',
 
   components: {
-    Modal,
+    Btn,
     Checkbox,
     FilterGroup,
-    Btn,
+    Modal,
   },
 
   props: {
@@ -95,8 +95,8 @@ export default {
 
   data() {
     return {
-      submitting: false,
       form: null,
+      submitting: false,
     }
   },
 
@@ -111,16 +111,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        purchased: this.vehicle.purchased,
-        flagship: this.vehicle.flagship,
-        public: this.vehicle.public,
-        saleNotify: this.vehicle.saleNotify,
-        modelPaintId: this.vehicle.paint?.id || null,
-      }
-    },
-
     async save() {
       this.submitting = true
 
@@ -133,6 +123,16 @@ export default {
 
       if (!response.error) {
         this.$comlink.$emit('close-modal')
+      }
+    },
+
+    setupForm() {
+      this.form = {
+        flagship: this.vehicle.flagship,
+        modelPaintId: this.vehicle.paint?.id || null,
+        public: this.vehicle.public,
+        purchased: this.vehicle.purchased,
+        saleNotify: this.vehicle.saleNotify,
       }
     },
   },

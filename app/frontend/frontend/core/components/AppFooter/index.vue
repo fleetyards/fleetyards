@@ -127,7 +127,6 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 
 export default {
   name: 'AppFooter',
-
   components: {
     Btn,
   },
@@ -148,7 +147,8 @@ export default {
   methods: {
     openSupportModal() {
       this.$comlink.$emit('open-modal', {
-        component: () => import('@/frontend/components/Support/Modal'),
+        component: () =>
+          import('@/frontend/components/Support/Modal/index.vue'),
         wide: true,
       })
     },

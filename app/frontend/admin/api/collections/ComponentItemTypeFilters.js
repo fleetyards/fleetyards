@@ -4,9 +4,9 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminComponentItemTypeFiltersCollection extends BaseCollection {
   primaryKey = 'value'
 
-  records: FilterGroupItem[] = []
+  records = []
 
-  async findAll(): Promise<FilterGroupItem[]> {
+  async findAll() {
     const response = await get('components/item_type_filters')
 
     if (!response.error) {

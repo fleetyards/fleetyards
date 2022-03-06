@@ -73,133 +73,135 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Loader from '@/frontend/core/components/Loader'
-import Panel from '@/frontend/core/components/Panel'
+<script>
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
 import modelModulesCollection from '@/frontend/api/collections/ModelModules'
 import modelModulePackagesCollection from '@/frontend/api/collections/ModelModulePackages'
 import modelUpgradesCollection from '@/frontend/api/collections/ModelUpgrades'
-import Addons from './Addons'
-import Packages from './Packages'
+import Addons from './Addons/index.vue'
+import Packages from './Packages/index.vue'
 
-type AddonsForm = {
-  modelModuleIds: string[]
-  modelUpgradeIds: string[]
-}
+export default {
+  name: 'AddonsModal',
 
-@Component<AddonsModal>({
   components: {
-    Btn,
-    Modal,
-    Loader,
-    Panel,
     Addons,
+    Btn,
+    Loader,
+    Modal,
     Packages,
   },
-})
-export default class AddonsModal extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle
 
-  @Prop({ default: false }) editable: boolean
+  props: {
+    editable: {
+      type: Boolean,
+      default: false,
+    },
 
-  modelModulesCollection: ModelModulesCollection = modelModulesCollection
+    vehicle: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  modelModulePackagesCollection: ModelModulePackagesCollection =
-    modelModulePackagesCollection
+  data() {
+    return {
+      form: null,
+      modelModulePackagesCollection: modelModulePackagesCollection,
+      modelModulesCollection: modelModulesCollection,
+      modelUpgradesCollection: modelUpgradesCollection,
+      submitting: false,
+    }
+  },
 
-  modelUpgradesCollection: ModelUpgradesCollection = modelUpgradesCollection
-
-  submitting = false
-
-  form: AddonsForm | null = null
+  watch: {
+    vehicle() {
+      this.setupForm()
+    },
+  },
 
   mounted() {
     this.fetch()
 
     this.setupForm()
-  }
+  },
 
-  @Watch('vehicle')
-  onVehicleChange() {
-    this.setupForm()
-  }
-
-  setupForm() {
-    this.form = {
-      modelModuleIds: [...this.vehicle.modelModuleIds],
-      modelUpgradeIds: [...this.vehicle.modelUpgradeIds],
-    }
-  }
-
-  selectedUpgrade(upgradeId) {
-    return this.form.modelUpgradeIds.includes(upgradeId)
-  }
-
-  changeUpgrade(upgrade) {
-    if (!this.editable) {
-      return
-    }
-
-    if (this.form.modelUpgradeIds.includes(upgrade.id)) {
-      const index = this.form.modelUpgradeIds.findIndex(
-        (upgradeId) => upgradeId === upgrade.id
-      )
-      if (index > -1) {
-        this.form.modelUpgradeIds.splice(index, 1)
+  methods: {
+    activatePackage(modulePackage) {
+      if (!this.editable) {
+        return
       }
-    } else {
-      this.form.modelUpgradeIds.push(upgrade.id)
-    }
-  }
 
-  async save() {
-    if (!this.editable) {
-      return
-    }
+      modulePackage.modules.forEach((module) => {
+        const additionalPackageModules = modulePackage.modules.filter(
+          (item) => item.id === module.id
+        )
+        const foundModules = this.form.modelModuleIds.filter(
+          (id) => id === module.id
+        )
 
-    this.submitting = true
-    const response = await this.$api.put(
-      `vehicles/${this.vehicle.id}`,
-      this.form
-    )
-    this.submitting = false
-    if (!response.error) {
-      this.$comlink.$emit('vehicle-save', response.data)
-      this.$comlink.$emit('close-modal')
-    }
-  }
+        if (
+          !foundModules.length ||
+          foundModules.length < additionalPackageModules.length
+        ) {
+          this.form.modelModuleIds.push(module.id)
+        }
+      })
+    },
 
-  async fetch() {
-    await modelModulesCollection.findAll(this.vehicle.model.slug)
-    await modelModulePackagesCollection.findAll(this.vehicle.model.slug)
-    await modelUpgradesCollection.findAll(this.vehicle.model.slug)
-  }
-
-  activatePackage(package) {
-    if (!this.editable) {
-      return
-    }
-
-    package.modules.forEach((module) => {
-      const additionalPackageModules = package.modules.filter(
-        (packageModule) => packageModule.id === module.id
-      )
-      const foundModules = this.form.modelModuleIds.filter(
-        (id) => id === module.id
-      )
-
-      if (
-        !foundModules.length ||
-        foundModules.length < additionalPackageModules.length
-      ) {
-        this.form.modelModuleIds.push(module.id)
+    changeUpgrade(upgrade) {
+      if (!this.editable) {
+        return
       }
-    })
-  }
+
+      if (this.form.modelUpgradeIds.includes(upgrade.id)) {
+        const index = this.form.modelUpgradeIds.findIndex(
+          (upgradeId) => upgradeId === upgrade.id
+        )
+        if (index > -1) {
+          this.form.modelUpgradeIds.splice(index, 1)
+        }
+      } else {
+        this.form.modelUpgradeIds.push(upgrade.id)
+      }
+    },
+
+    async fetch() {
+      await modelModulesCollection.findAll(this.vehicle.model.slug)
+      await modelModulePackagesCollection.findAll(this.vehicle.model.slug)
+      await modelUpgradesCollection.findAll(this.vehicle.model.slug)
+    },
+
+    async save() {
+      if (!this.editable) {
+        return
+      }
+
+      this.submitting = true
+      const response = await this.$api.put(
+        `vehicles/${this.vehicle.id}`,
+        this.form
+      )
+      this.submitting = false
+      if (!response.error) {
+        this.$comlink.$emit('vehicle-save', response.data)
+        this.$comlink.$emit('close-modal')
+      }
+    },
+
+    selectedUpgrade(upgradeId) {
+      return this.form.modelUpgradeIds.includes(upgradeId)
+    },
+
+    setupForm() {
+      this.form = {
+        modelModuleIds: [...this.vehicle.modelModuleIds],
+        modelUpgradeIds: [...this.vehicle.modelUpgradeIds],
+      }
+    },
+  },
 }
 </script>
 

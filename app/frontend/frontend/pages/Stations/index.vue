@@ -46,11 +46,10 @@ import stationsCollection from '@/frontend/api/collections/Stations'
 
 export default {
   name: 'StationsPage',
-
   components: {
     FilteredList,
-    StationPanel,
     FilterForm,
+    StationPanel,
   },
 
   mixins: [MetaInfo],

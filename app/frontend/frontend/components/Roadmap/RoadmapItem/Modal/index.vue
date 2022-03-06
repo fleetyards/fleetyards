@@ -65,8 +65,8 @@ export default {
   name: 'RoadmapItemModal',
 
   components: {
-    Modal,
     Btn,
+    Modal,
   },
 
   props: {
@@ -77,20 +77,20 @@ export default {
   },
 
   computed: {
-    storeImage() {
-      if (this.item.storeImage) {
-        return this.item.storeImage
-      }
-
-      return `https://robertsspaceindustries.com${this.item.image}`
-    },
-
     description() {
       if (this.item.body) {
         return this.item.body
       }
 
       return this.item.description
+    },
+
+    storeImage() {
+      if (this.item.storeImage) {
+        return this.item.storeImage
+      }
+
+      return `https://robertsspaceindustries.com${this.item.image}`
     },
 
     updates() {
@@ -110,11 +110,11 @@ export default {
           const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
 
           return {
-            key,
             change: count < 0 ? 'decreased' : 'increased',
-            old: lastVersion[key][0],
-            new: lastVersion[key][1],
             count,
+            key,
+            new: lastVersion[key][1],
+            old: lastVersion[key][0],
           }
         })
         .filter(
@@ -135,10 +135,6 @@ export default {
   },
 
   methods: {
-    openImage() {
-      window.open(this.storeImage, '_blank').focus()
-    },
-
     openDetail() {
       this.$comlink.$emit('close-modal')
       this.$router
@@ -149,6 +145,10 @@ export default {
           },
         })
         .catch(() => {})
+    },
+
+    openImage() {
+      window.open(this.storeImage, '_blank').focus()
     },
   },
 }

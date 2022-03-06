@@ -23,28 +23,28 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import LazyImage from '@/frontend/core/components/LazyImage'
-import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations/index.vue'
 
 export default {
   name: 'ComponentPanel',
 
   components: {
-    Panel,
     LazyImage,
+    Panel,
     ShopCommodityLocations,
   },
 
   props: {
     commodity: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     showStats: {
-      type: Boolean,
       default: true,
+      type: Boolean,
     },
   },
 

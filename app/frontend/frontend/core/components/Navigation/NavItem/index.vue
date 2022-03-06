@@ -148,24 +148,34 @@ export default {
   },
 
   props: {
-    to: {
-      type: Object,
-      default: null,
-    },
-
     action: {
       type: [Object, Function],
       default: null,
     },
 
-    href: {
-      type: String,
-      default: null,
+    active: {
+      type: Boolean,
+      default: false,
     },
 
-    label: {
-      type: String,
+    avatar: {
+      type: Boolean,
+      default: false,
+    },
+
+    divider: {
+      type: Boolean,
+      default: false,
+    },
+
+    exact: {
+      type: Boolean,
+      default: false,
+    },
+
+    href: {
       default: null,
+      type: String,
     },
 
     icon: {
@@ -178,9 +188,9 @@ export default {
       default: null,
     },
 
-    avatar: {
-      type: Boolean,
-      default: false,
+    label: {
+      type: String,
+      default: null,
     },
 
     menuKey: {
@@ -188,32 +198,22 @@ export default {
       default: null,
     },
 
-    exact: {
-      type: Boolean,
-      default: false,
-    },
-
-    divider: {
-      type: Boolean,
-      default: false,
-    },
-
-    active: {
-      type: Boolean,
-      default: false,
-    },
-
     submenuActive: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
 
     submenuDirection: {
-      type: String,
       default: 'down',
+      type: String,
       validator(value) {
         return ['down', 'up'].indexOf(value) !== -1
       },
+    },
+
+    to: {
+      type: Object,
+      default: null,
     },
   },
 
@@ -227,29 +227,6 @@ export default {
     ...mapGetters(['mobile']),
 
     ...mapGetters('app', ['navSlim']),
-
-    slim() {
-      return this.navSlim && !this.mobile
-    },
-
-    routeActive() {
-      if (this.to) {
-        return this.to.name === this.$route.name
-      }
-      return false
-    },
-
-    tooltip() {
-      if (!this.slim) {
-        return null
-      }
-
-      return {
-        content: this.label,
-        classes: 'nav-item-tooltip',
-        placement: 'right',
-      }
-    },
 
     hasDefaultSlot() {
       return !!this.$slots.default
@@ -273,6 +250,29 @@ export default {
       }
 
       return 'nav-item'
+    },
+
+    routeActive() {
+      if (this.to) {
+        return this.to.name === this.$route.name
+      }
+      return false
+    },
+
+    slim() {
+      return this.navSlim && !this.mobile
+    },
+
+    tooltip() {
+      if (!this.slim) {
+        return null
+      }
+
+      return {
+        classes: 'nav-item-tooltip',
+        content: this.label,
+        placement: 'right',
+      }
     },
   },
 

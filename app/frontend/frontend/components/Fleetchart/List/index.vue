@@ -93,7 +93,7 @@
             class="fleetchart-item fade-list-item fleetchart-download-image"
           >
             <img
-              :src="require('images/community-logo.png')"
+              :src="require('@/images/community-logo.png')"
               alt="made-by-the-community"
             />
           </div>
@@ -118,90 +118,98 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
+import { mapGetters } from 'vuex'
 import FleetchartSlider from '@/frontend/components/Fleetchart/Slider/index.vue'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
-import { Getter } from 'vuex-class'
-import Starship42Btn from '@/frontend/components/Starship42Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn/index.vue'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn/index.vue'
+import Starship42Btn from '@/frontend/components/Starship42Btn/index.vue'
 import FleetchartItem from './Item/index.vue'
 
-@Component({
+export default {
+  name: 'FleetchartList',
+
   components: {
     Btn,
     BtnDropdown,
     DownloadScreenshotBtn,
-    FleetChartStatusBtn,
     FleetchartItem,
     FleetchartSlider,
+    FleetChartStatusBtn,
     Starship42Btn,
   },
-})
-export default class FleetchartList extends Vue {
-  viewpointOptions: string[] = ['side', 'top', 'angled']
 
-  showStatus = false
-
-  gridEnabled = false
-
-  screenWidth: number | null = null
-
-  screenHeight: number | null = null
-
-  gridSize = 80.0
-
-  sizeMultiplicator = 4
-
-  internalScale = 1
-
-  maxScale = 20
-
-  minScale = 0.5
-
-  @Prop({ required: true }) namespace!: string
-
-  @Prop({
-    default() {
-      return []
+  props: {
+    downloadName: {
+      type: String,
+      default: null,
     },
-  })
-  items!: Vehicle[] | Model[]
 
-  @Prop({ default: false }) myShip!: boolean
+    items: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
 
-  @Prop({ default: null }) downloadName!: string
+    myShip: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Getter('mobile') mobile
+    namespace: {
+      type: String,
+      required: true,
+    },
+  },
 
-  get gridSizeLabel() {
-    return (this.gridSize / this.scale / this.sizeMultiplicator)
-      .toFixed(2)
-      .replace('.00', '')
-  }
+  data() {
+    return {
+      gridEnabled: false,
+      gridSize: 80.0,
+      internalScale: 1,
+      maxScale: 20,
+      minScale: 0.5,
+      screenHeight: null,
+      screenWidth: null,
+      showStatus: false,
+      sizeMultiplicator: 4,
+      viewpointOptions: ['side', 'top', 'angled'],
+    }
+  },
 
-  get scale() {
-    return this.$store.getters[`${this.namespace}/fleetchartScale`]
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  get viewpoint() {
-    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
-  }
+    gridSizeLabel() {
+      return (this.gridSize / this.scale / this.sizeMultiplicator)
+        .toFixed(2)
+        .replace('.00', '')
+    },
 
-  get showLabels() {
-    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
-  }
+    scale() {
+      return this.$store.getters[`${this.namespace}/fleetchartScale`]
+    },
 
-  @Watch('internalScale')
-  onScaleChange() {
-    this.$store.commit(
-      `${this.namespace}/setFleetchartScale`,
-      this.internalScale
-    )
-  }
+    showLabels() {
+      return this.$store.getters[`${this.namespace}/fleetchartLabels`]
+    },
+
+    viewpoint() {
+      return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
+    },
+  },
+
+  watch: {
+    internalScale() {
+      this.$store.commit(
+        `${this.namespace}/setFleetchartScale`,
+        this.internalScale
+      )
+    },
+  },
 
   mounted() {
     this.internalScale = this.scale
@@ -214,89 +222,91 @@ export default class FleetchartList extends Vue {
 
     window.addEventListener('resize', this.updateScreenSize)
     window.addEventListener('deviceorientation', this.updateScreenSize)
-  }
+  },
 
   beforeDestroy() {
     this.$comlink.$off('fleetchart-toggle-status')
 
     window.removeEventListener('resize', this.updateScreenSize)
     window.removeEventListener('deviceorientation', this.updateScreenSize)
-  }
+  },
 
-  modelName(item) {
-    const model = item.model || item
-
-    return model.name
-  }
-
-  productionStatus(item) {
-    const model = item.model || item
-
-    return this.$t(`labels.model.productionStatus.${model.productionStatus}`)
-  }
-
-  updateScreenSize() {
-    this.screenWidth = window.innerWidth
-    this.screenHeight = window.innerHeight
-
-    this.drawGridLines()
-  }
-
-  toggleGrid() {
-    this.gridEnabled = !this.gridEnabled
-
-    this.drawGridLines()
-  }
-
-  setViewpoint(viewpoint) {
-    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint)
-  }
-
-  toggleStatus() {
-    this.showStatus = !this.showStatus
-  }
-
-  toggleLabels() {
-    this.$store.commit(
-      `${this.namespace}/setFleetchartLabels`,
-      !this.showLabels
-    )
-  }
-
-  async drawGridLines() {
-    if (!this.gridEnabled) {
-      return
-    }
-
-    await this.$nextTick()
-
-    const canvas = this.$refs.fleetchartGrid
-
-    if (canvas.getContext) {
-      const ctx = canvas.getContext('2d')
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      ctx.drawVerticalLine = (left, top, height, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, 1, height)
+  methods: {
+    async drawGridLines() {
+      if (!this.gridEnabled) {
+        return
       }
 
-      ctx.drawHorizontalLine = (left, top, width, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, width, 1)
-      }
+      await this.$nextTick()
 
-      const lineColor = 'rgba(255, 255, 255, 0.5)'
+      const canvas = this.$refs.fleetchartGrid
 
-      for (let i = 0; i < canvas.width; i += this.gridSize) {
-        ctx.drawVerticalLine(i, 0, canvas.height, lineColor)
-      }
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d')
 
-      for (let i = 0; i < canvas.height; i += this.gridSize) {
-        ctx.drawHorizontalLine(0, i, canvas.width, lineColor)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        ctx.drawVerticalLine = (left, top, height, color) => {
+          ctx.fillStyle = color
+          ctx.fillRect(left, top, 1, height)
+        }
+
+        ctx.drawHorizontalLine = (left, top, width, color) => {
+          ctx.fillStyle = color
+          ctx.fillRect(left, top, width, 1)
+        }
+
+        const lineColor = 'rgba(255, 255, 255, 0.5)'
+
+        for (let i = 0; i < canvas.width; i += this.gridSize) {
+          ctx.drawVerticalLine(i, 0, canvas.height, lineColor)
+        }
+
+        for (let i = 0; i < canvas.height; i += this.gridSize) {
+          ctx.drawHorizontalLine(0, i, canvas.width, lineColor)
+        }
       }
-    }
-  }
+    },
+
+    modelName(item) {
+      const model = item.model || item
+
+      return model.name
+    },
+
+    productionStatus(item) {
+      const model = item.model || item
+
+      return this.$t(`labels.model.productionStatus.${model.productionStatus}`)
+    },
+
+    setViewpoint(viewpoint) {
+      this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint)
+    },
+
+    toggleGrid() {
+      this.gridEnabled = !this.gridEnabled
+
+      this.drawGridLines()
+    },
+
+    toggleLabels() {
+      this.$store.commit(
+        `${this.namespace}/setFleetchartLabels`,
+        !this.showLabels
+      )
+    },
+
+    toggleStatus() {
+      this.showStatus = !this.showStatus
+    },
+
+    updateScreenSize() {
+      this.screenWidth = window.innerWidth
+      this.screenHeight = window.innerHeight
+
+      this.drawGridLines()
+    },
+  },
 }
 </script>

@@ -35,43 +35,42 @@
 <script>
 export default {
   name: 'AvatarComponent',
-
   props: {
     avatar: {
-      type: String,
       default: null,
+      type: String,
+    },
+
+    creatable: {
+      default: false,
+      type: Boolean,
+    },
+
+    editable: {
+      default: false,
+      type: Boolean,
+    },
+
+    icon: {
+      default: 'fad fa-user',
+      type: String,
+    },
+
+    round: {
+      default: true,
+      type: Boolean,
     },
 
     size: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return ['default', 'small', 'large'].indexOf(value) !== -1
       },
     },
-
-    editable: {
-      type: Boolean,
-      default: false,
-    },
-
-    creatable: {
-      type: Boolean,
-      default: false,
-    },
-
-    icon: {
-      type: String,
-      default: 'fad fa-user',
-    },
-
     transparent: {
-      type: Boolean,
       default: false,
-    },
-    round: {
       type: Boolean,
-      default: true,
     },
   },
   methods: {

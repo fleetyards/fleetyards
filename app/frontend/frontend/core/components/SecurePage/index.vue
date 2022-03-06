@@ -53,8 +53,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import { displayAlert } from '@/frontend/lib/Noty'
 import sessionCollection from '@/frontend/api/collections/Session'
 
@@ -68,9 +68,9 @@ export default {
 
   data() {
     return {
-      submitting: false,
-      password: null,
       confirmed: false,
+      password: null,
+      submitting: false,
     }
   },
 
@@ -94,14 +94,14 @@ export default {
     this.$comlink.$on('access-confirmation-required', this.resetConfirmation)
   },
 
+  beforeDestroy() {
+    this.$comlink.$off('access-confirmation-required')
+  },
+
   created() {
     if (this.accessConfirmed) {
       this.confirmed = true
     }
-  },
-
-  beforeDestroy() {
-    this.$comlink.$off('access-confirmation-required')
   },
 
   methods: {

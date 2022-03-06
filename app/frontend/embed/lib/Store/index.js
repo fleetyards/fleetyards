@@ -7,56 +7,33 @@ import actions from './actions'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state: getDefaultState(),
-
   actions,
 
   getters: {
-    fleetchart(state) {
-      return state.fleetchart
-    },
     details(state) {
       return state.details
     },
-    grouping(state) {
-      return state.grouping
+    fleetchart(state) {
+      return state.fleetchart
+    },
+    fleetchartGrouping(state) {
+      return state.fleetchartGrouping
     },
     fleetchartScale(state) {
       return state.fleetchartScale
     },
-    fleetchartGrouping(state) {
-      return state.fleetchartGrouping
+    grouping(state) {
+      return state.grouping
     },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
-    setStoreVersion(state, payload) {
-      state.storeVersion = payload
-    },
-    setLocale(state, locale) {
-      state.locale = locale
-    },
-    toggleDetails(state) {
-      state.details = !state.details
-    },
     setDetails(state, payload) {
       state.details = payload
     },
-    toggleFleetchart(state) {
-      state.fleetchart = !state.fleetchart
-    },
     setFleetchart(state, payload) {
       state.fleetchart = payload
-    },
-    toggleGrouping(state) {
-      state.grouping = !state.grouping
-    },
-    setGrouping(state, payload) {
-      state.grouping = payload
-    },
-    toggleFleetchartGrouping(state) {
-      state.fleetchartGrouping = !state.fleetchartGrouping
     },
     setFleetchartGrouping(state, payload) {
       state.fleetchartGrouping = payload
@@ -64,10 +41,33 @@ const store = new Vuex.Store({
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload
     },
+    setGrouping(state, payload) {
+      state.grouping = payload
+    },
+    setLocale(state, locale) {
+      state.locale = locale
+    },
+    setStoreVersion(state, payload) {
+      state.storeVersion = payload
+    },
+    toggleDetails(state) {
+      state.details = !state.details
+    },
+    toggleFleetchart(state) {
+      state.fleetchart = !state.fleetchart
+    },
+    toggleFleetchartGrouping(state) {
+      state.fleetchartGrouping = !state.fleetchartGrouping
+    },
+    toggleGrouping(state) {
+      state.grouping = !state.grouping
+    },
   },
-  /* eslint-enable no-param-reassign */
 
+  /* eslint-enable no-param-reassign */
   plugins: getStorePlugins(),
+
+  state: getDefaultState(),
 })
 
 export default store

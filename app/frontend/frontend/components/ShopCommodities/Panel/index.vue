@@ -79,37 +79,37 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import LazyImage from '@/frontend/core/components/LazyImage'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
 
 export default {
   name: 'ShopCommodityPanel',
 
   components: {
-    Panel,
     LazyImage,
+    Panel,
   },
 
   props: {
     item: {
-      type: Object,
       required: true,
+      type: Object,
     },
   },
 
   computed: {
-    showStats() {
-      return ['equipment', 'component'].includes(this.item.category)
-    },
-
     shopRoute() {
       return {
         name: 'shop',
         params: {
-          stationSlug: this.item.shop.station.slug,
           slug: this.item.shop.slug,
+          stationSlug: this.item.shop.station.slug,
         },
       }
+    },
+
+    showStats() {
+      return ['equipment', 'component'].includes(this.item.category)
     },
 
     stationRoute() {

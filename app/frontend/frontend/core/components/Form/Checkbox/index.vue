@@ -27,37 +27,36 @@ export default {
   name: 'FormCheckbox',
 
   props: {
-    id: {
-      type: String,
-      default: '',
-    },
-
-    label: {
-      type: String,
+    checkboxValue: {
       default: null,
-    },
-
-    value: {
-      type: [Boolean, Array],
-      default: null,
+      type: [String, Number],
     },
 
     disabled: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
 
-    checkboxValue: {
-      type: [String, Number],
+    id: {
+      default: '',
+      type: String,
+    },
+
+    label: {
       default: null,
+      type: String,
     },
 
     slim: {
-      type: Boolean,
       default: true,
+      type: Boolean,
+    },
+
+    value: {
+      default: null,
+      type: [Boolean, Array],
     },
   },
-
   data() {
     return {
       internalValue: null,

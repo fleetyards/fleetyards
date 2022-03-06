@@ -57,37 +57,51 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import BtnGroup from '@/frontend/core/components/BtnGroup'
-import Btn from '@/frontend/core/components/Btn'
-import PerPageDropdown from '@/frontend/core/components/Paginator/PerPageDropdown'
+<script>
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import PerPageDropdown from '@/frontend/core/components/Paginator/PerPageDropdown/index.vue'
 
-@Component<Paginator>({
+export default {
+  name: 'PaginatorComponent',
+
   components: {
-    BtnGroup,
     Btn,
+    BtnGroup,
     PerPageDropdown,
   },
-})
-export default class Paginator extends Vue {
-  @Prop({ default: null }) collection: any
 
-  @Prop({ default: 1 }) page: number
+  props: {
+    collection: {
+      type: Object,
+      default: null,
+    },
 
-  @Prop({ default: 1 }) total: number
+    page: {
+      type: Number,
+      default: 1,
+    },
 
-  get innerTotal() {
-    if (this.collection) {
-      return this.collection.totalPages || 1
-    }
+    total: {
+      type: Number,
+      default: 1,
+    },
+  },
 
-    return this.total
-  }
+  computed: {
+    innerTotal() {
+      if (this.collection) {
+        return this.collection.totalPages || 1
+      }
 
-  pageRoute(page) {
-    return { query: { page, q: this.$route.query.q } }
-  }
+      return this.total
+    },
+  },
+
+  methods: {
+    pageRoute(page) {
+      return { query: { page, q: this.$route.query.q } }
+    },
+  },
 }
 </script>

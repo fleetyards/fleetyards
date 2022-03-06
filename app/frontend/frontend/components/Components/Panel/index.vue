@@ -59,30 +59,30 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import LazyImage from '@/frontend/core/components/LazyImage'
-import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn'
-import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
+import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations/index.vue'
 
 export default {
   name: 'ComponentPanel',
 
   components: {
-    Panel,
-    LazyImage,
     AddToCartBtn,
+    LazyImage,
+    Panel,
     ShopCommodityLocations,
   },
 
   props: {
     component: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     showMetrics: {
-      type: Boolean,
       default: true,
+      type: Boolean,
     },
   },
 

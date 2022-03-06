@@ -4,16 +4,16 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminComponentsCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminComponent[] = []
+  records = []
 
-  params: AdminComponentParams | null = null
+  params = null
 
-  async findAll(params: AdminComponentParams): Promise<AdminComponent[]> {
+  async findAll(params) {
     this.params = params
 
     const response = await get('components', {
-      q: params.filters,
       page: params?.page,
+      q: params.filters,
     })
 
     if (!response.error) {

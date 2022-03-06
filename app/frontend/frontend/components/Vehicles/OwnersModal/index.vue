@@ -25,30 +25,36 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Avatar from '@/frontend/core/components/Avatar'
+<script>
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
 import { sortBy } from '@/frontend/lib/Helpers'
 import { uniqByField as uniqByFieldArray } from '@/frontend/utils/Array'
 
-@Component<OwnersModal>({
+export default {
+  name: 'OwnersModal',
+
   components: {
+    Avatar,
     Btn,
     Modal,
-    Avatar,
   },
-})
-export default class OwnersModal extends Vue {
-  @Prop({ required: true }) vehicles: Vehicle[]
 
-  get sortedVehicles() {
-    return sortBy(this.vehicles, 'username').filter(
-      uniqByFieldArray('username')
-    )
-  }
+  props: {
+    vehicles: {
+      required: true,
+      type: Array,
+    },
+  },
+
+  computed: {
+    sortedVehicles() {
+      return sortBy(this.vehicles, 'username').filter(
+        uniqByFieldArray('username')
+      )
+    },
+  },
 }
 </script>
 

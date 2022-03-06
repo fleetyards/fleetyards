@@ -144,13 +144,13 @@ export default {
   name: 'PublicHangar',
 
   components: {
-    Btn,
-    FilteredList,
-    FilteredGrid,
-    FleetchartApp,
-    VehiclePanel,
     Avatar,
+    Btn,
+    FilteredGrid,
+    FilteredList,
+    FleetchartApp,
     GroupLabels,
+    VehiclePanel,
   },
 
   mixins: [MetaInfo],
@@ -160,15 +160,23 @@ export default {
   data() {
     return {
       collection: publicVehiclesCollection,
-      userCollection: publicUserCollection,
-      highlightedGroup: null,
       groupsCollection: publicHangarGroupsCollection,
+      highlightedGroup: null,
+      userCollection: publicUserCollection,
     }
   },
 
   computed: {
     ...mapGetters(['mobile']),
     ...mapGetters('publicHangar', ['fleetchartVisible', 'perPage']),
+
+    filters() {
+      return {
+        filters: this.$route.query.q,
+        page: this.$route.query.page,
+        username: this.username,
+      }
+    },
 
     hangarGroupCounts() {
       if (!this.hangarStats) {
@@ -209,14 +217,6 @@ export default {
     userTitle() {
       return this.username[0].toUpperCase() + this.username.slice(1)
     },
-
-    filters() {
-      return {
-        username: this.username,
-        page: this.$route.query.page,
-        filters: this.$route.query.q,
-      }
-    },
   },
 
   watch: {
@@ -236,6 +236,13 @@ export default {
   methods: {
     ...mapActions('publicHangar', ['toggleFleetchart']),
 
+    async fetch() {
+      await this.userCollection.findByUsername(this.username)
+      await this.groupsCollection.findAll(this.username)
+      await this.collection.findAll(this.filters)
+      await this.collection.findStatsByUsername(this.username, this.filters)
+    },
+
     highlightGroup(group) {
       if (!group) {
         this.highlightedGroup = null
@@ -243,13 +250,6 @@ export default {
       }
 
       this.highlightedGroup = group.id
-    },
-
-    async fetch() {
-      await this.userCollection.findByUsername(this.username)
-      await this.groupsCollection.findAll(this.username)
-      await this.collection.findAll(this.filters)
-      await this.collection.findStatsByUsername(this.username, this.filters)
     },
   },
 }

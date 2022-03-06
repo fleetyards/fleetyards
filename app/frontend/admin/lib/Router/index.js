@@ -6,10 +6,14 @@ import { routes } from '@/admin/routes'
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'history',
   base: window.ON_SUBDOMAIN ? '/admin' : '/',
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
+  mode: 'history',
+  parseQuery(query) {
+    return qs.parse(query)
+  },
+  routes,
   scrollBehavior: (to, _from, savedPosition) =>
     new Promise((resolve) => {
       setTimeout(() => {
@@ -22,14 +26,10 @@ const router = new Router({
         }
       }, 600)
     }),
-  parseQuery(query) {
-    return qs.parse(query)
-  },
   stringifyQuery(query) {
     const result = qs.stringify(query)
     return result ? `?${result}` : ''
   },
-  routes,
 })
 
 export default router

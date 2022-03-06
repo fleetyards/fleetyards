@@ -80,10 +80,10 @@ export default {
   name: 'AdminCommodityPrices',
 
   components: {
+    Btn,
+    BtnGroup,
     FilteredList,
     FilteredTable,
-    BtnGroup,
-    Btn,
   },
 
   data() {
@@ -92,40 +92,36 @@ export default {
       deleting: false,
       tableColumns: [
         {
-          name: 'item',
           label: this.$t('labels.commodityPrice.item'),
+          name: 'item',
           width: '30%',
         },
         {
-          name: 'shop',
           label: this.$t('labels.shopCommodity.shop'),
+          name: 'shop',
           width: '20%',
         },
         {
-          name: 'type',
           label: this.$t('labels.commodityPrice.type'),
+          name: 'type',
           width: '15%',
         },
         {
-          name: 'submitters',
           label: this.$t('labels.commodityPrice.submittedBy'),
+          name: 'submitters',
           width: '20%',
         },
         {
-          name: 'price',
           label: this.$t('labels.commodityPrice.price'),
+          name: 'price',
           width: '20%',
         },
-        { name: 'actions', label: this.$t('labels.actions'), width: '12%' },
+        { label: this.$t('labels.actions'), name: 'actions', width: '12%' },
       ],
     }
   },
 
   methods: {
-    async fetch() {
-      await this.collection.refresh()
-    },
-
     async confirm(commodityPrice) {
       if (await this.collection.confirm(commodityPrice.id)) {
         this.fetch()
@@ -134,25 +130,29 @@ export default {
       this.deleting = false
     },
 
-    remove(commodityPrice) {
-      this.deleting = true
-      displayConfirm({
-        text: this.$t('messages.confirm.commodityPrice.destroy'),
-        onConfirm: () => {
-          this.destroy(commodityPrice)
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-
     async destroy(commodityPrice) {
       if (await this.collection.destroy(commodityPrice.id)) {
         this.fetch()
       }
 
       this.deleting = false
+    },
+
+    async fetch() {
+      await this.collection.refresh()
+    },
+
+    remove(commodityPrice) {
+      this.deleting = true
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
+        },
+        onConfirm: () => {
+          this.destroy(commodityPrice)
+        },
+        text: this.$t('messages.confirm.commodityPrice.destroy'),
+      })
     },
   },
 }

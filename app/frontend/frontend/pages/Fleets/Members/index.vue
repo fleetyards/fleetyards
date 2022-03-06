@@ -77,9 +77,9 @@ import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
 import Btn from '@/frontend/core/components/Btn/index.vue'
 import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
 import FleetMembersFilterForm from '@/frontend/components/Fleets/MembersFilterForm/index.vue'
-import fleetMembersCollection from '@/frontend/api/collections/FleetMembers/index.vue'
 import FleetMembersList from '@/frontend/components/Fleets/MembersList/index.vue'
 import MetaInfoMixin from '@/frontend/mixins/MetaInfo'
+import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
 import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 
@@ -87,9 +87,9 @@ export default {
   name: 'FleetMembers',
 
   components: {
+    BreadCrumbs,
     Btn,
     BtnDropdown,
-    BreadCrumbs,
     FilteredList,
     FleetMembersFilterForm,
     FleetMembersList,
@@ -109,6 +109,36 @@ export default {
   computed: {
     ...mapGetters(['mobile']),
 
+    canInvite() {
+      return ['admin', 'officer'].includes(this.fleet.myRole)
+    },
+
+    crumbs() {
+      if (!this.fleet) {
+        return []
+      }
+
+      return [
+        {
+          label: this.fleet.name,
+          to: {
+            name: 'fleet',
+            params: {
+              slug: this.fleet.slug,
+            },
+          },
+        },
+      ]
+    },
+
+    filters() {
+      return {
+        filters: this.$route.query.q,
+        page: this.$route.query.page,
+        slug: this.$route.params.slug,
+      }
+    },
+
     fleet() {
       return fleetsCollection.record
     },
@@ -119,36 +149,6 @@ export default {
       }
 
       return this.$t('title.fleets.members', { fleet: this.fleet.name })
-    },
-
-    crumbs() {
-      if (!this.fleet) {
-        return []
-      }
-
-      return [
-        {
-          to: {
-            name: 'fleet',
-            params: {
-              slug: this.fleet.slug,
-            },
-          },
-          label: this.fleet.name,
-        },
-      ]
-    },
-
-    filters() {
-      return {
-        slug: this.$route.params.slug,
-        filters: this.$route.query.q,
-        page: this.$route.query.page,
-      }
-    },
-
-    canInvite() {
-      return ['admin', 'officer'].includes(this.fleet.myRole)
     },
   },
 
@@ -172,18 +172,24 @@ export default {
       await this.collection.findStats(this.filters)
     },
 
-    openInviteUrlModal() {
+    async fetchFleet() {
+      await fleetsCollection.findBySlug(this.$route.params.slug)
+    },
+
+    openInviteModal() {
       this.$comlink.$emit('open-modal', {
-        component: () => import('@/frontend/components/Fleets/InviteUrlModal'),
+        component: () =>
+          import('@/frontend/components/Fleets/MemberModal/index.vue'),
         props: {
           fleet: this.fleet,
         },
       })
     },
 
-    openInviteModal() {
+    openInviteUrlModal() {
       this.$comlink.$emit('open-modal', {
-        component: () => import('@/frontend/components/Fleets/MemberModal'),
+        component: () =>
+          import('@/frontend/components/Fleets/InviteUrlModal/index.vue'),
         props: {
           fleet: this.fleet,
         },
@@ -203,10 +209,6 @@ export default {
           received: debounce(this.fetch, 500),
         }
       )
-    },
-
-    async fetchFleet() {
-      await fleetsCollection.findBySlug(this.$route.params.slug)
     },
   },
 }

@@ -43,35 +43,34 @@
 <script>
 export default {
   name: 'RadioList',
-
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    options: {
-      type: Array,
-      required: true,
-    },
-    resetLabel: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: String,
-      default: '',
+    disabled: {
+      default: false,
+      type: Boolean,
     },
     inline: {
-      type: Boolean,
       default: true,
-    },
-    disabled: {
       type: Boolean,
-      default: false,
+    },
+    label: {
+      required: true,
+      type: String,
+    },
+    name: {
+      required: true,
+      type: String,
+    },
+    options: {
+      required: true,
+      type: Array,
+    },
+    resetLabel: {
+      default: '',
+      type: String,
+    },
+    value: {
+      default: '',
+      type: String,
     },
   },
   computed: {

@@ -30,32 +30,32 @@ export default {
   name: 'PanelComponent',
 
   props: {
-    outerSpacing: {
+    forText: {
+      default: false,
       type: Boolean,
+    },
+
+    highlight: {
+      default: false,
+      type: Boolean,
+    },
+
+    outerSpacing: {
       default: true,
+      type: Boolean,
     },
 
     transparency: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return ['default', 'more', 'complete'].indexOf(value) !== -1
       },
     },
 
-    highlight: {
-      type: Boolean,
-      default: false,
-    },
-
-    forText: {
-      type: Boolean,
-      default: false,
-    },
-
     variant: {
-      type: String,
       default: 'default',
+      type: String,
       validator(value) {
         return ['default', 'primary', 'success'].indexOf(value) !== -1
       },
@@ -63,12 +63,12 @@ export default {
   },
 
   computed: {
-    variantClass() {
-      return `panel-${this.variant}`
-    },
-
     transparencyClass() {
       return `panel-transparency-${this.transparency}`
+    },
+
+    variantClass() {
+      return `panel-${this.variant}`
     },
   },
 }

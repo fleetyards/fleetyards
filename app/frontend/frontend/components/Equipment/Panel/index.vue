@@ -84,35 +84,35 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import LazyImage from '@/frontend/core/components/LazyImage'
-import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations'
-import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations/index.vue'
+import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
 
 export default {
   name: 'ComponentPanel',
 
   components: {
-    Panel,
-    LazyImage,
     AddToCartBtn,
+    LazyImage,
+    Panel,
     ShopCommodityLocations,
   },
 
   props: {
     equipment: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     showStats: {
-      type: Boolean,
       default: true,
+      type: Boolean,
     },
   },
 
   computed: {
-    get image() {
+    image() {
       if (this.equipment.storeImageIsFallback) {
         return (
           this.equipment.manufacturer?.logo || this.equipment.storeImageMedium

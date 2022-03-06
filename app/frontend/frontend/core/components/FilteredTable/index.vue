@@ -109,36 +109,41 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Panel from '@/frontend/core/components/Panel'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Loader from '@/frontend/core/components/Loader'
-import Btn from '@/frontend/core/components/Btn'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { uniq as uniqArray } from '@/frontend/utils/Array'
 
 export default {
   name: 'FilteredTable',
 
   components: {
-    Panel,
-    Loader,
-    Checkbox,
     Btn,
+    Checkbox,
+    Loader,
+    Panel,
   },
 
   props: {
-    records: {
+    columns: {
       type: Array,
       required: true,
     },
 
-    columns: {
-      type: Object,
-      required: true,
+    emptyBoxVisible: {
+      default: false,
+      type: Boolean,
     },
 
-    primaryKey: {
-      type: String,
-      required: true,
+    listClasses: {
+      type: [Array, Object, String],
+      default: null,
+    },
+
+    listItemClasses: {
+      type: [Array, Object, String],
+      default: null,
     },
 
     loading: {
@@ -146,9 +151,14 @@ export default {
       default: false,
     },
 
-    emptyBoxVisible: {
-      type: Boolean,
-      default: false,
+    primaryKey: {
+      type: String,
+      required: true,
+    },
+
+    records: {
+      type: Array,
+      required: true,
     },
 
     selectable: {
@@ -156,21 +166,11 @@ export default {
       default: false,
     },
 
-    listClasses: {
-      type: Array,
-      default: null,
-    },
-
-    listItemClasses: {
-      type: Array,
-      default: null,
-    },
-
     selected: {
-      type: Array,
       default() {
         return []
       },
+      type: Array,
     },
   },
 
@@ -183,9 +183,6 @@ export default {
   computed: {
     ...mapGetters(['mobile']),
 
-    get uuid() {
-      return this._uid
-    },
     allSelected() {
       if (!this.records.length) {
         return false
@@ -195,21 +192,26 @@ export default {
         .map((record) => record.id)
         .every((recordId) => this.internalSelected.includes(recordId))
     },
+
     scopedSlots() {
       const itemSlotPrefix = 'col.'
       return Object.keys(this.$scopedSlots)
         .filter((name) => name.startsWith(itemSlotPrefix))
         .map((name) => name.substring(itemSlotPrefix.length))
     },
+
+    uuid() {
+      return this._uid
+    },
   },
 
   watch: {
-    selected() {
-      this.internalSelected = this.selected
-    },
-
     internalSelected() {
       this.$emit('selected-change', this.internalSelected)
+    },
+
+    selected() {
+      this.internalSelected = this.selected
     },
   },
 

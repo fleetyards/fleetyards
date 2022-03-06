@@ -27,7 +27,6 @@ import { sum as sumArray } from '@/frontend/utils/Array'
 
 export default {
   name: 'AppShoppingCart',
-
   components: {
     Btn,
   },
@@ -39,28 +38,28 @@ export default {
       cartItems: 'items',
     }),
 
+    cartItemCount() {
+      return sumArray(this.cartItems.map((item) => item.amount))
+    },
+
     total() {
       return sumArray(
         this.cartItems.map((item) => this.sum(item)).filter((item) => item)
       )
     },
-
-    cartItemCount() {
-      return sumArray(this.cartItems.map((item) => item.amount))
-    },
   },
 
   methods: {
-    sum(cartItem) {
-      return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
-    },
-
     openModal() {
       this.$comlink.$emit('open-modal', {
         component: () =>
-          import('@/frontend/core/components/AppShoppingCart/Modal'),
+          import('@/frontend/core/components/AppShoppingCart/Modal/index.vue'),
         wide: true,
       })
+    },
+
+    sum(cartItem) {
+      return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
     },
   },
 }

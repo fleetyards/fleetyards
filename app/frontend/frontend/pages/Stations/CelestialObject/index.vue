@@ -96,27 +96,67 @@ import { scrollToAnchor } from '@/frontend/utils/scrolling'
 
 export default {
   name: 'CelestialObjectDetail',
-
   components: {
+    BreadCrumbs,
+    CelestialObjectMetrics,
+    ItemPanel,
     Loader,
     Panel,
     StationPanel,
-    ItemPanel,
-    CelestialObjectMetrics,
-    BreadCrumbs,
   },
 
   mixins: [MetaInfo, Pagination],
 
   data() {
     return {
-      loading: false,
       celestialObject: null,
+      loading: false,
       stations: [],
     }
   },
 
   computed: {
+    crumbs() {
+      if (!this.celestialObject) {
+        return null
+      }
+
+      const crumbs = [
+        {
+          label: this.$t('nav.starsystems'),
+          to: {
+            hash: `#${this.celestialObject.starsystem.slug}`,
+            name: 'starsystems',
+          },
+        },
+        {
+          label: this.celestialObject.starsystem.name,
+          to: {
+            hash: `#${this.celestialObject.slug}`,
+            name: 'starsystem',
+            params: {
+              slug: this.celestialObject.starsystem.slug,
+            },
+          },
+        },
+      ]
+
+      if (this.celestialObject.parent) {
+        crumbs.push({
+          label: this.celestialObject.parent.name,
+          to: {
+            name: 'celestial-object',
+            params: {
+              slug: this.celestialObject.parent.slug,
+              starsystem: this.celestialObject.starsystem.slug,
+            },
+          },
+        })
+      }
+
+      return crumbs
+    },
+
     metaTitle() {
       if (!this.celestialObject) {
         return null
@@ -126,47 +166,6 @@ export default {
         celestialObject: this.celestialObject.name,
         starsystem: this.celestialObject.starsystem.name,
       })
-    },
-
-    crumbs() {
-      if (!this.celestialObject) {
-        return null
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
-        },
-        {
-          to: {
-            name: 'starsystem',
-            params: {
-              slug: this.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.celestialObject.slug}`,
-          },
-          label: this.celestialObject.starsystem.name,
-        },
-      ]
-
-      if (this.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: 'celestial-object',
-            params: {
-              starsystem: this.celestialObject.starsystem.slug,
-              slug: this.celestialObject.parent.slug,
-            },
-          },
-          label: this.celestialObject.parent.name,
-        })
-      }
-
-      return crumbs
     },
   },
 
@@ -196,12 +195,12 @@ export default {
     async fetchStations() {
       this.loading = true
       const response = await this.$api.get('stations', {
+        page: this.$route.query.page,
         q: {
           ...this.$route.query.q,
           celestialObjectEq: this.$route.params.slug,
           sorts: ['station_type asc', 'name asc'],
         },
-        page: this.$route.query.page,
       })
 
       this.loading = false

@@ -14,11 +14,9 @@ const createShoppingCartItem = (newItem, type) => {
   )
 
   return {
-    id: newItem.id,
-    type,
-    name: newItem.name,
+    amount: 1,
     bestSoldAt: soldAt[0],
-    soldAt,
+    id: newItem.id,
     listedAt: (newItem.listedAt || []).map((item) => ({
       id: item.id,
       shopName: item.shop.name,
@@ -26,35 +24,37 @@ const createShoppingCartItem = (newItem, type) => {
       stationName: item.shop.station.name,
       stationSlug: item.shop.station.slug,
     })),
-    amount: 1,
+    name: newItem.name,
+    soldAt,
+    type,
   }
 }
 
 export default {
-  reset({ commit }) {
-    commit('reset')
+  add({ commit, state }, { item, type }) {
+    const newItem = createShoppingCartItem(item, type)
+    const foundItem = state.items.find((cartItem) => cartItem.id === item.id)
+    if (foundItem) {
+      commit(
+        'setItems',
+        state.items.map((cartItem) => {
+          if (cartItem.id !== item.id) {
+            return cartItem
+          }
+
+          return {
+            ...newItem,
+            amount: foundItem.amount + 1,
+          }
+        })
+      )
+    } else {
+      commit('add', newItem)
+    }
   },
 
-  reduceAmount({ commit, state }, itemId) {
-    const foundItem = state.items.find((cartItem) => cartItem.id === itemId)
-
-    if (!foundItem || foundItem.amount <= 0) {
-      return
-    }
-
-    commit(
-      'setItems',
-      state.items.map((cartItem) => {
-        if (cartItem.id !== foundItem.id) {
-          return cartItem
-        }
-
-        return {
-          ...foundItem,
-          amount: foundItem.amount - 1,
-        }
-      })
-    )
+  clear({ commit }) {
+    commit('setItems', [])
   },
 
   increaseAmount({ commit, state }, itemId) {
@@ -79,26 +79,37 @@ export default {
     )
   },
 
-  add({ commit, state }, { item, type }) {
-    const newItem = createShoppingCartItem(item, type)
-    const foundItem = state.items.find((cartItem) => cartItem.id === item.id)
-    if (foundItem) {
-      commit(
-        'setItems',
-        state.items.map((cartItem) => {
-          if (cartItem.id !== item.id) {
-            return cartItem
-          }
+  reduceAmount({ commit, state }, itemId) {
+    const foundItem = state.items.find((cartItem) => cartItem.id === itemId)
 
-          return {
-            ...newItem,
-            amount: foundItem.amount + 1,
-          }
-        })
-      )
-    } else {
-      commit('add', newItem)
+    if (!foundItem || foundItem.amount <= 0) {
+      return
     }
+
+    commit(
+      'setItems',
+      state.items.map((cartItem) => {
+        if (cartItem.id !== foundItem.id) {
+          return cartItem
+        }
+
+        return {
+          ...foundItem,
+          amount: foundItem.amount - 1,
+        }
+      })
+    )
+  },
+
+  remove({ commit, state }, cartItemId) {
+    commit(
+      'setItems',
+      state.items.filter((cartItem) => cartItem.id !== cartItemId)
+    )
+  },
+
+  reset({ commit }) {
+    commit('reset')
   },
 
   update({ commit, state }, { item, type }) {
@@ -117,16 +128,5 @@ export default {
         }
       })
     )
-  },
-
-  remove({ commit, state }, cartItemId) {
-    commit(
-      'setItems',
-      state.items.filter((cartItem) => cartItem.id !== cartItemId)
-    )
-  },
-
-  clear({ commit }) {
-    commit('setItems', [])
   },
 }

@@ -36,6 +36,31 @@ export default {
   },
 
   props: {
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
+
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return (
+          ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+            value
+          ) !== -1
+        )
+      },
+    },
+
     withLabel: {
       type: Boolean,
       default: true,
@@ -48,14 +73,14 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    this.$comlink.$off('fleetchart-toggle-status')
+  },
+
   mounted() {
     this.showStatus = !!this.$route.query?.showStatus
 
     this.$comlink.$on('fleetchart-toggle-status', this.setShowStatus)
-  },
-
-  beforeDestroy() {
-    this.$comlink.$off('fleetchart-toggle-status')
   },
 
   methods: {

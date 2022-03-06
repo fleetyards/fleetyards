@@ -131,9 +131,9 @@ export default {
   name: 'SignupPage',
 
   components: {
-    FormInput,
     Btn,
     Checkbox,
+    FormInput,
   },
 
   mixins: [MetaInfo],
@@ -162,12 +162,12 @@ export default {
 
     setupForm() {
       this.form = {
-        username: null,
         email: null,
-        saleNotify: false,
+        fleetInviteToken: this.fleetInviteToken,
         password: null,
         passwordConfirmation: null,
-        fleetInviteToken: this.fleetInviteToken,
+        saleNotify: false,
+        username: null,
       }
     },
 

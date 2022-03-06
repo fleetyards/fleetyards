@@ -33,9 +33,9 @@ export class PublicVehiclesCollection extends BaseCollection {
     this.params = params
 
     const response = await get(`vehicles/${params?.username}`, {
-      q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
+      q: params?.filters,
     })
 
     if (!response.error) {

@@ -39,30 +39,29 @@ export default {
   name: 'NavItemInner',
 
   props: {
-    label: {
-      type: String,
-      default: '',
+    avatar: {
+      default: false,
+      type: Boolean,
     },
 
     icon: {
-      type: String,
       default: null,
+      type: String,
     },
 
     image: {
-      type: String,
       default: null,
+      type: String,
     },
-    avatar: {
-      type: Boolean,
-      default: false,
+    label: {
+      default: '',
+      type: String,
     },
     slim: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
   },
-
   computed: {
     firstLetter() {
       return this.label.charAt(0)

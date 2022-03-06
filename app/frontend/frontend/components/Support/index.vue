@@ -4,22 +4,23 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+<script>
 import Btn from '@/frontend/core/components/Btn/index.vue'
 
-@Component<Support>({
+export default {
+  name: 'SupportBtn',
   components: {
     Btn,
   },
-})
-export default class Support extends Vue {
-  open() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Support/Modal'),
-      wide: true,
-    })
-  }
+
+  methods: {
+    open() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Support/Modal/index.vue'),
+        wide: true,
+      })
+    },
+  },
 }
 </script>

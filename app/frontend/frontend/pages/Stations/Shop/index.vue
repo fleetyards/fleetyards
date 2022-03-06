@@ -217,15 +217,15 @@ export default {
   name: 'ShopPage',
 
   components: {
-    ShopBaseMetrics,
-    FilterForm,
-    Btn,
-    Panel,
-    PriceModalBtn,
+    AddToCartBtn,
     BreadCrumbs,
+    Btn,
     FilteredList,
     FilteredTable,
-    AddToCartBtn,
+    FilterForm,
+    Panel,
+    PriceModalBtn,
+    ShopBaseMetrics,
   },
 
   mixins: [MetaInfo],
@@ -242,53 +242,75 @@ export default {
   computed: {
     ...mapGetters(['mobile']),
 
+    crumbs() {
+      if (!this.shop) {
+        return null
+      }
+
+      const crumbs = [
+        {
+          label: this.$t('nav.starsystems'),
+          to: {
+            hash: `#${this.shop.celestialObject.starsystem.slug}`,
+            name: 'starsystems',
+          },
+        },
+        {
+          label: this.shop.celestialObject.starsystem.name,
+          to: {
+            hash: `#${this.shop.celestialObject.slug}`,
+            name: 'starsystem',
+            params: {
+              slug: this.shop.celestialObject.starsystem.slug,
+            },
+          },
+        },
+      ]
+
+      if (this.shop.celestialObject.parent) {
+        crumbs.push({
+          label: this.shop.celestialObject.parent.name,
+          to: {
+            name: 'celestial-object',
+            params: {
+              slug: this.shop.celestialObject.parent.slug,
+              starsystem: this.shop.celestialObject.starsystem.slug,
+            },
+          },
+        })
+      }
+
+      crumbs.push({
+        label: this.shop.celestialObject.name,
+        to: {
+          hash: `#${this.station.slug}`,
+          name: 'celestial-object',
+          params: {
+            slug: this.shop.celestialObject.slug,
+            starsystem: this.shop.celestialObject.starsystem.slug,
+          },
+        },
+      })
+
+      crumbs.push({
+        label: this.station.name,
+        to: {
+          name: 'station',
+          params: {
+            slug: this.station.slug,
+          },
+        },
+      })
+
+      return crumbs
+    },
+
     shop() {
       return shopsCollection.record
     },
 
-    tableColumns() {
-      const columns = [
-        { name: 'store_image', class: 'store-image' },
-        { name: 'description', class: 'description' },
-      ]
-
-      if (this.shop.buying) {
-        columns.push({
-          name: 'buy_price',
-          label: this.$t('labels.shop.buyPrice'),
-          class: 'price',
-        })
-      }
-
-      if (this.shop.selling) {
-        columns.push({
-          name: 'sell_price',
-          label: this.$t('labels.shop.sellPrice'),
-          class: 'price',
-        })
-      }
-
-      if (this.shop.rental) {
-        columns.push({
-          name: 'rental_price',
-          label: this.$t('labels.shop.rentalPrice'),
-          class: 'rent-price',
-        })
-      }
-
-      columns.push({ name: 'actions', class: 'actions actions-1x' })
-
-      return columns
-    },
-
-    title() {
-      if (!this.shop) {
-        return ''
-      }
-      return this.$t('title.shop', {
-        shop: this.shop.name,
-        station: this.shop.station.name,
-      })
+    station() {
+      return this.shop.station
     },
 
     subCategory() {
@@ -303,71 +325,49 @@ export default {
       return this.$route.query.q.subCategoryIn
     },
 
-    station() {
-      return this.shop.station
-    },
-
-    crumbs() {
-      if (!this.shop) {
-        return null
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.shop.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
-        },
-        {
-          to: {
-            name: 'starsystem',
-            params: {
-              slug: this.shop.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.shop.celestialObject.slug}`,
-          },
-          label: this.shop.celestialObject.starsystem.name,
-        },
+    tableColumns() {
+      const columns = [
+        { class: 'store-image', name: 'store_image' },
+        { class: 'description', name: 'description' },
       ]
 
-      if (this.shop.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: 'celestial-object',
-            params: {
-              starsystem: this.shop.celestialObject.starsystem.slug,
-              slug: this.shop.celestialObject.parent.slug,
-            },
-          },
-          label: this.shop.celestialObject.parent.name,
+      if (this.shop.buying) {
+        columns.push({
+          class: 'price',
+          label: this.$t('labels.shop.buyPrice'),
+          name: 'buy_price',
         })
       }
 
-      crumbs.push({
-        to: {
-          name: 'celestial-object',
-          params: {
-            starsystem: this.shop.celestialObject.starsystem.slug,
-            slug: this.shop.celestialObject.slug,
-          },
-          hash: `#${this.station.slug}`,
-        },
-        label: this.shop.celestialObject.name,
-      })
+      if (this.shop.selling) {
+        columns.push({
+          class: 'price',
+          label: this.$t('labels.shop.sellPrice'),
+          name: 'sell_price',
+        })
+      }
 
-      crumbs.push({
-        to: {
-          name: 'station',
-          params: {
-            slug: this.station.slug,
-          },
-        },
-        label: this.station.name,
-      })
+      if (this.shop.rental) {
+        columns.push({
+          class: 'rent-price',
+          label: this.$t('labels.shop.rentalPrice'),
+          name: 'rental_price',
+        })
+      }
 
-      return crumbs
+      columns.push({ class: 'actions actions-1x', name: 'actions' })
+
+      return columns
+    },
+
+    title() {
+      if (!this.shop) {
+        return ''
+      }
+      return this.$t('title.shop', {
+        shop: this.shop.name,
+        station: this.shop.station.name,
+      })
     },
   },
 
@@ -378,6 +378,33 @@ export default {
   },
 
   methods: {
+    async fetchSubCategories() {
+      const response = await this.$api.get(
+        'filters/shop-commodities/sub-categories',
+        {
+          shopSlug: this.shop.slug,
+          stationSlug: this.shop.station.slug,
+        }
+      )
+
+      if (!response.error) {
+        this.subCategories = response.data
+      }
+    },
+
+    link(record) {
+      if (record.category !== 'model') {
+        return null
+      }
+
+      return {
+        name: 'model',
+        params: {
+          slug: record.slug,
+        },
+      }
+    },
+
     manufacturer(record) {
       if (!record.item || !record.item.manufacturer) {
         return null
@@ -395,19 +422,6 @@ export default {
       }
 
       return record.name
-    },
-
-    link(record) {
-      if (record.category !== 'model') {
-        return null
-      }
-
-      return {
-        name: 'model',
-        params: {
-          slug: record.slug,
-        },
-      }
     },
 
     toggleSubcategory(value) {
@@ -446,20 +460,6 @@ export default {
           .catch((err) => {
             console.info(err)
           })
-      }
-    },
-
-    async fetchSubCategories() {
-      const response = await this.$api.get(
-        'filters/shop-commodities/sub-categories',
-        {
-          stationSlug: this.shop.station.slug,
-          shopSlug: this.shop.slug,
-        }
-      )
-
-      if (!response.error) {
-        this.subCategories = response.data
       }
     },
   },

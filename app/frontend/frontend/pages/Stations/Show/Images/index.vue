@@ -57,11 +57,10 @@ import imagesCollection from '@/frontend/api/collections/Images'
 
 export default {
   name: 'StationImages',
-
   components: {
-    FilteredList,
-    FilteredGrid,
     BreadCrumbs,
+    FilteredGrid,
+    FilteredList,
     Gallery,
     GalleryImage,
   },
@@ -76,14 +75,77 @@ export default {
   },
 
   computed: {
+    crumbs() {
+      if (!this.station) {
+        return null
+      }
+
+      const crumbs = [
+        {
+          label: this.$t('nav.starsystems'),
+          to: {
+            hash: `#${this.station.celestialObject.starsystem.slug}`,
+            name: 'starsystems',
+          },
+        },
+        {
+          label: this.station.celestialObject.starsystem.name,
+          to: {
+            hash: `#${this.station.celestialObject.slug}`,
+            name: 'starsystem',
+            params: {
+              slug: this.station.celestialObject.starsystem.slug,
+            },
+          },
+        },
+      ]
+
+      if (this.station.celestialObject.parent) {
+        crumbs.push({
+          label: this.station.celestialObject.parent.name,
+          to: {
+            name: 'celestial-object',
+            params: {
+              slug: this.station.celestialObject.parent.slug,
+              starsystem: this.station.celestialObject.starsystem.slug,
+            },
+          },
+        })
+      }
+
+      crumbs.push({
+        label: this.station.celestialObject.name,
+        to: {
+          hash: `#${this.station.slug}`,
+          name: 'celestial-object',
+          params: {
+            slug: this.station.celestialObject.slug,
+            starsystem: this.station.celestialObject.starsystem.slug,
+          },
+        },
+      })
+
+      crumbs.push({
+        label: this.station.name,
+        to: {
+          name: 'station',
+          params: {
+            slug: this.station.slug,
+          },
+        },
+      })
+
+      return crumbs
+    },
+
     metaTitle() {
       if (!this.station) {
         return null
       }
 
       return this.$t('title.stationImages', {
-        station: this.station.name,
         celestialObject: this.station.celestialObject.name,
+        station: this.station.name,
       })
     },
 
@@ -93,69 +155,6 @@ export default {
         galleryType: 'stations',
       }
     },
-
-    crumbs() {
-      if (!this.station) {
-        return null
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.station.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
-        },
-        {
-          to: {
-            name: 'starsystem',
-            params: {
-              slug: this.station.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.station.celestialObject.slug}`,
-          },
-          label: this.station.celestialObject.starsystem.name,
-        },
-      ]
-
-      if (this.station.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: 'celestial-object',
-            params: {
-              starsystem: this.station.celestialObject.starsystem.slug,
-              slug: this.station.celestialObject.parent.slug,
-            },
-          },
-          label: this.station.celestialObject.parent.name,
-        })
-      }
-
-      crumbs.push({
-        to: {
-          name: 'celestial-object',
-          params: {
-            starsystem: this.station.celestialObject.starsystem.slug,
-            slug: this.station.celestialObject.slug,
-          },
-          hash: `#${this.station.slug}`,
-        },
-        label: this.station.celestialObject.name,
-      })
-
-      crumbs.push({
-        to: {
-          name: 'station',
-          params: {
-            slug: this.station.slug,
-          },
-        },
-        label: this.station.name,
-      })
-
-      return crumbs
-    },
   },
 
   created() {
@@ -163,10 +162,6 @@ export default {
   },
 
   methods: {
-    openGallery(index) {
-      this.$refs.gallery.open(index)
-    },
-
     async fetchStation() {
       const response = await this.$api.get(
         `stations/${this.$route.params.slug}`
@@ -177,6 +172,10 @@ export default {
       } else if (response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
+    },
+
+    openGallery(index) {
+      this.$refs.gallery.open(index)
     },
   },
 }

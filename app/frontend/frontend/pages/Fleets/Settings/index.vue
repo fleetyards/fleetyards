@@ -57,12 +57,16 @@ export default {
 
   data() {
     return {
-      leaving: false,
       collection: fleetsCollection,
+      leaving: false,
     }
   },
 
   computed: {
+    canEdit() {
+      return this.fleet?.myRole === 'admin'
+    },
+
     fleet() {
       return this.collection.record
     },
@@ -73,10 +77,6 @@ export default {
       }
 
       return null
-    },
-
-    canEdit() {
-      return this.fleet?.myRole === 'admin'
     },
   },
 
@@ -102,7 +102,9 @@ export default {
 
       this.leaving = true
       displayConfirm({
-        text: this.$t('messages.confirm.fleet.leave'),
+        onClose: () => {
+          this.leaving = false
+        },
         onConfirm: async () => {
           const response = await this.$api.destroy(
             `fleets/${this.fleet.slug}/members/leave`
@@ -133,9 +135,7 @@ export default {
             }
           }
         },
-        onClose: () => {
-          this.leaving = false
-        },
+        text: this.$t('messages.confirm.fleet.leave'),
       })
     },
   },

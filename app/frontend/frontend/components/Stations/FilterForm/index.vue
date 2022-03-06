@@ -78,20 +78,20 @@
 
 <script>
 import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import RadioList from '@/frontend/core/components/Form/RadioList'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import RadioList from '@/frontend/core/components/Form/RadioList/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { booleanOptions } from '@/frontend/utils/FilterOptions'
 
 export default {
   name: 'StationsFilterForm',
 
   components: {
-    FilterGroup,
-    RadioList,
-    FormInput,
     Btn,
+    FilterGroup,
+    FormInput,
+    RadioList,
   },
 
   mixins: [Filters],
@@ -99,17 +99,17 @@ export default {
   data() {
     const query = this.$route.query.q || {}
     return {
-      loading: false,
       form: {
-        searchCont: query.searchCont,
-        nameCont: query.nameCont,
-        habsNotNull: query.habsNotNull,
         celestialObjectIn: query.celestialObjectIn || [],
+        docksShipSizeIn: query.docksShipSizeIn || [],
+        habsNotNull: query.habsNotNull,
+        nameCont: query.nameCont,
+        searchCont: query.searchCont,
+        shopsShopTypeIn: query.shopsShopTypeIn || [],
         starsystemIn: query.starsystemIn || [],
         stationTypeIn: query.stationTypeIn || [],
-        shopsShopTypeIn: query.shopsShopTypeIn || [],
-        docksShipSizeIn: query.docksShipSizeIn || [],
       },
+      loading: false,
     }
   },
 
@@ -123,14 +123,14 @@ export default {
     $route() {
       const query = this.$route.query.q || {}
       this.form = {
-        searchCont: query.searchCont,
-        nameCont: query.nameCont,
-        habsNotNull: query.habsNotNull,
         celestialObjectIn: query.celestialObjectIn || [],
+        docksShipSizeIn: query.docksShipSizeIn || [],
+        habsNotNull: query.habsNotNull,
+        nameCont: query.nameCont,
+        searchCont: query.searchCont,
+        shopsShopTypeIn: query.shopsShopTypeIn || [],
         starsystemIn: query.starsystemIn || [],
         stationTypeIn: query.stationTypeIn || [],
-        shopsShopTypeIn: query.shopsShopTypeIn || [],
-        docksShipSizeIn: query.docksShipSizeIn || [],
       }
     },
   },
@@ -149,6 +149,15 @@ export default {
       }
       return this.$api.get('celestial-objects', query)
     },
+
+    fetchShipSizes() {
+      return this.$api.get('stations/ship-sizes')
+    },
+
+    fetchShopTypes() {
+      return this.$api.get('shops/shop-types')
+    },
+
     fetchStarsystems({ page, search, missingValue }) {
       const query = {
         q: {},
@@ -162,14 +171,9 @@ export default {
       }
       return this.$api.get('starsystems', query)
     },
-    fetchShipSizes() {
-      return this.$api.get('stations/ship-sizes')
-    },
+
     fetchStationTypes() {
       return this.$api.get('stations/station-types')
-    },
-    fetchShopTypes() {
-      return this.$api.get('shops/shop-types')
     },
   },
 }

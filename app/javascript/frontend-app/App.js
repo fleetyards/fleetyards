@@ -1,6 +1,4 @@
 export default {
-  name: 'FrontendApp',
-
   data() {
     return {
       text: 'Hello World',
@@ -12,6 +10,8 @@ export default {
       this.text = 'Foo Bar'
     },
   },
+
+  name: 'FrontendApp',
 
   template: `<div @click="toggle">{{ text }}</div>`,
 }

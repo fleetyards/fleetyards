@@ -28,7 +28,6 @@ import Search from '@/frontend/core/components/Navigation/Search/index.vue'
 
 export default {
   name: 'NavigationHeader',
-
   components: {
     QuickSearch,
     Search,

@@ -32,62 +32,79 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel'
+<script>
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
-@Component<AddonsModal>({
+export default {
+  name: 'AddonsModal',
+
   components: {
     Panel,
   },
-})
-export default class AddonsModal extends Vue {
-  @Prop({ required: true }) value: string[]
 
-  @Prop({ required: true }) packages: ModelModulePackage[]
+  props: {
+    editable: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) editable: boolean
+    packages: {
+      type: Array,
+      required: true,
+    },
 
-  internalValue: string[] = []
+    value: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      internalValue: [],
+    }
+  },
+
+  watch: {
+    internalValue() {
+      this.$emit('input', this.internalValue)
+    },
+  },
 
   mounted() {
     this.internalValue = [...this.value]
-  }
+  },
 
-  @Watch('internalValue')
-  onInternalValueChange() {
-    this.$emit('input', this.internalValue)
-  }
-
-  activatePackage(package) {
-    if (!this.editable) {
-      return
-    }
-
-    this.internalValue = [...this.value]
-
-    package.modules.forEach((module) => {
-      const additionalPackageModules = package.modules.filter(
-        (packageModule) => packageModule.id === module.id
-      )
-      const foundModules = this.internalValue.filter((id) => id === module.id)
-
-      if (
-        !foundModules.length ||
-        foundModules.length < additionalPackageModules.length
-      ) {
-        this.internalValue.push(module.id)
+  methods: {
+    activatePackage(modulePackage) {
+      if (!this.editable) {
+        return
       }
-    })
-  }
 
-  selectedPackage(package) {
-    return (
-      JSON.stringify([...this.value].sort()) ===
-      JSON.stringify(package.modules.map((module) => module.id).sort())
-    )
-  }
+      this.internalValue = [...this.value]
+
+      modulePackage.modules.forEach((module) => {
+        const additionalPackageModules = modulePackage.modules.filter(
+          (item) => item.id === module.id
+        )
+        const foundModules = this.internalValue.filter((id) => id === module.id)
+
+        if (
+          !foundModules.length ||
+          foundModules.length < additionalPackageModules.length
+        ) {
+          this.internalValue.push(module.id)
+        }
+      })
+    },
+
+    selectedPackage(modulePackage) {
+      return (
+        JSON.stringify([...this.value].sort()) ===
+        JSON.stringify(modulePackage.modules.map((module) => module.id).sort())
+      )
+    },
+  },
 }
 </script>
 

@@ -4,16 +4,16 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminModelPaintsCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminModelPaint[] = []
+  records = []
 
-  params: AdminModelPaintParams | null = null
+  params = null
 
-  async findAll(params: AdminModelPaintParams): Promise<AdminModelPaint[]> {
+  async findAll(params) {
     this.params = params
 
     const response = await get('model-paints', {
-      q: params.filters,
       page: params?.page,
+      q: params.filters,
     })
 
     if (!response.error) {

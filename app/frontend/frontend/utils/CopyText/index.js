@@ -4,13 +4,13 @@ const copyText = function copyText(text, container) {
   return new Promise((resolve, reject) => {
     const fakeElement = document.createElement('button')
     const clipboard = new Clipboard(fakeElement, {
-      text() {
-        return text
-      },
       action() {
         return 'copy'
       },
       container: typeof container === 'object' ? container : document.body,
+      text() {
+        return text
+      },
     })
     clipboard.on('success', (e) => {
       clipboard.destroy()

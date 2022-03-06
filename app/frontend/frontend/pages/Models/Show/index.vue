@@ -186,7 +186,8 @@
       </div>
       <Loader :loading="loading" />
     </div>
-    <Paints :model="model" />
+
+    <Paints v-if="model" :model="model" />
 
     <hr v-if="modules.length" />
     <div class="row">
@@ -299,24 +300,23 @@ import { modelRouteGuard } from '@/frontend/utils/RouteGuards/Models'
 
 export default {
   name: 'ModelDetail',
-
   components: {
-    Loader,
-    LazyImage,
     AddToHangar,
-    Panel,
-    TeaserPanel,
+    BreadCrumbs,
     Btn,
     BtnDropdown,
     Hardpoints,
+    HoloViewer,
+    LazyImage,
+    Loader,
     ModelBaseMetrics,
     ModelCrewMetrics,
-    ModelSpeedMetrics,
     ModelPanel,
-    BreadCrumbs,
-    HoloViewer,
+    ModelSpeedMetrics,
     Paints,
+    Panel,
     ShareBtn,
+    TeaserPanel,
   },
 
   mixins: [MetaInfo],
@@ -325,28 +325,6 @@ export default {
 
   data() {
     return {
-      loading: false,
-
-      loadingVariants: false,
-
-      loadingLoaners: false,
-
-      loadingModules: false,
-
-      loadingUpgrades: false,
-
-      show3d: false,
-
-      variants: [],
-
-      loaners: [],
-
-      modules: [],
-
-      upgrades: [],
-
-      model: null,
-
       attributes: [
         'length',
         'beam',
@@ -358,6 +336,17 @@ export default {
         'scmSpeed',
         'afterburnerSpeed',
       ],
+      loading: false,
+      loadingLoaners: false,
+      loadingModules: false,
+      loadingUpgrades: false,
+      loadingVariants: false,
+      loaners: [],
+      model: null,
+      modules: [],
+      show3d: false,
+      upgrades: [],
+      variants: [],
     }
   },
 
@@ -366,20 +355,20 @@ export default {
     ...mapGetters('app', ['overlayVisible']),
     ...mapGetters('models', ['holoviewerVisible']),
 
-    storeImage() {
-      if (this.mobile) {
-        return this.model.storeImageMedium
+    crumbs() {
+      if (!this.model) {
+        return null
       }
 
-      return this.model.storeImageLarge
-    },
-
-    starship42Url() {
-      return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
-    },
-
-    starship42IframeUrl() {
-      return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
+      return [
+        {
+          label: this.$t('nav.models.index'),
+          to: {
+            hash: `#${this.model.slug}`,
+            name: 'models',
+          },
+        },
+      ]
     },
 
     metaTitle() {
@@ -388,29 +377,29 @@ export default {
       }
 
       return this.$t('title.model', {
-        name: this.model.name,
         manufacturer: this.model.manufacturer.name,
+        name: this.model.name,
       })
-    },
-
-    crumbs() {
-      if (!this.model) {
-        return null
-      }
-
-      return [
-        {
-          to: {
-            name: 'models',
-            hash: `#${this.model.slug}`,
-          },
-          label: this.$t('nav.models.index'),
-        },
-      ]
     },
 
     shareUrl() {
       return window.location.href
+    },
+
+    starship42IframeUrl() {
+      return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
+    },
+
+    starship42Url() {
+      return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
+    },
+
+    storeImage() {
+      if (this.mobile) {
+        return this.model.storeImageMedium
+      }
+
+      return this.model.storeImageLarge
     },
   },
 
@@ -424,8 +413,10 @@ export default {
   },
 
   methods: {
-    toggleHoloviewer() {
-      this.$store.dispatch('models/toggleHoloviewer')
+    async fetch() {
+      this.loading = true
+      this.model = await modelsCollection.findBySlug(this.$route.params.slug)
+      this.loading = false
     },
 
     fetchExtras() {
@@ -433,6 +424,17 @@ export default {
       this.fetchUpgrades()
       this.fetchVariants()
       this.fetchLoaners()
+    },
+
+    async fetchLoaners() {
+      this.loadingLoaners = true
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}/loaners`
+      )
+      this.loadingLoaners = false
+      if (!response.error) {
+        this.loaners = response.data
+      }
     },
 
     async fetchModules() {
@@ -468,21 +470,8 @@ export default {
       }
     },
 
-    async fetchLoaners() {
-      this.loadingLoaners = true
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}/loaners`
-      )
-      this.loadingLoaners = false
-      if (!response.error) {
-        this.loaners = response.data
-      }
-    },
-
-    async fetch() {
-      this.loading = true
-      this.model = await modelsCollection.findBySlug(this.$route.params.slug)
-      this.loading = false
+    toggleHoloviewer() {
+      this.$store.dispatch('models/toggleHoloviewer')
     },
   },
 }

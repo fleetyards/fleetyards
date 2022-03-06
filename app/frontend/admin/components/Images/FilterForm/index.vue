@@ -40,18 +40,18 @@ export default {
   name: 'AdminComponentsImagesFilterForm',
 
   components: {
-    FilterGroup,
     Btn,
+    FilterGroup,
   },
 
   mixins: [Filters],
 
   data() {
     return {
+      form: {},
       loading: false,
       modelIdEq: null,
       stationIdEq: null,
-      form: {},
     }
   },
 
@@ -68,6 +68,16 @@ export default {
         galleryIdEq: query.galleryIdEq,
         galleryTypeEq: query.galleryTypeEq,
       }
+    },
+
+    form: {
+      deep: true,
+      handler() {
+        if (!this.form.galleryIdEq && !this.form.galleryTypeEq) {
+          this.modelIdEq = null
+          this.stationIdEq = null
+        }
+      },
     },
 
     modelIdEq(value) {
@@ -90,16 +100,6 @@ export default {
         this.form.galleryIdEq = null
         this.form.galleryTypeEq = null
       }
-    },
-
-    form: {
-      deep: true,
-      handler() {
-        if (!this.form.galleryIdEq && !this.form.galleryTypeEq) {
-          this.modelIdEq = null
-          this.stationIdEq = null
-        }
-      },
     },
   },
 

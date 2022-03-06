@@ -14,22 +14,36 @@
   </span>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'FleetchartListItemImage',
 
-@Component({})
-export default class FleetchartListItemImage extends Vue {
-  @Prop() src!: string
+  props: {
+    label: {
+      type: String,
+      default: null,
+    },
 
-  @Prop() label!: string
+    length: {
+      type: Number,
+      default: null,
+    },
 
-  @Prop() length!: number
+    scale: {
+      type: Number,
+      default: null,
+    },
 
-  @Prop() scale!: number
+    src: {
+      type: String,
+      default: null,
+    },
+  },
 
-  get lengthMultiplicator() {
-    return (this.scale / 100) * 4
-  }
+  computed: {
+    lengthMultiplicator() {
+      return (this.scale / 100) * 4
+    },
+  },
 }
 </script>

@@ -26,8 +26,8 @@ export default {
   name: 'DownloadScreenshotBtn',
 
   components: {
-    SmallLoader,
     Btn,
+    SmallLoader,
   },
 
   props: {
@@ -36,14 +36,39 @@ export default {
       required: true,
     },
 
-    withLabel: {
-      type: Boolean,
-      default: true,
-    },
-
     filename: {
       type: String,
       default: 'fleetyards-screenshot',
+    },
+
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
+
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return (
+          ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+            value
+          ) !== -1
+        )
+      },
+    },
+
+    withLabel: {
+      type: Boolean,
+      default: true,
     },
   },
 
@@ -68,8 +93,8 @@ export default {
       html2canvas(element, {
         backgroundColor: null,
         useCORS: true,
-        windowWidth: element.parentNode.scrollWidth,
         windowHeight: element.parentNode.scrollHeight + 100,
+        windowWidth: element.parentNode.scrollWidth,
       })
         .then((canvas) => {
           element.classList.remove('fleetchart-download')

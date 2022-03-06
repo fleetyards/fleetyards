@@ -70,124 +70,153 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Watch, Prop } from 'vue-property-decorator'
-import { Action, Mutation, Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn'
-import Paginator from '@/frontend/core/components/Paginator'
-import Loader from '@/frontend/core/components/Loader'
-import EmptyBox from '@/frontend/core/components/EmptyBox'
+<script>
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Paginator from '@/frontend/core/components/Paginator/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
 import { scrollToAnchor } from '@/frontend/utils/scrolling'
 import { isFilterSelected } from '@/frontend/utils/Filters'
 
-@Component<FilteredList>({
+export default {
+  name: 'FilteredList',
+
   components: {
     Btn,
-    Paginator,
-    Loader,
     EmptyBox,
+    Loader,
+    Paginator,
   },
-})
-export default class FilteredList extends Vue {
-  loading = true
 
-  fullscreen = false
-
-  @Prop({ required: true }) collection!: BaseCollection
-
-  @Prop({ required: true }) name!: string
-
-  @Prop({ default: null }) recordListClass!: string
-
-  @Prop({
-    default() {
-      return {}
+  props: {
+    alwaysFilterVisible: {
+      type: Boolean,
+      default: false,
     },
-  })
-  params: RouteParams
 
-  @Prop({ default: 'findAll' }) collectionMethod: string
+    collection: {
+      required: true,
+      type: Object,
+    },
 
-  @Prop({ default: null }) routeQuery: RouteQuery
+    collectionMethod: {
+      default: 'findAll',
+      type: String,
+    },
 
-  @Prop({ default: null }) hash: string
+    hash: {
+      type: String,
+      default: null,
+    },
 
-  @Prop({ default: false }) paginated: boolean
+    hideEmptyBox: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: false }) alwaysFilterVisible: boolean
+    hideLoading: {
+      default: false,
+      type: Boolean,
+    },
 
-  @Prop({ default: false }) hideEmptyBox: boolean
+    name: {
+      required: true,
+      type: String,
+    },
 
-  @Prop({ default: false }) hideLoading: boolean
+    paginated: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: 'q' }) routeFilterName: string
+    params: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
 
-  @Getter('filtersVisible') filtersVisible
+    recordListClass: {
+      type: String,
+      default: null,
+    },
 
-  @Getter('mobile') mobile
+    routeFilterName: {
+      default: 'q',
+      type: String,
+    },
 
-  @Action('toggleFilterVisible') toggleFilterVisible
+    routeQuery: {
+      type: Object,
+      default: null,
+    },
+  },
 
-  @Mutation('setFiltersVisible') setFiltersVisible
+  data() {
+    return {
+      fullscreen: false,
 
-  @Mutation('setFilters') setFilters
-
-  get filters() {
-    return this.routeQuery[this.routeFilterName]
-  }
-
-  get search() {
-    return this.routeQuery.search
-  }
-
-  get hasFilterSlot() {
-    return !!this.$slots.filter
-  }
-
-  get page() {
-    return parseInt(this.routeQuery.page, 10) || 1
-  }
-
-  get filterVisible() {
-    return !!this.filtersVisible[this.name] && this.hasFilterSlot
-  }
-
-  get filterTooltip() {
-    if (this.filterVisible) {
-      return this.$t('actions.hideFilter')
+      loading: true,
     }
+  },
 
-    return this.$t('actions.showFilter')
-  }
+  computed: {
+    ...mapGetters(['mobile', 'filtersVisible']),
 
-  get isFilterSelected() {
-    return isFilterSelected(this.filters)
-  }
+    emptyBoxVisible() {
+      return !!(
+        !this.loading &&
+        !this.collection.records.length &&
+        (this.isFilterSelected || (this.paginated && this.page))
+      )
+    },
 
-  get emptyBoxVisible() {
-    return !!(
-      !this.loading &&
-      !this.collection.records.length &&
-      (this.isFilterSelected || (this.paginated && this.page))
-    )
-  }
+    filters() {
+      return this.routeQuery[this.routeFilterName]
+    },
 
-  @Watch('filters', { deep: true })
-  onFiltersChange() {
-    this.saveFilters()
-  }
+    filterTooltip() {
+      if (this.filterVisible) {
+        return this.$t('actions.hideFilter')
+      }
 
-  @Watch('routeQuery')
-  onPageChange() {
-    this.fetch()
-  }
+      return this.$t('actions.showFilter')
+    },
 
-  created() {
-    if (this.collection.records.length) {
-      this.collection.records = []
-    }
-  }
+    filterVisible() {
+      return !!this.filtersVisible[this.name] && this.hasFilterSlot
+    },
+
+    hasFilterSlot() {
+      return !!this.$slots.filter
+    },
+
+    isFilterSelected() {
+      return isFilterSelected(this.filters)
+    },
+
+    page() {
+      return parseInt(this.routeQuery.page, 10) || 1
+    },
+
+    search() {
+      return this.routeQuery.search
+    },
+  },
+
+  watch: {
+    filters: {
+      deep: true,
+      handler() {
+        this.saveFilters()
+      },
+    },
+
+    routeQuery() {
+      this.fetch()
+    },
+  },
 
   mounted() {
     this.fetch()
@@ -206,63 +235,75 @@ export default class FilteredList extends Vue {
     this.saveFilters()
 
     this.$comlink.$on('filteredListUpdate', this.fetch)
-  }
+  },
+
+  created() {
+    if (this.collection.records.length) {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.collection.records = []
+    }
+  },
 
   beforeDestroy() {
     this.$comlink.$off('filteredListUpdate')
-  }
+  },
 
-  saveFilters() {
-    if (this.isFilterSelected) {
-      this.setFilters({
-        [this.name]: { ...this.filters },
+  methods: {
+    ...mapActions(['toggleFilterVisible']),
+    ...mapMutations(['setFiltersVisible', 'setFilters']),
+
+    async fetch() {
+      this.loading = true
+
+      let params = {
+        filters: this.filters,
+        search: this.search,
+      }
+
+      if (this.paginated) {
+        params = {
+          ...params,
+          ...this.params,
+          page: this.page,
+        }
+      }
+
+      if (!this.collection[this.collectionMethod]) {
+        throw Error(`Method "${this.collectionMethod}" not found on Collection`)
+      }
+
+      await this.collection[this.collectionMethod](params)
+
+      this.$nextTick(() => {
+        scrollToAnchor(this.hash)
       })
 
-      return
-    }
+      setTimeout(() => {
+        this.loading = false
+      }, 300)
+    },
 
-    this.setFilters({
-      [this.name]: null,
-    })
-  }
+    saveFilters() {
+      if (this.isFilterSelected) {
+        this.setFilters({
+          [this.name]: { ...this.filters },
+        })
 
-  toggleFullscreen() {
-    this.fullscreen = !this.filterVisible
-  }
-
-  toggleFilter() {
-    this.toggleFilterVisible(this.name)
-  }
-
-  async fetch() {
-    this.loading = true
-
-    let params = {
-      search: this.search,
-      filters: this.filters,
-    }
-
-    if (this.paginated) {
-      params = {
-        ...params,
-        ...this.params,
-        page: this.page,
+        return
       }
-    }
 
-    if (!this.collection[this.collectionMethod]) {
-      throw Error(`Method "${this.collectionMethod}" not found on Collection`)
-    }
+      this.setFilters({
+        [this.name]: null,
+      })
+    },
 
-    await this.collection[this.collectionMethod](params)
+    toggleFilter() {
+      this.toggleFilterVisible(this.name)
+    },
 
-    this.$nextTick(() => {
-      scrollToAnchor(this.hash)
-    })
-
-    setTimeout(() => {
-      this.loading = false
-    }, 300)
-  }
+    toggleFullscreen() {
+      this.fullscreen = !this.filterVisible
+    },
+  },
 }
 </script>

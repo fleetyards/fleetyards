@@ -104,17 +104,17 @@ export default {
   name: 'SettingsAccount',
 
   components: {
-    SecurePage,
     Btn,
     FormInput,
+    SecurePage,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      form: null,
       deleting: false,
+      form: null,
       submitting: false,
     }
   },
@@ -136,33 +136,12 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        username: this.currentUser.username,
-        email: this.currentUser.email,
-      }
-    },
-
-    async updateAccount() {
-      this.submitting = true
-
-      const response = await userCollection.updateAccount(this.form)
-
-      this.submitting = false
-
-      if (!response.error) {
-        this.$comlink.$emit('user-update')
-
-        displaySuccess({
-          text: this.$t('messages.updateAccount.success'),
-        })
-      }
-    },
-
     async destroy() {
       this.deleting = true
       displayConfirm({
-        text: this.$t('messages.confirm.account.destroy'),
+        onClose: () => {
+          this.deleting = false
+        },
         onConfirm: async () => {
           const response = await userCollection.destroy()
 
@@ -182,10 +161,31 @@ export default {
             })
           }
         },
-        onClose: () => {
-          this.deleting = false
-        },
+        text: this.$t('messages.confirm.account.destroy'),
       })
+    },
+
+    setupForm() {
+      this.form = {
+        email: this.currentUser.email,
+        username: this.currentUser.username,
+      }
+    },
+
+    async updateAccount() {
+      this.submitting = true
+
+      const response = await userCollection.updateAccount(this.form)
+
+      this.submitting = false
+
+      if (!response.error) {
+        this.$comlink.$emit('user-update')
+
+        displaySuccess({
+          text: this.$t('messages.updateAccount.success'),
+        })
+      }
     },
   },
 }

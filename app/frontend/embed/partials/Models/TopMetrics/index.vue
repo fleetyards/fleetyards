@@ -30,20 +30,31 @@ export default {
 
   props: {
     model: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     padding: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
   },
 
   computed: {
-    isGroundVehicle() {
-      return this.model.classification === 'ground'
+    airSpeeds() {
+      let { scmSpeed, afterburnerSpeed } = this.model
+
+      if (scmSpeed && scmSpeed <= 0) {
+        scmSpeed = null
+      }
+
+      if (afterburnerSpeed && afterburnerSpeed <= 0) {
+        afterburnerSpeed = null
+      }
+
+      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
     },
+
     crew() {
       let { minCrew, maxCrew } = this.model
 
@@ -65,31 +76,6 @@ export default {
       )
     },
 
-    speeds() {
-      const speeds = []
-      if (this.groundSpeeds || this.isGroundVehicle) {
-        speeds.push(this.$toNumber(this.groundSpeeds, 'speed'))
-      }
-      if (!this.isGroundVehicle) {
-        speeds.push(this.$toNumber(this.airSpeeds, 'speed'))
-      }
-      return speeds.join('<br>')
-    },
-
-    airSpeeds() {
-      let { scmSpeed, afterburnerSpeed } = this.model
-
-      if (scmSpeed && scmSpeed <= 0) {
-        scmSpeed = null
-      }
-
-      if (afterburnerSpeed && afterburnerSpeed <= 0) {
-        afterburnerSpeed = null
-      }
-
-      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
-    },
-
     groundSpeeds() {
       let { groundSpeed, afterburnerGroundSpeed } = this.model
 
@@ -104,6 +90,21 @@ export default {
       return [groundSpeed, afterburnerGroundSpeed]
         .filter((item) => item)
         .join(' - ')
+    },
+
+    isGroundVehicle() {
+      return this.model.classification === 'ground'
+    },
+
+    speeds() {
+      const speeds = []
+      if (this.groundSpeeds || this.isGroundVehicle) {
+        speeds.push(this.$toNumber(this.groundSpeeds, 'speed'))
+      }
+      if (!this.isGroundVehicle) {
+        speeds.push(this.$toNumber(this.airSpeeds, 'speed'))
+      }
+      return speeds.join('<br>')
     },
   },
 }

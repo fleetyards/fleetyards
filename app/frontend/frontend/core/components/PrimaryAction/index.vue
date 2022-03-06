@@ -13,16 +13,25 @@
   </transition>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'PanelComponent',
 
-@Component
-export default class Panel extends Vue {
-  @Prop({ default: 'fal fa-plus' }) icon!: string
+  props: {
+    action: {
+      type: Function,
+      required: true,
+    },
 
-  @Prop({ required: true }) action
+    icon: {
+      type: String,
+      default: 'fal fa-plus',
+    },
 
-  @Prop({ default: null }) label!: string
+    label: {
+      type: String,
+      default: null,
+    },
+  },
 }
 </script>

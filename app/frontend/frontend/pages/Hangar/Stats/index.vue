@@ -151,11 +151,10 @@ import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 export default {
   name: 'HangarStats',
-
   components: {
+    BreadCrumbs,
     Chart,
     Panel,
-    BreadCrumbs,
   },
 
   mixins: [MetaInfo],
@@ -167,12 +166,12 @@ export default {
   },
 
   computed: {
-    totalCount() {
+    maxCrew() {
       if (!this.quickStats) {
-        return 0
+        return this.$toNumber(0, 'people')
       }
 
-      return this.quickStats.total
+      return this.$toNumber(this.quickStats.metrics.totalMaxCrew, 'people')
     },
 
     minCrew() {
@@ -183,20 +182,20 @@ export default {
       return this.$toNumber(this.quickStats.metrics.totalMinCrew, 'people')
     },
 
-    maxCrew() {
-      if (!this.quickStats) {
-        return this.$toNumber(0, 'people')
-      }
-
-      return this.$toNumber(this.quickStats.metrics.totalMaxCrew, 'people')
-    },
-
     totalCargo() {
       if (!this.quickStats) {
         return this.$toNumber(0, 'cargo')
       }
 
       return this.$toNumber(this.quickStats.metrics.totalCargo, 'cargo')
+    },
+
+    totalCount() {
+      if (!this.quickStats) {
+        return 0
+      }
+
+      return this.quickStats.total
     },
   },
 
@@ -205,24 +204,10 @@ export default {
   },
 
   methods: {
-    async loadQuickStats() {
-      const response = await this.$api.get('vehicles/quick-stats')
-      if (!response.error) {
-        this.quickStats = response.data
-      }
-    },
     async loadModelsByClassification() {
       const response = await this.$api.get(
         'vehicles/stats/models-by-classification'
       )
-      if (!response.error) {
-        return response.data
-      }
-      return []
-    },
-
-    async loadModelsBySize() {
-      const response = await this.$api.get('vehicles/stats/models-by-size')
       if (!response.error) {
         return response.data
       }
@@ -247,6 +232,21 @@ export default {
         return response.data
       }
       return []
+    },
+
+    async loadModelsBySize() {
+      const response = await this.$api.get('vehicles/stats/models-by-size')
+      if (!response.error) {
+        return response.data
+      }
+      return []
+    },
+
+    async loadQuickStats() {
+      const response = await this.$api.get('vehicles/quick-stats')
+      if (!response.error) {
+        this.quickStats = response.data
+      }
     },
   },
 }

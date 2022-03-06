@@ -105,33 +105,41 @@ import { scrollToAnchor } from '@/frontend/utils/scrolling'
 
 export default {
   name: 'StarsystemDetail',
-
   components: {
+    BreadCrumbs,
     Loader,
-    PlanetList,
     MoonPanel,
+    Panel,
+    PlanetList,
     StarsystemBaseMetrics,
     StarsystemLevelsMetrics,
-    Panel,
-    BreadCrumbs,
   },
 
   mixins: [MetaInfo, Pagination],
 
   data() {
     return {
+      celestialObjects: [],
       loading: false,
       starsystem: null,
-      celestialObjects: [],
     }
   },
 
   computed: {
-    starsystemName() {
-      if (this.celestialObjects.length === 0) {
-        return ''
+    crumbs() {
+      if (!this.starsystem) {
+        return null
       }
-      return this.celestialObjects[0].starsystem.name
+
+      return [
+        {
+          label: this.$t('nav.starsystems'),
+          to: {
+            hash: `#${this.starsystem.slug}`,
+            name: 'starsystems',
+          },
+        },
+      ]
     },
 
     metaTitle() {
@@ -141,20 +149,11 @@ export default {
       return this.$t('title.starsystem', { starsystem: this.starsystem.name })
     },
 
-    crumbs() {
-      if (!this.starsystem) {
-        return null
+    starsystemName() {
+      if (this.celestialObjects.length === 0) {
+        return ''
       }
-
-      return [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
-        },
-      ]
+      return this.celestialObjects[0].starsystem.name
     },
   },
 
@@ -182,12 +181,12 @@ export default {
     async fetchCelestialObjects() {
       this.loading = true
       const response = await this.$api.get('celestial-objects', {
+        page: this.$route.query.page,
         q: {
           ...this.$route.query.q,
-          starsystem: [this.$route.params.slug],
           main: true,
+          starsystem: [this.$route.params.slug],
         },
-        page: this.$route.query.page,
       })
       this.loading = false
       if (!response.error) {

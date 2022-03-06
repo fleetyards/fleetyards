@@ -43,30 +43,32 @@
 </template>
 
 <script>
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'ModelClassLabels',
 
   components: {
-    BtnDropdown,
     Btn,
+    BtnDropdown,
   },
 
   props: {
     countData: {
-      type: Array,
       required: true,
+      type: Array,
     },
+
     filterKey: {
-      type: String,
       default: '',
+      type: String,
     },
+
     label: {
-      type: String,
       default: '',
+      type: String,
     },
   },
 
@@ -77,6 +79,7 @@ export default {
       return this.label || this.$t('labels.fleet.size')
     },
   },
+
   methods: {
     filter(filter) {
       if (!this.filterKey) {
@@ -103,6 +106,7 @@ export default {
         },
       })
     },
+
     isActive(classification) {
       if (!this.$route.query.q) {
         return false

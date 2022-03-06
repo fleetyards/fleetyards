@@ -163,27 +163,28 @@ export default {
   name: 'HomePage',
 
   components: {
-    Loader,
-    Panel,
-    TeaserPanel,
     Btn,
     FormInput,
-    Support,
     LazyImage,
+    Loader,
+    Panel,
+    Support,
+    TeaserPanel,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      modelsCollection: modelsCollection,
       imagesCollection: imagesCollection,
-      modelsLoading: false,
       imagesLoading: false,
+      modelsCollection: modelsCollection,
+      modelsLoading: false,
       searchQuery: null,
       showScrollDown: false,
     }
   },
+
   computed: {
     ...mapGetters(['mobile']),
   },
@@ -198,6 +199,22 @@ export default {
   },
 
   methods: {
+    async fetchImages() {
+      this.imagesLoading = true
+      await this.imagesCollection.random()
+      this.imagesLoading = false
+    },
+
+    async fetchModels() {
+      this.modelsLoading = true
+      await this.modelsCollection.latest()
+      this.modelsLoading = false
+    },
+
+    scrollDown() {
+      VueScrollTo.scrollTo('.home-ships')
+    },
+
     search() {
       if (!this.searchQuery) {
         return
@@ -213,22 +230,6 @@ export default {
           },
         })
         .catch(() => {})
-    },
-
-    async fetchModels() {
-      this.modelsLoading = true
-      await this.modelsCollection.latest()
-      this.modelsLoading = false
-    },
-
-    async fetchImages() {
-      this.imagesLoading = true
-      await this.imagesCollection.random()
-      this.imagesLoading = false
-    },
-
-    scrollDown() {
-      VueScrollTo.scrollTo('.home-ships')
     },
   },
 }

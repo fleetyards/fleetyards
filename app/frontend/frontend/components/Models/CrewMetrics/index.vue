@@ -24,12 +24,15 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'ModelCrewMetrics',
 
-@Component<ModelCrewMetrics>({})
-export default class ModelCrewMetrics extends Vue {
-  @Prop({ required: true }) model: Model
+  props: {
+    model: {
+      required: true,
+      type: Object,
+    },
+  },
 }
 </script>

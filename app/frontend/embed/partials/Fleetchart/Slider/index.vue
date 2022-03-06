@@ -19,7 +19,6 @@ import VueSlider from 'vue-slider-component'
 
 export default {
   name: 'SliderComponent',
-
   components: {
     VueSlider,
   },
@@ -48,8 +47,8 @@ export default {
   },
 
   methods: {
-    updateScale(value) {
-      this.$emit('change', value)
+    label(value) {
+      return `${value} %`
     },
 
     mark(value) {
@@ -61,8 +60,8 @@ export default {
       return false
     },
 
-    label(value) {
-      return `${value} %`
+    updateScale(value) {
+      this.$emit('change', value)
     },
   },
 }

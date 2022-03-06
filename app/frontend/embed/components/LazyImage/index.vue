@@ -16,35 +16,28 @@ export default {
   name: 'LazyImage',
 
   props: {
-    src: {
-      type: String,
-      required: true,
-    },
     alt: {
-      type: String,
       default: 'image',
-    },
-    href: {
       type: String,
-      default: null,
     },
-    to: {
-      type: Object,
+
+    href: {
       default: null,
+      type: String,
+    },
+
+    src: {
+      required: true,
+      type: String,
+    },
+
+    to: {
+      default: null,
+      type: Object,
     },
   },
 
   computed: {
-    componentType() {
-      if (this.to) {
-        return 'router-link'
-      }
-      if (this.href) {
-        return 'a'
-      }
-      return 'div'
-    },
-
     componentArgs() {
       if (this.to) {
         return {
@@ -59,6 +52,16 @@ export default {
       }
 
       return {}
+    },
+
+    componentType() {
+      if (this.to) {
+        return 'router-link'
+      }
+      if (this.href) {
+        return 'a'
+      }
+      return 'div'
     },
   },
 }

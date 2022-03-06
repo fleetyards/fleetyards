@@ -195,162 +195,180 @@
   </FilteredTable>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import FilteredTable, {
-  FilteredTableColumn,
-} from '@/frontend/core/components/FilteredTable'
-import Btn from '@/frontend/core/components/Btn'
-import BtnGroup from '@/frontend/core/components/BtnGroup'
+<script>
+import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import { displayConfirm } from '@/frontend/lib/Noty'
-import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu'
-import HangarGroups from '@/frontend/components/Vehicles/HangarGroups'
+import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu/index.vue'
+import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
 
-@Component<FilteredGrid>({
+export default {
+  name: 'FilteredGrid',
   components: {
-    FilteredTable,
-    VehicleContextMenu,
-    HangarGroups,
     Btn,
     BtnGroup,
+    FilteredTable,
+    HangarGroups,
+    VehicleContextMenu,
   },
-})
-export default class FilteredGrid extends Vue {
-  @Prop({ required: true }) vehicles!: Vehicle[]
 
-  @Prop({ required: true }) primaryKey!: string
+  props: {
+    editable: {
+      type: Boolean,
+      default: false,
+    },
 
-  @Prop({ default: false }) editable!: boolean
+    primaryKey: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({ default: false }) slim!: boolean
+    slim: {
+      type: Boolean,
+      default: false,
+    },
 
-  selected: string[] = []
+    vehicles: {
+      type: Array,
+      required: true,
+    },
+  },
 
-  deleting = false
+  data() {
+    return {
+      deleting: false,
+      selected: [],
+      updating: false,
+    }
+  },
 
-  updating = false
-
-  get tableColumns(): FilteredTableColumn[] {
-    return [
-      {
-        name: 'store_image',
-        class: `store-image wide ${this.slim ? 'small' : ''}`,
-        type: 'store-image',
-      },
-      {
-        name: 'name',
-        class: 'vehicle-name name',
-        flexGrow: 1,
-      },
-      {
-        name: 'metrics',
-        class: 'vehicle-metrics',
-      },
-      {
-        name: 'states',
-        class: 'vehicle-states',
-      },
-      {
-        name: 'groups',
-        class: 'vehicle-groups',
-        label: this.$t('labels.vehicle.hangarGroups'),
-      },
-      {
-        name: 'actions',
-        class: 'actions',
-        label: this.$t('labels.actions'),
-      },
-    ]
-  }
-
-  mounted() {
-    this.$comlink.$on('vehicles-delete-all', this.resetSelected)
-  }
+  computed: {
+    tableColumns() {
+      return [
+        {
+          class: `store-image wide ${this.slim ? 'small' : ''}`,
+          name: 'store_image',
+          type: 'store-image',
+        },
+        {
+          class: 'vehicle-name name',
+          flexGrow: 1,
+          name: 'name',
+        },
+        {
+          class: 'vehicle-metrics',
+          name: 'metrics',
+        },
+        {
+          class: 'vehicle-states',
+          name: 'states',
+        },
+        {
+          class: 'vehicle-groups',
+          label: this.$t('labels.vehicle.hangarGroups'),
+          name: 'groups',
+        },
+        {
+          class: 'actions',
+          label: this.$t('labels.actions'),
+          name: 'actions',
+        },
+      ]
+    },
+  },
 
   beforeDestroy() {
     this.$comlink.$off('vehicles-delete-all')
-  }
+  },
 
-  hasAddons(vehicle) {
-    return vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length
-  }
+  mounted() {
+    this.$comlink.$on('vehicles-delete-all', this.resetSelected)
+  },
 
-  upgradable(vehicle) {
-    return (
-      (this.editable || this.hasAddons(vehicle)) &&
-      (vehicle.model.hasModules || vehicle.model.hasUpgrades)
-    )
-  }
+  methods: {
+    async destroyBulk() {
+      this.deleting = true
 
-  openBulkGroupEditModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/BulkGroupModal'),
-      props: {
-        vehicleIds: this.selected,
-      },
-    })
-  }
+      displayConfirm({
+        onClose: () => {
+          this.deleting = false
+        },
+        onConfirm: async () => {
+          await vehiclesCollection.destroyBulk(this.selected)
 
-  openEditModal(vehicle) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/Modal'),
-      props: {
-        vehicle,
-      },
-    })
-  }
+          this.resetSelected()
 
-  async markAsPurchasedBulk() {
-    this.updating = true
+          this.deleting = false
+        },
+        text: this.$t('messages.confirm.hangar.destroySelected'),
+      })
+    },
 
-    await vehiclesCollection.markAsPurchasedBulk(this.selected)
+    hasAddons(vehicle) {
+      return vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length
+    },
 
-    this.updating = false
-  }
+    async hideFromPublicHangar() {
+      this.updating = true
 
-  async hideFromPublicHangar() {
-    this.updating = true
+      await vehiclesCollection.hideFromPublicHangar(this.selected)
 
-    await vehiclesCollection.hideFromPublicHangar(this.selected)
+      this.updating = false
+    },
 
-    this.updating = false
-  }
+    async markAsPurchasedBulk() {
+      this.updating = true
 
-  async showOnPublicHangar() {
-    this.updating = true
+      await vehiclesCollection.markAsPurchasedBulk(this.selected)
 
-    await vehiclesCollection.showOnPublicHangar(this.selected)
+      this.updating = false
+    },
 
-    this.updating = false
-  }
+    onSelectedChange(value) {
+      this.selected = value
+    },
 
-  onSelectedChange(value) {
-    this.selected = value
-  }
+    openBulkGroupEditModal() {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/BulkGroupModal/index.vue'),
+        props: {
+          vehicleIds: this.selected,
+        },
+      })
+    },
 
-  async destroyBulk() {
-    this.deleting = true
+    openEditModal(vehicle) {
+      this.$comlink.$emit('open-modal', {
+        component: () =>
+          import('@/frontend/components/Vehicles/Modal/index.vue'),
+        props: {
+          vehicle,
+        },
+      })
+    },
 
-    displayConfirm({
-      text: this.$t('messages.confirm.hangar.destroySelected'),
-      onConfirm: async () => {
-        await vehiclesCollection.destroyBulk(this.selected)
+    resetSelected() {
+      this.selected = []
+    },
 
-        this.resetSelected()
+    async showOnPublicHangar() {
+      this.updating = true
 
-        this.deleting = false
-      },
-      onClose: () => {
-        this.deleting = false
-      },
-    })
-  }
+      await vehiclesCollection.showOnPublicHangar(this.selected)
 
-  resetSelected() {
-    this.selected = []
-  }
+      this.updating = false
+    },
+
+    upgradable(vehicle) {
+      return (
+        (this.editable || this.hasAddons(vehicle)) &&
+        (vehicle.model.hasModules || vehicle.model.hasUpgrades)
+      )
+    },
+  },
 }
 </script>
 

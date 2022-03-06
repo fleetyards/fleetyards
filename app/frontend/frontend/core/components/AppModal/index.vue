@@ -25,12 +25,12 @@ export default {
   data() {
     return {
       component: null,
-      props: null,
-      wide: false,
       fixed: false,
-      isShow: false,
       isOpen: false,
+      isShow: false,
+      props: null,
       title: null,
+      wide: false,
     }
   },
 
@@ -46,6 +46,37 @@ export default {
 
   methods: {
     ...mapActions('app', ['showOverlay', 'hideOverlay']),
+
+    close(force = false) {
+      if (this.fixed && !force) {
+        return
+      }
+
+      if (this.$refs.modelComponent?.dirty) {
+        displayConfirm({
+          onConfirm: () => {
+            this.internalClose()
+          },
+          text: this.$t('messages.confirm.modal.dirty'),
+        })
+      } else {
+        this.internalClose()
+      }
+    },
+
+    internalClose() {
+      this.isOpen = false
+      this.hideOverlay()
+
+      this.$nextTick(function onClose() {
+        setTimeout(() => {
+          this.isShow = false
+          this.component = null
+          this.props = null
+          this.$emit('modal-closed')
+        }, 300)
+      })
+    },
 
     open(options) {
       this.props = options.props
@@ -69,37 +100,6 @@ export default {
 
           this.$emit('modal-opened')
         }, 100)
-      })
-    },
-
-    close(force = false) {
-      if (this.fixed && !force) {
-        return
-      }
-
-      if (this.$refs.modelComponent?.dirty) {
-        displayConfirm({
-          text: this.$t('messages.confirm.modal.dirty'),
-          onConfirm: () => {
-            this.internalClose()
-          },
-        })
-      } else {
-        this.internalClose()
-      }
-    },
-
-    internalClose() {
-      this.isOpen = false
-      this.hideOverlay()
-
-      this.$nextTick(function onClose() {
-        setTimeout(() => {
-          this.isShow = false
-          this.component = null
-          this.props = null
-          this.$emit('modal-closed')
-        }, 300)
       })
     },
   },

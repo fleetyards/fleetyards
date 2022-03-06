@@ -33,11 +33,10 @@ import { displayAlert } from '@/frontend/lib/Noty'
 
 export default {
   name: 'TwoFactorBackupCodes',
-
   components: {
-    SecurePage,
-    Btn,
     BackupCodesPanel,
+    Btn,
+    SecurePage,
   },
 
   mixins: [MetaInfo],
@@ -46,8 +45,8 @@ export default {
 
   data() {
     return {
-      submitting: false,
       backupCodes: null,
+      submitting: false,
     }
   },
 
@@ -55,12 +54,12 @@ export default {
     ...mapGetters('session', ['currentUser']),
   },
 
-  mounted() {
-    this.$comlink.$on('access-confirmed', this.generateBackupCodes)
-  },
-
   beforeDestroy() {
     this.$comlink.$off('access-confirmed')
+  },
+
+  mounted() {
+    this.$comlink.$on('access-confirmed', this.generateBackupCodes)
   },
 
   methods: {

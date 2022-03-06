@@ -14,16 +14,16 @@ import shoppingCart from '@/frontend/lib/Store/modules/shoppingCart'
 
 export default () => ({
   app: app(),
-  session: session(),
   cookies: cookies(),
   fleet: fleet(),
-  publicFleet: publicFleet(),
   hangar: hangar(),
-  publicHangar: publicHangar(),
   models: models(),
-  stations: stations(),
-  shops: shops(),
-  shop: shop(),
+  publicFleet: publicFleet(),
+  publicHangar: publicHangar(),
   search: search(),
+  session: session(),
+  shop: shop(),
   shoppingCart: shoppingCart(),
+  shops: shops(),
+  stations: stations(),
 })

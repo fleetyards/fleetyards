@@ -101,25 +101,89 @@
 
 <script>
 import { BCollapse } from 'bootstrap-vue'
-import SmallLoader from '@/frontend/core/components/SmallLoader'
-import FormInput from '@/frontend/core/components/Form/FormInput'
+import SmallLoader from '@/frontend/core/components/SmallLoader/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import debounce from 'lodash.debounce'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: 'FilterGroup',
-
   components: {
     BCollapse,
-    SmallLoader,
-    InfiniteLoading,
     FormInput,
+    InfiniteLoading,
+    SmallLoader,
   },
 
   props: {
+    bigIcon: {
+      type: Boolean,
+      default: false,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+
+    error: {
+      type: String,
+      default: null,
+    },
+
+    fetch: {
+      type: Function,
+      default: null,
+    },
+
+    fetchPath: {
+      type: String,
+      default: null,
+    },
+
+    hideLabelOnEmpty: {
+      type: Boolean,
+      default: false,
+    },
+
+    iconAttr: {
+      type: String,
+      default: 'icon',
+    },
+
+    label: {
+      type: String,
+      default: null,
+    },
+
+    labelAttr: {
+      type: String,
+      default: 'name',
+    },
+
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+
     name: {
       required: true,
       type: String,
+    },
+
+    newSearchQuery: {
+      type: Boolean,
+      default: false,
+    },
+
+    noLabel: {
+      type: Boolean,
+      default: false,
+    },
+
+    nullable: {
+      type: Boolean,
+      default: true,
     },
 
     options: {
@@ -127,6 +191,31 @@ export default {
         return []
       },
       type: Array,
+    },
+
+    paginated: {
+      type: Boolean,
+      default: false,
+    },
+
+    returnObject: {
+      type: Boolean,
+      default: false,
+    },
+
+    searchable: {
+      type: Boolean,
+      default: false,
+    },
+
+    searchLabel: {
+      type: String,
+      default: null,
+    },
+
+    translationKey: {
+      type: String,
+      default: 'filterGroup',
     },
 
     value: {
@@ -144,112 +233,70 @@ export default {
       type: String,
       default: 'value',
     },
-
-    labelAttr: {
-      type: String,
-      default: 'name',
-    },
-
-    iconAttr: {
-      type: String,
-      default: 'icon',
-    },
-
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
-
-    disabeld: {
-      type: Boolean,
-      default: false,
-    },
-
-    searchable: {
-      type: Boolean,
-      default: false,
-    },
-
-    error: {
-      type: String,
-      default: null,
-    },
-
-    returnObject: {
-      type: Boolean,
-      default: false,
-    },
-
-    nullable: {
-      type: Boolean,
-      default: true,
-    },
-
-    paginated: {
-      type: Boolean,
-      default: false,
-    },
-
-    hideLabelOnEmpty: {
-      type: Boolean,
-      default: false,
-    },
-
-    label: {
-      type: String,
-      default: null,
-    },
-
-    translationKey: {
-      type: String,
-      default: 'filterGroup',
-    },
-
-    noLabel: {
-      type: Boolean,
-      default: false,
-    },
-
-    bigIcon: {
-      type: Boolean,
-      default: false,
-    },
-
-    fetch: {
-      type: Function,
-      default: null,
-    },
-
-    fetchPath: {
-      type: String,
-      default: null,
-    },
-
-    searchLabel: {
-      type: String,
-      default: null,
-    },
-
-    newSearchQuery: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   data() {
     return {
-      visible: false,
-      search: null,
-      page: 1,
-      loading: false,
       fetchedOptions: [],
-      selectedId: null,
       id: null,
+      loading: false,
       onSearch: debounce(this.debouncedOnSearch, 500),
+      page: 1,
+      search: null,
+      selectedId: null,
+      visible: false,
     }
   },
 
   computed: {
+    availableOptions() {
+      if (this.shouldFetch) {
+        if (this.paginated) {
+          return this.sort(this.fetchedOptions)
+        }
+        return this.fetchedOptions
+      }
+      if (this.paginated) {
+        return this.sort(this.options)
+      }
+      return this.options
+    },
+
+    cssClasses() {
+      return {
+        'has-error has-feedback': this.error,
+      }
+    },
+
+    filteredOptions() {
+      if (this.search) {
+        return this.availableOptions.filter((item) =>
+          item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase())
+        )
+      }
+      return this.availableOptions
+    },
+
+    groupID() {
+      return `${this.name}-${this._uid.toString()}`
+    },
+
+    innerLabel() {
+      if (this.label) {
+        return this.label
+      }
+
+      if (this.translationKey && this.translationKey !== 'filterGroup') {
+        return this.$t(`labels.${this.translationKey}.label`)
+      }
+
+      return this.$t(`labels.${this.id}`)
+    },
+
+    labelVisible() {
+      return !this.hideLabelOnEmpty || this.selectedOptions.length > 0
+    },
+
     prompt() {
       if (this.multiple) {
         return this.label
@@ -266,43 +313,6 @@ export default {
       return this.$t(`labels.${this.translationKey}.prompt`)
     },
 
-    labelVisible() {
-      return !this.hideLabelOnEmpty || this.selectedOptions.length > 0
-    },
-
-    innerLabel() {
-      if (this.label) {
-        return this.label
-      }
-
-      if (this.translationKey && this.translationKey !== 'filterGroup') {
-        return this.$t(`labels.${this.translationKey}.label`)
-      }
-
-      return this.$t(`labels.${this.id}`)
-    },
-
-    shouldFetch() {
-      return this.fetch || this.fetchPath
-    },
-
-    groupID() {
-      return `${this.name}-${this._uid.toString()}`
-    },
-
-    availableOptions() {
-      if (this.shouldFetch) {
-        if (this.paginated) {
-          return this.sort(this.fetchedOptions)
-        }
-        return this.fetchedOptions
-      }
-      if (this.paginated) {
-        return this.sort(this.options)
-      }
-      return this.options
-    },
-
     selectedOptions() {
       if (this.multiple) {
         return this.availableOptions.filter(
@@ -315,20 +325,17 @@ export default {
       return selectedOption ? [selectedOption] : []
     },
 
-    filteredOptions() {
-      if (this.search) {
-        return this.availableOptions.filter((item) =>
-          item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase())
-        )
-      }
-      return this.availableOptions
+    shouldFetch() {
+      return this.fetch || this.fetchPath
     },
+  },
 
-    cssClasses() {
-      return {
-        'has-error has-feedback': this.error,
-      }
-    },
+  created() {
+    document.addEventListener('click', this.documentClick)
+  },
+
+  destroyed() {
+    document.removeEventListener('click', this.documentClick)
   },
 
   mounted() {
@@ -340,58 +347,17 @@ export default {
     }
   },
 
-  created() {
-    document.addEventListener('click', this.documentClick)
-  },
-
-  destroyed() {
-    document.removeEventListener('click', this.documentClick)
-  },
-
   methods: {
-    documentClick(event) {
-      const element = this.$refs.filterGroup
-      const { target } = event
-
-      if (element !== target && !element.contains(target)) {
-        this.visible = false
-      }
-    },
-
-    debouncedOnSearch() {
-      if (this.paginated && this.search) {
-        this.page = 1
-        this.fetchOptions()
-      }
-    },
-
-    internalFetch(args) {
-      if (this.fetch) {
-        return this.fetch(args)
-      }
-
-      let query = this.buildQuery(args)
-      if (this.newSearchQuery) {
-        query = this.buildNewQuery(args)
-      }
-
-      return this.$api.get(this.fetchPath, query)
-    },
-
-    buildQuery(args) {
-      const query = {
-        q: {},
-      }
-
-      if (args.search && this.searchable) {
-        query.q.nameCont = args.search
-      } else if (args.missingValue && this.paginated) {
-        query.q.nameIn = args.missingValue
-      } else if (args.page && this.paginated) {
-        query.page = args.page
-      }
-
-      return query
+    addOptions(newOptions) {
+      newOptions.forEach((item) => {
+        if (
+          !this.availableOptions.find(
+            (option) => option[this.valueAttr] === item[this.valueAttr]
+          )
+        ) {
+          this.fetchedOptions.push(item)
+        }
+      })
     },
 
     buildNewQuery(args) {
@@ -410,27 +376,39 @@ export default {
       return query
     },
 
-    async fetchOptions() {
-      if (!this.shouldFetch) {
-        return
+    buildQuery(args) {
+      const query = {
+        q: {},
       }
 
-      this.loading = true
-
-      const response = await this.internalFetch({
-        page: this.page,
-        search: this.search,
-      })
-
-      this.loading = false
-
-      if (this.$refs.infiniteLoading) {
-        this.$refs.infiniteLoading.$emit('infinite-loading-reset')
+      if (args.search && this.searchable) {
+        query.q.nameCont = args.search
+      } else if (args.missingValue && this.paginated) {
+        query.q.nameIn = args.missingValue
+      } else if (args.page && this.paginated) {
+        query.page = args.page
       }
 
-      if (!response.error) {
-        this.addOptions(response.data)
-        this.fetchMissingOption()
+      return query
+    },
+
+    clearSearch() {
+      this.search = null
+    },
+
+    debouncedOnSearch() {
+      if (this.paginated && this.search) {
+        this.page = 1
+        this.fetchOptions()
+      }
+    },
+
+    documentClick(event) {
+      const element = this.$refs.filterGroup
+      const { target } = event
+
+      if (element !== target && !element.contains(target)) {
+        this.visible = false
       }
     },
 
@@ -470,41 +448,51 @@ export default {
       }
     },
 
-    sort(options) {
-      const sortedOptions = JSON.parse(JSON.stringify(options))
-      return sortedOptions.sort((a, b) => {
-        if (a[this.labelAttr] < b[this.labelAttr]) {
-          return -1
-        }
-        if (a[this.labelAttr] > b[this.labelAttr]) {
-          return 1
-        }
-        return 0
-      })
-    },
-
-    addOptions(newOptions) {
-      newOptions.forEach((item) => {
-        if (
-          !this.availableOptions.find(
-            (option) => option[this.valueAttr] === item[this.valueAttr]
-          )
-        ) {
-          this.fetchedOptions.push(item)
-        }
-      })
-    },
-
-    clearSearch() {
-      this.search = null
-    },
-
-    selected(option) {
-      if (this.multiple) {
-        return this.value && this.value.includes(option)
+    async fetchOptions() {
+      if (!this.shouldFetch) {
+        return
       }
 
-      return this.value === option
+      this.loading = true
+
+      const response = await this.internalFetch({
+        page: this.page,
+        search: this.search,
+      })
+
+      this.loading = false
+
+      if (this.$refs.infiniteLoading) {
+        this.$refs.infiniteLoading.$emit('infinite-loading-reset')
+      }
+
+      if (!response.error) {
+        this.addOptions(response.data)
+        this.fetchMissingOption()
+      }
+    },
+
+    focusSearch() {
+      if (this.searchable && this.visible) {
+        this.$nextTick(() => {
+          if (this.$refs.searchInput) {
+            this.$refs.searchInput.setFocus()
+          }
+        })
+      }
+    },
+
+    internalFetch(args) {
+      if (this.fetch) {
+        return this.fetch(args)
+      }
+
+      let query = this.buildQuery(args)
+      if (this.newSearchQuery) {
+        query = this.buildNewQuery(args)
+      }
+
+      return this.$api.get(this.fetchPath, query)
     },
 
     select(option) {
@@ -530,11 +518,25 @@ export default {
       }
     },
 
-    unselect(option) {
-      this.$emit(
-        'input',
-        this.value.filter((item) => item !== option)
-      )
+    selected(option) {
+      if (this.multiple) {
+        return this.value && this.value.includes(option)
+      }
+
+      return this.value === option
+    },
+
+    sort(options) {
+      const sortedOptions = JSON.parse(JSON.stringify(options))
+      return sortedOptions.sort((a, b) => {
+        if (a[this.labelAttr] < b[this.labelAttr]) {
+          return -1
+        }
+        if (a[this.labelAttr] > b[this.labelAttr]) {
+          return 1
+        }
+        return 0
+      })
     },
 
     toggle() {
@@ -546,14 +548,11 @@ export default {
       this.focusSearch()
     },
 
-    focusSearch() {
-      if (this.searchable && this.visible) {
-        this.$nextTick(() => {
-          if (this.$refs.searchInput) {
-            this.$refs.searchInput.setFocus()
-          }
-        })
-      }
+    unselect(option) {
+      this.$emit(
+        'input',
+        this.value.filter((item) => item !== option)
+      )
     },
   },
 }

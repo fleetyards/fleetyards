@@ -17,24 +17,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
 import { groupBy } from '@/frontend/lib/Helpers'
-import HardpointItem from '../Item'
-import HardpointLoadout from '../Loadout'
+import HardpointItem from '../Item/index.vue'
+import HardpointLoadout from '../Loadout/index.vue'
 
-@Component<HardpointGroup>({
+export default {
+  name: 'HardpointGroup',
+
   components: {
     HardpointItem,
     HardpointLoadout,
   },
-})
-export default class HardpointGroup extends Vue {
-  @Prop({ required: true }) hardpoints: Hardpoint[]
 
-  groupByCategory(hardpoints) {
-    return groupBy(hardpoints, 'category')
-  }
+  props: {
+    hardpoints: {
+      required: true,
+      type: Array,
+    },
+  },
+
+  methods: {
+    groupByCategory(hardpoints) {
+      return groupBy(hardpoints, 'category')
+    },
+  },
 }
 </script>

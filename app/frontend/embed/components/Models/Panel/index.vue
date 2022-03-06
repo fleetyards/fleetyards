@@ -56,27 +56,27 @@
 </template>
 
 <script>
-import Panel from '@/embed/components/Panel'
-import PanelDetails from '@/embed/components/Panel/PanelDetails'
-import ModelTopMetrics from '@/embed/partials/Models/TopMetrics'
-import ModelBaseMetrics from '@/embed/partials/Models/BaseMetrics'
-import LazyImage from '@/embed/components/LazyImage'
+import Panel from '@/embed/components/Panel/index.vue'
+import PanelDetails from '@/embed/components/Panel/PanelDetails/index.vue'
+import ModelTopMetrics from '@/embed/partials/Models/TopMetrics/index.vue'
+import ModelBaseMetrics from '@/embed/partials/Models/BaseMetrics/index.vue'
+import LazyImage from '@/embed/components/LazyImage/index.vue'
 
 export default {
   name: 'ModelsPanel',
 
   components: {
+    LazyImage,
+    ModelBaseMetrics,
+    ModelTopMetrics,
     Panel,
     PanelDetails,
-    ModelTopMetrics,
-    ModelBaseMetrics,
-    LazyImage,
   },
 
   props: {
-    model: {
-      type: Object,
-      required: true,
+    count: {
+      default: null,
+      type: Number,
     },
 
     details: {
@@ -84,26 +84,26 @@ export default {
       default: false,
     },
 
-    count: {
-      type: Number,
-      default: null,
+    model: {
+      type: Object,
+      required: true,
     },
   },
 
   computed: {
-    uuid() {
-      return this._uid
+    countLabel() {
+      if (!this.count) {
+        return ''
+      }
+      return `${this.count}x `
     },
 
     url() {
       return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
     },
 
-    countLabel() {
-      if (!this.count) {
-        return ''
-      }
-      return `${this.count}x `
+    uuid() {
+      return this._uid
     },
   },
 }

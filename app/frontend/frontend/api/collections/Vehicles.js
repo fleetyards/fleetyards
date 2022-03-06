@@ -30,9 +30,9 @@ export class VehiclesCollection extends BaseCollection {
     this.params = params
 
     const response = await get('vehicles', {
-      q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
+      q: params?.filters,
     })
 
     if (!response.error) {
@@ -112,8 +112,8 @@ export class VehiclesCollection extends BaseCollection {
 
   async markAsPurchasedBulk(ids) {
     const response = await put(`vehicles/bulk`, {
-      purchased: true,
       ids,
+      purchased: true,
     })
 
     if (!response.error) {
@@ -127,8 +127,8 @@ export class VehiclesCollection extends BaseCollection {
 
   async hideFromPublicHangar(ids) {
     const response = await put(`vehicles/bulk`, {
-      public: false,
       ids,
+      public: false,
     })
 
     if (!response.error) {
@@ -142,8 +142,8 @@ export class VehiclesCollection extends BaseCollection {
 
   async showOnPublicHangar(ids) {
     const response = await put(`vehicles/bulk`, {
-      public: true,
       ids,
+      public: true,
     })
 
     if (!response.error) {

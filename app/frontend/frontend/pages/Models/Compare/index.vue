@@ -117,37 +117,58 @@ export default {
   name: 'ModelsCompare',
 
   components: {
-    CollectionFilterGroup,
-    Box,
-    Btn,
-    BreadCrumbs,
-    TopViewRows,
     BaseRows,
+    Box,
+    BreadCrumbs,
+    Btn,
+    CollectionFilterGroup,
     CrewRows,
-    SpeedRows,
     HardpointRows,
+    SpeedRows,
+    TopViewRows,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      modelsCollection: modelsCollection,
-
-      newModel: null,
-
-      models: [],
-
       form: {},
+      models: [],
+      modelsCollection: modelsCollection,
+      newModel: null,
     }
   },
 
   computed: {
     ...mapGetters('app', ['navSlim']),
 
+    crumbs() {
+      return [
+        {
+          label: this.$t('nav.models.index'),
+          to: {
+            name: 'models',
+          },
+        },
+      ]
+    },
+
+    disabledTooltip() {
+      if (this.selectDisabled) {
+        return this.$t('labels.compare.enough')
+      }
+
+      return null
+    },
+
     erkulUrl() {
       return 'https://www.erkul.games/calculator'
     },
+
+    selectDisabled() {
+      return this.models.length > 7
+    },
+
     sortedModels() {
       const models = JSON.parse(JSON.stringify(this.models))
 
@@ -162,26 +183,6 @@ export default {
 
         return 0
       })
-    },
-    selectDisabled() {
-      return this.models.length > 7
-    },
-    disabledTooltip() {
-      if (this.selectDisabled) {
-        return this.$t('labels.compare.enough')
-      }
-
-      return null
-    },
-    crumbs() {
-      return [
-        {
-          to: {
-            name: 'models',
-          },
-          label: this.$t('nav.models.index'),
-        },
-      ]
     },
   },
 
@@ -203,6 +204,38 @@ export default {
   },
 
   methods: {
+    async add() {
+      if (this.newModel && !this.form.models.includes(this.newModel.slug)) {
+        const model = await this.fetchModel(this.newModel.slug)
+        this.models.push(model)
+        this.form.models.push(this.newModel.slug)
+      }
+      this.newModel = null
+    },
+
+    async fetchModel(slug) {
+      const model = await modelsCollection.findBySlug(slug)
+
+      const hardpoints = await modelHardpointsCollection.findAllByModel(slug)
+
+      return {
+        ...model,
+        hardpoints,
+      }
+    },
+
+    remove(model) {
+      if (this.form.models.includes(model.slug)) {
+        const index = this.form.models.indexOf(model.slug)
+        this.form.models.splice(index, 1)
+      }
+
+      if (this.models.findIndex((item) => item.slug === model.slug) >= 0) {
+        const index = this.models.findIndex((item) => item.slug === model.slug)
+        this.models.splice(index, 1)
+      }
+    },
+
     setupForm() {
       const query = JSON.parse(JSON.stringify(this.$route.query || {}))
       this.form = {
@@ -219,38 +252,6 @@ export default {
           },
         })
         .catch(() => {})
-    },
-
-    async add() {
-      if (this.newModel && !this.form.models.includes(this.newModel.slug)) {
-        const model = await this.fetchModel(this.newModel.slug)
-        this.models.push(model)
-        this.form.models.push(this.newModel.slug)
-      }
-      this.newModel = null
-    },
-
-    remove(model) {
-      if (this.form.models.includes(model.slug)) {
-        const index = this.form.models.indexOf(model.slug)
-        this.form.models.splice(index, 1)
-      }
-
-      if (this.models.findIndex((item) => item.slug === model.slug) >= 0) {
-        const index = this.models.findIndex((item) => item.slug === model.slug)
-        this.models.splice(index, 1)
-      }
-    },
-
-    async fetchModel(slug) {
-      const model = await modelsCollection.findBySlug(slug)
-
-      const hardpoints = await modelHardpointsCollection.findAllByModel(slug)
-
-      return {
-        ...model,
-        hardpoints,
-      }
     },
   },
 }

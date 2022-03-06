@@ -1,15 +1,17 @@
-import Paginator from '@/frontend/core/components/Paginator'
+import Paginator from '@/frontend/core/components/Paginator/index.vue'
 
 export default {
   components: {
     Paginator,
   },
+
   data() {
     return {
-      totalPages: null,
       currentPage: 1,
+      totalPages: null,
     }
   },
+
   methods: {
     setPages(data) {
       if (data) {

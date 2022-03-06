@@ -20,7 +20,6 @@ import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 
 export default {
   name: 'QuickSearch',
-
   components: {
     FormInput,
   },

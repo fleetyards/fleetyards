@@ -37,6 +37,26 @@ export default {
   },
 
   props: {
+    expandLeft: {
+      type: Boolean,
+      default: false,
+    },
+
+    expandTop: {
+      type: Boolean,
+      default: false,
+    },
+
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+
+    mobileBlock: {
+      type: Boolean,
+      default: false,
+    },
+
     size: {
       type: String,
       default: 'default',
@@ -56,33 +76,13 @@ export default {
         )
       },
     },
-
-    expandLeft: {
-      type: Boolean,
-      default: false,
-    },
-
-    expandTop: {
-      type: Boolean,
-      default: false,
-    },
-
-    mobileBlock: {
-      type: Boolean,
-      default: false,
-    },
-
-    inline: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   data() {
     return {
-      visible: false,
       innerExpandLeft: false,
       innerExpandTop: false,
+      visible: false,
     }
   },
 
@@ -98,28 +98,16 @@ export default {
     document.addEventListener('click', this.documentClick)
   },
 
+  destroyed() {
+    document.removeEventListener('click', this.documentClick)
+  },
+
   mounted() {
     this.innerExpandLeft = this.expandLeft
     this.innerExpandTop = this.expandTop
   },
 
-  destroyed() {
-    document.removeEventListener('click', this.documentClick)
-  },
-
   methods: {
-    toggle(event) {
-      const { target } = event
-      // @ts-ignore
-      const bounding = target.getBoundingClientRect()
-
-      this.innerExpandLeft =
-        this.expandLeft || window.innerWidth - bounding.left < 200
-      this.innerExpandTop = window.innerHeight - bounding.top < 200
-
-      this.visible = !this.visible
-    },
-
     documentClick(event) {
       if (!this.visible) return
 
@@ -133,6 +121,18 @@ export default {
       ) {
         this.visible = false
       }
+    },
+
+    toggle(event) {
+      const { target } = event
+      // @ts-ignore
+      const bounding = target.getBoundingClientRect()
+
+      this.innerExpandLeft =
+        this.expandLeft || window.innerWidth - bounding.left < 200
+      this.innerExpandTop = window.innerHeight - bounding.top < 200
+
+      this.visible = !this.visible
     },
   },
 }

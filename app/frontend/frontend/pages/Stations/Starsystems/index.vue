@@ -11,7 +11,7 @@
       <div class="col-12">
         <Panel>
           <div class="starmap">
-            <img :src="require('images/map.png')" alt="map" />
+            <img :src="require('@/images/map.png')" alt="map" />
             <router-link
               v-for="starsystem in starsystems"
               :key="starsystem.slug"
@@ -111,12 +111,11 @@ import { scrollToAnchor } from '@/frontend/utils/scrolling'
 
 export default {
   name: 'StarsystemsIndex',
-
   components: {
     Loader,
     Panel,
-    StarsystemList,
     PlanetPanel,
+    StarsystemList,
   },
 
   mixins: [MetaInfo, Pagination],
@@ -142,8 +141,8 @@ export default {
     async fetch() {
       this.loading = true
       const response = await this.$api.get('starsystems', {
-        q: this.$route.query.q,
         page: this.$route.query.page,
+        q: this.$route.query.q,
       })
       this.loading = false
       if (!response.error) {

@@ -1,61 +1,62 @@
 export const routes = [
   {
-    path: '/starsystems/',
-    name: 'starsystems',
-    component: () => import('@/frontend/pages/Stations/Starsystems'),
+    component: () => import('@/frontend/pages/Stations/Starsystems/index.vue'),
     meta: {
+      backgroundImage: 'bg-0',
       title: 'starsystems',
-      backgroundImage: 'bg-0',
     },
+    name: 'starsystems',
+    path: '/starsystems/',
   },
   {
-    path: '/starsystems/:slug/',
+    component: () => import('@/frontend/pages/Stations/Starsystem/index.vue'),
+    meta: {
+      backgroundImage: 'bg-0',
+    },
     name: 'starsystem',
-    component: () => import('@/frontend/pages/Stations/Starsystem'),
+    path: '/starsystems/:slug/',
+  },
+  {
+    component: () =>
+      import('@/frontend/pages/Stations/CelestialObject/index.vue'),
     meta: {
       backgroundImage: 'bg-0',
     },
-  },
-  {
-    path: '/starsystems/:starsystem/celestial-objects/:slug/',
     name: 'celestial-object',
-    component: () => import('@/frontend/pages/Stations/CelestialObject'),
-    meta: {
-      backgroundImage: 'bg-0',
-    },
+    path: '/starsystems/:starsystem/celestial-objects/:slug/',
   },
   {
-    path: '/shops/',
-    name: 'shops',
-    component: () => import('@/frontend/pages/Stations/ShopList'),
+    component: () => import('@/frontend/pages/Stations/ShopList/index.vue'),
     meta: {
+      backgroundImage: 'bg-2',
       title: 'shops',
-      backgroundImage: 'bg-2',
     },
+    name: 'shops',
+    path: '/shops/',
   },
   {
-    path: ':slug/',
+    component: () => import('@/frontend/pages/Stations/Show/index.vue'),
+    meta: {
+      backgroundImage: 'bg-0',
+    },
     name: 'station',
-    component: () => import('@/frontend/pages/Stations/Show'),
+    path: ':slug/',
+  },
+  {
+    component: () => import('@/frontend/pages/Stations/Show/Images/index.vue'),
     meta: {
       backgroundImage: 'bg-0',
     },
-  },
-  {
-    path: ':slug/images/',
     name: 'station-images',
-    component: () => import('@/frontend/pages/Stations/Show/Images'),
-    meta: {
-      backgroundImage: 'bg-0',
-    },
+    path: ':slug/images/',
   },
   {
-    path: ':stationSlug/shops/:slug/',
-    name: 'shop',
-    component: () => import('@/frontend/pages/Stations/Shop'),
+    component: () => import('@/frontend/pages/Stations/Shop/index.vue'),
     meta: {
       backgroundImage: 'bg-2',
     },
+    name: 'shop',
+    path: ':stationSlug/shops/:slug/',
   },
 ]
 

@@ -23,37 +23,43 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import copyText from '@/frontend/utils/CopyText'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 
-@Component<TwoFactorBackupCodesPanel>({
-  components: {
-    Panel,
-    Btn,
-  },
-})
-export default class TwoFactorBackupCodesPanel extends Vue {
-  @Prop({ required: true }) codes: string[]
+export default {
+  name: 'TwoFactorBackupCodesPanel',
 
-  copyCodes() {
-    copyText(this.codes.join('\n')).then(
-      () => {
-        displaySuccess({
-          text: this.$t('messages.copyBackupCodes.success'),
-        })
-      },
-      () => {
-        displayAlert({
-          text: this.$t('messages.copyBackupCodes.failure'),
-        })
-      }
-    )
-  }
+  components: {
+    Btn,
+    Panel,
+  },
+
+  props: {
+    codes: {
+      required: true,
+      type: Array,
+    },
+  },
+
+  methods: {
+    copyCodes() {
+      copyText(this.codes.join('\n')).then(
+        () => {
+          displaySuccess({
+            text: this.$t('messages.copyBackupCodes.success'),
+          })
+        },
+        () => {
+          displayAlert({
+            text: this.$t('messages.copyBackupCodes.failure'),
+          })
+        }
+      )
+    },
+  },
 }
 </script>
 

@@ -144,101 +144,108 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Btn from '@/frontend/core/components/Btn'
+<script>
+import { mapGetters } from 'vuex'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
 
-@Component<PrivacySettings>({
+export default {
+  name: 'PrivacySettings',
   components: {
     Modal,
-    Checkbox,
-    Btn,
   },
-})
-export default class PrivacySettings extends Vue {
-  @Prop({ default: false }) settings: boolean
 
-  info: any = null
+  props: {
+    settings: {
+      default: false,
+      type: Boolean,
+    },
+  },
 
-  internalSettings = false
-
-  form: PrivacySettingForm = {
-    ahoy: false,
-    youtube: false,
-  }
-
-  @Getter('cookies', { namespace: 'cookies' }) cookies: any
-
-  @Getter('infoVisible', { namespace: 'cookies' }) infoVisible: boolean
-
-  get title() {
-    if (this.info) {
-      return this.$t(`privacySettings.info.${this.info}.title`)
+  data() {
+    return {
+      form: {
+        ahoy: false,
+        youtube: false,
+      },
+      info: null,
+      internalSettings: false,
     }
-    if (this.internalSettings) {
-      return this.$t('privacySettings.title')
-    }
+  },
 
-    return this.$t('privacySettings.introduction.title')
-  }
+  computed: {
+    ...mapGetters('cookies', ['cookies', 'infoVisible']),
 
-  @Watch('cookies', { deep: true })
-  onCookiesChange() {
-    this.setupForm()
-  }
+    title() {
+      if (this.info) {
+        return this.$t(`privacySettings.info.${this.info}.title`)
+      }
+      if (this.internalSettings) {
+        return this.$t('privacySettings.title')
+      }
+
+      return this.$t('privacySettings.introduction.title')
+    },
+  },
+
+  watch: {
+    cookies: {
+      deep: true,
+      handler() {
+        this.setupForm()
+      },
+    },
+  },
 
   mounted() {
     this.internalSettings = this.settings
     this.setupForm()
-  }
+  },
 
-  showSettings() {
-    this.internalSettings = true
-  }
+  methods: {
+    accept() {
+      this.$store.dispatch('cookies/updateAcceptedCookies', {
+        ahoy: true,
+        youtube: true,
+      })
 
-  close() {
-    this.$comlink.$emit('close-modal', 'privacySetting', true)
-  }
+      this.$store.dispatch('cookies/hideInfo')
 
-  setupForm() {
-    this.form = {
-      ahoy: this.cookies.ahoy,
-      youtube: this.cookies.youtube,
-    }
-  }
+      this.close()
+    },
 
-  submit() {
-    this.$store.dispatch('cookies/updateAcceptedCookies', {
-      ...this.form,
-    })
+    close() {
+      this.$comlink.$emit('close-modal', 'privacySetting', true)
+    },
 
-    this.$store.dispatch('cookies/hideInfo')
+    hideInfo() {
+      this.info = null
+    },
 
-    this.close()
-  }
+    openInfo(key) {
+      this.info = key
+    },
 
-  accept() {
-    this.$store.dispatch('cookies/updateAcceptedCookies', {
-      ahoy: true,
-      youtube: true,
-    })
+    setupForm() {
+      this.form = {
+        ahoy: this.cookies.ahoy,
+        youtube: this.cookies.youtube,
+      }
+    },
 
-    this.$store.dispatch('cookies/hideInfo')
+    showSettings() {
+      this.internalSettings = true
+    },
 
-    this.close()
-  }
+    submit() {
+      this.$store.dispatch('cookies/updateAcceptedCookies', {
+        ...this.form,
+      })
 
-  openInfo(key) {
-    this.info = key
-  }
+      this.$store.dispatch('cookies/hideInfo')
 
-  hideInfo() {
-    this.info = null
-  }
+      this.close()
+    },
+  },
 }
 </script>
 

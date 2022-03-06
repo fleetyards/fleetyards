@@ -8,31 +8,41 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'PanelDetails',
 
-@Component
-export default class PanelDetails extends Vue {
-  height = 0
+  props: {
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  @Prop({ default: false }) visible!: boolean
+  data() {
+    return {
+      height: 0,
+    }
+  },
 
-  @Watch('visible')
-  onVisibleChange() {
-    this.setupHeight()
-  }
+  watch: {
+    visible() {
+      this.setupHeight()
+    },
+  },
 
   mounted() {
     this.setupHeight()
-  }
+  },
 
-  setupHeight() {
-    if (this.visible) {
-      this.height = this.$refs.panelDetails.scrollHeight
-    } else {
-      this.height = 0
-    }
-  }
+  methods: {
+    setupHeight() {
+      if (this.visible) {
+        this.height = this.$refs.panelDetails.scrollHeight
+      } else {
+        this.height = 0
+      }
+    },
+  },
 }
 </script>

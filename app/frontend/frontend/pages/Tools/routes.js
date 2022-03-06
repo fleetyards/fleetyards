@@ -1,22 +1,22 @@
 export const routes = [
   {
-    path: 'trade-routes/',
-    name: 'trade-routes',
     component: () => import('@/frontend/pages/Tools/TradeRoutes/index.vue'),
     meta: {
-      title: 'tools.tradeRoutes',
       backgroundImage: 'bg-7',
+      title: 'tools.tradeRoutes',
     },
+    name: 'trade-routes',
+    path: 'trade-routes/',
   },
   {
-    path: 'profit-calculator/',
-    name: 'profit-calculator',
     component: () =>
       import('@/frontend/pages/Tools/ProfitCalculator/index.vue'),
     meta: {
-      title: 'tools.profitCalculator',
       backgroundImage: 'bg-8',
+      title: 'tools.profitCalculator',
     },
+    name: 'profit-calculator',
+    path: 'profit-calculator/',
   },
 ]
 

@@ -68,9 +68,9 @@ export default {
   name: 'TwoFactorDisable',
 
   components: {
-    SecurePage,
     Btn,
     FormInput,
+    SecurePage,
   },
 
   mixins: [MetaInfo],
@@ -79,8 +79,8 @@ export default {
 
   data() {
     return {
-      submitting: false,
       form: null,
+      submitting: false,
     }
   },
 
@@ -93,12 +93,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        twoFactorCode: null,
-      }
-    },
-
     async disable() {
       this.submitting = true
 
@@ -118,7 +112,10 @@ export default {
         })
 
         this.$router
-          .push({ name: 'settings-security', hash: '#two-factor' })
+          .push({
+            hash: '#two-factor',
+            name: 'settings-security',
+          })
           .catch(() => {})
       } else if (response.error === 'requires_access_confirmation') {
         this.$comlink.$emit('access-confirmation-required')
@@ -126,6 +123,12 @@ export default {
         displayAlert({
           text: this.$t('messages.twoFactor.disable.failure'),
         })
+      }
+    },
+
+    setupForm() {
+      this.form = {
+        twoFactorCode: null,
       }
     },
   },

@@ -1,8 +1,12 @@
 import { formatISO } from 'date-fns'
 
 export default {
-  reset({ commit }) {
-    commit('reset')
+  confirmAccess({ commit }) {
+    commit('setAccessConfirmed', formatISO(new Date()))
+  },
+
+  hideCookiesInfo({ commit }) {
+    commit('setCookiesInfoVisible', false)
   },
 
   login({ commit }) {
@@ -15,19 +19,15 @@ export default {
     commit('setCurrentUser', null)
   },
 
-  hideCookiesInfo({ commit }) {
-    commit('setCookiesInfoVisible', false)
-  },
-
-  updateCookies({ commit }, payload) {
-    commit('setCookies', payload)
-  },
-
-  confirmAccess({ commit }) {
-    commit('setAccessConfirmed', formatISO(new Date()))
+  reset({ commit }) {
+    commit('reset')
   },
 
   resetConfirmAccess({ commit }) {
     commit('setAccessConfirmed', null)
+  },
+
+  updateCookies({ commit }, payload) {
+    commit('setCookies', payload)
   },
 }

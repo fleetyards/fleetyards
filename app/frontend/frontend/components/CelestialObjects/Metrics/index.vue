@@ -91,13 +91,13 @@ export default {
 
   props: {
     celestialObject: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     padding: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
   },
 }

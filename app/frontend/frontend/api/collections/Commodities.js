@@ -12,8 +12,8 @@ export class CommoditiesCollection extends BaseCollection {
     this.params = params
 
     const response = await get('commodities', {
-      q: params.filters,
       page: params?.page,
+      q: params.filters,
     })
 
     if (!response.error) {

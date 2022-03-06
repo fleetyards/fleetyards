@@ -4,16 +4,16 @@ import BaseCollection from '@/frontend/api/collections/Base'
 export class AdminImagesCollection extends BaseCollection {
   primaryKey = 'id'
 
-  records: AdminImage[] = []
+  records = []
 
-  params: AdminImageParams | null = null
+  params = null
 
-  async findAll(params: AdminImageParams | null): Promise<AdminImage[]> {
+  async findAll(params) {
     this.params = params
 
     const response = await get('images', {
-      q: params?.filters,
       page: params?.page,
+      q: params?.filters,
     })
 
     if (!response.error) {
@@ -24,11 +24,11 @@ export class AdminImagesCollection extends BaseCollection {
     return this.records
   }
 
-  async refresh(): Promise<void> {
+  async refresh() {
     await this.findAll(this.params)
   }
 
-  async findAllForGallery(params: AdminGalleryParams): Promise<AdminImage[]> {
+  async findAllForGallery(params) {
     const response = await get(
       `${params.galleryType}/${params.galleryId}/images`,
       {

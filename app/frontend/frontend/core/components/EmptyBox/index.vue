@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import Box from '@/frontend/core/components/Box'
-import Btn from '@/frontend/core/components/Btn'
+import Box from '@/frontend/core/components/Box/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 export default {
   name: 'EmptyBox',
@@ -35,14 +35,14 @@ export default {
   },
 
   props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
-
     ignoreFilter: {
       type: Boolean,
       default: false,
+    },
+
+    visible: {
+      type: Boolean,
+      required: true,
     },
   },
 
@@ -74,7 +74,6 @@ export default {
             q: this.$route.query.q || {},
           },
         })
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         .catch((_err) => {})
     },
   },

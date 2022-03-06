@@ -16,61 +16,86 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+<script>
+import { mapGetters } from 'vuex'
 import VueSlider from 'vue-slider-component'
-import { Getter } from 'vuex-class'
 
-@Component({
+export default {
+  name: 'FleetchartSlider',
+
   components: {
     VueSlider,
   },
-})
-export default class FleetchartSlider extends Vue {
-  innerValue = 1
 
-  @Prop({ required: true }) value!: number
+  props: {
+    interval: {
+      type: Number,
+      default: 0.5,
+    },
 
-  @Prop({ default: 20 }) maxScale!: number
+    mark: {
+      type: Number,
+      default: 2,
+    },
 
-  @Prop({ default: 0.2 }) minScale!: number
+    maxScale: {
+      type: Number,
+      default: 20,
+    },
 
-  @Prop({ default: 0.5 }) interval!: number
+    minScale: {
+      type: Number,
+      default: 0.2,
+    },
 
-  @Prop({ default: 2 }) mark!: number
+    value: {
+      type: Number,
+      required: true,
+    },
+  },
 
-  @Getter('mobile') mobile
+  data() {
+    return {
+      innerValue: 1,
+    }
+  },
 
-  get innerMark() {
-    return this.mobile ? 5 : this.mark
-  }
+  computed: {
+    ...mapGetters(['mobile']),
 
-  @Watch('value')
-  onValueChange() {
-    this.innerValue = this.value
-  }
+    innerMark() {
+      return this.mobile ? 5 : this.mark
+    },
+  },
+
+  watch: {
+    value() {
+      this.innerValue = this.value
+    },
+  },
 
   mounted() {
     this.innerValue = this.value
-  }
+  },
 
-  update(value) {
-    this.$emit('input', value)
-  }
+  methods: {
+    label(value) {
+      return `${value}x`
+    },
 
-  marks(value) {
-    if (value % this.innerMark === 0) {
-      return {
-        label: this.label(value),
+    marks(value) {
+      if (value % this.innerMark === 0) {
+        return {
+          label: this.label(value),
+        }
       }
-    }
 
-    return false
-  }
+      return false
+    },
 
-  label(value) {
-    return `${value}x`
-  }
+    update(value) {
+      this.$emit('input', value)
+    },
+  },
 }
 </script>

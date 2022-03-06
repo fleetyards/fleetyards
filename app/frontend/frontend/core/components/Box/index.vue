@@ -19,15 +19,14 @@ import Panel from '@/frontend/core/components/Panel/index.vue'
 
 export default {
   name: 'BoxComponent',
-
   components: {
     Panel,
   },
 
   computed: {
     large: {
-      type: Boolean,
       default: false,
+      type: Boolean,
     },
   },
 }

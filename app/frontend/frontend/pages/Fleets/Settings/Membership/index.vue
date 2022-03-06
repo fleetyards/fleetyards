@@ -106,26 +106,16 @@ export default {
   data() {
     return {
       collection: fleetMembersCollection,
-      submitting: false,
       form: {
+        hangarGroupId: null,
         primary: false,
         shipsFilter: null,
-        hangarGroupId: null,
       },
+      submitting: false,
     }
   },
 
   computed: {
-    fleet() {
-      return fleetsCollection.record
-    },
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
-
-      return this.$t('title.fleets.settings', { fleet: this.fleet.name })
-    },
     crumbs() {
       if (!this.fleet) {
         return []
@@ -133,20 +123,37 @@ export default {
 
       return [
         {
+          label: this.fleet.name,
           to: {
             name: 'fleet',
             params: {
               slug: this.fleet.slug,
             },
           },
-
-          label: this.fleet.name,
         },
       ]
     },
+
+    fleet() {
+      return fleetsCollection.record
+    },
+
+    membership() {
+      return this.collection.record
+    },
+
+    metaTitle() {
+      if (!this.fleet) {
+        return null
+      }
+
+      return this.$t('title.fleets.settings', { fleet: this.fleet.name })
+    },
+
     shipsFilterIsHangarGroup() {
       return this.form.shipsFilter === 'hangar_group'
     },
+
     shipsFilterOptions() {
       return [
         {
@@ -162,9 +169,6 @@ export default {
           value: 'hide',
         },
       ]
-    },
-    membership() {
-      return this.collection.record
     },
   },
 
@@ -190,14 +194,6 @@ export default {
   },
 
   methods: {
-    setupForm() {
-      this.form = {
-        primary: this.membership?.primary,
-        shipsFilter: this.membership?.shipsFilter,
-        hangarGroupId: this.membership?.hangarGroupId,
-      }
-    },
-
     async fetch() {
       await this.collection.findByFleet(this.$route.params.slug)
 
@@ -206,6 +202,14 @@ export default {
 
     async fetchFleet() {
       await fleetsCollection.findBySlug(this.$route.params.slug)
+    },
+
+    setupForm() {
+      this.form = {
+        hangarGroupId: this.membership?.hangarGroupId,
+        primary: this.membership?.primary,
+        shipsFilter: this.membership?.shipsFilter,
+      }
     },
 
     async submit() {

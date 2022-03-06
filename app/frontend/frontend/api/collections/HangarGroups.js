@@ -23,22 +23,19 @@ export class HangarGroupsCollection extends BaseCollection {
       if (refetch) {
         this.findAll()
       }
-
-      return response.data
     }
 
-    return null
+    return response
   }
 
   async update(hangarGroupId, form) {
     const response = await put(`hangar-groups/${hangarGroupId}`, form)
+
     if (!response.error) {
       this.findAll()
-
-      return true
     }
 
-    return false
+    return response
   }
 
   async destroy(hangarGroupId) {

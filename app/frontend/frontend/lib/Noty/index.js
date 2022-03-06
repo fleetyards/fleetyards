@@ -112,11 +112,11 @@ const notyBackoff = function notyBackoff(text) {
 
 const displayNotification = function displayNotification(options) {
   const defaults = {
-    text: null,
-    type: 'info',
-    timeout: 3000,
     icon: null,
     notifyInBackground: true,
+    text: null,
+    timeout: 3000,
+    type: 'info',
     ...options,
   }
 
@@ -136,20 +136,22 @@ const displayNotification = function displayNotification(options) {
         displayText = displayText.join('<br>')
       }
       new Noty({
-        text: displayText,
-        type: defaults.type,
+        animation: {
+          close: 'noty_effects_close',
+          open: 'noty_effects_open',
+        },
+
+        category: 'notification',
+
+        closeWith: ['click', 'button'],
         // @ts-ignore
         icon: defaults.icon,
-        timeout: defaults.timeout,
-        category: 'notification',
         layout: 'topRight',
-        theme: 'metroui',
-        closeWith: ['click', 'button'],
-        animation: {
-          open: 'noty_effects_open',
-          close: 'noty_effects_close',
-        },
         progressBar: true,
+        text: displayText,
+        theme: 'metroui',
+        timeout: defaults.timeout,
+        type: defaults.type,
       }).show()
     }
   }
@@ -157,12 +159,12 @@ const displayNotification = function displayNotification(options) {
 
 export const displayConfirm = function displayConfirm(options) {
   const defaults = {
-    text: null,
-    layout: 'center',
     confirmBtnLayout: 'danger',
-    onConfirm: () => {},
+    layout: 'center',
     onCancel: () => {},
     onClose: () => {},
+    onConfirm: () => {},
+    text: null,
     ...options,
   }
 
@@ -172,17 +174,11 @@ export const displayConfirm = function displayConfirm(options) {
   }
 
   const n = new Noty({
-    text: defaults.text,
-    layout: defaults.layout,
-    theme: 'metroui',
-    closeWith: ['click', 'button'],
-    id: 'noty-confirm',
-    // @ts-ignore
-    category: 'confirm',
     animation: {
-      open: 'noty_effects_open',
       close: 'noty_effects_close',
+      open: 'noty_effects_open',
     },
+
     buttons: [
       Noty.button(
         I18n.t('actions.confirm'),
@@ -204,11 +200,22 @@ export const displayConfirm = function displayConfirm(options) {
         }
       ),
     ],
+
     callbacks: {
       onClose() {
         defaults.onClose()
       },
     },
+
+    // @ts-ignore
+    category: 'confirm',
+
+    closeWith: ['click', 'button'],
+
+    id: 'noty-confirm',
+    layout: defaults.layout,
+    text: defaults.text,
+    theme: 'metroui',
   }).show()
 }
 
@@ -227,9 +234,9 @@ export function requestPermission() {
 export const displayAlert = function alert(options) {
   displayNotification({
     ...options,
-    type: 'error',
-    timeout: 10000,
     notifyInBackground: false,
+    timeout: 10000,
+    type: 'error',
   })
 }
 

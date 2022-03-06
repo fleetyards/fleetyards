@@ -21,14 +21,14 @@ export default {
   name: 'LoaderComponent',
 
   props: {
-    loading: {
-      type: Boolean,
+    fixed: {
       default: false,
+      type: Boolean,
     },
 
-    fixed: {
-      type: Boolean,
+    loading: {
       default: false,
+      type: Boolean,
     },
   },
 }

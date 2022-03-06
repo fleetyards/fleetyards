@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 export default {
   name: 'AddToCartBtn',
@@ -22,13 +22,13 @@ export default {
 
   props: {
     item: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
     type: {
-      type: String,
       required: true,
+      type: String,
     },
   },
 

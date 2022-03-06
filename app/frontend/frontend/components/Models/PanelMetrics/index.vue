@@ -68,78 +68,83 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+<script>
+export default {
+  name: 'PanelMetrics',
 
-@Component<PanelMetrics>({})
-export default class PanelMetrics extends Vue {
-  @Prop({ required: true }) model: Model
+  props: {
+    model: {
+      required: true,
+      type: Object,
+    },
+  },
 
-  get isGroundVehicle() {
-    return this.model.classification === 'ground'
-  }
+  computed: {
+    airSpeeds() {
+      let { scmSpeed, afterburnerSpeed } = this.model
 
-  get crew() {
-    let { minCrew, maxCrew } = this.model
+      if (scmSpeed && scmSpeed <= 0) {
+        scmSpeed = null
+      }
 
-    if (minCrew && minCrew <= 0) {
-      minCrew = null
-    }
+      if (afterburnerSpeed && afterburnerSpeed <= 0) {
+        afterburnerSpeed = null
+      }
 
-    if (maxCrew && maxCrew <= 0) {
-      maxCrew = null
-    }
+      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
+    },
 
-    if (minCrew === maxCrew) {
-      return this.$toNumber(this.model.minCrew, 'people')
-    }
+    crew() {
+      let { minCrew, maxCrew } = this.model
 
-    return this.$toNumber(
-      [minCrew, maxCrew].filter((item) => item).join(' - '),
-      'people'
-    )
-  }
+      if (minCrew && minCrew <= 0) {
+        minCrew = null
+      }
 
-  get speeds() {
-    const speeds = []
-    if (this.groundSpeeds || this.isGroundVehicle) {
-      speeds.push(this.$toNumber(this.groundSpeeds, 'speed'))
-    }
-    if (!this.isGroundVehicle) {
-      speeds.push(this.$toNumber(this.airSpeeds, 'speed'))
-    }
-    return speeds.join('<br>')
-  }
+      if (maxCrew && maxCrew <= 0) {
+        maxCrew = null
+      }
 
-  get airSpeeds() {
-    let { scmSpeed, afterburnerSpeed } = this.model
+      if (minCrew === maxCrew) {
+        return this.$toNumber(this.model.minCrew, 'people')
+      }
 
-    if (scmSpeed && scmSpeed <= 0) {
-      scmSpeed = null
-    }
+      return this.$toNumber(
+        [minCrew, maxCrew].filter((item) => item).join(' - '),
+        'people'
+      )
+    },
 
-    if (afterburnerSpeed && afterburnerSpeed <= 0) {
-      afterburnerSpeed = null
-    }
+    groundSpeeds() {
+      let { groundSpeed, afterburnerGroundSpeed } = this.model
 
-    return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
-  }
+      if (groundSpeed && groundSpeed <= 0) {
+        groundSpeed = null
+      }
 
-  get groundSpeeds() {
-    let { groundSpeed, afterburnerGroundSpeed } = this.model
+      if (afterburnerGroundSpeed && afterburnerGroundSpeed <= 0) {
+        afterburnerGroundSpeed = null
+      }
 
-    if (groundSpeed && groundSpeed <= 0) {
-      groundSpeed = null
-    }
+      return [groundSpeed, afterburnerGroundSpeed]
+        .filter((item) => item)
+        .join(' - ')
+    },
 
-    if (afterburnerGroundSpeed && afterburnerGroundSpeed <= 0) {
-      afterburnerGroundSpeed = null
-    }
+    isGroundVehicle() {
+      return this.model.classification === 'ground'
+    },
 
-    return [groundSpeed, afterburnerGroundSpeed]
-      .filter((item) => item)
-      .join(' - ')
-  }
+    speeds() {
+      const speeds = []
+      if (this.groundSpeeds || this.isGroundVehicle) {
+        speeds.push(this.$toNumber(this.groundSpeeds, 'speed'))
+      }
+      if (!this.isGroundVehicle) {
+        speeds.push(this.$toNumber(this.airSpeeds, 'speed'))
+      }
+      return speeds.join('<br>')
+    },
+  },
 }
 </script>

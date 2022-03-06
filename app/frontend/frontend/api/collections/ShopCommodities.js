@@ -14,8 +14,8 @@ export class ShopCommoditiesCollection extends BaseCollection {
     const response = await get(
       `stations/${params?.stationSlug}/shops/${params?.slug}/commodities`,
       {
-        q: params.filters,
         page: params.page,
+        q: params.filters,
       }
     )
 

@@ -12,8 +12,8 @@ export class ModelPaintsCollection extends BaseCollection {
     this.params = params
 
     const response = await get('model-paints', {
-      q: params.filters,
       page: params?.page,
+      q: params.filters,
     })
 
     if (!response.error) {

@@ -7,21 +7,9 @@ import getStoreModules from './modules'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  // strict: true,
-
-  state: getDefaultState(),
-
-  modules: getStoreModules(),
+  actions,
 
   getters: {
-    mobile(state) {
-      return state.mobile
-    },
-
-    online(state) {
-      return state.online
-    },
-
     backRoutes(state) {
       return state.backRoutes
     },
@@ -33,9 +21,17 @@ const store = new Vuex.Store({
     filtersVisible(state) {
       return state.filtersVisible
     },
+
+    mobile(state) {
+      return state.mobile
+    },
+
+    online(state) {
+      return state.online
+    },
   },
 
-  actions,
+  modules: getStoreModules(),
 
   /* eslint-disable no-param-reassign */
   mutations: {
@@ -43,8 +39,12 @@ const store = new Vuex.Store({
       Object.assign(state, getDefaultState())
     },
 
-    setStoreVersion(state, payload) {
-      state.storeVersion = payload
+    setFilters(state, payload) {
+      state.filters = { ...state.filters, ...payload }
+    },
+
+    setFiltersVisible(state, payload) {
+      state.filtersVisible = { ...state.filtersVisible, ...payload }
     },
 
     setLocale(state, locale) {
@@ -59,14 +59,13 @@ const store = new Vuex.Store({
       state.online = payload
     },
 
-    setFilters(state, payload) {
-      state.filters = { ...state.filters, ...payload }
-    },
-
-    setFiltersVisible(state, payload) {
-      state.filtersVisible = { ...state.filtersVisible, ...payload }
+    setStoreVersion(state, payload) {
+      state.storeVersion = payload
     },
   },
+
+  // strict: true,
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })
 

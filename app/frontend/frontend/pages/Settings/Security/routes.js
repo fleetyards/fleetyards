@@ -1,42 +1,45 @@
 export const routes = [
   {
-    path: '/',
-    name: 'settings-security-status',
-    component: () => import('@/frontend/pages/Settings/Security/Status'),
+    component: () =>
+      import('@/frontend/pages/Settings/Security/Status/index.vue'),
     meta: {
+      needsAuthentication: true,
       title: 'settings.security',
-      needsAuthentication: true,
     },
+    name: 'settings-security-status',
+    path: '/',
   },
   {
-    path: 'two-factor/enable/',
-    name: 'settings-two-factor-enable',
     component: () =>
-      import('@/frontend/pages/Settings/Security/TwoFactorEnable'),
+      import('@/frontend/pages/Settings/Security/TwoFactorEnable/index.vue'),
     meta: {
+      needsAuthentication: true,
       title: 'settings.twoFactor.enable',
-      needsAuthentication: true,
     },
+    name: 'settings-two-factor-enable',
+    path: 'two-factor/enable/',
   },
   {
-    path: 'two-factor/disable/',
-    name: 'settings-two-factor-disable',
     component: () =>
-      import('@/frontend/pages/Settings/Security/TwoFactorDisable'),
+      import('@/frontend/pages/Settings/Security/TwoFactorDisable/index.vue'),
     meta: {
+      needsAuthentication: true,
       title: 'settings.twoFactor.disable',
-      needsAuthentication: true,
     },
+    name: 'settings-two-factor-disable',
+    path: 'two-factor/disable/',
   },
   {
-    path: 'two-factor/backup-codes/',
-    name: 'settings-two-factor-backup-codes',
     component: () =>
-      import('@/frontend/pages/Settings/Security/TwoFactorBackupCodes'),
+      import(
+        '@/frontend/pages/Settings/Security/TwoFactorBackupCodes/index.vue'
+      ),
     meta: {
-      title: 'settings.twoFactor.backupCodes',
       needsAuthentication: true,
+      title: 'settings.twoFactor.backupCodes',
     },
+    name: 'settings-two-factor-backup-codes',
+    path: 'two-factor/backup-codes/',
   },
 ]
 

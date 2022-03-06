@@ -16,11 +16,58 @@ import BtnInner from '@/embed/components/Btn/Inner/index.vue'
 
 export default {
   name: 'BtnComponent',
-
   components: { BtnInner },
 
   props: {
+    active: {
+      type: Boolean,
+      default: false,
+    },
+
+    block: {
+      type: Boolean,
+      default: false,
+    },
+
+    disabled: {
+      default: false,
+      type: Boolean,
+    },
+
+    exact: {
+      type: Boolean,
+      default: false,
+    },
+
+    href: {
+      type: String,
+      default: null,
+    },
+
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+
     loading: {
+      default: false,
+      type: Boolean,
+    },
+
+    mobileBlock: {
+      type: Boolean,
+      default: false,
+    },
+
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
+    },
+
+    textInline: {
       type: Boolean,
       default: false,
     },
@@ -30,14 +77,9 @@ export default {
       default: null,
     },
 
-    href: {
-      type: String,
-      default: null,
-    },
-
     type: {
-      type: String,
       default: 'button',
+      type: String,
       validator(value) {
         return ['button', 'submit'].indexOf(value) !== -1
       },
@@ -52,73 +94,22 @@ export default {
         )
       },
     },
-
-    size: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'small', 'large'].indexOf(value) !== -1
-      },
-    },
-
-    exact: {
-      type: Boolean,
-      default: false,
-    },
-
-    block: {
-      type: Boolean,
-      default: false,
-    },
-
-    mobileBlock: {
-      type: Boolean,
-      default: false,
-    },
-
-    inline: {
-      type: Boolean,
-      default: false,
-    },
-
-    textInline: {
-      type: Boolean,
-      default: false,
-    },
-
-    active: {
-      type: Boolean,
-      default: false,
-    },
-
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   computed: {
-    btnType() {
-      if (this.to) return 'router-link'
-
-      if (this.href) return 'a'
-
-      return 'button'
-    },
-
     btnProps() {
       if (this.to) {
         return {
-          to: this.to,
           exact: this.exact,
+          to: this.to,
         }
       }
 
       if (this.href) {
         return {
           href: this.href,
-          target: '_blank',
           rel: 'noopener',
+          target: '_blank',
         }
       }
 
@@ -127,20 +118,28 @@ export default {
       }
     },
 
+    btnType() {
+      if (this.to) return 'router-link'
+
+      if (this.href) return 'a'
+
+      return 'button'
+    },
+
     cssClasses() {
       return {
-        'panel-btn': true,
-        'panel-btn-submit': this.type === 'submit',
-        'panel-btn-transparent': this.variant === 'transparent',
-        'panel-btn-link': this.variant === 'link',
-        'panel-btn-danger': this.variant === 'danger',
-        'panel-btn-small': this.size === 'small',
-        'panel-btn-large': this.size === 'large',
-        'panel-btn-block': this.block,
-        'panel-btn-inline': this.inline,
-        'panel-btn-text-inline': this.textInline,
-        'panel-btn-mobile-block': this.mobileBlock,
         'active': this.active,
+        'panel-btn': true,
+        'panel-btn-block': this.block,
+        'panel-btn-danger': this.variant === 'danger',
+        'panel-btn-inline': this.inline,
+        'panel-btn-large': this.size === 'large',
+        'panel-btn-link': this.variant === 'link',
+        'panel-btn-mobile-block': this.mobileBlock,
+        'panel-btn-small': this.size === 'small',
+        'panel-btn-submit': this.type === 'submit',
+        'panel-btn-text-inline': this.textInline,
+        'panel-btn-transparent': this.variant === 'transparent',
       }
     },
   },

@@ -15,16 +15,15 @@ export default {
 
   props: {
     docks: {
-      type: Array,
       required: true,
+      type: Array,
     },
 
     size: {
-      type: String,
       required: true,
+      type: String,
     },
   },
-
   computed: {
     sortedDocks() {
       return sortBy(this.docks, 'name')

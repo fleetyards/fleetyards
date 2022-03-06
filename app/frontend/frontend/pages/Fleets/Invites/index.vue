@@ -97,18 +97,18 @@ export default {
   name: 'FleetInvites',
 
   components: {
-    Panel,
-    Loader,
     Btn,
+    Loader,
+    Panel,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
+      invites: [],
       loading: true,
       submitting: false,
-      invites: [],
     }
   },
 
@@ -117,14 +117,6 @@ export default {
   },
 
   methods: {
-    invited(invite) {
-      return invite.status === 'invited'
-    },
-
-    requested(invite) {
-      return invite.status === 'requested'
-    },
-
     async accept(invite) {
       this.submitting = true
 
@@ -158,7 +150,9 @@ export default {
       this.submitting = true
 
       displayConfirm({
-        text: this.$t('messages.confirm.fleet.invites.decline'),
+        onClose: () => {
+          this.submitting = false
+        },
         onConfirm: async () => {
           const response = await this.$api.put(
             `fleets/${invite.fleet.slug}/members/decline-invite`
@@ -177,9 +171,7 @@ export default {
             this.submitting = false
           }
         },
-        onClose: () => {
-          this.submitting = false
-        },
+        text: this.$t('messages.confirm.fleet.invites.decline'),
       })
     },
 
@@ -193,6 +185,14 @@ export default {
       if (!response.error) {
         this.invites = response.data
       }
+    },
+
+    invited(invite) {
+      return invite.status === 'invited'
+    },
+
+    requested(invite) {
+      return invite.status === 'requested'
     },
   },
 }

@@ -2,10 +2,6 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
@@ -17,24 +13,8 @@ export default () => ({
       return state.filterVisible
     },
 
-    fleetchartVisible(state) {
-      return state.fleetchartVisible
-    },
-
-    fleetchartZoomData(state) {
-      return state.fleetchartZoomData
-    },
-
-    fleetchartViewpoint(state) {
-      return state.fleetchartViewpoint
-    },
-
     fleetchartLabels(state) {
       return state.fleetchartLabels
-    },
-
-    fleetchartScreenHeight(state) {
-      return state.fleetchartScreenHeight
     },
 
     fleetchartMode(state) {
@@ -45,24 +25,40 @@ export default () => ({
       return state.fleetchartScale
     },
 
+    fleetchartScreenHeight(state) {
+      return state.fleetchartScreenHeight
+    },
+
+    fleetchartViewpoint(state) {
+      return state.fleetchartViewpoint
+    },
+
+    fleetchartVisible(state) {
+      return state.fleetchartVisible
+    },
+
+    fleetchartZoomData(state) {
+      return state.fleetchartZoomData
+    },
+
     grouped(state) {
       return state.grouped
-    },
-
-    money(state) {
-      return state.money
-    },
-
-    preview(state) {
-      return state.preview
     },
 
     inviteToken(state) {
       return state.inviteToken
     },
 
+    money(state) {
+      return state.money
+    },
+
     perPage(state) {
       return state.perPage
+    },
+
+    preview(state) {
+      return state.preview
     },
   },
 
@@ -80,24 +76,8 @@ export default () => ({
       state.filterVisible = payload
     },
 
-    setFleetchartVisible(state, payload) {
-      state.fleetchartVisible = payload
-    },
-
-    setFleetchartZoomData(state, payload) {
-      state.fleetchartZoomData = payload
-    },
-
-    setFleetchartViewpoint(state, payload) {
-      state.fleetchartViewpoint = payload
-    },
-
     setFleetchartLabels(state, payload) {
       state.fleetchartLabels = payload
-    },
-
-    setFleetchartScreenHeight(state, payload) {
-      state.fleetchartScreenHeight = payload
     },
 
     setFleetchartMode(state, payload) {
@@ -108,6 +88,22 @@ export default () => ({
       state.fleetchartScale = payload
     },
 
+    setFleetchartScreenHeight(state, payload) {
+      state.fleetchartScreenHeight = payload
+    },
+
+    setFleetchartViewpoint(state, payload) {
+      state.fleetchartViewpoint = payload
+    },
+
+    setFleetchartVisible(state, payload) {
+      state.fleetchartVisible = payload
+    },
+
+    setFleetchartZoomData(state, payload) {
+      state.fleetchartZoomData = payload
+    },
+
     setGrouped(state, payload) {
       state.grouped = payload
     },
@@ -116,5 +112,9 @@ export default () => ({
       state.perPage = payload
     },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

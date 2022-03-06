@@ -99,34 +99,34 @@
 </template>
 
 <script>
-import ModelPanel from '@/embed/components/Models/Panel'
-import FleetchartItem from '@/embed/components/FleetchartItem'
-import FleetchartSlider from '@/embed/partials/Fleetchart/Slider'
-import Loader from '@/embed/components/Loader'
-import Btn from '@/embed/components/Btn'
+import ModelPanel from '@/embed/components/Models/Panel/index.vue'
+import FleetchartItem from '@/embed/components/FleetchartItem/index.vue'
+import FleetchartSlider from '@/embed/partials/Fleetchart/Slider/index.vue'
+import Loader from '@/embed/components/Loader/index.vue'
+import Btn from '@/embed/components/Btn/index.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'FleetyardsView',
 
   components: {
-    ModelPanel,
-    FleetchartItem,
-    Loader,
     Btn,
+    FleetchartItem,
     FleetchartSlider,
+    Loader,
+    ModelPanel,
   },
 
   data() {
     return {
-      ships: [],
-      users: [],
       fleetID: null,
-      vehicles: null,
-      models: null,
-      loading: false,
-      slider: false,
       groupedButton: false,
+      loading: false,
+      models: null,
+      ships: [],
+      slider: false,
+      users: [],
+      vehicles: null,
     }
   },
 
@@ -138,25 +138,6 @@ export default {
       'fleetchartGrouping',
       'fleetchart',
     ]),
-
-    ungroupedModels() {
-      if (this.ships.length) {
-        return this.ships
-          .map((slug) => ({
-            slug,
-            model: this.models.find((model) => model.slug === slug),
-          }))
-          .map(this.mapModel)
-          .filter((item) => item)
-          .sort(this.sortByName)
-      }
-
-      if (this.users) {
-        return [...this.models].sort(this.sortByName)
-      }
-
-      return []
-    },
 
     displayModels() {
       if (!this.models) {
@@ -191,6 +172,25 @@ export default {
         return 0
       })
     },
+
+    ungroupedModels() {
+      if (this.ships.length) {
+        return this.ships
+          .map((slug) => ({
+            model: this.models.find((model) => model.slug === slug),
+            slug,
+          }))
+          .map(this.mapModel)
+          .filter((item) => item)
+          .sort(this.sortByName)
+      }
+
+      if (this.users) {
+        return [...this.models].sort(this.sortByName)
+      }
+
+      return []
+    },
   },
 
   watch: {
@@ -224,55 +224,6 @@ export default {
   },
 
   methods: {
-    sortByName(a, b) {
-      if (a.name < b.name) {
-        return -1
-      }
-      if (a.name > b.name) {
-        return 1
-      }
-      return 0
-    },
-
-    mapModel(item) {
-      if (!item.model) {
-        return null
-      }
-      return item.model
-    },
-
-    updateShips(ships) {
-      this.ships = ships
-    },
-
-    updateUsers(users) {
-      this.users = users
-    },
-
-    updateFleet(fleetID) {
-      this.fleetID = fleetID
-    },
-
-    updateFleetchartScale(value) {
-      this.$store.commit('setFleetchartScale', value)
-    },
-
-    toggleDetails() {
-      this.$store.commit('toggleDetails')
-    },
-
-    toggleFleetchart() {
-      this.$store.commit('toggleFleetchart')
-    },
-
-    toggleGrouping() {
-      this.$store.commit('toggleGrouping')
-    },
-
-    toggleFleetchartGrouping() {
-      this.$store.commit('toggleFleetchartGrouping')
-    },
-
     count(slug) {
       if (!this.grouping) {
         return null
@@ -283,18 +234,6 @@ export default {
       }
 
       return this.ships.filter((item) => item === slug).length
-    },
-
-    async fetchShips() {
-      this.loading = true
-      const response = await this.$api.get('models/embed', {
-        models: this.ships.filter((v, i, a) => a.indexOf(v) === i),
-      })
-      this.loading = false
-
-      if (!response.error) {
-        this.models = response.data
-      }
     },
 
     async fetchFleetShips() {
@@ -319,6 +258,67 @@ export default {
       if (!response.error) {
         this.vehicles = response.data
       }
+    },
+
+    async fetchShips() {
+      this.loading = true
+      const response = await this.$api.get('models/embed', {
+        models: this.ships.filter((v, i, a) => a.indexOf(v) === i),
+      })
+      this.loading = false
+
+      if (!response.error) {
+        this.models = response.data
+      }
+    },
+
+    mapModel(item) {
+      if (!item.model) {
+        return null
+      }
+      return item.model
+    },
+
+    sortByName(a, b) {
+      if (a.name < b.name) {
+        return -1
+      }
+      if (a.name > b.name) {
+        return 1
+      }
+      return 0
+    },
+
+    toggleDetails() {
+      this.$store.commit('toggleDetails')
+    },
+
+    toggleFleetchart() {
+      this.$store.commit('toggleFleetchart')
+    },
+
+    toggleFleetchartGrouping() {
+      this.$store.commit('toggleFleetchartGrouping')
+    },
+
+    toggleGrouping() {
+      this.$store.commit('toggleGrouping')
+    },
+
+    updateFleet(fleetID) {
+      this.fleetID = fleetID
+    },
+
+    updateFleetchartScale(value) {
+      this.$store.commit('setFleetchartScale', value)
+    },
+
+    updateShips(ships) {
+      this.ships = ships
+    },
+
+    updateUsers(users) {
+      this.users = users
     },
   },
 }

@@ -144,15 +144,15 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import ShareBtn from '@/frontend/components/ShareBtn'
-import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel'
-import FleetVehiclesFilterForm from '@/frontend/components/Fleets/FilterForm'
-import FleetchartApp from '@/frontend/components/Fleetchart/App'
-import ModelClassLabels from '@/frontend/components/Models/ClassLabels'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
+import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel/index.vue'
+import FleetVehiclesFilterForm from '@/frontend/components/Fleets/FilterForm/index.vue'
+import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
+import ModelClassLabels from '@/frontend/components/Models/ClassLabels/index.vue'
 import fleetVehiclesCollection from '@/frontend/api/collections/FleetVehicles'
 import debounce from 'lodash.debounce'
 
@@ -162,27 +162,27 @@ export default {
   components: {
     Btn,
     BtnDropdown,
-    FilteredList,
     FilteredGrid,
-    FleetVehiclePanel,
-    ModelClassLabels,
+    FilteredList,
     FleetchartApp,
+    FleetVehiclePanel,
     FleetVehiclesFilterForm,
+    ModelClassLabels,
     ShareBtn,
   },
 
   props: {
     fleet: {
-      type: Object,
       required: true,
+      type: Object,
     },
 
-    shareUrl: {
+    metaTitle: {
       type: String,
       required: true,
     },
 
-    metaTitle: {
+    shareUrl: {
       type: String,
       required: true,
     },
@@ -198,7 +198,7 @@ export default {
   computed: {
     ...mapGetters(['mobile']),
 
-    ...mapActions('fleet', [
+    ...mapGetters('fleet', [
       'grouped',
       'money',
       'detailsVisible',
@@ -206,15 +206,17 @@ export default {
       'fleetchartVisible',
     ]),
 
-    fleetStats() {
-      return this.collection.stats
+    filters() {
+      return {
+        filters: this.$route.query.q,
+        grouped: this.grouped,
+        page: this.$route.query.page,
+        slug: this.fleet.slug,
+      }
     },
 
-    toggleDetailsTooltip() {
-      if (this.detailsVisible) {
-        return this.$t('actions.hideDetails')
-      }
-      return this.$t('actions.showDetails')
+    fleetStats() {
+      return this.collection.stats
     },
 
     routeParams() {
@@ -224,30 +226,29 @@ export default {
       }
     },
 
-    filters() {
-      return {
-        slug: this.fleet.slug,
-        filters: this.$route.query.q,
-        grouped: this.grouped,
-        page: this.$route.query.page,
+    toggleDetailsTooltip() {
+      if (this.detailsVisible) {
+        return this.$t('actions.hideDetails')
       }
+      return this.$t('actions.showDetails')
     },
   },
 
   watch: {
-    perPage() {
-      this.fetch()
-    },
-    grouped() {
-      this.fetch()
-    },
-
     $route() {
       this.fetchStats()
     },
 
     fleet() {
       this.fetchStats()
+    },
+
+    grouped() {
+      this.fetch()
+    },
+
+    perPage() {
+      this.fetch()
     },
   },
 
@@ -264,6 +265,15 @@ export default {
       'toggleMoney',
     ]),
 
+    async fetch() {
+      await this.collection.findAll(this.filters)
+      await this.fetchStats()
+    },
+
+    async fetchStats() {
+      await this.collection.findStats(this.filters)
+    },
+
     setupUpdates() {
       if (this.fleetVehiclesChannel) {
         this.fleetVehiclesChannel.unsubscribe()
@@ -277,15 +287,6 @@ export default {
           received: debounce(this.fetch, 500),
         }
       )
-    },
-
-    async fetch() {
-      await this.collection.findAll(this.filters)
-      await this.fetchStats()
-    },
-
-    async fetchStats() {
-      await this.collection.findStats(this.filters)
     },
   },
 }

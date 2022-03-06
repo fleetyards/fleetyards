@@ -78,6 +78,10 @@
     right: 20px;
     z-index: 1000;
 
+    :first-child {
+      margin-right: 5px;
+    }
+
     &.spacing-right {
       right: 230px;
     }

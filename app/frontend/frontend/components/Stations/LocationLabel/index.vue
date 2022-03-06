@@ -41,16 +41,12 @@ export default {
 
   props: {
     station: {
-      type: Object,
       required: true,
+      type: Object,
     },
   },
 
   computed: {
-    location() {
-      return this.station.celestialObject
-    },
-
     label() {
       if (this.suffix) {
         if (this.location) {
@@ -63,12 +59,8 @@ export default {
       return `${this.prefix} ${this.location.name}`
     },
 
-    tooltip() {
-      if (this.label.length > 50) {
-        return this.label
-      }
-
-      return null
+    location() {
+      return this.station.celestialObject
     },
 
     prefix() {
@@ -90,6 +82,14 @@ export default {
         return this.$t('labels.station.locationSuffix', {
           location: this.station.location,
         })
+      }
+
+      return null
+    },
+
+    tooltip() {
+      if (this.label.length > 50) {
+        return this.label
       }
 
       return null

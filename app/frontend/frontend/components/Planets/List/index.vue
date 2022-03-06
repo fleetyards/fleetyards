@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
 export default {
   name: 'PanelsList',
@@ -36,14 +36,14 @@ export default {
   },
 
   props: {
-    route: {
-      type: Object,
+    item: {
       required: true,
+      type: Object,
     },
 
-    item: {
-      type: Object,
+    route: {
       required: true,
+      type: Object,
     },
   },
 }

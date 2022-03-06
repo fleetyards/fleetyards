@@ -138,7 +138,6 @@ import Panel from '@/frontend/core/components/Panel/index.vue'
 
 export default {
   name: 'StatsIndex',
-
   components: {
     Chart,
     Panel,
@@ -157,14 +156,24 @@ export default {
   },
 
   methods: {
-    async loadQuickStats() {
-      const response = await this.$api.get('stats/quick-stats')
-      if (!response.error) {
-        this.quickStats = response.data
-      }
-    },
     async loadModelsByClassification() {
       const response = await this.$api.get('stats/models-by-classification')
+      if (!response.error) {
+        return response.data
+      }
+      return []
+    },
+
+    async loadModelsByManufacturer() {
+      const response = await this.$api.get('stats/models-by-manufacturer')
+      if (!response.error) {
+        return response.data
+      }
+      return []
+    },
+
+    async loadModelsByProductionStatus() {
+      const response = await this.$api.get('stats/models-by-production-status')
       if (!response.error) {
         return response.data
       }
@@ -187,20 +196,11 @@ export default {
       return []
     },
 
-    async loadModelsByManufacturer() {
-      const response = await this.$api.get('stats/models-by-manufacturer')
+    async loadQuickStats() {
+      const response = await this.$api.get('stats/quick-stats')
       if (!response.error) {
-        return response.data
+        this.quickStats = response.data
       }
-      return []
-    },
-
-    async loadModelsByProductionStatus() {
-      const response = await this.$api.get('stats/models-by-production-status')
-      if (!response.error) {
-        return response.data
-      }
-      return []
     },
   },
 }

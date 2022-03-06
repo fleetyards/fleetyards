@@ -86,17 +86,16 @@ import stationsCollection from '@/frontend/api/collections/Stations'
 
 export default {
   name: 'StationDetail',
-
   components: {
-    Loader,
+    BreadCrumbs,
     Btn,
-    PriceModalBtn,
+    Loader,
     Panel,
+    PriceModalBtn,
     ShopPanel,
     StationBaseMetrics,
     StationDocks,
     StationHabitations,
-    BreadCrumbs,
   },
 
   mixins: [MetaInfo],
@@ -110,8 +109,57 @@ export default {
   },
 
   computed: {
-    station() {
-      return stationsCollection.record
+    crumbs() {
+      if (!this.station) {
+        return null
+      }
+
+      const crumbs = [
+        {
+          label: this.$t('nav.starsystems'),
+          to: {
+            hash: `#${this.station.celestialObject.starsystem.slug}`,
+            name: 'starsystems',
+          },
+        },
+        {
+          label: this.station.celestialObject.starsystem.name,
+          to: {
+            hash: `#${this.station.celestialObject.slug}`,
+            name: 'starsystem',
+            params: {
+              slug: this.station.celestialObject.starsystem.slug,
+            },
+          },
+        },
+      ]
+
+      if (this.station.celestialObject.parent) {
+        crumbs.push({
+          label: this.station.celestialObject.parent.name,
+          to: {
+            name: 'celestial-object',
+            params: {
+              slug: this.station.celestialObject.parent.slug,
+              starsystem: this.station.celestialObject.starsystem.slug,
+            },
+          },
+        })
+      }
+
+      crumbs.push({
+        label: this.station.celestialObject.name,
+        to: {
+          hash: `#${this.station.slug}`,
+          name: 'celestial-object',
+          params: {
+            slug: this.station.celestialObject.slug,
+            starsystem: this.station.celestialObject.starsystem.slug,
+          },
+        },
+      })
+
+      return crumbs
     },
 
     metaTitle() {
@@ -120,62 +168,13 @@ export default {
       }
 
       return this.$t('title.station', {
-        station: this.station.name,
         celestialObject: this.station.celestialObject.name,
+        station: this.station.name,
       })
     },
 
-    crumbs() {
-      if (!this.station) {
-        return null
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.station.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
-        },
-        {
-          to: {
-            name: 'starsystem',
-            params: {
-              slug: this.station.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.station.celestialObject.slug}`,
-          },
-          label: this.station.celestialObject.starsystem.name,
-        },
-      ]
-
-      if (this.station.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: 'celestial-object',
-            params: {
-              starsystem: this.station.celestialObject.starsystem.slug,
-              slug: this.station.celestialObject.parent.slug,
-            },
-          },
-          label: this.station.celestialObject.parent.name,
-        })
-      }
-
-      crumbs.push({
-        to: {
-          name: 'celestial-object',
-          params: {
-            starsystem: this.station.celestialObject.starsystem.slug,
-            slug: this.station.celestialObject.slug,
-          },
-          hash: `#${this.station.slug}`,
-        },
-        label: this.station.celestialObject.name,
-      })
-
-      return crumbs
+    station() {
+      return stationsCollection.record
     },
   },
 

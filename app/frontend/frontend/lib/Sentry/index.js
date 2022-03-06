@@ -4,15 +4,15 @@ import * as Integrations from '@sentry/integrations'
 
 if (window.SENTRY_DSN) {
   Sentry.init({
-    environment: window.NODE_ENV,
-    release: window.GIT_REVISION,
     dsn: window.SENTRY_DSN,
+    environment: window.NODE_ENV,
     integrations: [
       new Integrations.Vue({
-        Vue,
         attachProps: true,
+        Vue,
       }),
     ],
+    release: window.GIT_REVISION,
   })
 
   Sentry.configureScope((scope) => {

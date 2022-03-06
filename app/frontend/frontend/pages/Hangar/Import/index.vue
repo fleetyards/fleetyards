@@ -73,18 +73,18 @@ export default {
   name: 'HangarImport',
 
   components: {
-    Panel,
-    LazyImage,
     BreadCrumbs,
+    LazyImage,
+    Panel,
   },
 
   mixins: [MetaInfo],
 
   data() {
     return {
-      ships: null,
-      loading: true,
       data: null,
+      loading: true,
+      ships: null,
     }
   },
 
@@ -137,6 +137,51 @@ export default {
       reader.readAsText(file)
     },
 
+    async matchWithHangar(items) {
+      const currentHangar = JSON.parse(JSON.stringify(this.ships))
+
+      const matchedItems = await items.map((item) => {
+        const found = currentHangar.find(
+          (vehicle) => vehicle.modelSlug === item.modelSlug
+        )
+
+        let state = 'new'
+
+        if (found) {
+          const index = currentHangar.findIndex(
+            (vehicle) => vehicle.modelSlug === found.modelSlug
+          )
+          currentHangar.splice(index, 1)
+          state = 'replace'
+        }
+
+        return {
+          ...item,
+          found,
+          state,
+        }
+      })
+
+      matchedItems.forEach(async (item) => {
+        if (item.found) {
+          return
+        }
+        const response = await this.$api.get(`models/${item.modelSlug}`)
+        if (!response.errors) {
+          // eslint-disable-next-line no-param-reassign
+          item.found = response.data
+        }
+      })
+
+      return [
+        ...matchedItems,
+        ...currentHangar.map((vehicle) => ({
+          ...vehicle,
+          state: 'destroy',
+        })),
+      ]
+    },
+
     async parseCSV(event) {
       this.data = await this.matchWithHangar(
         this.transformData(
@@ -152,6 +197,14 @@ export default {
       this.data = await this.matchWithHangar(
         this.transformData(JSON.parse(event.target.result))
       )
+    },
+
+    rowState(item) {
+      if (item.found) {
+        return 'nothing'
+      }
+
+      return 'create'
     },
 
     transformData(result) {
@@ -177,51 +230,6 @@ export default {
       }))
     },
 
-    async matchWithHangar(items) {
-      const currentHangar = JSON.parse(JSON.stringify(this.ships))
-
-      const matchedItems = await items.map((item) => {
-        const found = currentHangar.find(
-          (vehicle) => vehicle.modelSlug === item.modelSlug
-        )
-
-        let state = 'new'
-
-        if (found) {
-          const index = currentHangar.findIndex(
-            (vehicle) => vehicle.modelSlug === found.modelSlug
-          )
-          currentHangar.splice(index, 1)
-          state = 'replace'
-        }
-
-        return {
-          ...item,
-          state,
-          found,
-        }
-      })
-
-      matchedItems.forEach(async (item) => {
-        if (item.found) {
-          return
-        }
-        const response = await this.$api.get(`models/${item.modelSlug}`)
-        if (!response.errors) {
-          // eslint-disable-next-line no-param-reassign
-          item.found = response.data
-        }
-      })
-
-      return [
-        ...matchedItems,
-        ...currentHangar.map((vehicle) => ({
-          ...vehicle,
-          state: 'destroy',
-        })),
-      ]
-    },
-
     transformSlug(text) {
       let slug = text.trim()
       slug = slug.replace(/[ö]/g, 'oe')
@@ -242,14 +250,6 @@ export default {
       slug = slug.toLowerCase()
 
       return slug
-    },
-
-    rowState(item) {
-      if (item.found) {
-        return 'nothing'
-      }
-
-      return 'create'
     },
   },
 }

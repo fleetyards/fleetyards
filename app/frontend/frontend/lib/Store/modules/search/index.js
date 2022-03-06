@@ -2,10 +2,6 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
@@ -15,10 +11,6 @@ export default () => ({
   },
 
   mutations: {
-    reset(state) {
-      Object.assign(state, getDefaultState())
-    },
-
     addToHistory(state, payload) {
       // eslint-disable-next-line no-param-reassign
       state.history = state.history.filter(
@@ -31,5 +23,13 @@ export default () => ({
 
       state.history.unshift(payload)
     },
+
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
 })

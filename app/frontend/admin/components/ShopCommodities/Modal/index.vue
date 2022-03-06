@@ -202,23 +202,13 @@ export default {
   name: 'VehicleModal',
 
   components: {
-    Modal,
-    FilterGroup,
-    CollectionFilterGroup,
     Btn,
+    CollectionFilterGroup,
+    FilterGroup,
+    Modal,
   },
 
   props: {
-    shopId: {
-      type: String,
-      required: true,
-    },
-
-    shopCommodity: {
-      type: Object,
-      required: true,
-    },
-
     commodityItemType: {
       type: String,
       default: null,
@@ -228,50 +218,60 @@ export default {
       type: String,
       default: null,
     },
+
+    shopCommodity: {
+      type: Object,
+      required: true,
+    },
+
+    shopId: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
     return {
-      modelsCollection: modelsCollection,
       commoditiesCollection: commoditiesCollection,
-      componentsCollection: componentsCollection,
-      equipmentCollection: equipmentCollection,
-      modelModulesCollection: modelModulesCollection,
-      modelPaintsCollection: modelPaintsCollection,
-      componentItemTypeFiltersCollection: componentItemTypeFiltersCollection,
-      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
-      equipmentSlotFiltersCollection: equipmentSlotFiltersCollection,
-      submitting: false,
-      componentItemTypeFilter: null,
-      equipmentTypeFilter: null,
-      equipmentSlotFilter: null,
-      form: null,
       commodityTypeOptions: [
         {
-          value: 'Commodity',
           name: 'Commodity',
+          value: 'Commodity',
         },
         {
-          value: 'Component',
           name: 'Component',
+          value: 'Component',
         },
         {
-          value: 'Equipment',
           name: 'Equipment',
+          value: 'Equipment',
         },
         {
-          value: 'Model',
           name: 'Model',
+          value: 'Model',
         },
         {
-          value: 'ModelModule',
           name: 'Model Module',
+          value: 'ModelModule',
         },
         {
-          value: 'ModelPaint',
           name: 'Model Paint',
+          value: 'ModelPaint',
         },
       ],
+      componentItemTypeFilter: null,
+      componentItemTypeFiltersCollection: componentItemTypeFiltersCollection,
+      componentsCollection: componentsCollection,
+      equipmentCollection: equipmentCollection,
+      equipmentSlotFilter: null,
+      equipmentSlotFiltersCollection: equipmentSlotFiltersCollection,
+      equipmentTypeFilter: null,
+      equipmentTypeFiltersCollection: equipmentTypeFiltersCollection,
+      form: null,
+      modelModulesCollection: modelModulesCollection,
+      modelPaintsCollection: modelPaintsCollection,
+      modelsCollection: modelsCollection,
+      submitting: false,
     }
   },
 

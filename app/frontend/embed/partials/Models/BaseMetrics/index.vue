@@ -144,24 +144,24 @@ export default {
   name: 'ModelBaseMetrics',
 
   props: {
-    model: {
-      type: Object,
-      required: true,
-    },
-
-    title: {
-      type: Boolean,
-      default: false,
-    },
-
     detailed: {
-      type: Boolean,
       default: false,
+      type: Boolean,
+    },
+
+    model: {
+      required: true,
+      type: Object,
     },
 
     padding: {
-      type: Boolean,
       default: false,
+      type: Boolean,
+    },
+
+    title: {
+      default: false,
+      type: Boolean,
     },
   },
 }

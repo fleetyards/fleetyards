@@ -2,10 +2,6 @@ import actions from './actions'
 import getDefaultState from './state'
 
 export default () => ({
-  namespaced: true,
-
-  state: getDefaultState(),
-
   actions,
 
   getters: {
@@ -16,6 +12,10 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    add(state, payload) {
+      state.items.push(payload)
+    },
+
     reset(state) {
       Object.assign(state, getDefaultState())
     },
@@ -23,10 +23,10 @@ export default () => ({
     setItems(state, payload) {
       state.items = payload
     },
-
-    add(state, payload) {
-      state.items.push(payload)
-    },
   },
+
+  namespaced: true,
+
+  state: getDefaultState(),
   /* eslint-enable no-param-reassign */
 })

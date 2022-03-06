@@ -33,37 +33,14 @@ export default {
       resetFleetInviteToken: 'resetInviteToken',
     }),
 
-    async useInvite() {
-      if (!this.currentUser) {
-        return
-      }
+    checkInvite() {
+      return fleetsCollection.checkInvite(this.$route.params.token)
+    },
 
-      const fleet = await this.checkInvite()
-
-      if (!fleet) {
-        displayAlert({
-          text: this.$t('messages.fleetInvite.notFound'),
-        })
-
-        this.$router.push({
-          name: 'home',
-        })
-
-        return
-      }
-
-      displayConfirm({
-        text: this.$t('messages.fleetInvite.confirm', {
-          fleet: fleet.name,
-        }),
-        onConfirm: () => {
-          this.handleFleetInvite()
-        },
-        onClose: () => {
-          this.$router.push({
-            name: 'home',
-          })
-        },
+    createMember() {
+      return fleetsCollection.useInvite({
+        token: this.$route.params.token,
+        username: this.currentUser.username,
       })
     },
 
@@ -94,14 +71,37 @@ export default {
       })
     },
 
-    checkInvite() {
-      return fleetsCollection.checkInvite(this.$route.params.token)
-    },
+    async useInvite() {
+      if (!this.currentUser) {
+        return
+      }
 
-    createMember() {
-      return fleetsCollection.useInvite({
-        token: this.$route.params.token,
-        username: this.currentUser.username,
+      const fleet = await this.checkInvite()
+
+      if (!fleet) {
+        displayAlert({
+          text: this.$t('messages.fleetInvite.notFound'),
+        })
+
+        this.$router.push({
+          name: 'home',
+        })
+
+        return
+      }
+
+      displayConfirm({
+        onClose: () => {
+          this.$router.push({
+            name: 'home',
+          })
+        },
+        onConfirm: () => {
+          this.handleFleetInvite()
+        },
+        text: this.$t('messages.fleetInvite.confirm', {
+          fleet: fleet.name,
+        }),
       })
     },
   },

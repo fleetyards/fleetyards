@@ -189,7 +189,6 @@ import { BCollapse } from 'bootstrap-vue'
 
 export default {
   name: 'ModelsCompareSpeed',
-
   components: {
     BCollapse,
   },

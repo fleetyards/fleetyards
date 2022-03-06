@@ -43,11 +43,10 @@ import shopsCollection from '@/frontend/api/collections/Shops'
 
 export default {
   name: 'ShopList',
-
   components: {
-    FilterForm,
-    FilteredList,
     FilteredGrid,
+    FilteredList,
+    FilterForm,
     ShopPanel,
   },
 

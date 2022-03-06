@@ -104,11 +104,11 @@ export default {
   name: 'NavigationComponent',
 
   components: {
-    NavItem,
     FleetNav,
     FleetsNav,
-    StationsNav,
     NavFooter,
+    NavItem,
+    StationsNav,
   },
 
   data() {
@@ -128,12 +128,16 @@ export default {
       hangarPreview: 'preview',
     }),
 
-    slim() {
-      return this.navSlim && !this.mobile
-    },
-
     isFleetRoute() {
       return isFleetRoute(this.$route.name)
+    },
+
+    isModelRoute() {
+      if (!this.$route.name) {
+        return false
+      }
+
+      return this.$route.name.includes('model')
     },
 
     isRoadmapRoute() {
@@ -144,12 +148,8 @@ export default {
       return this.$route.name.includes('roadmap')
     },
 
-    isModelRoute() {
-      if (!this.$route.name) {
-        return false
-      }
-
-      return this.$route.name.includes('model')
+    slim() {
+      return this.navSlim && !this.mobile
     },
   },
 
@@ -163,15 +163,28 @@ export default {
     document.addEventListener('click', this.documentClick)
   },
 
-  destroyed() {
-    document.removeEventListener('click', this.documentClick)
-  },
-
   beforeDestroy() {
     this.close()
   },
 
+  destroyed() {
+    document.removeEventListener('click', this.documentClick)
+  },
+
   methods: {
+    close() {
+      this.$store.commit('app/closeNav')
+    },
+
+    documentClick(event) {
+      const element = this.$refs.navigation
+      const { target } = event
+
+      if (element !== target && !element.contains(target)) {
+        this.close()
+      }
+    },
+
     filterFor(route) {
       // // TODO: disabled until vue-router supports navigation to same route
       // return null
@@ -184,21 +197,8 @@ export default {
       }
     },
 
-    documentClick(event) {
-      const element = this.$refs.navigation
-      const { target } = event
-
-      if (element !== target && !element.contains(target)) {
-        this.close()
-      }
-    },
-
     open() {
       this.$store.commit('app/openNav')
-    },
-
-    close() {
-      this.$store.commit('app/closeNav')
     },
 
     reload() {
