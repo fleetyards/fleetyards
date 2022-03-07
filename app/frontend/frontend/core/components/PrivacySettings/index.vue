@@ -147,10 +147,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
 
 export default {
   name: 'PrivacySettings',
+
   components: {
+    Btn,
+    Checkbox,
     Modal,
   },
 

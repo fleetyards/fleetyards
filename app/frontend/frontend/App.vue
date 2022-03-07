@@ -72,7 +72,7 @@ export default {
 
     ...mapGetters('cookies', {
       cookies: 'cookies',
-      infoVisible: 'cookiesInfoVisible',
+      cookiesInfoVisible: 'infoVisible',
     }),
 
     ahoyAccepted() {

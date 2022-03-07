@@ -47,7 +47,7 @@ export default {
   methods: {
     ...mapActions('app', ['showOverlay', 'hideOverlay']),
 
-    close(force = false) {
+    close(_event, force = false) {
       if (this.fixed && !force) {
         return
       }
