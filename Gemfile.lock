@@ -602,6 +602,7 @@ GEM
       sshkit (~> 1.12)
     ssrf_filter (1.0.7)
     state_machine (1.2.0)
+    stringio (3.0.1)
     temple (0.8.2)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
