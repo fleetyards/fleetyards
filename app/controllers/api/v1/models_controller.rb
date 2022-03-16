@@ -226,6 +226,7 @@ module Api
         @model_modules = model.modules
           .visible
           .active
+          .order(name: :asc)
           .page(params[:page])
           .per(per_page(ModelModule))
       end
@@ -237,6 +238,7 @@ module Api
         @module_packages = model.module_packages
           .visible
           .active
+          .order(name: :asc)
           .page(params[:page])
           .per(per_page(ModelModule))
       end
@@ -248,6 +250,7 @@ module Api
         @model_upgrades = model.upgrades
           .visible
           .active
+          .order(name: :asc)
       end
 
       def paints
@@ -257,6 +260,7 @@ module Api
         @paints = model.paints
           .visible
           .active
+          .order(name: :asc)
       end
 
       def store_image

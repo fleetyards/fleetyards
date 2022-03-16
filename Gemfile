@@ -145,6 +145,9 @@ group :development do
   gem 'ed25519', require: false
 
   gem 'letter_opener'
+
+  gem 'git'
+  gem 'rdoc'
 end
 
 group :test do
