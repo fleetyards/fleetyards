@@ -27,9 +27,7 @@ class Changelog < Thor
 
     commits = git.log.since(last_version[:sha])
 
-    messages = commits.map do |commit|
-      commit.message
-    end
+    messages = commits.map(&:message)
 
     puts messages
   end
@@ -54,7 +52,6 @@ ghcr.io/fleetyards/app:#{tag}
   end
 
   no_commands do
-
     private def git
       @git ||= Git.open("#{__dir__}/../..")
     end
