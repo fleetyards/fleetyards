@@ -116,6 +116,9 @@ gem 'appsignal'
 gem 'pghero'
 gem 'pg_query', '>= 0.9.0'
 
+gem 'git'
+gem 'rdoc'
+
 group :development do
   gem 'annotate'
 
@@ -145,9 +148,6 @@ group :development do
   gem 'ed25519', require: false
 
   gem 'letter_opener'
-
-  gem 'git'
-  gem 'rdoc'
 end
 
 group :test do
