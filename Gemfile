@@ -91,7 +91,7 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
-gem 'nokogiri', '1.13.3'
+gem 'nokogiri'
 
 gem 'typhoeus'
 
