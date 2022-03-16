@@ -93,7 +93,7 @@ gem 'after_commit_everywhere'
 
 gem 'carrierwave'
 gem 'fog-aws'
-gem 'image_processing', '~> 1.0'
+gem 'image_processing', '~> 1.12'
 gem 'mini_magick'
 
 gem 'sprockets-rails', '~> 3.4.2'
