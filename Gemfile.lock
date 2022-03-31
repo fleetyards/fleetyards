@@ -471,9 +471,9 @@ GEM
       thor (~> 1.0)
     rainbow (3.1.1)
     rake (13.0.6)
-    ransack (2.4.2)
-      activerecord (>= 5.2.4)
-      activesupport (>= 5.2.4)
+    ransack (3.0.0)
+      activerecord (>= 6.0.4)
+      activesupport (>= 6.0.4)
       i18n
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
@@ -733,7 +733,7 @@ DEPENDENCIES
   rails-erd
   rails-i18n (~> 6.0)
   rails-perftest
-  ransack (~> 2.4.2)
+  ransack (~> 3.0.0)
   rdoc
   redcarpet
   redis-actionpack
