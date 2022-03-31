@@ -43,6 +43,30 @@
   content: '';
 }
 
+.loader .progress {
+  position: absolute;
+  border-radius: 0;
+  background-color: $primary;
+}
+
+.loader .progress.progress-left {
+  bottom: -10px;
+  right: 0;
+  width: 0%;
+  height: 5px;
+  max-width: 100%;
+  transition: width $transition-base-speed ease;
+}
+
+.loader .progress.progress-right {
+  bottom: 0;
+  right: -10px;
+  height: 0%;
+  width: 5px;
+  max-height: 100%;
+  transition: height $transition-base-speed ease;
+}
+
 .loader .cube2 {
   -webkit-transform: scale(1.1) rotateZ(90deg);
   transform: scale(1.1) rotateZ(90deg);
