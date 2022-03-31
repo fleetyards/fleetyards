@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.4.6'
+gem 'rails', '6.1.5'
 
 gem 'pg', '~> 1.0'
 
@@ -28,7 +28,7 @@ gem 'ahoy_matey'
 gem 'groupdate'
 gem 'rollups'
 
-gem 'i18n', '1.8.11'
+gem 'i18n', '1.10.0'
 gem 'i18n-js'
 gem 'rails-i18n', '~> 6.0'
 
@@ -98,7 +98,7 @@ gem 'mini_magick'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
-gem 'nokogiri', '1.13.1'
+gem 'nokogiri', '1.13.3'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
@@ -116,10 +116,13 @@ gem 'appsignal'
 gem 'pghero'
 gem 'pg_query', '>= 0.9.0'
 
+gem 'git'
+gem 'rdoc'
+
 group :development do
   gem 'annotate'
 
-  gem 'i18n-tasks', '~> 0.9.18'
+  gem 'i18n-tasks', '~> 1.0.5'
   gem 'listen'
   gem 'rails-erd'
 

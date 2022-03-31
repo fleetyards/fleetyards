@@ -22,7 +22,7 @@
       "Speed": 65.0,
       "Range": 520.0,
       "Size": 0.0,
-      "Capacity": 6.0,
+      "Capacity": 12.0,
       "ImpactDamage": {}
     },
     "Modes": [
@@ -42,7 +42,7 @@
     "Speed": 65.0,
     "Range": 520.0,
     "Size": 0.0,
-    "Capacity": 6.0,
+    "Capacity": 12.0,
     "ImpactDamage": {}
   }
 }
