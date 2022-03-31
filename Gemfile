@@ -122,7 +122,7 @@ gem 'rdoc'
 group :development do
   gem 'annotate'
 
-  gem 'i18n-tasks', '~> 0.9.18'
+  gem 'i18n-tasks', '~> 1.0.5'
   gem 'listen'
   gem 'rails-erd'
 
