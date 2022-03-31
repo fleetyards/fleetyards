@@ -292,7 +292,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
-    i18n (1.8.11)
+    i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     i18n-js (3.9.1)
       i18n (>= 0.6.6)
@@ -697,7 +697,7 @@ DEPENDENCIES
   haml
   haml-rails
   highline
-  i18n (= 1.8.11)
+  i18n (= 1.10.0)
   i18n-js
   i18n-tasks (~> 1.0.5)
   image_processing (~> 1.0)
