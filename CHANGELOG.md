@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.6.2](https://github.com/fleetyards/fleetyards/compare/v5.6.1...v5.6.2) (2022-04-03)
+
+
+### Bug Fixes
+
+* sort paints, modules and upgrades ([98dc964](https://github.com/fleetyards/fleetyards/commit/98dc964b08232b149649dda49aed6e43fbb6c053))
+
 ### [5.6.1](https://github.com/fleetyards/fleetyards/compare/v5.6.0...v5.6.1) (2022-02-15)
 
 ## [5.6.0](https://github.com/fleetyards/fleetyards/compare/v5.5.2...v5.6.0) (2022-02-15)
