@@ -7,9 +7,7 @@ class ApplicationMailer < ActionMailer::Base
 
   rescue_from Postmark::InactiveRecipientError, :handle_inactive_error
 
-  private
-
-  def handle_inactive_error
+  private def handle_inactive_error
     message.to.each do |email|
       EmailRejection.find_or_create_by(email: email)
     end
