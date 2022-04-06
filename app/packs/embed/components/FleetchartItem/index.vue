@@ -16,25 +16,29 @@
 import FleetchartItemImage from 'embed/partials/Fleetchart/Image'
 
 export default {
-  name: 'FleetchartItemImage',
+  name: 'FleetchartItem',
 
   components: {
     FleetchartItemImage,
   },
+
   props: {
     model: {
       type: Object,
       required: true,
     },
+
     scale: {
       type: Number,
       required: true,
     },
   },
+
   computed: {
     url() {
       return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
     },
+
     label() {
       return `${this.model.manufacturer.code} ${this.model.name}`
     },

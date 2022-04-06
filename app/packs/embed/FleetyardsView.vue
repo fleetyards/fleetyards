@@ -72,7 +72,7 @@
             >
               <FleetchartItem
                 v-for="(model, index) in fleetchartModels"
-                :key="`${index}-${model.slug}`"
+                :key="`fleetchart-item-${index}-${model.slug}`"
                 :model="model"
                 :scale="fleetchartScale"
               />
@@ -82,7 +82,7 @@
         <transition-group v-else name="fade-list" class="row" tag="div" appear>
           <div
             v-for="(model, index) in displayModels"
-            :key="`${index}-${model.slug}`"
+            :key="`panel-${index}-${model.slug}`"
             class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
           >
             <ModelPanel
