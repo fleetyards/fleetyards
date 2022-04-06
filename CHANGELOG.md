@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.6.3](https://github.com/fleetyards/fleetyards/compare/v5.6.2...v5.6.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* embed view ([e2b9562](https://github.com/fleetyards/fleetyards/commit/e2b95622b73657629c43a4c3b892091ac842673f))
+
 ### [5.6.2](https://github.com/fleetyards/fleetyards/compare/v5.6.1...v5.6.2) (2022-04-03)
 
 
