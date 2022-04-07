@@ -6,7 +6,8 @@
           <div class="col-12">
             <div class="page-actions page-actions-right">
               <Btn
-                v-show="!fleetchart && groupedButton"
+                v-show="groupedButton"
+                data-test="fleetview-grouped-button"
                 size="small"
                 @click.native="toggleGrouping"
               >
@@ -18,20 +19,9 @@
                 </template>
               </Btn>
               <Btn
-                v-show="fleetchart && groupedButton"
-                size="small"
-                @click.native="toggleFleetchartGrouping"
-              >
-                <template v-if="fleetchartGrouping">
-                  {{ $t('actions.disableGrouping') }}
-                </template>
-                <template v-else>
-                  {{ $t('actions.enableGrouping') }}
-                </template>
-              </Btn>
-              <Btn
                 v-show="!fleetchart"
                 :active="details"
+                data-test="fleetview-details-button"
                 size="small"
                 @click.native="toggleDetails"
               >
@@ -42,7 +32,11 @@
                   {{ $t('actions.showDetails') }}
                 </template>
               </Btn>
-              <Btn size="small" @click.native="toggleFleetchart">
+              <Btn
+                size="small"
+                data-test="fleetview-fleetchart-button"
+                @click.native="toggleFleetchart"
+              >
                 <template v-if="fleetchart">
                   {{ $t('actions.hideFleetchart') }}
                 </template>
@@ -53,45 +47,12 @@
             </div>
           </div>
         </div>
-        <div v-if="fleetchart && slider" class="row justify-content-lg-center">
-          <div class="col-12 col-lg-4">
-            <FleetchartSlider
-              :initial-scale="fleetchartScale"
-              @change="updateFleetchartScale"
-            />
-          </div>
-        </div>
-        <div v-if="fleetchart" class="row">
-          <div class="col-12 fleetchart-wrapper">
-            <transition-group
-              id="fleetchart"
-              name="fade-list"
-              class="row fleetchart"
-              tag="div"
-              appear
-            >
-              <FleetchartItem
-                v-for="(model, index) in fleetchartModels"
-                :key="`fleetchart-item-${index}-${model.slug}`"
-                :model="model"
-                :scale="fleetchartScale"
-              />
-            </transition-group>
-          </div>
-        </div>
-        <transition-group v-else name="fade-list" class="row" tag="div" appear>
-          <div
-            v-for="(model, index) in displayModels"
-            :key="`panel-${index}-${model.slug}`"
-            class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
-          >
-            <ModelPanel
-              :model="model"
-              :details="details"
-              :count="count(model.slug)"
-            />
-          </div>
-        </transition-group>
+        <FleetchartList
+          v-if="fleetchart"
+          :models="models"
+          :slider="fleetchartSlider"
+        />
+        <ModelList v-else :models="models" />
         <Loader :loading="loading" fixed />
       </div>
     </div>
@@ -99,9 +60,8 @@
 </template>
 
 <script>
-import ModelPanel from 'embed/components/Models/Panel'
-import FleetchartItem from 'embed/components/FleetchartItem'
-import FleetchartSlider from 'embed/partials/Fleetchart/Slider'
+import ModelList from 'embed/components/Models/List'
+import FleetchartList from 'embed/components/Fleetchart/List'
 import Loader from 'embed/components/Loader'
 import Btn from 'embed/components/Btn'
 import { mapGetters } from 'vuex'
@@ -110,116 +70,64 @@ export default {
   name: 'FleetyardsView',
 
   components: {
-    ModelPanel,
-    FleetchartItem,
+    FleetchartList,
+    ModelList,
     Loader,
     Btn,
-    FleetchartSlider,
   },
 
   data() {
     return {
-      ships: [],
+      initialShips: [],
       users: [],
-      fleetID: null,
-      vehicles: null,
-      models: null,
+      fleetId: null,
       loading: false,
-      slider: false,
+      fleetchartSlider: false,
       groupedButton: false,
+      groupedModels: [],
+      ungroupedModels: [],
     }
   },
 
   computed: {
-    ...mapGetters([
-      'fleetchartScale',
-      'details',
-      'grouping',
-      'fleetchartGrouping',
-      'fleetchart',
-    ]),
+    ...mapGetters(['details', 'grouping', 'fleetchart']),
 
-    ungroupedModels() {
-      if (this.ships.length) {
-        return this.ships
-          .map((slug) => ({
-            slug,
-            model: this.models.find((model) => model.slug === slug),
-          }))
-          .map(this.mapModel)
-          .filter((item) => item)
-          .sort(this.sortByName)
+    models() {
+      if (this.grouping) {
+        return this.groupedModels
       }
 
-      if (this.users) {
-        return [...this.models].sort(this.sortByName)
-      }
-
-      return []
-    },
-
-    displayModels() {
-      if (!this.models) {
-        return []
-      }
-
-      if (!this.grouping || (!this.fleetchartGrouping && this.fleetchart)) {
-        return this.ungroupedModels
-      }
-
-      if (this.users) {
-        return [...this.models].filter((item, pos) => {
-          const model = this.models.find(
-            (modelItem) => modelItem.slug === item.slug
-          )
-          return this.models.indexOf(model) === pos
-        })
-      }
-
-      return this.models
-    },
-
-    fleetchartModels() {
-      const fleetchartModels = this.displayModels.concat()
-      return fleetchartModels.sort((a, b) => {
-        if (a.length > b.length) {
-          return -1
-        }
-        if (a.length < b.length) {
-          return 1
-        }
-        return 0
-      })
+      return this.ungroupedModels
     },
   },
 
   watch: {
-    ships() {
-      this.fetchShips()
+    initialShips() {
+      this.fetchModels()
     },
 
     users() {
-      this.fetchHangars()
+      this.fetchHangarVehicles()
     },
 
-    vehicles() {
-      this.models = this.vehicles.map((vehicle) => vehicle.model)
+    fleetId() {
+      this.fetchFleetVehicles()
     },
   },
 
   mounted() {
-    this.ships = this.$root.ships
+    this.initialShips = this.$root.ships
     this.users = this.$root.users
-    this.fleetID = this.$root.fleetID
-    this.slider = this.$root.fleetchartSlider
+    this.fleetId = this.$root.fleetId
+    this.fleetchartSlider = this.$root.fleetchartSlider
     this.groupedButton = this.$root.groupedButton
 
-    if (this.fleetID) {
-      this.fetchFleetShips()
+    if (this.fleetId) {
+      this.fetchFleetVehicles()
     } else if (this.users) {
-      this.fetchHangars()
+      this.fetchHangarVehicles()
     } else {
-      this.fetchShips()
+      this.fetchModels()
     }
   },
 
@@ -241,20 +149,28 @@ export default {
       return item.model
     },
 
+    groupModels(models, item, pos) {
+      const firstModel = models.find((model) => model.slug === item.slug)
+      return models.indexOf(firstModel) === pos
+    },
+
+    enhanceGroupedModel(modelSlugs, model) {
+      return {
+        ...model,
+        count: modelSlugs.filter((slug) => slug === model.slug).length,
+      }
+    },
+
     updateShips(ships) {
-      this.ships = ships
+      this.initialShips = ships
     },
 
     updateUsers(users) {
       this.users = users
     },
 
-    updateFleet(fleetID) {
-      this.fleetID = fleetID
-    },
-
-    updateFleetchartScale(value) {
-      this.$store.commit('setFleetchartScale', value)
+    updateFleet(fleetId) {
+      this.fleetId = fleetId
     },
 
     toggleDetails() {
@@ -269,45 +185,53 @@ export default {
       this.$store.commit('toggleGrouping')
     },
 
-    toggleFleetchartGrouping() {
-      this.$store.commit('toggleFleetchartGrouping')
-    },
-
-    count(slug) {
-      if (!this.grouping) {
-        return null
-      }
-
-      if (this.users) {
-        return this.models.filter((model) => model.slug === slug).length
-      }
-
-      return this.ships.filter((item) => item === slug).length
-    },
-
-    async fetchShips() {
+    async fetchModels() {
       this.loading = true
+
       const response = await this.$api.get('models/embed', {
-        models: this.ships.filter((v, i, a) => a.indexOf(v) === i),
+        models: this.initialShips.filter((v, i, a) => a.indexOf(v) === i),
       })
+
       this.loading = false
 
       if (!response.error) {
-        this.models = response.data
+        const models = response.data
+        this.groupedModels = [...models].map((model) =>
+          this.enhanceGroupedModel(this.initialShips, model)
+        )
+        this.ungroupedModels = this.initialShips
+          .map((slug) => ({
+            slug,
+            model: models.find((model) => model.slug === slug),
+          }))
+          .map(this.mapModel)
+          .filter((item) => item)
+          .sort(this.sortByName)
       }
     },
 
-    async fetchFleetShips() {
+    async fetchFleetVehicles() {
       this.loading = true
-      const response = await this.$api.get(`fleets/${this.fleetID}/embed`)
+
+      const response = await this.$api.get(`fleets/${this.fleetId}/embed`)
+
       this.loading = false
 
       if (!response.error) {
-        this.vehicles = response.data
+        const models = response.data.map((vehicle) => vehicle.model)
+        this.groupedModels = [...models]
+          .filter((item, pos) => this.groupModels(models, item, pos))
+          .map((model) =>
+            this.enhanceGroupedModel(
+              models.map((item) => item.slug),
+              model
+            )
+          )
+        this.ungroupedModels = [...models].sort(this.sortByName)
       }
     },
 
-    async fetchHangars() {
+    async fetchHangarVehicles() {
       this.loading = true
 
       const response = await this.$api.get('vehicles/embed', {
@@ -317,7 +241,16 @@ export default {
       this.loading = false
 
       if (!response.error) {
-        this.vehicles = response.data
+        const models = response.data.map((vehicle) => vehicle.model)
+        this.groupedModels = [...models]
+          .filter((item, pos) => this.groupModels(models, item, pos))
+          .map((model) =>
+            this.enhanceGroupedModel(
+              models.map((item) => item.slug),
+              model
+            )
+          )
+        this.ungroupedModels = [...models].sort(this.sortByName)
       }
     },
   },

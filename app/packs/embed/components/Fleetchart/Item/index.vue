@@ -1,5 +1,9 @@
 <template>
-  <div v-tooltip.bottom="label" class="fleetchart-item fade-list-item">
+  <div
+    v-tooltip.bottom="label"
+    class="fleetchart-item fade-list-item"
+    :class="`model-${model.slug}`"
+  >
     <a :href="url" target="_blank" rel="noopener">
       <FleetchartItemImage
         v-if="model.fleetchartImage"
@@ -13,7 +17,7 @@
 </template>
 
 <script>
-import FleetchartItemImage from 'embed/partials/Fleetchart/Image'
+import FleetchartItemImage from 'embed/components/Fleetchart/Image'
 
 export default {
   name: 'FleetchartItem',

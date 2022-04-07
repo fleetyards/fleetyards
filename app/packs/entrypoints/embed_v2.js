@@ -37,7 +37,7 @@ setTimeout(() => {
     data: {
       ships: config.ships || [],
       users: config.users || [],
-      fleetID: config.fleetID || null,
+      fleetId: config.fleetId || config.fleetID || null, // fleetID is deprecated, please use fleetId
       groupedButton: config.groupedButton || false,
       fleetchartSlider: config.fleetchartSlider || false,
       frontendEndpoint: window.FRONTEND_ENDPOINT,
