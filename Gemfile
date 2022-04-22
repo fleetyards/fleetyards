@@ -53,7 +53,7 @@ gem 'useragent'
 
 gem 'redis-actionpack'
 
-gem 'ransack', '~> 2.4.2'
+gem 'ransack', '~> 3.1.0'
 
 gem 'jbuilder'
 gem 'oj'
