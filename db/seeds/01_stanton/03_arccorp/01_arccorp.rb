@@ -90,7 +90,7 @@ tdd.update!(
   hidden: false
 )
 
-arccorp_tower = Shop.find_or_initialize_by(name: 'ArcCorp Tower', station: area18)
+arccorp_tower = Shop.find_or_initialize_by(name: 'IO-North Tower', station: area18)
 arccorp_tower.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/admin.jpg').open,

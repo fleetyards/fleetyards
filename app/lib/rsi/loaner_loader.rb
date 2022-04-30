@@ -7,7 +7,7 @@ module Rsi
     def initialize(options = {})
       super
 
-      @base_url = 'https://support.robertsspaceindustries.com/hc/en-us/articles/360003093114-Loaner-Ship-Matrixs'
+      @base_url = 'https://support.robertsspaceindustries.com/api/v2/help_center/en-us/articles/360003093114'
     end
 
     def run(html = nil)
@@ -23,7 +23,7 @@ module Rsi
       missing_models = []
       model_loaners = []
 
-      (page.css('.article-body table tbody tr') || []).each do |loaner_data_row|
+      (page.css('table tbody tr') || []).each do |loaner_data_row|
         name = loaner_data_row.css('td:first-child').text.squish
         loaners = loaner_data_row.css('td:last-child').text.split(', ')
 
@@ -60,7 +60,9 @@ module Rsi
 
       return unless response.success?
 
-      response.body
+      JSON.parse(response.body).dig('article', 'body')
+    rescue JSON::ParserError
+      ''
     end
 
     private def models_map(name)

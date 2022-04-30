@@ -1,6 +1,6 @@
 microtech = CelestialObject.find_or_create_by!(name: 'microTech')
 
-shubin_sm0_13 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-13')
+shubin_sm0_13 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-13')
 shubin_sm0_13.update!(
   celestial_object: microtech,
   station_type: :outpost,
@@ -43,7 +43,7 @@ pad = 1
   end
 end
 
-shubin_sm0_10 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-10')
+shubin_sm0_10 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-10')
 shubin_sm0_10.update!(
   celestial_object: microtech,
   station_type: :outpost,
@@ -86,7 +86,7 @@ pad = 1
   end
 end
 
-shubin_sm0_18 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-18')
+shubin_sm0_18 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-18')
 shubin_sm0_18.update!(
   celestial_object: microtech,
   station_type: :outpost,
@@ -130,7 +130,7 @@ pad = 1
 end
 
 
-shubin_sm0_22 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-22')
+shubin_sm0_22 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-22')
 shubin_sm0_22.update!(
   celestial_object: microtech,
   station_type: :outpost,
