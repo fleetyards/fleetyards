@@ -67,10 +67,10 @@
       = link_to I18n.t(:"nav.admin_users"), admin_admin_users_path, class: 'nav-link'
     %li.nav-item.dropdown{class: active_nav?(%w(admin-maintenance-rsi_api_status))}
       %a.nav-link.dropdown-toggle{href: '#', id: "navbar-maintenance-dropdown", data: { toggle: 'dropdown' }}
-        = I18n.t(:"nav.maintenance.index")
+        = I18n.t(:"nav.admin_maintenance.index")
         %b.caret
       .dropdown-menu{"aria-labelledby": "navbar-maintenance-dropdown"}
-        = link_to I18n.t(:"nav.maintenance.rsi_api_status"), rsi_api_status_admin_maintenance_path, class: "dropdown-item #{active_nav?('admin-maintenance-rsi_api_status')}"
+        = link_to I18n.t(:"nav.admin_maintenance.rsi_api_status"), rsi_api_status_admin_maintenance_path, class: "dropdown-item #{active_nav?('admin-maintenance-rsi_api_status')}"
         %a.dropdown-item{href: admin_sidekiq_web_url, target: "_blank"}
           = I18n.t(:"nav.workers")
         %a.dropdown-item{href: admin_pg_hero_url, target: "_blank"}

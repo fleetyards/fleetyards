@@ -29,7 +29,7 @@ en:
     equipment: Equipment
     home: Home
     images: Images
-    maintenance:
+    admin_maintenance:
       index: Maintenance
       rsi_api_status: RSI API Status
     manufacturers: Manufacturers
