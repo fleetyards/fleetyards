@@ -29,7 +29,9 @@ en:
     equipment: Equipment
     home: Home
     images: Images
-    maintenance: Maintenance
+    maintenance:
+      index: Maintenance
+      rsi_api_status: RSI API Status
     manufacturers: Manufacturers
     model:
       overview: Index
@@ -65,6 +67,8 @@ en:
       edit: Edit Component
       index: Components
       new: New Component
+    admin_maintenance:
+      rsi_api_status: RSI API Status
     confirm: Confirm Account
     default: FleetYards.net
     default_short: FleetYards

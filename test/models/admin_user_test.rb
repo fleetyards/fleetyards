@@ -5,6 +5,7 @@
 # Table name: admin_users
 #
 #  id                        :uuid             not null, primary key
+#  avatar                    :string
 #  consumed_timestep         :integer
 #  current_sign_in_at        :datetime
 #  current_sign_in_ip        :string(255)
