@@ -8,8 +8,8 @@ module Admin
       @active_nav = 'admin-maintenance-rsi_api_status'
 
       @rsi_api_status = RsiRequestLog.where(resolved: false)
-                          .order(created_at: :desc)
-                          .all
+        .order(created_at: :desc)
+        .all
     end
   end
 end
