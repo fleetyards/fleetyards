@@ -11,8 +11,7 @@ on:
       - 'config/version.rb'
       - 'package.json'
   workflow_dispatch:
-    branches:
-      - '**'
+
 env:
   RUBY_VERSION: 3.0.3
 
