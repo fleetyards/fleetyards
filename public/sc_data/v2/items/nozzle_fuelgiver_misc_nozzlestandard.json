@@ -1,0 +1,32 @@
+{
+  "ClassName": "Nozzle_FuelGiver_MISC_NozzleStandard",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "DockingCollar.UNDEFINED",
+  "Name": "RN-7s",
+  "Description": "Manufacturer: MISC\nItem Type: Fuel Nozzle\nSafe Flow Rate: 0.4 SCU/s\n\nThe nozzle of choice for the acclaimed MISC Starfarer, the RN-7s was designed to be a flexible fuel transfer option suited for a variety of situations.\n",
+  "Manufacturer": {
+    "Code": "MIS",
+    "Name": "Musashi Industrial & Starflight Concern"
+  },
+  "Durability": {
+    "Health": 350.0
+  },
+  "Ports": [
+    {
+      "PortName": "itemport_vehicle_attach",
+      "Size": 8,
+      "Types": [
+        "NOITEM_Vehicle"
+      ],
+      "Flags": [
+        "Docking_Request_Accepting"
+      ]
+    },
+    {
+      "PortName": "itemport_camera_test",
+      "Size": 0,
+      "Loadout": "CameraSourceFuelNozzle"
+    }
+  ]
+}

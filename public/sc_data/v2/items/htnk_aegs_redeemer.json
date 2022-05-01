@@ -3,7 +3,7 @@
   "Size": 2,
   "Grade": 1,
   "Type": "FuelTank.Fuel",
-  "Name": "HTNK_AEGS_Redeemer",
+  "Name": "Internal Tank",
   "Manufacturer": {
     "Code": "AEG",
     "Name": "Aegis Dynamics"
@@ -12,6 +12,6 @@
     "flightReady"
   ],
   "HydrogenFuelTank": {
-    "Capacity": 375000.0
+    "Capacity": 330000.0
   }
 }

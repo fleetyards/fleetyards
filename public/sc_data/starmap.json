@@ -48,6 +48,18 @@
     "path": "libs/foundry/records/starmap/pu/asteroidcluster_template.xml"
   },
   {
+    "name": "Maria Pure of Heart",
+    "description": "Named after Maria Hurston, beloved mother of former Hurston Dynamics executive Chesterfield Hurston, this renowned hospital is ready to help all those in Lorville who are in need of healing.",
+    "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "f1759f46-e3c0-4dc1-94bc-c94488b58913",
+    "size": "0.1",
+    "reference": "4a4a8455-02d4-4c4a-bb97-a47f0e006c13",
+    "path": "libs/foundry/records/starmap/pu/hospital_stanton1_lorville.xml"
+  },
+  {
     "name": "Empire Health Services Medstation",
     "description": "Operated by the UEE, Empire Health Services is dedicated to  tending to the wellbeing of all the people of ArcCorp's Area18 while providing fair and unbiased medical care.",
     "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
@@ -495,7 +507,7 @@
   },
   {
     "name": "ARC-L1 Wide Forest Station",
-    "description": "Located at the L1 Lagrange point of ArcCorp (Stanton III), Rest & Relax's Wide Forest Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of ArcCorp (Stanton III), Rest & Relax's Wide Forest Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -579,7 +591,7 @@
   },
   {
     "name": "CRU-L1 Ambitious Dream Station",
-    "description": "Located at the L1 Lagrange point of Crusader (Stanton II), Rest & Relax's Ambitious Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of Crusader (Stanton II), Rest & Relax's Ambitious Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Personal Armor, Personal Weapons, Clothing, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -603,13 +615,13 @@
   },
   {
     "name": "CRU-L4 Shallow Fields Station",
-    "description": "Located at the L4 Lagrange point of Crusader (Stanton II), Rest & Relax's Shallow Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L4 Lagrange point of Crusader (Stanton II), Rest & Relax's Shallow Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
     "parent": "c67d1b8f-32ee-4fe1-8a66-bd1bfa04c5c0",
-    "size": "2000",
+    "size": "2500",
     "reference": "8f23301d-0711-47ec-9efb-76a6d8d1c9e6",
     "path": "libs/foundry/records/starmap/pu/station/reststop/rr_cru_l4.xml"
   },
@@ -627,7 +639,7 @@
   },
   {
     "name": "CRU-L5 Beautiful Glen Station",
-    "description": "Located at the L5 Lagrange point of Crusader (Stanton II), Rest & Relax's Beautiful Glen Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L5 Lagrange point of Crusader (Stanton II), Rest & Relax's Beautiful Glen Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -651,7 +663,7 @@
   },
   {
     "name": "HUR-L1 Green Glade Station",
-    "description": "Located at the L1 Lagrange point of Hurston (Stanton I), Rest & Relax's Green Glade Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of Hurston (Stanton I), Rest & Relax's Green Glade Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Personal Armor, Personal Weapons, Clothing, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -675,7 +687,7 @@
   },
   {
     "name": "HUR-L2 Faithful Dream Station",
-    "description": "Located at the L2 Lagrange point of Hurston (Stanton I), Rest & Relax's Faithful Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L2 Lagrange point of Hurston (Stanton I), Rest & Relax's Faithful Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -699,13 +711,13 @@
   },
   {
     "name": "HUR-L3 Thundering Express Station",
-    "description": "Located at the L3 Lagrange point of Hurston (Stanton I), Rest & Relax's Thundering Express Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L3 Lagrange point of Hurston (Stanton I), Rest & Relax's Thundering Express Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
     "parent": "f070fde0-0792-4edf-9a77-bd693d414bd2",
-    "size": "2000",
+    "size": "2500",
     "reference": "de5f2d1d-78e5-4273-8028-c06690c03685",
     "path": "libs/foundry/records/starmap/pu/station/reststop/rr_hur_l3.xml"
   },
@@ -723,7 +735,7 @@
   },
   {
     "name": "HUR-L4 Melodic Fields Station",
-    "description": "Located at the L4 Lagrange point of Hurston (Stanton I), Rest & Relax's Melodic Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L4 Lagrange point of Hurston (Stanton I), Rest & Relax's Melodic Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Weapons, Personal Weapons, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -747,7 +759,7 @@
   },
   {
     "name": "HUR-L5 High Course Station",
-    "description": "Located at the L5 Lagrange point of Hurston (Stanton I), Rest & Relax's High Course Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L5 Lagrange point of Hurston (Stanton I), Rest & Relax's High Course Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -783,7 +795,7 @@
   },
   {
     "name": "MIC-L1 Shallow Frontier Station",
-    "description": "Located at the L1 Lagrange point of microTech (Stanton IV), Rest & Relax's Shallow Frontier Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of microTech (Stanton IV), Rest & Relax's Shallow Frontier Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Personal Weapons, Personal Armor, Clothing, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -2119,7 +2131,7 @@
   },
   {
     "name": "Everus Harbor",
-    "description": "Hurston's primary port of call for Lorville for all large-scale incoming and outgoing cargo. Everus Harbor has been outfitted with a handful of amenities for capital ships and travelers looking for a quick stopover before heading down to the planet surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, and Habs.",
+    "description": "Hurston's primary port of call for Lorville for all large-scale incoming and outgoing cargo. Everus Harbor has been outfitted with a handful of amenities for capital ships and travelers looking for a quick stopover before heading down to the planet surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -3536,7 +3548,7 @@
   },
   {
     "name": "Baijini Point",
-    "description": "The primary cargo and transfer point for ArcCorp. Perfect as a waypoint on your down or back from the surface, Baijini Point features plenty of amenities for travelers while also providing a top-tier loading/unloading system for capital ships that are unable to head down to the surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, and Habs.",
+    "description": "The primary cargo and transfer point for ArcCorp. Perfect as a waypoint on your down or back from the surface, Baijini Point features plenty of amenities for travelers while also providing a top-tier loading/unloading system for capital ships that are unable to head down to the surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Personal Weapons, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -3969,7 +3981,7 @@
   },
   {
     "name": "Port Tressler",
-    "description": "Located in the trade lane above microTech, Port Tressler is the main transfer hub for New Babbage. Millions of SCU pass through this station everyday between exports from microTech and the other companies on the surface and the resources and trade coming in from the other systems. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, and Habs.",
+    "description": "Located in the trade lane above microTech, Port Tressler is the main transfer hub for New Babbage. Millions of SCU pass through this station everyday between exports from microTech and the other companies on the surface and the resources and trade coming in from the other systems. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",

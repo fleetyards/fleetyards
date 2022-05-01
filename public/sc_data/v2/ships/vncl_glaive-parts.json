@@ -326,7 +326,7 @@
                       "flightReady"
                     ],
                     "HydrogenFuelIntake": {
-                      "Rate": 16.0
+                      "Rate": 0.0
                     },
                     "PowerConnection": {
                       "PowerBase": 0.5,
@@ -365,7 +365,7 @@
                       "flightReady"
                     ],
                     "HydrogenFuelIntake": {
-                      "Rate": 16.0
+                      "Rate": 0.0
                     },
                     "PowerConnection": {
                       "PowerBase": 0.5,
@@ -399,7 +399,7 @@
                     "Size": 1,
                     "Grade": 1,
                     "Type": "FuelTank.Fuel",
-                    "Name": "HTNK_VNCL_Glaive",
+                    "Name": "Internal Tank",
                     "Tags": [
                       "flightReady"
                     ],
@@ -428,7 +428,7 @@
                     "Size": 1,
                     "Grade": 1,
                     "Type": "FuelTank.Fuel",
-                    "Name": "HTNK_VNCL_Glaive",
+                    "Name": "Internal Tank",
                     "Tags": [
                       "flightReady"
                     ],
@@ -865,7 +865,7 @@
                 "Name": "hardpoint_thruster_retro_left",
                 "Port": {
                   "PortName": "hardpoint_thruster_retro_left",
-                  "Size": 2,
+                  "Size": 1,
                   "Loadout": "VNCL_Glaive_Thruster_Retro_Fixed_Left",
                   "InstalledItem": {
                     "ClassName": "VNCL_Glaive_Thruster_Retro_Fixed_Left",
@@ -915,7 +915,7 @@
                 "Name": "hardpoint_thruster_retro_right",
                 "Port": {
                   "PortName": "hardpoint_thruster_retro_right",
-                  "Size": 2,
+                  "Size": 1,
                   "Loadout": "VNCL_Glaive_Thruster_Retro_Fixed_Right",
                   "InstalledItem": {
                     "ClassName": "VNCL_Glaive_Thruster_Retro_Fixed_Right",
@@ -1594,8 +1594,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -1629,8 +1628,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -1664,8 +1662,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -1699,8 +1696,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -2063,8 +2059,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -2098,8 +2093,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -2133,8 +2127,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -2168,8 +2161,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 699.84,
-                                          "Energy": 2799.36
+                                          "Physical": 2799.36
                                         }
                                       }
                                     },
@@ -2574,7 +2566,8 @@
                 "Radar": {
                   "DetectionLifetime": 0.0,
                   "AltitudeCeiling": 0.0,
-                  "CrossSectionOcclusion": false
+                  "CrossSectionOcclusion": false,
+                  "Signatures": []
                 },
                 "Ports": [
                   {
@@ -2652,7 +2645,7 @@
                   },
                   {
                     "PortName": "Display_HUD",
-                    "Size": 0,
+                    "Size": 1,
                     "Loadout": "Projector_HUD_Generic",
                     "InstalledItem": {
                       "ClassName": "Projector_HUD_Generic",
@@ -3329,6 +3322,17 @@
               ],
               "Category": "UNKNOWN",
               "Uneditable": true
+            }
+          },
+          {
+            "Name": "hardpoint_cockpit_flair_hang",
+            "Port": {
+              "PortName": "hardpoint_cockpit_flair_hang",
+              "Size": 1,
+              "Types": [
+                "Flair_Cockpit.Flair_Hanging"
+              ],
+              "Category": "UNKNOWN"
             }
           }
         ],

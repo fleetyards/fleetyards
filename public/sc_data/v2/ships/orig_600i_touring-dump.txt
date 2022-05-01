@@ -106,8 +106,8 @@ ORIG_600i_Touring
    hardpoint_main_lower_right                     S2   MainThruster                                      ORIG_600i_Thruster_Main                                          Main thrusters                          
    hardpoint_main_lower_left                      S2   MainThruster                                      ORIG_600i_Thruster_Main                                          Main thrusters                          
    hardpoint_remote_turret_top                    S6   Turret.GunTurret                                  ORIG_600i_SCItem_Remote_Turret                                   Remote turrets                          
-    turret_left                                   S3   WeaponGun.Gun                                     ASAD_DistortionRepeater_S3                                       Weapon hardpoints                       
-    turret_right                                  S3   WeaponGun.Gun                                     ASAD_DistortionRepeater_S3                                       Weapon hardpoints                       
+    turret_left                                   S3   WeaponGun.Gun                                     KLWE_LaserRepeater_S3                                            Weapon hardpoints                       
+    turret_right                                  S3   WeaponGun.Gun                                     KLWE_LaserRepeater_S3                                            Weapon hardpoints                       
   hardpoint_controller_missile                    S1   MissileController                                 Controller_Missile                                               UNKNOWN                                 
   hardpoint_lights_ext                            S1   MultiLight                                                                                                         UNKNOWN                                 
   hardpoint_thruster_mav_front_top_left           S2   ManneuverThruster                                 ORIG_600i_Thruster_Mav_Fixed_01                                  Maneuvering thrusters                   
@@ -145,9 +145,11 @@ ORIG_600i_Touring
    hardpoint_module_dashboard_right               S4   SeatDashboard                                     ORIG_600i_Dashboard_Expl_Module_Right                            UNKNOWN                                 
    hardpoint_module_dashboard_left                S4   SeatDashboard                                                                                                      UNKNOWN                                 
    hardpoint_remote_turret_bottom                 S6   Turret.GunTurret                                  ORIG_600i_SCItem_Remote_Turret_Bottom                            Remote turrets                          
-    turret_left                                   S3   WeaponGun.Gun                                     ASAD_DistortionRepeater_S3                                       Weapon hardpoints                       
-    turret_right                                  S3   WeaponGun.Gun                                     ASAD_DistortionRepeater_S3                                       Weapon hardpoints                       
+    turret_left                                   S3   WeaponGun.Gun                                     KLWE_LaserRepeater_S3                                            Weapon hardpoints                       
+    turret_right                                  S3   WeaponGun.Gun                                     KLWE_LaserRepeater_S3                                            Weapon hardpoints                       
     hardpoint_thruster_mav_rear_bottom_front      S2   ManneuverThruster                                 ORIG_600i_Thruster_Mav_Fixed_02                                  Maneuvering thrusters                   
    hardpoint_weapon_centre                        S5   Turret.Gun, Turret.GunTurret, WeaponGun.Gun       BEHR_LaserCannon_S5                                              Weapon hardpoints                       
     magazine_attach                               S0                                                                                                                      UNKNOWN                                 
+  hardpoint_cockpit_flair                         S1   Flair_Cockpit.Flair_Static                                                                                         UNKNOWN                                 
+  hardpoint_cockpit_flair_hang                    S1   Flair_Cockpit.Flair_Hanging                                                                                        UNKNOWN                                 
 

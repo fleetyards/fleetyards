@@ -703,7 +703,8 @@
                 "Radar": {
                   "DetectionLifetime": 0.0,
                   "AltitudeCeiling": 0.0,
-                  "CrossSectionOcclusion": false
+                  "CrossSectionOcclusion": false,
+                  "Signatures": []
                 },
                 "Ports": [
                   {
@@ -1323,7 +1324,7 @@
                                 "Size": 1,
                                 "Grade": 1,
                                 "Type": "FuelTank.Fuel",
-                                "Name": "HTNK_XIAN_Scout",
+                                "Name": "Internal Tank",
                                 "Tags": [
                                   "flightReady"
                                 ],
@@ -1353,7 +1354,7 @@
                                 "Size": 1,
                                 "Grade": 1,
                                 "Type": "FuelTank.Fuel",
-                                "Name": "HTNK_XIAN_Scout",
+                                "Name": "Internal Tank",
                                 "Tags": [
                                   "flightReady"
                                 ],
@@ -1468,9 +1469,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -1549,9 +1550,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -1673,9 +1674,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -1754,9 +1755,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -2355,7 +2356,7 @@
                 "Size": 1,
                 "Grade": 1,
                 "Type": "QuantumFuelTank.QuantumFuel",
-                "Name": "QTNK_XIAN_Scout",
+                "Name": "Internal Tank",
                 "Tags": [
                   "flightReady"
                 ],

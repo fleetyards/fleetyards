@@ -391,7 +391,8 @@
                 "Radar": {
                   "DetectionLifetime": 0.0,
                   "AltitudeCeiling": 0.0,
-                  "CrossSectionOcclusion": false
+                  "CrossSectionOcclusion": false,
+                  "Signatures": []
                 },
                 "Ports": [
                   {
@@ -899,7 +900,7 @@
                   },
                   {
                     "PortName": "Display_HUD",
-                    "Size": 0,
+                    "Size": 1,
                     "Loadout": "Projector_HUD_Generic",
                     "InstalledItem": {
                       "ClassName": "Projector_HUD_Generic",
@@ -1219,7 +1220,7 @@
                       "flightReady"
                     ],
                     "HydrogenFuelIntake": {
-                      "Rate": 30.0
+                      "Rate": 0.0
                     },
                     "PowerConnection": {
                       "PowerBase": 0.5,
@@ -1258,7 +1259,7 @@
                       "flightReady"
                     ],
                     "HydrogenFuelIntake": {
-                      "Rate": 30.0
+                      "Rate": 0.0
                     },
                     "PowerConnection": {
                       "PowerBase": 0.5,
@@ -1292,7 +1293,7 @@
                     "Size": 1,
                     "Grade": 1,
                     "Type": "FuelTank.Fuel",
-                    "Name": "HTNK_VNCL_Scythe",
+                    "Name": "Internal Tank",
                     "Tags": [
                       "flightReady"
                     ],
@@ -1321,7 +1322,7 @@
                     "Size": 1,
                     "Grade": 1,
                     "Type": "FuelTank.Fuel",
-                    "Name": "HTNK_VNCL_Scythe",
+                    "Name": "Internal Tank",
                     "Tags": [
                       "flightReady"
                     ],
@@ -2625,8 +2626,7 @@
                                   },
                                   "Missile": {
                                     "Damage": {
-                                      "Physical": 583.2,
-                                      "Energy": 2332.8
+                                      "Physical": 2332.8
                                     }
                                   }
                                 },
@@ -2660,8 +2660,7 @@
                                   },
                                   "Missile": {
                                     "Damage": {
-                                      "Physical": 583.2,
-                                      "Energy": 2332.8
+                                      "Physical": 2332.8
                                     }
                                   }
                                 },
@@ -2695,8 +2694,7 @@
                                   },
                                   "Missile": {
                                     "Damage": {
-                                      "Physical": 583.2,
-                                      "Energy": 2332.8
+                                      "Physical": 2332.8
                                     }
                                   }
                                 },
@@ -2730,8 +2728,7 @@
                                   },
                                   "Missile": {
                                     "Damage": {
-                                      "Physical": 583.2,
-                                      "Energy": 2332.8
+                                      "Physical": 2332.8
                                     }
                                   }
                                 },
@@ -2982,8 +2979,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 583.2,
-                                          "Energy": 2332.8
+                                          "Physical": 2332.8
                                         }
                                       }
                                     },
@@ -3017,8 +3013,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 583.2,
-                                          "Energy": 2332.8
+                                          "Physical": 2332.8
                                         }
                                       }
                                     },
@@ -3052,8 +3047,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 583.2,
-                                          "Energy": 2332.8
+                                          "Physical": 2332.8
                                         }
                                       }
                                     },
@@ -3087,8 +3081,7 @@
                                       },
                                       "Missile": {
                                         "Damage": {
-                                          "Physical": 583.2,
-                                          "Energy": 2332.8
+                                          "Physical": 2332.8
                                         }
                                       }
                                     },

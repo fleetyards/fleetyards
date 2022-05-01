@@ -86,5 +86,6 @@ AEGS_Gladius_PIR
   hardpoint_quantum_drive                         S1   QuantumDrive.QDrive                               QDRV_TARS_S01_Expedition_SCItem                                  Quantum drives                          
   hardpoint_quantum_fuel_tank                     S1   QuantumFuelTank.QuantumFuel                       QTNK_AEGS_Gladius                                                Quantum fuel tanks                      
   hardpoint_controller_comms                      S1   CommsController                                   Controller_Comms                                                 UNKNOWN                                 
+  hardpoint_cockpit_flair                         S1   Flair_Cockpit.Flair_Static                                                                                         UNKNOWN                                 
   hardpoint_controller_scanner                    S1   Scanner                                           test_scanner                                                     Scanners                                
 

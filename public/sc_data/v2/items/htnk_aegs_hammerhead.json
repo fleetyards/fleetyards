@@ -3,7 +3,7 @@
   "Size": 6,
   "Grade": 1,
   "Type": "FuelTank.Fuel",
-  "Name": "HTNK_AEGS_Hammerhead",
+  "Name": "Internal Tank",
   "Manufacturer": {
     "Code": "AEG",
     "Name": "Aegis Dynamics"
@@ -12,6 +12,6 @@
     "flightReady"
   ],
   "HydrogenFuelTank": {
-    "Capacity": 3472500.0
+    "Capacity": 7577280.0
   }
 }

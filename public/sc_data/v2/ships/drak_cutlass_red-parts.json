@@ -667,21 +667,21 @@
                       {
                         "PortName": "hardpoint_class_2",
                         "Size": 2,
-                        "Loadout": "ASAD_DistortionRepeater_S2",
+                        "Loadout": "KLWE_LaserRepeater_S2",
                         "InstalledItem": {
-                          "ClassName": "ASAD_DistortionRepeater_S2",
+                          "ClassName": "KLWE_LaserRepeater_S2",
                           "Size": 2,
                           "Grade": 1,
                           "Type": "WeaponGun.Gun",
-                          "Name": "DR Model-XJ2 Repeater",
-                          "Description": "Manufacturer: Associated Science & Development\nItem Type: Distortion Repeater\nSize: 2\n\nAdvancing the field of distortion weapons, the DR Model-XJ2 repeater from ASD provides tactical energy disruption that will severely limit any targeted ships operational capacity.",
+                          "Name": "CF-227 Badger Repeater",
+                          "Description": "Manufacturer: Klaus & Werner\nItem Type: Laser Repeater\nSize: 2\n\nThe CF-227 Badger is Klaus & Werner’s dependable size two repeating laser. Its increased output and high rate of fire make it a solid contender in any fight.",
                           "Manufacturer": {
-                            "Code": "ASAD",
-                            "Name": "[PH] PH Associated Science and Development"
+                            "Code": "KLA",
+                            "Name": "Klaus & Werner"
                           },
                           "Tags": [
-                            "ASAD",
-                            "DistortionRepeater",
+                            "KLWE",
+                            "LaserRepeater",
                             "flightReady",
                             "weaponMountUsable"
                           ],
@@ -696,72 +696,54 @@
                           "HeatConnection": {
                             "ThermalEnergyBase": 100.0,
                             "ThermalEnergyDraw": 200.0,
-                            "CoolingRate": 94.74356
+                            "CoolingRate": 100.95
                           },
                           "Weapon": {
                             "Ammunition": {
                               "Speed": 1400.0,
                               "Range": 1540.0000000000002,
-                              "Size": 1.0,
+                              "Size": 2.0,
                               "Capacity": 0.0,
                               "ImpactDamage": {
-                                "Distortion": 1.0
-                              },
-                              "DetonationDamage": {
-                                "Distortion": 42.0
+                                "Energy": 40.0
                               }
                             },
                             "Modes": [
                               {
                                 "Name": "Single",
                                 "LocalisedName": "[SEMI]",
-                                "RoundsPerMinute": 295.0,
+                                "RoundsPerMinute": 600.0,
                                 "FireType": "sequence",
                                 "AmmoPerShot": 1.0,
                                 "PelletsPerShot": 1.0,
                                 "DamagePerShot": {
-                                  "Distortion": 43.0
+                                  "Energy": 40.0
                                 },
                                 "DamagePerSecond": {
-                                  "Distortion": 211.41666666666669
+                                  "Energy": 400.0
                                 }
                               }
                             ],
                             "Consumption": {
-                              "RequestedRegenPerSec": 1032.5,
+                              "RequestedRegenPerSec": 2000.0,
                               "Cooldown": 1.0,
-                              "CostPerBullet": 42.0,
-                              "RequestedAmmoLoad": 6195.0
+                              "CostPerBullet": 40.0,
+                              "RequestedAmmoLoad": 12000.0
                             }
                           },
                           "Ammunition": {
                             "Speed": 1400.0,
                             "Range": 1540.0000000000002,
-                            "Size": 1.0,
+                            "Size": 2.0,
                             "Capacity": 0.0,
                             "ImpactDamage": {
-                              "Distortion": 1.0
-                            },
-                            "DetonationDamage": {
-                              "Distortion": 42.0
+                              "Energy": 40.0
                             }
                           },
                           "Ports": [
                             {
                               "PortName": "BAR1",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_Barrel_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_Barrel_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.Barrel",
-                                "Name": "ASAD_DistortionRepeater_Barrel_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.Barrel"
                               ],
@@ -770,18 +752,6 @@
                             {
                               "PortName": "MEC",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_FiringMechanism_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_FiringMechanism_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.FiringMechanism",
-                                "Name": "ASAD_DistortionRepeater_FiringMechanism_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.FiringMechanism"
                               ],
@@ -790,18 +760,6 @@
                             {
                               "PortName": "POW",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_PowerArray_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_PowerArray_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.PowerArray",
-                                "Name": "ASAD_DistortionRepeater_PowerArray_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.PowerArray"
                               ],
@@ -810,18 +768,6 @@
                             {
                               "PortName": "VEN",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_Ventilation_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_Ventilation_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.Ventilation",
-                                "Name": "ASAD_DistortionRepeater_Ventilation_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.Ventilation"
                               ],
@@ -948,7 +894,7 @@
                   "flightReady"
                 ],
                 "HydrogenFuelIntake": {
-                  "Rate": 23.5
+                  "Rate": 10.0
                 },
                 "PowerConnection": {
                   "PowerBase": 0.5,
@@ -982,7 +928,7 @@
                 "Size": 1,
                 "Grade": 1,
                 "Type": "FuelTank.Fuel",
-                "Name": "HTNK_DRAK_Cutlass_Red",
+                "Name": "Internal Tank",
                 "Tags": [
                   "flightReady"
                 ],
@@ -1012,7 +958,7 @@
                 "Size": 1,
                 "Grade": 1,
                 "Type": "FuelTank.Fuel",
-                "Name": "HTNK_DRAK_Cutlass_Red",
+                "Name": "Internal Tank",
                 "Tags": [
                   "flightReady"
                 ],
@@ -1131,7 +1077,7 @@
                 "Size": 1,
                 "Grade": 1,
                 "Type": "QuantumFuelTank.QuantumFuel",
-                "Name": "QTNK_DRAK_Cutlass_Red",
+                "Name": "Internal Tank",
                 "Tags": [
                   "flightReady"
                 ],
@@ -1181,7 +1127,8 @@
                 "Radar": {
                   "DetectionLifetime": 0.0,
                   "AltitudeCeiling": 0.0,
-                  "CrossSectionOcclusion": false
+                  "CrossSectionOcclusion": false,
+                  "Signatures": []
                 },
                 "Ports": [
                   {
@@ -1545,7 +1492,7 @@
                   "flightReady"
                 ],
                 "HydrogenFuelIntake": {
-                  "Rate": 23.5
+                  "Rate": 10.0
                 },
                 "PowerConnection": {
                   "PowerBase": 0.5,
@@ -1566,6 +1513,17 @@
               ],
               "Category": "Fuel intakes",
               "Uneditable": true
+            }
+          },
+          {
+            "Name": "hardpoint_cockpit_flair_hang",
+            "Port": {
+              "PortName": "hardpoint_cockpit_flair_hang",
+              "Size": 1,
+              "Types": [
+                "Flair_Cockpit.Flair_Hanging"
+              ],
+              "Category": "UNKNOWN"
             }
           },
           {
@@ -1760,21 +1718,21 @@
                       {
                         "PortName": "hardpoint_class_2",
                         "Size": 2,
-                        "Loadout": "ASAD_DistortionRepeater_S2",
+                        "Loadout": "KLWE_LaserRepeater_S2",
                         "InstalledItem": {
-                          "ClassName": "ASAD_DistortionRepeater_S2",
+                          "ClassName": "KLWE_LaserRepeater_S2",
                           "Size": 2,
                           "Grade": 1,
                           "Type": "WeaponGun.Gun",
-                          "Name": "DR Model-XJ2 Repeater",
-                          "Description": "Manufacturer: Associated Science & Development\nItem Type: Distortion Repeater\nSize: 2\n\nAdvancing the field of distortion weapons, the DR Model-XJ2 repeater from ASD provides tactical energy disruption that will severely limit any targeted ships operational capacity.",
+                          "Name": "CF-227 Badger Repeater",
+                          "Description": "Manufacturer: Klaus & Werner\nItem Type: Laser Repeater\nSize: 2\n\nThe CF-227 Badger is Klaus & Werner’s dependable size two repeating laser. Its increased output and high rate of fire make it a solid contender in any fight.",
                           "Manufacturer": {
-                            "Code": "ASAD",
-                            "Name": "[PH] PH Associated Science and Development"
+                            "Code": "KLA",
+                            "Name": "Klaus & Werner"
                           },
                           "Tags": [
-                            "ASAD",
-                            "DistortionRepeater",
+                            "KLWE",
+                            "LaserRepeater",
                             "flightReady",
                             "weaponMountUsable"
                           ],
@@ -1789,72 +1747,54 @@
                           "HeatConnection": {
                             "ThermalEnergyBase": 100.0,
                             "ThermalEnergyDraw": 200.0,
-                            "CoolingRate": 94.74356
+                            "CoolingRate": 100.95
                           },
                           "Weapon": {
                             "Ammunition": {
                               "Speed": 1400.0,
                               "Range": 1540.0000000000002,
-                              "Size": 1.0,
+                              "Size": 2.0,
                               "Capacity": 0.0,
                               "ImpactDamage": {
-                                "Distortion": 1.0
-                              },
-                              "DetonationDamage": {
-                                "Distortion": 42.0
+                                "Energy": 40.0
                               }
                             },
                             "Modes": [
                               {
                                 "Name": "Single",
                                 "LocalisedName": "[SEMI]",
-                                "RoundsPerMinute": 295.0,
+                                "RoundsPerMinute": 600.0,
                                 "FireType": "sequence",
                                 "AmmoPerShot": 1.0,
                                 "PelletsPerShot": 1.0,
                                 "DamagePerShot": {
-                                  "Distortion": 43.0
+                                  "Energy": 40.0
                                 },
                                 "DamagePerSecond": {
-                                  "Distortion": 211.41666666666669
+                                  "Energy": 400.0
                                 }
                               }
                             ],
                             "Consumption": {
-                              "RequestedRegenPerSec": 1032.5,
+                              "RequestedRegenPerSec": 2000.0,
                               "Cooldown": 1.0,
-                              "CostPerBullet": 42.0,
-                              "RequestedAmmoLoad": 6195.0
+                              "CostPerBullet": 40.0,
+                              "RequestedAmmoLoad": 12000.0
                             }
                           },
                           "Ammunition": {
                             "Speed": 1400.0,
                             "Range": 1540.0000000000002,
-                            "Size": 1.0,
+                            "Size": 2.0,
                             "Capacity": 0.0,
                             "ImpactDamage": {
-                              "Distortion": 1.0
-                            },
-                            "DetonationDamage": {
-                              "Distortion": 42.0
+                              "Energy": 40.0
                             }
                           },
                           "Ports": [
                             {
                               "PortName": "BAR1",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_Barrel_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_Barrel_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.Barrel",
-                                "Name": "ASAD_DistortionRepeater_Barrel_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.Barrel"
                               ],
@@ -1863,18 +1803,6 @@
                             {
                               "PortName": "MEC",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_FiringMechanism_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_FiringMechanism_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.FiringMechanism",
-                                "Name": "ASAD_DistortionRepeater_FiringMechanism_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.FiringMechanism"
                               ],
@@ -1883,18 +1811,6 @@
                             {
                               "PortName": "POW",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_PowerArray_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_PowerArray_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.PowerArray",
-                                "Name": "ASAD_DistortionRepeater_PowerArray_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.PowerArray"
                               ],
@@ -1903,18 +1819,6 @@
                             {
                               "PortName": "VEN",
                               "Size": 1,
-                              "Loadout": "ASAD_DistortionRepeater_Ventilation_S2",
-                              "InstalledItem": {
-                                "ClassName": "ASAD_DistortionRepeater_Ventilation_S2",
-                                "Size": 1,
-                                "Grade": 1,
-                                "Type": "WeaponAttachment.Ventilation",
-                                "Name": "ASAD_DistortionRepeater_Ventilation_S2",
-                                "Manufacturer": {
-                                  "Code": "ASAD",
-                                  "Name": "[PH] PH Associated Science and Development"
-                                }
-                              },
                               "Types": [
                                 "WeaponAttachment.Ventilation"
                               ],
@@ -2414,7 +2318,8 @@
                 "Radar": {
                   "DetectionLifetime": 0.0,
                   "AltitudeCeiling": 0.0,
-                  "CrossSectionOcclusion": false
+                  "CrossSectionOcclusion": false,
+                  "Signatures": []
                 },
                 "Ports": [
                   {
@@ -2486,39 +2391,6 @@
             "Port": {
               "PortName": "hardpoint_bed",
               "Size": 1,
-              "Loadout": "Bed_Bunk_DRAK_Cutlass",
-              "InstalledItem": {
-                "ClassName": "Bed_Bunk_DRAK_Cutlass",
-                "Size": 1,
-                "Grade": 1,
-                "Type": "Usable.UNDEFINED",
-                "Name": "Bed_Bunk_DRAK_Cutlass",
-                "Ports": [
-                  {
-                    "PortName": "Mattress",
-                    "Size": 2,
-                    "Types": [
-                      "Seat"
-                    ],
-                    "Category": "Seats"
-                  },
-                  {
-                    "PortName": "Pillow",
-                    "Size": 2,
-                    "Category": "UNKNOWN"
-                  },
-                  {
-                    "PortName": "Mattress_Top",
-                    "Size": 2,
-                    "Category": "UNKNOWN"
-                  },
-                  {
-                    "PortName": "Pillow_Top",
-                    "Size": 2,
-                    "Category": "UNKNOWN"
-                  }
-                ]
-              },
               "Types": [
                 "Usable"
               ],
@@ -2534,39 +2406,6 @@
             "Port": {
               "PortName": "hardpoint_bed_rear",
               "Size": 1,
-              "Loadout": "Bed_Bunk_DRAK_Cutlass",
-              "InstalledItem": {
-                "ClassName": "Bed_Bunk_DRAK_Cutlass",
-                "Size": 1,
-                "Grade": 1,
-                "Type": "Usable.UNDEFINED",
-                "Name": "Bed_Bunk_DRAK_Cutlass",
-                "Ports": [
-                  {
-                    "PortName": "Mattress",
-                    "Size": 2,
-                    "Types": [
-                      "Seat"
-                    ],
-                    "Category": "Seats"
-                  },
-                  {
-                    "PortName": "Pillow",
-                    "Size": 2,
-                    "Category": "UNKNOWN"
-                  },
-                  {
-                    "PortName": "Mattress_Top",
-                    "Size": 2,
-                    "Category": "UNKNOWN"
-                  },
-                  {
-                    "PortName": "Pillow_Top",
-                    "Size": 2,
-                    "Category": "UNKNOWN"
-                  }
-                ]
-              },
               "Types": [
                 "Usable"
               ],
@@ -2608,7 +2447,8 @@
                 "Radar": {
                   "DetectionLifetime": 0.0,
                   "AltitudeCeiling": 0.0,
-                  "CrossSectionOcclusion": false
+                  "CrossSectionOcclusion": false,
+                  "Signatures": []
                 },
                 "Ports": [
                   {
@@ -2800,7 +2640,7 @@
               "Loadout": "test_ping_S2",
               "InstalledItem": {
                 "ClassName": "test_ping_S2",
-                "Size": 1,
+                "Size": 2,
                 "Grade": 1,
                 "Type": "Ping.UNDEFINED",
                 "Name": "Ping",
@@ -4222,9 +4062,9 @@
                         },
                         "Thruster": {
                           "ThrustCapacity": 1999364.0,
-                          "FuelRate": 1.25E-05,
+                          "FuelRate": 1.05E-05,
                           "Type": "Retro",
-                          "MaxThrustFuelRate": 24.992050000000003
+                          "MaxThrustFuelRate": 20.993322
                         },
                         "Durability": {
                           "Health": 12340.0,
@@ -4269,9 +4109,9 @@
                         },
                         "Thruster": {
                           "ThrustCapacity": 6937529.0,
-                          "FuelRate": 1.25E-05,
+                          "FuelRate": 1.05E-05,
                           "Type": "Main",
-                          "MaxThrustFuelRate": 86.71911250000001
+                          "MaxThrustFuelRate": 72.8440545
                         },
                         "Durability": {
                           "Health": 11500.0,
@@ -4592,9 +4432,9 @@
                         },
                         "Thruster": {
                           "ThrustCapacity": 1999364.0,
-                          "FuelRate": 1.25E-05,
+                          "FuelRate": 1.05E-05,
                           "Type": "Retro",
-                          "MaxThrustFuelRate": 24.992050000000003
+                          "MaxThrustFuelRate": 20.993322
                         },
                         "Durability": {
                           "Health": 12340.0,
@@ -4639,9 +4479,9 @@
                         },
                         "Thruster": {
                           "ThrustCapacity": 6937529.0,
-                          "FuelRate": 1.25E-05,
+                          "FuelRate": 1.05E-05,
                           "Type": "Main",
-                          "MaxThrustFuelRate": 86.71911250000001
+                          "MaxThrustFuelRate": 72.8440545
                         },
                         "Durability": {
                           "Health": 11500.0,
