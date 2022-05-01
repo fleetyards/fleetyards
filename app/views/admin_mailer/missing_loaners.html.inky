@@ -3,15 +3,15 @@
 </h4>
 
 <br>
-<h5>Missing Loaners</h5>
+<h5>Missing Models</h5>
 <br>
 
-<% @missing_loaners.each do |loaner| %>
+<% @missing_models.each do |model| %>
 <p>
-  <b><%= loaner[:name] %></b><br>
-  Loaners: <%= loaner[:loaners] %>
+  <b><%= model[:name] %></b><br>
+  Loaners: <%= model[:loaners] %>
 </p>
-<% if loaner != @missing_loaners.last %>
+<% if model != @missing_models.last %>
 <hr>
 <% end %>
 <% end %>
@@ -19,16 +19,15 @@
 <br>
 <br>
 
-<h5>Missing Models</h5>
+<h5>Missing Loaners</h5>
 <br>
 
-<% @missing_models.each do |model| %>
+<% @missing_loaners.each do |loaner| %>
 <p>
-  <b><%= model[:loaner] %></b><br>
-  Model ID: <%= model[:model_id] %><br>
-  Model Name: <%= model[:model] %>
+  <b><%= loaner[:loaner] %></b><br>
+  For Model: <%= loaner[:model] %> (<%= loaner[:model_id] %>)
 </p>
-<% if model != @missing_models.last %>
+<% if loaner != @missing_loaners.last %>
 <hr>
 <% end %>
 <% end %>
