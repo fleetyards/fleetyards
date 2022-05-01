@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.7.0](https://github.com/fleetyards/fleetyards/compare/v5.6.5...v5.7.0) (2022-05-01)
+
+
+### Features
+
+* **sc_data:** Update Gamefiles to 3.17.0 Live ([5afb08b](https://github.com/fleetyards/fleetyards/commit/5afb08ba149118821bc40df72d5aa3dd024677f4))
+
 ### [5.6.5](https://github.com/fleetyards/fleetyards/compare/v5.6.4...v5.6.5) (2022-04-30)
 
 ### [5.6.4](https://github.com/fleetyards/fleetyards/compare/v5.6.3...v5.6.4) (2022-04-30)
