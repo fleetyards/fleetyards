@@ -1037,38 +1037,6 @@
                 }
               },
               {
-                "name": "hardpoint_personal_storage_01",
-                "damagemax": 0.0,
-                "class": "ItemPort",
-                "ItemPort": {
-                  "minsize": 1,
-                  "maxsize": 1,
-                  "flags": "selfphys uneditable",
-                  "Types": [
-                    {
-                      "type": "Cargo",
-                      "subtypes": ""
-                    }
-                  ]
-                }
-              },
-              {
-                "name": "hardpoint_personal_storage_02",
-                "damagemax": 0.0,
-                "class": "ItemPort",
-                "ItemPort": {
-                  "minsize": 1,
-                  "maxsize": 1,
-                  "flags": "selfphys uneditable",
-                  "Types": [
-                    {
-                      "type": "Cargo",
-                      "subtypes": ""
-                    }
-                  ]
-                }
-              },
-              {
                 "name": "Wing_Right",
                 "damageMax": 1880.0,
                 "damagemax": 0.0,
@@ -1674,24 +1642,6 @@
                     {
                       "pipeClass": "Fuel",
                       "pipe": "IntakeFuel"
-                    }
-                  ]
-                }
-              },
-              {
-                "name": "hardpoint_cockpit_flair_hang",
-                "damagemax": 0.0,
-                "class": "ItemPort",
-                "ItemPort": {
-                  "minsize": 1,
-                  "maxsize": 1,
-                  "display_name": "@itemPort_port_Flair02",
-                  "flags": "",
-                  "requiredTags": "",
-                  "Types": [
-                    {
-                      "type": "Flair_Cockpit",
-                      "subtypes": "Flair_Hanging"
                     }
                   ]
                 }
@@ -2607,7 +2557,7 @@
                 "class": "ItemPort",
                 "ItemPort": {
                   "minsize": 1,
-                  "maxsize": 1,
+                  "maxsize": 2,
                   "flags": "invisible uneditable",
                   "Types": [
                     {
@@ -2650,6 +2600,11 @@
                     }
                   ]
                 }
+              },
+              {
+                "name": "hardpoint_Toilet",
+                "damagemax": 0.0,
+                "class": "ItemPort"
               },
               {
                 "name": "hardpoint_weapon_rack",
@@ -2918,6 +2873,56 @@
                       ]
                     }
                   }
+                }
+              },
+              {
+                "name": "hardpoint_cockpit_flair_hang",
+                "damagemax": 0.0,
+                "class": "ItemPort",
+                "ItemPort": {
+                  "minsize": 1,
+                  "maxsize": 1,
+                  "display_name": "@itemPort_port_Flair02",
+                  "flags": "",
+                  "requiredTags": "",
+                  "Types": [
+                    {
+                      "type": "Flair_Cockpit",
+                      "subtypes": "Flair_Hanging"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "hardpoint_personal_storage_01",
+                "damagemax": 0.0,
+                "class": "ItemPort",
+                "ItemPort": {
+                  "minsize": 1,
+                  "maxsize": 1,
+                  "flags": "selfphys uneditable",
+                  "Types": [
+                    {
+                      "type": "Cargo",
+                      "subtypes": ""
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "hardpoint_personal_storage_02",
+                "damagemax": 0.0,
+                "class": "ItemPort",
+                "ItemPort": {
+                  "minsize": 1,
+                  "maxsize": 1,
+                  "flags": "selfphys uneditable",
+                  "Types": [
+                    {
+                      "type": "Cargo",
+                      "subtypes": ""
+                    }
+                  ]
                 }
               }
             ],

@@ -7,6 +7,7 @@ AEGS_Gladius_PIR
   hardpoint_thruster_retro_left                   S3   ManneuverThruster                                 AEGS_Gladius_Thruster_Retro                                      Retro thrusters                         
   hardpoint_armor                                 S1   Armor                                             ARMR_AEGS_Gladius                                                Armor                                   
   hardpoint_controller_flight                     S1   FlightController                                  Controller_Flight_AEGS_Gladius                                   UNKNOWN                                 
+  hardpoint_cockpit_flair                         S1   Flair_Cockpit.Flair_Static                                                                                         UNKNOWN                                 
   hardpoint_gun_nose                              S3   Turret.Gun, Turret.GunTurret, WeaponGun.Gun       Mount_Gimbal_S3                                                  Weapon hardpoints                       
    hardpoint_class_2                              S2   WeaponGun.Gun                                     GATS_BallisticGatling_S2                                         Weapon hardpoints                       
   hardpoint_radar                                 S1   Radar.ShortRangeRadar, Radar.MidRangeRadar        RADR_GRNP_S01_Voir                                               Radars                                  
@@ -86,6 +87,5 @@ AEGS_Gladius_PIR
   hardpoint_quantum_drive                         S1   QuantumDrive.QDrive                               QDRV_TARS_S01_Expedition_SCItem                                  Quantum drives                          
   hardpoint_quantum_fuel_tank                     S1   QuantumFuelTank.QuantumFuel                       QTNK_AEGS_Gladius                                                Quantum fuel tanks                      
   hardpoint_controller_comms                      S1   CommsController                                   Controller_Comms                                                 UNKNOWN                                 
-  hardpoint_cockpit_flair                         S1   Flair_Cockpit.Flair_Static                                                                                         UNKNOWN                                 
   hardpoint_controller_scanner                    S1   Scanner                                           test_scanner                                                     Scanners                                
 

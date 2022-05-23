@@ -3061,6 +3061,86 @@
   "InterdictionHardpoints": [],
   "CargoGrids": [
     {
+      "PortName": "hardpoint_cargogrid_main_left",
+      "Size": 1,
+      "Loadout": "ORIG_600_CargoGrid_Main",
+      "InstalledItem": {
+        "ClassName": "ORIG_600_CargoGrid_Main",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Cargo.UNDEFINED",
+        "Name": "ORIG_600_CargoGrid_Main",
+        "Manufacturer": {
+          "Code": "ORIG",
+          "Name": "Origin Jumpworks"
+        },
+        "CargoGrid": {
+          "Capacity": 8.0,
+          "Width": 5.0,
+          "Height": 2.5,
+          "Depth": 1.25
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "Cargo"
+      ],
+      "Flags": [
+        "selfphys",
+        "uneditable"
+      ],
+      "Category": "Cargo grids",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_cargogrid_main_right",
+      "Size": 1,
+      "Loadout": "ORIG_600_CargoGrid_Main",
+      "InstalledItem": {
+        "ClassName": "ORIG_600_CargoGrid_Main",
+        "Size": 1,
+        "Grade": 1,
+        "Type": "Cargo.UNDEFINED",
+        "Name": "ORIG_600_CargoGrid_Main",
+        "Manufacturer": {
+          "Code": "ORIG",
+          "Name": "Origin Jumpworks"
+        },
+        "CargoGrid": {
+          "Capacity": 8.0,
+          "Width": 5.0,
+          "Height": 2.5,
+          "Depth": 1.25
+        },
+        "PowerConnection": {
+          "PowerBase": 0.0,
+          "PowerDraw": 1.0
+        },
+        "HeatConnection": {
+          "ThermalEnergyBase": 10.0,
+          "ThermalEnergyDraw": 20.0,
+          "CoolingRate": 1.0
+        }
+      },
+      "Types": [
+        "Cargo"
+      ],
+      "Flags": [
+        "selfphys",
+        "uneditable"
+      ],
+      "Category": "Cargo grids",
+      "Uneditable": true
+    },
+    {
       "PortName": "hardpoint_cargogrid_module_centre",
       "Size": 1,
       "Loadout": "ORIG_600_CargoGrid_Module_Large",
@@ -3158,86 +3238,6 @@
           "Capacity": 6.0,
           "Width": 2.5,
           "Height": 3.75,
-          "Depth": 1.25
-        },
-        "PowerConnection": {
-          "PowerBase": 0.0,
-          "PowerDraw": 1.0
-        },
-        "HeatConnection": {
-          "ThermalEnergyBase": 10.0,
-          "ThermalEnergyDraw": 20.0,
-          "CoolingRate": 1.0
-        }
-      },
-      "Types": [
-        "Cargo"
-      ],
-      "Flags": [
-        "selfphys",
-        "uneditable"
-      ],
-      "Category": "Cargo grids",
-      "Uneditable": true
-    },
-    {
-      "PortName": "hardpoint_cargogrid_main_left",
-      "Size": 1,
-      "Loadout": "ORIG_600_CargoGrid_Main",
-      "InstalledItem": {
-        "ClassName": "ORIG_600_CargoGrid_Main",
-        "Size": 1,
-        "Grade": 1,
-        "Type": "Cargo.UNDEFINED",
-        "Name": "ORIG_600_CargoGrid_Main",
-        "Manufacturer": {
-          "Code": "ORIG",
-          "Name": "Origin Jumpworks"
-        },
-        "CargoGrid": {
-          "Capacity": 8.0,
-          "Width": 5.0,
-          "Height": 2.5,
-          "Depth": 1.25
-        },
-        "PowerConnection": {
-          "PowerBase": 0.0,
-          "PowerDraw": 1.0
-        },
-        "HeatConnection": {
-          "ThermalEnergyBase": 10.0,
-          "ThermalEnergyDraw": 20.0,
-          "CoolingRate": 1.0
-        }
-      },
-      "Types": [
-        "Cargo"
-      ],
-      "Flags": [
-        "selfphys",
-        "uneditable"
-      ],
-      "Category": "Cargo grids",
-      "Uneditable": true
-    },
-    {
-      "PortName": "hardpoint_cargogrid_main_right",
-      "Size": 1,
-      "Loadout": "ORIG_600_CargoGrid_Main",
-      "InstalledItem": {
-        "ClassName": "ORIG_600_CargoGrid_Main",
-        "Size": 1,
-        "Grade": 1,
-        "Type": "Cargo.UNDEFINED",
-        "Name": "ORIG_600_CargoGrid_Main",
-        "Manufacturer": {
-          "Code": "ORIG",
-          "Name": "Origin Jumpworks"
-        },
-        "CargoGrid": {
-          "Capacity": 8.0,
-          "Width": 5.0,
-          "Height": 2.5,
           "Depth": 1.25
         },
         "PowerConnection": {
@@ -3576,7 +3576,7 @@
     },
     {
       "PortName": "hardpoint_ping",
-      "Size": 1,
+      "Size": 2,
       "Loadout": "test_ping_S2",
       "InstalledItem": {
         "ClassName": "test_ping_S2",

@@ -839,7 +839,7 @@
                 "Name": "hardpoint_ping",
                 "Port": {
                   "PortName": "hardpoint_ping",
-                  "Size": 2,
+                  "Size": 1,
                   "Loadout": "test_ping_S2",
                   "InstalledItem": {
                     "ClassName": "test_ping_S2",
@@ -861,92 +861,6 @@
                   ],
                   "Category": "Pings",
                   "Uneditable": true
-                }
-              },
-              {
-                "Name": "hardpoint_powerplant_left",
-                "Port": {
-                  "PortName": "hardpoint_powerplant_left",
-                  "Size": 2,
-                  "Loadout": "POWR_SASU_S02_DayBreak_SCItem",
-                  "InstalledItem": {
-                    "ClassName": "POWR_SASU_S02_DayBreak_SCItem",
-                    "Size": 2,
-                    "Grade": 3,
-                    "Type": "PowerPlant.Power",
-                    "Name": "DayBreak",
-                    "Description": "Item Type: Power Plant\nManufacturer: Sakura Sun\nSize: 2\nGrade: C\nClass: Civilian\n\nSakura Sun knows exactly what you need. The DayBreak is a straightforward power plant that provides parity to its performance, durability, and stealth stats.",
-                    "Manufacturer": {
-                      "Code": "SASU",
-                      "Name": "Sakura Sun"
-                    },
-                    "PowerPlant": {
-                      "Output": 5937.5
-                    },
-                    "Durability": {
-                      "Health": 1296.0,
-                      "Lifetime": 34.56
-                    },
-                    "PowerConnection": {
-                      "PowerBase": 0.0,
-                      "PowerDraw": 5937.5
-                    },
-                    "HeatConnection": {
-                      "ThermalEnergyBase": 56589.29,
-                      "ThermalEnergyDraw": 66875.0,
-                      "CoolingRate": 100.0276
-                    }
-                  },
-                  "Types": [
-                    "PowerPlant"
-                  ],
-                  "Flags": [
-                    "invisible"
-                  ],
-                  "Category": "Power plants"
-                }
-              },
-              {
-                "Name": "hardpoint_powerplant_right",
-                "Port": {
-                  "PortName": "hardpoint_powerplant_right",
-                  "Size": 2,
-                  "Loadout": "POWR_SASU_S02_DayBreak_SCItem",
-                  "InstalledItem": {
-                    "ClassName": "POWR_SASU_S02_DayBreak_SCItem",
-                    "Size": 2,
-                    "Grade": 3,
-                    "Type": "PowerPlant.Power",
-                    "Name": "DayBreak",
-                    "Description": "Item Type: Power Plant\nManufacturer: Sakura Sun\nSize: 2\nGrade: C\nClass: Civilian\n\nSakura Sun knows exactly what you need. The DayBreak is a straightforward power plant that provides parity to its performance, durability, and stealth stats.",
-                    "Manufacturer": {
-                      "Code": "SASU",
-                      "Name": "Sakura Sun"
-                    },
-                    "PowerPlant": {
-                      "Output": 5937.5
-                    },
-                    "Durability": {
-                      "Health": 1296.0,
-                      "Lifetime": 34.56
-                    },
-                    "PowerConnection": {
-                      "PowerBase": 0.0,
-                      "PowerDraw": 5937.5
-                    },
-                    "HeatConnection": {
-                      "ThermalEnergyBase": 56589.29,
-                      "ThermalEnergyDraw": 66875.0,
-                      "CoolingRate": 100.0276
-                    }
-                  },
-                  "Types": [
-                    "PowerPlant"
-                  ],
-                  "Flags": [
-                    "invisible"
-                  ],
-                  "Category": "Power plants"
                 }
               },
               {
@@ -1005,22 +919,6 @@
                     "invisible"
                   ],
                   "Category": "Quantum drives"
-                }
-              },
-              {
-                "Name": "hardpoint_quantum_interdiction_generator",
-                "Port": {
-                  "PortName": "hardpoint_quantum_interdiction_generator",
-                  "Size": 1,
-                  "Types": [
-                    "QuantumInterdictionGenerator"
-                  ],
-                  "Flags": [
-                    "invisible",
-                    "uneditable"
-                  ],
-                  "Category": "QIG hardpoints",
-                  "Uneditable": true
                 }
               },
               {
@@ -5719,7 +5617,7 @@
                         "Loadout": "KRIG_P72_Archimedes",
                         "InstalledItem": {
                           "ClassName": "KRIG_P72_Archimedes",
-                          "Size": 2,
+                          "Size": 1,
                           "Grade": 1,
                           "Type": "NOITEM_Vehicle.Vehicle_Spaceship",
                           "Name": "Kruger P-72 Archimedes",
@@ -5779,6 +5677,25 @@
                               ],
                               "Flags": [
                                 "dockingport1"
+                              ],
+                              "Category": "UNKNOWN"
+                            },
+                            {
+                              "PortName": "hardpoint_air_traffic_controller",
+                              "Size": 1,
+                              "Loadout": "KRIG_P52_Merlin_ATCDataManager",
+                              "InstalledItem": {
+                                "ClassName": "KRIG_P52_Merlin_ATCDataManager",
+                                "Size": 1,
+                                "Grade": 1,
+                                "Type": "AirTrafficController.UNDEFINED",
+                                "Name": "KRIG_P52_Merlin_ATCDataManager",
+                                "Tags": [
+                                  "KRIG_Merlin_Base"
+                                ]
+                              },
+                              "Types": [
+                                "AirTrafficController"
                               ],
                               "Category": "UNKNOWN"
                             }
@@ -7287,6 +7204,108 @@
                 "Flair_Floor"
               ],
               "Category": "UNKNOWN"
+            }
+          },
+          {
+            "Name": "hardpoint_powerplant_left",
+            "Port": {
+              "PortName": "hardpoint_powerplant_left",
+              "Size": 2,
+              "Loadout": "POWR_SASU_S02_DayBreak_SCItem",
+              "InstalledItem": {
+                "ClassName": "POWR_SASU_S02_DayBreak_SCItem",
+                "Size": 2,
+                "Grade": 3,
+                "Type": "PowerPlant.Power",
+                "Name": "DayBreak",
+                "Description": "Item Type: Power Plant\nManufacturer: Sakura Sun\nSize: 2\nGrade: C\nClass: Civilian\n\nSakura Sun knows exactly what you need. The DayBreak is a straightforward power plant that provides parity to its performance, durability, and stealth stats.",
+                "Manufacturer": {
+                  "Code": "SASU",
+                  "Name": "Sakura Sun"
+                },
+                "PowerPlant": {
+                  "Output": 5937.5
+                },
+                "Durability": {
+                  "Health": 1296.0,
+                  "Lifetime": 34.56
+                },
+                "PowerConnection": {
+                  "PowerBase": 0.0,
+                  "PowerDraw": 5937.5
+                },
+                "HeatConnection": {
+                  "ThermalEnergyBase": 56589.29,
+                  "ThermalEnergyDraw": 66875.0,
+                  "CoolingRate": 100.0276
+                }
+              },
+              "Types": [
+                "PowerPlant"
+              ],
+              "Flags": [
+                "invisible"
+              ],
+              "Category": "Power plants"
+            }
+          },
+          {
+            "Name": "hardpoint_powerplant_right",
+            "Port": {
+              "PortName": "hardpoint_powerplant_right",
+              "Size": 2,
+              "Loadout": "POWR_SASU_S02_DayBreak_SCItem",
+              "InstalledItem": {
+                "ClassName": "POWR_SASU_S02_DayBreak_SCItem",
+                "Size": 2,
+                "Grade": 3,
+                "Type": "PowerPlant.Power",
+                "Name": "DayBreak",
+                "Description": "Item Type: Power Plant\nManufacturer: Sakura Sun\nSize: 2\nGrade: C\nClass: Civilian\n\nSakura Sun knows exactly what you need. The DayBreak is a straightforward power plant that provides parity to its performance, durability, and stealth stats.",
+                "Manufacturer": {
+                  "Code": "SASU",
+                  "Name": "Sakura Sun"
+                },
+                "PowerPlant": {
+                  "Output": 5937.5
+                },
+                "Durability": {
+                  "Health": 1296.0,
+                  "Lifetime": 34.56
+                },
+                "PowerConnection": {
+                  "PowerBase": 0.0,
+                  "PowerDraw": 5937.5
+                },
+                "HeatConnection": {
+                  "ThermalEnergyBase": 56589.29,
+                  "ThermalEnergyDraw": 66875.0,
+                  "CoolingRate": 100.0276
+                }
+              },
+              "Types": [
+                "PowerPlant"
+              ],
+              "Flags": [
+                "invisible"
+              ],
+              "Category": "Power plants"
+            }
+          },
+          {
+            "Name": "hardpoint_quantum_interdiction_generator",
+            "Port": {
+              "PortName": "hardpoint_quantum_interdiction_generator",
+              "Size": 1,
+              "Types": [
+                "QuantumInterdictionGenerator"
+              ],
+              "Flags": [
+                "invisible",
+                "uneditable"
+              ],
+              "Category": "QIG hardpoints",
+              "Uneditable": true
             }
           }
         ],
