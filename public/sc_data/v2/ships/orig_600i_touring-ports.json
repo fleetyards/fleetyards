@@ -3061,6 +3061,32 @@
   "InterdictionHardpoints": [],
   "CargoGrids": [
     {
+      "PortName": "hardpoint_cargogrid_main_left",
+      "Size": 1,
+      "Types": [
+        "Cargo"
+      ],
+      "Flags": [
+        "selfphys",
+        "uneditable"
+      ],
+      "Category": "Cargo grids",
+      "Uneditable": true
+    },
+    {
+      "PortName": "hardpoint_cargogrid_main_right",
+      "Size": 1,
+      "Types": [
+        "Cargo"
+      ],
+      "Flags": [
+        "selfphys",
+        "uneditable"
+      ],
+      "Category": "Cargo grids",
+      "Uneditable": true
+    },
+    {
       "PortName": "hardpoint_cargogrid_module_centre",
       "Size": 1,
       "Types": [
@@ -3143,32 +3169,6 @@
           "CoolingRate": 1.0
         }
       },
-      "Types": [
-        "Cargo"
-      ],
-      "Flags": [
-        "selfphys",
-        "uneditable"
-      ],
-      "Category": "Cargo grids",
-      "Uneditable": true
-    },
-    {
-      "PortName": "hardpoint_cargogrid_main_left",
-      "Size": 1,
-      "Types": [
-        "Cargo"
-      ],
-      "Flags": [
-        "selfphys",
-        "uneditable"
-      ],
-      "Category": "Cargo grids",
-      "Uneditable": true
-    },
-    {
-      "PortName": "hardpoint_cargogrid_main_right",
-      "Size": 1,
       "Types": [
         "Cargo"
       ],
@@ -3495,7 +3495,7 @@
     },
     {
       "PortName": "hardpoint_ping",
-      "Size": 1,
+      "Size": 2,
       "Loadout": "test_ping_S2",
       "InstalledItem": {
         "ClassName": "test_ping_S2",

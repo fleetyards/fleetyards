@@ -4187,7 +4187,7 @@
   "Avionics": [
     {
       "PortName": "hardpoint_ping",
-      "Size": 2,
+      "Size": 1,
       "Loadout": "test_ping_S2",
       "InstalledItem": {
         "ClassName": "test_ping_S2",

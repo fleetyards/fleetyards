@@ -9,16 +9,22 @@ json.slug model.slug
 json.rsi_slug model.rsi_slug
 json.description model.description
 json.length model.length.to_f
+json.length_label model.length_label
 json.fleetchart_length (model.fleetchart_offset_length || model.length).to_f
 json.beam model.beam.to_f
+json.beam_label model.beam_label
 json.height model.height.to_f
+json.height_label model.height_label
 json.mass model.mass.to_f
+json.mass_label model.mass.to_f
 json.cargo model.cargo.to_f
 json.cargo_label model.cargo_label
 json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size
 json.quantum_fuel_tank_size model.quantum_fuel_tank_size
 json.min_crew model.min_crew
+json.min_crew_label model.min_crew
 json.max_crew model.max_crew
+json.max_crew_label model.max_crew
 json.scm_speed model.scm_speed
 json.afterburner_speed model.afterburner_speed
 json.ground_speed model.ground_speed

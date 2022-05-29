@@ -14,7 +14,7 @@ module Discord
     end
 
     private def get_url
-      frontend_url('roadmap/changes')
+      frontend_roadmap_changes_url
     end
   end
 end
