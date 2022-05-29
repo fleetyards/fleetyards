@@ -20,7 +20,7 @@ module Discord
     end
 
     private def get_url
-      frontend_url("ships/#{model.slug}")
+      frontend_model_url(slug: model.slug)
     end
   end
 end

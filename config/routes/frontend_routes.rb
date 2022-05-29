@@ -1,15 +1,18 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints: ->(req) { req.subdomain.blank? || %w[admin api].exclude?(req.subdomain) } do
+namespace :frontend,
+          path: '',
+          host: Rails.configuration.app.domain,
+          constraints: ->(req) { req.subdomain.blank? || %w[admin api].exclude?(req.subdomain) } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
   get 'compare/ships', to: redirect('/ships/compare')
 
   get 'search' => 'base#index'
 
-  get 'ships' => 'base#index'
-  get 'ships/:slug' => 'base#model'
-  get 'ships/:slug/images' => 'base#model_images'
-  get 'ships/:slug/videos' => 'base#model_videos'
+  get 'ships' => 'base#index', as: :models
+  get 'ships/:slug' => 'base#model', as: :model
+  get 'ships/:slug/images' => 'base#model_images', as: :model_images
+  get 'ships/:slug/videos' => 'base#model_videos', as: :model_videos
 
   get 'hangar' => 'base#index'
   get 'hangar/preview' => 'base#index'
@@ -25,11 +28,11 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
   get 'tools/trade-routes' => 'base#index'
   get 'trade-routes', to: redirect('/tools/trade-routes')
 
-  get 'stations' => 'base#index'
-  get 'shops' => 'base#index'
-  get 'stations/:slug' => 'base#station'
-  get 'stations/:slug/images' => 'base#station_images'
-  get 'stations/:station_slug/shops/:slug' => 'base#shop'
+  get 'stations' => 'base#index', as: :stations
+  get 'shops' => 'base#index', as: :shops
+  get 'stations/:slug' => 'base#station', as: :station
+  get 'stations/:slug/images' => 'base#station_images', as: :station_images
+  get 'stations/:station_slug/shops/:slug' => 'base#shop', as: :station_shop
   get 'starsystems' => 'base#index'
   get 'starsystems/:slug' => 'base#starsystem'
   get 'starsystems/:starsystem_slug/celestial-objects/:slug' => 'base#celestial_object'
@@ -54,9 +57,9 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
 
   get 'stats' => 'base#index'
 
-  get 'roadmap' => 'base#index'
-  get 'roadmap/changes' => 'base#index'
-  get 'roadmap/ships' => 'base#index'
+  get 'roadmap' => 'base#index', as: :roadmap
+  get 'roadmap/changes' => 'base#index', as: :roadmap_changes
+  get 'roadmap/ships' => 'base#index', as: :roadmap_ships
 
   get 'impressum' => 'base#index'
   get 'privacy-policy' => 'base#index'

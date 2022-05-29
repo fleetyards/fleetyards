@@ -5,6 +5,8 @@ require 'discordrb/webhooks'
 # rubocop:disable Naming/AccessorMethodName
 module Discord
   class Webhook
+    include Routing
+
     attr_accessor :webhook_endpoint, :options, :title, :message, :url
 
     def initialize(options = {})
@@ -43,10 +45,6 @@ module Discord
         message,
         url,
       ].compact.join("\n")
-    end
-
-    private def frontend_url(path)
-      "#{Rails.configuration.app.frontend_endpoint}/#{path}"
     end
 
     private def client
