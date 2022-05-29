@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.8.0](https://github.com/fleetyards/fleetyards/compare/v5.7.1...v5.8.0) (2022-05-29)
+
+
+### Bug Fixes
+
+* **tests:** add missing attributes ([adc2dea](https://github.com/fleetyards/fleetyards/commit/adc2deaa99cbb79d3e2e1dc58472ef6b7ae5d55a))
+
 ### [5.7.1](https://github.com/fleetyards/fleetyards/compare/v5.7.0...v5.7.1) (2022-05-25)
 
 ## [5.7.0](https://github.com/fleetyards/fleetyards/compare/v5.6.5...v5.7.0) (2022-05-01)
