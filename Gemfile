@@ -20,6 +20,7 @@ gem 'slim-rails'
 
 gem 'searchkick'
 
+gem 'discordrb'
 gem 'discordrb-webhooks'
 
 gem 'selectize-rails'
