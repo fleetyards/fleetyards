@@ -15,6 +15,7 @@
 #  notify            :boolean          default(TRUE)
 #  public            :boolean          default(FALSE)
 #  purchased         :boolean          default(FALSE)
+#  purchased_ingame  :boolean          default(FALSE)
 #  sale_notify       :boolean          default(FALSE)
 #  serial            :string
 #  slug              :string
