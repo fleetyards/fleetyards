@@ -135,7 +135,7 @@ module Api
         @q.sorts = ["model_classification asc"]
 
         vehicles = @q.result
-        ingame_vehicles = vehicles.select(&:purchased_ingame?)
+        ingame_vehicles = vehicles.select(&:bought_via_ingame?)
         models = vehicles.map(&:model)
         ingame_models = ingame_vehicles.map(&:model)
         upgrades = vehicles.map(&:model_upgrades).flatten

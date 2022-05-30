@@ -15,7 +15,6 @@
 #  notify            :boolean          default(TRUE)
 #  public            :boolean          default(FALSE)
 #  purchased         :boolean          default(FALSE)
-#  purchased_ingame  :boolean          default(FALSE)
 #  sale_notify       :boolean          default(FALSE)
 #  serial            :string
 #  slug              :string
@@ -72,7 +71,7 @@ class Vehicle < ApplicationRecord
 
   NULL_ATTRS = %w[name serial].freeze
 
-  enum bought_via: { pledge_store: 0, ingame: 1 }
+  enum bought_via: { pledge_store: 0, ingame: 1 }, _prefix: true
 
   before_validation :normalize_serial
   before_save :nil_if_blank

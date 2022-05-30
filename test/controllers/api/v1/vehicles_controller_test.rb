@@ -755,6 +755,7 @@ module Api
             }],
             "metrics" => {
               "totalMoney" => 625,
+              "totalCredits" => 0,
               "totalMinCrew" => 5,
               "totalMaxCrew" => 10,
               "totalCargo" => 130
@@ -793,6 +794,7 @@ module Api
             }],
             "metrics" => {
               "totalMoney" => 0,
+              "totalCredits" => 0,
               "totalMinCrew" => 0,
               "totalMaxCrew" => 0,
               "totalCargo" => 0
