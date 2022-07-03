@@ -94,7 +94,7 @@
   },
   "devDependencies": {
     "@types/i18n-js": "3.8.2",
-    "@types/jest": "27.4.0",
+    "@types/jest": "28.1.4",
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
     "@vue/eslint-config-typescript": "10.0.0",
