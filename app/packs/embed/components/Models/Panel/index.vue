@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Panel v-if="model" :id="model.slug">
+    <Panel v-if="model" :class="`model-${model.slug}`">
       <div class="panel-heading">
         <h2 class="panel-title">
           <a :href="url" target="_blank" rel="noopener">
@@ -58,8 +58,8 @@
 <script>
 import Panel from 'embed/components/Panel'
 import PanelDetails from 'embed/components/Panel/PanelDetails'
-import ModelTopMetrics from 'embed/partials/Models/TopMetrics'
-import ModelBaseMetrics from 'embed/partials/Models/BaseMetrics'
+import ModelTopMetrics from 'embed/components/Models/TopMetrics'
+import ModelBaseMetrics from 'embed/components/Models/BaseMetrics'
 import LazyImage from 'embed/components/LazyImage'
 
 export default {

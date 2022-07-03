@@ -1,0 +1,20 @@
+{
+  "ClassName": "Mining_Gadget_THCN_BoreMax",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "Gadget.Gadget",
+  "Name": "BoreMax",
+  "Description": "Manufacturer: Thermyte Concern\nItem Type: Mining Gadget\n\nResistance: -75%\n\nOptimal Charge Rate: -50%\nOvercharge Rate: +50%\n\nBreak apart tough deposits with help from the BoreMax. Thermyte Concern designed this powerful mining accessory to dramatically reduce a deposit's resistance, though that extra energy does affect both the overcharge and optimal charge rate. ",
+  "Manufacturer": {
+    "Code": "THCN",
+    "Name": "Thermyte Concern"
+  },
+  "Tags": [
+    "mining_gadget",
+    "THCN",
+    "BoreMax"
+  ],
+  "Durability": {
+    "Health": 10.0
+  }
+}

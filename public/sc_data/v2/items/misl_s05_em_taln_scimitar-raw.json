@@ -89,8 +89,8 @@
         "hitType": "explosion",
         "damage": [
           {
-            "DamagePhysical": 2595.635,
-            "DamageEnergy": 16382.54,
+            "DamagePhysical": 16382.54,
+            "DamageEnergy": 0.0,
             "DamageDistortion": 0.0,
             "DamageThermal": 0.0,
             "DamageBiochemical": 0.0,

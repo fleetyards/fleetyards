@@ -31,6 +31,23 @@ if ENV['TEST_SEEDS'].present?
     email: 'test@fleetyards.net'
   )
 
+  ['freelancer', 'freelancer'].each_with_index do |slug, index|
+    Vehicle.find_or_create_by!(
+      user_id: test_user.id,
+      model_id: Model.find_by(slug: slug).id,
+      name: "#{slug}-#{index}",
+      purchased: true,
+      public: true
+    )
+  end
+
+  Fleet.find_or_create_by!(
+    name: 'TestFleet',
+    fid: 'TESTFLEET',
+    created_by: test_user.id,
+    public_fleet: true
+  )
+
   RoadmapItem.create(
     rsi_id: 500,
     release: '1.0.0',

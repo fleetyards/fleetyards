@@ -111,6 +111,7 @@
 #
 class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
+  include Routing
 
   paginates_per 30
   max_paginates_per 240
@@ -375,16 +376,61 @@ class Model < ApplicationRecord
   def cargo_label
     return if cargo.blank? || cargo.zero?
 
-    human_cargo = number_with_precision(
+    number = number_with_precision(
       cargo,
       precision: 2,
       strip_insignificant_zeros: true
     )
-    "#{name} (#{human_cargo} SCU)"
+
+    [number, 'SCU'].join(' ')
+  end
+
+  def length_label
+    return if length.blank? || length.zero?
+
+    number = number_with_precision(
+      length,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, 'm'].join(' ')
+  end
+
+  def beam_label
+    return if beam.blank? || beam.zero?
+
+    number = number_with_precision(
+      beam,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, 'm'].join(' ')
+  end
+
+  def height_label
+    return if height.blank? || height.zero?
+
+    number = number_with_precision(
+      height,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, 'm'].join(' ')
   end
 
   def to_json(*_args)
     to_jbuilder_json
+  end
+
+  def url
+    api_v1_model_url(slug: slug)
+  end
+
+  def frontend_url
+    frontend_model_url(slug: slug)
   end
 
   private def broadcast_update

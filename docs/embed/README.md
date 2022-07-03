@@ -19,6 +19,7 @@ To get a custom Ship List on your Website you can just paste the example code on
             fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
             ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
             users: ['torlekmaru', 'johndoe'], // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
+            fleetId: 'maru', // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
         }
     };
     (function() {

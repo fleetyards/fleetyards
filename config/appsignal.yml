@@ -1,19 +1,20 @@
-default: &defaults
+production:
   push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
   name: "Fleetyards"
+  active: true
+  ignore_errors:
+      - ActiveRecord::RecordNotFound
+      - ActionController::RoutingError
+      - ActionController::InvalidAuthenticityToken
+
+staging:
+  push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
+  name: "Fleetyards"
+  active: true
   ignore_errors:
       - ActiveRecord::RecordNotFound
       - ActionController::RoutingError
       - ActionController::InvalidAuthenticityToken
 
 development:
-  <<: *defaults
   active: false
-
-production:
-  <<: *defaults
-  active: true
-
-staging:
-  <<: *defaults
-  active: true

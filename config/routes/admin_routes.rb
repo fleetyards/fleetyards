@@ -95,6 +95,10 @@ namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), cons
     end
   end
 
+  resource :maintenance, only: [] do
+    get 'rsi-api-status' => 'maintenance#rsi_api_status', as: :rsi_api_status
+  end
+
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 
   root to: 'base#index'

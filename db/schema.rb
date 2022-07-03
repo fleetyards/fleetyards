@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_08_123524) do
+ActiveRecord::Schema.define(version: 2022_04_30_195725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_123524) do
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login"
     t.string "otp_backup_codes", array: true
+    t.string "avatar"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_admin_users_on_username", unique: true
@@ -181,6 +182,12 @@ ActiveRecord::Schema.define(version: 2022_02_08_123524) do
     t.decimal "length", precision: 15, scale: 2
     t.string "group"
     t.index ["station_id"], name: "index_docks_on_station_id"
+  end
+
+  create_table "email_rejections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "equipment", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -647,7 +654,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_123524) do
 
   create_table "rsi_request_logs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "url"
-    t.boolean "resolved"
+    t.boolean "resolved", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
