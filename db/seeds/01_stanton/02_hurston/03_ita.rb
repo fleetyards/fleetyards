@@ -3,7 +3,7 @@
 ita = CelestialObject.find_or_create_by!(name: 'Ita')
 ita.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/ita.jpg').open, hidden: false)
 
-ryder = Station.find_or_initialize_by(name: 'HDMS-Ryder')
+ryder = Station.find_or_initialize_by(name: 'HDMS Ryder')
 ryder.update!(
   celestial_object: ita,
   station_type: :outpost,
@@ -40,7 +40,7 @@ end
   end
 end
 
-woodruff = Station.find_or_initialize_by(name: 'HDMS-Woodruff')
+woodruff = Station.find_or_initialize_by(name: 'HDMS Woodruff')
 woodruff.update!(
   celestial_object: ita,
   station_type: :outpost,

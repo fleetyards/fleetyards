@@ -399,17 +399,17 @@
               },
               {
                 "itemPortName": "hardpoint_controller_fuel",
-                "entityClassName": "",
+                "entityClassName": "Controller_Fuel",
                 "loadout": {}
               },
               {
                 "itemPortName": "hardpoint_fuel_port",
-                "entityClassName": "",
+                "entityClassName": "DockingTube_Fuel_Ports_VNCL_Scythe",
                 "loadout": {}
               },
               {
                 "itemPortName": "hardpoint_air_traffic_controller",
-                "entityClassName": "",
+                "entityClassName": "VNCL_Scythe_ShipATCDataManager",
                 "loadout": {}
               }
             ]
@@ -423,8 +423,8 @@
           "Size": 3,
           "Grade": 1,
           "Manufacturer": "4668760a-d8a1-48d0-be4d-42304b702de0",
-          "Tags": "VNCL_Scythe",
-          "RequiredTags": "Ship_Dock_Refuel",
+          "Tags": "VNCL_Scythe Ship_Dock_Refuel",
+          "RequiredTags": "",
           "DisplayType": "",
           "Localization": {
             "Name": "@vehicle_NameVNCL_Scythe",
@@ -613,7 +613,7 @@
         "Parts": [
           {
             "name": "nose",
-            "damageMax": 6800.0,
+            "damageMax": 4000.0,
             "damagemax": 0.0,
             "class": "AnimatedJoint",
             "Parts": [
@@ -1436,7 +1436,7 @@
               },
               {
                 "name": "body",
-                "damageMax": 6000.0,
+                "damageMax": 4000.0,
                 "damagemax": 0.0,
                 "class": "AnimatedJoint",
                 "Parts": [
@@ -2406,7 +2406,7 @@
                   },
                   {
                     "name": "wing_left_arm",
-                    "damageMax": 440.0,
+                    "damageMax": 500.0,
                     "damagemax": 0.0,
                     "class": "AnimatedJoint",
                     "detachRatio": 1.0,
@@ -2492,14 +2492,14 @@
                   },
                   {
                     "name": "wing_right_arm",
-                    "damageMax": 520.0,
+                    "damageMax": 500.0,
                     "damagemax": 0.0,
                     "class": "AnimatedJoint",
                     "detachRatio": 1.0,
                     "Parts": [
                       {
                         "name": "wing_right_gun",
-                        "damageMax": 480.0,
+                        "damageMax": 500.0,
                         "damagemax": 0.0,
                         "class": "AnimatedJoint",
                         "detachRatio": 1.0,
@@ -2542,7 +2542,7 @@
                           },
                           {
                             "name": "wing_rightA",
-                            "damageMax": 480.0,
+                            "damageMax": 500.0,
                             "damagemax": 0.0,
                             "class": "AnimatedJoint",
                             "detachRatio": 1.0,

@@ -5,7 +5,7 @@
 arial = CelestialObject.find_or_create_by!(name: 'Arial')
 arial.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/arial.jpg').open, hidden: false)
 
-lathan = Station.find_or_initialize_by(name: 'HDMS-Lathan')
+lathan = Station.find_or_initialize_by(name: 'HDMS Lathan')
 lathan.update!(
   celestial_object: arial,
   station_type: :outpost,
@@ -42,7 +42,7 @@ end
   end
 end
 
-bezdek = Station.find_or_initialize_by(name: 'HDMS-Bezdek')
+bezdek = Station.find_or_initialize_by(name: 'HDMS Bezdek')
 bezdek.update!(
   celestial_object: arial,
   station_type: :outpost,

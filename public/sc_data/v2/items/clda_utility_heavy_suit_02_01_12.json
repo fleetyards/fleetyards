@@ -129,6 +129,23 @@
       "Size": 3,
       "Types": [
         "Char_Armor_Backpack"
+      ],
+      "Flags": [
+        "body_attach",
+        "inventory"
+      ]
+    },
+    {
+      "PortName": "gadget_attach_1",
+      "Size": 2,
+      "Types": [
+        "Gadget"
+      ],
+      "Flags": [
+        "body_attach",
+        "nophys",
+        "inventory",
+        "transferable"
       ]
     },
     {

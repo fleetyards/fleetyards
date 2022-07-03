@@ -70,7 +70,10 @@ export default class Starship42Btn extends Btn {
     })
 
     document.body.appendChild(form)
+
     form.submit()
+
+    document.body.removeChild(form)
   }
 }
 </script>
