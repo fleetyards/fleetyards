@@ -2,7 +2,7 @@
   <form @submit.prevent="filter">
     <FormInput
       id="shop-name"
-      v-model="form.nameCont"
+      v-model="form.search"
       translation-key="filters.shops.name"
       :no-label="true"
       :clearable="true"
@@ -113,10 +113,11 @@
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
+import debounce from 'lodash.debounce'
 import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import Btn from '@/frontend/core/components/Btn/index.vue'
+import { getFilters, isFilterSelected } from 'frontend/utils/Filters'
 
 export default {
   name: 'ShopsFilterForm',
@@ -127,14 +128,13 @@ export default {
     Btn,
   },
 
-  mixins: [Filters],
-
   data() {
     const query = this.$route.query.q || {}
     return {
       loading: false,
+      filter: debounce(this.debouncedFilter, 500),
+      search: this.$route.query.search,
       form: {
-        nameCont: query.nameCont,
         modelIn: query.modelIn || [],
         commodityIn: query.commodityIn || [],
         equipmentIn: query.equipmentIn || [],
@@ -147,11 +147,31 @@ export default {
     }
   },
 
+  computed: {
+    isFilterSelected() {
+      return (
+        isFilterSelected(this.$route.query.query) || this.$route.query.search
+      )
+    },
+  },
+
   watch: {
+    search() {
+      this.filter()
+    },
+
+    form: {
+      handler() {
+        this.filter()
+      },
+      deep: true,
+    },
+
     $route() {
+      this.search = this.$route.query.search
+
       const query = this.$route.query.q || {}
       this.form = {
-        nameCont: query.nameCont,
         modelIn: query.modelIn || [],
         commodityIn: query.commodityIn || [],
         equipmentIn: query.equipmentIn || [],
@@ -167,6 +187,34 @@ export default {
   methods: {
     fetchShopTypes() {
       return this.$api.get('shops/shop-types')
+    },
+
+    resetFilter() {
+      this.$router
+        .replace({
+          name: this.$route.name || undefined,
+          query: {},
+        })
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch((_err) => {})
+    },
+
+    debouncedFilter() {
+      const query = {
+        ...this.$route.query,
+        search: this.search || null,
+        query: getFilters(this.form),
+      }
+
+      console.log(query)
+
+      this.$router
+        .replace({
+          name: this.$route.name || undefined,
+          query,
+        })
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch((_err) => {})
     },
   },
 }

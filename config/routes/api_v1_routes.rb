@@ -122,13 +122,13 @@ v1_api_routes = lambda do
   end
 
   resources :trade_routes, path: 'trade-routes', only: [:index]
-  resources :commodities, only: [:index] do
+  resources :commodities, param: :slug, only: %i[index show] do
     collection do
       get 'types' => 'commodities#commodity_types'
     end
   end
-  resources :equipment, only: [:index]
-  resources :components, only: [:index] do
+  resources :equipment, param: :slug, only: %i[index show]
+  resources :components, param: :slug, only: %i[index show] do
     get :class_filters, on: :collection
     get :item_type_filters, on: :collection
   end

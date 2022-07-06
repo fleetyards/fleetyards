@@ -34,8 +34,8 @@ namespace :frontend,
   get 'stations/:slug/images' => 'base#station_images', as: :station_images
   get 'stations/:station_slug/shops/:slug' => 'base#shop', as: :station_shop
   get 'starsystems' => 'base#index'
-  get 'starsystems/:slug' => 'base#starsystem'
-  get 'starsystems/:starsystem_slug/celestial-objects/:slug' => 'base#celestial_object'
+  get 'starsystems/:slug' => 'base#starsystem', as: :starsystem
+  get 'starsystems/:starsystem_slug/celestial-objects/:slug' => 'base#celestial_object', as: :celestial_object
 
   get 'commodities' => 'base#index'
   get 'commodities/:id' => 'base#commodities'

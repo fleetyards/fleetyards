@@ -18,6 +18,11 @@ module Api
           .per(per_page(Commodity))
       end
 
+      def show
+        authorize! :show, :api_commodities
+        @commodity = Commodity.find_by!(slug: params[:slug])
+      end
+
       def commodity_types
         authorize! :index, :api_commodities
         @commodity_types = Commodity.type_filters

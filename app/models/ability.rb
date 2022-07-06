@@ -25,14 +25,14 @@ class Ability
     can %i[index show], :api_models
     can %i[index], :api_manufacturers
     can %i[index show], :api_stations
-    can %i[show index], :api_celestial_objects
+    can %i[index show], :api_celestial_objects
     can %i[index show], :api_shops
     can %i[index], :api_shop_commodities
-    can %i[show index], :api_starsystems
+    can %i[index show], :api_starsystems
     can %i[index], :api_images
-    can %i[index], :api_commodities
-    can %i[index], :api_components
-    can %i[index], :api_equipment
+    can %i[index show], :api_commodities
+    can %i[index show], :api_components
+    can %i[index show], :api_equipment
     can %i[public], :api_hangar_groups
     can %i[show create], :api_commodity_prices
     can %i[show], :api_components
@@ -60,6 +60,7 @@ class Ability
   private def fleet_rules(user)
     return if user.id.blank?
 
+      show accept_invitation decline_invitation create_by_invite update destroy
     admin_and_officer_fleet_ids = user.fleets
       .includes(:fleet_memberships)
       .joins(:fleet_memberships)

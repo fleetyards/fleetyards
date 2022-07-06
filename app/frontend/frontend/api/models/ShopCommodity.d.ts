@@ -8,6 +8,7 @@ type ShopCommoditiesFilter = {
 
 interface ShopCommodityParams extends CollectionParams {
   filters: ShopCommoditiesFilter
+  search: string
   stationSlug: string
   slug: string
 }

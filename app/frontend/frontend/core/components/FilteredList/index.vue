@@ -162,7 +162,7 @@ export default class FilteredList extends Vue {
   }
 
   get isFilterSelected() {
-    return isFilterSelected(this.filters)
+    return isFilterSelected(this.filters) || this.search
   }
 
   get emptyBoxVisible() {
