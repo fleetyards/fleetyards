@@ -57,6 +57,7 @@ gem 'ransack', '~> 2.4.2'
 
 gem 'jbuilder'
 gem 'oj'
+gem 'responders'
 
 gem 'dalli'
 
