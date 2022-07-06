@@ -4,9 +4,6 @@ name: Health Check
 on:
   schedule:
     - cron: "0 18 * * *"
-  workflow_dispatch:
-    branches:
-      - main
 
 jobs:
   health-check:

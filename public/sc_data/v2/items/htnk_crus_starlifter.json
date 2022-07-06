@@ -3,11 +3,11 @@
   "Size": 1,
   "Grade": 1,
   "Type": "FuelTank.Fuel",
-  "Name": "HTNK_CRUS_Starlifter",
+  "Name": "Internal Tank",
   "Tags": [
     "flightReady"
   ],
   "HydrogenFuelTank": {
-    "Capacity": 2522000.0
+    "Capacity": 6577500.0
   }
 }

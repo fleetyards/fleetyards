@@ -14,6 +14,12 @@
       },
       {
         "value": "a2ce68ed-35ce-4cc3-90dc-1f34d98a83bf"
+      },
+      {
+        "value": "3c084e41-c6df-467d-a149-bf718666e51f"
+      },
+      {
+        "value": "c08564a2-68d2-4eb1-903b-e3c3ecf12ac1"
       }
     ],
     "Components": {
@@ -371,16 +377,21 @@
               },
               {
                 "itemPortName": "hardpoint_controller_fuel",
-                "entityClassName": "",
+                "entityClassName": "Controller_Fuel",
                 "loadout": {}
               },
               {
-                "itemPortName": "",
-                "entityClassName": "",
+                "itemPortName": "hardpoint_fuel_port",
+                "entityClassName": "DockingTube_Fuel_Ports_ANVL_Pisces",
                 "loadout": {}
               },
               {
-                "itemPortName": "",
+                "itemPortName": "hardpoint_air_traffic_controller",
+                "entityClassName": "ANVL_Pisces_ShipATCDataManager",
+                "loadout": {}
+              },
+              {
+                "itemPortName": "hardpoint_cockpit_flair",
                 "entityClassName": "",
                 "loadout": {}
               },
@@ -412,11 +423,11 @@
         "AttachDef": {
           "Type": "NOITEM_Vehicle",
           "SubType": "Vehicle_Spaceship",
-          "Size": 2,
+          "Size": 1,
           "Grade": 1,
           "Manufacturer": "b922abdb-0634-4358-9eee-60118f3cf3a7",
-          "Tags": "ANVL_Pisces",
-          "RequiredTags": "Ship_Dock_Refuel",
+          "Tags": "ANVL_Pisces Ship_Dock_Refuel",
+          "RequiredTags": "",
           "DisplayType": "",
           "Localization": {
             "Name": "@vehicle_NameANVL_C8_Pisces",
@@ -556,7 +567,7 @@
     "name": "ANVL_Pisces",
     "displayname": "ANVL_Pisces",
     "subType": "Vehicle_Spaceship",
-    "size": 2,
+    "size": 1,
     "requiredItemTags": "",
     "itemPortTags": "",
     "crossSectionMultiplier": "0.42,0.32,0.46",
@@ -2009,6 +2020,24 @@
                 }
               },
               {
+                "name": "hardpoint_cockpit_flair",
+                "damagemax": 0.0,
+                "class": "ItemPort",
+                "ItemPort": {
+                  "minsize": 1,
+                  "maxsize": 1,
+                  "display_name": "@itemPort_port_Flair01",
+                  "flags": "",
+                  "requiredTags": "",
+                  "Types": [
+                    {
+                      "type": "Flair_Cockpit",
+                      "subtypes": "Flair_Static"
+                    }
+                  ]
+                }
+              },
+              {
                 "name": "hardpoint_cockpit_selfDestruct",
                 "damagemax": 0.0,
                 "class": "ItemPort",
@@ -2218,9 +2247,9 @@
                   "minsize": 1,
                   "maxsize": 1,
                   "display_name": "port_NamePaint",
-                  "flags": "webcustom uneditable",
+                  "flags": "",
                   "id": "modPaint",
-                  "requiredTags": "C8X_Expedition",
+                  "requiredTags": "Paint_Pisces",
                   "Types": [
                     {
                       "type": "Paints"
@@ -2608,6 +2637,32 @@
             "idRef": "modPart_gun_c8x_left_wing",
             "name": "skipPart",
             "value": "0"
+          }
+        ]
+      },
+      {
+        "name": "C8R",
+        "patchFile": "",
+        "Elems": [
+          {
+            "idRef": "modPart_cargo_right01",
+            "name": "skipPart",
+            "value": "1"
+          },
+          {
+            "idRef": "modPart_cargo_right02",
+            "name": "skipPart",
+            "value": "1"
+          },
+          {
+            "idRef": "modPart_cargo_left01",
+            "name": "skipPart",
+            "value": "1"
+          },
+          {
+            "idRef": "modPart_cargo_left02",
+            "name": "skipPart",
+            "value": "1"
           }
         ]
       }
