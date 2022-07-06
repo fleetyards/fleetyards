@@ -6,7 +6,7 @@
   "Name": "VNCL_Scythe_SCItem_Dashboard_Pilot",
   "Manufacturer": {
     "Code": "VNC",
-    "Name": "Vanduul Components - Generic"
+    "Name": "Vanduul"
   },
   "Tags": [
     "flightReady"
@@ -33,7 +33,7 @@
     },
     {
       "PortName": "Display_HUD",
-      "Size": 0
+      "Size": 1
     }
   ]
 }

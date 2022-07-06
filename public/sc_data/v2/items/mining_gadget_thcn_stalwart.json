@@ -1,0 +1,20 @@
+{
+  "ClassName": "Mining_Gadget_THCN_Stalwart",
+  "Size": 2,
+  "Grade": 1,
+  "Type": "Gadget.Gadget",
+  "Name": "Stalwart",
+  "Description": "Manufacturer: Thermyte Concern\nItem Type: Mining Gadget\n\nResistance: -30%\nOptimal Charge Rate: +100%\nShatter Damage: -50%\n\nInstability: +15%\nOvercharge Rate:: +200%\n\nReduce resistance and increase the optimal charge rate on a deposit with the Stalwart. These powerful benefits will help get the job done quickly, but operators are warned that misuse can increase the risk of a catastrophic explosion.",
+  "Manufacturer": {
+    "Code": "THCN",
+    "Name": "Thermyte Concern"
+  },
+  "Tags": [
+    "mining_gadget",
+    "THCN",
+    "Stalwart"
+  ],
+  "Durability": {
+    "Health": 10.0
+  }
+}

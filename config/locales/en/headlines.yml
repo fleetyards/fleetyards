@@ -78,6 +78,9 @@ en:
         edit: Edit %{user}
         index: Users
         new: New User
+      maintenance:
+        rsi_api_status:
+          index: RSI API Status
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

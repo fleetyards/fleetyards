@@ -3,11 +3,11 @@
   "Size": 1,
   "Grade": 1,
   "Type": "FuelTank.Fuel",
-  "Name": "HTNK_ANVL_Terrapin",
+  "Name": "Internal Tank",
   "Tags": [
     "flightReady"
   ],
   "HydrogenFuelTank": {
-    "Capacity": 227500.0
+    "Capacity": 522500.0
   }
 }

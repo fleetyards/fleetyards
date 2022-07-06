@@ -13,9 +13,9 @@ module Rsi
 
       case response.code
       when 403
-        RsiRequestLog.find_or_create_by(url: url)
+        RsiRequestLog.find_or_create_by(url: url.split('?').first)
       when 200
-        log_entry = RsiRequestLog.find_by(url: url, resolved: false)
+        log_entry = RsiRequestLog.find_by(url: url.split('?').first, resolved: false)
         log_entry.update(resolved: true) if log_entry.present?
       end
 

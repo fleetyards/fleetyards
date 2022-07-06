@@ -7,7 +7,7 @@ module Rsi
     def initialize(options = {})
       super
 
-      @base_url = 'https://support.robertsspaceindustries.com/hc/en-us/articles/360003093114-Loaner-Ship-Matrixs'
+      @base_url = 'https://support.robertsspaceindustries.com/api/v2/help_center/en-us/articles/360003093114'
     end
 
     def run(html = nil)
@@ -23,13 +23,13 @@ module Rsi
       missing_models = []
       model_loaners = []
 
-      (page.css('.article-body table tbody tr') || []).each do |loaner_data_row|
+      (page.css('table tbody tr') || []).each do |loaner_data_row|
         name = loaner_data_row.css('td:first-child').text.squish
         loaners = loaner_data_row.css('td:last-child').text.split(', ')
 
         found_models = Model.where(name: models_map(name)).all
 
-        missing_loaners << { name: name, loaners: loaners } if found_models.blank?
+        missing_models << { name: name, loaners: loaners } if found_models.blank?
 
         found_models.each do |model|
           loaners.each do |loaner|
@@ -40,7 +40,7 @@ module Rsi
               model_loaner = ModelLoaner.create(model_id: model.id, loaner_model_id: loaner_model.id)
               model_loaners << model_loaner.id
             else
-              missing_models << {
+              missing_loaners << {
                 model: model.name,
                 model_id: model.id,
                 loaner: loaner_name,
@@ -60,7 +60,9 @@ module Rsi
 
       return unless response.success?
 
-      response.body
+      JSON.parse(response.body).dig('article', 'body')
+    rescue JSON::ParserError
+      ''
     end
 
     private def models_map(name)
@@ -74,6 +76,7 @@ module Rsi
         'Dragonfly' => ['Dragonfly Yellowjacket', 'Dragonfly Black'],
         'Hercules Starlifter (All)' => ['C2 Hercules', 'M2 Hercules', 'A2 Hercules'],
         'Hercules Starlifter A2' => ['A2 Hercules'],
+        'Genesis Starliner' => ['Genesis'],
         'Hull A & B' => ['Hull A', 'Hull B'],
         'Hull D, E' => ['Hull D', 'Hull E'],
         'Idris-M & P' => %w[Idris-P Idris-M],
@@ -88,6 +91,7 @@ module Rsi
         "San'Tok.yai" => ["San'tok.yāi"],
         'Nox' => ['Nox', 'Nox Kue'],
         'X1 & Variants' => ['X1 Base', 'X1 Velocity', 'X1 Force'],
+        'Reliant Variants' => ['Reliant Kore', 'Reliant Mako', 'Reliant Sen', 'Reliant Tana'],
         'Cyclone Variants' => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA],
       }
 
@@ -105,11 +109,9 @@ module Rsi
         'Hercules C2' => 'C2 Hercules',
         'Hercules M2' => 'M2 Hercules',
         'Cyclone (Explorer only)' => 'Cyclone',
-        'Cyclone TR' => 'Cyclone-TR',
-        'Cyclone RC' => 'Cyclone-RC',
-        'Cyclone AA' => 'Cyclone-AA',
         "Khartu-al (Xi'an Scout)" => 'Khartu-Al',
-        'Khartu-al' => 'Khartu-Al'
+        'Khartu-al' => 'Khartu-Al',
+        'Mole' => 'MOLE'
       }
 
       return model_map[name] if model_map[name].present?
