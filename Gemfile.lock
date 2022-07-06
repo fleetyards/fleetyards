@@ -533,7 +533,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    searchkick (5.0.3)
+    searchkick (5.0.4)
       activemodel (>= 5.2)
       hashie
     selectize-rails (0.12.6)
