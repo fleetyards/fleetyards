@@ -30,6 +30,8 @@
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #
 class Component < ApplicationRecord
+  include Routing
+
   paginates_per 50
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code item_type item_class],
@@ -166,6 +168,14 @@ class Component < ApplicationRecord
 
   def tracking_signal_label
     Component.human_enum_name(:tracking_signal, tracking_signal)
+  end
+
+  def url
+    api_v1_component_url(slug: slug)
+  end
+
+  def frontend_url
+    nil
   end
 
   private def touch_shop_commodities

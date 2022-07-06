@@ -24,4 +24,5 @@ json.cache! ['v1', result] do
     json.partial! 'api/v1/starsystems/base', starsystem: result
   end
   json.partial! 'api/shared/dates', record: result
+  json.partial! 'api/shared/links', record: result
 end

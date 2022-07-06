@@ -18,6 +18,8 @@
 #  index_commodities_on_name  (name) UNIQUE
 #
 class Commodity < ApplicationRecord
+  include Routing
+
   paginates_per 50
 
   searchkick searchable: %i[name commodity_type],
@@ -71,5 +73,13 @@ class Commodity < ApplicationRecord
 
   def commodity_type_label
     Commodity.human_enum_name(:commodity_type, commodity_type)
+  end
+
+  def url
+    api_v1_commodity_url(slug: slug)
+  end
+
+  def frontend_url
+    nil
   end
 end

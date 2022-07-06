@@ -29,6 +29,8 @@
 #  rsi_id                :integer
 #
 class Starsystem < ApplicationRecord
+  include Routing
+
   paginates_per 15
 
   searchkick searchable: %i[name],
@@ -75,5 +77,13 @@ class Starsystem < ApplicationRecord
 
   def location_label
     factions.first&.name
+  end
+
+  def url
+    api_v1_starsystem_url(slug: slug)
+  end
+
+  def frontend_url
+    frontend_starsystem_url(slug: slug)
   end
 end

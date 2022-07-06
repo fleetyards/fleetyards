@@ -31,6 +31,8 @@
 #  index_stations_on_planet_id            (planet_id)
 #
 class Station < ApplicationRecord
+  include Routing
+
   paginates_per 10
 
   searchkick searchable: %i[name station_type classification celestial_object starsystem refinery cargo_hub],
@@ -190,6 +192,14 @@ class Station < ApplicationRecord
 
   def classification_label
     Station.human_enum_name(:classification, classification)
+  end
+
+  def url
+    api_v1_station_url(slug: slug)
+  end
+
+  def frontend_url
+    frontend_station_url(slug: slug)
   end
 
   private def update_slugs

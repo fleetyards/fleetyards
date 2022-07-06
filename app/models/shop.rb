@@ -25,6 +25,8 @@
 #  index_shops_on_station_id  (station_id)
 #
 class Shop < ApplicationRecord
+  include Routing
+
   paginates_per 30
 
   searchkick searchable: %i[name shop_type station celestial_object starsystem refinery],
@@ -117,6 +119,14 @@ class Shop < ApplicationRecord
       location,
       station.location_label
     ].compact.join(' ')
+  end
+
+  def url
+    api_v1_station_shop_url(station_slug: station.slug, slug: slug)
+  end
+
+  def frontend_url
+    frontend_station_shop_url(station_slug: station.slug, slug: slug)
   end
 
   private def update_shop_commodities

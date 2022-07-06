@@ -34,6 +34,8 @@
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #
 class Equipment < ApplicationRecord
+  include Routing
+
   paginates_per 50
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code equipment_type item_type slot],
@@ -167,6 +169,14 @@ class Equipment < ApplicationRecord
 
   def backpack_compatibility_label
     Equipment.human_enum_name(:backpack_compatibility, backpack_compatibility)
+  end
+
+  def url
+    api_v1_equipment_url(slug: slug)
+  end
+
+  def frontend_url
+    nil
   end
 
   private def touch_shop_commodities

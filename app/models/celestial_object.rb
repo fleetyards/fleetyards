@@ -34,6 +34,8 @@
 #  index_celestial_objects_on_starsystem_id  (starsystem_id)
 #
 class CelestialObject < ApplicationRecord
+  include Routing
+
   paginates_per 30
 
   searchkick searchable: %i[name starsystem],
@@ -93,5 +95,13 @@ class CelestialObject < ApplicationRecord
 
   def location_label
     I18n.t('activerecord.attributes.celestial_object.location_prefix.default', starsystem: starsystem.name)
+  end
+
+  def url
+    api_v1_celestial_object_url(slug: slug)
+  end
+
+  def frontend_url
+    frontend_celestial_object_url(starsystem_slug: starsystem.slug, slug: slug)
   end
 end
