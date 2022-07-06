@@ -18,6 +18,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
+gem 'elasticsearch', '~> 7.6'
 gem 'searchkick'
 
 gem 'discordrb-webhooks'
