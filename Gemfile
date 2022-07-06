@@ -30,7 +30,7 @@ gem 'rollups'
 
 gem 'i18n', '1.10.0'
 gem 'i18n-js'
-gem 'rails-i18n', '~> 6.0'
+gem 'rails-i18n', '~> 7.0'
 
 gem 'js_cookie_rails'
 
