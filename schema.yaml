@@ -1,0 +1,855 @@
+openapi: 3.1.0
+x-stoplight:
+  id: dd4a2d0985b96
+info:
+  title: V1 Schema
+  version: '1.0'
+  summary: V1 Schema
+  description: V1 Schema
+  contact:
+    name: Marten Klitzke
+    url: 'https://fleetyards.net'
+    email: info@fleetyards.net
+  license:
+    name: GNU General Public License v3.0
+    url: 'https://github.com/fleetyards/fleetyards/blob/main/LICENSE'
+tags:
+  - name: Images
+    description: Images
+  - name: Models
+    description: Models
+  - name: Videos
+    description: Videos
+servers:
+  - url: 'http://api.fleetyards.test/v1'
+    description: development
+  - url: 'https://stage.fleetyards.net/api/v1'
+    description: stage
+  - url: 'https://api.fleetyards.net/v1'
+    description: live
+paths:
+  /models:
+    get:
+      summary: Models Index
+      tags:
+        - Models
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Model-Minimal'
+              examples: {}
+      operationId: get-models
+      description: List of Models
+  '/models/{slug}':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Slug of Model
+    get:
+      summary: Model Detail
+      tags:
+        - Models
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model-Complete'
+      operationId: get-models-slug
+      description: Model Detail
+  '/models/{slug}/images':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Slug of Model
+    get:
+      summary: Model Images
+      tags:
+        - Models
+        - Images
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+      operationId: get-models-slug-images
+      description: Model Images
+  '/models/{slug}/videos':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Slug of Model
+    get:
+      summary: Model Videos
+      tags:
+        - Models
+        - Videos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Video'
+      operationId: get-models-slug-videos
+      description: Model Videos
+components:
+  schemas:
+    Image:
+      type: object
+      examples:
+        - id: 14d9aa21-b932-4c1f-b006-fa5c1154d28d
+          name: IMG_2488-6a3464c6-a3a6-44b0-8639-d048dac7a1f5.JPG
+          caption: null
+          url: >-
+            http://fleetyards.test/uploads/image/name/14/d9/aa21-b932-4c1f-b006-fa5c1154d28d/IMG_2488-6a3464c6-a3a6-44b0-8639-d048dac7a1f5.JPG
+          width: 3840
+          height: 2160
+          type: image/jpeg
+          background: true
+          smallUrl: >-
+            http://fleetyards.test/uploads/image/name/14/d9/aa21-b932-4c1f-b006-fa5c1154d28d/small_IMG_2488-6a3464c6-a3a6-44b0-8639-d048dac7a1f5.JPG
+          bigUrl: >-
+            http://fleetyards.test/uploads/image/name/14/d9/aa21-b932-4c1f-b006-fa5c1154d28d/big_IMG_2488-6a3464c6-a3a6-44b0-8639-d048dac7a1f5.JPG
+          model:
+            id: bd062120-034e-4bdc-a979-9b02644b5f3c
+            name: 600i Explorer
+            slug: 600i-explorer
+          gallery:
+            id: bd062120-034e-4bdc-a979-9b02644b5f3c
+            name: 600i Explorer
+            slug: 600i-explorer
+          createdAt: '2021-09-14T17:48:14Z'
+          updatedAt: '2021-09-14T17:48:16Z'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        caption:
+          type:
+            - 'null'
+            - string
+        url:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        type:
+          type: string
+        background:
+          type: boolean
+        smallUrl:
+          type: string
+          format: uri
+        bigUrl:
+          type: string
+          format: uri
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+            - id
+            - name
+            - slug
+        gallery:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+            - id
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - url
+        - smallUrl
+        - bigUrl
+        - createdAt
+        - updatedAt
+    Video:
+      type: object
+      examples:
+        - id: 6c5f649c-a7a6-45ee-a9b4-9881795f6af8
+          url: 'https://www.youtube-nocookie.com/embed/gbCSQDhPOlk'
+          videoId: gbCSQDhPOlk
+          type: youtube
+          createdAt: '2017-08-28T21:46:01Z'
+          updatedAt: '2018-05-06T19:50:00Z'
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+        videoId:
+          type: string
+        type:
+          type: string
+          enum:
+            - youtube
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Manufacturer-Minimal:
+      type: object
+      title: Manufacturer Minimal
+      examples: []
+      description: 'Manufacturer of Models, Components and Equipment'
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type:
+            - string
+            - 'null'
+          example: ORIG
+        logo:
+          type:
+            - string
+            - 'null'
+          format: uri
+          example: >-
+            http://fleetyards.test/uploads/manufacturer/logo/40/52/e7cf-5451-4a9f-a7e2-797daa26ccd8/small_logo_origin_active__1_.png
+      required:
+        - name
+        - slug
+        - code
+        - logo
+    Model-Complete:
+      type: object
+      examples: []
+      description: Ships and Vehicles
+      title: Model Complete
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        scIdentifier:
+          type: string
+        erkulIdentifier:
+          type: string
+        rsiName:
+          type: string
+        slug:
+          type: string
+        rsiSlug:
+          type: string
+        description:
+          type: string
+        length:
+          type: number
+        lengthLabel:
+          type: string
+        fleetchartLength:
+          type: number
+        beam:
+          type: integer
+        beamLabel:
+          type: string
+        height:
+          type: integer
+        heightLabel:
+          type: string
+        mass:
+          type: integer
+        massLabel:
+          type: integer
+        cargo:
+          type: integer
+        cargoLabel:
+          type: string
+        hydrogenFuelTankSize:
+          type: string
+        quantumFuelTankSize:
+          type: string
+        minCrew:
+          type: integer
+        minCrewLabel:
+          type: integer
+        maxCrew:
+          type: integer
+        maxCrewLabel:
+          type: integer
+        scmSpeed:
+          type: string
+        afterburnerSpeed:
+          type: string
+        groundSpeed:
+          type: 'null'
+        afterburnerGroundSpeed:
+          type: 'null'
+        pitchMax:
+          type: string
+        yawMax:
+          type: string
+        rollMax:
+          type: string
+        xaxisAcceleration:
+          type: string
+        yaxisAcceleration:
+          type: string
+        zaxisAcceleration:
+          type: string
+        size:
+          type: string
+        sizeLabel:
+          type: string
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        fleetchartImage:
+          type: string
+        topView:
+          type: string
+        topViewSmall:
+          type: string
+        topViewMedium:
+          type: string
+        topViewLarge:
+          type: string
+        topViewXlarge:
+          type: string
+        topViewWidth:
+          type: integer
+        topViewHeight:
+          type: integer
+        sideView:
+          type: string
+        sideViewSmall:
+          type: string
+        sideViewMedium:
+          type: string
+        sideViewLarge:
+          type: string
+        sideViewXlarge:
+          type: string
+        sideViewWidth:
+          type: integer
+        sideViewHeight:
+          type: integer
+        angledView:
+          type: string
+          format: uri
+        angledViewSmall:
+          type: string
+          format: uri
+        angledViewMedium:
+          type: string
+        angledViewLarge:
+          type: string
+        angledViewXlarge:
+          type: string
+        angledViewWidth:
+          type: integer
+        angledViewHeight:
+          type: integer
+        brochure:
+          type: string
+        holo:
+          type: string
+        holoColored:
+          type: boolean
+        storeUrl:
+          type: string
+        salesPageUrl:
+          type: string
+        price:
+          type: integer
+        priceLabel:
+          type: string
+        pledgePrice:
+          type: integer
+        pledgePriceLabel:
+          type: string
+        lastPledgePrice:
+          type: integer
+        lastPledgePriceLabel:
+          type: string
+        onSale:
+          type: boolean
+        productionStatus:
+          type: string
+        productionNote:
+          type: 'null'
+        classification:
+          type: string
+        classificationLabel:
+          type: string
+        focus:
+          type: string
+        rsiId:
+          type: integer
+        hasImages:
+          type: boolean
+        hasVideos:
+          type: boolean
+        hasModules:
+          type: boolean
+        hasUpgrades:
+          type: boolean
+        hasPaints:
+          type: boolean
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        soldAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        boughtAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        listedAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        rentalAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer-Minimal'
+        loaners:
+          type: array
+          items:
+            type: object
+            properties:
+              slug:
+                type: string
+              name:
+                type: string
+        docks:
+          type: array
+          items:
+            type: object
+            properties:
+              size:
+                type: string
+              count:
+                type: integer
+              typeLabel:
+                type: string
+              type:
+                type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+            frontend:
+              type: string
+              format: uri
+      required:
+        - id
+        - name
+        - slug
+        - createdAt
+        - updatedAt
+    Model-Minimal:
+      type: object
+      title: Model Minimal
+      examples: []
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        scIdentifier:
+          type: string
+        erkulIdentifier:
+          type: string
+        rsiName:
+          type: string
+        slug:
+          type: string
+        rsiSlug:
+          type: string
+        description:
+          type: string
+        length:
+          type: number
+        lengthLabel:
+          type: string
+        fleetchartLength:
+          type: number
+        beam:
+          type: integer
+        beamLabel:
+          type: string
+        height:
+          type: integer
+        heightLabel:
+          type: string
+        mass:
+          type: integer
+        massLabel:
+          type: integer
+        cargo:
+          type: integer
+        cargoLabel:
+          type: string
+        hydrogenFuelTankSize:
+          type: string
+        quantumFuelTankSize:
+          type: string
+        minCrew:
+          type: integer
+        minCrewLabel:
+          type: integer
+        maxCrew:
+          type: integer
+        maxCrewLabel:
+          type: integer
+        scmSpeed:
+          type: string
+        afterburnerSpeed:
+          type: 'null'
+        groundSpeed:
+          type: 'null'
+        afterburnerGroundSpeed:
+          type: 'null'
+        pitchMax:
+          type: 'null'
+        yawMax:
+          type: 'null'
+        rollMax:
+          type: 'null'
+        xaxisAcceleration:
+          type: 'null'
+        yaxisAcceleration:
+          type: 'null'
+        zaxisAcceleration:
+          type: 'null'
+        size:
+          type: string
+        sizeLabel:
+          type: string
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        fleetchartImage:
+          type: string
+        topView:
+          type: string
+        topViewSmall:
+          type: string
+        topViewMedium:
+          type: string
+        topViewLarge:
+          type: string
+        topViewXlarge:
+          type: string
+        topViewWidth:
+          type: integer
+        topViewHeight:
+          type: integer
+        sideView:
+          type: string
+        sideViewSmall:
+          type: string
+        sideViewMedium:
+          type: string
+        sideViewLarge:
+          type: string
+        sideViewXlarge:
+          type: string
+        sideViewWidth:
+          type: integer
+        sideViewHeight:
+          type: integer
+        angledView:
+          type: string
+        angledViewSmall:
+          type: string
+        angledViewMedium:
+          type: string
+        angledViewLarge:
+          type: string
+        angledViewXlarge:
+          type: string
+        angledViewWidth:
+          type: integer
+        angledViewHeight:
+          type: integer
+        brochure:
+          type: string
+        holo:
+          type: string
+        holoColored:
+          type: boolean
+        storeUrl:
+          type: string
+        salesPageUrl:
+          type: string
+        price:
+          type: 'null'
+        priceLabel:
+          type: 'null'
+        pledgePrice:
+          type: number
+        pledgePriceLabel:
+          type: string
+        lastPledgePrice:
+          type: integer
+        lastPledgePriceLabel:
+          type: string
+        onSale:
+          type: boolean
+        productionStatus:
+          type: string
+        productionNote:
+          type: 'null'
+        classification:
+          type: string
+        classificationLabel:
+          type: string
+        focus:
+          type: string
+        rsiId:
+          type: integer
+        hasImages:
+          type: boolean
+        hasVideos:
+          type: boolean
+        hasModules:
+          type: boolean
+        hasUpgrades:
+          type: boolean
+        hasPaints:
+          type: boolean
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        soldAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        boughtAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        listedAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        rentalAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodity-Minimal'
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer-Minimal'
+        loaners:
+          type: array
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - slug
+        - createdAt
+        - updatedAt
+    Shop-Minimal:
+      type: object
+      examples: []
+      description: 'Shop located on Stations, Landingzones and Outposts'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        stationLabel:
+          type: string
+        location:
+          type: 'null'
+        locationLabel:
+          type: string
+        rental:
+          type: boolean
+        buying:
+          type: boolean
+        selling:
+          type: boolean
+        storeImage:
+          type: string
+          format: uri
+        storeImageLarge:
+          type: string
+          format: uri
+        storeImageMedium:
+          type: string
+          format: uri
+        storeImageSmall:
+          type: string
+          format: uri
+        refineryTerminal:
+          type: boolean
+        station:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+      required:
+        - id
+        - name
+        - slug
+    ShopCommodity-Minimal:
+      type: object
+      examples: []
+      description: Shop Commodities listed in Shops
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        storeImage:
+          type: string
+          format: uri
+        storeImageLarge:
+          type: string
+          format: uri
+        storeImageMedium:
+          type: string
+          format: uri
+        storeImageSmall:
+          type: string
+          format: uri
+        category:
+          type: string
+        subCategory:
+          type: string
+        subCategoryLabel:
+          type: string
+        description:
+          type: string
+        pricePerUnit:
+          type: boolean
+        sellPrice:
+          type: string
+        averageSellPrice:
+          type: string
+        buyPrice:
+          type: 'null'
+        averageBuyPrice:
+          type: 'null'
+        rentalPrice1Day:
+          type: 'null'
+        averageRentalPrice1Day:
+          type: 'null'
+        rentalPrice3Days:
+          type: 'null'
+        averageRentalPrice3Days:
+          type: 'null'
+        rentalPrice7Days:
+          type: 'null'
+        averageRentalPrice7Days:
+          type: 'null'
+        rentalPrice30Days:
+          type: 'null'
+        averageRentalPrice30Days:
+          type: 'null'
+        locationLabel:
+          type: string
+        confirmed:
+          type: boolean
+        commodityItemType:
+          type: string
+        commodityItemId:
+          type: string
+          format: uuid
+        shop:
+          $ref: '#/components/schemas/Shop-Minimal'
+      required:
+        - id
+        - name
+        - slug
