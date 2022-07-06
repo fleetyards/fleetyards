@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.8.0](https://github.com/fleetyards/fleetyards/compare/v5.7.1...v5.8.0) (2022-05-29)
+
+
+### Bug Fixes
+
+* **tests:** add missing attributes ([adc2dea](https://github.com/fleetyards/fleetyards/commit/adc2deaa99cbb79d3e2e1dc58472ef6b7ae5d55a))
+
+### [5.7.1](https://github.com/fleetyards/fleetyards/compare/v5.7.0...v5.7.1) (2022-05-25)
+
+## [5.7.0](https://github.com/fleetyards/fleetyards/compare/v5.6.5...v5.7.0) (2022-05-01)
+
+
+### Features
+
+* **sc_data:** Update Gamefiles to 3.17.0 Live ([5afb08b](https://github.com/fleetyards/fleetyards/commit/5afb08ba149118821bc40df72d5aa3dd024677f4))
+
+### [5.6.5](https://github.com/fleetyards/fleetyards/compare/v5.6.4...v5.6.5) (2022-04-30)
+
+### [5.6.4](https://github.com/fleetyards/fleetyards/compare/v5.6.3...v5.6.4) (2022-04-30)
+
+
+### Bug Fixes
+
+* embed widget for fleets and users ([c633c77](https://github.com/fleetyards/fleetyards/commit/c633c7733af3650b5e4fd3410a91f6f7fc7c6a64))
+* loaner worker to use zendesk api ([bdb92f9](https://github.com/fleetyards/fleetyards/commit/bdb92f95d37181c5208a1859ab4f3c29affeed2c))
+
+### [5.6.3](https://github.com/fleetyards/fleetyards/compare/v5.6.2...v5.6.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* embed view ([e2b9562](https://github.com/fleetyards/fleetyards/commit/e2b95622b73657629c43a4c3b892091ac842673f))
+
 ### [5.6.2](https://github.com/fleetyards/fleetyards/compare/v5.6.1...v5.6.2) (2022-04-03)
 
 

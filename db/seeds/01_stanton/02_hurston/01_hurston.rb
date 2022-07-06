@@ -70,7 +70,7 @@ vantage_rentals.update!(
   hidden: false
 )
 
-admin = Shop.find_or_initialize_by(name: 'Admin Office', station: lorville)
+admin = Shop.find_or_initialize_by(name: 'L19 Admin Office', station: lorville)
 admin.update!(
   shop_type: :admin,
   location: 'L19 District',
@@ -80,7 +80,7 @@ admin.update!(
   hidden: false
 )
 
-tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany and Sons', station: lorville)
+tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany & Sons', station: lorville)
 tammany_and_sons.update!(
   shop_type: :superstore,
   location: 'L19 District',

@@ -59,6 +59,7 @@ en:
         starsystem: No Starsystems could be found.
         station: No Stations could be found.
         user: No User could be found.
+        rsi_api_status: No unresolved RSI API Insidents
       component:
         category: Category
       model:
@@ -73,5 +74,7 @@ en:
         email: Email
         last_sign_in_at: Last sign in
         username: Username
+      created_at: Created at
+      url: URL
     tax_excluded: excl. VAT
     unknown: Unknown

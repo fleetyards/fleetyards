@@ -2,7 +2,7 @@
 
 hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 
-stanhope = Station.find_or_initialize_by(name: 'HDMS-Stanhope')
+stanhope = Station.find_or_initialize_by(name: 'HDMS Stanhope')
 stanhope.update!(
   celestial_object: hurston,
   station_type: :outpost,
@@ -44,7 +44,7 @@ pad = 1
   end
 end
 
-edmond = Station.find_or_initialize_by(name: 'HDMS-Edmond')
+edmond = Station.find_or_initialize_by(name: 'HDMS Edmond')
 edmond.update!(
   celestial_object: hurston,
   station_type: :outpost,
@@ -86,7 +86,7 @@ pad = 1
   end
 end
 
-hadley = Station.find_or_initialize_by(name: 'HDMS-Hadley')
+hadley = Station.find_or_initialize_by(name: 'HDMS Hadley')
 hadley.update!(
   celestial_object: hurston,
   station_type: :outpost,
@@ -127,7 +127,7 @@ pad = 1
   end
 end
 
-oparei = Station.find_or_initialize_by(name: 'HDMS-Oparei')
+oparei = Station.find_or_initialize_by(name: 'HDMS Oparei')
 oparei.update!(
   celestial_object: hurston,
   station_type: :outpost,
@@ -168,7 +168,7 @@ pad = 1
   end
 end
 
-pinewood = Station.find_or_initialize_by(name: 'HDMS-Pinewood')
+pinewood = Station.find_or_initialize_by(name: 'HDMS Pinewood')
 pinewood.update!(
   celestial_object: hurston,
   station_type: :outpost,
@@ -209,7 +209,7 @@ pad = 1
   end
 end
 
-thedus = Station.find_or_initialize_by(name: 'HDMS-Thedus')
+thedus = Station.find_or_initialize_by(name: 'HDMS Thedus')
 thedus.update!(
   celestial_object: hurston,
   station_type: :outpost,
@@ -250,7 +250,7 @@ pad = 1
   end
 end
 
-reclamation = Station.find_or_initialize_by(name: 'Reclamation and Disposal Orinth')
+reclamation = Station.find_or_initialize_by(name: 'Reclamation & Disposal Orinth')
 reclamation.update!(
   celestial_object: hurston,
   station_type: :outpost,

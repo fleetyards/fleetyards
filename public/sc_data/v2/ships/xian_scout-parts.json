@@ -244,7 +244,7 @@
         }
       },
       {
-        "Name": "Body",
+        "Name": "body",
         "MaximumDamage": 2240.0,
         "Parts": [
           {
@@ -703,7 +703,8 @@
                 "Radar": {
                   "DetectionLifetime": 0.0,
                   "AltitudeCeiling": 0.0,
-                  "CrossSectionOcclusion": false
+                  "CrossSectionOcclusion": false,
+                  "Signatures": []
                 },
                 "Ports": [
                   {
@@ -1027,7 +1028,7 @@
                       },
                       {
                         "PortName": "Display_HUD",
-                        "Size": 0,
+                        "Size": 1,
                         "Loadout": "Projector_HUD_Generic",
                         "InstalledItem": {
                           "ClassName": "Projector_HUD_Generic",
@@ -1049,12 +1050,6 @@
                   "Category": "UNKNOWN",
                   "Uneditable": true
                 }
-              },
-              {
-                "Name": "control_ball_l"
-              },
-              {
-                "Name": "control_ball_r"
               },
               {
                 "Name": "hardpoint_self_destruct_pilot",
@@ -1169,7 +1164,7 @@
             ]
           },
           {
-            "Name": "Sub_Frame",
+            "Name": "sub_frame",
             "MaximumDamage": 2000.0,
             "Parts": [
               {
@@ -1323,7 +1318,7 @@
                                 "Size": 1,
                                 "Grade": 1,
                                 "Type": "FuelTank.Fuel",
-                                "Name": "HTNK_XIAN_Scout",
+                                "Name": "Internal Tank",
                                 "Tags": [
                                   "flightReady"
                                 ],
@@ -1353,7 +1348,7 @@
                                 "Size": 1,
                                 "Grade": 1,
                                 "Type": "FuelTank.Fuel",
-                                "Name": "HTNK_XIAN_Scout",
+                                "Name": "Internal Tank",
                                 "Tags": [
                                   "flightReady"
                                 ],
@@ -1468,9 +1463,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -1549,9 +1544,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -1673,9 +1668,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -1754,9 +1749,9 @@
                                 },
                                 "Thruster": {
                                   "ThrustCapacity": 1542333.0,
-                                  "FuelRate": 1.25E-05,
+                                  "FuelRate": 1.3000000000000001E-05,
                                   "Type": "Main",
-                                  "MaxThrustFuelRate": 19.2791625
+                                  "MaxThrustFuelRate": 20.050329
                                 },
                                 "Durability": {
                                   "Health": 15000.0,
@@ -2355,7 +2350,7 @@
                 "Size": 1,
                 "Grade": 1,
                 "Type": "QuantumFuelTank.QuantumFuel",
-                "Name": "QTNK_XIAN_Scout",
+                "Name": "Internal Tank",
                 "Tags": [
                   "flightReady"
                 ],

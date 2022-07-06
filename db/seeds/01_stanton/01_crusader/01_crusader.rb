@@ -104,16 +104,16 @@ municipal_services.update!(
   hidden: false
 )
 
-corvalex = Shop.find_or_initialize_by(name: 'Corvalex Shipping', station: orison)
-corvalex.update!(
+covalex = Shop.find_or_initialize_by(name: 'Covalex Shipping', station: orison)
+covalex.update!(
   shop_type: :cargo,
   location: 'Providence Industrial Platform',
   selling: true,
   hidden: false
 )
 
-tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany and Sons', station: orison)
-tammany_and_sons.update!(
+providence_surplus = Shop.find_or_initialize_by(name: 'Providence Surplus', station: orison)
+providence_surplus.update!(
   shop_type: :superstore,
   location: 'Providence Industrial Platform',
   selling: true,
@@ -132,6 +132,14 @@ crusader_discovery = Shop.find_or_initialize_by(name: 'Crusader Discovery Center
 crusader_discovery.update!(
   shop_type: :souvenirs,
   location: 'Providence Industrial Platform',
+  selling: true,
+  hidden: false
+)
+
+crusader_show_room = Shop.find_or_initialize_by(name: 'Crusader Showroom', station: orison)
+crusader_show_room.update!(
+  shop_type: :ships,
+  location: 'Cloudview Center',
   selling: true,
   hidden: false
 )

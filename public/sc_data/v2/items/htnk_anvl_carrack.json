@@ -3,11 +3,11 @@
   "Size": 1,
   "Grade": 1,
   "Type": "FuelTank.Fuel",
-  "Name": "HTNK_ANVL_Carrack",
+  "Name": "Internal Tank",
   "Tags": [
     "flightReady"
   ],
   "HydrogenFuelTank": {
-    "Capacity": 2192500.0
+    "Capacity": 7893000.0
   }
 }

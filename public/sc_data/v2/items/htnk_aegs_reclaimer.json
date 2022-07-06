@@ -3,11 +3,11 @@
   "Size": 1,
   "Grade": 1,
   "Type": "FuelTank.Fuel",
-  "Name": "HTNK_AEGS_Reclaimer",
+  "Name": "Internal Tank",
   "Tags": [
     "flightReady"
   ],
   "HydrogenFuelTank": {
-    "Capacity": 3660000.0
+    "Capacity": 4385000.0
   }
 }

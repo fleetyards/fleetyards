@@ -48,6 +48,18 @@
     "path": "libs/foundry/records/starmap/pu/asteroidcluster_template.xml"
   },
   {
+    "name": "Maria Pure of Heart",
+    "description": "Named after Maria Hurston, beloved mother of former Hurston Dynamics executive Chesterfield Hurston, this renowned hospital is ready to help all those in Lorville who are in need of healing.",
+    "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "f1759f46-e3c0-4dc1-94bc-c94488b58913",
+    "size": "0.1",
+    "reference": "4a4a8455-02d4-4c4a-bb97-a47f0e006c13",
+    "path": "libs/foundry/records/starmap/pu/hospital_stanton1_lorville.xml"
+  },
+  {
     "name": "Empire Health Services Medstation",
     "description": "Operated by the UEE, Empire Health Services is dedicated to  tending to the wellbeing of all the people of ArcCorp's Area18 while providing fair and unbiased medical care.",
     "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
@@ -495,7 +507,7 @@
   },
   {
     "name": "ARC-L1 Wide Forest Station",
-    "description": "Located at the L1 Lagrange point of ArcCorp (Stanton III), Rest & Relax's Wide Forest Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of ArcCorp (Stanton III), Rest & Relax's Wide Forest Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -579,7 +591,7 @@
   },
   {
     "name": "CRU-L1 Ambitious Dream Station",
-    "description": "Located at the L1 Lagrange point of Crusader (Stanton II), Rest & Relax's Ambitious Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of Crusader (Stanton II), Rest & Relax's Ambitious Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Personal Armor, Personal Weapons, Clothing, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -603,13 +615,13 @@
   },
   {
     "name": "CRU-L4 Shallow Fields Station",
-    "description": "Located at the L4 Lagrange point of Crusader (Stanton II), Rest & Relax's Shallow Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L4 Lagrange point of Crusader (Stanton II), Rest & Relax's Shallow Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
     "parent": "c67d1b8f-32ee-4fe1-8a66-bd1bfa04c5c0",
-    "size": "2000",
+    "size": "2500",
     "reference": "8f23301d-0711-47ec-9efb-76a6d8d1c9e6",
     "path": "libs/foundry/records/starmap/pu/station/reststop/rr_cru_l4.xml"
   },
@@ -627,7 +639,7 @@
   },
   {
     "name": "CRU-L5 Beautiful Glen Station",
-    "description": "Located at the L5 Lagrange point of Crusader (Stanton II), Rest & Relax's Beautiful Glen Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L5 Lagrange point of Crusader (Stanton II), Rest & Relax's Beautiful Glen Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -651,7 +663,7 @@
   },
   {
     "name": "HUR-L1 Green Glade Station",
-    "description": "Located at the L1 Lagrange point of Hurston (Stanton I), Rest & Relax's Green Glade Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of Hurston (Stanton I), Rest & Relax's Green Glade Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Personal Armor, Personal Weapons, Clothing, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -675,7 +687,7 @@
   },
   {
     "name": "HUR-L2 Faithful Dream Station",
-    "description": "Located at the L2 Lagrange point of Hurston (Stanton I), Rest & Relax's Faithful Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L2 Lagrange point of Hurston (Stanton I), Rest & Relax's Faithful Dream Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -699,13 +711,13 @@
   },
   {
     "name": "HUR-L3 Thundering Express Station",
-    "description": "Located at the L3 Lagrange point of Hurston (Stanton I), Rest & Relax's Thundering Express Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L3 Lagrange point of Hurston (Stanton I), Rest & Relax's Thundering Express Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
     "parent": "f070fde0-0792-4edf-9a77-bd693d414bd2",
-    "size": "2000",
+    "size": "2500",
     "reference": "de5f2d1d-78e5-4273-8028-c06690c03685",
     "path": "libs/foundry/records/starmap/pu/station/reststop/rr_hur_l3.xml"
   },
@@ -723,7 +735,7 @@
   },
   {
     "name": "HUR-L4 Melodic Fields Station",
-    "description": "Located at the L4 Lagrange point of Hurston (Stanton I), Rest & Relax's Melodic Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L4 Lagrange point of Hurston (Stanton I), Rest & Relax's Melodic Fields Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Weapons, Personal Weapons, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -747,7 +759,7 @@
   },
   {
     "name": "HUR-L5 High Course Station",
-    "description": "Located at the L5 Lagrange point of Hurston (Stanton I), Rest & Relax's High Course Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Clothing, Food, and Habs.",
+    "description": "Located at the L5 Lagrange point of Hurston (Stanton I), Rest & Relax's High Course Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Ship Weapons, Personal Weapons, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -783,7 +795,7 @@
   },
   {
     "name": "MIC-L1 Shallow Frontier Station",
-    "description": "Located at the L1 Lagrange point of microTech (Stanton IV), Rest & Relax's Shallow Frontier Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Ship Components, Personal Armor, Clothing, Food, and Habs. Also features a Refinery.",
+    "description": "Located at the L1 Lagrange point of microTech (Stanton IV), Rest & Relax's Shallow Frontier Station offers a wide variety of shops and services for the weary traveler including: Refueling, Restocking, Personal Weapons, Personal Armor, Clothing, Food, a Clinic, and Habs. Also features a Refinery.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -1191,7 +1203,7 @@
   },
   {
     "name": "Cellin",
-    "description": "Named after the youngest of the three siblings featured in the 25th century children’s morality tale, “A Gift for Baba,” this moon features over a hundred currently dormant volcanoes that are said to represent Cellin’s simmering anger.",
+    "description": "Named after the youngest of the three siblings featured in the 25th century children’s morality tale, 'A Gift for Baba,' this moon features over a hundred currently dormant volcanoes that are said to represent Cellin’s simmering anger.",
     "type": "4af1132e-d980-482d-823f-f713a196b9aa",
     "navIcon": "Moon",
     "hideInStarmap": "0",
@@ -1215,7 +1227,7 @@
   },
   {
     "name": "Daymar",
-    "description": "Named after the middle brother of the three siblings featured in the 25th century children’s morality tale, “A Gift for Baba,” this is the largest of Crusader’s moons. Daymar’s slightly eccentric orbit is said to represent his ease at getting lost in the story.",
+    "description": "Named after the middle brother of the three siblings featured in the 25th century children’s morality tale, 'A Gift for Baba,' this is the largest of Crusader’s moons. Daymar’s slightly eccentric orbit is said to represent his ease at getting lost in the story.",
     "type": "4af1132e-d980-482d-823f-f713a196b9aa",
     "navIcon": "Moon",
     "hideInStarmap": "0",
@@ -1249,7 +1261,7 @@
   },
   {
     "name": "Yela",
-    "description": "Named after the oldest of the three siblings featured in the 25th century children’s morality tale, “A Gift for Baba,” this moon has a water-ice crust said to represent Yela’s cool and calculating mannerisms.",
+    "description": "Named after the oldest of the three siblings featured in the 25th century children’s morality tale, 'A Gift for Baba,' this moon has a water-ice crust said to represent Yela’s cool and calculating mannerisms.",
     "type": "4af1132e-d980-482d-823f-f713a196b9aa",
     "navIcon": "Moon",
     "hideInStarmap": "0",
@@ -1539,7 +1551,7 @@
     "path": "libs/foundry/records/starmap/pu/system/nyx/delamar/miningclaim/privateminingpoint_delamar_008.xml"
   },
   {
-    "name": "HDMO-Calthrope (NA)",
+    "name": "HDES-Calthrope (NA)",
     "description": "KEEP OUT. This structure is no longer in active service. Do not use, occupy or enter.",
     "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
     "navIcon": "Outpost",
@@ -2119,7 +2131,7 @@
   },
   {
     "name": "Everus Harbor",
-    "description": "Hurston's primary port of call for Lorville for all large-scale incoming and outgoing cargo. Everus Harbor has been outfitted with a handful of amenities for capital ships and travelers looking for a quick stopover before heading down to the planet surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, and Habs.",
+    "description": "Hurston's primary port of call for Lorville for all large-scale incoming and outgoing cargo. Everus Harbor has been outfitted with a handful of amenities for capital ships and travelers looking for a quick stopover before heading down to the planet surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -2334,8 +2346,8 @@
     "path": "libs/foundry/records/starmap/pu/system/stanton/stanton1/ugf/stanton1_ugf_secdep1.xml"
   },
   {
-    "name": "HDMO-Dobbs (NA)",
-    "description": "This Hurston Dynamics Mining Operation (HDMO) is currently not active. Mines no longer in operation may be hazardous and are strictly off-limits.",
+    "name": "HDES-Dobbs (NA)",
+    "description": "This Hurston Dynamics Extraction Site (HDES) is currently not active. Mines no longer in operation may be hazardous and are strictly off-limits.",
     "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
     "navIcon": "Outpost",
     "hideInStarmap": "0",
@@ -2356,6 +2368,86 @@
     "size": "1000",
     "reference": "20e6f57a-5446-47c5-a23e-9df6bd7239d5",
     "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/commarray/stanton2_comm001.xml"
+  },
+  {
+    "name": "August Dunlow Exhibition Hall",
+    "type": "4969b9e4-4b1e-45b4-b335-506bbf7af476",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "567f92d7-d34c-42fa-b57b-f1939d4c5f5b",
+    "size": "0.1",
+    "reference": "07b47705-a5b7-4bb2-b339-3dad7d590a0f",
+    "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/conventioncenter/augustdunlowspaceport_conventionhangar.xml"
+  },
+  {
+    "name": "Vision Center",
+    "type": "4969b9e4-4b1e-45b4-b335-506bbf7af476",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "567f92d7-d34c-42fa-b57b-f1939d4c5f5b",
+    "size": "0.1",
+    "reference": "2fab7ac2-17e6-496b-bd90-75353c9f5c11",
+    "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/conventioncenter/visioncenter.xml"
+  },
+  {
+    "name": "Admin Center",
+    "description": "Part of the Inspiration Business Park outside Orison, the Admin Center houses for Crusader Industries' extensive sales and legal departments as well as training facilities for their various ships.",
+    "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "2e6edabc-e698-400c-b000-d67f723e2e28",
+    "size": "0.1",
+    "reference": "6f9547a6-341a-4c2e-ac3f-fda96a0bb81b",
+    "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/floatingislands/floatingisland_admincenter.xml"
+  },
+  {
+    "name": "Brushwood",
+    "description": "Part of the Inspiration Business Park outside Orison, Brushwood platform showcases Crusader Industries' impressive fleet of ships designed for the commercial and civilian markets.",
+    "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "2e6edabc-e698-400c-b000-d67f723e2e28",
+    "size": "0.1",
+    "reference": "295888cc-d3b5-43ab-80c0-ea5ccc418c5b",
+    "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/floatingislands/floatingisland_brushwoodplatform.xml"
+  },
+  {
+    "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "c15033ab-2eb3-4d6d-b882-0cb336e67ed8",
+    "size": "0.1",
+    "reference": "2e6edabc-e698-400c-b000-d67f723e2e28",
+    "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/floatingislands/floatingisland_clusterparent.xml"
+  },
+  {
+    "name": "Hartmoore",
+    "description": "Part of the Inspiration Business Park outside Orison, Brushwood platform showcases Crusader Industries' impressive fleet of ships designed for military and security clientele.",
+    "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "2e6edabc-e698-400c-b000-d67f723e2e28",
+    "size": "0.1",
+    "reference": "fa405db0-2cce-489a-a4d5-25aef5039e59",
+    "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/floatingislands/floatingisland_hartmooreplatform.xml"
+  },
+  {
+    "name": "Solanki",
+    "description": "Part of the Inspiration Business Park outside Orison, Solanki platform is home to temporary residences and amenities for visiting VIPs.",
+    "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
+    "navIcon": "Default",
+    "hideInStarmap": "1",
+    "jurisdiction": "00000000-0000-0000-0000-000000000000",
+    "parent": "2e6edabc-e698-400c-b000-d67f723e2e28",
+    "size": "0.1",
+    "reference": "d78536c3-c88f-4e06-8e1c-617d0747c7c6",
+    "path": "libs/foundry/records/starmap/pu/system/stanton/stanton2/floatingislands/floatingisland_solankipatform.xml"
   },
   {
     "name": "CRU L1",
@@ -3536,7 +3628,7 @@
   },
   {
     "name": "Baijini Point",
-    "description": "The primary cargo and transfer point for ArcCorp. Perfect as a waypoint on your down or back from the surface, Baijini Point features plenty of amenities for travelers while also providing a top-tier loading/unloading system for capital ships that are unable to head down to the surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, and Habs.",
+    "description": "The primary cargo and transfer point for ArcCorp. Perfect as a waypoint on your down or back from the surface, Baijini Point features plenty of amenities for travelers while also providing a top-tier loading/unloading system for capital ships that are unable to head down to the surface. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Personal Weapons, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -3969,7 +4061,7 @@
   },
   {
     "name": "Port Tressler",
-    "description": "Located in the trade lane above microTech, Port Tressler is the main transfer hub for New Babbage. Millions of SCU pass through this station everyday between exports from microTech and the other companies on the surface and the resources and trade coming in from the other systems. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, and Habs.",
+    "description": "Located in the trade lane above microTech, Port Tressler is the main transfer hub for New Babbage. Millions of SCU pass through this station everyday between exports from microTech and the other companies on the surface and the resources and trade coming in from the other systems. Includes shops and services like: Refueling, Restocking, Cargo Transfers, Ship Components, Personal Armor, Clothing, Food, a Clinic, and Habs.",
     "type": "3819ac97-18f1-499e-9729-b889172da3f8",
     "navIcon": "Station",
     "hideInStarmap": "0",
@@ -4128,7 +4220,7 @@
     "navIcon": "Outpost",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
-    "parent": "35a9f8f5-8f80-4796-83db-7d7362baeb9a",
+    "parent": "d6f1ccd9-fbfb-4086-9608-8466ef2c1c93",
     "size": "1",
     "reference": "3f61f287-7733-4e8e-85a7-37dbad6aac9f",
     "path": "libs/foundry/records/starmap/pu/system/stanton/stanton4/ugf/stanton3b_ugf_arccorpprocessingcenter115.xml"
@@ -4140,7 +4232,7 @@
     "navIcon": "Outpost",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
-    "parent": "35a9f8f5-8f80-4796-83db-7d7362baeb9a",
+    "parent": "d6f1ccd9-fbfb-4086-9608-8466ef2c1c93",
     "size": "1",
     "reference": "22e765be-346f-4c1a-b1b7-8174c2f858bf",
     "path": "libs/foundry/records/starmap/pu/system/stanton/stanton4/ugf/stanton3b_ugf_arccorpprocessingcenter123.xml"
@@ -4152,17 +4244,19 @@
     "navIcon": "Outpost",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
-    "parent": "35a9f8f5-8f80-4796-83db-7d7362baeb9a",
+    "parent": "d6f1ccd9-fbfb-4086-9608-8466ef2c1c93",
     "size": "1",
     "reference": "266c318b-0303-43b8-a6e8-e6256b419ce2",
     "path": "libs/foundry/records/starmap/pu/system/stanton/stanton4/ugf/stanton3b_ugf_goodtimestemple.xml"
   },
   {
+    "name": "Lost and Found",
+    "description": "We have what you're looking for.",
     "type": "e207a1ec-1395-4c1c-8e51-b38c4420784c",
     "navIcon": "Outpost",
     "hideInStarmap": "0",
     "jurisdiction": "00000000-0000-0000-0000-000000000000",
-    "parent": "35a9f8f5-8f80-4796-83db-7d7362baeb9a",
+    "parent": "d6f1ccd9-fbfb-4086-9608-8466ef2c1c93",
     "size": "1",
     "reference": "38dc12d7-304d-49e8-9d87-9bf60212cfaa",
     "path": "libs/foundry/records/starmap/pu/system/stanton/stanton4/ugf/stanton3b_ugf_lostandfound.xml"

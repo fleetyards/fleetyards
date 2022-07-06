@@ -22,7 +22,7 @@
           fleetchart: false,
           fleetchartGrouped: true,
           fleetchartSlider: true,
-          fleetID: 'maru'
+          fleetId: "<%= Rails.env.production? ? 'maru' : 'testfleet' %>"
         };
         (function() {
             var d = document, s = d.createElement('script');
