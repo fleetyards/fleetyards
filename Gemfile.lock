@@ -366,6 +366,10 @@ GEM
     msgpack (1.6.0)
     multi_json (1.15.0)
     multipart-post (2.2.3)
+    net-pop (0.1.1)
+      digest
+      net-protocol
+      timeout
     net-protocol (0.1.2)
       io-wait
       timeout
@@ -718,6 +722,7 @@ DEPENDENCIES
   minitest-ci
   minitest-rails
   mocha
+  net-pop
   net-smtp
   nokogiri (= 1.13.7)
   oj
