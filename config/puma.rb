@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-rails_environment = ENV['RAILS_ENV'] || 'development'
-app_dir = ENV['APP_DIR'] || '.'
+rails_environment = ENV.fetch('RAILS_ENV', 'development')
+app_dir = ENV.fetch('APP_DIR', '.')
 
-max_threads_count = Integer(ENV['MAX_THREADS'] || 2)
-min_threads_count = Integer(ENV['MIN_THREADS'] || max_threads_count || 1)
+max_threads_count = Integer(ENV.fetch('MAX_THREADS', 2))
+min_threads_count = Integer(ENV.fetch('MIN_THREADS') { max_threads_count } || 1)
 threads min_threads_count, max_threads_count
 
-workers Integer(ENV['WORKER_COUNT'] || 2)
+workers Integer(ENV.fetch('WORKER_COUNT', 2))
 
-port ENV['PORT'] || 3000
+port ENV.fetch('PORT', 3000)
 
 environment rails_environment
 

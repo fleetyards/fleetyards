@@ -2,7 +2,7 @@
 
 class ScDataCheckJob < ApplicationJob
   def perform
-    new_version = File.read(Rails.root.join('public/sc_data/.version')).strip
+    new_version = File.read(Rails.public_path.join('sc_data/.version')).strip
 
     version_file = Rails.root.join('.sc_data_version')
 

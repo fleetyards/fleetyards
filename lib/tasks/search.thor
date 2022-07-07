@@ -89,7 +89,7 @@ class Search < Thor
 
   no_commands do
     private def elasticsearch_url
-      ENV['ELASTICSEARCH_URL'] || 'http://localhost:9200'
+      ENV.fetch('ELASTICSEARCH_URL', 'http://localhost:9200')
     end
 
     private def set_elasticsearch_settings
