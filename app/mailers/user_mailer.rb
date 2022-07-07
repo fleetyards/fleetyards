@@ -5,7 +5,7 @@ class UserMailer < ApplicationMailer
     @username = username
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.user.username_changed.subject')
     )
   end

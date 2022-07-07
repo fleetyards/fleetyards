@@ -35,7 +35,7 @@ module Rsi
     private def cleanup_game_file_hardpoints(model_id, model_sc_identifier)
       ModelHardpoint.where(
         source: :game_files,
-        model_id: model_id,
+        model_id:,
         hardpoint_type: hardpoint_types(model_sc_identifier)
       ).update(deleted_at: Time.zone.now)
     end
@@ -43,7 +43,7 @@ module Rsi
     private def cleanup_old_hardpoints(model_id, model_sc_identifier, hardpoint_ids)
       ModelHardpoint.where(
         source: :ship_matrix,
-        model_id: model_id,
+        model_id:,
         hardpoint_type: hardpoint_types(model_sc_identifier)
       ).where.not(id: hardpoint_ids)
         .update(deleted_at: Time.zone.now)
@@ -53,7 +53,7 @@ module Rsi
       data.values.map do |types|
         types.values.map do |values|
           values.each_with_index.map do |value, index|
-            value.symbolize_keys.merge(index: index)
+            value.symbolize_keys.merge(index:)
           end
         end
       end.flatten.select do |hardpoint_data|
@@ -66,12 +66,12 @@ module Rsi
 
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :ship_matrix,
-        model_id: model_id,
+        model_id:,
         hardpoint_type: hardpoint_data[:type],
         group: component_class_to_group(hardpoint_data[:component_class]),
         key: "#{hardpoint_data[:type]}-#{hardpoint_data[:index]}",
-        mount: mount,
-        size: size
+        mount:,
+        size:
       )
 
       hardpoint.update!(

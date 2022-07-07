@@ -7,7 +7,7 @@ session_store_options = {
   key: Rails.configuration.cookie_prefix,
   domain: Rails.configuration.app.cookie_domain,
   secure: Rails.env.production? || Rails.env.staging?,
-  expire_after: expire_after,
+  expire_after:,
   same_site: :lax,
 }
 

@@ -123,7 +123,7 @@ class Model < ApplicationRecord
 
   def search_data
     {
-      name: name,
+      name:,
       manufacturer_name: manufacturer.name,
       manufacturer_code: manufacturer.code
     }
@@ -345,13 +345,13 @@ class Model < ApplicationRecord
   def dock_counts
     docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
       docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
-        DockCount.new(dock_size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, dock_count: docks_by_type.size)
+        DockCount.new(dock_size: size, dock_type:, dock_type_label: docks_by_type.first.dock_type_label, dock_count: docks_by_type.size)
       end
     end.flatten
   end
 
   def variants
-    Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id).where.not(rsi_chassis_id: nil)
+    Model.where(rsi_chassis_id:).where.not(id:).where.not(rsi_chassis_id: nil)
   end
 
   def snub_crafts
@@ -458,11 +458,11 @@ class Model < ApplicationRecord
   end
 
   def url
-    api_v1_model_url(slug: slug)
+    api_v1_model_url(slug:)
   end
 
   def frontend_url
-    frontend_model_url(slug: slug)
+    frontend_model_url(slug:)
   end
 
   private def broadcast_update

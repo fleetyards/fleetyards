@@ -125,6 +125,8 @@ gem 'pg_query', '>= 0.9.0'
 gem 'git'
 gem 'rdoc'
 
+gem 'net-smtp'
+
 group :development do
   gem 'annotate'
 

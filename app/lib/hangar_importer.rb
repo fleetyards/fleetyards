@@ -43,15 +43,15 @@ class HangarImporter
         MODEL_FIND_QUERY.join(' OR '),
         {
           name: name.downcase,
-          slug: slug,
-          normalized_name: normalized_name,
+          slug:,
+          normalized_name:,
           search: "%#{normalized_name}%"
         }
       ]
 
       params = {
         notify: false,
-        user_id: user_id,
+        user_id:,
         name: item[:ship_name] || item[:custom_name],
         serial: item[:ship_serial],
         flagship: item[:flagship] || false,
@@ -59,7 +59,7 @@ class HangarImporter
         public: item[:public] || false,
         name_visible: item[:name_visible] || false,
         sale_notify: item[:sale_notify] || false,
-        hangar_group_ids: HangarGroup.where(user_id: user_id, name: item[:groups]).pluck(:id),
+        hangar_group_ids: HangarGroup.where(user_id:, name: item[:groups]).pluck(:id),
         model_module_ids: ModelModule.where(name: item[:modules]).pluck(:id),
         model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
       }
@@ -82,7 +82,7 @@ class HangarImporter
     end
 
     # rubocop:disable Rails/SkipsModelValidations
-    Vehicle.where(user_id: user_id).update_all(notify: true)
+    Vehicle.where(user_id:).update_all(notify: true)
     # rubocop:enable Rails/SkipsModelValidations
 
     {

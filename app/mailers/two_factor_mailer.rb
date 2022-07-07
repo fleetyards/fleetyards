@@ -5,7 +5,7 @@ class TwoFactorMailer < ApplicationMailer
     @two_factor_code = token
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.two_factor.login.subject')
     )
   end
@@ -14,7 +14,7 @@ class TwoFactorMailer < ApplicationMailer
     @username = username
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.two_factor.enabled.subject')
     )
   end
@@ -23,7 +23,7 @@ class TwoFactorMailer < ApplicationMailer
     @username = username
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.two_factor.disabled.subject')
     )
   end

@@ -166,7 +166,7 @@ module Rsi
 
       updates = {
         last_updated_at: new_time_modified(data),
-        model_id: model_id,
+        model_id:,
       }
 
       updates[:rsi_description] = data['description']

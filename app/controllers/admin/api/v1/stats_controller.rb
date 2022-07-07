@@ -8,7 +8,7 @@ module Admin
           authorize! :stats, :admin
 
           quick_stats = {
-            online_count: online_count,
+            online_count:,
             ships_count_year: Model.year(Time.current.year).count,
             ships_count_total: Model.count,
             users_count_total: User.count,
@@ -42,7 +42,7 @@ module Admin
             .map do |created_at, count|
             {
               label: I18n.l(created_at.to_date, format: :day_month_short),
-              count: count,
+              count:,
               tooltip: I18n.l(created_at.to_date, format: :day_month)
             }
           end
@@ -56,7 +56,7 @@ module Admin
           visits_per_month = Rollup.where('time > ?', 1.year.ago).series('Visits', interval: :month).map do |started_at, count|
             {
               label: I18n.l(started_at.to_date, format: :month_year_short),
-              count: count,
+              count:,
               tooltip: I18n.l(started_at.to_date, format: :month_year)
             }
           end
@@ -70,7 +70,7 @@ module Admin
           registrations_per_month = Rollup.where('time > ?', 1.year.ago).series('Registrations', interval: :month).map do |created_at, count|
             {
               label: I18n.l(created_at.to_date, format: :month_year_short),
-              count: count,
+              count:,
               tooltip: I18n.l(created_at.to_date, format: :month_year)
             }
           end

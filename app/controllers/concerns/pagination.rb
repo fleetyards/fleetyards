@@ -43,6 +43,6 @@ module Pagination
   end
 
   private def page_link(page)
-    url_for(controller: controller_name, action: action_name, page: page)
+    url_for(controller: controller_name, action: action_name, page:)
   end
 end

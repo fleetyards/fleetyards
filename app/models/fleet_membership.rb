@@ -82,8 +82,8 @@ class FleetMembership < ApplicationRecord
     return unless primary?
 
     # rubocop:disable Rails/SkipsModelValidations
-    FleetMembership.where(user_id: user_id, primary: true)
-      .where.not(id: id)
+    FleetMembership.where(user_id:, primary: true)
+      .where.not(id:)
       .update_all(primary: false)
     # rubocop:enable Rails/SkipsModelValidations
   end
@@ -171,7 +171,7 @@ class FleetMembership < ApplicationRecord
     return if ships_filter_hide?
 
     scope = user.vehicles.where(hidden: false)
-    scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
+    scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: }) if ships_filter_hangar_group? && hangar_group_id.present?
     scope = scope.purchased if ships_filter_purchased?
     scope
   end
