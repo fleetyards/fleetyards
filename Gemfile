@@ -125,6 +125,7 @@ gem 'pg_query', '>= 0.9.0'
 gem 'git'
 gem 'rdoc'
 
+gem 'net-imap'
 gem 'net-pop'
 gem 'net-smtp'
 

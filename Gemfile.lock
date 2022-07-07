@@ -366,6 +366,10 @@ GEM
     msgpack (1.6.0)
     multi_json (1.15.0)
     multipart-post (2.2.3)
+    net-imap (0.2.3)
+      digest
+      net-protocol
+      strscan
     net-pop (0.1.1)
       digest
       net-protocol
@@ -616,6 +620,7 @@ GEM
     ssrf_filter (1.0.8)
     state_machine (1.2.0)
     stringio (3.0.2)
+    strscan (3.0.1)
     temple (0.8.2)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
@@ -722,6 +727,7 @@ DEPENDENCIES
   minitest-ci
   minitest-rails
   mocha
+  net-imap
   net-pop
   net-smtp
   nokogiri (= 1.13.7)
