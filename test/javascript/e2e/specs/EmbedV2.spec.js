@@ -4,6 +4,7 @@ describe('EmbedV2', () => {
 
     cy.get('.model-600i-explorer').should('have.length', 1)
 
+    cy.get('.model-600i-explorer .top-metrics').should('exist')
     cy.get('.model-600i-explorer .top-metrics').should('be.visible')
 
     cy.selectElement('fleetview-details-button').click()
