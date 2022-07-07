@@ -39,7 +39,7 @@ module Rsi
     end
 
     private def prevent_extra_server_requests?
-      Rails.env.test? || ENV['CI'] || Rails.configuration.rsi.load_from_file
+      Rails.env.test? || ENV.fetch('CI') { Rails.configuration.rsi.load_from_file }
     end
   end
 end

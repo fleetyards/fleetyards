@@ -181,7 +181,7 @@ module Frontend
 
       filename_base = models.map(&:slug).join('-')
       filename = "#{filename_base}.jpg"
-      path = Rails.root.join('public', 'compare', filename)
+      path = Rails.public_path.join('compare', filename)
       return "https://fleetyards.net/compare/#{filename}" if File.exist?(path)
 
       models.each_with_index do |model, index|

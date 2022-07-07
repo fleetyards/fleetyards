@@ -19,7 +19,7 @@ class Db < Thor
   def dump
     require './config/environment'
 
-    database_url = ENV['DATABASE_URL']
+    database_url = ENV.fetch('DATABASE_URL', nil)
 
     run %(pg_dump -Fc --no-acl --no-owner #{database_url} -f dumps/latest.dump)
   end
