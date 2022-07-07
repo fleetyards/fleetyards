@@ -3,7 +3,7 @@
 module ScData
   module_function def current_version
     @current_version ||= begin
-      version_file = Rails.root.join('public/sc_data/.version')
+      version_file = Rails.public_path.join('sc_data/.version')
 
       File.read(version_file).strip if File.exist?(version_file)
     end

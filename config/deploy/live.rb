@@ -3,7 +3,7 @@
 set :stage, :production
 set :rails_env, 'production'
 set :appsignal_env, :production
-set :branch, -> { ENV['CIRCLE_TAG'] || 'main' }
+set :branch, -> { ENV.fetch('CIRCLE_TAG', 'main') }
 set :branch_spec, ->(rev) { available_tags.include?(rev) }
 set :branch_spec_type, 'a git tag'
 
