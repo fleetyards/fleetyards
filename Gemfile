@@ -29,7 +29,7 @@ gem 'ahoy_matey'
 gem 'groupdate'
 gem 'rollups'
 
-gem 'i18n', '1.10.0'
+gem 'i18n', '1.11.0'
 gem 'i18n-js'
 gem 'rails-i18n', '~> 7.0'
 
