@@ -2,10 +2,7 @@ export const routes = [
   {
     path: '/starsystems/',
     name: 'starsystems',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Starsystems'
-      ),
+    component: () => import('@/frontend/pages/Stations/Starsystems/index.vue'),
     meta: {
       title: 'starsystems',
       backgroundImage: 'bg-0',
@@ -14,10 +11,7 @@ export const routes = [
   {
     path: '/starsystems/:slug/',
     name: 'starsystem',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Starsystem'
-      ),
+    component: () => import('@/frontend/pages/Stations/Starsystem/index.vue'),
     meta: {
       backgroundImage: 'bg-0',
     },
@@ -26,9 +20,7 @@ export const routes = [
     path: '/starsystems/:starsystem/celestial-objects/:slug/',
     name: 'celestial-object',
     component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/CelestialObject'
-      ),
+      import('@/frontend/pages/Stations/CelestialObject/index.vue'),
     meta: {
       backgroundImage: 'bg-0',
     },
@@ -36,10 +28,7 @@ export const routes = [
   {
     path: '/shops/',
     name: 'shops',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/ShopList'
-      ),
+    component: () => import('@/frontend/pages/Stations/ShopList/index.vue'),
     meta: {
       title: 'shops',
       backgroundImage: 'bg-2',
@@ -48,10 +37,7 @@ export const routes = [
   {
     path: ':slug/',
     name: 'station',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Show'
-      ),
+    component: () => import('@/frontend/pages/Stations/Show/index.vue'),
     meta: {
       backgroundImage: 'bg-0',
     },
@@ -59,10 +45,7 @@ export const routes = [
   {
     path: ':slug/images/',
     name: 'station-images',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Show/Images'
-      ),
+    component: () => import('@/frontend/pages/Stations/Show/Images/index.vue'),
     meta: {
       backgroundImage: 'bg-0',
     },
@@ -70,10 +53,7 @@ export const routes = [
   {
     path: ':stationSlug/shops/:slug/',
     name: 'shop',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Shop'
-      ),
+    component: () => import('@/frontend/pages/Stations/Shop/index.vue'),
     meta: {
       backgroundImage: 'bg-2',
     },

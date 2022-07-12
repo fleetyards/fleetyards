@@ -1,4 +1,4 @@
-import { get, put, destroy } from 'frontend/api/client'
+import { get, put, destroy } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class UserCollection extends BaseCollection {

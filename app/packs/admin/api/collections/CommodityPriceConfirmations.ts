@@ -1,5 +1,5 @@
-import { get, put, destroy } from 'frontend/api/client'
-import BaseCollection from 'frontend/api/collections/Base'
+import { get, put, destroy } from '@/frontend/api/client'
+import BaseCollection from '@/frontend/api/collections/Base'
 
 export class AdminCommodityPriceConfirmationsCollection extends BaseCollection {
   primaryKey: string = 'id'

@@ -72,7 +72,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Panel from 'frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel'
 import { isBefore, addHours } from 'date-fns'
 
 @Component<RoadmapItem>({
@@ -166,7 +166,8 @@ export default class RoadmapItem extends Vue {
 
   openModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Roadmap/RoadmapItem/Modal'),
+      component: () =>
+        import('@/frontend/components/Roadmap/RoadmapItem/Modal'),
       props: {
         item: this.item,
       },

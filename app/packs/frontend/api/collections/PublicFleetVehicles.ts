@@ -1,5 +1,5 @@
-import { get } from 'frontend/api/client'
-import Store from 'frontend/lib/Store'
+import { get } from '@/frontend/api/client'
+import Store from '@/frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class PublicFleetVehiclesCollection extends BaseCollection {

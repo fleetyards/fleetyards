@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import Filters from 'frontend/mixins/Filters'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Btn from 'frontend/core/components/Btn'
+import Filters from '@/frontend/mixins/Filters'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
 
 export default {
   name: 'FleetFilterForm',

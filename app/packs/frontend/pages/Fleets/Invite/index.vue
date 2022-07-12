@@ -6,8 +6,12 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import fleetsCollection from 'frontend/api/collections/Fleets'
-import { displayConfirm, displayAlert, displaySuccess } from 'frontend/lib/Noty'
+import fleetsCollection from '@/frontend/api/collections/Fleets'
+import {
+  displayConfirm,
+  displayAlert,
+  displaySuccess,
+} from '@/frontend/lib/Noty'
 
 @Component<FleetInvite>()
 export default class FleetInvite extends Vue {

@@ -64,13 +64,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import copyText from 'frontend/utils/CopyText'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import Btn from 'frontend/core/components/Btn'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
-import inviteUrlCollection from 'frontend/api/collections/FleetInviteUrls'
-import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
+import copyText from '@/frontend/utils/CopyText'
+import Modal from '@/frontend/core/components/AppModal/Modal'
+import Btn from '@/frontend/core/components/Btn'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import inviteUrlCollection from '@/frontend/api/collections/FleetInviteUrls'
+import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
 
 @Component<MemberModal>({
   components: {

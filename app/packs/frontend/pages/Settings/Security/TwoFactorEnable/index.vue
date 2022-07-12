@@ -82,14 +82,14 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { disabledRouteGuard } from 'frontend/utils/RouteGuards/TwoFactor'
-import twoFactorCollection from 'frontend/api/collections/TwoFactor'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import SecurePage from 'frontend/core/components/SecurePage'
-import BackupCodesPanel from 'frontend/components/Security/TwoFactorBackupCodesPanel'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Btn from 'frontend/core/components/Btn'
-import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
+import { disabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
+import twoFactorCollection from '@/frontend/api/collections/TwoFactor'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import SecurePage from '@/frontend/core/components/SecurePage'
+import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
+import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 
 @Component<TwoFactorEnable>({
   beforeRouteEnter: disabledRouteGuard,

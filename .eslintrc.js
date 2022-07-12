@@ -39,11 +39,13 @@ module.exports = {
       'Array.iterator',
     ],
     'import/resolver': {
-      webpack: {
-        config: 'config/webpack/development.js',
-      },
+      typescript: {},
       alias: {
-        map: [['helpers', './test/javascript/unit/helpers']],
+        map: [
+          ['@', './app/packs'],
+          ['admin-app', './app/javascript/admin-app'],
+          ['frontend-app', './app/javascript/frontend-app'],
+        ],
       },
     },
   },

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Panel from 'frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel'
 
 export default {
   name: 'PanelsList',

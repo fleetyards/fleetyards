@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { Getter } from 'vuex-class'
 
 @Component({

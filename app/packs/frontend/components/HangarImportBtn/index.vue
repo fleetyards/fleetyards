@@ -26,13 +26,13 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import VueUploadComponent from 'vue-upload-component'
-import Btn from 'frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn'
 import {
   displayWarning,
   displayAlert,
   displaySuccess,
   displayConfirm,
-} from 'frontend/lib/Noty'
+} from '@/frontend/lib/Noty'
 
 @Component({
   components: {

@@ -121,14 +121,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import FilteredList from 'frontend/core/components/FilteredList'
-import FilteredTable from 'frontend/core/components/FilteredTable'
-import FilterForm from 'admin/components/ShopCommodities/FilterForm'
-import BtnGroup from 'frontend/core/components/BtnGroup'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import Btn from 'frontend/core/components/Btn'
-import shopCommoditiesCollection from 'admin/api/collections/ShopCommodities'
-import { displayConfirm } from 'frontend/lib/Noty'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
+import FilterForm from '@/admin/components/ShopCommodities/FilterForm/index.vue'
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import shopCommoditiesCollection from '@/admin/api/collections/ShopCommodities'
+import { displayConfirm } from '@/frontend/lib/Noty'
 
 @Component<AdminStationImages>({
   components: {
@@ -202,7 +202,8 @@ export default class AdminStationImages extends Vue {
 
   openEditModal(shopCommodity) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/Modal'),
+      component: () =>
+        import('@/admin/components/ShopCommodities/Modal/index.vue'),
       props: {
         shopId: this.routeParams.shopId,
         shopCommodity,
@@ -212,7 +213,8 @@ export default class AdminStationImages extends Vue {
 
   openSellPricesModal(shopCommodity) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/PricesModal'),
+      component: () =>
+        import('@/admin/components/ShopCommodities/PricesModal/index.vue'),
       props: {
         path: 'sell',
         shopId: this.routeParams.shopId,
@@ -223,7 +225,8 @@ export default class AdminStationImages extends Vue {
 
   openBuyPricesModal(shopCommodity) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/PricesModal'),
+      component: () =>
+        import('@/admin/components/ShopCommodities/PricesModal/index.vue'),
       props: {
         path: 'buy',
         shopId: this.routeParams.shopId,
@@ -234,7 +237,8 @@ export default class AdminStationImages extends Vue {
 
   openRentalPricesModal(shopCommodity) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/PricesModal'),
+      component: () =>
+        import('@/admin/components/ShopCommodities/PricesModal/index.vue'),
       props: {
         path: 'rental',
         shopId: this.routeParams.shopId,
@@ -245,7 +249,8 @@ export default class AdminStationImages extends Vue {
 
   openAddModal(commodityItemType) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/NewModal'),
+      component: () =>
+        import('@/admin/components/ShopCommodities/NewModal/index.vue'),
       props: {
         shopId: this.routeParams.shopId,
         commodityItemType,
@@ -255,7 +260,8 @@ export default class AdminStationImages extends Vue {
 
   openComponentModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('admin/components/ShopCommodities/NewModal'),
+      component: () =>
+        import('@/admin/components/ShopCommodities/NewModal/index.vue'),
       props: {
         shopId: this.routeParams.shopId,
         commodityItemType: 'Component',

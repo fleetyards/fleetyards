@@ -1,5 +1,5 @@
 import mountVM from 'helpers/mount'
-import Navigation from 'frontend/core/components/Navigation'
+import Navigation from '@/frontend/core/components/Navigation'
 
 describe('Navigation', () => {
   let cmp

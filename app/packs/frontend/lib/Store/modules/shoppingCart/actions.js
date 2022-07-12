@@ -1,4 +1,4 @@
-import { sortBy } from 'frontend/lib/Helpers'
+import { sortBy } from '@/frontend/lib/Helpers'
 
 const createShoppingCartItem = (newItem, type) => {
   const soldAt = sortBy(

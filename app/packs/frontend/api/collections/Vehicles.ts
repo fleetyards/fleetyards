@@ -6,8 +6,8 @@ import {
   download,
   ApiResponse,
   ApiErrorResponse,
-} from 'frontend/api/client'
-import Store from 'frontend/lib/Store'
+} from '@/frontend/api/client'
+import Store from '@/frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {

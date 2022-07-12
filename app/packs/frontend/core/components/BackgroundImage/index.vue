@@ -6,43 +6,55 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import axios from 'axios'
+import backgroundImage0webp from '@/images/bg-0.webp'
+import backgroundImage2webp from '@/images/bg-2.webp'
+import backgroundImage5webp from '@/images/bg-5.webp'
+import backgroundImage6webp from '@/images/bg-6.webp'
+import backgroundImage7webp from '@/images/bg-7.webp'
+import backgroundImage8webp from '@/images/bg-8.webp'
+import backgroundImage404webp from '@/images/bg-404.webp'
+import backgroundImage0jpg from '@/images/bg-0.jpg'
+import backgroundImage2jpg from '@/images/bg-2.jpg'
+import backgroundImage5jpg from '@/images/bg-5.jpg'
+import backgroundImage6jpg from '@/images/bg-6.jpg'
+import backgroundImage7jpg from '@/images/bg-7.jpg'
+import backgroundImage8jpg from '@/images/bg-8.jpg'
+import backgroundImage404jpg from '@/images/bg-404.jpg'
 
 @Component<BackgroundImage>({})
 export default class BackgroundImage extends Vue {
   webpSupported: boolean = true
 
-backgroundImages: Fucntion[] = {
-    /* eslint-disable global-require */
+  backgroundImages: Fucntion[] = {
     webp: {
-      'bg-0': () => require('images/bg-0.webp'),
-      'bg-2': () => require('images/bg-2.webp'),
-      'bg-5': () => require('images/bg-5.webp'),
-      'bg-6': () => require('images/bg-6.webp'),
-      'bg-7': () => require('images/bg-7.webp'),
-      'bg-8': () => require('images/bg-8.webp'),
-      'bg-404': () => require('images/bg-404.webp'),
+      'bg-0': () => require('@/images/bg-0.webp'),
+      'bg-2': () => backgroundImage2webp,
+      'bg-5': () => backgroundImage5webp,
+      'bg-6': () => require('@/images/bg-6.webp'),
+      'bg-7': () => backgroundImage7webp,
+      'bg-8': () => backgroundImage8webp,
+      'bg-404': () => backgroundImage404webp,
     },
     jpg: {
-      'bg-0': () => require('images/bg-0.jpg'),
-      'bg-2': () => require('images/bg-2.jpg'),
-      'bg-5': () => require('images/bg-5.jpg'),
-      'bg-6': () => require('images/bg-6.jpg'),
-      'bg-7': () => require('images/bg-7.jpg'),
-      'bg-8': () => require('images/bg-8.jpg'),
-      'bg-404': () => require('images/bg-404.jpg'),
+      'bg-0': () => backgroundImage0jpg,
+      'bg-2': () => backgroundImage2jpg,
+      'bg-5': () => backgroundImage5jpg,
+      'bg-6': () => backgroundImage6jpg,
+      'bg-7': () => backgroundImage7jpg,
+      'bg-8': () => backgroundImage8jpg,
+      'bg-404': () => backgroundImage404jpg,
     },
-    /* eslint-enable global-require */
   }
 
-get uuid() {
+  get uuid() {
     return this._uid
   }
 
-get backgroundImageKey() {
+  get backgroundImageKey() {
     if (this.$route.meta.backgroundImage) {
       return this.$route.meta.backgroundImage
     }
@@ -50,21 +62,11 @@ get backgroundImageKey() {
     return 'bg-6'
   }
 
-get backgroundImage() {
+  get backgroundImage() {
     return this.backgroundImages[this.webpSupported ? 'webp' : 'jpg'][
       this.backgroundImageKey
     ]()
   }
-
-
-
-
-
-
-
-
-
-
 
   created() {
     this.checkWebpSupport()
@@ -81,7 +83,7 @@ get backgroundImage() {
 
     this.webpSupported = await createImageBitmap(response.data).then(
       () => true,
-      () => false,
+      () => false
     )
 
     return this.webpSupported

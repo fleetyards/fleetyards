@@ -25,8 +25,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Box from 'frontend/core/components/Box'
-import Btn from 'frontend/core/components/Btn'
+import Box from '@/frontend/core/components/Box/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 @Component<EmptyBox>({
   components: {

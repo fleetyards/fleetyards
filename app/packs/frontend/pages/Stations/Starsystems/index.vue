@@ -101,13 +101,13 @@
 </template>
 
 <script>
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/core/components/Loader'
-import Panel from 'frontend/core/components/Panel'
-import StarsystemList from 'frontend/components/Starsystems/List'
-import PlanetPanel from 'frontend/components/Planets/Panel'
-import Pagination from 'frontend/mixins/Pagination'
-import { scrollToAnchor } from 'frontend/utils/scrolling'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Loader from '@/frontend/core/components/Loader'
+import Panel from '@/frontend/core/components/Panel'
+import StarsystemList from '@/frontend/components/Starsystems/List'
+import PlanetPanel from '@/frontend/components/Planets/Panel'
+import Pagination from '@/frontend/mixins/Pagination'
+import { scrollToAnchor } from '@/frontend/utils/scrolling'
 
 export default {
   name: 'StarsystemsIndex',

@@ -132,9 +132,9 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
-import { isFleetRoute } from 'frontend/utils/Routes/Fleets'
-import fleetsApiCollection from 'frontend/api/collections/Fleets'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import { isFleetRoute } from '@/frontend/utils/Routes/Fleets'
+import fleetsApiCollection from '@/frontend/api/collections/Fleets'
 
 @Component<NavigationHeader>({
   components: {

@@ -210,10 +210,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Panel from 'frontend/core/components/Panel'
-import Btn from 'frontend/core/components/Btn'
-import AppContact from 'frontend/core/components/AppContact'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Panel from '@/frontend/core/components/Panel'
+import Btn from '@/frontend/core/components/Btn'
+import AppContact from '@/frontend/core/components/AppContact'
 
 @Component<PrivacyPolicy>({
   components: {

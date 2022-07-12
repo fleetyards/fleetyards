@@ -1,8 +1,8 @@
 import I18n from 'i18n-js'
-import en from 'translations/en'
-import de from 'translations/de'
 import { parseISO } from 'date-fns'
 import { format } from 'date-fns-tz'
+import en from '@/translations/en'
+import de from '@/translations/de'
 
 // @ts-ignore
 I18n.availableLocales = ['en', 'de']

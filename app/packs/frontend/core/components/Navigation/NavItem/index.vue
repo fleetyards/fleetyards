@@ -138,8 +138,8 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
-import NavItemInner from 'frontend/core/components/Navigation/NavItem/NavItemInner'
-import NavigationMixin from 'frontend/mixins/Navigation'
+import NavItemInner from '@/frontend/core/components/Navigation/NavItem/NavItemInner/index.vue'
+import NavigationMixin from '@/frontend/mixins/Navigation'
 
 @Component<NavItem>({
   components: {

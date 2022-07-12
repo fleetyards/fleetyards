@@ -19,7 +19,7 @@
 import Vue from 'vue'
 import { Component, Ref } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-import { displayConfirm } from 'frontend/lib/Noty'
+import { displayConfirm } from '@/frontend/lib/Noty'
 
 type AppModalOptions = {
   component: Promise<VueComponent>

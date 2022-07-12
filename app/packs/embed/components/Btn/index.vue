@@ -14,8 +14,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import BtnInner from 'embed/components/Btn/Inner/index.vue'
 import { RouteConfig } from 'vue-router'
+import BtnInner from '@/embed/components/Btn/Inner/index.vue'
 
 @Component({ components: { BtnInner } })
 export default class Btn extends Vue {

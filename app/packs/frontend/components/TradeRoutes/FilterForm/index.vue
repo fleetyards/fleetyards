@@ -121,13 +121,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import Filters from 'frontend/mixins/Filters'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
-import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
-import Btn from 'frontend/core/components/Btn'
+import Filters from '@/frontend/mixins/Filters'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
+import Btn from '@/frontend/core/components/Btn'
 import { Getter } from 'vuex-class'
-import celestialObjectCollection from 'frontend/api/collections/CelestialObjects'
-import starsystemCollection from 'frontend/api/collections/Starsystems'
+import celestialObjectCollection from '@/frontend/api/collections/CelestialObjects'
+import starsystemCollection from '@/frontend/api/collections/Starsystems'
 
 @Component<TradeRoutesFilterForm>({
   components: {

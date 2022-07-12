@@ -141,14 +141,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import FleetchartItem from 'frontend/components/Fleetchart/ListPanzoom/Item/index.vue'
-import Btn from 'frontend/core/components/Btn'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
+import FleetchartItem from '@/frontend/components/Fleetchart/ListPanzoom/Item/index.vue'
+import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
 // import { fabric } from 'fabric'
-import Loader from 'frontend/core/components/Loader'
+import Loader from '@/frontend/core/components/Loader'
 import download from 'downloadjs'
 
 @Component({

@@ -25,8 +25,8 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import QuickSearch from 'frontend/core/components/Navigation/QuickSearch'
-import Search from 'frontend/core/components/Navigation/Search'
+import QuickSearch from '@/frontend/core/components/Navigation/QuickSearch/index.vue'
+import Search from '@/frontend/core/components/Navigation/Search/index.vue'
 
 @Component<NavigationHeader>({
   components: {

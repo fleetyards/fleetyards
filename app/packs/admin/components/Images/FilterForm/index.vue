@@ -34,9 +34,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import Filters from 'frontend/mixins/Filters'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
-import Btn from 'frontend/core/components/Btn'
+import Filters from '@/frontend/mixins/Filters'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import Btn from '@/frontend/core/components/Btn'
 
 @Component<FilterForm>({
   components: {

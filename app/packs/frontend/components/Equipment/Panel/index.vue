@@ -86,10 +86,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Panel from 'frontend/core/components/Panel'
-import LazyImage from 'frontend/core/components/LazyImage'
-import ShopCommodityLocations from 'frontend/components/ShopCommodities/Locations'
-import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations/index.vue'
+import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
 
 @Component<ComponentPanel>({
   components: {

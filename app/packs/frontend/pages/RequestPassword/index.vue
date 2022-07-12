@@ -51,10 +51,10 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Btn from 'frontend/core/components/Btn'
-import { displaySuccess } from 'frontend/lib/Noty'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
+import { displaySuccess } from '@/frontend/lib/Noty'
 
 @Component<RequestPassword>({
   components: {

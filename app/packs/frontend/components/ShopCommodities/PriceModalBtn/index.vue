@@ -8,8 +8,8 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
-import { displayWarning } from 'frontend/lib/Noty'
+import Btn from '@/frontend/core/components/Btn'
+import { displayWarning } from '@/frontend/lib/Noty'
 
 @Component<PriceModalBtn>({
   components: {
@@ -54,7 +54,7 @@ export default class PriceModalBtn extends Vue {
 
     this.$comlink.$emit('open-modal', {
       component: () =>
-        import('frontend/components/ShopCommodities/PriceModal/index.vue'),
+        import('@/frontend/components/ShopCommodities/PriceModal/index.vue'),
       props: {
         stationSlug: this.stationSlug,
         shopId: this.shopId,

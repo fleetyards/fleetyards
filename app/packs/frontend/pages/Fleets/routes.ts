@@ -1,14 +1,10 @@
-import { routes as SettingsRoutes } from 'frontend/pages/Fleets/Settings/routes'
+import { routes as SettingsRoutes } from '@/frontend/pages/Fleets/Settings/routes'
 
 export const routes = [
   {
     path: 'add/',
     name: 'fleet-add',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets-add" */
-        'frontend/pages/Fleets/Add/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Add/index.vue'),
     meta: {
       needsAuthentication: true,
       title: 'fleets.add',
@@ -18,11 +14,7 @@ export const routes = [
   {
     path: 'preview/',
     name: 'fleet-preview',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets-preview" */
-        'frontend/pages/Fleets/Preview/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Preview/index.vue'),
     meta: {
       title: 'fleets.preview',
       backgroundImage: 'bg-8',
@@ -31,11 +23,7 @@ export const routes = [
   {
     path: 'invites/',
     name: 'fleet-invites',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets-invites" */
-        'frontend/pages/Fleets/Invites/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Invites/index.vue'),
     meta: {
       needsAuthentication: true,
       title: 'fleets.invites',
@@ -45,11 +33,7 @@ export const routes = [
   {
     path: 'invites/:token/',
     name: 'fleet-invite',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets-invites" */
-        'frontend/pages/Fleets/Invite/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Invite/index.vue'),
     meta: {
       needsAuthentication: true,
       backgroundImage: 'bg-8',
@@ -58,11 +42,7 @@ export const routes = [
   {
     path: ':slug/',
     name: 'fleet',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Show/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Show/index.vue'),
     meta: {
       backgroundImage: 'bg-8',
     },
@@ -70,11 +50,7 @@ export const routes = [
   {
     path: ':slug/ships/',
     name: 'fleet-ships',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.ships" */
-        'frontend/pages/Fleets/Ships/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Ships/index.vue'),
     meta: {
       backgroundImage: 'bg-8',
     },
@@ -90,11 +66,7 @@ export const routes = [
   {
     path: ':slug/members/',
     name: 'fleet-members',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Members/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Members/index.vue'),
     meta: {
       needsAuthentication: true,
       backgroundImage: 'bg-8',
@@ -103,11 +75,7 @@ export const routes = [
   {
     path: ':slug/settings/',
     name: 'fleet-settings',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Settings/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Settings/index.vue'),
     meta: {
       needsAuthentication: true,
       backgroundImage: 'bg-8',
@@ -120,11 +88,7 @@ export const routes = [
   {
     path: ':slug/stats/',
     name: 'fleet-stats',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Stats/index.vue'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Stats/index.vue'),
     meta: {
       needsAuthentication: true,
       backgroundImage: 'bg-8',

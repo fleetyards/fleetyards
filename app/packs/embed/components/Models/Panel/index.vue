@@ -56,11 +56,11 @@
 </template>
 
 <script>
-import Panel from 'embed/components/Panel'
-import PanelDetails from 'embed/components/Panel/PanelDetails'
-import ModelTopMetrics from 'embed/components/Models/TopMetrics'
-import ModelBaseMetrics from 'embed/components/Models/BaseMetrics'
-import LazyImage from 'embed/components/LazyImage'
+import Panel from '@/embed/components/Panel/index.vue'
+import PanelDetails from '@/embed/components/Panel/PanelDetails/index.vue'
+import ModelTopMetrics from '@/embed/components/Models/TopMetrics/index.vue'
+import ModelBaseMetrics from '@/embed/components/Models/BaseMetrics/index.vue'
+import LazyImage from '@/embed/components/LazyImage/index.vue'
 
 export default {
   name: 'ModelsPanel',

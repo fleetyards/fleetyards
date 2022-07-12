@@ -81,15 +81,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
-import Btn from 'frontend/core/components/Btn'
-import Checkbox from 'frontend/core/components/Form/Checkbox'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
-import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
-import { fleetRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from 'frontend/api/collections/Fleets'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
+import Btn from '@/frontend/core/components/Btn'
+import Checkbox from '@/frontend/core/components/Form/Checkbox'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
+import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
+import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
+import fleetsCollection from '@/frontend/api/collections/Fleets'
 
 @Component<FleetMembershipSettings>({
   beforeRouteEnter: fleetRouteGuard,

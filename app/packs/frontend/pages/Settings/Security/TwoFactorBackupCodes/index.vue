@@ -25,13 +25,13 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import SecurePage from 'frontend/core/components/SecurePage'
-import Btn from 'frontend/core/components/Btn'
-import BackupCodesPanel from 'frontend/components/Security/TwoFactorBackupCodesPanel'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import { enabledRouteGuard } from 'frontend/utils/RouteGuards/TwoFactor'
-import twoFactorCollection from 'frontend/api/collections/TwoFactor'
-import { displayAlert } from 'frontend/lib/Noty'
+import SecurePage from '@/frontend/core/components/SecurePage'
+import Btn from '@/frontend/core/components/Btn'
+import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import { enabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
+import twoFactorCollection from '@/frontend/api/collections/TwoFactor'
+import { displayAlert } from '@/frontend/lib/Noty'
 
 @Component<TwoFactorBackupCodes>({
   beforeRouteEnter: enabledRouteGuard,

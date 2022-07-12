@@ -13,7 +13,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 @Component<AddToCartBtn>({
   components: {

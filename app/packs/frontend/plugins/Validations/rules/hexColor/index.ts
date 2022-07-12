@@ -1,4 +1,4 @@
-import { I18n } from 'frontend/lib/I18n'
+import { I18n } from '@/frontend/lib/I18n'
 
 const pattern = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
 

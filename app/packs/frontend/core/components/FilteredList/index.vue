@@ -74,12 +74,12 @@
 import Vue from 'vue'
 import { Component, Watch, Prop } from 'vue-property-decorator'
 import { Action, Mutation, Getter } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
-import Paginator from 'frontend/core/components/Paginator'
-import Loader from 'frontend/core/components/Loader'
-import EmptyBox from 'frontend/core/components/EmptyBox'
-import { scrollToAnchor } from 'frontend/utils/scrolling'
-import { isFilterSelected } from 'frontend/utils/Filters'
+import Btn from '@/frontend/core/components/Btn'
+import Paginator from '@/frontend/core/components/Paginator'
+import Loader from '@/frontend/core/components/Loader'
+import EmptyBox from '@/frontend/core/components/EmptyBox'
+import { scrollToAnchor } from '@/frontend/utils/scrolling'
+import { isFilterSelected } from '@/frontend/utils/Filters'
 
 @Component<FilteredList>({
   components: {

@@ -34,8 +34,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { groupBy, sortBy } from 'frontend/lib/Helpers'
-import Panel from 'frontend/core/components/Panel'
+import { groupBy, sortBy } from '@/frontend/lib/Helpers'
+import Panel from '@/frontend/core/components/Panel'
 import HardpointItems from '../Items'
 
 @Component<HardpointGroup>({
@@ -95,7 +95,7 @@ export default class HardpointGroup extends Vue {
 
     this.$comlink.$emit('open-modal', {
       component: () =>
-        import('frontend/components/Models/Hardpoints/ComponentModal'),
+        import('@/frontend/components/Models/Hardpoints/ComponentModal'),
       props: {
         hardpoint,
       },

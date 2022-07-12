@@ -27,7 +27,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { sortByToggle } from 'frontend/utils/Sorting'
+import { sortByToggle } from '@/frontend/utils/Sorting'
 
 @Component<MembersListHead>()
 export default class MembersListHead extends Vue {

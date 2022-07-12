@@ -24,8 +24,8 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
-import { sum as sumArray } from 'frontend/utils/Array'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import { sum as sumArray } from '@/frontend/utils/Array'
 
 @Component<ShoppingCart>({
   components: {
@@ -53,7 +53,8 @@ export default class ShoppingCart extends Vue {
 
   openModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/core/components/AppShoppingCart/Modal'),
+      component: () =>
+        import('@/frontend/core/components/AppShoppingCart/Modal'),
       wide: true,
     })
   }

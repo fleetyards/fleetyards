@@ -49,13 +49,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import FilteredList from 'frontend/core/components/FilteredList'
-import FilteredGrid from 'frontend/core/components/FilteredGrid'
-import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
-import Gallery from 'frontend/core/components/Gallery'
-import GalleryImage from 'frontend/core/components/Gallery/Image'
-import imagesCollection from 'frontend/api/collections/Images'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import FilteredList from '@/frontend/core/components/FilteredList'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
+import Gallery from '@/frontend/core/components/Gallery'
+import GalleryImage from '@/frontend/core/components/Gallery/Image'
+import imagesCollection from '@/frontend/api/collections/Images'
 
 @Component<ModelImages>({
   components: {

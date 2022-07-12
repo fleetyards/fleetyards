@@ -118,12 +118,12 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/core/components/Loader'
-import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
-import EmptyBox from 'frontend/core/components/EmptyBox'
-import Btn from 'frontend/core/components/Btn'
-import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Loader from '@/frontend/core/components/Loader'
+import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem'
+import EmptyBox from '@/frontend/core/components/EmptyBox'
+import Btn from '@/frontend/core/components/Btn'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
 
 @Component<ShipsRoadmap>({
   components: {

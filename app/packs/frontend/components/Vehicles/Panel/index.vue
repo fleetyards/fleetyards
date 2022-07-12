@@ -158,14 +158,14 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Panel from 'frontend/core/components/Panel'
-import PanelDetails from 'frontend/core/components/Panel/PanelDetails'
-import LazyImage from 'frontend/core/components/LazyImage'
-import AddToHangar from 'frontend/components/Models/AddToHangar'
-import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
-import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
-import HangarGroups from 'frontend/components/Vehicles/HangarGroups'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import PanelDetails from '@/frontend/core/components/Panel/PanelDetails/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import AddToHangar from '@/frontend/components/Models/AddToHangar/index.vue'
+import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.vue'
+import vehiclesCollection from '@/frontend/api/collections/Vehicles'
+import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu/index.vue'
+import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
 
 @Component<VehiclePanel>({
   components: {
@@ -295,7 +295,7 @@ export default class VehiclePanel extends Vue {
 
   openAddonsModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/AddonsModal'),
+      component: () => import('@/frontend/components/Vehicles/AddonsModal'),
       props: {
         vehicle: this.vehicle,
         editable: this.editable,

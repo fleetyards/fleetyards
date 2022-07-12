@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 @Component<FleetChartStatusBtn>({
   components: {

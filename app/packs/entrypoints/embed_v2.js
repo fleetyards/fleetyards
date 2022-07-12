@@ -1,11 +1,10 @@
-import 'stylesheets/embed-v2'
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
-import FleetyardsView from 'embed/FleetyardsView'
-import store from 'embed/lib/Store'
-import I18nPlugin from 'frontend/lib/I18n'
-import ApiClient from 'embed/api/client'
-import 'frontend/plugins/LazyLoad'
+import FleetyardsView from '@/embed/FleetyardsView.vue'
+import store from '@/embed/lib/Store'
+import I18nPlugin from '@/frontend/lib/I18n'
+import ApiClient from '@/embed/api/client'
+import '@/frontend/plugins/LazyLoad'
 
 Vue.use(ApiClient)
 Vue.use(I18nPlugin)

@@ -24,8 +24,8 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import Btn from 'frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import Btn from '@/frontend/core/components/Btn'
 
 @Component<PerPageDropdown>({
   components: {

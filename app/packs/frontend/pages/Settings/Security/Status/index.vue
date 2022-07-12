@@ -56,11 +56,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn'
-import ChangePasswordForm from 'frontend/components/Security/ChangePasswordForm'
+import Btn from '@/frontend/core/components/Btn'
+import ChangePasswordForm from '@/frontend/components/Security/ChangePasswordForm'
 import { Getter } from 'vuex-class'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import { displayConfirm } from 'frontend/lib/Noty'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import { displayConfirm } from '@/frontend/lib/Noty'
 
 @Component<SettingsSecurityStatus>({
   components: {

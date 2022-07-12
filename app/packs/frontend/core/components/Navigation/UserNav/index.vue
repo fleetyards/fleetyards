@@ -21,7 +21,7 @@
         <NavItem
           :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
           :label="$t('nav.rsiProfile')"
-          :image="require('images/rsi_logo.png')"
+          :image="require('@/images/rsi_logo.png')"
         />
         <NavItem :divider="true" />
       </template>
@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import NavItem from 'frontend/core/components/Navigation/NavItem'
-import NavigationMixin from 'frontend/mixins/Navigation'
-import sessionCollection from 'frontend/api/collections/Session'
+import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
+import NavigationMixin from '@/frontend/mixins/Navigation'
+import sessionCollection from '@/frontend/api/collections/Session'
 
 export default {
   name: 'UserNav',

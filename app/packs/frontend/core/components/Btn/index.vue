@@ -15,7 +15,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import BtnInner from 'frontend/core/components/Btn/Inner/index.vue'
+import BtnInner from '@/frontend/core/components/Btn/Inner/index.vue'
 import { RouteConfig } from 'vue-router'
 
 @Component<Btn>({

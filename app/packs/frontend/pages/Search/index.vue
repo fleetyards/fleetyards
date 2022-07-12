@@ -98,25 +98,24 @@
   </section>
 </template>
 
-<script>
-
+<script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import Filters from 'frontend/mixins/Filters'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Btn from 'frontend/core/components/Btn'
-import ShareBtn from 'frontend/components/ShareBtn'
-import ModelPanel from 'frontend/components/Models/Panel'
-import SearchPanel from 'frontend/components/Search/Panel'
-import FilteredList from 'frontend/core/components/FilteredList'
-import CelestialObjectsPanel from 'frontend/components/CelestialObjects/Panel'
-import ShopCommodityPanel from 'frontend/components/ShopCommodities/Panel'
-import ComponentPanel from 'frontend/components/Components/Panel'
-import CommodityPanel from 'frontend/components/Commodities/Panel'
-import EquipmentPanel from 'frontend/components/Equipment/Panel'
-import SearchHistory from 'frontend/components/Search/History'
-import searchCollection from 'frontend/api/collections/Search'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Filters from '@/frontend/mixins/Filters'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
+import ShareBtn from '@/frontend/components/ShareBtn'
+import ModelPanel from '@/frontend/components/Models/Panel'
+import SearchPanel from '@/frontend/components/Search/Panel'
+import FilteredList from '@/frontend/core/components/FilteredList'
+import CelestialObjectsPanel from '@/frontend/components/CelestialObjects/Panel'
+import ShopCommodityPanel from '@/frontend/components/ShopCommodities/Panel'
+import ComponentPanel from '@/frontend/components/Components/Panel'
+import CommodityPanel from '@/frontend/components/Commodities/Panel'
+import EquipmentPanel from '@/frontend/components/Equipment/Panel'
+import SearchHistory from '@/frontend/components/Search/History'
+import searchCollection from '@/frontend/api/collections/Search'
 
 @Component<Search>({
   components: {
@@ -138,11 +137,11 @@ import searchCollection from 'frontend/api/collections/Search'
 export default class Search extends Vue {
   collection: SearchCollection = searchCollection
 
-form: SearchFilter = {
-    search: null
+  form: SearchFilter = {
+    search: null,
   }
 
-get historyVisible() {
+  get historyVisible() {
     return !this.collection.records.length && !this.form.search
   }
 
@@ -164,10 +163,6 @@ get historyVisible() {
   get shareTitle() {
     return this.$t('labels.search.shareTitle', { query: this.form.search })
   }
-
-
-
-
 
   @Watch('$route')
   onRouteChange() {

@@ -38,17 +38,17 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Updates from 'frontend/mixins/Updates'
-import userCollection from 'frontend/api/collections/User'
-import versionCollection from 'frontend/api/collections/Version'
-import Navigation from 'frontend/core/components/Navigation'
-import NavigationHeader from 'frontend/core/components/Navigation/Header'
-import NavigationMobile from 'frontend/core/components/Navigation/Mobile'
-import AppFooter from 'frontend/core/components/AppFooter'
-import AppModal from 'frontend/core/components/AppModal'
-import AppShoppingCart from 'frontend/core/components/AppShoppingCart'
-import BackgroundImage from 'frontend/core/components/BackgroundImage'
-import { requestPermission } from 'frontend/lib/Noty'
+import Updates from '@/frontend/mixins/Updates'
+import userCollection from '@/frontend/api/collections/User'
+import versionCollection from '@/frontend/api/collections/Version'
+import Navigation from '@/frontend/core/components/Navigation/index.vue'
+import NavigationHeader from '@/frontend/core/components/Navigation/Header/index.vue'
+import NavigationMobile from '@/frontend/core/components/Navigation/Mobile/index.vue'
+import AppFooter from '@/frontend/core/components/AppFooter/index.vue'
+import AppModal from '@/frontend/core/components/AppModal/index.vue'
+import AppShoppingCart from '@/frontend/core/components/AppShoppingCart/index.vue'
+import BackgroundImage from '@/frontend/core/components/BackgroundImage/index.vue'
+import { requestPermission } from '@/frontend/lib/Noty'
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
 
@@ -176,7 +176,8 @@ export default class FrontendApp extends Vue {
 
   openPrivacySettings(settings = false) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/core/components/PrivacySettings'),
+      component: () =>
+        import('@/frontend/core/components/PrivacySettings/index.vue'),
       fixed: true,
       props: {
         settings,

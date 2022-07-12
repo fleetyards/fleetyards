@@ -21,8 +21,8 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
-import { displayWarning } from 'frontend/lib/Noty'
+import Btn from '@/frontend/core/components/Btn'
+import { displayWarning } from '@/frontend/lib/Noty'
 
 @Component<AddToHangar>({
   components: {
@@ -73,7 +73,7 @@ export default class AddToHangar extends Vue {
     }
 
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Models/AddToHangarModal'),
+      component: () => import('@/frontend/components/Models/AddToHangarModal'),
       props: {
         model: this.model,
       },

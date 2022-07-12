@@ -47,8 +47,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
-import fleetsCollection from 'frontend/api/collections/Fleets'
+import {
+  displaySuccess,
+  displayAlert,
+  displayConfirm,
+} from '@/frontend/lib/Noty'
+import fleetsCollection from '@/frontend/api/collections/Fleets'
 
 @Component<FleetSettingsIndex>({})
 export default class FleetSettingsIndex extends Vue {

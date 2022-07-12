@@ -137,13 +137,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
-import Checkbox from 'frontend/core/components/Form/Checkbox'
-import Btn from 'frontend/core/components/Btn'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
-import { transformErrors } from 'frontend/api/helpers'
+import Modal from '@/frontend/core/components/AppModal/Modal'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import Checkbox from '@/frontend/core/components/Form/Checkbox'
+import Btn from '@/frontend/core/components/Btn'
+import vehiclesCollection from '@/frontend/api/collections/Vehicles'
+import { transformErrors } from '@/frontend/api/helpers'
 
 @Component<VehicleModal>({
   components: {

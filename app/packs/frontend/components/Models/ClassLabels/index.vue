@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import Btn from 'frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import Btn from '@/frontend/core/components/Btn'
 import { mapGetters } from 'vuex'
 
 export default {

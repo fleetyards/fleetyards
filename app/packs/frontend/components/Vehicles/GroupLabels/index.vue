@@ -81,9 +81,9 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import Btn from 'frontend/core/components/Btn'
-import { displayAlert } from 'frontend/lib/Noty'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import { displayAlert } from '@/frontend/lib/Noty'
 import { Getter } from 'vuex-class'
 
 @Component<GroupLabels>({
@@ -223,7 +223,8 @@ export default class GroupLabels extends Vue {
 
   openGroupModal(hangarGroup) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/GroupModal'),
+      component: () =>
+        import('@/frontend/components/Vehicles/GroupModal/index.vue'),
       props: {
         hangarGroup,
       },

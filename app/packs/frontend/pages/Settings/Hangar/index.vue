@@ -50,11 +50,11 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { displaySuccess } from 'frontend/lib/Noty'
-import Btn from 'frontend/core/components/Btn'
-import Checkbox from 'frontend/core/components/Form/Checkbox'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import userCollection from 'frontend/api/collections/User'
+import { displaySuccess } from '@/frontend/lib/Noty'
+import Btn from '@/frontend/core/components/Btn'
+import Checkbox from '@/frontend/core/components/Form/Checkbox'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import userCollection from '@/frontend/api/collections/User'
 
 @Component<SettingsHangar>({
   components: {

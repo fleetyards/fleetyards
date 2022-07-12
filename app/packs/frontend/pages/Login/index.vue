@@ -109,12 +109,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Btn from 'frontend/core/components/Btn'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Checkbox from 'frontend/core/components/Form/Checkbox'
-import { displayAlert } from 'frontend/lib/Noty'
-import sessionCollection from 'frontend/api/collections/Session'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Btn from '@/frontend/core/components/Btn'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Checkbox from '@/frontend/core/components/Form/Checkbox'
+import { displayAlert } from '@/frontend/lib/Noty'
+import sessionCollection from '@/frontend/api/collections/Session'
 
 @Component<Login>({
   components: {

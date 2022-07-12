@@ -1,6 +1,6 @@
 import Noty from 'noty'
 import { isBefore, addSeconds } from 'date-fns'
-import { I18n } from 'frontend/lib/I18n'
+import { I18n } from '@/frontend/lib/I18n'
 
 Noty.overrideDefaults({
   callbacks: {
@@ -66,7 +66,7 @@ const displayDesktopNotification = function displayDesktopNotification(
   // eslint-disable-next-line compat/compat
   const notification = new window.Notification(message, {
     // eslint-disable-next-line global-require
-    icon: `${window.FRONTEND_ENDPOINT}${require('images/favicon.png')}`,
+    icon: `${window.FRONTEND_ENDPOINT}${require('@/images/favicon.png')}`,
   })
 
   return notification

@@ -71,7 +71,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { groupBy, sortBy } from 'frontend/lib/Helpers'
+import { groupBy, sortBy } from '@/frontend/lib/Helpers'
 import DockItem from './Item'
 
 @Component<StationsDocks>({

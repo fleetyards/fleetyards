@@ -18,7 +18,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "app/packs/*"]
+      "*": ["node_modules/*"],
+      "@/*": ["app/packs/*"]
     },
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,

@@ -60,7 +60,7 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
-import FleetchartItemImage from 'frontend/components/Fleetchart/List/Item/Image'
+import FleetchartItemImage from '@/frontend/components/Fleetchart/List/Item/Image'
 
 @Component<ModelsCompareTopView>({
   components: {

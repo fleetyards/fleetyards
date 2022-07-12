@@ -1,4 +1,4 @@
-import ViewNotFound from 'frontend/pages/NotFound'
+import ViewNotFound from '@/frontend/pages/NotFound/index.vue'
 
 export default (componentImport) => async () => {
   const { default: component } = await componentImport()

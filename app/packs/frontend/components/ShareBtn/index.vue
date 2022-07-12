@@ -13,9 +13,9 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn/index.vue'
-import copyText from 'frontend/utils/CopyText'
-import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import copyText from '@/frontend/utils/CopyText'
+import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
 
 @Component({
   components: {

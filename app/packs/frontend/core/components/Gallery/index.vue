@@ -54,8 +54,8 @@
 <script>
 import PhotoSwipe from 'photoswipe'
 import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
-import copyText from 'frontend/utils/CopyText'
-import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
+import copyText from '@/frontend/utils/CopyText'
+import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
 
 export default {
   name: 'GalleryIndex',

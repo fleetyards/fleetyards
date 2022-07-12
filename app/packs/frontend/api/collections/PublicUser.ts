@@ -1,4 +1,4 @@
-import { get } from 'frontend/api/client'
+import { get } from '@/frontend/api/client'
 
 export class PublicUserCollection {
   record: User | null = null

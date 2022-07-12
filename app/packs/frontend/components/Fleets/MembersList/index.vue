@@ -22,7 +22,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Panel from 'frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel'
 import MembersListHead from './MembersListHead'
 import MembersListItem from './MembersListItem'
 

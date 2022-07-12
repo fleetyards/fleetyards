@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import nprogress from 'nprogress'
-import Store from 'frontend/lib/Store'
+import Store from '@/frontend/lib/Store'
 import linkHeaderParser from 'parse-link-header'
 import Qs from 'qs'
 

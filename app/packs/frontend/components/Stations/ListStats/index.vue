@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import LocationLabel from 'frontend/components/Stations/LocationLabel'
+import LocationLabel from '@/frontend/components/Stations/LocationLabel'
 
 export default {
   name: 'StationsListStats',

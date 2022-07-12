@@ -144,13 +144,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import FilteredTable from 'frontend/core/components/FilteredTable'
-import Btn from 'frontend/core/components/Btn'
-import BtnGroup from 'frontend/core/components/BtnGroup'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
-import { displayConfirm } from 'frontend/lib/Noty'
-import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
-import HangarGroups from 'frontend/components/Vehicles/HangarGroups'
+import vehiclesCollection from '@/frontend/api/collections/Vehicles'
+import { displayConfirm } from '@/frontend/lib/Noty'
+import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu/index.vue'
+import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
 
 @Component<FilteredGrid>({
   components: {
@@ -217,7 +217,8 @@ export default class FilteredGrid extends Vue {
 
   openBulkGroupEditModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/BulkGroupModal'),
+      component: () =>
+        import('@/frontend/components/Vehicles/BulkGroupModal/index.vue'),
       props: {
         vehicleIds: this.selected,
       },
@@ -226,7 +227,7 @@ export default class FilteredGrid extends Vue {
 
   openEditModal(vehicle) {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/Modal'),
+      component: () => import('@/frontend/components/Vehicles/Modal/index.vue'),
       props: {
         vehicle,
       },

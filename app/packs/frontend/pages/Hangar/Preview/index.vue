@@ -114,10 +114,10 @@
 </template>
 
 <script>
-import MetaInfo from 'frontend/mixins/MetaInfo'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
 
-import Btn from 'frontend/core/components/Btn'
-import Panel from 'frontend/core/components/Panel'
+import Btn from '@/frontend/core/components/Btn'
+import Panel from '@/frontend/core/components/Panel'
 
 export default {
   name: 'HangarPreview',

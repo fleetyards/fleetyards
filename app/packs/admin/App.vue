@@ -10,7 +10,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import AppModal from 'frontend/core/components/AppModal'
+import AppModal from '@/frontend/core/components/AppModal'
 
 @Component<AdminApp>({
   components: {

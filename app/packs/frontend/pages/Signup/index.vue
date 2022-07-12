@@ -122,12 +122,12 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Btn from 'frontend/core/components/Btn'
-import Checkbox from 'frontend/core/components/Form/Checkbox'
-import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
-import { transformErrors } from 'frontend/api/helpers'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
+import Checkbox from '@/frontend/core/components/Form/Checkbox'
+import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
+import { transformErrors } from '@/frontend/api/helpers'
 
 @Component<Signup>({
   components: {

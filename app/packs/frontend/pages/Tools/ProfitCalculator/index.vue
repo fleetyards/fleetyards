@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import MetaInfo from 'frontend/mixins/MetaInfo'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
 
 @Component<ProfitCalculator>({
   components: {},

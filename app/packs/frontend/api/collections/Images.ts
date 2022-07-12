@@ -1,4 +1,4 @@
-import { get } from 'frontend/api/client'
+import { get } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class ImagesCollection extends BaseCollection {

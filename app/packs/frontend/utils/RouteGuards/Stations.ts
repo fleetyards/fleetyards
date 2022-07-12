@@ -1,4 +1,4 @@
-import stationsCollection from 'frontend/api/collections/Stations'
+import stationsCollection from '@/frontend/api/collections/Stations'
 
 import { Route, NavigationGuardNext } from 'vue-router'
 

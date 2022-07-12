@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import LazyImage from 'frontend/core/components/LazyImage'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
 
 @Component<GalleryImage>({
   components: {

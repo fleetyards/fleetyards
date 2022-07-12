@@ -1,4 +1,4 @@
-import { post, destroy } from 'frontend/api/client'
+import { post, destroy } from '@/frontend/api/client'
 
 export class SessionCollection {
   record: Session | null = null

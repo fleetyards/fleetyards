@@ -16,7 +16,7 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import FormInput from 'frontend/core/components/Form/FormInput'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import { debounce } from 'ts-debounce'
 
 @Component<SearchForm>({

@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import Panel from 'frontend/core/components/Panel'
-import LazyImage from 'frontend/core/components/LazyImage'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
 
 export default {
   name: 'CelestalObjectPanel',

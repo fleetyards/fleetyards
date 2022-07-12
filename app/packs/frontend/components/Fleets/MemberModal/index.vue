@@ -45,11 +45,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Btn from 'frontend/core/components/Btn'
-import memberCollection from 'frontend/api/collections/FleetMembers'
-import { displayAlert } from 'frontend/lib/Noty'
+import Modal from '@/frontend/core/components/AppModal/Modal'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
+import memberCollection from '@/frontend/api/collections/FleetMembers'
+import { displayAlert } from '@/frontend/lib/Noty'
 
 @Component<MemberModal>({
   components: {

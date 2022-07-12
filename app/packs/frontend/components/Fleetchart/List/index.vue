@@ -121,13 +121,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import FleetchartSlider from 'frontend/components/Fleetchart/Slider/index.vue'
-import Btn from 'frontend/core/components/Btn'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
+import FleetchartSlider from '@/frontend/components/Fleetchart/Slider/index.vue'
+import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
-import Starship42Btn from 'frontend/components/Starship42Btn'
+import Starship42Btn from '@/frontend/components/Starship42Btn'
 import FleetchartItem from './Item/index.vue'
 
 @Component({

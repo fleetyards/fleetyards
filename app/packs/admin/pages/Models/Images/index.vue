@@ -25,11 +25,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import ImageUploader from 'admin/components/ImageUploader'
-import FilteredList from 'frontend/core/components/FilteredList'
+import ImageUploader from '@/admin/components/ImageUploader'
+import FilteredList from '@/frontend/core/components/FilteredList'
 import imagesCollection, {
   AdminImagesCollection,
-} from 'admin/api/collections/Images'
+} from '@/admin/api/collections/Images'
 
 @Component<AdminModelImages>({
   components: {

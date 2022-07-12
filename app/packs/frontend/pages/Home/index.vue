@@ -9,7 +9,7 @@
               <h1 id="home-welcome">
                 <small class="text-muted">{{ $t('headlines.welcome') }}</small>
                 <img
-                  :src="require(`images/logo-home.png`)"
+                  :src="require('@/images/logo-home.png')"
                   class="logo"
                   width="150px"
                   height="101px"
@@ -150,16 +150,16 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import VueScrollTo from 'vue-scrollto'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/core/components/Loader'
-import Panel from 'frontend/core/components/Panel'
-import TeaserPanel from 'frontend/core/components/TeaserPanel'
-import Btn from 'frontend/core/components/Btn'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Support from 'frontend/components/Support'
-import LazyImage from 'frontend/core/components/LazyImage'
-import modelsCollection from 'frontend/api/collections/Models'
-import imagesCollection from 'frontend/api/collections/Images'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Support from '@/frontend/components/Support/index.vue'
+import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import modelsCollection from '@/frontend/api/collections/Models'
+import imagesCollection from '@/frontend/api/collections/Images'
 
 @Component<Home>({
   components: {

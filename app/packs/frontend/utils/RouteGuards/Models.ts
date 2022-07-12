@@ -1,4 +1,4 @@
-import modelsCollection from 'frontend/api/collections/Models'
+import modelsCollection from '@/frontend/api/collections/Models'
 
 import { Route, NavigationGuardNext } from 'vue-router'
 

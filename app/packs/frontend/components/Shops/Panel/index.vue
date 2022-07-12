@@ -35,7 +35,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Panel from 'frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel'
 
 @Component<ShopPanel>({
   components: {

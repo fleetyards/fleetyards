@@ -1,4 +1,4 @@
-import userCollection from 'frontend/api/collections/User'
+import userCollection from '@/frontend/api/collections/User'
 import { Route, NavigationGuardNext } from 'vue-router'
 
 export const enabledRouteGuard = async function fleetRouteGuard(

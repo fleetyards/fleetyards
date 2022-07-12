@@ -17,7 +17,7 @@
         <ul>
           <NavItem class="logo-menu">
             <img
-              v-lazy="require('images/favicon-small.png')"
+              v-lazy="require('@/images/favicon-small.png')"
               class="logo-menu-image"
               alt="logo"
             />
@@ -95,13 +95,13 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import NavItem from 'frontend/core/components/Navigation/NavItem'
-import FleetNav from 'frontend/core/components/Navigation/FleetNav'
-import FleetsNav from 'frontend/core/components/Navigation/FleetsNav'
-import StationsNav from 'frontend/core/components/Navigation/StationsNav'
-import NavFooter from 'frontend/core/components/Navigation/NavFooter'
-import NavigationMixin from 'frontend/mixins/Navigation'
-import { isFleetRoute } from 'frontend/utils/Routes/Fleets'
+import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
+import FleetNav from '@/frontend/core/components/Navigation/FleetNav/index.vue'
+import FleetsNav from '@/frontend/core/components/Navigation/FleetsNav/index.vue'
+import StationsNav from '@/frontend/core/components/Navigation/StationsNav/index.vue'
+import NavFooter from '@/frontend/core/components/Navigation/NavFooter/index.vue'
+import NavigationMixin from '@/frontend/mixins/Navigation'
+import { isFleetRoute } from '@/frontend/utils/Routes/Fleets'
 
 @Component<Navigation>({
   components: {

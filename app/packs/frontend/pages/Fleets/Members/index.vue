@@ -73,19 +73,19 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Panel from 'frontend/core/components/Panel'
-import FilteredList from 'frontend/core/components/FilteredList'
-import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
-import Btn from 'frontend/core/components/Btn'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import FleetMembersFilterForm from 'frontend/components/Fleets/MembersFilterForm'
-import Avatar from 'frontend/core/components/Avatar'
-import MetaInfoMixin from 'frontend/mixins/MetaInfo'
-import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
-import FleetMembersList from 'frontend/components/Fleets/MembersList'
-import { fleetRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from 'frontend/api/collections/Fleets'
+import MetaInfoMixin from '@/frontend/mixins/MetaInfo'
+import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
+import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
+import fleetsCollection from '@/frontend/api/collections/Fleets'
 import debounce from 'lodash.debounce'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import FleetMembersFilterForm from '@/frontend/components/Fleets/MembersFilterForm/index.vue'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
+import FleetMembersList from '@/frontend/components/Fleets/MembersList/index.vue'
 
 @Component<FleetMembers>({
   components: {
@@ -171,7 +171,8 @@ export default class FleetMemmbers extends Vue {
 
   openInviteUrlModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Fleets/InviteUrlModal'),
+      component: () =>
+        import('@/frontend/components/Fleets/InviteUrlModal/index.vue'),
       props: {
         fleet: this.fleet,
       },
@@ -180,7 +181,8 @@ export default class FleetMemmbers extends Vue {
 
   openInviteModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Fleets/MemberModal'),
+      component: () =>
+        import('@/frontend/components/Fleets/MemberModal/index.vue'),
       props: {
         fleet: this.fleet,
       },

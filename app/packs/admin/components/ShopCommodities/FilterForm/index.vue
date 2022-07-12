@@ -66,15 +66,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Btn from 'frontend/core/components/Btn'
-import componentItemTypeFiltersCollection from 'admin/api/collections/ComponentItemTypeFilters'
-import equipmentItemTypeFiltersCollection from 'admin/api/collections/EquipmentItemTypeFilters'
-import equipmentTypeFiltersCollection from 'admin/api/collections/EquipmentTypeFilters'
-import equipmentSlotFiltersCollection from 'admin/api/collections/EquipmentSlotFilters'
 import { debounce } from 'ts-debounce'
-import { getFilters, isFilterSelected } from 'frontend/utils/Filters'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
+import componentItemTypeFiltersCollection from '@/admin/api/collections/ComponentItemTypeFilters'
+import equipmentItemTypeFiltersCollection from '@/admin/api/collections/EquipmentItemTypeFilters'
+import equipmentTypeFiltersCollection from '@/admin/api/collections/EquipmentTypeFilters'
+import equipmentSlotFiltersCollection from '@/admin/api/collections/EquipmentSlotFilters'
+import { getFilters, isFilterSelected } from '@/frontend/utils/Filters'
 
 @Component<ShopCommoditiesFilterForm>({
   components: {

@@ -79,18 +79,18 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import FilteredList from 'frontend/core/components/FilteredList'
-import FilteredGrid from 'frontend/core/components/FilteredGrid'
-import ModelPanel from 'frontend/components/Models/Panel'
-import ModelsFilterForm from 'frontend/components/Models/FilterForm'
-import FleetchartApp from 'frontend/components/Fleetchart/App'
-import MetaInfo from 'frontend/mixins/MetaInfo'
+import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import FilteredList from '@/frontend/core/components/FilteredList'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid'
+import ModelPanel from '@/frontend/components/Models/Panel'
+import ModelsFilterForm from '@/frontend/components/Models/FilterForm'
+import FleetchartApp from '@/frontend/components/Fleetchart/App'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
 import modelsCollection, {
   ModelsCollection,
-} from 'frontend/api/collections/Models'
-import HangarItemsMixin from 'frontend/mixins/HangarItems'
+} from '@/frontend/api/collections/Models'
+import HangarItemsMixin from '@/frontend/mixins/HangarItems'
 
 @Component<Models>({
   components: {

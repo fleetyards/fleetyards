@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import Filters from 'frontend/mixins/Filters'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import Filters from '@/frontend/mixins/Filters'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
 
 export default {
   name: 'TradeRoutesQuickFilter',

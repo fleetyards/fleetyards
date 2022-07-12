@@ -1,4 +1,4 @@
-import publicUserCollection from 'frontend/api/collections/PublicUser'
+import publicUserCollection from '@/frontend/api/collections/PublicUser'
 
 import { Route, NavigationGuardNext } from 'vue-router'
 

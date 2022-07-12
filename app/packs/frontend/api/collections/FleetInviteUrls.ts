@@ -1,4 +1,4 @@
-import { get, post, destroy } from 'frontend/api/client'
+import { get, post, destroy } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class FleetInviteUrlsCollection extends BaseCollection {

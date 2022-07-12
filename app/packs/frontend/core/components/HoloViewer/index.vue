@@ -42,14 +42,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Loader from 'frontend/core/components/Loader'
-import BtnGroup from 'frontend/core/components/BtnGroup'
-import Btn from 'frontend/core/components/Btn'
+import Loader from '@/frontend/core/components/Loader'
+import BtnGroup from '@/frontend/core/components/BtnGroup'
+import Btn from '@/frontend/core/components/Btn'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { displayAlert } from 'frontend/lib/Noty'
+import { displayAlert } from '@/frontend/lib/Noty'
 
 @Component<HoloViewer>({
   components: {

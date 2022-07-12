@@ -1,4 +1,4 @@
-import app from 'admin/lib/Store/modules/app'
+import app from '@/admin/lib/Store/modules/app'
 
 export default () => ({
   app: app(),

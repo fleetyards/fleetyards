@@ -1,6 +1,6 @@
-import { get } from 'frontend/api/client'
-import { prefetch } from 'frontend/api/prefetch'
-import Store from 'frontend/lib/Store'
+import { get } from '@/frontend/api/client'
+import { prefetch } from '@/frontend/api/prefetch'
+import Store from '@/frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class ModelsCollection extends BaseCollection {

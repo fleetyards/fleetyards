@@ -26,10 +26,10 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import Btn from 'frontend/core/components/Btn'
-import { displaySuccess } from 'frontend/lib/Noty'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
+import Modal from '@/frontend/core/components/AppModal/Modal'
+import Btn from '@/frontend/core/components/Btn'
+import { displaySuccess } from '@/frontend/lib/Noty'
+import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 
 @Component<AddToHangarModal>({
   components: {

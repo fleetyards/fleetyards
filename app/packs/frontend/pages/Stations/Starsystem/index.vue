@@ -92,16 +92,16 @@
 </template>
 
 <script>
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/core/components/Loader'
-import Panel from 'frontend/core/components/Panel'
-import PlanetList from 'frontend/components/Planets/List'
-import MoonPanel from 'frontend/components/Planets/Panel'
-import StarsystemBaseMetrics from 'frontend/components/Starsystems/BaseMetrics'
-import StarsystemLevelsMetrics from 'frontend/components/Starsystems/LevelsMetrics'
-import Pagination from 'frontend/mixins/Pagination'
-import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
-import { scrollToAnchor } from 'frontend/utils/scrolling'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Loader from '@/frontend/core/components/Loader'
+import Panel from '@/frontend/core/components/Panel'
+import PlanetList from '@/frontend/components/Planets/List'
+import MoonPanel from '@/frontend/components/Planets/Panel'
+import StarsystemBaseMetrics from '@/frontend/components/Starsystems/BaseMetrics'
+import StarsystemLevelsMetrics from '@/frontend/components/Starsystems/LevelsMetrics'
+import Pagination from '@/frontend/mixins/Pagination'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
+import { scrollToAnchor } from '@/frontend/utils/scrolling'
 
 export default {
   name: 'StarsystemDetail',

@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import NavItem from 'frontend/core/components/Navigation/NavItem'
-import NavigationMixin from 'frontend/mixins/Navigation'
+import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
+import NavigationMixin from '@/frontend/mixins/Navigation'
 
 export default {
   name: 'StationsNav',

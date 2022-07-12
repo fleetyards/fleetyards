@@ -152,13 +152,13 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import panzoom from 'panzoom'
-import Btn from 'frontend/core/components/Btn'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
+import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
 import { Getter } from 'vuex-class'
 import debounce from 'lodash.debounce'
-import Starship42Btn from 'frontend/components/Starship42Btn'
+import Starship42Btn from '@/frontend/components/Starship42Btn'
 import FleetchartItem from './Item/index.vue'
 
 @Component({

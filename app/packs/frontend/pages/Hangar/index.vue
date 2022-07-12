@@ -248,27 +248,27 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import FilteredList from 'frontend/core/components/FilteredList'
-import FilteredGrid from 'frontend/core/components/FilteredGrid'
-import VehiclesTable from 'frontend/components/Vehicles/Table'
-import Btn from 'frontend/core/components/Btn'
-import PrimaryAction from 'frontend/core/components/PrimaryAction'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import VehiclePanel from 'frontend/components/Vehicles/Panel'
-import HangarImportBtn from 'frontend/components/HangarImportBtn'
-import VehiclesFilterForm from 'frontend/components/Vehicles/FilterForm'
-import ModelClassLabels from 'frontend/components/Models/ClassLabels'
-import GroupLabels from 'frontend/components/Vehicles/GroupLabels'
-import FleetchartApp from 'frontend/components/Fleetchart/App'
-import HangarGuideBox from 'frontend/components/HangarGuideBox'
-import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
-import ShareBtn from 'frontend/components/ShareBtn'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import HangarItemsMixin from 'frontend/mixins/HangarItems'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import VehiclesTable from '@/frontend/components/Vehicles/Table/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import PrimaryAction from '@/frontend/core/components/PrimaryAction/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import VehiclePanel from '@/frontend/components/Vehicles/Panel/index.vue'
+import HangarImportBtn from '@/frontend/components/HangarImportBtn/index.vue'
+import VehiclesFilterForm from '@/frontend/components/Vehicles/FilterForm/index.vue'
+import ModelClassLabels from '@/frontend/components/Models/ClassLabels/index.vue'
+import GroupLabels from '@/frontend/components/Vehicles/GroupLabels/index.vue'
+import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
+import HangarGuideBox from '@/frontend/components/HangarGuideBox/index.vue'
+import AddonsModal from '@/frontend/components/Vehicles/AddonsModal/index.vue'
+import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import HangarItemsMixin from '@/frontend/mixins/HangarItems'
 import { format } from 'date-fns'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
-import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
-import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import vehiclesCollection from '@/frontend/api/collections/Vehicles'
+import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
+import { displayAlert, displayConfirm } from '@/frontend/lib/Noty'
 import debounce from 'lodash.debounce'
 
 @Component<Hangar>({
@@ -413,7 +413,8 @@ export default class Hangar extends Vue {
 
   showNewModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/NewVehiclesModal'),
+      component: () =>
+        import('@/frontend/components/Vehicles/NewVehiclesModal/index.vue'),
     })
   }
 

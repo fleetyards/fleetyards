@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
-import { I18n } from 'frontend/lib/I18n'
-import { displayInfo } from 'frontend/lib/Noty'
+import { I18n } from '@/frontend/lib/I18n'
+import { displayInfo } from '@/frontend/lib/Noty'
 
 export default {
   mixins: [I18n],

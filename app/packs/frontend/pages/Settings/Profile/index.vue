@@ -156,13 +156,13 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
-import Btn from 'frontend/core/components/Btn'
-import Avatar from 'frontend/core/components/Avatar'
-import FormInput from 'frontend/core/components/Form/FormInput'
+import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
+import Btn from '@/frontend/core/components/Btn'
+import Avatar from '@/frontend/core/components/Avatar'
+import FormInput from '@/frontend/core/components/Form/FormInput'
 import VueUploadComponent from 'vue-upload-component'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import userCollection from 'frontend/api/collections/User'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import userCollection from '@/frontend/api/collections/User'
 
 @Component<SettingsAccount>({
   components: {

@@ -103,8 +103,8 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
-import SmallLoader from 'frontend/core/components/SmallLoader'
-import FormInput from 'frontend/core/components/Form/FormInput'
+import SmallLoader from '@/frontend/core/components/SmallLoader'
+import FormInput from '@/frontend/core/components/Form/FormInput'
 import { debounce } from 'ts-debounce'
 import InfiniteLoading from 'vue-infinite-loading'
 

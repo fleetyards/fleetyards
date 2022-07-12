@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import ModelPanel from 'embed/components/Models/Panel'
 import { mapGetters } from 'vuex'
+import ModelPanel from '@/embed/components/Models/Panel'
 
 export default {
   name: 'ModelList',

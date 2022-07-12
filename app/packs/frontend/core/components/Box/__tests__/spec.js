@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Box from 'frontend/core/components/Box'
+import Box from '@/frontend/core/components/Box'
 
 describe('Box', () => {
   let cmp

@@ -132,9 +132,9 @@
 </template>
 
 <script>
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Chart from 'frontend/core/components/Chart'
-import Panel from 'frontend/core/components/Panel'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import Chart from '@/frontend/core/components/Chart'
+import Panel from '@/frontend/core/components/Panel'
 
 export default {
   name: 'StatsIndex',

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { sortBy } from 'frontend/lib/Helpers'
+import { sortBy } from '@/frontend/lib/Helpers'
 
 export default {
   name: 'StationsDocksItem',

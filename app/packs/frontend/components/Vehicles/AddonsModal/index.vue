@@ -76,15 +76,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import Loader from 'frontend/core/components/Loader'
-import Panel from 'frontend/core/components/Panel'
-import modelModulesCollection from 'frontend/api/collections/ModelModules'
-import modelModulePackagesCollection from 'frontend/api/collections/ModelModulePackages'
-import modelUpgradesCollection from 'frontend/api/collections/ModelUpgrades'
-import Addons from './Addons'
-import Packages from './Packages'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import modelModulesCollection from '@/frontend/api/collections/ModelModules'
+import modelModulePackagesCollection from '@/frontend/api/collections/ModelModulePackages'
+import modelUpgradesCollection from '@/frontend/api/collections/ModelUpgrades'
+import Addons from './Addons/index.vue'
+import Packages from './Packages/index.vue'
 
 type AddonsForm = {
   modelModuleIds: string[]
@@ -179,13 +179,13 @@ export default class AddonsModal extends Vue {
     await modelUpgradesCollection.findAll(this.vehicle.model.slug)
   }
 
-  activatePackage(package) {
+  activatePackage(addonPackage) {
     if (!this.editable) {
       return
     }
 
-    package.modules.forEach((module) => {
-      const additionalPackageModules = package.modules.filter(
+    addonPackage.modules.forEach((module) => {
+      const additionalPackageModules = addonPackage.modules.filter(
         (packageModule) => packageModule.id === module.id
       )
       const foundModules = this.form.modelModuleIds.filter(

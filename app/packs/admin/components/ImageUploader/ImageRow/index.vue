@@ -117,8 +117,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn'
-import FormInput from 'frontend/core/components/Form/FormInput'
+import Btn from '@/frontend/core/components/Btn'
+import FormInput from '@/frontend/core/components/Form/FormInput'
 import debounce from 'lodash.debounce'
 
 @Component<ImageRow>({

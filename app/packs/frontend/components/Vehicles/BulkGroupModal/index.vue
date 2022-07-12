@@ -46,12 +46,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import Checkbox from 'frontend/core/components/Form/Checkbox'
-import Btn from 'frontend/core/components/Btn'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
-import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
+import Modal from '@/frontend/core/components/AppModal/Modal'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import Checkbox from '@/frontend/core/components/Form/Checkbox'
+import Btn from '@/frontend/core/components/Btn'
+import vehiclesCollection from '@/frontend/api/collections/Vehicles'
+import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
 
 @Component<VehicleModal>({
   components: {

@@ -1,5 +1,5 @@
-import { post } from 'frontend/api/client'
-import { I18n } from 'frontend/lib/I18n'
+import { post } from '@/frontend/api/client'
+import { I18n } from '@/frontend/lib/I18n'
 
 export default {
   message() {

@@ -82,10 +82,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import { displayConfirm } from 'frontend/lib/Noty'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
+import Btn from '@/frontend/core/components/Btn'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import { displayConfirm } from '@/frontend/lib/Noty'
+import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 
 @Component<GroupModal>({
   components: {
@@ -154,7 +154,7 @@ export default class ContextMenu extends Vue {
 
   openEditModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/Modal'),
+      component: () => import('@/frontend/components/Vehicles/Modal'),
       props: {
         vehicle: this.vehicle,
       },
@@ -163,7 +163,7 @@ export default class ContextMenu extends Vue {
 
   openNamingModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/NamingModal'),
+      component: () => import('@/frontend/components/Vehicles/NamingModal'),
       props: {
         vehicle: this.vehicle,
       },
@@ -172,7 +172,7 @@ export default class ContextMenu extends Vue {
 
   openEditGroupsModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/GroupsModal'),
+      component: () => import('@/frontend/components/Vehicles/GroupsModal'),
       props: {
         vehicle: this.vehicle,
       },
@@ -181,7 +181,7 @@ export default class ContextMenu extends Vue {
 
   openAddonsModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/AddonsModal'),
+      component: () => import('@/frontend/components/Vehicles/AddonsModal'),
       props: {
         vehicle: this.vehicle,
         editable: this.editable,

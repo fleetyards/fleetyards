@@ -33,7 +33,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Modal from 'frontend/core/components/AppModal/Modal'
+import Modal from '@/frontend/core/components/AppModal/Modal'
 
 @Component<Support>({
   components: {

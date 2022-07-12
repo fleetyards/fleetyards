@@ -35,7 +35,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Panel from 'frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
 @Component<AddonsModal>({
   components: {
@@ -60,15 +60,15 @@ export default class AddonsModal extends Vue {
     this.$emit('input', this.internalValue)
   }
 
-  activatePackage(package) {
+  activatePackage(addonPackage) {
     if (!this.editable) {
       return
     }
 
     this.internalValue = [...this.value]
 
-    package.modules.forEach((module) => {
-      const additionalPackageModules = package.modules.filter(
+    addonPackage.modules.forEach((module) => {
+      const additionalPackageModules = addonPackage.modules.filter(
         (packageModule) => packageModule.id === module.id
       )
       const foundModules = this.internalValue.filter((id) => id === module.id)
@@ -82,10 +82,10 @@ export default class AddonsModal extends Vue {
     })
   }
 
-  selectedPackage(package) {
+  selectedPackage(addonPackage) {
     return (
       JSON.stringify([...this.value].sort()) ===
-      JSON.stringify(package.modules.map((module) => module.id).sort())
+      JSON.stringify(addonPackage.modules.map((module) => module.id).sort())
     )
   }
 }

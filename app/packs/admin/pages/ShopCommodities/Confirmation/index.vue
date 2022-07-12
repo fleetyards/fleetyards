@@ -62,12 +62,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import FilteredList from 'frontend/core/components/FilteredList'
-import FilteredTable from 'frontend/core/components/FilteredTable'
-import BtnGroup from 'frontend/core/components/BtnGroup'
-import Btn from 'frontend/core/components/Btn'
-import shopCommodityConfirmationsCollection from 'admin/api/collections/ShopCommodityConfirmations'
-import { displayConfirm } from 'frontend/lib/Noty'
+import FilteredList from '@/frontend/core/components/FilteredList'
+import FilteredTable from '@/frontend/core/components/FilteredTable'
+import BtnGroup from '@/frontend/core/components/BtnGroup'
+import Btn from '@/frontend/core/components/Btn'
+import shopCommodityConfirmationsCollection from '@/admin/api/collections/ShopCommodityConfirmations'
+import { displayConfirm } from '@/frontend/lib/Noty'
 
 @Component<AdminShopCommodities>({
   components: {

@@ -1,5 +1,5 @@
-import { get } from 'frontend/api/client'
-import BaseCollection from 'frontend/api/collections/Base'
+import { get } from '@/frontend/api/client'
+import BaseCollection from '@/frontend/api/collections/Base'
 
 export class AdminModelModulesCollection extends BaseCollection {
   primaryKey: string = 'id'

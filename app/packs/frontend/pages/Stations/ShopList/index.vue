@@ -36,12 +36,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import FilterForm from 'frontend/components/Shops/FilterForm'
-import FilteredList from 'frontend/core/components/FilteredList'
-import FilteredGrid from 'frontend/core/components/FilteredGrid'
-import ShopPanel from 'frontend/components/Shops/Panel'
-import shopsCollection from 'frontend/api/collections/Shops'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import FilterForm from '@/frontend/components/Shops/FilterForm'
+import FilteredList from '@/frontend/core/components/FilteredList'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid'
+import ShopPanel from '@/frontend/components/Shops/Panel'
+import shopsCollection from '@/frontend/api/collections/Shops'
 
 @Component<ShopList>({
   components: {

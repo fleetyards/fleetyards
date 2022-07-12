@@ -25,6 +25,8 @@ gem 'discordrb-webhooks'
 
 gem 'selectize-rails'
 
+gem 'vite_rails'
+
 gem 'ahoy_matey'
 gem 'groupdate'
 gem 'rollups'
@@ -71,7 +73,6 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
-gem 'webpacker', '~> 5.x'
 
 gem 'jquery-rails'
 gem 'js-routes'

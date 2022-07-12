@@ -1,4 +1,4 @@
-import shopsCollection from 'frontend/api/collections/Shops'
+import shopsCollection from '@/frontend/api/collections/Shops'
 
 import { Route, NavigationGuardNext } from 'vue-router'
 

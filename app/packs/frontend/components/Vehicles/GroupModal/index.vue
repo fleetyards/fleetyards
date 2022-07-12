@@ -79,12 +79,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import Btn from 'frontend/core/components/Btn'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
-import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
-import Checkbox from 'frontend/core/components/Form/Checkbox'
+import Modal from '@/frontend/core/components/AppModal/Modal'
+import Btn from '@/frontend/core/components/Btn'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import { displayAlert, displayConfirm } from '@/frontend/lib/Noty'
+import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
+import Checkbox from '@/frontend/core/components/Form/Checkbox'
 import VSwatches from 'vue-swatches'
 
 @Component<GroupModal>({

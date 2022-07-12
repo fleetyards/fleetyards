@@ -28,11 +28,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from 'frontend/core/components/Btn'
-import Modal from 'frontend/core/components/AppModal/Modal'
-import Avatar from 'frontend/core/components/Avatar'
-import { sortBy } from 'frontend/lib/Helpers'
-import { uniqByField as uniqByFieldArray } from 'frontend/utils/Array'
+import Btn from '@/frontend/core/components/Btn'
+import Modal from '@/frontend/core/components/AppModal/Modal'
+import Avatar from '@/frontend/core/components/Avatar'
+import { sortBy } from '@/frontend/lib/Helpers'
+import { uniqByField as uniqByFieldArray } from '@/frontend/utils/Array'
 
 @Component<OwnersModal>({
   components: {

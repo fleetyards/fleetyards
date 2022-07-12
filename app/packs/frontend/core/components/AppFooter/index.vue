@@ -98,7 +98,7 @@
       </div>
       <div class="app-community-logo">
         <img
-          v-lazy="require('images/community-logo.png')"
+          v-lazy="require('@/images/community-logo.png')"
           alt="community-logo"
         />
       </div>
@@ -125,7 +125,7 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Btn from 'frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 @Component<AppFooter>({
   components: {
@@ -151,7 +151,7 @@ export default class AppFooter extends Vue {
 
   openSupportModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Support/Modal'),
+      component: () => import('@/frontend/components/Support/Modal/index.vue'),
       wide: true,
     })
   }

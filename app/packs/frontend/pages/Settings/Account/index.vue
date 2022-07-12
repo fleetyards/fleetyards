@@ -91,12 +91,16 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
-import SecurePage from 'frontend/core/components/SecurePage'
-import Btn from 'frontend/core/components/Btn'
-import FormInput from 'frontend/core/components/Form/FormInput'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import userCollection from 'frontend/api/collections/User'
+import {
+  displaySuccess,
+  displayAlert,
+  displayConfirm,
+} from '@/frontend/lib/Noty'
+import SecurePage from '@/frontend/core/components/SecurePage'
+import Btn from '@/frontend/core/components/Btn'
+import FormInput from '@/frontend/core/components/Form/FormInput'
+import MetaInfo from '@/frontend/mixins/MetaInfo'
+import userCollection from '@/frontend/api/collections/User'
 
 @Component<SettingsAccount>({
   components: {

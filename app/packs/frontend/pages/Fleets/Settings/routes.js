@@ -2,10 +2,7 @@ export const routes = [
   {
     path: 'fleet/',
     name: 'fleet-settings-fleet',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Fleets/Settings/Fleet'
-      ),
+    component: () => import('@/frontend/pages/Fleets/Settings/Fleet/index.vue'),
     meta: {
       title: 'fleet.settings.fleet',
       needsAuthentication: true,
@@ -15,9 +12,7 @@ export const routes = [
     path: 'membership/',
     name: 'fleet-settings-membership',
     component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Fleets/Settings/Membership'
-      ),
+      import('@/frontend/pages/Fleets/Settings/Membership/index.vue'),
     meta: {
       title: 'fleet.settings.membership',
       needsAuthentication: true,
