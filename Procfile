@@ -1,3 +1,2 @@
-web: ./bin/rails s
+web: ./bin/rails server -p $PORT
 worker: ./bin/sidekiq
-webpack: ./bin/webpack-dev-server
