@@ -3,7 +3,7 @@
 # TODO: take new image of Delamar
 
 delamar = CelestialObject.find_or_create_by!(name: 'Delamar')
-delamar.update!(store_image: Rails.root.join('db/seeds/images/nyx/delamar/delamar.jpg').open, hidden: false)
+delamar.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/delamar.jpg', hidden: false)
 
 levski = Station.find_or_initialize_by(name: 'Levski')
 levski.update!(
@@ -11,7 +11,7 @@ levski.update!(
   station_type: :landing_zone,
   classification: :settlement,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/levski.jpg',
   hidden: false
 )
 
@@ -46,7 +46,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: levski)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/admin_levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/admin_levski.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -55,7 +55,7 @@ admin_office.update!(
 dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: levski)
 dumpers_depot.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/dumpers_depot_levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/dumpers_depot_levski.jpg',
   selling: true,
   hidden: false
 )
@@ -63,7 +63,7 @@ dumpers_depot.update!(
 conscientious_objects = Shop.find_or_initialize_by(name: 'Conscientious Objects', station: levski)
 conscientious_objects.update!(
   shop_type: :weapons,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/conscientious_objects_levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/conscientious_objects_levski.jpg',
   selling: true,
   hidden: false
 )
@@ -71,7 +71,7 @@ conscientious_objects.update!(
 cordrys = Shop.find_or_initialize_by(name: "Cordry's", station: levski, shop_type: :armor)
 cordrys.update!(
   shop_type: :armor,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/cordrys_levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/cordrys_levski.jpg',
   selling: true,
   hidden: false
 )
@@ -79,28 +79,28 @@ cordrys.update!(
 grand_barter = Shop.find_or_initialize_by(name: 'Grand Barter', station: levski)
 grand_barter.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/grand_barter_levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/grand_barter_levski.jpg',
   hidden: false
 )
 
 hospital = Shop.find_or_initialize_by(name: 'Levski Hospital', station: levski)
 hospital.update!(
   shop_type: :hospital,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/hospital_levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/hospital_levski.jpg',
   hidden: false
 )
 
 cafe_musain = Shop.find_or_initialize_by(name: 'Cafe Musáin', station: levski)
 cafe_musain.update!(
   shop_type: :bar,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/cafe_musain_levski.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/cafe_musain_levski.jpg',
   hidden: false
 )
 
 teachs = Shop.find_or_initialize_by(name: "Teach's Ship Shop", station: levski)
 teachs.update!(
   shop_type: :ships,
-  store_image: Rails.root.join('db/seeds/images/nyx/delamar/teachs.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/teachs.jpg',
   selling: true,
   hidden: false
 )

@@ -3,7 +3,7 @@
 # TODO: take new image of Cellin
 
 cellin = CelestialObject.find_or_create_by!(name: 'Cellin')
-cellin.update!(store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/cellin.jpg').open, hidden: false)
+cellin.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/cellin.jpg', hidden: false)
 
 kareah = Station.find_or_initialize_by(name: 'Security Post Kareah')
 kareah.update!(
@@ -11,7 +11,7 @@ kareah.update!(
   station_type: :station,
   classification: :security,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/kareah.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/kareah.jpg',
   hidden: false
 )
 
@@ -32,13 +32,13 @@ gallete.update!(
   station_type: :outpost,
   classification: :farming,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/gallete.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/gallete.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: gallete)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/gallete_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/gallete_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -50,13 +50,13 @@ hickes.update!(
   station_type: :outpost,
   classification: :science,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/hickes.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/hickes.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hickes)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/hickes_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/hickes_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -88,13 +88,13 @@ terra_mills.update!(
   station_type: :outpost,
   classification: :farming,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/terra_mills.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/terra_mills.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: terra_mills)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/terra_mills_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/terra_mills_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -126,13 +126,13 @@ tram_n_myers.update!(
   station_type: :outpost,
   classification: :mining,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/tram_n_myers.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/tram_n_myers.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: tram_n_myers)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/tram_n_myers_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/tram_n_myers_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -143,7 +143,7 @@ ashburn.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/ashburn.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/ashburn.jpg',
   hidden: false
 )
 
@@ -152,7 +152,7 @@ flanagan.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/flanagan.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/flanagan.jpg',
   hidden: false
 )
 
@@ -161,7 +161,7 @@ julep.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/julep.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/julep.jpg',
   hidden: false
 )
 
@@ -170,7 +170,7 @@ mogote.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/mogote.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/mogote.jpg',
   hidden: false
 )
 
@@ -180,13 +180,13 @@ private_property.update!(
   station_type: :aid_shelter,
   classification: :drug_lab,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/private_property.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/private_property.jpg',
   hidden: true
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: private_property)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/private_property_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/private_property_admin.jpg',
   buying: true,
   selling: true,
   hidden: true

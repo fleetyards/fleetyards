@@ -2,7 +2,7 @@
 
 api_options = {
   path: (Rails.configuration.app.subdomain ? 'api' : ''),
-  host: ("api.#{Rails.configuration.app.domain}" if Rails.configuration.app.subdomain && !Rails.env.test?),
+  host: ("api.#{Rails.configuration.app.domain}" unless Rails.configuration.app.subdomain || Rails.env.test?),
   constraints: ->(req) { Rails.configuration.app.subdomain || req.subdomain == 'api' }
 }.compact
 

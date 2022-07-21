@@ -10,7 +10,7 @@ hur_l2.update!(
   station_type: :station,
   classification: :rest_stop,
   location: 'HUR-L2',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/hur-l2-a.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l2/hur-l2-a.jpg',
   hidden: hidden
 )
 
@@ -52,7 +52,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hur_l2)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l2/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -61,7 +61,7 @@ admin_office.update!(
 live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: hur_l2)
 live_fire_weapons.update!(
   shop_type: :weapons,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/weapons.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l2/weapons.jpg',
   selling: true,
   hidden: hidden
 )
@@ -69,7 +69,7 @@ live_fire_weapons.update!(
 congreve_weapons = Shop.find_or_initialize_by(name: 'Congreve Weapons', station: hur_l2)
 congreve_weapons.update!(
   shop_type: :weapons,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/ship_weapons.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l2/ship_weapons.jpg',
   selling: true,
   hidden: hidden
 )
@@ -80,7 +80,7 @@ casaba.destroy if casaba.present?
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: hur_l2)
 platinum_bay.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/platinum.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l2/platinum.jpg',
   selling: true,
   hidden: hidden
 )

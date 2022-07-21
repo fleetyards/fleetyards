@@ -10,7 +10,7 @@ hur_l1.update!(
   station_type: :station,
   classification: :rest_stop,
   location: 'HUR-L1',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/hur-l1-a.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l1/hur-l1-a.jpg',
   refinery: true,
   hidden: hidden
 )
@@ -53,7 +53,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hur_l1)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l1/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -63,7 +63,7 @@ Shop.find_by(name: 'Live Fire Weapons', station: hur_l1)&.destroy
 bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: hur_l1)
 bulwark_armor.update!(
   shop_type: :armor,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/hur-l1/live_fire_weapons.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/hur-l1/live_fire_weapons.jpg',
   selling: true,
   hidden: hidden
 )
@@ -71,14 +71,14 @@ bulwark_armor.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: hur_l1)
 casaba.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/casaba.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l1/casaba.jpg',
   selling: true,
   hidden: hidden
 )
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: hur_l1)
 platinum_bay.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/platinum.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l1/platinum.jpg',
   selling: true,
   hidden: hidden
 )
