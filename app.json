@@ -32,6 +32,7 @@
   },
   "name": "fleetyards",
   "scripts": {
+    "postdeploy": "bundle exec rake db:schema:load db:seed"
   },
   "stack": "heroku-20"
 }
