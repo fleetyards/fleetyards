@@ -9,15 +9,6 @@
     }
   ],
   "env": {
-    "DOMAIN": {
-      "required": true
-    },
-    "LANG": {
-      "required": true
-    },
-    "RACK_ENV": {
-      "required": true
-    },
     "RAILS_ENV": {
       "required": true
     },
@@ -28,12 +19,6 @@
       "required": true
     },
     "RAILS_SERVE_STATIC_FILES": {
-      "required": true
-    },
-    "REDIS_TLS_URL": {
-      "required": true
-    },
-    "REDIS_URL": {
       "required": true
     }
   },
