@@ -1,6 +1,11 @@
 {
   "addons": [
-    "bonsai",
+    {
+      "plan": "bonsai",
+      "options": {
+        "engine": "opensearch"
+      }
+    },
     "heroku-postgresql",
     "heroku-redis"
   ],

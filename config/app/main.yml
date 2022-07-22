@@ -20,8 +20,11 @@ shared:
   mailer_default_from: <%= ENV["MAILER_DEFAULT_FROM"] %>
   mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
 
+  elasticsearch_url: <%= ENV["ELASTICSEARCH_URL"] || 'localhost:9200' %>
+
 production:
   on_subdomain?: true
 
 review:
   domain: <%= ENV["HEROKU_APP_NAME"] %>
+  elasticsearch_url: <%= ENV["BONSAI_URL"] %>
