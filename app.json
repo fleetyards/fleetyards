@@ -3,7 +3,7 @@
     {
       "plan": "bonsai",
       "options": {
-        "engine": "opensearch"
+        "engine": "elasticsearch"
       }
     },
     "heroku-postgresql",
