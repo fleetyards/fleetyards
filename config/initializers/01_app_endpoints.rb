@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'app_endpoint_resolver'
+
 endpoints = AppEndpointResolver.new
 
 FRONTEND_DOMAIN = endpoints.frontend_domain
