@@ -24,7 +24,7 @@
         "SubType": "UNDEFINED",
         "Size": 1,
         "Grade": 1,
-        "Manufacturer": "f80ab8de-4d04-4a1f-a8f2-ee2bb01fd125",
+        "Manufacturer": "00000000-0000-0000-0000-000000000000",
         "Tags": "",
         "RequiredTags": "",
         "DisplayType": "",
@@ -52,7 +52,7 @@
             "available": true
           },
           {
-            "Name": "Carry",
+            "Name": "CarryLowered",
             "RoomTag": "00000000-0000-0000-0000-000000000000",
             "UsableTag": "00000000-0000-0000-0000-000000000000",
             "DisplayName": "@interaction_carry",
@@ -122,10 +122,10 @@
             "available": true
           },
           {
-            "Name": "Consume",
+            "Name": "",
             "RoomTag": "00000000-0000-0000-0000-000000000000",
             "UsableTag": "00000000-0000-0000-0000-000000000000",
-            "DisplayName": "@interaction_drink",
+            "DisplayName": "@usable_use",
             "DisplayType": "Show",
             "GenericCursor": "SingleAction",
             "FocusModeOnly": false,

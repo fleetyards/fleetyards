@@ -47,7 +47,7 @@
           "weaponMountUsable"
         ],
         "Durability": {
-          "Health": 1024.0,
+          "Health": 10240.0,
           "Lifetime": 20.0
         },
         "PowerConnection": {
@@ -216,7 +216,7 @@
           "weaponMountUsable"
         ],
         "Durability": {
-          "Health": 1024.0,
+          "Health": 10240.0,
           "Lifetime": 20.0
         },
         "PowerConnection": {

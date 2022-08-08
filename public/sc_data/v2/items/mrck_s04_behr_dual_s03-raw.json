@@ -97,7 +97,7 @@
       "Ports": [
         {
           "Name": "missile_01_attach",
-          "DisplayName": "Missile Slot #1",
+          "DisplayName": "port_NameMissileRackSlot01",
           "PortTags": "",
           "RequiredPortTags": "",
           "Flags": "",
@@ -118,7 +118,7 @@
         },
         {
           "Name": "missile_02_attach",
-          "DisplayName": "Missile Slot #2",
+          "DisplayName": "port_NameMissileRackSlot02",
           "PortTags": "",
           "RequiredPortTags": "",
           "Flags": "",

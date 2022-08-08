@@ -690,6 +690,248 @@
     }
   },
   {
+    "ClassName": "AEGS_Gladius_CINEMATIC_ONLY",
+    "Name": "Aegis Gladius",
+    "Description": "Manufacturer: Aegis Dynamics\nFocus: Light Fighter\n\nThe Gladius is an older design which has been updated over the years to keep up with modern technology. In military circles, the Gladius is beloved for its performance and its simplicity. A fast, light fighter with a laser-focus on dogfighting, the Gladius is an ideal interceptor or escort ship.",
+    "Career": "Combat",
+    "Role": "Light Fighter",
+    "Size": 2,
+    "Cargo": 0,
+    "Crew": 1,
+    "WeaponCrew": 0,
+    "OperationsCrew": 0,
+    "Mass": 51352.06,
+    "IsSpaceship": true,
+    "Manufacturer": {
+      "Code": "AEG",
+      "Name": "Aegis Dynamics"
+    },
+    "DamageBeforeDestruction": {
+      "Nose": 2500.0,
+      "Body": 2500.0
+    },
+    "DamageBeforeDetach": {
+      "FrontWing_Left": 50.0,
+      "FrontWing_Right": 50.0,
+      "Canopy": 1500.0,
+      "WingLeft": 800.0,
+      "WingLeft_Tip": 260.0,
+      "TipWing_Left_B": 50.0,
+      "TipWing_Left_A": 50.0,
+      "WingLeft_Mid_Flap": 50.0,
+      "WingRight": 800.0,
+      "WingRight_Tip": 260.0,
+      "TipWing_Right_A": 50.0,
+      "TipWing_Right_B": 50.0,
+      "WingRight_Mid_Flap": 50.0,
+      "Belly_Wing_Left": 150.0,
+      "Belly_Wing_Right": 150.0,
+      "Rudder_Right": 50.0,
+      "Rudder_Right_Flap": 50.0,
+      "RearWingRight": 50.0,
+      "RearWingRight_Flap": 50.0,
+      "RearWingLeft": 50.0,
+      "RearWingLeft_Flap": 50.0,
+      "Rudder_Left": 50.0,
+      "Rudder_Left_Flap": 50.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 208.0,
+      "MaxSpeed": 1236.0,
+      "ZeroToScm": 2.0374233297816047,
+      "ZeroToMax": 12.106996325048382,
+      "ScmToZero": 6.837748944175817,
+      "MaxToZero": 40.63200814904476,
+      "Acceleration": {
+        "Main": 102.08973116170998,
+        "Retro": 30.419367791671842,
+        "Vtol": 0.0,
+        "Maneuvering": 88.11639494111823
+      },
+      "AccelerationG": {
+        "Main": 10.410255232716816,
+        "Retro": 3.1019122014101397,
+        "Vtol": 0.0,
+        "Maneuvering": 8.985371506864812
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 135000.0,
+      "FuelIntakeRate": 0.0,
+      "FuelUsage": {
+        "Main": 33.715943887499996,
+        "Retro": 10.0462376175,
+        "Vtol": 0.0,
+        "Maneuvering": 14.140495000000003
+      },
+      "ThrustCapacity": {
+        "Main": 5242518.0,
+        "Retro": 1562097.2,
+        "Vtol": 0.0,
+        "Maneuvering": 4524958.399999999
+      },
+      "IntakeToMainFuelRatio": 0.0,
+      "IntakeToTankCapacityRatio": 0.0,
+      "TimeForIntakesToFillTank": "Infinity",
+      "ManeuveringTimeTillEmpty": 3309.9437679139196
+    },
+    "QuantumTravel": {
+      "Speed": 253252000.0,
+      "SpoolTime": 2.25,
+      "FuelCapacity": 583.33,
+      "Range": 31328141783.029003,
+      "PortOlisarToArcCorpTime": 165.55585373462006,
+      "PortOlisarToArcCorpFuel": 780.6872769234001,
+      "PortOlisarToArcCorpAndBack": 0.37360029889230256
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      }
+    ],
+    "MannedTurrets": [],
+    "RemoteTurrets": []
+  },
+  {
+    "ClassName": "AEGS_Gladius_PiercingTest",
+    "Name": "Aegis Gladius",
+    "Description": "Manufacturer: Aegis Dynamics\nFocus: Light Fighter\n\nThe Gladius is an older design which has been updated over the years to keep up with modern technology. In military circles, the Gladius is beloved for its performance and its simplicity. A fast, light fighter with a laser-focus on dogfighting, the Gladius is an ideal interceptor or escort ship.",
+    "Career": "Combat",
+    "Role": "Light Fighter",
+    "Size": 2,
+    "Cargo": 0,
+    "Crew": 1,
+    "WeaponCrew": 0,
+    "OperationsCrew": 0,
+    "Mass": 51352.06,
+    "IsSpaceship": true,
+    "Manufacturer": {
+      "Code": "AEG",
+      "Name": "Aegis Dynamics"
+    },
+    "DamageBeforeDestruction": {
+      "Nose": 2500.0,
+      "Body": 2500.0
+    },
+    "DamageBeforeDetach": {
+      "FrontWing_Left": 50.0,
+      "FrontWing_Right": 50.0,
+      "Canopy": 1500.0,
+      "WingLeft": 800.0,
+      "WingLeft_Tip": 260.0,
+      "TipWing_Left_B": 50.0,
+      "TipWing_Left_A": 50.0,
+      "WingLeft_Mid_Flap": 50.0,
+      "WingRight": 800.0,
+      "WingRight_Tip": 260.0,
+      "TipWing_Right_A": 50.0,
+      "TipWing_Right_B": 50.0,
+      "WingRight_Mid_Flap": 50.0,
+      "Belly_Wing_Left": 150.0,
+      "Belly_Wing_Right": 150.0,
+      "Rudder_Right": 50.0,
+      "Rudder_Right_Flap": 50.0,
+      "RearWingRight": 50.0,
+      "RearWingRight_Flap": 50.0,
+      "RearWingLeft": 50.0,
+      "RearWingLeft_Flap": 50.0,
+      "Rudder_Left": 50.0,
+      "Rudder_Left_Flap": 50.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 208.0,
+      "MaxSpeed": 1236.0,
+      "ZeroToScm": 2.0374233297816047,
+      "ZeroToMax": 12.106996325048382,
+      "ScmToZero": 6.837748944175817,
+      "MaxToZero": 40.63200814904476,
+      "Acceleration": {
+        "Main": 102.08973116170998,
+        "Retro": 30.419367791671842,
+        "Vtol": 0.0,
+        "Maneuvering": 88.11639494111823
+      },
+      "AccelerationG": {
+        "Main": 10.410255232716816,
+        "Retro": 3.1019122014101397,
+        "Vtol": 0.0,
+        "Maneuvering": 8.985371506864812
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 135000.0,
+      "FuelIntakeRate": 0.0,
+      "FuelUsage": {
+        "Main": 33.715943887499996,
+        "Retro": 10.0462376175,
+        "Vtol": 0.0,
+        "Maneuvering": 14.140495000000003
+      },
+      "ThrustCapacity": {
+        "Main": 5242518.0,
+        "Retro": 1562097.2,
+        "Vtol": 0.0,
+        "Maneuvering": 4524958.399999999
+      },
+      "IntakeToMainFuelRatio": 0.0,
+      "IntakeToTankCapacityRatio": 0.0,
+      "TimeForIntakesToFillTank": "Infinity",
+      "ManeuveringTimeTillEmpty": 3309.9437679139196
+    },
+    "QuantumTravel": {
+      "Speed": 253252000.0,
+      "SpoolTime": 2.25,
+      "FuelCapacity": 583.33,
+      "Range": 31328141783.029003,
+      "PortOlisarToArcCorpTime": 165.55585373462006,
+      "PortOlisarToArcCorpFuel": 780.6872769234001,
+      "PortOlisarToArcCorpAndBack": 0.37360029889230256
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      }
+    ],
+    "MannedTurrets": [],
+    "RemoteTurrets": []
+  },
+  {
     "ClassName": "AEGS_Gladius_PIR",
     "Name": "Aegis Gladius Pirate",
     "Description": "Manufacturer: Aegis Dynamics\nFocus: Light Fighter\n\nThe Gladius is an older design which has been updated over the years to keep up with modern technology. In military circles, the Gladius is beloved for its performance and its simplicity. A fast, light fighter with a laser-focus on dogfighting, the Gladius is an ideal interceptor or escort ship.",
@@ -814,6 +1056,127 @@
       "ExpeditedClaimTime": 1.6875,
       "ExpeditedCost": 2535.0
     }
+  },
+  {
+    "ClassName": "AEGS_Gladius_Refuel_Testing",
+    "Name": "Aegis Gladius",
+    "Description": "Manufacturer: Aegis Dynamics\nFocus: Light Fighter\n\nThe Gladius is an older design which has been updated over the years to keep up with modern technology. In military circles, the Gladius is beloved for its performance and its simplicity. A fast, light fighter with a laser-focus on dogfighting, the Gladius is an ideal interceptor or escort ship.",
+    "Career": "Combat",
+    "Role": "Light Fighter",
+    "Size": 2,
+    "Cargo": 0,
+    "Crew": 1,
+    "WeaponCrew": 0,
+    "OperationsCrew": 0,
+    "Mass": 51352.06,
+    "IsSpaceship": true,
+    "Manufacturer": {
+      "Code": "AEG",
+      "Name": "Aegis Dynamics"
+    },
+    "DamageBeforeDestruction": {
+      "Nose": 2500.0,
+      "Body": 2500.0
+    },
+    "DamageBeforeDetach": {
+      "FrontWing_Left": 50.0,
+      "FrontWing_Right": 50.0,
+      "Canopy": 1500.0,
+      "WingLeft": 800.0,
+      "WingLeft_Tip": 260.0,
+      "TipWing_Left_B": 50.0,
+      "TipWing_Left_A": 50.0,
+      "WingLeft_Mid_Flap": 50.0,
+      "WingRight": 800.0,
+      "WingRight_Tip": 260.0,
+      "TipWing_Right_A": 50.0,
+      "TipWing_Right_B": 50.0,
+      "WingRight_Mid_Flap": 50.0,
+      "Belly_Wing_Left": 150.0,
+      "Belly_Wing_Right": 150.0,
+      "Rudder_Right": 50.0,
+      "Rudder_Right_Flap": 50.0,
+      "RearWingRight": 50.0,
+      "RearWingRight_Flap": 50.0,
+      "RearWingLeft": 50.0,
+      "RearWingLeft_Flap": 50.0,
+      "Rudder_Left": 50.0,
+      "Rudder_Left_Flap": 50.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 208.0,
+      "MaxSpeed": 1236.0,
+      "ZeroToScm": 2.0374233297816047,
+      "ZeroToMax": 12.106996325048382,
+      "ScmToZero": 6.837748944175817,
+      "MaxToZero": 40.63200814904476,
+      "Acceleration": {
+        "Main": 102.08973116170998,
+        "Retro": 30.419367791671842,
+        "Vtol": 0.0,
+        "Maneuvering": 88.11639494111823
+      },
+      "AccelerationG": {
+        "Main": 10.410255232716816,
+        "Retro": 3.1019122014101397,
+        "Vtol": 0.0,
+        "Maneuvering": 8.985371506864812
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 135000.0,
+      "FuelIntakeRate": 0.0,
+      "FuelUsage": {
+        "Main": 33.715943887499996,
+        "Retro": 10.0462376175,
+        "Vtol": 0.0,
+        "Maneuvering": 14.140495000000003
+      },
+      "ThrustCapacity": {
+        "Main": 5242518.0,
+        "Retro": 1562097.2,
+        "Vtol": 0.0,
+        "Maneuvering": 4524958.399999999
+      },
+      "IntakeToMainFuelRatio": 0.0,
+      "IntakeToTankCapacityRatio": 0.0,
+      "TimeForIntakesToFillTank": "Infinity",
+      "ManeuveringTimeTillEmpty": 3309.9437679139196
+    },
+    "QuantumTravel": {
+      "Speed": 253252000.0,
+      "SpoolTime": 2.25,
+      "FuelCapacity": 583.33,
+      "Range": 31328141783.029003,
+      "PortOlisarToArcCorpTime": 165.55585373462006,
+      "PortOlisarToArcCorpFuel": 780.6872769234001,
+      "PortOlisarToArcCorpAndBack": 0.37360029889230256
+    },
+    "PilotHardpoints": [
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
+        ]
+      }
+    ],
+    "MannedTurrets": [],
+    "RemoteTurrets": []
   },
   {
     "ClassName": "AEGS_Gladius_Valiant",
@@ -1766,20 +2129,15 @@
     },
     "DamageBeforeDetach": {
       "Wing_Right": 6600.0,
-      "wing_debris_right_bottom": 1.0,
-      "wing_debris_right_top": 1.0,
+      "wing_debris_right_bottom": 6600.0,
+      "wing_debris_right_top": 6600.0,
       "Wing_Left": 6600.0,
-      "wing_debris_left_top": 500.0,
-      "wing_debris_left_bottom": 500.0,
-      "Tail": 3600.0,
-      "rudder_left": 250.0,
-      "rudder_glass_left": 1.0,
-      "tail_glass_ramp_top_left": 1.0,
-      "tail_glass_name_front_right": 1.0,
-      "tail_glass_name_rear_right": 1.0,
-      "tail_glass_name_front_left": 1.0,
-      "tail_glass_name_rear_left": 1.0,
-      "tail_glass_ramp_top_right": 1.0
+      "wing_debris_left_top": 6600.0,
+      "wing_debris_left_bottom": 6600.0,
+      "rudder_right": 200.0,
+      "rudder_flap_right": 100.0,
+      "rudder_left": 200.0,
+      "rudder_flap_left": 100.0
     },
     "FlightCharacteristics": {
       "ScmSpeed": 140.0,
@@ -3996,14 +4354,14 @@
       "Body": 4000.0
     },
     "DamageBeforeDetach": {
+      "Canopy": 80.0,
+      "WingRightRear": 800.0,
       "WingRight_Debris": 3000.0,
       "LG_Door_Rear_R": 100.0,
-      "Tail_Debris": 2500.0,
-      "WingRightRear": 800.0,
+      "WingLeftRear": 800.0,
       "WingLeft_Debris": 3000.0,
       "LG_Door_Rear_L": 100.0,
-      "WingLeftRear": 800.0,
-      "Canopy": 80.0
+      "Tail_Debris": 2500.0
     },
     "FlightCharacteristics": {
       "ScmSpeed": 200.0,
@@ -4056,17 +4414,17 @@
     },
     "PilotHardpoints": [
       {
-        "Size": 3,
-        "Fixed": true,
-        "WeaponSizes": [
-          3
-        ]
-      },
-      {
         "Size": 5,
         "Turret": true,
         "WeaponSizes": [
           3,
+          3
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
           3
         ]
       },
@@ -4109,14 +4467,14 @@
       "Body": 4000.0
     },
     "DamageBeforeDetach": {
+      "Canopy": 80.0,
+      "WingRightRear": 800.0,
       "WingRight_Debris": 3000.0,
       "LG_Door_Rear_R": 100.0,
-      "Tail_Debris": 2500.0,
-      "WingRightRear": 800.0,
+      "WingLeftRear": 800.0,
       "WingLeft_Debris": 3000.0,
       "LG_Door_Rear_L": 100.0,
-      "WingLeftRear": 800.0,
-      "Canopy": 80.0
+      "Tail_Debris": 2500.0
     },
     "FlightCharacteristics": {
       "ScmSpeed": 192.0,
@@ -4169,17 +4527,17 @@
     },
     "PilotHardpoints": [
       {
-        "Size": 3,
-        "Fixed": true,
-        "WeaponSizes": [
-          3
-        ]
-      },
-      {
         "Size": 5,
         "Fixed": true,
         "WeaponSizes": [
           5
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
         ]
       },
       {
@@ -4461,14 +4819,14 @@
       "Body": 4000.0
     },
     "DamageBeforeDetach": {
+      "Canopy": 80.0,
+      "WingRightRear": 800.0,
       "WingRight_Debris": 3000.0,
       "LG_Door_Rear_R": 100.0,
-      "Tail_Debris": 2500.0,
-      "WingRightRear": 800.0,
+      "WingLeftRear": 800.0,
       "WingLeft_Debris": 3000.0,
       "LG_Door_Rear_L": 100.0,
-      "WingLeftRear": 800.0,
-      "Canopy": 80.0
+      "Tail_Debris": 2500.0
     },
     "FlightCharacteristics": {
       "ScmSpeed": 192.0,
@@ -4521,17 +4879,17 @@
     },
     "PilotHardpoints": [
       {
-        "Size": 3,
-        "Fixed": true,
-        "WeaponSizes": [
-          3
-        ]
-      },
-      {
         "Size": 5,
         "Fixed": true,
         "WeaponSizes": [
           5
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
         ]
       },
       {
@@ -4578,14 +4936,14 @@
       "Body": 4000.0
     },
     "DamageBeforeDetach": {
+      "Canopy": 80.0,
+      "WingRightRear": 800.0,
       "WingRight_Debris": 3000.0,
       "LG_Door_Rear_R": 100.0,
-      "Tail_Debris": 2500.0,
-      "WingRightRear": 800.0,
+      "WingLeftRear": 800.0,
       "WingLeft_Debris": 3000.0,
       "LG_Door_Rear_L": 100.0,
-      "WingLeftRear": 800.0,
-      "Canopy": 80.0
+      "Tail_Debris": 2500.0
     },
     "FlightCharacteristics": {
       "ScmSpeed": 192.0,
@@ -4638,17 +4996,17 @@
     },
     "PilotHardpoints": [
       {
-        "Size": 3,
-        "Fixed": true,
-        "WeaponSizes": [
-          3
-        ]
-      },
-      {
         "Size": 5,
         "Fixed": true,
         "WeaponSizes": [
           5
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
         ]
       },
       {
@@ -4695,14 +5053,14 @@
       "Body": 4000.0
     },
     "DamageBeforeDetach": {
+      "Canopy": 80.0,
+      "WingRightRear": 800.0,
       "WingRight_Debris": 3000.0,
       "LG_Door_Rear_R": 100.0,
-      "Tail_Debris": 2500.0,
-      "WingRightRear": 800.0,
+      "WingLeftRear": 800.0,
       "WingLeft_Debris": 3000.0,
       "LG_Door_Rear_L": 100.0,
-      "WingLeftRear": 800.0,
-      "Canopy": 80.0
+      "Tail_Debris": 2500.0
     },
     "FlightCharacteristics": {
       "ScmSpeed": 192.0,
@@ -4755,17 +5113,17 @@
     },
     "PilotHardpoints": [
       {
-        "Size": 3,
-        "Fixed": true,
-        "WeaponSizes": [
-          3
-        ]
-      },
-      {
         "Size": 5,
         "Turret": true,
         "WeaponSizes": [
           4
+        ]
+      },
+      {
+        "Size": 3,
+        "Fixed": true,
+        "WeaponSizes": [
+          3
         ]
       },
       {
@@ -9456,116 +9814,6 @@
       "ExpeditedClaimTime": 0.675,
       "ExpeditedCost": 1015.0
     }
-  },
-  {
-    "ClassName": "DRAK_Vulture",
-    "Name": "Drake Vulture",
-    "Description": "Manufacturer: Drake Interplanetary\nFocus: Light Salvage\n\nAnswer to no one, cut out the middle man, and throw caution to the wind. Rip wrecks like a pro and carve out your own place in the great big empty behind the stick of this rough, rugged salvage machine from Drake Interplanetary.",
-    "Career": "Industrial",
-    "Role": "Light Salvage",
-    "Size": 2,
-    "Cargo": 16,
-    "Crew": 1,
-    "WeaponCrew": 0,
-    "OperationsCrew": 0,
-    "Mass": 114591.0,
-    "IsSpaceship": true,
-    "Manufacturer": {
-      "Code": "DRAK",
-      "Name": "Drake Interplanetary"
-    },
-    "DamageBeforeDestruction": {
-      "body": 1500.0
-    },
-    "DamageBeforeDetach": {
-      "drone_wing_left": 50.0,
-      "drone_wing_right": 50.0,
-      "front_nacelle_right": 200.0,
-      "front_nacelle_left": 200.0,
-      "main_engine_left": 200.0,
-      "main_engine_right": 200.0
-    },
-    "FlightCharacteristics": {
-      "ScmSpeed": 165.0,
-      "MaxSpeed": 1114.0,
-      "ZeroToScm": 4.266461431399778,
-      "ZeroToMax": 28.80507899745062,
-      "ScmToZero": 4.914070435083641,
-      "MaxToZero": 33.17742099807985,
-      "Acceleration": {
-        "Main": 38.67373528462095,
-        "Retro": 33.57705229904617,
-        "Vtol": 0.0,
-        "Maneuvering": 69.78844411864804
-      },
-      "AccelerationG": {
-        "Main": 3.943623423571436,
-        "Retro": 3.423906404863304,
-        "Vtol": 0.0,
-        "Maneuvering": 7.116440677255985
-      }
-    },
-    "Propulsion": {
-      "FuelCapacity": 360000.0,
-      "FuelIntakeRate": 20.0,
-      "FuelUsage": {
-        "Main": 55.395775,
-        "Retro": 48.09535,
-        "Vtol": 0.0,
-        "Maneuvering": 99.96409500000003
-      },
-      "ThrustCapacity": {
-        "Main": 4431662.0,
-        "Retro": 3847628.0,
-        "Vtol": 0.0,
-        "Maneuvering": 7997127.599999999
-      },
-      "IntakeToMainFuelRatio": 0.3610383643878978,
-      "IntakeToTankCapacityRatio": 5.555555555555556E-05,
-      "TimeForIntakesToFillTank": 18000.0,
-      "ManeuveringTimeTillEmpty": 4216.55166949239
-    },
-    "QuantumTravel": {
-      "Speed": 89383080.0,
-      "SpoolTime": 7.75,
-      "FuelCapacity": 583.33,
-      "Range": 100574137931.0345,
-      "PortOlisarToArcCorpTime": 469.0748077824125,
-      "PortOlisarToArcCorpFuel": 243.178636206,
-      "PortOlisarToArcCorpAndBack": 1.1993857871335645
-    },
-    "PilotHardpoints": [
-      {
-        "Size": 1,
-        "Fixed": true,
-        "WeaponSizes": [
-          1
-        ]
-      },
-      {
-        "Size": 1,
-        "Fixed": true,
-        "WeaponSizes": [
-          1
-        ]
-      },
-      {
-        "Size": 1,
-        "Fixed": true,
-        "WeaponSizes": [
-          1
-        ]
-      },
-      {
-        "Size": 1,
-        "Fixed": true,
-        "WeaponSizes": [
-          1
-        ]
-      }
-    ],
-    "MannedTurrets": [],
-    "RemoteTurrets": []
   },
   {
     "ClassName": "ESPR_Prowler",
@@ -15730,54 +15978,54 @@
       "Name": "Esperia"
     },
     "DamageBeforeDestruction": {
-      "Nose": 2500.0,
-      "Body": 2500.0
+      "Nose": 1800.0,
+      "Body": 1800.0
     },
     "DamageBeforeDetach": {
-      "Wing_Left": 1500.0,
-      "Wing_Left_Tip": 375.0,
-      "Wing_Right": 1500.0,
-      "Wing_Right_Tip": 375.0
+      "Wing_Left": 700.0,
+      "Wing_Left_Tip": 275.0,
+      "Wing_Right": 700.0,
+      "Wing_Right_Tip": 275.0
     },
     "FlightCharacteristics": {
       "ScmSpeed": 214.0,
       "MaxSpeed": 1238.0,
-      "ZeroToScm": 1.9391234859448356,
-      "ZeroToMax": 11.21791997943788,
-      "ScmToZero": 5.386753693452309,
-      "MaxToZero": 31.162621834083915,
+      "ZeroToScm": 1.5330746067464587,
+      "ZeroToMax": 8.86890823902858,
+      "ScmToZero": 3.857560117740304,
+      "MaxToZero": 22.316165540946244,
       "Acceleration": {
-        "Main": 110.35913986453976,
-        "Retro": 39.727080943040086,
+        "Main": 139.5887708649469,
+        "Retro": 55.475480217624636,
         "Vtol": 0.0,
-        "Maneuvering": 206.5904215552019
+        "Maneuvering": 280.52987157185686
       },
       "AccelerationG": {
-        "Main": 11.253500231410626,
-        "Retro": 4.051034786375868,
+        "Main": 14.234093045298817,
+        "Retro": 5.656924566763957,
         "Vtol": 0.0,
-        "Maneuvering": 21.06635988312647
+        "Maneuvering": 28.606085354837596
       }
     },
     "Propulsion": {
-      "FuelCapacity": 45000.0,
+      "FuelCapacity": 522500.0,
       "FuelIntakeRate": 0.0,
       "FuelUsage": {
-        "Main": 37.27242,
-        "Retro": 13.417325,
+        "Main": 132.004215,
+        "Retro": 18.736150000000002,
         "Vtol": 0.0,
-        "Maneuvering": 69.77333250000001
+        "Maneuvering": 94.7454575
       },
       "ThrustCapacity": {
-        "Main": 2981793.5999999996,
-        "Retro": 1073386.0,
+        "Main": 3771549.0,
+        "Retro": 1498892.0,
         "Vtol": 0.0,
-        "Maneuvering": 5581866.600000001
+        "Maneuvering": 7579636.600000001
       },
       "IntakeToMainFuelRatio": 0.0,
       "IntakeToTankCapacityRatio": 0.0,
       "TimeForIntakesToFillTank": "Infinity",
-      "ManeuveringTimeTillEmpty": 623.6220875094576
+      "ManeuveringTimeTillEmpty": 2912.8604216170343
     },
     "QuantumTravel": {
       "Speed": 159399800.0,
@@ -15919,10 +16167,10 @@
       }
     },
     "Propulsion": {
-      "FuelCapacity": 120000.0,
+      "FuelCapacity": 1045000.0,
       "FuelIntakeRate": 0.0,
       "FuelUsage": {
-        "Main": 89.119425,
+        "Main": 263.793498,
         "Retro": 33.46113750000001,
         "Vtol": 0.0,
         "Maneuvering": 147.03109500000002
@@ -15936,7 +16184,7 @@
       "IntakeToMainFuelRatio": 0.0,
       "IntakeToTankCapacityRatio": 0.0,
       "TimeForIntakesToFillTank": "Infinity",
-      "ManeuveringTimeTillEmpty": 737.8486813468118
+      "ManeuveringTimeTillEmpty": 3098.0491449643023
     },
     "QuantumTravel": {
       "Speed": 253252000.0,
@@ -16055,10 +16303,10 @@
       }
     },
     "Propulsion": {
-      "FuelCapacity": 120000.0,
+      "FuelCapacity": 1045000.0,
       "FuelIntakeRate": 0.0,
       "FuelUsage": {
-        "Main": 89.119425,
+        "Main": 263.793498,
         "Retro": 33.752587500000004,
         "Vtol": 0.0,
         "Maneuvering": 147.03109500000002
@@ -16072,7 +16320,7 @@
       "IntakeToMainFuelRatio": 0.0,
       "IntakeToTankCapacityRatio": 0.0,
       "TimeForIntakesToFillTank": "Infinity",
-      "ManeuveringTimeTillEmpty": 737.8486813468118
+      "ManeuveringTimeTillEmpty": 3098.0491449643023
     },
     "QuantumTravel": {
       "Speed": 253252000.0,
@@ -16478,10 +16726,10 @@
       }
     },
     "Propulsion": {
-      "FuelCapacity": 120000.0,
+      "FuelCapacity": 1045000.0,
       "FuelIntakeRate": 29.0,
       "FuelUsage": {
-        "Main": 80.201316,
+        "Main": 178.91062799999997,
         "Retro": 0.0,
         "Vtol": 0.0,
         "Maneuvering": 86.63122
@@ -16492,10 +16740,10 @@
         "Vtol": 0.0,
         "Maneuvering": 6930497.600000001
       },
-      "IntakeToMainFuelRatio": 0.36159007665161,
-      "IntakeToTankCapacityRatio": 0.00024166666666666667,
-      "TimeForIntakesToFillTank": 4137.931034482759,
-      "ManeuveringTimeTillEmpty": 1269.6138678907098
+      "IntakeToMainFuelRatio": 0.16209210332658383,
+      "IntakeToTankCapacityRatio": 2.7751196172248804E-05,
+      "TimeForIntakesToFillTank": 36034.48275862069,
+      "ManeuveringTimeTillEmpty": 5408.168221957518
     },
     "QuantumTravel": {
       "Speed": 138543800.0,
@@ -16633,6 +16881,109 @@
       "ExpeditedClaimTime": 0.0,
       "ExpeditedCost": 380.0
     }
+  },
+  {
+    "ClassName": "ANVL_Centurion",
+    "Name": "Anvil Centurion",
+    "Description": "Manufacturer: Anvil Aerospace\nFocus: Combat\n\nBuilt on Anvil's popular Atlas Platform, the Centurion presents a tactical solution for short-range anti-aircraft operations. Thanks to the Centurion’s custom energy-based AA turret, your forces can establish ground superiority by assuring immediate threats from above are dealt with quickly and efficiently.",
+    "Career": "Ground",
+    "Role": "Ground",
+    "Size": 4,
+    "Cargo": 0,
+    "Crew": 2,
+    "WeaponCrew": 2,
+    "OperationsCrew": 0,
+    "Mass": 79016.0,
+    "IsSpaceship": false,
+    "IsVehicle": true,
+    "Manufacturer": {
+      "Code": "ANVL",
+      "Name": "Anvil Aerospace"
+    },
+    "DamageBeforeDestruction": {
+      "nose": 10000.0,
+      "body": 10000.0
+    },
+    "DamageBeforeDetach": {
+      "hardpoint_wheel_left01": 1700.0,
+      "hardpoint_wheel_left02": 1700.0,
+      "hardpoint_wheel_left03": 1700.0,
+      "hardpoint_wheel_left04": 1700.0,
+      "hardpoint_wheel_right01": 1700.0,
+      "hardpoint_wheel_right02": 1700.0,
+      "hardpoint_wheel_right03": 1700.0,
+      "hardpoint_wheel_right04": 1700.0
+    },
+    "FlightCharacteristics": {
+      "ScmSpeed": 0.0,
+      "MaxSpeed": 0.0,
+      "ZeroToScm": "NaN",
+      "ZeroToMax": "NaN",
+      "ScmToZero": "NaN",
+      "MaxToZero": "NaN",
+      "Acceleration": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      },
+      "AccelerationG": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      }
+    },
+    "Propulsion": {
+      "FuelCapacity": 0.0,
+      "FuelIntakeRate": 0.0,
+      "FuelUsage": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      },
+      "ThrustCapacity": {
+        "Main": 0.0,
+        "Retro": 0.0,
+        "Vtol": 0.0,
+        "Maneuvering": 0.0
+      },
+      "IntakeToMainFuelRatio": "NaN",
+      "IntakeToTankCapacityRatio": "NaN",
+      "TimeForIntakesToFillTank": "NaN",
+      "ManeuveringTimeTillEmpty": "NaN"
+    },
+    "QuantumTravel": {
+      "Speed": 0.0,
+      "SpoolTime": 0.0,
+      "FuelCapacity": 0.0,
+      "Range": 0.0,
+      "PortOlisarToArcCorpTime": 0.0,
+      "PortOlisarToArcCorpFuel": 0.0,
+      "PortOlisarToArcCorpAndBack": 0.0
+    },
+    "PilotHardpoints": [],
+    "MannedTurrets": [],
+    "RemoteTurrets": [
+      {
+        "Size": 4,
+        "Turret": true,
+        "WeaponSizes": [
+          3
+        ]
+      },
+      {
+        "Size": 9,
+        "Gimballed": true,
+        "WeaponSizes": [
+          4,
+          4,
+          4,
+          4
+        ]
+      }
+    ]
   },
   {
     "ClassName": "ANVL_Spartan",
@@ -17099,7 +17450,7 @@
       "Name": "Roberts Space Industries"
     },
     "DamageBeforeDestruction": {
-      "Body": 2500.0
+      "Body": 13000.0
     },
     "DamageBeforeDetach": {
       "wheel1": 1500.0,
@@ -17201,7 +17552,7 @@
       "Name": "Roberts Space Industries"
     },
     "DamageBeforeDestruction": {
-      "Body": 2500.0
+      "Body": 13000.0
     },
     "DamageBeforeDetach": {
       "wheel1": 1500.0,
@@ -17871,7 +18222,7 @@
       "Name": "Tumbril Land Systems"
     },
     "DamageBeforeDestruction": {
-      "body_mesh": 10000.0
+      "body_mesh": 40000.0
     },
     "DamageBeforeDetach": {
       "hardpoint_drive_sprocket_right": 800.0,

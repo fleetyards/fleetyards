@@ -2283,7 +2283,7 @@
                         "ItemPort": {
                           "minsize": 3,
                           "maxsize": 3,
-                          "display_name": "",
+                          "display_name": "port_NameTurret01",
                           "flags": "uneditable",
                           "defaultWeaponGroup": "",
                           "id": "",
