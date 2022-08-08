@@ -52,6 +52,9 @@ module Fleetyards
       html_tag.to_s.html_safe
       # rubocop:enable Rails/OutputSafety
     }
+
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time]
+
     config.autoload_paths << Rails.root.join('config/routes')
 
     # Hack to fix Zeitwerk issue
