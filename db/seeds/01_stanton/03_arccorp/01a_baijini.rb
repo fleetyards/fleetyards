@@ -10,7 +10,7 @@ baijini.update!(
   station_type: :station,
   classification: :trading,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/baijini.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/baijini/baijini.jpg',
   cargo_hub: true,
   hidden: hidden
 )
@@ -53,7 +53,7 @@ end
 admin = Shop.find_or_initialize_by(name: 'Admin Office', station: baijini)
 admin.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/baijini/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -62,7 +62,7 @@ admin.update!(
 bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: baijini)
 bulwark_armor.update!(
   shop_type: :armor,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/armor.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/baijini/armor.jpg',
   selling: true,
   hidden: hidden
 )
@@ -70,7 +70,7 @@ bulwark_armor.update!(
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: baijini)
 platinum_bay.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/platinum_bay.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/baijini/platinum_bay.jpg',
   selling: true,
   hidden: hidden
 )
@@ -78,7 +78,7 @@ platinum_bay.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: baijini)
 casaba.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/casaba.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/baijini/casaba.jpg',
   selling: true,
   hidden: hidden
 )
@@ -86,7 +86,7 @@ casaba.update!(
 traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station: baijini)
 traveler_rentals.update!(
   shop_type: :rental,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/traveler-rentals.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/traveler-rentals.jpg',
   rental: true,
   hidden: hidden
 )

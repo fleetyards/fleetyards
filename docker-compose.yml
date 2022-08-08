@@ -15,7 +15,7 @@ services:
       RAILS_SERVE_STATIC_FILES: 1
       DOMAIN: localhost:3001
       PORT: 3001
-      ON_SUBDOMAIN: 1
+      ON_SUBDOMAIN: false
     depends_on:
       - postgres
       - redis

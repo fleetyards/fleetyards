@@ -57,3 +57,5 @@ REVISION
 cypress/*
 
 .sc_data_version
+
+/config/credentials/review.key

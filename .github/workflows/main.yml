@@ -11,7 +11,7 @@ on:
       - "config/version.rb"
       - "package.json"
   workflow_dispatch:
-  
+
 env:
   RUBY_VERSION: 3.0.4
 
@@ -239,7 +239,7 @@ jobs:
       DATABASE_USER: root
       TEST_SEEDS: 1
       RAILS_ENV: ci
-      ON_SUBDOMAIN: 1
+      ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       JOBS: 1

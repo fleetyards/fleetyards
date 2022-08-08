@@ -2,7 +2,7 @@
 
 arccorp = CelestialObject.find_or_create_by!(name: 'ArcCorp')
 arccorp.update!(
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arccorp.png').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/arccorp.png',
   hidden: false
 )
 
@@ -12,7 +12,7 @@ area18.update!(
   station_type: :landing_zone,
   location: nil,
   classification: :city,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18-1.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18-1.jpg',
   hidden: false
 )
 
@@ -45,7 +45,7 @@ end
 astro = Shop.find_or_initialize_by(name: 'Astro Armada', station: area18)
 astro.update!(
   shop_type: :ships,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/astro.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/astro.jpg',
   selling: true,
   hidden: false
 )
@@ -53,7 +53,7 @@ astro.update!(
 dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: area18)
 dumpers_depot.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/dumpers_depot.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/dumpers_depot.jpg',
   selling: true,
   hidden: false
 )
@@ -61,7 +61,7 @@ dumpers_depot.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: area18)
 casaba.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/casaba.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/casaba.jpg',
   selling: true,
   hidden: false
 )
@@ -69,7 +69,7 @@ casaba.update!(
 cubby_blast = Shop.find_or_initialize_by(name: 'Cubby Blast', station: area18)
 cubby_blast.update!(
   shop_type: :armor_and_weapons,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/weapons.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/weapons.jpg',
   selling: true,
   hidden: false
 )
@@ -77,14 +77,14 @@ cubby_blast.update!(
 gloc = Shop.find_or_initialize_by(name: 'G-LOC Bar', station: area18)
 gloc.update!(
   shop_type: :bar,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/g-loc.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/g-loc.jpg',
   hidden: false
 )
 
 tdd = Shop.find_or_initialize_by(name: 'Trade & Development Division', station: area18)
 tdd.update!(
   shop_type: :resources,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/jobwell.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/jobwell.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -93,7 +93,7 @@ tdd.update!(
 arccorp_tower = Shop.find_or_initialize_by(name: 'IO-North Tower', station: area18)
 arccorp_tower.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -102,7 +102,7 @@ arccorp_tower.update!(
 centermass = Shop.find_or_initialize_by(name: 'CenterMass', station: area18)
 centermass.update!(
   shop_type: :weapons,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/centermass.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18/centermass.jpg',
   selling: true,
   hidden: false
 )
@@ -111,7 +111,7 @@ traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station:
 traveler_rentals.update!(
   shop_type: :rental,
   location: 'Riker Memorial Spaceport',
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/traveler-rentals.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/traveler-rentals.jpg',
   rental: true,
   hidden: false
 )
@@ -121,7 +121,7 @@ area04.update!(
   celestial_object: arccorp,
   station_type: :district,
   location: 'ArcCorp',
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area04.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area04.jpg',
   hidden: true
 )
 
@@ -130,7 +130,7 @@ area06.update!(
   celestial_object: arccorp,
   station_type: :district,
   location: 'ArcCorp',
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area06.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area06.jpg',
   hidden: true
 )
 
@@ -139,7 +139,7 @@ area11.update!(
   celestial_object: arccorp,
   station_type: :district,
   location: 'ArcCorp',
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area11.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area11.jpg',
   hidden: true
 )
 
@@ -148,7 +148,7 @@ area17.update!(
   celestial_object: arccorp,
   station_type: :district,
   location: 'ArcCorp',
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area17.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area17.jpg',
   hidden: true
 )
 
@@ -157,6 +157,6 @@ area20.update!(
   celestial_object: arccorp,
   station_type: :district,
   location: 'ArcCorp',
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area20.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area20.jpg',
   hidden: true
 )

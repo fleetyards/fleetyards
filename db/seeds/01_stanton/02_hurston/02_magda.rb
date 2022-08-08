@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 magda = CelestialObject.find_or_create_by!(name: 'Magda')
-magda.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/magda/magda.jpg').open, hidden: false)
+magda.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/magda/magda.jpg', hidden: false)
 
 hahn = Station.find_or_initialize_by(name: 'HDMS Hahn')
 hahn.update!(
   celestial_object: magda,
   station_type: :outpost,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/magda/hahn.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/magda/hahn.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hahn)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/magda/hahn_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/magda/hahn_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -45,13 +45,13 @@ perlman.update!(
   celestial_object: magda,
   station_type: :outpost,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/magda/perlman.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/magda/perlman.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: perlman)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/magda/perlman_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/magda/perlman_admin.jpg',
   buying: true,
   selling: true,
   hidden: false

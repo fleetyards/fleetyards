@@ -6,9 +6,9 @@
   window.SC_DATA_VERSION = '<%= ScData.current_version %>'
   window.APP_NAME = '<%= Rails.configuration.app.name %>'
   window.STORE_VERSION = '<%= Rails.configuration.app.store_version %>'
-  window.API_ENDPOINT = '<%= Rails.configuration.app.api_endpoint %>'
-  window.CABLE_ENDPOINT = '<%= Rails.configuration.app.cable_endpoint %>'
-  window.FRONTEND_ENDPOINT = '<%= Rails.configuration.app.frontend_endpoint %>'
+  window.API_ENDPOINT = '<%= API_ENDPOINT %>'
+  window.CABLE_ENDPOINT = '<%= CABLE_ENDPOINT %>'
+  window.FRONTEND_ENDPOINT = '<%= FRONTEND_ENDPOINT %>'
   window.RSI_ENDPOINT = '<%= Rails.configuration.rsi.endpoint %>'
   window.SENTRY_DSN = '<%= Rails.application.credentials.sentry_frontend_dsn %>'
   window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>

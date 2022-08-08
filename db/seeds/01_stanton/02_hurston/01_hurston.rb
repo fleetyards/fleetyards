@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
-hurston.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/hurston-a.jpg').open, hidden: false)
+hurston.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hurston-a.jpg', hidden: false)
 
 lorville = Station.find_or_initialize_by(name: 'Lorville')
 lorville.update!(
@@ -9,7 +9,7 @@ lorville.update!(
   station_type: :landing_zone,
   location: nil,
   classification: :city,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/teasa_spaceport.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/teasa_spaceport.jpg',
   hidden: false
 )
 
@@ -56,7 +56,7 @@ new_deal = Shop.find_or_initialize_by(name: 'New Deal', station: lorville)
 new_deal.update!(
   shop_type: :ships,
   location: 'Teasa Spaceport',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/new_deal.png').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/new_deal.png',
   selling: true,
   hidden: false
 )
@@ -65,7 +65,7 @@ vantage_rentals = Shop.find_or_initialize_by(name: 'Vantage Rentals', station: l
 vantage_rentals.update!(
   shop_type: :rental,
   location: 'Teasa Spaceport',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/vantage.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/vantage.jpg',
   rental: true,
   hidden: false
 )
@@ -74,7 +74,7 @@ admin = Shop.find_or_initialize_by(name: 'L19 Admin Office', station: lorville)
 admin.update!(
   shop_type: :admin,
   location: 'L19 District',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/l19/admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -84,7 +84,7 @@ tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany & Sons', station: l
 tammany_and_sons.update!(
   shop_type: :superstore,
   location: 'L19 District',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/tammany_and_sons.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/l19/tammany_and_sons.jpg',
   selling: true,
   hidden: false
 )
@@ -93,7 +93,7 @@ reclamation_n_disposal = Shop.find_or_initialize_by(name: 'Reclamation & Disposa
 reclamation_n_disposal.update!(
   shop_type: :salvage,
   location: 'L19 District',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/reclamation_n_disposal.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/l19/reclamation_n_disposal.jpg',
   hidden: false
 )
 
@@ -101,7 +101,7 @@ m_n_v = Shop.find_or_initialize_by(name: 'M & V', station: lorville)
 m_n_v.update!(
   shop_type: :bar,
   location: 'L19 District',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/m_n_v.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/l19/m_n_v.jpg',
   hidden: false
 )
 
@@ -109,7 +109,7 @@ maria_pure_of_heart = Shop.find_or_initialize_by(name: 'MARIA - Pure of Heart', 
 maria_pure_of_heart.update!(
   shop_type: :hospital,
   location: 'L19 District',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/maria_pure_of_heart.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/l19/maria_pure_of_heart.jpg',
   hidden: false
 )
 
@@ -117,7 +117,7 @@ transfers = Shop.find_or_initialize_by(name: 'CBD Transfers', station: lorville)
 transfers.update!(
   shop_type: :resources,
   location: 'Central Business District',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/business/transfers.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/business/transfers.jpg',
   hidden: false
 )
 
@@ -125,6 +125,6 @@ showcase = Shop.find_or_initialize_by(name: 'HD Showcase', station: lorville)
 showcase.update!(
   shop_type: :weapons,
   location: 'Central Business District',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/business/showcase.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/business/showcase.jpg',
   hidden: false
 )

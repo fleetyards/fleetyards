@@ -10,7 +10,7 @@ portolisar.update!(
   station_type: :station,
   classification: :trading,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/portolisar.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/portolisar/portolisar.jpg',
   hidden: false,
   refinery: true
 )
@@ -47,7 +47,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: portolisar)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/portolisar/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -56,7 +56,7 @@ admin_office.update!(
 dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: portolisar)
 dumpers_depot.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/dumpers_depot.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/portolisar/dumpers_depot.jpg',
   selling: true,
   hidden: hidden
 )
@@ -64,7 +64,7 @@ dumpers_depot.update!(
 live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: portolisar)
 live_fire_weapons.update!(
   shop_type: :weapons,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/live_fire_weapons.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/portolisar/live_fire_weapons.jpg',
   selling: true,
   hidden: hidden
 )
@@ -72,7 +72,7 @@ live_fire_weapons.update!(
 garrity_defense = Shop.find_or_initialize_by(name: 'Garrity Defense', station: portolisar)
 garrity_defense.update!(
   shop_type: :armor,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/garrity_defense.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/portolisar/garrity_defense.jpg',
   selling: true,
   hidden: hidden
 )
@@ -80,7 +80,7 @@ garrity_defense.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: portolisar)
 casaba.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/casaba.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/portolisar/casaba.jpg',
   selling: true,
   hidden: hidden
 )
