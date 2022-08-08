@@ -10,7 +10,7 @@ mic_l1.update!(
   station_type: :station,
   classification: :rest_stop,
   location: 'MIC-L1',
-  store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/mic-l1.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/mic-l1/mic-l1.jpg',
   refinery: true,
   hidden: hidden
 )
@@ -53,7 +53,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: mic_l1)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/mic-l1/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -62,7 +62,7 @@ admin_office.update!(
 bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: mic_l1)
 bulwark_armor.update!(
   shop_type: :armor,
-  store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/armor.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/mic-l1/armor.jpg',
   selling: true,
   hidden: hidden
 )
@@ -70,7 +70,7 @@ bulwark_armor.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: mic_l1)
 casaba.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/casaba.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/mic-l1/casaba.jpg',
   selling: true,
   hidden: hidden
 )
@@ -78,7 +78,7 @@ casaba.update!(
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: mic_l1)
 platinum_bay.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/platinum_bay.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/mic-l1/platinum_bay.jpg',
   selling: true,
   hidden: hidden
 )

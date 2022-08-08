@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 require 'uglifier'
+require 'app_endpoint_resolver'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+
+  endpoints = AppEndpointResolver.new
+
   config.hosts << ".#{Rails.configuration.app.domain}"
   config.hosts << Rails.configuration.app.short_domain
 
@@ -102,7 +106,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
 
-  config.action_mailer.asset_host = Rails.configuration.app.frontend_endpoint
+  config.action_mailer.asset_host = endpoints.frontend_endpoint
 
   config.action_mailer.postmark_settings = {
     api_token: Rails.application.credentials.postmark_api_token
@@ -129,8 +133,11 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.action_cable.url = Rails.configuration.app.cable_endpoint
-  config.action_cable.allowed_request_origins = [Rails.configuration.app.frontend_endpoint]
+  config.action_cable.url = endpoints.cable_endpoint
+  config.action_cable.allowed_request_origins = [
+    endpoints.frontend_endpoint,
+    endpoints.admin_endpoint
+  ]
 
   ActionCable.server.config.logger = Logger.new(nil)
 

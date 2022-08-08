@@ -13,7 +13,10 @@ if ENV['TEST_SEEDS'].present?
 
   model = Model.first
   20.times do |index|
-    model.images << Image.new(name: Rails.root.join("db/seeds/images/models/stub-#{index}.jpg").open, enabled: true)
+    model.images << Image.new(
+      remote_name_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/models/stub-#{index}.jpg",
+      enabled: true
+    )
   end
 
   stanton = Starsystem.find_or_create_by!(name: 'Stanton')

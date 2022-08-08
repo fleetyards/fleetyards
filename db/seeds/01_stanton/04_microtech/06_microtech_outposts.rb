@@ -6,14 +6,14 @@ shubin_sm0_13.update!(
   station_type: :outpost,
   classification: :mining,
   location: 'Microtech',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_13)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -49,14 +49,14 @@ shubin_sm0_10.update!(
   station_type: :outpost,
   classification: :mining,
   location: 'Microtech',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_10)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -92,14 +92,14 @@ shubin_sm0_18.update!(
   station_type: :outpost,
   classification: :mining,
   location: 'Microtech',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_18)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -136,14 +136,14 @@ shubin_sm0_22.update!(
   station_type: :outpost,
   classification: :mining,
   location: 'Microtech',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_22)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -179,14 +179,14 @@ rayari_deltana.update!(
   station_type: :outpost,
   classification: :science,
   location: 'Microtech',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rayari_deltana)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -221,7 +221,7 @@ point_wain.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/tamdon.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false
 )
 
@@ -230,7 +230,7 @@ clear_view.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/tamdon.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false
 )
 
@@ -239,7 +239,7 @@ nuiqsut.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/tamdon.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false
 )
 
@@ -248,6 +248,6 @@ calhoun.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/tamdon.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false
 )

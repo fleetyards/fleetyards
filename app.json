@@ -1,0 +1,44 @@
+{
+  "addons": [
+    {
+      "plan": "bonsai",
+      "options": {
+        "engine": "elasticsearch"
+      }
+    },
+    "heroku-postgresql",
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "env": {
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RAILS_LOG_TO_STDOUT": {
+      "required": true
+    },
+    "RAILS_MASTER_KEY": {
+      "required": true
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    },
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "fleetyards",
+  "scripts": {
+    "postdeploy": "./bin/rails db:seed"
+  },
+  "stack": "heroku-20"
+}

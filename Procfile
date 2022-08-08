@@ -1,3 +1,3 @@
-web: ./bin/rails s
+release: ./bin/rails db:schema:load db:migrate
+web: ./bin/rails server -p $PORT
 worker: ./bin/sidekiq
-webpack: ./bin/webpack-dev-server

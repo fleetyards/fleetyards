@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 microtech = CelestialObject.find_or_create_by!(name: 'microTech')
-microtech.update!(store_image: Rails.root.join('db/seeds/images/stanton/microtech/microtech.jpg').open, hidden: false)
+microtech.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/microtech.jpg', hidden: false)
 
 new_babbage = Station.find_or_initialize_by(name: 'New Babbage')
 new_babbage.update!(
@@ -9,7 +9,7 @@ new_babbage.update!(
   station_type: :landing_zone,
   classification: :city,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/microtech/new-babbage-a.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/new-babbage-a.jpg',
   hidden: false
 )
 

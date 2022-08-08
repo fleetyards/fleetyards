@@ -10,7 +10,7 @@ arc_l3.update!(
   station_type: :station,
   classification: :rest_stop,
   location: 'ARC-L3',
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l3/arc-l3.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/arc-l3/arc-l3.jpg',
   hidden: hidden
 )
 

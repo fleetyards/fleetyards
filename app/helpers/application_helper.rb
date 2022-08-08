@@ -59,9 +59,7 @@ module ApplicationHelper
   end
 
   def api_url(path)
-    uri = URI.parse(Rails.configuration.app.api_endpoint)
-
-    "#{uri.scheme}://#{uri.host}#{path}"
+    "#{API_ENDPOINT}#{path}"
   end
 
   def app_enabled?
