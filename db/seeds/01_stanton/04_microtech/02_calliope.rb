@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 calliope = CelestialObject.find_or_create_by!(name: 'Calliope')
-calliope.update!(store_image: Rails.root.join('db/seeds/images/stanton/microtech/calliope/calliope.jpg').open, hidden: false)
+calliope.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/calliope/calliope.jpg', hidden: false)
 
 rayari_anvik = Station.find_or_initialize_by(name: 'Rayari Anvik Research Outpost')
 rayari_anvik.update!(
@@ -9,14 +9,14 @@ rayari_anvik.update!(
   station_type: :outpost,
   classification: :science,
   location: 'Calliope',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rayari_anvik)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -52,14 +52,14 @@ rayari_kaltag.update!(
   station_type: :outpost,
   classification: :science,
   location: 'Calliope',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rayari_kaltag)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -95,14 +95,14 @@ shubin_smca_6.update!(
   station_type: :outpost,
   classification: :mining,
   location: 'Calliope',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_smca_6)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -138,14 +138,14 @@ shubin_smca_8.update!(
   station_type: :outpost,
   classification: :mining,
   location: 'Calliope',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_smca_8)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false

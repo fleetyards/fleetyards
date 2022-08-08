@@ -7,7 +7,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  base: window.ON_SUBDOMAIN ? '/admin' : '/',
+  base: window.ON_SUBDOMAIN ? '' : '/admin',
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
   scrollBehavior: (to, _from, savedPosition) =>

@@ -10,7 +10,7 @@ hur_l5.update!(
   station_type: :station,
   classification: :rest_stop,
   location: 'HUR-L5',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/hur-l5-a.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l5/hur-l5-a.jpg',
   hidden: hidden
 )
 
@@ -52,7 +52,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hur_l5)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l5/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -60,21 +60,21 @@ admin_office.update!(
 live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: hur_l5)
 live_fire_weapons.update!(
   shop_type: :weapons,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/weapons.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l5/weapons.jpg',
   selling: true,
   hidden: hidden
 )
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: hur_l5)
 casaba.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/casaba.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l5/casaba.jpg',
   selling: true,
   hidden: hidden
 )
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: hur_l5)
 platinum_bay.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/platinum.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l5/platinum.jpg',
   selling: true,
   hidden: hidden
 )
@@ -82,7 +82,7 @@ platinum_bay.update!(
 congreve_weapons = Shop.find_or_initialize_by(name: 'Congreve Weapons', station: hur_l5)
 congreve_weapons.update!(
   shop_type: :weapons,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/ship_weapons.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l5/ship_weapons.jpg',
   selling: true,
   hidden: hidden
 )

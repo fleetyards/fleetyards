@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 ita = CelestialObject.find_or_create_by!(name: 'Ita')
-ita.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/ita.jpg').open, hidden: false)
+ita.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/ita/ita.jpg', hidden: false)
 
 ryder = Station.find_or_initialize_by(name: 'HDMS Ryder')
 ryder.update!(
   celestial_object: ita,
   station_type: :outpost,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/ryder.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/ita/ryder.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: ryder)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/ryder_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/ita/ryder_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -45,13 +45,13 @@ woodruff.update!(
   celestial_object: ita,
   station_type: :outpost,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/woodruff.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/ita/woodruff.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: woodruff)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/woodruff_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/ita/woodruff_admin.jpg',
   buying: true,
   selling: true,
   hidden: false

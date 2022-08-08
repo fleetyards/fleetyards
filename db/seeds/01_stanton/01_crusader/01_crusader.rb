@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
-crusader.update!(store_image: Rails.root.join('db/seeds/images/stanton/crusader/crusader.jpg').open, hidden: false)
+crusader.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/crusader.jpg', hidden: false)
 
 orison = Station.find_or_initialize_by(name: 'Orison')
 orison.update!(
@@ -9,7 +9,7 @@ orison.update!(
   station_type: :landing_zone,
   location: nil,
   classification: :city,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/orison/main.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/orison/main.jpg',
   cargo_hub: true,
   hidden: false
 )

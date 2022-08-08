@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require 'app_endpoint_resolver'
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+
+  endpoints = AppEndpointResolver.new
 
   config.hosts << ".#{Rails.configuration.app.domain}"
   config.hosts << Rails.configuration.app.short_domain
@@ -41,7 +45,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.deliver_later_queue_name = 'mailers'
   config.action_mailer.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
-  config.action_mailer.asset_host = Rails.configuration.app.frontend_endpoint
+  config.action_mailer.asset_host = endpoints.frontend_endpoint
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -63,10 +67,10 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_cable.url = Rails.configuration.app.cable_endpoint
+  config.action_cable.url = endpoints.cable_endpoint
   config.action_cable.allowed_request_origins = [
-    Rails.configuration.app.frontend_endpoint,
-    Rails.configuration.app.admin_endpoint
+    endpoints.frontend_endpoint,
+    endpoints.admin_endpoint
   ]
 
   # Use an evented file watcher to asynchronously detect changes in source code,

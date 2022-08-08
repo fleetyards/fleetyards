@@ -7,14 +7,14 @@ stanhope.update!(
   celestial_object: hurston,
   station_type: :outpost,
   location: 'Hurston',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: stanhope)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -49,14 +49,14 @@ edmond.update!(
   celestial_object: hurston,
   station_type: :outpost,
   location: 'Hurston',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/edmond.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/edmond.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: edmond)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/edmond_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/edmond_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -91,13 +91,13 @@ hadley.update!(
   celestial_object: hurston,
   station_type: :outpost,
   location: 'Hurston',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hadley.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hadley.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hadley)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hadley_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hadley_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -132,13 +132,13 @@ oparei.update!(
   celestial_object: hurston,
   station_type: :outpost,
   location: 'Hurston',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/oparei.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/oparei.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: oparei)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/oparei_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/oparei_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -173,13 +173,13 @@ pinewood.update!(
   celestial_object: hurston,
   station_type: :outpost,
   location: 'Hurston',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/pinewood.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/pinewood.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: pinewood)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/pinewood_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/pinewood_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -214,13 +214,13 @@ thedus.update!(
   celestial_object: hurston,
   station_type: :outpost,
   location: 'Hurston',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/thedus.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/thedus.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: thedus)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/thedus_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/thedus_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -256,13 +256,13 @@ reclamation.update!(
   station_type: :outpost,
   classification: :salvaging,
   location: 'Hurston',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/reclamation.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/reclamation.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: reclamation)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/reclamation_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/reclamation_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
