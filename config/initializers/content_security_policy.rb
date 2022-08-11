@@ -9,15 +9,12 @@
 require 'uri'
 
 Rails.application.config.content_security_policy do |policy|
-  api_endpoint = "https://#{URI.parse(Rails.configuration.app.api_endpoint).host}"
-  cable_endpoint = "wss://#{URI.parse(Rails.configuration.app.cable_endpoint).host}"
-  admin_endpoint = "https://#{URI.parse(Rails.configuration.app.admin_endpoint).host}"
-
-  if Rails.env.development?
-    api_endpoint = "http://#{URI.parse(Rails.configuration.app.api_endpoint).host}"
-    cable_endpoint = "ws://#{URI.parse(Rails.configuration.app.cable_endpoint).host}"
-    admin_endpoint = "http://#{URI.parse(Rails.configuration.app.admin_endpoint).host}"
-  end
+  api_uri = URI.parse(API_ENDPOINT)
+  api_endpoint = "#{api_uri.scheme}://#{api_uri.host}"
+  cable_uri = URI.parse(CABLE_ENDPOINT)
+  cable_endpoint = "#{cable_uri.scheme}://#{cable_uri.host}"
+  admin_uri = URI.parse(ADMIN_ENDPOINT)
+  admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
 
   connect_src = [
     :self, :data, cable_endpoint, api_endpoint, admin_endpoint, 'https://img.youtube.com',
@@ -36,7 +33,7 @@ Rails.application.config.content_security_policy do |policy|
     'https://stackpath.bootstrapcdn.com', 'https://starship42.com', 'https://www.gstatic.com'
   ]
 
-  worker_src = [:self, :blob, Rails.configuration.app.frontend_endpoint]
+  worker_src = [:self, :blob, FRONTEND_ENDPOINT]
 
   style_src = [
     :self, :unsafe_inline, 'https://fonts.googleapis.com', 'https://pro.fontawesome.com',
@@ -44,7 +41,7 @@ Rails.application.config.content_security_policy do |policy|
   ]
 
   img_src = [
-    :self, :data, :blob, Rails.configuration.app.frontend_endpoint, api_endpoint,
+    :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint,
     Rails.application.credentials.carrierwave_cloud_cdn_endpoint, Rails.configuration.rsi.endpoint,
     'https://img.youtube.com', 'https://img.buymeacoffee.com', 'https://validator.swagger.io'
   ].compact
@@ -56,7 +53,7 @@ Rails.application.config.content_security_policy do |policy|
   ]
 
   frame_src = [
-    :self, :blob, Rails.configuration.app.frontend_endpoint, 'https://www.youtube.com', 'https://www.youtube-nocookie.com', 'https://starship42.com', 'https://starship42.fleetyards.net'
+    :self, :blob, FRONTEND_ENDPOINT, 'https://www.youtube.com', 'https://www.youtube-nocookie.com', 'https://starship42.com', 'https://starship42.fleetyards.net'
   ]
 
   form_src = [

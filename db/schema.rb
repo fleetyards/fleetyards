@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_30_195725) do
+ActiveRecord::Schema.define(version: 2022_08_11_164634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -315,6 +315,18 @@ ActiveRecord::Schema.define(version: 2022_04_30_195725) do
     t.boolean "global", default: true
     t.string "caption"
     t.index ["gallery_id"], name: "index_images_on_gallery_id"
+  end
+
+  create_table "imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.string "version"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "failed_at"
+    t.string "aasm_state"
+    t.text "info"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

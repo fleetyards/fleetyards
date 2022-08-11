@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 yela = CelestialObject.find_or_create_by!(name: 'Yela')
-yela.update!(store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/yela.jpg').open, hidden: false)
+yela.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/yela.jpg', hidden: false)
 
 grimhex = Station.find_or_initialize_by(name: 'GrimHEX')
 grimhex.update!(
@@ -9,7 +9,7 @@ grimhex.update!(
   station_type: :asteroid_station,
   classification: :trading,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/grimhex.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/grimhex.jpg',
   hidden: false
 )
 
@@ -42,7 +42,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: grimhex)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/grimhex_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/grimhex_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -50,35 +50,35 @@ admin_office.update!(
 dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: grimhex)
 dumpers_depot.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/grimhex_dumpers.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/grimhex_dumpers.jpg',
   selling: true,
   hidden: false
 )
 ruto = Shop.find_or_initialize_by(name: "Ruto's Room", station: grimhex)
 ruto.update!(
   shop_type: :blackmarket,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/rutos.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/rutos.jpg',
   selling: true,
   hidden: false
 )
 skutters = Shop.find_or_initialize_by(name: 'Skutters', station: grimhex)
 skutters.update!(
   shop_type: :armor_and_weapons,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/skutters.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/skutters.jpg',
   selling: true,
   hidden: false
 )
 kc_trending = Shop.find_or_initialize_by(name: 'KC Trending', station: grimhex)
 kc_trending.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/kc_trending.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/kc_trending.jpg',
   selling: true,
   hidden: false
 )
 old_38 = Shop.find_or_initialize_by(name: "Old '38", station: grimhex)
 old_38.update!(
   shop_type: :bar,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/old_38.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/old_38.jpg',
   hidden: false
 )
 
@@ -88,13 +88,13 @@ deakins_research_outpost.update!(
   station_type: :outpost,
   classification: :science,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/deakins_research_outpost.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/deakins_research_outpost.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: deakins_research_outpost)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/deakins_research_outpost_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/deakins_research_outpost_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -126,13 +126,13 @@ benson_mining_outpost.update!(
   station_type: :outpost,
   classification: :mining,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/benson_mining.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/benson_mining.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: benson_mining_outpost)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/benson_mining_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/benson_mining_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -144,13 +144,13 @@ arc_corp_mining_area_157.update!(
   station_type: :outpost,
   classification: :mining,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/arccorp.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/arccorp.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: arc_corp_mining_area_157)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/arccorp_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/arccorp_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -177,16 +177,16 @@ end
 end
 
 nakamura_valley_aid_shelter = Station.find_or_initialize_by(name: 'Nakamura Valley Aid Shelter')
-nakamura_valley_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/nakamura_valley.jpg').open, hidden: false)
+nakamura_valley_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/nakamura_valley.jpg', hidden: false)
 
 kosso_basin_aid_shelter = Station.find_or_initialize_by(name: 'Kosso Basin Aid Shelter')
-kosso_basin_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/kosso_basin.jpg').open, hidden: false)
+kosso_basin_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/kosso_basin.jpg', hidden: false)
 
 aston_ridge_aid_shelter = Station.find_or_initialize_by(name: 'Aston Ridge Aid Shelter')
-aston_ridge_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/aston_ridge.jpg').open, hidden: false)
+aston_ridge_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/aston_ridge.jpg', hidden: false)
 
 talarine_divide_aid_shelter = Station.find_or_initialize_by(name: 'Talarine Divide Aid Shelter')
-talarine_divide_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/talarine_divide.jpg').open, hidden: false)
+talarine_divide_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/talarine_divide.jpg', hidden: false)
 
 jump_town = Station.find_or_initialize_by(name: 'Jump Town')
 jump_town.update!(
@@ -194,13 +194,13 @@ jump_town.update!(
   station_type: :aid_shelter,
   classification: :drug_lab,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/jump_town.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/jump_town.jpg',
   hidden: true
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: jump_town)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/jump_town_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/jump_town_admin.jpg',
   selling: true,
   hidden: true
 )
@@ -211,13 +211,13 @@ nt_999.update!(
   station_type: :aid_shelter,
   classification: :drug_lab,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/nt_999.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/nt_999.jpg',
   hidden: true
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: nt_999)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/nt_999_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/nt_999_admin.jpg',
   selling: true,
   hidden: true
 )

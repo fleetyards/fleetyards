@@ -1,4 +1,4 @@
-production: &defaults
+shared:
   name: <%= ENV["MAINTAINER_NAME"] %>
   mail: <%= ENV["MAINTAINER_MAIL"] %>
 
@@ -7,15 +7,3 @@ production: &defaults
     postalcode: <%= ENV["MAINTAINER_ADDRESS_POSTALCODE"] %>
     city: <%= ENV["MAINTAINER_ADDRESS_CITY"] %>
     country: <%= ENV["MAINTAINER_ADDRESS_COUNTRY"] %>
-
-staging:
-  <<: *defaults
-
-ci:
-  <<: *defaults
-
-development:
-  <<: *defaults
-
-test:
-  <<: *defaults

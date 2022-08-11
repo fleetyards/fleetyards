@@ -10,7 +10,7 @@ cru_l2.update!(
   station_type: :station,
   classification: :rest_stop,
   location: 'CRU-L2',
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l2/cru-l2.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/cru-l2.jpg',
   hidden: hidden
 )
 
@@ -52,7 +52,7 @@ cru_l2.update!(
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l2)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l2/admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -61,7 +61,7 @@ admin_office.update!(
 live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: cru_l2)
 live_fire_weapons.update!(
   shop_type: :weapons,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l2/weapons.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/weapons.jpg',
   selling: true,
   hidden: hidden
 )
@@ -69,7 +69,7 @@ live_fire_weapons.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: cru_l2)
 casaba.update!(
   shop_type: :clothing,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l2/casaba.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/casaba.jpg',
   selling: true,
   hidden: hidden
 )
@@ -77,7 +77,7 @@ casaba.update!(
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: cru_l2)
 platinum_bay.update!(
   shop_type: :components,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l2/platinum_bay.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/platinum_bay.jpg',
   selling: true,
   hidden: hidden
 )

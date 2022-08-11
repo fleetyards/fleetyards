@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.6'
+gem 'rails', '6.1.6.1'
 
 gem 'pg', '~> 1.0'
 
@@ -99,7 +99,7 @@ gem 'mini_magick'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
-gem 'nokogiri', '1.13.6'
+gem 'nokogiri', '1.13.7'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'

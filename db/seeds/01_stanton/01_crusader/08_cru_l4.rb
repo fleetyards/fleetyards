@@ -10,7 +10,7 @@ cru_l4.update!(
   station_type: :station,
   classification: :rest_stop,
   location: 'CRU-L4',
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/cru-l4-a.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l4/cru-l4-a.jpg',
   hidden: hidden
 )
 
@@ -52,7 +52,7 @@ end
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l4)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l4/admin.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -61,7 +61,7 @@ admin_office.update!(
 blackmarket = Shop.find_or_initialize_by(name: 'Blackmarket Terminal', station: cru_l4)
 blackmarket.update!(
   shop_type: :blackmarket,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/blackmarket.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l4/blackmarket.jpg',
   buying: true,
   selling: true,
   hidden: hidden
@@ -71,7 +71,7 @@ Shop.find_by(name: 'Live Fire Weapons', station: cru_l4)&.destroy
 bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: cru_l4)
 bulwark_armor.update!(
   shop_type: :armor,
-  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/live_fire_weapons.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l4/live_fire_weapons.jpg',
   selling: true,
   hidden: hidden
 )
@@ -79,7 +79,7 @@ bulwark_armor.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: cru_l4)
 casaba.update!(
   shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/casaba.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l4/casaba.jpg',
   selling: true,
   hidden: hidden
 )
@@ -87,7 +87,7 @@ casaba.update!(
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: cru_l4)
 platinum_bay.update!(
   shop_type: :components,
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/platinum.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l4/platinum.jpg',
   selling: true,
   hidden: hidden
 )
