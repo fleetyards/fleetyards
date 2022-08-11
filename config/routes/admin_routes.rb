@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), constraints: ->(req) { Rails.configuration.app.subdomain || req.subdomain == 'admin' } do
+namespace :admin, path: (Rails.configuration.app.on_subdomain? ? '' : 'admin'), constraints: ->(req) { !Rails.configuration.app.on_subdomain? || req.subdomain == 'admin' } do
   draw :admin_api_routes
 
   devise_for :admin_users,

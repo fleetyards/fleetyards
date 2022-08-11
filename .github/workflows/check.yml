@@ -3,9 +3,10 @@ name: Check
 on:
   schedule:
     - cron: "0 20 * * *"
+  workflow_dispatch:
 
 env:
-  RUBY_VERSION: 3.0.3
+  RUBY_VERSION: 3.0.4
 
 jobs:
   js-setup:
@@ -14,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
 
@@ -25,7 +26,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
       - name: Check Audit DB

@@ -421,6 +421,38 @@ class Model < ApplicationRecord
     [number, 'm'].join(' ')
   end
 
+  def price_label
+    return if price.blank? || price.zero?
+
+    number = number_with_precision(
+      price,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, 'aUEC'].join(' ')
+  end
+
+  def pledge_price_label
+    return if pledge_price.blank? || pledge_price.zero?
+
+    number_to_currency(
+      pledge_price,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+  end
+
+  def last_pledge_price_label
+    return if last_pledge_price.blank? || last_pledge_price.zero?
+
+    number_to_currency(
+      last_pledge_price,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+  end
+
   def to_json(*_args)
     to_jbuilder_json
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 clio = CelestialObject.find_or_create_by!(name: 'Clio')
-clio.update!(store_image: Rails.root.join('db/seeds/images/stanton/microtech/clio/clio.jpg').open, hidden: false)
+clio.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/clio/clio.jpg', hidden: false)
 
 rayari_mc_grath = Station.find_or_initialize_by(name: 'Rayari McGrath Research Outpost')
 rayari_mc_grath.update!(
@@ -9,14 +9,14 @@ rayari_mc_grath.update!(
   station_type: :outpost,
   classification: :science,
   location: 'Clio',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rayari_mc_grath)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -52,14 +52,14 @@ rayari_cantwell.update!(
   station_type: :outpost,
   classification: :science,
   location: 'Clio',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rayari_cantwell)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope_admin.jpg',
   buying: true,
   selling: true,
   hidden: false

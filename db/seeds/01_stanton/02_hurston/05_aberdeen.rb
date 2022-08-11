@@ -3,20 +3,20 @@
 # TODO: take new image of Aberdeen
 
 aberdeen = CelestialObject.find_or_create_by!(name: 'Aberdeen')
-aberdeen.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/aberdeen/aberdeen.jpg').open, hidden: false)
+aberdeen.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/aberdeen/aberdeen.jpg', hidden: false)
 
 norgaard = Station.find_or_initialize_by(name: 'HDMS-Norgaard')
 norgaard.update!(
   celestial_object: aberdeen,
   station_type: :outpost,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/aberdeen/norgaard.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/aberdeen/norgaard.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: norgaard)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/aberdeen/norgaard_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/aberdeen/norgaard_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -47,13 +47,13 @@ anderson.update!(
   celestial_object: aberdeen,
   station_type: :outpost,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/aberdeen/anderson.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/aberdeen/anderson.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: anderson)
 admin_office.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/aberdeen/anderson_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/aberdeen/anderson_admin.jpg',
   buying: true,
   selling: true,
   hidden: false

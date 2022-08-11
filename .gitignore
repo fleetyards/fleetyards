@@ -8,8 +8,6 @@ data/*
 
 pids/*
 
-db/seeds_fleetchart
-
 # config files
 config/credentials/*.key
 config/*.key
@@ -57,3 +55,5 @@ REVISION
 cypress/*
 
 .sc_data_version
+
+/config/credentials/review.key

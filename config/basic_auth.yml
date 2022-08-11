@@ -1,15 +1,3 @@
-production: &defaults
+shared:
   user: <%= ENV["HTTP_BASIC_USER"] %>
   password: <%= ENV["HTTP_BASIC_PASSWORD"] %>
-
-staging:
-  <<: *defaults
-
-ci:
-  <<: *defaults
-
-development:
-  <<: *defaults
-
-test:
-  <<: *defaults

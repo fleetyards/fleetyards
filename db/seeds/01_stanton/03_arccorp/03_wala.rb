@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 wala = CelestialObject.find_or_create_by!(name: 'Wala')
-wala.update!(store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/wala.jpg').open, hidden: false)
+wala.update!(remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/wala.jpg', hidden: false)
 
 area_061 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 061')
 area_061.update!(
@@ -9,7 +9,7 @@ area_061.update!(
   station_type: :outpost,
   classification: :mining,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_061.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_061.jpg',
   hidden: false
 )
 
@@ -36,7 +36,7 @@ end
 admin_office_area_061 = Shop.find_or_initialize_by(name: 'Admin Office', station: area_061)
 admin_office_area_061.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_061_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_061_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -48,14 +48,14 @@ area_048.update!(
   station_type: :outpost,
   classification: :mining,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_048.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_048.jpg',
   hidden: false
 )
 
 admin_office_area_048 = Shop.find_or_initialize_by(name: 'Admin Office', station: area_048)
 admin_office_area_048.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_048_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_048_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -87,14 +87,14 @@ area_045.update!(
   station_type: :outpost,
   classification: :mining,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_045.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_045.jpg',
   hidden: false
 )
 
 admin_office_area_045 = Shop.find_or_initialize_by(name: 'Admin Office', station: area_045)
 admin_office_area_045.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_045_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_045_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -126,14 +126,14 @@ area_056.update!(
   station_type: :outpost,
   classification: :mining,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_056.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_056.jpg',
   hidden: false
 )
 
 admin_office_area_056 = Shop.find_or_initialize_by(name: 'Admin Office', station: area_056)
 admin_office_area_056.update!(
   shop_type: :admin,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_056_admin.jpg').open,
+  remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_056_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
@@ -165,13 +165,13 @@ samson.update!(
   station_type: :outpost,
   classification: :salvaging,
   location: nil,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/samson.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/samson.jpg',
   hidden: false
 )
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: samson)
 admin_office.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/samson_admin.jpg').open,
+  # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/samson_admin.jpg',
   buying: true,
   selling: true,
   hidden: false
