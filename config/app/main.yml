@@ -20,6 +20,10 @@ shared:
   mailer_default_from: <%= ENV["MAILER_DEFAULT_FROM"] %>
   mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
 
+  s3_endpoint: <%= ENV["S3_ENDPOINT"] || "https://fleetyards.fra1.digitaloceanspaces.com" %>
+  s3_sc_data_bucket: <%= ENV["S3_SC_DATA_BUCKET"] || "sc_data" %>
+  s3_seeds_fleetchart_bucket: <%= ENV["S3_SEEDS_FLEETCHART_BUCKET"] || "seeds_fleetchart" %>
+
   elasticsearch_url: <%= ENV["ELASTICSEARCH_URL"] || 'localhost:9200' %>
 
 production:
