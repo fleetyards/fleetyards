@@ -3,19 +3,24 @@
 module ScData
   class BaseLoader
     private def load_from_export(path)
-      full_path = Rails.root.join("public/sc_data/#{path}")
+      response = Typhoeus.get("#{s3_base_url}/#{path}")
 
-      raw_data = File.read(full_path) if File.exist?(full_path)
+      return unless response.success?
 
-      parse_json(raw_data) if raw_data.present?
+      begin
+        JSON.parse(response.body)
+      rescue JSON::ParserError => e
+        Raven.capture_exception(e)
+        Rails.logger.error "SC Data could not be parsed: #{response.body}"
+        nil
+      end
     end
 
-    private def parse_json(raw_data)
-      JSON.parse(raw_data)
-    rescue JSON::ParserError => e
-      Raven.capture_exception(e)
-      Rails.logger.error "SC Data could not be parsed: #{raw_data}"
-      nil
+    private def s3_base_url
+      [
+        Rails.configuration.app.s3_endpoint,
+        Rails.configuration.app.s3_sc_data_bucket
+      ].join('/')
     end
   end
 end

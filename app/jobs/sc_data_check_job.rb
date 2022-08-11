@@ -2,7 +2,7 @@
 
 class ScDataCheckJob < ApplicationJob
   def perform
-    new_version = File.read(Rails.public_path.join('sc_data/.version')).strip
+    new_version = load_version_from_s3
 
     version_file = Rails.root.join('.sc_data_version')
 
@@ -13,5 +13,20 @@ class ScDataCheckJob < ApplicationJob
     Loaders::ScDataShipsJob.perform_later
 
     File.write(version_file, new_version)
+  end
+
+  private def load_version_from_s3
+    response = Typhoeus.get("#{s3_base_url}/version")
+
+    return unless response.success?
+
+    response.body.strip
+  end
+
+  private def s3_base_url
+    [
+      Rails.configuration.app.s3_endpoint,
+      Rails.configuration.app.s3_sc_data_bucket
+    ].join('/')
   end
 end
