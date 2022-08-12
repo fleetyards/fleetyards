@@ -11,7 +11,7 @@
       <div class="col-12">
         <Panel>
           <div class="starmap">
-            <img :src="require('images/map.png')" alt="map" />
+            <img :src="mapImageUrl" alt="map" />
             <router-link
               v-for="starsystem in starsystems"
               :key="starsystem.slug"
@@ -108,6 +108,7 @@ import Pagination from '@/frontend/mixins/Pagination'
 import { scrollToAnchor } from '@/frontend/utils/scrolling'
 import StarsystemList from '@/frontend/components/Starsystems/List/index.vue'
 import PlanetPanel from '@/frontend/components/Planets/Panel/index.vue'
+import mapImageUrl from '@/images/map.png'
 
 export default {
   name: 'StarsystemsIndex',
@@ -124,6 +125,7 @@ export default {
   data() {
     return {
       loading: false,
+      mapImageUrl,
       starsystems: [],
     }
   },
