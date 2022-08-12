@@ -1,5 +1,8 @@
-import mountVM from 'helpers/mount'
-import Navigation from '@/frontend/core/components/Navigation'
+import mountVM from '~/test/javascript/unit/mount'
+import sanityTest from '~/test/javascript/unit/sanityTest'
+import Navigation from '@/frontend/core/components/Navigation/index.vue'
+
+sanityTest(Navigation)
 
 describe('Navigation', () => {
   let cmp

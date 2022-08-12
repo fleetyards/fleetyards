@@ -1,5 +1,8 @@
 import { mount } from '@vue/test-utils'
-import Box from '@/frontend/core/components/Box'
+import sanityTest from '~/test/javascript/unit/sanityTest'
+import Box from '@/frontend/core/components/Box/index.vue'
+
+sanityTest(Box)
 
 describe('Box', () => {
   let cmp

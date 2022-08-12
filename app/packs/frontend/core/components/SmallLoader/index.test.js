@@ -1,5 +1,8 @@
 import { mount } from '@vue/test-utils'
+import sanityTest from '~/test/javascript/unit/sanityTest'
 import SmallLoader from '@/frontend/core/components/SmallLoader/index.vue'
+
+sanityTest(SmallLoader)
 
 describe('SmallLoader', () => {
   it('does not render Smallloader default', () => {

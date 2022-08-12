@@ -1,5 +1,8 @@
 import Loader from '@/frontend/core/components/Loader/index.vue'
+import sanityTest from '~/test/javascript/unit/sanityTest'
 import { mount } from '@vue/test-utils'
+
+sanityTest(Loader, {})
 
 describe('Loader', () => {
   it('does not render loader on default', () => {

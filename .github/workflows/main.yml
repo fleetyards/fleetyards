@@ -62,7 +62,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
       - name: Run Javascript Tests
-        run: yarn test:ci
+        run: yarn test
 
   ruby-setup:
     runs-on: ubuntu-latest

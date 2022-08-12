@@ -43,6 +43,7 @@ module.exports = {
       alias: {
         map: [
           ['@', './app/packs'],
+          ['~', '.'],
           ['admin-app', './app/javascript/admin-app'],
           ['frontend-app', './app/javascript/frontend-app'],
         ],

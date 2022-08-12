@@ -1,4 +1,4 @@
-import mountVM from 'helpers/mount'
+import mountVM from '~/test/javascript/unit/mount'
 import Panel from '@/frontend/core/components/Panel/index.vue'
 
 describe('Panel', () => {

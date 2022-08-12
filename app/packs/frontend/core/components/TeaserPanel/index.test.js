@@ -1,4 +1,4 @@
-import sanityTest from 'helpers/sanityTest'
+import sanityTest from '~/test/javascript/unit/sanityTest'
 import Component from '@/frontend/core/components/TeaserPanel/index.vue'
 
 const item = {

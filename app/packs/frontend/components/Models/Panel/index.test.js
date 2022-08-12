@@ -1,23 +1,23 @@
 import Panel from '@/frontend/core/components/Panel/index.vue'
-import mountVM from 'helpers/mount'
+import mountVM from '~/test/javascript/unit/mount'
 import ModelPanel from '@/frontend/components/Models/Panel/index.vue'
+
+const model = {
+  name: 'Enterprise',
+  slug: 'enterprise',
+  storeImageMedium: 'TestImage',
+  manufacturer: {
+    name: 'Utopia Planitia',
+  },
+  shipRole: {
+    name: 'Exporation Cruiser',
+  },
+}
 
 describe('ShipPanel', () => {
   let cmp
-  let model
 
   beforeEach(() => {
-    model = {
-      name: 'Enterprise',
-      slug: 'enterprise',
-      storeImageMedium: 'TestImage',
-      manufacturer: {
-        name: 'Utopia Planitia',
-      },
-      shipRole: {
-        name: 'Exporation Cruiser',
-      },
-    }
     cmp = mountVM(ModelPanel, { model })
   })
 

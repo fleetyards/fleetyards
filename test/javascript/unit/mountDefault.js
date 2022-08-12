@@ -6,7 +6,7 @@ import Comlink from '@/frontend/plugins/Comlink'
 import VueLazyload from 'vue-lazyload'
 import VTooltip from 'v-tooltip'
 import BootstrapVue from 'bootstrap-vue'
-import createLocalVue from './createLocalVue'
+import { createLocalVue } from '@vue/test-utils'
 
 export default (config = {}) => {
   const localVue = createLocalVue(config)
