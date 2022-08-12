@@ -273,7 +273,7 @@ import fleetsCollection from '@/frontend/api/collections/Fleets'
 import { transformErrors } from '@/frontend/api/helpers'
 import Avatar from '@/frontend/core/components/Avatar/index.vue'
 import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
-import FormTextarea from '@/frontend/core/components/Form/FormTextarea'
+import FormTextarea from '@/frontend/core/components/Form/FormTextarea/index.vue'
 
 @Component<FleetSettings>({
   beforeRouteEnter: fleetRouteGuard,
