@@ -178,13 +178,13 @@ export default class Home extends Vue {
 
   imagesCollection: ImagesCollection = imagesCollection
 
-  modelsLoading: boolean = false
+  modelsLoading = false
 
-  imagesLoading: boolean = false
+  imagesLoading = false
 
   searchQuery: string = null
 
-  showScrollDown: boolean = false
+  showScrollDown = false
 
   @Getter('mobile') mobile
 

@@ -61,7 +61,7 @@ import { displayAlert } from '@/frontend/lib/Noty'
 export default class MemberModal extends Vue {
   @Prop({ required: true }) fleet: Fleet
 
-  submitting: boolean = false
+  submitting = false
 
   form: FleetMemberForm | null = null
 

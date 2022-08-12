@@ -197,9 +197,9 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 export default class MembersListItem extends Vue {
   collection: FleetMembersCollection = fleetMembersCollection
 
-  deleting: boolean = false
+  deleting = false
 
-  updating: boolean = false
+  updating = false
 
   @Getter('mobile') mobile
 

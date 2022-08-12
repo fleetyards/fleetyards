@@ -68,7 +68,7 @@ import modelsCollection from '@/frontend/api/collections/Models'
   },
 })
 export default class NewVehiclesModal extends Vue {
-  submitting: boolean = false
+  submitting = false
 
   modelsCollection: ModelsCollection = modelsCollection
 

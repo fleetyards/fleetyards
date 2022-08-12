@@ -1,6 +1,6 @@
 import { I18n } from '@/frontend/lib/I18n'
 
-const regex: RegExp =
+const regex =
   /^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäöáíñóú\[\]\(\)-_'".,?!:;\s]*$/i
 
 const validate = (value: string): boolean => regex.test(value)

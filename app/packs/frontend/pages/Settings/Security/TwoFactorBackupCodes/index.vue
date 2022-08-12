@@ -45,7 +45,7 @@ import { displayAlert } from '@/frontend/lib/Noty'
 export default class TwoFactorBackupCodes extends Vue {
   @Getter('currentUser', { namespace: 'session' }) currentUser
 
-  submitting: boolean = false
+  submitting = false
 
   backupCodes: string[] | null = null
 

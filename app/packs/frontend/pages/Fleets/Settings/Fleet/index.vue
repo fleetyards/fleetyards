@@ -289,17 +289,17 @@ import FormTextarea from '@/frontend/core/components/Form/FormTextarea/index.vue
   mixins: [MetaInfo],
 })
 export default class FleetSettings extends Vue {
-  leaving: boolean = false
+  leaving = false
 
-  submitting: boolean = false
+  submitting = false
 
-  deleting: boolean = false
+  deleting = false
 
   files: any[] = []
 
-  fileExtensions: string = 'jpg,jpeg,png,webp'
+  fileExtensions = 'jpg,jpeg,png,webp'
 
-  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
+  acceptedMimeTypes = 'image/png,image/jpeg,image/webp'
 
   form: FleetForm = {
     fid: null,

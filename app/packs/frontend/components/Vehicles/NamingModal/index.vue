@@ -157,9 +157,9 @@ import { transformErrors } from '@/frontend/api/helpers'
 export default class VehicleNamingModal extends Vue {
   @Prop({ required: true }) vehicle: Vehicle
 
-  submitting: boolean = false
+  submitting = false
 
-  deleting: boolean = false
+  deleting = false
 
   form: Object | null = null
 

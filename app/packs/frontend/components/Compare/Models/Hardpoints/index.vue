@@ -62,15 +62,15 @@ export default class ModelsCompareCategories extends Vue {
 
   groups = ['avionic', 'system', 'propulsion', 'thruster', 'weapon']
 
-  avionicVisible: boolean = false
+  avionicVisible = false
 
-  systemVisible: boolean = false
+  systemVisible = false
 
-  propulsionVisible: boolean = false
+  propulsionVisible = false
 
-  thrusterVisible: boolean = false
+  thrusterVisible = false
 
-  weaponVisible: boolean = false
+  weaponVisible = false
 
   @Watch('models')
   onModelsChange() {

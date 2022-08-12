@@ -36,7 +36,7 @@ export default class DownloadScreenshotBtn extends Btn {
 
   @Prop({ default: 'fleetyards-screenshot' }) filename!: string
 
-  downloading: boolean = false
+  downloading = false
 
   async download() {
     this.downloading = true

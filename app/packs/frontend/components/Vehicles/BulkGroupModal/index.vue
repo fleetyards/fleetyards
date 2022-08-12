@@ -64,7 +64,7 @@ import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
 export default class VehicleModal extends Vue {
   @Prop({ required: true }) vehicleIds: string[]
 
-  submitting: boolean = false
+  submitting = false
 
   hangarGroupIds: string[] = []
 

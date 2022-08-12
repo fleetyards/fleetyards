@@ -2,7 +2,7 @@ import { get } from '@/frontend/api/client'
 import BaseCollection from '@/frontend/api/collections/Base'
 
 export class ModelPaintsCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: ModelPaint[] = []
 

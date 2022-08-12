@@ -102,11 +102,7 @@ const handleResponse = function handleResponse(
   }
 }
 
-export async function get(
-  path: string,
-  params: any = {},
-  silent: boolean = false
-) {
+export async function get(path: string, params: any = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
@@ -120,7 +116,7 @@ export async function get(
   }
 }
 
-export async function post(path: string, body = {}, silent: boolean = false) {
+export async function post(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
@@ -131,7 +127,7 @@ export async function post(path: string, body = {}, silent: boolean = false) {
   }
 }
 
-export async function put(path: string, body = {}, silent: boolean = false) {
+export async function put(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
@@ -142,11 +138,7 @@ export async function put(path: string, body = {}, silent: boolean = false) {
   }
 }
 
-export async function destroy(
-  path: string,
-  data = {},
-  silent: boolean = false
-) {
+export async function destroy(path: string, data = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
@@ -158,7 +150,7 @@ export async function destroy(
   }
 }
 
-export async function upload(path: string, body = {}, silent: boolean = false) {
+export async function upload(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
@@ -178,11 +170,7 @@ export async function upload(path: string, body = {}, silent: boolean = false) {
   }
 }
 
-export async function download(
-  path: string,
-  params = {},
-  silent: boolean = false
-) {
+export async function download(path: string, params = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }

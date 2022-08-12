@@ -130,9 +130,9 @@ import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 export default class ImageRow extends Vue {
   @Prop({ required: true }) image!: Object
 
-  deleting: boolean = false
+  deleting = false
 
-  updating: boolean = false
+  updating = false
 
   internalImage: Object = null
 

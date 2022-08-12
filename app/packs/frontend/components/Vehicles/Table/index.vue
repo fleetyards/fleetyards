@@ -170,9 +170,9 @@ export default class FilteredGrid extends Vue {
 
   selected: string[] = []
 
-  deleting: boolean = false
+  deleting = false
 
-  updating: boolean = false
+  updating = false
 
   tableColumns: FilteredTableColumn[] = [
     {

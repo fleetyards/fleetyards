@@ -91,7 +91,7 @@ import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 export default class VehicleModal extends Vue {
   @Prop({ required: true }) vehicle: Vehicle
 
-  submitting: boolean = false
+  submitting = false
 
   form: Object | null = null
 

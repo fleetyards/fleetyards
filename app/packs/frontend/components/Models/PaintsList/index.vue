@@ -43,7 +43,7 @@ export default class ModelPaintList extends Vue {
 
   collection: ModelPaintsCollection = modelPaintsCollection
 
-  loading: boolean = false
+  loading = false
 
   get paints() {
     return this.collection.records

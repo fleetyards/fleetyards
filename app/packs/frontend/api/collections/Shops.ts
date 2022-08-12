@@ -3,7 +3,7 @@ import { prefetch } from '@/frontend/api/prefetch'
 import BaseCollection from './Base'
 
 export class ShopsCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: Shop[] = []
 

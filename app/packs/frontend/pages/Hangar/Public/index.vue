@@ -160,7 +160,7 @@ import GroupLabels from '@/frontend/components/Vehicles/GroupLabels/index.vue'
   mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
-  loading: boolean = false
+  loading = false
 
   collection: PublicVehiclesCollection = publicVehiclesCollection
 

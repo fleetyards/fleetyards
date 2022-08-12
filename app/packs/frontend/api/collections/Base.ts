@@ -1,11 +1,11 @@
 export default class BaseCollection {
-  primaryKey: string = 'slug'
+  primaryKey = 'slug'
 
   currentPage: number | null = 1
 
   totalPages: number | null = null
 
-  loaded: boolean = false
+  loaded = false
 
   setPages(meta: Pagination | null) {
     if (!meta) {

@@ -323,17 +323,17 @@ import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
   beforeRouteEnter: modelRouteGuard,
 })
 export default class ModelDetail extends Vue {
-  loading: boolean = false
+  loading = false
 
-  loadingVariants: boolean = false
+  loadingVariants = false
 
-  loadingLoaners: boolean = false
+  loadingLoaners = false
 
-  loadingModules: boolean = false
+  loadingModules = false
 
-  loadingUpgrades: boolean = false
+  loadingUpgrades = false
 
-  show3d: boolean = false
+  show3d = false
 
   variants: Model[] = []
 

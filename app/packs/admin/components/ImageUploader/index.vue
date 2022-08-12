@@ -143,9 +143,9 @@ export default class ImageUploader extends Vue {
 
   newImages = []
 
-  postAction: string = `${window.API_ENDPOINT}/images`
+  postAction = `${window.API_ENDPOINT}/images`
 
-  uploadCount: number = 1
+  uploadCount = 1
 
   headers = {
     'Accept': 'application/json',

@@ -81,7 +81,7 @@ export default class AdminShopCommodities extends Vue {
   collection: ShopCommodityConfirmationsCollection =
     shopCommodityConfirmationsCollection
 
-  deleting: boolean = false
+  deleting = false
 
   tableColumns = [
     { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '20%' },

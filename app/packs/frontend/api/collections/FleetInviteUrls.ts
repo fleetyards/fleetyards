@@ -2,7 +2,7 @@ import { get, post, destroy } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class FleetInviteUrlsCollection extends BaseCollection {
-  primaryKey: string = 'token'
+  primaryKey = 'token'
 
   records: FleetInviteUrl[] = []
 
@@ -47,7 +47,7 @@ export class FleetInviteUrlsCollection extends BaseCollection {
     return null
   }
 
-  async create(form: InviteUrlForm, refetch: boolean = false) {
+  async create(form: InviteUrlForm, refetch = false) {
     const response = await post(`fleets/${form.fleetSlug}/invite-urls`, form)
 
     if (!response.error) {
@@ -61,7 +61,7 @@ export class FleetInviteUrlsCollection extends BaseCollection {
     return null
   }
 
-  async destroy(fleetSlug: string, token: string, refetch: boolean = false) {
+  async destroy(fleetSlug: string, token: string, refetch = false) {
     const response = await destroy(`fleets/${fleetSlug}/invite-urls/${token}`)
 
     if (!response.error) {

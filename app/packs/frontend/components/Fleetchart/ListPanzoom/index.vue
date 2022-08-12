@@ -179,37 +179,37 @@ export default class FleetchartListPanzoom extends Vue {
 
   viewpointOptions: string[] = ['side', 'top', 'angled']
 
-  showStatus: boolean = false
+  showStatus = false
 
-  zoomSpeed: number = 0.5
+  zoomSpeed = 0.5
 
-  maxZoom: number = 20
+  maxZoom = 20
 
-  minZoom: number = 0.2
+  minZoom = 0.2
 
-  pinchSpeed: number = 3
+  pinchSpeed = 3
 
-  margin: number = 80
+  margin = 80
 
-  innerMargin: number = 20
+  innerMargin = 20
 
-  marginBottom: number = 40
+  marginBottom = 40
 
-  gridEnabled: boolean = false
+  gridEnabled = false
 
   screenWidth: number | null = null
 
   screenHeight: number | null = null
 
-  gridSize: number = 80.0
+  gridSize = 80.0
 
   panzoomInstance = null
 
   fleetchartColumns = {}
 
-  markedForReset: boolean = false
+  markedForReset = false
 
-  sizeMultiplicator: number = 4
+  sizeMultiplicator = 4
 
   @Getter('mobile') mobile
 

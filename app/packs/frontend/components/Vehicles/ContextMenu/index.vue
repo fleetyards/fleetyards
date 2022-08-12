@@ -94,7 +94,7 @@ import vehiclesCollection from '@/frontend/api/collections/Vehicles'
   },
 })
 export default class ContextMenu extends Vue {
-  deleting: boolean = false
+  deleting = false
 
   @Prop({ default: null }) vehicle: Vehicle | null
 

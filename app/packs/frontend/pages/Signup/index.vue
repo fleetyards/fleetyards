@@ -145,7 +145,7 @@ export default class Signup extends Vue {
 
   form: SignupForm | null = null
 
-  submitting: boolean = false
+  submitting = false
 
   mounted() {
     this.setupForm()

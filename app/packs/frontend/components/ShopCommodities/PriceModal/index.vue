@@ -278,7 +278,7 @@ export default class PricesModal extends Vue {
 
   @Prop({ default: [] }) pathOptions!: FilterGroupItem[]
 
-  submitting: boolean = false
+  submitting = false
 
   form: CommodityPriceForm | null = null
 

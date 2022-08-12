@@ -102,7 +102,7 @@ import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
   mixins: [MetaInfo],
 })
 export default class StationDetail extends Vue {
-  loading: boolean = false
+  loading = false
 
   get station() {
     return stationsCollection.record

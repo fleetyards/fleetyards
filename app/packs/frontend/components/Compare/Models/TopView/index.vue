@@ -71,7 +71,7 @@ import FleetchartItemImage from '@/frontend/components/Fleetchart/List/Item/Imag
 export default class ModelsCompareTopView extends Vue {
   @Prop({ required: true }) models!: Model[]
 
-  visible: boolean = false
+  visible = false
 
   get maxWidth() {
     if (!this.$refs.compareTopView) {

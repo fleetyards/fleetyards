@@ -96,7 +96,7 @@ export default class ShopCommoditiesFilterForm extends Vue {
   equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
     equipmentSlotFiltersCollection
 
-  loading: boolean = false
+  loading = false
 
   search: string = null
 

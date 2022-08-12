@@ -6,7 +6,7 @@ export class FleetsCollection extends BaseCollection {
 
   record: Fleet | null = null
 
-  async findAllForCurrent(identifier: string = 'default'): Promise<Fleet[]> {
+  async findAllForCurrent(identifier = 'default'): Promise<Fleet[]> {
     const response = await get(`fleets/current`, {
       [identifier]: true,
     })
@@ -30,7 +30,7 @@ export class FleetsCollection extends BaseCollection {
   }
 
   // tslint:disable-next-line variable-name
-  async create(form: FleetForm, _refetch: boolean = false) {
+  async create(form: FleetForm, _refetch = false) {
     const response = await post('fleets', form)
 
     if (!response.error) {

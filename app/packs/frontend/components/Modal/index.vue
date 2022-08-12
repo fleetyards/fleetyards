@@ -51,9 +51,9 @@ export default class Modal extends Vue {
 
   @Ref('modal') readonly modal!: HTMLElement
 
-  isShow: boolean = false
+  isShow = false
 
-  isOpen: boolean = false
+  isOpen = false
 
   @Prop({ required: true })
   private title!: string

@@ -66,7 +66,7 @@ import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 export default class RequestPassword extends Vue {
   @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated: boolean
 
-  submitting: boolean = false
+  submitting = false
 
   form: RequestPasswordForm | null = null
 

@@ -164,7 +164,7 @@ export default class PrivacySettings extends Vue {
 
   info: any = null
 
-  internalSettings: boolean = false
+  internalSettings = false
 
   form: PrivacySettingForm = {
     ahoy: false,

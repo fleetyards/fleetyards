@@ -2,7 +2,7 @@ import { get, post } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class CommodityPricesCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   async create(form: CommodityPriceForm): Promise<CommodityPrice | null> {
     const response = await post('commodity-prices', form)

@@ -11,7 +11,7 @@ import Store from '@/frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: Vehicle[] = []
 
@@ -19,7 +19,7 @@ export class VehiclesCollection extends BaseCollection {
 
   params: VehicleParams | null = null
 
-  lastUsedMethod: string = 'findAll'
+  lastUsedMethod = 'findAll'
 
   get perPage(): number | string {
     return Store.getters['hangar/perPage']
@@ -94,10 +94,7 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async create(
-    form: VehicleForm,
-    refresh: boolean = false
-  ): Promise<Vehicle | null> {
+  async create(form: VehicleForm, refresh = false): Promise<Vehicle | null> {
     const response = await post('vehicles', form)
 
     if (!response.error) {

@@ -104,7 +104,7 @@ import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
 export default class TwoFactorEnable extends Vue {
   @Getter('currentUser', { namespace: 'session' }) currentUser
 
-  submitting: boolean = false
+  submitting = false
 
   backupCodes: string[] | null = null
 

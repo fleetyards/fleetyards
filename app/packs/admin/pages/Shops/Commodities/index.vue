@@ -143,7 +143,7 @@ import { displayConfirm } from '@/frontend/lib/Noty'
 export default class AdminStationImages extends Vue {
   collection: ShopCommoditiesCollection = shopCommoditiesCollection
 
-  deleting: boolean = false
+  deleting = false
 
   tableColumns = [
     { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '30%' },

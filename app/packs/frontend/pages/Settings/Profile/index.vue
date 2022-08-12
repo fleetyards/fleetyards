@@ -180,11 +180,11 @@ export default class SettingsAccount extends Vue {
 
   files = []
 
-  fileExtensions: string = 'jpg,jpeg,png,webp'
+  fileExtensions = 'jpg,jpeg,png,webp'
 
-  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
+  acceptedMimeTypes = 'image/png,image/jpeg,image/webp'
 
-  submitting: boolean = false
+  submitting = false
 
   get avatarUrl() {
     return this.newAvatar.url || (this.currentUser && this.currentUser.avatar)

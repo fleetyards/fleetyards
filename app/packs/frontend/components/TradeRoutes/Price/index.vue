@@ -18,7 +18,7 @@ export default class TradeRoutePrice extends Vue {
 
   @Prop({ default: 'buy' }) priceType!: string
 
-  @Prop({ default: null }) availableCargo!: Number
+  @Prop({ default: null }) availableCargo!: number
 
   @Prop({ default: false }) average!: ToTextBooleanArg
 

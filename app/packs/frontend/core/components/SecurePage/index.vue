@@ -74,11 +74,11 @@ export default class Signup extends Vue {
   @Action('resetConfirmAccess', { namespace: 'session' })
   resetConfirmAccess: any
 
-  submitting: boolean = false
+  submitting = false
 
   password: string = null
 
-  confirmed: boolean = false
+  confirmed = false
 
   get metaTitle() {
     return this.$t(`title.confirmAccess`)

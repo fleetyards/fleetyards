@@ -113,7 +113,7 @@ export default class AddonsModal extends Vue {
 
   modelUpgradesCollection: ModelUpgradesCollection = modelUpgradesCollection
 
-  submitting: boolean = false
+  submitting = false
 
   form: AddonsForm | null = null
 

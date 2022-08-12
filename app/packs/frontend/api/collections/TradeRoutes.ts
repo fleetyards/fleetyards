@@ -2,7 +2,7 @@ import { get } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class TradeRoutesCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: TradeRoute[] = []
 

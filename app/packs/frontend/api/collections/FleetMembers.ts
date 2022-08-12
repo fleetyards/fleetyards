@@ -2,7 +2,7 @@ import { get, post, put } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class FleetMembersCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: FleetMember[] = []
 
@@ -55,7 +55,7 @@ export class FleetMembersCollection extends BaseCollection {
   async create(
     slug: string,
     form: FleetMemberForm,
-    refetch: boolean = false
+    refetch = false
   ): Promise<RecordResponse<FleetMember>> {
     const response = await post(`fleets/${slug}/members`, form)
 
@@ -76,11 +76,7 @@ export class FleetMembersCollection extends BaseCollection {
     }
   }
 
-  async acceptRequest(
-    slug: string,
-    username: string,
-    refetch: boolean = false
-  ) {
+  async acceptRequest(slug: string, username: string, refetch = false) {
     const response = await put(
       `fleets/${slug}/members/${username}/accept-request`
     )
@@ -96,11 +92,7 @@ export class FleetMembersCollection extends BaseCollection {
     return null
   }
 
-  async declineRequest(
-    slug: string,
-    username: string,
-    refetch: boolean = false
-  ) {
+  async declineRequest(slug: string, username: string, refetch = false) {
     const response = await put(
       `fleets/${slug}/members/${username}/decline-request`
     )

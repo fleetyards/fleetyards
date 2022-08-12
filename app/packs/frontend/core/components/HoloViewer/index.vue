@@ -59,9 +59,9 @@ import { displayAlert } from '@/frontend/lib/Noty'
   },
 })
 export default class HoloViewer extends Vue {
-  loading: boolean = false
+  loading = false
 
-  debug: boolean = false
+  debug = false
 
   scene = null
 
@@ -73,19 +73,19 @@ export default class HoloViewer extends Vue {
 
   controls = null
 
-  modelColor: number = 0x428bca
+  modelColor = 0x428bca
 
-  windowColor: number = 0x1d3d59
+  windowColor = 0x1d3d59
 
-  autoRotate: boolean = true
+  autoRotate = true
 
-  autoRotateSpeed: number = 1.5
+  autoRotateSpeed = 1.5
 
-  zoom: boolean = false
+  zoom = false
 
-  progress: number = 0
+  progress = 0
 
-  color: boolean = false
+  color = false
 
   @Prop({ required: true }) holo: string
 

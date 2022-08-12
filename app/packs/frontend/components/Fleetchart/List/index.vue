@@ -143,23 +143,23 @@ import FleetchartItem from './Item/index.vue'
 export default class FleetchartList extends Vue {
   viewpointOptions: string[] = ['side', 'top', 'angled']
 
-  showStatus: boolean = false
+  showStatus = false
 
-  gridEnabled: boolean = false
+  gridEnabled = false
 
   screenWidth: number | null = null
 
   screenHeight: number | null = null
 
-  gridSize: number = 80.0
+  gridSize = 80.0
 
-  sizeMultiplicator: number = 4
+  sizeMultiplicator = 4
 
-  internalScale: number = 1
+  internalScale = 1
 
-  maxScale: number = 20
+  maxScale = 20
 
-  minScale: number = 0.5
+  minScale = 0.5
 
   @Prop({ required: true }) namespace!: string
 

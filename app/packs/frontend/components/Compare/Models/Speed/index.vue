@@ -197,7 +197,7 @@ import { BCollapse } from 'bootstrap-vue'
 export default class ModelsCompareSpeed extends Vue {
   @Prop({ required: true }) models!: Model[]
 
-  visible: boolean = false
+  visible = false
 
   mounted() {
     this.visible = this.models.length > 0

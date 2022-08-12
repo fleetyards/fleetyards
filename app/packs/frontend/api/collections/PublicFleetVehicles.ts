@@ -3,7 +3,7 @@ import Store from '@/frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class PublicFleetVehiclesCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: (Vehicle | Model)[] = []
 

@@ -2,7 +2,7 @@ import { get } from '@/frontend/api/client'
 import BaseCollection from '@/frontend/api/collections/Base'
 
 export class AdminComponentClassFiltersCollection extends BaseCollection {
-  primaryKey: string = 'value'
+  primaryKey = 'value'
 
   records: FilterGroupItem[] = []
 

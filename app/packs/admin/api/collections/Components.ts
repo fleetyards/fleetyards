@@ -2,7 +2,7 @@ import { get } from '@/frontend/api/client'
 import BaseCollection from '@/frontend/api/collections/Base'
 
 export class AdminComponentsCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: AdminComponent[] = []
 

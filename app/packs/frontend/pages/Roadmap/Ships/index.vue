@@ -138,11 +138,11 @@ import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
   mixins: [MetaInfo],
 })
 export default class ShipsRoadmap extends Vue {
-  loading: boolean = true
+  loading = true
 
-  onlyReleased: boolean = true
+  onlyReleased = true
 
-  compact: boolean = true
+  compact = true
 
   roadmapItems = []
 

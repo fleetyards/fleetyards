@@ -104,7 +104,7 @@ import fleetsCollection from '@/frontend/api/collections/Fleets'
 export default class FleetMembershipSettings extends Vue {
   collection: FleetMembersCollection = fleetMembersCollection
 
-  submitting: boolean = false
+  submitting = false
 
   form: FleetMembershipForm = {
     primary: false,

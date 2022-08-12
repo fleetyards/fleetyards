@@ -2,7 +2,7 @@ import { get, post, put, destroy } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class HangarGroupsCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: HangarGroup[] = []
 
@@ -18,7 +18,7 @@ export class HangarGroupsCollection extends BaseCollection {
 
   async create(
     form: HangarGroupForm,
-    refetch: boolean = false
+    refetch = false
   ): Promise<HangarGroup | null> {
     const response = await post('hangar-groups', form)
 

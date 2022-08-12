@@ -14,7 +14,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component
 export default class PanelDetails extends Vue {
-  height: number = 0
+  height = 0
 
   @Prop({ default: false }) visible!: boolean
 

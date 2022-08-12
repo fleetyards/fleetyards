@@ -172,13 +172,13 @@ export default class FilterGroup extends Vue {
 
   @Prop({ default: false }) newSearchQuery!: boolean
 
-  visible: boolean = false
+  visible = false
 
   search = null
 
-  page: number = 1
+  page = 1
 
-  loading: boolean = false
+  loading = false
 
   fetchedOptions = []
 

@@ -71,7 +71,7 @@ import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
   },
 })
 export default class ChangePasswordForm extends Vue {
-  submitting: boolean = false
+  submitting = false
 
   form: ChangePasswordForm | null = null
 

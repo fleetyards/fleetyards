@@ -163,7 +163,7 @@ import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
 export default class FleetchartListFabric extends Vue {
   viewpointOptions: string[] = ['side', 'top', 'angled']
 
-  showStatus: boolean = false
+  showStatus = false
 
   selectedModel: Model | null = null
 
@@ -171,21 +171,21 @@ export default class FleetchartListFabric extends Vue {
 
   canvas = null
 
-  scale: number = 0.5
+  scale = 0.5
 
-  margin: number = 80
+  margin = 80
 
-  loaded: boolean = true
+  loaded = true
 
-  gridEnabled: boolean = false
+  gridEnabled = false
 
-  screenWidth: number = 1920
+  screenWidth = 1920
 
-  screenHeight: number = 1080
+  screenHeight = 1080
 
-  gridSize: number = 80.0
+  gridSize = 80.0
 
-  zoomLevel: string = 'large'
+  zoomLevel = 'large'
 
   @Getter('mobile') mobile
 

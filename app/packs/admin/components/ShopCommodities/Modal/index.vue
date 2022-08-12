@@ -238,7 +238,7 @@ export default class VehicleModal extends Vue {
   equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
     equipmentSlotFiltersCollection
 
-  submitting: boolean = false
+  submitting = false
 
   componentItemTypeFilter: string | null = null
 

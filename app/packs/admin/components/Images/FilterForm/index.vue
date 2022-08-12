@@ -46,7 +46,7 @@ import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
   mixins: [Filters],
 })
 export default class FilterForm extends Vue {
-  loading: boolean = false
+  loading = false
 
   modelIdEq: string | null = null
 

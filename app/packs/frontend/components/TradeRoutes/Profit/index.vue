@@ -14,7 +14,7 @@ import { Component, Prop } from 'vue-property-decorator'
 export default class TradeRouteProfit extends Vue {
   @Prop({ required: true }) tradeRoute!: TradeRoute
 
-  @Prop({ default: null }) availableCargo!: Number
+  @Prop({ default: null }) availableCargo!: number
 
   @Prop({ default: false }) average!: ToTextBooleanArg
 

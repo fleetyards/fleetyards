@@ -104,9 +104,9 @@ export default class GroupModal extends Vue {
   })
   hangarGroup: HangarGroup
 
-  submitting: boolean = false
+  submitting = false
 
-  deleting: boolean = false
+  deleting = false
 
   form: HangarGroupForm | null = null
 

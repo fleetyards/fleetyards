@@ -150,7 +150,7 @@ export default class ShoppingCart extends Vue {
 
   @Action('remove', { namespace: 'shoppingCart' }) removeFromCart: any
 
-  loading: boolean = false
+  loading = false
 
   get sortedItems() {
     return sortBy(this.cartItems, 'name')

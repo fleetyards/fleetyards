@@ -125,9 +125,9 @@ import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
   mixins: [MetaInfo],
 })
 export default class Login extends Vue {
-  submitting: boolean = false
+  submitting = false
 
-  twoFactorRequired: boolean = false
+  twoFactorRequired = false
 
   form: LoginForm = null
 

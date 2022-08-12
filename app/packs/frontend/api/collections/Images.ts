@@ -2,7 +2,7 @@ import { get } from '@/frontend/api/client'
 import BaseCollection from './Base'
 
 export class ImagesCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: Image[] = []
 

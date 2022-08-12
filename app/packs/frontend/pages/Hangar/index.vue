@@ -292,9 +292,9 @@ import debounce from 'lodash.debounce'
   mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class Hangar extends Vue {
-  deleting: boolean = false
+  deleting = false
 
-  guideVisible: boolean = false
+  guideVisible = false
 
   vehiclesChannel = null
 

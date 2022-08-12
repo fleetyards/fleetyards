@@ -68,7 +68,7 @@ export default class SettingsHangar extends Vue {
 
   form: NotificationSettingsForm = null
 
-  submitting: boolean = false
+  submitting = false
 
   created() {
     if (this.currentUser) {

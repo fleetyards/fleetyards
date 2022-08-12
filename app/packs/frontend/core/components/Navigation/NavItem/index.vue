@@ -150,7 +150,7 @@ import NavigationMixin from '@/frontend/mixins/Navigation'
   mixins: [NavigationMixin],
 })
 export default class NavItem extends Vue {
-  open: boolean = false
+  open = false
 
   @Prop({ default: null }) to: Object | null
 

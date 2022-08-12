@@ -90,9 +90,9 @@ import { isFilterSelected } from '@/frontend/utils/Filters'
   },
 })
 export default class FilteredList extends Vue {
-  loading: boolean = true
+  loading = true
 
-  fullscreen: boolean = false
+  fullscreen = false
 
   @Prop({ required: true }) collection!: BaseCollection
 

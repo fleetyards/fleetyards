@@ -56,7 +56,7 @@ import fleetsCollection from '@/frontend/api/collections/Fleets'
 
 @Component<FleetSettingsIndex>({})
 export default class FleetSettingsIndex extends Vue {
-  leaving: boolean = false
+  leaving = false
 
   collection: FleetsCollection = fleetsCollection
 

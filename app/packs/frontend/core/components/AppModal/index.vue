@@ -41,13 +41,13 @@ export default class AppModal extends Vue {
 
   props: any = null
 
-  wide: boolean = false
+  wide = false
 
-  fixed: boolean = false
+  fixed = false
 
-  isShow: boolean = false
+  isShow = false
 
-  isOpen: boolean = false
+  isOpen = false
 
   title: string = null
 
@@ -86,7 +86,7 @@ export default class AppModal extends Vue {
     })
   }
 
-  public close(force: boolean = false) {
+  public close(force = false) {
     if (this.fixed && !force) {
       return
     }

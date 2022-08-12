@@ -104,9 +104,9 @@ import Loader from '@/frontend/core/components/Loader/index.vue'
   mixins: [MetaInfo],
 })
 export default class FleetInvites extends Vue {
-  loading: boolean = true
+  loading = true
 
-  submitting: boolean = false
+  submitting = false
 
   invites: FleetMember[] = []
 

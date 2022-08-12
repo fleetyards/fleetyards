@@ -70,7 +70,7 @@ export default class Hardpoints extends Vue {
 
   collection: ModelHardpointsCollection = modelHardpointsCollection
 
-  loading: boolean = false
+  loading = false
 
   get hardpoints() {
     return this.collection.records || []

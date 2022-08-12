@@ -28,7 +28,7 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class FleetchartSlider extends Vue {
-  innerValue: number = 1
+  innerValue = 1
 
   @Prop({ required: true }) value!: number
 

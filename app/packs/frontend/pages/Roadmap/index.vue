@@ -130,11 +130,11 @@ import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
   mixins: [MetaInfo],
 })
 export default class RoadmapReleases extends Vue {
-  loading: boolean = true
+  loading = true
 
-  onlyReleased: boolean = true
+  onlyReleased = true
 
-  showRemoved: boolean = false
+  showRemoved = false
 
   roadmapItems: any[] = []
 

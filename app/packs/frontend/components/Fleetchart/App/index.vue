@@ -84,9 +84,9 @@ export default class FleetchartApp extends Vue {
 
   innerItems: Vehiclep[] | Model[] = []
 
-  isOpen: boolean = false
+  isOpen = false
 
-  isShow: boolean = false
+  isShow = false
 
   @Prop({ required: true }) namespace!: string
 

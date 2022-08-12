@@ -115,9 +115,9 @@ export default class SettingsAccount extends Vue {
 
   form: UserAccountForm | null = null
 
-  deleting: boolean = false
+  deleting = false
 
-  submitting: boolean = false
+  submitting = false
 
   created() {
     if (this.currentUser) {

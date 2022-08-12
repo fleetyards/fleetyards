@@ -117,13 +117,13 @@ import InfiniteLoading from 'vue-infinite-loading'
   },
 })
 export default class CollectionFilterGroup extends Vue {
-  visible: boolean = false
+  visible = false
 
   search: string | null = null
 
-  page: number = 1
+  page = 1
 
-  loading: boolean = false
+  loading = false
 
   selectedId: string = null
 

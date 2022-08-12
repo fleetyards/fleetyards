@@ -249,7 +249,7 @@ export default class TradeRoutes extends Vue {
 
   modelsCollection: ModelsCollection = modelsCollection
 
-  averagePrices: boolean = false
+  averagePrices = false
 
   cargoShip: Model | null = null
 

@@ -2,7 +2,7 @@ import { get, post, put, destroy } from '@/frontend/api/client'
 import BaseCollection from '@/frontend/api/collections/Base'
 
 export class AdminShopCommoditiesCollection extends BaseCollection {
-  primaryKey: string = 'id'
+  primaryKey = 'id'
 
   records: AdminShopCommodity[] = []
 
@@ -32,7 +32,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   async create(
     shopId: string,
     form: AdminShopCommodityForm,
-    refetch: boolean = false
+    refetch = false
   ): Promise<AdminShopCommodity | null> {
     const response = await post(`shops/${shopId}/commodities`, form)
 

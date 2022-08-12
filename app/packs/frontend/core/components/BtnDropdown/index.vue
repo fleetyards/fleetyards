@@ -37,11 +37,11 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
   },
 })
 export default class BtnDropdown extends Vue {
-  visible: boolean = false
+  visible = false
 
-  innerExpandLeft: boolean = false
+  innerExpandLeft = false
 
-  innerExpandTop: boolean = false
+  innerExpandTop = false
 
   @Prop({
     default: 'default',

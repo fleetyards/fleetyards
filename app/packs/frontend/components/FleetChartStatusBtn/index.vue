@@ -37,7 +37,7 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 export default class FleetChartStatusBtn extends Btn {
   @Prop({ default: true }) withLabel!: boolean
 
-  showStatus: boolean = false
+  showStatus = false
 
   mounted() {
     this.showStatus = !!this.$route.query?.showStatus
