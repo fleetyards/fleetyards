@@ -25,9 +25,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import ImageUploader from '@/admin/components/ImageUploader'
-import FilterForm from '@/admin/components/Images/FilterForm'
-import FilteredList from '@/frontend/core/components/FilteredList'
+import ImageUploader from '@/admin/components/ImageUploader/index.vue'
+import FilterForm from '@/admin/components/Images/FilterForm/index.vue'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
 import imagesCollection, {
   AdminImagesCollection,
 } from '@/admin/api/collections/Images'

@@ -28,9 +28,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Avatar from '@/frontend/core/components/Avatar'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
 import { sortBy } from '@/frontend/lib/Helpers'
 import { uniqByField as uniqByFieldArray } from '@/frontend/utils/Array'
 

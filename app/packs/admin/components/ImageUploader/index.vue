@@ -115,12 +115,12 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import VueUploadComponent from 'vue-upload-component'
 import Cookies from 'js-cookie'
-import ImageRow from '@/admin/components/ImageUploader/ImageRow'
-import Loader from '@/frontend/core/components/Loader'
-import EmptyBox from '@/frontend/core/components/EmptyBox'
-import Btn from '@/frontend/core/components/Btn'
-import Panel from '@/frontend/core/components/Panel'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { displayAlert } from '@/frontend/lib/Noty'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import ImageRow from '@/admin/components/ImageUploader/ImageRow/index.vue'
 
 @Component<ImageUploader>({
   components: {

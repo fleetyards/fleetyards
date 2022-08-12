@@ -50,11 +50,11 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FilteredList from '@/frontend/core/components/FilteredList'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
-import Gallery from '@/frontend/core/components/Gallery'
-import GalleryImage from '@/frontend/core/components/Gallery/Image'
+import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Gallery from '@/frontend/core/components/Gallery/index.vue'
+import GalleryImage from '@/frontend/core/components/Gallery/Image/index.vue'
 import imagesCollection from '@/frontend/api/collections/Images'
 
 @Component<ModelImages>({

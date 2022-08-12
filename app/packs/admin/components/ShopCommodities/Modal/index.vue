@@ -185,10 +185,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import shopCommodityCollection from '@/admin/api/collections/ShopCommodities'
 import modelsCollection from '@/admin/api/collections/Models'
 import commoditiesCollection from '@/admin/api/collections/Commodities'
@@ -199,6 +196,9 @@ import modelPaintsCollection from '@/admin/api/collections/ModelPaints'
 import componentItemTypeFiltersCollection from '@/admin/api/collections/ComponentItemTypeFilters'
 import equipmentTypeFiltersCollection from '@/admin/api/collections/EquipmentTypeFilters'
 import equipmentSlotFiltersCollection from '@/admin/api/collections/EquipmentSlotFilters'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
 
 @Component<VehicleModal>({
   components: {

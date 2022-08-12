@@ -55,10 +55,10 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
 import { displayAlert } from '@/frontend/lib/Noty'
 import sessionCollection from '@/frontend/api/collections/Session'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 
 @Component<Signup>({
   components: {
@@ -132,7 +132,7 @@ export default class Signup extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~stylesheets/variables';
+@import '@/stylesheets/variables';
 
 form {
   max-width: 300px;

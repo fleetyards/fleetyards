@@ -1,5 +1,5 @@
 import sanityTest from 'helpers/sanityTest'
-import Component from '@/frontend/components/Models/Panel'
+import Component from '@/frontend/components/Models/Panel/index.vue'
 
 const model = {
   name: 'Enterprise',

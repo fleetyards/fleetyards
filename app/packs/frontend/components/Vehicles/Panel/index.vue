@@ -295,7 +295,8 @@ export default class VehiclePanel extends Vue {
 
   openAddonsModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/AddonsModal'),
+      component: () =>
+        import('@/frontend/components/Vehicles/AddonsModal/index.vue'),
       props: {
         vehicle: this.vehicle,
         editable: this.editable,

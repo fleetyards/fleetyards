@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Loader from '@/embed/components/Loader'
+import Loader from '@/embed/components/Loader/index.vue'
 
 describe('Loader', () => {
   it('does not render loader on default', () => {

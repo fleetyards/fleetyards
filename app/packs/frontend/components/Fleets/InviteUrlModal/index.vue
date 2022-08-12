@@ -65,12 +65,12 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import copyText from '@/frontend/utils/CopyText'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
 import inviteUrlCollection from '@/frontend/api/collections/FleetInviteUrls'
 import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 
 @Component<MemberModal>({
   components: {
@@ -218,7 +218,7 @@ export default class MemberModal extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~stylesheets/variables';
+@import '@/stylesheets/variables';
 
 .invite-url {
   margin-bottom: 20px;

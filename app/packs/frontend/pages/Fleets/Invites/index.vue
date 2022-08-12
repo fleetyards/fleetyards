@@ -86,14 +86,14 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Panel from '@/frontend/core/components/Panel'
-import Loader from '@/frontend/core/components/Loader'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import {
   displaySuccess,
   displayAlert,
   displayConfirm,
 } from '@/frontend/lib/Noty'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
 
 @Component<FleetInvites>({
   components: {

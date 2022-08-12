@@ -102,12 +102,12 @@
 
 <script>
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader'
-import Panel from '@/frontend/core/components/Panel'
-import StarsystemList from '@/frontend/components/Starsystems/List'
-import PlanetPanel from '@/frontend/components/Planets/Panel'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 import Pagination from '@/frontend/mixins/Pagination'
 import { scrollToAnchor } from '@/frontend/utils/scrolling'
+import StarsystemList from '@/frontend/components/Starsystems/List/index.vue'
+import PlanetPanel from '@/frontend/components/Planets/Panel/index.vue'
 
 export default {
   name: 'StarsystemsIndex',

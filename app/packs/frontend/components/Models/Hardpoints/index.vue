@@ -53,10 +53,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
-import Loader from '@/frontend/core/components/Loader'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
 import modelHardpointsCollection from '@/frontend/api/collections/ModelHardpoints'
-import HardpointGroup from './Group'
+import HardpointGroup from './Group/index.vue'
 
 @Component<Hardpoints>({
   components: {

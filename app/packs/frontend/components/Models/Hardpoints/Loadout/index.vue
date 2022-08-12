@@ -34,15 +34,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
+import loadoutListIconUrl from '@/images/icons/loadout-list-icon.svg'
 
 @Component<HardpointItem>({})
 export default class HardpointItem extends Vue {
   @Prop({ required: true }) hardpoint: Hardpoint
 
-  /* eslint-disable global-require */
-  loadoutListIcon = require('images/icons/loadout-list-icon.svg')
+  loadoutListIcon = loadoutListIconUrl
 
-  /* eslint-enable global-require */
   get showComponent() {
     return this.loadout.component
   }

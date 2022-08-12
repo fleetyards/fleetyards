@@ -93,11 +93,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import Avatar from '@/frontend/core/components/Avatar'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import HangarItemsMixin from '@/frontend/mixins/HangarItems'
 import { publicFleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
 
 @Component<FleetDetail>({
   beforeRouteEnter: publicFleetRouteGuard,
@@ -143,7 +143,7 @@ export default class FleetDetail extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~stylesheets/variables';
+@import '@/stylesheets/variables';
 
 .heading {
   display: flex;

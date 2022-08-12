@@ -160,13 +160,13 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfoMixin from '@/frontend/mixins/MetaInfo'
-import Chart from '@/frontend/core/components/Chart'
-import Panel from '@/frontend/core/components/Panel'
+import Chart from '@/frontend/core/components/Chart/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
 import vehiclesCollection from '@/frontend/api/collections/FleetVehicles'
 import membersCollection from '@/frontend/api/collections/FleetMembers'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
 
 @Component({
   beforeRouteEnter: fleetRouteGuard,

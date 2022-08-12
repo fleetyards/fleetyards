@@ -42,9 +42,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Loader from '@/frontend/core/components/Loader'
-import BtnGroup from '@/frontend/core/components/BtnGroup'
-import Btn from '@/frontend/core/components/Btn'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'

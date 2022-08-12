@@ -69,12 +69,12 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn'
-import Loader from '@/frontend/core/components/Loader'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem'
-import EmptyBox from '@/frontend/core/components/EmptyBox'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem/index.vue'
+import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
 
 @Component<RoadmapChanges>({
   components: {

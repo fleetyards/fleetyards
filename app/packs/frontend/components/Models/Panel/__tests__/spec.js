@@ -1,6 +1,6 @@
-import ModelPanel from '@/frontend/components/Models/Panel'
-import Panel from '@/frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 import mountVM from 'helpers/mount'
+import ModelPanel from '@/frontend/components/Models/Panel/index.vue'
 
 describe('ShipPanel', () => {
   let cmp

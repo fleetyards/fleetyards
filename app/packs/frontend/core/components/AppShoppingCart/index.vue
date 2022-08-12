@@ -54,7 +54,7 @@ export default class ShoppingCart extends Vue {
   openModal() {
     this.$comlink.$emit('open-modal', {
       component: () =>
-        import('@/frontend/core/components/AppShoppingCart/Modal'),
+        import('@/frontend/core/components/AppShoppingCart/Modal/index.vue'),
       wide: true,
     })
   }

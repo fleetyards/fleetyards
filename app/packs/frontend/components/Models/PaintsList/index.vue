@@ -28,8 +28,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Loader from '@/frontend/core/components/Loader'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
 import modelPaintsCollection from '@/frontend/api/collections/ModelPaints'
 
 @Component<ModelPaintList>({

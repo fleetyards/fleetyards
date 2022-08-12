@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 
 export default {
   name: 'VehicleAddonsModal',

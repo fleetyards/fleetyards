@@ -60,11 +60,11 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import FleetchartListPanzoom from '@/frontend/components/Fleetchart/ListPanzoom'
-import FleetchartList from '@/frontend/components/Fleetchart/List'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import Loader from '@/frontend/core/components/Loader'
+import FleetchartListPanzoom from '@/frontend/components/Fleetchart/ListPanzoom/index.vue'
+import FleetchartList from '@/frontend/components/Fleetchart/List/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
 
 @Component({
   components: {

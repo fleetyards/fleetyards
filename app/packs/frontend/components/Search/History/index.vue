@@ -46,8 +46,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Btn from '@/frontend/core/components/Btn'
-import Panel from '@/frontend/core/components/Panel'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
 export default {
   name: 'SearchHistory',

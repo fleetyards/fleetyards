@@ -52,10 +52,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import Modal from '@/frontend/core/components/AppModal/Modal'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel'
-import Btn from '@/frontend/core/components/Btn'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import modelsCollection from '@/frontend/api/collections/Models'
 

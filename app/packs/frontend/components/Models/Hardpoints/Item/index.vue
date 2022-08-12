@@ -49,15 +49,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
+import turretIconUrl from '@/images/hardpoints/turrets-dark.svg'
 
 @Component<HardpointItem>({})
 export default class HardpointItem extends Vue {
   @Prop({ required: true }) hardpoint: Hardpoint
 
-  /* eslint-disable global-require */
-  turretIcon = require('images/hardpoints/turrets-dark.svg')
+  turretIcon = turretIconUrl
 
-  /* eslint-enable global-require */
   get tooltip() {
     if (
       !this.showCategory &&

@@ -112,11 +112,11 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader'
-import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem'
-import Btn from '@/frontend/core/components/Btn'
-import EmptyBox from '@/frontend/core/components/EmptyBox'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem/index.vue'
+import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
 
 @Component<RoadmapReleases>({
   components: {

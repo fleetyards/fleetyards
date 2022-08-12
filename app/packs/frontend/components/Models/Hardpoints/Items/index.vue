@@ -21,8 +21,8 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { groupBy } from '@/frontend/lib/Helpers'
-import HardpointItem from '../Item'
-import HardpointLoadout from '../Loadout'
+import HardpointItem from '../Item/index.vue'
+import HardpointLoadout from '../Loadout/index.vue'
 
 @Component<HardpointGroup>({
   components: {

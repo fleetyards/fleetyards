@@ -211,9 +211,9 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Panel from '@/frontend/core/components/Panel'
-import Btn from '@/frontend/core/components/Btn'
-import AppContact from '@/frontend/core/components/AppContact'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import AppContact from '@/frontend/core/components/AppContact/index.vue'
 
 @Component<PrivacyPolicy>({
   components: {

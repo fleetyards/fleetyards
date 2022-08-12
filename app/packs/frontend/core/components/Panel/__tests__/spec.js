@@ -1,5 +1,5 @@
 import mountVM from 'helpers/mount'
-import Panel from '@/frontend/core/components/Panel'
+import Panel from '@/frontend/core/components/Panel/index.vue'
 
 describe('Panel', () => {
   it('renders panel', () => {

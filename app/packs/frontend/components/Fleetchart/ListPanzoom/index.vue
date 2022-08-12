@@ -127,10 +127,7 @@
               key="made-by-the-community"
               class="fleetchart-item fade-list-item"
             >
-              <img
-                :src="require('images/community-logo.png')"
-                alt="made-by-the-community"
-              />
+              <CommunityLogo />
             </div>
           </transition-group>
         </div>
@@ -152,13 +149,14 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import panzoom from 'panzoom'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn/index.vue'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn/index.vue'
 import { Getter } from 'vuex-class'
 import debounce from 'lodash.debounce'
-import Starship42Btn from '@/frontend/components/Starship42Btn'
+import Starship42Btn from '@/frontend/components/Starship42Btn/index.vue'
+import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
 import FleetchartItem from './Item/index.vue'
 
 @Component({
@@ -169,6 +167,7 @@ import FleetchartItem from './Item/index.vue'
     FleetChartStatusBtn,
     FleetchartItem,
     Starship42Btn,
+    CommunityLogo,
   },
 })
 export default class FleetchartListPanzoom extends Vue {

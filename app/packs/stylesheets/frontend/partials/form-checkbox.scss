@@ -47,7 +47,7 @@
   }
 
   &:checked + label::after {
-    background: url('~images/icons/solid/check-primary.svg');
+    background: url('@/images/icons/solid/check-primary.svg');
   }
 
   &:disabled + label {

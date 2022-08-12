@@ -62,8 +62,8 @@ import Component from 'vue-class-component'
 import Vue from 'vue'
 
 import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Panel from '@/frontend/core/components/Panel'
-import AppContact from '@/frontend/core/components/AppContact'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import AppContact from '@/frontend/core/components/AppContact/index.vue'
 
 @Component({
   components: {

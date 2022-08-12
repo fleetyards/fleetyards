@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import SmallLoader from '@/frontend/core/components/SmallLoader'
+import SmallLoader from '@/frontend/core/components/SmallLoader/index.vue'
 
 describe('SmallLoader', () => {
   it('does not render Smallloader default', () => {

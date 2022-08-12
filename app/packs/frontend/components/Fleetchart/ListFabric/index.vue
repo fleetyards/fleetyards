@@ -116,10 +116,7 @@
           }"
         >
           <div key="made-by-the-community" class="fleetchart-download-image">
-            <img
-              :src="require('images/community-logo.png')"
-              alt="made-by-the-community"
-            />
+            <CommunityLogo />
           </div>
 
           <FleetchartItem
@@ -142,14 +139,15 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import FleetchartItem from '@/frontend/components/Fleetchart/ListPanzoom/Item/index.vue'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn/index.vue'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn/index.vue'
 import { Getter } from 'vuex-class'
 // import { fabric } from 'fabric'
-import Loader from '@/frontend/core/components/Loader'
+import Loader from '@/frontend/core/components/Loader/index.vue'
 import download from 'downloadjs'
+import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
 
 @Component({
   components: {
@@ -159,6 +157,7 @@ import download from 'downloadjs'
     FleetChartStatusBtn,
     FleetchartItem,
     Loader,
+    CommunityLogo,
   },
 })
 export default class FleetchartListFabric extends Vue {

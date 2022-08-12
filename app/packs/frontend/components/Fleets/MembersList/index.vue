@@ -22,9 +22,9 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Panel from '@/frontend/core/components/Panel'
-import MembersListHead from './MembersListHead'
-import MembersListItem from './MembersListItem'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import MembersListHead from './MembersListHead/index.vue'
+import MembersListItem from './MembersListItem/index.vue'
 
 @Component<MembersList>({
   components: {

@@ -97,10 +97,7 @@
         </p>
       </div>
       <div class="app-community-logo">
-        <img
-          v-lazy="require('@/images/community-logo.png')"
-          alt="community-logo"
-        />
+        <CommunityLogo />
       </div>
       <div class="app-version">
         {{ codename }} ({{ version }})
@@ -126,10 +123,12 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Btn from '@/frontend/core/components/Btn/index.vue'
+import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
 
 @Component<AppFooter>({
   components: {
     Btn,
+    CommunityLogo,
   },
 })
 export default class AppFooter extends Vue {

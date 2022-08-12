@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import HangarGuide from '@/frontend/components/HangarGuide'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import HangarGuide from '@/frontend/components/HangarGuide/index.vue'
 
 export default {
   name: 'HangarGuideBox',

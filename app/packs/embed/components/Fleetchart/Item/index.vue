@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import FleetchartItemImage from '@/embed/components/Fleetchart/Image'
+import FleetchartItemImage from '@/embed/components/Fleetchart/Image/index.vue'
 
 export default {
   name: 'FleetchartItem',

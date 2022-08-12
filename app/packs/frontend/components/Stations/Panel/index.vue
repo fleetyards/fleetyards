@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel'
-import Stats from '@/frontend/components/Stations/ListStats'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import Stats from '@/frontend/components/Stations/ListStats/index.vue'
 
 export default {
   name: 'StationsPanel',

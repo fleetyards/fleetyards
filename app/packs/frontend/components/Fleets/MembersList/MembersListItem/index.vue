@@ -179,14 +179,14 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Avatar from '@/frontend/core/components/Avatar'
-import Btn from '@/frontend/core/components/Btn'
 import {
   displaySuccess,
   displayAlert,
   displayConfirm,
 } from '@/frontend/lib/Noty'
 import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 
 @Component<MembersListItem>({
   components: {
@@ -325,7 +325,7 @@ export default class MembersListItem extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~stylesheets/variables';
+@import '@/stylesheets/variables';
 
 @media (max-width: $desktop-breakpoint) {
   .flex-list-row {

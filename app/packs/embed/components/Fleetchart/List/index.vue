@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import FleetchartSlider from '@/embed/components/Fleetchart/Slider'
-import FleetchartItem from '@/embed/components/Fleetchart/Item'
+import FleetchartSlider from '@/embed/components/Fleetchart/Slider/index.vue'
+import FleetchartItem from '@/embed/components/Fleetchart/Item/index.vue'
 import { mapGetters } from 'vuex'
 
 export default {

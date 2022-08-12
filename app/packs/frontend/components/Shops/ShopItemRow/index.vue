@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn'
+import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
 
 export default {
   name: 'ShopsItemRow',

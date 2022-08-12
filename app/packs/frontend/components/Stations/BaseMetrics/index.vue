@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import LocationLabel from '@/frontend/components/Stations/LocationLabel'
+import LocationLabel from '@/frontend/components/Stations/LocationLabel/index.vue'
 
 export default {
   name: 'StationsBaseMetrics',

@@ -60,9 +60,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import BtnGroup from '@/frontend/core/components/BtnGroup'
-import Btn from '@/frontend/core/components/Btn'
-import PerPageDropdown from '@/frontend/core/components/Paginator/PerPageDropdown'
+import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import PerPageDropdown from '@/frontend/core/components/Paginator/PerPageDropdown/index.vue'
 
 @Component<Paginator>({
   components: {

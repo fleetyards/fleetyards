@@ -63,11 +63,11 @@
 </template>
 
 <script>
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import { mapGetters } from 'vuex'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 
 export default {
   name: 'ChangePassword',

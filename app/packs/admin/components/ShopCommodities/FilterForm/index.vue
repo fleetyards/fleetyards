@@ -67,14 +67,14 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { debounce } from 'ts-debounce'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import componentItemTypeFiltersCollection from '@/admin/api/collections/ComponentItemTypeFilters'
 import equipmentItemTypeFiltersCollection from '@/admin/api/collections/EquipmentItemTypeFilters'
 import equipmentTypeFiltersCollection from '@/admin/api/collections/EquipmentTypeFilters'
 import equipmentSlotFiltersCollection from '@/admin/api/collections/EquipmentSlotFilters'
 import { getFilters, isFilterSelected } from '@/frontend/utils/Filters'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
 
 @Component<ShopCommoditiesFilterForm>({
   components: {

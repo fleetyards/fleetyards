@@ -108,11 +108,11 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Panel from '@/frontend/core/components/Panel'
-import Checkbox from '@/frontend/core/components/Form/Checkbox'
-import Loader from '@/frontend/core/components/Loader'
-import Btn from '@/frontend/core/components/Btn'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { uniq as uniqArray } from '@/frontend/utils/Array'
+import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
 
 export type FilteredTableColumn = {
   name: string

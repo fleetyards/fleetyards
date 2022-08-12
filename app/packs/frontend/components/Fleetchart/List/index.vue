@@ -92,10 +92,7 @@
             key="made-by-the-community"
             class="fleetchart-item fade-list-item fleetchart-download-image"
           >
-            <img
-              :src="require('images/community-logo.png')"
-              alt="made-by-the-community"
-            />
+            <CommunityLogo />
           </div>
         </transition-group>
         <canvas
@@ -122,12 +119,13 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import FleetchartSlider from '@/frontend/components/Fleetchart/Slider/index.vue'
-import Btn from '@/frontend/core/components/Btn'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown'
-import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn'
-import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
+import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn/index.vue'
+import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn/index.vue'
 import { Getter } from 'vuex-class'
-import Starship42Btn from '@/frontend/components/Starship42Btn'
+import Starship42Btn from '@/frontend/components/Starship42Btn/index.vue'
+import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
 import FleetchartItem from './Item/index.vue'
 
 @Component({
@@ -139,6 +137,7 @@ import FleetchartItem from './Item/index.vue'
     FleetchartItem,
     FleetchartSlider,
     Starship42Btn,
+    CommunityLogo,
   },
 })
 export default class FleetchartList extends Vue {

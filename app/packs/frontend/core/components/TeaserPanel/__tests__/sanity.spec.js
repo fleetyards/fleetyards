@@ -1,5 +1,5 @@
 import sanityTest from 'helpers/sanityTest'
-import Component from '@/frontend/core/components/TeaserPanel'
+import Component from '@/frontend/core/components/TeaserPanel/index.vue'
 
 const item = {
   name: 'Enterprise',

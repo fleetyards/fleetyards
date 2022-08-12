@@ -12,7 +12,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ModelPanel from '@/embed/components/Models/Panel'
+import ModelPanel from '@/embed/components/Models/Panel/index.vue'
 
 export default {
   name: 'ModelList',

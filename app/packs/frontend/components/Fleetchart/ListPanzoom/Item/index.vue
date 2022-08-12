@@ -42,7 +42,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import Btn from '@/frontend/core/components/Btn/index.vue'
-import FleetchartItemImage from './Image'
+import FleetchartItemImage from './Image/index.vue'
 
 @Component({
   components: {

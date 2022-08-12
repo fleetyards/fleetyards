@@ -30,7 +30,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import { uniq as uniqArray } from '@/frontend/utils/Array'
 
 @Component<ModelPanel>({
@@ -65,7 +65,8 @@ export default class ModelPanel extends Vue {
 
   openOwnersModal() {
     this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/OwnersModal'),
+      component: () =>
+        import('@/frontend/components/Vehicles/OwnersModal/index.vue'),
       props: {
         vehicles: this.vehicles,
       },

@@ -7,14 +7,14 @@
     height: 50px;
     margin-top: -25px;
     margin-left: -25px;
-    background-image: url('~images/loading.svg');
+    background-image: url('@/images/loading.svg');
     background-position: center;
     background-size: 100%;
     content: '';
   }
 
   &[lazy='error'] {
-    background-image: url('~images/store_image.jpg') !important;
+    background-image: url('@/images/store_image.jpg') !important;
   }
 }
 
@@ -88,14 +88,14 @@
     height: 50px;
     margin-top: -25px;
     margin-left: -25px;
-    background-image: url('~images/loading.svg');
+    background-image: url('@/images/loading.svg');
     background-position: center;
     background-size: 100%;
     content: '';
   }
 
   &[lazy='error'] {
-    background-image: url('~images/store_image.jpg') !important;
+    background-image: url('@/images/store_image.jpg') !important;
   }
 }
 

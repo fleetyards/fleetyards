@@ -166,10 +166,10 @@
 
 <script>
 import Filters from '@/frontend/mixins/Filters'
-import RadioList from '@/frontend/core/components/Form/RadioList'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup'
-import Btn from '@/frontend/core/components/Btn'
-import FormInput from '@/frontend/core/components/Form/FormInput'
+import RadioList from '@/frontend/core/components/Form/RadioList/index.vue'
+import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import {
   booleanOptions,
   priceOptions,

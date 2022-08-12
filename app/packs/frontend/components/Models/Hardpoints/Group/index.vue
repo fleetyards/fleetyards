@@ -35,8 +35,24 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { groupBy, sortBy } from '@/frontend/lib/Helpers'
-import Panel from '@/frontend/core/components/Panel'
-import HardpointItems from '../Items'
+import Panel from '@/frontend/core/components/Panel/index.vue'
+import radarIconUrl from '@/images/hardpoints/radar.svg'
+import computersIconUrl from '@/images/hardpoints/computers.svg'
+import powerPlantsIconUrl from '@/images/hardpoints/power_plants.svg'
+import coolersIconUrl from '@/images/hardpoints/coolers.svg'
+import shieldGeneratorsIconUrl from '@/images/hardpoints/shield_generators.svg'
+import fuelIntakesIconUrl from '@/images/hardpoints/fuel_intakes.svg'
+import fuelTanksIconUrl from '@/images/hardpoints/fuel_tanks.svg'
+import quantumDrivesIconUrl from '@/images/hardpoints/quantum_drives.svg'
+import jumpModulesIconUrl from '@/images/hardpoints/jump_modules.svg'
+import quantumFuelTanksIconUrl from '@/images/hardpoints/quantum_fuel_tanks.svg'
+import mainThrustersIconUrl from '@/images/hardpoints/main_thrusters.svg'
+import maneuveringThrustersIconUrl from '@/images/hardpoints/maneuvering_thrusters.svg'
+import weaponsIconUrl from '@/images/hardpoints/weapons.svg'
+import turretsIconUrl from '@/images/hardpoints/turrets.svg'
+import missilesIconUrl from '@/images/hardpoints/missiles.svg'
+import utilityItemsIconUrl from '@/images/hardpoints/utility_items.svg'
+import HardpointItems from '../Items/index.vue'
 
 @Component<HardpointGroup>({
   components: {
@@ -52,24 +68,22 @@ export default class HardpointGroup extends Vue {
   @Prop({ default: false }) withoutTitle: boolean
 
   icons = {
-    /* eslint-disable global-require */
-    radar: require('images/hardpoints/radar.svg'),
-    computers: require('images/hardpoints/computers.svg'),
-    power_plants: require('images/hardpoints/power_plants.svg'),
-    coolers: require('images/hardpoints/coolers.svg'),
-    shield_generators: require('images/hardpoints/shield_generators.svg'),
-    fuel_intakes: require('images/hardpoints/fuel_intakes.svg'),
-    fuel_tanks: require('images/hardpoints/fuel_tanks.svg'),
-    quantum_drives: require('images/hardpoints/quantum_drives.svg'),
-    jump_modules: require('images/hardpoints/jump_modules.svg'),
-    quantum_fuel_tanks: require('images/hardpoints/quantum_fuel_tanks.svg'),
-    main_thrusters: require('images/hardpoints/main_thrusters.svg'),
-    maneuvering_thrusters: require('images/hardpoints/maneuvering_thrusters.svg'),
-    weapons: require('images/hardpoints/weapons.svg'),
-    turrets: require('images/hardpoints/turrets.svg'),
-    missiles: require('images/hardpoints/missiles.svg'),
-    utility_items: require('images/hardpoints/utility_items.svg'),
-    /* eslint-enable global-require */
+    radar: radarIconUrl,
+    computers: computersIconUrl,
+    power_plants: powerPlantsIconUrl,
+    coolers: coolersIconUrl,
+    shield_generators: shieldGeneratorsIconUrl,
+    fuel_intakes: fuelIntakesIconUrl,
+    fuel_tanks: fuelTanksIconUrl,
+    quantum_drives: quantumDrivesIconUrl,
+    jump_modules: jumpModulesIconUrl,
+    quantum_fuel_tanks: quantumFuelTanksIconUrl,
+    main_thrusters: mainThrustersIconUrl,
+    maneuvering_thrusters: maneuveringThrustersIconUrl,
+    weapons: weaponsIconUrl,
+    turrets: turretsIconUrl,
+    missiles: missilesIconUrl,
+    utility_items: utilityItemsIconUrl,
   }
 
   grouped(type) {
@@ -84,10 +98,6 @@ export default class HardpointGroup extends Vue {
     return groupBy(sortBy(hardpoints, 'category'), 'key')
   }
 
-  // groupByCategory(hardpoints) {
-  //   return groupBy(sortBy(hardpoints, 'category'), 'category')
-  // }
-
   openComponentModal(hardpoint) {
     if (!hardpoint.component) {
       return
@@ -95,7 +105,9 @@ export default class HardpointGroup extends Vue {
 
     this.$comlink.$emit('open-modal', {
       component: () =>
-        import('@/frontend/components/Models/Hardpoints/ComponentModal'),
+        import(
+          '@/frontend/components/Models/Hardpoints/ComponentModal/index.vue'
+        ),
       props: {
         hardpoint,
       },

@@ -81,11 +81,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal'
 import commodityPricesCollection from '@/admin/api/collections/CommodityPrices'
-import FormInput from '@/frontend/core/components/Form/FormInput'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup'
-import Btn from '@/frontend/core/components/Btn'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
 
 @Component<BuyPricesModal>({
   components: {

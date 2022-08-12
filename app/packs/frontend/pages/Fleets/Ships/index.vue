@@ -53,15 +53,15 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import Avatar from '@/frontend/core/components/Avatar'
-import Btn from '@/frontend/core/components/Btn'
-import ShareBtn from '@/frontend/components/ShareBtn'
-import ShipsList from '@/frontend/components/Fleets/ShipsList'
-import PublicShipsList from '@/frontend/components/Fleets/PublicShipsList'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import HangarItemsMixin from '@/frontend/mixins/HangarItems'
 import { publicFleetShipsRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from '@/frontend/api/collections/Fleets'
+import PublicShipsList from '@/frontend/components/Fleets/PublicShipsList/index.vue'
+import ShipsList from '@/frontend/components/Fleets/ShipsList/index.vue'
+import Avatar from '@/frontend/core/components/Avatar/index.vue'
 
 @Component<FleetShips>({
   beforeRouteEnter: publicFleetShipsRouteGuard,

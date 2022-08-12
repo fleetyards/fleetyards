@@ -16,17 +16,17 @@
 
       <transition name="fade">
         <div
+          v-if="progress != null && progress < 100"
           class="progress progress-left"
           :style="{ width: `${progress}%` }"
-          v-if="progress != null && progress < 100"
         ></div>
       </transition>
 
       <transition name="fade">
         <div
+          v-if="progress != null && progress < 100"
           class="progress progress-right"
           :style="{ height: `${progress}%` }"
-          v-if="progress != null && progress < 100"
         ></div>
       </transition>
     </div>

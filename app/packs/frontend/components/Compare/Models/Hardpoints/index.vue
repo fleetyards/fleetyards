@@ -49,7 +49,7 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
-import HardpointGroup from '@/frontend/components/Models/Hardpoints/Group'
+import HardpointGroup from '@/frontend/components/Models/Hardpoints/Group/index.vue'
 
 @Component<ModelsCompareCategories>({
   components: {

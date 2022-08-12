@@ -71,11 +71,11 @@
 import { mapGetters } from 'vuex'
 import MetaInfo from '@/frontend/mixins/MetaInfo'
 import Pagination from '@/frontend/mixins/Pagination'
-import Loader from '@/frontend/core/components/Loader'
-import Btn from '@/frontend/core/components/Btn'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs'
+import Btn from '@/frontend/core/components/Btn/index.vue'
 import copyText from '@/frontend/utils/CopyText'
 import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
+import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Loader from '@/frontend/core/components/Loader/index.vue'
 
 export default {
   name: 'ModelVideos',
