@@ -1,7 +1,6 @@
 import { mount } from '@vue/test-utils'
 import optionsDefault from './mountDefault'
 
-// eslint-disable-next-line jest/no-export
 export default (component, propsData = {}, mocks = {}) => {
   describe(`Component: ${component.name}`, () => {
     let wrapper

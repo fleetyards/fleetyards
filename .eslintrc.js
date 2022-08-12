@@ -3,14 +3,12 @@ module.exports = {
 
   env: {
     'node': true,
-    'jest': true,
     'cypress/globals': true,
   },
 
   extends: [
     'airbnb-base',
     'plugin:compat/recommended',
-    'plugin:jest/recommended',
     'plugin:vue/recommended',
     'plugin:vue-types/strongly-recommended',
     'prettier',
@@ -63,8 +61,6 @@ module.exports = {
     'class-methods-use-this': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/extensions': 'off',
-    'jest/expect-expect': 'off',
-    'jest/no-mocks-import': 'off',
     'no-bitwise': 'off',
     'no-console': [
       'error',
@@ -111,15 +107,4 @@ module.exports = {
     'vue/component-name-in-template-casing': 'error',
     'vue/no-v-html': 'off',
   },
-
-  overrides: [
-    {
-      files: ['**/e2e/**/*.js'],
-      rules: {
-        'jest/valid-expect': 'off',
-        'jest/no-standalone-expect': 'off',
-        'jest/expect-expect': 'off',
-      },
-    },
-  ],
 }

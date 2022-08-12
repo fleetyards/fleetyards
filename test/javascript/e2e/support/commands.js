@@ -99,7 +99,6 @@ Cypress.Commands.add('login', () => {
 
   cy.wait(500)
 
-  // eslint-disable-next-line jest/valid-expect-in-promise
   cy.fixture('users').then((userData) => {
     cy.selectInput('login').type(userData.test.username)
     cy.selectInput('password').type(userData.test.password)
