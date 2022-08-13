@@ -1,7 +1,6 @@
 production:
   url: <%= ENV["DATABASE_URL"] %>
   pool: <%= ENV["DATABASE_POOL_SIZE"] %>
-  schema_search_path: "public"
 
 staging:
   url: <%= ENV["DATABASE_URL"] %>
