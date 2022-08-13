@@ -1,6 +1,7 @@
 {
   "all": {
     "sourceCodeDir": "app/packs",
+    "publicOutputDir": "",
     "watchAdditionalPaths": []
   },
   "development": {

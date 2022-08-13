@@ -9,6 +9,7 @@ export default defineConfig({
     RubyPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
+      filename: 'service-worker.js',
       workbox: {
         clientsClaim: true,
         skipWaiting: true,
