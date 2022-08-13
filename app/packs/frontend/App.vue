@@ -39,6 +39,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Updates from '@/frontend/mixins/Updates'
+import ServiceWorkerMixin from '@/frontend/mixins/ServiceWorker'
 import userCollection from '@/frontend/api/collections/User'
 import versionCollection from '@/frontend/api/collections/Version'
 import Navigation from '@/frontend/core/components/Navigation/index.vue'
@@ -62,7 +63,7 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
     AppModal,
     AppShoppingCart,
   },
-  mixins: [Updates],
+  mixins: [Updates, ServiceWorkerMixin],
 })
 export default class FrontendApp extends Vue {
   sessionRenewInterval: boolean = null
