@@ -207,6 +207,12 @@ import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
 import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
 
+// TODO: move to collection model or use openapi schema types when available
+type ShopCommoditiesFormData = {
+  commodityItemType: string
+  commodityItemId?: string
+}
+
 @Component<VehicleModal>({
   components: {
     Modal,
@@ -252,7 +258,7 @@ export default class VehicleModal extends Vue {
 
   equipmentSlotFilter: string | null = null
 
-  form: Object | null = null
+  form: ShopCommoditiesFormData | null = null
 
   items = []
 

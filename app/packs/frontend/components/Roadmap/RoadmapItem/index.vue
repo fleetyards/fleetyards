@@ -75,13 +75,30 @@ import { Component, Prop } from 'vue-property-decorator'
 import Panel from '@/frontend/core/components/Panel/index.vue'
 import { isBefore, addHours } from 'date-fns'
 
+// TODO: move to collection model or use openapi schema types when available
+type RoadmapItemData = {
+  name: string
+  description: string
+  lastVersionChangedAt: Date
+  lastVersion: {
+    active: {
+      change: string
+      count: number
+    }[]
+    released: boolean
+    committed: boolean
+  }
+  recentlyUpdated: boolean
+  storeImage: string
+}
+
 @Component<RoadmapItem>({
   components: {
     Panel,
   },
 })
 export default class RoadmapItem extends Vue {
-  @Prop({ required: true }) item!: Object
+  @Prop({ required: true }) item!: RoadmapItemData
 
   @Prop({ default: true }) compact!: boolean
 

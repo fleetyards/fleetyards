@@ -1,4 +1,4 @@
-export function getFilters(formData: Object) {
+export function getFilters(formData: Record<string, unknown>) {
   const filters = JSON.parse(JSON.stringify(formData))
 
   Object.keys(filters)
@@ -8,7 +8,7 @@ export function getFilters(formData: Object) {
   return filters
 }
 
-export function isFilterSelected(routeFilters: Object) {
+export function isFilterSelected(routeFilters: Record<string, unknown>) {
   const filters = JSON.parse(JSON.stringify(routeFilters || {}))
 
   Object.keys(filters)

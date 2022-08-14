@@ -79,6 +79,14 @@ import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
 import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 
+type VehicleFormData = {
+  flagship: boolean
+  purchased: boolean
+  saleNotify: boolean
+  public: boolean
+  modelPaintId: string | null
+}
+
 @Component<VehicleModal>({
   components: {
     Modal,
@@ -93,7 +101,7 @@ export default class VehicleModal extends Vue {
 
   submitting = false
 
-  form: Object | null = null
+  form: VehicleFormData | null = null
 
   mounted() {
     this.setupForm()

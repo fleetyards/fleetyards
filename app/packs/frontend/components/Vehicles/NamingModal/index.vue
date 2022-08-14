@@ -145,6 +145,13 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import { transformErrors } from '@/frontend/api/helpers'
 
+type VehicleNamingFormData = {
+  name: string
+  serial: string
+  nameVisible: boolean
+  alternativeNames: string[]
+}
+
 @Component<VehicleModal>({
   components: {
     Modal,
@@ -161,7 +168,7 @@ export default class VehicleNamingModal extends Vue {
 
   deleting = false
 
-  form: Object | null = null
+  form: VehicleNamingFormData | null = null
 
   public get dirty() {
     return (

@@ -2,7 +2,11 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { debounce } from 'ts-debounce'
 
-const getQuery = function getQuery(formData: Object) {
+type FormData = {
+  [key: string]: string | number | boolean | string[] | number[] | boolean[]
+}
+
+const getQuery = function getQuery(formData) {
   const q = JSON.parse(JSON.stringify(formData))
 
   Object.keys(q)
@@ -14,9 +18,9 @@ const getQuery = function getQuery(formData: Object) {
 
 @Component<FiltersMixin>({})
 export default class FiltersMixin extends Vue {
-  form: Object = {}
+  form: FormData = {}
 
-  filter: Function = debounce(this.debouncedFilter, 500)
+  filter = debounce(this.debouncedFilter, 500)
 
   get isFilterSelected() {
     const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))

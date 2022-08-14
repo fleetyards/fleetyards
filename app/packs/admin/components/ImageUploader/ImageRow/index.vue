@@ -121,6 +121,10 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 import debounce from 'lodash.debounce'
 import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 
+type Image = {
+  id: string
+}
+
 @Component<ImageRow>({
   components: {
     Btn,
@@ -128,15 +132,15 @@ import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
   },
 })
 export default class ImageRow extends Vue {
-  @Prop({ required: true }) image!: Object
+  @Prop({ required: true }) image!: Image
 
   deleting = false
 
   updating = false
 
-  internalImage: Object = null
+  internalImage: Image = null
 
-  updateCaption: Function = debounce(this.debouncedUpdateCaption, 500)
+  updateCaption = debounce(this.debouncedUpdateCaption, 500)
 
   get uuid() {
     return this._uid

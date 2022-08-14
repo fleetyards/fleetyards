@@ -9,11 +9,11 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   params: AdminShopCommodityParams | null = null
 
   async findAll(
-    params: AdminShopCommodityParams | null
+    params: AdminShopCommodityParams
   ): Promise<AdminShopCommodity[]> {
     this.params = params
 
-    const response = await get(`shops/${params!.shopId}/commodities`, params)
+    const response = await get(`shops/${params.shopId}/commodities`, params)
 
     if (!response.error) {
       this.records = response.data
@@ -25,7 +25,9 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
 
   async refresh(): Promise<void> {
     setTimeout(async () => {
-      await this.findAll(this.params)
+      if (this.params) {
+        await this.findAll(this.params)
+      }
     }, 500)
   }
 
@@ -66,7 +68,9 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
     const response = await destroy(`shops/${shopId}/commodities/${id}`)
 
     if (!response.error) {
-      this.findAll(this.params)
+      if (this.params) {
+        this.findAll(this.params)
+      }
 
       return true
     }

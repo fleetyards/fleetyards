@@ -75,10 +75,8 @@ export default class HangarImportBtn extends Vue {
     this.disabled = true
 
     displayConfirm({
-      // @ts-ignore
       text: this.$t('messages.confirm.hangar.import'),
       onConfirm: async () => {
-        // @ts-ignore
         this.$refs.upload.$el.querySelector('input').click()
       },
       onCancel: () => {
@@ -95,7 +93,6 @@ export default class HangarImportBtn extends Vue {
         )
       ) {
         displayAlert({
-          // @ts-ignore
           text: this.$t('messages.hangarImport.invalidExtension', {
             extensions: this.fileExtensions,
           }),
@@ -127,14 +124,12 @@ export default class HangarImportBtn extends Vue {
     const uploadData = new FormData()
     uploadData.append('import', importFile.file)
 
-    // @ts-ignore
     const response = await this.$api.upload('vehicles/import', uploadData)
 
     this.disabled = false
 
     if (response.error || !response.data.success) {
       displayAlert({
-        // @ts-ignore
         text: this.$t('messages.hangarImport.failure'),
       })
       return
@@ -144,7 +139,6 @@ export default class HangarImportBtn extends Vue {
 
     if (data.missing.length) {
       displayWarning({
-        // @ts-ignore
         text: this.$t('messages.hangarImport.partialSuccess', {
           missing: `- ${data.missing.join('<br>- ')}`,
         }),
@@ -152,7 +146,6 @@ export default class HangarImportBtn extends Vue {
       })
     } else {
       displaySuccess({
-        // @ts-ignore
         text: this.$t('messages.hangarImport.success'),
       })
     }

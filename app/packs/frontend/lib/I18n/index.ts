@@ -4,17 +4,21 @@ import { format } from 'date-fns-tz'
 import en from '@/translations/en'
 import de from '@/translations/de'
 
-// @ts-ignore
-I18n.availableLocales = ['en', 'de']
+const availableLocales = ['en', 'de']
 I18n.defaultLocale = 'en'
 I18n.locale = 'en'
 I18n.fallbacks = true
 I18n.translations.en = en
 I18n.translations.de = de
 
+type I18nTranslateOptions = {
+  [key: string]: any
+}
+
 const methods = {
+  availableLocales,
   // tslint:disable-next-line function-name
-  t(key: string, options: Object) {
+  t(key: string, options: I18nTranslateOptions) {
     return I18n.t(key, options)
   },
 
@@ -23,17 +27,16 @@ const methods = {
     return format(parseISO(value), I18n.t(dateFormat))
   },
 
-  toNumber(value: number, units: string) {
+  toNumber(value: number | string, units: string) {
     let count: string | number = I18n.l('number', value)
     if (units === 'weight') {
-      count = I18n.l('number', value / 1000)
+      count = I18n.l('number', (value as number) / 1000)
     }
     if (units === 'people') {
       count = value
     }
     if (units === 'speed' && value) {
-      count = value
-        // @ts-ignore
+      count = (value as string)
         .split(' - ')
         .map((item) => I18n.l('number', item))
         .join(' - ')

@@ -36,6 +36,7 @@ configure({
 })
 
 export default {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   install(vue: any) {
     vue.component('ValidationObserver', ValidationObserver)
     vue.component('ValidationProvider', ValidationProvider)

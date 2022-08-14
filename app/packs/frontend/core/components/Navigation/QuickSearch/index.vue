@@ -20,6 +20,10 @@ import { Getter } from 'vuex-class'
 import Filters from '@/frontend/mixins/Filters'
 import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 
+type QuickSearchFormData = {
+  [key: string]: any
+}
+
 @Component<Navigation>({
   components: {
     FormInput,
@@ -27,7 +31,7 @@ import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
   mixins: [Filters],
 })
 export default class QuickSearch extends Vue {
-  form: Object = {}
+  form: QuickSearchFormData = {}
 
   @Getter('mobile') mobile
 

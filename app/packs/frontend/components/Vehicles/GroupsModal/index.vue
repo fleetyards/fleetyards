@@ -49,6 +49,12 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
 
+type HangarGroupFormData = {
+  id: number
+  name: string
+  selected: boolean
+}
+
 @Component<VehicleModal>({
   components: {
     Modal,
@@ -63,7 +69,7 @@ export default class VehicleGroupsModal extends Vue {
 
   submitting = false
 
-  form: Object | null = null
+  form: HangarGroupFormData | null = null
 
   get hangarGroups() {
     return hangarGroupsCollection.records

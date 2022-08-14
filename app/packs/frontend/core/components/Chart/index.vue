@@ -349,7 +349,9 @@ export default {
         series.setData(this.data)
       }
     },
+
     setupChart() {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this
 
       this.instance = chart(this.id, {

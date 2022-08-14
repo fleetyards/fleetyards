@@ -152,9 +152,9 @@ import NavigationMixin from '@/frontend/mixins/Navigation'
 export default class NavItem extends Vue {
   open = false
 
-  @Prop({ default: null }) to: Object | null
+  @Prop({ default: null }) to: Route | null
 
-  @Prop({ default: null }) action: Function | null
+  @Prop({ default: null }) action
 
   @Prop({ default: null }) href: string | null
 

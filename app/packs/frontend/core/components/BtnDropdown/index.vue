@@ -92,7 +92,6 @@ export default class BtnDropdown extends Vue {
 
   toggle(event: MouseEvent) {
     const { target } = event
-    // @ts-ignore
     const bounding = target.getBoundingClientRect()
 
     this.innerExpandLeft =
@@ -108,7 +107,6 @@ export default class BtnDropdown extends Vue {
     const { wrapper, btnList } = this.$refs
     const { target } = event
 
-    // @ts-ignore
     if (
       target !== wrapper &&
       (!wrapper.contains(target) || btnList.contains(target))

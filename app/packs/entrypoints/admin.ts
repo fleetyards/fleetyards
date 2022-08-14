@@ -50,7 +50,6 @@ if (process.env.NODE_ENV !== 'production') {
   Vue.config.productionTip = false
 }
 
-// @ts-ignore
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 

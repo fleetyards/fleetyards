@@ -131,7 +131,7 @@ export default class CollectionFilterGroup extends Vue {
 
   fetchedOptions: FilterGroupOption[] = []
 
-  onSearch: Function = debounce(this.debouncedOnSearch, 500)
+  onSearch = debounce(this.debouncedOnSearch, 500)
 
   @Prop({ required: true }) collection!: BaseCollection
 
@@ -140,7 +140,7 @@ export default class CollectionFilterGroup extends Vue {
   @Prop({
     default: () => ({}),
   })
-  collectionFilter!: Object
+  collectionFilter!: any
 
   @Prop({ required: true }) name!: string
 
@@ -152,7 +152,7 @@ export default class CollectionFilterGroup extends Vue {
       return null
     },
   })
-  value!: string[] | string | number | Object | null
+  value!: string[] | string | number | any | null
 
   @Prop({ default: 'value' }) valueAttr!: string
 

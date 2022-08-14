@@ -19,15 +19,19 @@ import { Getter } from 'vuex-class'
 import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
 import { debounce } from 'ts-debounce'
 
+type SearchFormType = {
+  [key: string]: string
+}
+
 @Component<SearchForm>({
   components: {
     FormInput,
   },
 })
 export default class SearchForm extends Vue {
-  form: Object = {}
+  form: SearchFormType = {}
 
-  filter: Function = debounce(this.debouncedFilter, 500)
+  filter = debounce(this.debouncedFilter, 500)
 
   @Getter('mobile') mobile
 

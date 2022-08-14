@@ -200,7 +200,13 @@ import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFil
 import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
 import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
 
-@Component<VehicleModal>({
+// TODO: move to collection model or use openapi schema types when available
+type ShopCommoditiesFormData = {
+  commodityItemType: string
+  commodityItemId?: string
+}
+
+@Component<ShopCommoditiesModal>({
   components: {
     Modal,
     FilterGroup,
@@ -208,7 +214,7 @@ import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
     Btn,
   },
 })
-export default class VehicleModal extends Vue {
+export default class ShopCommoditiesModal extends Vue {
   @Prop({ required: true }) shopId: string
 
   @Prop({ required: true }) shopCommodity: ShopCommodity
@@ -246,7 +252,7 @@ export default class VehicleModal extends Vue {
 
   equipmentSlotFilter: string | null = null
 
-  form: Object | null = null
+  form: ShopCommoditiesFormData | null = null
 
   commodityTypeOptions: FilterGroupItem[] = [
     {

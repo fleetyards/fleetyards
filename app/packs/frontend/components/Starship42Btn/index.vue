@@ -43,7 +43,6 @@ export default class Starship42Btn extends Btn {
       return null
     }
 
-    // @ts-ignore
     return this.$t('labels.poweredByStarship42')
   }
 

@@ -132,7 +132,7 @@ export default class FilterGroup extends Vue {
       return null
     },
   })
-  value!: string[] | string | number | Object | null
+  value!: string[] | string | number | any | null
 
   @Prop({ default: 'value' }) valueAttr!: string
 
@@ -164,7 +164,7 @@ export default class FilterGroup extends Vue {
 
   @Prop({ default: false }) bigIcon!: boolean
 
-  @Prop({ default: null }) fetch!: Function
+  @Prop({ default: null }) fetch!
 
   @Prop({ default: null }) fetchPath!: string
 
@@ -186,7 +186,7 @@ export default class FilterGroup extends Vue {
 
   id: string = null
 
-  onSearch: Function = debounce(this.debouncedOnSearch, 500)
+  onSearch = debounce(this.debouncedOnSearch, 500)
 
   get prompt() {
     if (this.multiple) {

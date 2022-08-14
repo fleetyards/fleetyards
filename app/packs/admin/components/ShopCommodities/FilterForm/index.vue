@@ -107,7 +107,7 @@ export default class ShopCommoditiesFilterForm extends Vue {
     equipment_slot: [],
   }
 
-  filter: Function = debounce(this.debouncedFilter, 500)
+  filter = debounce(this.debouncedFilter, 500)
 
   get isFilterSelected() {
     return isFilterSelected(this.$route.query.filters)

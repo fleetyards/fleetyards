@@ -136,6 +136,8 @@ export default class RoadmapReleases extends Vue {
 
   showRemoved = false
 
+  // TODO: replace with collection
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   roadmapItems: any[] = []
 
   visible: string[] = []

@@ -21,7 +21,7 @@ import { Component, Prop } from 'vue-property-decorator'
 export default class Panel extends Vue {
   @Prop({ default: 'fal fa-plus' }) icon!: string
 
-  @Prop({ required: true }) action!: Function
+  @Prop({ required: true }) action!
 
   @Prop({ default: null }) label!: string
 }

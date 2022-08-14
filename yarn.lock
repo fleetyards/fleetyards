@@ -3993,13 +3993,6 @@ eslint-plugin-sort-class-members@^1.14.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.14.1.tgz#e701d6341e267ed0d0bf44c8293ff1e15b324e3c"
   integrity sha512-/Q/cm3h4N9DBNYvJMQMhluucSmr3Yydr9U0BgGcXUQe/rgWdXKSymZ5Ewcf4vmAG0bbTmAYmekuMnYYrqlu9Rg==
 
-eslint-plugin-vue-types@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue-types/-/eslint-plugin-vue-types-2.1.0.tgz#fa668aa7607d33fea7ac370e932e8bf9079d43db"
-  integrity sha512-8Ny/frfosSq3Vzgt5OXNw8DiQucTFixaPaH2mb1/2f7+emI9xPQnSKGt/6a8533OZBhnhXMfr0Ha8BF5iStQHw==
-  dependencies:
-    eslint-rule-composer "^0.3.0"
-
 eslint-plugin-vue@8.4.1:
   version "8.4.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-8.4.1.tgz#0a25493bbfee6baa21614e637e3fd390617c0bb4"
@@ -4009,11 +4002,6 @@ eslint-plugin-vue@8.4.1:
     natural-compare "^1.4.0"
     semver "^7.3.5"
     vue-eslint-parser "^8.0.1"
-
-eslint-rule-composer@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-rule-composer/-/eslint-rule-composer-0.3.0.tgz#79320c927b0c5c0d3d3d2b76c8b4a488f25bbaf9"
-  integrity sha512-bt+Sh8CtDmn2OajxvNO+BX7Wn4CIWMpTRm3MaiKPCQcnnlm0CS2mhui6QaoeQugs+3Kj2ESKEEGJUdVafwhiCg==
 
 eslint-scope@^5.1.1:
   version "5.1.1"

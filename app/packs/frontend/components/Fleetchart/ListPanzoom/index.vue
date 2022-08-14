@@ -171,9 +171,9 @@ import FleetchartItem from './Item/index.vue'
   },
 })
 export default class FleetchartListPanzoom extends Vue {
-  updateZoomData: Function = debounce(this.debouncedUpdateZoomData, 300)
+  updateZoomData = debounce(this.debouncedUpdateZoomData, 300)
 
-  checkReset: Function = debounce(this.debouncedCheckReset, 300)
+  checkReset = debounce(this.debouncedCheckReset, 300)
 
   screenHeightOptions: string[] = ['1x', '1_5x', '2x', '3x', '4x']
 

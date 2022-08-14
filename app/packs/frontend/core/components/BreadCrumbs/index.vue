@@ -29,6 +29,6 @@ export default class BreadCrumbs extends Vue {
       return []
     },
   })
-  crumbs!: Object[]
+  crumbs!: Route[]
 }
 </script>

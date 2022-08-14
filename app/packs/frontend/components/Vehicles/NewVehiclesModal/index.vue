@@ -59,6 +59,10 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 import vehiclesCollection from '@/frontend/api/collections/Vehicles'
 import modelsCollection from '@/frontend/api/collections/Models'
 
+type VehicleFormData = {
+  vehicles: Vehicle[]
+}
+
 @Component<NewVehiclesModal>({
   components: {
     Modal,
@@ -72,7 +76,7 @@ export default class NewVehiclesModal extends Vue {
 
   modelsCollection: ModelsCollection = modelsCollection
 
-  form: Object = {
+  form: VehicleFormData = {
     vehicles: [],
   }
 

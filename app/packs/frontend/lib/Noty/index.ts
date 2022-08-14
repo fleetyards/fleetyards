@@ -1,6 +1,7 @@
 import Noty from 'noty'
 import { isBefore, addSeconds } from 'date-fns'
 import { I18n } from '@/frontend/lib/I18n'
+import { FleetyardsNotyOptions } from './index.d'
 
 Noty.overrideDefaults({
   callbacks: {
@@ -9,15 +10,14 @@ Noty.overrideDefaults({
         this.barDom.innerHTML = `
           <div class="noty_body">${this.options.text}</div>
         `
-        const buttons = []
+        const buttons: string[] = []
         this.options.buttons.forEach((button) => {
           const inner = document.createElement('div')
           inner.setAttribute('class', 'panel-btn-inner')
           inner.textContent = button.dom.textContent
           button.dom.removeChild(button.dom.childNodes[0])
           button.dom.appendChild(inner)
-          // @ts-ignore
-          buttons.push(button.dom.outerHTML)
+          buttons.push(button.dom.outerHTML as string)
         })
 
         this.barDom.innerHTML += `
@@ -141,7 +141,6 @@ const displayNotification = function displayNotification(options) {
       new Noty({
         text: displayText,
         type: defaults.type,
-        // @ts-ignore
         icon: defaults.icon,
         timeout: defaults.timeout,
         category: 'notification',
@@ -153,7 +152,7 @@ const displayNotification = function displayNotification(options) {
           close: 'noty_effects_close',
         },
         progressBar: true,
-      }).show()
+      } as FleetyardsNotyOptions).show()
     }
   }
 }
@@ -183,7 +182,6 @@ export const displayConfirm = function displayConfirm(options) {
     theme: 'metroui',
     closeWith: ['click', 'button'],
     id: 'noty-confirm',
-    // @ts-ignore
     category: 'confirm',
     animation: {
       open: 'noty_effects_open',
@@ -194,7 +192,6 @@ export const displayConfirm = function displayConfirm(options) {
         I18n.t('actions.confirm'),
         `panel-btn panel-btn-inline${btnClass}`,
         () => {
-          // @ts-ignore
           n.close()
           defaults.onConfirm()
         },
@@ -204,7 +201,6 @@ export const displayConfirm = function displayConfirm(options) {
         I18n.t('actions.cancel'),
         'panel-btn panel-btn-inline',
         () => {
-          // @ts-ignore
           n.close()
           defaults.onCancel()
         }
@@ -215,7 +211,9 @@ export const displayConfirm = function displayConfirm(options) {
         defaults.onClose()
       },
     },
-  }).show()
+  } as FleetyardsNotyOptions)
+
+  n.show()
 }
 
 export function requestPermission() {

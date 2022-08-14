@@ -23,7 +23,7 @@ export default class LazyImage extends Vue {
 
   @Prop({ default: null }) href!: string
 
-  @Prop({ to: null }) to!: Object
+  @Prop({ to: null }) to!: Route
 
   get uuid() {
     return this._uid
