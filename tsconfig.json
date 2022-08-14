@@ -18,7 +18,6 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"],
       "@/*": ["app/frontend/*"],
       "~/*": ["*"]
     },
@@ -28,6 +27,8 @@
     "noImplicitThis": true,
     "noEmit": true,
     "types": [
+      "cypress",
+      "node",
       "vitest/globals"
     ]
   },
@@ -35,11 +36,12 @@
     "@types/*",
     "app/frontend/**/*.ts",
     "app/frontend/**/*.tsx",
-    "app/frontend/**/*.vue"
+    "app/frontend/**/*.vue",
+    "test/javascript/**/*.ts",
+    "cypress/**/*.ts",
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts",
     "vendor",
     "public"
   ],
