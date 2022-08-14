@@ -19,7 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"],
-      "@/*": ["app/packs/*"],
+      "@/*": ["app/frontend/*"],
       "~/*": ["*"]
     },
     "sourceMap": true,
@@ -33,9 +33,9 @@
   },
   "include": [
     "@types/*",
-    "app/packs/**/*.ts",
-    "app/packs/**/*.tsx",
-    "app/packs/**/*.vue"
+    "app/frontend/**/*.ts",
+    "app/frontend/**/*.tsx",
+    "app/frontend/**/*.vue"
   ],
   "exclude": [
     "node_modules",

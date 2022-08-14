@@ -42,7 +42,7 @@ module.exports = {
       typescript: {},
       alias: {
         map: [
-          ['@', './app/packs'],
+          ['@', './app/frontend'],
           ['~', '.'],
           ['admin-app', './app/javascript/admin-app'],
           ['frontend-app', './app/javascript/frontend-app'],

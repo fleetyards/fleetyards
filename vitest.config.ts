@@ -8,14 +8,14 @@ export default defineConfig({
     'process.env': {},
   },
   test: {
-    include: ['app/packs/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    include: ['app/frontend/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     globals: true,
     environment: 'jsdom',
     alias: [{ find: /^vue$/, replacement: 'vue/dist/vue.runtime.common.js' }],
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './app/packs'),
+      '@': path.resolve(__dirname, './app/frontend'),
       '~': path.resolve(__dirname, '.'),
     },
   },
