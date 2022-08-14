@@ -113,10 +113,10 @@ export default class Models extends Vue {
 
   @Getter('perPage', { namespace: 'models' }) perPage
 
-  @Action('toggleDetails', { namespace: 'models' }) toggleDetails: function
+  @Action('toggleDetails', { namespace: 'models' }) toggleDetails
 
   @Action('toggleFleetchart', { namespace: 'models' })
-  toggleFleetchart: function
+  toggleFleetchart
 
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {

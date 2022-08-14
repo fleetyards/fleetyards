@@ -320,14 +320,14 @@ export default class Hangar extends Vue {
 
   @Getter('fleetchartVisible', { namespace: 'hangar' }) fleetchartVisible
 
-  @Action('toggleDetails', { namespace: 'hangar' }) toggleDetails: function
+  @Action('toggleDetails', { namespace: 'hangar' }) toggleDetails
 
-  @Action('toggleMoney', { namespace: 'hangar' }) toggleMoney: function
+  @Action('toggleMoney', { namespace: 'hangar' }) toggleMoney
 
-  @Action('toggleGridView', { namespace: 'hangar' }) toggleGridView: function
+  @Action('toggleGridView', { namespace: 'hangar' }) toggleGridView
 
   @Action('toggleFleetchart', { namespace: 'hangar' })
-  toggleFleetchart: function
+  toggleFleetchart
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
