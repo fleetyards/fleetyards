@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker
-      .register('/service-worker.js', {
+      .register('/sw.js', {
         scope: '/',
       })
       .then(
