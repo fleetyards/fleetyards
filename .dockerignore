@@ -9,7 +9,7 @@ blocklist.json
 # app files
 public/uploads
 public/compare
-public/packs-test
+public/vite
 
 # yarn files
 yarn-error.log
