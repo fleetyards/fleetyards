@@ -239,7 +239,6 @@ jobs:
       DATABASE_USER: root
       TEST_SEEDS: 1
       RAILS_ENV: ci
-      VITE_RUBY_MODE: production
       ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
@@ -310,7 +309,6 @@ jobs:
           parallel: true
         env:
           PORT: 8270
-          VITE_RUBY_MODE: production
           CYPRESS_BASE_URL: http://localhost:8270
 
 
