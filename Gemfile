@@ -49,7 +49,7 @@ gem 'postmark-rails'
 gem 'cancancan'
 
 gem 'devise'
-gem 'devise-two-factor', github: 'tinfoil/devise-two-factor'
+gem 'devise-two-factor', '~> 4.0'
 gem 'rqrcode'
 
 gem 'useragent'

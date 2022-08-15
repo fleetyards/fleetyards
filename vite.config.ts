@@ -1,12 +1,12 @@
 import { defineConfig } from 'vite'
 import RubyPlugin from 'vite-plugin-ruby'
-import { createVuePlugin } from 'vite-plugin-vue2'
+import { createVuePlugin as Vue2Plugin } from 'vite-plugin-vue2'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   plugins: [
-    createVuePlugin(),
     RubyPlugin(),
+    Vue2Plugin(),
     VitePWA({
       registerType: 'autoUpdate',
       filename: 'sw.js',
