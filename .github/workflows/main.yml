@@ -239,6 +239,7 @@ jobs:
       DATABASE_USER: root
       TEST_SEEDS: 1
       RAILS_ENV: ci
+      VITE_RUBY_MODE: production
       ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
@@ -295,7 +296,7 @@ jobs:
       - name: Create ES Index
         run: bundle exec thor search:index
       - name: Assets Compile
-        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+        run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
       - name: Cypress run
@@ -309,7 +310,7 @@ jobs:
           parallel: true
         env:
           PORT: 8270
-          RACK_ENV: production
+          VITE_RUBY_MODE: production
           CYPRESS_BASE_URL: http://localhost:8270
 
 
