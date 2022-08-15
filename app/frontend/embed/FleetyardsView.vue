@@ -211,6 +211,10 @@ export default {
     },
 
     async fetchFleetVehicles() {
+      if (!this.fleetId) {
+        return
+      }
+
       this.loading = true
 
       const response = await this.$api.get(`fleets/${this.fleetId}/embed`)

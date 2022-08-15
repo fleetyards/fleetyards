@@ -309,6 +309,7 @@ jobs:
           parallel: true
         env:
           PORT: 8270
+          RACK_ENV: production
           CYPRESS_BASE_URL: http://localhost:8270
 
 

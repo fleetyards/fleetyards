@@ -26,6 +26,7 @@ Rails.application.config.content_security_policy do |policy|
 
   connect_src.concat ['ws://localhost:3035', 'http://localhost:3035', "ws://#{ViteRuby.config.host_with_port}"] if Rails.env.development?
   connect_src.concat ['ws://fleetyards.test:3035', 'http://fleetyards.test:3035', 'ws://fleetyards.test:3036'] if Rails.env.development?
+  connect_src.concat ['ws://admin.fleetyards.test:3035', 'http://admin.fleetyards.test:3035', 'ws://admin.fleetyards.test:3036'] if Rails.env.development?
 
   script_src = [
     :self, :unsafe_inline, :unsafe_eval, :blob, 'https://www.youtube.com/iframe_api', 'https://s.ytimg.com',
