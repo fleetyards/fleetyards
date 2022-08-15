@@ -12,7 +12,6 @@ import Meta from 'vue-meta'
 import Ahoy from '@/frontend/plugins/Ahoy'
 import Validations from '@/frontend/plugins/Validations'
 import VTooltip from 'v-tooltip'
-import PortalVue from 'portal-vue'
 
 Vue.use(Subscriptions)
 Vue.use(ApiClient)
@@ -20,7 +19,6 @@ Vue.use(Comlink)
 Vue.use(I18nPlugin)
 Vue.use(Ahoy)
 Vue.use(Validations)
-Vue.use(PortalVue)
 
 Vue.use(Meta, {
   keyName: 'head',
