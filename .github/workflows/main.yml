@@ -239,6 +239,7 @@ jobs:
       DATABASE_USER: root
       TEST_SEEDS: 1
       RAILS_ENV: ci
+      VITE_RUBY_MODE: production
       ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
