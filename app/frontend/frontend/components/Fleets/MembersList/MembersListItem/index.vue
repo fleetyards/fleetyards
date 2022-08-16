@@ -69,7 +69,7 @@
         <a
           v-if="member.homepage"
           v-tooltip="$t('labels.homepage')"
-          :href="member.homepage"
+          :href="`//${member.homepage}`"
           target="_blank"
           rel="noopener"
         >
@@ -87,7 +87,7 @@
         <a
           v-if="member.youtube"
           v-tooltip="$t('labels.youtube')"
-          :href="member.youtube"
+          :href="`//${member.youtube}`"
           target="_blank"
           rel="noopener"
         >
@@ -96,7 +96,7 @@
         <a
           v-if="member.twitch"
           v-tooltip="$t('labels.twitch')"
-          :href="member.twitch"
+          :href="`//${member.twitch}`"
           target="_blank"
           rel="noopener"
         >
@@ -105,7 +105,7 @@
         <a
           v-if="member.guilded"
           v-tooltip="$t('labels.guilded')"
-          :href="member.guilded"
+          :href="`//${member.guilded}`"
           target="_blank"
           rel="noopener"
         >
@@ -114,7 +114,7 @@
         <a
           v-if="member.discord"
           v-tooltip="$t('labels.discord')"
-          :href="member.discord"
+          :href="`//${member.discord}`"
           target="_blank"
           rel="noopener"
         >
