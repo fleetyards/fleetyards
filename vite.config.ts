@@ -18,6 +18,11 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    commonjsOptions: {
+      requireReturnsDefault: true,
+    },
+  },
   define: {
     'process.env': {},
   },
