@@ -6,6 +6,8 @@ set :application, 'fleetyards'
 set :deploy_to, '/home/fleetyards'
 set :repo_url, 'https://github.com/fleetyards/fleetyards.git'
 
+set :assets_prefix, 'vite'
+
 set :keep_releases, 5
 set :keep_assets, 5
 
