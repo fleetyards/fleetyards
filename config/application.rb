@@ -58,7 +58,7 @@ module Fleetyards
     config.autoload_paths << Rails.root.join('config/routes')
 
     # Hack to fix Zeitwerk issue
-    Rails.autoloaders.main.ignore(Rails.root.join('app/packs/images'))
+    Rails.autoloaders.main.ignore(Rails.root.join('app/frontend/images'))
 
     config.exceptions_app = routes
 

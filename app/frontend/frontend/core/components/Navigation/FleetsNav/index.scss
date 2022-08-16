@@ -1,0 +1,27 @@
+@import '@/stylesheets/variables';
+
+.fleets-nav-item-icon {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 24px;
+  margin-right: 10px;
+
+  :first-child,
+  :last-child {
+    position: absolute;
+    width: 14px;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  :first-child {
+    top: 0;
+    left: 0;
+  }
+
+  :last-child {
+    right: 4px;
+    bottom: -6px;
+  }
+}
