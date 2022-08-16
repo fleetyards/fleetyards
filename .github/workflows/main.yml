@@ -62,7 +62,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
       - name: Run Javascript Tests
-        run: yarn test:ci
+        run: yarn test
 
   ruby-setup:
     runs-on: ubuntu-latest
@@ -199,7 +199,7 @@ jobs:
   #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
   #     - run: yarn install
   #     - run: mkdir -p log
-  #     - name: Webpacker & Assets Compile
+  #     - name: Assets Compile
   #       run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
   #     - name: Set up QEMU
   #       uses: docker/setup-qemu-action@v1
@@ -239,11 +239,11 @@ jobs:
       DATABASE_USER: root
       TEST_SEEDS: 1
       RAILS_ENV: ci
+      VITE_RUBY_MODE: production
       ON_SUBDOMAIN: false
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       JOBS: 1
-      CYPRESS_BASE_URL: http://localhost:8270
 
     services:
       postgres:
@@ -295,21 +295,23 @@ jobs:
         run: bundle exec rails db:create db:schema:load
       - name: Create ES Index
         run: bundle exec thor search:index
-      - name: Webpacker & Assets Compile
-        run: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+      - name: Assets Compile
+        run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
-      - name: Run Server
-        run: PORT=8270 bundle exec puma -C config/puma.rb &
-      - name: Wait for Server
-        run: |
-          until $(curl --output /dev/null --silent --head --fail $CYPRESS_BASE_URL); do
-              printf '.'
-              sleep 5
-          done
-      - run: yarn install
-      - name: Run E2E Tests
-        run: yarn run test:e2e --record --parallel
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: bundle exec puma -C config/puma.rb
+          wait-on: 'http://localhost:8270'
+          wait-on-timeout: 120
+          browser: chrome
+          record: true
+          parallel: true
+        env:
+          PORT: 8270
+          CYPRESS_BASE_URL: http://localhost:8270
+
 
   deploy-to-stage:
     if: github.ref == 'refs/heads/main'

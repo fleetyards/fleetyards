@@ -45,8 +45,31 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
     <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900|Major+Mono+Display&display=swap" crossorigin>
 
-    <%= stylesheet_pack_tag 'frontend.css', rel: 'preload', as: 'style' %>
-    <%= stylesheet_pack_tag 'frontend.css' %>
+    <%= vite_stylesheet_tag 'frontend.scss' %>
+    <script>
+      window.APP_VERSION = '<%= Fleetyards::VERSION %>'
+      window.APP_CODENAME = '<%= Fleetyards::CODENAME %>'
+      window.NODE_ENV = '<%= Rails.env %>'
+      window.GIT_REVISION = '<%= Git.revision_short %>'
+      window.SC_DATA_VERSION = '<%= ScData.current_version %>'
+      window.APP_NAME = '<%= Rails.configuration.app.name %>'
+      window.STORE_VERSION = '<%= Rails.configuration.app.store_version %>'
+      window.API_ENDPOINT = '<%= API_ENDPOINT %>'
+      window.CABLE_ENDPOINT = '<%= CABLE_ENDPOINT %>'
+      window.FRONTEND_ENDPOINT = '<%= FRONTEND_ENDPOINT %>'
+      window.RSI_ENDPOINT = '<%= Rails.configuration.rsi.endpoint %>'
+      window.SENTRY_DSN = '<%= Rails.application.credentials.sentry_frontend_dsn %>'
+      window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>
+      window.MAINTAINER_NAME = '<%= Rails.configuration.maintainer.name %>'
+      window.MAINTAINER_MAIL = '<%= Rails.configuration.maintainer.mail %>'
+      window.MAINTAINER_ADDRESS_STREET = '<%= Rails.configuration.maintainer.address[:street] %>'
+      window.MAINTAINER_ADDRESS_POSTALCODE = '<%= Rails.configuration.maintainer.address[:postalcode] %>'
+      window.MAINTAINER_ADDRESS_CITY = '<%= Rails.configuration.maintainer.address[:city] %>'
+      window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.configuration.maintainer.address[:country] %>'
+      window.COPYRIGHT_OWNER = '<%= Rails.configuration.app.copyright_owner %>'
+    </script>
+    <%= vite_client_tag %>
+    <%= vite_typescript_tag 'frontend' %>
   </head>
   <body>
     <div id="app">

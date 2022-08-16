@@ -18,23 +18,30 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "app/packs/*"]
+      "@/*": ["app/frontend/*"],
+      "~/*": ["*"]
     },
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": [
+      "cypress",
+      "node",
+      "vitest/globals"
+    ]
   },
   "include": [
     "@types/*",
-    "app/packs/**/*.ts",
-    "app/packs/**/*.tsx",
-    "app/packs/**/*.vue"
+    "app/frontend/**/*.ts",
+    "app/frontend/**/*.tsx",
+    "app/frontend/**/*.vue",
+    "test/javascript/**/*.ts",
+    "cypress/**/*.ts",
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts",
     "vendor",
     "public"
   ],

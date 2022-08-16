@@ -12,7 +12,6 @@ pids/*
 config/credentials/*.key
 config/*.key
 .env
-.wti
 
 # test files
 coverage/*
@@ -25,8 +24,7 @@ test/javascript/unit/coverage/*
 public/uploads/*
 public/assets
 public/compare/*
-public/packs
-public/packs-test
+public/vite*
 
 # js dependencies
 vendor/assets/.bowerrc
@@ -37,7 +35,7 @@ vendor/assets/bower_components/sweetalert
 
 .byebug_history
 
-/node_modules
+node_modules
 yarn-error.log
 yarn-debug.log*
 .yarn-integrity
@@ -49,11 +47,3 @@ blocklist.json
 reserved_usernames.json
 
 REVISION
-
-.idea
-
-cypress/*
-
-.sc_data_version
-
-/config/credentials/review.key

@@ -5,7 +5,7 @@ window.STORE_VERSION = '<%= Rails.configuration.app.embed_store_version %>'
 const d = document
 const styles = d.createElement('link')
 
-styles.href = '<%= FRONTEND_ENDPOINT %><%= ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed_v2.css')) %>'
+styles.href = '<%= vite_asset_url('embed-v2.scss', type: :stylesheet) %>'
 styles.rel = 'stylesheet'
 styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
@@ -16,12 +16,12 @@ fonts.rel = 'stylesheet'
 fonts.media = 'all';
 (d.head || d.body).appendChild(fonts)
 
-const chunks = <%= Webpacker.manifest.lookup_pack_with_chunks!('embed_v2', type: :javascript).flatten.uniq.to_json.html_safe %>
+const chunks = <%= ViteRuby.instance.manifest.resolve_entries('embed_v2.js').fetch(:scripts, []).to_json.html_safe %>
 
 chunks.forEach((chunkUrl) => {
   const chunk = d.createElement('script')
   chunk.src = '<%= FRONTEND_ENDPOINT %>' + chunkUrl
-  chunk.type = 'application/javascript'
+  chunk.type = 'module'
   const parent = d.head || d.body
   parent.appendChild(chunk)
 })

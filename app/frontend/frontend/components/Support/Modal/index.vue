@@ -1,0 +1,58 @@
+<template>
+  <Modal :title="$t('headlines.support')">
+    <div class="support-body">
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <p v-html="$t('texts.support.info')" />
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <p v-html="$t('texts.support.code', { code: 'STAR-5F32-SJZ4' })" />
+        </div>
+      </div>
+      <br />
+      <p>
+        {{ $t('labels.supportUs') }}
+      </p>
+      <div class="page-actions page-actions-center">
+        <Btn
+          href="https://www.buymeacoffee.com/mortik"
+          variant="link"
+          class="support-buymeacoffee"
+        >
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
+          />
+        </Btn>
+        &nbsp; &nbsp;
+        <Btn href="https://paypal.me/mortik" size="large">
+          <i class="fab fa-paypal" />
+          PayPal
+        </Btn>
+        &nbsp; &nbsp;
+        <Btn href="https://www.patreon.com/fleetyards" size="large">
+          <i class="fab fa-patreon" />
+          Patreon
+        </Btn>
+      </div>
+    </div>
+  </Modal>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
+import Btn from '@/frontend/core/components/Btn/index.vue'
+
+@Component<SupportModal>({
+  components: {
+    Modal,
+    Btn,
+  },
+})
+export default class SupportModal extends Vue {}
+</script>
