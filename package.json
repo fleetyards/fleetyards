@@ -82,7 +82,6 @@
     "eslint-plugin-compat": "4.0.2",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "26.5.3",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-sort-class-members": "^1.14.1",
     "eslint-plugin-vue": "8.4.1",
