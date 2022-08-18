@@ -85,7 +85,6 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-sort-class-members": "^1.14.1",
     "eslint-plugin-vue": "8.4.1",
-    "husky": "^7.0.4",
     "jsdom": "^20.0.0",
     "mocha": "^10.0.0",
     "postcss": "^8.4.16",
