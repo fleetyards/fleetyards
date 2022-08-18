@@ -733,6 +733,7 @@ DEPENDENCIES
   rdoc
   redcarpet
   redis-actionpack
+  responders
   rollups
   rqrcode
   rubocop

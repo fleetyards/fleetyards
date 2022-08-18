@@ -13,7 +13,8 @@ set :conditionally_migrate, true
 
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
-set :bundler_version, '2.2.23'
+set :bundler_version, '2.3.15'
+set :gem_version, '3.3.4'
 set :bundle_check_before_install, false # FIX: created failed deploys because dependencies where missing.
 
 set :initial_deploy, false
@@ -69,7 +70,7 @@ namespace :ruby do
       execute("#{rbenv_path}/bin/rbenv install #{fetch(:rbenv_ruby)} -s")
       execute("#{rbenv_path}/bin/rbenv global #{fetch(:rbenv_ruby)}")
       info 'Update Rubygems'
-      execute("#{rbenv_path}/shims/gem update --system")
+      execute("#{rbenv_path}/shims/gem update --system #{fetch(:gem_version)} --no-document")
       info 'Update/Install Bundler'
       execute("#{rbenv_path}/shims/gem install bundler -v #{fetch(:bundler_version)} --conservative --silent --force")
     end
