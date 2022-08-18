@@ -25,12 +25,14 @@ gem 'discordrb-webhooks'
 
 gem 'selectize-rails'
 
+gem 'vite_rails'
+
 gem 'ahoy_matey'
 gem 'groupdate'
 gem 'rollups'
 
-gem 'i18n', '1.10.0'
-gem 'i18n-js'
+gem 'i18n', '1.11.0'
+gem 'i18n-js', '< 4.0'
 gem 'rails-i18n', '~> 7.0'
 
 gem 'js_cookie_rails'
@@ -47,7 +49,7 @@ gem 'postmark-rails'
 gem 'cancancan'
 
 gem 'devise'
-gem 'devise-two-factor', github: 'tinfoil/devise-two-factor'
+gem 'devise-two-factor', '~> 4.0'
 gem 'rqrcode'
 
 gem 'useragent'
@@ -72,7 +74,6 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
-gem 'webpacker', '~> 5.x'
 
 gem 'jquery-rails'
 gem 'js-routes'

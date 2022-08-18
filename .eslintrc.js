@@ -3,19 +3,19 @@ module.exports = {
 
   env: {
     'node': true,
-    'jest': true,
     'cypress/globals': true,
   },
 
   extends: [
     'airbnb-base',
     'plugin:compat/recommended',
-    'plugin:jest/recommended',
     'plugin:vue/recommended',
-    'plugin:vue-types/strongly-recommended',
+    'plugin:@typescript-eslint/recommended',
     'prettier',
     '@vue/typescript',
   ],
+
+  parser: 'vue-eslint-parser',
 
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -39,11 +39,14 @@ module.exports = {
       'Array.iterator',
     ],
     'import/resolver': {
-      webpack: {
-        config: 'config/webpack/development.js',
-      },
+      typescript: {},
       alias: {
-        map: [['helpers', './test/javascript/unit/helpers']],
+        map: [
+          ['@', './app/frontend'],
+          ['~', '.'],
+          ['admin-app', './app/javascript/admin-app'],
+          ['frontend-app', './app/javascript/frontend-app'],
+        ],
       },
     },
   },
@@ -60,8 +63,6 @@ module.exports = {
     'class-methods-use-this': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/extensions': 'off',
-    'jest/expect-expect': 'off',
-    'jest/no-mocks-import': 'off',
     'no-bitwise': 'off',
     'no-console': [
       'error',
@@ -108,15 +109,4 @@ module.exports = {
     'vue/component-name-in-template-casing': 'error',
     'vue/no-v-html': 'off',
   },
-
-  overrides: [
-    {
-      files: ['**/e2e/**/*.js'],
-      rules: {
-        'jest/valid-expect': 'off',
-        'jest/no-standalone-expect': 'off',
-        'jest/expect-expect': 'off',
-      },
-    },
-  ],
 }

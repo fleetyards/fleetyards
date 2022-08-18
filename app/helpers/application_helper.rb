@@ -59,7 +59,7 @@ module ApplicationHelper
   end
 
   def api_url(path)
-    "#{API_ENDPOINT}#{path}"
+    "#{API_ENDPOINT}#{path.gsub(%r{v\d{1}/}, '')}"
   end
 
   def app_enabled?
