@@ -33,7 +33,7 @@
     "handlebars": ">=4.7.7",
     "highcharts": "^9.3.3",
     "html2canvas": "1.4.1",
-    "i18n-js": "3.9.2",
+    "i18n-js": "4.0.2",
     "jquery": "^3.6.0",
     "js-cookie": "^3.0.1",
     "lodash.debounce": "4.0.8",
