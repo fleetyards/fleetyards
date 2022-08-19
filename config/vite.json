@@ -1,6 +1,11 @@
 {
   "all": {
+    "publicOutputDir": "vite",
+    "sourceCodeDir": "app/frontend",
     "watchAdditionalPaths": []
+  },
+  "production": {
+    "base": "vite"
   },
   "development": {
     "autoBuild": true,
