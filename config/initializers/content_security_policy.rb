@@ -80,7 +80,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.object_src :self
   policy.frame_ancestors :none
 
-  policy.upgrade_insecure_requests true
+  policy.upgrade_insecure_requests true unless Rails.env.development? || Rails.env.test?
 
   # policy.report_uri Rails.application.credentials.sentry_csp_uri if Rails.application.credentials.sentry_csp_uri.present?
 end

@@ -12,6 +12,7 @@ export default defineConfig({
       filename: 'sw.js',
       useCredentials: true,
       workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         clientsClaim: true,
         skipWaiting: true,
         navigateFallback: null,
