@@ -11,7 +11,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       filename: 'sw.js',
       useCredentials: true,
+      scope: '/',
       workbox: {
+        modifyURLPrefix: {
+          '': '/vite/',
+        },
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         clientsClaim: true,
         skipWaiting: true,
