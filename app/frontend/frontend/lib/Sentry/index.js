@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import * as Sentry from '@sentry/vue'
 import { BrowserTracing } from '@sentry/tracing'
+import router from '@/frontend/lib/Router'
 
 if (window.SENTRY_DSN) {
   Sentry.init({
