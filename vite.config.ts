@@ -4,7 +4,6 @@ import { createVuePlugin as Vue2Plugin } from 'vite-plugin-vue2'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: 'vite',
   plugins: [
     RubyPlugin(),
     Vue2Plugin(),
@@ -12,7 +11,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       filename: 'sw.js',
       useCredentials: true,
+      scope: '/',
       workbox: {
+        modifyURLPrefix: {
+          '': '/vite/',
+        },
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         clientsClaim: true,
         skipWaiting: true,
