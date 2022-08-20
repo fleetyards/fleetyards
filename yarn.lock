@@ -1333,6 +1333,16 @@
     localforage "^1.8.1"
     tslib "^1.9.3"
 
+"@sentry/tracing@^7.11.1":
+  version "7.11.1"
+  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.11.1.tgz#50cbe82dd5b9a1307b31761cdd4b0d71132cf5c7"
+  integrity sha512-ilgnHfpdYUWKG/5yAXIfIbPVsCfrC4ONFBR/wN25/hdAyVfXMa3AJx7NCCXxZBOPDWH3hMW8rl4La5yuDbXofg==
+  dependencies:
+    "@sentry/hub" "7.11.1"
+    "@sentry/types" "7.11.1"
+    "@sentry/utils" "7.11.1"
+    tslib "^1.9.3"
+
 "@sentry/types@7.11.1":
   version "7.11.1"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.11.1.tgz#06e2827f6ba37159c33644208a0453b86d25e232"
@@ -1344,6 +1354,17 @@
   integrity sha512-tRVXNT5O9ilkV31pyHeTqA1PcPQfMV/2OR6yUYM4ah+QVISovC0f0ybhByuH5nYg6x/Gsnx1o7pc8L1GE3+O7A==
   dependencies:
     "@sentry/types" "7.11.1"
+    tslib "^1.9.3"
+
+"@sentry/vue@^7.11.1":
+  version "7.11.1"
+  resolved "https://registry.yarnpkg.com/@sentry/vue/-/vue-7.11.1.tgz#dc3a1d4868a3400222053465dac154a9e30aedce"
+  integrity sha512-4RiaMbvGITpKpnzJBixCR874HjYCmK11yt9YRt/rwXE185TKCVyq54h+57l3680WgNz4MU9oI+PF6C/1E/LfXg==
+  dependencies:
+    "@sentry/browser" "7.11.1"
+    "@sentry/core" "7.11.1"
+    "@sentry/types" "7.11.1"
+    "@sentry/utils" "7.11.1"
     tslib "^1.9.3"
 
 "@surma/rollup-plugin-off-main-thread@^2.2.3":

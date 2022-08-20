@@ -1,16 +1,23 @@
 import Vue from 'vue'
-import * as Sentry from '@sentry/browser'
-import * as Integrations from '@sentry/integrations'
+import * as Sentry from '@sentry/vue'
+import { BrowserTracing } from '@sentry/tracing'
 
 if (window.SENTRY_DSN) {
   Sentry.init({
+    Vue,
     environment: window.NODE_ENV,
     release: window.GIT_REVISION,
     dsn: window.SENTRY_DSN,
     integrations: [
-      new Integrations.Vue({
-        Vue,
-        attachProps: true,
+      new BrowserTracing({
+        routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+        tracingOrigins: [
+          'localhost',
+          'fleetyards.test',
+          'stage.fleetyards.net',
+          'fleetyards.net',
+          /^\//,
+        ],
       }),
     ],
   })

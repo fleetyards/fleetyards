@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@rails/actioncable": "^7.0.3",
-    "@sentry/browser": "7.11.1",
-    "@sentry/integrations": "7.11.1",
+    "@sentry/tracing": "^7.11.1",
+    "@sentry/vue": "^7.11.1",
     "ahoy.js": "0.4.0",
     "axios": "0.26.1",
     "bootstrap": "4.6.0",
