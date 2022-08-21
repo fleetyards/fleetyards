@@ -2,7 +2,7 @@
 
 production: &production
   loaders_youtube_job:
-    cron: '*/10 * * * *' # Every 5 Minutes
+    cron: '*/10 * * * *' # Every 10 Minutes
     class: 'Loaders::YoutubeJob'
     queue: 'loaders'
   loaders_rsi_news_job:
