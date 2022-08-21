@@ -26,7 +26,7 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      maxParallelFileReads: 4,
+      maxParallelFileReads: 5,
     },
     commonjsOptions: {
       requireReturnsDefault: true,
