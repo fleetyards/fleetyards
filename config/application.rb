@@ -24,9 +24,6 @@ Bundler.require(*Rails.groups)
 
 module Fleetyards
   class Application < Rails::Application
-    config.lograge.enabled = true
-    config.lograge.ignore_actions = ['Api::BaseController#version']
-
     config.load_defaults 6.1
 
     # Settings in config/environments/* take precedence over those specified here.
@@ -43,9 +40,13 @@ module Fleetyards
     config.i18n.available_locales = [:en]
     config.i18n.fallbacks = [:en]
 
+    # Use a real queuing backend for Active Job (and separate queues per environment).
     config.active_job.queue_adapter = :sidekiq
     config.active_job.queue_name_prefix = 'fleetyards'
     config.active_job.queue_name_delimiter = '_'
+
+    config.lograge.enabled = true
+    config.lograge.ignore_actions = ['Api::BaseController#version']
 
     config.action_view.field_error_proc = proc { |html_tag, _instance|
       # rubocop:disable Rails/OutputSafety
@@ -54,8 +55,6 @@ module Fleetyards
     }
 
     config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time]
-
-    config.autoload_paths << Rails.root.join('config/routes')
 
     # Hack to fix Zeitwerk issue
     Rails.autoloaders.main.ignore(Rails.root.join('app/frontend/images'))
