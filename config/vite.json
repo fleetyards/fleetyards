@@ -1,5 +1,7 @@
 {
   "all": {
+    "publicOutputDir": "vite",
+    "sourceCodeDir": "app/frontend",
     "watchAdditionalPaths": []
   },
   "development": {

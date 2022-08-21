@@ -11,7 +11,12 @@ export default defineConfig({
       registerType: 'autoUpdate',
       filename: 'sw.js',
       useCredentials: true,
+      scope: '/',
       workbox: {
+        modifyURLPrefix: {
+          '': '/vite/',
+        },
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         clientsClaim: true,
         skipWaiting: true,
         navigateFallback: null,
@@ -21,7 +26,7 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      maxParallelFileReads: 4,
+      maxParallelFileReads: 5,
     },
     commonjsOptions: {
       requireReturnsDefault: true,

@@ -29,8 +29,8 @@ Rails.application.config.content_security_policy do |policy|
   connect_src.concat ['ws://admin.fleetyards.test:3035', 'http://admin.fleetyards.test:3035', 'ws://admin.fleetyards.test:3036'] if Rails.env.development?
 
   script_src = [
-    :self, :unsafe_inline, :unsafe_eval, :blob, 'https://www.youtube.com/iframe_api', 'https://s.ytimg.com',
-    'https://kit.fontawesome.com', 'https://kit-pro.fontawesome.com',
+    :self, :unsafe_inline, :unsafe_eval, :blob, 'https://www.youtube.com/iframe_api',
+    'https://s.ytimg.com', 'https://kit.fontawesome.com', 'https://kit-pro.fontawesome.com',
     'https://kit-free.fontawesome.com', 'https://code.jquery.com', 'https://cdn.jsdelivr.net',
     'https://stackpath.bootstrapcdn.com', 'https://starship42.com', 'https://www.gstatic.com'
   ]
@@ -80,7 +80,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.object_src :self
   policy.frame_ancestors :none
 
-  policy.upgrade_insecure_requests true
+  policy.upgrade_insecure_requests true unless Rails.env.development? || Rails.env.test?
 
   # policy.report_uri Rails.application.credentials.sentry_csp_uri if Rails.application.credentials.sentry_csp_uri.present?
 end

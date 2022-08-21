@@ -81,10 +81,6 @@ Rails.application.configure do
   config.assets.precompile += %w[error.css]
   config.assets.precompile += Dir[Rails.root.join('vendor/assets/bower_components/**/img/*')]
 
-  # Use a real queuing backend for Active Job (and separate queues per environment).
-  config.active_job.queue_adapter = :sidekiq
-  config.active_job.queue_name_prefix = 'fleetyards'
-
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -111,17 +107,6 @@ Rails.application.configure do
   config.action_mailer.postmark_settings = {
     api_token: Rails.application.credentials.postmark_api_token
   }
-
-  # TODO: remove later
-  # config.action_mailer.smtp_settings = {
-  #   address: Rails.application.credentials.mailer_host,
-  #   port: Rails.application.credentials.mailer_port,
-  #   enable_starttls_auto: true,
-  #   user_name: Rails.application.credentials.mailer_user,
-  #   password: Rails.application.credentials.mailer_password,
-  #   authentication: 'login',
-  #   domain: Rails.configuration.app.domain
-  # }
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
