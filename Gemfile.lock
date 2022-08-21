@@ -78,8 +78,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.0)
-      public_suffix (>= 2.0.2, < 5.0)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     after_commit_everywhere (1.2.2)
       activerecord (>= 4.2)
       activesupport
@@ -380,7 +380,7 @@ GEM
     nokogiri (1.13.7)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    oj (3.13.20)
+    oj (3.13.21)
     orm_adapter (0.5.0)
     paper_trail (13.0.0)
       activerecord (>= 5.2)
@@ -415,7 +415,7 @@ GEM
       pry (>= 0.10.4)
     psych (4.0.4)
       stringio
-    public_suffix (4.0.7)
+    public_suffix (5.0.0)
     puma (5.6.4)
       nio4r (~> 2.0)
     raabro (1.4.0)
