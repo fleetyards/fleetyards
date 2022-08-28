@@ -20,11 +20,11 @@
     <meta name="color-scheme" content="light dark">
 
     <meta name="theme-color" content="#333333"/>
-    <meta name="application-name" content="FleetYards.net">
+    <meta name="application-name" content="<%= I18n.t("title.default") %>">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-title" content="FleetYards.net">
+    <meta name="mobile-web-app-title" content="<%= I18n.t("title.default") %>">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="FleetYards.net">
+    <meta name="apple-mobile-web-app-title" content="<%= I18n.t("title.default") %>">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link rel="manifest" href="<%= asset_path('manifest.json') %>" />
@@ -76,7 +76,7 @@
       <div class="app-intro">
         <h1>
           <%= image_tag 'logo.png', class: 'logo' %>
-          <%= I18n.t('app') %>
+          <%= I18n.t("title.default") %>
         </h1>
         <div>
           <div class="loader">
