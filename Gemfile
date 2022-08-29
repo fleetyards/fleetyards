@@ -98,6 +98,7 @@ gem 'carrierwave'
 gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
+gem 'ssrf_filter', '~> 1.0.8'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
