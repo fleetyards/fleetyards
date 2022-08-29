@@ -173,7 +173,7 @@ export const routes = [
   {
     path: '/tools/',
     name: 'tools',
-    component: () => import('@/frontend/pages/Tools/index.vue'),
+    component: () => import('@/frontend/pages/ToolsPage.vue'),
     children: ToolsRoutes,
     redirect: { name: ToolsRoutes[0].name },
     meta: {
