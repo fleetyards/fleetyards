@@ -24,7 +24,9 @@ Rails.application.config.content_security_policy do |policy|
     'https://ka-p.fontawesome.com', 'https://starship42.com', 'https://www.gstatic.com'
   ]
 
-  connect_src.concat ['ws://localhost:3035', 'http://localhost:3035', "ws://#{ViteRuby.config.host_with_port}"] if Rails.env.development?
+  connect_src.concat ["ws://#{ViteRuby.config.host_with_port}"] if Rails.env.development?
+  connect_src.concat ['ws://127.0.0.1:3035', 'http://127.0.0.1:3035', 'ws://127.0.0.1:3036'] if Rails.env.development?
+  connect_src.concat ['ws://localhost:3035', 'http://localhost:3035', 'ws://localhost:3036'] if Rails.env.development?
   connect_src.concat ['ws://fleetyards.test:3035', 'http://fleetyards.test:3035', 'ws://fleetyards.test:3036'] if Rails.env.development?
   connect_src.concat ['ws://admin.fleetyards.test:3035', 'http://admin.fleetyards.test:3035', 'ws://admin.fleetyards.test:3036'] if Rails.env.development?
 

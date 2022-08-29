@@ -1,6 +1,6 @@
 import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import RubyPlugin from 'vite-plugin-ruby'
-import { createVuePlugin as Vue2Plugin } from 'vite-plugin-vue2'
+import Vue2Plugin from '@vitejs/plugin-vue2'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
