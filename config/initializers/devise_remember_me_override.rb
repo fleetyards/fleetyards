@@ -8,11 +8,7 @@ Devise::Controllers::Rememberable.class_eval do
   protected
 
   def remember_key(resource, scope)
-    fallback_key = if Rails.env.production?
-                     "#{Rails.configuration.cookie_prefix}_#{scope.upcase}_STORED"
-                   else
-                     "#{Rails.configuration.cookie_prefix}_#{scope.upcase}_STORED_#{Rails.env.upcase}"
-                   end
+    fallback_key = "#{Rails.configuration.cookie_prefix}_#{scope.upcase}_STORED"
 
     resource.rememberable_options.fetch(:key, fallback_key)
   end
@@ -25,11 +21,7 @@ Devise::Strategies::Rememberable.class_eval do
   private
 
   def remember_key
-    fallback_key = if Rails.env.production?
-                     "#{Rails.configuration.cookie_prefix}_#{scope.upcase}_STORED"
-                   else
-                     "#{Rails.configuration.cookie_prefix}_#{scope.upcase}_STORED_#{Rails.env.upcase}"
-                   end
+    fallback_key = "#{Rails.configuration.cookie_prefix}_#{scope.upcase}_STORED"
 
     mapping.to.rememberable_options.fetch(:key, fallback_key)
   end
