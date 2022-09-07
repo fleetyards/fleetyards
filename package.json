@@ -67,8 +67,8 @@
   },
   "devDependencies": {
     "@types/i18n-js": "3.8.2",
-    "@typescript-eslint/eslint-plugin": "5.34.0",
-    "@typescript-eslint/parser": "5.34.0",
+    "@typescript-eslint/eslint-plugin": "5.36.2",
+    "@typescript-eslint/parser": "5.36.2",
     "@vitejs/plugin-vue2": "1.1.2",
     "@vue/eslint-config-typescript": "10.0.0",
     "@vue/test-utils": "1.3.0",
