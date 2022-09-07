@@ -98,7 +98,7 @@
     "vite": "3.1.0",
     "vite-plugin-pwa": "0.12.7",
     "vite-plugin-ruby": "3.1.0",
-    "vitest": "0.22.1",
+    "vitest": "0.23.1",
     "vue-eslint-parser": "8.3.0",
     "vue-template-compiler": "2.7.10",
     "workbox-build": "6.5.4",
