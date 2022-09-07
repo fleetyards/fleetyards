@@ -10,7 +10,7 @@ module ScData
       begin
         JSON.parse(response.body)
       rescue JSON::ParserError => e
-        Raven.capture_exception(e)
+        Sentry.capture_exception(e)
         Rails.logger.error "SC Data could not be parsed: #{response.body}"
         nil
       end

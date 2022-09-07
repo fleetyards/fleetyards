@@ -45,7 +45,7 @@ module TradingData
 
       JSON.parse(file)
     rescue JSON::ParserError => e
-      Raven.capture_exception(e)
+      Sentry.capture_exception(e)
       Rails.logger.error 'Trading Data could not be parsed!'
       []
     end
