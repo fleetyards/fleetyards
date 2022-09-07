@@ -32,7 +32,7 @@ module Rsi
         File.write(json_file_path, roadmap_data.to_json)
         roadmap_data['data']['releases']
       rescue JSON::ParserError => e
-        Raven.capture_exception(e)
+        Sentry.capture_exception(e)
         Rails.logger.error "Roadmap Data could not be parsed: #{response.body}"
         []
       end

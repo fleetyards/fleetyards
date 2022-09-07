@@ -51,7 +51,7 @@ module Rsi
         File.write(json_file_path, model_data.to_json)
         model_data['data']
       rescue JSON::ParserError => e
-        Raven.capture_exception(e)
+        Sentry.capture_exception(e)
         Rails.logger.error "Model Data could not be parsed: #{response.body}"
         []
       end

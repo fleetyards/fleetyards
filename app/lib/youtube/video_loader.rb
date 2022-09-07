@@ -32,7 +32,7 @@ module Youtube
       begin
         JSON.parse(response.body)
       rescue JSON::ParserError => e
-        Raven.capture_exception(e)
+        Sentry.capture_exception(e)
         Rails.logger.error "Spreadsheet Data could not be parsed: #{response.body}"
         {}
       end

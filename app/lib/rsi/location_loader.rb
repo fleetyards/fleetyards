@@ -53,7 +53,7 @@ module Rsi
         File.write(json_file_path, starsystems_data.to_json)
         starsystems_data['data']['resultset']
       rescue JSON::ParserError => e
-        Raven.capture_exception(e)
+        Sentry.capture_exception(e)
         Rails.logger.error "Starsysyems Data could not be parsed: #{response.body}"
         []
       end
@@ -94,7 +94,7 @@ module Rsi
           []
         end
       rescue JSON::ParserError => e
-        Raven.capture_exception(e)
+        Sentry.capture_exception(e)
         Rails.logger.error "Starsysyem Data could not be parsed: #{response.body}"
         []
       end
