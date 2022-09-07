@@ -555,8 +555,14 @@ GEM
       activemodel (>= 5.2)
       hashie
     selectize-rails (0.12.6)
-    sentry-raven (3.1.2)
-      faraday (>= 1.0)
+    sentry-rails (5.4.2)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.4.2)
+    sentry-ruby (5.4.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.4.2)
+      sentry-ruby (~> 5.4.2)
+      sidekiq (>= 3.0)
     sexp_processor (4.16.1)
     shoulda (4.0.0)
       shoulda-context (~> 2.0)
@@ -747,7 +753,9 @@ DEPENDENCIES
   sass-rails
   searchkick
   selectize-rails
-  sentry-raven
+  sentry-rails
+  sentry-ruby
+  sentry-sidekiq
   shoulda
   shoulda-matchers
   sidekiq

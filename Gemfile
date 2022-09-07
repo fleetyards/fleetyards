@@ -107,7 +107,9 @@ gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
 
-gem 'sentry-raven'
+gem 'sentry-rails'
+gem 'sentry-ruby'
+gem 'sentry-sidekiq'
 
 gem 'lograge'
 
