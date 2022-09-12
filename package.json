@@ -16,7 +16,7 @@
     "lint:prettier:fix": "prettier app/frontend --write"
   },
   "dependencies": {
-    "@rails/actioncable": "7.0.3",
+    "@rails/actioncable": "7.0.4",
     "@sentry/tracing": "7.12.1",
     "@sentry/vue": "7.12.1",
     "ahoy.js": "0.4.0",
