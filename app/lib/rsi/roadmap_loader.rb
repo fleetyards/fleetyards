@@ -156,7 +156,7 @@ module Rsi
           roadmap_item.update(updated_at: updated_at)
         else
           changes = item.changeset.except('release')
-          changes.to_hash if changes.is_a?(HashWithIndifferentAccess)
+          changes.to_hash if changes.is_a?(ActiveSupport::HashWithIndifferentAccess)
           changes = ::YAML.dump(changes)
 
           item.update(object_changes: changes)

@@ -114,17 +114,17 @@ module Api
       end
 
       private def blocked(email)
-        return unless File.exist?(Rails.root.join('blocklist.json'))
+        return unless Rails.root.join('blocklist.json').exist?
 
-        blocklist = JSON.parse(File.read(Rails.root.join('blocklist.json')))
+        blocklist = JSON.parse(Rails.root.join('blocklist.json').read)
 
         blocklist.include?(email.downcase.strip)
       end
 
       private def reserved_name(username)
-        return unless File.exist?(Rails.root.join('reserved_usernames.json'))
+        return unless Rails.root.join('reserved_usernames.json').exist?
 
-        reserved_usernames = JSON.parse(File.read(Rails.root.join('reserved_usernames.json')))
+        reserved_usernames = JSON.parse(Rails.root.join('reserved_usernames.json').read)
 
         reserved_usernames.include?(username.downcase.strip)
       end

@@ -185,7 +185,7 @@ class HangarImporterStarship42Test < ActiveSupport::TestCase
     end
   end
 
-  let(:data) { JSON.parse(File.read(Rails.root.join('test/fixtures/imports/starship42.json'))) }
+  let(:data) { JSON.parse(Rails.root.join('test/fixtures/imports/starship42.json').read) }
 
   it 'imports all data' do
     assert_equal(
