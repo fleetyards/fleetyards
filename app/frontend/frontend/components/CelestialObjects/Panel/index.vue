@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 
 export default {
-  name: 'CelestalObjectPanel',
+  name: "CelestalObjectPanel",
 
   components: {
     Panel,
@@ -51,24 +51,24 @@ export default {
   computed: {
     route() {
       switch (this.item.resultType) {
-        case 'celestial_object':
+        case "celestial_object":
           return {
-            name: 'celestial-object',
+            name: "celestial-object",
             params: {
               starsystem: this.item.starsystem.slug,
               slug: this.item.slug,
             },
-          }
-        case 'starsystem':
-          return { name: 'starsystem', params: { slug: this.item.slug } }
+          };
+        case "starsystem":
+          return { name: "starsystem", params: { slug: this.item.slug } };
         default:
-          return ''
+          return "";
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

@@ -1,24 +1,24 @@
-import { get } from '@/frontend/api/client'
-import Store from '@/frontend/lib/Store'
-import BaseCollection from './Base'
+import { get } from "@/frontend/api/client";
+import Store from "@/frontend/lib/Store";
+import BaseCollection from "./Base";
 
 export class FleetVehiclesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: (Vehicle | Model)[] = []
+  records: (Vehicle | Model)[] = [];
 
-  stats: FleetVehicleStats | null = null
+  stats: FleetVehicleStats | null = null;
 
   get perPage(): number {
-    return Store.getters['fleet/perPage']
+    return Store.getters["fleet/perPage"];
   }
 
   get perPageSteps(): (number | string)[] {
-    return [15, 30, 60, 120, 240, 'all']
+    return [15, 30, 60, 120, 240, "all"];
   }
 
   updatePerPage(perPage) {
-    Store.dispatch('fleet/updatePerPage', perPage)
+    Store.dispatch("fleet/updatePerPage", perPage);
   }
 
   async findAll(params: FleetVehicleParams): Promise<(Vehicle | Model)[]> {
@@ -27,14 +27,14 @@ export class FleetVehiclesCollection extends BaseCollection {
       page: params?.page,
       perPage: this.perPage,
       grouped: params?.grouped,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 
   async findAllFleetchart(
@@ -42,13 +42,13 @@ export class FleetVehiclesCollection extends BaseCollection {
   ): Promise<(Vehicle | Model)[]> {
     const response = await get(`fleets/${params.slug}/fleetchart`, {
       q: params?.filters,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 
   async findStats(
@@ -56,14 +56,14 @@ export class FleetVehiclesCollection extends BaseCollection {
   ): Promise<FleetVehicleStats | null> {
     const response = await get(`fleets/${params.slug}/quick-stats`, {
       q: params?.filters,
-    })
+    });
 
     if (!response.error) {
-      this.stats = response.data
+      this.stats = response.data;
     }
 
-    return this.stats
+    return this.stats;
   }
 }
 
-export default new FleetVehiclesCollection()
+export default new FleetVehiclesCollection();

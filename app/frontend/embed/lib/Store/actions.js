@@ -1,7 +1,7 @@
-import getDefaultState from './state'
+import getDefaultState from "./state";
 
 export default {
   reset({ state }) {
-    Object.assign(state, getDefaultState())
+    Object.assign(state, getDefaultState());
   },
-}
+};

@@ -9,7 +9,7 @@
           class="text-right metrics-title"
           @click="toggle('speed')"
         >
-          {{ $t('labels.metrics.speed') }}
+          {{ $t("labels.metrics.speed") }}
           <i class="fa fa-chevron-right" />
         </div>
       </div>
@@ -24,7 +24,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.scmSpeed') }}
+          {{ $t("model.scmSpeed") }}
         </div>
         <div
           v-for="model in models"
@@ -32,7 +32,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.scmSpeed, 'speed') }}
+            {{ $toNumber(model.scmSpeed, "speed") }}
           </span>
         </div>
       </div>
@@ -40,7 +40,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.afterburnerSpeed') }}
+          {{ $t("model.afterburnerSpeed") }}
         </div>
         <div
           v-for="model in models"
@@ -48,7 +48,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.afterburnerSpeed, 'speed') }}
+            {{ $toNumber(model.afterburnerSpeed, "speed") }}
           </span>
         </div>
       </div>
@@ -56,7 +56,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.groundSpeed') }}
+          {{ $t("model.groundSpeed") }}
         </div>
         <div
           v-for="model in models"
@@ -64,7 +64,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.groundSpeed, 'speed') }}
+            {{ $toNumber(model.groundSpeed, "speed") }}
           </span>
         </div>
       </div>
@@ -72,7 +72,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.afterburnerGroundSpeed') }}
+          {{ $t("model.afterburnerGroundSpeed") }}
         </div>
         <div
           v-for="model in models"
@@ -80,7 +80,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.afterburnerGroundSpeed, 'speed') }}
+            {{ $toNumber(model.afterburnerGroundSpeed, "speed") }}
           </span>
         </div>
       </div>
@@ -88,7 +88,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.pitchMax') }}
+          {{ $t("model.pitchMax") }}
         </div>
         <div
           v-for="model in models"
@@ -96,7 +96,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.pitchMax, 'rotation') }}
+            {{ $toNumber(model.pitchMax, "rotation") }}
           </span>
         </div>
       </div>
@@ -104,7 +104,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.yawMax') }}
+          {{ $t("model.yawMax") }}
         </div>
         <div
           v-for="model in models"
@@ -112,7 +112,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.yawMax, 'rotation') }}
+            {{ $toNumber(model.yawMax, "rotation") }}
           </span>
         </div>
       </div>
@@ -120,7 +120,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.rollMax') }}
+          {{ $t("model.rollMax") }}
         </div>
         <div
           v-for="model in models"
@@ -128,7 +128,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.rollMax, 'rotation') }}
+            {{ $toNumber(model.rollMax, "rotation") }}
           </span>
         </div>
       </div>
@@ -136,7 +136,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.xaxisAcceleration') }}
+          {{ $t("model.xaxisAcceleration") }}
         </div>
         <div
           v-for="model in models"
@@ -144,7 +144,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.xaxisAcceleration, 'speed') }}
+            {{ $toNumber(model.xaxisAcceleration, "speed") }}
           </span>
         </div>
       </div>
@@ -152,7 +152,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.yaxisAcceleration') }}
+          {{ $t("model.yaxisAcceleration") }}
         </div>
         <div
           v-for="model in models"
@@ -160,7 +160,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.yaxisAcceleration, 'speed') }}
+            {{ $toNumber(model.yaxisAcceleration, "speed") }}
           </span>
         </div>
       </div>
@@ -168,7 +168,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.zaxisAcceleration') }}
+          {{ $t("model.zaxisAcceleration") }}
         </div>
         <div
           v-for="model in models"
@@ -176,7 +176,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.zaxisAcceleration, 'speed') }}
+            {{ $toNumber(model.zaxisAcceleration, "speed") }}
           </span>
         </div>
       </div>
@@ -185,9 +185,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { BCollapse } from "bootstrap-vue";
 
 @Component<ModelsCompareSpeed>({
   components: {
@@ -195,21 +195,21 @@ import { BCollapse } from 'bootstrap-vue'
   },
 })
 export default class ModelsCompareSpeed extends Vue {
-  @Prop({ required: true }) models!: Model[]
+  @Prop({ required: true }) models!: Model[];
 
-  visible = false
+  visible = false;
 
   mounted() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
-  @Watch('models')
+  @Watch("models")
   onModelsChange() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
   toggle() {
-    this.visible = !this.visible
+    this.visible = !this.visible;
   }
 }
 </script>

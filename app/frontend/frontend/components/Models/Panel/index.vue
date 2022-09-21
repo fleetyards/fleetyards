@@ -84,13 +84,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import PanelDetails from '@/frontend/core/components/Panel/PanelDetails/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import AddToHangar from '@/frontend/components/Models/AddToHangar/index.vue'
-import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import PanelDetails from "@/frontend/core/components/Panel/PanelDetails/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
+import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 
 @Component<ModelPanel>({
   components: {
@@ -102,24 +102,24 @@ import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.v
   },
 })
 export default class ModelPanel extends Vue {
-  @Prop({ required: true }) model: Model
+  @Prop({ required: true }) model: Model;
 
-  @Prop({ default: false }) details: boolean
+  @Prop({ default: false }) details: boolean;
 
   get uuid() {
-    return this._uid
+    return this._uid;
   }
 
   get storeImage() {
-    return this.model.storeImageMedium
+    return this.model.storeImageMedium;
   }
 
   filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] }
+    return { manufacturerIn: [manufacturer] };
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

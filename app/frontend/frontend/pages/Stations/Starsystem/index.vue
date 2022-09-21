@@ -4,7 +4,7 @@
       <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="starsystem">
-          {{ $t('headlines.starsystem', { starsystem: starsystem.name }) }}
+          {{ $t("headlines.starsystem", { starsystem: starsystem.name }) }}
         </h1>
       </div>
     </div>
@@ -51,7 +51,7 @@
             >
               <template v-if="celestialObject.moons.length">
                 <h3 class="sr-only">
-                  {{ $t('headlines.celestialObjects') }}
+                  {{ $t("headlines.celestialObjects") }}
                 </h3>
                 <transition-group name="fade-list" class="row" tag="div" appear>
                   <div
@@ -92,19 +92,19 @@
 </template>
 
 <script>
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import Pagination from '@/frontend/mixins/Pagination'
-import { scrollToAnchor } from '@/frontend/utils/scrolling'
-import PlanetList from '@/frontend/components/Planets/List/index.vue'
-import MoonPanel from '@/frontend/components/Planets/Panel/index.vue'
-import StarsystemBaseMetrics from '@/frontend/components/Starsystems/BaseMetrics/index.vue'
-import StarsystemLevelsMetrics from '@/frontend/components/Starsystems/LevelsMetrics/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import Pagination from "@/frontend/mixins/Pagination";
+import { scrollToAnchor } from "@/frontend/utils/scrolling";
+import PlanetList from "@/frontend/components/Planets/List/index.vue";
+import MoonPanel from "@/frontend/components/Planets/Panel/index.vue";
+import StarsystemBaseMetrics from "@/frontend/components/Starsystems/BaseMetrics/index.vue";
+import StarsystemLevelsMetrics from "@/frontend/components/Starsystems/LevelsMetrics/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 
 export default {
-  name: 'StarsystemDetail',
+  name: "StarsystemDetail",
 
   components: {
     Loader,
@@ -123,82 +123,82 @@ export default {
       loading: false,
       starsystem: null,
       celestialObjects: [],
-    }
+    };
   },
 
   computed: {
     starsystemName() {
       if (this.celestialObjects.length === 0) {
-        return ''
+        return "";
       }
-      return this.celestialObjects[0].starsystem.name
+      return this.celestialObjects[0].starsystem.name;
     },
 
     metaTitle() {
       if (!this.starsystem) {
-        return null
+        return null;
       }
-      return this.$t('title.starsystem', { starsystem: this.starsystem.name })
+      return this.$t("title.starsystem", { starsystem: this.starsystem.name });
     },
 
     crumbs() {
       if (!this.starsystem) {
-        return null
+        return null;
       }
 
       return [
         {
           to: {
-            name: 'starsystems',
+            name: "starsystems",
             hash: `#${this.starsystem.slug}`,
           },
-          label: this.$t('nav.starsystems'),
+          label: this.$t("nav.starsystems"),
         },
-      ]
+      ];
     },
   },
 
   watch: {
     $route() {
-      this.fetchCelestialObjects()
+      this.fetchCelestialObjects();
     },
   },
 
   created() {
-    this.fetch()
-    this.fetchCelestialObjects()
+    this.fetch();
+    this.fetchCelestialObjects();
   },
 
   methods: {
     async fetch() {
       const response = await this.$api.get(
         `starsystems/${this.$route.params.slug}`
-      )
+      );
       if (!response.error) {
-        this.starsystem = response.data
+        this.starsystem = response.data;
       }
     },
 
     async fetchCelestialObjects() {
-      this.loading = true
-      const response = await this.$api.get('celestial-objects', {
+      this.loading = true;
+      const response = await this.$api.get("celestial-objects", {
         q: {
           ...this.$route.query.q,
           starsystemEq: this.$route.params.slug,
           main: true,
         },
         page: this.$route.query.page,
-      })
-      this.loading = false
+      });
+      this.loading = false;
       if (!response.error) {
-        this.celestialObjects = response.data
+        this.celestialObjects = response.data;
 
         this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash)
-        })
+          scrollToAnchor(this.$route.hash);
+        });
       }
-      this.setPages(response.meta)
+      this.setPages(response.meta);
     },
   },
-}
+};
 </script>

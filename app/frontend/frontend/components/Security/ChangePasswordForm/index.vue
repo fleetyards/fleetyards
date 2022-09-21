@@ -47,10 +47,10 @@
       </ValidationProvider>
       <div class="d-flex">
         <Btn :loading="submitting" type="submit">
-          {{ $t('actions.updatePassword') }}
+          {{ $t("actions.updatePassword") }}
         </Btn>
         <Btn :to="{ name: 'request-password' }" variant="link">
-          {{ $t('actions.reset-password') }}
+          {{ $t("actions.reset-password") }}
         </Btn>
       </div>
     </form>
@@ -58,11 +58,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 
 @Component<ChangePasswordForm>({
   components: {
@@ -71,12 +71,12 @@ import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
   },
 })
 export default class ChangePasswordForm extends Vue {
-  submitting = false
+  submitting = false;
 
-  form: ChangePasswordForm | null = null
+  form: ChangePasswordForm | null = null;
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
@@ -84,27 +84,27 @@ export default class ChangePasswordForm extends Vue {
       currentPassword: null,
       password: null,
       passwordConfirmation: null,
-    }
+    };
   }
 
   async changePassword() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await this.$api.put('password/update', this.form)
+    const response = await this.$api.put("password/update", this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
       displaySuccess({
-        text: this.$t('messages.changePassword.success'),
-      })
+        text: this.$t("messages.changePassword.success"),
+      });
 
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push('/').catch(() => {})
+      this.$router.push("/").catch(() => {});
     } else {
       displayAlert({
-        text: this.$t('messages.changePassword.failure'),
-      })
+        text: this.$t("messages.changePassword.failure"),
+      });
     }
   }
 }

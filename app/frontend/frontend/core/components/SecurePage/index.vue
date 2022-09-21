@@ -15,7 +15,7 @@
               :small="true"
             >
               <form @submit.prevent="handleSubmit(confirmAccess)">
-                <h1>{{ $t('headlines.confirmAccess') }}</h1>
+                <h1>{{ $t("headlines.confirmAccess") }}</h1>
 
                 <ValidationProvider
                   v-slot="{ errors }"
@@ -40,7 +40,7 @@
                   data-test="submit-confirm-access"
                   :block="true"
                 >
-                  {{ $t('actions.confirmAccess') }}
+                  {{ $t("actions.confirmAccess") }}
                 </Btn>
               </form>
             </ValidationObserver>
@@ -52,13 +52,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import { displayAlert } from '@/frontend/lib/Noty'
-import sessionCollection from '@/frontend/api/collections/Session'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import { displayAlert } from "@/frontend/lib/Noty";
+import sessionCollection from "@/frontend/api/collections/Session";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 
 @Component<Signup>({
   components: {
@@ -67,79 +67,79 @@ import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
   },
 })
 export default class Signup extends Vue {
-  @Getter('accessConfirmed', { namespace: 'session' }) accessConfirmed: boolean
+  @Getter("accessConfirmed", { namespace: "session" }) accessConfirmed: boolean;
 
-  @Action('confirmAccess', { namespace: 'session' }) saveConfirmAccess: any
+  @Action("confirmAccess", { namespace: "session" }) saveConfirmAccess: any;
 
-  @Action('resetConfirmAccess', { namespace: 'session' })
-  resetConfirmAccess: any
+  @Action("resetConfirmAccess", { namespace: "session" })
+  resetConfirmAccess: any;
 
-  submitting = false
+  submitting = false;
 
-  password: string = null
+  password: string = null;
 
-  confirmed = false
+  confirmed = false;
 
   get metaTitle() {
-    return this.$t(`title.confirmAccess`)
+    return this.$t(`title.confirmAccess`);
   }
 
   mounted() {
-    this.$comlink.$on('access-confirmation-required', this.resetConfirmation)
+    this.$comlink.$on("access-confirmation-required", this.resetConfirmation);
   }
 
   created() {
     if (this.accessConfirmed) {
-      this.confirmed = true
+      this.confirmed = true;
     }
   }
 
   beforeDestroy() {
-    this.$comlink.$off('access-confirmation-required')
+    this.$comlink.$off("access-confirmation-required");
   }
 
-  @Watch('confirmed')
+  @Watch("confirmed")
   onConfirmedChange() {
     if (this.confirmed) {
-      this.$comlink.$emit('access-confirmed')
+      this.$comlink.$emit("access-confirmed");
     }
   }
 
   resetConfirmation() {
-    this.confirmed = false
-    this.resetConfirmAccess()
+    this.confirmed = false;
+    this.resetConfirmAccess();
   }
 
   async confirmAccess() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await sessionCollection.confirmAccess(this.password)
+    const response = await sessionCollection.confirmAccess(this.password);
 
-    this.password = null
+    this.password = null;
 
-    this.submitting = false
+    this.submitting = false;
 
     if (response) {
-      this.confirmed = true
-      this.saveConfirmAccess()
+      this.confirmed = true;
+      this.saveConfirmAccess();
     } else {
       displayAlert({
-        text: this.$t('messages.confirmAccess.failure'),
-      })
+        text: this.$t("messages.confirmAccess.failure"),
+      });
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 form {
   max-width: 300px;
   margin: 0 auto;
 }
 
-button[type='submit'] {
+button[type="submit"] {
   transition: color $transition-base-speed ease;
 
   .confirmed {

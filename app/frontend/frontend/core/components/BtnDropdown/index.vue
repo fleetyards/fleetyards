@@ -27,9 +27,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<BtnDropdown>({
   components: {
@@ -37,81 +37,81 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
   },
 })
 export default class BtnDropdown extends Vue {
-  visible = false
+  visible = false;
 
-  innerExpandLeft = false
+  innerExpandLeft = false;
 
-  innerExpandTop = false
+  innerExpandTop = false;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+      return ["default", "small", "large"].indexOf(value) !== -1;
     },
   })
-  size!: string
+  size!: string;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
       return (
-        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+        ["default", "transparent", "link", "danger", "dropdown"].indexOf(
           value
         ) !== -1
-      )
+      );
     },
   })
-  variant!: string
+  variant!: string;
 
-  @Prop({ default: false }) expandLeft!: boolean
+  @Prop({ default: false }) expandLeft!: boolean;
 
-  @Prop({ default: false }) expandTop!: boolean
+  @Prop({ default: false }) expandTop!: boolean;
 
-  @Prop({ default: false }) mobileBlock!: boolean
+  @Prop({ default: false }) mobileBlock!: boolean;
 
-  @Prop({ default: false }) inline!: boolean
+  @Prop({ default: false }) inline!: boolean;
 
   get cssClasses() {
     return {
-      'panel-btn-dropdown-inline': this.inline,
-    }
+      "panel-btn-dropdown-inline": this.inline,
+    };
   }
 
   created() {
-    document.addEventListener('click', this.documentClick)
+    document.addEventListener("click", this.documentClick);
   }
 
   mounted() {
-    this.innerExpandLeft = this.expandLeft
-    this.innerExpandTop = this.expandTop
+    this.innerExpandLeft = this.expandLeft;
+    this.innerExpandTop = this.expandTop;
   }
 
   destroyed() {
-    document.removeEventListener('click', this.documentClick)
+    document.removeEventListener("click", this.documentClick);
   }
 
   toggle(event: MouseEvent) {
-    const { target } = event
-    const bounding = target.getBoundingClientRect()
+    const { target } = event;
+    const bounding = target.getBoundingClientRect();
 
     this.innerExpandLeft =
-      this.expandLeft || window.innerWidth - bounding.left < 200
-    this.innerExpandTop = window.innerHeight - bounding.top < 200
+      this.expandLeft || window.innerWidth - bounding.left < 200;
+    this.innerExpandTop = window.innerHeight - bounding.top < 200;
 
-    this.visible = !this.visible
+    this.visible = !this.visible;
   }
 
   documentClick(event: MouseEvent) {
-    if (!this.visible) return
+    if (!this.visible) return;
 
-    const { wrapper, btnList } = this.$refs
-    const { target } = event
+    const { wrapper, btnList } = this.$refs;
+    const { target } = event;
 
     if (
       target !== wrapper &&
       (!wrapper.contains(target) || btnList.contains(target))
     ) {
-      this.visible = false
+      this.visible = false;
     }
   }
 }

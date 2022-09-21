@@ -1,5 +1,5 @@
-import actions from './actions'
-import getDefaultState from './state'
+import actions from "./actions";
+import getDefaultState from "./state";
 
 export default () => ({
   namespaced: true,
@@ -10,91 +10,91 @@ export default () => ({
 
   getters: {
     detailsVisible(state) {
-      return state.detailsVisible
+      return state.detailsVisible;
     },
 
     fleetchartVisible(state) {
-      return state.fleetchartVisible
+      return state.fleetchartVisible;
     },
 
     fleetchartZoomData(state) {
-      return state.fleetchartZoomData
+      return state.fleetchartZoomData;
     },
 
     fleetchartViewpoint(state) {
-      return state.fleetchartViewpoint
+      return state.fleetchartViewpoint;
     },
 
     fleetchartLabels(state) {
-      return state.fleetchartLabels
+      return state.fleetchartLabels;
     },
 
     fleetchartScreenHeight(state) {
-      return state.fleetchartScreenHeight
+      return state.fleetchartScreenHeight;
     },
 
     fleetchartMode(state) {
-      return state.fleetchartMode
+      return state.fleetchartMode;
     },
 
     fleetchartScale(state) {
-      return state.fleetchartScale
+      return state.fleetchartScale;
     },
 
     holoviewerVisible(state) {
-      return state.holoviewerVisible
+      return state.holoviewerVisible;
     },
 
     perPage(state) {
-      return state.perPage
+      return state.perPage;
     },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
-      Object.assign(state, getDefaultState())
+      Object.assign(state, getDefaultState());
     },
 
     setDetailsVisible(state, payload) {
-      state.detailsVisible = payload
+      state.detailsVisible = payload;
     },
 
     setFleetchartVisible(state, payload) {
-      state.fleetchartVisible = payload
+      state.fleetchartVisible = payload;
     },
 
     setFleetchartZoomData(state, payload) {
-      state.fleetchartZoomData = payload
+      state.fleetchartZoomData = payload;
     },
 
     setFleetchartViewpoint(state, payload) {
-      state.fleetchartViewpoint = payload
+      state.fleetchartViewpoint = payload;
     },
 
     setFleetchartLabels(state, payload) {
-      state.fleetchartLabels = payload
+      state.fleetchartLabels = payload;
     },
 
     setFleetchartScreenHeight(state, payload) {
-      state.fleetchartScreenHeight = payload
+      state.fleetchartScreenHeight = payload;
     },
 
     setFleetchartMode(state, payload) {
-      state.fleetchartMode = payload
+      state.fleetchartMode = payload;
     },
 
     setFleetchartScale(state, payload) {
-      state.fleetchartScale = payload
+      state.fleetchartScale = payload;
     },
 
     setHoloviewerVisible(state, payload) {
-      state.holoviewerVisible = payload
+      state.holoviewerVisible = payload;
     },
 
     setPerPage(state, payload) {
-      state.perPage = payload
+      state.perPage = payload;
     },
   },
   /* eslint-enable no-param-reassign */
-})
+});

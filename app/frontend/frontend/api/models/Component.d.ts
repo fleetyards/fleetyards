@@ -1,11 +1,11 @@
 type ComponentsFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface ComponentParams extends CollectionParams {
-  filters: ComponentsFilter
+  filters: ComponentsFilter;
 }
 
 type Component = {
-  id: string
-}
+  id: string;
+};

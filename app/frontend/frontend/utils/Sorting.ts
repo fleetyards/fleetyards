@@ -1,48 +1,48 @@
-import { Location } from 'vue-router'
+import { Location } from "vue-router";
 
 type QueryParams = {
-  sorts: string[]
-}
+  sorts: string[];
+};
 
-type Dictionary<T> = { [key: string]: T }
+type Dictionary<T> = { [key: string]: T };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface FleetYardsRouteQuery extends Dictionary<any> {
-  q: QueryParams | null
+  q: QueryParams | null;
 }
 
 interface FleetYardsLocation extends Location {
-  query?: FleetYardsRouteQuery
+  query?: FleetYardsRouteQuery;
 }
 
 export const sortByToggle = function sortByToggle(
   currentRoute: FleetYardsLocation,
   field: string,
-  direction = 'asc'
+  direction = "asc"
 ) {
-  const currentSort = (currentRoute.query?.q || {}).sorts
+  const currentSort = (currentRoute.query?.q || {}).sorts;
 
-  const oppositeDirection = ['asc', 'desc'].find((item) => item !== direction)
+  const oppositeDirection = ["asc", "desc"].find((item) => item !== direction);
 
   if (!oppositeDirection) {
     throw Error(
-      'Invalid Direction provided! Direction can only be one of asc|desc'
-    )
+      "Invalid Direction provided! Direction can only be one of asc|desc"
+    );
   }
 
-  const sorts: string[] = []
+  const sorts: string[] = [];
   if (Array.isArray(currentSort)) {
     if (currentSort.includes(`${field} ${direction}`)) {
-      sorts.push(`${field} ${oppositeDirection}`)
+      sorts.push(`${field} ${oppositeDirection}`);
     } else if (
       currentSort.includes(`${field} ${oppositeDirection}`) ||
       (!currentSort.includes(`${field} asc`) &&
         !currentSort.includes(`${field} desc`))
     ) {
-      sorts.push(`${field} ${direction}`)
+      sorts.push(`${field} ${direction}`);
     }
   } else {
-    sorts.push(`${field} ${direction}`)
+    sorts.push(`${field} ${direction}`);
   }
 
   return {
@@ -55,13 +55,13 @@ export const sortByToggle = function sortByToggle(
         sorts,
       },
     },
-  }
-}
+  };
+};
 
 export const sortBy = function sortBy(
   currentRoute: FleetYardsLocation,
   field: string,
-  direction = 'asc'
+  direction = "asc"
 ) {
   return {
     name: currentRoute.name,
@@ -73,5 +73,5 @@ export const sortBy = function sortBy(
         sorts: [`${field} ${direction}`],
       },
     },
-  }
-}
+  };
+};

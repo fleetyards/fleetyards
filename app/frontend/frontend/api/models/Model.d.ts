@@ -1,29 +1,29 @@
 type Model = {
-  id: string
-  slug: string
-  name: string
-  manufacturer: Manufacturer
-  fleetchartImage: string
-  storeImageSmall: string
-  length: number
-  hasModules: boolean
-  hasUpgrades: boolean
-  rsiId: string
-  rsiName: string
-}
+  id: string;
+  slug: string;
+  name: string;
+  manufacturer: Manufacturer;
+  fleetchartImage: string;
+  storeImageSmall: string;
+  length: number;
+  hasModules: boolean;
+  hasUpgrades: boolean;
+  rsiId: string;
+  rsiName: string;
+};
 
 type ModelsFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface ModelParams extends CollectionParams {
-  filters: ModelsFilter
+  filters: ModelsFilter;
 }
 
 type ModelLoaner = {
-  id: string
-}
+  id: string;
+};
 
 type ModelUpgrade = {
-  id: string
-}
+  id: string;
+};

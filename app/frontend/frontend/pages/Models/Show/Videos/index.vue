@@ -68,17 +68,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Pagination from '@/frontend/mixins/Pagination'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import copyText from '@/frontend/utils/CopyText'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import Loader from '@/frontend/core/components/Loader/index.vue'
+import { mapGetters } from "vuex";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Pagination from "@/frontend/mixins/Pagination";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import copyText from "@/frontend/utils/CopyText";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
 
 export default {
-  name: 'ModelVideos',
+  name: "ModelVideos",
 
   components: {
     Loader,
@@ -93,56 +93,56 @@ export default {
       videos: [],
       model: null,
       loading: false,
-    }
+    };
   },
 
   computed: {
-    ...mapGetters('cookies', ['cookies']),
+    ...mapGetters("cookies", ["cookies"]),
 
     metaTitle() {
       if (!this.model) {
-        return null
+        return null;
       }
 
-      return this.$t('title.modelVideos', {
+      return this.$t("title.modelVideos", {
         name: this.model.name,
-      })
+      });
     },
 
     crumbs() {
       if (!this.model) {
-        return null
+        return null;
       }
 
       return [
         {
           to: {
-            name: 'models',
+            name: "models",
             hash: `#${this.model.slug}`,
           },
-          label: this.$t('nav.models.index'),
+          label: this.$t("nav.models.index"),
         },
         {
-          to: { name: 'model', param: { slug: this.$route.params.slug } },
+          to: { name: "model", param: { slug: this.$route.params.slug } },
           label: this.model.name,
         },
-      ]
+      ];
     },
 
     youtubeEnabled() {
-      return this.cookies.youtube
+      return this.cookies.youtube;
     },
   },
 
   watch: {
     $route() {
-      this.fetch()
+      this.fetch();
     },
   },
 
   created() {
-    this.fetchModel()
-    this.fetch()
+    this.fetchModel();
+    this.fetch();
   },
 
   methods: {
@@ -150,49 +150,49 @@ export default {
       copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(
         () => {
           displaySuccess({
-            text: this.$t('messages.copyVideoUrl.success'),
-          })
+            text: this.$t("messages.copyVideoUrl.success"),
+          });
         },
         () => {
           displayAlert({
-            text: this.$t('messages.copyVideoUrl.failure'),
-          })
+            text: this.$t("messages.copyVideoUrl.failure"),
+          });
         }
-      )
+      );
     },
 
     enableYoutube() {
-      this.$comlink.$emit('open-privacy-settings')
+      this.$comlink.$emit("open-privacy-settings");
     },
 
     async fetch() {
-      this.loading = true
+      this.loading = true;
 
       const response = await this.$api.get(
         `models/${this.$route.params.slug}/videos`,
         {
           page: this.$route.query.page,
         }
-      )
+      );
 
-      this.loading = false
+      this.loading = false;
 
       if (!response.error) {
-        this.videos = response.data
+        this.videos = response.data;
       }
 
-      this.setPages(response.meta)
+      this.setPages(response.meta);
     },
 
     async fetchModel() {
-      const response = await this.$api.get(`models/${this.$route.params.slug}`)
+      const response = await this.$api.get(`models/${this.$route.params.slug}`);
 
       if (!response.error) {
-        this.model = response.data
+        this.model = response.data;
       } else if (response.error.response.status === 404) {
-        this.$router.replace({ name: '404' })
+        this.$router.replace({ name: "404" });
       }
     },
   },
-}
+};
 </script>

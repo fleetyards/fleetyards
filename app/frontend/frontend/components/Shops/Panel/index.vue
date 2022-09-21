@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 @Component<ShopPanel>({
   components: {
@@ -43,6 +43,6 @@ import Panel from '@/frontend/core/components/Panel/index.vue'
   },
 })
 export default class ShopPanel extends Vue {
-  @Prop({ required: true }) shop!: Shop
+  @Prop({ required: true }) shop!: Shop;
 }
 </script>

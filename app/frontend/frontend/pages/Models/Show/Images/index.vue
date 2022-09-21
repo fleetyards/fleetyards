@@ -47,15 +47,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import Gallery from '@/frontend/core/components/Gallery/index.vue'
-import GalleryImage from '@/frontend/core/components/Gallery/Image/index.vue'
-import imagesCollection from '@/frontend/api/collections/Images'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Gallery from "@/frontend/core/components/Gallery/index.vue";
+import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
+import imagesCollection from "@/frontend/api/collections/Images";
 
 @Component<ModelImages>({
   components: {
@@ -68,62 +68,62 @@ import imagesCollection from '@/frontend/api/collections/Images'
   mixins: [MetaInfo],
 })
 export default class ModelImages extends Vue {
-  collection: ImagesCollection = imagesCollection
+  collection: ImagesCollection = imagesCollection;
 
-  model: Model | null = null
+  model: Model | null = null;
 
   get metaTitle() {
     if (!this.model) {
-      return null
+      return null;
     }
 
-    return this.$t('title.modelImages', {
+    return this.$t("title.modelImages", {
       name: this.model.name,
-    })
+    });
   }
 
   get routeParams() {
     return {
       ...this.$route.params,
-      galleryType: 'models',
-    }
+      galleryType: "models",
+    };
   }
 
   get crumbs() {
     if (!this.model) {
-      return null
+      return null;
     }
 
     return [
       {
         to: {
-          name: 'models',
+          name: "models",
           hash: `#${this.model.slug}`,
         },
-        label: this.$t('nav.models.index'),
+        label: this.$t("nav.models.index"),
       },
       {
-        to: { name: 'model', param: { slug: this.$route.params.slug } },
+        to: { name: "model", param: { slug: this.$route.params.slug } },
         label: this.model.name,
       },
-    ]
+    ];
   }
 
   created() {
-    this.fetchModel()
+    this.fetchModel();
   }
 
   openGallery(index) {
-    this.$refs.gallery.open(index)
+    this.$refs.gallery.open(index);
   }
 
   async fetchModel() {
-    const response = await this.$api.get(`models/${this.$route.params.slug}`)
+    const response = await this.$api.get(`models/${this.$route.params.slug}`);
 
     if (!response.error) {
-      this.model = response.data
+      this.model = response.data;
     } else if (response.error.response.status === 404) {
-      this.$router.replace({ name: '404' })
+      this.$router.replace({ name: "404" });
     }
   }
 }

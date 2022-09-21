@@ -1,6 +1,6 @@
 type ChartData = {
-  name: string
-  y: number
-  selected?: boolean
-  sliced?: boolean
-}
+  name: string;
+  y: number;
+  selected?: boolean;
+  sliced?: boolean;
+};

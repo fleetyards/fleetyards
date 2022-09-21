@@ -61,7 +61,7 @@
             <hr />
             <h3>
               <span>
-                {{ $t('headlines.hangar.alternativeNames') }}
+                {{ $t("headlines.hangar.alternativeNames") }}
               </span>
               <Btn
                 data-test="vehicle-add-name"
@@ -127,7 +127,7 @@
           data-test="vehicle-save"
           :inline="true"
         >
-          {{ $t('actions.save') }}
+          {{ $t("actions.save") }}
         </Btn>
       </div>
     </template>
@@ -135,22 +135,22 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import vehiclesCollection from '@/frontend/api/collections/Vehicles'
-import { transformErrors } from '@/frontend/api/helpers'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import { transformErrors } from "@/frontend/api/helpers";
 
 type VehicleNamingFormData = {
-  name: string
-  serial: string
-  nameVisible: boolean
-  alternativeNames: string[]
-}
+  name: string;
+  serial: string;
+  nameVisible: boolean;
+  alternativeNames: string[];
+};
 
 @Component<VehicleModal>({
   components: {
@@ -162,13 +162,13 @@ type VehicleNamingFormData = {
   },
 })
 export default class VehicleNamingModal extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle
+  @Prop({ required: true }) vehicle: Vehicle;
 
-  submitting = false
+  submitting = false;
 
-  deleting = false
+  deleting = false;
 
-  form: VehicleNamingFormData | null = null
+  form: VehicleNamingFormData | null = null;
 
   public get dirty() {
     return (
@@ -176,64 +176,67 @@ export default class VehicleNamingModal extends Vue {
       Object.keys(this.$refs.form.fields).some(
         (field) => this.$refs.form.fields[field].dirty
       )
-    )
+    );
   }
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
-  @Watch('vehicle')
+  @Watch("vehicle")
   onVehicleChange() {
-    this.setupForm()
+    this.setupForm();
   }
 
   addName() {
-    this.form.alternativeNames.push('')
+    this.form.alternativeNames.push("");
   }
 
   removeName(index) {
-    this.form.alternativeNames.splice(index, 1)
+    this.form.alternativeNames.splice(index, 1);
   }
 
   useName(index) {
-    const newName = this.form.alternativeNames[index]
-    this.form.alternativeNames[index] = this.form.name
-    this.form.name = newName
+    const newName = this.form.alternativeNames[index];
+    this.form.alternativeNames[index] = this.form.name;
+    this.form.name = newName;
   }
 
   setupForm() {
-    const initialData = JSON.parse(JSON.stringify(this.vehicle || {}))
+    const initialData = JSON.parse(JSON.stringify(this.vehicle || {}));
 
     this.form = {
       name: initialData.name,
       serial: initialData.serial,
       nameVisible: initialData.nameVisible,
       alternativeNames: initialData.alternativeNames,
-    }
+    };
   }
 
   async save() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await vehiclesCollection.update(this.vehicle.id, this.form)
+    const response = await vehiclesCollection.update(
+      this.vehicle.id,
+      this.form
+    );
 
     if (!response.error) {
-      this.$comlink.$emit('close-modal')
+      this.$comlink.$emit("close-modal");
     } else {
-      const { error } = response
+      const { error } = response;
       if (error.response && error.response.data) {
-        const { data: errorData } = error.response
+        const { data: errorData } = error.response;
 
-        this.$refs.form.setErrors(transformErrors(errorData.errors))
+        this.$refs.form.setErrors(transformErrors(errorData.errors));
       }
     }
 
-    this.submitting = false
+    this.submitting = false;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

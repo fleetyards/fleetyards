@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
-import UserNav from '@/frontend/core/components/Navigation/UserNav/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
+import { mapGetters } from "vuex";
+import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
+import UserNav from "@/frontend/core/components/Navigation/UserNav/index.vue";
+import NavigationMixin from "@/frontend/mixins/Navigation";
 
 export default {
-  name: 'NavFooter',
+  name: "NavFooter",
 
   components: {
     NavItem,
@@ -36,27 +36,27 @@ export default {
   mixins: [NavigationMixin],
 
   computed: {
-    ...mapGetters(['mobile']),
+    ...mapGetters(["mobile"]),
 
-    ...mapGetters('app', ['navSlim']),
+    ...mapGetters("app", ["navSlim"]),
 
     slim() {
-      return this.navSlim && !this.mobile
+      return this.navSlim && !this.mobile;
     },
 
     toggleSlimLabel() {
       if (this.slim) {
-        return this.$t('nav.toggleSlimExpand')
+        return this.$t("nav.toggleSlimExpand");
       }
 
-      return this.$t('nav.toggleSlimCollapse')
+      return this.$t("nav.toggleSlimCollapse");
     },
   },
 
   methods: {
     toggleSlim() {
-      this.$store.commit('app/toggleSlimNav')
+      this.$store.commit("app/toggleSlimNav");
     },
   },
-}
+};
 </script>

@@ -23,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import ImageUploader from '@/admin/components/ImageUploader/index.vue'
-import FilterForm from '@/admin/components/Images/FilterForm/index.vue'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import ImageUploader from "@/admin/components/ImageUploader/index.vue";
+import FilterForm from "@/admin/components/Images/FilterForm/index.vue";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import imagesCollection, {
   AdminImagesCollection,
-} from '@/admin/api/collections/Images'
+} from "@/admin/api/collections/Images";
 
 @Component<AdminImages>({
   components: {
@@ -40,29 +40,29 @@ import imagesCollection, {
   },
 })
 export default class AdminImages extends Vue {
-  collection: AdminImagesCollection = imagesCollection
+  collection: AdminImagesCollection = imagesCollection;
 
   get toggleFiltersTooltip() {
     if (this.filterVisible) {
-      return this.$t('actions.hideFilter')
+      return this.$t("actions.hideFilter");
     }
-    return this.$t('actions.showFilter')
+    return this.$t("actions.showFilter");
   }
 
   get query() {
-    return this.$route.query.q || {}
+    return this.$route.query.q || {};
   }
 
   get galleryId() {
-    return this.query.galleryIdEq
+    return this.query.galleryIdEq;
   }
 
   get galleryType() {
-    return this.query.galleryTypeEq
+    return this.query.galleryTypeEq;
   }
 
   async fetch() {
-    await this.collection.refresh()
+    await this.collection.refresh();
   }
 }
 </script>

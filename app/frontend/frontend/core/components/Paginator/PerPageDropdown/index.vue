@@ -6,7 +6,7 @@
     :inline="true"
   >
     <template #label>
-      <template v-if="!mobile">{{ $t('labels.pagination.perPage') }}:</template>
+      <template v-if="!mobile">{{ $t("labels.pagination.perPage") }}:</template>
       {{ perPage }}
     </template>
     <Btn
@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import { Component, Prop } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<PerPageDropdown>({
   components: {
@@ -34,21 +34,21 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
   },
 })
 export default class PerPageDropdown extends BtnDropdown {
-  @Prop({ required: true }) perPage!: number
+  @Prop({ required: true }) perPage!: number;
 
   @Prop({
     default: () => [10, 20, 50, 100],
   })
-  steps!: number[]
+  steps!: number[];
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get uuid() {
-    return this._uid
+    return this._uid;
   }
 
   update(step) {
-    this.$emit('change', step)
+    this.$emit("change", step);
   }
 }
 </script>

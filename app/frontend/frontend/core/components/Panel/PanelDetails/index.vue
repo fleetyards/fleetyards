@@ -9,29 +9,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class PanelDetails extends Vue {
-  height = 0
+  height = 0;
 
-  @Prop({ default: false }) visible!: boolean
+  @Prop({ default: false }) visible!: boolean;
 
-  @Watch('visible')
+  @Watch("visible")
   onVisibleChange() {
-    this.setupHeight()
+    this.setupHeight();
   }
 
   mounted() {
-    this.setupHeight()
+    this.setupHeight();
   }
 
   setupHeight() {
     if (this.visible) {
-      this.height = this.$refs.panelDetails.scrollHeight
+      this.height = this.$refs.panelDetails.scrollHeight;
     } else {
-      this.height = 0
+      this.height = 0;
     }
   }
 }

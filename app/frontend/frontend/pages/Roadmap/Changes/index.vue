@@ -4,7 +4,7 @@
       <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 class="sr-only">
-          {{ $t('headlines.roadmap') }}
+          {{ $t("headlines.roadmap") }}
         </h1>
       </div>
     </div>
@@ -24,7 +24,7 @@
       <div class="col-12 col-lg-6">
         <div class="page-actions page-actions-right">
           <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t('labels.rsiRoadmap') }}
+            {{ $t("labels.rsiRoadmap") }}
           </Btn>
         </div>
       </div>
@@ -44,7 +44,7 @@
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
-                {{ $t('labels.roadmap.stories', { count: items.length }) }}
+                {{ $t("labels.roadmap.stories", { count: items.length }) }}
               </small>
             </h2>
 
@@ -66,15 +66,15 @@
   </section>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem/index.vue'
-import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
+import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 
 @Component<RoadmapChanges>({
   components: {
@@ -89,113 +89,113 @@ import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
   mixins: [MetaInfo],
 })
 export default class RoadmapChanges extends Vue {
-  loading = true
+  loading = true;
 
-  compact = false
+  compact = false;
 
-  roadmapChanges = []
+  roadmapChanges = [];
 
-  options = []
+  options = [];
 
-  roadmapChannel = null
+  roadmapChannel = null;
 
-  selectedWeek = 0
+  selectedWeek = 0;
 
   get toggleCompactTooltip() {
     if (this.compact) {
-      return this.$t('actions.showDetails')
+      return this.$t("actions.showDetails");
     }
 
-    return this.$t('actions.hideDetails')
+    return this.$t("actions.hideDetails");
   }
 
   get emptyBoxVisible() {
-    return !this.loading && this.roadmapChanges.length === 0
+    return !this.loading && this.roadmapChanges.length === 0;
   }
 
   get query() {
     if (!this.options.length) {
-      return null
+      return null;
     }
 
-    return this.options[this.selectedWeek].query
+    return this.options[this.selectedWeek].query;
   }
 
   get groupedByRelease() {
     return this.roadmapChanges.reduce((rv, x) => {
-      const value = JSON.parse(JSON.stringify(rv))
+      const value = JSON.parse(JSON.stringify(rv));
 
-      value[x.release] = rv[x.release] || []
-      value[x.release].push(x)
+      value[x.release] = rv[x.release] || [];
+      value[x.release].push(x);
 
-      return value
-    }, {})
+      return value;
+    }, {});
   }
 
   get crumbs() {
     return [
       {
         to: {
-          name: 'roadmap',
+          name: "roadmap",
         },
-        label: this.$t('nav.roadmap.index'),
+        label: this.$t("nav.roadmap.index"),
       },
-    ]
+    ];
   }
 
   async mounted() {
-    await this.fetchOptions()
-    this.fetch()
-    this.setupUpdates()
+    await this.fetchOptions();
+    this.fetch();
+    this.setupUpdates();
   }
 
   beforeDestroy() {
     if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe()
+      this.roadmapChannel.unsubscribe();
     }
   }
 
   setupUpdates() {
     if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe()
+      this.roadmapChannel.unsubscribe();
     }
 
     this.roadmapChannel = this.$cable.consumer.subscriptions.create(
       {
-        channel: 'RoadmapChannel',
+        channel: "RoadmapChannel",
       },
       {
         received: this.fetch,
       }
-    )
+    );
   }
 
   toggleCompact() {
-    this.compact = !this.compact
+    this.compact = !this.compact;
   }
 
   async fetchOptions() {
-    const response = await this.$api.get('roadmap/weeks')
+    const response = await this.$api.get("roadmap/weeks");
 
     if (!response.error) {
-      this.options = response.data
+      this.options = response.data;
     }
   }
 
   async fetch() {
     if (!this.query) {
-      return
+      return;
     }
 
-    this.loading = true
-    const response = await this.$api.get('roadmap?changes=1', {
+    this.loading = true;
+    const response = await this.$api.get("roadmap?changes=1", {
       q: this.query,
-    })
+    });
 
-    this.loading = false
+    this.loading = false;
 
     if (!response.error) {
-      this.roadmapChanges = response.data.filter((item) => item.lastVersion)
+      this.roadmapChanges = response.data.filter((item) => item.lastVersion);
     }
   }
 }

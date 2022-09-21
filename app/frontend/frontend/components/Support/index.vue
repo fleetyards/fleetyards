@@ -1,13 +1,13 @@
 <template>
   <Btn size="small" class="support-button" @click.native="open">
-    {{ $t('actions.supportUs') }}
+    {{ $t("actions.supportUs") }}
   </Btn>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<Support>({
   components: {
@@ -16,10 +16,10 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
 })
 export default class Support extends Vue {
   open() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Support/Modal/index.vue'),
+    this.$comlink.$emit("open-modal", {
+      component: () => import("@/frontend/components/Support/Modal/index.vue"),
       wide: true,
-    })
+    });
   }
 }
 </script>

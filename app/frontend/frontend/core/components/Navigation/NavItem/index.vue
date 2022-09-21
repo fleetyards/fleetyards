@@ -3,8 +3,8 @@
   <li
     v-else-if="hasSubmenuSlot"
     :class="{
-      'active': active || submenuActive,
-      'open': open,
+      active: active || submenuActive,
+      open: open,
       'nav-item-slim': slim,
     }"
     :data-test="`nav-${navKey}`"
@@ -71,7 +71,7 @@
     v-slot="{ href: linkHref, navigate }"
     :to="to"
     :class="{
-      'active': active || routeActive,
+      active: active || routeActive,
       'nav-item-slim': slim,
     }"
     :data-test="`nav-${navKey}`"
@@ -135,11 +135,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
-import NavItemInner from '@/frontend/core/components/Navigation/NavItem/NavItemInner/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { BCollapse } from "bootstrap-vue";
+import NavItemInner from "@/frontend/core/components/Navigation/NavItem/NavItemInner/index.vue";
+import NavigationMixin from "@/frontend/mixins/Navigation";
 
 @Component<NavItem>({
   components: {
@@ -150,101 +150,101 @@ import NavigationMixin from '@/frontend/mixins/Navigation'
   mixins: [NavigationMixin],
 })
 export default class NavItem extends Vue {
-  open = false
+  open = false;
 
-  @Prop({ default: null }) to: Route | null
+  @Prop({ default: null }) to: Route | null;
 
-  @Prop({ default: null }) action
+  @Prop({ default: null }) action;
 
-  @Prop({ default: null }) href: string | null
+  @Prop({ default: null }) href: string | null;
 
-  @Prop({ default: '' }) label: string
+  @Prop({ default: "" }) label: string;
 
-  @Prop({ default: null }) icon: string | null
+  @Prop({ default: null }) icon: string | null;
 
-  @Prop({ default: null }) image: string | null
+  @Prop({ default: null }) image: string | null;
 
-  @Prop({ default: false }) avatar: boolean
+  @Prop({ default: false }) avatar: boolean;
 
-  @Prop({ default: null }) menuKey: string | null
+  @Prop({ default: null }) menuKey: string | null;
 
-  @Prop({ default: false }) exact: boolean
+  @Prop({ default: false }) exact: boolean;
 
-  @Prop({ default: false }) divider: boolean
+  @Prop({ default: false }) divider: boolean;
 
-  @Prop({ default: false }) active: boolean
+  @Prop({ default: false }) active: boolean;
 
-  @Prop({ default: false }) submenuActive: boolean
+  @Prop({ default: false }) submenuActive: boolean;
 
-  @Prop({ default: 'down' }) submenuDirection: string
+  @Prop({ default: "down" }) submenuDirection: string;
 
   get routeActive() {
     if (this.to) {
-      return this.to.name === this.$route.name
+      return this.to.name === this.$route.name;
     }
-    return false
+    return false;
   }
 
   get tooltip() {
     if (!this.slim) {
-      return null
+      return null;
     }
 
     return {
       content: this.label,
-      classes: 'nav-item-tooltip',
-      placement: 'right',
-    }
+      classes: "nav-item-tooltip",
+      placement: "right",
+    };
   }
 
   get hasDefaultSlot() {
-    return !!this.$slots.default
+    return !!this.$slots.default;
   }
 
   get hasSubmenuSlot() {
-    return !!this.$slots.submenu
+    return !!this.$slots.submenu;
   }
 
   get matchedRoutes() {
-    return this.$route.matched.map((route) => route.name)
+    return this.$route.matched.map((route) => route.name);
   }
 
   get navKey() {
     if (this.menuKey) {
-      return this.menuKey
+      return this.menuKey;
     }
 
     if (this.to) {
-      return this.to.name
+      return this.to.name;
     }
 
-    return 'nav-item'
+    return "nav-item";
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.checkRoutes()
+    this.checkRoutes();
   }
 
-  @Watch('submenuActive')
+  @Watch("submenuActive")
   onSubmenuActiveChange() {
-    this.checkRoutes()
+    this.checkRoutes();
   }
 
   mounted() {
-    this.checkRoutes()
+    this.checkRoutes();
   }
 
   checkRoutes() {
-    this.open = this.submenuActive
+    this.open = this.submenuActive;
   }
 
   toggleMenu() {
-    this.open = !this.open
+    this.open = !this.open;
   }
 }
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

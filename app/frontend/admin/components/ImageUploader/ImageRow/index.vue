@@ -48,12 +48,12 @@
       </h2>
       <div v-if="internalImage.error">
         <span class="pill pill-danger">
-          {{ $t('labels.image.error') }}
+          {{ $t("labels.image.error") }}
         </span>
       </div>
       <template v-if="!uploaded">
         <p v-if="internalImage.active">
-          {{ $t('labels.image.processing') }}
+          {{ $t("labels.image.processing") }}
           {{ internalImage.speed | formatSize }}
         </p>
         <div
@@ -97,17 +97,17 @@
         </Btn>
         <Btn :disabled="deleting" size="small" @click.native="deleteImage">
           <i class="fa fa-trash" />
-          <span>{{ $t('labels.image.delete') }}</span>
+          <span>{{ $t("labels.image.delete") }}</span>
         </Btn>
       </template>
       <template v-else>
         <Btn v-if="!internalImage.success" @click.native="start(internalImage)">
           <i class="fa fa-upload" />
-          <span>{{ $t('labels.image.start') }}</span>
+          <span>{{ $t("labels.image.start") }}</span>
         </Btn>
         <Btn @click.native="cancel(internalImage)">
           <i class="fa fa-ban-circle" />
-          <span>{{ $t('labels.image.cancel') }}</span>
+          <span>{{ $t("labels.image.cancel") }}</span>
         </Btn>
       </template>
     </div>
@@ -115,15 +115,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import debounce from 'lodash.debounce'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import debounce from "lodash.debounce";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 
 type Image = {
-  id: string
-}
+  id: string;
+};
 
 @Component<ImageRow>({
   components: {
@@ -132,91 +132,91 @@ type Image = {
   },
 })
 export default class ImageRow extends Vue {
-  @Prop({ required: true }) image!: Image
+  @Prop({ required: true }) image!: Image;
 
-  deleting = false
+  deleting = false;
 
-  updating = false
+  updating = false;
 
-  internalImage: Image = null
+  internalImage: Image = null;
 
-  updateCaption = debounce(this.debouncedUpdateCaption, 500)
+  updateCaption = debounce(this.debouncedUpdateCaption, 500);
 
   get uuid() {
-    return this._uid
+    return this._uid;
   }
 
   get uploaded() {
-    return !!this.internalImage.url
+    return !!this.internalImage.url;
   }
 
-  @Watch('image')
+  @Watch("image")
   onImageChange() {
-    this.internalImage = this.image
+    this.internalImage = this.image;
   }
 
   mounted() {
-    this.internalImage = this.image
+    this.internalImage = this.image;
   }
 
   start() {
-    this.$emit('start', this.internalImage)
+    this.$emit("start", this.internalImage);
   }
 
   cancel() {
-    this.$emit('cancel', this.internalImage)
+    this.$emit("cancel", this.internalImage);
   }
 
   async toggleEnabled() {
-    this.updating = true
-    this.internalImage.enabled = !this.internalImage.enabled
+    this.updating = true;
+    this.internalImage.enabled = !this.internalImage.enabled;
     const response = await this.$api.put(`images/${this.internalImage.id}`, {
       enabled: this.internalImage.enabled,
-    })
+    });
 
-    this.updating = false
+    this.updating = false;
 
     if (response.error) {
-      this.internalImage.enabled = !this.internalImage.enabled
+      this.internalImage.enabled = !this.internalImage.enabled;
     }
   }
 
   async toggleGlobal() {
-    this.updating = true
-    this.internalImage.global = !this.internalImage.global
+    this.updating = true;
+    this.internalImage.global = !this.internalImage.global;
     const response = await this.$api.put(`images/${this.internalImage.id}`, {
       global: this.internalImage.global,
-    })
+    });
 
-    this.updating = false
+    this.updating = false;
 
     if (response.error) {
-      this.internalImage.global = !this.internalImage.global
+      this.internalImage.global = !this.internalImage.global;
     }
   }
 
   async deleteImage() {
-    this.deleting = true
-    const response = await this.$api.destroy(`images/${this.internalImage.id}`)
+    this.deleting = true;
+    const response = await this.$api.destroy(`images/${this.internalImage.id}`);
 
     if (!response.error) {
-      this.$emit('image-deleted', this.internalImage)
-      this.deleting = false
+      this.$emit("image-deleted", this.internalImage);
+      this.deleting = false;
     }
   }
 
   async debouncedUpdateCaption() {
-    this.updating = true
+    this.updating = true;
 
     await this.$api.put(`images/${this.internalImage.id}`, {
       caption: this.internalImage.caption,
-    })
+    });
 
-    this.updating = false
+    this.updating = false;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

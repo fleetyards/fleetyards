@@ -52,19 +52,19 @@
 </template>
 
 <script>
-import PhotoSwipe from 'photoswipe'
-import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
-import copyText from '@/frontend/utils/CopyText'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
+import PhotoSwipe from "photoswipe";
+import PhotoSwipeUIDefault from "photoswipe/dist/photoswipe-ui-default";
+import copyText from "@/frontend/utils/CopyText";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 
 export default {
-  name: 'GalleryIndex',
+  name: "GalleryIndex",
 
   props: {
     items: {
       type: Array,
       default() {
-        return []
+        return [];
       },
     },
   },
@@ -73,7 +73,7 @@ export default {
     return {
       gallery: null,
       index: 0,
-    }
+    };
   },
 
   computed: {
@@ -84,7 +84,7 @@ export default {
         h: item.height,
         msrc: item.smallUrl,
         el: document.querySelector(`[href="${item.url}"]`),
-      }))
+      }));
     },
 
     options() {
@@ -96,7 +96,7 @@ export default {
         history: false,
         counterEl: false,
         shareEl: false,
-      }
+      };
     },
   },
 
@@ -105,52 +105,52 @@ export default {
       copyText(this.gallery.currItem.src).then(
         () => {
           displaySuccess({
-            text: this.$t('messages.copyImageUrl.success'),
-          })
+            text: this.$t("messages.copyImageUrl.success"),
+          });
         },
         () => {
           displayAlert({
-            text: this.$t('messages.copyImageUrl.failure'),
-          })
+            text: this.$t("messages.copyImageUrl.failure"),
+          });
         }
-      )
+      );
     },
 
     getThumbBounds(index) {
       if (!this.galleryItems[index] || !this.galleryItems[index].el) {
-        return { x: 0, y: 0, w: 0 }
+        return { x: 0, y: 0, w: 0 };
       }
 
       const pageYScroll =
-        window.pageYOffset || document.documentElement.scrollTop
-      const rect = this.galleryItems[index].el.getBoundingClientRect()
+        window.pageYOffset || document.documentElement.scrollTop;
+      const rect = this.galleryItems[index].el.getBoundingClientRect();
 
-      return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }
+      return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
     },
 
     open(index = 0) {
-      this.index = parseInt(index, 10)
-      this.$store.dispatch('app/showOverlay')
-      this.setup()
-      this.gallery.init()
+      this.index = parseInt(index, 10);
+      this.$store.dispatch("app/showOverlay");
+      this.setup();
+      this.gallery.init();
     },
 
     onClose() {
-      this.$store.dispatch('app/hideOverlay')
+      this.$store.dispatch("app/hideOverlay");
     },
 
     setup() {
-      const pswpElement = document.querySelectorAll('.pswp')[0]
+      const pswpElement = document.querySelectorAll(".pswp")[0];
 
       this.gallery = new PhotoSwipe(
         pswpElement,
         PhotoSwipeUIDefault,
         this.galleryItems,
         this.options
-      )
+      );
 
-      this.gallery.listen('close', this.onClose)
+      this.gallery.listen("close", this.onClose);
     },
   },
-}
+};
 </script>

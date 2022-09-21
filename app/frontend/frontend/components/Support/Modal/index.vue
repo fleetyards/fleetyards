@@ -15,7 +15,7 @@
       </div>
       <br />
       <p>
-        {{ $t('labels.supportUs') }}
+        {{ $t("labels.supportUs") }}
       </p>
       <div class="page-actions page-actions-center">
         <Btn
@@ -43,10 +43,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<SupportModal>({
   components: {

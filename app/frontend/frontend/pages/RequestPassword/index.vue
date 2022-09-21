@@ -6,7 +6,7 @@
           <form @submit.prevent="handleSubmit(requestPassword)">
             <h1>
               <router-link to="/" exact>
-                {{ $t('app') }}
+                {{ $t("app") }}
               </router-link>
             </h1>
 
@@ -28,16 +28,16 @@
             </ValidationProvider>
 
             <Btn :loading="submitting" type="submit" size="large" :block="true">
-              {{ $t('actions.requestPassword') }}
+              {{ $t("actions.requestPassword") }}
             </Btn>
 
             <footer v-if="!isAuthenticated">
               <p class="text-center">
-                {{ $t('labels.alreadyRegistered') }}
+                {{ $t("labels.alreadyRegistered") }}
               </p>
 
               <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ $t('actions.login') }}
+                {{ $t("actions.login") }}
               </Btn>
             </footer>
           </form>
@@ -48,13 +48,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displaySuccess } from '@/frontend/lib/Noty'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displaySuccess } from "@/frontend/lib/Noty";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 
 @Component<RequestPassword>({
   components: {
@@ -64,39 +64,39 @@ import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
   mixins: [MetaInfo],
 })
 export default class RequestPassword extends Vue {
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated: boolean
+  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated: boolean;
 
-  submitting = false
+  submitting = false;
 
-  form: RequestPasswordForm | null = null
+  form: RequestPasswordForm | null = null;
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
     this.form = {
       email: null,
-    }
+    };
   }
 
   async requestPassword() {
-    this.submitting = true
+    this.submitting = true;
 
-    await this.$api.post('password/request', this.form)
+    await this.$api.post("password/request", this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     displaySuccess({
-      text: this.$t('messages.requestPasswordChange.success'),
-    })
+      text: this.$t("messages.requestPasswordChange.success"),
+    });
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    this.$router.push('/').catch(() => {})
+    this.$router.push("/").catch(() => {});
   }
 }
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

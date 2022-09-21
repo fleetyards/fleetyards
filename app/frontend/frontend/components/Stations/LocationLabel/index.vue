@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  name: 'StationsLocatioLabel',
+  name: "StationsLocatioLabel",
 
   props: {
     station: {
@@ -48,52 +48,52 @@ export default {
 
   computed: {
     location() {
-      return this.station.celestialObject
+      return this.station.celestialObject;
     },
 
     label() {
       if (this.suffix) {
         if (this.location) {
-          return `${this.prefix} ${this.location.name}, ${this.suffix}`
+          return `${this.prefix} ${this.location.name}, ${this.suffix}`;
         }
 
-        return this.suffix
+        return this.suffix;
       }
 
-      return `${this.prefix} ${this.location.name}`
+      return `${this.prefix} ${this.location.name}`;
     },
 
     tooltip() {
       if (this.label.length > 50) {
-        return this.label
+        return this.label;
       }
 
-      return null
+      return null;
     },
 
     prefix() {
       switch (this.station.type) {
-        case 'asteroid-station':
-          return this.$t('labels.station.locationPrefix.asteriod')
-        case 'hub':
-        case 'station':
-        case 'cargo-station':
-        case 'mining-station':
-          return this.$t('labels.station.locationPrefix.orbit')
+        case "asteroid-station":
+          return this.$t("labels.station.locationPrefix.asteriod");
+        case "hub":
+        case "station":
+        case "cargo-station":
+        case "mining-station":
+          return this.$t("labels.station.locationPrefix.orbit");
         default:
-          return this.$t('labels.station.locationPrefix.default')
+          return this.$t("labels.station.locationPrefix.default");
       }
     },
 
     suffix() {
       if (this.station.location) {
-        return this.$t('labels.station.locationSuffix', {
+        return this.$t("labels.station.locationSuffix", {
           location: this.station.location,
-        })
+        });
       }
 
-      return null
+      return null;
     },
   },
-}
+};
 </script>

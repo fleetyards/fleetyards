@@ -4,7 +4,7 @@
       <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 class="sr-only">
-          {{ $t('headlines.roadmap') }}
+          {{ $t("headlines.roadmap") }}
         </h1>
       </div>
     </div>
@@ -19,7 +19,7 @@
             {{ toggleCompactTooltip }}
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t('labels.rsiRoadmap') }}
+            {{ $t("labels.rsiRoadmap") }}
           </Btn>
         </div>
       </div>
@@ -44,7 +44,7 @@
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
-                {{ $t('labels.roadmap.ships', { count: items.length }) }}
+                {{ $t("labels.roadmap.ships", { count: items.length }) }}
               </small>
               <i class="fa fa-chevron-right" />
             </h2>
@@ -77,11 +77,11 @@
               @click="toggle('unscheduled')"
             >
               <span class="title">
-                {{ $t('labels.roadmap.unscheduled') }}
+                {{ $t("labels.roadmap.unscheduled") }}
               </span>
               <small class="text-muted">
                 {{
-                  $t('labels.roadmap.ships', {
+                  $t("labels.roadmap.ships", {
                     count: unscheduledModels.length,
                   })
                 }}
@@ -115,15 +115,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import RoadmapItem from '@/frontend/components/Roadmap/RoadmapItem/index.vue'
-import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { BCollapse } from "bootstrap-vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
+import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 
 @Component<ShipsRoadmap>({
   components: {
@@ -138,155 +138,155 @@ import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
   mixins: [MetaInfo],
 })
 export default class ShipsRoadmap extends Vue {
-  loading = true
+  loading = true;
 
-  onlyReleased = true
+  onlyReleased = true;
 
-  compact = true
+  compact = true;
 
-  roadmapItems = []
+  roadmapItems = [];
 
-  visible = []
+  visible = [];
 
-  unscheduledModels = []
+  unscheduledModels = [];
 
-  roadmapChannel = null
+  roadmapChannel = null;
 
   get toggleCompactTooltip() {
     if (this.compact) {
-      return this.$t('actions.showDetails')
+      return this.$t("actions.showDetails");
     }
 
-    return this.$t('actions.hideDetails')
+    return this.$t("actions.hideDetails");
   }
 
   get releasedToggleLabel() {
     if (this.onlyReleased) {
-      return this.$t('actions.showReleased')
+      return this.$t("actions.showReleased");
     }
-    return this.$t('actions.hideReleased')
+    return this.$t("actions.hideReleased");
   }
 
   get emptyBoxVisible() {
-    return !this.loading && this.roadmapItems.length === 0
+    return !this.loading && this.roadmapItems.length === 0;
   }
 
   get filteredItems() {
-    const items = this.roadmapItems.filter((item) => item.model)
+    const items = this.roadmapItems.filter((item) => item.model);
 
     if (this.onlyReleased) {
-      return items.filter((item) => !item.released)
+      return items.filter((item) => !item.released);
     }
 
-    return items
+    return items;
   }
 
   get groupedByRelease() {
     return this.filteredItems.reduce((rv, x) => {
-      const value = { ...rv }
+      const value = { ...rv };
 
-      value[x.release] = rv[x.release] || []
-      value[x.release].push(x)
+      value[x.release] = rv[x.release] || [];
+      value[x.release].push(x);
 
-      return value
-    }, {})
+      return value;
+    }, {});
   }
 
   get otherModels() {
-    return this.models
+    return this.models;
   }
 
   get modelsOnRoadmap() {
     return this.roadmapItems
       .filter((item) => item.model)
       .map((item) => item.model.id)
-      .filter((item) => item)
+      .filter((item) => item);
   }
 
   get crumbs() {
     return [
       {
         to: {
-          name: 'roadmap',
+          name: "roadmap",
         },
-        label: this.$t('nav.roadmap.index'),
+        label: this.$t("nav.roadmap.index"),
       },
-    ]
+    ];
   }
 
   mounted() {
-    this.fetch()
-    this.setupUpdates()
+    this.fetch();
+    this.setupUpdates();
   }
 
   beforeDestroy() {
     if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe()
+      this.roadmapChannel.unsubscribe();
     }
   }
 
   setupUpdates() {
     if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe()
+      this.roadmapChannel.unsubscribe();
     }
 
     this.roadmapChannel = this.$cable.consumer.subscriptions.create(
       {
-        channel: 'RoadmapChannel',
+        channel: "RoadmapChannel",
       },
       {
         received: this.fetch,
       }
-    )
+    );
   }
 
   toggleReleased() {
-    this.onlyReleased = !this.onlyReleased
+    this.onlyReleased = !this.onlyReleased;
   }
 
   toggleCompact() {
-    this.compact = !this.compact
+    this.compact = !this.compact;
   }
 
   toggle(release) {
     if (this.visible.includes(release)) {
-      const index = this.visible.indexOf(release)
-      this.visible.splice(index, 1)
-      return null
+      const index = this.visible.indexOf(release);
+      this.visible.splice(index, 1);
+      return null;
     }
-    return this.visible.push(release)
+    return this.visible.push(release);
   }
 
   openReleased() {
     Object.keys(this.groupedByRelease).forEach((release) => {
-      const items = this.groupedByRelease[release]
+      const items = this.groupedByRelease[release];
       if (items.length && !items[0].released) {
-        this.visible.push(release)
+        this.visible.push(release);
       }
-    })
+    });
   }
 
   async fetch() {
-    this.loading = true
-    const response = await this.$api.get('roadmap?ships=1', {
+    this.loading = true;
+    const response = await this.$api.get("roadmap?ships=1", {
       q: {
         rsiCategoryIdIn: [6],
         activeEq: true,
       },
-    })
-    this.loading = false
+    });
+    this.loading = false;
 
     if (!response.error) {
-      this.roadmapItems = response.data
-      await this.fetchModels()
-      this.openReleased()
+      this.roadmapItems = response.data;
+      await this.fetchModels();
+      this.openReleased();
     }
   }
 
   async fetchModels() {
-    const response = await this.$api.get('models/unscheduled')
+    const response = await this.$api.get("models/unscheduled");
     if (!response.error) {
-      this.unscheduledModels = response.data
+      this.unscheduledModels = response.data;
     }
   }
 }

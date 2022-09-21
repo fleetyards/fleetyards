@@ -71,21 +71,21 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import RadioList from '@/frontend/core/components/Form/RadioList/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { booleanOptions } from '@/frontend/utils/FilterOptions'
+import Filters from "@/frontend/mixins/Filters";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { booleanOptions } from "@/frontend/utils/FilterOptions";
 
 export default {
-  name: 'StationsFilterForm',
+  name: "StationsFilterForm",
 
   components: {
     FilterGroup,
@@ -97,7 +97,7 @@ export default {
   mixins: [Filters],
 
   data() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
     return {
       loading: false,
       form: {
@@ -110,18 +110,18 @@ export default {
         shopsShopTypeIn: query.shopsShopTypeIn || [],
         docksShipSizeIn: query.docksShipSizeIn || [],
       },
-    }
+    };
   },
 
   computed: {
     booleanOptions() {
-      return booleanOptions
+      return booleanOptions;
     },
   },
 
   watch: {
     $route() {
-      const query = this.$route.query.q || {}
+      const query = this.$route.query.q || {};
       this.form = {
         searchCont: query.searchCont,
         nameCont: query.nameCont,
@@ -131,7 +131,7 @@ export default {
         stationTypeIn: query.stationTypeIn || [],
         shopsShopTypeIn: query.shopsShopTypeIn || [],
         docksShipSizeIn: query.docksShipSizeIn || [],
-      }
+      };
     },
   },
 
@@ -139,38 +139,38 @@ export default {
     fetchCelestialObjects({ page, search, missingValue }) {
       const query = {
         q: {},
-      }
+      };
       if (search) {
-        query.q.nameCont = search
+        query.q.nameCont = search;
       } else if (missingValue) {
-        query.q.nameIn = missingValue
+        query.q.nameIn = missingValue;
       } else if (page) {
-        query.page = page
+        query.page = page;
       }
-      return this.$api.get('celestial-objects', query)
+      return this.$api.get("celestial-objects", query);
     },
     fetchStarsystems({ page, search, missingValue }) {
       const query = {
         q: {},
-      }
+      };
       if (search) {
-        query.q.nameCont = search
+        query.q.nameCont = search;
       } else if (missingValue) {
-        query.q.nameIn = missingValue
+        query.q.nameIn = missingValue;
       } else if (page) {
-        query.page = page
+        query.page = page;
       }
-      return this.$api.get('starsystems', query)
+      return this.$api.get("starsystems", query);
     },
     fetchShipSizes() {
-      return this.$api.get('stations/ship-sizes')
+      return this.$api.get("stations/ship-sizes");
     },
     fetchStationTypes() {
-      return this.$api.get('stations/station-types')
+      return this.$api.get("stations/station-types");
     },
     fetchShopTypes() {
-      return this.$api.get('shops/shop-types')
+      return this.$api.get("shops/shop-types");
     },
   },
-}
+};
 </script>

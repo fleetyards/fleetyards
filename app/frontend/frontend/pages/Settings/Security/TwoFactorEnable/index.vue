@@ -3,7 +3,7 @@
     <div v-if="currentUser" class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t('headlines.settings.twoFactor.enable') }}</h1>
+          <h1>{{ $t("headlines.settings.twoFactor.enable") }}</h1>
         </div>
       </div>
       <div class="row">
@@ -15,14 +15,14 @@
                 :to="{ name: 'settings-security', hash: '#two-factor' }"
                 :exact="true"
               >
-                {{ $t('actions.done') }}
+                {{ $t("actions.done") }}
               </Btn>
             </div>
           </div>
 
           <template v-else-if="!currentUser.twoFactorRequired">
             <p>
-              {{ $t('texts.twoFactor.enable') }}
+              {{ $t("texts.twoFactor.enable") }}
             </p>
             <ValidationObserver
               v-if="form"
@@ -65,7 +65,7 @@
                       size="large"
                       :block="true"
                     >
-                      {{ $t('actions.twoFactor.enable') }}
+                      {{ $t("actions.twoFactor.enable") }}
                     </Btn>
                   </div>
                 </div>
@@ -79,17 +79,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import { disabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
-import twoFactorCollection from '@/frontend/api/collections/TwoFactor'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue'
-import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import { disabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
+import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
+import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
 
 @Component<TwoFactorEnable>({
   beforeRouteEnter: disabledRouteGuard,
@@ -102,47 +102,47 @@ import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
   mixins: [MetaInfo],
 })
 export default class TwoFactorEnable extends Vue {
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+  @Getter("currentUser", { namespace: "session" }) currentUser;
 
-  submitting = false
+  submitting = false;
 
-  backupCodes: string[] | null = null
+  backupCodes: string[] | null = null;
 
-  form: TwoFactorForm | null = null
+  form: TwoFactorForm | null = null;
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
     this.form = {
       twoFactorCode: null,
-    }
+    };
   }
 
   async enable() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await twoFactorCollection.enable(this.form.twoFactorCode)
+    const response = await twoFactorCollection.enable(this.form.twoFactorCode);
 
-    this.submitting = false
+    this.submitting = false;
 
-    this.setupForm()
+    this.setupForm();
 
     if (!response.error) {
-      this.$comlink.$emit('user-update')
+      this.$comlink.$emit("user-update");
 
-      this.backupCodes = response.data.codes
+      this.backupCodes = response.data.codes;
 
       displaySuccess({
-        text: this.$t('messages.twoFactor.enable.success'),
-      })
-    } else if (response.error === 'requires_access_confirmation') {
-      this.$comlink.$emit('access-confirmation-required')
+        text: this.$t("messages.twoFactor.enable.success"),
+      });
+    } else if (response.error === "requires_access_confirmation") {
+      this.$comlink.$emit("access-confirmation-required");
     } else {
       displayAlert({
-        text: this.$t('messages.twoFactor.enable.failure'),
-      })
+        text: this.$t("messages.twoFactor.enable.failure"),
+      });
     }
   }
 }

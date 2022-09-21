@@ -23,13 +23,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import ImageUploader from '@/admin/components/ImageUploader/index.vue'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import ImageUploader from "@/admin/components/ImageUploader/index.vue";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import imagesCollection, {
   AdminImagesCollection,
-} from '@/admin/api/collections/Images'
+} from "@/admin/api/collections/Images";
 
 @Component<AdminModelImages>({
   components: {
@@ -38,28 +38,28 @@ import imagesCollection, {
   },
 })
 export default class AdminModelImages extends Vue {
-  collection: AdminImagesCollection = imagesCollection
+  collection: AdminImagesCollection = imagesCollection;
 
   get galleryId() {
-    return this.$route.params.uuid
+    return this.$route.params.uuid;
   }
 
   get routeParams() {
     return {
-      galleryType: 'models',
+      galleryType: "models",
       galleryId: this.galleryId,
-    }
+    };
   }
 
   get filters() {
     return {
       ...this.routeParams,
       page: this.$route.query.page,
-    }
+    };
   }
 
   async fetch() {
-    await this.collection.findAllForGallery(this.filters)
+    await this.collection.findAllForGallery(this.filters);
   }
 }
 </script>

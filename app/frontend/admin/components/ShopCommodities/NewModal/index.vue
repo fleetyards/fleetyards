@@ -180,7 +180,7 @@
             data-test="shopCommodity-save"
             :inline="true"
           >
-            {{ $t('actions.save') }}
+            {{ $t("actions.save") }}
           </Btn>
         </div>
       </template>
@@ -189,29 +189,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import shopCommodityCollection from '@/admin/api/collections/ShopCommodities'
-import modelsCollection from '@/admin/api/collections/Models'
-import commoditiesCollection from '@/admin/api/collections/Commodities'
-import componentsCollection from '@/admin/api/collections/Components'
-import equipmentCollection from '@/admin/api/collections/Equipment'
-import modelModulesCollection from '@/admin/api/collections/ModelModules'
-import modelPaintsCollection from '@/admin/api/collections/ModelPaints'
-import componentItemTypeFiltersCollection from '@/admin/api/collections/ComponentItemTypeFilters'
-import equipmentTypeFiltersCollection from '@/admin/api/collections/EquipmentTypeFilters'
-import equipmentSlotFiltersCollection from '@/admin/api/collections/EquipmentSlotFilters'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import shopCommodityCollection from "@/admin/api/collections/ShopCommodities";
+import modelsCollection from "@/admin/api/collections/Models";
+import commoditiesCollection from "@/admin/api/collections/Commodities";
+import componentsCollection from "@/admin/api/collections/Components";
+import equipmentCollection from "@/admin/api/collections/Equipment";
+import modelModulesCollection from "@/admin/api/collections/ModelModules";
+import modelPaintsCollection from "@/admin/api/collections/ModelPaints";
+import componentItemTypeFiltersCollection from "@/admin/api/collections/ComponentItemTypeFilters";
+import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
+import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
+import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
 
 // TODO: move to collection model or use openapi schema types when available
 type ShopCommoditiesFormData = {
-  commodityItemType: string
-  commodityItemId?: string
-}
+  commodityItemType: string;
+  commodityItemId?: string;
+};
 
 @Component<VehicleModal>({
   components: {
@@ -223,121 +223,121 @@ type ShopCommoditiesFormData = {
   },
 })
 export default class VehicleModal extends Vue {
-  @Prop({ required: true }) shopId: string
+  @Prop({ required: true }) shopId: string;
 
-  @Prop({ default: null }) commodityItemType: string | null
+  @Prop({ default: null }) commodityItemType: string | null;
 
-  @Prop({ default: null }) itemTypeFilter: string | null
+  @Prop({ default: null }) itemTypeFilter: string | null;
 
-  modelsCollection: ModelsCollection = modelsCollection
+  modelsCollection: ModelsCollection = modelsCollection;
 
-  commoditiesCollection: CommoditiesCollection = commoditiesCollection
+  commoditiesCollection: CommoditiesCollection = commoditiesCollection;
 
-  componentsCollection: ComponentsCollection = componentsCollection
+  componentsCollection: ComponentsCollection = componentsCollection;
 
-  equipmentCollection: EquipmentCollection = equipmentCollection
+  equipmentCollection: EquipmentCollection = equipmentCollection;
 
-  modelModulesCollection: ModelModulesCollection = modelModulesCollection
+  modelModulesCollection: ModelModulesCollection = modelModulesCollection;
 
-  modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection
+  modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection;
 
   componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
-    componentItemTypeFiltersCollection
+    componentItemTypeFiltersCollection;
 
   equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
-    equipmentTypeFiltersCollection
+    equipmentTypeFiltersCollection;
 
   equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
-    equipmentSlotFiltersCollection
+    equipmentSlotFiltersCollection;
 
-  submitting = false
+  submitting = false;
 
-  componentItemTypeFilter: string | null = null
+  componentItemTypeFilter: string | null = null;
 
-  equipmentTypeFilter: string | null = null
+  equipmentTypeFilter: string | null = null;
 
-  equipmentSlotFilter: string | null = null
+  equipmentSlotFilter: string | null = null;
 
-  form: ShopCommoditiesFormData | null = null
+  form: ShopCommoditiesFormData | null = null;
 
-  items = []
+  items = [];
 
   commodityTypeOptions: FilterGroupItem[] = [
     {
-      value: 'Commodity',
-      name: 'Commodity',
+      value: "Commodity",
+      name: "Commodity",
     },
     {
-      value: 'Component',
-      name: 'Component',
+      value: "Component",
+      name: "Component",
     },
     {
-      value: 'Equipment',
-      name: 'Equipment',
+      value: "Equipment",
+      name: "Equipment",
     },
     {
-      value: 'Model',
-      name: 'Model',
+      value: "Model",
+      name: "Model",
     },
     {
-      value: 'ModelModule',
-      name: 'Model Module',
+      value: "ModelModule",
+      name: "Model Module",
     },
     {
-      value: 'ModelPaint',
-      name: 'Model Paint',
+      value: "ModelPaint",
+      name: "Model Paint",
     },
-  ]
+  ];
 
   get formId() {
-    return 'shopCommodity-new'
+    return "shopCommodity-new";
   }
 
   get title() {
-    return this.$t('headlines.modals.shopCommodity.create')
+    return this.$t("headlines.modals.shopCommodity.create");
   }
 
   mounted() {
-    this.componentItemTypeFilter = this.itemTypeFilter
+    this.componentItemTypeFilter = this.itemTypeFilter;
 
-    this.setupForm()
+    this.setupForm();
   }
 
   fetchSubCategories() {
-    return this.$api.get('filters/shop-commodities/sub-categories')
+    return this.$api.get("filters/shop-commodities/sub-categories");
   }
 
   setupForm() {
     this.form = {
       commodityItemType: this.commodityItemType,
-    }
+    };
   }
 
   async submit() {
-    this.submitting = true
+    this.submitting = true;
 
     await Promise.all(
       this.items.map(async (item) => {
         await shopCommodityCollection.create(this.shopId, {
           commodityItemId: item.id,
           ...this.form,
-        })
+        });
       })
-    )
+    );
 
-    this.$comlink.$emit('commodities-update')
+    this.$comlink.$emit("commodities-update");
 
-    this.$comlink.$emit('close-modal')
+    this.$comlink.$emit("close-modal");
 
-    this.submitting = false
+    this.submitting = false;
   }
 
   add(value) {
-    this.items.push(value)
+    this.items.push(value);
   }
 
   removeItem(index) {
-    this.items.splice(index, 1)
+    this.items.splice(index, 1);
   }
 }
 </script>

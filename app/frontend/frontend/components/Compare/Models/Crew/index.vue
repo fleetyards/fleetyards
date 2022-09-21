@@ -9,7 +9,7 @@
           class="text-right metrics-title"
           @click="toggle"
         >
-          {{ $t('labels.metrics.crew') }}
+          {{ $t("labels.metrics.crew") }}
           <i class="fa fa-chevron-right" />
         </div>
       </div>
@@ -24,7 +24,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.minCrew') }}
+          {{ $t("model.minCrew") }}
         </div>
         <div
           v-for="model in models"
@@ -32,7 +32,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.minCrew, 'people') }}
+            {{ $toNumber(model.minCrew, "people") }}
           </span>
         </div>
       </div>
@@ -40,7 +40,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.maxCrew') }}
+          {{ $t("model.maxCrew") }}
         </div>
         <div
           v-for="model in models"
@@ -48,7 +48,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.maxCrew, 'people') }}
+            {{ $toNumber(model.maxCrew, "people") }}
           </span>
         </div>
       </div>
@@ -57,9 +57,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { BCollapse } from "bootstrap-vue";
 
 @Component<ModelsCompareCrew>({
   components: {
@@ -67,21 +67,21 @@ import { BCollapse } from 'bootstrap-vue'
   },
 })
 export default class ModelsCompareCrew extends Vue {
-  @Prop({ required: true }) models!: Model[]
+  @Prop({ required: true }) models!: Model[];
 
-  visible = false
+  visible = false;
 
   mounted() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
-  @Watch('models')
+  @Watch("models")
   onModelsChange() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
   toggle() {
-    this.visible = !this.visible
+    this.visible = !this.visible;
   }
 }
 </script>

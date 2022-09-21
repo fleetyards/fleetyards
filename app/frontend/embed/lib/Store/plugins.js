@@ -1,17 +1,17 @@
-import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from "vuex-persistedstate";
 
 export default function getStorePlugins() {
   return [
     createPersistedState({
-      key: 'FleetYards-Fleetview',
+      key: "FleetYards-Fleetview",
       paths: [
-        'storeVersion',
-        'details',
-        'fleetchart',
-        'fleetchartScale',
-        'grouping',
-        'fleetchartGrouping',
+        "storeVersion",
+        "details",
+        "fleetchart",
+        "fleetchartScale",
+        "grouping",
+        "fleetchartGrouping",
       ],
     }),
-  ]
+  ];
 }

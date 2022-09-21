@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t('headlines.search') }}
+          {{ $t("headlines.search") }}
         </h1>
       </div>
     </div>
@@ -99,23 +99,23 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Filters from '@/frontend/mixins/Filters'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
-import searchCollection from '@/frontend/api/collections/Search'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import ModelPanel from '@/frontend/components/Models/Panel/index.vue'
-import SearchPanel from '@/frontend/components/Search/Panel/index.vue'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import CelestialObjectsPanel from '@/frontend/components/CelestialObjects/Panel/index.vue'
-import ShopCommodityPanel from '@/frontend/components/ShopCommodities/Panel/index.vue'
-import ComponentPanel from '@/frontend/components/Components/Panel/index.vue'
-import CommodityPanel from '@/frontend/components/Commodities/Panel/index.vue'
-import EquipmentPanel from '@/frontend/components/Equipment/Panel/index.vue'
-import SearchHistory from '@/frontend/components/Search/History/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Filters from "@/frontend/mixins/Filters";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import searchCollection from "@/frontend/api/collections/Search";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
+import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import CelestialObjectsPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
+import ShopCommodityPanel from "@/frontend/components/ShopCommodities/Panel/index.vue";
+import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
+import CommodityPanel from "@/frontend/components/Commodities/Panel/index.vue";
+import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
+import SearchHistory from "@/frontend/components/Search/History/index.vue";
 
 @Component<Search>({
   components: {
@@ -135,101 +135,101 @@ import SearchHistory from '@/frontend/components/Search/History/index.vue'
   mixins: [MetaInfo, Filters],
 })
 export default class Search extends Vue {
-  collection: SearchCollection = searchCollection
+  collection: SearchCollection = searchCollection;
 
   form: SearchFilter = {
     search: null,
-  }
+  };
 
   get historyVisible() {
-    return !this.collection.records.length && !this.form.search
+    return !this.collection.records.length && !this.form.search;
   }
 
   get filters() {
     return {
       filters: this.$route.query.q,
       page: this.$route.query.page || 1,
-    }
+    };
   }
 
   get firstPage() {
-    return !this.$route.query.page || this.$route.query.page === 1
+    return !this.$route.query.page || this.$route.query.page === 1;
   }
 
   get shareUrl() {
-    return window.location.href
+    return window.location.href;
   }
 
   get shareTitle() {
-    return this.$t('labels.search.shareTitle', { query: this.form.search })
+    return this.$t("labels.search.shareTitle", { query: this.form.search });
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
     this.form = {
       search: query.search,
-    }
-    this.fetch()
+    };
+    this.fetch();
   }
 
   created() {
-    this.form.search = this.$route.query?.q?.search
-    this.fetch()
+    this.form.search = this.$route.query?.q?.search;
+    this.fetch();
   }
 
   routeForResult(result) {
     switch (result.resultType) {
-      case 'celestial_object':
+      case "celestial_object":
         return {
-          name: 'celestial-object',
+          name: "celestial-object",
           params: {
             starsystem: result.starsystem.slug,
             slug: result.slug,
           },
-        }
-      case 'shop':
+        };
+      case "shop":
         return {
-          name: 'shop',
+          name: "shop",
           params: {
             stationSlug: result.station.slug,
             slug: result.slug,
           },
-        }
-      case 'starsystem':
+        };
+      case "starsystem":
         return {
-          name: 'starsystem',
+          name: "starsystem",
           params: {
             slug: result.slug,
           },
-        }
+        };
       default:
-        return null
+        return null;
     }
   }
 
   search() {
-    this.filter()
+    this.filter();
   }
 
   restoreSearch(search) {
-    this.form.search = search
-    this.filter()
+    this.form.search = search;
+    this.filter();
   }
 
   async fetch() {
-    await this.collection.findAll(this.filters)
+    await this.collection.findAll(this.filters);
 
     if (this.collection.records.length && this.firstPage && this.form.search) {
-      this.$store.dispatch('search/save', {
+      this.$store.dispatch("search/save", {
         search: this.form.search,
         createdAt: new Date(),
-      })
+      });
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

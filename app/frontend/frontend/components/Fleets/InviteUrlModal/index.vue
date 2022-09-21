@@ -24,17 +24,17 @@
       </div>
       <div class="invite-url-subline">
         <div v-if="inviteUrl.expired">
-          {{ $t('labels.fleet.inviteUrls.expired') }}
+          {{ $t("labels.fleet.inviteUrls.expired") }}
         </div>
         <div v-else-if="inviteUrl.expiresAfterLabel">
           {{
-            $t('labels.fleet.inviteUrls.expiresIn', {
+            $t("labels.fleet.inviteUrls.expiresIn", {
               time: inviteUrl.expiresAfterLabel,
             })
           }}
         </div>
         <div v-else>
-          {{ $t('labels.fleet.inviteUrls.noExpiration') }}
+          {{ $t("labels.fleet.inviteUrls.noExpiration") }}
         </div>
         <div>{{ usesLeft(inviteUrl) }}</div>
       </div>
@@ -55,22 +55,22 @@
         name="limit"
       />
       <Btn @click.native="create">
-        {{ $t('actions.fleet.inviteUrls.create') }}
+        {{ $t("actions.fleet.inviteUrls.create") }}
       </Btn>
     </template>
   </Modal>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import copyText from '@/frontend/utils/CopyText'
-import inviteUrlCollection from '@/frontend/api/collections/FleetInviteUrls'
-import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import copyText from "@/frontend/utils/CopyText";
+import inviteUrlCollection from "@/frontend/api/collections/FleetInviteUrls";
+import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 
 @Component<MemberModal>({
   components: {
@@ -81,81 +81,81 @@ import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
   },
 })
 export default class MemberModal extends Vue {
-  collection: FleetInviteUrlCollection = inviteUrlCollection
+  collection: FleetInviteUrlCollection = inviteUrlCollection;
 
-  @Prop({ required: true }) fleet: Fleet
+  @Prop({ required: true }) fleet: Fleet;
 
-  form: InviteUrlForm | null = null
+  form: InviteUrlForm | null = null;
 
   expiresAfterOptions = [
     {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.infinite'),
+      name: this.$t("labels.fleet.inviteUrls.expiresAfterOptions.infinite"),
       value: null,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.30_minutes'),
+      name: this.$t("labels.fleet.inviteUrls.expiresAfterOptions.30_minutes"),
       value: 30,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.1_hour'),
+      name: this.$t("labels.fleet.inviteUrls.expiresAfterOptions.1_hour"),
       value: 60,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.6_hours'),
+      name: this.$t("labels.fleet.inviteUrls.expiresAfterOptions.6_hours"),
       value: 6 * 60,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.12_hours'),
+      name: this.$t("labels.fleet.inviteUrls.expiresAfterOptions.12_hours"),
       value: 12 * 60,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.1_day'),
+      name: this.$t("labels.fleet.inviteUrls.expiresAfterOptions.1_day"),
       value: 24 * 60,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.expiresAfterOptions.7_days'),
+      name: this.$t("labels.fleet.inviteUrls.expiresAfterOptions.7_days"),
       value: 24 * 60 * 7,
     },
-  ]
+  ];
 
   limitOptions = [
     {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.infinite'),
+      name: this.$t("labels.fleet.inviteUrls.limitOptions.infinite"),
       value: null,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.1'),
+      name: this.$t("labels.fleet.inviteUrls.limitOptions.1"),
       value: 1,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.5'),
+      name: this.$t("labels.fleet.inviteUrls.limitOptions.5"),
       value: 5,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.10'),
+      name: this.$t("labels.fleet.inviteUrls.limitOptions.10"),
       value: 10,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.25'),
+      name: this.$t("labels.fleet.inviteUrls.limitOptions.25"),
       value: 25,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.50'),
+      name: this.$t("labels.fleet.inviteUrls.limitOptions.50"),
       value: 50,
     },
     {
-      name: this.$t('labels.fleet.inviteUrls.limitOptions.100'),
+      name: this.$t("labels.fleet.inviteUrls.limitOptions.100"),
       value: 100,
     },
-  ]
+  ];
 
   get inviteUrls() {
-    return this.collection.records
+    return this.collection.records;
   }
 
   mounted() {
-    this.fetch()
-    this.setupForm()
+    this.fetch();
+    this.setupForm();
   }
 
   setupForm() {
@@ -163,62 +163,62 @@ export default class MemberModal extends Vue {
       expiresAfterMinutes: null,
       limit: null,
       fleetSlug: this.fleet.slug,
-    }
+    };
   }
 
   async fetch() {
     await this.collection.findAll({
       fleetSlug: this.fleet.slug,
-    })
+    });
   }
 
   async create() {
-    await this.collection.create(this.form, true)
+    await this.collection.create(this.form, true);
   }
 
   async remove(inviteUrl) {
-    await this.collection.destroy(this.fleet.slug, inviteUrl.token, true)
+    await this.collection.destroy(this.fleet.slug, inviteUrl.token, true);
   }
 
   inviteCount(inviteUrl) {
     if (inviteUrl.inviteCount > 999) {
-      return '+999'
+      return "+999";
     }
 
-    return inviteUrl.inviteCount
+    return inviteUrl.inviteCount;
   }
 
   usesLeft(inviteUrl) {
     if (!inviteUrl.limit && inviteUrl.limit !== 0) {
-      return this.$t('labels.fleet.inviteUrls.noLimit')
+      return this.$t("labels.fleet.inviteUrls.noLimit");
     }
 
-    return this.$t('labels.fleet.inviteUrls.usesLeft', {
+    return this.$t("labels.fleet.inviteUrls.usesLeft", {
       count: inviteUrl.limit,
-    })
+    });
   }
 
   copy(inviteUrl) {
     copyText(inviteUrl.url).then(
       () => {
         displaySuccess({
-          text: this.$t('messages.copyInviteUrl.success', {
+          text: this.$t("messages.copyInviteUrl.success", {
             url: inviteUrl.url,
           }),
-        })
+        });
       },
       () => {
         displayAlert({
-          text: this.$t('messages.copyInviteUrl.failure'),
-        })
+          text: this.$t("messages.copyInviteUrl.failure"),
+        });
       }
-    )
+    );
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 .invite-url {
   margin-bottom: 20px;

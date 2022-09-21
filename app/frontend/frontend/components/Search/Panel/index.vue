@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 
 export default {
-  name: 'SearchPanel',
+  name: "SearchPanel",
 
   components: {
     Panel,
@@ -47,20 +47,20 @@ export default {
   computed: {
     route() {
       switch (this.item.resultType) {
-        case 'shop':
+        case "shop":
           return {
-            name: 'shop',
+            name: "shop",
             params: {
               stationSlug: this.item.station.slug,
               slug: this.item.slug,
             },
-          }
-        case 'station':
-          return { name: 'station', params: { slug: this.item.slug } }
+          };
+        case "station":
+          return { name: "station", params: { slug: this.item.slug } };
         default:
-          return ''
+          return "";
       }
     },
   },
-}
+};
 </script>

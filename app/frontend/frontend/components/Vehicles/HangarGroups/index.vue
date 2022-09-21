@@ -19,40 +19,40 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component<PanelGroups>({})
 export default class PanelGroups extends Vue {
-  @Prop({ required: true }) groups: HangarGroup[]
+  @Prop({ required: true }) groups: HangarGroup[];
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'large'].indexOf(value) !== -1
+      return ["default", "large"].indexOf(value) !== -1;
     },
   })
-  size!: string
+  size!: string;
 
   filter(event, filter) {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!filter) {
-      return
+      return;
     }
 
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}));
 
     if ((query.hangarGroupsIn || []).includes(filter)) {
-      const index = query.hangarGroupsIn.findIndex((item) => item === filter)
+      const index = query.hangarGroupsIn.findIndex((item) => item === filter);
       if (index > -1) {
-        query.hangarGroupsIn.splice(index, 1)
+        query.hangarGroupsIn.splice(index, 1);
       }
     } else {
       if (!query.hangarGroupsIn) {
-        query.hangarGroupsIn = []
+        query.hangarGroupsIn = [];
       }
-      query.hangarGroupsIn.push(filter)
+      query.hangarGroupsIn.push(filter);
     }
 
     this.$router.replace({
@@ -60,11 +60,11 @@ export default class PanelGroups extends Vue {
       query: {
         q: query,
       },
-    })
+    });
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

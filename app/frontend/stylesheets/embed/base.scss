@@ -4,14 +4,14 @@
   padding-right: 15px;
   padding-left: 15px;
   color: $text-color;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 
-  .row > [class*='col-'] {
+  .row > [class*="col-"] {
     transition: width ease $transition-base-speed;
   }
 
   a,
-  input[type='button'],
+  input[type="button"],
   button {
     outline: 0 none !important;
   }

@@ -14,7 +14,7 @@
               @click="navigate"
               @keypress.enter="navigate"
             >
-              <a :href="linkHref">{{ $t('nav.settings.profile') }}</a>
+              <a :href="linkHref">{{ $t("nav.settings.profile") }}</a>
             </li>
           </router-link>
           <router-link
@@ -28,7 +28,7 @@
               @click="navigate"
               @keypress.enter="navigate"
             >
-              <a :href="linkHref">{{ $t('nav.settings.account') }}</a>
+              <a :href="linkHref">{{ $t("nav.settings.account") }}</a>
             </li>
           </router-link>
           <router-link
@@ -42,7 +42,7 @@
               @click="navigate"
               @keypress.enter="navigate"
             >
-              <a :href="linkHref">{{ $t('nav.settings.security') }}</a>
+              <a :href="linkHref">{{ $t("nav.settings.security") }}</a>
             </li>
           </router-link>
           <router-link
@@ -56,7 +56,7 @@
               @click="navigate"
               @keypress.enter="navigate"
             >
-              <a :href="linkHref">{{ $t('nav.settings.notifications') }}</a>
+              <a :href="linkHref">{{ $t("nav.settings.notifications") }}</a>
             </li>
           </router-link>
           <router-link
@@ -70,7 +70,7 @@
               @click="navigate"
               @keypress.enter="navigate"
             >
-              <a :href="linkHref">{{ $t('nav.settings.hangar') }}</a>
+              <a :href="linkHref">{{ $t("nav.settings.hangar") }}</a>
             </li>
           </router-link>
         </ul>
@@ -83,8 +83,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
 
 @Component<Settings>()
 export default class Settings extends Vue {}

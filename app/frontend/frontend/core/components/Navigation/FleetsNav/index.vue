@@ -38,13 +38,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
-import fleetInvitesCollection from '@/frontend/api/collections/FleetInvites'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
+import NavigationMixin from "@/frontend/mixins/Navigation";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
+import fleetInvitesCollection from "@/frontend/api/collections/FleetInvites";
 
 @Component<FleetsNav>({
   components: {
@@ -53,40 +53,40 @@ import fleetInvitesCollection from '@/frontend/api/collections/FleetInvites'
   mixins: [NavigationMixin],
 })
 export default class FleetsNav extends Vue {
-  collection: FleetsCollection = fleetsCollection
+  collection: FleetsCollection = fleetsCollection;
 
-  invitesCollection: FleetInvitesCollection = fleetInvitesCollection
+  invitesCollection: FleetInvitesCollection = fleetInvitesCollection;
 
-  @Getter('preview', { namespace: 'fleet' }) fleetPreview
+  @Getter("preview", { namespace: "fleet" }) fleetPreview;
 
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
+  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated;
 
   get active() {
-    return ['fleets', 'fleet-add', 'fleet-preview', 'fleet-invites'].includes(
+    return ["fleets", "fleet-add", "fleet-preview", "fleet-invites"].includes(
       this.$route.name
-    )
+    );
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetch()
+    this.fetch();
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
   }
 
   async fetch() {
     if (!this.isAuthenticated) {
-      return
+      return;
     }
 
-    await this.collection.findAllForCurrent('nav')
-    await this.invitesCollection.findAllForCurrent('nav')
+    await this.collection.findAllForCurrent("nav");
+    await this.invitesCollection.findAllForCurrent("nav");
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

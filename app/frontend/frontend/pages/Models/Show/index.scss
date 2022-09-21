@@ -1,4 +1,4 @@
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 .image {
   height: auto;
@@ -63,7 +63,7 @@
   padding-right: 74px;
   color: $text-color;
   color: darken($text-color, 15%);
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   line-height: 1.4;
   text-transform: uppercase;
 
@@ -88,7 +88,7 @@
 .upgrades,
 .variants {
   h2 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: "Orbitron", sans-serif;
   }
 }
 

@@ -9,7 +9,7 @@
           class="text-right metrics-title"
           @click="toggle"
         >
-          {{ $t('labels.metrics.base') }}
+          {{ $t("labels.metrics.base") }}
           <i class="fa fa-chevron-right" />
         </div>
       </div>
@@ -24,7 +24,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.manufacturer') }}
+          {{ $t("model.manufacturer") }}
         </div>
         <div
           v-for="model in models"
@@ -38,7 +38,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.productionStatus') }}
+          {{ $t("model.productionStatus") }}
         </div>
         <div
           v-for="model in models"
@@ -54,7 +54,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.focus') }}
+          {{ $t("model.focus") }}
         </div>
         <div
           v-for="model in models"
@@ -70,7 +70,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.classification') }}
+          {{ $t("model.classification") }}
         </div>
         <div
           v-for="model in models"
@@ -86,7 +86,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.size') }}
+          {{ $t("model.size") }}
         </div>
         <div
           v-for="model in models"
@@ -102,7 +102,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.length') }}
+          {{ $t("model.length") }}
         </div>
         <div
           v-for="model in models"
@@ -110,7 +110,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.length, 'distance') }}
+            {{ $toNumber(model.length, "distance") }}
           </span>
         </div>
       </div>
@@ -118,7 +118,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.beam') }}
+          {{ $t("model.beam") }}
         </div>
         <div
           v-for="model in models"
@@ -126,7 +126,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.beam, 'distance') }}
+            {{ $toNumber(model.beam, "distance") }}
           </span>
         </div>
       </div>
@@ -134,7 +134,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.height') }}
+          {{ $t("model.height") }}
         </div>
         <div
           v-for="model in models"
@@ -142,7 +142,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.height, 'distance') }}
+            {{ $toNumber(model.height, "distance") }}
           </span>
         </div>
       </div>
@@ -150,7 +150,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.mass') }}
+          {{ $t("model.mass") }}
         </div>
         <div
           v-for="model in models"
@@ -158,7 +158,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.mass, 'weight') }}
+            {{ $toNumber(model.mass, "weight") }}
           </span>
         </div>
       </div>
@@ -166,7 +166,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.cargo') }}
+          {{ $t("model.cargo") }}
         </div>
         <div
           v-for="model in models"
@@ -174,7 +174,7 @@
           class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toNumber(model.cargo, 'cargo') }}
+            {{ $toNumber(model.cargo, "cargo") }}
           </span>
         </div>
       </div>
@@ -182,7 +182,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.price') }}
+          {{ $t("model.price") }}
         </div>
         <div
           v-for="model in models"
@@ -196,7 +196,7 @@
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
-          {{ $t('model.pledgePrice') }}
+          {{ $t("model.pledgePrice") }}
         </div>
         <div
           v-for="model in models"
@@ -213,9 +213,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { BCollapse } from "bootstrap-vue";
 
 @Component<ModelsCompareBase>({
   components: {
@@ -223,21 +223,21 @@ import { BCollapse } from 'bootstrap-vue'
   },
 })
 export default class ModelsCompareBase extends Vue {
-  @Prop({ required: true }) models!: Model[]
+  @Prop({ required: true }) models!: Model[];
 
-  visible = false
+  visible = false;
 
   mounted() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
-  @Watch('models')
+  @Watch("models")
   onModelsChange() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
   toggle() {
-    this.visible = !this.visible
+    this.visible = !this.visible;
   }
 }
 </script>

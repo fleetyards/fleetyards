@@ -8,11 +8,11 @@
           <div class="item-amount"></div>
 
           <div class="item-sold-at">
-            {{ $t('labels.shoppingCart.perItem') }}
+            {{ $t("labels.shoppingCart.perItem") }}
           </div>
 
           <div class="item-price">
-            {{ $t('labels.shoppingCart.itemTotal') }}
+            {{ $t("labels.shoppingCart.itemTotal") }}
           </div>
 
           <div class="item-actions"></div>
@@ -60,7 +60,7 @@
           />
 
           <div v-else class="item-price unavailable">
-            {{ $t('labels.unavailable') }}
+            {{ $t("labels.unavailable") }}
           </div>
 
           <div class="item-actions">
@@ -76,12 +76,12 @@
           </div>
         </div>
         <div key="total" class="item-list-item item-list-total">
-          <div class="text-muted">{{ $t('labels.shoppingCart.total') }}</div>
+          <div class="text-muted">{{ $t("labels.shoppingCart.total") }}</div>
           <div class="price-label" v-html="$toUEC(total)" />
         </div>
       </div>
       <div v-else class="item-list-empty">
-        {{ $t('labels.blank.shoppingCart') }}
+        {{ $t("labels.blank.shoppingCart") }}
       </div>
     </div>
 
@@ -109,7 +109,7 @@
           :aria-label="$t('actions.close')"
           @click.native="closeModal"
         >
-          {{ $t('actions.close') }}
+          {{ $t("actions.close") }}
         </Btn>
       </div>
     </template>
@@ -117,18 +117,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { sum as sumArray } from '@/frontend/utils/Array'
-import { sortBy } from '@/frontend/lib/Helpers'
-import ItemAmount from '@/frontend/core/components/AppShoppingCart/ItemAmount/index.vue'
-import ComponentsCollection from '@/frontend/api/collections/Components'
-import CommoditiesCollection from '@/frontend/api/collections/Commodities'
-import EquipmentCollection from '@/frontend/api/collections/Equipment'
-import ModelsCollection from '@/frontend/api/collections/Models'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { sum as sumArray } from "@/frontend/utils/Array";
+import { sortBy } from "@/frontend/lib/Helpers";
+import ItemAmount from "@/frontend/core/components/AppShoppingCart/ItemAmount/index.vue";
+import ComponentsCollection from "@/frontend/api/collections/Components";
+import CommoditiesCollection from "@/frontend/api/collections/Commodities";
+import EquipmentCollection from "@/frontend/api/collections/Equipment";
+import ModelsCollection from "@/frontend/api/collections/Models";
 // import ModelPaintsCollection from '@/frontend/api/collections/ModelPaints'
 // import ModelModulesCollection from '@/frontend/api/collections/ModelModules'
 
@@ -140,34 +140,34 @@ import ModelsCollection from '@/frontend/api/collections/Models'
   },
 })
 export default class ShoppingCart extends Vue {
-  @Getter('mobile') mobile: boolean
+  @Getter("mobile") mobile: boolean;
 
-  @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
+  @Getter("items", { namespace: "shoppingCart" }) cartItems: any[];
 
-  @Action('clear', { namespace: 'shoppingCart' }) clearCart: any
+  @Action("clear", { namespace: "shoppingCart" }) clearCart: any;
 
-  @Action('update', { namespace: 'shoppingCart' }) updateInCart: any
+  @Action("update", { namespace: "shoppingCart" }) updateInCart: any;
 
-  @Action('remove', { namespace: 'shoppingCart' }) removeFromCart: any
+  @Action("remove", { namespace: "shoppingCart" }) removeFromCart: any;
 
-  loading = false
+  loading = false;
 
   get sortedItems() {
-    return sortBy(this.cartItems, 'name')
+    return sortBy(this.cartItems, "name");
   }
 
   get total() {
     return sumArray(
       this.cartItems.map((item) => this.sum(item)).filter((item) => item)
-    )
+    );
   }
 
   sum(cartItem) {
-    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
+    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount);
   }
 
   closeModal() {
-    this.$comlink.$emit('close-modal')
+    this.$comlink.$emit("close-modal");
   }
 
   async refreshForType(collection, type) {
@@ -177,24 +177,24 @@ export default class ShoppingCart extends Vue {
           .filter((item) => item.type === type)
           .map((item) => item.id),
       },
-    })
+    });
 
-    items.forEach((item) => this.updateInCart({ item, type }))
+    items.forEach((item) => this.updateInCart({ item, type }));
   }
 
   async refresh() {
-    this.loading = true
-    await this.refreshForType(ComponentsCollection, 'Component')
-    await this.refreshForType(CommoditiesCollection, 'Commodity')
-    await this.refreshForType(EquipmentCollection, 'Equipment')
-    await this.refreshForType(ModelsCollection, 'Model')
+    this.loading = true;
+    await this.refreshForType(ComponentsCollection, "Component");
+    await this.refreshForType(CommoditiesCollection, "Commodity");
+    await this.refreshForType(EquipmentCollection, "Equipment");
+    await this.refreshForType(ModelsCollection, "Model");
     // await this.refreshForType(ModelPaintsCollection, 'ModelPaint')
     // await this.refreshForType(ModelModulesCollection, 'ModelModule')
-    this.loading = false
+    this.loading = false;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

@@ -1,18 +1,18 @@
 type AdminShopCommodity = {
-  id: string
-}
+  id: string;
+};
 
 type AdminShopCommodityForm = {
-  id: string
-  commodtyItemId: string
-  commodtyItemType: string
-}
+  id: string;
+  commodtyItemId: string;
+  commodtyItemType: string;
+};
 
 type AdminShopCommodityFilter = {
-  componentItemTypeIn: string[]
-}
+  componentItemTypeIn: string[];
+};
 
 interface AdminShopCommodityParams extends CollectionParams {
-  filters?: AdminShopCommodityFilter
-  shopId: string
+  filters?: AdminShopCommodityFilter;
+  shopId: string;
 }

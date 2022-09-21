@@ -30,12 +30,12 @@
 </template>
 
 <script>
-import FleetchartSlider from '@/embed/components/Fleetchart/Slider/index.vue'
-import FleetchartItem from '@/embed/components/Fleetchart/Item/index.vue'
-import { mapGetters } from 'vuex'
+import FleetchartSlider from "@/embed/components/Fleetchart/Slider/index.vue";
+import FleetchartItem from "@/embed/components/Fleetchart/Item/index.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'FleetchartList',
+  name: "FleetchartList",
 
   components: {
     FleetchartSlider,
@@ -57,41 +57,41 @@ export default {
   data() {
     return {
       internalModels: [],
-    }
+    };
   },
 
   computed: {
-    ...mapGetters(['grouping', 'fleetchartScale', 'fleetchartGrouping']),
+    ...mapGetters(["grouping", "fleetchartScale", "fleetchartGrouping"]),
   },
 
   watch: {
     models() {
-      this.internalModels = [...this.models]
-      this.internalModels.sort(this.sortByFleetchartLength)
+      this.internalModels = [...this.models];
+      this.internalModels.sort(this.sortByFleetchartLength);
     },
   },
 
   mounted() {
-    this.internalModels = [...this.models]
-    this.internalModels.sort(this.sortByFleetchartLength)
+    this.internalModels = [...this.models];
+    this.internalModels.sort(this.sortByFleetchartLength);
   },
 
   methods: {
     updateFleetchartScale(value) {
-      this.$store.commit('setFleetchartScale', value)
+      this.$store.commit("setFleetchartScale", value);
     },
 
     sortByFleetchartLength(a, b) {
       if (a.fleetchartLength > b.fleetchartLength) {
-        return -1
+        return -1;
       }
 
       if (a.fleetchartLength < b.fleetchartLength) {
-        return 1
+        return 1;
       }
 
-      return 0
+      return 0;
     },
   },
-}
+};
 </script>

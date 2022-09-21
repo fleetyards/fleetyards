@@ -1,38 +1,38 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class ModelPaintsCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: ModelPaint[] = []
+  records: ModelPaint[] = [];
 
-  params: ModelPaintParams | null = null
+  params: ModelPaintParams | null = null;
 
   async findAll(params: ModelPaintParams): Promise<ModelPaint[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('model-paints', {
+    const response = await get("model-paints", {
       q: params.filters,
       page: params?.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 
   async findAllByModel(modelSlug: string): Promise<ModelPaint[]> {
-    const response = await get(`models/${modelSlug}/paints`)
+    const response = await get(`models/${modelSlug}/paints`);
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new ModelPaintsCollection()
+export default new ModelPaintsCollection();

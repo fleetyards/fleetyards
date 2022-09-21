@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t('headlines.starsystems') }}
+          {{ $t("headlines.starsystems") }}
         </h1>
       </div>
     </div>
@@ -60,7 +60,7 @@
             >
               <template v-if="starsystem.celestialObjects.length">
                 <h3 class="sr-only">
-                  {{ $t('headlines.celestialObjects') }}
+                  {{ $t("headlines.celestialObjects") }}
                 </h3>
                 <transition-group name="fade-list" class="row" tag="div" appear>
                   <div
@@ -101,17 +101,17 @@
 </template>
 
 <script>
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import Pagination from '@/frontend/mixins/Pagination'
-import { scrollToAnchor } from '@/frontend/utils/scrolling'
-import StarsystemList from '@/frontend/components/Starsystems/List/index.vue'
-import PlanetPanel from '@/frontend/components/Planets/Panel/index.vue'
-import mapImageUrl from '@/images/map.png'
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import Pagination from "@/frontend/mixins/Pagination";
+import { scrollToAnchor } from "@/frontend/utils/scrolling";
+import StarsystemList from "@/frontend/components/Starsystems/List/index.vue";
+import PlanetPanel from "@/frontend/components/Planets/Panel/index.vue";
+import mapImageUrl from "@/images/map.png";
 
 export default {
-  name: 'StarsystemsIndex',
+  name: "StarsystemsIndex",
 
   components: {
     Loader,
@@ -127,40 +127,40 @@ export default {
       loading: false,
       mapImageUrl,
       starsystems: [],
-    }
+    };
   },
 
   watch: {
     $route() {
-      this.fetch()
+      this.fetch();
     },
   },
 
   created() {
-    this.fetch()
+    this.fetch();
   },
 
   methods: {
     async fetch() {
-      this.loading = true
-      const response = await this.$api.get('starsystems', {
+      this.loading = true;
+      const response = await this.$api.get("starsystems", {
         q: this.$route.query.q,
         page: this.$route.query.page,
-      })
-      this.loading = false
+      });
+      this.loading = false;
       if (!response.error) {
-        this.starsystems = response.data
+        this.starsystems = response.data;
 
         this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash)
-        })
+          scrollToAnchor(this.$route.hash);
+        });
       }
-      this.setPages(response.meta)
+      this.setPages(response.meta);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

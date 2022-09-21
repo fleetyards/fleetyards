@@ -1,11 +1,11 @@
 type Station = {
-  id: string
-}
+  id: string;
+};
 
 type StationsFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface StationParams extends CollectionParams {
-  filters: StationsFilter
+  filters: StationsFilter;
 }

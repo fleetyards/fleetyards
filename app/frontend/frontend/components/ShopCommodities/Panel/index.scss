@@ -1,4 +1,4 @@
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 .teaser-panel {
   display: flex;
@@ -26,7 +26,7 @@
     overflow: hidden;
     font-weight: 400;
     font-size: 20px;
-    font-family: 'Orbitron', tahoma, sans-serif;
+    font-family: "Orbitron", tahoma, sans-serif;
     white-space: nowrap;
     text-overflow: ellipsis;
   }

@@ -1,9 +1,9 @@
 export default {
   reset({ commit }) {
-    commit('reset')
+    commit("reset");
   },
 
   save({ commit }, payload) {
-    commit('addToHistory', payload)
+    commit("addToHistory", payload);
   },
-}
+};

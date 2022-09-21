@@ -23,11 +23,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
 
 @Component<ComponentPanel>({
   components: {
@@ -37,23 +37,23 @@ import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locati
   },
 })
 export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) commodity!: Component
+  @Prop({ required: true }) commodity!: Component;
 
-  @Prop({ default: true }) showStats!: boolean
+  @Prop({ default: true }) showStats!: boolean;
 
   get tradeRouteRoute() {
     return {
-      name: 'trade-routes',
+      name: "trade-routes",
       query: {
         q: {
           commodityIn: [this.commodity.slug],
         },
       },
-    }
+    };
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

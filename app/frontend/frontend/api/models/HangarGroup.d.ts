@@ -1,10 +1,10 @@
 type HangarGroup = {
-  id: string
-  name: string
-  color: string
-}
+  id: string;
+  name: string;
+  color: string;
+};
 
 type HangarGroupForm = {
-  name: string
-  color: string
-}
+  name: string;
+  color: string;
+};

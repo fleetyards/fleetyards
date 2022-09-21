@@ -8,7 +8,7 @@
               :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
             />
             <h1>
-              {{ $t('headlines.hangar.stats') }}
+              {{ $t("headlines.hangar.stats") }}
             </h1>
           </div>
         </div>
@@ -22,7 +22,7 @@
                 <div class="panel-box-text">
                   {{ totalCount }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.stats.quickStats.totalShips') }}
+                    {{ $t("labels.stats.quickStats.totalShips") }}
                   </div>
                 </div>
               </div>
@@ -37,7 +37,7 @@
                 <div class="panel-box-text">
                   {{ minCrew }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.hangarMetrics.totalMinCrew') }}
+                    {{ $t("labels.hangarMetrics.totalMinCrew") }}
                   </div>
                 </div>
               </div>
@@ -52,7 +52,7 @@
                 <div class="panel-box-text">
                   {{ maxCrew }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.hangarMetrics.totalMaxCrew') }}
+                    {{ $t("labels.hangarMetrics.totalMaxCrew") }}
                   </div>
                 </div>
               </div>
@@ -67,7 +67,7 @@
                 <div class="panel-box-text">
                   {{ totalCargo }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.hangarMetrics.totalCargo') }}
+                    {{ $t("labels.hangarMetrics.totalCargo") }}
                   </div>
                 </div>
               </div>
@@ -79,7 +79,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByClassification') }}
+                  {{ $t("labels.stats.modelsByClassification") }}
                 </h2>
               </div>
               <Chart
@@ -94,7 +94,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsBySize') }}
+                  {{ $t("labels.stats.modelsBySize") }}
                 </h2>
               </div>
               <Chart
@@ -111,7 +111,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByProductionStatus') }}
+                  {{ $t("labels.stats.modelsByProductionStatus") }}
                 </h2>
               </div>
               <Chart
@@ -126,7 +126,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByManufacturer') }}
+                  {{ $t("labels.stats.modelsByManufacturer") }}
                 </h2>
               </div>
               <Chart
@@ -144,13 +144,13 @@
 </template>
 
 <script>
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Chart from '@/frontend/core/components/Chart/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Chart from "@/frontend/core/components/Chart/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 
 export default {
-  name: 'HangarStats',
+  name: "HangarStats",
 
   components: {
     Chart,
@@ -163,91 +163,91 @@ export default {
   data() {
     return {
       quickStats: null,
-    }
+    };
   },
 
   computed: {
     totalCount() {
       if (!this.quickStats) {
-        return 0
+        return 0;
       }
 
-      return this.quickStats.total
+      return this.quickStats.total;
     },
 
     minCrew() {
       if (!this.quickStats) {
-        return this.$toNumber(0, 'people')
+        return this.$toNumber(0, "people");
       }
 
-      return this.$toNumber(this.quickStats.metrics.totalMinCrew, 'people')
+      return this.$toNumber(this.quickStats.metrics.totalMinCrew, "people");
     },
 
     maxCrew() {
       if (!this.quickStats) {
-        return this.$toNumber(0, 'people')
+        return this.$toNumber(0, "people");
       }
 
-      return this.$toNumber(this.quickStats.metrics.totalMaxCrew, 'people')
+      return this.$toNumber(this.quickStats.metrics.totalMaxCrew, "people");
     },
 
     totalCargo() {
       if (!this.quickStats) {
-        return this.$toNumber(0, 'cargo')
+        return this.$toNumber(0, "cargo");
       }
 
-      return this.$toNumber(this.quickStats.metrics.totalCargo, 'cargo')
+      return this.$toNumber(this.quickStats.metrics.totalCargo, "cargo");
     },
   },
 
   mounted() {
-    this.loadQuickStats()
+    this.loadQuickStats();
   },
 
   methods: {
     async loadQuickStats() {
-      const response = await this.$api.get('vehicles/quick-stats')
+      const response = await this.$api.get("vehicles/quick-stats");
       if (!response.error) {
-        this.quickStats = response.data
+        this.quickStats = response.data;
       }
     },
     async loadModelsByClassification() {
       const response = await this.$api.get(
-        'vehicles/stats/models-by-classification'
-      )
+        "vehicles/stats/models-by-classification"
+      );
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
 
     async loadModelsBySize() {
-      const response = await this.$api.get('vehicles/stats/models-by-size')
+      const response = await this.$api.get("vehicles/stats/models-by-size");
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
 
     async loadModelsByManufacturer() {
       const response = await this.$api.get(
-        'vehicles/stats/models-by-manufacturer'
-      )
+        "vehicles/stats/models-by-manufacturer"
+      );
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
 
     async loadModelsByProductionStatus() {
       const response = await this.$api.get(
-        'vehicles/stats/models-by-production-status'
-      )
+        "vehicles/stats/models-by-production-status"
+      );
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
   },
-}
+};
 </script>

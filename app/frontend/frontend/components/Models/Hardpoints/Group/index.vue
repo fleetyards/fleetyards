@@ -32,27 +32,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { groupBy, sortBy } from '@/frontend/lib/Helpers'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import radarIconUrl from '@/images/hardpoints/radar.svg'
-import computersIconUrl from '@/images/hardpoints/computers.svg'
-import powerPlantsIconUrl from '@/images/hardpoints/power_plants.svg'
-import coolersIconUrl from '@/images/hardpoints/coolers.svg'
-import shieldGeneratorsIconUrl from '@/images/hardpoints/shield_generators.svg'
-import fuelIntakesIconUrl from '@/images/hardpoints/fuel_intakes.svg'
-import fuelTanksIconUrl from '@/images/hardpoints/fuel_tanks.svg'
-import quantumDrivesIconUrl from '@/images/hardpoints/quantum_drives.svg'
-import jumpModulesIconUrl from '@/images/hardpoints/jump_modules.svg'
-import quantumFuelTanksIconUrl from '@/images/hardpoints/quantum_fuel_tanks.svg'
-import mainThrustersIconUrl from '@/images/hardpoints/main_thrusters.svg'
-import maneuveringThrustersIconUrl from '@/images/hardpoints/maneuvering_thrusters.svg'
-import weaponsIconUrl from '@/images/hardpoints/weapons.svg'
-import turretsIconUrl from '@/images/hardpoints/turrets.svg'
-import missilesIconUrl from '@/images/hardpoints/missiles.svg'
-import utilityItemsIconUrl from '@/images/hardpoints/utility_items.svg'
-import HardpointItems from '../Items/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { groupBy, sortBy } from "@/frontend/lib/Helpers";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import radarIconUrl from "@/images/hardpoints/radar.svg";
+import computersIconUrl from "@/images/hardpoints/computers.svg";
+import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
+import coolersIconUrl from "@/images/hardpoints/coolers.svg";
+import shieldGeneratorsIconUrl from "@/images/hardpoints/shield_generators.svg";
+import fuelIntakesIconUrl from "@/images/hardpoints/fuel_intakes.svg";
+import fuelTanksIconUrl from "@/images/hardpoints/fuel_tanks.svg";
+import quantumDrivesIconUrl from "@/images/hardpoints/quantum_drives.svg";
+import jumpModulesIconUrl from "@/images/hardpoints/jump_modules.svg";
+import quantumFuelTanksIconUrl from "@/images/hardpoints/quantum_fuel_tanks.svg";
+import mainThrustersIconUrl from "@/images/hardpoints/main_thrusters.svg";
+import maneuveringThrustersIconUrl from "@/images/hardpoints/maneuvering_thrusters.svg";
+import weaponsIconUrl from "@/images/hardpoints/weapons.svg";
+import turretsIconUrl from "@/images/hardpoints/turrets.svg";
+import missilesIconUrl from "@/images/hardpoints/missiles.svg";
+import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
+import HardpointItems from "../Items/index.vue";
 
 @Component<HardpointGroup>({
   components: {
@@ -61,11 +61,11 @@ import HardpointItems from '../Items/index.vue'
   },
 })
 export default class HardpointGroup extends Vue {
-  @Prop({ required: true }) group: HardpointGroup
+  @Prop({ required: true }) group: HardpointGroup;
 
-  @Prop({ required: true }) hardpoints: ModelHardpoint[]
+  @Prop({ required: true }) hardpoints: ModelHardpoint[];
 
-  @Prop({ default: false }) withoutTitle: boolean
+  @Prop({ default: false }) withoutTitle: boolean;
 
   icons = {
     radar: radarIconUrl,
@@ -84,34 +84,34 @@ export default class HardpointGroup extends Vue {
     turrets: turretsIconUrl,
     missiles: missilesIconUrl,
     utility_items: utilityItemsIconUrl,
-  }
+  };
 
   grouped(type) {
-    return ['main_thrusters', 'maneuvering_thrusters'].includes(type)
+    return ["main_thrusters", "maneuvering_thrusters"].includes(type);
   }
 
   groupByType(hardpoints) {
-    return groupBy(sortBy(hardpoints, 'type'), 'type')
+    return groupBy(sortBy(hardpoints, "type"), "type");
   }
 
   groupByKey(hardpoints) {
-    return groupBy(sortBy(hardpoints, 'category'), 'key')
+    return groupBy(sortBy(hardpoints, "category"), "key");
   }
 
   openComponentModal(hardpoint) {
     if (!hardpoint.component) {
-      return
+      return;
     }
 
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
         import(
-          '@/frontend/components/Models/Hardpoints/ComponentModal/index.vue'
+          "@/frontend/components/Models/Hardpoints/ComponentModal/index.vue"
         ),
       props: {
         hardpoint,
       },
-    })
+    });
   }
 }
 </script>
