@@ -1,11 +1,11 @@
 type AdminModelPaint = {
-  id: string
-}
+  id: string;
+};
 
 type AdminModelPaintFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface AdminModelPaintParams extends CollectionParams {
-  filters: AdminModelPaintFilter
+  filters: AdminModelPaintFilter;
 }

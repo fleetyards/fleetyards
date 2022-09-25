@@ -6,7 +6,7 @@ body {
   position: relative;
   min-width: 320px;
   min-height: 100%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   background-color: $background;
 }
 
@@ -82,10 +82,10 @@ body {
     height: 50px;
     margin-top: -25px;
     margin-left: -25px;
-    background-image: image-url('@/images/loading.gif');
+    background-image: image-url("@/images/loading.gif");
     background-position: center;
     background-size: 100%;
-    content: '';
+    content: "";
   }
 }
 

@@ -8,7 +8,7 @@
   >
     <i class="fal fa-upload" />
     <span>
-      {{ $t('actions.import') }}
+      {{ $t("actions.import") }}
       <VueUploadComponent
         ref="upload"
         name="uploadAvatar"
@@ -23,16 +23,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import VueUploadComponent from 'vue-upload-component'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import VueUploadComponent from "vue-upload-component";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 import {
   displayWarning,
   displayAlert,
   displaySuccess,
   displayConfirm,
-} from '@/frontend/lib/Noty'
+} from "@/frontend/lib/Noty";
 
 @Component({
   components: {
@@ -41,48 +41,48 @@ import {
   },
 })
 export default class HangarImportBtn extends Vue {
-  fileExtensions = 'json'
+  fileExtensions = "json";
 
-  disabled = false
+  disabled = false;
 
-  acceptedMimeTypes = 'application/json'
+  acceptedMimeTypes = "application/json";
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
       return (
-        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+        ["default", "transparent", "link", "danger", "dropdown"].indexOf(
           value
         ) !== -1
-      )
+      );
     },
   })
-  variant!: string
+  variant!: string;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+      return ["default", "small", "large"].indexOf(value) !== -1;
     },
   })
-  size!: string
+  size!: string;
 
   get fileExtensionsList() {
-    return this.fileExtensions.split(',')
+    return this.fileExtensions.split(",");
   }
 
   selectFile() {
-    this.disabled = true
+    this.disabled = true;
 
     displayConfirm({
-      text: this.$t('messages.confirm.hangar.import'),
+      text: this.$t("messages.confirm.hangar.import"),
       onConfirm: async () => {
-        this.$refs.upload.$el.querySelector('input').click()
+        this.$refs.upload.$el.querySelector("input").click();
       },
       onCancel: () => {
-        this.disabled = false
+        this.disabled = false;
       },
-    })
+    });
   }
 
   inputFilter(newFile, oldFile, prevent) {
@@ -93,64 +93,64 @@ export default class HangarImportBtn extends Vue {
         )
       ) {
         displayAlert({
-          text: this.$t('messages.hangarImport.invalidExtension', {
+          text: this.$t("messages.hangarImport.invalidExtension", {
             extensions: this.fileExtensions,
           }),
-        })
-        return prevent()
+        });
+        return prevent();
       }
     }
     if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
       // eslint-disable-next-line no-param-reassign
-      newFile.url = ''
+      newFile.url = "";
       // eslint-disable-next-line compat/compat
-      const URL = window.URL || window.webkitURL
+      const URL = window.URL || window.webkitURL;
       if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign
-        newFile.url = URL.createObjectURL(newFile.file)
+        newFile.url = URL.createObjectURL(newFile.file);
       }
     }
 
-    return null
+    return null;
   }
 
   async importJson(value) {
-    const importFile = (value && value[0]) || {}
+    const importFile = (value && value[0]) || {};
 
     if (!importFile || !importFile.file) {
-      return
+      return;
     }
 
-    const uploadData = new FormData()
-    uploadData.append('import', importFile.file)
+    const uploadData = new FormData();
+    uploadData.append("import", importFile.file);
 
-    const response = await this.$api.upload('vehicles/import', uploadData)
+    const response = await this.$api.upload("vehicles/import", uploadData);
 
-    this.disabled = false
+    this.disabled = false;
 
     if (response.error || !response.data.success) {
       displayAlert({
-        text: this.$t('messages.hangarImport.failure'),
-      })
-      return
+        text: this.$t("messages.hangarImport.failure"),
+      });
+      return;
     }
 
-    const { data } = response
+    const { data } = response;
 
     if (data.missing.length) {
       displayWarning({
-        text: this.$t('messages.hangarImport.partialSuccess', {
-          missing: `- ${data.missing.join('<br>- ')}`,
+        text: this.$t("messages.hangarImport.partialSuccess", {
+          missing: `- ${data.missing.join("<br>- ")}`,
         }),
         timeout: null,
-      })
+      });
     } else {
       displaySuccess({
-        text: this.$t('messages.hangarImport.success'),
-      })
+        text: this.$t("messages.hangarImport.success"),
+      });
     }
 
-    this.$emit('uploaded')
+    this.$emit("uploaded");
   }
 }
 </script>

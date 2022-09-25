@@ -58,23 +58,23 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { debounce } from 'ts-debounce'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import componentItemTypeFiltersCollection from '@/admin/api/collections/ComponentItemTypeFilters'
-import equipmentItemTypeFiltersCollection from '@/admin/api/collections/EquipmentItemTypeFilters'
-import equipmentTypeFiltersCollection from '@/admin/api/collections/EquipmentTypeFilters'
-import equipmentSlotFiltersCollection from '@/admin/api/collections/EquipmentSlotFilters'
-import { getFilters, isFilterSelected } from '@/frontend/utils/Filters'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { debounce } from "ts-debounce";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import componentItemTypeFiltersCollection from "@/admin/api/collections/ComponentItemTypeFilters";
+import equipmentItemTypeFiltersCollection from "@/admin/api/collections/EquipmentItemTypeFilters";
+import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
+import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
+import { getFilters, isFilterSelected } from "@/frontend/utils/Filters";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 
 @Component<ShopCommoditiesFilterForm>({
   components: {
@@ -85,44 +85,44 @@ import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFil
 })
 export default class ShopCommoditiesFilterForm extends Vue {
   componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
-    componentItemTypeFiltersCollection
+    componentItemTypeFiltersCollection;
 
   equipmentItemTypeFiltersCollection: EquipmentItemTypeFiltersCollection =
-    equipmentItemTypeFiltersCollection
+    equipmentItemTypeFiltersCollection;
 
   equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
-    equipmentTypeFiltersCollection
+    equipmentTypeFiltersCollection;
 
   equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
-    equipmentSlotFiltersCollection
+    equipmentSlotFiltersCollection;
 
-  loading = false
+  loading = false;
 
-  search: string = null
+  search: string = null;
 
   form = {
     component_item_type: [],
     equipment_item_type: [],
     equipment_type: [],
     equipment_slot: [],
-  }
+  };
 
-  filter = debounce(this.debouncedFilter, 500)
+  filter = debounce(this.debouncedFilter, 500);
 
   get isFilterSelected() {
-    return isFilterSelected(this.$route.query.filters)
+    return isFilterSelected(this.$route.query.filters);
   }
 
-  @Watch('form', {
+  @Watch("form", {
     deep: true,
   })
   onFormChange() {
-    this.filter()
+    this.filter();
   }
 
-  @Watch('search')
+  @Watch("search")
   onSearchChange() {
-    this.filter()
+    this.filter();
   }
 
   resetFilter() {
@@ -132,7 +132,7 @@ export default class ShopCommoditiesFilterForm extends Vue {
         query: {},
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
+      .catch((_err) => {});
   }
 
   debouncedFilter() {
@@ -146,26 +146,26 @@ export default class ShopCommoditiesFilterForm extends Vue {
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
+      .catch((_err) => {});
   }
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
-    const filters = this.$route.query.filters || {}
+    const filters = this.$route.query.filters || {};
     this.form = {
       component_item_type: filters.component_item_type || [],
       equipment_item_type: filters.equipment_item_type || [],
       equipment_type: filters.equipment_type || [],
       equipment_slot: filters.equipment_slot || [],
-    }
+    };
   }
 }
 </script>

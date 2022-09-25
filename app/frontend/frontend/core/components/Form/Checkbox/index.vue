@@ -24,11 +24,11 @@
 
 <script>
 export default {
-  name: 'FormCheckbox',
+  name: "FormCheckbox",
   props: {
     id: {
       type: String,
-      default: '',
+      default: "",
     },
 
     label: {
@@ -60,30 +60,30 @@ export default {
   data() {
     return {
       internalValue: null,
-    }
+    };
   },
 
   computed: {
     checkboxID() {
       // eslint-disable-next-line no-underscore-dangle
-      return `${this.id}-${this._uid.toString()}`
+      return `${this.id}-${this._uid.toString()}`;
     },
   },
 
   watch: {
     value() {
-      this.internalValue = this.value
+      this.internalValue = this.value;
     },
   },
 
   mounted() {
-    this.internalValue = this.value
+    this.internalValue = this.value;
   },
 
   methods: {
     update() {
-      this.$emit('input', this.internalValue)
+      this.$emit("input", this.internalValue);
     },
   },
-}
+};
 </script>

@@ -15,7 +15,7 @@ $color2: #3197ee;
     padding-top: 2px;
   }
 
-  input[type='radio'] {
+  input[type="radio"] {
     position: absolute;
     opacity: 0;
 
@@ -32,7 +32,7 @@ $color2: #3197ee;
       border-radius: 100%;
       cursor: pointer;
       transition: all 250ms ease;
-      content: '';
+      content: "";
     }
 
     &:checked + .radio-label::before {

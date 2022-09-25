@@ -1,20 +1,20 @@
-import axios from 'axios'
-import nprogress from 'nprogress'
-import linkHeaderParser from 'parse-link-header'
+import axios from "axios";
+import nprogress from "nprogress";
+import linkHeaderParser from "parse-link-header";
 
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
   headers: {
     common: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
   },
-})
+});
 
 const extractMetaInfo = function extractMetaInfo(headers, params) {
-  const links = linkHeaderParser(headers.link)
-  let meta = null
+  const links = linkHeaderParser(headers.link);
+  let meta = null;
   if (links) {
     meta = {
       currentPage: parseInt(params.page || 1, 10),
@@ -22,41 +22,41 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
         (links.last && links.last.page) || params.page || 1,
         10
       ),
-    }
+    };
   }
-  return meta
-}
+  return meta;
+};
 
 const handleError = async function handleError(error, silent) {
   if (!silent) {
-    nprogress.done()
+    nprogress.done();
   }
 
   return {
     data: null,
     meta: null,
     error,
-  }
-}
+  };
+};
 
 const handleResponse = function handleResponse(response, params, silent) {
   if (!silent) {
-    nprogress.done()
+    nprogress.done();
   }
 
-  const meta = extractMetaInfo(response.headers, params)
+  const meta = extractMetaInfo(response.headers, params);
 
   return {
     data: response.data,
     error: null,
     meta,
     params,
-  }
-}
+  };
+};
 
 export async function get(path, params = {}, silent = false) {
   if (!silent) {
-    nprogress.start()
+    nprogress.start();
   }
   try {
     return handleResponse(
@@ -65,20 +65,20 @@ export async function get(path, params = {}, silent = false) {
       }),
       params,
       silent
-    )
+    );
   } catch (error) {
-    return handleError(error, silent)
+    return handleError(error, silent);
   }
 }
 
 const apiClient = {
   get,
   client,
-}
+};
 
 export default {
   install(Vue) {
     // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$api = apiClient
+    Vue.prototype.$api = apiClient;
   },
-}
+};

@@ -14,15 +14,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class Panel extends Vue {
-  @Prop({ default: 'fal fa-plus' }) icon!: string
+  @Prop({ default: "fal fa-plus" }) icon!: string;
 
-  @Prop({ required: true }) action!
+  @Prop({ required: true }) action!;
 
-  @Prop({ default: null }) label!: string
+  @Prop({ default: null }) label!: string;
 }
 </script>

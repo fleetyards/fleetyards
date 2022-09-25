@@ -100,13 +100,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
-import SmallLoader from '@/frontend/core/components/SmallLoader/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import debounce from 'lodash.debounce'
-import InfiniteLoading from 'vue-infinite-loading'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { BCollapse } from "bootstrap-vue";
+import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import debounce from "lodash.debounce";
+import InfiniteLoading from "vue-infinite-loading";
 
 @Component<CollectionFilterGroup>({
   components: {
@@ -117,159 +117,159 @@ import InfiniteLoading from 'vue-infinite-loading'
   },
 })
 export default class CollectionFilterGroup extends Vue {
-  visible = false
+  visible = false;
 
-  search: string | null = null
+  search: string | null = null;
 
-  page = 1
+  page = 1;
 
-  loading = false
+  loading = false;
 
-  selectedId: string = null
+  selectedId: string = null;
 
-  id: string = null
+  id: string = null;
 
-  fetchedOptions: FilterGroupOption[] = []
+  fetchedOptions: FilterGroupOption[] = [];
 
-  onSearch = debounce(this.debouncedOnSearch, 500)
+  onSearch = debounce(this.debouncedOnSearch, 500);
 
-  @Prop({ required: true }) collection!: BaseCollection
+  @Prop({ required: true }) collection!: BaseCollection;
 
-  @Prop({ default: 'findAll' }) collectionMethod: string
+  @Prop({ default: "findAll" }) collectionMethod: string;
 
   @Prop({
     default: () => ({}),
   })
-  collectionFilter!: any
+  collectionFilter!: any;
 
-  @Prop({ required: true }) name!: string
+  @Prop({ required: true }) name!: string;
 
   @Prop({
     default() {
       if (this.multiple) {
-        return []
+        return [];
       }
-      return null
+      return null;
     },
   })
-  value!: string[] | string | number | any | null
+  value!: string[] | string | number | any | null;
 
-  @Prop({ default: 'value' }) valueAttr!: string
+  @Prop({ default: "value" }) valueAttr!: string;
 
-  @Prop({ default: 'name' }) labelAttr!: string
+  @Prop({ default: "name" }) labelAttr!: string;
 
-  @Prop({ default: 'icon' }) iconAttr!: string
+  @Prop({ default: "icon" }) iconAttr!: string;
 
-  @Prop({ default: false }) multiple!: boolean
+  @Prop({ default: false }) multiple!: boolean;
 
-  @Prop({ default: false }) disabled!: boolean
+  @Prop({ default: false }) disabled!: boolean;
 
-  @Prop({ default: false }) searchable!: boolean
+  @Prop({ default: false }) searchable!: boolean;
 
-  @Prop({ default: false }) returnObject!: boolean
+  @Prop({ default: false }) returnObject!: boolean;
 
-  @Prop({ default: true }) nullable!: boolean
+  @Prop({ default: true }) nullable!: boolean;
 
-  @Prop({ default: null }) error!: string
+  @Prop({ default: null }) error!: string;
 
-  @Prop({ default: false }) paginated!: boolean
+  @Prop({ default: false }) paginated!: boolean;
 
-  @Prop({ default: false }) hideLabelOnEmpty!: boolean
+  @Prop({ default: false }) hideLabelOnEmpty!: boolean;
 
-  @Prop({ default: null }) label!: string | null
+  @Prop({ default: null }) label!: string | null;
 
-  @Prop({ default: 'filterGroup' }) translationKey!: string
+  @Prop({ default: "filterGroup" }) translationKey!: string;
 
-  @Prop({ default: false }) noLabel!: boolean
+  @Prop({ default: false }) noLabel!: boolean;
 
-  @Prop({ default: false }) bigIcon!: boolean
+  @Prop({ default: false }) bigIcon!: boolean;
 
-  @Prop({ default: null }) searchLabel!: string | null
+  @Prop({ default: null }) searchLabel!: string | null;
 
   get prompt() {
     if (this.multiple) {
-      return this.label
+      return this.label;
     }
 
     if (this.selectedOptions.length > 0) {
-      return this.selectedOptions[0][this.labelAttr]
+      return this.selectedOptions[0][this.labelAttr];
     }
 
     if (this.nullable) {
-      return this.$t(`labels.${this.translationKey}.nullablePrompt`)
+      return this.$t(`labels.${this.translationKey}.nullablePrompt`);
     }
 
-    return this.$t(`labels.${this.translationKey}.prompt`)
+    return this.$t(`labels.${this.translationKey}.prompt`);
   }
 
   get labelVisible() {
-    return !this.hideLabelOnEmpty || this.selectedOptions.length > 0
+    return !this.hideLabelOnEmpty || this.selectedOptions.length > 0;
   }
 
   get innerLabel() {
     if (this.label) {
-      return this.label
+      return this.label;
     }
 
-    if (this.translationKey && this.translationKey !== 'filterGroup') {
-      return this.$t(`labels.${this.translationKey}.label`)
+    if (this.translationKey && this.translationKey !== "filterGroup") {
+      return this.$t(`labels.${this.translationKey}.label`);
     }
 
-    return this.$t(`labels.${this.id}`)
+    return this.$t(`labels.${this.id}`);
   }
 
   get groupID() {
-    return `${this.name}-${this._uid.toString()}`
+    return `${this.name}-${this._uid.toString()}`;
   }
 
   get availableOptions() {
     if (this.paginated) {
-      return this.sort(this.fetchedOptions)
+      return this.sort(this.fetchedOptions);
     }
-    return this.fetchedOptions
+    return this.fetchedOptions;
   }
 
   get selectedOptions() {
     if (this.multiple) {
       return this.availableOptions.filter(
         (item) => this.value && this.value.includes(item[this.valueAttr])
-      )
+      );
     }
     const selectedOption = this.availableOptions.find(
       (item) => item[this.valueAttr] === this.value
-    )
-    return selectedOption ? [selectedOption] : []
+    );
+    return selectedOption ? [selectedOption] : [];
   }
 
   get filteredOptions() {
     if (this.search) {
       return this.availableOptions.filter((item) =>
         item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase())
-      )
+      );
     }
-    return this.availableOptions
+    return this.availableOptions;
   }
 
   get cssClasses() {
     return {
-      'has-error has-feedback': this.error,
-    }
+      "has-error has-feedback": this.error,
+    };
   }
 
-  @Watch('collectionFilter', { deep: true })
+  @Watch("collectionFilter", { deep: true })
   onCollectionFilterChange(newValue, oldValue) {
     if (
       Object.entries(newValue).toString() !==
       Object.entries(oldValue).toString()
     ) {
-      this.fetchedOptions = []
-      this.fetchOptions()
+      this.fetchedOptions = [];
+      this.fetchOptions();
     }
   }
 
-  @Watch('disabled')
+  @Watch("disabled")
   onDisabled() {
-    this.fetchOptions()
+    this.fetchOptions();
   }
 
   queryParams(args) {
@@ -277,56 +277,56 @@ export default class CollectionFilterGroup extends Vue {
       filters: {
         ...this.collectionFilter,
       },
-    }
+    };
     if (args.search && this.searchable) {
-      query.filters.nameCont = args.search
+      query.filters.nameCont = args.search;
     } else if (args.missingValue && this.paginated) {
-      query.filters[`${this.valueAttr}Eq`] = args.missingValue
+      query.filters[`${this.valueAttr}Eq`] = args.missingValue;
     } else if (args.page && this.paginated) {
-      query.page = args.page
+      query.page = args.page;
     }
 
-    return query
+    return query;
   }
 
   created() {
-    this.selectedId = this._uid.toString()
-    this.id = this._uid.toString()
+    this.selectedId = this._uid.toString();
+    this.id = this._uid.toString();
 
-    document.addEventListener('click', this.documentClick)
+    document.addEventListener("click", this.documentClick);
   }
 
   mounted() {
-    this.fetchOptions()
+    this.fetchOptions();
   }
 
   destroyed() {
-    document.removeEventListener('click', this.documentClick)
+    document.removeEventListener("click", this.documentClick);
   }
 
   documentClick(event) {
-    const element = this.$refs.filterGroup
-    const { target } = event
+    const element = this.$refs.filterGroup;
+    const { target } = event;
 
     if (element !== target && !element.contains(target)) {
-      this.visible = false
+      this.visible = false;
     }
   }
 
   debouncedOnSearch() {
     if (this.paginated && this.search) {
-      this.page = 1
-      this.fetchOptions()
+      this.page = 1;
+      this.fetchOptions();
     }
   }
 
   async fetchOptions() {
     if (this.disabled) {
-      this.fetchMissingOption()
-      return
+      this.fetchMissingOption();
+      return;
     }
 
-    this.loading = true
+    this.loading = true;
 
     const options = await this.collection[this.collectionMethod]({
       ...this.queryParams({
@@ -334,19 +334,19 @@ export default class CollectionFilterGroup extends Vue {
         search: this.search,
       }),
       cacheId: this.groupID,
-    })
+    });
 
-    this.$emit('loaded', options)
+    this.$emit("loaded", options);
 
-    this.loading = false
+    this.loading = false;
 
     if (this.$refs.infiniteLoading) {
-      this.$refs.infiniteLoading.$emit('infinite-loading-reset')
+      this.$refs.infiniteLoading.$emit("infinite-loading-reset");
     }
 
     if (options) {
-      this.addOptions(options)
-      this.fetchMissingOption()
+      this.addOptions(options);
+      this.fetchMissingOption();
     }
   }
 
@@ -356,56 +356,56 @@ export default class CollectionFilterGroup extends Vue {
       (this.multiple && this.selectedOptions.length === this.value.length) ||
       (!this.multiple && this.selectedOptions[0] === this.value)
     ) {
-      return
+      return;
     }
 
-    this.loading = true
+    this.loading = true;
 
     const options = await this.collection[this.collectionMethod]({
       ...this.queryParams({
         missingValue: this.value,
       }),
       cacheId: `${this.groupID}-missing`,
-    })
+    });
 
-    this.loading = false
+    this.loading = false;
     if (options.length) {
-      this.addOptions(options)
+      this.addOptions(options);
     }
   }
 
   async fetchMore($state) {
-    this.loading = true
-    this.page += 1
+    this.loading = true;
+    this.page += 1;
 
     const options = await this.collection[this.collectionMethod](
       this.queryParams({
         page: this.page,
       })
-    )
+    );
 
-    $state.loaded()
+    $state.loaded();
 
-    this.loading = false
+    this.loading = false;
 
     if (options.length) {
-      this.addOptions(options)
+      this.addOptions(options);
     } else {
-      $state.complete()
+      $state.complete();
     }
   }
 
   sort(options) {
-    const sortedOptions = JSON.parse(JSON.stringify(options))
+    const sortedOptions = JSON.parse(JSON.stringify(options));
     return sortedOptions.sort((a, b) => {
       if (a[this.labelAttr] < b[this.labelAttr]) {
-        return -1
+        return -1;
       }
       if (a[this.labelAttr] > b[this.labelAttr]) {
-        return 1
+        return 1;
       }
-      return 0
-    })
+      return 0;
+    });
   }
 
   addOptions(newOptions) {
@@ -415,69 +415,69 @@ export default class CollectionFilterGroup extends Vue {
           (option) => option[this.valueAttr] === item[this.valueAttr]
         )
       ) {
-        this.fetchedOptions.push(item)
+        this.fetchedOptions.push(item);
       }
-    })
+    });
   }
 
   clearSearch() {
-    this.search = null
+    this.search = null;
   }
 
   selected(option) {
     if (this.multiple) {
-      return this.value && this.value.includes(option)
+      return this.value && this.value.includes(option);
     }
 
-    return this.value === option
+    return this.value === option;
   }
 
   select(option) {
-    this.clearSearch()
+    this.clearSearch();
 
     if (this.selected(option)) {
       if (this.multiple) {
         this.$emit(
-          'input',
+          "input",
           this.value.filter((item) => item !== option)
-        )
+        );
       } else if (this.nullable) {
-        this.$emit('input', null)
+        this.$emit("input", null);
       }
     } else if (this.multiple) {
-      const selected = JSON.parse(JSON.stringify(this.value))
-      selected.push(option)
-      this.$emit('input', selected)
-      this.focusSearch()
+      const selected = JSON.parse(JSON.stringify(this.value));
+      selected.push(option);
+      this.$emit("input", selected);
+      this.focusSearch();
     } else {
-      this.$emit('input', option)
-      this.toggle()
+      this.$emit("input", option);
+      this.toggle();
     }
   }
 
   unselect(option) {
     this.$emit(
-      'input',
+      "input",
       this.value.filter((item) => item !== option)
-    )
+    );
   }
 
   toggle() {
     if (this.disabled) {
-      return
+      return;
     }
 
-    this.visible = !this.visible
-    this.focusSearch()
+    this.visible = !this.visible;
+    this.focusSearch();
   }
 
   focusSearch() {
     if (this.searchable && this.visible) {
       this.$nextTick(() => {
         if (this.$refs.searchInput) {
-          this.$refs.searchInput.setFocus()
+          this.$refs.searchInput.setFocus();
         }
-      })
+      });
     }
   }
 }

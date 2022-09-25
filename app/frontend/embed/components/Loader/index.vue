@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'LoaderComponent',
+  name: "LoaderComponent",
 
   props: {
     loading: {
@@ -31,5 +31,5 @@ export default {
       default: false,
     },
   },
-}
+};
 </script>

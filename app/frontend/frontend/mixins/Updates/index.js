@@ -1,6 +1,6 @@
-import { mapGetters } from 'vuex'
-import { I18n } from '@/frontend/lib/I18n'
-import { displayInfo } from '@/frontend/lib/Noty'
+import { mapGetters } from "vuex";
+import { I18n } from "@/frontend/lib/I18n";
+import { displayInfo } from "@/frontend/lib/Noty";
 
 export default {
   mixins: [I18n],
@@ -8,51 +8,51 @@ export default {
   data() {
     return {
       channels: {},
-    }
+    };
   },
 
   computed: {
-    ...mapGetters('session', ['isAuthenticated']),
+    ...mapGetters("session", ["isAuthenticated"]),
   },
 
   mounted() {
-    this.setupUpdates()
+    this.setupUpdates();
   },
 
   beforeDestroy() {
-    this.disconnectUpdates()
+    this.disconnectUpdates();
   },
 
   watch: {
     isAuthenticated() {
-      this.disconnectUpdates()
-      this.setupUpdates()
+      this.disconnectUpdates();
+      this.setupUpdates();
     },
   },
 
   methods: {
     setupUpdates() {
-      this.setupAppVersionChannel()
+      this.setupAppVersionChannel();
 
       if (this.isAuthenticated) {
-        this.setupOnSaleVehiclesChannel()
-        this.setupOnSaleChannel()
-        this.setupHangarCreateChannel()
-        this.setupHangarDestroyChannel()
+        this.setupOnSaleVehiclesChannel();
+        this.setupOnSaleChannel();
+        this.setupHangarCreateChannel();
+        this.setupHangarDestroyChannel();
       }
     },
 
     disconnectUpdates() {
       Object.keys(this.channels).forEach((channel) => {
-        this.unsubscribeChannel(channel)
-      })
+        this.unsubscribeChannel(channel);
+      });
 
-      this.$cable.refresh()
+      this.$cable.refresh();
     },
 
     unsubscribeChannel(channel) {
-      this.channels[channel].unsubscribe()
-      delete this.channels[channel]
+      this.channels[channel].unsubscribe();
+      delete this.channels[channel];
     },
 
     connected(_channel) {
@@ -60,149 +60,149 @@ export default {
     },
 
     disconnected(channel) {
-      this.unsubscribeChannel(channel)
+      this.unsubscribeChannel(channel);
       // console.info('Disconnected from Channel:', channel)
     },
 
     setupAppVersionChannel() {
       this.channels.appVersion = this.$cable.consumer.subscriptions.create(
         {
-          channel: 'AppVersionChannel',
+          channel: "AppVersionChannel",
         },
         {
           received: this.updateAppVersion,
           connected: () => {
-            this.connected('appVersion', this.channels.appVersion)
+            this.connected("appVersion", this.channels.appVersion);
           },
           disconnected: () => {
-            this.disconnected('appVersion')
+            this.disconnected("appVersion");
           },
         }
-      )
+      );
     },
 
     setupHangarCreateChannel() {
       if (this.channels.hangarCreate) {
-        return
+        return;
       }
       this.channels.hangarCreate = this.$cable.consumer.subscriptions.create(
         {
-          channel: 'HangarCreateChannel',
+          channel: "HangarCreateChannel",
         },
         {
           received: this.addShipToHangar,
           connected: () => {
-            this.connected('hangarCreate')
+            this.connected("hangarCreate");
           },
           disconnected: () => {
-            this.disconnected('hangarCreate')
+            this.disconnected("hangarCreate");
           },
         }
-      )
+      );
     },
 
     setupHangarDestroyChannel() {
       if (this.channels.hangarDestroy) {
-        return
+        return;
       }
       this.channels.hangarDestroy = this.$cable.consumer.subscriptions.create(
         {
-          channel: 'HangarDestroyChannel',
+          channel: "HangarDestroyChannel",
         },
         {
           received: this.removeShipFromHangar,
           connected: () => {
-            this.connected('hangarDestroy')
+            this.connected("hangarDestroy");
           },
           disconnected: () => {
-            this.disconnected('hangarDestroy')
+            this.disconnected("hangarDestroy");
           },
         }
-      )
+      );
     },
 
     setupOnSaleVehiclesChannel() {
       if (this.channels.onSaleHangar) {
-        return
+        return;
       }
       this.channels.onSaleHangar = this.$cable.consumer.subscriptions.create(
         {
-          channel: 'OnSaleHangarChannel',
+          channel: "OnSaleHangarChannel",
         },
         {
           received: this.notifyVehicleOnSale,
           connected: () => {
-            this.connected('onSaleHangar')
+            this.connected("onSaleHangar");
           },
           disconnected: () => {
-            this.disconnected('onSaleHangar')
+            this.disconnected("onSaleHangar");
           },
         }
-      )
+      );
     },
 
     setupOnSaleChannel() {
       if (this.channels.onSale) {
-        return
+        return;
       }
       this.channels.onSale = this.$cable.consumer.subscriptions.create(
         {
-          channel: 'OnSaleChannel',
+          channel: "OnSaleChannel",
         },
         {
           received: this.notifyOnSale,
           connected: () => {
-            this.connected('onSale')
+            this.connected("onSale");
           },
           disconnected: () => {
-            this.disconnected('onSale')
+            this.disconnected("onSale");
           },
         }
-      )
+      );
     },
 
     updateAppVersion(data) {
-      this.$store.dispatch('app/updateVersion', JSON.parse(data))
+      this.$store.dispatch("app/updateVersion", JSON.parse(data));
     },
 
     addShipToHangar(data) {
-      const vehicle = JSON.parse(data)
+      const vehicle = JSON.parse(data);
 
       if (!vehicle.model) {
-        return
+        return;
       }
 
-      this.$store.dispatch('hangar/add', vehicle.model.slug)
+      this.$store.dispatch("hangar/add", vehicle.model.slug);
     },
 
     removeShipFromHangar(data) {
-      const vehicle = JSON.parse(data)
+      const vehicle = JSON.parse(data);
 
       if (!vehicle.model) {
-        return
+        return;
       }
 
-      this.$store.dispatch('hangar/remove', vehicle.model.slug)
+      this.$store.dispatch("hangar/remove", vehicle.model.slug);
     },
 
     notifyVehicleOnSale(data) {
-      const vehicle = JSON.parse(data)
+      const vehicle = JSON.parse(data);
 
       displayInfo({
-        text: I18n.t('messages.model.onSale', {
+        text: I18n.t("messages.model.onSale", {
           model: vehicle.model.name,
         }),
         icon: vehicle.model.storeImageSmall,
-      })
+      });
     },
 
     notifyOnSale(data) {
-      const model = JSON.parse(data)
+      const model = JSON.parse(data);
 
       displayInfo({
-        text: I18n.t('messages.model.onSale', { model: model.name }),
+        text: I18n.t("messages.model.onSale", { model: model.name }),
         icon: model.storeImageSmall,
-      })
+      });
     },
   },
-}
+};

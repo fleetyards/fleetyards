@@ -71,15 +71,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch, Prop } from 'vue-property-decorator'
-import { Action, Mutation, Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Paginator from '@/frontend/core/components/Paginator/index.vue'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
-import { scrollToAnchor } from '@/frontend/utils/scrolling'
-import { isFilterSelected } from '@/frontend/utils/Filters'
+import Vue from "vue";
+import { Component, Watch, Prop } from "vue-property-decorator";
+import { Action, Mutation, Getter } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Paginator from "@/frontend/core/components/Paginator/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
+import { scrollToAnchor } from "@/frontend/utils/scrolling";
+import { isFilterSelected } from "@/frontend/utils/Filters";
 
 @Component<FilteredList>({
   components: {
@@ -90,79 +90,79 @@ import { isFilterSelected } from '@/frontend/utils/Filters'
   },
 })
 export default class FilteredList extends Vue {
-  loading = true
+  loading = true;
 
-  fullscreen = false
+  fullscreen = false;
 
-  @Prop({ required: true }) collection!: BaseCollection
+  @Prop({ required: true }) collection!: BaseCollection;
 
-  @Prop({ required: true }) name!: string
+  @Prop({ required: true }) name!: string;
 
-  @Prop({ default: null }) recordListClass!: string
+  @Prop({ default: null }) recordListClass!: string;
 
   @Prop({
     default() {
-      return {}
+      return {};
     },
   })
-  params: RouteParams
+  params: RouteParams;
 
-  @Prop({ default: 'findAll' }) collectionMethod: string
+  @Prop({ default: "findAll" }) collectionMethod: string;
 
-  @Prop({ default: null }) routeQuery: RouteQuery
+  @Prop({ default: null }) routeQuery: RouteQuery;
 
-  @Prop({ default: null }) hash: string
+  @Prop({ default: null }) hash: string;
 
-  @Prop({ default: false }) paginated: boolean
+  @Prop({ default: false }) paginated: boolean;
 
-  @Prop({ default: false }) alwaysFilterVisible: boolean
+  @Prop({ default: false }) alwaysFilterVisible: boolean;
 
-  @Prop({ default: false }) hideEmptyBox: boolean
+  @Prop({ default: false }) hideEmptyBox: boolean;
 
-  @Prop({ default: false }) hideLoading: boolean
+  @Prop({ default: false }) hideLoading: boolean;
 
-  @Prop({ default: 'q' }) routeFilterName: string
+  @Prop({ default: "q" }) routeFilterName: string;
 
-  @Getter('filtersVisible') filtersVisible
+  @Getter("filtersVisible") filtersVisible;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Action('toggleFilterVisible') toggleFilterVisible
+  @Action("toggleFilterVisible") toggleFilterVisible;
 
-  @Mutation('setFiltersVisible') setFiltersVisible
+  @Mutation("setFiltersVisible") setFiltersVisible;
 
-  @Mutation('setFilters') setFilters
+  @Mutation("setFilters") setFilters;
 
   get filters() {
-    return this.routeQuery[this.routeFilterName]
+    return this.routeQuery[this.routeFilterName];
   }
 
   get search() {
-    return this.routeQuery.search
+    return this.routeQuery.search;
   }
 
   get hasFilterSlot() {
-    return !!this.$slots.filter
+    return !!this.$slots.filter;
   }
 
   get page() {
-    return parseInt(this.routeQuery.page, 10) || 1
+    return parseInt(this.routeQuery.page, 10) || 1;
   }
 
   get filterVisible() {
-    return !!this.filtersVisible[this.name] && this.hasFilterSlot
+    return !!this.filtersVisible[this.name] && this.hasFilterSlot;
   }
 
   get filterTooltip() {
     if (this.filterVisible) {
-      return this.$t('actions.hideFilter')
+      return this.$t("actions.hideFilter");
     }
 
-    return this.$t('actions.showFilter')
+    return this.$t("actions.showFilter");
   }
 
   get isFilterSelected() {
-    return isFilterSelected(this.filters)
+    return isFilterSelected(this.filters);
   }
 
   get emptyBoxVisible() {
@@ -170,99 +170,99 @@ export default class FilteredList extends Vue {
       !this.loading &&
       !this.collection.records.length &&
       (this.isFilterSelected || (this.paginated && this.page))
-    )
+    );
   }
 
-  @Watch('filters', { deep: true })
+  @Watch("filters", { deep: true })
   onFiltersChange() {
-    this.saveFilters()
+    this.saveFilters();
   }
 
-  @Watch('routeQuery')
+  @Watch("routeQuery")
   onPageChange() {
-    this.fetch()
+    this.fetch();
   }
 
   created() {
     if (this.collection.records.length) {
-      this.collection.records = []
+      this.collection.records = [];
     }
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
 
     if (this.mobile) {
       this.setFiltersVisible({
         [this.name]: false,
-      })
+      });
     } else if (this.alwaysFilterVisible) {
       this.setFiltersVisible({
         [this.name]: true,
-      })
+      });
     }
 
-    this.toggleFullscreen()
-    this.saveFilters()
+    this.toggleFullscreen();
+    this.saveFilters();
 
-    this.$comlink.$on('filteredListUpdate', this.fetch)
+    this.$comlink.$on("filteredListUpdate", this.fetch);
   }
 
   beforeDestroy() {
-    this.$comlink.$off('filteredListUpdate')
+    this.$comlink.$off("filteredListUpdate");
   }
 
   saveFilters() {
     if (this.isFilterSelected) {
       this.setFilters({
         [this.name]: { ...this.filters },
-      })
+      });
 
-      return
+      return;
     }
 
     this.setFilters({
       [this.name]: null,
-    })
+    });
   }
 
   toggleFullscreen() {
-    this.fullscreen = !this.filterVisible
+    this.fullscreen = !this.filterVisible;
   }
 
   toggleFilter() {
-    this.toggleFilterVisible(this.name)
+    this.toggleFilterVisible(this.name);
   }
 
   async fetch() {
-    this.loading = true
+    this.loading = true;
 
     let params = {
       search: this.search,
       filters: this.filters,
-    }
+    };
 
     if (this.paginated) {
       params = {
         ...params,
         ...this.params,
         page: this.page,
-      }
+      };
     }
 
     if (!this.collection[this.collectionMethod]) {
-      throw Error(`Method "${this.collectionMethod}" not found on Collection`)
+      throw Error(`Method "${this.collectionMethod}" not found on Collection`);
     }
 
-    await this.collection[this.collectionMethod](params)
+    await this.collection[this.collectionMethod](params);
 
     this.$nextTick(() => {
-      scrollToAnchor(this.hash)
-    })
+      scrollToAnchor(this.hash);
+    });
 
     setTimeout(() => {
-      this.loading = false
-    }, 300)
+      this.loading = false;
+    }, 300);
   }
 }
 </script>

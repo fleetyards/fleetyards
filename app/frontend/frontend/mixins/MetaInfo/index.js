@@ -1,12 +1,12 @@
 export default {
   computed: {
     metaTitle() {
-      const { title } = this.$route.meta
+      const { title } = this.$route.meta;
       if (title) {
-        return this.$t(`title.${title}`)
+        return this.$t(`title.${title}`);
       }
 
-      return null
+      return null;
     },
   },
 
@@ -15,11 +15,11 @@ export default {
       title: this.metaTitle,
       titleTemplate(title) {
         if (title) {
-          return `${title} | ${this.$t('app')}`
+          return `${title} | ${this.$t("app")}`;
         }
 
-        return this.$t('app')
+        return this.$t("app");
       },
-    }
+    };
   },
-}
+};

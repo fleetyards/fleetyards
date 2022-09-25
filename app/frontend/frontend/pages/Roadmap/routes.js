@@ -1,20 +1,20 @@
 export const routes = [
   {
-    path: 'changes/',
-    name: 'roadmap-changes',
-    component: () => import('@/frontend/pages/Roadmap/Changes/index.vue'),
+    path: "changes/",
+    name: "roadmap-changes",
+    component: () => import("@/frontend/pages/Roadmap/Changes/index.vue"),
     meta: {
-      title: 'roadmap.changes',
+      title: "roadmap.changes",
     },
   },
   {
-    path: 'ships/',
-    name: 'roadmap-ships',
-    component: () => import('@/frontend/pages/Roadmap/Ships/index.vue'),
+    path: "ships/",
+    name: "roadmap-ships",
+    component: () => import("@/frontend/pages/Roadmap/Ships/index.vue"),
     meta: {
-      title: 'roadmap.ships',
+      title: "roadmap.ships",
     },
   },
-]
+];
 
-export default routes
+export default routes;

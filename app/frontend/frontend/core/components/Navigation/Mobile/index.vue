@@ -118,7 +118,7 @@
         @click.stop.prevent="toggle"
       >
         <span class="sr-only">
-          {{ $t('labels.toggleNavigation') }}
+          {{ $t("labels.toggleNavigation") }}
         </span>
         <span class="icon-bar top-bar" />
         <span class="icon-bar middle-bar" />
@@ -129,12 +129,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { isFleetRoute } from '@/frontend/utils/Routes/Fleets'
-import fleetsApiCollection from '@/frontend/api/collections/Fleets'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { isFleetRoute } from "@/frontend/utils/Routes/Fleets";
+import fleetsApiCollection from "@/frontend/api/collections/Fleets";
 
 @Component<NavigationHeader>({
   components: {
@@ -142,64 +142,64 @@ import fleetsApiCollection from '@/frontend/api/collections/Fleets'
   },
 })
 export default class NavigationHeader extends Vue {
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Getter('filters') filters
+  @Getter("filters") filters;
 
-  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
+  @Getter("navCollapsed", { namespace: "app" }) navCollapsed!: boolean;
 
-  @Getter('isAuthenticated', { namespace: 'session' })
-  isAuthenticated!: boolean
+  @Getter("isAuthenticated", { namespace: "session" })
+  isAuthenticated!: boolean;
 
-  @Getter('preview', { namespace: 'hangar' }) hangarPreview
+  @Getter("preview", { namespace: "hangar" }) hangarPreview;
 
-  @Action('toggleNav', { namespace: 'app' }) toggle
+  @Action("toggleNav", { namespace: "app" }) toggle;
 
-  fleetsCollection: FleetsCollection = fleetsApiCollection
+  fleetsCollection: FleetsCollection = fleetsApiCollection;
 
   get isFleetRoute() {
-    return isFleetRoute(this.$route.name)
+    return isFleetRoute(this.$route.name);
   }
 
   get currentFleet(): Fleet | null {
-    return this.fleetsCollection.record
+    return this.fleetsCollection.record;
   }
 
   get shipsNavActive() {
-    return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
+    return ["fleet-ships", "fleet-fleetchart"].includes(this.$route.name);
   }
 
   get firstLetter() {
-    return this.currentFleet?.name?.charAt(0)
+    return this.currentFleet?.name?.charAt(0);
   }
 
   filterFor(route) {
     // // TODO: disabled until vue-router supports navigation to same route
     // return null
     if (!this.filters[route]) {
-      return null
+      return null;
     }
 
     return {
       q: this.filters[route],
-    }
+    };
   }
 
   routeActive(route) {
-    return route === this.$route.name
+    return route === this.$route.name;
   }
 
   mounted() {
-    this.fetchFleet()
-    this.$comlink.$on('fleet-update', this.fetchFleet)
+    this.fetchFleet();
+    this.$comlink.$on("fleet-update", this.fetchFleet);
   }
 
   async fetchFleet() {
     if (!this.isFleetRoute) {
-      return
+      return;
     }
 
-    await this.fleetsCollection.findBySlug(this.$route.params.slug)
+    await this.fleetsCollection.findBySlug(this.$route.params.slug);
   }
 }
 </script>

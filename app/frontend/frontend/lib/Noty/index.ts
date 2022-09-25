@@ -1,45 +1,45 @@
-import Noty from 'noty'
-import { isBefore, addSeconds } from 'date-fns'
-import { I18n } from '@/frontend/lib/I18n'
-import { FleetyardsNotyOptions } from './index.d'
+import Noty from "noty";
+import { isBefore, addSeconds } from "date-fns";
+import { I18n } from "@/frontend/lib/I18n";
+import { FleetyardsNotyOptions } from "./index.d";
 
 Noty.overrideDefaults({
   callbacks: {
     onTemplate() {
-      if (this.options.category === 'confirm') {
+      if (this.options.category === "confirm") {
         this.barDom.innerHTML = `
           <div class="noty_body">${this.options.text}</div>
-        `
-        const buttons: string[] = []
+        `;
+        const buttons: string[] = [];
         this.options.buttons.forEach((button) => {
-          const inner = document.createElement('div')
-          inner.setAttribute('class', 'panel-btn-inner')
-          inner.textContent = button.dom.textContent
-          button.dom.removeChild(button.dom.childNodes[0])
-          button.dom.appendChild(inner)
-          buttons.push(button.dom.outerHTML as string)
-        })
+          const inner = document.createElement("div");
+          inner.setAttribute("class", "panel-btn-inner");
+          inner.textContent = button.dom.textContent;
+          button.dom.removeChild(button.dom.childNodes[0]);
+          button.dom.appendChild(inner);
+          buttons.push(button.dom.outerHTML as string);
+        });
 
         this.barDom.innerHTML += `
           <div class="noty_buttons">
-            ${buttons.join('')}
+            ${buttons.join("")}
           </div>
           <div class="noty_close_button override">
             <i class="fal fa-times"></i>
           </div>
           <div class="noty_progressbar"></div>
-        `
+        `;
       }
 
-      if (this.options.category === 'notification') {
+      if (this.options.category === "notification") {
         this.barDom.innerHTML = `
           <div class="noty_body">${this.options.text}</div>
-        `
+        `;
 
         if (this.options.icon) {
           this.barDom.innerHTML += `
             <div class="noty_icon"><img src="${this.options.icon}" alt="icon" /></div>
-          `
+          `;
         }
 
         this.barDom.innerHTML += `
@@ -47,18 +47,18 @@ Noty.overrideDefaults({
             <i class="fal fa-times"></i>
           </div>
           <div class="noty_progressbar"></div>
-        `
+        `;
       }
     },
   },
-})
+});
 
 const notifyPermissionGranted = function notifyPermissionGranted() {
   return (
     // eslint-disable-next-line compat/compat
-    'Notification' in window && window.Notification.permission === 'granted'
-  )
-}
+    "Notification" in window && window.Notification.permission === "granted"
+  );
+};
 
 const displayDesktopNotification = function displayDesktopNotification(
   message
@@ -66,102 +66,102 @@ const displayDesktopNotification = function displayDesktopNotification(
   // eslint-disable-next-line compat/compat
   const notification = new window.Notification(message, {
     // eslint-disable-next-line global-require
-    icon: `${window.FRONTEND_ENDPOINT}${require('@/images/favicon.png')}`,
-  })
+    icon: `${window.FRONTEND_ENDPOINT}${require("@/images/favicon.png")}`,
+  });
 
-  return notification
-}
+  return notification;
+};
 
 const displayNativeNotification = function displayNativeNotification(message) {
-  if ('serviceWorker' in navigator) {
+  if ("serviceWorker" in navigator) {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker.ready.then(
       (registration) => {
         if (!registration.showNotification) {
-          return
+          return;
         }
 
         registration.showNotification(message, {
           icon: `${window.FRONTEND_ENDPOINT}/images/favicon.png`,
           vibrate: [200, 100, 200, 100, 200, 100, 200],
-        })
+        });
       },
       () => {
-        displayDesktopNotification(message)
+        displayDesktopNotification(message);
       }
-    )
+    );
   } else {
-    displayDesktopNotification(message)
+    displayDesktopNotification(message);
   }
-}
+};
 
 const notifyInBackground = function notifyInBackground(text) {
-  displayNativeNotification(text)
-}
+  displayNativeNotification(text);
+};
 
-let lastNotyText = ''
-let lastNotyAt: Date | null = null
+let lastNotyText = "";
+let lastNotyAt: Date | null = null;
 
 const notyBackoff = function notyBackoff(text) {
   if (lastNotyText !== text) {
-    return false
+    return false;
   }
-  const lastNoty = JSON.parse(JSON.stringify(lastNotyAt))
+  const lastNoty = JSON.parse(JSON.stringify(lastNotyAt));
   if (isBefore(addSeconds(new Date(lastNoty), 2), new Date())) {
-    return false
+    return false;
   }
-  return true
-}
+  return true;
+};
 
 const displayNotification = function displayNotification(options) {
   const defaults = {
     text: null,
-    type: 'info',
+    type: "info",
     timeout: 3000,
     icon: null,
     notifyInBackground: true,
     ...options,
-  }
+  };
 
   if (defaults.text && !notyBackoff(defaults.text)) {
-    lastNotyAt = new Date()
-    lastNotyText = defaults.text
+    lastNotyAt = new Date();
+    lastNotyText = defaults.text;
 
-    let displayText = defaults.text
+    let displayText = defaults.text;
     if (
-      document.visibilityState !== 'visible' &&
+      document.visibilityState !== "visible" &&
       notifyPermissionGranted() &&
       defaults.notifyInBackground
     ) {
-      notifyInBackground(displayText.replace(/(<([^>]+)>)/gi, ''))
+      notifyInBackground(displayText.replace(/(<([^>]+)>)/gi, ""));
     } else {
       if (Array.isArray(displayText)) {
-        displayText = displayText.join('<br>')
+        displayText = displayText.join("<br>");
       }
       new Noty({
         text: displayText,
         type: defaults.type,
         icon: defaults.icon,
         timeout: defaults.timeout,
-        category: 'notification',
-        layout: 'topRight',
-        theme: 'metroui',
-        closeWith: ['click', 'button'],
+        category: "notification",
+        layout: "topRight",
+        theme: "metroui",
+        closeWith: ["click", "button"],
         animation: {
-          open: 'noty_effects_open',
-          close: 'noty_effects_close',
+          open: "noty_effects_open",
+          close: "noty_effects_close",
         },
         progressBar: true,
-      } as FleetyardsNotyOptions).show()
+      } as FleetyardsNotyOptions).show();
     }
   }
-}
+};
 
 export const displayConfirm = function displayConfirm(options) {
   const defaults = {
     text: null,
-    layout: 'center',
-    confirmBtnLayout: 'danger',
+    layout: "center",
+    confirmBtnLayout: "danger",
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onConfirm: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -169,92 +169,92 @@ export const displayConfirm = function displayConfirm(options) {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onClose: () => {},
     ...options,
-  }
+  };
 
-  let btnClass = ''
-  if (defaults.confirmBtnLayout !== 'default') {
-    btnClass = ` btn-${defaults.confirmBtnLayout}`
+  let btnClass = "";
+  if (defaults.confirmBtnLayout !== "default") {
+    btnClass = ` btn-${defaults.confirmBtnLayout}`;
   }
 
   const n = new Noty({
     text: defaults.text,
     layout: defaults.layout,
-    theme: 'metroui',
-    closeWith: ['click', 'button'],
-    id: 'noty-confirm',
-    category: 'confirm',
+    theme: "metroui",
+    closeWith: ["click", "button"],
+    id: "noty-confirm",
+    category: "confirm",
     animation: {
-      open: 'noty_effects_open',
-      close: 'noty_effects_close',
+      open: "noty_effects_open",
+      close: "noty_effects_close",
     },
     buttons: [
       Noty.button(
-        I18n.t('actions.confirm'),
+        I18n.t("actions.confirm"),
         `panel-btn panel-btn-inline${btnClass}`,
         () => {
-          n.close()
-          defaults.onConfirm()
+          n.close();
+          defaults.onConfirm();
         },
-        { 'data-status': 'ok' }
+        { "data-status": "ok" }
       ),
       Noty.button(
-        I18n.t('actions.cancel'),
-        'panel-btn panel-btn-inline',
+        I18n.t("actions.cancel"),
+        "panel-btn panel-btn-inline",
         () => {
-          n.close()
-          defaults.onCancel()
+          n.close();
+          defaults.onCancel();
         }
       ),
     ],
     callbacks: {
       onClose() {
-        defaults.onClose()
+        defaults.onClose();
       },
     },
-  } as FleetyardsNotyOptions)
+  } as FleetyardsNotyOptions);
 
-  n.show()
-}
+  n.show();
+};
 
 export function requestPermission() {
-  if (!('Notification' in window) || notifyPermissionGranted()) {
-    return
+  if (!("Notification" in window) || notifyPermissionGranted()) {
+    return;
   }
 
   // eslint-disable-next-line compat/compat
   window.Notification.requestPermission((permission) => {
-    if (permission === 'granted') {
-      displayNativeNotification(I18n.t('messages.notification.granted'))
+    if (permission === "granted") {
+      displayNativeNotification(I18n.t("messages.notification.granted"));
     }
-  })
+  });
 }
 
 export const displayAlert = function alert(options) {
   displayNotification({
     ...options,
-    type: 'error',
+    type: "error",
     timeout: 10000,
     notifyInBackground: false,
-  })
-}
+  });
+};
 
 export const displaySuccess = function success(options) {
   displayNotification({
     ...options,
-    type: 'success',
-  })
-}
+    type: "success",
+  });
+};
 
 export const displayInfo = function info(options) {
   displayNotification({
     ...options,
-    type: 'info',
-  })
-}
+    type: "info",
+  });
+};
 
 export const displayWarning = function warning(options) {
   displayNotification({
     ...options,
-    type: 'warning',
-  })
-}
+    type: "warning",
+  });
+};

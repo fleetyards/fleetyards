@@ -1,33 +1,33 @@
-import { formatISO } from 'date-fns'
+import { formatISO } from "date-fns";
 
 export default {
   reset({ commit }) {
-    commit('reset')
+    commit("reset");
   },
 
   login({ commit }) {
-    commit('setAuthenticated', true)
+    commit("setAuthenticated", true);
   },
 
   async logout({ commit }) {
-    commit('setAuthenticated', false)
-    commit('hangar/setShips', [], { root: true })
-    commit('setCurrentUser', null)
+    commit("setAuthenticated", false);
+    commit("hangar/setShips", [], { root: true });
+    commit("setCurrentUser", null);
   },
 
   hideCookiesInfo({ commit }) {
-    commit('setCookiesInfoVisible', false)
+    commit("setCookiesInfoVisible", false);
   },
 
   updateCookies({ commit }, payload) {
-    commit('setCookies', payload)
+    commit("setCookies", payload);
   },
 
   confirmAccess({ commit }) {
-    commit('setAccessConfirmed', formatISO(new Date()))
+    commit("setAccessConfirmed", formatISO(new Date()));
   },
 
   resetConfirmAccess({ commit }) {
-    commit('setAccessConfirmed', null)
+    commit("setAccessConfirmed", null);
   },
-}
+};

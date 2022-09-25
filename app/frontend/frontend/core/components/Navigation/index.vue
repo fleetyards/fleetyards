@@ -2,7 +2,7 @@
   <nav
     ref="navigation"
     :class="{
-      'visible': !navCollapsed,
+      visible: !navCollapsed,
       'nav-slim': slim,
     }"
     role="navigation"
@@ -22,7 +22,7 @@
               alt="logo"
             />
             <span v-if="!slim" class="logo-menu-label">
-              {{ $t('app') }}
+              {{ $t("app") }}
             </span>
           </NavItem>
           <FleetNav v-if="isFleetRoute" />
@@ -92,16 +92,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
-import FleetNav from '@/frontend/core/components/Navigation/FleetNav/index.vue'
-import FleetsNav from '@/frontend/core/components/Navigation/FleetsNav/index.vue'
-import StationsNav from '@/frontend/core/components/Navigation/StationsNav/index.vue'
-import NavFooter from '@/frontend/core/components/Navigation/NavFooter/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
-import { isFleetRoute } from '@/frontend/utils/Routes/Fleets'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
+import FleetNav from "@/frontend/core/components/Navigation/FleetNav/index.vue";
+import FleetsNav from "@/frontend/core/components/Navigation/FleetsNav/index.vue";
+import StationsNav from "@/frontend/core/components/Navigation/StationsNav/index.vue";
+import NavFooter from "@/frontend/core/components/Navigation/NavFooter/index.vue";
+import NavigationMixin from "@/frontend/mixins/Navigation";
+import { isFleetRoute } from "@/frontend/utils/Routes/Fleets";
 
 @Component<Navigation>({
   components: {
@@ -114,86 +114,86 @@ import { isFleetRoute } from '@/frontend/utils/Routes/Fleets'
   mixins: [NavigationMixin],
 })
 export default class Navigation extends Vue {
-  searchQuery = null
+  searchQuery = null;
 
-  @Getter('filters') filters
+  @Getter("filters") filters;
 
-  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed
+  @Getter("navCollapsed", { namespace: "app" }) navCollapsed;
 
-  @Getter('isUpdateAvailable', { namespace: 'app' }) isUpdateAvailable
+  @Getter("isUpdateAvailable", { namespace: "app" }) isUpdateAvailable;
 
-  @Getter('preview', { namespace: 'hangar' }) hangarPreview
+  @Getter("preview", { namespace: "hangar" }) hangarPreview;
 
   get isFleetRoute() {
-    return isFleetRoute(this.$route.name)
+    return isFleetRoute(this.$route.name);
   }
 
   get isRoadmapRoute() {
     if (!this.$route.name) {
-      return false
+      return false;
     }
 
-    return this.$route.name.includes('roadmap')
+    return this.$route.name.includes("roadmap");
   }
 
   get isModelRoute() {
     if (!this.$route.name) {
-      return false
+      return false;
     }
 
-    return this.$route.name.includes('model')
+    return this.$route.name.includes("model");
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.close()
+    this.close();
   }
 
   created() {
-    document.addEventListener('click', this.documentClick)
+    document.addEventListener("click", this.documentClick);
   }
 
   destroyed() {
-    document.removeEventListener('click', this.documentClick)
+    document.removeEventListener("click", this.documentClick);
   }
 
   beforeDestroy() {
-    this.close()
+    this.close();
   }
 
   filterFor(route) {
     // // TODO: disabled until vue-router supports navigation to same route
     // return null
     if (!this.filters[route]) {
-      return null
+      return null;
     }
 
     return {
       q: this.filters[route],
-    }
+    };
   }
 
   documentClick(event) {
-    const element = this.$refs.navigation
-    const { target } = event
+    const element = this.$refs.navigation;
+    const { target } = event;
 
     if (element !== target && !element.contains(target)) {
-      this.close()
+      this.close();
     }
   }
 
   open() {
-    this.$store.commit('app/openNav')
+    this.$store.commit("app/openNav");
   }
 
   close() {
-    this.$store.commit('app/closeNav')
+    this.$store.commit("app/closeNav");
   }
 
   reload() {
-    this.close()
+    this.close();
 
-    window.location.reload(true)
+    window.location.reload(true);
   }
 }
 </script>

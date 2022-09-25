@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import FleetchartItemImage from '@/embed/components/Fleetchart/Image/index.vue'
+import FleetchartItemImage from "@/embed/components/Fleetchart/Image/index.vue";
 
 export default {
-  name: 'FleetchartItem',
+  name: "FleetchartItem",
 
   components: {
     FleetchartItemImage,
@@ -40,12 +40,12 @@ export default {
 
   computed: {
     url() {
-      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
+      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`;
     },
 
     label() {
-      return `${this.model.manufacturer.code} ${this.model.name}`
+      return `${this.model.manufacturer.code} ${this.model.name}`;
     },
   },
-}
+};
 </script>

@@ -3,15 +3,15 @@
 </template>
 
 <script>
-import logoUrl from '@/images/community-logo.png'
+import logoUrl from "@/images/community-logo.png";
 
 export default {
-  name: 'CommunityLogo',
+  name: "CommunityLogo",
 
   computed: {
     logoUrl() {
-      return logoUrl
+      return logoUrl;
     },
   },
-}
+};
 </script>

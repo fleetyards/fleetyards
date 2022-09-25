@@ -22,11 +22,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import QuickSearch from '@/frontend/core/components/Navigation/QuickSearch/index.vue'
-import Search from '@/frontend/core/components/Navigation/Search/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import QuickSearch from "@/frontend/core/components/Navigation/QuickSearch/index.vue";
+import Search from "@/frontend/core/components/Navigation/Search/index.vue";
 
 @Component<NavigationHeader>({
   components: {
@@ -35,32 +35,32 @@ import Search from '@/frontend/core/components/Navigation/Search/index.vue'
   },
 })
 export default class NavigationHeader extends Vue {
-  @Getter('mobile') mobile!: boolean
+  @Getter("mobile") mobile!: boolean;
 
-  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed!: boolean
+  @Getter("navCollapsed", { namespace: "app" }) navCollapsed!: boolean;
 
-  @Getter('gitRevision', { namespace: 'app' }) gitRevision!: string
+  @Getter("gitRevision", { namespace: "app" }) gitRevision!: string;
 
-  @Action('toggleNav', { namespace: 'app' }) toggle
+  @Action("toggleNav", { namespace: "app" }) toggle;
 
   get environmentLabelClasses() {
-    const cssClasses = ['pill']
+    const cssClasses = ["pill"];
 
-    if (window.NODE_ENV === 'staging') {
-      cssClasses.push('pill-warning')
-    } else if (window.NODE_ENV === 'production') {
-      cssClasses.push('pill-danger')
+    if (window.NODE_ENV === "staging") {
+      cssClasses.push("pill-warning");
+    } else if (window.NODE_ENV === "production") {
+      cssClasses.push("pill-danger");
     }
 
-    return cssClasses
+    return cssClasses;
   }
 
   get nodeEnv() {
-    if (window.NODE_ENV === 'production') {
-      return null
+    if (window.NODE_ENV === "production") {
+      return null;
     }
 
-    return (window.NODE_ENV || '').toUpperCase()
+    return (window.NODE_ENV || "").toUpperCase();
   }
 }
 </script>

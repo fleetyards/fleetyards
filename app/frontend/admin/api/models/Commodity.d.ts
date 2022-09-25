@@ -1,11 +1,11 @@
 type AdminCommodity = {
-  id: string
-}
+  id: string;
+};
 
 type AdminCommodityFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface AdminCommodityParams extends CollectionParams {
-  filters: AdminCommodityFilter
+  filters: AdminCommodityFilter;
 }

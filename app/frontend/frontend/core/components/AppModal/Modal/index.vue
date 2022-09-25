@@ -23,9 +23,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 @Component<Modal>({
   components: {
@@ -34,10 +34,10 @@ import Panel from '@/frontend/core/components/Panel/index.vue'
 })
 export default class Modal extends Vue {
   @Prop({ required: true })
-  private title!: string
+  private title!: string;
 
   close() {
-    this.$comlink.$emit('close-modal')
+    this.$comlink.$emit("close-modal");
   }
 }
 </script>

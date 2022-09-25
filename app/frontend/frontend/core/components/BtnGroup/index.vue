@@ -5,18 +5,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class BtnGroup extends Vue {
-  @Prop({ default: false }) inline!: boolean
+  @Prop({ default: false }) inline!: boolean;
 
   get cssClasses() {
     return {
-      'panel-btn-group': true,
-      'panel-btn-group-inline': this.inline,
-    }
+      "panel-btn-group": true,
+      "panel-btn-group-inline": this.inline,
+    };
   }
 }
 </script>

@@ -2,16 +2,16 @@
   <div>
     <div class="metrics-label">{{ docks.length }}x {{ size }}:</div>
     <div class="metrics-value">
-      {{ sortedDocks.map((dock) => dock.name).join(', ') }}
+      {{ sortedDocks.map((dock) => dock.name).join(", ") }}
     </div>
   </div>
 </template>
 
 <script>
-import { sortBy } from '@/frontend/lib/Helpers'
+import { sortBy } from "@/frontend/lib/Helpers";
 
 export default {
-  name: 'StationsDocksItem',
+  name: "StationsDocksItem",
 
   props: {
     docks: {
@@ -27,10 +27,10 @@ export default {
 
   computed: {
     sortedDocks() {
-      return sortBy(this.docks, 'name')
+      return sortBy(this.docks, "name");
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

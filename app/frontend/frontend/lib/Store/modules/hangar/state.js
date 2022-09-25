@@ -4,14 +4,14 @@ export default () => ({
   filterVisible: true,
   fleetchartVisible: false,
   fleetchartZoomData: null,
-  fleetchartViewpoint: 'side',
+  fleetchartViewpoint: "side",
   fleetchartLabels: false,
-  fleetchartScreenHeight: '1x',
-  fleetchartMode: 'panzoom',
+  fleetchartScreenHeight: "1x",
+  fleetchartMode: "panzoom",
   fleetchartScale: 1,
   preview: true,
   money: true,
   starterGuideVisible: false,
   perPage: 30,
   gridView: true,
-})
+});

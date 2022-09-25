@@ -91,13 +91,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import HangarItemsMixin from '@/frontend/mixins/HangarItems'
-import { publicFleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
-import Avatar from '@/frontend/core/components/Avatar/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import HangarItemsMixin from "@/frontend/mixins/HangarItems";
+import { publicFleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
+import Avatar from "@/frontend/core/components/Avatar/index.vue";
 
 @Component<FleetDetail>({
   beforeRouteEnter: publicFleetRouteGuard,
@@ -108,42 +108,42 @@ import Avatar from '@/frontend/core/components/Avatar/index.vue'
 })
 export default class FleetDetail extends Vue {
   get fleet() {
-    return fleetsCollection.record
+    return fleetsCollection.record;
   }
 
   get description(): string | null {
     if (!this.fleet || !this.fleet.description) {
-      return null
+      return null;
     }
 
-    return this.fleet.description.replaceAll('\n', '<br>')
+    return this.fleet.description.replaceAll("\n", "<br>");
   }
 
   get metaTitle() {
     if (!this.fleet) {
-      return null
+      return null;
     }
 
-    return this.fleet.name
+    return this.fleet.name;
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetch()
+    this.fetch();
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
   }
 
   async fetch() {
-    await fleetsCollection.findBySlug(this.$route.params.slug)
+    await fleetsCollection.findBySlug(this.$route.params.slug);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 .heading {
   display: flex;

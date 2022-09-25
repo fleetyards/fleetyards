@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 @Component<AddonsModal>({
   components: {
@@ -43,54 +43,54 @@ import Panel from '@/frontend/core/components/Panel/index.vue'
   },
 })
 export default class AddonsModal extends Vue {
-  @Prop({ required: true }) value: string[]
+  @Prop({ required: true }) value: string[];
 
-  @Prop({ required: true }) packages: ModelModulePackage[]
+  @Prop({ required: true }) packages: ModelModulePackage[];
 
-  @Prop({ default: false }) editable: boolean
+  @Prop({ default: false }) editable: boolean;
 
-  internalValue: string[] = []
+  internalValue: string[] = [];
 
   mounted() {
-    this.internalValue = [...this.value]
+    this.internalValue = [...this.value];
   }
 
-  @Watch('internalValue')
+  @Watch("internalValue")
   onInternalValueChange() {
-    this.$emit('input', this.internalValue)
+    this.$emit("input", this.internalValue);
   }
 
   activatePackage(addonPackage) {
     if (!this.editable) {
-      return
+      return;
     }
 
-    this.internalValue = [...this.value]
+    this.internalValue = [...this.value];
 
     addonPackage.modules.forEach((module) => {
       const additionalPackageModules = addonPackage.modules.filter(
         (packageModule) => packageModule.id === module.id
-      )
-      const foundModules = this.internalValue.filter((id) => id === module.id)
+      );
+      const foundModules = this.internalValue.filter((id) => id === module.id);
 
       if (
         !foundModules.length ||
         foundModules.length < additionalPackageModules.length
       ) {
-        this.internalValue.push(module.id)
+        this.internalValue.push(module.id);
       }
-    })
+    });
   }
 
   selectedPackage(addonPackage) {
     return (
       JSON.stringify([...this.value].sort()) ===
       JSON.stringify(addonPackage.modules.map((module) => module.id).sort())
-    )
+    );
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

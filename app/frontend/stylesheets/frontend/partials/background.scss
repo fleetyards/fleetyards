@@ -11,58 +11,58 @@
   transition: background-image ease 0.5s;
 
   &.bg-0 {
-    background-image: url('@/images/bg-0.jpg');
+    background-image: url("@/images/bg-0.jpg");
 
     &.webp {
-      background-image: url('@/images/bg-0.webp');
+      background-image: url("@/images/bg-0.webp");
     }
   }
 
   &.bg-2 {
-    background-image: url('@/images/bg-2.jpg');
+    background-image: url("@/images/bg-2.jpg");
 
     &.webp {
-      background-image: url('@/images/bg-2.webp');
+      background-image: url("@/images/bg-2.webp");
     }
   }
 
   &.bg-5 {
-    background-image: url('@/images/bg-5.jpg');
+    background-image: url("@/images/bg-5.jpg");
 
     &.webp {
-      background-image: url('@/images/bg-5.webp');
+      background-image: url("@/images/bg-5.webp");
     }
   }
 
   &.bg-6 {
-    background-image: url('@/images/bg-6.jpg');
+    background-image: url("@/images/bg-6.jpg");
 
     &.webp {
-      background-image: url('@/images/bg-6.webp');
+      background-image: url("@/images/bg-6.webp");
     }
   }
 
   &.bg-7 {
-    background-image: url('@/images/bg-7.jpg');
+    background-image: url("@/images/bg-7.jpg");
 
     &.webp {
-      background-image: url('@/images/bg-7.webp');
+      background-image: url("@/images/bg-7.webp");
     }
   }
 
   &.bg-8 {
-    background-image: url('@/images/bg-8.jpg');
+    background-image: url("@/images/bg-8.jpg");
 
     &.webp {
-      background-image: url('@/images/bg-8.webp');
+      background-image: url("@/images/bg-8.webp");
     }
   }
 
   &.bg-404 {
-    background-image: url('@/images/bg-404.jpg');
+    background-image: url("@/images/bg-404.jpg");
 
     &.webp {
-      background-image: url('@/images/bg-404.webp');
+      background-image: url("@/images/bg-404.webp");
     }
   }
 }

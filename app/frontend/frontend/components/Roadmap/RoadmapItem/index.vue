@@ -30,7 +30,7 @@
             v-tooltip="$t('labels.roadmap.committed')"
             class="roadmap-item-committed"
           >
-            <span class="text-muted">{{ $t('labels.roadmap.committed') }}</span>
+            <span class="text-muted">{{ $t("labels.roadmap.committed") }}</span>
             <i class="far fa-check" />
           </div>
         </small>
@@ -40,7 +40,7 @@
         <li v-for="(update, index) in updates" :key="index">
           <template v-if="update.key === 'release' && !update.old">
             {{
-              $t('labels.roadmap.lastVersion.addedToRelease', {
+              $t("labels.roadmap.lastVersion.addedToRelease", {
                 release: update.new,
               })
             }}
@@ -70,27 +70,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import { isBefore, addHours } from 'date-fns'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import { isBefore, addHours } from "date-fns";
 
 // TODO: move to collection model or use openapi schema types when available
 type RoadmapItemData = {
-  name: string
-  description: string
-  lastVersionChangedAt: Date
+  name: string;
+  description: string;
+  lastVersionChangedAt: Date;
   lastVersion: {
     active: {
-      change: string
-      count: number
-    }[]
-    released: boolean
-    committed: boolean
-  }
-  recentlyUpdated: boolean
-  storeImage: string
-}
+      change: string;
+      count: number;
+    }[];
+    released: boolean;
+    committed: boolean;
+  };
+  recentlyUpdated: boolean;
+  storeImage: string;
+};
 
 @Component<RoadmapItem>({
   components: {
@@ -98,97 +98,97 @@ type RoadmapItemData = {
   },
 })
 export default class RoadmapItem extends Vue {
-  @Prop({ required: true }) item!: RoadmapItemData
+  @Prop({ required: true }) item!: RoadmapItemData;
 
-  @Prop({ default: true }) compact!: boolean
+  @Prop({ default: true }) compact!: boolean;
 
-  @Prop({ default: true }) showProgress!: boolean
+  @Prop({ default: true }) showProgress!: boolean;
 
-  @Prop({ default: null }) active!: boolean
+  @Prop({ default: null }) active!: boolean;
 
   get storeImage() {
     if (this.item.storeImageSmall) {
-      return this.item.storeImageSmall
+      return this.item.storeImageSmall;
     }
 
-    return `https://robertsspaceindustries.com${this.item.image}`
+    return `https://robertsspaceindustries.com${this.item.image}`;
   }
 
   get description() {
     if (this.item.body) {
-      return this.item.body
+      return this.item.body;
     }
 
-    return this.item.description
+    return this.item.description;
   }
 
   get recentlyUpdated() {
     return isBefore(
       new Date(),
       addHours(new Date(this.item.lastVersionChangedAt), 24)
-    )
+    );
   }
 
   get cssClasses() {
     return {
       compact: this.compact,
       inactive: !this.item.active && !this.active,
-    }
+    };
   }
 
   get inactiveTooltip() {
     if (!this.item.active) {
-      return this.$t('texts.roadmap.inactive')
+      return this.$t("texts.roadmap.inactive");
     }
-    return null
+    return null;
   }
 
   get updates() {
     if (!this.item) {
-      return []
+      return [];
     }
 
-    const { lastVersion } = this.item
+    const { lastVersion } = this.item;
 
     if (!lastVersion) {
-      return []
+      return [];
     }
 
-    return ['committed', 'release', 'released', 'active']
+    return ["committed", "release", "released", "active"]
       .filter((key) => lastVersion[key])
       .map((key) => {
-        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10);
 
         return {
           key,
-          change: count < 0 ? 'decreased' : 'increased',
+          change: count < 0 ? "decreased" : "increased",
           old: lastVersion[key][0],
           new: lastVersion[key][1],
           count,
-        }
+        };
       })
       .filter(
         (update) =>
-          update.key !== 'released' || (update.key === 'released' && update.old)
+          update.key !== "released" || (update.key === "released" && update.old)
       )
       .filter(
         (update) =>
-          update.key !== 'commited' || (update.key === 'commited' && update.old)
+          update.key !== "commited" || (update.key === "commited" && update.old)
       )
       .filter(
         (update) =>
-          update.key !== 'active' || (update.key === 'active' && update.old)
-      )
+          update.key !== "active" || (update.key === "active" && update.old)
+      );
   }
 
   openModal() {
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/components/Roadmap/RoadmapItem/Modal/index.vue'),
+        import("@/frontend/components/Roadmap/RoadmapItem/Modal/index.vue"),
       props: {
         item: this.item,
       },
-    })
+    });
   }
 }
 </script>

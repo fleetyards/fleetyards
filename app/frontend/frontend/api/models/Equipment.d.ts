@@ -1,11 +1,11 @@
 type EquipmentFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface EquipmentParams extends CollectionParams {
-  filters: EquipmentFilter
+  filters: EquipmentFilter;
 }
 
 type Equipment = {
-  id: string
-}
+  id: string;
+};

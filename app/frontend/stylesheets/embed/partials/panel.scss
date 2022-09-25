@@ -27,7 +27,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     left: 80px;
     height: $outerBorderWidth;
     background-color: #444;
-    content: '';
+    content: "";
   }
 
   &::after {
@@ -37,7 +37,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     left: 80px;
     height: $outerBorderWidth;
     background-color: #444;
-    content: '';
+    content: "";
   }
 }
 
@@ -58,7 +58,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     background-color: #444;
     border-bottom-right-radius: 1px;
     border-bottom-left-radius: 1px;
-    content: '';
+    content: "";
   }
 
   &::after {
@@ -70,7 +70,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     background-color: #444;
     border-top-left-radius: 1px;
     border-top-right-radius: 1px;
-    content: '';
+    content: "";
   }
 
   &.panel-primary {
@@ -141,14 +141,14 @@ $contentBorderRadius: $panelContentBorderRadius;
       overflow: hidden;
       font-weight: normal;
       font-size: 22px;
-      font-family: 'Orbitron', sans-serif;
+      font-family: "Orbitron", sans-serif;
       white-space: nowrap;
       text-overflow: ellipsis;
 
       small {
         color: darken($text-color, 20%);
         font-size: 15px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
 
         a {
           color: darken($text-color, 20%);

@@ -1,5 +1,5 @@
-import actions from './actions'
-import getDefaultState from './state'
+import actions from "./actions";
+import getDefaultState from "./state";
 
 export default () => ({
   namespaced: true,
@@ -10,143 +10,143 @@ export default () => ({
 
   getters: {
     ships(state) {
-      return state.ships
+      return state.ships;
     },
 
     preview(state) {
-      return state.preview
+      return state.preview;
     },
 
     empty(state) {
-      return state.ships.length === 0
+      return state.ships.length === 0;
     },
 
     detailsVisible(state) {
-      return state.detailsVisible
+      return state.detailsVisible;
     },
 
     filterVisible(state) {
-      return state.filterVisible
+      return state.filterVisible;
     },
 
     fleetchartVisible(state) {
-      return state.fleetchartVisible
+      return state.fleetchartVisible;
     },
 
     fleetchartZoomData(state) {
-      return state.fleetchartZoomData
+      return state.fleetchartZoomData;
     },
 
     fleetchartViewpoint(state) {
-      return state.fleetchartViewpoint
+      return state.fleetchartViewpoint;
     },
 
     fleetchartLabels(state) {
-      return state.fleetchartLabels
+      return state.fleetchartLabels;
     },
 
     fleetchartScreenHeight(state) {
-      return state.fleetchartScreenHeight
+      return state.fleetchartScreenHeight;
     },
 
     fleetchartMode(state) {
-      return state.fleetchartMode
+      return state.fleetchartMode;
     },
 
     fleetchartScale(state) {
-      return state.fleetchartScale
+      return state.fleetchartScale;
     },
 
     money(state) {
-      return state.money
+      return state.money;
     },
 
     starterGuideVisible(state) {
-      return state.starterGuideVisible
+      return state.starterGuideVisible;
     },
 
     perPage(state) {
-      return state.perPage
+      return state.perPage;
     },
 
     gridView(state) {
-      return state.gridView
+      return state.gridView;
     },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
-      Object.assign(state, getDefaultState())
+      Object.assign(state, getDefaultState());
     },
 
     add(state, payload) {
-      state.ships.push(payload)
+      state.ships.push(payload);
     },
 
     remove(state, payload) {
-      state.ships.splice(state.ships.indexOf(payload), 1)
+      state.ships.splice(state.ships.indexOf(payload), 1);
     },
 
     setDetailsVisible(state, payload) {
-      state.detailsVisible = payload
+      state.detailsVisible = payload;
     },
 
     setFilterVisible(state, payload) {
-      state.filterVisible = payload
+      state.filterVisible = payload;
     },
 
     setFleetchartVisible(state, payload) {
-      state.fleetchartVisible = payload
+      state.fleetchartVisible = payload;
     },
 
     setFleetchartZoomData(state, payload) {
-      state.fleetchartZoomData = payload
+      state.fleetchartZoomData = payload;
     },
 
     setFleetchartViewpoint(state, payload) {
-      state.fleetchartViewpoint = payload
+      state.fleetchartViewpoint = payload;
     },
 
     setFleetchartLabels(state, payload) {
-      state.fleetchartLabels = payload
+      state.fleetchartLabels = payload;
     },
 
     setFleetchartScreenHeight(state, payload) {
-      state.fleetchartScreenHeight = payload
+      state.fleetchartScreenHeight = payload;
     },
 
     setFleetchartMode(state, payload) {
-      state.fleetchartMode = payload
+      state.fleetchartMode = payload;
     },
 
     setFleetchartScale(state, payload) {
-      state.fleetchartScale = payload
+      state.fleetchartScale = payload;
     },
 
     setShips(state, payload) {
-      state.ships = payload
+      state.ships = payload;
     },
 
     setPreview(state, payload) {
-      state.preview = !!payload
+      state.preview = !!payload;
     },
 
     setMoney(state, payload) {
-      state.money = payload
+      state.money = payload;
     },
 
     setStarterGuideVisible(state, payload) {
-      state.starterGuideVisible = payload
+      state.starterGuideVisible = payload;
     },
 
     setPerPage(state, payload) {
-      state.perPage = payload
+      state.perPage = payload;
     },
 
     setGridView(state, payload) {
-      state.gridView = payload
+      state.gridView = payload;
     },
   },
   /* eslint-enable no-param-reassign */
-})
+});

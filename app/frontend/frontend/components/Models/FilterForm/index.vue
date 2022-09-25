@@ -159,25 +159,25 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
-import RadioList from '@/frontend/core/components/Form/RadioList/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Filters from "@/frontend/mixins/Filters";
+import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import {
   booleanOptions,
   priceOptions,
   pledgePriceOptions,
-} from '@/frontend/utils/FilterOptions'
+} from "@/frontend/utils/FilterOptions";
 
 export default {
-  name: 'ModelFilterForm',
+  name: "ModelFilterForm",
 
   components: {
     RadioList,
@@ -189,7 +189,7 @@ export default {
   mixins: [Filters],
 
   data() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
     return {
       loading: false,
       form: {
@@ -211,26 +211,26 @@ export default {
         pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       },
-    }
+    };
   },
 
   computed: {
     booleanOptions() {
-      return booleanOptions
+      return booleanOptions;
     },
 
     priceOptions() {
-      return priceOptions
+      return priceOptions;
     },
 
     pledgePriceOptions() {
-      return pledgePriceOptions
+      return pledgePriceOptions;
     },
   },
 
   watch: {
     $route() {
-      const query = this.$route.query.q || {}
+      const query = this.$route.query.q || {};
 
       this.form = {
         searchCont: query.searchCont,
@@ -250,8 +250,8 @@ export default {
         priceIn: query.priceIn || [],
         pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
-      }
+      };
     },
   },
-}
+};
 </script>

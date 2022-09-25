@@ -1,28 +1,28 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class ComponentsCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: Component[] = []
+  records: Component[] = [];
 
-  params: ComponentParams | null = null
+  params: ComponentParams | null = null;
 
   async findAll(params: ComponentParams): Promise<Component[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('components', {
+    const response = await get("components", {
       q: params.filters,
       page: params?.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new ComponentsCollection()
+export default new ComponentsCollection();

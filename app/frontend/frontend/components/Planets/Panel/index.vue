@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 export default {
-  name: 'PlanetsPanel',
+  name: "PlanetsPanel",
 
   components: {
     Panel,
@@ -41,9 +41,9 @@ export default {
       default: null,
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

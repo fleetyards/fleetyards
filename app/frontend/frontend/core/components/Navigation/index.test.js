@@ -1,17 +1,17 @@
-import mountVM from '~/test/javascript/unit/mount'
-import sanityTest from '~/test/javascript/unit/sanityTest'
-import Navigation from '@/frontend/core/components/Navigation/index.vue'
+import mountVM from "~/test/javascript/unit/mount";
+import sanityTest from "~/test/javascript/unit/sanityTest";
+import Navigation from "@/frontend/core/components/Navigation/index.vue";
 
-sanityTest(Navigation)
+sanityTest(Navigation);
 
-describe('Navigation', () => {
-  let cmp
+describe("Navigation", () => {
+  let cmp;
 
   beforeEach(() => {
-    cmp = mountVM(Navigation)
-  })
+    cmp = mountVM(Navigation);
+  });
 
-  it('renders nothing without pagination info', () => {
-    expect(cmp.findAll('nav')).toHaveLength(1)
-  })
-})
+  it("renders nothing without pagination info", () => {
+    expect(cmp.findAll("nav")).toHaveLength(1);
+  });
+});

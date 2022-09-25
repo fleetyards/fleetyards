@@ -21,11 +21,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { sum as sumArray } from '@/frontend/utils/Array'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { sum as sumArray } from "@/frontend/utils/Array";
 
 @Component<ShoppingCart>({
   components: {
@@ -33,30 +33,30 @@ import { sum as sumArray } from '@/frontend/utils/Array'
   },
 })
 export default class ShoppingCart extends Vue {
-  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
+  @Getter("navSlim", { namespace: "app" }) navSlim: boolean;
 
-  @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
+  @Getter("items", { namespace: "shoppingCart" }) cartItems: any[];
 
   get total() {
     return sumArray(
       this.cartItems.map((item) => this.sum(item)).filter((item) => item)
-    )
+    );
   }
 
   get cartItemCount() {
-    return sumArray(this.cartItems.map((item) => item.amount))
+    return sumArray(this.cartItems.map((item) => item.amount));
   }
 
   sum(cartItem) {
-    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
+    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount);
   }
 
   openModal() {
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/core/components/AppShoppingCart/Modal/index.vue'),
+        import("@/frontend/core/components/AppShoppingCart/Modal/index.vue"),
       wide: true,
-    })
+    });
   }
 }
 </script>

@@ -51,7 +51,7 @@
         border-bottom-right-radius: 2px;
         border-bottom-left-radius: 2px;
         box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
-        content: '';
+        content: "";
       }
 
       &.active {
@@ -214,7 +214,7 @@ nav {
         padding-top: 6px;
         padding-right: 20px;
         padding-left: 50px;
-        font-family: 'Orbitron', sans-serif;
+        font-family: "Orbitron", sans-serif;
       }
     }
 

@@ -42,7 +42,7 @@
           size="large"
           :inline="true"
         >
-          {{ $t('actions.add') }}
+          {{ $t("actions.add") }}
         </Btn>
       </div>
     </template>
@@ -50,18 +50,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import vehiclesCollection from '@/frontend/api/collections/Vehicles'
-import modelsCollection from '@/frontend/api/collections/Models'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import modelsCollection from "@/frontend/api/collections/Models";
 
 type VehicleFormData = {
-  vehicles: Vehicle[]
-}
+  vehicles: Vehicle[];
+};
 
 @Component<NewVehiclesModal>({
   components: {
@@ -72,42 +72,42 @@ type VehicleFormData = {
   },
 })
 export default class NewVehiclesModal extends Vue {
-  submitting = false
+  submitting = false;
 
-  modelsCollection: ModelsCollection = modelsCollection
+  modelsCollection: ModelsCollection = modelsCollection;
 
   form: VehicleFormData = {
     vehicles: [],
-  }
+  };
 
   add(value) {
     this.form.vehicles.push({
       model: value,
-    })
+    });
   }
 
   removeItem(index) {
-    this.form.vehicles.splice(index, 1)
+    this.form.vehicles.splice(index, 1);
   }
 
   mounted() {
     this.form = {
       vehicles: [],
-    }
+    };
   }
 
   async save() {
-    this.submitting = true
+    this.submitting = true;
 
     await this.form.vehicles.forEach(async (item) => {
-      await vehiclesCollection.create({ modelId: item.model.id })
-    })
+      await vehiclesCollection.create({ modelId: item.model.id });
+    });
 
-    vehiclesCollection.refresh()
+    vehiclesCollection.refresh();
 
-    this.submitting = false
+    this.submitting = false;
 
-    this.$comlink.$emit('close-modal')
+    this.$comlink.$emit("close-modal");
   }
 }
 </script>

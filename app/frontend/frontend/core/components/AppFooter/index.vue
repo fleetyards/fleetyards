@@ -19,11 +19,11 @@
         </a>
         |
         <router-link :to="{ name: 'privacy-policy' }">
-          {{ $t('nav.privacyPolicy') }}
+          {{ $t("nav.privacyPolicy") }}
         </router-link>
         |
         <router-link :to="{ name: 'impressum' }">
-          {{ $t('nav.impressum') }}
+          {{ $t("nav.impressum") }}
         </router-link>
         <span class="d-xs-none">|</span>
         <br class="d-sm-none" />
@@ -68,12 +68,12 @@
         </a>
         |
         <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
-          {{ $t('nav.api') }}
+          {{ $t("nav.api") }}
         </a>
       </div>
       <div class="app-footer-support">
         <Btn :inline="true" variant="link" @click.native="openSupportModal">
-          {{ $t('labels.supportUs') }}
+          {{ $t("labels.supportUs") }}
           <i class="fa fa-heart" />
         </Btn>
       </div>
@@ -112,18 +112,18 @@
         </span>
       </div>
       <div class="sc-data-version">
-        {{ $t('labels.scDataVersion') }}: {{ scDataVersion }}
+        {{ $t("labels.scDataVersion") }}: {{ scDataVersion }}
       </div>
     </div>
   </footer>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
 
 @Component<AppFooter>({
   components: {
@@ -132,27 +132,27 @@ import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
   },
 })
 export default class AppFooter extends Vue {
-  @Getter('online') online: boolean
+  @Getter("online") online: boolean;
 
-  @Getter('version', { namespace: 'app' }) version: string
+  @Getter("version", { namespace: "app" }) version: string;
 
-  @Getter('codename', { namespace: 'app' }) codename: string
+  @Getter("codename", { namespace: "app" }) codename: string;
 
-  @Getter('gitRevision', { namespace: 'app' }) gitRevision: string
+  @Getter("gitRevision", { namespace: "app" }) gitRevision: string;
 
   get copyrightOwner() {
-    return window.COPYRIGHT_OWNER
+    return window.COPYRIGHT_OWNER;
   }
 
   get scDataVersion() {
-    return window.SC_DATA_VERSION
+    return window.SC_DATA_VERSION;
   }
 
   openSupportModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Support/Modal/index.vue'),
+    this.$comlink.$emit("open-modal", {
+      component: () => import("@/frontend/components/Support/Modal/index.vue"),
       wide: true,
-    })
+    });
   }
 }
 </script>

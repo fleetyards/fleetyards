@@ -1,10 +1,10 @@
 type Session = {
-  token: string
-  expires: string
-}
+  token: string;
+  expires: string;
+};
 
 type SessionParams = {
-  login: string
-  password: string
-  rememberMe: boolean
-}
+  login: string;
+  password: string;
+  rememberMe: boolean;
+};

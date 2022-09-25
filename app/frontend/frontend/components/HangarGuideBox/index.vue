@@ -7,19 +7,19 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import HangarGuide from '@/frontend/components/HangarGuide/index.vue'
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import HangarGuide from "@/frontend/components/HangarGuide/index.vue";
 
 export default {
-  name: 'HangarGuideBox',
+  name: "HangarGuideBox",
 
   components: {
     Panel,
     HangarGuide,
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import './styles/index';
+@import "./styles/index";
 </style>

@@ -54,11 +54,11 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 
 export default {
-  name: 'VehicleAddonsModal',
+  name: "VehicleAddonsModal",
 
   components: {
     Panel,
@@ -96,73 +96,73 @@ export default {
     return {
       addonToAdd: null,
       internalAddons: [...this.value],
-    }
+    };
   },
 
   watch: {
     value() {
       if (this.internalAddons !== this.value) {
-        this.internalAddons = [...this.value]
+        this.internalAddons = [...this.value];
       }
     },
 
     addons() {
-      this.internalAddons = [...this.value]
+      this.internalAddons = [...this.value];
     },
 
     internalAddons() {
-      this.$emit('input', this.internalAddons)
+      this.$emit("input", this.internalAddons);
     },
   },
 
   methods: {
     selectTooltip(addonId) {
       if (this.internalAddons.includes(addonId)) {
-        return this.$t('labels.deselect')
+        return this.$t("labels.deselect");
       }
-      return null
+      return null;
     },
 
     addAddon() {
       if (!this.addonToAdd) {
-        return
+        return;
       }
-      this.internalAddons.push(this.addonToAdd)
-      this.addonToAdd = null
+      this.internalAddons.push(this.addonToAdd);
+      this.addonToAdd = null;
     },
 
     idsForAddon(addonId) {
-      const ids = this.internalAddons.filter((item) => item === addonId)
+      const ids = this.internalAddons.filter((item) => item === addonId);
       if (ids.length) {
-        return ids
+        return ids;
       }
-      return [addonId]
+      return [addonId];
     },
 
     changeAddon(addonId) {
       if (!this.editable) {
-        return
+        return;
       }
 
       if (this.internalAddons.includes(addonId)) {
         const index = this.internalAddons.findIndex(
           (itemId) => itemId === addonId
-        )
+        );
         if (index > -1) {
-          this.internalAddons.splice(index, 1)
+          this.internalAddons.splice(index, 1);
         }
       } else {
-        this.internalAddons.push(addonId)
+        this.internalAddons.push(addonId);
       }
     },
 
     selectedAddon(addonId) {
-      return this.internalAddons.includes(addonId)
+      return this.internalAddons.includes(addonId);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

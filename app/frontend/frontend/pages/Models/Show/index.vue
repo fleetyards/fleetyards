@@ -34,7 +34,7 @@
                 size="small"
                 @click.native="toggleHoloviewer"
               >
-                {{ $t('labels.3dView') }}
+                {{ $t("labels.3dView") }}
               </Btn>
               <a
                 v-show="holoviewerVisible"
@@ -43,7 +43,7 @@
                 target="_blank"
                 rel="noopener"
               >
-                {{ $t('labels.poweredByStarship42') }}
+                {{ $t("labels.poweredByStarship42") }}
               </a>
               <HoloViewer
                 v-if="holoviewerVisible && model.holo"
@@ -74,7 +74,7 @@
               <div class="col-6">
                 <template v-if="model.focus">
                   <h3 class="text-uppercase text-right">
-                    <small class="text-muted">{{ $t('model.focus') }}:</small>
+                    <small class="text-muted">{{ $t("model.focus") }}:</small>
                     {{ model.focus }}
                   </h3>
                 </template>
@@ -101,16 +101,16 @@
                 style="flex-grow: 3"
               >
                 {{
-                  $t('actions.model.onSale', {
+                  $t("actions.model.onSale", {
                     price: $toDollar(model.pledgePrice),
                   })
                 }}
                 <small class="price-info">
-                  {{ $t('labels.taxExcluded') }}
+                  {{ $t("labels.taxExcluded") }}
                 </small>
               </Btn>
               <Btn v-else :href="model.storeUrl" style="flex-grow: 3">
-                {{ $t('actions.model.store') }}
+                {{ $t("actions.model.store") }}
               </Btn>
 
               <AddToHangar :model="model" />
@@ -129,7 +129,7 @@
                   variant="dropdown"
                 >
                   <i class="fa fa-images" />
-                  <span>{{ $t('nav.images') }}</span>
+                  <span>{{ $t("nav.images") }}</span>
                 </Btn>
                 <Btn
                   v-if="model.hasVideos"
@@ -137,7 +137,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-video" />
-                  <span>{{ $t('nav.videos') }}</span>
+                  <span>{{ $t("nav.videos") }}</span>
                 </Btn>
                 <Btn
                   v-if="model.brochure"
@@ -145,7 +145,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-download" />
-                  <span>{{ $t('labels.model.brochure') }}</span>
+                  <span>{{ $t("labels.model.brochure") }}</span>
                 </Btn>
                 <Btn
                   :to="{
@@ -156,7 +156,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-exchange" />
-                  <span>{{ $t('actions.compare.models') }}</span>
+                  <span>{{ $t("actions.compare.models") }}</span>
                 </Btn>
                 <ShareBtn
                   v-if="mobile"
@@ -171,7 +171,7 @@
                   variant="dropdown"
                 >
                   <i class="fad fa-megaphone" />
-                  <span>{{ $t('labels.model.salesPage') }}</span>
+                  <span>{{ $t("labels.model.salesPage") }}</span>
                 </Btn>
               </BtnDropdown>
             </div>
@@ -192,7 +192,7 @@
     <div class="row">
       <div class="col-12 modules">
         <h2 v-if="modules.length" class="text-uppercase">
-          {{ $t('labels.model.modules') }}
+          {{ $t("labels.model.modules") }}
         </h2>
         <div v-if="modules.length" class="row">
           <div
@@ -210,7 +210,7 @@
     <div class="row">
       <div class="col-12 upgrades">
         <h2 v-if="upgrades.length" class="text-uppercase">
-          {{ $t('labels.model.upgrades') }}
+          {{ $t("labels.model.upgrades") }}
         </h2>
         <div v-if="upgrades.length" class="row">
           <div
@@ -228,7 +228,7 @@
     <div class="row">
       <div class="col-12 variants">
         <h2 v-if="variants.length" class="text-uppercase">
-          {{ $t('labels.model.variants') }}
+          {{ $t("labels.model.variants") }}
         </h2>
         <transition-group
           v-if="variants.length"
@@ -252,7 +252,7 @@
     <div class="row">
       <div class="col-12 loaners">
         <h2 v-if="loaners.length" class="text-uppercase">
-          {{ $t('labels.model.loaners') }}
+          {{ $t("labels.model.loaners") }}
         </h2>
         <transition-group
           v-if="loaners.length"
@@ -276,29 +276,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import AddToHangar from '@/frontend/components/Models/AddToHangar/index.vue'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import Hardpoints from '@/frontend/components/Models/Hardpoints/index.vue'
-import Paints from '@/frontend/components/Models/PaintsList/index.vue'
-import ModelBaseMetrics from '@/frontend/components/Models/BaseMetrics/index.vue'
-import ModelCrewMetrics from '@/frontend/components/Models/CrewMetrics/index.vue'
-import ModelSpeedMetrics from '@/frontend/components/Models/SpeedMetrics/index.vue'
-import ModelPanel from '@/frontend/components/Models/Panel/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import HoloViewer from '@/frontend/core/components/HoloViewer/index.vue'
-import HangarItemsMixin from '@/frontend/mixins/HangarItems'
-import { modelRouteGuard } from '@/frontend/utils/RouteGuards/Models'
-import modelsCollection from '@/frontend/api/collections/Models'
-import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
+import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
+import Paints from "@/frontend/components/Models/PaintsList/index.vue";
+import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
+import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
+import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
+import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import HoloViewer from "@/frontend/core/components/HoloViewer/index.vue";
+import HangarItemsMixin from "@/frontend/mixins/HangarItems";
+import { modelRouteGuard } from "@/frontend/utils/RouteGuards/Models";
+import modelsCollection from "@/frontend/api/collections/Models";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 
 @Component<ModelDetail>({
   components: {
@@ -323,165 +323,165 @@ import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
   beforeRouteEnter: modelRouteGuard,
 })
 export default class ModelDetail extends Vue {
-  loading = false
+  loading = false;
 
-  loadingVariants = false
+  loadingVariants = false;
 
-  loadingLoaners = false
+  loadingLoaners = false;
 
-  loadingModules = false
+  loadingModules = false;
 
-  loadingUpgrades = false
+  loadingUpgrades = false;
 
-  show3d = false
+  show3d = false;
 
-  variants: Model[] = []
+  variants: Model[] = [];
 
-  loaners: ModelLoaner[] = []
+  loaners: ModelLoaner[] = [];
 
-  modules: ModelModule[] = []
+  modules: ModelModule[] = [];
 
-  upgrades: ModelUpgrade[] = []
+  upgrades: ModelUpgrade[] = [];
 
-  model: Model | null = null
+  model: Model | null = null;
 
   attributes: string[] = [
-    'length',
-    'beam',
-    'height',
-    'mass',
-    'cargo',
-    'minCrew',
-    'maxCrew',
-    'scmSpeed',
-    'afterburnerSpeed',
-  ]
+    "length",
+    "beam",
+    "height",
+    "mass",
+    "cargo",
+    "minCrew",
+    "maxCrew",
+    "scmSpeed",
+    "afterburnerSpeed",
+  ];
 
-  @Getter('overlayVisible', { namespace: 'app' }) overlayVisible
+  @Getter("overlayVisible", { namespace: "app" }) overlayVisible;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
+  @Getter("holoviewerVisible", { namespace: "models" }) holoviewerVisible;
 
   get storeImage() {
     if (this.mobile) {
-      return this.model.storeImageMedium
+      return this.model.storeImageMedium;
     }
 
-    return this.model.storeImageLarge
+    return this.model.storeImageLarge;
   }
 
   get starship42Url(): string {
-    return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
+    return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`;
   }
 
   get starship42IframeUrl(): string {
-    return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
+    return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`;
   }
 
   get metaTitle() {
     if (!this.model) {
-      return null
+      return null;
     }
 
-    return this.$t('title.model', {
+    return this.$t("title.model", {
       name: this.model.name,
       manufacturer: this.model.manufacturer.name,
-    })
+    });
   }
 
   get crumbs() {
     if (!this.model) {
-      return null
+      return null;
     }
 
     return [
       {
         to: {
-          name: 'models',
+          name: "models",
           hash: `#${this.model.slug}`,
         },
-        label: this.$t('nav.models.index'),
+        label: this.$t("nav.models.index"),
       },
-    ]
+    ];
   }
 
   get shareUrl() {
-    return window.location.href
+    return window.location.href;
   }
 
   mounted() {
-    this.fetch()
-    this.fetchExtras()
+    this.fetch();
+    this.fetchExtras();
 
     if (this.$route.query.holoviewer) {
-      this.$store.dispatch('models/enableHoloviewer')
+      this.$store.dispatch("models/enableHoloviewer");
     }
   }
 
   toggleHoloviewer() {
-    this.$store.dispatch('models/toggleHoloviewer')
+    this.$store.dispatch("models/toggleHoloviewer");
   }
 
   fetchExtras() {
-    this.fetchModules()
-    this.fetchUpgrades()
-    this.fetchVariants()
-    this.fetchLoaners()
+    this.fetchModules();
+    this.fetchUpgrades();
+    this.fetchVariants();
+    this.fetchLoaners();
   }
 
   async fetchModules() {
-    this.loadingModules = true
+    this.loadingModules = true;
     const response = await this.$api.get(
       `models/${this.$route.params.slug}/modules`
-    )
-    this.loadingModules = false
+    );
+    this.loadingModules = false;
     if (!response.error) {
-      this.modules = response.data
+      this.modules = response.data;
     }
   }
 
   async fetchUpgrades() {
-    this.loadingUpgrades = true
+    this.loadingUpgrades = true;
     const response = await this.$api.get(
       `models/${this.$route.params.slug}/upgrades`
-    )
-    this.loadingUpgrades = false
+    );
+    this.loadingUpgrades = false;
     if (!response.error) {
-      this.upgrades = response.data
+      this.upgrades = response.data;
     }
   }
 
   async fetchVariants() {
-    this.loadingVariants = true
+    this.loadingVariants = true;
     const response = await this.$api.get(
       `models/${this.$route.params.slug}/variants`
-    )
-    this.loadingVariants = false
+    );
+    this.loadingVariants = false;
     if (!response.error) {
-      this.variants = response.data
+      this.variants = response.data;
     }
   }
 
   async fetchLoaners() {
-    this.loadingLoaners = true
+    this.loadingLoaners = true;
     const response = await this.$api.get(
       `models/${this.$route.params.slug}/loaners`
-    )
-    this.loadingLoaners = false
+    );
+    this.loadingLoaners = false;
     if (!response.error) {
-      this.loaners = response.data
+      this.loaners = response.data;
     }
   }
 
   async fetch() {
-    this.loading = true
-    this.model = await modelsCollection.findBySlug(this.$route.params.slug)
-    this.loading = false
+    this.loading = true;
+    this.model = await modelsCollection.findBySlug(this.$route.params.slug);
+    this.loading = false;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

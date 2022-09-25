@@ -2,9 +2,9 @@
   <div>
     <div v-if="erkulUrl" class="d-flex justify-content-center">
       <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
-        <small>{{ $t('labels.erkul.prefix') }}</small>
+        <small>{{ $t("labels.erkul.prefix") }}</small>
         <i />
-        {{ $t('labels.erkul.link') }}
+        {{ $t("labels.erkul.link") }}
       </Btn>
     </div>
     <div class="row">
@@ -40,9 +40,9 @@
         :mobile-block="true"
         class="scunpacked-link"
       >
-        <small>{{ $t('labels.scunpacked.prefix') }}</small>
+        <small>{{ $t("labels.scunpacked.prefix") }}</small>
         <i>
-          {{ $t('labels.scunpacked.link') }}
+          {{ $t("labels.scunpacked.link") }}
         </i>
       </Btn>
     </div>
@@ -51,12 +51,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import modelHardpointsCollection from '@/frontend/api/collections/ModelHardpoints'
-import HardpointGroup from './Group/index.vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
+import HardpointGroup from "./Group/index.vue";
 
 @Component<Hardpoints>({
   components: {
@@ -66,59 +66,59 @@ import HardpointGroup from './Group/index.vue'
   },
 })
 export default class Hardpoints extends Vue {
-  @Prop({ required: true }) model!: Model
+  @Prop({ required: true }) model!: Model;
 
-  collection: ModelHardpointsCollection = modelHardpointsCollection
+  collection: ModelHardpointsCollection = modelHardpointsCollection;
 
-  loading = false
+  loading = false;
 
   get hardpoints() {
-    return this.collection.records || []
+    return this.collection.records || [];
   }
 
   get erkulUrl(): string | null {
     if (
       !this.model ||
-      this.model.productionStatus !== 'flight-ready' ||
+      this.model.productionStatus !== "flight-ready" ||
       !this.model.erkulIdentifier
     ) {
-      return null
+      return null;
     }
 
-    return `https://www.erkul.games/ship/${this.model.erkulIdentifier}`
+    return `https://www.erkul.games/ship/${this.model.erkulIdentifier}`;
   }
 
   get scunpackedUrl(): string | null {
     if (!this.model.scIdentifier) {
-      return null
+      return null;
     }
 
-    return `https://scunpacked.com/ships/${this.model.scIdentifier}`
+    return `https://scunpacked.com/ships/${this.model.scIdentifier}`;
   }
 
   hardpointsForGroup(group) {
-    return this.hardpoints.filter((hardpoint) => hardpoint.group === group)
+    return this.hardpoints.filter((hardpoint) => hardpoint.group === group);
   }
 
-  @Watch('model')
+  @Watch("model")
   onModelChange() {
-    this.fetch()
+    this.fetch();
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
   }
 
   async fetch() {
     if (!this.model) {
-      return
+      return;
     }
 
-    this.loading = true
+    this.loading = true;
 
-    await this.collection.findAllByModel(this.model.slug)
+    await this.collection.findAllByModel(this.model.slug);
 
-    this.loading = false
+    this.loading = false;
   }
 }
 </script>

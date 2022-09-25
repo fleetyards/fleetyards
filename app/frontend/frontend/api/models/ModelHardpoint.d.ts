@@ -1,3 +1,3 @@
 type ModelHardpoint = {
-  id: string
-}
+  id: string;
+};

@@ -1,5 +1,5 @@
 .lazy {
-  &[lazy='loading']::before {
+  &[lazy="loading"]::before {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -7,14 +7,14 @@
     height: 50px;
     margin-top: -25px;
     margin-left: -25px;
-    background-image: url('@/images/loading.svg');
+    background-image: url("@/images/loading.svg");
     background-position: center;
     background-size: 100%;
-    content: '';
+    content: "";
   }
 
-  &[lazy='error'] {
-    background-image: url('@/images/store_image.jpg') !important;
+  &[lazy="error"] {
+    background-image: url("@/images/store_image.jpg") !important;
   }
 }
 
@@ -79,7 +79,7 @@
   background-position: center;
   background-size: cover;
 
-  &[lazy='loading']::before {
+  &[lazy="loading"]::before {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -87,14 +87,14 @@
     height: 50px;
     margin-top: -25px;
     margin-left: -25px;
-    background-image: url('@/images/loading.svg');
+    background-image: url("@/images/loading.svg");
     background-position: center;
     background-size: 100%;
-    content: '';
+    content: "";
   }
 
-  &[lazy='error'] {
-    background-image: url('@/images/store_image.jpg') !important;
+  &[lazy="error"] {
+    background-image: url("@/images/store_image.jpg") !important;
   }
 }
 
