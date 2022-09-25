@@ -102,14 +102,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import PanelDetails from '@/frontend/core/components/Panel/PanelDetails/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import AddToHangar from '@/frontend/components/Models/AddToHangar/index.vue'
-import VehicleOwner from '@/frontend/components/Vehicles/OwnerLabel/index.vue'
-import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import PanelDetails from "@/frontend/core/components/Panel/PanelDetails/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
+import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
+import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 
 @Component<FleetVehiclePanel>({
   components: {
@@ -122,81 +122,81 @@ import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.v
   },
 })
 export default class FleetVehiclePanel extends Vue {
-  @Prop({ required: true }) fleetVehicle: Vehicle | Model | null
+  @Prop({ required: true }) fleetVehicle: Vehicle | Model | null;
 
-  @Prop({ default: false }) details: boolean
+  @Prop({ default: false }) details: boolean;
 
-  @Prop({ default: true }) showOwner: boolean
+  @Prop({ default: true }) showOwner: boolean;
 
   get uuid() {
-    return this._uid
+    return this._uid;
   }
 
   get storeImage() {
     if (this.fleetVehicle.paint) {
-      return this.fleetVehicle.paint.storeImageMedium
+      return this.fleetVehicle.paint.storeImageMedium;
     }
 
     if (this.fleetVehicle.upgrade) {
-      return this.fleetVehicle.upgrade.storeImageMedium
+      return this.fleetVehicle.upgrade.storeImageMedium;
     }
 
-    return this.model.storeImageMedium
+    return this.model.storeImageMedium;
   }
 
   get modelName() {
     if (!this.fleetVehicle.model) {
-      return this.fleetVehicle.name
+      return this.fleetVehicle.name;
     }
 
-    return this.fleetVehicle.model.name
+    return this.fleetVehicle.model.name;
   }
 
   get model() {
     if (this.fleetVehicle.model) {
-      return this.fleetVehicle.model
+      return this.fleetVehicle.model;
     }
 
-    return this.fleetVehicle
+    return this.fleetVehicle;
   }
 
   get id() {
     if (this.fleetVehicle) {
-      return this.fleetVehicle.id
+      return this.fleetVehicle.id;
     }
 
-    return this.model.slug
+    return this.model.slug;
   }
 
   get customName() {
     if (this.fleetVehicle.model && this.fleetVehicle.name) {
-      return this.fleetVehicle.name
+      return this.fleetVehicle.name;
     }
 
-    return null
+    return null;
   }
 
   get vehicles() {
     if (!this.fleetVehicle.vehicles) {
-      return []
+      return [];
     }
 
-    return this.fleetVehicle.vehicles
+    return this.fleetVehicle.vehicles;
   }
 
   get countLabel() {
     if (!this.vehicles.length) {
-      return ''
+      return "";
     }
-    return `${this.vehicles.length}x `
+    return `${this.vehicles.length}x `;
   }
 
   filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] }
+    return { manufacturerIn: [manufacturer] };
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

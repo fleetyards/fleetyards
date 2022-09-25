@@ -1,27 +1,27 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from './Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
 export class SearchCollection extends BaseCollection {
-  records: SearchResult[] = []
+  records: SearchResult[] = [];
 
-  params: SearchParams | null = null
+  params: SearchParams | null = null;
 
   async findAll(params: SearchParams): Promise<SearchResult[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('search', {
+    const response = await get("search", {
       q: params.filters,
       page: params.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.loaded = true
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.loaded = true;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new SearchCollection()
+export default new SearchCollection();

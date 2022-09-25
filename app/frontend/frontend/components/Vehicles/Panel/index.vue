@@ -155,17 +155,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import PanelDetails from '@/frontend/core/components/Panel/PanelDetails/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import AddToHangar from '@/frontend/components/Models/AddToHangar/index.vue'
-import ModelPanelMetrics from '@/frontend/components/Models/PanelMetrics/index.vue'
-import vehiclesCollection from '@/frontend/api/collections/Vehicles'
-import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu/index.vue'
-import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import PanelDetails from "@/frontend/core/components/Panel/PanelDetails/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
+import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
+import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
+import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 
 @Component<VehiclePanel>({
   components: {
@@ -179,70 +179,70 @@ import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
   },
 })
 export default class VehiclePanel extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle | null
+  @Prop({ required: true }) vehicle: Vehicle | null;
 
-  @Prop({ default: false }) details: boolean
+  @Prop({ default: false }) details: boolean;
 
-  @Prop({ default: false }) editable: boolean
+  @Prop({ default: false }) editable: boolean;
 
-  @Prop({ default: false }) highlight: boolean
+  @Prop({ default: false }) highlight: boolean;
 
-  @Prop({ default: false }) loanersHintVisible: boolean
+  @Prop({ default: false }) loanersHintVisible: boolean;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get uuid() {
-    return this._uid
+    return this._uid;
   }
 
   get storeImage() {
     if (this.vehicle && this.vehicle.paint) {
-      return this.vehicle.paint.storeImageMedium
+      return this.vehicle.paint.storeImageMedium;
     }
 
     if (this.vehicle && this.vehicle.upgrade) {
-      return this.vehicle.upgrade.storeImageMedium
+      return this.vehicle.upgrade.storeImageMedium;
     }
 
-    return this.model.storeImageMedium
+    return this.model.storeImageMedium;
   }
 
   get modelName() {
-    return this.model.name
+    return this.model.name;
   }
 
   get model() {
     if (!this.vehicle) {
-      return null
+      return null;
     }
 
-    return this.vehicle.model
+    return this.vehicle.model;
   }
 
   get id() {
     if (this.vehicle) {
-      return this.vehicle.id
+      return this.vehicle.id;
     }
 
-    return this.model.slug
+    return this.model.slug;
   }
 
   get customName() {
     if (this.vehicle && this.vehicle.name) {
-      return this.vehicle.name
+      return this.vehicle.name;
     }
 
-    return null
+    return null;
   }
 
   get flagshipTooltip() {
     if (!this.vehicle) {
-      return ''
+      return "";
     }
-    if (this.$route.name === 'hangar') {
-      return this.$t('labels.yourFlagship')
+    if (this.$route.name === "hangar") {
+      return this.$t("labels.yourFlagship");
     }
-    return this.$t('labels.flagship')
+    return this.$t("labels.flagship");
   }
 
   get hasAddons() {
@@ -250,58 +250,58 @@ export default class VehiclePanel extends Vue {
       this.vehicle &&
       (this.vehicle.modelModuleIds.length ||
         this.vehicle.modelUpgradeIds.length)
-    )
+    );
   }
 
   get upgradable() {
     return (
       (this.editable || this.hasAddons) &&
       (this.model.hasModules || this.model.hasUpgrades)
-    )
+    );
   }
 
   get purchasedLabel() {
     if (this.vehicle.purchased) {
-      return this.$t('labels.vehicle.purchased')
+      return this.$t("labels.vehicle.purchased");
     }
 
-    return this.$t('actions.markAsPurchased')
+    return this.$t("actions.markAsPurchased");
   }
 
   get loanersTooltip() {
     return [
-      this.$t('labels.vehicle.hasLoaners'),
-      this.model.loaners.map((loaner) => loaner.name).join(', '),
-    ].join(': ')
+      this.$t("labels.vehicle.hasLoaners"),
+      this.model.loaners.map((loaner) => loaner.name).join(", "),
+    ].join(": ");
   }
 
   get hasLoaners() {
-    return this.model?.loaners?.length
+    return this.model?.loaners?.length;
   }
 
   filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] }
+    return { manufacturerIn: [manufacturer] };
   }
 
   async togglePurchased() {
     if (!this.editable || this.vehicle.loaner) {
-      return
+      return;
     }
 
     await vehiclesCollection.update(this.vehicle.id, {
       purchased: !this.vehicle.purchased,
-    })
+    });
   }
 
   openAddonsModal() {
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/components/Vehicles/AddonsModal/index.vue'),
+        import("@/frontend/components/Vehicles/AddonsModal/index.vue"),
       props: {
         vehicle: this.vehicle,
         editable: this.editable,
       },
-    })
+    });
   }
 }
 </script>

@@ -1,4 +1,4 @@
-import Paginator from '@/frontend/core/components/Paginator/index.vue'
+import Paginator from "@/frontend/core/components/Paginator/index.vue";
 
 export default {
   components: {
@@ -8,17 +8,17 @@ export default {
     return {
       totalPages: null,
       currentPage: 1,
-    }
+    };
   },
   methods: {
     setPages(data) {
       if (data) {
-        this.currentPage = data.currentPage
-        this.totalPages = data.totalPages
+        this.currentPage = data.currentPage;
+        this.totalPages = data.totalPages;
       } else {
-        this.currentPage = 1
-        this.totalPages = null
+        this.currentPage = 1;
+        this.totalPages = null;
       }
     },
   },
-}
+};

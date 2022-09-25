@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'LazyImage',
+  name: "LazyImage",
 
   props: {
     src: {
@@ -22,7 +22,7 @@ export default {
     },
     alt: {
       type: String,
-      default: 'image',
+      default: "image",
     },
     href: {
       type: String,
@@ -37,29 +37,29 @@ export default {
   computed: {
     componentType() {
       if (this.to) {
-        return 'router-link'
+        return "router-link";
       }
       if (this.href) {
-        return 'a'
+        return "a";
       }
-      return 'div'
+      return "div";
     },
 
     componentArgs() {
       if (this.to) {
         return {
           to: this.to,
-        }
+        };
       }
 
       if (this.href) {
         return {
           href: this.href,
-        }
+        };
       }
 
-      return {}
+      return {};
     },
   },
-}
+};
 </script>

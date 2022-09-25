@@ -22,7 +22,7 @@
             @click.native="toggleFleetchart"
           >
             <i class="fad fa-starship" />
-            {{ $t('labels.fleetchart') }}
+            {{ $t("labels.fleetchart") }}
           </Btn>
 
           <ShareBtn
@@ -50,18 +50,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import HangarItemsMixin from '@/frontend/mixins/HangarItems'
-import { publicFleetShipsRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
-import PublicShipsList from '@/frontend/components/Fleets/PublicShipsList/index.vue'
-import ShipsList from '@/frontend/components/Fleets/ShipsList/index.vue'
-import Avatar from '@/frontend/core/components/Avatar/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import HangarItemsMixin from "@/frontend/mixins/HangarItems";
+import { publicFleetShipsRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
+import PublicShipsList from "@/frontend/components/Fleets/PublicShipsList/index.vue";
+import ShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
+import Avatar from "@/frontend/core/components/Avatar/index.vue";
 
 @Component<FleetShips>({
   beforeRouteEnter: publicFleetShipsRouteGuard,
@@ -75,48 +75,48 @@ import Avatar from '@/frontend/core/components/Avatar/index.vue'
   mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class FleetShips extends Vue {
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get fleet() {
-    return fleetsCollection.record
+    return fleetsCollection.record;
   }
 
   get metaTitle() {
     if (!this.fleet) {
-      return null
+      return null;
     }
 
-    return this.fleet.name
+    return this.fleet.name;
   }
 
   get shareUrl() {
     if (!this.fleet) {
-      return ''
+      return "";
     }
-    const host = `${window.location.protocol}//${window.location.host}`
+    const host = `${window.location.protocol}//${window.location.host}`;
 
-    return `${host}/fleets/${this.fleet.slug}/ships`
+    return `${host}/fleets/${this.fleet.slug}/ships`;
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetch()
+    this.fetch();
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
   }
 
   toggleFleetchart() {
     if (this.fleet.myFleet) {
-      this.$store.dispatch('fleet/toggleFleetchart')
+      this.$store.dispatch("fleet/toggleFleetchart");
     } else {
-      this.$store.dispatch('publicFleet/toggleFleetchart')
+      this.$store.dispatch("publicFleet/toggleFleetchart");
     }
   }
 
   async fetch() {
-    await fleetsCollection.findBySlug(this.$route.params.slug)
+    await fleetsCollection.findBySlug(this.$route.params.slug);
   }
 }
 </script>

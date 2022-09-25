@@ -1,20 +1,20 @@
 export default {
   reset({ commit }) {
-    commit('reset')
+    commit("reset");
   },
 
   updateVersion({ state, commit }, payload = {}) {
     if (payload && payload.version && state.appVersion !== payload.version) {
-      commit('setVersion', payload.version)
-      commit('setCodename', payload.codename)
+      commit("setVersion", payload.version);
+      commit("setCodename", payload.codename);
     }
   },
 
   showOverlay({ commit }) {
-    commit('setOverlayVisible', true)
+    commit("setOverlayVisible", true);
   },
 
   hideOverlay({ commit }) {
-    commit('setOverlayVisible', false)
+    commit("setOverlayVisible", false);
   },
-}
+};

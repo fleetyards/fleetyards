@@ -10,7 +10,7 @@
     <template #selected-actions>
       <div class="d-flex">
         <BtnGroup :inline="true">
-          <span>{{ $t('labels.public') }}</span>
+          <span>{{ $t("labels.public") }}</span>
           <Btn
             v-tooltip="$t('actions.hangar.showOnPublicHangar')"
             size="small"
@@ -36,10 +36,10 @@
           :disabled="updating"
           @click.native="markAsPurchasedBulk"
         >
-          {{ $t('actions.hangar.markAsPurchasedSelected') }}
+          {{ $t("actions.hangar.markAsPurchasedSelected") }}
         </Btn>
         <Btn size="small" :inline="true" @click.native="openBulkGroupEditModal">
-          {{ $t('actions.hangar.editGroupsSelected') }}
+          {{ $t("actions.hangar.editGroupsSelected") }}
         </Btn>
         <Btn
           v-tooltip="$t('actions.deleteSelected')"
@@ -133,7 +133,7 @@
           variant="link"
           @click.native="openEditModal(record)"
         >
-          {{ $t('actions.edit') }}
+          {{ $t("actions.edit") }}
         </Btn>
         <VehicleContextMenu :vehicle="record" :editable="editable" />
       </BtnGroup>
@@ -142,15 +142,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import vehiclesCollection from '@/frontend/api/collections/Vehicles'
-import { displayConfirm } from '@/frontend/lib/Noty'
-import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
-import VehicleContextMenu from '@/frontend/components/Vehicles/ContextMenu/index.vue'
-import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import { displayConfirm } from "@/frontend/lib/Noty";
+import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
+import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
+import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 
 @Component<FilteredGrid>({
   components: {
@@ -162,130 +162,130 @@ import HangarGroups from '@/frontend/components/Vehicles/HangarGroups/index.vue'
   },
 })
 export default class FilteredGrid extends Vue {
-  @Prop({ required: true }) vehicles!: Vehicle[]
+  @Prop({ required: true }) vehicles!: Vehicle[];
 
-  @Prop({ required: true }) primaryKey!: string
+  @Prop({ required: true }) primaryKey!: string;
 
-  @Prop({ default: false }) editable!: boolean
+  @Prop({ default: false }) editable!: boolean;
 
-  selected: string[] = []
+  selected: string[] = [];
 
-  deleting = false
+  deleting = false;
 
-  updating = false
+  updating = false;
 
   tableColumns: FilteredTableColumn[] = [
     {
-      name: 'store_image',
-      class: 'store-image wide',
-      type: 'store-image',
+      name: "store_image",
+      class: "store-image wide",
+      type: "store-image",
     },
     {
-      name: 'name',
-      width: '40%',
+      name: "name",
+      width: "40%",
     },
     {
-      name: 'states',
-      width: '10%',
+      name: "states",
+      width: "10%",
     },
     {
-      name: 'groups',
-      label: this.$t('labels.vehicle.hangarGroups'),
-      width: '10%',
+      name: "groups",
+      label: this.$t("labels.vehicle.hangarGroups"),
+      width: "10%",
     },
-    { name: 'actions', label: this.$t('labels.actions'), width: '10%' },
-  ]
+    { name: "actions", label: this.$t("labels.actions"), width: "10%" },
+  ];
 
   mounted() {
-    this.$comlink.$on('vehicles-delete-all', this.resetSelected)
+    this.$comlink.$on("vehicles-delete-all", this.resetSelected);
   }
 
   beforeDestroy() {
-    this.$comlink.$off('vehicles-delete-all')
+    this.$comlink.$off("vehicles-delete-all");
   }
 
   hasAddons(vehicle) {
-    return vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length
+    return vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length;
   }
 
   upgradable(vehicle) {
     return (
       (this.editable || this.hasAddons(vehicle)) &&
       (vehicle.model.hasModules || vehicle.model.hasUpgrades)
-    )
+    );
   }
 
   openBulkGroupEditModal() {
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/components/Vehicles/BulkGroupModal/index.vue'),
+        import("@/frontend/components/Vehicles/BulkGroupModal/index.vue"),
       props: {
         vehicleIds: this.selected,
       },
-    })
+    });
   }
 
   openEditModal(vehicle) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('@/frontend/components/Vehicles/Modal/index.vue'),
+    this.$comlink.$emit("open-modal", {
+      component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
       props: {
         vehicle,
       },
-    })
+    });
   }
 
   async markAsPurchasedBulk() {
-    this.updating = true
+    this.updating = true;
 
-    await vehiclesCollection.markAsPurchasedBulk(this.selected)
+    await vehiclesCollection.markAsPurchasedBulk(this.selected);
 
-    this.updating = false
+    this.updating = false;
   }
 
   async hideFromPublicHangar() {
-    this.updating = true
+    this.updating = true;
 
-    await vehiclesCollection.hideFromPublicHangar(this.selected)
+    await vehiclesCollection.hideFromPublicHangar(this.selected);
 
-    this.updating = false
+    this.updating = false;
   }
 
   async showOnPublicHangar() {
-    this.updating = true
+    this.updating = true;
 
-    await vehiclesCollection.showOnPublicHangar(this.selected)
+    await vehiclesCollection.showOnPublicHangar(this.selected);
 
-    this.updating = false
+    this.updating = false;
   }
 
   onSelectedChange(value) {
-    this.selected = value
+    this.selected = value;
   }
 
   async destroyBulk() {
-    this.deleting = true
+    this.deleting = true;
 
     displayConfirm({
-      text: this.$t('messages.confirm.hangar.destroySelected'),
+      text: this.$t("messages.confirm.hangar.destroySelected"),
       onConfirm: async () => {
-        await vehiclesCollection.destroyBulk(this.selected)
+        await vehiclesCollection.destroyBulk(this.selected);
 
-        this.resetSelected()
+        this.resetSelected();
 
-        this.deleting = false
+        this.deleting = false;
       },
       onClose: () => {
-        this.deleting = false
+        this.deleting = false;
       },
-    })
+    });
   }
 
   resetSelected() {
-    this.selected = []
+    this.selected = [];
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

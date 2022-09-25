@@ -14,7 +14,7 @@
         <div class="filtered-table-row">
           <div class="selected-count">
             {{
-              $t('labels.table.selected', { count: internalSelected.length })
+              $t("labels.table.selected", { count: internalSelected.length })
             }}
             <Btn
               v-tooltip="$t('actions.unselect')"
@@ -43,7 +43,7 @@
             :class="column.class"
             :style="{
               'flex-grow': column.flexGrow,
-              'width': column.width,
+              width: column.width,
             }"
           >
             {{ column.label }}
@@ -70,7 +70,7 @@
                   :class="column.class"
                   :style="{
                     'flex-grow': column.flexGrow,
-                    'width': column.width,
+                    width: column.width,
                   }"
                 >
                   <slot :record="record" :name="`col-${column.name}`">
@@ -97,7 +97,7 @@
         class="fade-list-item col-12 filtered-table-empty"
       >
         <div class="filtered-table-row">
-          {{ $t('texts.empty.info') }}
+          {{ $t("texts.empty.info") }}
         </div>
       </div>
     </transition-group>
@@ -105,20 +105,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { uniq as uniqArray } from '@/frontend/utils/Array'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { uniq as uniqArray } from "@/frontend/utils/Array";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 
 export type FilteredTableColumn = {
-  name: string
-  class: maybe<string>
-  label: string
-}
+  name: string;
+  class: maybe<string>;
+  label: string;
+};
 
 @Component<FilteredTable>({
   components: {
@@ -129,56 +129,56 @@ export type FilteredTableColumn = {
   },
 })
 export default class FilteredTable extends Vue {
-  @Prop({ required: true }) records!: any[]
+  @Prop({ required: true }) records!: any[];
 
-  @Prop({ required: true }) columns!: FilteredTableColumn[]
+  @Prop({ required: true }) columns!: FilteredTableColumn[];
 
-  @Prop({ required: true }) primaryKey!: string
+  @Prop({ required: true }) primaryKey!: string;
 
-  @Prop({ default: false }) loading!: boolean
+  @Prop({ default: false }) loading!: boolean;
 
-  @Prop({ default: false }) emptyBoxVisible!: boolean
+  @Prop({ default: false }) emptyBoxVisible!: boolean;
 
-  @Prop({ default: false }) selectable!: boolean
+  @Prop({ default: false }) selectable!: boolean;
 
   @Prop({
     default: () => [],
   })
-  selected!: string[]
+  selected!: string[];
 
-  internalSelected: string[] = []
+  internalSelected: string[] = [];
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get uuid() {
-    return this._uid
+    return this._uid;
   }
 
   get allSelected() {
     if (!this.records.length) {
-      return false
+      return false;
     }
 
     return this.records
       .map((record) => record.id)
-      .every((recordId) => this.internalSelected.includes(recordId))
+      .every((recordId) => this.internalSelected.includes(recordId));
   }
 
   get scopedSlots() {
-    const itemSlotPrefix = 'col.'
+    const itemSlotPrefix = "col.";
     return Object.keys(this.$scopedSlots)
       .filter((name) => name.startsWith(itemSlotPrefix))
-      .map((name) => name.substring(itemSlotPrefix.length))
+      .map((name) => name.substring(itemSlotPrefix.length));
   }
 
-  @Watch('selected')
+  @Watch("selected")
   onSelectedChange() {
-    this.internalSelected = this.selected
+    this.internalSelected = this.selected;
   }
 
-  @Watch('internalSelected')
+  @Watch("internalSelected")
   onInternalSelectedChange() {
-    this.$emit('selected-change', this.internalSelected)
+    this.$emit("selected-change", this.internalSelected);
   }
 
   onAllSelectedChange(value) {
@@ -186,17 +186,17 @@ export default class FilteredTable extends Vue {
       this.internalSelected = [
         ...this.internalSelected,
         ...this.records.map((record) => record.id),
-      ].filter(uniqArray)
+      ].filter(uniqArray);
     } else {
       this.internalSelected = [...this.internalSelected].filter(
         (selected) =>
           !this.records.map((record) => record.id).includes(selected)
-      )
+      );
     }
   }
 
   resetSelected() {
-    this.internalSelected = []
+    this.internalSelected = [];
   }
 }
 </script>

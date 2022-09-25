@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 
 @Component<GalleryImage>({
   components: {
@@ -22,20 +22,20 @@ import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
   },
 })
 export default class GalleryImage extends Vue {
-  @Prop({ required: true }) src!: string
+  @Prop({ required: true }) src!: string;
 
-  @Prop({ default: 'image' }) alt!: string
+  @Prop({ default: "image" }) alt!: string;
 
-  @Prop({ default: null }) title!: string
+  @Prop({ default: null }) title!: string;
 
-  @Prop({ default: null }) href!: string
+  @Prop({ default: null }) href!: string;
 
   openInNewTab(url) {
-    window.open(url, '_blank')
+    window.open(url, "_blank");
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

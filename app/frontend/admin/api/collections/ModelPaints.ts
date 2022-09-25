@@ -1,28 +1,28 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class AdminModelPaintsCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: AdminModelPaint[] = []
+  records: AdminModelPaint[] = [];
 
-  params: AdminModelPaintParams | null = null
+  params: AdminModelPaintParams | null = null;
 
   async findAll(params: AdminModelPaintParams): Promise<AdminModelPaint[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('model-paints', {
+    const response = await get("model-paints", {
       q: params.filters,
       page: params?.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new AdminModelPaintsCollection()
+export default new AdminModelPaintsCollection();

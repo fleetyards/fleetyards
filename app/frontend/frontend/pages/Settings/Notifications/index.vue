@@ -3,7 +3,7 @@
     <form @submit.prevent="handleSubmit(submit)">
       <div class="row">
         <div class="col-lg-12">
-          <h1>{{ $t('headlines.settings.notifications') }}</h1>
+          <h1>{{ $t("headlines.settings.notifications") }}</h1>
         </div>
       </div>
       <div class="row">
@@ -25,21 +25,21 @@
       </div>
       <br />
       <Btn :loading="submitting" type="submit" size="large">
-        {{ $t('actions.save') }}
+        {{ $t("actions.save") }}
       </Btn>
     </form>
   </ValidationObserver>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import { displaySuccess } from '@/frontend/lib/Noty'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import userCollection from '@/frontend/api/collections/User'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import { displaySuccess } from "@/frontend/lib/Noty";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import userCollection from "@/frontend/api/collections/User";
 
 @Component<SettingsNotifications>({
   components: {
@@ -49,42 +49,42 @@ import userCollection from '@/frontend/api/collections/User'
   mixins: [MetaInfo],
 })
 export default class SettingsNotifications extends Vue {
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+  @Getter("currentUser", { namespace: "session" }) currentUser;
 
-  form: NotificationSettingsForm = null
+  form: NotificationSettingsForm = null;
 
-  submitting = false
+  submitting = false;
 
   created() {
     if (this.currentUser) {
-      this.setupForm()
+      this.setupForm();
     }
   }
 
-  @Watch('currentUser')
+  @Watch("currentUser")
   onCurrentUserChange() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
     this.form = {
       saleNotify: this.currentUser.saleNotify,
-    }
+    };
   }
 
   async submit() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await userCollection.updateAccount(this.form)
+    const response = await userCollection.updateAccount(this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
-      this.$comlink.$emit('user-update')
+      this.$comlink.$emit("user-update");
 
       displaySuccess({
-        text: this.$t('messages.updateNotifications.success'),
-      })
+        text: this.$t("messages.updateNotifications.success"),
+      });
     }
   }
 }

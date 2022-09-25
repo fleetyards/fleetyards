@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t('headlines.stats') }}
+              {{ $t("headlines.stats") }}
             </h1>
           </div>
         </div>
@@ -20,7 +20,7 @@
                   {{ quickStats.shipsCountYear }}
                   <div class="panel-box-text-info">
                     {{
-                      $t('labels.stats.quickStats.newShips', {
+                      $t("labels.stats.quickStats.newShips", {
                         year: new Date().getFullYear(),
                       })
                     }}
@@ -38,7 +38,7 @@
                 <div class="panel-box-text">
                   {{ quickStats.shipsCountTotal }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.stats.quickStats.totalShips') }}
+                    {{ $t("labels.stats.quickStats.totalShips") }}
                   </div>
                 </div>
               </div>
@@ -50,7 +50,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByClassification') }}
+                  {{ $t("labels.stats.modelsByClassification") }}
                 </h2>
               </div>
               <Chart
@@ -65,7 +65,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsBySize') }}
+                  {{ $t("labels.stats.modelsBySize") }}
                 </h2>
               </div>
               <Chart
@@ -82,7 +82,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByProductionStatus') }}
+                  {{ $t("labels.stats.modelsByProductionStatus") }}
                 </h2>
               </div>
               <Chart
@@ -97,7 +97,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsPerMonth') }}
+                  {{ $t("labels.stats.modelsPerMonth") }}
                 </h2>
               </div>
               <Chart
@@ -114,7 +114,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByManufacturer') }}
+                  {{ $t("labels.stats.modelsByManufacturer") }}
                 </h2>
               </div>
               <Chart
@@ -132,12 +132,12 @@
 </template>
 
 <script>
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Chart from '@/frontend/core/components/Chart/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Chart from "@/frontend/core/components/Chart/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 export default {
-  name: 'StatsIndex',
+  name: "StatsIndex",
 
   components: {
     Chart,
@@ -149,59 +149,59 @@ export default {
   data() {
     return {
       quickStats: null,
-    }
+    };
   },
 
   mounted() {
-    this.loadQuickStats()
+    this.loadQuickStats();
   },
 
   methods: {
     async loadQuickStats() {
-      const response = await this.$api.get('stats/quick-stats')
+      const response = await this.$api.get("stats/quick-stats");
       if (!response.error) {
-        this.quickStats = response.data
+        this.quickStats = response.data;
       }
     },
     async loadModelsByClassification() {
-      const response = await this.$api.get('stats/models-by-classification')
+      const response = await this.$api.get("stats/models-by-classification");
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
 
     async loadModelsBySize() {
-      const response = await this.$api.get('stats/models-by-size')
+      const response = await this.$api.get("stats/models-by-size");
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
 
     async loadModelsPerMonth() {
-      const response = await this.$api.get('stats/models-per-month')
+      const response = await this.$api.get("stats/models-per-month");
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
 
     async loadModelsByManufacturer() {
-      const response = await this.$api.get('stats/models-by-manufacturer')
+      const response = await this.$api.get("stats/models-by-manufacturer");
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
 
     async loadModelsByProductionStatus() {
-      const response = await this.$api.get('stats/models-by-production-status')
+      const response = await this.$api.get("stats/models-by-production-status");
       if (!response.error) {
-        return response.data
+        return response.data;
       }
-      return []
+      return [];
     },
   },
-}
+};
 </script>

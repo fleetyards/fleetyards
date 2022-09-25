@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import * as Sentry from '@sentry/vue'
-import { BrowserTracing } from '@sentry/tracing'
-import router from '@/frontend/lib/Router'
+import Vue from "vue";
+import * as Sentry from "@sentry/vue";
+import { BrowserTracing } from "@sentry/tracing";
+import router from "@/frontend/lib/Router";
 
 if (window.SENTRY_DSN) {
   Sentry.init({
@@ -13,19 +13,19 @@ if (window.SENTRY_DSN) {
       new BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router),
         tracingOrigins: [
-          'localhost',
-          'fleetyards.test',
-          'stage.fleetyards.net',
-          'fleetyards.net',
+          "localhost",
+          "fleetyards.test",
+          "stage.fleetyards.net",
+          "fleetyards.net",
           /^\//,
         ],
       }),
     ],
-  })
+  });
 
   Sentry.configureScope((scope) => {
-    scope.setTag('version', window.APP_VERSION)
-    scope.setTag('codename', window.APP_CODENAME)
-    scope.setTag('store-version', window.STORE_VERSION)
-  })
+    scope.setTag("version", window.APP_VERSION);
+    scope.setTag("codename", window.APP_CODENAME);
+    scope.setTag("store-version", window.STORE_VERSION);
+  });
 }

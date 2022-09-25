@@ -1,11 +1,11 @@
 type AdminComponent = {
-  id: string
-}
+  id: string;
+};
 
 type AdminComponentFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface AdminComponentParams extends CollectionParams {
-  filters: AdminComponentFilter
+  filters: AdminComponentFilter;
 }

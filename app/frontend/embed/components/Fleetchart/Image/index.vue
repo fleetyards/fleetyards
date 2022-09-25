@@ -15,21 +15,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class FleetchartListItemImage extends Vue {
-  @Prop() src!: string
+  @Prop() src!: string;
 
-  @Prop() label!: string
+  @Prop() label!: string;
 
-  @Prop() length!: number
+  @Prop() length!: number;
 
-  @Prop() scale!: number
+  @Prop() scale!: number;
 
   get lengthMultiplicator() {
-    return (this.scale / 100) * 4
+    return (this.scale / 100) * 4;
   }
 }
 </script>

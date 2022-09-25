@@ -1,42 +1,42 @@
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { debounce } from 'ts-debounce'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { debounce } from "ts-debounce";
 
 type FormData = {
-  [key: string]: string | number | boolean | string[] | number[] | boolean[]
-}
+  [key: string]: string | number | boolean | string[] | number[] | boolean[];
+};
 
 const getQuery = function getQuery(formData) {
-  const q = JSON.parse(JSON.stringify(formData))
+  const q = JSON.parse(JSON.stringify(formData));
 
   Object.keys(q)
     .filter((key) => !q[key] || q[key].length === 0)
-    .forEach((key) => delete q[key])
+    .forEach((key) => delete q[key]);
 
-  return q
-}
+  return q;
+};
 
 @Component<FiltersMixin>({})
 export default class FiltersMixin extends Vue {
-  form: FormData = {}
+  form: FormData = {};
 
-  filter = debounce(this.debouncedFilter, 500)
+  filter = debounce(this.debouncedFilter, 500);
 
   get isFilterSelected() {
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}));
 
     Object.keys(query)
       .filter((key) => !query[key] || query[key].length === 0)
-      .forEach((key) => delete query[key])
+      .forEach((key) => delete query[key]);
 
-    return Object.keys(query).length > 0
+    return Object.keys(query).length > 0;
   }
 
-  @Watch('form', {
+  @Watch("form", {
     deep: true,
   })
   onFormChange() {
-    this.filter()
+    this.filter();
   }
 
   resetFilter() {
@@ -46,7 +46,7 @@ export default class FiltersMixin extends Vue {
         query: {},
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
+      .catch((_err) => {});
   }
 
   debouncedFilter() {
@@ -59,6 +59,6 @@ export default class FiltersMixin extends Vue {
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
+      .catch((_err) => {});
   }
 }

@@ -16,16 +16,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { Action } from "vuex-class";
 
 @Component<ShoppingCartItemAmount>({})
 export default class ShoppingCartItemAmount extends Vue {
-  @Prop({ required: true }) cartItem!: CartItem
+  @Prop({ required: true }) cartItem!: CartItem;
 
-  @Action('reduceAmount', { namespace: 'shoppingCart' }) reduceAmount: any
+  @Action("reduceAmount", { namespace: "shoppingCart" }) reduceAmount: any;
 
-  @Action('increaseAmount', { namespace: 'shoppingCart' }) increaseAmount: any
+  @Action("increaseAmount", { namespace: "shoppingCart" }) increaseAmount: any;
 }
 </script>

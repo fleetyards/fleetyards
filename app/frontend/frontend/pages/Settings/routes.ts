@@ -1,55 +1,55 @@
-import SecurityRoutes from './Security/routes'
+import SecurityRoutes from "./Security/routes";
 
 export const routes = [
   {
-    path: 'profile/',
-    name: 'settings-profile',
-    component: () => import('@/frontend/pages/Settings/Profile/index.vue'),
+    path: "profile/",
+    name: "settings-profile",
+    component: () => import("@/frontend/pages/Settings/Profile/index.vue"),
     meta: {
-      title: 'settings.index',
+      title: "settings.index",
       needsAuthentication: true,
     },
   },
   {
-    path: 'account/',
-    name: 'settings-account',
-    component: () => import('@/frontend/pages/Settings/Account/index.vue'),
+    path: "account/",
+    name: "settings-account",
+    component: () => import("@/frontend/pages/Settings/Account/index.vue"),
     meta: {
-      title: 'settings.account',
+      title: "settings.account",
       needsAuthentication: true,
     },
   },
   {
-    path: 'notifications/',
-    name: 'settings-notifications',
+    path: "notifications/",
+    name: "settings-notifications",
     component: () =>
-      import('@/frontend/pages/Settings/Notifications/index.vue'),
+      import("@/frontend/pages/Settings/Notifications/index.vue"),
     meta: {
-      title: 'settings.notifications',
+      title: "settings.notifications",
       needsAuthentication: true,
     },
   },
   {
-    path: 'hangar/',
-    name: 'settings-hangar',
-    component: () => import('@/frontend/pages/Settings/Hangar/index.vue'),
+    path: "hangar/",
+    name: "settings-hangar",
+    component: () => import("@/frontend/pages/Settings/Hangar/index.vue"),
     meta: {
-      title: 'settings.hangar',
+      title: "settings.hangar",
       needsAuthentication: true,
     },
   },
   {
-    path: 'security/',
-    name: 'settings-security',
-    component: () => import('@/frontend/pages/Settings/Security/index.vue'),
+    path: "security/",
+    name: "settings-security",
+    component: () => import("@/frontend/pages/Settings/Security/index.vue"),
     meta: {
       needsAuthentication: true,
     },
     redirect: {
-      name: 'settings-security-status',
+      name: "settings-security-status",
     },
     children: SecurityRoutes,
   },
-]
+];
 
-export default routes
+export default routes;

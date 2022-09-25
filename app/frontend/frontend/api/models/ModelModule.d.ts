@@ -1,11 +1,11 @@
 type ModelModulesFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface ModelModuleParams extends CollectionParams {
-  filters: ModelModulesFilter
+  filters: ModelModulesFilter;
 }
 
 type ModelModule = {
-  id: string
-}
+  id: string;
+};

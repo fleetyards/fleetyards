@@ -3,13 +3,13 @@
     <div v-if="currentUser" class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t('headlines.settings.twoFactor.disable') }}</h1>
+          <h1>{{ $t("headlines.settings.twoFactor.disable") }}</h1>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
           <p class="text-center">
-            {{ $t('texts.twoFactor.disable') }}
+            {{ $t("texts.twoFactor.disable") }}
           </p>
 
           <ValidationObserver
@@ -42,7 +42,7 @@
                   <br />
 
                   <Btn :loading="submitting" type="submit" size="large">
-                    {{ $t('actions.twoFactor.disable') }}
+                    {{ $t("actions.twoFactor.disable") }}
                   </Btn>
                 </div>
               </div>
@@ -55,16 +55,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import { enabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
-import twoFactorCollection from '@/frontend/api/collections/TwoFactor'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
+import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
 
 @Component<TwoFactorDisable>({
   beforeRouteEnter: enabledRouteGuard,
@@ -76,48 +76,48 @@ import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
   mixins: [MetaInfo],
 })
 export default class TwoFactorDisable extends Vue {
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+  @Getter("currentUser", { namespace: "session" }) currentUser;
 
-  submitting = false
+  submitting = false;
 
-  form: TwoFactorForm | null = null
+  form: TwoFactorForm | null = null;
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
     this.form = {
       twoFactorCode: null,
-    }
+    };
   }
 
   async disable() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await twoFactorCollection.disable(this.form.twoFactorCode)
+    const response = await twoFactorCollection.disable(this.form.twoFactorCode);
 
-    this.submitting = false
+    this.submitting = false;
 
-    this.setupForm()
+    this.setupForm();
 
     if (!response.error) {
-      this.$comlink.$emit('user-update')
+      this.$comlink.$emit("user-update");
 
       displaySuccess({
-        text: this.$t('messages.twoFactor.disable.success'),
-      })
+        text: this.$t("messages.twoFactor.disable.success"),
+      });
 
       this.$router
-        .push({ name: 'settings-security', hash: '#two-factor' })
+        .push({ name: "settings-security", hash: "#two-factor" })
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {})
-    } else if (response.error === 'requires_access_confirmation') {
-      this.$comlink.$emit('access-confirmation-required')
+        .catch(() => {});
+    } else if (response.error === "requires_access_confirmation") {
+      this.$comlink.$emit("access-confirmation-required");
     } else {
       displayAlert({
-        text: this.$t('messages.twoFactor.disable.failure'),
-      })
+        text: this.$t("messages.twoFactor.disable.failure"),
+      });
     }
   }
 }

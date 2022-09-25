@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-12">
         <BreadCrumbs :crumbs="crumbs" />
-        <h1>{{ $t('headlines.fleets.settings.membership') }}</h1>
+        <h1>{{ $t("headlines.fleets.settings.membership") }}</h1>
       </div>
     </div>
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
@@ -71,7 +71,7 @@
           size="large"
           data-test="fleet-save"
         >
-          {{ $t('actions.save') }}
+          {{ $t("actions.save") }}
         </Btn>
       </form>
     </ValidationObserver>
@@ -79,17 +79,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
-import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
+import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
 
 @Component<FleetMembershipSettings>({
   beforeRouteEnter: fleetRouteGuard,
@@ -102,37 +102,37 @@ import fleetsCollection from '@/frontend/api/collections/Fleets'
   mixins: [MetaInfo],
 })
 export default class FleetMembershipSettings extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection
+  collection: FleetMembersCollection = fleetMembersCollection;
 
-  submitting = false
+  submitting = false;
 
   form: FleetMembershipForm = {
     primary: false,
     shipsFilter: null,
     hangarGroupId: null,
-  }
+  };
 
   get fleet() {
-    return fleetsCollection.record
+    return fleetsCollection.record;
   }
 
   get metaTitle() {
     if (!this.fleet) {
-      return null
+      return null;
     }
 
-    return this.$t('title.fleets.settings', { fleet: this.fleet.name })
+    return this.$t("title.fleets.settings", { fleet: this.fleet.name });
   }
 
   get crumbs() {
     if (!this.fleet) {
-      return []
+      return [];
     }
 
     return [
       {
         to: {
-          name: 'fleet',
+          name: "fleet",
           params: {
             slug: this.fleet.slug,
           },
@@ -140,54 +140,54 @@ export default class FleetMembershipSettings extends Vue {
 
         label: this.fleet.name,
       },
-    ]
+    ];
   }
 
   get shipsFilterIsHangarGroup() {
-    return this.form.shipsFilter === 'hangar_group'
+    return this.form.shipsFilter === "hangar_group";
   }
 
   get shipsFilterOptions() {
     return [
       {
-        name: this.$t('labels.fleet.members.shipsFilter.values.purchased'),
-        value: 'purchased',
+        name: this.$t("labels.fleet.members.shipsFilter.values.purchased"),
+        value: "purchased",
       },
       {
-        name: this.$t('labels.fleet.members.shipsFilter.values.hangar_group'),
-        value: 'hangar_group',
+        name: this.$t("labels.fleet.members.shipsFilter.values.hangar_group"),
+        value: "hangar_group",
       },
       {
-        name: this.$t('labels.fleet.members.shipsFilter.values.hide'),
-        value: 'hide',
+        name: this.$t("labels.fleet.members.shipsFilter.values.hide"),
+        value: "hide",
       },
-    ]
+    ];
   }
 
   get membership() {
-    return this.collection.record
+    return this.collection.record;
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetchFleet()
+    this.fetchFleet();
   }
 
-  @Watch('fleet')
+  @Watch("fleet")
   onFleetChange() {
-    this.fetch()
+    this.fetch();
   }
 
-  @Watch('shipsFilterIsHangarGroup')
+  @Watch("shipsFilterIsHangarGroup")
   onShipsFilterChange() {
     if (!this.shipsFilterIsHangarGroup) {
-      this.form.hangarGroupId = null
+      this.form.hangarGroupId = null;
     }
   }
 
   mounted() {
-    this.fetchFleet()
-    this.fetch()
+    this.fetchFleet();
+    this.fetch();
   }
 
   setupForm() {
@@ -195,39 +195,39 @@ export default class FleetMembershipSettings extends Vue {
       primary: this.membership?.primary,
       shipsFilter: this.membership?.shipsFilter,
       hangarGroupId: this.membership?.hangarGroupId,
-    }
+    };
   }
 
   async fetch() {
-    await this.collection.findByFleet(this.$route.params.slug)
+    await this.collection.findByFleet(this.$route.params.slug);
 
-    this.setupForm()
+    this.setupForm();
   }
 
   async fetchFleet() {
-    await fleetsCollection.findBySlug(this.$route.params.slug)
+    await fleetsCollection.findBySlug(this.$route.params.slug);
   }
 
   async submit() {
-    this.submitting = true
+    this.submitting = true;
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}/members`,
       this.form
-    )
+    );
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
       displaySuccess({
-        text: this.$t('messages.fleet.members.update.success'),
-      })
+        text: this.$t("messages.fleet.members.update.success"),
+      });
 
-      this.$comlink.$emit('fleet-update')
+      this.$comlink.$emit("fleet-update");
     } else {
       displayAlert({
-        text: this.$t('messages.fleet.members.update.failure'),
-      })
+        text: this.$t("messages.fleet.members.update.failure"),
+      });
     }
   }
 }

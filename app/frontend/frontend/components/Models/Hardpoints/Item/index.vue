@@ -5,7 +5,7 @@
     :class="{ 'has-component': hardpoint.component }"
   >
     <div class="hardpoint-item-size">
-      {{ $t('labels.hardpoint.size') }} {{ hardpoint.sizeLabel }}
+      {{ $t("labels.hardpoint.size") }} {{ hardpoint.sizeLabel }}
     </div>
     <div
       v-if="hardpoint.itemSlots > 1 || showComponent"
@@ -47,40 +47,40 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import turretIconUrl from '@/images/hardpoints/turrets-dark.svg'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import turretIconUrl from "@/images/hardpoints/turrets-dark.svg";
 
 @Component<HardpointItem>({})
 export default class HardpointItem extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint
+  @Prop({ required: true }) hardpoint: Hardpoint;
 
-  turretIcon = turretIconUrl
+  turretIcon = turretIconUrl;
 
   get tooltip() {
     if (
       !this.showCategory &&
       this.hardpoint.categoryLabel !== this.hardpoint?.component?.name
     ) {
-      return this.hardpoint.categoryLabel
+      return this.hardpoint.categoryLabel;
     }
 
-    return this.hardpoint.details
+    return this.hardpoint.details;
   }
 
   get isMissileTurret() {
-    return this.hardpoint.category === 'missile_turret'
+    return this.hardpoint.category === "missile_turret";
   }
 
   get showCategory() {
-    return this.hardpoint.type !== 'turrets'
+    return this.hardpoint.type !== "turrets";
   }
 
   get showComponent() {
     return (
       this.hardpoint.component &&
-      !['main_thrusters', 'maneuvering_thrusters'].includes(this.hardpoint.type)
-    )
+      !["main_thrusters", "maneuvering_thrusters"].includes(this.hardpoint.type)
+    );
   }
 }
 </script>

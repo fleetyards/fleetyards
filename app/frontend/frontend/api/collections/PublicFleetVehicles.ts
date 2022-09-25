@@ -1,24 +1,24 @@
-import { get } from '@/frontend/api/client'
-import Store from '@/frontend/lib/Store'
-import BaseCollection from './Base'
+import { get } from "@/frontend/api/client";
+import Store from "@/frontend/lib/Store";
+import BaseCollection from "./Base";
 
 export class PublicFleetVehiclesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: (Vehicle | Model)[] = []
+  records: (Vehicle | Model)[] = [];
 
-  stats: FleetVehicleStats | null = null
+  stats: FleetVehicleStats | null = null;
 
   get perPage(): number | string {
-    return Store.getters['publicFleet/perPage']
+    return Store.getters["publicFleet/perPage"];
   }
 
   get perPageSteps(): (number | string)[] {
-    return [15, 30, 60, 120, 240, 'all']
+    return [15, 30, 60, 120, 240, "all"];
   }
 
   updatePerPage(perPage) {
-    Store.dispatch('publicFleet/updatePerPage', perPage)
+    Store.dispatch("publicFleet/updatePerPage", perPage);
   }
 
   async findAll(params: FleetVehicleParams): Promise<(Vehicle | Model)[]> {
@@ -27,14 +27,14 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
       page: params?.page,
       grouped: params?.grouped,
       perPage: this.perPage,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 
   async findAllFleetchart(
@@ -42,13 +42,13 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
   ): Promise<(Vehicle | Model)[]> {
     const response = await get(`fleets/${params.slug}/public-fleetchart`, {
       q: params?.filters,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 
   async findStats(
@@ -56,14 +56,14 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
   ): Promise<FleetVehicleStats | null> {
     const response = await get(`fleets/${params.slug}/quick-stats`, {
       q: params?.filters,
-    })
+    });
 
     if (!response.error) {
-      this.stats = response.data
+      this.stats = response.data;
     }
 
-    return this.stats
+    return this.stats;
   }
 }
 
-export default new PublicFleetVehiclesCollection()
+export default new PublicFleetVehiclesCollection();

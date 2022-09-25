@@ -3,7 +3,7 @@
     <div v-if="currentUser" class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t('headlines.settings.twoFactor.backupCodes') }}</h1>
+          <h1>{{ $t("headlines.settings.twoFactor.backupCodes") }}</h1>
         </div>
       </div>
       <div v-if="backupCodes" class="row two-factor-backup-codes">
@@ -13,7 +13,7 @@
             :to="{ name: 'settings-security', hash: '#two-factor' }"
             :exact="true"
           >
-            {{ $t('actions.done') }}
+            {{ $t("actions.done") }}
           </Btn>
         </div>
       </div>
@@ -22,16 +22,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BackupCodesPanel from '@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import { enabledRouteGuard } from '@/frontend/utils/RouteGuards/TwoFactor'
-import twoFactorCollection from '@/frontend/api/collections/TwoFactor'
-import { displayAlert } from '@/frontend/lib/Noty'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
+import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
+import { displayAlert } from "@/frontend/lib/Noty";
 
 @Component<TwoFactorBackupCodes>({
   beforeRouteEnter: enabledRouteGuard,
@@ -43,35 +43,35 @@ import { displayAlert } from '@/frontend/lib/Noty'
   mixins: [MetaInfo],
 })
 export default class TwoFactorBackupCodes extends Vue {
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+  @Getter("currentUser", { namespace: "session" }) currentUser;
 
-  submitting = false
+  submitting = false;
 
-  backupCodes: string[] | null = null
+  backupCodes: string[] | null = null;
 
   mounted() {
-    this.$comlink.$on('access-confirmed', this.generateBackupCodes)
+    this.$comlink.$on("access-confirmed", this.generateBackupCodes);
   }
 
   beforeDestroy() {
-    this.$comlink.$off('access-confirmed')
+    this.$comlink.$off("access-confirmed");
   }
 
   async generateBackupCodes() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await twoFactorCollection.generateBackupCodes()
+    const response = await twoFactorCollection.generateBackupCodes();
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
-      this.backupCodes = response.data.codes
-    } else if (response.error === 'requires_access_confirmation') {
-      this.$comlink.$emit('access-confirmation-required')
+      this.backupCodes = response.data.codes;
+    } else if (response.error === "requires_access_confirmation") {
+      this.$comlink.$emit("access-confirmation-required");
     } else {
       displayAlert({
-        text: this.$t('messages.twoFactor.backupCodes.failure'),
-      })
+        text: this.$t("messages.twoFactor.backupCodes.failure"),
+      });
     }
   }
 }

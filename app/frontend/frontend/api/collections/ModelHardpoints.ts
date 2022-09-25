@@ -1,20 +1,20 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class ModelHardpointsCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: ModelHardpoint[] = []
+  records: ModelHardpoint[] = [];
 
   async findAllByModel(modelSlug: string): Promise<ModelHardpoint[]> {
-    const response = await get(`models/${modelSlug}/hardpoints`)
+    const response = await get(`models/${modelSlug}/hardpoints`);
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new ModelHardpointsCollection()
+export default new ModelHardpointsCollection();

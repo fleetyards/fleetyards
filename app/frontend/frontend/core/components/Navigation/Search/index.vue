@@ -13,15 +13,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import { debounce } from 'ts-debounce'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { debounce } from "ts-debounce";
 
 type SearchFormType = {
-  [key: string]: string
-}
+  [key: string]: string;
+};
 
 @Component<SearchForm>({
   components: {
@@ -29,43 +29,43 @@ type SearchFormType = {
   },
 })
 export default class SearchForm extends Vue {
-  form: SearchFormType = {}
+  form: SearchFormType = {};
 
-  filter = debounce(this.debouncedFilter, 500)
+  filter = debounce(this.debouncedFilter, 500);
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   mounted() {
-    this.setupSearch()
+    this.setupSearch();
   }
 
-  @Watch('form', {
+  @Watch("form", {
     deep: true,
   })
   onFormChange() {
-    this.filter()
+    this.filter();
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.setupSearch()
+    this.setupSearch();
   }
 
   setupSearch() {
     this.form = {
       [this.$route.meta.search]:
         this.$route.query[this.$route.meta.search] || null,
-    }
+    };
   }
 
   debouncedFilter() {
     const query = {
       ...this.$route.query,
       ...this.form,
-    }
+    };
 
     if (!query[this.$route.meta.search]) {
-      delete query[this.$route.meta.search]
+      delete query[this.$route.meta.search];
     }
 
     this.$router
@@ -74,7 +74,7 @@ export default class SearchForm extends Vue {
         query,
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {})
+      .catch((_err) => {});
   }
 }
 </script>

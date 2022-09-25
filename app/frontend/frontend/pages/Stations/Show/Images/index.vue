@@ -47,15 +47,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import Gallery from '@/frontend/core/components/Gallery/index.vue'
-import GalleryImage from '@/frontend/core/components/Gallery/Image/index.vue'
-import imagesCollection from '@/frontend/api/collections/Images'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Gallery from "@/frontend/core/components/Gallery/index.vue";
+import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
+import imagesCollection from "@/frontend/api/collections/Images";
 
 @Component<ModelImages>({
   components: {
@@ -68,44 +68,44 @@ import imagesCollection from '@/frontend/api/collections/Images'
   mixins: [MetaInfo],
 })
 export default class ModelImages extends Vue {
-  collection: ImagesCollection = imagesCollection
+  collection: ImagesCollection = imagesCollection;
 
-  station: Station | null = null
+  station: Station | null = null;
 
   get metaTitle() {
     if (!this.station) {
-      return null
+      return null;
     }
 
-    return this.$t('title.stationImages', {
+    return this.$t("title.stationImages", {
       station: this.station.name,
       celestialObject: this.station.celestialObject.name,
-    })
+    });
   }
 
   get routeParams() {
     return {
       ...this.$route.params,
-      galleryType: 'stations',
-    }
+      galleryType: "stations",
+    };
   }
 
   get crumbs() {
     if (!this.station) {
-      return null
+      return null;
     }
 
     const crumbs = [
       {
         to: {
-          name: 'starsystems',
+          name: "starsystems",
           hash: `#${this.station.celestialObject.starsystem.slug}`,
         },
-        label: this.$t('nav.starsystems'),
+        label: this.$t("nav.starsystems"),
       },
       {
         to: {
-          name: 'starsystem',
+          name: "starsystem",
           params: {
             slug: this.station.celestialObject.starsystem.slug,
           },
@@ -113,24 +113,24 @@ export default class ModelImages extends Vue {
         },
         label: this.station.celestialObject.starsystem.name,
       },
-    ]
+    ];
 
     if (this.station.celestialObject.parent) {
       crumbs.push({
         to: {
-          name: 'celestial-object',
+          name: "celestial-object",
           params: {
             starsystem: this.station.celestialObject.starsystem.slug,
             slug: this.station.celestialObject.parent.slug,
           },
         },
         label: this.station.celestialObject.parent.name,
-      })
+      });
     }
 
     crumbs.push({
       to: {
-        name: 'celestial-object',
+        name: "celestial-object",
         params: {
           starsystem: this.station.celestialObject.starsystem.slug,
           slug: this.station.celestialObject.slug,
@@ -138,36 +138,36 @@ export default class ModelImages extends Vue {
         hash: `#${this.station.slug}`,
       },
       label: this.station.celestialObject.name,
-    })
+    });
 
     crumbs.push({
       to: {
-        name: 'station',
+        name: "station",
         params: {
           slug: this.station.slug,
         },
       },
       label: this.station.name,
-    })
+    });
 
-    return crumbs
+    return crumbs;
   }
 
   created() {
-    this.fetchStation()
+    this.fetchStation();
   }
 
   openGallery(index) {
-    this.$refs.gallery.open(index)
+    this.$refs.gallery.open(index);
   }
 
   async fetchStation() {
-    const response = await this.$api.get(`stations/${this.$route.params.slug}`)
+    const response = await this.$api.get(`stations/${this.$route.params.slug}`);
 
     if (!response.error) {
-      this.station = response.data
+      this.station = response.data;
     } else if (response.error.response.status === 404) {
-      this.$router.replace({ name: '404' })
+      this.$router.replace({ name: "404" });
     }
   }
 }

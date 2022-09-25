@@ -1,13 +1,13 @@
 type Shop = {
-  id: string
-}
+  id: string;
+};
 
 type ShopsFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface ShopParams extends CollectionParams {
-  filters?: ShopsFilter
-  stationSlug?: string
-  slug?: string
+  filters?: ShopsFilter;
+  stationSlug?: string;
+  slug?: string;
 }

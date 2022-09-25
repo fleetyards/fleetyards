@@ -1,8 +1,8 @@
 type Image = {
-  id: string
-}
+  id: string;
+};
 
 interface GalleryParams extends CollectionParams {
-  galleryType: string
-  slug: string
+  galleryType: string;
+  slug: string;
 }

@@ -1,4 +1,4 @@
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 .nav-item-inner {
   position: relative;
@@ -14,7 +14,7 @@
 
   .nav-item-prefix {
     min-width: 30px;
-    font-family: 'Major Mono Display', monospace;
+    font-family: "Major Mono Display", monospace;
     margin-inline-end: 15px;
     font-weight: bold;
     // color: $text-color;
@@ -41,7 +41,7 @@
     height: 30px;
     overflow: hidden;
     font-size: 70%;
-    font-family: 'Orbitron', sans-serif;
+    font-family: "Orbitron", sans-serif;
     background-color: $gray-darker;
     border-radius: 50%;
   }

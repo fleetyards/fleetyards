@@ -7,7 +7,7 @@
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
-              {{ $t('labels.fleetchartApp.screenHeight') }}:
+              {{ $t("labels.fleetchartApp.screenHeight") }}:
             </template>
             {{
               $t(
@@ -30,7 +30,7 @@
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
-              {{ $t('labels.fleetchartApp.viewpoint') }}:
+              {{ $t("labels.fleetchartApp.viewpoint") }}:
             </template>
             {{ $t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
           </template>
@@ -73,10 +73,10 @@
           <Btn size="small" variant="dropdown" @click.native="toggleLabels">
             <i class="fad fa-tags" />
             <span v-if="showLabels">
-              {{ $t('actions.hideLabels') }}
+              {{ $t("actions.hideLabels") }}
             </span>
             <span v-else>
-              {{ $t('actions.showLabels') }}
+              {{ $t("actions.showLabels") }}
             </span>
           </Btn>
 
@@ -84,7 +84,7 @@
 
           <Btn size="small" variant="dropdown" @click.native="markForReset">
             <i class="fad fa-undo" />
-            <span>{{ $t('actions.resetZoom') }}</span>
+            <span>{{ $t("actions.resetZoom") }}</span>
           </Btn>
         </BtnDropdown>
       </div>
@@ -94,7 +94,7 @@
           'fleetchart-grid-enabled': gridEnabled,
         }"
       >
-        {{ $t('labels.fleetchartApp.gridSize', { size: gridSizeLabel }) }}
+        {{ $t("labels.fleetchartApp.gridSize", { size: gridSizeLabel }) }}
       </div>
       <div class="fleetchart-scroll-wrapper">
         <div id="fleetchart" ref="fleetchart" class="fleetchart">
@@ -146,18 +146,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import panzoom from 'panzoom'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn/index.vue'
-import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn/index.vue'
-import { Getter } from 'vuex-class'
-import debounce from 'lodash.debounce'
-import Starship42Btn from '@/frontend/components/Starship42Btn/index.vue'
-import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
-import FleetchartItem from './Item/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import panzoom from "panzoom";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
+import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
+import { Getter } from "vuex-class";
+import debounce from "lodash.debounce";
+import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
+import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import FleetchartItem from "./Item/index.vue";
 
 @Component({
   components: {
@@ -171,60 +171,60 @@ import FleetchartItem from './Item/index.vue'
   },
 })
 export default class FleetchartListPanzoom extends Vue {
-  updateZoomData = debounce(this.debouncedUpdateZoomData, 300)
+  updateZoomData = debounce(this.debouncedUpdateZoomData, 300);
 
-  checkReset = debounce(this.debouncedCheckReset, 300)
+  checkReset = debounce(this.debouncedCheckReset, 300);
 
-  screenHeightOptions: string[] = ['1x', '1_5x', '2x', '3x', '4x']
+  screenHeightOptions: string[] = ["1x", "1_5x", "2x", "3x", "4x"];
 
-  viewpointOptions: string[] = ['side', 'top', 'angled']
+  viewpointOptions: string[] = ["side", "top", "angled"];
 
-  showStatus = false
+  showStatus = false;
 
-  zoomSpeed = 0.5
+  zoomSpeed = 0.5;
 
-  maxZoom = 20
+  maxZoom = 20;
 
-  minZoom = 0.2
+  minZoom = 0.2;
 
-  pinchSpeed = 3
+  pinchSpeed = 3;
 
-  margin = 80
+  margin = 80;
 
-  innerMargin = 20
+  innerMargin = 20;
 
-  marginBottom = 40
+  marginBottom = 40;
 
-  gridEnabled = false
+  gridEnabled = false;
 
-  screenWidth: number | null = null
+  screenWidth: number | null = null;
 
-  screenHeight: number | null = null
+  screenHeight: number | null = null;
 
-  gridSize = 80.0
+  gridSize = 80.0;
 
-  panzoomInstance = null
+  panzoomInstance = null;
 
-  fleetchartColumns = {}
+  fleetchartColumns = {};
 
-  markedForReset = false
+  markedForReset = false;
 
-  sizeMultiplicator = 4
+  sizeMultiplicator = 4;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Prop({ required: true }) namespace!: string
+  @Prop({ required: true }) namespace!: string;
 
   @Prop({
     default() {
-      return []
+      return [];
     },
   })
-  items!: Vehicle[] | Model[]
+  items!: Vehicle[] | Model[];
 
-  @Prop({ default: false }) myShip!: boolean
+  @Prop({ default: false }) myShip!: boolean;
 
-  @Prop({ default: null }) downloadName!: string
+  @Prop({ default: null }) downloadName!: string;
 
   get gridSizeLabel() {
     return (
@@ -233,41 +233,41 @@ export default class FleetchartListPanzoom extends Vue {
       this.sizeMultiplicator
     )
       .toFixed(2)
-      .replace('.00', '')
+      .replace(".00", "");
   }
 
   get viewpoint() {
-    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
+    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`];
   }
 
   get showLabels() {
-    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
+    return this.$store.getters[`${this.namespace}/fleetchartLabels`];
   }
 
   get selectedScreenHeight() {
-    return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`]
+    return this.$store.getters[`${this.namespace}/fleetchartScreenHeight`];
   }
 
   get viewpointTop() {
-    return this.viewpoint === 'top'
+    return this.viewpoint === "top";
   }
 
   get viewpointSide() {
-    return this.viewpoint === 'side'
+    return this.viewpoint === "side";
   }
 
   get viewpointAngled() {
-    return this.viewpoint === 'angled'
+    return this.viewpoint === "angled";
   }
 
   get screenHeightFactor() {
     return {
-      '1x': 1,
-      '1_5x': 1.5,
-      '2x': 2,
-      '3x': 3,
-      '4x': 4,
-    }[this.selectedScreenHeight]
+      "1x": 1,
+      "1_5x": 1.5,
+      "2x": 2,
+      "3x": 3,
+      "4x": 4,
+    }[this.selectedScreenHeight];
   }
 
   get maxColHeight() {
@@ -275,47 +275,47 @@ export default class FleetchartListPanzoom extends Vue {
       this.screenHeight * this.screenHeightFactor -
       this.margin -
       this.marginBottom
-    )
+    );
   }
 
   get initialZoomData() {
-    return this.$store.getters[`${this.namespace}/fleetchartZoomData`]
+    return this.$store.getters[`${this.namespace}/fleetchartZoomData`];
   }
 
   get scale() {
-    return this.initialZoomData?.scale || 1
+    return this.initialZoomData?.scale || 1;
   }
 
   mounted() {
-    this.showStatus = !!this.$route.query?.showStatus
+    this.showStatus = !!this.$route.query?.showStatus;
 
-    this.$comlink.$on('fleetchart-toggle-status', this.toggleStatus)
+    this.$comlink.$on("fleetchart-toggle-status", this.toggleStatus);
 
-    this.updateScreenSize()
+    this.updateScreenSize();
 
-    this.setupColumns()
+    this.setupColumns();
 
-    this.setupZoom()
+    this.setupZoom();
 
-    window.addEventListener('resize', this.updateScreenSize)
-    window.addEventListener('deviceorientation', this.updateScreenSize)
+    window.addEventListener("resize", this.updateScreenSize);
+    window.addEventListener("deviceorientation", this.updateScreenSize);
   }
 
   beforeDestroy() {
-    this.$comlink.$off('fleetchart-toggle-status')
+    this.$comlink.$off("fleetchart-toggle-status");
 
-    this.panzoomInstance.dispose()
+    this.panzoomInstance.dispose();
 
-    this.panzoomInstance = null
+    this.panzoomInstance = null;
 
-    window.removeEventListener('resize', this.updateScreenSize)
-    window.removeEventListener('deviceorientation', this.updateScreenSize)
+    window.removeEventListener("resize", this.updateScreenSize);
+    window.removeEventListener("deviceorientation", this.updateScreenSize);
   }
 
   debouncedUpdateZoomData() {
-    const transform = this.panzoomInstance.getTransform()
+    const transform = this.panzoomInstance.getTransform();
 
-    this.$store.commit(`${this.namespace}/setFleetchartZoomData`, transform)
+    this.$store.commit(`${this.namespace}/setFleetchartZoomData`, transform);
   }
 
   async setupZoom() {
@@ -324,160 +324,160 @@ export default class FleetchartListPanzoom extends Vue {
       minZoom: this.minZoom,
       zoomSpeed: this.zoomSpeed,
       pinchSpeed: this.pinchSpeed,
-    })
+    });
 
     if (this.initialZoomData?.scale) {
-      this.panzoomInstance.zoomAbs(0, 0, this.initialZoomData.scale)
+      this.panzoomInstance.zoomAbs(0, 0, this.initialZoomData.scale);
 
       // hack to apply latest location after zooming.
       setTimeout(() => {
         this.panzoomInstance.moveTo(
           this.initialZoomData.x,
           this.initialZoomData.y
-        )
-      }, 300)
+        );
+      }, 300);
     }
 
-    this.panzoomInstance.on('zoom', (_event) => {
-      this.updateZoomData()
-    })
+    this.panzoomInstance.on("zoom", (_event) => {
+      this.updateZoomData();
+    });
 
-    this.panzoomInstance.on('pan', (_event) => {
-      this.updateZoomData()
-    })
+    this.panzoomInstance.on("pan", (_event) => {
+      this.updateZoomData();
+    });
 
-    this.panzoomInstance.on('transform', (_event) => {
-      this.checkReset()
-    })
+    this.panzoomInstance.on("transform", (_event) => {
+      this.checkReset();
+    });
   }
 
   modelName(item) {
-    const model = item.model || item
+    const model = item.model || item;
 
-    return model.name
+    return model.name;
   }
 
   productionStatus(item) {
-    const model = item.model || item
+    const model = item.model || item;
 
-    return this.$t(`labels.model.productionStatus.${model.productionStatus}`)
+    return this.$t(`labels.model.productionStatus.${model.productionStatus}`);
   }
 
   debouncedCheckReset() {
     if (this.markedForReset) {
-      this.markedForReset = false
+      this.markedForReset = false;
 
-      this.resetZoom()
+      this.resetZoom();
     }
   }
 
   updateScreenSize() {
-    this.screenWidth = window.innerWidth
-    this.screenHeight = window.innerHeight
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
 
-    this.drawGridLines()
+    this.drawGridLines();
   }
 
   setupColumns() {
-    this.fleetchartColumns = {}
-    let index = 0
-    let colHeight = 0
+    this.fleetchartColumns = {};
+    let index = 0;
+    let colHeight = 0;
 
     this.items.forEach((item) => {
-      const model = item.model || item
-      const length = model.fleetchartLength * this.sizeMultiplicator
+      const model = item.model || item;
+      const length = model.fleetchartLength * this.sizeMultiplicator;
 
       const height =
-        (length * this.imageMaxHeight(item)) / this.imageMaxWidth(item)
+        (length * this.imageMaxHeight(item)) / this.imageMaxWidth(item);
 
       if (Number.isNaN(height)) {
-        return
+        return;
       }
 
-      colHeight += height
+      colHeight += height;
 
       if (colHeight > this.maxColHeight) {
-        colHeight = height
-        index += 1
+        colHeight = height;
+        index += 1;
       }
 
-      colHeight += this.innerMargin
+      colHeight += this.innerMargin;
 
       this.fleetchartColumns[index] = [
         ...(this.fleetchartColumns[index] || []),
         item,
-      ]
-    })
+      ];
+    });
   }
 
   toggleGrid() {
-    this.gridEnabled = !this.gridEnabled
+    this.gridEnabled = !this.gridEnabled;
 
-    this.drawGridLines()
+    this.drawGridLines();
   }
 
   setViewpoint(viewpoint) {
-    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint)
+    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint);
   }
 
   setScreenHeight(screenHeight) {
     this.$store.commit(
       `${this.namespace}/setFleetchartScreenHeight`,
       screenHeight
-    )
+    );
 
-    this.setupColumns()
+    this.setupColumns();
   }
 
   toggleStatus() {
-    this.showStatus = !this.showStatus
+    this.showStatus = !this.showStatus;
   }
 
   toggleLabels() {
     this.$store.commit(
       `${this.namespace}/setFleetchartLabels`,
       !this.showLabels
-    )
+    );
   }
 
   async drawGridLines() {
     if (!this.gridEnabled) {
-      return
+      return;
     }
 
-    await this.$nextTick()
+    await this.$nextTick();
 
-    const canvas = this.$refs.fleetchartGrid
+    const canvas = this.$refs.fleetchartGrid;
 
     if (canvas.getContext) {
-      const ctx = canvas.getContext('2d')
+      const ctx = canvas.getContext("2d");
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       ctx.drawVerticalLine = (left, top, height, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, 1, height)
-      }
+        ctx.fillStyle = color;
+        ctx.fillRect(left, top, 1, height);
+      };
 
       ctx.drawHorizontalLine = (left, top, width, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, width, 1)
-      }
+        ctx.fillStyle = color;
+        ctx.fillRect(left, top, width, 1);
+      };
 
-      const lineColor = 'rgba(255, 255, 255, 0.5)'
+      const lineColor = "rgba(255, 255, 255, 0.5)";
 
       for (let i = 0; i < canvas.width; i += this.gridSize) {
-        ctx.drawVerticalLine(i, 0, canvas.height, lineColor)
+        ctx.drawVerticalLine(i, 0, canvas.height, lineColor);
       }
 
       for (let i = 0; i < canvas.height; i += this.gridSize) {
-        ctx.drawHorizontalLine(0, i, canvas.width, lineColor)
+        ctx.drawHorizontalLine(0, i, canvas.width, lineColor);
       }
     }
   }
 
   image(item) {
-    const model = item.model || item
+    const model = item.model || item;
 
     if (
       item.modulePackage &&
@@ -485,9 +485,9 @@ export default class FleetchartListPanzoom extends Vue {
         item.modulePackage.sideView ||
         item.modulePackage.angledView)
     ) {
-      const url = this.extractUrlFromModel(item.modulePackage)
+      const url = this.extractUrlFromModel(item.modulePackage);
       if (url) {
-        return url
+        return url;
       }
     }
 
@@ -495,54 +495,54 @@ export default class FleetchartListPanzoom extends Vue {
       item.paint &&
       (item.paint.topView || item.paint.sideView || item.paint.angledView)
     ) {
-      const url = this.extractUrlFromModel(item.paint)
+      const url = this.extractUrlFromModel(item.paint);
       if (url) {
-        return url
+        return url;
       }
     }
 
-    return this.extractUrlFromModel(model)
+    return this.extractUrlFromModel(model);
   }
 
   extractUrlFromModel(model) {
     if (this.viewpointTop && model.topView) {
-      return this.topView(model)
+      return this.topView(model);
     }
 
     if (this.viewpointSide && model.sideView) {
-      return this.sideView(model)
+      return this.sideView(model);
     }
 
     if (this.viewpointAngled && model.angledView) {
-      return this.angledView(model)
+      return this.angledView(model);
     }
 
-    return null
+    return null;
   }
 
   resetZoom() {
-    this.panzoomInstance.zoomAbs(0, 0, 1)
-    this.panzoomInstance.moveTo(0, 0)
+    this.panzoomInstance.zoomAbs(0, 0, 1);
+    this.panzoomInstance.moveTo(0, 0);
   }
 
   markForReset() {
-    this.markedForReset = true
+    this.markedForReset = true;
 
     setTimeout(() => {
-      this.checkReset()
-    }, 300)
+      this.checkReset();
+    }, 300);
   }
 
   topView(model) {
-    return model.topViewResized
+    return model.topViewResized;
   }
 
   sideView(model) {
-    return model.sideViewResized
+    return model.sideViewResized;
   }
 
   angledView(model) {
-    return model.angledViewResized
+    return model.angledViewResized;
   }
 
   extractMaxWidthFromModel(model) {
@@ -550,7 +550,7 @@ export default class FleetchartListPanzoom extends Vue {
       model.topViewWidth,
       model.sideViewWidth,
       model.angledViewWidth
-    )
+    );
   }
 
   extractMaxHeightFromModel(model) {
@@ -558,11 +558,11 @@ export default class FleetchartListPanzoom extends Vue {
       model.topViewHeight,
       model.sideViewHeight,
       model.angledViewHeight
-    )
+    );
   }
 
   imageMaxHeight(item) {
-    const model = item.model || item
+    const model = item.model || item;
 
     if (
       item.modulePackage &&
@@ -570,9 +570,9 @@ export default class FleetchartListPanzoom extends Vue {
         item.modulePackage.sideView ||
         item.modulePackage.angledView)
     ) {
-      const height = this.extractMaxHeightFromModel(item.modulePackage)
+      const height = this.extractMaxHeightFromModel(item.modulePackage);
       if (height) {
-        return height
+        return height;
       }
     }
 
@@ -580,17 +580,17 @@ export default class FleetchartListPanzoom extends Vue {
       item.paint &&
       (item.paint.topView || item.paint.sideView || item.paint.angledView)
     ) {
-      const height = this.extractMaxHeightFromModel(item.paint)
+      const height = this.extractMaxHeightFromModel(item.paint);
       if (height) {
-        return height
+        return height;
       }
     }
 
-    return this.extractMaxHeightFromModel(model)
+    return this.extractMaxHeightFromModel(model);
   }
 
   imageMaxWidth(item) {
-    const model = item.model || item
+    const model = item.model || item;
 
     if (
       item.modulePackage &&
@@ -598,9 +598,9 @@ export default class FleetchartListPanzoom extends Vue {
         item.modulePackage.sideView ||
         item.modulePackage.angledView)
     ) {
-      const width = this.extractMaxWidthFromModel(item.modulePackage)
+      const width = this.extractMaxWidthFromModel(item.modulePackage);
       if (width) {
-        return width
+        return width;
       }
     }
 
@@ -608,13 +608,13 @@ export default class FleetchartListPanzoom extends Vue {
       item.paint &&
       (item.paint.topView || item.paint.sideView || item.paint.angledView)
     ) {
-      const width = this.extractMaxWidthFromModel(item.paint)
+      const width = this.extractMaxWidthFromModel(item.paint);
       if (width) {
-        return width
+        return width;
       }
     }
 
-    return this.extractMaxWidthFromModel(model)
+    return this.extractMaxWidthFromModel(model);
   }
 }
 </script>

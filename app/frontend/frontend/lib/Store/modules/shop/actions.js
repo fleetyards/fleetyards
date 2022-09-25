@@ -1,9 +1,9 @@
 export default {
   reset({ commit }) {
-    commit('reset')
+    commit("reset");
   },
 
   toggleFilter({ commit, state }) {
-    commit('setFilterVisible', !state.filterVisible)
+    commit("setFilterVisible", !state.filterVisible);
   },
-}
+};

@@ -34,10 +34,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Ref } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import Vue from "vue";
+import { Component, Prop, Ref } from "vue-property-decorator";
+import { Action } from "vuex-class";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 @Component({
   components: {
@@ -45,62 +45,62 @@ import Panel from '@/frontend/core/components/Panel/index.vue'
   },
 })
 export default class Modal extends Vue {
-  @Action('showOverlay', { namespace: 'app' }) showOverlay: any
+  @Action("showOverlay", { namespace: "app" }) showOverlay: any;
 
-  @Action('hideOverlay', { namespace: 'app' }) hideOverlay: any
+  @Action("hideOverlay", { namespace: "app" }) hideOverlay: any;
 
-  @Ref('modal') readonly modal!: HTMLElement
+  @Ref("modal") readonly modal!: HTMLElement;
 
-  isShow = false
+  isShow = false;
 
-  isOpen = false
+  isOpen = false;
 
   @Prop({ required: true })
-  private title!: string
+  private title!: string;
 
   @Prop({ default: false })
-  private visible!: boolean
+  private visible!: boolean;
 
   @Prop({ default: false })
-  private wide!: boolean
+  private wide!: boolean;
 
   @Prop({ default: true })
-  private closable!: boolean
+  private closable!: boolean;
 
   created() {
-    this.isShow = this.visible
-    this.isOpen = this.visible
+    this.isShow = this.visible;
+    this.isOpen = this.visible;
   }
 
   public open() {
-    this.isShow = true
-    this.showOverlay()
+    this.isShow = true;
+    this.showOverlay();
 
     this.$nextTick(() => {
-      this.isOpen = true
-      this.$refs.modal.focus()
-      this.$emit('open')
-    })
+      this.isOpen = true;
+      this.$refs.modal.focus();
+      this.$emit("open");
+    });
   }
 
   public close(force = false) {
     if (!this.closable && !force) {
-      return
+      return;
     }
 
-    this.isOpen = false
-    this.hideOverlay()
+    this.isOpen = false;
+    this.hideOverlay();
 
     this.$nextTick(function onClose() {
       setTimeout(() => {
-        this.isShow = false
-        this.$emit('close')
-      }, 500)
-    })
+        this.isShow = false;
+        this.$emit("close");
+      }, 500);
+    });
   }
 }
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

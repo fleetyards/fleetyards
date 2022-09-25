@@ -14,15 +14,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Filters from '@/frontend/mixins/Filters'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Filters from "@/frontend/mixins/Filters";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 
 type QuickSearchFormData = {
-  [key: string]: any
-}
+  [key: string]: any;
+};
 
 @Component<Navigation>({
   components: {
@@ -31,31 +31,31 @@ type QuickSearchFormData = {
   mixins: [Filters],
 })
 export default class QuickSearch extends Vue {
-  form: QuickSearchFormData = {}
+  form: QuickSearchFormData = {};
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   mounted() {
-    const query = this.queryParams()
+    const query = this.queryParams();
 
     query[this.$route.meta.quickSearch] =
-      query[this.$route.meta.quickSearch] || null
+      query[this.$route.meta.quickSearch] || null;
 
-    this.form = query
+    this.form = query;
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    const query = this.queryParams()
+    const query = this.queryParams();
 
     query[this.$route.meta.quickSearch] =
-      query[this.$route.meta.quickSearch] || null
+      query[this.$route.meta.quickSearch] || null;
 
-    this.form = query
+    this.form = query;
   }
 
   queryParams() {
-    return JSON.parse(JSON.stringify(this.$route.query.q || {}))
+    return JSON.parse(JSON.stringify(this.$route.query.q || {}));
   }
 }
 </script>

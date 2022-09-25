@@ -2,7 +2,7 @@
   <ol aria-label="breadcrumb" class="breadcrumb">
     <li class="breadcrumb-item">
       <router-link :to="{ name: 'home' }">
-        {{ $t('nav.home') }}
+        {{ $t("nav.home") }}
       </router-link>
     </li>
     <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 @Component({
   components: {
@@ -26,9 +26,9 @@ import Panel from '@/frontend/core/components/Panel/index.vue'
 export default class BreadCrumbs extends Vue {
   @Prop({
     default() {
-      return []
+      return [];
     },
   })
-  crumbs!: Route[]
+  crumbs!: Route[];
 }
 </script>

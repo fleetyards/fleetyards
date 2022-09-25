@@ -1,13 +1,13 @@
 type ModelPaintsFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface ModelPaintParams extends CollectionParams {
-  filters: ModelPaintsFilter
+  filters: ModelPaintsFilter;
 }
 
 type ModelPaint = {
-  id: string
-  rsiId: string
-  rsiName: string
-}
+  id: string;
+  rsiId: string;
+  rsiName: string;
+};

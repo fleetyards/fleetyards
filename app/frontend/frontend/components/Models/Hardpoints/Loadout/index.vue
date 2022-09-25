@@ -14,7 +14,7 @@
       :class="{ 'has-component': loadout.component }"
     >
       <div v-if="showComponent" class="hardpoint-item-size">
-        {{ $t('labels.hardpoint.size') }} {{ loadout.component.size }}
+        {{ $t("labels.hardpoint.size") }} {{ loadout.component.size }}
       </div>
       <div class="hardpoint-item-component">
         <template v-if="showComponent">
@@ -32,30 +32,30 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import loadoutListIconUrl from '@/images/icons/loadout-list-icon.svg'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import loadoutListIconUrl from "@/images/icons/loadout-list-icon.svg";
 
 @Component<HardpointItem>({})
 export default class HardpointItem extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint
+  @Prop({ required: true }) hardpoint: Hardpoint;
 
-  loadoutListIcon = loadoutListIconUrl
+  loadoutListIcon = loadoutListIconUrl;
 
   get showComponent() {
-    return this.loadout.component
+    return this.loadout.component;
   }
 
   get loadoutsCount() {
-    return this.hardpoint.loadouts.length
+    return this.hardpoint.loadouts.length;
   }
 
   get loadout() {
     if (!this.hardpoint.loadouts.length) {
-      return null
+      return null;
     }
 
-    return this.hardpoint.loadouts[0]
+    return this.hardpoint.loadouts[0];
   }
 }
 </script>

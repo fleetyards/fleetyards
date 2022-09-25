@@ -1,4 +1,4 @@
 type Version = {
-  version: string
-  codename: string
-}
+  version: string;
+  codename: string;
+};

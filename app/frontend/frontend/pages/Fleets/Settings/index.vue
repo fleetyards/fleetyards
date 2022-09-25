@@ -10,7 +10,7 @@
             :custom="true"
           >
             <li role="link" @click="navigate" @keypress.enter="navigate">
-              <a :href="linkHref">{{ $t('nav.fleets.settings.fleet') }}</a>
+              <a :href="linkHref">{{ $t("nav.fleets.settings.fleet") }}</a>
             </li>
           </router-link>
 
@@ -20,7 +20,7 @@
             :custom="true"
           >
             <li role="link" @click="navigate" @keypress.enter="navigate">
-              <a :href="linkHref">{{ $t('nav.fleets.settings.membership') }}</a>
+              <a :href="linkHref">{{ $t("nav.fleets.settings.membership") }}</a>
             </li>
           </router-link>
           <li
@@ -32,7 +32,7 @@
           >
             <a @click="leave">
               <i class="fal fa-sign-out" />
-              {{ $t('actions.fleet.leave', { fleet: fleet.name }) }}
+              {{ $t("actions.fleet.leave", { fleet: fleet.name }) }}
             </a>
           </li>
         </ul>
@@ -45,92 +45,92 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
 import {
   displaySuccess,
   displayAlert,
   displayConfirm,
-} from '@/frontend/lib/Noty'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
+} from "@/frontend/lib/Noty";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
 
 @Component<FleetSettingsIndex>({})
 export default class FleetSettingsIndex extends Vue {
-  leaving = false
+  leaving = false;
 
-  collection: FleetsCollection = fleetsCollection
+  collection: FleetsCollection = fleetsCollection;
 
   get fleet(): Fleet | null {
-    return this.collection.record
+    return this.collection.record;
   }
 
   get leaveTooltip() {
-    if (this.fleet.myFleet && this.fleet.myRole === 'admin') {
-      return this.$t('texts.fleets.leaveInfo')
+    if (this.fleet.myFleet && this.fleet.myRole === "admin") {
+      return this.$t("texts.fleets.leaveInfo");
     }
 
-    return null
+    return null;
   }
 
   get canEdit(): boolean {
-    return this.fleet?.myRole === 'admin'
+    return this.fleet?.myRole === "admin";
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetch()
+    this.fetch();
   }
 
   mounted() {
-    this.fetch()
-    this.$comlink.$on('fleet-update', this.fetch)
+    this.fetch();
+    this.$comlink.$on("fleet-update", this.fetch);
   }
 
   async fetch() {
-    await this.collection.findBySlug(this.$route.params.slug)
+    await this.collection.findBySlug(this.$route.params.slug);
   }
 
   async leave() {
-    if ((this.myFleet && this.myFleet.role === 'admin') || this.leaving) return
+    if ((this.myFleet && this.myFleet.role === "admin") || this.leaving) return;
 
-    this.leaving = true
+    this.leaving = true;
     displayConfirm({
-      text: this.$t('messages.confirm.fleet.leave'),
+      text: this.$t("messages.confirm.fleet.leave"),
       onConfirm: async () => {
         const response = await this.$api.destroy(
           `fleets/${this.fleet.slug}/members/leave`
-        )
+        );
 
-        this.leaving = false
+        this.leaving = false;
 
         if (!response.error) {
-          this.$comlink.$emit('fleet-update')
+          this.$comlink.$emit("fleet-update");
 
           displaySuccess({
-            text: this.$t('messages.fleet.leave.success'),
-          })
+            text: this.$t("messages.fleet.leave.success"),
+          });
 
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          this.$router.push({ name: 'home' }).catch(() => {})
+          this.$router.push({ name: "home" }).catch(() => {});
         } else {
-          const { error } = response
+          const { error } = response;
           if (error.response && error.response.data) {
-            const { data: errorData } = error.response
+            const { data: errorData } = error.response;
 
             displayAlert({
               text: errorData.message,
-            })
+            });
           } else {
             displayAlert({
-              text: this.$t('messages.fleet.leave.failure'),
-            })
+              text: this.$t("messages.fleet.leave.failure"),
+            });
           }
         }
       },
       onClose: () => {
-        this.leaving = false
+        this.leaving = false;
       },
-    })
+    });
   }
 }
 </script>

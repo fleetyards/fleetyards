@@ -16,7 +16,7 @@
         <div class="col-12 fleet-metrics metrics-block" @click="toggleMoney">
           <div v-if="money" class="metrics-item">
             <div class="metrics-label">
-              {{ $t('labels.hangarMetrics.totalMoney') }}:
+              {{ $t("labels.hangarMetrics.totalMoney") }}:
             </div>
             <div class="metrics-value">
               {{ $toDollar(fleetStats.metrics.totalMoney) }}
@@ -24,34 +24,34 @@
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t('labels.hangarMetrics.total') }}:
+              {{ $t("labels.hangarMetrics.total") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.total, 'ships') }}
+              {{ $toNumber(fleetStats.total, "ships") }}
             </div>
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t('labels.hangarMetrics.totalMinCrew') }}:
+              {{ $t("labels.hangarMetrics.totalMinCrew") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.metrics.totalMinCrew, 'people') }}
+              {{ $toNumber(fleetStats.metrics.totalMinCrew, "people") }}
             </div>
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t('labels.hangarMetrics.totalMaxCrew') }}:
+              {{ $t("labels.hangarMetrics.totalMaxCrew") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.metrics.totalMaxCrew, 'people') }}
+              {{ $toNumber(fleetStats.metrics.totalMaxCrew, "people") }}
             </div>
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t('labels.hangarMetrics.totalCargo') }}:
+              {{ $t("labels.hangarMetrics.totalCargo") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.metrics.totalCargo, 'cargo') }}
+              {{ $toNumber(fleetStats.metrics.totalCargo, "cargo") }}
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@
                 @click.native="toggleFleetchart"
               >
                 <i class="fad fa-starship" />
-                <span>{{ $t('labels.fleetchart') }}</span>
+                <span>{{ $t("labels.fleetchart") }}</span>
               </Btn>
 
               <ShareBtn
@@ -104,11 +104,11 @@
             <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
               <template v-if="grouped">
                 <i class="fas fa-square" />
-                <span>{{ $t('actions.ungrouped') }}</span>
+                <span>{{ $t("actions.ungrouped") }}</span>
               </template>
               <template v-else>
                 <i class="fas fa-th-large" />
-                <span>{{ $t('actions.groupedByModel') }}</span>
+                <span>{{ $t("actions.groupedByModel") }}</span>
               </template>
             </Btn>
           </BtnDropdown>
@@ -143,21 +143,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import ShareBtn from '@/frontend/components/ShareBtn/index.vue'
-import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel/index.vue'
-import FleetVehiclesFilterForm from '@/frontend/components/Fleets/FilterForm/index.vue'
-import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
-import ModelClassLabels from '@/frontend/components/Models/ClassLabels/index.vue'
-import AddonsModal from '@/frontend/components/Vehicles/AddonsModal/index.vue'
-import fleetVehiclesCollection from '@/frontend/api/collections/FleetVehicles'
-import debounce from 'lodash.debounce'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
+import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
+import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
+import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
+import fleetVehiclesCollection from "@/frontend/api/collections/FleetVehicles";
+import debounce from "lodash.debounce";
 
 @Component<FleetShipsList>({
   components: {
@@ -174,52 +174,52 @@ import debounce from 'lodash.debounce'
   },
 })
 export default class FleetShipsList extends Vue {
-  collection: FleetVehiclesCollection = fleetVehiclesCollection
+  collection: FleetVehiclesCollection = fleetVehiclesCollection;
 
-  fleetVehiclesChannel = null
+  fleetVehiclesChannel = null;
 
-  @Prop({ required: true }) fleet: Fleet
+  @Prop({ required: true }) fleet: Fleet;
 
-  @Prop({ required: true }) shareUrl: string
+  @Prop({ required: true }) shareUrl: string;
 
-  @Prop({ required: true }) metaTitle: string
+  @Prop({ required: true }) metaTitle: string;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Getter('grouped', { namespace: 'fleet' }) grouped
+  @Getter("grouped", { namespace: "fleet" }) grouped;
 
-  @Getter('money', { namespace: 'fleet' }) money
+  @Getter("money", { namespace: "fleet" }) money;
 
-  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
+  @Getter("detailsVisible", { namespace: "fleet" }) detailsVisible;
 
-  @Getter('perPage', { namespace: 'fleet' }) perPage
+  @Getter("perPage", { namespace: "fleet" }) perPage;
 
-  @Getter('fleetchartVisible', { namespace: 'fleet' }) fleetchartVisible
+  @Getter("fleetchartVisible", { namespace: "fleet" }) fleetchartVisible;
 
-  @Action('toggleFleetchart', { namespace: 'fleet' }) toggleFleetchart: any
+  @Action("toggleFleetchart", { namespace: "fleet" }) toggleFleetchart: any;
 
-  @Action('toggleDetails', { namespace: 'fleet' }) toggleDetails: any
+  @Action("toggleDetails", { namespace: "fleet" }) toggleDetails: any;
 
-  @Action('toggleGrouped', { namespace: 'fleet' }) toggleGrouped: any
+  @Action("toggleGrouped", { namespace: "fleet" }) toggleGrouped: any;
 
-  @Action('toggleMoney', { namespace: 'fleet' }) toggleMoney: any
+  @Action("toggleMoney", { namespace: "fleet" }) toggleMoney: any;
 
   get fleetStats() {
-    return this.collection.stats
+    return this.collection.stats;
   }
 
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
-      return this.$t('actions.hideDetails')
+      return this.$t("actions.hideDetails");
     }
-    return this.$t('actions.showDetails')
+    return this.$t("actions.showDetails");
   }
 
   get routeParams() {
     return {
       ...this.$route.params,
       grouped: this.grouped,
-    }
+    };
   }
 
   get filters() {
@@ -228,56 +228,56 @@ export default class FleetShipsList extends Vue {
       filters: this.$route.query.q,
       grouped: this.grouped,
       page: this.$route.query.page,
-    }
+    };
   }
 
-  @Watch('perPage')
+  @Watch("perPage")
   onPerPageChange() {
-    this.fetch()
+    this.fetch();
   }
 
-  @Watch('grouped')
+  @Watch("grouped")
   onGroupedChange() {
-    this.fetch()
+    this.fetch();
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetchStats()
+    this.fetchStats();
   }
 
-  @Watch('fleet')
+  @Watch("fleet")
   onFleetChange() {
-    this.fetchStats()
+    this.fetchStats();
   }
 
   mounted() {
-    this.fetchStats()
-    this.setupUpdates()
+    this.fetchStats();
+    this.setupUpdates();
   }
 
   setupUpdates() {
     if (this.fleetVehiclesChannel) {
-      this.fleetVehiclesChannel.unsubscribe()
+      this.fleetVehiclesChannel.unsubscribe();
     }
 
     this.fleetVehiclesChannel = this.$cable.consumer.subscriptions.create(
       {
-        channel: 'FleetVehiclesChannel',
+        channel: "FleetVehiclesChannel",
       },
       {
         received: debounce(this.fetch, 500),
       }
-    )
+    );
   }
 
   async fetch() {
-    await this.collection.findAll(this.filters)
-    await this.fetchStats()
+    await this.collection.findAll(this.filters);
+    await this.fetchStats();
   }
 
   async fetchStats() {
-    await this.collection.findStats(this.filters)
+    await this.collection.findStats(this.filters);
   }
 }
 </script>

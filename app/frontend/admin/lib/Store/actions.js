@@ -1,17 +1,17 @@
 export default {
   reset({ commit }) {
-    commit('reset')
+    commit("reset");
   },
 
   saveFilters({ commit }, key, filters) {
-    commit('setFilters', {
+    commit("setFilters", {
       [key]: filters,
-    })
+    });
   },
 
   toggleFilterVisible({ commit, state }, key) {
-    commit('setFiltersVisible', {
+    commit("setFiltersVisible", {
       [key]: !state.filtersVisible[key],
-    })
+    });
   },
-}
+};

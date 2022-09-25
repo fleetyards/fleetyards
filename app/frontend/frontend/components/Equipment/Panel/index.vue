@@ -17,31 +17,31 @@
         <div class="metrics-list">
           <div v-if="equipment.manufacturer" class="metrics-item">
             <div class="metrics-label">
-              {{ $t('commodityItem.manufacturer') }}:
+              {{ $t("commodityItem.manufacturer") }}:
             </div>
             <div class="metrics-value" v-html="equipment.manufacturer.name" />
           </div>
           <div v-if="equipment.size" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.size') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.size") }}:</div>
             <div class="metrics-value">
               {{ equipment.size }}
             </div>
           </div>
           <div v-if="equipment.grade" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.grade') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.grade") }}:</div>
             <div class="metrics-value">
               {{ equipment.grade }}
             </div>
           </div>
           <div v-if="equipment.range" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.range') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.range") }}:</div>
             <div class="metrics-value">
               {{ equipment.range }}
             </div>
           </div>
           <div v-if="equipment.rateOfFire" class="metrics-item">
             <div class="metrics-label">
-              {{ $t('commodityItem.rateOfFire') }}:
+              {{ $t("commodityItem.rateOfFire") }}:
             </div>
             <div class="metrics-value">
               {{ equipment.rateOfFire }}
@@ -49,7 +49,7 @@
           </div>
           <div v-if="equipment.weaponClassLabel" class="metrics-item">
             <div class="metrics-label">
-              {{ $t('commodityItem.weaponClass') }}:
+              {{ $t("commodityItem.weaponClass") }}:
             </div>
             <div class="metrics-value">
               {{ equipment.weaponClassLabel }}
@@ -57,20 +57,20 @@
           </div>
           <div v-if="equipment.damageReduction" class="metrics-item">
             <div class="metrics-label">
-              {{ $t('commodityItem.damageReduction') }}:
+              {{ $t("commodityItem.damageReduction") }}:
             </div>
             <div class="metrics-value">
               {{ equipment.damageReduction }}
             </div>
           </div>
           <div v-if="equipment.storage" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.storage') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.storage") }}:</div>
             <div class="metrics-value">
               {{ equipment.storage }}
             </div>
           </div>
           <div v-if="equipment.extras" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.extras') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.extras") }}:</div>
             <div class="metrics-value">
               {{ equipment.extras }}
             </div>
@@ -84,12 +84,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations/index.vue'
-import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
+import AddToCartBtn from "@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue";
 
 @Component<ComponentPanel>({
   components: {
@@ -100,18 +100,18 @@ import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBt
   },
 })
 export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) equipment!: Equipment
+  @Prop({ required: true }) equipment!: Equipment;
 
-  @Prop({ default: true }) showStats!: boolean
+  @Prop({ default: true }) showStats!: boolean;
 
   get image() {
     if (this.equipment.storeImageIsFallback) {
       return (
         this.equipment.manufacturer?.logo || this.equipment.storeImageMedium
-      )
+      );
     }
 
-    return this.equipment.storeImage
+    return this.equipment.storeImage;
   }
 }
 </script>

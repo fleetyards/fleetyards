@@ -62,156 +62,156 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
 @Component<FormInput>({})
 export default class FormInput extends Vue {
-  @Prop({ required: true }) id!: string
+  @Prop({ required: true }) id!: string;
 
-  @Prop({ default: null }) icon!: string
+  @Prop({ default: null }) icon!: string;
 
-  @Prop({ default: null }) value!: string | number
+  @Prop({ default: null }) value!: string | number;
 
   @Prop({
-    default: 'text',
+    default: "text",
     validator(value) {
-      return ['text', 'number', 'password', 'email', 'url', 'color'].includes(
+      return ["text", "number", "password", "email", "url", "color"].includes(
         value
-      )
+      );
     },
   })
-  type!: string
+  type!: string;
 
-  @Prop({ default: null }) error!: string
+  @Prop({ default: null }) error!: string;
 
-  @Prop({ default: null }) translationKey!: string
+  @Prop({ default: null }) translationKey!: string;
 
-  @Prop({ default: false }) autofocus!: boolean
+  @Prop({ default: false }) autofocus!: boolean;
 
-  @Prop({ default: false }) hideLabelOnEmpty!: boolean
+  @Prop({ default: false }) hideLabelOnEmpty!: boolean;
 
-  @Prop({ default: null }) label!: string
+  @Prop({ default: null }) label!: string;
 
-  @Prop({ default: null }) min!: number
+  @Prop({ default: null }) min!: number;
 
-  @Prop({ default: null }) max!: number
+  @Prop({ default: null }) max!: number;
 
-  @Prop({ default: 0.01 }) step!: number
+  @Prop({ default: 0.01 }) step!: number;
 
-  @Prop({ default: false }) noLabel!: boolean
+  @Prop({ default: false }) noLabel!: boolean;
 
-  @Prop({ default: false }) noPlaceholder!: boolean
+  @Prop({ default: false }) noPlaceholder!: boolean;
 
-  @Prop({ default: null }) placeholder!: string
+  @Prop({ default: null }) placeholder!: string;
 
-  @Prop({ default: false }) clearable!: boolean
+  @Prop({ default: false }) clearable!: boolean;
 
-  @Prop({ default: false }) disabled!: boolean
+  @Prop({ default: false }) disabled!: boolean;
 
-  @Prop({ default: false }) inline!: boolean
+  @Prop({ default: false }) inline!: boolean;
 
-  @Prop({ default: null }) prefix!: string
+  @Prop({ default: null }) prefix!: string;
 
-  @Prop({ default: null }) suffix!: string
+  @Prop({ default: null }) suffix!: string;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'clean'].indexOf(value) !== -1
+      return ["default", "clean"].indexOf(value) !== -1;
     },
   })
-  variant!: string
+  variant!: string;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'large'].indexOf(value) !== -1
+      return ["default", "large"].indexOf(value) !== -1;
     },
   })
-  size!: string
+  size!: string;
 
-  inputValue: any = null
+  inputValue: any = null;
 
   get innerId() {
-    return `${this.id}-${this._uid}`
+    return `${this.id}-${this._uid}`;
   }
 
   get innerStep() {
-    if (this.type === 'number') {
-      return this.step
+    if (this.type === "number") {
+      return this.step;
     }
 
-    return null
+    return null;
   }
 
   get innerLabel() {
     if (this.label) {
-      return this.label
+      return this.label;
     }
 
     if (this.translationKey) {
-      return this.$t(`labels.${this.translationKey}`)
+      return this.$t(`labels.${this.translationKey}`);
     }
 
-    return this.$t(`labels.${this.id}`)
+    return this.$t(`labels.${this.id}`);
   }
 
   get innerPlaceholder() {
     if (this.noPlaceholder) {
-      return null
+      return null;
     }
 
     if (this.placeholder) {
-      return this.placeholder
+      return this.placeholder;
     }
 
     if (this.translationKey) {
-      return this.$t(`placeholders.${this.translationKey}`)
+      return this.$t(`placeholders.${this.translationKey}`);
     }
 
-    return this.$t(`placeholders.${this.id}`)
+    return this.$t(`placeholders.${this.id}`);
   }
 
   get cssClasses() {
     return {
-      'has-error has-feedback': this.error,
-      'form-input-large': this.size === 'large',
-      'form-input-clean': this.variant === 'clean',
-      'form-input-clearable': this.clearable,
-      'form-input-disabled': this.disabled,
-      'form-input-inline': this.inline,
+      "has-error has-feedback": this.error,
+      "form-input-large": this.size === "large",
+      "form-input-clean": this.variant === "clean",
+      "form-input-clearable": this.clearable,
+      "form-input-disabled": this.disabled,
+      "form-input-inline": this.inline,
       [`form-input-${this.type}`]: true,
-    }
+    };
   }
 
-  @Watch('value')
+  @Watch("value")
   onValueChange() {
-    this.inputValue = this.value
+    this.inputValue = this.value;
   }
 
   mounted() {
-    this.inputValue = this.value
+    this.inputValue = this.value;
 
     if (this.autofocus) {
-      this.setFocus()
+      this.setFocus();
     }
   }
 
   setFocus() {
     if (this.$refs.input) {
-      this.$refs.input.focus()
+      this.$refs.input.focus();
     }
   }
 
   update() {
-    this.$emit('input', this.inputValue)
+    this.$emit("input", this.inputValue);
   }
 
   clear() {
-    this.inputValue = null
-    this.update()
-    this.$emit('clear')
+    this.inputValue = null;
+    this.update();
+    this.$emit("clear");
   }
 }
 </script>

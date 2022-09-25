@@ -1,13 +1,13 @@
 type CelestialObject = {
-  id: string
-  slug: string
-  name: string
-}
+  id: string;
+  slug: string;
+  name: string;
+};
 
 type CelestialObjectsFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface CelestialObjectParams extends CollectionParams {
-  filters: CelestialObjectsFilter
+  filters: CelestialObjectsFilter;
 }

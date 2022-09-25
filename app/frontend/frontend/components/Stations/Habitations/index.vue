@@ -8,7 +8,7 @@
   >
     <div class="col-12 col-lg-3">
       <div class="metrics-title">
-        {{ $t('labels.station.habs') }}
+        {{ $t("labels.station.habs") }}
       </div>
     </div>
     <div class="col-12 col-lg-9 metrics-block">
@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import { groupBy } from '@/frontend/lib/Helpers'
+import { groupBy } from "@/frontend/lib/Helpers";
 
 export default {
-  name: 'StationsHabitations',
+  name: "StationsHabitations",
 
   props: {
     station: {
@@ -48,8 +48,8 @@ export default {
 
   computed: {
     habitationsByName() {
-      return groupBy(this.station.habitations, 'habitationName')
+      return groupBy(this.station.habitations, "habitationName");
     },
   },
-}
+};
 </script>

@@ -1,110 +1,110 @@
-import { get, post } from '@/frontend/api/client'
-import BaseCollection from './Base'
+import { get, post } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
 export class FleetsCollection extends BaseCollection {
-  records: Fleet[] = []
+  records: Fleet[] = [];
 
-  record: Fleet | null = null
+  record: Fleet | null = null;
 
-  async findAllForCurrent(identifier = 'default'): Promise<Fleet[]> {
+  async findAllForCurrent(identifier = "default"): Promise<Fleet[]> {
     const response = await get(`fleets/current`, {
       [identifier]: true,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 
   async findBySlug(slug: string): Promise<Fleet | null> {
-    const response = await get(`fleets/${slug}`)
+    const response = await get(`fleets/${slug}`);
 
     if (!response.error) {
-      this.record = response.data
+      this.record = response.data;
     }
 
-    return this.record
+    return this.record;
   }
 
   // tslint:disable-next-line variable-name
   async create(form: FleetForm, _refetch = false) {
-    const response = await post('fleets', form)
+    const response = await post("fleets", form);
 
     if (!response.error) {
       // if (refetch) {
       //   this.findAll(this.params)
       // }
 
-      return response.data
+      return response.data;
     }
 
-    return null
+    return null;
   }
 
   async findModelsByClassificationBySlug(slug: string): Promise<ChartData[]> {
-    const response = await get(`fleets/${slug}/stats/models-by-classification`)
+    const response = await get(`fleets/${slug}/stats/models-by-classification`);
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return []
+    return [];
   }
 
   async findModelsBySizeBySlug(slug: string): Promise<ChartData[]> {
-    const response = await get(`fleets/${slug}/stats/models-by-size`)
+    const response = await get(`fleets/${slug}/stats/models-by-size`);
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return []
+    return [];
   }
 
   async findModelsByManufacturerBySlug(slug: string): Promise<ChartData[]> {
-    const response = await get(`fleets/${slug}/stats/models-by-manufacturer`)
+    const response = await get(`fleets/${slug}/stats/models-by-manufacturer`);
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return []
+    return [];
   }
 
   async findModelsByProductionStatusBySlug(slug: string): Promise<ChartData[]> {
     const response = await get(
       `fleets/${slug}/stats/models-by-production-status`
-    )
+    );
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return []
+    return [];
   }
 
   async checkInvite(token: string) {
-    const response = await get(`fleets/check-invite/${token}`)
+    const response = await get(`fleets/check-invite/${token}`);
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return null
+    return null;
   }
 
   async useInvite(form: FleetMemberInviteForm) {
-    const response = await post(`fleets/use-invite`, form)
+    const response = await post(`fleets/use-invite`, form);
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return null
+    return null;
   }
 }
 
-export default new FleetsCollection()
+export default new FleetsCollection();

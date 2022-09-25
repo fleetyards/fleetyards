@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<AddToCartBtn>({
   components: {
@@ -21,16 +21,16 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
   },
 })
 export default class AddToCartBtn extends Vue {
-  @Prop({ required: true }) item!: any
+  @Prop({ required: true }) item!: any;
 
-  @Prop({ required: true }) type!: any
+  @Prop({ required: true }) type!: any;
 
-  @Getter('mobile') mobile: boolean
+  @Getter("mobile") mobile: boolean;
 
-  @Action('add', { namespace: 'shoppingCart' }) addToCart: any
+  @Action("add", { namespace: "shoppingCart" }) addToCart: any;
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

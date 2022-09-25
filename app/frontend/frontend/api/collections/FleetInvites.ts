@@ -1,22 +1,22 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from './Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
 export class FleetInvitesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: FleetInvite[] = []
+  records: FleetInvite[] = [];
 
-  async findAllForCurrent(identifier = 'default'): Promise<FleetInvite[]> {
+  async findAllForCurrent(identifier = "default"): Promise<FleetInvite[]> {
     const response = await get(`fleets/invites`, {
       [identifier]: true,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new FleetInvitesCollection()
+export default new FleetInvitesCollection();

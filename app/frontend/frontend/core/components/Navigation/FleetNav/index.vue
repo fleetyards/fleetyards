@@ -49,10 +49,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
 
 @Component<FleetNav>({
   components: {
@@ -60,23 +60,23 @@ import fleetsCollection from '@/frontend/api/collections/Fleets'
   },
 })
 export default class FleetNav extends Vue {
-  collection: FleetsCollection = fleetsCollection
+  collection: FleetsCollection = fleetsCollection;
 
   get currentFleet(): Fleet | null {
-    return this.collection.record
+    return this.collection.record;
   }
 
   get shipsNavActive() {
-    return ['fleet-ships', 'fleet-fleetchart'].includes(this.$route.name)
+    return ["fleet-ships", "fleet-fleetchart"].includes(this.$route.name);
   }
 
   mounted() {
-    this.fetch()
-    this.$comlink.$on('fleet-update', this.fetch)
+    this.fetch();
+    this.$comlink.$on("fleet-update", this.fetch);
   }
 
   async fetch() {
-    await this.collection.findBySlug(this.$route.params.slug)
+    await this.collection.findBySlug(this.$route.params.slug);
   }
 }
 </script>

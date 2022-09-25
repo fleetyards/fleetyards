@@ -1,15 +1,15 @@
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(['mobile']),
+    ...mapGetters(["mobile"]),
 
-    ...mapGetters('app', ['navSlim']),
+    ...mapGetters("app", ["navSlim"]),
 
-    ...mapGetters('session', ['currentUser', 'isAuthenticated']),
+    ...mapGetters("session", ["currentUser", "isAuthenticated"]),
 
     slim() {
-      return this.navSlim && !this.mobile
+      return this.navSlim && !this.mobile;
     },
   },
-}
+};

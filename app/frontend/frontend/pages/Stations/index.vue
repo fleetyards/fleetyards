@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t('headlines.stations') }}
+          {{ $t("headlines.stations") }}
         </h1>
       </div>
     </div>
@@ -38,13 +38,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import StationPanel from '@/frontend/components/Stations/Panel/index.vue'
-import FilterForm from '@/frontend/components/Stations/FilterForm/index.vue'
-import stationsCollection from '@/frontend/api/collections/Stations'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
+import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
+import stationsCollection from "@/frontend/api/collections/Stations";
 
 @Component<Stations>({
   components: {
@@ -55,10 +55,10 @@ import stationsCollection from '@/frontend/api/collections/Stations'
   mixins: [MetaInfo],
 })
 export default class Stations extends Vue {
-  collection: StationsCollection = stationsCollection
+  collection: StationsCollection = stationsCollection;
 
   get isSubRoute() {
-    return this.$route.name !== 'stations'
+    return this.$route.name !== "stations";
   }
 }
 </script>

@@ -16,18 +16,18 @@
     />
     <span v-if="withLabel">
       <template v-if="showStatus">
-        {{ $t('actions.hideStatusColor') }}
+        {{ $t("actions.hideStatusColor") }}
       </template>
       <template v-else>
-        {{ $t('actions.showStatusColor') }}
+        {{ $t("actions.showStatusColor") }}
       </template>
     </span>
   </Btn>
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import { Component, Prop } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<FleetChartStatusBtn>({
   components: {
@@ -35,26 +35,26 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
   },
 })
 export default class FleetChartStatusBtn extends Btn {
-  @Prop({ default: true }) withLabel!: boolean
+  @Prop({ default: true }) withLabel!: boolean;
 
-  showStatus = false
+  showStatus = false;
 
   mounted() {
-    this.showStatus = !!this.$route.query?.showStatus
+    this.showStatus = !!this.$route.query?.showStatus;
 
-    this.$comlink.$on('fleetchart-toggle-status', this.setShowStatus)
+    this.$comlink.$on("fleetchart-toggle-status", this.setShowStatus);
   }
 
   beforeDestroy() {
-    this.$comlink.$off('fleetchart-toggle-status')
+    this.$comlink.$off("fleetchart-toggle-status");
   }
 
   setShowStatus() {
-    this.showStatus = !this.showStatus
+    this.showStatus = !this.showStatus;
   }
 
   toggleStatus() {
-    this.$comlink.$emit('fleetchart-toggle-status')
+    this.$comlink.$emit("fleetchart-toggle-status");
   }
 }
 </script>

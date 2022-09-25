@@ -1,28 +1,28 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class AdminEquipmentCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: AdminEquipment[] = []
+  records: AdminEquipment[] = [];
 
-  params: AdminEquipmentParams | null = null
+  params: AdminEquipmentParams | null = null;
 
   async findAll(params: AdminEquipmentParams): Promise<AdminEquipment[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('equipment', {
+    const response = await get("equipment", {
       q: params.filters,
       page: params?.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new AdminEquipmentCollection()
+export default new AdminEquipmentCollection();

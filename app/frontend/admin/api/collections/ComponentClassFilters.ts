@@ -1,20 +1,20 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class AdminComponentClassFiltersCollection extends BaseCollection {
-  primaryKey = 'value'
+  primaryKey = "value";
 
-  records: FilterGroupItem[] = []
+  records: FilterGroupItem[] = [];
 
   async findAll(): Promise<FilterGroupItem[]> {
-    const response = await get('components/class_filters')
+    const response = await get("components/class_filters");
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new AdminComponentClassFiltersCollection()
+export default new AdminComponentClassFiltersCollection();

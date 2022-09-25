@@ -1,4 +1,4 @@
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 li.nav-item {
   > a,
@@ -55,7 +55,7 @@ li.nav-item {
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
       box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
-      content: '';
+      content: "";
     }
   }
 
