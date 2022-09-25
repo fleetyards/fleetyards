@@ -1,28 +1,28 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class AdminModelsCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: AdminModel[] = []
+  records: AdminModel[] = [];
 
-  params: AdminAdminModelParams | null = null
+  params: AdminAdminModelParams | null = null;
 
   async findAll(params: AdminAdminModelParams): Promise<AdminModel[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('models', {
+    const response = await get("models", {
       q: params.filters,
       page: params.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new AdminModelsCollection()
+export default new AdminModelsCollection();

@@ -44,7 +44,7 @@
     <div class="row">
       <div class="col-12">
         <template v-if="station && station.shops.length">
-          <h2>{{ $t('headlines.shops') }}</h2>
+          <h2>{{ $t("headlines.shops") }}</h2>
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
               v-for="shop in station.shops"
@@ -71,20 +71,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import PriceModalBtn from '@/frontend/components/ShopCommodities/PriceModalBtn/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import { stationRouteGuard } from '@/frontend/utils/RouteGuards/Stations'
-import stationsCollection from '@/frontend/api/collections/Stations'
-import ShopPanel from '@/frontend/components/Stations/Item/index.vue'
-import StationBaseMetrics from '@/frontend/components/Stations/BaseMetrics/index.vue'
-import StationDocks from '@/frontend/components/Stations/Docks/index.vue'
-import StationHabitations from '@/frontend/components/Stations/Habitations/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import { stationRouteGuard } from "@/frontend/utils/RouteGuards/Stations";
+import stationsCollection from "@/frontend/api/collections/Stations";
+import ShopPanel from "@/frontend/components/Stations/Item/index.vue";
+import StationBaseMetrics from "@/frontend/components/Stations/BaseMetrics/index.vue";
+import StationDocks from "@/frontend/components/Stations/Docks/index.vue";
+import StationHabitations from "@/frontend/components/Stations/Habitations/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 
 @Component<StationDetail>({
   beforeRouteEnter: stationRouteGuard,
@@ -102,39 +102,39 @@ import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
   mixins: [MetaInfo],
 })
 export default class StationDetail extends Vue {
-  loading = false
+  loading = false;
 
   get station() {
-    return stationsCollection.record
+    return stationsCollection.record;
   }
 
   get metaTitle() {
     if (!this.station) {
-      return null
+      return null;
     }
 
-    return this.$t('title.station', {
+    return this.$t("title.station", {
       station: this.station.name,
       celestialObject: this.station.celestialObject.name,
-    })
+    });
   }
 
   get crumbs() {
     if (!this.station) {
-      return null
+      return null;
     }
 
     const crumbs = [
       {
         to: {
-          name: 'starsystems',
+          name: "starsystems",
           hash: `#${this.station.celestialObject.starsystem.slug}`,
         },
-        label: this.$t('nav.starsystems'),
+        label: this.$t("nav.starsystems"),
       },
       {
         to: {
-          name: 'starsystem',
+          name: "starsystem",
           params: {
             slug: this.station.celestialObject.starsystem.slug,
           },
@@ -142,24 +142,24 @@ export default class StationDetail extends Vue {
         },
         label: this.station.celestialObject.starsystem.name,
       },
-    ]
+    ];
 
     if (this.station.celestialObject.parent) {
       crumbs.push({
         to: {
-          name: 'celestial-object',
+          name: "celestial-object",
           params: {
             starsystem: this.station.celestialObject.starsystem.slug,
             slug: this.station.celestialObject.parent.slug,
           },
         },
         label: this.station.celestialObject.parent.name,
-      })
+      });
     }
 
     crumbs.push({
       to: {
-        name: 'celestial-object',
+        name: "celestial-object",
         params: {
           starsystem: this.station.celestialObject.starsystem.slug,
           slug: this.station.celestialObject.slug,
@@ -167,23 +167,23 @@ export default class StationDetail extends Vue {
         hash: `#${this.station.slug}`,
       },
       label: this.station.celestialObject.name,
-    })
+    });
 
-    return crumbs
+    return crumbs;
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
   }
 
   async fetch() {
-    this.loading = true
-    await stationsCollection.findBySlug(this.$route.params.slug)
-    this.loading = false
+    this.loading = true;
+    await stationsCollection.findBySlug(this.$route.params.slug);
+    this.loading = false;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

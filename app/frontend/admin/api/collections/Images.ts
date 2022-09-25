@@ -1,31 +1,31 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class AdminImagesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: AdminImage[] = []
+  records: AdminImage[] = [];
 
-  params: AdminImageParams | null = null
+  params: AdminImageParams | null = null;
 
   async findAll(params: AdminImageParams | null): Promise<AdminImage[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('images', {
+    const response = await get("images", {
       q: params?.filters,
       page: params?.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 
   async refresh(): Promise<void> {
-    await this.findAll(this.params)
+    await this.findAll(this.params);
   }
 
   async findAllForGallery(params: AdminGalleryParams): Promise<AdminImage[]> {
@@ -34,15 +34,15 @@ export class AdminImagesCollection extends BaseCollection {
       {
         page: params.page,
       }
-    )
+    );
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new AdminImagesCollection()
+export default new AdminImagesCollection();

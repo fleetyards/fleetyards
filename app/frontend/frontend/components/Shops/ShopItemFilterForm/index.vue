@@ -59,19 +59,19 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Filters from "@/frontend/mixins/Filters";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 export default {
-  name: 'ShopsItemFilterForm',
+  name: "ShopsItemFilterForm",
 
   components: {
     FilterGroup,
@@ -82,7 +82,7 @@ export default {
   mixins: [Filters],
 
   data() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
 
     return {
       loading: false,
@@ -96,32 +96,32 @@ export default {
       },
       categoryOptions: [
         {
-          name: 'Ship',
-          value: 'Model',
+          name: "Ship",
+          value: "Model",
         },
         {
-          name: 'Component',
-          value: 'Component',
+          name: "Component",
+          value: "Component",
         },
         {
-          name: 'Equipment',
-          value: 'Equipment',
+          name: "Equipment",
+          value: "Equipment",
         },
         {
-          name: 'Commodity',
-          value: 'Commodity',
+          name: "Commodity",
+          value: "Commodity",
         },
         {
-          name: 'Module',
-          value: 'ModelModule',
+          name: "Module",
+          value: "ModelModule",
         },
       ],
-    }
+    };
   },
 
   watch: {
     $route() {
-      const query = this.$route.query.q || {}
+      const query = this.$route.query.q || {};
       this.form = {
         nameCont: query.nameCont,
         categoryIn: query.categoryIn || [],
@@ -129,28 +129,28 @@ export default {
         manufacturerIn: query.manufacturerIn || [],
         priceGteq: query.priceGteq,
         priceLteq: query.priceLteq,
-      }
+      };
     },
   },
 
   methods: {
     fetchSubCategories() {
-      return this.$api.get('filters/shop-commodities/sub-categories')
+      return this.$api.get("filters/shop-commodities/sub-categories");
     },
 
     fetchCommodityManufacturers({ page, search, missingValue }) {
       const query = {
         q: {},
-      }
+      };
       if (search) {
-        query.q.nameCont = search
+        query.q.nameCont = search;
       } else if (missingValue) {
-        query.q.nameIn = missingValue
+        query.q.nameIn = missingValue;
       } else if (page) {
-        query.page = page
+        query.page = page;
       }
-      return this.$api.get('manufacturers', query)
+      return this.$api.get("manufacturers", query);
     },
   },
-}
+};
 </script>

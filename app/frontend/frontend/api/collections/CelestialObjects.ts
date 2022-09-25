@@ -1,36 +1,36 @@
-import { get } from '@/frontend/api/client'
-import { prefetch } from '@/frontend/api/prefetch'
-import BaseCollection from './Base'
+import { get } from "@/frontend/api/client";
+import { prefetch } from "@/frontend/api/prefetch";
+import BaseCollection from "./Base";
 
 export class CelestialObjectCollection extends BaseCollection {
-  records: CelestialObject[] = []
+  records: CelestialObject[] = [];
 
-  record: CelestialObject | null = null
+  record: CelestialObject | null = null;
 
-  params: CelestialObjectParams | null = null
+  params: CelestialObjectParams | null = null;
 
   async findAll(params: CelestialObjectParams): Promise<CelestialObject[]> {
-    if (prefetch('celestialObjects')) {
-      this.records = prefetch('celestialObjects')
-      return this.records
+    if (prefetch("celestialObjects")) {
+      this.records = prefetch("celestialObjects");
+      return this.records;
     }
 
-    this.params = params
+    this.params = params;
 
-    const response = await get('celestial-objects', {
+    const response = await get("celestial-objects", {
       q: params.filters,
       page: params.page,
       cacheId: params.cacheId,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.loaded = true
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.loaded = true;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new CelestialObjectCollection()
+export default new CelestialObjectCollection();

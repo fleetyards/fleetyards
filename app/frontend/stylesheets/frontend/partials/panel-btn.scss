@@ -19,7 +19,7 @@
     left: 14px;
     height: $panel-border-width;
     background-color: #444;
-    content: '';
+    content: "";
   }
 
   &::after {
@@ -29,7 +29,7 @@
     left: 14px;
     height: $panel-border-width;
     background-color: #444;
-    content: '';
+    content: "";
   }
 
   .panel-btn-inner {
@@ -37,7 +37,7 @@
     overflow: hidden;
     color: $text-color;
     font-size: 110%;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     white-space: nowrap;
     text-align: center;
     text-overflow: ellipsis;

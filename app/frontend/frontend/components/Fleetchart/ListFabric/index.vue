@@ -23,7 +23,7 @@
         <BtnDropdown size="small">
           <template #label>
             <template v-if="!mobile">
-              {{ $t('labels.fleetchartApp.viewpoint') }}:
+              {{ $t("labels.fleetchartApp.viewpoint") }}:
             </template>
             {{ $t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
           </template>
@@ -46,7 +46,7 @@
             <Btn size="small" variant="dropdown" @click.native="download">
               <i class="fad fa-image" />
               <span>
-                {{ $t('actions.saveScreenshot') }}
+                {{ $t("actions.saveScreenshot") }}
               </span>
             </Btn>
 
@@ -61,10 +61,10 @@
           >
             <i class="fad fa-tags" />
             <span v-if="showLabels">
-              {{ $t('actions.hideLabels') }}
+              {{ $t("actions.hideLabels") }}
             </span>
             <span v-else>
-              {{ $t('actions.showLabels') }}
+              {{ $t("actions.showLabels") }}
             </span>
           </Btn>
 
@@ -72,7 +72,7 @@
 
           <Btn size="small" variant="dropdown" @click.native="resetZoom">
             <i class="fad fa-undo" />
-            <span>{{ $t('actions.resetZoom') }}</span>
+            <span>{{ $t("actions.resetZoom") }}</span>
           </Btn>
         </BtnDropdown>
         <input v-model="scale" step="0.01" type="number" />
@@ -83,7 +83,7 @@
           'fleetchart-grid-enabled': gridEnabled,
         }"
       >
-        {{ $t('labels.fleetchartApp.gridSize', { size: gridSizeLabel }) }}
+        {{ $t("labels.fleetchartApp.gridSize", { size: gridSizeLabel }) }}
       </div>
       <div class="fleetchart-scroll-wrapper">
         <canvas
@@ -136,18 +136,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import FleetchartItem from '@/frontend/components/Fleetchart/ListPanzoom/Item/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import DownloadScreenshotBtn from '@/frontend/components/DownloadScreenshotBtn/index.vue'
-import FleetChartStatusBtn from '@/frontend/components/FleetChartStatusBtn/index.vue'
-import { Getter } from 'vuex-class'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import FleetchartItem from "@/frontend/components/Fleetchart/ListPanzoom/Item/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
+import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
+import { Getter } from "vuex-class";
 // import { fabric } from 'fabric'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import download from 'downloadjs'
-import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import download from "downloadjs";
+import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
 
 @Component({
   components: {
@@ -161,53 +161,53 @@ import CommunityLogo from '@/frontend/core/components/CommunityLogo/index.vue'
   },
 })
 export default class FleetchartListFabric extends Vue {
-  viewpointOptions: string[] = ['side', 'top', 'angled']
+  viewpointOptions: string[] = ["side", "top", "angled"];
 
-  showStatus = false
+  showStatus = false;
 
-  selectedModel: Model | null = null
+  selectedModel: Model | null = null;
 
-  selectedVehicle: Vehicle | null = null
+  selectedVehicle: Vehicle | null = null;
 
-  canvas = null
+  canvas = null;
 
-  scale = 0.5
+  scale = 0.5;
 
-  margin = 80
+  margin = 80;
 
-  loaded = true
+  loaded = true;
 
-  gridEnabled = false
+  gridEnabled = false;
 
-  screenWidth = 1920
+  screenWidth = 1920;
 
-  screenHeight = 1080
+  screenHeight = 1080;
 
-  gridSize = 80.0
+  gridSize = 80.0;
 
-  zoomLevel = 'large'
+  zoomLevel = "large";
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Prop({ required: true }) namespace!: string
+  @Prop({ required: true }) namespace!: string;
 
   @Prop({
     default() {
-      return []
+      return [];
     },
   })
-  items!: Vehicle[] | Model[]
+  items!: Vehicle[] | Model[];
 
-  @Prop({ default: false }) myShip!: boolean
+  @Prop({ default: false }) myShip!: boolean;
 
-  @Prop({ default: null }) downloadName!: string
+  @Prop({ default: null }) downloadName!: string;
 
   get sizeMultiplicator() {
-    if (this.viewpoint === 'angled') {
-      return 3
+    if (this.viewpoint === "angled") {
+      return 3;
     }
 
-    return 4
+    return 4;
   }
 
   get gridSizeLabel() {
@@ -217,41 +217,41 @@ export default class FleetchartListFabric extends Vue {
       this.sizeMultiplicator
     )
       .toFixed(2)
-      .replace('.00', '')
+      .replace(".00", "");
   }
 
   get viewpoint() {
-    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`]
+    return this.$store.getters[`${this.namespace}/fleetchartViewpoint`];
   }
 
   get showLabels() {
-    return this.$store.getters[`${this.namespace}/fleetchartLabels`]
+    return this.$store.getters[`${this.namespace}/fleetchartLabels`];
   }
 
   get viewpointTop() {
-    return this.viewpoint === 'top'
+    return this.viewpoint === "top";
   }
 
   get viewpointSide() {
-    return this.viewpoint === 'side'
+    return this.viewpoint === "side";
   }
 
   get viewpointAngled() {
-    return this.viewpoint === 'angled'
+    return this.viewpoint === "angled";
   }
 
   get innerMargin() {
-    return this.margin / 2
+    return this.margin / 2;
   }
 
   get maxColHeight() {
-    return this.screenHeight - this.margin * 2
+    return this.screenHeight - this.margin * 2;
   }
 
   get testModel() {
     return this.items
       .map((item) => (item.model ? item.model : item))
-      .find((item) => item.slug === 'apollo-medivac')
+      .find((item) => item.slug === "apollo-medivac");
   }
 
   // @Watch('zoomLevel')
@@ -260,44 +260,44 @@ export default class FleetchartListFabric extends Vue {
   // }
 
   mounted() {
-    this.showStatus = !!this.$route.query?.showStatus
+    this.showStatus = !!this.$route.query?.showStatus;
 
-    this.$comlink.$on('fleetchart-toggle-status', this.toggleStatus)
+    this.$comlink.$on("fleetchart-toggle-status", this.toggleStatus);
 
-    this.setupFabricCanvas()
+    this.setupFabricCanvas();
     // this.setupCanvas()
 
-    this.updateCanvasSize()
+    this.updateCanvasSize();
 
-    this.drawGridLines()
+    this.drawGridLines();
 
-    this.renderShips()
+    this.renderShips();
 
-    window.addEventListener('resize', this.updateCanvasSize)
-    window.addEventListener('deviceorientation', this.updateCanvasSize)
+    window.addEventListener("resize", this.updateCanvasSize);
+    window.addEventListener("deviceorientation", this.updateCanvasSize);
   }
 
   beforeDestroy() {
-    this.$comlink.$off('fleetchart-toggle-status')
+    this.$comlink.$off("fleetchart-toggle-status");
 
-    this.canvas = null
+    this.canvas = null;
 
-    window.removeEventListener('resize', this.updateCanvasSize)
-    window.removeEventListener('deviceorientation', this.updateCanvasSize)
+    window.removeEventListener("resize", this.updateCanvasSize);
+    window.removeEventListener("deviceorientation", this.updateCanvasSize);
   }
 
   download() {
-    download(this.canvas.toDataURL(), `fleetyards-${this.downloadName}.png`)
+    download(this.canvas.toDataURL(), `fleetyards-${this.downloadName}.png`);
   }
 
   updateCanvasSize() {
-    this.screenWidth = window.innerWidth
-    this.screenHeight = window.innerHeight
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
 
-    this.canvas.setWidth(this.screenWidth)
-    this.canvas.setHeight(this.screenHeight)
+    this.canvas.setWidth(this.screenWidth);
+    this.canvas.setHeight(this.screenHeight);
 
-    this.canvas.renderAll()
+    this.canvas.renderAll();
   }
 
   // setupCanvas() {
@@ -335,184 +335,184 @@ export default class FleetchartListFabric extends Vue {
   // }
 
   setupFabricCanvas() {
-    this.screenWidth = window.innerWidth
-    this.screenHeight = window.innerHeight
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
 
-    this.canvas = new fabric.Canvas('fleetchart', {
+    this.canvas = new fabric.Canvas("fleetchart", {
       selection: false,
       hasControls: false,
-    })
+    });
 
-    fabric.Group.prototype.hasControls = false
-    fabric.Object.prototype.objectCaching = false
+    fabric.Group.prototype.hasControls = false;
+    fabric.Object.prototype.objectCaching = false;
 
-    this.canvas.setWidth(this.screenWidth)
-    this.canvas.setHeight(this.screenHeight)
+    this.canvas.setWidth(this.screenWidth);
+    this.canvas.setHeight(this.screenHeight);
 
-    this.setupCanvas(document.getElementById('fleetchart'))
+    this.setupCanvas(document.getElementById("fleetchart"));
 
-    this.canvas.requestRenderAll()
+    this.canvas.requestRenderAll();
 
-    this.setupDragging()
-    this.setupZoom()
+    this.setupDragging();
+    this.setupZoom();
   }
 
   setupCanvas(canvas) {
     // Get the device pixel ratio, falling back to 1.
-    const dpr = window.devicePixelRatio || 1
+    const dpr = window.devicePixelRatio || 1;
     // Get the size of the canvas in CSS pixels.
-    const rect = canvas.getBoundingClientRect()
+    const rect = canvas.getBoundingClientRect();
     // Give the canvas pixel dimensions of their CSS
     // size * the device pixel ratio.
-    canvas.width = rect.width * dpr
-    canvas.height = rect.height * dpr
-    const ctx = canvas.getContext('2d')
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    const ctx = canvas.getContext("2d");
     // Scale all drawing operations by the dpr, so you
     // don't have to worry about the difference.
-    ctx.scale(dpr, dpr)
+    ctx.scale(dpr, dpr);
 
-    return ctx
+    return ctx;
   }
 
   setupDragging() {
-    this.canvas.on('mouse:down', function mouseDown(opt) {
-      const evt = opt.e
+    this.canvas.on("mouse:down", function mouseDown(opt) {
+      const evt = opt.e;
       // if (evt.altKey === true) {
-      this.isDragging = true
-      this.selection = false
-      this.lastPosX = evt.clientX
-      this.lastPosY = evt.clientY
+      this.isDragging = true;
+      this.selection = false;
+      this.lastPosX = evt.clientX;
+      this.lastPosY = evt.clientY;
       // }
-    })
+    });
 
-    this.canvas.on('mouse:move', function mouseMove(opt) {
+    this.canvas.on("mouse:move", function mouseMove(opt) {
       if (this.isDragging) {
-        const { e } = opt
-        const vpt = this.viewportTransform
-        vpt[4] += e.clientX - this.lastPosX
-        vpt[5] += e.clientY - this.lastPosY
-        this.requestRenderAll()
-        this.lastPosX = e.clientX
-        this.lastPosY = e.clientY
+        const { e } = opt;
+        const vpt = this.viewportTransform;
+        vpt[4] += e.clientX - this.lastPosX;
+        vpt[5] += e.clientY - this.lastPosY;
+        this.requestRenderAll();
+        this.lastPosX = e.clientX;
+        this.lastPosY = e.clientY;
       }
-    })
+    });
 
-    this.canvas.on('mouse:up', function mouseUp(_opt) {
-      this.setViewportTransform(this.viewportTransform)
-      this.isDragging = false
-      this.selection = true
-    })
+    this.canvas.on("mouse:up", function mouseUp(_opt) {
+      this.setViewportTransform(this.viewportTransform);
+      this.isDragging = false;
+      this.selection = true;
+    });
   }
 
   setupZoom() {
-    this.canvas.on('mouse:wheel', (opt) => {
-      const delta = opt.e.deltaY
-      let zoom = this.canvas.getZoom()
-      zoom *= 0.999 ** delta
+    this.canvas.on("mouse:wheel", (opt) => {
+      const delta = opt.e.deltaY;
+      let zoom = this.canvas.getZoom();
+      zoom *= 0.999 ** delta;
 
-      if (zoom > 30) zoom = 30
+      if (zoom > 30) zoom = 30;
 
-      if (zoom < 0.2) zoom = 0.2
+      if (zoom < 0.2) zoom = 0.2;
 
-      this.canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom)
+      this.canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
 
-      this.updateZoomLevel(zoom)
+      this.updateZoomLevel(zoom);
 
-      opt.e.preventDefault()
-      opt.e.stopPropagation()
-    })
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+    });
   }
 
   setupColumns() {
-    let index = 0
-    let height = 0
-    const cols = {}
+    let index = 0;
+    let height = 0;
+    const cols = {};
 
     this.items.forEach((item) => {
-      const model = item.model || item
-      const length = model.fleetchartLength * this.sizeMultiplicator
+      const model = item.model || item;
+      const length = model.fleetchartLength * this.sizeMultiplicator;
 
       if (!this.imageHeight(model)) {
-        return
+        return;
       }
 
-      height += (length * this.imageHeight(model)) / this.imageWidth(model)
-      height += this.innerMargin
+      height += (length * this.imageHeight(model)) / this.imageWidth(model);
+      height += this.innerMargin;
 
       if (height > this.maxColHeight) {
-        height = 0
-        index += 1
+        height = 0;
+        index += 1;
       }
 
-      cols[index] = [...(cols[index] || []), item]
-    })
+      cols[index] = [...(cols[index] || []), item];
+    });
 
-    return cols
+    return cols;
   }
 
   async renderShips() {
-    this.canvas.clear()
+    this.canvas.clear();
 
-    const cols = this.setupColumns()
+    const cols = this.setupColumns();
 
-    let colOffset = this.margin
+    let colOffset = this.margin;
 
-    const promisses = []
+    const promisses = [];
 
     Object.keys(cols).forEach((columnIndex) => {
-      const lastItem = cols[columnIndex][cols[columnIndex].length - 1]
-      const lastItemModel = lastItem.model || lastItem
-      const maxColLength = lastItemModel.length * this.sizeMultiplicator
+      const lastItem = cols[columnIndex][cols[columnIndex].length - 1];
+      const lastItemModel = lastItem.model || lastItem;
+      const maxColLength = lastItemModel.length * this.sizeMultiplicator;
 
-      let positionTop = this.margin
+      let positionTop = this.margin;
 
       cols[columnIndex].forEach((item, index) => {
         if (index > 1) {
-          return
+          return;
         }
 
-        const model = item.model || item
-        const src = this.image(model, this.canvas.getZoom())
+        const model = item.model || item;
+        const src = this.image(model, this.canvas.getZoom());
 
-        const length = model.fleetchartLength * this.sizeMultiplicator
+        const length = model.fleetchartLength * this.sizeMultiplicator;
 
         if (!this.imageHeight(model)) {
-          return
+          return;
         }
 
         const height =
-          (length * this.imageHeight(model)) / this.imageWidth(model)
+          (length * this.imageHeight(model)) / this.imageWidth(model);
 
-        const top = positionTop
-        const left = colOffset + (maxColLength - length)
+        const top = positionTop;
+        const left = colOffset + (maxColLength - length);
 
         promisses.push(
           new Promise((resolve) => {
             this.loadImage(src, top, left, length, (image) => {
-              cols[columnIndex].canvasImage = image
-              resolve()
-            })
+              cols[columnIndex].canvasImage = image;
+              resolve();
+            });
           })
-        )
+        );
 
-        positionTop += height
-        positionTop += this.innerMargin
-      })
+        positionTop += height;
+        positionTop += this.innerMargin;
+      });
 
-      colOffset += maxColLength
-      colOffset += this.margin
-    })
+      colOffset += maxColLength;
+      colOffset += this.margin;
+    });
 
-    await Promise.all(promisses)
+    await Promise.all(promisses);
 
-    this.canvas.renderAll()
+    this.canvas.renderAll();
 
-    this.loaded = true
+    this.loaded = true;
   }
 
   loadImage(src, top, left, length, callback = null) {
     fabric.Image.fromURL(src, (image) => {
-      image.objectCaching = false
+      image.objectCaching = false;
 
       image.set({
         left,
@@ -525,137 +525,137 @@ export default class FleetchartListFabric extends Vue {
         lockScalingY: true,
         lockSkewingX: true,
         lockSkewingY: true,
-      })
+      });
 
       // image.scaleToWidth(length)
 
       image.resizeFilter = new fabric.Image.filters.Resize({
-        resizeType: 'lanczos',
-      })
-      image.applyResizeFilters()
+        resizeType: "lanczos",
+      });
+      image.applyResizeFilters();
 
-      this.canvas.add(image)
+      this.canvas.add(image);
 
-      this.canvas.renderAll()
+      this.canvas.renderAll();
 
       if (callback) {
-        callback(image)
+        callback(image);
       }
-    })
+    });
   }
 
   toggleGrid() {
-    this.gridEnabled = !this.gridEnabled
+    this.gridEnabled = !this.gridEnabled;
 
-    this.drawGridLines()
+    this.drawGridLines();
   }
 
   setViewpoint(viewpoint) {
-    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint)
+    this.$store.commit(`${this.namespace}/setFleetchartViewpoint`, viewpoint);
 
-    this.renderShips()
+    this.renderShips();
   }
 
   updateZoomLevel(zoom) {
     if (zoom > 10) {
-      this.zoomLevel = ''
-      return
+      this.zoomLevel = "";
+      return;
     }
 
     if (zoom > 7.9) {
-      this.zoomLevel = 'xlarge'
-      return
+      this.zoomLevel = "xlarge";
+      return;
     }
 
     if (zoom > 3.9) {
-      this.zoomLevel = 'large'
-      return
+      this.zoomLevel = "large";
+      return;
     }
 
     if (zoom > 1.9) {
-      this.zoomLevel = 'medium'
-      return
+      this.zoomLevel = "medium";
+      return;
     }
 
-    this.zoomLevel = 'small'
+    this.zoomLevel = "small";
   }
 
   toggleStatus() {
-    this.showStatus = !this.showStatus
+    this.showStatus = !this.showStatus;
   }
 
   toggleLabels() {
     this.$store.commit(
       `${this.namespace}/setFleetchartLabels`,
       !this.showLabels
-    )
+    );
   }
 
   async drawGridLines() {
     if (!this.gridEnabled) {
-      return
+      return;
     }
 
-    await this.$nextTick()
+    await this.$nextTick();
 
-    const canvas = this.$refs.fleetchartGrid
+    const canvas = this.$refs.fleetchartGrid;
 
     if (canvas.getContext) {
-      const ctx = canvas.getContext('2d')
+      const ctx = canvas.getContext("2d");
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       ctx.drawVerticalLine = (left, top, height, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, 1, height)
-      }
+        ctx.fillStyle = color;
+        ctx.fillRect(left, top, 1, height);
+      };
 
       ctx.drawHorizontalLine = (left, top, width, color) => {
-        ctx.fillStyle = color
-        ctx.fillRect(left, top, width, 1)
-      }
+        ctx.fillStyle = color;
+        ctx.fillRect(left, top, width, 1);
+      };
 
-      const lineColor = 'rgba(255, 255, 255, 0.5)'
+      const lineColor = "rgba(255, 255, 255, 0.5)";
 
       for (let i = 0; i < canvas.width; i += this.gridSize) {
-        ctx.drawVerticalLine(i, 0, canvas.height, lineColor)
+        ctx.drawVerticalLine(i, 0, canvas.height, lineColor);
       }
 
       for (let i = 0; i < canvas.height; i += this.gridSize) {
-        ctx.drawHorizontalLine(0, i, canvas.width, lineColor)
+        ctx.drawHorizontalLine(0, i, canvas.width, lineColor);
       }
     }
   }
 
   image(model, zoom = 1) {
     if (model.paint && (model.paint.topView || model.paint.sideView)) {
-      const url = this.extractUrlFromModel(model.paint, zoom)
+      const url = this.extractUrlFromModel(model.paint, zoom);
       if (url) {
-        return url
+        return url;
       }
     }
 
-    return this.extractUrlFromModel(model, zoom)
+    return this.extractUrlFromModel(model, zoom);
   }
 
   extractUrlFromModel(model, zoom) {
     if (this.viewpointTop && model.topView) {
-      return this.topView(model, zoom)
+      return this.topView(model, zoom);
     }
 
     if (this.viewpointSide && model.sideView) {
-      return this.sideView(model, zoom)
+      return this.sideView(model, zoom);
     }
 
     if (this.viewpointAngled && model.angledView) {
-      return this.angledView(model, zoom)
+      return this.angledView(model, zoom);
     }
 
-    return null
+    return null;
   }
 
   topView(model) {
-    return model.topViewResized
+    return model.topViewResized;
   }
 
   sideView(model, _zoom) {
@@ -675,65 +675,65 @@ export default class FleetchartListFabric extends Vue {
     //   return model.sideViewMedium
     // }
 
-    return model.sideView
+    return model.sideView;
   }
 
   angledView(model) {
-    return model.angledViewResized
+    return model.angledViewResized;
   }
 
   extractHeightFromModel(model) {
     if (this.viewpointTop && model.topView) {
-      return model.topViewHeight
+      return model.topViewHeight;
     }
 
     if (this.viewpointSide && model.sideView) {
-      return model.sideViewHeight
+      return model.sideViewHeight;
     }
 
     if (this.viewpointAngled && model.angledView) {
-      return model.angledViewHeight
+      return model.angledViewHeight;
     }
 
-    return null
+    return null;
   }
 
   extractWidthFromModel(model) {
     if (this.viewpointTop && model.topView) {
-      return model.topViewWidth
+      return model.topViewWidth;
     }
 
     if (this.viewpointSide && model.sideView) {
-      return model.sideViewWidth
+      return model.sideViewWidth;
     }
 
     if (this.viewpointAngled && model.angledView) {
-      return model.angledViewWidth
+      return model.angledViewWidth;
     }
 
-    return null
+    return null;
   }
 
   imageHeight(model) {
     if (model.paint && (model.paint.topView || model.paint.sideView)) {
-      const height = this.extractHeightFromModel(model.paint)
+      const height = this.extractHeightFromModel(model.paint);
       if (height) {
-        return height
+        return height;
       }
     }
 
-    return this.extractHeightFromModel(model)
+    return this.extractHeightFromModel(model);
   }
 
   imageWidth(model) {
     if (model.paint && (model.paint.topView || model.paint.sideView)) {
-      const width = this.extractWidthFromModel(model.paint)
+      const width = this.extractWidthFromModel(model.paint);
       if (width) {
-        return width
+        return width;
       }
     }
 
-    return this.extractWidthFromModel(model)
+    return this.extractWidthFromModel(model);
   }
 }
 </script>

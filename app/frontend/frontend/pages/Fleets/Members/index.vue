@@ -6,10 +6,10 @@
       </div>
       <div class="col-8">
         <h1>
-          {{ $t('headlines.fleets.members') }}
+          {{ $t("headlines.fleets.members") }}
           <small v-if="collection.stats" class="text-muted">
             {{
-              $t('labels.fleet.members.total', {
+              $t("labels.fleet.members.total", {
                 count: collection.stats.total,
               })
             }}
@@ -24,11 +24,11 @@
             @click.native="openInviteUrlModal"
           >
             <i class="fal fa-plus" />
-            {{ $t('actions.fleet.createInviteUrl') }}
+            {{ $t("actions.fleet.createInviteUrl") }}
           </Btn>
           <Btn v-if="canInvite" :inline="true" @click.native="openInviteModal">
             <i class="fad fa-user-plus" />
-            {{ $t('actions.fleet.inviteMember') }}
+            {{ $t("actions.fleet.inviteMember") }}
           </Btn>
         </div>
       </div>
@@ -51,11 +51,11 @@
             @click.native="openInviteUrlModal"
           >
             <i class="fal fa-plus" />
-            <span>{{ $t('actions.fleet.createInviteUrl') }}</span>
+            <span>{{ $t("actions.fleet.createInviteUrl") }}</span>
           </Btn>
           <Btn size="small" variant="dropdown" @click.native="openInviteModal">
             <i class="fad fa-user-plus" />
-            <span>{{ $t('actions.fleet.inviteMember') }}</span>
+            <span>{{ $t("actions.fleet.inviteMember") }}</span>
           </Btn>
         </BtnDropdown>
       </template>
@@ -70,22 +70,22 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import MetaInfoMixin from '@/frontend/mixins/MetaInfo'
-import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
-import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
-import debounce from 'lodash.debounce'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import FleetMembersFilterForm from '@/frontend/components/Fleets/MembersFilterForm/index.vue'
-import Avatar from '@/frontend/core/components/Avatar/index.vue'
-import FleetMembersList from '@/frontend/components/Fleets/MembersList/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import MetaInfoMixin from "@/frontend/mixins/MetaInfo";
+import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
+import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
+import debounce from "lodash.debounce";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
+import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
 
 @Component<FleetMembers>({
   components: {
@@ -102,40 +102,40 @@ import FleetMembersList from '@/frontend/components/Fleets/MembersList/index.vue
   beforeRouteEnter: fleetRouteGuard,
 })
 export default class FleetMemmbers extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection
+  collection: FleetMembersCollection = fleetMembersCollection;
 
-  fleetMembersChannel = null
+  fleetMembersChannel = null;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get fleet() {
-    return fleetsCollection.record
+    return fleetsCollection.record;
   }
 
   get metaTitle(): string {
     if (!this.fleet) {
-      return null
+      return null;
     }
 
-    return this.$t('title.fleets.members', { fleet: this.fleet.name })
+    return this.$t("title.fleets.members", { fleet: this.fleet.name });
   }
 
   get crumbs(): BreadCumb[] {
     if (!this.fleet) {
-      return []
+      return [];
     }
 
     return [
       {
         to: {
-          name: 'fleet',
+          name: "fleet",
           params: {
             slug: this.fleet.slug,
           },
         },
         label: this.fleet.name,
       },
-    ]
+    ];
   }
 
   get filters(): FleetMembersParams {
@@ -143,69 +143,69 @@ export default class FleetMemmbers extends Vue {
       slug: this.$route.params.slug,
       filters: this.$route.query.q,
       page: this.$route.query.page,
-    }
+    };
   }
 
   get canInvite(): boolean {
-    return ['admin', 'officer'].includes(this.fleet.myRole)
+    return ["admin", "officer"].includes(this.fleet.myRole);
   }
 
   mounted() {
-    this.fetchFleet()
-    this.fetch()
-    this.setupUpdates()
+    this.fetchFleet();
+    this.fetch();
+    this.setupUpdates();
 
-    this.$comlink.$on('fleet-member-invited', this.fetch)
-    this.$comlink.$on('fleet-member-update', this.fetch)
+    this.$comlink.$on("fleet-member-invited", this.fetch);
+    this.$comlink.$on("fleet-member-update", this.fetch);
   }
 
   beforeDestroy() {
-    this.$comlink.$off('fleet-member-invited')
-    this.$comlink.$off('fleet-member-update')
+    this.$comlink.$off("fleet-member-invited");
+    this.$comlink.$off("fleet-member-update");
   }
 
   async fetch() {
-    await this.collection.findAll(this.filters)
-    await this.collection.findStats(this.filters)
+    await this.collection.findAll(this.filters);
+    await this.collection.findStats(this.filters);
   }
 
   openInviteUrlModal() {
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/components/Fleets/InviteUrlModal/index.vue'),
+        import("@/frontend/components/Fleets/InviteUrlModal/index.vue"),
       props: {
         fleet: this.fleet,
       },
-    })
+    });
   }
 
   openInviteModal() {
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/components/Fleets/MemberModal/index.vue'),
+        import("@/frontend/components/Fleets/MemberModal/index.vue"),
       props: {
         fleet: this.fleet,
       },
-    })
+    });
   }
 
   setupUpdates() {
     if (this.fleetMembersChannel) {
-      this.fleetMembersChannel.unsubscribe()
+      this.fleetMembersChannel.unsubscribe();
     }
 
     this.fleetMembersChannel = this.$cable.consumer.subscriptions.create(
       {
-        channel: 'FleetMembersChannel',
+        channel: "FleetMembersChannel",
       },
       {
         received: debounce(this.fetch, 500),
       }
-    )
+    );
   }
 
   async fetchFleet() {
-    await fleetsCollection.findBySlug(this.$route.params.slug)
+    await fleetsCollection.findBySlug(this.$route.params.slug);
   }
 }
 </script>

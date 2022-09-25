@@ -3,13 +3,13 @@
     <small class="roadmap-modal-subheadline">
       <div class="text-muted">
         <span>
-          {{ $t('labels.roadmap.lastUpdate') }}:
+          {{ $t("labels.roadmap.lastUpdate") }}:
           {{ item.lastVersionChangedAtLabel }}
         </span>
         <i class="far fa-clock" />
       </div>
       <div v-if="item.committed" class="roadmap-item-committed">
-        <span class="text-muted">{{ $t('labels.roadmap.committed') }}</span>
+        <span class="text-muted">{{ $t("labels.roadmap.committed") }}</span>
         <i class="far fa-check" />
       </div>
     </small>
@@ -21,7 +21,7 @@
       <li v-for="(update, index) in updates" :key="index">
         <template v-if="update.key === 'release' && !update.old">
           {{
-            $t('labels.roadmap.lastVersion.addedToRelease', {
+            $t("labels.roadmap.lastVersion.addedToRelease", {
               release: update.new,
             })
           }}
@@ -50,7 +50,7 @@
     <template #footer>
       <div class="float-sm-right">
         <Btn v-if="item.model" :inline="true" @click.native="openDetail">
-          {{ $t('actions.showMore') }}
+          {{ $t("actions.showMore") }}
         </Btn>
       </div>
     </template>
@@ -58,10 +58,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<AddToHangarModal>({
   components: {
@@ -70,77 +70,77 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
   },
 })
 export default class RoadmapItemModal extends Vue {
-  @Prop({ required: true }) item
+  @Prop({ required: true }) item;
 
   get storeImage() {
     if (this.item.storeImage) {
-      return this.item.storeImage
+      return this.item.storeImage;
     }
 
-    return `https://robertsspaceindustries.com${this.item.image}`
+    return `https://robertsspaceindustries.com${this.item.image}`;
   }
 
   get description() {
     if (this.item.body) {
-      return this.item.body
+      return this.item.body;
     }
 
-    return this.item.description
+    return this.item.description;
   }
 
   get updates() {
     if (!this.item) {
-      return []
+      return [];
     }
 
-    const { lastVersion } = this.item
+    const { lastVersion } = this.item;
 
     if (!lastVersion) {
-      return []
+      return [];
     }
 
-    return ['committed', 'release', 'released', 'active']
+    return ["committed", "release", "released", "active"]
       .filter((key) => lastVersion[key])
       .map((key) => {
-        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10);
 
         return {
           key,
-          change: count < 0 ? 'decreased' : 'increased',
+          change: count < 0 ? "decreased" : "increased",
           old: lastVersion[key][0],
           new: lastVersion[key][1],
           count,
-        }
+        };
       })
       .filter(
         (update) =>
-          update.key !== 'released' || (update.key === 'released' && update.old)
+          update.key !== "released" || (update.key === "released" && update.old)
       )
       .filter(
         (update) =>
-          update.key !== 'commited' || (update.key === 'commited' && update.old)
+          update.key !== "commited" || (update.key === "commited" && update.old)
       )
       .filter(
         (update) =>
-          update.key !== 'active' || (update.key === 'active' && update.old)
-      )
+          update.key !== "active" || (update.key === "active" && update.old)
+      );
   }
 
   openImage() {
-    window.open(this.storeImage, '_blank').focus()
+    window.open(this.storeImage, "_blank").focus();
   }
 
   openDetail() {
-    this.$comlink.$emit('close-modal')
+    this.$comlink.$emit("close-modal");
     this.$router
       .push({
-        name: 'model',
+        name: "model",
         params: {
           slug: this.item.model.slug,
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(() => {})
+      .catch(() => {});
   }
 }
 </script>

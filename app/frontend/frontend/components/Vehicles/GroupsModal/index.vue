@@ -31,7 +31,7 @@
           data-test="vehicle-save"
           :inline="true"
         >
-          {{ $t('actions.save') }}
+          {{ $t("actions.save") }}
         </Btn>
       </div>
     </template>
@@ -39,21 +39,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import vehiclesCollection from '@/frontend/api/collections/Vehicles'
-import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 
 type HangarGroupFormData = {
-  id: number
-  name: string
-  selected: boolean
-}
+  id: number;
+  name: string;
+  selected: boolean;
+};
 
 @Component<VehicleModal>({
   components: {
@@ -65,57 +65,60 @@ type HangarGroupFormData = {
   },
 })
 export default class VehicleGroupsModal extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle
+  @Prop({ required: true }) vehicle: Vehicle;
 
-  submitting = false
+  submitting = false;
 
-  form: HangarGroupFormData | null = null
+  form: HangarGroupFormData | null = null;
 
   get hangarGroups() {
-    return hangarGroupsCollection.records
+    return hangarGroupsCollection.records;
   }
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
-  @Watch('vehicle')
+  @Watch("vehicle")
   onVehicleChange() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
     this.form = {
       hangarGroupIds: this.vehicle.hangarGroupIds,
-    }
+    };
   }
 
   selected(groupId) {
-    return (this.form.hangarGroupIds || []).includes(groupId)
+    return (this.form.hangarGroupIds || []).includes(groupId);
   }
 
   changeGroup(group) {
     if (this.form.hangarGroupIds.includes(group.id)) {
       const index = this.form.hangarGroupIds.findIndex(
         (groupId) => groupId === group.id
-      )
+      );
       if (index > -1) {
-        this.form.hangarGroupIds.splice(index, 1)
+        this.form.hangarGroupIds.splice(index, 1);
       }
     } else {
-      this.form.hangarGroupIds.push(group.id)
+      this.form.hangarGroupIds.push(group.id);
     }
   }
 
   async save() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await vehiclesCollection.update(this.vehicle.id, this.form)
+    const response = await vehiclesCollection.update(
+      this.vehicle.id,
+      this.form
+    );
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
-      this.$comlink.$emit('close-modal')
+      this.$comlink.$emit("close-modal");
     }
   }
 }

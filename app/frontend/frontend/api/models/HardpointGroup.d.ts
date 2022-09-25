@@ -1,3 +1,3 @@
 type HardpointGroup = {
-  name: string
-}
+  name: string;
+};

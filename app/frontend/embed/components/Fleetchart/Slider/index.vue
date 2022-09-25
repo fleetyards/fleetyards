@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import VueSlider from 'vue-slider-component'
+import VueSlider from "vue-slider-component";
 
 export default {
-  name: 'SliderComponent',
+  name: "SliderComponent",
 
   components: {
     VueSlider,
@@ -34,36 +34,36 @@ export default {
   data() {
     return {
       scale: null,
-    }
+    };
   },
 
   computed: {
     max() {
-      return this.mobile ? 100 : 300
+      return this.mobile ? 100 : 300;
     },
   },
 
   mounted() {
-    this.scale = this.initialScale
+    this.scale = this.initialScale;
   },
 
   methods: {
     updateScale(value) {
-      this.$emit('change', value)
+      this.$emit("change", value);
     },
 
     mark(value) {
       if (value % 50 === 0 || value === 10) {
         return {
           label: this.label(value),
-        }
+        };
       }
-      return false
+      return false;
     },
 
     label(value) {
-      return `${value} %`
+      return `${value} %`;
     },
   },
-}
+};
 </script>

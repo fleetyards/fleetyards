@@ -40,7 +40,7 @@
               :inline="true"
               @click.native="confirm(record)"
             >
-              {{ $t('actions.confirm') }}
+              {{ $t("actions.confirm") }}
             </Btn>
             <Btn
               v-tooltip="$t('actions.remove')"
@@ -60,14 +60,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import shopCommodityConfirmationsCollection from '@/admin/api/collections/ShopCommodityConfirmations'
-import { displayConfirm } from '@/frontend/lib/Noty'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredTable from '@/frontend/core/components/FilteredTable/index.vue'
-import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import shopCommodityConfirmationsCollection from "@/admin/api/collections/ShopCommodityConfirmations";
+import { displayConfirm } from "@/frontend/lib/Noty";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
+import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
 
 @Component<AdminShopCommodities>({
   components: {
@@ -79,52 +79,52 @@ import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
 })
 export default class AdminShopCommodities extends Vue {
   collection: ShopCommodityConfirmationsCollection =
-    shopCommodityConfirmationsCollection
+    shopCommodityConfirmationsCollection;
 
-  deleting = false
+  deleting = false;
 
   tableColumns = [
-    { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '20%' },
-    { name: 'shop', label: this.$t('labels.shopCommodity.shop'), width: '20%' },
+    { name: "item", label: this.$t("labels.shopCommodity.item"), width: "20%" },
+    { name: "shop", label: this.$t("labels.shopCommodity.shop"), width: "20%" },
     {
-      name: 'submitter',
-      label: this.$t('labels.shopCommodity.submittedBy'),
-      width: '20%',
+      name: "submitter",
+      label: this.$t("labels.shopCommodity.submittedBy"),
+      width: "20%",
     },
-    { name: 'actions', label: this.$t('labels.actions'), width: '12%' },
-  ]
+    { name: "actions", label: this.$t("labels.actions"), width: "12%" },
+  ];
 
   async fetch() {
-    await this.collection.refresh()
+    await this.collection.refresh();
   }
 
   async confirm(shopCommodity) {
     if (await this.collection.confirm(shopCommodity.id)) {
-      this.fetch()
+      this.fetch();
     }
 
-    this.deleting = false
+    this.deleting = false;
   }
 
   remove(shopCommodity) {
-    this.deleting = true
+    this.deleting = true;
     displayConfirm({
-      text: this.$t('messages.confirm.shopCommodity.destroy'),
+      text: this.$t("messages.confirm.shopCommodity.destroy"),
       onConfirm: () => {
-        this.destroy(shopCommodity)
+        this.destroy(shopCommodity);
       },
       onClose: () => {
-        this.deleting = false
+        this.deleting = false;
       },
-    })
+    });
   }
 
   async destroy(shopCommodity) {
     if (await this.collection.destroy(shopCommodity.id)) {
-      this.fetch()
+      this.fetch();
     }
 
-    this.deleting = false
+    this.deleting = false;
   }
 }
 </script>

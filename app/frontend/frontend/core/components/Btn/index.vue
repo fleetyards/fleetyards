@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import BtnInner from '@/frontend/core/components/Btn/Inner/index.vue'
-import { RouteConfig } from 'vue-router'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import BtnInner from "@/frontend/core/components/Btn/Inner/index.vue";
+import { RouteConfig } from "vue-router";
 
 @Component<Btn>({
   components: {
@@ -24,62 +24,62 @@ import { RouteConfig } from 'vue-router'
   },
 })
 export default class Btn extends Vue {
-  @Prop({ default: false }) loading!: boolean
+  @Prop({ default: false }) loading!: boolean;
 
-  @Prop({ default: null }) to!: RouteConfig
+  @Prop({ default: null }) to!: RouteConfig;
 
-  @Prop({ default: null }) href!: string
+  @Prop({ default: null }) href!: string;
 
   @Prop({
-    default: 'button',
+    default: "button",
     validator(value) {
-      return ['button', 'submit'].indexOf(value) !== -1
+      return ["button", "submit"].indexOf(value) !== -1;
     },
   })
-  type!: string
+  type!: string;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
       return (
-        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+        ["default", "transparent", "link", "danger", "dropdown"].indexOf(
           value
         ) !== -1
-      )
+      );
     },
   })
-  variant!: string
+  variant!: string;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+      return ["default", "small", "large"].indexOf(value) !== -1;
     },
   })
-  size!: string
+  size!: string;
 
-  @Prop({ default: false }) exact!: boolean
+  @Prop({ default: false }) exact!: boolean;
 
-  @Prop({ default: false }) block!: boolean
+  @Prop({ default: false }) block!: boolean;
 
-  @Prop({ default: false }) mobileBlock!: boolean
+  @Prop({ default: false }) mobileBlock!: boolean;
 
-  @Prop({ default: false }) inline!: boolean
+  @Prop({ default: false }) inline!: boolean;
 
-  @Prop({ default: false }) textInline!: boolean
+  @Prop({ default: false }) textInline!: boolean;
 
-  @Prop({ default: false }) active!: boolean
+  @Prop({ default: false }) active!: boolean;
 
-  @Prop({ default: false }) disabled!: boolean
+  @Prop({ default: false }) disabled!: boolean;
 
-  @Prop({ default: null }) routeActiveClass!: boolean
+  @Prop({ default: null }) routeActiveClass!: boolean;
 
   get btnType() {
-    if (this.to && !this.disabled) return 'router-link'
+    if (this.to && !this.disabled) return "router-link";
 
-    if (this.href) return 'a'
+    if (this.href) return "a";
 
-    return 'button'
+    return "button";
   }
 
   get btnProps() {
@@ -89,38 +89,38 @@ export default class Btn extends Vue {
         exact: this.exact,
         // event: this.disabled ? '' : 'click',
         activeClass: this.routeActiveClass,
-      }
+      };
     }
 
     if (this.href) {
       return {
         href: this.href,
-        target: '_blank',
-        rel: 'noopener',
-      }
+        target: "_blank",
+        rel: "noopener",
+      };
     }
 
     return {
       type: this.type,
-    }
+    };
   }
 
   get cssClasses() {
     return {
-      'panel-btn-submit': this.type === 'submit',
-      'panel-btn-transparent': this.variant === 'transparent',
-      'panel-btn-link': this.variant === 'link',
-      'panel-btn-danger': this.variant === 'danger',
-      'panel-btn-small': this.size === 'small',
-      'panel-btn-large': this.size === 'large',
-      'panel-btn-block': this.block,
-      'panel-btn-inline': this.inline,
-      'panel-btn-dropdown-link': this.variant === 'dropdown',
-      'panel-btn-text-inline': this.textInline,
-      'panel-btn-mobile-block': this.mobileBlock,
-      'active': this.active,
-      'disabled': this.disabled,
-    }
+      "panel-btn-submit": this.type === "submit",
+      "panel-btn-transparent": this.variant === "transparent",
+      "panel-btn-link": this.variant === "link",
+      "panel-btn-danger": this.variant === "danger",
+      "panel-btn-small": this.size === "small",
+      "panel-btn-large": this.size === "large",
+      "panel-btn-block": this.block,
+      "panel-btn-inline": this.inline,
+      "panel-btn-dropdown-link": this.variant === "dropdown",
+      "panel-btn-text-inline": this.textInline,
+      "panel-btn-mobile-block": this.mobileBlock,
+      active: this.active,
+      disabled: this.disabled,
+    };
   }
 }
 </script>

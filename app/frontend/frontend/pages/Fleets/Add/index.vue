@@ -4,7 +4,7 @@
       <form @submit.prevent="handleSubmit(submit)">
         <div class="row justify-content-lg-center">
           <div class="col-12 col-md-6 col-lg-4">
-            <h1>{{ $t('headlines.fleets.add') }}</h1>
+            <h1>{{ $t("headlines.fleets.add") }}</h1>
           </div>
         </div>
 
@@ -58,7 +58,7 @@
               size="large"
               data-test="fleet-save"
             >
-              {{ $t('actions.save') }}
+              {{ $t("actions.save") }}
             </Btn>
           </div>
         </div>
@@ -68,14 +68,14 @@
 </template>
 
 <script>
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 
 export default {
-  name: 'FleetAdd',
+  name: "FleetAdd",
 
   components: {
     Btn,
@@ -92,37 +92,37 @@ export default {
       },
       loading: false,
       submitting: false,
-    }
+    };
   },
 
   methods: {
     async submit() {
-      this.submitting = true
+      this.submitting = true;
 
-      const fleet = await fleetsCollection.create(this.form)
+      const fleet = await fleetsCollection.create(this.form);
 
-      this.submitting = false
+      this.submitting = false;
 
       if (fleet) {
-        this.$comlink.$emit('fleet-create')
+        this.$comlink.$emit("fleet-create");
 
         displaySuccess({
-          text: this.$t('messages.fleet.create.success'),
-        })
+          text: this.$t("messages.fleet.create.success"),
+        });
 
         this.$router
           .push({
-            name: 'fleet',
+            name: "fleet",
             params: { slug: fleet.slug },
           })
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          .catch(() => {})
+          .catch(() => {});
       } else {
         displayAlert({
-          text: this.$t('messages.fleet.create.failure'),
-        })
+          text: this.$t("messages.fleet.create.failure"),
+        });
       }
     },
   },
-}
+};
 </script>

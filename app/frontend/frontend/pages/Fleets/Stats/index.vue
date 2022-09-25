@@ -6,7 +6,7 @@
           <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
             <h1>
-              {{ $t('headlines.fleets.stats') }}
+              {{ $t("headlines.fleets.stats") }}
             </h1>
           </div>
         </div>
@@ -20,7 +20,7 @@
                 <div class="panel-box-text">
                   {{ totalMemberCount }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.stats.quickStats.totalMembers') }}
+                    {{ $t("labels.stats.quickStats.totalMembers") }}
                   </div>
                 </div>
               </div>
@@ -35,7 +35,7 @@
                 <div class="panel-box-text">
                   {{ totalShipCount }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.stats.quickStats.totalShips') }}
+                    {{ $t("labels.stats.quickStats.totalShips") }}
                   </div>
                 </div>
               </div>
@@ -50,7 +50,7 @@
                 <div class="panel-box-text">
                   {{ minCrew }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.hangarMetrics.totalMinCrew') }}
+                    {{ $t("labels.hangarMetrics.totalMinCrew") }}
                   </div>
                 </div>
               </div>
@@ -65,7 +65,7 @@
                 <div class="panel-box-text">
                   {{ maxCrew }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.hangarMetrics.totalMaxCrew') }}
+                    {{ $t("labels.hangarMetrics.totalMaxCrew") }}
                   </div>
                 </div>
               </div>
@@ -80,7 +80,7 @@
                 <div class="panel-box-text">
                   {{ totalCargo }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.hangarMetrics.totalCargo') }}
+                    {{ $t("labels.hangarMetrics.totalCargo") }}
                   </div>
                 </div>
               </div>
@@ -92,7 +92,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByClassification') }}
+                  {{ $t("labels.stats.modelsByClassification") }}
                 </h2>
               </div>
               <Chart
@@ -107,7 +107,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsBySize') }}
+                  {{ $t("labels.stats.modelsBySize") }}
                 </h2>
               </div>
               <Chart
@@ -124,7 +124,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByProductionStatus') }}
+                  {{ $t("labels.stats.modelsByProductionStatus") }}
                 </h2>
               </div>
               <Chart
@@ -139,7 +139,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsByManufacturer') }}
+                  {{ $t("labels.stats.modelsByManufacturer") }}
                 </h2>
               </div>
               <Chart
@@ -157,16 +157,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfoMixin from '@/frontend/mixins/MetaInfo'
-import Chart from '@/frontend/core/components/Chart/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
-import vehiclesCollection from '@/frontend/api/collections/FleetVehicles'
-import membersCollection from '@/frontend/api/collections/FleetMembers'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfoMixin from "@/frontend/mixins/MetaInfo";
+import Chart from "@/frontend/core/components/Chart/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
+import vehiclesCollection from "@/frontend/api/collections/FleetVehicles";
+import membersCollection from "@/frontend/api/collections/FleetMembers";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 
 @Component({
   beforeRouteEnter: fleetRouteGuard,
@@ -178,122 +178,122 @@ import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
   mixins: [MetaInfoMixin],
 })
 export default class FleetStats extends Vue {
-  collection: FleetsCollection = fleetsCollection
+  collection: FleetsCollection = fleetsCollection;
 
-  vehiclesCollection: FleetVehiclesCollection = vehiclesCollection
+  vehiclesCollection: FleetVehiclesCollection = vehiclesCollection;
 
-  membersCollection: FleetMembersCollection = membersCollection
+  membersCollection: FleetMembersCollection = membersCollection;
 
   get fleet() {
-    return this.collection.record
+    return this.collection.record;
   }
 
   get slug() {
-    return this.$route.params.slug
+    return this.$route.params.slug;
   }
 
   get vehicleStats() {
-    return this.vehiclesCollection.stats
+    return this.vehiclesCollection.stats;
   }
 
   get memberStats() {
-    return this.membersCollection.stats
+    return this.membersCollection.stats;
   }
 
   get totalMemberCount() {
     if (!this.memberStats) {
-      return 0
+      return 0;
     }
 
-    return this.memberStats.total
+    return this.memberStats.total;
   }
 
   get totalShipCount() {
     if (!this.vehicleStats) {
-      return 0
+      return 0;
     }
 
-    return this.vehicleStats.total
+    return this.vehicleStats.total;
   }
 
   get minCrew() {
     if (!this.vehicleStats) {
-      return this.$toNumber(0, 'people')
+      return this.$toNumber(0, "people");
     }
 
-    return this.$toNumber(this.vehicleStats.metrics.totalMinCrew, 'people')
+    return this.$toNumber(this.vehicleStats.metrics.totalMinCrew, "people");
   }
 
   get maxCrew() {
     if (!this.vehicleStats) {
-      return this.$toNumber(0, 'people')
+      return this.$toNumber(0, "people");
     }
 
-    return this.$toNumber(this.vehicleStats.metrics.totalMaxCrew, 'people')
+    return this.$toNumber(this.vehicleStats.metrics.totalMaxCrew, "people");
   }
 
   get totalCargo() {
     if (!this.vehicleStats) {
-      return this.$toNumber(0, 'cargo')
+      return this.$toNumber(0, "cargo");
     }
 
-    return this.$toNumber(this.vehicleStats.metrics.totalCargo, 'cargo')
+    return this.$toNumber(this.vehicleStats.metrics.totalCargo, "cargo");
   }
 
   get crumbs() {
     if (!this.fleet) {
-      return []
+      return [];
     }
 
     return [
       {
         to: {
-          name: 'fleet',
+          name: "fleet",
           params: {
             slug: this.fleet.slug,
           },
         },
         label: this.fleet.name,
       },
-    ]
+    ];
   }
 
   get metaTitle() {
     if (!this.fleet) {
-      return null
+      return null;
     }
 
-    return this.$t('title.fleets.stats', { fleet: this.fleet.name })
+    return this.$t("title.fleets.stats", { fleet: this.fleet.name });
   }
 
   mounted() {
-    this.fetchFleet()
-    this.loadQuickStats()
+    this.fetchFleet();
+    this.loadQuickStats();
   }
 
   loadQuickStats() {
-    this.vehiclesCollection.findStats({ slug: this.slug })
-    this.membersCollection.findStats({ slug: this.slug })
+    this.vehiclesCollection.findStats({ slug: this.slug });
+    this.membersCollection.findStats({ slug: this.slug });
   }
 
   loadModelsByClassification() {
-    return this.collection.findModelsByClassificationBySlug(this.slug)
+    return this.collection.findModelsByClassificationBySlug(this.slug);
   }
 
   loadModelsBySize() {
-    return this.collection.findModelsBySizeBySlug(this.slug)
+    return this.collection.findModelsBySizeBySlug(this.slug);
   }
 
   loadModelsByManufacturer() {
-    return this.collection.findModelsByManufacturerBySlug(this.slug)
+    return this.collection.findModelsByManufacturerBySlug(this.slug);
   }
 
   loadModelsByProductionStatus() {
-    return this.collection.findModelsByProductionStatusBySlug(this.slug)
+    return this.collection.findModelsByProductionStatusBySlug(this.slug);
   }
 
   async fetchFleet() {
-    await this.collection.findBySlug(this.$route.params.slug)
+    await this.collection.findBySlug(this.$route.params.slug);
   }
 }
 </script>

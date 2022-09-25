@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import ModelPanel from '@/embed/components/Models/Panel/index.vue'
+import { mapGetters } from "vuex";
+import ModelPanel from "@/embed/components/Models/Panel/index.vue";
 
 export default {
-  name: 'ModelList',
+  name: "ModelList",
 
   components: {
     ModelPanel,
@@ -31,31 +31,31 @@ export default {
   data() {
     return {
       internalModels: [],
-    }
+    };
   },
 
   computed: {
-    ...mapGetters(['details', 'grouping']),
+    ...mapGetters(["details", "grouping"]),
   },
 
   watch: {
     models() {
-      this.internalModels = this.models
+      this.internalModels = this.models;
     },
   },
 
   mounted() {
-    this.internalModels = this.models
+    this.internalModels = this.models;
   },
 
   methods: {
     count(model) {
       if (!this.grouping) {
-        return null
+        return null;
       }
 
-      return model.count
+      return model.count;
     },
   },
-}
+};
 </script>

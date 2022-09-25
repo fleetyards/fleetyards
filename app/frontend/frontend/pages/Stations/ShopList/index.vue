@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t('headlines.shops') }}
+          {{ $t("headlines.shops") }}
         </h1>
       </div>
     </div>
@@ -34,14 +34,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import FilterForm from '@/frontend/components/Shops/FilterForm/index.vue'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
-import ShopPanel from '@/frontend/components/Shops/Panel/index.vue'
-import shopsCollection from '@/frontend/api/collections/Shops'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import FilterForm from "@/frontend/components/Shops/FilterForm/index.vue";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
+import shopsCollection from "@/frontend/api/collections/Shops";
 
 @Component<ShopList>({
   components: {
@@ -53,10 +53,10 @@ import shopsCollection from '@/frontend/api/collections/Shops'
   mixins: [MetaInfo],
 })
 export default class ShopList extends Vue {
-  collection: ShopsCollection = shopsCollection
+  collection: ShopsCollection = shopsCollection;
 }
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

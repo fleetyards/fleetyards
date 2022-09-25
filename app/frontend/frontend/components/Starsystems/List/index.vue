@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 export default {
-  name: 'StarsystemsList',
+  name: "StarsystemsList",
 
   components: {
     Panel,
@@ -46,9 +46,9 @@ export default {
       required: true,
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

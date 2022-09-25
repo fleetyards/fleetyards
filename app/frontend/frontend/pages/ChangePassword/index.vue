@@ -6,7 +6,7 @@
           <form @submit.prevent="handleSubmit(changePassword)">
             <h1>
               <router-link :to="{ name: 'home' }" exact>
-                {{ $t('app') }}
+                {{ $t("app") }}
               </router-link>
             </h1>
             <ValidationProvider
@@ -43,16 +43,16 @@
             </ValidationProvider>
 
             <Btn :loading="submitting" type="submit" size="large" :block="true">
-              {{ $t('actions.save') }}
+              {{ $t("actions.save") }}
             </Btn>
 
             <footer>
               <p class="text-center">
-                {{ $t('labels.alreadyRegistered') }}
+                {{ $t("labels.alreadyRegistered") }}
               </p>
 
               <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ $t('actions.login') }}
+                {{ $t("actions.login") }}
               </Btn>
             </footer>
           </form>
@@ -63,14 +63,14 @@
 </template>
 
 <script>
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import { mapGetters } from 'vuex'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import { mapGetters } from "vuex";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 
 export default {
-  name: 'ChangePassword',
+  name: "ChangePassword",
 
   components: {
     FormInput,
@@ -87,48 +87,48 @@ export default {
         password: null,
         passwordConfirmation: null,
       },
-    }
+    };
   },
 
   computed: {
-    ...mapGetters('session', ['isAuthenticated']),
+    ...mapGetters("session", ["isAuthenticated"]),
   },
 
   mounted() {
     if (this.isAuthenticated) {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push({ name: 'settings-change-password' }).catch(() => {})
+      this.$router.push({ name: "settings-change-password" }).catch(() => {});
     }
   },
 
   methods: {
     async changePassword() {
-      this.submitting = true
+      this.submitting = true;
 
       const response = await this.$api.put(
         `password/update/${this.$route.params.token}`,
         this.form
-      )
+      );
 
-      this.submitting = false
+      this.submitting = false;
 
       if (!response.error) {
         displaySuccess({
-          text: this.$t('messages.changePassword.success'),
-        })
+          text: this.$t("messages.changePassword.success"),
+        });
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this.$router.push('/').catch(() => {})
+        this.$router.push("/").catch(() => {});
       } else {
         displayAlert({
-          text: this.$t('messages.changePassword.failure'),
-        })
+          text: this.$t("messages.changePassword.failure"),
+        });
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

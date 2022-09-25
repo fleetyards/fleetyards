@@ -9,7 +9,7 @@
           class="text-right metrics-title"
           @click="toggle"
         >
-          {{ $t('labels.metrics.topView') }}
+          {{ $t("labels.metrics.topView") }}
           <i class="fa fa-chevron-right" />
         </div>
       </div>
@@ -57,10 +57,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { BCollapse } from 'bootstrap-vue'
-import FleetchartItemImage from '@/frontend/components/Fleetchart/List/Item/Image/index.vue'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { BCollapse } from "bootstrap-vue";
+import FleetchartItemImage from "@/frontend/components/Fleetchart/List/Item/Image/index.vue";
 
 @Component<ModelsCompareTopView>({
   components: {
@@ -69,46 +69,46 @@ import FleetchartItemImage from '@/frontend/components/Fleetchart/List/Item/Imag
   },
 })
 export default class ModelsCompareTopView extends Vue {
-  @Prop({ required: true }) models!: Model[]
+  @Prop({ required: true }) models!: Model[];
 
-  visible = false
+  visible = false;
 
   get maxWidth() {
     if (!this.$refs.compareTopView) {
-      return 0
+      return 0;
     }
 
-    return this.$refs.compareTopView.offsetWidth / 4
+    return this.$refs.compareTopView.offsetWidth / 4;
   }
 
   get scale() {
     if (this.models.length <= 0) {
-      return 0
+      return 0;
     }
 
     const maxLength = Math.max(
       ...this.models.map((model) => model.fleetchartLength),
       0
-    )
+    );
 
-    return this.maxWidth / (maxLength * 3)
+    return this.maxWidth / (maxLength * 3);
   }
 
   length(model) {
-    return model.fleetchartLength * 3 * this.scale
+    return model.fleetchartLength * 3 * this.scale;
   }
 
   mounted() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
-  @Watch('models')
+  @Watch("models")
   onModelsChange() {
-    this.visible = this.models.length > 0
+    this.visible = this.models.length > 0;
   }
 
   toggle() {
-    this.visible = !this.visible
+    this.visible = !this.visible;
   }
 }
 </script>

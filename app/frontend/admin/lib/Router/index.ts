@@ -1,35 +1,35 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import qs from 'qs'
-import { routes } from '@/admin/routes'
+import Vue from "vue";
+import Router from "vue-router";
+import qs from "qs";
+import { routes } from "@/admin/routes";
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
-  mode: 'history',
-  base: window.ON_SUBDOMAIN ? '' : '/admin',
-  linkActiveClass: 'active',
-  linkExactActiveClass: 'active',
+  mode: "history",
+  base: window.ON_SUBDOMAIN ? "" : "/admin",
+  linkActiveClass: "active",
+  linkExactActiveClass: "active",
   scrollBehavior: (to, _from, savedPosition) =>
     new Promise((resolve) => {
       setTimeout(() => {
         if (to.hash) {
-          resolve()
+          resolve();
         } else if (savedPosition) {
-          resolve(savedPosition)
+          resolve(savedPosition);
         } else {
-          resolve({ x: 0, y: 0 })
+          resolve({ x: 0, y: 0 });
         }
-      }, 600)
+      }, 600);
     }),
   parseQuery(query) {
-    return qs.parse(query)
+    return qs.parse(query);
   },
   stringifyQuery(query) {
-    const result = qs.stringify(query)
-    return result ? `?${result}` : ''
+    const result = qs.stringify(query);
+    return result ? `?${result}` : "";
   },
   routes,
-})
+});
 
-export default router
+export default router;

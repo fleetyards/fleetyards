@@ -85,7 +85,7 @@
           return {
             value: item.slug,
             name: item.name,
-          }
+          };
         })
       "
       :label="$t('labels.filters.vehicles.group')"
@@ -203,25 +203,25 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
-import RadioList from '@/frontend/core/components/Form/RadioList/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Filters from "@/frontend/mixins/Filters";
+import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 import {
   booleanOptions,
   priceOptions,
   pledgePriceOptions,
-} from '@/frontend/utils/FilterOptions'
+} from "@/frontend/utils/FilterOptions";
 
 export default {
-  name: 'VehiclesFilterForm',
+  name: "VehiclesFilterForm",
 
   components: {
     RadioList,
@@ -236,13 +236,13 @@ export default {
     hangarGroupsOptions: {
       type: Array,
       default() {
-        return []
+        return [];
       },
     },
   },
 
   data() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
     return {
       form: {
         nameCont: query.nameCont,
@@ -266,26 +266,26 @@ export default {
         hangarGroupsIn: query.hangarGroupsIn || [],
         hangarGroupsNotIn: query.hangarGroupsNotIn || [],
       },
-    }
+    };
   },
 
   computed: {
     booleanOptions() {
-      return booleanOptions
+      return booleanOptions;
     },
 
     priceOptions() {
-      return priceOptions
+      return priceOptions;
     },
 
     pledgePriceOptions() {
-      return pledgePriceOptions
+      return pledgePriceOptions;
     },
   },
 
   watch: {
     $route() {
-      const query = this.$route.query.q || {}
+      const query = this.$route.query.q || {};
       this.form = {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
@@ -307,8 +307,8 @@ export default {
         productionStatusIn: query.productionStatusIn || [],
         hangarGroupsIn: query.hangarGroupsIn || [],
         hangarGroupsNotIn: query.hangarGroupsNotIn || [],
-      }
+      };
     },
   },
-}
+};
 </script>

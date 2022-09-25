@@ -1,37 +1,37 @@
-import Vue from 'vue'
-import VTooltip from 'v-tooltip'
-import FleetyardsView from '@/embed/FleetyardsView.vue'
-import store from '@/embed/lib/Store'
-import I18nPlugin from '@/frontend/lib/I18n'
-import ApiClient from '@/embed/api/client'
-import '@/frontend/plugins/LazyLoad'
+import Vue from "vue";
+import VTooltip from "v-tooltip";
+import FleetyardsView from "@/embed/FleetyardsView.vue";
+import store from "@/embed/lib/Store";
+import I18nPlugin from "@/frontend/lib/I18n";
+import ApiClient from "@/embed/api/client";
+import "@/frontend/plugins/LazyLoad";
 
-Vue.use(ApiClient)
-Vue.use(I18nPlugin)
+Vue.use(ApiClient);
+Vue.use(I18nPlugin);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-VTooltip.enabled = window.innerWidth > 768
+VTooltip.enabled = window.innerWidth > 768;
 Vue.use(VTooltip, {
-  defaultContainer: '#fleetyards-view',
-})
+  defaultContainer: "#fleetyards-view",
+});
 
-window.FleetYardsFleetchart = null
+window.FleetYardsFleetchart = null;
 
 setTimeout(() => {
   if (store.state.storeVersion !== window.STORE_VERSION) {
-    console.info('Updating Store Version and resetting Store')
+    console.info("Updating Store Version and resetting Store");
 
-    store.dispatch('reset')
-    store.commit('setStoreVersion', window.STORE_VERSION)
+    store.dispatch("reset");
+    store.commit("setStoreVersion", window.STORE_VERSION);
   }
 
   // eslint-disable-next-line no-undef
-  const config = window.FleetYardsFleetchartConfig || {}
+  const config = window.FleetYardsFleetchartConfig || {};
 
   // eslint-disable-next-line no-new
   window.FleetYardsFleetchart = new Vue({
-    el: '#fleetyards-view',
+    el: "#fleetyards-view",
     store,
     data: {
       ships: config.ships || [],
@@ -43,26 +43,26 @@ setTimeout(() => {
     },
     methods: {
       updateShips(ships) {
-        const fleetview = (this.$children || [])[0]
+        const fleetview = (this.$children || [])[0];
         if (fleetview) {
-          fleetview.updateShips(ships)
+          fleetview.updateShips(ships);
         }
       },
 
       updateUsers(users) {
-        const fleetview = (this.$children || [])[0]
+        const fleetview = (this.$children || [])[0];
         if (fleetview) {
-          fleetview.updateUsers(users)
+          fleetview.updateUsers(users);
         }
       },
 
       updateFleet(fleetID) {
-        const fleetview = (this.$children || [])[0]
+        const fleetview = (this.$children || [])[0];
         if (fleetview) {
-          fleetview.updateFleet(fleetID)
+          fleetview.updateFleet(fleetID);
         }
       },
     },
     render: (h) => h(FleetyardsView),
-  })
-}, 2000)
+  });
+}, 2000);

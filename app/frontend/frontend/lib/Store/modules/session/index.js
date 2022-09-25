@@ -1,6 +1,6 @@
-import { parseISO, differenceInMinutes } from 'date-fns'
-import actions from './actions'
-import getDefaultState from './state'
+import { parseISO, differenceInMinutes } from "date-fns";
+import actions from "./actions";
+import getDefaultState from "./state";
 
 export default () => ({
   namespaced: true,
@@ -11,48 +11,48 @@ export default () => ({
 
   getters: {
     isAuthenticated(state) {
-      return state.authenticated
+      return state.authenticated;
     },
 
     currentUser(state) {
-      return state.currentUser
+      return state.currentUser;
     },
 
     accessConfirmed(state) {
       if (!state.accessConfirmed) {
-        return false
+        return false;
       }
 
       const diff = differenceInMinutes(
         new Date(),
         parseISO(state.accessConfirmed)
-      )
+      );
 
-      return diff < 10
+      return diff < 10;
     },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
-      Object.assign(state, getDefaultState())
+      Object.assign(state, getDefaultState());
     },
 
     setAuthenticated(state, payload) {
-      state.authenticated = payload
+      state.authenticated = payload;
     },
 
     setCurrentUser(state, payload) {
       if (payload) {
-        state.currentUser = payload.data
+        state.currentUser = payload.data;
       } else {
-        state.currentUser = null
+        state.currentUser = null;
       }
     },
 
     setAccessConfirmed(state, payload) {
-      state.accessConfirmed = payload
+      state.accessConfirmed = payload;
     },
   },
   /* eslint-enable no-param-reassign */
-})
+});

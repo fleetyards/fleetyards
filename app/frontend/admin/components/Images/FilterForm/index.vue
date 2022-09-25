@@ -26,17 +26,17 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import Filters from '@/frontend/mixins/Filters'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import Filters from "@/frontend/mixins/Filters";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 
 @Component<FilterForm>({
   components: {
@@ -46,88 +46,88 @@ import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
   mixins: [Filters],
 })
 export default class FilterForm extends Vue {
-  loading = false
+  loading = false;
 
-  modelIdEq: string | null = null
+  modelIdEq: string | null = null;
 
-  stationIdEq: string | null = null
+  stationIdEq: string | null = null;
 
   form: GalleryFilters = {
     galleryIdEq: this.routeQuery.galleryIdEq,
     galleryTypeEq: this.routeQuery.galleryTypeEq,
-  }
+  };
 
   get routeQuery() {
-    return this.$route.query.q || {}
+    return this.$route.query.q || {};
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
     this.form = {
       galleryIdEq: query.galleryIdEq,
       galleryTypeEq: query.galleryTypeEq,
-    }
+    };
   }
 
-  @Watch('modelIdEq')
+  @Watch("modelIdEq")
   onModelIdFilterChange(value) {
     if (value) {
-      this.stationIdEq = null
-      this.form.galleryIdEq = value
-      this.form.galleryTypeEq = 'Model'
+      this.stationIdEq = null;
+      this.form.galleryIdEq = value;
+      this.form.galleryTypeEq = "Model";
     } else if (!this.stationIdEq) {
-      this.form.galleryIdEq = null
-      this.form.galleryTypeEq = null
+      this.form.galleryIdEq = null;
+      this.form.galleryTypeEq = null;
     }
   }
 
-  @Watch('stationIdEq')
+  @Watch("stationIdEq")
   onStationIdFitlerChange(value) {
     if (value) {
-      this.modelIdEq = null
-      this.form.galleryIdEq = value
-      this.form.galleryTypeEq = 'Station'
+      this.modelIdEq = null;
+      this.form.galleryIdEq = value;
+      this.form.galleryTypeEq = "Station";
     } else if (!this.modelIdEq) {
-      this.form.galleryIdEq = null
-      this.form.galleryTypeEq = null
+      this.form.galleryIdEq = null;
+      this.form.galleryTypeEq = null;
     }
   }
 
-  @Watch('form', { deep: true })
+  @Watch("form", { deep: true })
   onFormChange() {
     if (!this.form.galleryIdEq && !this.form.galleryTypeEq) {
-      this.modelIdEq = null
-      this.stationIdEq = null
+      this.modelIdEq = null;
+      this.stationIdEq = null;
     }
   }
 
   fetchModels({ page, search, missingValue }) {
     const query = {
       q: {},
-    }
+    };
     if (search) {
-      query.q.nameCont = search
+      query.q.nameCont = search;
     } else if (missingValue) {
-      query.q.nameIn = missingValue
+      query.q.nameIn = missingValue;
     } else if (page) {
-      query.page = page
+      query.page = page;
     }
-    return this.$api.get('models/options', query)
+    return this.$api.get("models/options", query);
   }
 
   fetchStations({ page, search, missingValue }) {
     const query = {
       q: {},
-    }
+    };
     if (search) {
-      query.q.nameCont = search
+      query.q.nameCont = search;
     } else if (missingValue) {
-      query.q.nameIn = missingValue
+      query.q.nameIn = missingValue;
     } else if (page) {
-      query.page = page
+      query.page = page;
     }
-    return this.$api.get('stations/options', query)
+    return this.$api.get("stations/options", query);
   }
 }
 </script>

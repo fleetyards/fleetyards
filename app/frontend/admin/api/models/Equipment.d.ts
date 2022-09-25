@@ -1,11 +1,11 @@
 type AdminEquipment = {
-  id: string
-}
+  id: string;
+};
 
 type AdminEquipmentFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface AdminEquipmentParams extends CollectionParams {
-  filters: AdminEquipmentFilter
+  filters: AdminEquipmentFilter;
 }

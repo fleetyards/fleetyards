@@ -78,7 +78,7 @@
               :to="sortBy('origin_shop_station_name', 'asc')"
               :exact="true"
             >
-              {{ $t('labels.tradeRoutes.sortByStation') }}
+              {{ $t("labels.tradeRoutes.sortByStation") }}
             </Btn>
           </BtnGroup>
         </template>
@@ -95,7 +95,7 @@
             :exact="true"
           >
             <i class="far fa-dollar-sign" />
-            <span>{{ $t('labels.tradeRoutes.sortByProfit') }}</span>
+            <span>{{ $t("labels.tradeRoutes.sortByProfit") }}</span>
           </Btn>
           <Btn
             :active="sortByPercent || sortByAveragePercent"
@@ -109,7 +109,7 @@
             :exact="true"
           >
             <i class="far fa-percent" />
-            <span>{{ $t('labels.tradeRoutes.sortByPercent') }}</span>
+            <span>{{ $t("labels.tradeRoutes.sortByPercent") }}</span>
           </Btn>
           <Btn
             :active="sortByStation"
@@ -119,7 +119,7 @@
             :exact="true"
           >
             <i class="fad fa-map-marker-alt" />
-            <span>{{ $t('labels.tradeRoutes.sortByStation') }}</span>
+            <span>{{ $t("labels.tradeRoutes.sortByStation") }}</span>
           </Btn>
         </BtnDropdown>
       </template>
@@ -210,23 +210,23 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import PriceModalBtn from '@/frontend/components/ShopCommodities/PriceModalBtn/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import { sortBy } from '@/frontend/utils/Sorting'
-import tradeRoutesCollection from '@/frontend/api/collections/TradeRoutes'
-import modelsCollection from '@/frontend/api/collections/Models'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import BtnGroup from '@/frontend/core/components/BtnGroup/index.vue'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import FilterForm from '@/frontend/components/TradeRoutes/FilterForm/index.vue'
-import QuickFilter from '@/frontend/components/TradeRoutes/QuickFilter/index.vue'
-import TradeRoutePrice from '@/frontend/components/TradeRoutes/Price/index.vue'
-import TradeRouteProfit from '@/frontend/components/TradeRoutes/Profit/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import { sortBy } from "@/frontend/utils/Sorting";
+import tradeRoutesCollection from "@/frontend/api/collections/TradeRoutes";
+import modelsCollection from "@/frontend/api/collections/Models";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import FilterForm from "@/frontend/components/TradeRoutes/FilterForm/index.vue";
+import QuickFilter from "@/frontend/components/TradeRoutes/QuickFilter/index.vue";
+import TradeRoutePrice from "@/frontend/components/TradeRoutes/Price/index.vue";
+import TradeRouteProfit from "@/frontend/components/TradeRoutes/Profit/index.vue";
 
 @Component<TradeRoutes>({
   components: {
@@ -245,128 +245,128 @@ import TradeRouteProfit from '@/frontend/components/TradeRoutes/Profit/index.vue
   mixins: [MetaInfo],
 })
 export default class TradeRoutes extends Vue {
-  collection: TradeRoutesCollection = tradeRoutesCollection
+  collection: TradeRoutesCollection = tradeRoutesCollection;
 
-  modelsCollection: ModelsCollection = modelsCollection
+  modelsCollection: ModelsCollection = modelsCollection;
 
-  averagePrices = false
+  averagePrices = false;
 
-  cargoShip: Model | null = null
+  cargoShip: Model | null = null;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get title(): string {
     if (this.cargoShip) {
-      return this.$t('headlines.tools.tradeRoutes.withShip', {
+      return this.$t("headlines.tools.tradeRoutes.withShip", {
         name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
-        cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
-      })
+        cargo: this.$toNumber(this.cargoShip.cargo, "cargo"),
+      });
     }
 
-    return this.$t('headlines.tools.tradeRoutes.index')
+    return this.$t("headlines.tools.tradeRoutes.index");
   }
 
   get availableCargo(): number {
-    return this.cargoShip ? this.cargoShip.cargo * 100 : null
+    return this.cargoShip ? this.cargoShip.cargo * 100 : null;
   }
 
   get sorts(): string[] {
-    return this.$route.query.q?.sorts || []
+    return this.$route.query.q?.sorts || [];
   }
 
   get sortByAveragePercent(): boolean {
     return (
-      this.sorts.includes('average_profit_per_unit_percent asc') ||
-      this.sorts.includes('average_profit_per_unit_percent desc')
-    )
+      this.sorts.includes("average_profit_per_unit_percent asc") ||
+      this.sorts.includes("average_profit_per_unit_percent desc")
+    );
   }
 
   get sortByPercent(): boolean {
     return (
-      this.sorts.includes('profit_per_unit_percent asc') ||
-      this.sorts.includes('profit_per_unit_percent desc')
-    )
+      this.sorts.includes("profit_per_unit_percent asc") ||
+      this.sorts.includes("profit_per_unit_percent desc")
+    );
   }
 
   get sortByAverageProfit(): boolean {
     return (
-      this.sorts.includes('average_profit_per_unit asc') ||
-      this.sorts.includes('average_profit_per_unit desc')
-    )
+      this.sorts.includes("average_profit_per_unit asc") ||
+      this.sorts.includes("average_profit_per_unit desc")
+    );
   }
 
   get sortByProfit(): boolean {
     return (
-      this.sorts.includes('profit_per_unit asc') ||
-      this.sorts.includes('profit_per_unit desc') ||
+      this.sorts.includes("profit_per_unit asc") ||
+      this.sorts.includes("profit_per_unit desc") ||
       !this.sorts.length
-    )
+    );
   }
 
   get sortByStation(): boolean {
     return (
-      this.sorts.includes('origin_shop_station_name asc') ||
-      this.sorts.includes('origin_shop_station_name desc')
-    )
+      this.sorts.includes("origin_shop_station_name asc") ||
+      this.sorts.includes("origin_shop_station_name desc")
+    );
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetchCargoShip()
+    this.fetchCargoShip();
   }
 
   mounted() {
-    this.averagePrices = this.sortByAverageProfit || this.sortByAveragePercent
-    this.fetchCargoShip()
+    this.averagePrices = this.sortByAverageProfit || this.sortByAveragePercent;
+    this.fetchCargoShip();
   }
 
   sortBy(field, direction) {
-    return sortBy(this.$route, field, direction)
+    return sortBy(this.$route, field, direction);
   }
 
   showLatestPrices() {
-    this.averagePrices = false
+    this.averagePrices = false;
 
     if (this.sortByProfit || this.sortByAverageProfit) {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push(this.sortBy('profit_per_unit', 'desc')).catch(() => {})
+      this.$router.push(this.sortBy("profit_per_unit", "desc")).catch(() => {});
     } else if (this.sortByPercent || this.sortByAveragePercent) {
       this.$router
-        .push(this.sortBy('profit_per_unit_percent', 'desc'))
+        .push(this.sortBy("profit_per_unit_percent", "desc"))
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {})
+        .catch(() => {});
     }
   }
 
   showAveragePrices() {
-    this.averagePrices = true
+    this.averagePrices = true;
 
     if (this.sortByProfit || this.sortByAverageProfit) {
       this.$router
-        .push(this.sortBy('average_profit_per_unit', 'desc'))
+        .push(this.sortBy("average_profit_per_unit", "desc"))
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {})
+        .catch(() => {});
     } else if (this.sortByPercent || this.sortByAveragePercent) {
       this.$router
-        .push(this.sortBy('average_profit_per_unit_percent', 'desc'))
+        .push(this.sortBy("average_profit_per_unit_percent", "desc"))
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {})
+        .catch(() => {});
     }
   }
 
   async fetchCargoShip() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
 
     if (!query.cargoShip) {
-      this.cargoShip = null
-      return
+      this.cargoShip = null;
+      return;
     }
 
-    this.cargoShip = await modelsCollection.findBySlug(query.cargoShip)
+    this.cargoShip = await modelsCollection.findBySlug(query.cargoShip);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

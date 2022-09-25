@@ -6,7 +6,7 @@
           <form @submit.prevent="handleSubmit(login)">
             <h1>
               <router-link to="/" exact>
-                {{ $t('app') }}
+                {{ $t("app") }}
               </router-link>
             </h1>
             <template v-if="twoFactorRequired">
@@ -74,7 +74,7 @@
               size="large"
               :block="true"
             >
-              {{ $t('actions.login') }}
+              {{ $t("actions.login") }}
             </Btn>
             <Btn
               :to="{
@@ -84,11 +84,11 @@
               size="small"
               :block="true"
             >
-              {{ $t('actions.reset-password') }}
+              {{ $t("actions.reset-password") }}
             </Btn>
             <footer>
               <p class="text-center">
-                {{ $t('labels.signup.link') }}
+                {{ $t("labels.signup.link") }}
               </p>
               <Btn
                 data-test="signup-link"
@@ -96,7 +96,7 @@
                 size="small"
                 :block="true"
               >
-                {{ $t('actions.signUp') }}
+                {{ $t("actions.signUp") }}
               </Btn>
             </footer>
           </form>
@@ -107,14 +107,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displayAlert } from '@/frontend/lib/Noty'
-import sessionCollection from '@/frontend/api/collections/Session'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displayAlert } from "@/frontend/lib/Noty";
+import sessionCollection from "@/frontend/api/collections/Session";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 
 @Component<Login>({
   components: {
@@ -125,14 +125,14 @@ import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
   mixins: [MetaInfo],
 })
 export default class Login extends Vue {
-  submitting = false
+  submitting = false;
 
-  twoFactorRequired = false
+  twoFactorRequired = false;
 
-  form: LoginForm = null
+  form: LoginForm = null;
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
@@ -141,41 +141,41 @@ export default class Login extends Vue {
       password: null,
       login: null,
       twoFactorCode: null,
-    }
+    };
   }
 
   async login() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await sessionCollection.create(this.form)
+    const response = await sessionCollection.create(this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (
       response.error &&
       response.error.response?.data?.code ===
-        'session.create.two_factor_required'
+        "session.create.two_factor_required"
     ) {
-      this.twoFactorRequired = true
+      this.twoFactorRequired = true;
     } else if (!response.error) {
-      await this.$store.dispatch('session/login')
+      await this.$store.dispatch("session/login");
       if (this.$route.params.redirectToRoute) {
         await this.$router.replace({
           name: this.$route.params.redirectToRoute,
-        })
+        });
       } else {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        await this.$router.push('/').catch(() => {})
+        await this.$router.push("/").catch(() => {});
       }
     } else {
       displayAlert({
         text: response.error.response.data.message,
-      })
+      });
     }
   }
 }
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

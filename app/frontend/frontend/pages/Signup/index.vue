@@ -6,7 +6,7 @@
           <form @submit.prevent="handleSubmit(signup)">
             <h1>
               <router-link to="/" :exact="true">
-                {{ $t('app') }}
+                {{ $t("app") }}
               </router-link>
             </h1>
             <ValidationProvider
@@ -92,23 +92,23 @@
               size="large"
               :block="true"
             >
-              {{ $t('actions.signUp') }}
+              {{ $t("actions.signUp") }}
             </Btn>
 
             <p class="privacy-info">
-              {{ $t('labels.signup.privacyPolicy') }}
+              {{ $t("labels.signup.privacyPolicy") }}
               <router-link :to="{ name: 'privacy-policy' }">
-                {{ $t('labels.privacyPolicy') }}
+                {{ $t("labels.privacyPolicy") }}
               </router-link>
             </p>
 
             <footer>
               <p class="text-center">
-                {{ $t('labels.alreadyRegistered') }}
+                {{ $t("labels.alreadyRegistered") }}
               </p>
 
               <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ $t('actions.login') }}
+                {{ $t("actions.login") }}
               </Btn>
             </footer>
           </form>
@@ -119,15 +119,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displaySuccess, displayAlert } from '@/frontend/lib/Noty'
-import { transformErrors } from '@/frontend/api/helpers'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import { transformErrors } from "@/frontend/api/helpers";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 
 @Component<Signup>({
   components: {
@@ -138,17 +138,17 @@ import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
   mixins: [MetaInfo],
 })
 export default class Signup extends Vue {
-  @Getter('inviteToken', { namespace: 'fleet' }) fleetInviteToken
+  @Getter("inviteToken", { namespace: "fleet" }) fleetInviteToken;
 
-  @Action('resetInviteToken', { namespace: 'fleet' })
-  resetFleetInviteToken: any
+  @Action("resetInviteToken", { namespace: "fleet" })
+  resetFleetInviteToken: any;
 
-  form: SignupForm | null = null
+  form: SignupForm | null = null;
 
-  submitting = false
+  submitting = false;
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
@@ -159,47 +159,47 @@ export default class Signup extends Vue {
       password: null,
       passwordConfirmation: null,
       fleetInviteToken: this.fleetInviteToken,
-    }
+    };
   }
 
   async signup() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await this.$api.post('users/signup', this.form)
+    const response = await this.$api.post("users/signup", this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
       displaySuccess({
-        text: this.$t('messages.signup.success'),
-      })
+        text: this.$t("messages.signup.success"),
+      });
 
-      this.resetFleetInviteToken()
+      this.resetFleetInviteToken();
 
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push('/').catch(() => {})
+      this.$router.push("/").catch(() => {});
     } else if (
       response.error.response &&
       response.error.response.data &&
-      response.error.response.data.code === 'blocked'
+      response.error.response.data.code === "blocked"
     ) {
       displayAlert({
-        text: this.$t('texts.signup.blocked'),
-      })
+        text: this.$t("texts.signup.blocked"),
+      });
     } else {
-      const { error } = response
+      const { error } = response;
       if (error.response && error.response.data) {
-        const { data: errorData } = error.response
+        const { data: errorData } = error.response;
 
-        this.$refs.form.setErrors(transformErrors(errorData.errors))
+        this.$refs.form.setErrors(transformErrors(errorData.errors));
 
         displayAlert({
           text: errorData.message,
-        })
+        });
       } else {
         displayAlert({
-          text: this.$t('messages.signup.failure'),
-        })
+          text: this.$t("messages.signup.failure"),
+        });
       }
     }
   }
@@ -207,5 +207,5 @@ export default class Signup extends Vue {
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

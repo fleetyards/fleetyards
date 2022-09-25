@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
+import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
+import NavigationMixin from "@/frontend/mixins/Navigation";
 
 export default {
-  name: 'StationsNav',
+  name: "StationsNav",
 
   components: {
     NavItem,
@@ -42,16 +42,16 @@ export default {
   computed: {
     active() {
       return [
-        'stations',
-        'station',
-        'shops',
-        'shop',
-        'starsystems',
-        'starsystem',
-        'celestial-object',
-        'station-images',
-      ].includes(this.$route.name)
+        "stations",
+        "station",
+        "shops",
+        "shop",
+        "starsystems",
+        "starsystem",
+        "celestial-object",
+        "station-images",
+      ].includes(this.$route.name);
     },
   },
-}
+};
 </script>

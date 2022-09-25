@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t('headlines.images') }}
+              {{ $t("headlines.images") }}
             </h1>
           </div>
         </div>
@@ -46,14 +46,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Gallery from '@/frontend/core/components/Gallery/index.vue'
-import GalleryImage from '@/frontend/core/components/Gallery/Image/index.vue'
-import imagesCollection from '@/frontend/api/collections/Images'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Gallery from "@/frontend/core/components/Gallery/index.vue";
+import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
+import imagesCollection from "@/frontend/api/collections/Images";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 
 @Component<Images>({
   components: {
@@ -65,10 +65,10 @@ import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
   mixins: [MetaInfo],
 })
 export default class Images extends Vue {
-  collection: ImagesCollection = imagesCollection
+  collection: ImagesCollection = imagesCollection;
 
   openGallery(index) {
-    this.$refs.gallery.open(index)
+    this.$refs.gallery.open(index);
   }
 }
 </script>

@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import MembersListHead from './MembersListHead/index.vue'
-import MembersListItem from './MembersListItem/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import MembersListHead from "./MembersListHead/index.vue";
+import MembersListItem from "./MembersListItem/index.vue";
 
 @Component<MembersList>({
   components: {
@@ -34,22 +34,22 @@ import MembersListItem from './MembersListItem/index.vue'
   },
 })
 export default class Memberslist extends Vue {
-  @Prop({ required: true }) members: Member[]
+  @Prop({ required: true }) members: Member[];
 
-  @Prop({ required: true }) role: string
+  @Prop({ required: true }) role: string;
 
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+  @Getter("currentUser", { namespace: "session" }) currentUser;
 
   get isAdmin() {
-    return this.role === 'admin'
+    return this.role === "admin";
   }
 
   canEdit(member) {
     if (member && this.currentUser) {
-      return this.isAdmin && member.username !== this.currentUser.username
+      return this.isAdmin && member.username !== this.currentUser.username;
     }
 
-    return false
+    return false;
   }
 }
 </script>

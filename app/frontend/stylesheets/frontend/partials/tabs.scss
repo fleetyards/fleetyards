@@ -17,7 +17,7 @@ $nav-transition-speed: 0.3s;
       $gray-darker 90%,
       transparent 100%
     );
-    content: '';
+    content: "";
   }
 
   li {
@@ -50,7 +50,7 @@ $nav-transition-speed: 0.3s;
         background: $primary;
         opacity: 0;
         transition: all ease $transition-base-speed;
-        content: '';
+        content: "";
       }
 
       &.disabled {

@@ -6,7 +6,7 @@
     class="labels-dropdown"
   >
     <template slot="label">
-      {{ $t('labels.groups') }}
+      {{ $t("labels.groups") }}
     </template>
     <Btn
       v-for="group in groups"
@@ -35,7 +35,7 @@
   </BtnDropdown>
   <div v-else class="labels">
     <h3 v-if="groups.length || editable" class="label-title">
-      {{ $t('labels.groups') }}:
+      {{ $t("labels.groups") }}:
     </h3>
     <draggable v-model="groups" @start="drag = true" @end="drag = false">
       <transition-group name="fade-list" appear>
@@ -78,13 +78,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import draggable from 'vuedraggable'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displayAlert } from '@/frontend/lib/Noty'
-import { Getter } from 'vuex-class'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import draggable from "vuedraggable";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displayAlert } from "@/frontend/lib/Noty";
+import { Getter } from "vuex-class";
 
 @Component<GroupLabels>({
   components: {
@@ -94,43 +94,43 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class GroupLabels extends Vue {
-  groups: HangarGroup[] = []
+  groups: HangarGroup[] = [];
 
   @Prop({
     default() {
-      return []
+      return [];
     },
   })
-  hangarGroups: HangarGroup[]
+  hangarGroups: HangarGroup[];
 
   @Prop({
     default() {
-      return []
+      return [];
     },
   })
-  hangarGroupCounts: Array
+  hangarGroupCounts: Array;
 
-  @Prop({ default: false }) editable!: boolean
+  @Prop({ default: false }) editable!: boolean;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get sortIndex() {
-    return this.groups.map((item) => item.id)
+    return this.groups.map((item) => item.id);
   }
 
   mounted() {
-    this.groups = this.hangarGroups
+    this.groups = this.hangarGroups;
   }
 
-  @Watch('hangarGroups')
+  @Watch("hangarGroups")
   onHangarGroupsChange() {
-    this.groups = this.hangarGroups
+    this.groups = this.hangarGroups;
   }
 
-  @Watch('groups')
+  @Watch("groups")
   onGroupsFake() {
     if (this.groups !== this.hangarGroups) {
-      this.updateSort()
+      this.updateSort();
     }
   }
 
@@ -139,32 +139,34 @@ export default class GroupLabels extends Vue {
       this.hangarGroupCounts.find((count) => count.id === group.id) || {
         count: 0,
       }
-    )
+    );
   }
 
   filter(filter) {
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}));
 
     if ((query.hangarGroupsIn || []).includes(filter)) {
       if (!query.hangarGroupsNotIn) {
-        query.hangarGroupsNotIn = []
+        query.hangarGroupsNotIn = [];
       }
-      query.hangarGroupsNotIn.push(filter)
+      query.hangarGroupsNotIn.push(filter);
 
-      const index = query.hangarGroupsIn.findIndex((item) => item === filter)
+      const index = query.hangarGroupsIn.findIndex((item) => item === filter);
       if (index > -1) {
-        query.hangarGroupsIn.splice(index, 1)
+        query.hangarGroupsIn.splice(index, 1);
       }
     } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
-      const index = query.hangarGroupsNotIn.findIndex((item) => item === filter)
+      const index = query.hangarGroupsNotIn.findIndex(
+        (item) => item === filter
+      );
       if (index > -1) {
-        query.hangarGroupsNotIn.splice(index, 1)
+        query.hangarGroupsNotIn.splice(index, 1);
       }
     } else {
       if (!query.hangarGroupsIn) {
-        query.hangarGroupsIn = []
+        query.hangarGroupsIn = [];
       }
-      query.hangarGroupsIn.push(filter)
+      query.hangarGroupsIn.push(filter);
     }
 
     this.$router.replace({
@@ -172,71 +174,71 @@ export default class GroupLabels extends Vue {
       query: {
         q: query,
       },
-    })
+    });
   }
 
   isActive(group) {
     if (!this.$route.query.q) {
-      return false
+      return false;
     }
 
-    const filter = this.$route.query.q.hangarGroupsIn
+    const filter = this.$route.query.q.hangarGroupsIn;
     if (!filter) {
-      return false
+      return false;
     }
 
     if (filter.includes(group)) {
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   isInverted(group) {
     if (!this.$route.query.q) {
-      return false
+      return false;
     }
 
-    const filter = this.$route.query.q.hangarGroupsNotIn
+    const filter = this.$route.query.q.hangarGroupsNotIn;
     if (!filter) {
-      return false
+      return false;
     }
 
     if (filter.includes(group)) {
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   async updateSort() {
-    const response = await this.$api.put('hangar-groups/sort', {
+    const response = await this.$api.put("hangar-groups/sort", {
       sorting: this.sortIndex,
-    })
+    });
 
     if (response.error) {
       displayAlert({
         text: response.error.response.data.message,
-      })
+      });
     }
   }
 
   openGroupModal(hangarGroup) {
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/components/Vehicles/GroupModal/index.vue'),
+        import("@/frontend/components/Vehicles/GroupModal/index.vue"),
       props: {
         hangarGroup,
       },
-    })
+    });
   }
 
   highlight(group) {
-    this.$emit('highlight', group)
+    this.$emit("highlight", group);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import actions from './actions'
-import getDefaultState from './state'
-import getStoreModules from './modules'
+import Vue from "vue";
+import Vuex from "vuex";
+import actions from "./actions";
+import getDefaultState from "./state";
+import getStoreModules from "./modules";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   // strict: true,
@@ -15,23 +15,23 @@ const store = new Vuex.Store({
 
   getters: {
     mobile(state) {
-      return state.mobile
+      return state.mobile;
     },
 
     online(state) {
-      return state.online
+      return state.online;
     },
 
     backRoutes(state) {
-      return state.backRoutes
+      return state.backRoutes;
     },
 
     filters(state) {
-      return state.filters
+      return state.filters;
     },
 
     filtersVisible(state) {
-      return state.filtersVisible
+      return state.filtersVisible;
     },
   },
 
@@ -40,34 +40,34 @@ const store = new Vuex.Store({
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
-      Object.assign(state, getDefaultState())
+      Object.assign(state, getDefaultState());
     },
 
     setStoreVersion(state, payload) {
-      state.storeVersion = payload
+      state.storeVersion = payload;
     },
 
     setLocale(state, locale) {
-      state.locale = locale
+      state.locale = locale;
     },
 
     setMobile(state, payload) {
-      state.mobile = payload
+      state.mobile = payload;
     },
 
     setOnlineStatus(state, payload) {
-      state.online = payload
+      state.online = payload;
     },
 
     setFilters(state, payload) {
-      state.filters = { ...state.filters, ...payload }
+      state.filters = { ...state.filters, ...payload };
     },
 
     setFiltersVisible(state, payload) {
-      state.filtersVisible = { ...state.filtersVisible, ...payload }
+      state.filtersVisible = { ...state.filtersVisible, ...payload };
     },
   },
   /* eslint-enable no-param-reassign */
-})
+});
 
-export default store
+export default store;

@@ -47,11 +47,11 @@
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
+import Filters from "@/frontend/mixins/Filters";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 
 export default {
-  name: 'TradeRoutesQuickFilter',
+  name: "TradeRoutesQuickFilter",
 
   components: {
     FilterGroup,
@@ -60,35 +60,35 @@ export default {
   mixins: [Filters],
 
   data() {
-    const query = this.queryParams()
+    const query = this.queryParams();
 
-    query.originStationIn = query.originStationIn || []
-    query.commodityIn = query.commodityIn || []
-    query.destinationStationIn = query.destinationStationIn || []
+    query.originStationIn = query.originStationIn || [];
+    query.commodityIn = query.commodityIn || [];
+    query.destinationStationIn = query.destinationStationIn || [];
 
     return {
       form: query,
-    }
+    };
   },
 
   watch: {
     $route() {
-      const query = this.queryParams()
+      const query = this.queryParams();
 
-      query.originStationIn = query.originStationIn || []
-      query.commodityIn = query.commodityIn || []
-      query.destinationStationIn = query.destinationStationIn || []
+      query.originStationIn = query.originStationIn || [];
+      query.commodityIn = query.commodityIn || [];
+      query.destinationStationIn = query.destinationStationIn || [];
 
-      this.form = query
+      this.form = query;
     },
   },
 
   methods: {
     queryParams() {
-      return JSON.parse(JSON.stringify(this.$route.query.q || {}))
+      return JSON.parse(JSON.stringify(this.$route.query.q || {}));
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -65,7 +65,7 @@
 .pswp__button--arrow--right::before {
   width: 44px;
   height: 44px;
-  background: url('@/images/photoswipe/default-skin.png') 0 0 no-repeat;
+  background: url("@/images/photoswipe/default-skin.png") 0 0 no-repeat;
   background-size: 264px 88px;
 }
 
@@ -77,7 +77,7 @@
   .pswp--svg .pswp__button,
   .pswp--svg .pswp__button--arrow--left::before,
   .pswp--svg .pswp__button--arrow--right::before {
-    background-image: url('@/images/photoswipe/default-skin.svg');
+    background-image: url("@/images/photoswipe/default-skin.svg");
   }
 
   .pswp--svg .pswp__button--arrow--left,
@@ -165,7 +165,7 @@
   width: 32px;
   height: 30px;
   background-color: rgba(0, 0, 0, 0.3);
-  content: '';
+  content: "";
 }
 
 .pswp__button--arrow--left::before {
@@ -281,7 +281,7 @@ a.pswp__share--facebook::before {
   height: 0;
   border: 6px solid transparent;
   border-bottom-color: #fff;
-  content: '';
+  content: "";
   -webkit-pointer-events: none;
   -moz-pointer-events: none;
   pointer-events: none;
@@ -397,7 +397,7 @@ a.pswp__share--download:hover {
 
 .pswp__preloader--active .pswp__preloader__icn {
   /* We use .gif in browsers that don't support CSS animation */
-  background: url('@/images/loading.gif') 0 0 no-repeat;
+  background: url("@/images/loading.gif") 0 0 no-repeat;
 }
 
 .pswp--css_animation .pswp__preloader--active {

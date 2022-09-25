@@ -7,7 +7,7 @@
           <div class="col-12">
             <div class="search-form text-center">
               <h1 id="home-welcome">
-                <small class="text-muted">{{ $t('headlines.welcome') }}</small>
+                <small class="text-muted">{{ $t("headlines.welcome") }}</small>
                 <img
                   :src="require('@/images/logo-home.png')"
                   class="logo"
@@ -15,7 +15,7 @@
                   height="101px"
                   alt="logo"
                 />
-                {{ $t('app') }}
+                {{ $t("app") }}
               </h1>
               <div class="row justify-content-md-center">
                 <div class="col-12 col-lg-6">
@@ -55,7 +55,7 @@
             <blockquote class="blockquote text-right">
               <p v-html="$t('texts.indexQuote')" />
               <footer class="blockquote-footer">
-                {{ $t('texts.indexQuoteSource') }}
+                {{ $t("texts.indexQuoteSource") }}
                 <a
                   href="https://robertsspaceindustries.com"
                   target="_blank"
@@ -82,7 +82,7 @@
       <div class="row">
         <div class="col-12 col-lg-6 relative home-ships">
           <h2 class="sr-only">
-            {{ $t('headlines.welcomeShips') }}
+            {{ $t("headlines.welcomeShips") }}
           </h2>
           <transition-group
             name="fade-list"
@@ -110,7 +110,7 @@
         <div class="col-12 col-lg-6 relative home-images">
           <Panel>
             <h2 class="sr-only">
-              {{ $t('headlines.welcomeImages') }}
+              {{ $t("headlines.welcomeImages") }}
             </h2>
             <div class="panel-body images">
               <transition-group
@@ -146,20 +146,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import VueScrollTo from 'vue-scrollto'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Support from '@/frontend/components/Support/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import modelsCollection from '@/frontend/api/collections/Models'
-import imagesCollection from '@/frontend/api/collections/Images'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import VueScrollTo from "vue-scrollto";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Support from "@/frontend/components/Support/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import modelsCollection from "@/frontend/api/collections/Models";
+import imagesCollection from "@/frontend/api/collections/Images";
 
 @Component<Home>({
   components: {
@@ -174,37 +174,37 @@ import imagesCollection from '@/frontend/api/collections/Images'
   mixins: [MetaInfo],
 })
 export default class Home extends Vue {
-  modelsCollection: ModelsCollection = modelsCollection
+  modelsCollection: ModelsCollection = modelsCollection;
 
-  imagesCollection: ImagesCollection = imagesCollection
+  imagesCollection: ImagesCollection = imagesCollection;
 
-  modelsLoading = false
+  modelsLoading = false;
 
-  imagesLoading = false
+  imagesLoading = false;
 
-  searchQuery: string = null
+  searchQuery: string = null;
 
-  showScrollDown = false
+  showScrollDown = false;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   created() {
-    this.fetchImages()
-    this.fetchModels()
+    this.fetchImages();
+    this.fetchModels();
 
     setTimeout(() => {
-      this.showScrollDown = true
-    }, 2000)
+      this.showScrollDown = true;
+    }, 2000);
   }
 
   search() {
     if (!this.searchQuery) {
-      return
+      return;
     }
 
     this.$router
       .push({
-        name: 'search',
+        name: "search",
         query: {
           q: {
             search: this.searchQuery,
@@ -212,23 +212,23 @@ export default class Home extends Vue {
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(() => {})
+      .catch(() => {});
   }
 
   async fetchModels() {
-    this.modelsLoading = true
-    await this.modelsCollection.latest()
-    this.modelsLoading = false
+    this.modelsLoading = true;
+    await this.modelsCollection.latest();
+    this.modelsLoading = false;
   }
 
   async fetchImages() {
-    this.imagesLoading = true
-    await this.imagesCollection.random()
-    this.imagesLoading = false
+    this.imagesLoading = true;
+    await this.imagesCollection.random();
+    this.imagesLoading = false;
   }
 
   scrollDown() {
-    VueScrollTo.scrollTo('.home-ships')
+    VueScrollTo.scrollTo(".home-ships");
   }
 }
 </script>

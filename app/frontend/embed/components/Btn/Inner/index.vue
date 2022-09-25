@@ -1,7 +1,7 @@
 <template>
   <div class="panel-btn-inner">
     <template v-if="loading">
-      {{ $t('actions.loading') }}
+      {{ $t("actions.loading") }}
     </template>
     <template v-else>
       <slot />
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'BtnInner',
+  name: "BtnInner",
 
   props: {
     loading: {
@@ -19,5 +19,5 @@ export default {
       default: false,
     },
   },
-}
+};
 </script>

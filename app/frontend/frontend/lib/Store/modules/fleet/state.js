@@ -3,14 +3,14 @@ export default () => ({
   filterVisible: true,
   fleetchartVisible: false,
   fleetchartZoomData: null,
-  fleetchartViewpoint: 'side',
+  fleetchartViewpoint: "side",
   fleetchartLabels: false,
-  fleetchartScreenHeight: '1x',
-  fleetchartMode: 'panzoom',
+  fleetchartScreenHeight: "1x",
+  fleetchartMode: "panzoom",
   fleetchartScale: 1,
   perPage: 30,
   grouped: true,
   money: true,
   preview: true,
   inviteToken: null,
-})
+});

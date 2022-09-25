@@ -107,19 +107,19 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Filters from "@/frontend/mixins/Filters";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 export default {
-  name: 'ShopsFilterForm',
+  name: "ShopsFilterForm",
 
   components: {
     FilterGroup,
@@ -130,7 +130,7 @@ export default {
   mixins: [Filters],
 
   data() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
     return {
       loading: false,
       form: {
@@ -144,12 +144,12 @@ export default {
         starsystemIn: query.starsystemIn || [],
         shopTypeIn: query.shopTypeIn || [],
       },
-    }
+    };
   },
 
   watch: {
     $route() {
-      const query = this.$route.query.q || {}
+      const query = this.$route.query.q || {};
       this.form = {
         nameCont: query.nameCont,
         modelIn: query.modelIn || [],
@@ -160,14 +160,14 @@ export default {
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
         shopTypeIn: query.shopTypeIn || [],
-      }
+      };
     },
   },
 
   methods: {
     fetchShopTypes() {
-      return this.$api.get('shops/shop-types')
+      return this.$api.get("shops/shop-types");
     },
   },
-}
+};
 </script>

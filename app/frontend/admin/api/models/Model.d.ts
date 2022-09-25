@@ -1,12 +1,12 @@
 type AdminModel = {
-  id: string
-}
+  id: string;
+};
 
 type AdminModelsFilter = {
-  idEq: string
-  nameCont: string
-}
+  idEq: string;
+  nameCont: string;
+};
 
 interface AdminAdminModelParams extends CollectionParams {
-  filters: AdminModelsFilter
+  filters: AdminModelsFilter;
 }

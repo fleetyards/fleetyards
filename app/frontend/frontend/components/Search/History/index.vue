@@ -4,7 +4,7 @@
       <Panel>
         <div class="panel-heading panel-heading-with-actions">
           <h2 class="panel-title">
-            {{ $t('headlines.searchHistory') }}
+            {{ $t("headlines.searchHistory") }}
           </h2>
           <div class="panel-heading-actions">
             <Btn
@@ -16,7 +16,7 @@
             >
               <i v-if="mobile" class="fa fa-times" />
               <template v-else>
-                {{ $t('actions.clearHistory') }}
+                {{ $t("actions.clearHistory") }}
               </template>
             </Btn>
           </div>
@@ -37,7 +37,7 @@
       </Panel>
       <div class="text-center">
         <Btn v-if="history.length > page * perPage" @click.native="showMore">
-          {{ $t('actions.showMore') }}
+          {{ $t("actions.showMore") }}
         </Btn>
       </div>
     </div>
@@ -45,12 +45,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
+import { mapGetters } from "vuex";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 export default {
-  name: 'SearchHistory',
+  name: "SearchHistory",
 
   components: {
     Btn,
@@ -61,35 +61,35 @@ export default {
     return {
       page: 1,
       perPage: 30,
-    }
+    };
   },
 
   computed: {
-    ...mapGetters(['mobile']),
+    ...mapGetters(["mobile"]),
 
-    ...mapGetters('search', ['history']),
+    ...mapGetters("search", ["history"]),
 
     filteredHistory() {
-      return this.history.slice(0, this.page * this.perPage)
+      return this.history.slice(0, this.page * this.perPage);
     },
   },
 
   methods: {
     restore(search) {
-      this.$emit('restore', search)
+      this.$emit("restore", search);
     },
 
     showMore() {
-      this.page += 1
+      this.page += 1;
     },
 
     resetHistory() {
-      this.$store.dispatch('search/reset')
+      this.$store.dispatch("search/reset");
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

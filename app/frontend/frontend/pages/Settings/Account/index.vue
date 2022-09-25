@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t('headlines.settings.account') }}</h1>
+          <h1>{{ $t("headlines.settings.account") }}</h1>
         </div>
       </div>
 
@@ -55,7 +55,7 @@
                     :no-placeholder="true"
                   />
                   <Btn :loading="submitting" type="submit" size="large">
-                    {{ $t('actions.save') }}
+                    {{ $t("actions.save") }}
                   </Btn>
                 </div>
               </div>
@@ -70,7 +70,7 @@
         <div class="col-12">
           <br />
           <p>
-            {{ $t('labels.account.destroyInfo') }}
+            {{ $t("labels.account.destroyInfo") }}
           </p>
           <Btn
             :loading="deleting"
@@ -79,7 +79,7 @@
             data-test="destroy-account"
             @click.native="destroy"
           >
-            {{ $t('actions.destroyAccount') }}
+            {{ $t("actions.destroyAccount") }}
           </Btn>
         </div>
       </div>
@@ -88,19 +88,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
 import {
   displaySuccess,
   displayAlert,
   displayConfirm,
-} from '@/frontend/lib/Noty'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import userCollection from '@/frontend/api/collections/User'
-import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
+} from "@/frontend/lib/Noty";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import userCollection from "@/frontend/api/collections/User";
+import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
 
 @Component<SettingsAccount>({
   components: {
@@ -111,76 +111,76 @@ import SecurePage from '@/frontend/core/components/SecurePage/index.vue'
   mixins: [MetaInfo],
 })
 export default class SettingsAccount extends Vue {
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+  @Getter("currentUser", { namespace: "session" }) currentUser;
 
-  form: UserAccountForm | null = null
+  form: UserAccountForm | null = null;
 
-  deleting = false
+  deleting = false;
 
-  submitting = false
+  submitting = false;
 
   created() {
     if (this.currentUser) {
-      this.setupForm()
+      this.setupForm();
     }
   }
 
-  @Watch('currentUser')
+  @Watch("currentUser")
   onCurrentUserChange() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
     this.form = {
       username: this.currentUser.username,
       email: this.currentUser.email,
-    }
+    };
   }
 
   async updateAccount() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await userCollection.updateAccount(this.form)
+    const response = await userCollection.updateAccount(this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
-      this.$comlink.$emit('user-update')
+      this.$comlink.$emit("user-update");
 
       displaySuccess({
-        text: this.$t('messages.updateAccount.success'),
-      })
+        text: this.$t("messages.updateAccount.success"),
+      });
     }
   }
 
   async destroy() {
-    this.deleting = true
+    this.deleting = true;
     displayConfirm({
-      text: this.$t('messages.confirm.account.destroy'),
+      text: this.$t("messages.confirm.account.destroy"),
       onConfirm: async () => {
-        const response = await userCollection.destroy()
+        const response = await userCollection.destroy();
 
-        this.deleting = false
+        this.deleting = false;
 
         if (!response.error) {
           displaySuccess({
-            text: this.$t('messages.account.destroy.success'),
-          })
+            text: this.$t("messages.account.destroy.success"),
+          });
 
-          await this.$store.dispatch('session/logout')
+          await this.$store.dispatch("session/logout");
 
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          this.$router.push({ name: 'home' }).catch(() => {})
+          this.$router.push({ name: "home" }).catch(() => {});
         } else {
           displayAlert({
-            text: this.$t('messages.account.destroy.error'),
-          })
+            text: this.$t("messages.account.destroy.error"),
+          });
         }
       },
       onClose: () => {
-        this.deleting = false
+        this.deleting = false;
       },
-    })
+    });
   }
 }
 </script>

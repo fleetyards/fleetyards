@@ -35,27 +35,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component<NavItemInner>({})
 export default class NavItemInner extends Vue {
-  @Prop({ default: '' }) label: string
+  @Prop({ default: "" }) label: string;
 
-  @Prop({ default: null }) icon: string | null
+  @Prop({ default: null }) icon: string | null;
 
-  @Prop({ default: null }) image: string | null
+  @Prop({ default: null }) image: string | null;
 
-  @Prop({ default: false }) avatar: boolean
+  @Prop({ default: false }) avatar: boolean;
 
-  @Prop({ default: false }) slim: boolean
+  @Prop({ default: false }) slim: boolean;
 
   get firstLetter() {
-    return this.label.charAt(0)
+    return this.label.charAt(0);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

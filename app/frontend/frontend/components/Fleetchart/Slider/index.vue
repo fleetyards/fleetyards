@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import VueSlider from 'vue-slider-component'
-import { Getter } from 'vuex-class'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import VueSlider from "vue-slider-component";
+import { Getter } from "vuex-class";
 
 @Component({
   components: {
@@ -28,49 +28,49 @@ import { Getter } from 'vuex-class'
   },
 })
 export default class FleetchartSlider extends Vue {
-  innerValue = 1
+  innerValue = 1;
 
-  @Prop({ required: true }) value!: number
+  @Prop({ required: true }) value!: number;
 
-  @Prop({ default: 20 }) maxScale!: number
+  @Prop({ default: 20 }) maxScale!: number;
 
-  @Prop({ default: 0.2 }) minScale!: number
+  @Prop({ default: 0.2 }) minScale!: number;
 
-  @Prop({ default: 0.5 }) interval!: number
+  @Prop({ default: 0.5 }) interval!: number;
 
-  @Prop({ default: 2 }) mark!: number
+  @Prop({ default: 2 }) mark!: number;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   get innerMark() {
-    return this.mobile ? 5 : this.mark
+    return this.mobile ? 5 : this.mark;
   }
 
-  @Watch('value')
+  @Watch("value")
   onValueChange() {
-    this.innerValue = this.value
+    this.innerValue = this.value;
   }
 
   mounted() {
-    this.innerValue = this.value
+    this.innerValue = this.value;
   }
 
   update(value) {
-    this.$emit('input', value)
+    this.$emit("input", value);
   }
 
   marks(value) {
     if (value % this.innerMark === 0) {
       return {
         label: this.label(value),
-      }
+      };
     }
 
-    return false
+    return false;
   }
 
   label(value) {
-    return `${value}x`
+    return `${value}x`;
   }
 }
 </script>
