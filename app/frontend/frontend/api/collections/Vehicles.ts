@@ -6,164 +6,164 @@ import {
   download,
   ApiResponse,
   ApiErrorResponse,
-} from '@/frontend/api/client'
-import Store from '@/frontend/lib/Store'
-import BaseCollection from './Base'
+} from "@/frontend/api/client";
+import Store from "@/frontend/lib/Store";
+import BaseCollection from "./Base";
 
 export class VehiclesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: Vehicle[] = []
+  records: Vehicle[] = [];
 
-  stats: VehicleStats | null = null
+  stats: VehicleStats | null = null;
 
-  params: VehicleParams | null = null
+  params: VehicleParams | null = null;
 
-  lastUsedMethod = 'findAll'
+  lastUsedMethod = "findAll";
 
   get perPage(): number | string {
-    return Store.getters['hangar/perPage']
+    return Store.getters["hangar/perPage"];
   }
 
   get perPageSteps(): (number | string)[] {
-    return [15, 30, 60, 120, 240, 'all']
+    return [15, 30, 60, 120, 240, "all"];
   }
 
   updatePerPage(perPage) {
-    Store.dispatch('hangar/updatePerPage', perPage)
+    Store.dispatch("hangar/updatePerPage", perPage);
   }
 
   async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
-    this.lastUsedMethod = 'findAll'
-    this.params = params
+    this.lastUsedMethod = "findAll";
+    this.params = params;
 
-    const response = await get('vehicles', {
+    const response = await get("vehicles", {
       q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 
   async findAllFleetchart(params: VehicleParams | null): Promise<Vehicle[]> {
-    this.lastUsedMethod = 'findAllFleetchart'
-    this.params = params
+    this.lastUsedMethod = "findAllFleetchart";
+    this.params = params;
 
-    const response = await get('vehicles/fleetchart', {
+    const response = await get("vehicles/fleetchart", {
       q: params?.filters,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 
   async refresh(): Promise<void> {
-    await this[this.lastUsedMethod || 'findAll'](this.params)
+    await this[this.lastUsedMethod || "findAll"](this.params);
   }
 
   async findStats(params: VehicleParams): Promise<VehicleStats | null> {
-    const response = await get('vehicles/quick-stats', {
+    const response = await get("vehicles/quick-stats", {
       q: params.filters,
-    })
+    });
 
     if (!response.error) {
-      this.stats = response.data
+      this.stats = response.data;
     }
 
-    return this.stats
+    return this.stats;
   }
 
   async export(params: VehicleParams): Promise<Vehicle[] | null> {
-    const response = await download('vehicles/export', {
+    const response = await download("vehicles/export", {
       q: params.filters,
-    })
+    });
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return null
+    return null;
   }
 
   async create(form: VehicleForm, refresh = false): Promise<Vehicle | null> {
-    const response = await post('vehicles', form)
+    const response = await post("vehicles", form);
 
     if (!response.error) {
       if (refresh) {
-        this.refresh()
+        this.refresh();
       }
 
-      return response.data
+      return response.data;
     }
 
-    return null
+    return null;
   }
 
   async update(
     id: string,
     form: VehicleForm
   ): Promise<ApiResponse | ApiErrorResponse> {
-    const response = await put(`vehicles/${id}`, form)
+    const response = await put(`vehicles/${id}`, form);
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
     }
 
-    return response
+    return response;
   }
 
   async markAsPurchasedBulk(ids: string): Promise<boolean> {
     const response = await put(`vehicles/bulk`, {
       purchased: true,
       ids,
-    })
+    });
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
 
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   async hideFromPublicHangar(ids: string): Promise<boolean> {
     const response = await put(`vehicles/bulk`, {
       public: false,
       ids,
-    })
+    });
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
 
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   async showOnPublicHangar(ids: string): Promise<boolean> {
     const response = await put(`vehicles/bulk`, {
       public: true,
       ids,
-    })
+    });
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
 
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   async updateHangarGroupsBulk(
@@ -173,54 +173,54 @@ export class VehiclesCollection extends BaseCollection {
     const response = await put(`vehicles/bulk`, {
       hangarGroupIds,
       ids,
-    })
+    });
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
 
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   async destroy(id: string): Promise<boolean> {
-    const response = await destroy(`vehicles/${id}`)
+    const response = await destroy(`vehicles/${id}`);
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
 
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   async destroyBulk(ids: string[]): Promise<boolean> {
-    const response = await put('vehicles/destroy-bulk', {
+    const response = await put("vehicles/destroy-bulk", {
       ids,
-    })
+    });
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
 
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   async destroyAll(): Promise<boolean> {
-    const response = await destroy('vehicles/destroy-all')
+    const response = await destroy("vehicles/destroy-all");
 
     if (!response.error) {
-      this.refresh()
+      this.refresh();
 
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 }
 
-export default new VehiclesCollection()
+export default new VehiclesCollection();

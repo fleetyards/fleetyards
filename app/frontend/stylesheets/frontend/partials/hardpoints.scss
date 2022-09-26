@@ -1,7 +1,7 @@
 .hardpoint-group {
   h2.hardpoint-group-label {
     font-size: 20px;
-    font-family: 'Orbitron', tahoma, sans-serif;
+    font-family: "Orbitron", tahoma, sans-serif;
     text-transform: uppercase;
   }
 
@@ -132,7 +132,7 @@
       left: 14px;
       height: $panel-border-width;
       background-color: #444;
-      content: '';
+      content: "";
     }
 
     &::after {
@@ -142,7 +142,7 @@
       left: 14px;
       height: $panel-border-width;
       background-color: #444;
-      content: '';
+      content: "";
     }
 
     &.has-component {

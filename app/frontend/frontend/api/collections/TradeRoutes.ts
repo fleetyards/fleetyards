@@ -1,27 +1,27 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from './Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
 export class TradeRoutesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: TradeRoute[] = []
+  records: TradeRoute[] = [];
 
-  params: TradeRouteParams | null = null
+  params: TradeRouteParams | null = null;
 
   async findAll(params: TradeRouteParams | null): Promise<TradeRoute[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('trade-routes', {
+    const response = await get("trade-routes", {
       q: params?.filters,
       page: params?.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
-export default new TradeRoutesCollection()
+export default new TradeRoutesCollection();

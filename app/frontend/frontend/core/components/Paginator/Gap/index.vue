@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: 'PaginatorGap',
-}
+  name: "PaginatorGap",
+};
 </script>

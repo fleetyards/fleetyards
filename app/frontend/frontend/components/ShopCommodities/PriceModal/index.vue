@@ -230,7 +230,7 @@
             size="large"
             :inline="true"
           >
-            {{ $t('actions.save') }}
+            {{ $t("actions.save") }}
           </Btn>
         </div>
       </template>
@@ -239,24 +239,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
-import stationsCollection from '@/frontend/api/collections/Stations'
-import shopsCollection from '@/frontend/api/collections/Shops'
-import shopCommodityTypesCollection from '@/frontend/api/collections/ShopCommodityTypes'
-import modelsCollection from '@/frontend/api/collections/Models'
-import modelModulesCollection from '@/frontend/api/collections/ModelModules'
-import modelPaintsCollection from '@/frontend/api/collections/ModelPaints'
-import commoditiesCollection from '@/frontend/api/collections/Commodities'
-import componentsCollection from '@/frontend/api/collections/Components'
-import equipmentCollection from '@/frontend/api/collections/Equipment'
-import commodityPricesCollction from '@/frontend/api/collections/CommodityPrices'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
+import stationsCollection from "@/frontend/api/collections/Stations";
+import shopsCollection from "@/frontend/api/collections/Shops";
+import shopCommodityTypesCollection from "@/frontend/api/collections/ShopCommodityTypes";
+import modelsCollection from "@/frontend/api/collections/Models";
+import modelModulesCollection from "@/frontend/api/collections/ModelModules";
+import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
+import commoditiesCollection from "@/frontend/api/collections/Commodities";
+import componentsCollection from "@/frontend/api/collections/Components";
+import equipmentCollection from "@/frontend/api/collections/Equipment";
+import commodityPricesCollction from "@/frontend/api/collections/CommodityPrices";
 
 @Component<GroupModal>({
   components: {
@@ -268,120 +268,120 @@ import commodityPricesCollction from '@/frontend/api/collections/CommodityPrices
   },
 })
 export default class PricesModal extends Vue {
-  @Prop({ default: null }) shopId!: string | null
+  @Prop({ default: null }) shopId!: string | null;
 
-  @Prop({ default: null }) stationSlug!: string | null
+  @Prop({ default: null }) stationSlug!: string | null;
 
-  @Prop({ default: null }) shopTypes!: string[] | null
+  @Prop({ default: null }) shopTypes!: string[] | null;
 
-  @Prop({ default: null }) commodityItemType!: string | null
+  @Prop({ default: null }) commodityItemType!: string | null;
 
-  @Prop({ default: [] }) pathOptions!: FilterGroupItem[]
+  @Prop({ default: [] }) pathOptions!: FilterGroupItem[];
 
-  submitting = false
+  submitting = false;
 
-  form: CommodityPriceForm | null = null
+  form: CommodityPriceForm | null = null;
 
-  stationsCollection: StationsCollection = stationsCollection
+  stationsCollection: StationsCollection = stationsCollection;
 
-  shopsCollection: shopsCollection = shopsCollection
+  shopsCollection: shopsCollection = shopsCollection;
 
   shopCommodityTypesCollection: ShopCommodityTypesCollection =
-    shopCommodityTypesCollection
+    shopCommodityTypesCollection;
 
-  modelsCollection: ModelsCollection = modelsCollection
+  modelsCollection: ModelsCollection = modelsCollection;
 
-  modelModulesCollection: ModelModulesCollection = modelModulesCollection
+  modelModulesCollection: ModelModulesCollection = modelModulesCollection;
 
-  modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection
+  modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection;
 
-  commoditiesCollection: CommoditiesCollection = commoditiesCollection
+  commoditiesCollection: CommoditiesCollection = commoditiesCollection;
 
-  componentsCollection: ComponentsCollection = componentsCollection
+  componentsCollection: ComponentsCollection = componentsCollection;
 
-  equipmentCollection: EquipmentCollection = equipmentCollection
+  equipmentCollection: EquipmentCollection = equipmentCollection;
 
-  commodityPricesCollction: CommodityPricesCollction = commodityPricesCollction
+  commodityPricesCollction: CommodityPricesCollction = commodityPricesCollction;
 
-  internalStationSlug: string = null
+  internalStationSlug: string = null;
 
   get stationsCollectionFilter() {
     return {
       withShops: true,
       commodityItemType: this.commodityItemType,
-    }
+    };
   }
 
   get shopsCollectionFilter() {
     return {
       stationIn: [this.internalStationSlug],
       commodityItemType: this.commodityItemType,
-    }
+    };
   }
 
   get id() {
-    return (this.hangarGroup && this.hangarGroup.id) || 'new'
+    return (this.hangarGroup && this.hangarGroup.id) || "new";
   }
 
-  @Watch('internalStationSlug')
+  @Watch("internalStationSlug")
   onInternalStationSlugChange(value) {
     if (!value) {
-      this.internalStationSlug = this.stationSlug
+      this.internalStationSlug = this.stationSlug;
     }
 
-    this.form.shopId = this.shopId || null
+    this.form.shopId = this.shopId || null;
   }
 
-  @Watch('form.commodityItemType')
+  @Watch("form.commodityItemType")
   onFormCommodityTypeChange() {
-    this.form.commodityItemId = null
+    this.form.commodityItemId = null;
   }
 
-  @Watch('commodityItemType')
+  @Watch("commodityItemType")
   onCommodityTypeChange() {
-    this.form.commodityItemType = this.commodityItemType
+    this.form.commodityItemType = this.commodityItemType;
   }
 
-  @Watch('staationSlug')
+  @Watch("staationSlug")
   onStationSlugChange() {
-    this.internalStationSlug = this.stationSlug
+    this.internalStationSlug = this.stationSlug;
   }
 
   mounted() {
-    this.internalStationSlug = this.stationSlug
+    this.internalStationSlug = this.stationSlug;
 
     this.form = {
       shopId: this.shopId,
       commodityItemId: null,
-      path: 'sell',
+      path: "sell",
       timeRange: null,
       commodityItemType: this.commodityItemType,
       price: null,
-    }
+    };
   }
 
   async create() {
-    this.submitting = true
+    this.submitting = true;
 
-    const newCommodityPrice = await commodityPricesCollction.create(this.form)
+    const newCommodityPrice = await commodityPricesCollction.create(this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!newCommodityPrice.error) {
       displaySuccess({
-        text: this.$t('messages.commodityPrice.create.success'),
-      })
-      this.$comlink.$emit('close-modal')
+        text: this.$t("messages.commodityPrice.create.success"),
+      });
+      this.$comlink.$emit("close-modal");
     } else {
-      displayAlert({ text: newCommodityPrice.error.message })
+      displayAlert({ text: newCommodityPrice.error.message });
     }
   }
 
   setDefaultShopId(shops) {
     if (shops.length === 1) {
-      this.form.shopId = shops[0].id
+      this.form.shopId = shops[0].id;
     } else {
-      this.form.shopId = null
+      this.form.shopId = null;
     }
   }
 }

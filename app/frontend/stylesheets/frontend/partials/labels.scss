@@ -30,7 +30,7 @@ $innerBorderWidth: 2px;
       left: 10px;
       height: $innerBorderWidth;
       background-color: #444;
-      content: '';
+      content: "";
     }
 
     &::after {
@@ -40,7 +40,7 @@ $innerBorderWidth: 2px;
       left: 10px;
       height: $innerBorderWidth;
       background-color: #444;
-      content: '';
+      content: "";
     }
 
     .label-inner {

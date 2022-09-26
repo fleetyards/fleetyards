@@ -1,5 +1,5 @@
-import actions from './actions'
-import getDefaultState from './state'
+import actions from "./actions";
+import getDefaultState from "./state";
 
 export default () => ({
   namespaced: true,
@@ -10,27 +10,27 @@ export default () => ({
 
   getters: {
     infoVisible(state) {
-      return state.infoVisible
+      return state.infoVisible;
     },
 
     cookies(state) {
-      return state.cookies
+      return state.cookies;
     },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
-      Object.assign(state, getDefaultState())
+      Object.assign(state, getDefaultState());
     },
 
     setInfoVisible(state, payload) {
-      state.infoVisible = payload
+      state.infoVisible = payload;
     },
 
     setCookies(state, payload) {
-      state.cookies = payload
+      state.cookies = payload;
     },
   },
   /* eslint-enable no-param-reassign */
-})
+});

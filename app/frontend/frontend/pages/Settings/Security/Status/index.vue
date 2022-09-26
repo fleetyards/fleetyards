@@ -3,13 +3,13 @@
     <div v-if="currentUser" class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t('headlines.settings.security.index') }}</h1>
+          <h1>{{ $t("headlines.settings.security.index") }}</h1>
         </div>
       </div>
       <br />
       <div class="row">
         <div class="col-12 col-md-6">
-          <h2 id="change-password">{{ $t('headlines.changePassword') }}</h2>
+          <h2 id="change-password">{{ $t("headlines.changePassword") }}</h2>
           <ChangePasswordForm />
         </div>
       </div>
@@ -19,32 +19,32 @@
       <div class="row">
         <div class="col-12 col-md-6">
           <h2 id="two-factor">
-            {{ $t('headlines.settings.security.twoFactor') }}
+            {{ $t("headlines.settings.security.twoFactor") }}
             <small>
               <span
                 v-if="currentUser.twoFactorRequired"
                 class="badge badge-success"
               >
                 <i class="fas fa-check" />
-                {{ $t('labels.enabled') }}
+                {{ $t("labels.enabled") }}
               </span>
               <span v-else class="badge badge-danger">
                 <i class="fas fa-times" />
-                {{ $t('labels.disabled') }}
+                {{ $t("labels.disabled") }}
               </span>
             </small>
           </h2>
           <div class="two-factor-actions">
             <template v-if="currentUser.twoFactorRequired">
               <Btn :to="{ name: 'settings-two-factor-disable' }">
-                {{ $t('actions.twoFactor.disable') }}
+                {{ $t("actions.twoFactor.disable") }}
               </Btn>
               <Btn @click.native="generateBackupCodes">
-                {{ $t('actions.twoFactor.generateBackupCodes') }}
+                {{ $t("actions.twoFactor.generateBackupCodes") }}
               </Btn>
             </template>
             <Btn v-else :to="{ name: 'settings-two-factor-enable' }">
-              {{ $t('actions.twoFactor.enable') }}
+              {{ $t("actions.twoFactor.enable") }}
             </Btn>
           </div>
         </div>
@@ -54,13 +54,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import ChangePasswordForm from '@/frontend/components/Security/ChangePasswordForm/index.vue'
-import { Getter } from 'vuex-class'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import { displayConfirm } from '@/frontend/lib/Noty'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
+import { Getter } from "vuex-class";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import { displayConfirm } from "@/frontend/lib/Noty";
 
 @Component<SettingsSecurityStatus>({
   components: {
@@ -70,25 +70,25 @@ import { displayConfirm } from '@/frontend/lib/Noty'
   mixins: [MetaInfo],
 })
 export default class SettingsSecurityStatus extends Vue {
-  @Getter('currentUser', { namespace: 'session' }) currentUser
+  @Getter("currentUser", { namespace: "session" }) currentUser;
 
   generateBackupCodes() {
-    this.backupCodesWaiting = true
+    this.backupCodesWaiting = true;
 
     displayConfirm({
-      text: this.$t('messages.confirm.twoFactor.generateBackupCodes'),
+      text: this.$t("messages.confirm.twoFactor.generateBackupCodes"),
       onConfirm: () => {
-        this.backupCodesWaiting = false
+        this.backupCodesWaiting = false;
         this.$router
-          .push({ name: 'settings-two-factor-backup-codes' })
+          .push({ name: "settings-two-factor-backup-codes" })
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          .catch(() => {})
+          .catch(() => {});
       },
       onClose: () => {
-        this.backupCodesWaiting = false
-        this.deleting = false
+        this.backupCodesWaiting = false;
+        this.deleting = false;
       },
-    })
+    });
   }
 }
 </script>

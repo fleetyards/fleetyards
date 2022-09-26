@@ -1,5 +1,5 @@
-import actions from './actions'
-import getDefaultState from './state'
+import actions from "./actions";
+import getDefaultState from "./state";
 
 export default () => ({
   namespaced: true,
@@ -10,23 +10,23 @@ export default () => ({
 
   getters: {
     items(state) {
-      return state.items
+      return state.items;
     },
   },
 
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
-      Object.assign(state, getDefaultState())
+      Object.assign(state, getDefaultState());
     },
 
     setItems(state, payload) {
-      state.items = payload
+      state.items = payload;
     },
 
     add(state, payload) {
-      state.items.push(payload)
+      state.items.push(payload);
     },
   },
   /* eslint-enable no-param-reassign */
-})
+});

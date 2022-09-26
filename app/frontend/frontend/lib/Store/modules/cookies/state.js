@@ -4,4 +4,4 @@ export default () => ({
     ahoy: false,
     youtube: false,
   },
-})
+});

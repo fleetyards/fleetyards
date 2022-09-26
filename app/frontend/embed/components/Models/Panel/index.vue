@@ -56,14 +56,14 @@
 </template>
 
 <script>
-import Panel from '@/embed/components/Panel/index.vue'
-import PanelDetails from '@/embed/components/Panel/PanelDetails/index.vue'
-import ModelTopMetrics from '@/embed/components/Models/TopMetrics/index.vue'
-import ModelBaseMetrics from '@/embed/components/Models/BaseMetrics/index.vue'
-import LazyImage from '@/embed/components/LazyImage/index.vue'
+import Panel from "@/embed/components/Panel/index.vue";
+import PanelDetails from "@/embed/components/Panel/PanelDetails/index.vue";
+import ModelTopMetrics from "@/embed/components/Models/TopMetrics/index.vue";
+import ModelBaseMetrics from "@/embed/components/Models/BaseMetrics/index.vue";
+import LazyImage from "@/embed/components/LazyImage/index.vue";
 
 export default {
-  name: 'ModelsPanel',
+  name: "ModelsPanel",
 
   components: {
     Panel,
@@ -92,19 +92,19 @@ export default {
 
   computed: {
     uuid() {
-      return this._uid
+      return this._uid;
     },
 
     url() {
-      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
+      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`;
     },
 
     countLabel() {
       if (!this.count) {
-        return ''
+        return "";
       }
-      return `${this.count}x `
+      return `${this.count}x `;
     },
   },
-}
+};
 </script>

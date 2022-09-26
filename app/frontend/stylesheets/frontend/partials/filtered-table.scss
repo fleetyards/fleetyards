@@ -79,7 +79,7 @@
         overflow: hidden;
         font-weight: normal;
         font-size: 20px;
-        font-family: 'Orbitron', sans-serif;
+        font-family: "Orbitron", sans-serif;
         text-overflow: ellipsis;
       }
     }
@@ -106,7 +106,7 @@
     .name {
       font-weight: normal;
       font-size: 22px;
-      font-family: 'Orbitron', sans-serif;
+      font-family: "Orbitron", sans-serif;
 
       small {
         color: darken($text-color, 20%);
@@ -131,7 +131,7 @@
     justify-content: center;
     padding: 20px;
     color: darken($text-color, 30%);
-    font-family: 'Orbitron', sans-serif;
+    font-family: "Orbitron", sans-serif;
   }
 
   .filtered-table-loader > .filtered-table-row {
@@ -177,7 +177,7 @@
         margin-top: -30px;
         background-color: $primary;
         opacity: 0;
-        content: '';
+        content: "";
       }
 
       &::before {

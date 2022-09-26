@@ -113,21 +113,21 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { Getter } from 'vuex-class'
-import celestialObjectCollection from '@/frontend/api/collections/CelestialObjects'
-import starsystemCollection from '@/frontend/api/collections/Starsystems'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import Filters from "@/frontend/mixins/Filters";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { Getter } from "vuex-class";
+import celestialObjectCollection from "@/frontend/api/collections/CelestialObjects";
+import starsystemCollection from "@/frontend/api/collections/Starsystems";
 
 @Component<TradeRoutesFilterForm>({
   components: {
@@ -139,16 +139,16 @@ import starsystemCollection from '@/frontend/api/collections/Starsystems'
 })
 export default class TradeRoutesFilterForm extends Vue {
   celestialObjectCollection: CelestialObjectCollection =
-    celestialObjectCollection
+    celestialObjectCollection;
 
-  starsystemCollection: StarsystemCollection = starsystemCollection
+  starsystemCollection: StarsystemCollection = starsystemCollection;
 
-  form: TradeRoutesFilters
+  form: TradeRoutesFilters;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
   mounted() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
 
     this.form = {
       cargoShip: query.cargoShip || null,
@@ -161,12 +161,12 @@ export default class TradeRoutesFilterForm extends Vue {
       originStarsystemIn: query.originStarsystemIn || [],
       destinationStarsystemIn: query.destinationStarsystemIn || [],
       sorts: query.sorts || [],
-    }
+    };
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
 
     this.form = {
       cargoShip: query.cargoShip || null,
@@ -179,12 +179,12 @@ export default class TradeRoutesFilterForm extends Vue {
       originStarsystemIn: query.originStarsystemIn || [],
       destinationStarsystemIn: query.destinationStarsystemIn || [],
       sorts: query.sorts || [],
-    }
+    };
 
-    const storedFilters = JSON.parse(JSON.stringify(this.form))
+    const storedFilters = JSON.parse(JSON.stringify(this.form));
 
     if (!storedFilters.cargoShip) {
-      delete storedFilters.cargoShip
+      delete storedFilters.cargoShip;
     }
   }
 }

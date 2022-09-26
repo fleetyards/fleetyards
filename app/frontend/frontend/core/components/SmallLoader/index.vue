@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'SmallLoader',
+  name: "SmallLoader",
 
   props: {
     loading: {
@@ -18,5 +18,5 @@ export default {
       default: false,
     },
   },
-}
+};
 </script>

@@ -1,34 +1,34 @@
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import HangarItemsCollection from '@/frontend/api/collections/HangarItems'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import HangarItemsCollection from "@/frontend/api/collections/HangarItems";
 
 @Component<HangarItemsMixin>({})
 export default class HangarItemsMixin extends Vue {
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
+  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated;
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetchHangarItems()
+    this.fetchHangarItems();
   }
 
-  @Watch('isAuthenticated')
+  @Watch("isAuthenticated")
   onSessionChange() {
-    this.fetchHangarItems()
+    this.fetchHangarItems();
   }
 
   created() {
-    this.fetchHangarItems()
+    this.fetchHangarItems();
   }
 
   async fetchHangarItems() {
     if (!this.isAuthenticated) {
-      return
+      return;
     }
 
     await this.$store.dispatch(
-      'hangar/saveHangar',
+      "hangar/saveHangar",
       await HangarItemsCollection.findAll()
-    )
+    );
   }
 }

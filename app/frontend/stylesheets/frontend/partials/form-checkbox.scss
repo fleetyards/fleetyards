@@ -23,7 +23,7 @@
     border: 1px solid $input-border;
     border-radius: 2px;
     transition: all 250ms ease;
-    content: '';
+    content: "";
   }
 
   & + label::after {
@@ -39,7 +39,7 @@
     background-size: cover;
     border-radius: 2px;
     transition: all 250ms ease;
-    content: '';
+    content: "";
   }
 
   &:hover + label::before {
@@ -47,7 +47,7 @@
   }
 
   &:checked + label::after {
-    background: url('@/images/icons/solid/check-primary.svg');
+    background: url("@/images/icons/solid/check-primary.svg");
   }
 
   &:disabled + label {

@@ -1,3 +1,3 @@
 type TwoFactorBackupCodes = {
-  codes: string[]
-}
+  codes: string[];
+};

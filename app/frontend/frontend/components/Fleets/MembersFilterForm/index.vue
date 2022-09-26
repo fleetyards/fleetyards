@@ -23,19 +23,19 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t('actions.resetFilter') }}
+      {{ $t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script>
-import Filters from '@/frontend/mixins/Filters'
-import FilterGroup from '@/frontend/core/components/Form/FilterGroup/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+import Filters from "@/frontend/mixins/Filters";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 export default {
-  name: 'FleetFilterForm',
+  name: "FleetFilterForm",
 
   components: {
     FilterGroup,
@@ -46,7 +46,7 @@ export default {
   mixins: [Filters],
 
   data() {
-    const query = this.$route.query.q || {}
+    const query = this.$route.query.q || {};
     return {
       form: {
         usernameCont: query.usernameCont,
@@ -55,30 +55,30 @@ export default {
 
       roleOptions: [
         {
-          name: this.$t('labels.fleet.members.roles.admin'),
-          value: 'admin',
+          name: this.$t("labels.fleet.members.roles.admin"),
+          value: "admin",
         },
         {
-          name: this.$t('labels.fleet.members.roles.officer'),
-          value: 'officer',
+          name: this.$t("labels.fleet.members.roles.officer"),
+          value: "officer",
         },
         {
-          name: this.$t('labels.fleet.members.roles.member'),
-          value: 'member',
+          name: this.$t("labels.fleet.members.roles.member"),
+          value: "member",
         },
       ],
-    }
+    };
   },
 
   watch: {
     $route() {
-      const query = this.$route.query.q || {}
+      const query = this.$route.query.q || {};
       this.form = {
         usernameCont: query.usernameCont,
         roleIn: query.roleIn || [],
         sorts: query.sorts,
-      }
+      };
     },
   },
-}
+};
 </script>

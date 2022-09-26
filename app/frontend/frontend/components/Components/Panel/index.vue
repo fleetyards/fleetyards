@@ -13,39 +13,39 @@
         <AddToCartBtn :item="component" type="Component" class="add-to-cart" />
         <div v-if="showMetrics" class="metrics-list">
           <div v-if="component.size" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.size') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.size") }}:</div>
             <div class="metrics-value">
               {{ component.size }}
             </div>
           </div>
           <div v-if="component.grade" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.grade') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.grade") }}:</div>
             <div class="metrics-value">
               {{ component.grade }}
             </div>
           </div>
           <div v-if="component.typeLabel" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.type') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.type") }}:</div>
             <div class="metrics-value">
               {{ component.typeLabel }}
             </div>
           </div>
           <div v-if="component.itemTypeLabel" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.itemType') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.itemType") }}:</div>
             <div class="metrics-value">
               {{ component.itemTypeLabel }}
             </div>
           </div>
           <div v-if="component.itemClassLabel" class="metrics-item">
             <div class="metrics-label">
-              {{ $t('commodityItem.itemClass') }}:
+              {{ $t("commodityItem.itemClass") }}:
             </div>
             <div class="metrics-value">
               {{ component.itemClassLabel }}
             </div>
           </div>
           <div v-if="component.extras" class="metrics-item">
-            <div class="metrics-label">{{ $t('commodityItem.extras') }}:</div>
+            <div class="metrics-label">{{ $t("commodityItem.extras") }}:</div>
             <div class="metrics-value">
               {{ component.extras }}
             </div>
@@ -59,13 +59,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import AddToCartBtn from '@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue'
-import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locations/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import AddToCartBtn from "@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue";
+import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
 
 @Component<ComponentPanel>({
   components: {
@@ -77,18 +77,18 @@ import ShopCommodityLocations from '@/frontend/components/ShopCommodities/Locati
   },
 })
 export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) component!: Component
+  @Prop({ required: true }) component!: Component;
 
-  @Prop({ default: true }) showMetrics!: boolean
+  @Prop({ default: true }) showMetrics!: boolean;
 
   get image() {
     if (this.component.storeImageIsFallback) {
       return (
         this.component.manufacturer?.logo || this.component.storeImageMedium
-      )
+      );
     }
 
-    return this.component.storeImageMedium
+    return this.component.storeImageMedium;
   }
 }
 </script>

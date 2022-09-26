@@ -79,13 +79,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import commodityPricesCollection from '@/admin/api/collections/CommodityPrices'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFilterGroup/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import commodityPricesCollection from "@/admin/api/collections/CommodityPrices";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 
 @Component<BuyPricesModal>({
   components: {
@@ -96,22 +96,22 @@ import CollectionFilterGroup from '@/frontend/core/components/Form/CollectionFil
   },
 })
 export default class BuyPricesModal extends Vue {
-  @Prop({ required: true }) shopId: string
+  @Prop({ required: true }) shopId: string;
 
-  @Prop({ required: true }) path: string
+  @Prop({ required: true }) path: string;
 
-  @Prop({ required: true }) shopCommodity: ShopCommodity
+  @Prop({ required: true }) shopCommodity: ShopCommodity;
 
-  collection: CommodityPricesCollection = commodityPricesCollection
+  collection: CommodityPricesCollection = commodityPricesCollection;
 
-  prices: ShopCommodityPrice[] = []
+  prices: ShopCommodityPrice[] = [];
 
-  form: AdminCommodityPriceForm = null
+  form: AdminCommodityPriceForm = null;
 
   get title() {
     return this.$t(`headlines.modals.shopCommodity.${this.path}Prices`, {
       shopCommodity: this.shopCommodity.item.name,
-    })
+    });
   }
 
   get params() {
@@ -119,12 +119,12 @@ export default class BuyPricesModal extends Vue {
       shopId: this.shopId,
       shopCommodityId: this.shopCommodity.id,
       path: this.path,
-    }
+    };
   }
 
   mounted() {
-    this.fetch()
-    this.setupForm()
+    this.fetch();
+    this.setupForm();
   }
 
   setupForm() {
@@ -132,29 +132,29 @@ export default class BuyPricesModal extends Vue {
       shopCommodityId: this.shopCommodity.id,
       path: this.path,
       price: null,
-    }
+    };
   }
 
   async fetch() {
-    await this.collection.findAll(this.params)
+    await this.collection.findAll(this.params);
   }
 
   async create() {
-    await this.collection.create(this.form)
+    await this.collection.create(this.form);
 
-    this.$comlink.$emit('prices-update')
+    this.$comlink.$emit("prices-update");
 
-    this.newPrice = null
+    this.newPrice = null;
 
-    this.$comlink.$emit('close-modal')
+    this.$comlink.$emit("close-modal");
   }
 
   async destroy(record) {
-    await this.collection.destroy(record.id)
+    await this.collection.destroy(record.id);
 
-    this.$comlink.$emit('prices-update')
+    this.$comlink.$emit("prices-update");
 
-    this.fetch()
+    this.fetch();
   }
 }
 </script>

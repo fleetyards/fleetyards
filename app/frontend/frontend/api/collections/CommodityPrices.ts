@@ -1,30 +1,30 @@
-import { get, post } from '@/frontend/api/client'
-import BaseCollection from './Base'
+import { get, post } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
 export class CommodityPricesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
   async create(form: CommodityPriceForm): Promise<CommodityPrice | null> {
-    const response = await post('commodity-prices', form)
+    const response = await post("commodity-prices", form);
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
     return {
       error: response.error,
-    }
+    };
   }
 
   async timeRanges(): Promise<FilterGroupItem[]> {
-    const response = await get('commodity-prices/time-ranges')
+    const response = await get("commodity-prices/time-ranges");
 
     if (!response.error) {
-      return response.data
+      return response.data;
     }
 
-    return []
+    return [];
   }
 }
 
-export default new CommodityPricesCollection()
+export default new CommodityPricesCollection();

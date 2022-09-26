@@ -6,7 +6,7 @@
           :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
         />
         <h1>
-          {{ $t('headlines.hangar.import') }}
+          {{ $t("headlines.hangar.import") }}
         </h1>
       </div>
     </div>
@@ -61,16 +61,16 @@
 </template>
 
 <script>
-import { sortBy } from '@/frontend/lib/Helpers'
-import Papa from 'papaparse'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import { displayAlert } from '@/frontend/lib/Noty'
+import { sortBy } from "@/frontend/lib/Helpers";
+import Papa from "papaparse";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import { displayAlert } from "@/frontend/lib/Noty";
 
 export default {
-  name: 'HangarImport',
+  name: "HangarImport",
 
   components: {
     Panel,
@@ -85,56 +85,56 @@ export default {
       ships: null,
       loading: true,
       data: null,
-    }
+    };
   },
 
   computed: {
     emptyBoxVisible() {
-      return this.data && this.data.length === 0
+      return this.data && this.data.length === 0;
     },
 
     sortedData() {
-      return sortBy(this.data || [], 'state')
+      return sortBy(this.data || [], "state");
     },
   },
 
   mounted() {
-    this.fetchHangar()
+    this.fetchHangar();
   },
 
   methods: {
     async fetchHangar() {
-      this.loading = true
-      const response = await this.$api.get('vehicles/hangar')
+      this.loading = true;
+      const response = await this.$api.get("vehicles/hangar");
 
-      this.loading = false
+      this.loading = false;
 
       if (!response.errors) {
-        this.ships = response.data
+        this.ships = response.data;
       }
     },
 
     async importData(event) {
-      const file = event.target.files[0]
+      const file = event.target.files[0];
 
-      if (!['text/csv', 'application/json'].includes(file.type)) {
+      if (!["text/csv", "application/json"].includes(file.type)) {
         displayAlert({
-          text: this.$t('messages.hangarImport.wrongFileType'),
-        })
+          text: this.$t("messages.hangarImport.wrongFileType"),
+        });
         // eslint-disable-next-line no-param-reassign
-        event.target.value = ''
-        return
+        event.target.value = "";
+        return;
       }
 
-      const reader = new FileReader()
+      const reader = new FileReader();
 
-      if (file.type === 'text/csv') {
-        reader.onload = await this.parseCSV
+      if (file.type === "text/csv") {
+        reader.onload = await this.parseCSV;
       } else {
-        reader.onload = await this.parseJSON
+        reader.onload = await this.parseJSON;
       }
 
-      reader.readAsText(file)
+      reader.readAsText(file);
     },
 
     async parseCSV(event) {
@@ -145,113 +145,113 @@ export default {
             skipEmptyLines: true,
           }).data
         )
-      )
+      );
     },
 
     async parseJSON(event) {
       this.data = await this.matchWithHangar(
         this.transformData(JSON.parse(event.target.result))
-      )
+      );
     },
 
     transformData(result) {
       if (result.length === 0) {
-        return []
+        return [];
       }
 
       if (!result[0].model && !result[0].name) {
         displayAlert({
-          text: this.$t('messages.hangarImport.wrongStructure'),
-        })
-        return null
+          text: this.$t("messages.hangarImport.wrongStructure"),
+        });
+        return null;
       }
 
       if (result[0].model) {
-        return result
+        return result;
       }
 
       return result.map((item) => ({
         ...item,
         model: item.name,
         modelSlug: this.transformSlug(item.name),
-      }))
+      }));
     },
 
     async matchWithHangar(items) {
-      const currentHangar = JSON.parse(JSON.stringify(this.ships))
+      const currentHangar = JSON.parse(JSON.stringify(this.ships));
 
       const matchedItems = await items.map((item) => {
         const found = currentHangar.find(
           (vehicle) => vehicle.modelSlug === item.modelSlug
-        )
+        );
 
-        let state = 'new'
+        let state = "new";
 
         if (found) {
           const index = currentHangar.findIndex(
             (vehicle) => vehicle.modelSlug === found.modelSlug
-          )
-          currentHangar.splice(index, 1)
-          state = 'replace'
+          );
+          currentHangar.splice(index, 1);
+          state = "replace";
         }
 
         return {
           ...item,
           state,
           found,
-        }
-      })
+        };
+      });
 
       matchedItems.forEach(async (item) => {
         if (item.found) {
-          return
+          return;
         }
-        const response = await this.$api.get(`models/${item.modelSlug}`)
+        const response = await this.$api.get(`models/${item.modelSlug}`);
         if (!response.errors) {
           // eslint-disable-next-line no-param-reassign
-          item.found = response.data
+          item.found = response.data;
         }
-      })
+      });
 
       return [
         ...matchedItems,
         ...currentHangar.map((vehicle) => ({
           ...vehicle,
-          state: 'destroy',
+          state: "destroy",
         })),
-      ]
+      ];
     },
 
     transformSlug(text) {
-      let slug = text.trim()
-      slug = slug.replace(/[ö]/g, 'oe')
-      slug = slug.replace(/[ü]/g, 'ue')
-      slug = slug.replace(/[ä]/g, 'ae')
-      slug = slug.replace(/[ß]/g, 'ss')
-      slug = slug.replace(/[Ä]/g, 'Ae')
-      slug = slug.replace(/[Ö]/g, 'Oe')
-      slug = slug.replace(/[Ü]/g, 'Ue')
-      slug = slug.replace(/[éèê]/g, 'e')
-      slug = slug.replace(/[àáâ]/g, 'a')
-      slug = slug.replace(/[óòô]/g, 'o')
-      slug = slug.replace(/[íìî]/g, 'i')
-      slug = slug.replace(/[ùúû]/g, 'u')
-      slug = slug.replace(/\s/g, '-')
-      slug = slug.replace(/\-\-/g, '-')
-      slug = slug.replace(/\-\-/g, '-')
-      slug = slug.replace(/\./g, '')
-      slug = slug.toLowerCase()
+      let slug = text.trim();
+      slug = slug.replace(/[ö]/g, "oe");
+      slug = slug.replace(/[ü]/g, "ue");
+      slug = slug.replace(/[ä]/g, "ae");
+      slug = slug.replace(/[ß]/g, "ss");
+      slug = slug.replace(/[Ä]/g, "Ae");
+      slug = slug.replace(/[Ö]/g, "Oe");
+      slug = slug.replace(/[Ü]/g, "Ue");
+      slug = slug.replace(/[éèê]/g, "e");
+      slug = slug.replace(/[àáâ]/g, "a");
+      slug = slug.replace(/[óòô]/g, "o");
+      slug = slug.replace(/[íìî]/g, "i");
+      slug = slug.replace(/[ùúû]/g, "u");
+      slug = slug.replace(/\s/g, "-");
+      slug = slug.replace(/\-\-/g, "-");
+      slug = slug.replace(/\-\-/g, "-");
+      slug = slug.replace(/\./g, "");
+      slug = slug.toLowerCase();
 
-      return slug
+      return slug;
     },
 
     rowState(item) {
       if (item.found) {
-        return 'nothing'
+        return "nothing";
       }
 
-      return 'create'
+      return "create";
     },
   },
-}
+};
 </script>

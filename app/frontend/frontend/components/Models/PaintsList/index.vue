@@ -3,7 +3,7 @@
     <div class="col-12 paints">
       <hr v-if="paints.length" />
       <h2 v-if="paints.length" class="text-uppercase">
-        {{ $t('labels.model.paints') }}
+        {{ $t("labels.model.paints") }}
       </h2>
       <transition-group
         v-if="paints.length"
@@ -26,11 +26,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import TeaserPanel from '@/frontend/core/components/TeaserPanel/index.vue'
-import modelPaintsCollection from '@/frontend/api/collections/ModelPaints'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
+import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
 
 @Component<ModelPaintList>({
   components: {
@@ -39,35 +39,35 @@ import modelPaintsCollection from '@/frontend/api/collections/ModelPaints'
   },
 })
 export default class ModelPaintList extends Vue {
-  @Prop({ required: true }) model!: Model
+  @Prop({ required: true }) model!: Model;
 
-  collection: ModelPaintsCollection = modelPaintsCollection
+  collection: ModelPaintsCollection = modelPaintsCollection;
 
-  loading = false
+  loading = false;
 
   get paints() {
-    return this.collection.records
+    return this.collection.records;
   }
 
-  @Watch('model')
+  @Watch("model")
   onModelChange() {
-    this.fetch()
+    this.fetch();
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
   }
 
   async fetch() {
     if (!this.model) {
-      return
+      return;
     }
 
-    this.loading = true
+    this.loading = true;
 
-    await this.collection.findAllByModel(this.model.slug)
+    await this.collection.findAllByModel(this.model.slug);
 
-    this.loading = false
+    this.loading = false;
   }
 }
 </script>

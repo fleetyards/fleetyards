@@ -1,31 +1,31 @@
-import { get, post, put } from '@/frontend/api/client'
-import BaseCollection from './Base'
+import { get, post, put } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
 export class FleetMembersCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: FleetMember[] = []
+  records: FleetMember[] = [];
 
-  record: FleetMember | null = null
+  record: FleetMember | null = null;
 
-  stats: FleetMemberStats | null = null
+  stats: FleetMemberStats | null = null;
 
-  params: FleetMembersParams | null = null
+  params: FleetMembersParams | null = null;
 
   async findAll(params: FleetMembersParams | null): Promise<FleetMember[]> {
     const response = await get(`fleets/${params?.slug}/members`, {
       q: params?.filters,
       page: params?.page,
-    })
+    });
 
-    this.params = params
+    this.params = params;
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 
   async findStats(
@@ -33,23 +33,23 @@ export class FleetMembersCollection extends BaseCollection {
   ): Promise<FleetMemberStats | null> {
     const response = await get(`fleets/${params?.slug}/member-quick-stats`, {
       q: params?.filters,
-    })
+    });
 
     if (!response.error) {
-      this.stats = response.data
+      this.stats = response.data;
     }
 
-    return this.stats
+    return this.stats;
   }
 
   async findByFleet(slug: string): Promise<FleetMember | null> {
-    const response = await get(`fleets/${slug}/members/current`)
+    const response = await get(`fleets/${slug}/members/current`);
 
     if (!response.error) {
-      this.record = response.data
+      this.record = response.data;
     }
 
-    return this.record
+    return this.record;
   }
 
   async create(
@@ -57,56 +57,56 @@ export class FleetMembersCollection extends BaseCollection {
     form: FleetMemberForm,
     refetch = false
   ): Promise<RecordResponse<FleetMember>> {
-    const response = await post(`fleets/${slug}/members`, form)
+    const response = await post(`fleets/${slug}/members`, form);
 
     if (!response.error) {
       if (refetch) {
-        this.findAll(this.params)
+        this.findAll(this.params);
       }
 
       return {
         data: response.data,
         error: null,
-      }
+      };
     }
 
     return {
       data: null,
       error: this.extractErrorCode(response.error),
-    }
+    };
   }
 
   async acceptRequest(slug: string, username: string, refetch = false) {
     const response = await put(
       `fleets/${slug}/members/${username}/accept-request`
-    )
+    );
 
     if (!response.error) {
       if (refetch) {
-        this.findAll(this.params)
+        this.findAll(this.params);
       }
 
-      return response.data
+      return response.data;
     }
 
-    return null
+    return null;
   }
 
   async declineRequest(slug: string, username: string, refetch = false) {
     const response = await put(
       `fleets/${slug}/members/${username}/decline-request`
-    )
+    );
 
     if (!response.error) {
       if (refetch) {
-        this.findAll(this.params)
+        this.findAll(this.params);
       }
 
-      return response.data
+      return response.data;
     }
 
-    return null
+    return null;
   }
 }
 
-export default new FleetMembersCollection()
+export default new FleetMembersCollection();

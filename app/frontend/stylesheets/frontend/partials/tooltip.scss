@@ -14,13 +14,13 @@
     display: none;
   }
 
-  &[aria-hidden='true'] {
+  &[aria-hidden="true"] {
     visibility: hidden;
     opacity: 0;
     transition: opacity ease 0.15s, visibility ease 0.15s;
   }
 
-  &[aria-hidden='false'] {
+  &[aria-hidden="false"] {
     visibility: visible;
     opacity: 1;
     transition: opacity ease 0.15s;

@@ -5,4 +5,4 @@ export default () => ({
   navCollapsed: true,
   navSlim: false,
   overlayVisible: false,
-})
+});

@@ -16,16 +16,16 @@
       <template v-if="avatar">
         <i class="fa fa-times" />
 
-        {{ $t('actions.remove') }}
+        {{ $t("actions.remove") }}
       </template>
       <template v-else>
         <i class="fa fa-upload" />
 
         <template v-if="editable">
-          {{ $t('actions.change') }}
+          {{ $t("actions.change") }}
         </template>
         <template v-else>
-          {{ $t('actions.upload') }}
+          {{ $t("actions.upload") }}
         </template>
       </template>
     </div>
@@ -33,41 +33,41 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component<Avatar>()
 export default class Avatar extends Vue {
-  @Prop({ default: null }) avatar!: string
+  @Prop({ default: null }) avatar!: string;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'small', 'large'].indexOf(value) !== -1
+      return ["default", "small", "large"].indexOf(value) !== -1;
     },
   })
-  size!: string
+  size!: string;
 
-  @Prop({ default: false }) editable!: boolean
+  @Prop({ default: false }) editable!: boolean;
 
-  @Prop({ default: false }) creatable!: boolean
+  @Prop({ default: false }) creatable!: boolean;
 
-  @Prop({ default: 'fad fa-user' }) icon!: string
+  @Prop({ default: "fad fa-user" }) icon!: string;
 
-  @Prop({ default: false }) transparent!: boolean
+  @Prop({ default: false }) transparent!: boolean;
 
-  @Prop({ default: true }) round!: boolean
+  @Prop({ default: true }) round!: boolean;
 
   emitClick() {
     if (this.avatar) {
-      this.$emit('destroy')
+      this.$emit("destroy");
     } else {
-      this.$emit('upload')
+      this.$emit("upload");
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

@@ -1,20 +1,20 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from './Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
 export class PublicHangarGroupsCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: HangarGroup[] = []
+  records: HangarGroup[] = [];
 
   async findAll(username: string): Promise<HangarGroup[]> {
-    const response = await get(`hangar-groups/${username}`)
+    const response = await get(`hangar-groups/${username}`);
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new PublicHangarGroupsCollection()
+export default new PublicHangarGroupsCollection();

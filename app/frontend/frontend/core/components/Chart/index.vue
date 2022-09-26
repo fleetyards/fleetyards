@@ -9,15 +9,15 @@
 </template>
 
 <script>
-import { chart } from 'highcharts'
+import { chart } from "highcharts";
 
 export default {
-  name: 'ChartComponent',
+  name: "ChartComponent",
 
   props: {
     type: {
       type: String,
-      default: 'line',
+      default: "line",
     },
     loadData: {
       type: Function,
@@ -29,7 +29,7 @@ export default {
     },
     tooltipType: {
       type: String,
-      default: '',
+      default: "",
     },
     height: {
       type: Number,
@@ -45,115 +45,115 @@ export default {
       data: [],
       theme: {
         colors: [
-          '#428bca',
-          '#90ee7e',
-          '#f45b5b',
-          '#7798BF',
-          '#aaeeee',
-          '#ff0066',
-          '#eeaaee',
-          '#55BF3B',
-          '#DF5353',
-          '#7798BF',
-          '#aaeeee',
+          "#428bca",
+          "#90ee7e",
+          "#f45b5b",
+          "#7798BF",
+          "#aaeeee",
+          "#ff0066",
+          "#eeaaee",
+          "#55BF3B",
+          "#DF5353",
+          "#7798BF",
+          "#aaeeee",
         ],
         chart: {
-          backgroundColor: 'transparent',
+          backgroundColor: "transparent",
           style: {
-            fontSize: '11px',
+            fontSize: "11px",
           },
-          plotBorderColor: '#606063',
+          plotBorderColor: "#606063",
         },
         title: {
           style: {
-            color: '#E0E0E3',
-            textTransform: 'uppercase',
-            fontSize: '20px',
+            color: "#E0E0E3",
+            textTransform: "uppercase",
+            fontSize: "20px",
           },
           text: null,
         },
         subtitle: {
           style: {
-            color: '#E0E0E3',
-            textTransform: 'uppercase',
+            color: "#E0E0E3",
+            textTransform: "uppercase",
           },
         },
         xAxis: {
           labels: {
             style: {
-              fontSize: '12px',
-              color: '#E0E0E3',
+              fontSize: "12px",
+              color: "#E0E0E3",
             },
           },
-          lineColor: '#707073',
-          minorGridLineColor: '#505053',
-          tickColor: '#707073',
+          lineColor: "#707073",
+          minorGridLineColor: "#505053",
+          tickColor: "#707073",
           tickWidth: 1,
           title: {
             text: null,
             style: {
-              color: '#A0A0A3',
+              color: "#A0A0A3",
             },
           },
         },
         yAxis: {
-          gridLineColor: '#707073',
+          gridLineColor: "#707073",
           gridLineWidth: 1,
           labels: {
             style: {
-              fontSize: '12px',
-              color: '#E0E0E3',
+              fontSize: "12px",
+              color: "#E0E0E3",
             },
           },
-          lineColor: '#707073',
-          minorGridLineColor: '#505053',
-          tickColor: '#707073',
+          lineColor: "#707073",
+          minorGridLineColor: "#505053",
+          tickColor: "#707073",
           tickWidth: 1,
           title: {
             text: null,
             style: {
-              color: '#A0A0A3',
+              color: "#A0A0A3",
             },
           },
         },
         tooltip: {
-          backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          backgroundColor: "rgba(0, 0, 0, 0.85)",
           style: {
-            fontSize: '12px',
-            color: '#F0F0F0',
+            fontSize: "12px",
+            color: "#F0F0F0",
           },
         },
         plotOptions: {
           area: {
-            fillColor: 'rgba(66, 139, 202, 0.3)',
+            fillColor: "rgba(66, 139, 202, 0.3)",
           },
           series: {
             dataLabels: {
-              color: '#B0B0B3',
+              color: "#B0B0B3",
             },
             marker: {
-              lineColor: '#333',
+              lineColor: "#333",
             },
           },
           boxplot: {
-            fillColor: '#505053',
+            fillColor: "#505053",
           },
           candlestick: {
-            lineColor: 'white',
+            lineColor: "white",
           },
           errorbar: {
-            color: 'white',
+            color: "white",
           },
           column: {
-            borderColor: '#333',
+            borderColor: "#333",
           },
           bar: {
-            borderColor: '#333',
+            borderColor: "#333",
           },
           pie: {
-            borderColor: '#333',
-            innerSize: '50%',
-            cursor: 'pointer',
+            borderColor: "#333",
+            innerSize: "50%",
+            cursor: "pointer",
             dataLabels: {
               enabled: false,
             },
@@ -165,13 +165,13 @@ export default {
           borderWidth: 0,
           itemMarginBottom: 3,
           itemStyle: {
-            color: '#E0E0E3',
+            color: "#E0E0E3",
           },
           itemHoverStyle: {
-            color: '#FFF',
+            color: "#FFF",
           },
           itemHiddenStyle: {
-            color: '#606063',
+            color: "#606063",
           },
         },
         credits: {
@@ -179,138 +179,138 @@ export default {
         },
         labels: {
           style: {
-            color: '#707073',
+            color: "#707073",
           },
         },
         drilldown: {
           activeAxisLabelStyle: {
-            color: '#F0F0F3',
+            color: "#F0F0F3",
           },
           activeDataLabelStyle: {
-            color: '#F0F0F3',
+            color: "#F0F0F3",
           },
         },
         navigation: {
           buttonOptions: {
-            symbolStroke: '#DDDDDD',
+            symbolStroke: "#DDDDDD",
             theme: {
-              fill: '#505053',
+              fill: "#505053",
             },
           },
         },
         // scroll charts
         rangeSelector: {
           buttonTheme: {
-            fill: '#505053',
-            stroke: '#000000',
+            fill: "#505053",
+            stroke: "#000000",
             style: {
-              color: '#CCC',
+              color: "#CCC",
             },
             states: {
               hover: {
-                fill: '#707073',
-                stroke: '#000000',
+                fill: "#707073",
+                stroke: "#000000",
                 style: {
-                  color: 'white',
+                  color: "white",
                 },
               },
               select: {
-                fill: '#000003',
-                stroke: '#000000',
+                fill: "#000003",
+                stroke: "#000000",
                 style: {
-                  color: 'white',
+                  color: "white",
                 },
               },
             },
           },
-          inputBoxBorderColor: '#505053',
+          inputBoxBorderColor: "#505053",
           inputStyle: {
-            backgroundColor: '#333',
-            color: 'silver',
+            backgroundColor: "#333",
+            color: "silver",
           },
           labelStyle: {
-            color: 'silver',
+            color: "silver",
           },
         },
 
         navigator: {
           handles: {
-            backgroundColor: '#666',
-            borderColor: '#AAA',
+            backgroundColor: "#666",
+            borderColor: "#AAA",
           },
-          outlineColor: '#CCC',
-          maskFill: 'rgba(255,255,255,0.1)',
+          outlineColor: "#CCC",
+          maskFill: "rgba(255,255,255,0.1)",
           series: {
-            color: '#7798BF',
-            lineColor: '#A6C7ED',
+            color: "#7798BF",
+            lineColor: "#A6C7ED",
           },
           xAxis: {
-            gridLineColor: '#505053',
+            gridLineColor: "#505053",
           },
         },
 
         scrollbar: {
-          barBackgroundColor: '#808083',
-          barBorderColor: '#808083',
-          buttonArrowColor: '#CCC',
-          buttonBackgroundColor: '#606063',
-          buttonBorderColor: '#606063',
-          rifleColor: '#FFF',
-          trackBackgroundColor: '#404043',
-          trackBorderColor: '#404043',
+          barBackgroundColor: "#808083",
+          barBorderColor: "#808083",
+          buttonArrowColor: "#CCC",
+          buttonBackgroundColor: "#606063",
+          buttonBorderColor: "#606063",
+          rifleColor: "#FFF",
+          trackBackgroundColor: "#404043",
+          trackBorderColor: "#404043",
         },
 
         // special colors for some of the
-        legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
-        background2: '#505053',
-        dataLabelsColor: '#B0B0B3',
-        textColor: '#C0C0C0',
-        contrastTextColor: '#F0F0F3',
-        maskColor: 'rgba(255,255,255,0.3)',
+        legendBackgroundColor: "rgba(0, 0, 0, 0.5)",
+        background2: "#505053",
+        dataLabelsColor: "#B0B0B3",
+        textColor: "#C0C0C0",
+        contrastTextColor: "#F0F0F3",
+        maskColor: "rgba(255,255,255,0.3)",
       },
-    }
+    };
   },
   computed: {
     chartWithCategory() {
-      return ['bar', 'line', 'column', 'area'].includes(this.type)
+      return ["bar", "line", "column", "area"].includes(this.type);
     },
     xAxis() {
       if (this.chartWithCategory) {
         return {
           categories: this.data.map((item) => item.label),
-        }
+        };
       }
-      return {}
+      return {};
     },
     yAxis() {
       if (this.chartWithCategory) {
         return {
           allowDecimals: false,
-        }
+        };
       }
-      return {}
+      return {};
     },
     legend() {
       if (this.chartWithCategory) {
-        return false
+        return false;
       }
-      return this.theme.legend
+      return this.theme.legend;
     },
     chartData() {
       if (this.chartWithCategory) {
-        return this.data.map((item) => [item.tooltip, item.count])
+        return this.data.map((item) => [item.tooltip, item.count]);
       }
-      return this.data
+      return this.data;
     },
   },
   created() {
-    this.init()
+    this.init();
   },
   mounted() {
     if (this.reload) {
       this.interval = setInterval(() => {
-        this.reloadChart()
-      }, this.reload * 1000)
+        this.reloadChart();
+      }, this.reload * 1000);
     }
   },
   methods: {
@@ -318,41 +318,41 @@ export default {
       const options = {
         label: tooltip.key,
         count: tooltip.y,
+      };
+
+      if (this.type === "pie") {
+        options.percentage = Math.round(tooltip.percentage);
       }
 
-      if (this.type === 'pie') {
-        options.percentage = Math.round(tooltip.percentage)
-      }
-
-      return this.$t(`labels.charts.${this.tooltipType}`, options)
+      return this.$t(`labels.charts.${this.tooltipType}`, options);
     },
 
     async init() {
-      this.loading = true
+      this.loading = true;
 
-      this.data = await this.loadData()
+      this.data = await this.loadData();
 
-      this.loading = false
+      this.loading = false;
 
-      this.setupChart()
+      this.setupChart();
     },
 
     async reloadChart() {
-      this.data = await this.loadData()
-      const series = this.instance.series[0]
+      this.data = await this.loadData();
+      const series = this.instance.series[0];
       if (this.chartWithCategory) {
-        series.setData(this.data.map((item) => [item.tooltip, item.count]))
+        series.setData(this.data.map((item) => [item.tooltip, item.count]));
         this.instance.xAxis[0].setCategories(
           this.data.map((item) => item.label)
-        )
+        );
       } else {
-        series.setData(this.data)
+        series.setData(this.data);
       }
     },
 
     setupChart() {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
-      const self = this
+      const self = this;
 
       this.instance = chart(this.id, {
         ...this.theme,
@@ -373,7 +373,7 @@ export default {
         tooltip: {
           ...this.theme.tooltip,
           formatter() {
-            return self.tooltipFormat(this)
+            return self.tooltipFormat(this);
           },
         },
         series: [
@@ -381,8 +381,8 @@ export default {
             data: this.chartData,
           },
         ],
-      })
+      });
     },
   },
-}
+};
 </script>

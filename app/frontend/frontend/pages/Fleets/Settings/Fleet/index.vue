@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-12">
         <BreadCrumbs :crumbs="crumbs" />
-        <h1>{{ $t('headlines.fleets.settings.fleet') }}</h1>
+        <h1>{{ $t("headlines.fleets.settings.fleet") }}</h1>
       </div>
     </div>
 
@@ -239,7 +239,7 @@
           size="large"
           data-test="fleet-save"
         >
-          {{ $t('actions.save') }}
+          {{ $t("actions.save") }}
         </Btn>
         <Btn
           :loading="deleting"
@@ -248,7 +248,7 @@
           data-test="fleet-delete"
           @click.native="destroy"
         >
-          {{ $t('actions.delete') }}
+          {{ $t("actions.delete") }}
         </Btn>
       </form>
     </ValidationObserver>
@@ -256,24 +256,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import VueUploadComponent from 'vue-upload-component'
-import BreadCrumbs from '@/frontend/core/components/BreadCrumbs/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import VueUploadComponent from "vue-upload-component";
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import {
   displaySuccess,
   displayAlert,
   displayConfirm,
-} from '@/frontend/lib/Noty'
-import { fleetRouteGuard } from '@/frontend/utils/RouteGuards/Fleets'
-import fleetsCollection from '@/frontend/api/collections/Fleets'
-import { transformErrors } from '@/frontend/api/helpers'
-import Avatar from '@/frontend/core/components/Avatar/index.vue'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
-import FormTextarea from '@/frontend/core/components/Form/FormTextarea/index.vue'
+} from "@/frontend/lib/Noty";
+import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import fleetsCollection from "@/frontend/api/collections/Fleets";
+import { transformErrors } from "@/frontend/api/helpers";
+import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import FormTextarea from "@/frontend/core/components/Form/FormTextarea/index.vue";
 
 @Component<FleetSettings>({
   beforeRouteEnter: fleetRouteGuard,
@@ -289,17 +289,17 @@ import FormTextarea from '@/frontend/core/components/Form/FormTextarea/index.vue
   mixins: [MetaInfo],
 })
 export default class FleetSettings extends Vue {
-  leaving = false
+  leaving = false;
 
-  submitting = false
+  submitting = false;
 
-  deleting = false
+  deleting = false;
 
-  files: any[] = []
+  files: any[] = [];
 
-  fileExtensions = 'jpg,jpeg,png,webp'
+  fileExtensions = "jpg,jpeg,png,webp";
 
-  acceptedMimeTypes = 'image/png,image/jpeg,image/webp'
+  acceptedMimeTypes = "image/png,image/jpeg,image/webp";
 
   form: FleetForm = {
     fid: null,
@@ -314,97 +314,97 @@ export default class FleetSettings extends Vue {
     guilded: null,
     publicFleet: false,
     removeLogo: false,
-  }
+  };
 
   get fleet() {
-    return fleetsCollection.record
+    return fleetsCollection.record;
   }
 
   get metaTitle() {
     if (!this.fleet) {
-      return null
+      return null;
     }
 
-    return this.$t('title.fleets.settings', { fleet: this.fleet.name })
+    return this.$t("title.fleets.settings", { fleet: this.fleet.name });
   }
 
   get logoUrl() {
     if (this.fleet) {
-      return this.newLogo.url || this.fleet.logo
+      return this.newLogo.url || this.fleet.logo;
     }
 
-    return this.newLogo.url
+    return this.newLogo.url;
   }
 
   get newLogo() {
-    return (this.files && this.files[0]) || {}
+    return (this.files && this.files[0]) || {};
   }
 
   get crumbs() {
     if (!this.fleet) {
-      return []
+      return [];
     }
 
     return [
       {
         to: {
-          name: 'fleet',
+          name: "fleet",
           params: {
             slug: this.fleet.slug,
           },
         },
         label: this.fleet.name,
       },
-    ]
+    ];
   }
 
   get canEdit() {
-    return this.fleet?.myRole === 'admin'
+    return this.fleet?.myRole === "admin";
   }
 
   get leaveTooltip() {
     if (this.canEdit) {
-      return this.$t('texts.fleets.leaveInfo')
+      return this.$t("texts.fleets.leaveInfo");
     }
 
-    return null
+    return null;
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetch()
+    this.fetch();
   }
 
-  @Watch('fleet')
+  @Watch("fleet")
   onFleetChange() {
-    this.setupForm()
+    this.setupForm();
   }
 
   mounted() {
-    this.fetch()
+    this.fetch();
 
     if (this.fleet && !this.canEdit) {
       this.$router.replace({
-        name: 'fleet-settings-membership',
+        name: "fleet-settings-membership",
         params: { slug: this.$route.params.slug },
-      })
-      return
+      });
+      return;
     }
 
     if (this.fleet) {
-      this.setupForm()
+      this.setupForm();
     }
   }
 
   selectLogo() {
-    this.form.removeLogo = false
-    this.$refs.upload.$el.querySelector('input').click()
+    this.form.removeLogo = false;
+    this.$refs.upload.$el.querySelector("input").click();
   }
 
   removeLogo() {
-    this.files = []
-    this.fleet.logo = null
-    this.form.removeLogo = true
+    this.files = [];
+    this.fleet.logo = null;
+    this.form.removeLogo = true;
   }
 
   setupForm() {
@@ -421,141 +421,141 @@ export default class FleetSettings extends Vue {
       guilded: this.fleet.guilded,
       publicFleet: this.fleet.publicFleet,
       removeLogo: false,
-    }
+    };
   }
 
   async submit() {
-    this.submitting = true
+    this.submitting = true;
 
-    await this.uploadLogo()
+    await this.uploadLogo();
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}`,
       this.form
-    )
+    );
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
       displaySuccess({
-        text: this.$t('messages.fleet.update.success'),
-      })
+        text: this.$t("messages.fleet.update.success"),
+      });
 
-      this.$comlink.$emit('fleet-update')
+      this.$comlink.$emit("fleet-update");
 
       if (response.data.slug !== this.$route.params.slug) {
         await this.$router.replace({
-          name: 'fleet-settings',
+          name: "fleet-settings",
           params: { slug: response.data.slug },
-        })
+        });
       }
     } else {
-      this.handleUpdateError(response.error)
+      this.handleUpdateError(response.error);
     }
   }
 
   async uploadLogo() {
     if (!this.newLogo || !this.newLogo.file) {
-      return
+      return;
     }
 
-    const uploadData = new FormData()
-    uploadData.append('logo', this.newLogo.file)
+    const uploadData = new FormData();
+    uploadData.append("logo", this.newLogo.file);
 
     const response = await this.$api.upload(
       `fleets/${this.$route.params.slug}`,
       uploadData
-    )
+    );
 
     if (!response.error) {
       displaySuccess({
-        text: this.$t('messages.fleet.update.logo.success'),
-      })
+        text: this.$t("messages.fleet.update.logo.success"),
+      });
 
-      this.$comlink.$emit('fleet-update')
+      this.$comlink.$emit("fleet-update");
 
       setTimeout(() => {
-        this.files = []
-      }, 1000)
+        this.files = [];
+      }, 1000);
     } else {
-      this.handleUpdateError(response.error)
+      this.handleUpdateError(response.error);
     }
   }
 
   handleUpdateError(error) {
     if (error.response && error.response.data) {
-      const { data: errorData } = error.response
+      const { data: errorData } = error.response;
 
-      this.$refs.form.setErrors(transformErrors(errorData.errors))
+      this.$refs.form.setErrors(transformErrors(errorData.errors));
 
       displayAlert({
         text: errorData.message,
-      })
+      });
     } else {
       displayAlert({
-        text: this.$t('messages.fleet.update.failure'),
-      })
+        text: this.$t("messages.fleet.update.failure"),
+      });
     }
   }
 
   async destroy() {
-    this.deleting = true
+    this.deleting = true;
     displayConfirm({
-      text: this.$t('messages.confirm.fleet.destroy'),
+      text: this.$t("messages.confirm.fleet.destroy"),
       onConfirm: async () => {
         const response = await this.$api.destroy(
           `fleets/${this.$route.params.slug}`
-        )
+        );
 
         if (!response.error) {
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          this.$router.push({ name: 'home' }).catch(() => {})
+          this.$router.push({ name: "home" }).catch(() => {});
 
-          this.$comlink.$emit('fleet-update')
+          this.$comlink.$emit("fleet-update");
 
           displaySuccess({
-            text: this.$t('messages.fleet.destroy.success'),
-          })
+            text: this.$t("messages.fleet.destroy.success"),
+          });
         } else {
           displayAlert({
-            text: this.$t('messages.fleet.destroy.failure'),
-          })
-          this.deleting = false
+            text: this.$t("messages.fleet.destroy.failure"),
+          });
+          this.deleting = false;
         }
       },
       onClose: () => {
-        this.deleting = false
+        this.deleting = false;
       },
-    })
+    });
   }
 
   updatedValue(value) {
-    this.files = value
+    this.files = value;
   }
 
   inputFilter(newFile, oldFile, prevent) {
     if (newFile && !oldFile) {
       if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-        this.alert('Your choice is not a picture')
-        return prevent()
+        this.alert("Your choice is not a picture");
+        return prevent();
       }
     }
     if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
       // eslint-disable-next-line no-param-reassign
-      newFile.url = ''
+      newFile.url = "";
       // eslint-disable-next-line compat/compat
-      const URL = window.URL || window.webkitURL
+      const URL = window.URL || window.webkitURL;
       if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign
-        newFile.url = URL.createObjectURL(newFile.file)
+        newFile.url = URL.createObjectURL(newFile.file);
       }
     }
 
-    return null
+    return null;
   }
 
   async fetch() {
-    await fleetsCollection.findBySlug(this.$route.params.slug)
+    await fleetsCollection.findBySlug(this.$route.params.slug);
   }
 }
 </script>

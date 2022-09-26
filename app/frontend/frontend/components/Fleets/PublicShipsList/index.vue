@@ -20,7 +20,7 @@
               @click.native="toggleFleetchart"
             >
               <i class="fad fa-starship" />
-              <span>{{ $t('labels.fleetchart') }}</span>
+              <span>{{ $t("labels.fleetchart") }}</span>
             </Btn>
 
             <hr />
@@ -39,11 +39,11 @@
           <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
             <template v-if="grouped">
               <i class="fas fa-square" />
-              <span>{{ $t('actions.ungrouped') }}</span>
+              <span>{{ $t("actions.ungrouped") }}</span>
             </template>
             <template v-else>
               <i class="fas fa-th-large" />
-              <span>{{ $t('actions.groupedByModel') }}</span>
+              <span>{{ $t("actions.groupedByModel") }}</span>
             </template>
           </Btn>
         </BtnDropdown>
@@ -78,19 +78,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import BtnDropdown from '@/frontend/core/components/BtnDropdown/index.vue'
-import FleetVehiclePanel from '@/frontend/components/Fleets/VehiclePanel/index.vue'
-import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
-import PublicFleetVehiclesFilterForm from '@/frontend/components/Fleets/PublicFilterForm/index.vue'
-import ModelClassLabels from '@/frontend/components/Models/ClassLabels/index.vue'
-import AddonsModal from '@/frontend/components/Vehicles/AddonsModal/index.vue'
-import publicFleetVehiclesCollection from '@/frontend/api/collections/PublicFleetVehicles'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
+import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import PublicFleetVehiclesFilterForm from "@/frontend/components/Fleets/PublicFilterForm/index.vue";
+import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
+import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
+import publicFleetVehiclesCollection from "@/frontend/api/collections/PublicFleetVehicles";
 
 @Component<FleetPublicShipsList>({
   components: {
@@ -106,39 +106,39 @@ import publicFleetVehiclesCollection from '@/frontend/api/collections/PublicFlee
   },
 })
 export default class FleetPublicShipsList extends Vue {
-  collection: PublicFleetVehiclesCollection = publicFleetVehiclesCollection
+  collection: PublicFleetVehiclesCollection = publicFleetVehiclesCollection;
 
-  @Prop({ required: true }) fleet: Fleet
+  @Prop({ required: true }) fleet: Fleet;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Getter('grouped', { namespace: 'publicFleet' }) grouped
+  @Getter("grouped", { namespace: "publicFleet" }) grouped;
 
-  @Getter('detailsVisible', { namespace: 'publicFleet' }) detailsVisible
+  @Getter("detailsVisible", { namespace: "publicFleet" }) detailsVisible;
 
-  @Getter('fleetchartVisible', { namespace: 'publicFleet' }) fleetchartVisible
+  @Getter("fleetchartVisible", { namespace: "publicFleet" }) fleetchartVisible;
 
-  @Getter('perPage', { namespace: 'publicFleet' }) perPage
+  @Getter("perPage", { namespace: "publicFleet" }) perPage;
 
-  @Action('toggleFleetchart', { namespace: 'publicFleet' })
-  toggleFleetchart: any
+  @Action("toggleFleetchart", { namespace: "publicFleet" })
+  toggleFleetchart: any;
 
-  @Action('toggleDetails', { namespace: 'publicFleet' }) toggleDetails: any
+  @Action("toggleDetails", { namespace: "publicFleet" }) toggleDetails: any;
 
-  @Action('toggleGrouped', { namespace: 'publicFleet' }) toggleGrouped: any
+  @Action("toggleGrouped", { namespace: "publicFleet" }) toggleGrouped: any;
 
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
-      return this.$t('actions.hideDetails')
+      return this.$t("actions.hideDetails");
     }
-    return this.$t('actions.showDetails')
+    return this.$t("actions.showDetails");
   }
 
   get routeParams() {
     return {
       ...this.$route.params,
       grouped: this.grouped,
-    }
+    };
   }
 
   get filters() {
@@ -146,21 +146,21 @@ export default class FleetPublicShipsList extends Vue {
       slug: this.fleet.slug,
       grouped: this.grouped,
       page: this.$route.query.page,
-    }
+    };
   }
 
-  @Watch('grouped')
+  @Watch("grouped")
   onGroupedChange() {
-    this.fetch()
+    this.fetch();
   }
 
-  @Watch('perPage')
+  @Watch("perPage")
   onPerPageChange() {
-    this.fetch()
+    this.fetch();
   }
 
   async fetch() {
-    await this.collection.findAll(this.filters)
+    await this.collection.findAll(this.filters);
   }
 }
 </script>

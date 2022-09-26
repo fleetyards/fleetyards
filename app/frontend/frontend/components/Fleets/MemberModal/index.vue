@@ -34,7 +34,7 @@
             size="large"
             :inline="true"
           >
-            {{ $t('actions.fleet.members.invite') }}
+            {{ $t("actions.fleet.members.invite") }}
           </Btn>
         </div>
       </template>
@@ -43,13 +43,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import memberCollection from '@/frontend/api/collections/FleetMembers'
-import { displayAlert } from '@/frontend/lib/Noty'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import memberCollection from "@/frontend/api/collections/FleetMembers";
+import { displayAlert } from "@/frontend/lib/Noty";
 
 @Component<MemberModal>({
   components: {
@@ -59,36 +59,36 @@ import { displayAlert } from '@/frontend/lib/Noty'
   },
 })
 export default class MemberModal extends Vue {
-  @Prop({ required: true }) fleet: Fleet
+  @Prop({ required: true }) fleet: Fleet;
 
-  submitting = false
+  submitting = false;
 
-  form: FleetMemberForm | null = null
+  form: FleetMemberForm | null = null;
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
     this.form = {
       username: null,
-    }
+    };
   }
 
   async save() {
-    this.submitting = true
+    this.submitting = true;
 
-    const response = await memberCollection.create(this.fleet.slug, this.form)
+    const response = await memberCollection.create(this.fleet.slug, this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (!response.error) {
-      this.$comlink.$emit('fleet-member-invited', response.data)
-      this.$comlink.$emit('close-modal')
+      this.$comlink.$emit("fleet-member-invited", response.data);
+      this.$comlink.$emit("close-modal");
     } else {
       displayAlert({
         text: this.$t(response.error),
-      })
+      });
     }
   }
 }

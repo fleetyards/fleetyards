@@ -10,7 +10,7 @@
             <h1>
               <Avatar :avatar="user.avatar" />
               <span>
-                {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
+                {{ $t("headlines.hangar.public", { user: usernamePlural }) }}
               </span>
             </h1>
           </div>
@@ -84,7 +84,7 @@
           <div v-if="!mobile" class="page-actions page-actions-right">
             <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
               <i class="fad fa-starship" />
-              {{ $t('labels.fleetchart') }}
+              {{ $t("labels.fleetchart") }}
             </Btn>
           </div>
         </div>
@@ -126,23 +126,23 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import { publicHangarRouteGuard } from '@/frontend/utils/RouteGuards/Hangar'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import publicVehiclesCollection from '@/frontend/api/collections/PublicVehicles'
-import publicUserCollection from '@/frontend/api/collections/PublicUser'
-import publicHangarGroupsCollection from '@/frontend/api/collections/PublicHangarGroups'
-import VehiclePanel from '@/frontend/components/Vehicles/Panel/index.vue'
-import ModelClassLabels from '@/frontend/components/Models/ClassLabels/index.vue'
-import AddonsModal from '@/frontend/components/Vehicles/AddonsModal/index.vue'
-import FleetchartApp from '@/frontend/components/Fleetchart/App/index.vue'
-import Avatar from '@/frontend/core/components/Avatar/index.vue'
-import FilteredList from '@/frontend/core/components/FilteredList/index.vue'
-import FilteredGrid from '@/frontend/core/components/FilteredGrid/index.vue'
-import GroupLabels from '@/frontend/components/Vehicles/GroupLabels/index.vue'
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import publicVehiclesCollection from "@/frontend/api/collections/PublicVehicles";
+import publicUserCollection from "@/frontend/api/collections/PublicUser";
+import publicHangarGroupsCollection from "@/frontend/api/collections/PublicHangarGroups";
+import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
+import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
+import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
+import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 
 @Component<PublicHangar>({
   beforeRouteEnter: publicHangarRouteGuard,
@@ -160,63 +160,63 @@ import GroupLabels from '@/frontend/components/Vehicles/GroupLabels/index.vue'
   mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
-  loading = false
+  loading = false;
 
-  collection: PublicVehiclesCollection = publicVehiclesCollection
+  collection: PublicVehiclesCollection = publicVehiclesCollection;
 
-  userCollection: PublicUserCollection = publicUserCollection
+  userCollection: PublicUserCollection = publicUserCollection;
 
-  highlightedGroup: string = null
+  highlightedGroup: string = null;
 
-  groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection
+  groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Getter('fleetchartVisible', { namespace: 'publicHangar' }) fleetchartVisible
+  @Getter("fleetchartVisible", { namespace: "publicHangar" }) fleetchartVisible;
 
-  @Getter('perPage', { namespace: 'publicHangar' }) perPage
+  @Getter("perPage", { namespace: "publicHangar" }) perPage;
 
-  @Action('toggleFleetchart', { namespace: 'publicHangar' })
-  toggleFleetchart: any
+  @Action("toggleFleetchart", { namespace: "publicHangar" })
+  toggleFleetchart: any;
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
-      return []
+      return [];
     }
 
-    return this.hangarStats.groups
+    return this.hangarStats.groups;
   }
 
   get hangarStats(): VehicleStats | null {
-    return this.collection.stats
+    return this.collection.stats;
   }
 
   get metaTitle() {
-    return this.$t('title.hangar.public', { user: this.usernamePlural })
+    return this.$t("title.hangar.public", { user: this.usernamePlural });
   }
 
   get user() {
-    return this.userCollection.record
+    return this.userCollection.record;
   }
 
   get username() {
-    return this.$route.params.username
+    return this.$route.params.username;
   }
 
   get usernamePlural() {
     if (
-      this.userTitle.endsWith('s') ||
-      this.userTitle.endsWith('x') ||
-      this.userTitle.endsWith('z')
+      this.userTitle.endsWith("s") ||
+      this.userTitle.endsWith("x") ||
+      this.userTitle.endsWith("z")
     ) {
-      return this.userTitle
+      return this.userTitle;
     }
 
-    return `${this.userTitle}'s`
+    return `${this.userTitle}'s`;
   }
 
   get userTitle() {
-    return this.username[0].toUpperCase() + this.username.slice(1)
+    return this.username[0].toUpperCase() + this.username.slice(1);
   }
 
   get filters() {
@@ -224,37 +224,37 @@ export default class PublicHangar extends Vue {
       username: this.username,
       page: this.$route.query.page,
       filters: this.$route.query.q,
-    }
+    };
   }
 
-  @Watch('$route')
+  @Watch("$route")
   onRouteChange() {
-    this.fetch()
+    this.fetch();
   }
 
-  @Watch('perPage')
+  @Watch("perPage")
   onPerPageChange() {
-    this.fetch()
+    this.fetch();
   }
 
   created() {
-    this.fetch()
+    this.fetch();
   }
 
   highlightGroup(group) {
     if (!group) {
-      this.highlightedGroup = null
-      return
+      this.highlightedGroup = null;
+      return;
     }
 
-    this.highlightedGroup = group.id
+    this.highlightedGroup = group.id;
   }
 
   async fetch() {
-    await this.userCollection.findByUsername(this.username)
-    await this.groupsCollection.findAll(this.username)
-    await this.collection.findAll(this.filters)
-    await this.collection.findStatsByUsername(this.username, this.filters)
+    await this.userCollection.findByUsername(this.username);
+    await this.groupsCollection.findAll(this.username);
+    await this.collection.findAll(this.filters);
+    await this.collection.findStatsByUsername(this.username, this.filters);
   }
 }
 </script>

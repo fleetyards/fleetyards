@@ -27,37 +27,37 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
 
 @Component<AppContact>({})
 export default class AppContact extends Vue {
   get appName() {
-    return window.APP_NAME
+    return window.APP_NAME;
   }
 
   get maintainerName() {
-    return window.MAINTAINER_NAME
+    return window.MAINTAINER_NAME;
   }
 
   get maintainerMail() {
-    return window.MAINTAINER_MAIL
+    return window.MAINTAINER_MAIL;
   }
 
   get maintainerAddressStreet() {
-    return window.MAINTAINER_ADDRESS_STREET
+    return window.MAINTAINER_ADDRESS_STREET;
   }
 
   get maintainerAddressPostalcode() {
-    return window.MAINTAINER_ADDRESS_POSTALCODE
+    return window.MAINTAINER_ADDRESS_POSTALCODE;
   }
 
   get maintainerAddressCity() {
-    return window.MAINTAINER_ADDRESS_CITY
+    return window.MAINTAINER_ADDRESS_CITY;
   }
 
   get maintainerAddressCountry() {
-    return window.MAINTAINER_ADDRESS_COUNTRY
+    return window.MAINTAINER_ADDRESS_COUNTRY;
   }
 }
 </script>

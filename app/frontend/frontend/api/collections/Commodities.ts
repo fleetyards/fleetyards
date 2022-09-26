@@ -1,28 +1,28 @@
-import { get } from '@/frontend/api/client'
-import BaseCollection from '@/frontend/api/collections/Base'
+import { get } from "@/frontend/api/client";
+import BaseCollection from "@/frontend/api/collections/Base";
 
 export class CommoditiesCollection extends BaseCollection {
-  primaryKey = 'id'
+  primaryKey = "id";
 
-  records: Commodity[] = []
+  records: Commodity[] = [];
 
-  params: CommodityParams | null = null
+  params: CommodityParams | null = null;
 
   async findAll(params: CommodityParams): Promise<Commodity[]> {
-    this.params = params
+    this.params = params;
 
-    const response = await get('commodities', {
+    const response = await get("commodities", {
       q: params.filters,
       page: params?.page,
-    })
+    });
 
     if (!response.error) {
-      this.records = response.data
-      this.setPages(response.meta)
+      this.records = response.data;
+      this.setPages(response.meta);
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new CommoditiesCollection()
+export default new CommoditiesCollection();

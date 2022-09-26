@@ -17,22 +17,22 @@
 
         <Btn @click.native="selectImages">
           <i class="fa fa-plus" />
-          <span>{{ $t('labels.image.selectImages') }}</span>
+          <span>{{ $t("labels.image.selectImages") }}</span>
         </Btn>
 
         <Btn @click.native="selectFolder">
           <i class="fa fa-plus" />
-          <span>{{ $t('labels.image.selectFolder') }}</span>
+          <span>{{ $t("labels.image.selectFolder") }}</span>
         </Btn>
 
         <Btn v-if="newImages.length" @click.native="startUpload">
           <i class="fa fa-upload" />
-          <span>{{ $t('labels.image.startUpload') }}</span>
+          <span>{{ $t("labels.image.startUpload") }}</span>
         </Btn>
 
         <Btn v-if="newImages.length" @click.native="cancelUpload">
           <i class="fa fa-ban-circle" />
-          <span>{{ $t('labels.image.cancelUpload') }}</span>
+          <span>{{ $t("labels.image.cancelUpload") }}</span>
         </Btn>
       </div>
 
@@ -66,7 +66,7 @@
       <div class="dropzone">
         <i class="fal fa-file-plus fa-2x" />
         <h3>
-          {{ $t('labels.image.dropzone') }}
+          {{ $t("labels.image.dropzone") }}
         </h3>
       </div>
     </Panel>
@@ -78,11 +78,11 @@
             <div class="store-image wide" />
 
             <div class="description">
-              {{ $t('labels.image.name') }}
+              {{ $t("labels.image.name") }}
             </div>
 
             <div class="size">
-              {{ $t('labels.image.size') }}
+              {{ $t("labels.image.size") }}
             </div>
 
             <div class="actions" />
@@ -111,16 +111,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import VueUploadComponent from 'vue-upload-component'
-import Cookies from 'js-cookie'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displayAlert } from '@/frontend/lib/Noty'
-import Loader from '@/frontend/core/components/Loader/index.vue'
-import EmptyBox from '@/frontend/core/components/EmptyBox/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import ImageRow from '@/admin/components/ImageUploader/ImageRow/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import VueUploadComponent from "vue-upload-component";
+import Cookies from "js-cookie";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displayAlert } from "@/frontend/lib/Noty";
+import Loader from "@/frontend/core/components/Loader/index.vue";
+import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 
 @Component<ImageUploader>({
   components: {
@@ -133,142 +133,142 @@ import ImageRow from '@/admin/components/ImageUploader/ImageRow/index.vue'
   },
 })
 export default class ImageUploader extends Vue {
-  @Prop({ required: true }) images: Image[]
+  @Prop({ required: true }) images: Image[];
 
-  @Prop({ default: null }) galleryId: string | null
+  @Prop({ default: null }) galleryId: string | null;
 
-  @Prop({ default: null }) galleryType: string | null
+  @Prop({ default: null }) galleryType: string | null;
 
-  @Prop({ default: false }) loading: boolean
+  @Prop({ default: false }) loading: boolean;
 
-  newImages = []
+  newImages = [];
 
-  postAction = `${window.API_ENDPOINT}/images`
+  postAction = `${window.API_ENDPOINT}/images`;
 
-  uploadCount = 1
+  uploadCount = 1;
 
   headers = {
-    'Accept': 'application/json',
-    'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
-  }
+    Accept: "application/json",
+    "X-CSRF-Token": Cookies.get("COMMAND-CSRF-TOKEN"),
+  };
 
   get isUploadActive() {
-    return !!this.galleryId && !!this.galleryType
+    return !!this.galleryId && !!this.galleryType;
   }
 
   get allImages() {
-    return [...this.newImages, ...this.images]
+    return [...this.newImages, ...this.images];
   }
 
   get metaData() {
     return {
       galleryId: this.galleryId,
       galleryType: this.galleryType,
-    }
+    };
   }
 
   get emptyBoxVisible() {
-    return !this.loading && !this.allImages.length
+    return !this.loading && !this.allImages.length;
   }
 
   get activeImages() {
-    return this.newImages.filter((item) => item.active)
+    return this.newImages.filter((item) => item.active);
   }
 
   get progress() {
     if (!this.newImages.length) {
-      return 0
+      return 0;
     }
 
     const pendingProgress = this.newImages
       .map((item) => parseFloat(item.progress))
-      .reduce((pv, cv) => pv + cv, 0)
-    const completedUploads = this.uploadCount - this.newImages.length
+      .reduce((pv, cv) => pv + cv, 0);
+    const completedUploads = this.uploadCount - this.newImages.length;
 
     return Math.ceil(
       (pendingProgress + completedUploads * 100) / this.uploadCount
-    )
+    );
   }
 
   get speed() {
     if (!this.activeImages.length) {
-      return 0
+      return 0;
     }
 
     return (
       this.activeImages
         .map((item) => parseFloat(item.speed))
         .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
-    )
+    );
   }
 
   mounted() {
-    document.addEventListener('paste', this.addFileFromClipboard)
+    document.addEventListener("paste", this.addFileFromClipboard);
   }
 
   destroyed() {
-    document.removeEventListener('paste')
+    document.removeEventListener("paste");
   }
 
   addFileFromClipboard(event) {
     if (event.clipboardData && event.clipboardData.files.length > 0) {
-      this.$refs.upload.add(event.clipboardData.files[0])
+      this.$refs.upload.add(event.clipboardData.files[0]);
     }
   }
 
   selectImages() {
-    this.$refs.upload.$el.querySelector('input').click()
+    this.$refs.upload.$el.querySelector("input").click();
   }
 
   selectFolder() {
     if (!this.$refs.upload.features.directory) {
       displayAlert({
-        text: 'Your browser does not support',
-      })
+        text: "Your browser does not support",
+      });
 
-      return
+      return;
     }
 
-    const input = this.$refs.upload.$el.querySelector('input')
-    input.directory = true
-    input.webkitdirectory = true
-    this.directory = true
-    input.onclick = null
-    input.click()
+    const input = this.$refs.upload.$el.querySelector("input");
+    input.directory = true;
+    input.webkitdirectory = true;
+    this.directory = true;
+    input.onclick = null;
+    input.click();
     input.onclick = (_e) => {
-      this.directory = false
-      input.directory = false
-      input.webkitdirectory = false
-    }
+      this.directory = false;
+      input.directory = false;
+      input.webkitdirectory = false;
+    };
   }
 
   setUploadCount() {
-    this.uploadCount = this.newImages.length
+    this.uploadCount = this.newImages.length;
   }
 
   startUpload() {
-    this.setUploadCount()
-    this.$refs.upload.active = true
+    this.setUploadCount();
+    this.$refs.upload.active = true;
   }
 
   startSingleUpload(image) {
-    this.$refs.upload.update(image, { active: true })
+    this.$refs.upload.update(image, { active: true });
   }
 
   cancelUpload() {
-    this.newImages = []
+    this.newImages = [];
   }
 
   cancelSingleUpload(image) {
-    this.$refs.upload.remove(image)
+    this.$refs.upload.remove(image);
   }
 
   async inputImage(newImage, oldImage) {
     if (newImage && oldImage && !newImage.active && oldImage.active) {
       if (newImage.xhr && newImage.xhr.status === 200) {
-        this.$emit('image-uploaded', newImage)
-        const index = this.newImages.indexOf(newImage)
-        this.newImages.splice(index, 1)
+        this.$emit("image-uploaded", newImage);
+        const index = this.newImages.indexOf(newImage);
+        this.newImages.splice(index, 1);
       }
     }
   }
@@ -276,24 +276,24 @@ export default class ImageUploader extends Vue {
   inputFilter(newImage, oldImage, prevent) {
     if (newImage && !oldImage) {
       if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
-        prevent()
+        prevent();
       }
     }
 
     if (!newImage) {
-      return
+      return;
     }
 
     /* eslint-disable no-param-reassign */
-    newImage.blob = ''
+    newImage.blob = "";
     // eslint-disable-next-line compat/compat
-    const URL = window.URL || window.webkitURL
+    const URL = window.URL || window.webkitURL;
     if (URL && URL.createObjectURL) {
-      newImage.blob = URL.createObjectURL(newImage.file)
+      newImage.blob = URL.createObjectURL(newImage.file);
     }
-    newImage.smallUrl = ''
-    if (newImage.blob && newImage.type.substr(0, 6) === 'image/') {
-      newImage.smallUrl = newImage.blob
+    newImage.smallUrl = "";
+    if (newImage.blob && newImage.type.substr(0, 6) === "image/") {
+      newImage.smallUrl = newImage.blob;
     }
     /* eslint-enable no-param-reassign */
   }
@@ -301,5 +301,5 @@ export default class ImageUploader extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import 'index.scss';
+@import "index.scss";
 </style>

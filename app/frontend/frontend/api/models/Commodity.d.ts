@@ -1,11 +1,11 @@
 type Commodity = {
-  id: string
-}
+  id: string;
+};
 
 type CommoditiesFilter = {
-  nameCont: string
-}
+  nameCont: string;
+};
 
 interface CommodityParams extends CollectionParams {
-  filters: CommoditiesFilter
+  filters: CommoditiesFilter;
 }

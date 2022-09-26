@@ -2,16 +2,16 @@
   <div class="hangar-guide">
     <h1>
       <template v-if="empty">
-        {{ $t('headlines.hangarGuideEmpty') }}
+        {{ $t("headlines.hangarGuideEmpty") }}
         <small class="text-muted">
-          {{ $t('sublines.hangarGuide.headline') }}
+          {{ $t("sublines.hangarGuide.headline") }}
         </small>
       </template>
       <template v-else>
-        {{ $t('headlines.hangarGuide') }}
+        {{ $t("headlines.hangarGuide") }}
       </template>
     </h1>
-    <h2>{{ $t('sublines.hangarGuide.add') }}</h2>
+    <h2>{{ $t("sublines.hangarGuide.add") }}</h2>
     <div class="hangar-guide-topic">
       <img
         :src="require(`images/hangar-guide/add.gif`)"
@@ -20,13 +20,13 @@
       />
       <p v-html="$t('texts.hangarGuide.add')" />
       <div class="hangar-guide-highlight">
-        {{ $t('texts.hangarGuide.icon') }}
+        {{ $t("texts.hangarGuide.icon") }}
         <i class="fal fa-bookmark" />
       </div>
       <div class="clearfix" />
     </div>
     <hr />
-    <h2>{{ $t('sublines.hangarGuide.edit') }}</h2>
+    <h2>{{ $t("sublines.hangarGuide.edit") }}</h2>
     <div class="hangar-guide-topic">
       <img
         :src="require(`images/hangar-guide/edit.gif`)"
@@ -35,13 +35,13 @@
       />
       <p v-html="$t('texts.hangarGuide.edit')" />
       <div class="hangar-guide-highlight">
-        {{ $t('texts.hangarGuide.icon') }}
+        {{ $t("texts.hangarGuide.icon") }}
         <i class="fa fa-pencil" />
       </div>
       <div class="clearfix" />
     </div>
     <hr />
-    <h2>{{ $t('sublines.hangarGuide.public') }}</h2>
+    <h2>{{ $t("sublines.hangarGuide.public") }}</h2>
     <div class="hangar-guide-topic">
       <img
         :src="require(`images/hangar-guide/public.gif`)"
@@ -52,7 +52,7 @@
       <div class="clearfix" />
     </div>
     <hr />
-    <h2>{{ $t('sublines.hangarGuide.fleetchart') }}</h2>
+    <h2>{{ $t("sublines.hangarGuide.fleetchart") }}</h2>
     <div class="hangar-guide-topic">
       <img
         :src="require(`images/hangar-guide/fleetchart.gif`)"
@@ -63,7 +63,7 @@
       <div class="clearfix" />
     </div>
     <hr />
-    <h2>{{ $t('sublines.hangarGuide.groups') }}</h2>
+    <h2>{{ $t("sublines.hangarGuide.groups") }}</h2>
     <div class="hangar-guide-topic">
       <img
         :src="require(`images/hangar-guide/groups.gif`)"
@@ -78,17 +78,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'HangarGuide',
+  name: "HangarGuide",
 
   computed: {
-    ...mapGetters('hangar', ['empty']),
+    ...mapGetters("hangar", ["empty"]),
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

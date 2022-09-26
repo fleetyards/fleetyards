@@ -31,13 +31,13 @@
       </div>
       <div class="role">
         <template v-if="member.status === 'invited'">
-          {{ $t('labels.fleet.members.invited') }}
+          {{ $t("labels.fleet.members.invited") }}
         </template>
         <template v-else-if="member.status === 'requested'">
-          {{ $t('labels.fleet.members.requested') }}
+          {{ $t("labels.fleet.members.requested") }}
         </template>
         <span v-else-if="member.status === 'declined'" class="text-danger">
-          {{ $t('labels.fleet.members.declined') }}
+          {{ $t("labels.fleet.members.declined") }}
         </span>
         <template v-else>
           {{ member.roleLabel }}
@@ -176,17 +176,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { Getter } from "vuex-class";
 import {
   displaySuccess,
   displayAlert,
   displayConfirm,
-} from '@/frontend/lib/Noty'
-import fleetMembersCollection from '@/frontend/api/collections/FleetMembers'
-import Avatar from '@/frontend/core/components/Avatar/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
+} from "@/frontend/lib/Noty";
+import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
+import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<MembersListItem>({
   components: {
@@ -195,137 +195,137 @@ import Btn from '@/frontend/core/components/Btn/index.vue'
   },
 })
 export default class MembersListItem extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection
+  collection: FleetMembersCollection = fleetMembersCollection;
 
-  deleting = false
+  deleting = false;
 
-  updating = false
+  updating = false;
 
-  @Getter('mobile') mobile
+  @Getter("mobile") mobile;
 
-  @Prop({ required: true }) member: Member
+  @Prop({ required: true }) member: Member;
 
-  @Prop({ default: false }) editable: boolean
+  @Prop({ default: false }) editable: boolean;
 
-  @Prop({ default: false }) editableMember: boolean
+  @Prop({ default: false }) editableMember: boolean;
 
   async removeMember(member) {
-    this.deleting = true
+    this.deleting = true;
     displayConfirm({
-      text: this.$t('messages.confirm.fleet.members.destroy'),
+      text: this.$t("messages.confirm.fleet.members.destroy"),
       onConfirm: async () => {
         const response = await this.$api.destroy(
           `fleets/${this.$route.params.slug}/members/${member.username}`
-        )
+        );
 
         if (!response.error) {
-          this.$comlink.$emit('fleet-member-update')
+          this.$comlink.$emit("fleet-member-update");
           displaySuccess({
-            text: this.$t('messages.fleet.members.destroy.success'),
-          })
+            text: this.$t("messages.fleet.members.destroy.success"),
+          });
         } else {
           displayAlert({
-            text: this.$t('messages.fleet.members.destroy.failure'),
-          })
-          this.deleting = false
+            text: this.$t("messages.fleet.members.destroy.failure"),
+          });
+          this.deleting = false;
         }
       },
       onClose: () => {
-        this.deleting = false
+        this.deleting = false;
       },
-    })
+    });
   }
 
   async demoteMember(member) {
-    this.updating = true
+    this.updating = true;
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}/members/${member.username}/demote`
-    )
+    );
 
-    this.updating = false
+    this.updating = false;
 
     if (!response.error) {
-      this.$comlink.$emit('fleet-member-update')
+      this.$comlink.$emit("fleet-member-update");
       displaySuccess({
-        text: this.$t('messages.fleet.members.demote.success'),
-      })
+        text: this.$t("messages.fleet.members.demote.success"),
+      });
     } else {
       displayAlert({
-        text: this.$t('messages.fleet.members.demote.failure'),
-      })
+        text: this.$t("messages.fleet.members.demote.failure"),
+      });
     }
   }
 
   async promoteMember(member) {
-    this.updating = true
+    this.updating = true;
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}/members/${member.username}/promote`
-    )
+    );
 
-    this.updating = false
+    this.updating = false;
 
     if (!response.error) {
-      this.$comlink.$emit('fleet-member-update')
+      this.$comlink.$emit("fleet-member-update");
       displaySuccess({
-        text: this.$t('messages.fleet.members.promote.success'),
-      })
+        text: this.$t("messages.fleet.members.promote.success"),
+      });
     } else {
       displayAlert({
-        text: this.$t('messages.fleet.members.promote.failure'),
-      })
+        text: this.$t("messages.fleet.members.promote.failure"),
+      });
     }
   }
 
   async acceptRequest(member) {
-    this.updating = true
+    this.updating = true;
 
     const success = await this.collection.acceptRequest(
       this.$route.params.slug,
       member.username
-    )
+    );
 
-    this.updating = false
+    this.updating = false;
 
     if (success) {
-      this.$comlink.$emit('fleet-member-update')
+      this.$comlink.$emit("fleet-member-update");
       displaySuccess({
-        text: this.$t('messages.fleet.members.accept.success'),
-      })
+        text: this.$t("messages.fleet.members.accept.success"),
+      });
     } else {
       displayAlert({
-        text: this.$t('messages.fleet.members.accept.failure'),
-      })
+        text: this.$t("messages.fleet.members.accept.failure"),
+      });
     }
   }
 
   async declineRequest(member) {
-    this.updating = true
+    this.updating = true;
 
     const success = await this.collection.declineRequest(
       this.$route.params.slug,
       member.username
-    )
+    );
 
-    this.updating = false
+    this.updating = false;
 
     if (success) {
-      this.$comlink.$emit('fleet-member-update')
+      this.$comlink.$emit("fleet-member-update");
       displaySuccess({
-        text: this.$t('messages.fleet.members.decline.success'),
-      })
+        text: this.$t("messages.fleet.members.decline.success"),
+      });
     } else {
       displayAlert({
-        text: this.$t('messages.fleet.members.decline.failure'),
-      })
+        text: this.$t("messages.fleet.members.decline.failure"),
+      });
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/stylesheets/variables';
+@import "@/stylesheets/variables";
 
 @media (max-width: $desktop-breakpoint) {
   .flex-list-row {

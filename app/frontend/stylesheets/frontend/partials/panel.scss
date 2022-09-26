@@ -27,7 +27,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     left: 80px;
     height: $outerBorderWidth;
     background-color: #444;
-    content: '';
+    content: "";
   }
 
   &::after {
@@ -37,7 +37,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     left: 80px;
     height: $outerBorderWidth;
     background-color: #444;
-    content: '';
+    content: "";
   }
 }
 
@@ -58,7 +58,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     background-color: #444;
     border-bottom-right-radius: 1px;
     border-bottom-left-radius: 1px;
-    content: '';
+    content: "";
   }
 
   &::after {
@@ -70,7 +70,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     background-color: #444;
     border-top-left-radius: 1px;
     border-top-right-radius: 1px;
-    content: '';
+    content: "";
   }
 
   &.panel-primary {

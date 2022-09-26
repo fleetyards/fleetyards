@@ -4,13 +4,13 @@
       <div class="col-12 col-lg-8">
         <Panel>
           <div class="panel-body">
-            <h1>{{ $t('headlines.privacy') }}</h1>
+            <h1>{{ $t("headlines.privacy") }}</h1>
             <Btn
               class="privacy-settings-link"
               :mobile-block="true"
               @click.native="openPrivacySettings"
             >
-              {{ $t('nav.privacySettings') }}
+              {{ $t("nav.privacySettings") }}
             </Btn>
             <p>
               Below you can read about what Information we are using to provide
@@ -208,12 +208,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import MetaInfo from '@/frontend/mixins/MetaInfo'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import AppContact from '@/frontend/core/components/AppContact/index.vue'
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import AppContact from "@/frontend/core/components/AppContact/index.vue";
 
 @Component<PrivacyPolicy>({
   components: {
@@ -225,15 +225,15 @@ import AppContact from '@/frontend/core/components/AppContact/index.vue'
 })
 export default class PrivacyPolicy extends Vue {
   get appName() {
-    return window.APP_NAME
+    return window.APP_NAME;
   }
 
   openPrivacySettings() {
-    this.$comlink.$emit('open-privacy-settings', true)
+    this.$comlink.$emit("open-privacy-settings", true);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

@@ -1,17 +1,17 @@
-import { get } from '@/frontend/api/client'
+import { get } from "@/frontend/api/client";
 
 export class HangarItemsCollection {
-  records: string[] = []
+  records: string[] = [];
 
   async findAll(): Promise<string[]> {
-    const response = await get('vehicles/hangar-items', {}, true)
+    const response = await get("vehicles/hangar-items", {}, true);
 
     if (!response.error) {
-      this.records = response.data
+      this.records = response.data;
     }
 
-    return this.records
+    return this.records;
   }
 }
 
-export default new HangarItemsCollection()
+export default new HangarItemsCollection();

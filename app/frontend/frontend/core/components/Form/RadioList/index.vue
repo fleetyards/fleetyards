@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  name: 'RadioList',
+  name: "RadioList",
 
   props: {
     name: {
@@ -59,11 +59,11 @@ export default {
     },
     resetLabel: {
       type: String,
-      default: '',
+      default: "",
     },
     value: {
       type: String,
-      default: '',
+      default: "",
     },
     inline: {
       type: Boolean,
@@ -77,16 +77,16 @@ export default {
   computed: {
     radioID() {
       // eslint-disable-next-line no-underscore-dangle
-      return `${this.name}-${this._uid.toString()}`
+      return `${this.name}-${this._uid.toString()}`;
     },
   },
   methods: {
     change(event) {
-      this.$emit('input', event.target.value)
+      this.$emit("input", event.target.value);
     },
     clear() {
-      this.$emit('input', null)
+      this.$emit("input", null);
     },
   },
-}
+};
 </script>

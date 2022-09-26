@@ -1,13 +1,13 @@
 export default {
   reset({ commit }) {
-    commit('reset')
+    commit("reset");
   },
 
   toggleFleetchart({ commit, state }) {
-    commit('setFleetchartVisible', !state.fleetchartVisible)
+    commit("setFleetchartVisible", !state.fleetchartVisible);
   },
 
   updatePerPage({ commit }, payload) {
-    commit('setPerPage', payload)
+    commit("setPerPage", payload);
   },
-}
+};

@@ -18,11 +18,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { groupBy } from '@/frontend/lib/Helpers'
-import HardpointItem from '../Item/index.vue'
-import HardpointLoadout from '../Loadout/index.vue'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { groupBy } from "@/frontend/lib/Helpers";
+import HardpointItem from "../Item/index.vue";
+import HardpointLoadout from "../Loadout/index.vue";
 
 @Component<HardpointGroup>({
   components: {
@@ -31,10 +31,10 @@ import HardpointLoadout from '../Loadout/index.vue'
   },
 })
 export default class HardpointGroup extends Vue {
-  @Prop({ required: true }) hardpoints: Hardpoint[]
+  @Prop({ required: true }) hardpoints: Hardpoint[];
 
   groupByCategory(hardpoints) {
-    return groupBy(hardpoints, 'category')
+    return groupBy(hardpoints, "category");
   }
 }
 </script>

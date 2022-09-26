@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import Panel from '@/frontend/core/components/Panel/index.vue'
-import LazyImage from '@/frontend/core/components/LazyImage/index.vue'
+import Panel from "@/frontend/core/components/Panel/index.vue";
+import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 
 export default {
-  name: 'TeaserPanel',
+  name: "TeaserPanel",
 
   components: {
     Panel,
@@ -68,27 +68,27 @@ export default {
 
     variant: {
       type: String,
-      default: 'default',
+      default: "default",
       validator(value) {
-        return ['default', 'text'].indexOf(value) !== -1
+        return ["default", "text"].indexOf(value) !== -1;
       },
     },
   },
 
   computed: {
     image() {
-      return this.item.storeImageMedium
+      return this.item.storeImageMedium;
     },
 
     title() {
       if (this.item.title) {
-        return this.item.title
+        return this.item.title;
       }
       if (this.item.label) {
-        return this.item.label
+        return this.item.label;
       }
-      return this.item.name
+      return this.item.name;
     },
   },
-}
+};
 </script>

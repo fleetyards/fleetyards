@@ -7,15 +7,15 @@
     @click.native="share"
   >
     <i class="fad fa-share-square" />
-    <span v-if="variant === 'dropdown'">{{ $t('actions.share') }}</span>
+    <span v-if="variant === 'dropdown'">{{ $t("actions.share") }}</span>
   </Btn>
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import copyText from '@/frontend/utils/CopyText'
-import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
+import { Component, Prop } from "vue-property-decorator";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import copyText from "@/frontend/utils/CopyText";
+import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
 
 @Component({
   components: {
@@ -23,9 +23,9 @@ import { displayAlert, displaySuccess } from '@/frontend/lib/Noty'
   },
 })
 export default class ShareBtn extends Btn {
-  @Prop({ required: true }) url!: string
+  @Prop({ required: true }) url!: string;
 
-  @Prop({ required: true }) title!: string
+  @Prop({ required: true }) title!: string;
 
   share() {
     if (navigator.canShare && navigator.canShare({ url: this.url })) {
@@ -34,34 +34,34 @@ export default class ShareBtn extends Btn {
           title: this.title,
           url: this.url,
         })
-        .then(() => console.info('Share was successful.'))
-        .catch((error) => console.info('Sharing failed', error))
+        .then(() => console.info("Share was successful."))
+        .catch((error) => console.info("Sharing failed", error));
     } else {
-      this.copyShareUrl()
+      this.copyShareUrl();
     }
   }
 
   copyShareUrl() {
     if (!this.url) {
       displayAlert({
-        text: this.$t('messages.copyShareUrl.failure'),
-      })
+        text: this.$t("messages.copyShareUrl.failure"),
+      });
     }
 
     copyText(this.url).then(
       () => {
         displaySuccess({
-          text: this.$t('messages.copyShareUrl.success', {
+          text: this.$t("messages.copyShareUrl.success", {
             url: this.url,
           }),
-        })
+        });
       },
       () => {
         displayAlert({
-          text: this.$t('messages.copyShareUrl.failure'),
-        })
+          text: this.$t("messages.copyShareUrl.failure"),
+        });
       }
-    )
+    );
   }
 }
 </script>

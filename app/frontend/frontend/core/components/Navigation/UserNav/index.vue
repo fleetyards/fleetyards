@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import NavItem from '@/frontend/core/components/Navigation/NavItem/index.vue'
-import NavigationMixin from '@/frontend/mixins/Navigation'
-import sessionCollection from '@/frontend/api/collections/Session'
+import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
+import NavigationMixin from "@/frontend/mixins/Navigation";
+import sessionCollection from "@/frontend/api/collections/Session";
 
 export default {
-  name: 'UserNav',
+  name: "UserNav",
 
   components: {
     NavItem,
@@ -52,28 +52,28 @@ export default {
   computed: {
     active() {
       return [
-        'settings-profile',
-        'settings-account',
-        'settings-hangar',
-        'settings-notifications',
-        'settings-security-status',
-        'settings-two-factor-enable',
-        'settings-two-factor-disable',
-        'settings-two-factor-backup-codes',
-        'settings-change-password',
-      ].includes(this.$route.name)
+        "settings-profile",
+        "settings-account",
+        "settings-hangar",
+        "settings-notifications",
+        "settings-security-status",
+        "settings-two-factor-enable",
+        "settings-two-factor-disable",
+        "settings-two-factor-backup-codes",
+        "settings-change-password",
+      ].includes(this.$route.name);
     },
   },
 
   methods: {
     async logout() {
-      await sessionCollection.destroy()
-      await this.$store.dispatch('session/logout')
+      await sessionCollection.destroy();
+      await this.$store.dispatch("session/logout");
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import 'index';
+@import "index";
 </style>

@@ -6,19 +6,19 @@
     }"
   >
     <div v-if="model.focus" class="col-6 col-md-4">
-      <div class="metrics-label">{{ $t('model.focus') }}:</div>
+      <div class="metrics-label">{{ $t("model.focus") }}:</div>
       <div class="metrics-value">
         {{ model.focus }}
       </div>
     </div>
     <div v-if="model.minCrew || model.maxCrew" class="col-6 col-md-4">
-      <div class="metrics-label">{{ $t('model.crew') }}:</div>
+      <div class="metrics-label">{{ $t("model.crew") }}:</div>
       <div class="metrics-value">
         {{ crew }}
       </div>
     </div>
     <div class="col-12 col-md-4">
-      <div class="metrics-label">{{ $t('model.speed') }}:</div>
+      <div class="metrics-label">{{ $t("model.speed") }}:</div>
       <div class="metrics-value" v-html="speeds" />
     </div>
   </div>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: 'ModelTopMetrics',
+  name: "ModelTopMetrics",
 
   props: {
     model: {
@@ -42,69 +42,69 @@ export default {
 
   computed: {
     isGroundVehicle() {
-      return this.model.classification === 'ground'
+      return this.model.classification === "ground";
     },
     crew() {
-      let { minCrew, maxCrew } = this.model
+      let { minCrew, maxCrew } = this.model;
 
       if (minCrew && minCrew <= 0) {
-        minCrew = null
+        minCrew = null;
       }
 
       if (maxCrew && maxCrew <= 0) {
-        maxCrew = null
+        maxCrew = null;
       }
 
       if (minCrew === maxCrew) {
-        return this.$toNumber(this.model.minCrew, 'people')
+        return this.$toNumber(this.model.minCrew, "people");
       }
 
       return this.$toNumber(
-        [minCrew, maxCrew].filter((item) => item).join(' - '),
-        'people'
-      )
+        [minCrew, maxCrew].filter((item) => item).join(" - "),
+        "people"
+      );
     },
 
     speeds() {
-      const speeds = []
+      const speeds = [];
       if (this.groundSpeeds || this.isGroundVehicle) {
-        speeds.push(this.$toNumber(this.groundSpeeds, 'speed'))
+        speeds.push(this.$toNumber(this.groundSpeeds, "speed"));
       }
       if (!this.isGroundVehicle) {
-        speeds.push(this.$toNumber(this.airSpeeds, 'speed'))
+        speeds.push(this.$toNumber(this.airSpeeds, "speed"));
       }
-      return speeds.join('<br>')
+      return speeds.join("<br>");
     },
 
     airSpeeds() {
-      let { scmSpeed, afterburnerSpeed } = this.model
+      let { scmSpeed, afterburnerSpeed } = this.model;
 
       if (scmSpeed && scmSpeed <= 0) {
-        scmSpeed = null
+        scmSpeed = null;
       }
 
       if (afterburnerSpeed && afterburnerSpeed <= 0) {
-        afterburnerSpeed = null
+        afterburnerSpeed = null;
       }
 
-      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
+      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(" - ");
     },
 
     groundSpeeds() {
-      let { groundSpeed, afterburnerGroundSpeed } = this.model
+      let { groundSpeed, afterburnerGroundSpeed } = this.model;
 
       if (groundSpeed && groundSpeed <= 0) {
-        groundSpeed = null
+        groundSpeed = null;
       }
 
       if (afterburnerGroundSpeed && afterburnerGroundSpeed <= 0) {
-        afterburnerGroundSpeed = null
+        afterburnerGroundSpeed = null;
       }
 
       return [groundSpeed, afterburnerGroundSpeed]
         .filter((item) => item)
-        .join(' - ')
+        .join(" - ");
     },
   },
-}
+};
 </script>

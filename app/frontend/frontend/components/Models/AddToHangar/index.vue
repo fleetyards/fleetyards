@@ -18,11 +18,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import { displayWarning } from '@/frontend/lib/Noty'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displayWarning } from "@/frontend/lib/Noty";
 
 @Component<AddToHangar>({
   components: {
@@ -30,55 +30,55 @@ import { displayWarning } from '@/frontend/lib/Noty'
   },
 })
 export default class AddToHangar extends Vue {
-  @Prop({ required: true }) model: Model
+  @Prop({ required: true }) model: Model;
 
   @Prop({
-    default: 'default',
+    default: "default",
     validator(value) {
-      return ['default', 'panel', 'menu'].includes(value)
+      return ["default", "panel", "menu"].includes(value);
     },
   })
-  variant: string
+  variant: string;
 
-  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
+  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated;
 
-  @Getter('ships', { namespace: 'hangar' }) ships
+  @Getter("ships", { namespace: "hangar" }) ships;
 
   get inHangar() {
-    return !!(this.ships || []).find((item) => item === this.model.slug)
+    return !!(this.ships || []).find((item) => item === this.model.slug);
   }
 
   get btnVariant() {
-    if (['panel', 'menu'].includes(this.variant)) {
-      return 'link'
+    if (["panel", "menu"].includes(this.variant)) {
+      return "link";
     }
 
-    return 'default'
+    return "default";
   }
 
   get btnSize() {
-    if (['panel', 'menu'].includes(this.variant)) {
-      return 'small'
+    if (["panel", "menu"].includes(this.variant)) {
+      return "small";
     }
 
-    return 'default'
+    return "default";
   }
 
   async add() {
     if (!this.isAuthenticated) {
       displayWarning({
-        text: this.$t('messages.error.hangar.accountRequired'),
-      })
-      return
+        text: this.$t("messages.error.hangar.accountRequired"),
+      });
+      return;
     }
 
-    this.$comlink.$emit('open-modal', {
+    this.$comlink.$emit("open-modal", {
       component: () =>
-        import('@/frontend/components/Models/AddToHangarModal/index.vue'),
+        import("@/frontend/components/Models/AddToHangarModal/index.vue"),
       props: {
         model: this.model,
       },
-    })
+    });
   }
 }
 </script>

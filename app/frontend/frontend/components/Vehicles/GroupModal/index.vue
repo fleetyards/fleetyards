@@ -68,7 +68,7 @@
             size="large"
             :inline="true"
           >
-            {{ $t('actions.save') }}
+            {{ $t("actions.save") }}
           </Btn>
         </div>
       </template>
@@ -77,15 +77,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from '@/frontend/core/components/AppModal/Modal/index.vue'
-import Btn from '@/frontend/core/components/Btn/index.vue'
-import FormInput from '@/frontend/core/components/Form/FormInput/index.vue'
-import { displayAlert, displayConfirm } from '@/frontend/lib/Noty'
-import hangarGroupsCollection from '@/frontend/api/collections/HangarGroups'
-import Checkbox from '@/frontend/core/components/Form/Checkbox/index.vue'
-import VSwatches from 'vue-swatches'
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
+import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
+import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import VSwatches from "vue-swatches";
 
 @Component<GroupModal>({
   components: {
@@ -99,36 +99,36 @@ import VSwatches from 'vue-swatches'
 export default class GroupModal extends Vue {
   @Prop({
     default() {
-      return {}
+      return {};
     },
   })
-  hangarGroup: HangarGroup
+  hangarGroup: HangarGroup;
 
-  submitting = false
+  submitting = false;
 
-  deleting = false
+  deleting = false;
 
-  form: HangarGroupForm | null = null
+  form: HangarGroupForm | null = null;
 
   get title() {
     if (this.hangarGroup && this.hangarGroup.id) {
-      return this.$t('headlines.hangarGroup.edit')
+      return this.$t("headlines.hangarGroup.edit");
     }
 
-    return this.$t('headlines.hangarGroup.create')
+    return this.$t("headlines.hangarGroup.create");
   }
 
   get id() {
-    return (this.hangarGroup && this.hangarGroup.id) || 'new'
+    return (this.hangarGroup && this.hangarGroup.id) || "new";
   }
 
   mounted() {
-    this.setupForm()
+    this.setupForm();
   }
 
-  @Watch('hangarGroup')
+  @Watch("hangarGroup")
   onHangarGroupChange() {
-    this.setupForm()
+    this.setupForm();
   }
 
   setupForm() {
@@ -136,41 +136,41 @@ export default class GroupModal extends Vue {
       name: this.hangarGroup?.name,
       color: this.hangarGroup?.color,
       public: this.hangarGroup?.public,
-    }
+    };
   }
 
   remove() {
-    this.deleting = true
+    this.deleting = true;
 
     displayConfirm({
-      text: this.$t('messages.confirm.hangarGroup.destroy'),
+      text: this.$t("messages.confirm.hangarGroup.destroy"),
       onConfirm: () => {
-        this.destroy()
+        this.destroy();
       },
       onClose: () => {
-        this.deleting = false
+        this.deleting = false;
       },
-    })
+    });
   }
 
   async destroy() {
-    const success = await hangarGroupsCollection.destroy(this.hangarGroup.id)
+    const success = await hangarGroupsCollection.destroy(this.hangarGroup.id);
 
     if (success) {
-      this.$comlink.$emit('hangar-group-delete', this.hangarGroup)
-      this.$comlink.$emit('close-modal')
+      this.$comlink.$emit("hangar-group-delete", this.hangarGroup);
+      this.$comlink.$emit("close-modal");
     } else {
-      this.deleting = false
+      this.deleting = false;
     }
   }
 
   async save() {
-    this.submitting = true
+    this.submitting = true;
 
     if (this.hangarGroup && this.hangarGroup.id) {
-      this.update()
+      this.update();
     } else {
-      this.create()
+      this.create();
     }
   }
 
@@ -178,37 +178,37 @@ export default class GroupModal extends Vue {
     const success = await hangarGroupsCollection.update(
       this.hangarGroup.id,
       this.form
-    )
+    );
 
-    this.submitting = false
+    this.submitting = false;
 
     if (success) {
-      this.$comlink.$emit('hangar-group-save')
-      this.$comlink.$emit('close-modal')
+      this.$comlink.$emit("hangar-group-save");
+      this.$comlink.$emit("close-modal");
     } else {
       displayAlert({
         text: response.error.response.data.message,
-      })
+      });
     }
   }
 
   async create() {
-    const newHangarGroup = await hangarGroupsCollection.create(this.form)
+    const newHangarGroup = await hangarGroupsCollection.create(this.form);
 
-    this.submitting = false
+    this.submitting = false;
 
     if (newHangarGroup) {
-      this.$comlink.$emit('hangar-group-save')
-      this.$comlink.$emit('close-modal')
+      this.$comlink.$emit("hangar-group-save");
+      this.$comlink.$emit("close-modal");
     } else {
       displayAlert({
         text: response.error.response.data.message,
-      })
+      });
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'index';
+@import "index";
 </style>

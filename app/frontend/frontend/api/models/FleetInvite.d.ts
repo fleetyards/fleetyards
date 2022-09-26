@@ -1,4 +1,4 @@
 type FleetInvite = {
-  id: string
-  status: string
-}
+  id: string;
+  status: string;
+};
