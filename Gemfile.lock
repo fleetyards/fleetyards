@@ -205,7 +205,7 @@ GEM
       tzinfo
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    excon (0.92.5)
+    excon (0.93.0)
     execjs (2.8.1)
     faker (2.23.0)
       i18n (>= 1.8.11, < 2)
@@ -258,7 +258,7 @@ GEM
       rchardet (~> 1.8)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    google-protobuf (3.21.6)
+    google-protobuf (3.21.7)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
@@ -361,7 +361,7 @@ GEM
       minitest (~> 5.10)
       railties (~> 6.1.0)
     mocha (1.15.0)
-    msgpack (1.5.6)
+    msgpack (1.6.0)
     multi_json (1.15.0)
     multipart-post (2.2.3)
     net-scp (3.0.0)
@@ -645,7 +645,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.1)
 
 PLATFORMS
   ruby
