@@ -4,21 +4,24 @@
 #
 # Table name: shops
 #
-#  id                :uuid             not null, primary key
-#  buying            :boolean          default(FALSE)
-#  description       :text
-#  hidden            :boolean          default(TRUE)
-#  location          :string
-#  name              :string
-#  refinery_terminal :boolean
-#  rental            :boolean          default(FALSE)
-#  selling           :boolean          default(FALSE)
-#  shop_type         :integer
-#  slug              :string
-#  store_image       :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  station_id        :uuid
+#  id                   :uuid             not null, primary key
+#  accepts_stolen_goods :boolean          default(FALSE)
+#  buying               :boolean          default(FALSE)
+#  description          :text
+#  hidden               :boolean          default(TRUE)
+#  location             :string
+#  name                 :string
+#  profit_margin        :decimal(15, 2)
+#  refinery_terminal    :boolean
+#  rental               :boolean          default(FALSE)
+#  rsi_reference        :string
+#  selling              :boolean          default(FALSE)
+#  shop_type            :integer
+#  slug                 :string
+#  store_image          :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  station_id           :uuid
 #
 # Indexes
 #
@@ -60,7 +63,7 @@ class Shop < ApplicationRecord
     clothing: 0, armor: 1, weapons: 2, components: 3, armor_and_weapons: 4, superstore: 5,
     ships: 6, admin: 7, bar: 8, hospital: 9, salvage: 10, resources: 11, rental: 12,
     computers: 13, blackmarket: 14, mining_equipment: 15, equipment: 16, courier: 17, refinery: 18,
-    pharmacy: 19, cargo: 20, souvenirs: 21, kiosk: 22, ship_customizations: 23
+    pharmacy: 19, cargo: 20, souvenirs: 21, kiosk: 22, ship_customizations: 23, unknown: 999
   }
   ransacker :shop_type, formatter: proc { |v| Shop.shop_types[v] } do |parent|
     parent.table[:shop_type]

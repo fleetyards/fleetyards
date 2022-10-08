@@ -786,6 +786,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_23_075729) do
     t.boolean "refinery_terminal"
     t.text "description"
     t.string "location"
+    t.boolean "accepts_stolen_goods", default: false
+    t.decimal "profit_margin", precision: 15, scale: 2
+    t.string "rsi_reference"
     t.index ["station_id"], name: "index_shops_on_station_id"
     t.index ["station_id"], name: "shops_station_id_index"
   end

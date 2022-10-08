@@ -5,14 +5,17 @@ module ScData
     private def load_from_export(path)
       response = Typhoeus.get("#{s3_base_url}/#{path}")
 
-      return unless response.success?
+      unless response.success?
+        puts "Failed to load #{path} from S3: Status: #{response.code}"
+        return []
+      end
 
       begin
         JSON.parse(response.body)
       rescue JSON::ParserError => e
         Sentry.capture_exception(e)
         Rails.logger.error "SC Data could not be parsed: #{response.body}"
-        nil
+        []
       end
     end
 
