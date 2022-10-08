@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.9.0](https://github.com/fleetyards/fleetyards/compare/v5.8.0...v5.9.0) (2022-10-08)
+
+
+### Bug Fixes
+
+* **fleet-member-list:** add missing prefix to social links ([#2284](https://github.com/fleetyards/fleetyards/issues/2284)) ([9729d1f](https://github.com/fleetyards/fleetyards/commit/9729d1f7179958a3a3932914ae3cfac0e744b1ad))
+* **routes:** resolve issue with path in api_routes ([2a5c0a8](https://github.com/fleetyards/fleetyards/commit/2a5c0a84956c033aa307b68e15dbde033539ce93))
+
 ## [5.8.0](https://github.com/fleetyards/fleetyards/compare/v5.7.1...v5.8.0) (2022-05-29)
 
 
