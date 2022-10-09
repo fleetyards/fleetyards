@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="item.listedAt.length">
+    <div v-if="item.listedAt && item.listedAt.length">
       <span class="metrics-label">{{ $t("shopCommodity.listedAt") }}:</span>
       <ul class="list-unstyled">
         <li
@@ -17,7 +17,7 @@
         </li>
       </ul>
     </div>
-    <div v-if="item.soldAt.length">
+    <div v-if="item.soldAt && item.soldAt.length">
       <span class="metrics-label">{{ $t("shopCommodity.soldAt") }}:</span>
       <ul class="list-unstyled">
         <li
@@ -36,7 +36,7 @@
         </li>
       </ul>
     </div>
-    <div v-if="item.boughtAt.length">
+    <div v-if="item.boughtAt && item.boughtAt.length">
       <span class="metrics-label">{{ $t("shopCommodity.boughtAt") }}:</span>
       <ul class="list-unstyled">
         <li
