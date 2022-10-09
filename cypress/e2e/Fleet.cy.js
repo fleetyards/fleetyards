@@ -1,78 +1,84 @@
-describe('Fleet', () => {
+describe("Fleet", () => {
   beforeEach(() => {
-    cy.visitApp('/')
+    cy.visitApp("/");
 
-    cy.acceptCookies()
-  })
+    cy.acceptCookies();
+  });
 
-  it('Shows Preview', () => {
-    cy.clickNav('fleets-menu')
-    cy.clickNav('fleet-preview')
+  it("Shows Preview", () => {
+    cy.clickNav("fleets-menu");
+    cy.wait(200);
+    cy.clickNav("fleet-preview");
 
-    cy.url().should('include', '/fleets/preview/')
+    cy.url().should("include", "/fleets/preview/");
 
-    cy.selectElement('login').click()
+    cy.selectElement("login").click();
 
-    cy.url().should('include', '/login')
+    cy.url().should("include", "/login");
 
-    cy.clickNav('fleets-menu')
-    cy.clickNav('fleet-add')
+    cy.clickNav("fleets-menu");
+    cy.wait(200);
+    cy.clickNav("fleet-add");
 
-    cy.url().should('include', '/login')
+    cy.url().should("include", "/login");
 
-    cy.visitApp('/')
+    cy.visitApp("/");
 
-    cy.clickNav('fleets-menu')
-    cy.clickNav('fleet-add')
+    cy.clickNav("fleets-menu");
+    cy.wait(200);
+    cy.clickNav("fleet-add");
 
-    cy.url().should('include', '/login')
-  })
+    cy.url().should("include", "/login");
+  });
 
-  it('default workflow', () => {
-    cy.clickNav('fleets-menu')
-    cy.clickNav('fleet-preview')
+  it("default workflow", () => {
+    cy.clickNav("fleets-menu");
+    cy.wait(200);
+    cy.clickNav("fleet-preview");
 
-    cy.url().should('include', '/fleets/preview/')
+    cy.url().should("include", "/fleets/preview/");
 
-    cy.selectElement('login').click()
+    cy.selectElement("login").click();
 
-    cy.url().should('include', '/login')
+    cy.url().should("include", "/login");
 
-    cy.clickNav('fleets-menu')
-    cy.clickNav('fleet-add')
+    cy.clickNav("fleets-menu");
+    cy.wait(200);
+    cy.clickNav("fleet-add");
 
-    cy.url().should('include', '/login')
+    cy.url().should("include", "/login");
 
-    cy.visitApp('/')
+    cy.visitApp("/");
 
-    cy.clickNav('fleets-menu')
-    cy.clickNav('fleet-add')
+    cy.clickNav("fleets-menu");
+    cy.wait(200);
+    cy.clickNav("fleet-add");
 
-    cy.url().should('include', '/login')
+    cy.url().should("include", "/login");
 
-    cy.login()
+    cy.login();
 
-    cy.url().should('include', '/fleets/add/')
+    cy.url().should("include", "/fleets/add/");
 
-    cy.selectElement('input-fid').type('TestFleet1')
-    cy.selectElement('input-name').type('Test Fleet 1.')
+    cy.selectElement("input-fid").type("TestFleet1");
+    cy.selectElement("input-name").type("Test Fleet 1.");
 
-    cy.selectElement('fleet-save').click()
+    cy.selectElement("fleet-save").click();
 
-    cy.url().should('include', '/fleets/testfleet1/')
+    cy.url().should("include", "/fleets/testfleet1/");
 
-    cy.success('Your Fleet has been created.')
+    cy.success("Your Fleet has been created.");
 
-    cy.wait(500)
+    cy.wait(500);
 
-    cy.clickNav('fleet-settings')
+    cy.clickNav("fleet-settings");
 
-    cy.selectElement('fleet-delete').click()
+    cy.selectElement("fleet-delete").click();
 
-    cy.acceptConfirm()
+    cy.acceptConfirm();
 
-    cy.wait(500)
+    cy.wait(500);
 
-    cy.success('Your Fleet has been destroyed.')
-  })
-})
+    cy.success("Your Fleet has been destroyed.");
+  });
+});
