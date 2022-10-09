@@ -6,9 +6,7 @@ describe("Fleet", () => {
   });
 
   it("Shows Preview", () => {
-    cy.clickNav("fleets-menu");
-    cy.wait(200);
-    cy.clickNav("fleet-preview");
+    cy.clickNav("fleets-menu", "fleet-preview");
 
     cy.url().should("include", "/fleets/preview/");
 
@@ -16,25 +14,19 @@ describe("Fleet", () => {
 
     cy.url().should("include", "/login");
 
-    cy.clickNav("fleets-menu");
-    cy.wait(200);
-    cy.clickNav("fleet-add");
+    cy.clickNav("fleets-menu", "fleet-add");
 
     cy.url().should("include", "/login");
 
     cy.visitApp("/");
 
-    cy.clickNav("fleets-menu");
-    cy.wait(200);
-    cy.clickNav("fleet-add");
+    cy.clickNav("fleets-menu", "fleet-add");
 
     cy.url().should("include", "/login");
   });
 
   it("default workflow", () => {
-    cy.clickNav("fleets-menu");
-    cy.wait(200);
-    cy.clickNav("fleet-preview");
+    cy.clickNav("fleets-menu", "fleet-preview");
 
     cy.url().should("include", "/fleets/preview/");
 
@@ -42,17 +34,13 @@ describe("Fleet", () => {
 
     cy.url().should("include", "/login");
 
-    cy.clickNav("fleets-menu");
-    cy.wait(200);
-    cy.clickNav("fleet-add");
+    cy.clickNav("fleets-menu", "fleet-add");
 
     cy.url().should("include", "/login");
 
     cy.visitApp("/");
 
-    cy.clickNav("fleets-menu");
-    cy.wait(200);
-    cy.clickNav("fleet-add");
+    cy.clickNav("fleets-menu", "fleet-add");
 
     cy.url().should("include", "/login");
 
