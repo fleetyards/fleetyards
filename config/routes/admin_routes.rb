@@ -22,6 +22,7 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? '' : 'admin'), 
 
   resources :users, except: [:show] do
     member do
+      post 'login-as' => 'users#login_as', as: :login_as
       put 'resend-confirmation' => 'users#resend_confirmation', as: :resend_confirmation
     end
   end

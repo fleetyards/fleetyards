@@ -59,6 +59,14 @@ module Admin
       end
     end
 
+    def login_as
+      authorize! :update, user
+
+      sign_in(:user, user)
+
+      redirect_to frontend_root_url(reload_session: true)
+    end
+
     private def user_params
       @user_params ||= params.require(:user).permit(
         :admin, :username, :email, :password, :password_confirmation
