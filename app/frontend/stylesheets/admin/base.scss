@@ -71,6 +71,17 @@ body {
   }
 }
 
+.app-intro {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+  margin-top: -80px;
+  margin-bottom: -50px;
+  text-align: center;
+}
+
 .chart {
   position: relative;
 

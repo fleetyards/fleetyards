@@ -35,7 +35,6 @@ declare global {
     APP_CODENAME: string;
     API_ENDPOINT: string;
     DATA_PREFILL: KeyValuePair;
-    ON_SUBDOMAIN: boolean;
     FRONTEND_ENDPOINT: string;
   }
 }
