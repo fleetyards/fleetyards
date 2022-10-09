@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.9.4](https://github.com/fleetyards/fleetyards/compare/v5.9.3...v5.9.4) (2022-10-09)
+
+
+### Bug Fixes
+
+* **shop-commodities:** safeguard empty shopping lists ([58c3fa8](https://github.com/fleetyards/fleetyards/commit/58c3fa887667283c2e2ed471800a40581ba1a050))
+
 ### [5.9.3](https://github.com/fleetyards/fleetyards/compare/v5.9.2...v5.9.3) (2022-10-09)
 
 ### [5.9.2](https://github.com/fleetyards/fleetyards/compare/v5.9.1...v5.9.2) (2022-10-09)
