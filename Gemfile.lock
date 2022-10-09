@@ -264,7 +264,7 @@ GEM
       rails (>= 3.2.0)
     groupdate (6.1.0)
       activesupport (>= 5.2)
-    haml (6.0.5)
+    haml (6.0.6)
       temple (>= 0.8.2)
       thor
       tilt
