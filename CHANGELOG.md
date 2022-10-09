@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.9.2](https://github.com/fleetyards/fleetyards/compare/v5.9.1...v5.9.2) (2022-10-09)
+
+
+### Bug Fixes
+
+* link header parser in embed ([8422076](https://github.com/fleetyards/fleetyards/commit/84220768f7a33f6613783cf11bf1c00fba862304))
+* **pagination:** update link header parsing ([5d4824c](https://github.com/fleetyards/fleetyards/commit/5d4824c19cf80b1790de2b02133993a8a5e09659))
+
 ### [5.9.1](https://github.com/fleetyards/fleetyards/compare/v5.9.0...v5.9.1) (2022-10-09)
 
 ## [5.9.0](https://github.com/fleetyards/fleetyards/compare/v5.8.0...v5.9.0) (2022-10-08)
