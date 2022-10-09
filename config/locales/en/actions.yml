@@ -9,6 +9,7 @@ en:
     add_trade_commodity: Add Commodity
     add_upgrade_kit: Add Model
     add_video: Add Video
+    login_in_as: Login as
     admin:
       celestial_object:
         new: Create new Celestial Object

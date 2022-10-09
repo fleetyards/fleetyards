@@ -1,6 +1,6 @@
 import axios from "axios";
 import nprogress from "nprogress";
-import linkHeaderParser from "parse-link-header";
+import linkHeaderParser from "@/frontend/api/linkHeaderParser";
 
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
