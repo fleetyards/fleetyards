@@ -115,6 +115,7 @@ export default class FrontendApp extends Vue {
 
   @Watch("$route")
   onRouteChange() {
+    this.checkSessionReload();
     if (this.cookiesInfoVisible && this.$route.name !== "privacy-policy") {
       this.openPrivacySettings();
     } else if (
@@ -137,7 +138,8 @@ export default class FrontendApp extends Vue {
     }
   }
 
-  created() {
+  async created() {
+    this.checkSessionReload();
     this.setNoScroll();
     this.checkMobile();
 
@@ -200,6 +202,12 @@ export default class FrontendApp extends Vue {
       document.body.classList.add("no-scroll");
     } else {
       document.body.classList.remove("no-scroll");
+    }
+  }
+
+  async checkSessionReload() {
+    if (this.$route.query.reload_session) {
+      await this.$store.dispatch("session/login");
     }
   }
 

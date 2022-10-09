@@ -8,6 +8,7 @@ en:
     confirm:
       delete: Are you sure you want to delete this entry?
       resend_confirmation: Are you sure you want to resend confirmation instructions for this user?
+      admin_login_in_as: Are you sure you want to login as the user?
     create:
       failure: "%{resource} could not be created."
       success: "%{resource} created."
