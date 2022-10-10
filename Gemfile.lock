@@ -383,7 +383,7 @@ GEM
     pg (1.4.3)
     pg_query (2.1.4)
       google-protobuf (>= 3.19.2)
-    pghero (3.0.0)
+    pghero (3.0.1)
       activerecord (>= 6)
     postmark (1.22.1)
       json
@@ -541,7 +541,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    searchkick (5.0.4)
+    searchkick (5.0.5)
       activemodel (>= 5.2)
       hashie
     selectize-rails (0.12.6)
