@@ -20,6 +20,7 @@
 #  encrypted_password        :string(255)      default(""), not null
 #  failed_attempts           :integer          default(0), not null
 #  guilded                   :string
+#  hangar_updated_at         :datetime
 #  homepage                  :string
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)

@@ -124,18 +124,21 @@ class Vehicle < ApplicationRecord
   def broadcast_update
     return if loaner? || !notify?
 
+    User.update(hangar_updated_at: Time.zone.now)
     HangarChannel.broadcast_to(user, to_json)
   end
 
   def broadcast_create
     return if loaner? || !notify?
 
+    User.update(hangar_updated_at: Time.zone.now)
     HangarCreateChannel.broadcast_to(user, to_json)
   end
 
   def broadcast_destroy
     return if loaner? || !notify?
 
+    User.update(hangar_updated_at: Time.zone.now)
     HangarDestroyChannel.broadcast_to(user, to_json)
   end
 
