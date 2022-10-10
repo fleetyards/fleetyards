@@ -21,5 +21,6 @@ json.cache! ['v1', member] do
   json.youtube member.user.youtube
   json.twitch member.user.twitch
   json.guilded member.user.guilded
+  json.hangar_updated_at member.user.hangar_updated_at&.utc&.iso8601
   json.partial! 'api/shared/dates', record: member
 end
