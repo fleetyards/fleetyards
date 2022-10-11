@@ -5,7 +5,7 @@ describe("Fleet", () => {
     cy.acceptCookies();
   });
 
-  it("Shows Preview", () => {
+  it("Shows Preview only once", () => {
     cy.clickNav("fleets-menu", "fleet-preview");
 
     cy.url().should("include", "/fleets/preview/");
@@ -14,11 +14,7 @@ describe("Fleet", () => {
 
     cy.url().should("include", "/login");
 
-    cy.clickNav("fleets-menu", "fleet-add");
-
-    cy.url().should("include", "/login");
-
-    cy.visitApp("/");
+    cy.wait(500);
 
     cy.clickNav("fleets-menu", "fleet-add");
 
