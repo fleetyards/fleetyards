@@ -42,7 +42,7 @@ class Vehicle < ApplicationRecord
 
   belongs_to :model
   belongs_to :model_paint, optional: true
-  belongs_to :user
+  belongs_to :user, touch: :hangar_updated_at
   belongs_to :module_package,
              class_name: 'ModelModulePackage',
              optional: true
@@ -124,21 +124,18 @@ class Vehicle < ApplicationRecord
   def broadcast_update
     return if loaner? || !notify?
 
-    User.update(hangar_updated_at: Time.zone.now)
     HangarChannel.broadcast_to(user, to_json)
   end
 
   def broadcast_create
     return if loaner? || !notify?
 
-    User.update(hangar_updated_at: Time.zone.now)
     HangarCreateChannel.broadcast_to(user, to_json)
   end
 
   def broadcast_destroy
     return if loaner? || !notify?
 
-    User.update(hangar_updated_at: Time.zone.now)
     HangarDestroyChannel.broadcast_to(user, to_json)
   end
 
