@@ -14,7 +14,7 @@ describe("Fleet", () => {
 
     cy.url().should("include", "/login");
 
-    cy.wait(500);
+    cy.visitApp("/");
 
     cy.clickNav("fleets-menu", "fleet-add");
 
@@ -27,18 +27,6 @@ describe("Fleet", () => {
     cy.url().should("include", "/fleets/preview/");
 
     cy.selectElement("login").click();
-
-    cy.url().should("include", "/login");
-
-    cy.clickNav("fleets-menu", "fleet-add");
-
-    cy.url().should("include", "/login");
-
-    cy.visitApp("/");
-
-    cy.clickNav("fleets-menu", "fleet-add");
-
-    cy.url().should("include", "/login");
 
     cy.login();
 
