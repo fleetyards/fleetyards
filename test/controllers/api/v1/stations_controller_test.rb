@@ -584,7 +584,7 @@ module Api
 
       describe 'without session' do
         it 'should return list for index' do
-          get "/api/v1/stations", as: :json
+          get '/api/v1/stations', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -610,7 +610,7 @@ module Api
         end
 
         it 'should return list for index' do
-          get "/api/v1/stations", as: :json
+          get '/api/v1/stations', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
