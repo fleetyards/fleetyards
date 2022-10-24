@@ -18,6 +18,10 @@ module Admin
       @manufacturer = Manufacturer.new
     end
 
+    def edit
+      authorize! :update, manufacturer
+    end
+
     def create
       authorize! :create, :admin_manufacturers
       @manufacturer = Manufacturer.new(manufacturer_params)
@@ -26,10 +30,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.manufacturer'))
       end
-    end
-
-    def edit
-      authorize! :update, manufacturer
     end
 
     def update

@@ -21,6 +21,10 @@ module Admin
       @commodity = Commodity.new
     end
 
+    def edit
+      authorize! :update, commodity
+    end
+
     def create
       authorize! :create, :admin_commodities
       @commodity = Commodity.new(commodity_params)
@@ -29,10 +33,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.commodity'))
       end
-    end
-
-    def edit
-      authorize! :update, commodity
     end
 
     def update

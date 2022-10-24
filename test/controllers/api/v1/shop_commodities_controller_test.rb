@@ -4,14 +4,7 @@ require 'test_helper'
 
 module Api
   module V1
-    class ShopCommoditiesControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::ShopCommoditiesController
-
+    class ShopCommoditiesControllerTest < ActionDispatch::IntegrationTest
       let(:new_deal) { shops :new_deal }
       let(:explorer) { shop_commodities :commodity_three }
       let(:andromeda) { shop_commodities :commodity_four }
@@ -522,7 +515,7 @@ module Api
       describe 'without session' do
         it 'should return list for index' do
           VCR.use_cassette('shop_commodities_index') do
-            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+            get "/api/v1/stations/#{new_deal.station.slug}/shops/#{new_deal.slug}/commodities", as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -541,7 +534,7 @@ module Api
 
         it 'should return list for index' do
           VCR.use_cassette('shop_commodities_index') do
-            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+            get "/api/v1/stations/#{new_deal.station.slug}/shops/#{new_deal.slug}/commodities", as: :json
 
             assert_response :ok
             json = JSON.parse response.body

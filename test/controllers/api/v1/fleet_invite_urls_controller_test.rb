@@ -4,20 +4,13 @@ require 'test_helper'
 
 module Api
   module V1
-    class FleetInviteUrlsControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::FleetInviteUrlsController
-
+    class FleetInviteUrlsControllerTest < ActionDispatch::IntegrationTest
       let(:starfleet) { fleets :starfleet }
       let(:fleet_invite_url) { fleet_invite_urls :one }
 
       describe 'without session' do
         test 'should render 401 for index' do
-          get :index, params: { fleet_slug: starfleet.slug }
+          get "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -25,7 +18,7 @@ module Api
         end
 
         test 'should render 401 for create' do
-          post :create, params: { fleet_slug: starfleet.slug }
+          post "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -33,7 +26,7 @@ module Api
         end
 
         test 'should render 401 for destroy' do
-          delete :destroy, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
+          delete "/api/v1/fleets/#{starfleet.slug}/invite-urls/#{fleet_invite_url.token}", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -66,7 +59,7 @@ module Api
           end
 
           test 'should return list for index' do
-            get :index, params: { fleet_slug: starfleet.slug }
+            get "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
             assert_response :ok
 
@@ -77,7 +70,7 @@ module Api
         end
 
         test 'should render 403 for create' do
-          post :create, params: { fleet_slug: starfleet.slug }
+          post "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
           assert_response :forbidden
           json = JSON.parse response.body
@@ -85,7 +78,7 @@ module Api
         end
 
         test 'should render 403 for destroy' do
-          delete :destroy, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
+          delete "/api/v1/fleets/#{starfleet.slug}/invite-urls/#{fleet_invite_url.token}", as: :json
 
           assert_response :forbidden
           json = JSON.parse response.body
@@ -118,7 +111,7 @@ module Api
           end
 
           test 'should return list for index' do
-            get :index, params: { fleet_slug: starfleet.slug }
+            get "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
             assert_response :ok
 
@@ -130,7 +123,7 @@ module Api
 
         describe '#create' do
           test 'should return list for index' do
-            post :create, params: { fleet_slug: starfleet.slug }
+            post "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
             assert_response :ok
 
@@ -142,7 +135,7 @@ module Api
 
         describe '#destroy' do
           test 'should return list for index' do
-            delete :destroy, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
+            delete "/api/v1/fleets/#{starfleet.slug}/invite-urls/#{fleet_invite_url.token}", as: :json
 
             assert_response :ok
           end

@@ -18,6 +18,10 @@ module Admin
       @user = User.new
     end
 
+    def edit
+      authorize! :update, user
+    end
+
     def create
       authorize! :create, :admin_users
       @user = User.new(user_params)
@@ -26,10 +30,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.user'))
       end
-    end
-
-    def edit
-      authorize! :update, user
     end
 
     def update

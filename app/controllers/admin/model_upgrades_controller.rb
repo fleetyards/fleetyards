@@ -21,6 +21,10 @@ module Admin
       @model_upgrade = ModelUpgrade.new
     end
 
+    def edit
+      authorize! :update, model_upgrade
+    end
+
     def create
       authorize! :create, :admin_model_upgrades
       @model_upgrade = ModelUpgrade.new(model_upgrade_params)
@@ -29,10 +33,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model_upgrade'))
       end
-    end
-
-    def edit
-      authorize! :update, model_upgrade
     end
 
     def update

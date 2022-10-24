@@ -4,14 +4,7 @@ require 'test_helper'
 
 module Api
   module V1
-    class StarsystemsControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::StarsystemsController
-
+    class StarsystemsControllerTest < ActionDispatch::IntegrationTest
       let(:stanton) { starsystems :stanton }
       let(:oberon) { starsystems :oberon }
       let(:index_result) do
@@ -227,7 +220,7 @@ module Api
 
       describe 'without session' do
         it 'should return list for index' do
-          get :index
+          get '/api/v1/starsystems', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -236,7 +229,7 @@ module Api
         end
 
         it 'should return a single record for show' do
-          get :show, params: { slug: stanton.slug }
+          get "/api/v1/starsystems/#{stanton.slug}", as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -253,7 +246,7 @@ module Api
         end
 
         it 'should return list for index' do
-          get :index
+          get '/api/v1/starsystems', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -262,7 +255,7 @@ module Api
         end
 
         it 'should return a single record for show' do
-          get :show, params: { slug: stanton.slug }
+          get "/api/v1/starsystems/#{stanton.slug}", as: :json
 
           assert_response :ok
           json = JSON.parse response.body

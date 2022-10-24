@@ -22,6 +22,10 @@ module Admin
       @celestial_object = CelestialObject.new
     end
 
+    def edit
+      authorize! :update, celestial_object
+    end
+
     def create
       authorize! :create, :admin_celestial_objects
       @celestial_object = CelestialObject.new(celestial_object_params)
@@ -30,10 +34,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.celestial_object'))
       end
-    end
-
-    def edit
-      authorize! :update, celestial_object
     end
 
     def update

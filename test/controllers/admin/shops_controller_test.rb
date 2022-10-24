@@ -3,15 +3,13 @@
 require 'test_helper'
 
 module Admin
-  class ShopsControllerTest < ActionController::TestCase
-    tests Admin::ShopsController
-
+  class ShopsControllerTest < ActionDispatch::IntegrationTest
     let(:data) { users :data }
     let(:jeanluc) { admin_users :jeanluc }
 
     describe 'without session' do
       it 'should redirect to login for index' do
-        get :index
+        get '/admin/shops'
 
         assert_redirected_to new_admin_user_session_url
       end
@@ -23,7 +21,7 @@ module Admin
       end
 
       it 'should redirect to login for index' do
-        get :index
+        get '/admin/shops'
 
         assert_redirected_to new_admin_user_session_url
       end

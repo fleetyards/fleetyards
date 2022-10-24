@@ -4,19 +4,12 @@ require 'test_helper'
 
 module Api
   module V1
-    class FleetVehiclesControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::FleetVehiclesController
-
+    class FleetVehiclesControllerTest < ActionDispatch::IntegrationTest
       let(:starfleet) { fleets :starfleet }
 
       describe 'without session' do
         it 'should render 403 for index' do
-          get :index, params: { slug: starfleet.slug }
+          get "/api/v1/fleets/#{starfleet.slug}/vehicles", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -24,7 +17,7 @@ module Api
         end
 
         it 'should render 403 for quick-stats' do
-          get :quick_stats, params: { slug: starfleet.slug }
+          get "/api/v1/fleets/#{starfleet.slug}/quick-stats", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -32,7 +25,7 @@ module Api
         end
 
         it 'should render 403 for fleetchart' do
-          get :fleetchart, params: { slug: starfleet.slug }
+          get "/api/v1/fleets/#{starfleet.slug}/fleetchart", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -40,13 +33,13 @@ module Api
         end
 
         it 'should render 200 for public' do
-          get :public, params: { slug: starfleet.slug }
+          get "/api/v1/fleets/#{starfleet.slug}/public-vehicles", as: :json
 
           assert_response :ok
         end
 
         test 'should render 200 for public-fleetchart' do
-          get :public_fleetchart, params: { slug: starfleet.slug }
+          get "/api/v1/fleets/#{starfleet.slug}/public-fleetchart", as: :json
 
           assert_response :ok
         end
@@ -61,7 +54,7 @@ module Api
 
         describe '#index' do
           it 'should return list for index' do
-            get :index, params: { slug: starfleet.slug }
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -71,7 +64,7 @@ module Api
           end
 
           it 'should return list with loaners for index' do
-            get :index, params: { slug: starfleet.slug, q: { loanerEq: true } }
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { q: { loanerEq: true } }, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -81,7 +74,7 @@ module Api
           end
 
           it 'should return list with only loaners for index' do
-            get :index, params: { slug: starfleet.slug, q: { loanerEq: 'only' } }
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { q: { loanerEq: 'only' } }, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -93,31 +86,31 @@ module Api
 
         describe '#index grouped' do
           it 'should return list for index' do
-            get :index, params: { slug: starfleet.slug, grouped: true }
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { grouped: true }, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
-            data = json.map { |item| item['name'] }
+            data = json.pluck('name')
 
             assert_equal(%w[600i Andromeda], data)
           end
 
           it 'should return list with loaners for index' do
-            get :index, params: { slug: starfleet.slug, grouped: true, q: { loanerEq: true } }
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { grouped: true, q: { loanerEq: true } }, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
-            data = json.map { |item| item['name'] }
+            data = json.pluck('name')
 
             assert_equal(%w[600i Andromeda PTV], data)
           end
 
           it 'should return list with only loaners for index' do
-            get :index, params: { slug: starfleet.slug, grouped: true, q: { loanerEq: 'only' } }
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { grouped: true, q: { loanerEq: 'only' } }, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
-            data = json.map { |item| item['name'] }
+            data = json.pluck('name')
 
             assert_equal(%w[PTV], data)
           end
@@ -125,7 +118,7 @@ module Api
 
         describe '#fleetchart' do
           it 'should return list for index' do
-            get :fleetchart, params: { slug: starfleet.slug }
+            get "/api/v1/fleets/#{starfleet.slug}/fleetchart", as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -135,7 +128,7 @@ module Api
           end
 
           it 'should return list with loaners for index' do
-            get :fleetchart, params: { slug: starfleet.slug, q: { loanerEq: true } }
+            get "/api/v1/fleets/#{starfleet.slug}/fleetchart", params: { q: { loanerEq: true } }, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -145,7 +138,7 @@ module Api
           end
 
           it 'should return list with only loaners for index' do
-            get :fleetchart, params: { slug: starfleet.slug, q: { loanerEq: 'only' } }
+            get "/api/v1/fleets/#{starfleet.slug}/fleetchart", params: { q: { loanerEq: 'only' } }, as: :json
 
             assert_response :ok
             json = JSON.parse response.body

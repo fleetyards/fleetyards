@@ -4,18 +4,11 @@ require 'test_helper'
 
 module Api
   module V1
-    class ModelsControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
+    class ModelsControllerTest < ActionDispatch::IntegrationTest
       let(:origin) { Model.find_by(slug: '600i') }
 
-      tests Api::V1::ModelsController
-
       it 'should return list for index' do
-        get :index
+        get '/api/v1/models', as: :json
 
         assert_response :ok
         json = JSON.parse response.body
@@ -409,7 +402,7 @@ module Api
       end
 
       it 'should be able to filter the list' do
-        get :index, params: { q: '{ "nameCont": "Andromeda" }' }
+        get '/api/v1/models', params: { q: '{ "nameCont": "Andromeda" }' }, as: :json
 
         assert_response :ok
         json = JSON.parse response.body
@@ -419,7 +412,7 @@ module Api
       end
 
       it 'should be able to reduce per page size' do
-        get :index, params: { perPage: '15' }
+        get '/api/v1/models', params: { perPage: '15' }, as: :json
 
         assert_response :ok
         json = JSON.parse response.body
