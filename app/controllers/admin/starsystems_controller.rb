@@ -22,6 +22,10 @@ module Admin
       @starsystem = Starsystem.new
     end
 
+    def edit
+      authorize! :update, starsystem
+    end
+
     def create
       authorize! :create, :admin_starsystems
       @starsystem = Starsystem.new(starsystem_params)
@@ -30,10 +34,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.starsystem'))
       end
-    end
-
-    def edit
-      authorize! :update, starsystem
     end
 
     def update

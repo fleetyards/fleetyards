@@ -4,14 +4,7 @@ require 'test_helper'
 
 module Api
   module V1
-    class TradeRoutesControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::TradeRoutesController
-
+    class TradeRoutesControllerTest < ActionDispatch::IntegrationTest
       let(:gold_yela_daymar) { trade_routes :gold_yela_daymar }
       let(:titan_daymar_yela) { trade_routes :titan_daymar_yela }
       let(:titan_daymar_olisar) { trade_routes :titan_daymar_olisar }
@@ -188,7 +181,7 @@ module Api
 
       describe 'without session' do
         it 'should return list for index' do
-          get :index
+          get '/api/v1/trade-routes', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -205,7 +198,7 @@ module Api
         end
 
         it 'should return list for index' do
-          get :index
+          get '/api/v1/trade-routes', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -214,7 +207,7 @@ module Api
         end
 
         it 'should return a filtered list for index' do
-          get :index, params: { q: { commodityIn: ['gold'] } }
+          get '/api/v1/trade-routes', params: { q: { commodityIn: ['gold'] } }, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -223,7 +216,7 @@ module Api
         end
 
         it 'should return an empty list for different commodity' do
-          get :index, params: { q: { commodityIn: ['dilithium'] } }
+          get '/api/v1/trade-routes', params: { q: { commodityIn: ['dilithium'] } }, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -232,7 +225,7 @@ module Api
         end
 
         it 'should return an filtered list for planet' do
-          get :index, params: { q: { originCelestialObjectIn: ['yela'] } }
+          get '/api/v1/trade-routes', params: { q: { originCelestialObjectIn: ['yela'] } }, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -241,7 +234,7 @@ module Api
         end
 
         it 'should return an filtered list for planet' do
-          get :index, params: { q: { destinationCelestialObjectIn: ['yela'] } }
+          get '/api/v1/trade-routes', params: { q: { destinationCelestialObjectIn: ['yela'] } }, as: :json
 
           assert_response :ok
           json = JSON.parse response.body

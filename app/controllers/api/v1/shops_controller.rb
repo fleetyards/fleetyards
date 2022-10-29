@@ -6,11 +6,6 @@ module Api
       before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:shops) }, only: [:index]
 
-      def show
-        authorize! :show, :api_shops
-        @shop = station.shops.visible.find_by!(slug: params[:slug])
-      end
-
       def index
         authorize! :index, :api_shops
 
@@ -23,6 +18,11 @@ module Api
         @shops = @q.result(distinct: true)
           .page(params[:page])
           .per(per_page(Shop))
+      end
+
+      def show
+        authorize! :show, :api_shops
+        @shop = station.shops.visible.find_by!(slug: params[:slug])
       end
 
       def shop_types

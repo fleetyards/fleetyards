@@ -25,6 +25,10 @@ module Admin
       @equipment = Equipment.new(prefill)
     end
 
+    def edit
+      authorize! :update, equipment
+    end
+
     def create
       authorize! :create, :admin_equipment
       @equipment = Equipment.new(equipment_params)
@@ -33,10 +37,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.equipment'))
       end
-    end
-
-    def edit
-      authorize! :update, equipment
     end
 
     def update

@@ -4,14 +4,7 @@ require 'test_helper'
 
 module Api
   module V1
-    class RoadmapControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::RoadmapController
-
+    class RoadmapControllerTest < ActionDispatch::IntegrationTest
       let(:first_roadmap_item) { roadmap_items :one }
       let(:second_roadmap_item) { roadmap_items :two }
       let(:index_result) do
@@ -66,7 +59,7 @@ module Api
 
       describe 'without session' do
         it 'should return list for index' do
-          get :index
+          get '/api/v1/roadmap', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -83,7 +76,7 @@ module Api
         end
 
         it 'should return list for index' do
-          get :index
+          get '/api/v1/roadmap', as: :json
 
           assert_response :ok
           json = JSON.parse response.body

@@ -12,6 +12,7 @@ Rails.application.configure do
   config.hosts << Rails.configuration.app.short_domain
   config.hosts << 'api.fleetyards.test'
   config.hosts << 'admin.fleetyards.test'
+  config.hosts << 'www.example.com'
 
   config.cache_classes = false
 

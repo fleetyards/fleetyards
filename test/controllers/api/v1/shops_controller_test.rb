@@ -4,14 +4,7 @@ require 'test_helper'
 
 module Api
   module V1
-    class ShopsControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::ShopsController
-
+    class ShopsControllerTest < ActionDispatch::IntegrationTest
       let(:crusader) { celestial_objects :crusader }
       let(:yela) { celestial_objects :yela }
       let(:daymar) { celestial_objects :daymar }
@@ -462,22 +455,22 @@ module Api
       end
 
       describe 'without session' do
-        it 'should return a single record for show' do
-          get :show, params: { station_slug: new_deal.station.slug, slug: new_deal.slug }
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          assert_equal show_result, json
-        end
-
         it 'should return list for index' do
-          get :index
+          get '/api/v1/shops', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
 
           assert_equal index_result, json
+        end
+
+        it 'should return a single record for show' do
+          get "/api/v1/stations/#{new_deal.station.slug}/shops/#{new_deal.slug}", as: :json
+
+          assert_response :ok
+          json = JSON.parse response.body
+
+          assert_equal show_result, json
         end
       end
 
@@ -488,22 +481,22 @@ module Api
           sign_in data
         end
 
-        it 'should return a single record for show' do
-          get :show, params: { station_slug: new_deal.station.slug, slug: new_deal.slug }
-
-          assert_response :ok
-          json = JSON.parse response.body
-
-          assert_equal show_result, json
-        end
-
         it 'should return list for index' do
-          get :index
+          get '/api/v1/shops', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
 
           assert_equal index_result, json
+        end
+
+        it 'should return a single record for show' do
+          get "/api/v1/stations/#{new_deal.station.slug}/shops/#{new_deal.slug}", as: :json
+
+          assert_response :ok
+          json = JSON.parse response.body
+
+          assert_equal show_result, json
         end
       end
     end

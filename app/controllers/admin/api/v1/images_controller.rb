@@ -29,20 +29,20 @@ module Admin
           render json: ValidationError.new('image.create', errors: image.errors), status: :bad_request
         end
 
-        def destroy
-          authorize! :destroy, image
-
-          return if image.destroy
-
-          render json: ValidationError.new('image.destroy', errors: image.errors), status: :bad_request
-        end
-
         def update
           authorize! :update, image
 
           return if image.update(image_params)
 
           render json: ValidationError.new('image.update', errors: image.errors), status: :bad_request
+        end
+
+        def destroy
+          authorize! :destroy, image
+
+          return if image.destroy
+
+          render json: ValidationError.new('image.destroy', errors: image.errors), status: :bad_request
         end
 
         private def image_query_params

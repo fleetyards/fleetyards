@@ -21,6 +21,10 @@ module Admin
       @shop = Shop.new
     end
 
+    def edit
+      authorize! :update, shop
+    end
+
     def create
       authorize! :create, :admin_shops
       @shop = Shop.new(shop_params)
@@ -29,10 +33,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.shop'))
       end
-    end
-
-    def edit
-      authorize! :update, shop
     end
 
     def update

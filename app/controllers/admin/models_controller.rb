@@ -49,6 +49,11 @@ module Admin
       @model = Model.new
     end
 
+    def edit
+      authorize! :update, model
+      model.build_addition if model.addition.blank?
+    end
+
     def create
       authorize! :create, :admin_models
       @model = Model.new(model_params)
@@ -57,11 +62,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model'))
       end
-    end
-
-    def edit
-      authorize! :update, model
-      model.build_addition if model.addition.blank?
     end
 
     def update

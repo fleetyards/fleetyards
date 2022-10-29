@@ -21,6 +21,10 @@ module Admin
       @station = Station.new
     end
 
+    def edit
+      authorize! :update, station
+    end
+
     def create
       authorize! :create, :admin_stations
       @station = Station.new(station_params)
@@ -29,10 +33,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.station'))
       end
-    end
-
-    def edit
-      authorize! :update, station
     end
 
     def update

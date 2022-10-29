@@ -21,6 +21,10 @@ module Admin
       @component = Component.new
     end
 
+    def edit
+      authorize! :update, component
+    end
+
     def create
       authorize! :create, :admin_components
       @component = Component.new(component_params)
@@ -29,10 +33,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.component'))
       end
-    end
-
-    def edit
-      authorize! :update, component
     end
 
     def update

@@ -21,6 +21,10 @@ module Admin
       @model_paint = ModelPaint.new
     end
 
+    def edit
+      authorize! :update, model_paint
+    end
+
     def create
       authorize! :create, :admin_model_paints
       @model_paint = ModelPaint.new(model_paint_params)
@@ -29,10 +33,6 @@ module Admin
       else
         render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model_paint'))
       end
-    end
-
-    def edit
-      authorize! :update, model_paint
     end
 
     def update

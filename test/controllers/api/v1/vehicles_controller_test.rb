@@ -4,17 +4,10 @@ require 'test_helper'
 
 module Api
   module V1
-    class VehiclesControllerTest < ActionController::TestCase
-      setup do
-        @request.headers['Accept'] = Mime[:json]
-        @request.headers['Content-Type'] = Mime[:json].to_s
-      end
-
-      tests Api::V1::VehiclesController
-
+    class VehiclesControllerTest < ActionDispatch::IntegrationTest
       describe 'without session' do
         it 'should render 403 for index' do
-          get :index
+          get '/api/v1/vehicles', as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -22,7 +15,7 @@ module Api
         end
 
         it 'should render 403 for quick-stats' do
-          get :quick_stats
+          get '/api/v1/vehicles/quick-stats', as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -30,7 +23,7 @@ module Api
         end
 
         it 'should render 200 for public quick-stats' do
-          get :public_quick_stats, params: { username: 'data' }
+          get '/api/v1/vehicles/data/quick-stats', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -52,7 +45,7 @@ module Api
         end
 
         it 'should render 403 for hangar-items' do
-          get :hangar_items
+          get '/api/v1/vehicles/hangar-items', as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
@@ -70,7 +63,7 @@ module Api
         end
 
         it 'should return list for index' do
-          get :index
+          get '/api/v1/vehicles', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -523,7 +516,7 @@ module Api
           query_params = {
             hangarGroupsIn: enterprise.hangar_groups.map(&:slug)
           }
-          get :index, params: { q: query_params.to_json }
+          get '/api/v1/vehicles', params: { q: query_params.to_json }, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -722,7 +715,7 @@ module Api
         end
 
         it 'should return counts for quick-stats' do
-          get :quick_stats
+          get '/api/v1/vehicles/quick-stats', as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -750,7 +743,7 @@ module Api
         end
 
         it 'should return counts for quick-stats' do
-          get :quick_stats, params: { q: '{ "classificationIn": ["combat"] }' }
+          get '/api/v1/vehicles/quick-stats', params: { q: '{ "classificationIn": ["combat"] }' }, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -778,7 +771,7 @@ module Api
         end
 
         it 'should render 200 for hangar-items' do
-          get :hangar_items
+          get '/api/v1/vehicles/hangar-items', as: :json
 
           assert_response :ok
           json = JSON.parse response.body

@@ -49,8 +49,8 @@ end
 Searchkick.disable_callbacks
 
 # rubocop:disable Style/ClassAndModuleChildren
-class ActionController::TestCase
-  include Devise::Test::ControllerHelpers
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
   ActiveRecord::Migration.check_pending!
 
   fixtures :all

@@ -57,20 +57,20 @@ module Admin
           render json: ValidationError.new('shop_commodity.update', errors: shop_commodity.errors), status: :bad_request
         end
 
-        def destroy
-          authorize! :destroy, shop_commodity
-
-          return if shop_commodity.destroy
-
-          render json: ValidationError.new('shop_commodity.destroy', errors: shop_commodity.errors), status: :bad_request
-        end
-
         def update
           authorize! :update, shop_commodity
 
           return if shop_commodity.update(shop_commodity_params)
 
           render json: ValidationError.new('shop_commodity.update', errors: shop_commodity.errors), status: :bad_request
+        end
+
+        def destroy
+          authorize! :destroy, shop_commodity
+
+          return if shop_commodity.destroy
+
+          render json: ValidationError.new('shop_commodity.destroy', errors: shop_commodity.errors), status: :bad_request
         end
 
         private def shop
