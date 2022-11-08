@@ -264,7 +264,7 @@ GEM
       rails (>= 3.2.0)
     groupdate (6.1.0)
       activesupport (>= 5.2)
-    haml (6.0.8)
+    haml (6.0.9)
       temple (>= 0.8.2)
       thor
       tilt
@@ -360,7 +360,7 @@ GEM
     minitest-rails (6.1.0)
       minitest (~> 5.10)
       railties (~> 6.1.0)
-    mocha (2.0.1)
+    mocha (2.0.2)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.6.0)
     multi_json (1.15.0)
@@ -373,7 +373,7 @@ GEM
     nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    oj (3.13.22)
+    oj (3.13.23)
     orm_adapter (0.5.0)
     paper_trail (13.0.0)
       activerecord (>= 5.2)
@@ -548,13 +548,13 @@ GEM
       activemodel (>= 5.2)
       hashie
     selectize-rails (0.12.6)
-    sentry-rails (5.5.0)
+    sentry-rails (5.6.0)
       railties (>= 5.0)
-      sentry-ruby (~> 5.5.0)
-    sentry-ruby (5.5.0)
+      sentry-ruby (~> 5.6.0)
+    sentry-ruby (5.6.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sentry-sidekiq (5.5.0)
-      sentry-ruby (~> 5.5.0)
+    sentry-sidekiq (5.6.0)
+      sentry-ruby (~> 5.6.0)
       sidekiq (>= 3.0)
     shoulda (4.0.0)
       shoulda-context (~> 2.0)
@@ -649,7 +649,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.4)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
