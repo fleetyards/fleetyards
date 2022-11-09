@@ -8,7 +8,7 @@ gem 'rails', '6.1.7'
 
 gem 'pg', '~> 1.0'
 
-gem 'sidekiq'
+gem 'sidekiq', '< 7'
 gem 'sidekiq-cron'
 gem 'sidekiq-statistic', github: 'davydovanton/sidekiq-statistic', branch: 'v1.5.1'
 
