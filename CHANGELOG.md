@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.6](https://github.com/fleetyards/fleetyards/compare/v5.10.5...v5.10.6) (2022-11-09)
+
+
+### Bug Fixes
+
+* **stats:** update hangar stats to only count non loaner ships ([7a29142](https://github.com/fleetyards/fleetyards/commit/7a29142c7a9b5fb7930970b93abd1bdbf09e4d63))
+
 ### [5.10.5](https://github.com/fleetyards/fleetyards/compare/v5.10.4...v5.10.5) (2022-11-09)
 
 
