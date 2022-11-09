@@ -475,8 +475,6 @@ GEM
       actionpack (>= 5, < 8)
       redis-rack (>= 2.1.0, < 3)
       redis-store (>= 1.1.0, < 2)
-    redis-client (0.11.1)
-      connection_pool
     redis-rack (2.1.4)
       rack (>= 2.0.8, < 3)
       redis-store (>= 1.2, < 2)
@@ -562,11 +560,10 @@ GEM
     shoulda-context (2.0.0)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
-    sidekiq (7.0.1)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.9.0)
+    sidekiq (6.5.8)
+      connection_pool (>= 2.2.5, < 3)
+      rack (~> 2.0)
+      redis (>= 4.5.0, < 5)
     sidekiq-cron (1.8.0)
       fugit (~> 1)
       sidekiq (>= 4.2.1)
@@ -751,7 +748,7 @@ DEPENDENCIES
   sentry-sidekiq
   shoulda
   shoulda-matchers
-  sidekiq
+  sidekiq (< 7)
   sidekiq-cron
   sidekiq-statistic!
   simplecov
