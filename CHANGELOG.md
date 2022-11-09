@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.5](https://github.com/fleetyards/fleetyards/compare/v5.10.4...v5.10.5) (2022-11-09)
+
+
+### Bug Fixes
+
+* **hangar:** update calculation for models by manufacturer on stats page ([d0838cb](https://github.com/fleetyards/fleetyards/commit/d0838cb13ae940d1afe3c5867430d7861f5bb9b9))
+* **sc-data:** load version from s3 ([0747a19](https://github.com/fleetyards/fleetyards/commit/0747a1971185a9608de9d648e0adebe105666e89))
+
 ### [5.10.4](https://github.com/fleetyards/fleetyards/compare/v5.10.3...v5.10.4) (2022-10-11)
 
 ### [5.10.3](https://github.com/fleetyards/fleetyards/compare/v5.10.2...v5.10.3) (2022-10-11)
