@@ -343,7 +343,7 @@ module Api
           current_user.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                { manufacturer.name => current_user.vehicles.where(model_id: model_ids).count }
+                { manufacturer.name => current_user.vehicles.visible.where(model_id: model_ids).count }
               end
               .reduce(:merge) || []
         )
@@ -367,7 +367,7 @@ module Api
       def check_serial
         authorize! :check_serial, :api_vehicles
 
-        render json: { serialTaken: current_user.vehicles.exists?(serial: vehicle_params[:serial].upcase) }
+        render json: { serialTaken: current_user.vehicles.visible.exists?(serial: vehicle_params[:serial].upcase) }
       end
 
       private def vehicle
