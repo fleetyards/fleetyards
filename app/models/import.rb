@@ -20,6 +20,10 @@ class Import < ApplicationRecord
 
   validates :version, :type, presence: true
 
+  def self.current_version
+    finished.last&.version
+  end
+
   aasm timestamps: true do
     state :created, initial: true
     state :started

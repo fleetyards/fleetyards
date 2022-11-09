@@ -7,6 +7,8 @@ v1_api_routes = lambda do
     end
   end
 
+  get 'sc-data/version' => 'sc_data#current_version'
+
   resources :models, param: :slug, only: %i[index show] do
     collection do
       get :fleetchart
