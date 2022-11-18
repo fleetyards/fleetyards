@@ -34,7 +34,7 @@
               v-if="vehicle && vehicle.flagship"
               v-tooltip.right="flagshipTooltip"
             >
-              <i class="fad fa-certificate flagship-icon" />
+              <i class="fa fa-certificate flagship-icon" />
             </small>
           </transition>
 
