@@ -1,13 +1,15 @@
 <template>
   <transition name="back-to-top-fade">
-    <div
-      v-tooltip="label"
-      :aria-label="label"
-      class="primary-action"
-      @click="action"
-    >
-      <div class="primary-action-inner">
-        <i :class="icon" />
+    <div class="primary-action">
+      <div
+        v-tooltip="label"
+        :aria-label="label"
+        class="primary-action-item"
+        @click="action"
+      >
+        <div class="primary-action-inner">
+          <i :class="icon" />
+        </div>
       </div>
     </div>
   </transition>
