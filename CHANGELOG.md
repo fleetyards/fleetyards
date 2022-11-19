@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.7](https://github.com/fleetyards/fleetyards/compare/v5.10.6...v5.10.7) (2022-11-19)
+
+
+### Bug Fixes
+
+* flagship icon ([7aa4cfe](https://github.com/fleetyards/fleetyards/commit/7aa4cfe3b3ff59529dfe7ecfdb6262e4ab41f5af))
+
 ### [5.10.6](https://github.com/fleetyards/fleetyards/compare/v5.10.5...v5.10.6) (2022-11-09)
 
 
