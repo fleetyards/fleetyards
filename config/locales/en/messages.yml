@@ -46,3 +46,5 @@ en:
       requires_access_confirmation: Access confirmation pending
       two_factor_setup:
         active: Two-factor Authentication already active
+        enable:
+          failure: Could not activate Two-factor Authentication

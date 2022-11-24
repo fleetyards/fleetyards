@@ -120,8 +120,8 @@ export default class Signup extends Vue {
     this.submitting = false;
 
     if (response) {
+      await this.saveConfirmAccess();
       this.confirmed = true;
-      this.saveConfirmAccess();
     } else {
       displayAlert({
         text: this.$t("messages.confirmAccess.failure"),

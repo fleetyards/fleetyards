@@ -23,6 +23,10 @@ export default {
     success: 'Invite URL "%{url}" Copied!',
     failure: "Could not copy Invite URL",
   },
+  copyTwoFactorProvisioningUrl: {
+    success: "Provisioning Url Copied!",
+    failure: "Could not copy Provisioning Url",
+  },
   copyBackupCodes: {
     success: "Backup Codes Copied!",
     failure: "Could not copy Backup Codes",

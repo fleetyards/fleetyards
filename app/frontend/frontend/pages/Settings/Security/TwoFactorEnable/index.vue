@@ -20,7 +20,7 @@
             </div>
           </div>
 
-          <template v-else-if="!currentUser.twoFactorRequired">
+          <template v-else-if="!currentUser.twoFactorRequired && started">
             <p>
               {{ $t("texts.twoFactor.enable") }}
             </p>
@@ -40,6 +40,13 @@
                         :src="currentUser.twoFactorQrCodeUrl"
                         alt="two-factor-qrcode"
                       />
+
+                      <code
+                        class="two-factor-provisioning-url"
+                        @click="copyProvisioningUrl"
+                      >
+                        {{ currentUser.twoFactorProvisioningUrl }}
+                      </code>
                     </div>
                     <ValidationProvider
                       vid="twoFactorCode"
@@ -90,6 +97,7 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
 import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
+import copyText from "@/frontend/utils/CopyText";
 
 @Component<TwoFactorEnable>({
   beforeRouteEnter: disabledRouteGuard,
@@ -110,7 +118,10 @@ export default class TwoFactorEnable extends Vue {
 
   form: TwoFactorForm | null = null;
 
+  started = false;
+
   mounted() {
+    this.startProcess();
     this.setupForm();
   }
 
@@ -118,6 +129,14 @@ export default class TwoFactorEnable extends Vue {
     this.form = {
       twoFactorCode: null,
     };
+  }
+
+  async startProcess() {
+    const response = await twoFactorCollection.start();
+
+    if (!response.error) {
+      this.started = true;
+    }
   }
 
   async enable() {
@@ -145,6 +164,21 @@ export default class TwoFactorEnable extends Vue {
       });
     }
   }
+
+  copyProvisioningUrl() {
+    copyText(this.currentUser.twoFactorProvisioningUrl).then(
+      () => {
+        displaySuccess({
+          text: this.$t("messages.copyTwoFactorProvisioningUrl.success"),
+        });
+      },
+      () => {
+        displayAlert({
+          text: this.$t("messages.copyTwoFactorProvisioningUrl.failure"),
+        });
+      }
+    );
+  }
 }
 </script>
 
@@ -155,8 +189,13 @@ export default class TwoFactorEnable extends Vue {
   margin: 40px 0;
 
   .two-factor-form-inner {
-    width: 300px;
+    width: 400px;
   }
+}
+
+.two-factor-provisioning-url {
+  font-size: 70%;
+  cursor: copy;
 }
 
 .two-factor-qrcode {

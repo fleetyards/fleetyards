@@ -3,10 +3,26 @@
 module Api
   module V1
     class TwoFactorsController < ::Api::BaseController
-      def qrcode
+      def start
         authorize! :update, current_user
 
-        current_user.update(otp_secret: User.generate_otp_secret) if current_user.otp_required_for_login?
+        unless access_cookie_valid?
+          render json: { code: 'requires_access_confirmation', message: I18n.t('messages.user.requires_access_confirmation') }, status: :bad_request
+          return
+        end
+
+        if current_user.otp_required_for_login?
+          render json: { code: 'two_factor_setup.active', message: I18n.t('messages.user.two_factor_setup.active') }, status: :bad_request
+          return
+        end
+
+        current_user.update(otp_secret: User.generate_otp_secret)
+
+        render json: { code: :success, message: I18n.t('labels.success') }
+      end
+
+      def qrcode
+        authorize! :update, current_user
 
         uri = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.configuration.app.name)
 
