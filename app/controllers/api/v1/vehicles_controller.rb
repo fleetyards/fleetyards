@@ -122,6 +122,11 @@ module Api
       def public
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
+        unless user.public_hangar?
+          not_found
+          return
+        end
+
         vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'name asc', 'model_name asc'], 'model_name asc')
 
         @q = user.vehicles
@@ -137,6 +142,11 @@ module Api
 
       def public_fleetchart
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+
+        unless user.public_hangar?
+          not_found
+          return
+        end
 
         @q = user.vehicles
           .visible
@@ -154,6 +164,11 @@ module Api
 
       def public_quick_stats
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+
+        unless user.public_hangar?
+          not_found
+          return
+        end
 
         scope = user.vehicles
           .includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
