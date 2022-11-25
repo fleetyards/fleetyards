@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.8](https://github.com/fleetyards/fleetyards/compare/v5.10.7...v5.10.8) (2022-11-25)
+
+
+### Bug Fixes
+
+* **stage:** update ON_SUBDOMAIN flag ([736dacf](https://github.com/fleetyards/fleetyards/commit/736dacf0262c84311d639e5493282e1d6b298aec))
+* **styling:** update Avatar image size and grid breakpoints for tablets ([d609f52](https://github.com/fleetyards/fleetyards/commit/d609f525a50bd11f1c40688abaefb0f94aa98c2f))
+
 ### [5.10.7](https://github.com/fleetyards/fleetyards/compare/v5.10.6...v5.10.7) (2022-11-19)
 
 
