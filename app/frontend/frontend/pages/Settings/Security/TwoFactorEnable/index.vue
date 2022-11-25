@@ -121,8 +121,12 @@ export default class TwoFactorEnable extends Vue {
   started = false;
 
   mounted() {
-    this.startProcess();
     this.setupForm();
+    this.$comlink.$on("access-confirmed", this.startProcess);
+  }
+
+  beforeDestroy() {
+    this.$comlink.$off("access-confirmed");
   }
 
   setupForm() {
