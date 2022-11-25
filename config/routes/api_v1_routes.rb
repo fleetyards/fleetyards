@@ -75,6 +75,7 @@ v1_api_routes = lambda do
       resource :two_factor, path: 'two-factor', only: [] do
         collection do
           get :qrcode
+          post :start
           post :enable
           post :disable
           post 'generate-backup-codes' => 'two_factors#generate_backup_codes'

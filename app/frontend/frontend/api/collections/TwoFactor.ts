@@ -18,6 +18,22 @@ export class TwoFactorCollection extends BaseCollection {
     };
   }
 
+  async start(): Promise<RecordResponse<boolean>> {
+    const response = await post("users/two-factor/start");
+
+    if (!response.error) {
+      return {
+        data: response.data,
+        error: null,
+      };
+    }
+
+    return {
+      data: null,
+      error: this.extractErrorCode(response.error),
+    };
+  }
+
   async enable(code: string): Promise<RecordResponse<TwoFactorBackupCodes>> {
     const response = await post("users/two-factor/enable", {
       twoFactorCode: code,
