@@ -390,7 +390,7 @@ GEM
       google-protobuf (>= 3.19.2)
     pghero (3.0.1)
       activerecord (>= 6)
-    postmark (1.22.1)
+    postmark (1.22.2)
       json
     postmark-rails (0.22.1)
       actionmailer (>= 3.0.0)
