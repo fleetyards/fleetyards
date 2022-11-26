@@ -3,20 +3,21 @@
     <div class="flex-list-row">
       <div class="username">
         <Avatar :avatar="member.avatar" size="small" />
-        {{ member.username }}
-        <template v-if="mobile">
-          (
-          <a
-            v-if="member.rsiHandle"
+        <div class="username-inner">
+          {{ member.username }}
+          <div
+            v-if="mobile && member.rsiHandle"
             v-tooltip="$t('nav.rsiProfile')"
-            :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
-            target="_blank"
-            rel="noopener"
+            class="rsiHandle"
           >
-            {{ member.rsiHandle }}
-          </a>
-          )
-        </template>
+            (<a
+              :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
+              target="_blank"
+              rel="noopener"
+              >{{ member.rsiHandle }}</a
+            >)
+          </div>
+        </div>
       </div>
       <div v-if="!mobile" class="rsi-handle">
         <a
