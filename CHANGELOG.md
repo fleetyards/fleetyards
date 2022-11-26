@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.9](https://github.com/fleetyards/fleetyards/compare/v5.10.8...v5.10.9) (2022-11-26)
+
+
+### Bug Fixes
+
+* **hangar:** render 404 if public hangar is disabled for all relevant api endpoints ([1bd6df1](https://github.com/fleetyards/fleetyards/commit/1bd6df1fe02dfe4545a527bf3581dc745750581a))
+* **metrics:** update spacing ([5b2a9b5](https://github.com/fleetyards/fleetyards/commit/5b2a9b53e82e78e17610ed792bb668534378aa84))
+
 ### [5.10.8](https://github.com/fleetyards/fleetyards/compare/v5.10.7...v5.10.8) (2022-11-25)
 
 
