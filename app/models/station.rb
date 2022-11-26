@@ -100,7 +100,7 @@ class Station < ApplicationRecord
 
   accepts_nested_attributes_for :docks, allow_destroy: true
 
-  delegate :starsystem, to: :celestial_object
+  delegate :starsystem, to: :celestial_object, allow_nil: true
 
   def self.visible
     where(hidden: false)

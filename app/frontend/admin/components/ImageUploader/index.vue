@@ -17,22 +17,22 @@
 
         <Btn @click.native="selectImages">
           <i class="fa fa-plus" />
-          <span>{{ $t("labels.image.selectImages") }}</span>
+          {{ $t("labels.image.selectImages") }}
         </Btn>
 
         <Btn @click.native="selectFolder">
           <i class="fa fa-plus" />
-          <span>{{ $t("labels.image.selectFolder") }}</span>
+          {{ $t("labels.image.selectFolder") }}
         </Btn>
 
         <Btn v-if="newImages.length" @click.native="startUpload">
           <i class="fa fa-upload" />
-          <span>{{ $t("labels.image.startUpload") }}</span>
+          {{ $t("labels.image.startUpload") }}
         </Btn>
 
         <Btn v-if="newImages.length" @click.native="cancelUpload">
-          <i class="fa fa-ban-circle" />
-          <span>{{ $t("labels.image.cancelUpload") }}</span>
+          <i class="fa fa-ban" />
+          {{ $t("labels.image.cancelUpload") }}
         </Btn>
       </div>
 
