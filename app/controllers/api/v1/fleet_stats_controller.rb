@@ -9,7 +9,7 @@ module Api
         authorize! :show, fleet
 
         models_by_size = transform_for_pie_chart(
-          fleet.models
+          fleet.models(loaner: false)
                .group(:size).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
                .reduce(:merge) || []
@@ -22,7 +22,7 @@ module Api
         authorize! :show, fleet
 
         models_by_production_status = transform_for_pie_chart(
-          fleet.models
+          fleet.models(loaner: false)
                .group(:production_status).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
                .reduce(:merge) || []
@@ -38,7 +38,7 @@ module Api
           fleet.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                { manufacturer.name => fleet.vehicles.where(model_id: model_ids).count }
+                { manufacturer.name => fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count }
               end
               .reduce(:merge) || []
         )
@@ -50,7 +50,7 @@ module Api
         authorize! :show, fleet
 
         models_by_classification = transform_for_pie_chart(
-          fleet.models
+          fleet.models(loaner: false)
                .group(:classification).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
                .reduce(:merge) || []
