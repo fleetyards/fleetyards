@@ -96,7 +96,7 @@ class HangarImporter
 
   private def starship_42_mapping
     {
-      'x1' => 'X1 Base',
+      'x1' => 'X1',
       '315p explorer' => '315p',
       '325a fighter' => '325a',
       '350r racer' => '350r',
@@ -120,12 +120,20 @@ class HangarImporter
       'reliant kore - mini hauler' => 'Reliant Kore',
       'reliant mako - news van' => 'Reliant Mako',
       'reliant sen - researcher' => 'Reliant Sen',
-      'reliant tana - skirmisher' => 'Reliant Tana'
+      'reliant tana - skirmisher' => 'Reliant Tana',
+      'c1 spirit' => 'C1 Spirit',
+      'e1 spirit' => 'E1 Spirit',
+      'a1 spirit' => 'A1 Spirit',
+      'crusader mercury star runner' => 'Mercury',
+      'genesis starliner' => 'Genesis',
+      'retaliator base' => 'Retaliator'
     }
   end
 
+  # rubocop:disable Metrics/MethodLength
   private def hangar_xplor_mapping
     {
+      'X1 Base' => 'X1',
       '315p Explorer' => '315p',
       '325a Fighter' => '325a',
       '350r Racer' => '350r',
@@ -142,6 +150,7 @@ class HangarImporter
       'Hercules Starlifter A2' => 'A2 Hercules',
       'Hercules Starlifter C2' => 'C2 Hercules',
       'Hercules Starlifter M2' => 'M2 Hercules',
+      'Genesis Starliner' => 'Genesis',
       'Hornet F7C' => 'F7C Hornet',
       'Hornet F7C-M Heartseeker' => 'F7C-M Super Hornet Heartseeker',
       'Idris-M Frigate' => 'Idris-M',
@@ -163,9 +172,13 @@ class HangarImporter
       'Reliant Sen - Researcher' => 'Reliant Sen',
       'Reliant Tana - Skirmisher' => 'Reliant Tana',
       'Rover' => 'G12a Rover',
-      'X1' => 'X1 Base'
+      'Retaliator Base' => 'Retaliator',
+      'Crusader A1 Spirit' => 'A1 Spirit',
+      'Crusader C1 Spirit' => 'C1 Spirit',
+      'Crusader E1 Spirit' => 'E1 Spirit'
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   private def normalize(name)
     transform_to_slug(strip_name(name))
