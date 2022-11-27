@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.12](https://github.com/fleetyards/fleetyards/compare/v5.10.11...v5.10.12) (2022-11-27)
+
+
+### Bug Fixes
+
+* **hangar-import:** handle no data present in import file ([b75234c](https://github.com/fleetyards/fleetyards/commit/b75234cd49e8fc73b543e500bf7804f3f7b08854))
+* **models:** update will_it_fit filter to return scope if parent not found ([ad2cec0](https://github.com/fleetyards/fleetyards/commit/ad2cec0adb3757fc0c34a25c54c4dc583a14ab07))
+
 ### [5.10.11](https://github.com/fleetyards/fleetyards/compare/v5.10.10...v5.10.11) (2022-11-27)
 
 
