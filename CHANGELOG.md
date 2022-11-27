@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.11](https://github.com/fleetyards/fleetyards/compare/v5.10.10...v5.10.11) (2022-11-27)
+
+
+### Bug Fixes
+
+* **loaners:** only add loaners for purchased ships ([32159ab](https://github.com/fleetyards/fleetyards/commit/32159abb9eb219d6ae643a1031c31897263ac08f)), closes [#2464](https://github.com/fleetyards/fleetyards/issues/2464)
+
 ### [5.10.10](https://github.com/fleetyards/fleetyards/compare/v5.10.9...v5.10.10) (2022-11-27)
 
 
