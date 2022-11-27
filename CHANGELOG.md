@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.10](https://github.com/fleetyards/fleetyards/compare/v5.10.9...v5.10.10) (2022-11-27)
+
+
+### Bug Fixes
+
+* **fleet-stats:** exclude loaners from statistics ([d27e5b6](https://github.com/fleetyards/fleetyards/commit/d27e5b608326267ee2a0e8bd028dba6c168f3941)), closes [#2460](https://github.com/fleetyards/fleetyards/issues/2460)
+* **fleets:** memberlist styling ([88fd91c](https://github.com/fleetyards/fleetyards/commit/88fd91c3b4e89774b79021e0df7df7299d6fa515))
+* **hangar-import:** Add additional mapping for Genesis Starliner and Spirit ([828ae7e](https://github.com/fleetyards/fleetyards/commit/828ae7eee599cdc10923cea0cb9835da91540d5e))
+
 ### [5.10.9](https://github.com/fleetyards/fleetyards/compare/v5.10.8...v5.10.9) (2022-11-26)
 
 
