@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.10.12](https://github.com/fleetyards/fleetyards/compare/v5.10.11...v5.10.12) (2022-11-27)
+
+
+### Bug Fixes
+
+* **hangar-import:** handle no data present in import file ([b75234c](https://github.com/fleetyards/fleetyards/commit/b75234cd49e8fc73b543e500bf7804f3f7b08854))
+* **models:** update will_it_fit filter to return scope if parent not found ([ad2cec0](https://github.com/fleetyards/fleetyards/commit/ad2cec0adb3757fc0c34a25c54c4dc583a14ab07))
+
+### [5.10.11](https://github.com/fleetyards/fleetyards/compare/v5.10.10...v5.10.11) (2022-11-27)
+
+
+### Bug Fixes
+
+* **loaners:** only add loaners for purchased ships ([32159ab](https://github.com/fleetyards/fleetyards/commit/32159abb9eb219d6ae643a1031c31897263ac08f)), closes [#2464](https://github.com/fleetyards/fleetyards/issues/2464)
+
+### [5.10.10](https://github.com/fleetyards/fleetyards/compare/v5.10.9...v5.10.10) (2022-11-27)
+
+
+### Bug Fixes
+
+* **fleet-stats:** exclude loaners from statistics ([d27e5b6](https://github.com/fleetyards/fleetyards/commit/d27e5b608326267ee2a0e8bd028dba6c168f3941)), closes [#2460](https://github.com/fleetyards/fleetyards/issues/2460)
+* **fleets:** memberlist styling ([88fd91c](https://github.com/fleetyards/fleetyards/commit/88fd91c3b4e89774b79021e0df7df7299d6fa515))
+* **hangar-import:** Add additional mapping for Genesis Starliner and Spirit ([828ae7e](https://github.com/fleetyards/fleetyards/commit/828ae7eee599cdc10923cea0cb9835da91540d5e))
+
 ### [5.10.9](https://github.com/fleetyards/fleetyards/compare/v5.10.8...v5.10.9) (2022-11-26)
 
 

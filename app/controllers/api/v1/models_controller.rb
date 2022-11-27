@@ -336,7 +336,7 @@ module Api
         slug = model_query_params.delete('will_it_fit')
         parent = Model.visible.active.where(slug: slug).or(Model.where(rsi_slug: slug)).first
 
-        return if parent.blank? || parent.docks.blank?
+        return scope if parent.blank? || parent.docks.blank?
 
         vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).order(length: :desc).first
         ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).order(length: :desc).first
