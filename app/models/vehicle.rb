@@ -69,9 +69,9 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   before_save :set_module_package
 
-  after_create :add_loaners, :broadcast_create
+  after_create :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
-  after_save :set_flagship
+  after_save :set_flagship, :update_loaners
   after_commit :broadcast_update
   after_touch :clear_association_cache
 
@@ -88,6 +88,16 @@ class Vehicle < ApplicationRecord
   ransack_alias :hangar_groups, :hangar_groups_slug
 
   serialize :alternative_names, Array
+
+  def update_loaners
+    return if loaner?
+
+    if purchased?
+      add_loaners
+    else
+      remove_loaners
+    end
+  end
 
   def add_loaners
     return if loaner?
@@ -110,6 +120,8 @@ class Vehicle < ApplicationRecord
   end
 
   def create_loaner(model_loaner)
+    return if Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id: user_id)
+
     Vehicle.create(
       loaner: true,
       model_id: model_loaner.id,
