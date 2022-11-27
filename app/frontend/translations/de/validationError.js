@@ -1,1 +1,5 @@
-export default { fleet_memberships: { create: 'Member already present or has a pending invite' } };
+export default {
+  fleet_memberships: {
+    create: "Member already present or has a pending invite",
+  },
+};
