@@ -8,8 +8,11 @@ export default {
   },
   station: {
     type: "Typ",
-    classification: "Klassifizierung",
     location: "Ort",
+    classification: "Klassifizierung",
+    habitable: "Habitable?",
+    refinery: "Refinery Station",
+    cargoHub: "Cargo Hub",
   },
   model: {
     focus: "Fokus",
@@ -34,6 +37,8 @@ export default {
     xaxisAcceleration: "X-Axis",
     yaxisAcceleration: "Y-Axis",
     zaxisAcceleration: "Z-Axis",
+    quantumFuelTankSize: "Quantum Fuel",
+    hydrogenFuelTankSize: "Fuel",
     height: "Height",
     length: "Length",
     mass: "Mass",
@@ -48,6 +53,7 @@ export default {
     ordnance: "Ordnance",
     modular: "Modular",
     soldAt: "Sold at?",
+    rentalAt: "Rental at?",
     lastUpdatedAt: "Last updated at?",
   },
   component: {
@@ -74,8 +80,8 @@ export default {
     type: "Type",
     celestialObject: "Location",
     station: "Station",
-    rentalPrice: "%{price} / day",
     location: "%{name} at %{location}",
+    refineryTerminal: "Refinery Terminal",
   },
   commodityItem: {
     grade: "Grade",
@@ -87,7 +93,18 @@ export default {
     range: "Range",
     damageReduction: "Damage Reduction",
     rateOfFire: "Rate of Fire",
-    extras: "",
+    extras: "Additional Info",
+    location: "Location",
+    slot: "Slot",
+    storage: "Storage",
+    shop: "Shop",
+    unconfirmed: "Item is unconfirmed",
+    manufacturer: "Manufacturer",
+  },
+  shopCommodity: {
+    listedAt: "Listed at",
+    soldAt: "Sold at",
+    boughtAt: "Bought at",
   },
   resources: {
     models: "Ships",
@@ -118,6 +135,11 @@ export default {
     rateOfFire: "%{count} shots/min",
     rotation: "%{count} deg/s",
     cargo: "%{count} SCU",
+    fuel: "%{count}",
+    ships: {
+      one: "%{count} ship",
+      other: "%{count} ships",
+    },
     people: {
       one: "%{count} person",
       other: "%{count} persons",
