@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_10_204212) do
+ActiveRecord::Schema.define(version: 2022_11_27_144517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -324,6 +324,14 @@ ActiveRecord::Schema.define(version: 2022_10_10_204212) do
     t.datetime "failed_at"
     t.string "aasm_state"
     t.text "info"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "lists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "user_id"
+    t.json "body"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -711,6 +719,9 @@ ActiveRecord::Schema.define(version: 2022_10_10_204212) do
     t.boolean "refinery_terminal"
     t.text "description"
     t.string "location"
+    t.boolean "accepts_stolen_goods", default: false
+    t.decimal "profit_margin", precision: 15, scale: 2
+    t.string "rsi_reference"
     t.index ["station_id"], name: "index_shops_on_station_id"
   end
 
@@ -906,9 +917,11 @@ ActiveRecord::Schema.define(version: 2022_10_10_204212) do
     t.uuid "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
-    t.text "object"
+    t.text "old_object"
     t.datetime "created_at"
-    t.text "object_changes"
+    t.text "old_object_changes"
+    t.json "object"
+    t.json "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
