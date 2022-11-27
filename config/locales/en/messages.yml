@@ -42,6 +42,8 @@ en:
     update:
       failure: "%{resource} could not be edited."
       success: "%{resource} edited successfully."
+    hangar_import:
+      no_data: No Data found to import
     user:
       requires_access_confirmation: Access confirmation pending
       two_factor_setup:
