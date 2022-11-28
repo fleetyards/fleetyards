@@ -5,11 +5,11 @@
     :variant="variant"
     :size="size"
     :inline="inline"
+    :block="block"
     @click.native="openStarship42"
   >
     <template v-if="withIcon">
-      <i class="fad fa-cube" />
-      <span>{{ $t("labels.exportStarship42") }}</span>
+      <i class="fad fa-cube" /> {{ $t("labels.exportStarship42") }}
     </template>
     <span v-else>
       {{ $t("labels.3dView") }}
@@ -31,6 +31,8 @@ export default class Starship42Btn extends Btn {
   @Prop({ required: true }) items!: Vehicle[] | Model[];
 
   @Prop({ default: false }) withIcon!: boolean;
+
+  @Prop({ default: false }) block!: boolean;
 
   @Getter("mobile") mobile;
 
