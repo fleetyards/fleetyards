@@ -55,6 +55,8 @@ class Vehicle < ApplicationRecord
            source: :hangar_group,
            through: :task_forces
 
+  has_many :fleet_vehicles, dependent: :destroy
+
   has_many :vehicle_modules, dependent: :destroy
   has_many :model_modules, through: :vehicle_modules
 
@@ -71,7 +73,7 @@ class Vehicle < ApplicationRecord
 
   after_create :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
-  after_save :set_flagship, :update_loaners
+  after_save :set_flagship, :update_loaners, :update_fleet_vehicles
   after_commit :broadcast_update
   after_touch :clear_association_cache
 
@@ -88,6 +90,16 @@ class Vehicle < ApplicationRecord
   ransack_alias :hangar_groups, :hangar_groups_slug
 
   serialize :alternative_names, Array
+
+  def update_fleet_vehicles
+    return if hidden?
+
+    fleet_vehicles.destroy_all
+
+    user.fleet_memberships.each do |fleet_membership|
+      fleet_membership.add_fleet_vehicle(self)
+    end
+  end
 
   def update_loaners
     return if loaner?

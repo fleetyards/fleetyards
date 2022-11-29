@@ -78,6 +78,21 @@ class FleetMembership < ApplicationRecord
     end
   end
 
+  def add_fleet_vehicle(vehicle)
+    return if ships_filter_hide?
+
+    return if ships_filter_purchased? && !vehicle.purchased?
+
+    parent_vehicle = Vehicle.find_by(id: vehicle.vehicle_id) if vehicle.loaner?
+    hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
+    return if ships_filter_hangar_group? && hangar_group_ids.exclude?(hangar_group_id)
+
+    FleetVehicle.create(
+      fleet_id: fleet_id,
+      vehicle_id: vehicle.id
+    )
+  end
+
   def set_primary
     return unless primary?
 
