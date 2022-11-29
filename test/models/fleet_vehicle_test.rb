@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: fleet_vehicles
@@ -8,7 +10,7 @@
 #  fleet_id   :uuid
 #  vehicle_id :uuid
 #
-require "test_helper"
+require 'test_helper'
 
 class FleetVehicleTest < ActiveSupport::TestCase
   # test "the truth" do
