@@ -71,7 +71,9 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
+        model_ids = @q.result.pluck(:model_id)
+
+        @model_counts = fleet.models.where(id: model_ids).group(:slug).count
       end
 
       def public
@@ -126,7 +128,9 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
+        model_ids = @q.result.pluck(:model_id)
+
+        @model_counts = fleet.models.where(id: model_ids).group(:slug).count
       end
 
       def embed
