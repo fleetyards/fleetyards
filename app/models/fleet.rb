@@ -35,15 +35,11 @@ class Fleet < ApplicationRecord
            dependent: :destroy
   has_many :fleet_invite_urls,
            dependent: :destroy
-  has_many :visible_memberships,
-           -> { where(aasm_state: :accepted).where.not(ships_filter: :hide) },
-           dependent: :destroy,
-           class_name: 'FleetMembership',
-           inverse_of: false
-  has_many :users,
-           through: :visible_memberships
-
   has_many :fleet_vehicles, dependent: :destroy
+  has_many :vehicles, through: :fleet_vehicles, source: :vehicle
+  has_many :models, through: :vehicles, source: :model
+  has_many :manufacturers,
+           through: :models
 
   validates :fid,
             uniqueness: { case_sensitive: false },
@@ -81,24 +77,6 @@ class Fleet < ApplicationRecord
     end
 
     self.ts = ensure_valid_ts_url(self, :ts, force: force)
-  end
-
-  def vehicles(filters = nil)
-    vehicle_ids = visible_memberships.map { |member| member.visible_vehicle_ids(filters) }.flatten
-
-    Vehicle.where(id: vehicle_ids)
-  end
-
-  def models(filters = nil)
-    model_ids = visible_memberships.map { |member| member.visible_model_ids(filters) }.flatten
-
-    Model.where(id: model_ids)
-  end
-
-  def manufacturers
-    manufacturer_ids = models.pluck(:manufacturer_id)
-
-    Manufacturer.where(id: manufacturer_ids)
   end
 
   def setup_admin_user

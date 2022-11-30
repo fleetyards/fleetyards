@@ -9,10 +9,14 @@
 #  vehicle_id :uuid
 #
 
-one:
-  vehicle_id: 
-  fleet_id: 
+starfleet_enterprise:
+  vehicle: enterprise
+  fleet: starfleet
 
-two:
-  vehicle_id: 
-  fleet_id: 
+starfleet_raven:
+  vehicle: raven
+  fleet: starfleet
+
+starfleet_ptv_loaner:
+  vehicle: ptv_loaner
+  fleet: starfleet

@@ -36,6 +36,45 @@ class Dock < ApplicationRecord
     parent.table[:ship_size]
   end
 
+  SHIP_SIZE_METRICS = {
+    extra_extra_small: {
+      x: 12,
+      y: 16,
+      z: 6
+    },
+    extra_small: {
+      x: 24,
+      y: 32,
+      z: 12
+
+    },
+    small: {
+      x: 48,
+      y: 48,
+      z: 16
+    },
+    medium: {
+      x: 56,
+      y: 88,
+      z: 18
+    },
+    large: {
+      x: 72,
+      y: 128,
+      z: 36
+    },
+    extra_large: {
+      x: 160,
+      y: 272,
+      z: 64
+    },
+    capital: {
+      x: 160,
+      y: 272,
+      z: 64
+    }
+  }.freeze
+
   validates :dock_type, :ship_size, presence: true
 
   def self.size_filters

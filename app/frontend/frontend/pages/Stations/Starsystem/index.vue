@@ -75,7 +75,7 @@
             </PlanetList>
           </div>
         </transition-group>
-        <Loader :loading="loading" fixed />
+        <Loader :loading="loading" :fixed="true" />
       </div>
     </div>
     <div class="row">
