@@ -9,6 +9,8 @@ export class FleetVehiclesCollection extends BaseCollection {
 
   stats: FleetVehicleStats | null = null;
 
+  modelCounts: FleetModelCounts | null = null;
+
   get perPage(): number {
     return Store.getters["fleet/perPage"];
   }
@@ -25,7 +27,7 @@ export class FleetVehiclesCollection extends BaseCollection {
     const response = await get(`fleets/${params.slug}/vehicles`, {
       q: params?.filters,
       page: params?.page,
-      perPage: this.perPage,
+      perPage: params?.perPage || this.perPage,
       grouped: params?.grouped,
     });
 
@@ -63,6 +65,20 @@ export class FleetVehiclesCollection extends BaseCollection {
     }
 
     return this.stats;
+  }
+
+  async findModelCounts(
+    params: FleetVehicleParams
+  ): Promise<FleetModelCounts | null> {
+    const response = await get(`fleets/${params.slug}/model-counts`, {
+      q: params?.filters,
+    });
+
+    if (!response.error) {
+      this.modelCounts = response.data;
+    }
+
+    return this.modelCounts;
   }
 }
 

@@ -74,9 +74,10 @@
           </div>
         </LazyImage>
         <VehicleOwner
-          v-if="(fleetVehicle.username || vehicles.length) && showOwner"
+          v-if="showOwner"
           :owner="fleetVehicle.username"
-          :vehicles="vehicles"
+          :model-slug="fleetVehicle.slug"
+          :fleet-slug="fleetSlug"
         />
       </div>
       <PanelDetails
@@ -122,11 +123,15 @@ import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.v
   },
 })
 export default class FleetVehiclePanel extends Vue {
+  @Prop({ required: true }) fleetSlug: string;
+
   @Prop({ required: true }) fleetVehicle: Vehicle | Model | null;
 
   @Prop({ default: false }) details: boolean;
 
   @Prop({ default: true }) showOwner: boolean;
+
+  @Prop({ default: null }) modelCounts: FleetModelCounts | null;
 
   get uuid() {
     return this._uid;
@@ -185,10 +190,17 @@ export default class FleetVehiclePanel extends Vue {
   }
 
   get countLabel() {
-    if (!this.vehicles.length) {
+    if (!this.fleetVehicle.slug) {
       return "";
     }
-    return `${this.vehicles.length}x `;
+
+    const modelCount = this.modelCounts?.modelCounts[this.fleetVehicle.slug];
+
+    if (!modelCount) {
+      return "";
+    }
+
+    return `${modelCount}x `;
   }
 
   filterManufacturerQuery(manufacturer) {

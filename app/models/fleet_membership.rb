@@ -155,14 +155,6 @@ class FleetMembership < ApplicationRecord
     FleetMembershipMailer.fleet_accepted(user.email, user.username, fleet).deliver_later
   end
 
-  def visible_vehicle_ids(filters = nil)
-    return [] if visible_vehicles.blank?
-
-    scope = visible_vehicles
-    scope = scope.where(filters) if filters.present?
-    scope.pluck(:id)
-  end
-
   def broadcast_update
     fleet.fleet_memberships.find_each do |member|
       FleetMembersChannel.broadcast_to(member.user, to_json)
@@ -184,23 +176,6 @@ class FleetMembership < ApplicationRecord
       FleetMembersChannel.broadcast_to(member.user, to_json)
       FleetVehiclesChannel.broadcast_to(member.user, to_json)
     end
-  end
-
-  def visible_model_ids(filters = nil)
-    return [] if visible_vehicles.blank?
-
-    scope = visible_vehicles
-    scope = scope.where(filters) if filters.present?
-    scope.pluck(:model_id)
-  end
-
-  def visible_vehicles
-    return if ships_filter_hide?
-
-    scope = user.vehicles.where(hidden: false)
-    scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
-    scope = scope.purchased if ships_filter_purchased?
-    scope
   end
 
   def promote

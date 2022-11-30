@@ -66,7 +66,7 @@
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="loading" fixed />
+        <Loader :loading="loading" :fixed="true" />
         <div class="row">
           <div class="col-12 fade-list-item release">
             <h2

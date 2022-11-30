@@ -20,7 +20,8 @@ type VehicleForm = {
 };
 
 type VehiclesFilter = {
-  modelNameCont: string;
+  modelNameCont?: string;
+  modelSlugIn?: string[];
 };
 
 interface VehicleParams extends CollectionParams {
