@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_28_193636) do
+ActiveRecord::Schema.define(version: 2022_11_30_092935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -914,6 +914,7 @@ ActiveRecord::Schema.define(version: 2022_11_28_193636) do
     t.string "serial"
     t.string "alternative_names"
     t.uuid "module_package_id"
+    t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
