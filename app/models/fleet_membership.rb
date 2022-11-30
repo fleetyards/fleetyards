@@ -45,8 +45,8 @@ class FleetMembership < ApplicationRecord
 
   ransack_alias :username, :user_username
 
-  after_create :broadcast_create
-  after_destroy :broadcast_destroy
+  after_create :broadcast_create, :setup_fleet_vehicles
+  after_destroy :broadcast_destroy, :teardown_fleet_vehicles
   after_save :set_primary
   after_commit :broadcast_update
 
@@ -76,6 +76,18 @@ class FleetMembership < ApplicationRecord
     event :decline do
       transitions from: %i[invited requested], to: :declined
     end
+  end
+
+  def setup_fleet_vehicles
+    return if ships_filter_hide?
+
+    user.vehicles.each do |vehicle|
+      add_fleet_vehicle(vehicle)
+    end
+  end
+
+  def teardown_fleet_vehicles
+    fleet.fleet_vehicles.where(vehicle_id: user.vehicle_ids).destroy_all
   end
 
   def add_fleet_vehicle(vehicle)

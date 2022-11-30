@@ -43,6 +43,8 @@ class Fleet < ApplicationRecord
   has_many :users,
            through: :visible_memberships
 
+  has_many :fleet_vehicles, dependent: :destroy
+
   validates :fid,
             uniqueness: { case_sensitive: false },
             length: { minimum: 3 },
