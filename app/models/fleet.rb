@@ -35,20 +35,11 @@ class Fleet < ApplicationRecord
            dependent: :destroy
   has_many :fleet_invite_urls,
            dependent: :destroy
-  # has_many :visible_memberships,
-  #          -> { where(aasm_state: :accepted).where.not(ships_filter: :hide) },
-  #          dependent: :destroy,
-  #          class_name: 'FleetMembership',
-  #          inverse_of: false
-  # has_many :users,
-  #          through: :visible_memberships
   has_many :fleet_vehicles, dependent: :destroy
   has_many :vehicles, through: :fleet_vehicles, source: :vehicle
   has_many :models, through: :vehicles, source: :model
   has_many :manufacturers,
            through: :models
-
-  has_many :fleet_vehicles, dependent: :destroy
 
   validates :fid,
             uniqueness: { case_sensitive: false },
