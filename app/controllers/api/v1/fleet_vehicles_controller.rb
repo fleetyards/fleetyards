@@ -41,7 +41,7 @@ module Api
 
           @models = result_with_pagination(result, per_page(Model))
 
-          render 'api/v2/fleet_vehicles/models'
+          render 'api/v1/fleet_vehicles/models'
         else
           result = @q.result(distinct: true).includes(:model).joins(:model)
 
