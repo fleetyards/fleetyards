@@ -17,6 +17,8 @@ module Api
 
         scope = scope.where(loaner: loaner_included?)
 
+        scope = scope.where(user_id: for_members) if for_members.present?
+
         if price_range.present?
           vehicle_query_params['sorts'] = 'model_price asc'
           scope = scope.includes(:model).where(models: { price: price_range })
@@ -59,13 +61,13 @@ module Api
 
         scope = scope.where(loaner: loaner_included?)
 
+        scope = scope.where(user_id: for_members) if for_members.present?
+
         if price_range.present?
-          vehicle_query_params['sorts'] = 'model_price asc'
           scope = scope.includes(:model).where(models: { price: price_range })
         end
 
         if pledge_price_range.present?
-          vehicle_query_params['sorts'] = 'model_last_pledge_price asc'
           scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
         end
 
@@ -73,7 +75,7 @@ module Api
 
         model_ids = @q.result.pluck(:model_id)
 
-        @model_counts = fleet.models.where(id: model_ids).group(:slug).count
+        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
       end
 
       def public
@@ -128,9 +130,7 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        model_ids = @q.result.pluck(:model_id)
-
-        @model_counts = fleet.models.where(id: model_ids).group(:slug).count
+        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
       end
 
       def embed
@@ -313,6 +313,12 @@ module Api
         [false, true]
       end
       helper_method :loaner_included?
+
+      private def for_members
+        return if vehicle_query_params[:member_in].blank?
+
+        @_for_members ||= User.where(username: vehicle_query_params[:member_in]).pluck(:id)
+      end
     end
   end
 end

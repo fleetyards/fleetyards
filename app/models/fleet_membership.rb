@@ -44,6 +44,7 @@ class FleetMembership < ApplicationRecord
   validates :user_id, uniqueness: { scope: :fleet_id }
 
   ransack_alias :username, :user_username
+  ransack_alias :name, :user_username
 
   after_create :broadcast_create, :setup_fleet_vehicles
   after_destroy :broadcast_destroy, :teardown_fleet_vehicles
