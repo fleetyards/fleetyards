@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.11.4](https://github.com/fleetyards/fleetyards/compare/v5.11.3...v5.11.4) (2022-12-01)
+
+
+### Bug Fixes
+
+* **fleet-ships:** add missing membership update callback ([c845c37](https://github.com/fleetyards/fleetyards/commit/c845c37aba204cb8d8c299e898666e487fc09982))
+* **fleet-ships:** reenable for_members filter ([f05364f](https://github.com/fleetyards/fleetyards/commit/f05364f44042f711eaf58a3a758c440210c031d8))
+
 ### [5.11.3](https://github.com/fleetyards/fleetyards/compare/v5.11.2...v5.11.3) (2022-11-30)
 
 
