@@ -47,6 +47,7 @@ class FleetMembership < ApplicationRecord
   ransack_alias :name, :user_username
 
   after_create :broadcast_create, :setup_fleet_vehicles
+  after_update :update_fleet_vehicles
   after_destroy :broadcast_destroy, :teardown_fleet_vehicles
   after_save :set_primary
   after_commit :broadcast_update
@@ -85,6 +86,14 @@ class FleetMembership < ApplicationRecord
     user.vehicles.each do |vehicle|
       add_fleet_vehicle(vehicle)
     end
+  end
+
+  def update_fleet_vehicles
+    return unless ships_filter_changed?
+
+    teardown_fleet_vehicles
+
+    setup_fleet_vehicles
   end
 
   def teardown_fleet_vehicles
