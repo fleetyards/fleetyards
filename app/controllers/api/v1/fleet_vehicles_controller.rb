@@ -63,17 +63,11 @@ module Api
 
         scope = scope.where(user_id: for_members) if for_members.present?
 
-        if price_range.present?
-          scope = scope.includes(:model).where(models: { price: price_range })
-        end
+        scope = scope.includes(:model).where(models: { price: price_range }) if price_range.present?
 
-        if pledge_price_range.present?
-          scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
-        end
+        scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range }) if pledge_price_range.present?
 
         @q = scope.ransack(vehicle_query_params)
-
-        model_ids = @q.result.pluck(:model_id)
 
         @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
       end
@@ -317,7 +311,7 @@ module Api
       private def for_members
         return if vehicle_query_params[:member_in].blank?
 
-        @_for_members ||= User.where(username: vehicle_query_params[:member_in]).pluck(:id)
+        @for_members ||= User.where(username: vehicle_query_params[:member_in]).pluck(:id)
       end
     end
   end
