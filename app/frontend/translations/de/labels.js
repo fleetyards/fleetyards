@@ -451,6 +451,8 @@ export default {
       shops: "Shops",
       docks: "Docks",
       habs: "Habitation?",
+      cargoHub: "Cargo Hub?",
+      refinery: "Refinery Station?",
     },
     vehicles: {
       name: "Name or Ship name",
