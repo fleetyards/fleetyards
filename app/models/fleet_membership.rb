@@ -44,9 +44,11 @@ class FleetMembership < ApplicationRecord
   validates :user_id, uniqueness: { scope: :fleet_id }
 
   ransack_alias :username, :user_username
+  ransack_alias :name, :user_username
 
-  after_create :broadcast_create
-  after_destroy :broadcast_destroy
+  after_create :broadcast_create, :setup_fleet_vehicles
+  after_update :update_fleet_vehicles
+  after_destroy :broadcast_destroy, :teardown_fleet_vehicles
   after_save :set_primary
   after_commit :broadcast_update
 
@@ -76,6 +78,41 @@ class FleetMembership < ApplicationRecord
     event :decline do
       transitions from: %i[invited requested], to: :declined
     end
+  end
+
+  def setup_fleet_vehicles
+    return if ships_filter_hide?
+
+    user.vehicles.each do |vehicle|
+      add_fleet_vehicle(vehicle)
+    end
+  end
+
+  def update_fleet_vehicles
+    return unless ships_filter_changed?
+
+    teardown_fleet_vehicles
+
+    setup_fleet_vehicles
+  end
+
+  def teardown_fleet_vehicles
+    fleet.fleet_vehicles.where(vehicle_id: user.vehicle_ids).destroy_all
+  end
+
+  def add_fleet_vehicle(vehicle)
+    return if ships_filter_hide?
+
+    return if ships_filter_purchased? && !vehicle.purchased?
+
+    parent_vehicle = Vehicle.find_by(id: vehicle.vehicle_id) if vehicle.loaner?
+    hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
+    return if ships_filter_hangar_group? && hangar_group_ids.exclude?(hangar_group_id)
+
+    FleetVehicle.create(
+      fleet_id: fleet_id,
+      vehicle_id: vehicle.id
+    )
   end
 
   def set_primary
@@ -128,14 +165,6 @@ class FleetMembership < ApplicationRecord
     FleetMembershipMailer.fleet_accepted(user.email, user.username, fleet).deliver_later
   end
 
-  def visible_vehicle_ids(filters = nil)
-    return [] if visible_vehicles.blank?
-
-    scope = visible_vehicles
-    scope = scope.where(filters) if filters.present?
-    scope.pluck(:id)
-  end
-
   def broadcast_update
     fleet.fleet_memberships.find_each do |member|
       FleetMembersChannel.broadcast_to(member.user, to_json)
@@ -157,23 +186,6 @@ class FleetMembership < ApplicationRecord
       FleetMembersChannel.broadcast_to(member.user, to_json)
       FleetVehiclesChannel.broadcast_to(member.user, to_json)
     end
-  end
-
-  def visible_model_ids(filters = nil)
-    return [] if visible_vehicles.blank?
-
-    scope = visible_vehicles
-    scope = scope.where(filters) if filters.present?
-    scope.pluck(:model_id)
-  end
-
-  def visible_vehicles
-    return if ships_filter_hide?
-
-    scope = user.vehicles.where(hidden: false)
-    scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
-    scope = scope.purchased if ships_filter_purchased?
-    scope
   end
 
   def promote

@@ -97,17 +97,17 @@
         </Btn>
         <Btn :disabled="deleting" size="small" @click.native="deleteImage">
           <i class="fa fa-trash" />
-          <span>{{ $t("labels.image.delete") }}</span>
+          {{ $t("labels.image.delete") }}
         </Btn>
       </template>
       <template v-else>
         <Btn v-if="!internalImage.success" @click.native="start(internalImage)">
           <i class="fa fa-upload" />
-          <span>{{ $t("labels.image.start") }}</span>
+          {{ $t("labels.image.start") }}
         </Btn>
         <Btn @click.native="cancel(internalImage)">
-          <i class="fa fa-ban-circle" />
-          <span>{{ $t("labels.image.cancel") }}</span>
+          <i class="fa fa-ban" />
+          {{ $t("labels.image.cancel") }}
         </Btn>
       </template>
     </div>

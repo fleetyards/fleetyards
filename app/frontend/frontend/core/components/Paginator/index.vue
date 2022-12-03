@@ -1,8 +1,8 @@
 <template>
-  <div class="pagination">
-    <BtnGroup>
+  <div v-if="perPageSelectable || innerTotal > 1" class="pagination">
+    <BtnGroup :inline="inline">
       <PerPageDropdown
-        v-if="collection && collection.perPage"
+        v-if="perPageSelectable && collection && collection.perPage"
         variant="dropdown"
         size="small"
         :per-page="collection.perPage"
@@ -72,11 +72,15 @@ import PerPageDropdown from "@/frontend/core/components/Paginator/PerPageDropdow
   },
 })
 export default class Paginator extends Vue {
+  @Prop({ default: false }) inline!: boolean;
+
   @Prop({ default: null }) collection: any;
 
   @Prop({ default: 1 }) page: number;
 
   @Prop({ default: 1 }) total: number;
+
+  @Prop({ default: true }) perPageSelectable: boolean;
 
   get innerTotal() {
     if (this.collection) {

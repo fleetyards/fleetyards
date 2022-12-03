@@ -1,24 +1,16 @@
 <template>
   <div class="owner">
-    <template v-if="usernames.length">
-      {{ $t("labels.vehicle.owner") }}
-
-      <Btn :href="`/hangar/${firstOwner}`" variant="link" :text-inline="true">
-        {{ firstOwner }}
+    <template v-if="modelSlug">
+      <Btn
+        variant="link"
+        :text-inline="true"
+        class="owner-more-action"
+        @click.native="openOwnersModal"
+      >
+        {{ $t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
       </Btn>
-      <template v-if="usernames.length > 1">
-        {{ $t("labels.and") }}
-        <Btn
-          variant="link"
-          :text-inline="true"
-          class="owner-more-action"
-          @click.native="openOwnersModal"
-        >
-          {{ $t("actions.fleet.showOwners") }}
-        </Btn>
-      </template>
     </template>
-    <template v-else>
+    <template v-else-if="owner">
       {{ $t("labels.vehicle.owner") }}
       <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
         {{ owner }}
@@ -31,7 +23,6 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { uniq as uniqArray } from "@/frontend/utils/Array";
 
 @Component<ModelPanel>({
   components: {
@@ -39,36 +30,19 @@ import { uniq as uniqArray } from "@/frontend/utils/Array";
   },
 })
 export default class ModelPanel extends Vue {
+  @Prop({ required: true }) fleetSlug: string;
+
   @Prop({ default: null }) owner: string | null;
 
-  @Prop({
-    default() {
-      return [];
-    },
-  })
-  vehicles: Vehicle[];
-
-  get firstOwner() {
-    if (this.usernames.length > 0) {
-      return this.usernames[0];
-    }
-
-    return null;
-  }
-
-  get usernames() {
-    return this.vehicles
-      .map((vehicle) => vehicle.username)
-      .sort()
-      .filter(uniqArray);
-  }
+  @Prop({ default: null }) modelSlug: string | null;
 
   openOwnersModal() {
     this.$comlink.$emit("open-modal", {
       component: () =>
         import("@/frontend/components/Vehicles/OwnersModal/index.vue"),
       props: {
-        vehicles: this.vehicles,
+        fleetSlug: this.fleetSlug,
+        modelSlug: this.modelSlug,
       },
     });
   }

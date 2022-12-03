@@ -105,7 +105,7 @@
               />
             </div>
           </transition-group>
-          <Loader :loading="modelsLoading" fixed />
+          <Loader :loading="modelsLoading" :fixed="true" />
         </div>
         <div class="col-12 col-lg-6 relative home-images">
           <Panel>

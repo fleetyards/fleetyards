@@ -65,6 +65,20 @@
       :options="booleanOptions"
       name="habs"
     />
+    <RadioList
+      v-model="form.refineryEq"
+      :label="$t('labels.filters.stations.refinery')"
+      :reset-label="$t('labels.all')"
+      :options="booleanOptions"
+      name="refinery"
+    />
+    <RadioList
+      v-model="form.cargoHubEq"
+      :label="$t('labels.filters.stations.cargoHub')"
+      :reset-label="$t('labels.all')"
+      :options="booleanOptions"
+      name="cargoHub"
+    />
     <Btn
       :disabled="!isFilterSelected"
       :block="true"
@@ -104,6 +118,8 @@ export default {
         searchCont: query.searchCont,
         nameCont: query.nameCont,
         habsNotNull: query.habsNotNull,
+        cargoHubEq: query.cargoHubEq,
+        refineryEq: query.refineryEq,
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
         stationTypeIn: query.stationTypeIn || [],
@@ -126,6 +142,8 @@ export default {
         searchCont: query.searchCont,
         nameCont: query.nameCont,
         habsNotNull: query.habsNotNull,
+        cargoHubEq: query.cargoHubEq,
+        refineryEq: query.refineryEq,
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
         stationTypeIn: query.stationTypeIn || [],

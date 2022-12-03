@@ -178,9 +178,11 @@ v1_api_routes = lambda do
 
     member do
       get 'vehicles' => 'fleet_vehicles#index'
+      get 'model-counts' => 'fleet_vehicles#model_counts'
       get 'quick-stats' => 'fleet_vehicles#quick_stats'
       get 'fleetchart' => 'fleet_vehicles#fleetchart'
       get 'public-vehicles' => 'fleet_vehicles#public'
+      get 'public-model-counts' => 'fleet_vehicles#public_model_counts'
       get 'embed' => 'fleet_vehicles#embed'
       get 'public-fleetchart' => 'fleet_vehicles#public_fleetchart'
 

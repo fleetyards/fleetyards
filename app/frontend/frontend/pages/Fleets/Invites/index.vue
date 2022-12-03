@@ -76,7 +76,7 @@
           </transition-group>
         </Panel>
 
-        <Loader :loading="loading" fixed />
+        <Loader :loading="loading" :fixed="true" />
       </div>
     </div>
   </section>

@@ -19,11 +19,11 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       loader.all
 
       expectations = {
-        hardpoints: 5140,
-        components: 125,
-        models: 154,
+        hardpoints: 5901,
+        components: 137,
+        models: 180,
         paints: 17,
-        manufacturers: 45
+        manufacturers: 49
       }
 
       assert_equal(expectations,
@@ -90,7 +90,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       model_polaris.reload
 
       assert_in_delta(155.0, model_polaris.length.to_f)
-      assert_equal('2020-02-26T22:17:02Z', model_polaris.last_updated_at.utc.iso8601)
+      assert_equal('2022-08-18T16:49:02Z', model_polaris.last_updated_at.utc.iso8601)
     end
   end
 
@@ -100,8 +100,8 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       model = Model.find_by(name: '300i')
 
-      assert_equal(32, ModelHardpoint.where(model_id: model.id).count)
-      assert_equal(5, Component.count)
+      assert_equal(34, ModelHardpoint.where(model_id: model.id).count)
+      assert_equal(6, Component.count)
       assert_equal(0, ModelHardpoint.where(model_id: model.id).deleted.count)
     end
   end

@@ -60,7 +60,7 @@
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="loading" fixed />
+        <Loader :loading="loading" :fixed="true" />
       </div>
     </div>
   </section>

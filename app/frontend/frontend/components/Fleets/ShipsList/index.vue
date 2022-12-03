@@ -125,6 +125,8 @@
             <template #default="{ record }">
               <FleetVehiclePanel
                 :fleet-vehicle="record"
+                :model-counts="modelCounts"
+                :fleet-slug="fleet.slug"
                 :details="detailsVisible"
               />
             </template>
@@ -208,6 +210,10 @@ export default class FleetShipsList extends Vue {
     return this.collection.stats;
   }
 
+  get modelCounts() {
+    return this.collection.modelCounts;
+  }
+
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
       return this.$t("actions.hideDetails");
@@ -244,15 +250,18 @@ export default class FleetShipsList extends Vue {
   @Watch("$route")
   onRouteChange() {
     this.fetchStats();
+    this.fetchModelCounts();
   }
 
   @Watch("fleet")
   onFleetChange() {
     this.fetchStats();
+    this.fetchModelCounts();
   }
 
   mounted() {
     this.fetchStats();
+    this.fetchModelCounts();
     this.setupUpdates();
   }
 
@@ -278,6 +287,10 @@ export default class FleetShipsList extends Vue {
 
   async fetchStats() {
     await this.collection.findStats(this.filters);
+  }
+
+  async fetchModelCounts() {
+    await this.collection.findModelCounts(this.filters);
   }
 }
 </script>

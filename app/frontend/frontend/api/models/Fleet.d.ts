@@ -21,12 +21,19 @@ type FleetForm = {
 
 interface FleetVehicleParams extends CollectionParams {
   slug: string;
-  filters: VehicleParams;
+  filters: VehiclesFilter;
   grouped: boolean;
+  perPage: "all" | number;
 }
 
 type FleetVehicleStats = {
   total: number;
   classifications: ClassificationMetrics;
   metrics: VehicleMetrics;
+};
+
+type FleetModelCounts = {
+  modelCounts: {
+    [key: string]: number;
+  };
 };

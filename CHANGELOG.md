@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.11.4](https://github.com/fleetyards/fleetyards/compare/v5.11.3...v5.11.4) (2022-12-01)
+
+
+### Bug Fixes
+
+* **fleet-ships:** add missing membership update callback ([c845c37](https://github.com/fleetyards/fleetyards/commit/c845c37aba204cb8d8c299e898666e487fc09982))
+* **fleet-ships:** reenable for_members filter ([f05364f](https://github.com/fleetyards/fleetyards/commit/f05364f44042f711eaf58a3a758c440210c031d8))
+
+### [5.11.3](https://github.com/fleetyards/fleetyards/compare/v5.11.2...v5.11.3) (2022-11-30)
+
+
+### Bug Fixes
+
+* **fleet:** model_counts group call breaks with applied filters ([8c83dcd](https://github.com/fleetyards/fleetyards/commit/8c83dcd4c92da030080b7bfa19fda6199d4bf288))
+
+### [5.11.2](https://github.com/fleetyards/fleetyards/compare/v5.11.1...v5.11.2) (2022-11-30)
+
+### [5.11.1](https://github.com/fleetyards/fleetyards/compare/v5.11.0...v5.11.1) (2022-11-30)
+
+## [5.11.0](https://github.com/fleetyards/fleetyards/compare/v5.10.13...v5.11.0) (2022-11-29)
+
+
+### Features
+
+* **compare:** add starship42 button to compare page ([d5d9a94](https://github.com/fleetyards/fleetyards/commit/d5d9a949d0f87bd7d7f910c30effa8c9fa86ee35))
+
+### [5.10.13](https://github.com/fleetyards/fleetyards/compare/v5.10.12...v5.10.13) (2022-11-27)
+
+### [5.10.12](https://github.com/fleetyards/fleetyards/compare/v5.10.11...v5.10.12) (2022-11-27)
+
+
+### Bug Fixes
+
+* **hangar-import:** handle no data present in import file ([b75234c](https://github.com/fleetyards/fleetyards/commit/b75234cd49e8fc73b543e500bf7804f3f7b08854))
+* **models:** update will_it_fit filter to return scope if parent not found ([ad2cec0](https://github.com/fleetyards/fleetyards/commit/ad2cec0adb3757fc0c34a25c54c4dc583a14ab07))
+
+### [5.10.11](https://github.com/fleetyards/fleetyards/compare/v5.10.10...v5.10.11) (2022-11-27)
+
+
+### Bug Fixes
+
+* **loaners:** only add loaners for purchased ships ([32159ab](https://github.com/fleetyards/fleetyards/commit/32159abb9eb219d6ae643a1031c31897263ac08f)), closes [#2464](https://github.com/fleetyards/fleetyards/issues/2464)
+
+### [5.10.10](https://github.com/fleetyards/fleetyards/compare/v5.10.9...v5.10.10) (2022-11-27)
+
+
+### Bug Fixes
+
+* **fleet-stats:** exclude loaners from statistics ([d27e5b6](https://github.com/fleetyards/fleetyards/commit/d27e5b608326267ee2a0e8bd028dba6c168f3941)), closes [#2460](https://github.com/fleetyards/fleetyards/issues/2460)
+* **fleets:** memberlist styling ([88fd91c](https://github.com/fleetyards/fleetyards/commit/88fd91c3b4e89774b79021e0df7df7299d6fa515))
+* **hangar-import:** Add additional mapping for Genesis Starliner and Spirit ([828ae7e](https://github.com/fleetyards/fleetyards/commit/828ae7eee599cdc10923cea0cb9835da91540d5e))
+
 ### [5.10.9](https://github.com/fleetyards/fleetyards/compare/v5.10.8...v5.10.9) (2022-11-26)
 
 

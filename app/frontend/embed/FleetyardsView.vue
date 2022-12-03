@@ -53,7 +53,7 @@
           :slider="fleetchartSlider"
         />
         <ModelList v-else :models="models" />
-        <Loader :loading="loading" fixed />
+        <Loader :loading="loading" :fixed="true" />
       </div>
     </div>
   </div>

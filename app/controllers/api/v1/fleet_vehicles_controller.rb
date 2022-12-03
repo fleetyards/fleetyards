@@ -10,10 +10,14 @@ module Api
       def index
         authorize! :show, fleet
 
-        scope = fleet.vehicles(fleet_vehicle_filters).includes(
+        scope = fleet.vehicles.includes(
           :model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
           model: [:manufacturer]
         )
+
+        scope = scope.where(loaner: loaner_included?)
+
+        scope = scope.where(user_id: for_members) if for_members.present?
 
         if price_range.present?
           vehicle_query_params['sorts'] = 'model_price asc'
@@ -30,10 +34,11 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         if ActiveModel::Type::Boolean.new.cast(params['grouped'])
-          model_ids = @q.result.includes(:model).joins(:model).pluck(:model_id)
+          model_ids = @q.result.pluck(:model_id)
 
-          result = fleet.models(fleet_vehicle_filters)
+          result = fleet.models
             .where(id: model_ids)
+            .distinct
             .order(name: :asc)
 
           @models = result_with_pagination(result, per_page(Model))
@@ -44,6 +49,27 @@ module Api
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
         end
+      end
+
+      def model_counts
+        authorize! :show, fleet
+
+        scope = fleet.vehicles.includes(
+          :model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
+          model: [:manufacturer]
+        )
+
+        scope = scope.where(loaner: loaner_included?)
+
+        scope = scope.where(user_id: for_members) if for_members.present?
+
+        scope = scope.includes(:model).where(models: { price: price_range }) if price_range.present?
+
+        scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range }) if pledge_price_range.present?
+
+        @q = scope.ransack(vehicle_query_params)
+
+        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
       end
 
       def public
@@ -58,15 +84,18 @@ module Api
 
         scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
+        scope = scope.where(loaner: loaner_included?)
+
         vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
 
         @q = scope.ransack(vehicle_query_params)
 
         if ActiveModel::Type::Boolean.new.cast(params['grouped'])
-          model_ids = @q.result.includes(:model).joins(:model).pluck(:model_id)
+          model_ids = @q.result.pluck(:model_id)
 
-          result = fleet.models(loaner: loaner_included?)
+          result = fleet.models
             .where(id: model_ids)
+            .distinct
             .order(name: :asc)
 
           @models = result_with_pagination(result, per_page(Model))
@@ -79,6 +108,23 @@ module Api
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
         end
+      end
+
+      def public_model_counts
+        authorize! :read, :api_fleet
+
+        @fleet = Fleet.find_by!(slug: params[:slug])
+
+        unless fleet.public_fleet?
+          @vehicles = Kaminari.paginate_array([]).page(params[:page]).per(per_page(Vehicle))
+          return
+        end
+
+        scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+
+        @q = scope.ransack(vehicle_query_params)
+
+        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
       end
 
       def embed
@@ -106,7 +152,9 @@ module Api
       def fleetchart
         authorize! :show, fleet
 
-        scope = fleet.vehicles(loaner: loaner_included?).includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+        scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+
+        scope = scope.where(loaner: loaner_included?)
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -126,7 +174,9 @@ module Api
           return
         end
 
-        scope = fleet.vehicles(loaner: loaner_included?).includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+        scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+
+        scope = scope.where(loaner: loaner_included?)
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -140,7 +190,9 @@ module Api
       def quick_stats
         authorize! :show, fleet
 
-        scope = fleet.vehicles(loaner: loaner_included?).includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+        scope = fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+
+        scope = scope.where(loaner: loaner_included?)
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -223,9 +275,10 @@ module Api
 
       private def vehicle_query_params
         @vehicle_query_params ||= query_params(
-          :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq, :length_gteq, :length_lteq,
-          :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq,
-          manufacturer_in: [], classification_in: [], focus_in: [],
+          :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq,
+          :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
+          :pledge_price_lteq, :loaner_eq,
+          model_slug_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
           size_in: [], price_in: [], pledge_price_in: [],
           production_status_in: [], sorts: [], member_in: []
         )
@@ -258,14 +311,7 @@ module Api
       private def for_members
         return if vehicle_query_params[:member_in].blank?
 
-        User.where(username: vehicle_query_params[:member_in]).pluck(:id)
-      end
-
-      private def fleet_vehicle_filters
-        {
-          loaner: loaner_included?,
-          user_id: for_members.presence
-        }.compact
+        @for_members ||= User.where(username: vehicle_query_params[:member_in]).pluck(:id)
       end
     end
   end

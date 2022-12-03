@@ -33,7 +33,10 @@
 class Station < ApplicationRecord
   paginates_per 10
 
-  searchkick searchable: %i[name station_type classification celestial_object starsystem refinery cargo_hub],
+  searchkick searchable: %i[
+               name station_type classification celestial_object starsystem refinery
+               cargo_hub habitation tags
+             ],
              word_start: %i[name]
 
   def search_data
@@ -43,8 +46,14 @@ class Station < ApplicationRecord
       classification: classification,
       celestial_object: celestial_object.name,
       starsystem: celestial_object.starsystem&.name,
-      cargo_hub: cargo_hub? ? 'Cargo Hub' : '',
-      refinery: refinery? ? 'Refinery' : ''
+      cargo_hub: cargo_hub?,
+      refinery: refinery?,
+      habitation: habitations.present?,
+      tags: [
+        ('Cargo Hub' if cargo_hub?),
+        ('Habitation' if habitations.present?),
+        ('Refinery' if refinery?)
+      ].compact
     }
   end
 
@@ -100,7 +109,7 @@ class Station < ApplicationRecord
 
   accepts_nested_attributes_for :docks, allow_destroy: true
 
-  delegate :starsystem, to: :celestial_object
+  delegate :starsystem, to: :celestial_object, allow_nil: true
 
   def self.visible
     where(hidden: false)

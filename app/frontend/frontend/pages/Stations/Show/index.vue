@@ -63,7 +63,7 @@
               />
             </div>
           </transition-group>
-          <Loader :loading="loading" fixed />
+          <Loader :loading="loading" :fixed="true" />
         </template>
       </div>
     </div>

@@ -69,7 +69,7 @@
             <StationPanel :station="station" />
           </div>
         </transition-group>
-        <Loader :loading="loading" fixed />
+        <Loader :loading="loading" :fixed="true" />
       </div>
       <div class="col-12">
         <Paginator

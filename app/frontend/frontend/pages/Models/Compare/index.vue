@@ -39,6 +39,11 @@
                   <i />
                   {{ $t("labels.erkul.link") }}
                 </Btn>
+                <Starship42Btn
+                  :items="sortedModels"
+                  :with-icon="true"
+                  :block="true"
+                />
               </div>
               <div
                 v-for="model in sortedModels"
@@ -114,6 +119,7 @@ import BaseRows from "@/frontend/components/Compare/Models/Base/index.vue";
 import CrewRows from "@/frontend/components/Compare/Models/Crew/index.vue";
 import SpeedRows from "@/frontend/components/Compare/Models/Speed/index.vue";
 import HardpointRows from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
+import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 
 @Component<ModelsCompare>({
   components: {
@@ -126,6 +132,7 @@ import HardpointRows from "@/frontend/components/Compare/Models/Hardpoints/index
     CrewRows,
     SpeedRows,
     HardpointRows,
+    Starship42Btn,
   },
   mixins: [MetaInfo],
 })

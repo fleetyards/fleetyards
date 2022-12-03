@@ -57,7 +57,11 @@ module Api
       def import
         authorize! :index, :api_hangar
 
-        @response = ::HangarImporter.new(JSON.parse(params[:import].read)).run(current_user.id)
+        import_data = JSON.parse(params[:import].read)
+
+        render json: ValidationError.new('vehicle.import', message: I18n.t('messages.hangar_import.no_data')), status: :bad_request if import_data.blank?
+
+        @response = ::HangarImporter.new(import_data).run(current_user.id)
       rescue JSON::ParserError => e
         render json: ValidationError.new('vehicle.import', message: e), status: :bad_request
       end
