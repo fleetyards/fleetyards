@@ -111,6 +111,50 @@
     <div class="row">
       <div class="col-6">
         <FormInput
+          id="model-beam-gteq"
+          v-model="form.beamGteq"
+          type="number"
+          translation-key="filters.models.beamGt"
+          :no-placeholder="true"
+        />
+      </div>
+
+      <div class="col-6">
+        <FormInput
+          id="model-beam-lteq"
+          v-model="form.beamLteq"
+          type="number"
+          translation-key="filters.models.beamLt"
+          :no-placeholder="true"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <FormInput
+          id="model-height-gteq"
+          v-model="form.heightGteq"
+          type="number"
+          translation-key="filters.models.heightGt"
+          :no-placeholder="true"
+        />
+      </div>
+
+      <div class="col-6">
+        <FormInput
+          id="model-height-lteq"
+          v-model="form.heightLteq"
+          type="number"
+          translation-key="filters.models.heightLt"
+          :no-placeholder="true"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <FormInput
           id="model-pledge-price-gteq"
           v-model="form.pledgePriceGteq"
           type="number"
@@ -202,6 +246,10 @@ export default {
         pledgePriceGteq: query.pledgePriceGteq,
         lengthLteq: query.lengthLteq,
         lengthGteq: query.lengthGteq,
+        beamLteq: query.beamLteq,
+        beamGteq: query.beamGteq,
+        heightLteq: query.heightLteq,
+        heightGteq: query.heightGteq,
         willItFit: query.willItFit,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
@@ -242,6 +290,10 @@ export default {
         pledgePriceGteq: query.pledgePriceGteq,
         lengthLteq: query.lengthLteq,
         lengthGteq: query.lengthGteq,
+        beamLteq: query.beamLteq,
+        beamGteq: query.beamGteq,
+        heightLteq: query.heightLteq,
+        heightGteq: query.heightGteq,
         willItFit: query.willItFit,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
