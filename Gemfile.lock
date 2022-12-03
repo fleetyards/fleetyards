@@ -569,7 +569,7 @@ GEM
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
       redis (>= 4.5.0, < 5)
-    sidekiq-cron (1.8.0)
+    sidekiq-cron (1.9.0)
       fugit (~> 1)
       sidekiq (>= 4.2.1)
     simplecov (0.21.2)
