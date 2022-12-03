@@ -12,12 +12,17 @@ module Pagination
   end
 
   def pagination_header(name)
-    return if params[:perPage] == 'all'
+    links = {
+      self: page_link(nil),
+    }
 
-    scope = name
-    scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
+    if params[:perPage] != 'all'
+      scope = name
+      scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
+      links = links.merge(pagination_links(instance_variable_get("@#{scope}")))
+    end
 
-    headers['Link'] = pagination_links(instance_variable_get("@#{scope}")).filter_map do |k, v|
+    headers['Link'] = links.filter_map do |k, v|
       next if v.blank?
 
       "<#{v}>; rel=\"#{k}\""
@@ -35,14 +40,14 @@ module Pagination
 
   private def pagination_links(scope)
     {
-      first: (page_link(1) if scope.total_pages > 1 && !scope.first_page?),
+      first: page_link(1),
       next: (page_link(scope.current_page + 1) unless scope.last_page?),
       prev: (page_link(scope.current_page - 1) unless scope.first_page?),
-      last: (page_link(scope.total_pages) if scope.total_pages > 1 && !scope.last_page?)
+      last: page_link(scope.total_pages)
     }
   end
 
   private def page_link(page)
-    url_for(controller: controller_name, action: action_name, page: page)
+    url_for(controller: controller_name, action: action_name, page: page, per_page: page.present? ? params[:perPage].to_i : nil)
   end
 end
