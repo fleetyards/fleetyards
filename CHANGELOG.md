@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.12.0](https://github.com/fleetyards/fleetyards/compare/v5.11.4...v5.12.0) (2022-12-03)
+
+
+### Features
+
+* **models:** add filters for beam and height ([0b1548c](https://github.com/fleetyards/fleetyards/commit/0b1548ce261962a3c27267c43fbc15839ba609d8))
+* **stations:** add filter for refinery and cargo hub ([4705f0c](https://github.com/fleetyards/fleetyards/commit/4705f0c250feae4908d4c1050f7e6e8f4cdf4cbc))
+
 ### [5.11.4](https://github.com/fleetyards/fleetyards/compare/v5.11.3...v5.11.4) (2022-12-01)
 
 
