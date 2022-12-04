@@ -39,15 +39,31 @@ class FleetMembershipTest < ActiveSupport::TestCase
   let(:user) { users :troi }
 
   describe '#schedule_setup_fleet_vehicles' do
-    it 'enqueues update setup_fleet_vehicles job' do
+    it 'enqueues update setup_fleet_vehicles job on on_accept_request' do
+      membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, aasm_state: :requested)
       assert_enqueued_with(job: Updater::FleetMembershipVehiclesSetupJob) do
-        FleetMembership.create(fleet_id: fleet.id, user_id: user.id)
+        membership.accept_request!
       end
     end
 
-    it 'does not enqueue setup_fleet_vehicles job when ships_filter is hide' do
+    it 'does not enqueue setup_fleet_vehicles job when ships_filter is hide on on_accept_request' do
+      membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, ships_filter: :hide, aasm_state: :requested)
       assert_no_enqueued_jobs(only: Updater::FleetMembershipVehiclesSetupJob) do
-        FleetMembership.create(fleet_id: fleet.id, user_id: user.id, ships_filter: :hide)
+        membership.accept_request!
+      end
+    end
+
+    it 'enqueues update setup_fleet_vehicles job on on_accept_invitation' do
+      membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, aasm_state: :invited)
+      assert_enqueued_with(job: Updater::FleetMembershipVehiclesSetupJob) do
+        membership.accept_invitation!
+      end
+    end
+
+    it 'does not enqueue setup_fleet_vehicles job when ships_filter is hide on on_accept_invitation' do
+      membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, ships_filter: :hide, aasm_state: :invited)
+      assert_no_enqueued_jobs(only: Updater::FleetMembershipVehiclesSetupJob) do
+        membership.accept_invitation!
       end
     end
   end
@@ -58,13 +74,22 @@ class FleetMembershipTest < ActiveSupport::TestCase
         membership.update(ships_filter: :hide)
       end
     end
+
+    it 'does not enqueue setup_fleet_vehicles job when ships_filter did not change' do
+      assert_no_enqueued_jobs(only: Updater::FleetMembershipVehiclesSetupJob) do
+        membership.update(primary: !membership.primary)
+      end
+    end
   end
 
-  describe '#schedule_remove_fleet_vehicles' do
-    it 'enqueues update remove_fleet_vehicles job' do
-      new_fleet_membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id)
+  describe '#remove_fleet_vehicles' do
+    it 'removes all relevant fleet_vehicles' do
+      user.vehicles.create(model_id: Model.first.id, purchased: true)
+      new_fleet_membership = FleetMembership.create!(fleet_id: fleet.id, user_id: user.id, aasm_state: :accepted)
 
-      assert_enqueued_with(job: Updater::FleetMembershipVehiclesRemoveJob) do
+      perform_enqueued_jobs
+
+      assert_difference -> { new_fleet_membership.fleet.fleet_vehicles.count }, -1 do
         new_fleet_membership.destroy
       end
     end

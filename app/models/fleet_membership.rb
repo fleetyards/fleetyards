@@ -48,7 +48,7 @@ class FleetMembership < ApplicationRecord
 
   after_create :broadcast_create, :schedule_setup_fleet_vehicles
   after_update :schedule_update_fleet_vehicles
-  after_destroy :broadcast_destroy, :schedule_remove_fleet_vehicles
+  after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
   after_commit :broadcast_update
 
@@ -81,20 +81,21 @@ class FleetMembership < ApplicationRecord
   end
 
   def schedule_setup_fleet_vehicles
+    return unless accepted?
     return if ships_filter_hide?
 
-    Updater::FleetMembershipVehiclesSetupJob.perform_later
+    Updater::FleetMembershipVehiclesSetupJob.perform_later(fleet_membership_id: id)
   end
 
   def schedule_update_fleet_vehicles
-    Updater::FleetMembershipVehiclesUpdateJob.perform_later
-  end
+    return unless accepted?
+    return unless saved_change_to_ships_filter? || saved_change_to_hangar_group_id?
 
-  def schedule_remove_fleet_vehicles
-    Updater::FleetMembershipVehiclesRemoveJob.perform_later
+    Updater::FleetMembershipVehiclesUpdateJob.perform_later(fleet_membership_id: id)
   end
 
   def setup_fleet_vehicles
+    return unless accepted?
     return if ships_filter_hide?
 
     user.vehicles.each do |vehicle|
@@ -103,7 +104,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def update_fleet_vehicles
-    return unless ships_filter_changed?
+    return unless accepted?
 
     if ships_filter_hide?
       remove_fleet_vehicles
@@ -120,9 +121,9 @@ class FleetMembership < ApplicationRecord
 
   def update_fleet_vehicle(vehicle)
     case ships_filter
-    when :purchased
+    when 'purchased'
       update_fleet_vehicle_for_purchased(vehicle)
-    when :hangar_group
+    when 'hangar_group'
       update_fleet_vehicle_for_hangar_group(vehicle)
     else
       fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
@@ -165,6 +166,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def on_accept_invitation
+    schedule_setup_fleet_vehicles
+
     notify_fleet_admins
 
     fleet.fleet_memberships.find_each do |member|
@@ -185,6 +188,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def on_accept_request
+    schedule_setup_fleet_vehicles
+
     notify_new_member
 
     fleet.fleet_memberships.find_each do |member|

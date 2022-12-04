@@ -80,7 +80,12 @@ class Fleet < ApplicationRecord
   end
 
   def setup_admin_user
-    fleet_memberships.create(user_id: created_by, role: :admin, aasm_state: :accepted, accepted_at: Time.zone.now)
+    fleet_memberships.create(
+      user_id: created_by,
+      role: :admin,
+      aasm_state: :accepted,
+      accepted_at: Time.zone.now
+    )
   end
 
   def role(user_id)
