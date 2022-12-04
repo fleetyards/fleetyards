@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_30_092935) do
+ActiveRecord::Schema.define(version: 2022_12_04_005713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(version: 2022_11_30_092935) do
     t.uuid "fleet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["fleet_id", "vehicle_id"], name: "index_fleet_vehicles_on_fleet_id_and_vehicle_id", unique: true
   end
 
   create_table "fleets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

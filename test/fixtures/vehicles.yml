@@ -42,6 +42,7 @@ raven:
   user: data
   purchased: true
   public: true
+  hidden: false
 
 ptv_loaner:
   model: ptv

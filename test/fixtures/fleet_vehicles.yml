@@ -8,6 +8,10 @@
 #  fleet_id   :uuid
 #  vehicle_id :uuid
 #
+# Indexes
+#
+#  index_fleet_vehicles_on_fleet_id_and_vehicle_id  (fleet_id,vehicle_id) UNIQUE
+#
 
 starfleet_enterprise:
   vehicle: enterprise

@@ -72,9 +72,9 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   before_save :set_module_package
 
-  after_create :broadcast_create
+  after_create :broadcast_create, :schedule_fleet_vehicle_create
   after_destroy :remove_loaners, :broadcast_destroy
-  after_save :set_flagship, :update_loaners, :update_fleet_vehicles
+  after_save :set_flagship, :update_loaners, :schedule_fleet_vehicle_update
   after_commit :broadcast_update
   after_touch :clear_association_cache
 
@@ -92,13 +92,22 @@ class Vehicle < ApplicationRecord
 
   serialize :alternative_names, Array
 
-  def update_fleet_vehicles
+  def schedule_fleet_vehicle_update
+    return if hidden?
+    return unless saved_change_to_purchased?
+
+    Updater::FleetVehicleUpdateJob.perform_later(vehicle_id: id)
+  end
+
+  def schedule_fleet_vehicle_create
     return if hidden?
 
-    fleet_vehicles.destroy_all
+    Updater::FleetVehicleUpdateJob.perform_later(vehicle_id: id)
+  end
 
+  def update_fleet_vehicle
     user.fleet_memberships.each do |fleet_membership|
-      fleet_membership.add_fleet_vehicle(self)
+      fleet_membership.update_fleet_vehicle(self)
     end
   end
 

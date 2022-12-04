@@ -731,7 +731,15 @@ module Api
               'label' => 'Multi role',
               'count' => 1
             }],
-            'groups' => [],
+            'groups' => [{
+              'id' => 'afe7ade2-7912-54a7-9bf7-9eb2415e8380',
+              'slug' => 'group-one',
+              'count' => 1
+            }, {
+              'id' => 'ae2759d9-a46f-5257-972f-430dbbce6fd3',
+              'slug' => 'group-two',
+              'count' => 1
+            }],
             'metrics' => {
               'totalMoney' => 625,
               'totalMinCrew' => 5,
@@ -759,7 +767,15 @@ module Api
               'label' => 'Multi role',
               'count' => 0
             }],
-            'groups' => [],
+            'groups' => [{
+              'id' => 'afe7ade2-7912-54a7-9bf7-9eb2415e8380',
+              'slug' => 'group-one',
+              'count' => 0
+            }, {
+              'id' => 'ae2759d9-a46f-5257-972f-430dbbce6fd3',
+              'slug' => 'group-two',
+              'count' => 0
+            }],
             'metrics' => {
               'totalMoney' => 0,
               'totalMinCrew' => 0,
