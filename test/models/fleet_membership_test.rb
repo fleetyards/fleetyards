@@ -41,28 +41,14 @@ class FleetMembershipTest < ActiveSupport::TestCase
   describe '#schedule_setup_fleet_vehicles' do
     it 'enqueues update setup_fleet_vehicles job on on_accept_request' do
       membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, aasm_state: :requested)
-      assert_enqueued_with(job: Updater::FleetMembershipVehiclesSetupJob) do
-        membership.accept_request!
-      end
-    end
-
-    it 'does not enqueue setup_fleet_vehicles job when ships_filter is hide on on_accept_request' do
-      membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, ships_filter: :hide, aasm_state: :requested)
-      assert_no_enqueued_jobs(only: Updater::FleetMembershipVehiclesSetupJob) do
+      assert_enqueued_with(job: Updater::FleetMembershipVehiclesUpdateJob) do
         membership.accept_request!
       end
     end
 
     it 'enqueues update setup_fleet_vehicles job on on_accept_invitation' do
       membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, aasm_state: :invited)
-      assert_enqueued_with(job: Updater::FleetMembershipVehiclesSetupJob) do
-        membership.accept_invitation!
-      end
-    end
-
-    it 'does not enqueue setup_fleet_vehicles job when ships_filter is hide on on_accept_invitation' do
-      membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, ships_filter: :hide, aasm_state: :invited)
-      assert_no_enqueued_jobs(only: Updater::FleetMembershipVehiclesSetupJob) do
+      assert_enqueued_with(job: Updater::FleetMembershipVehiclesUpdateJob) do
         membership.accept_invitation!
       end
     end
