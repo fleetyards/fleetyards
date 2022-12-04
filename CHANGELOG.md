@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.1](https://github.com/fleetyards/fleetyards/compare/v5.12.0...v5.12.1) (2022-12-04)
+
+
+### Bug Fixes
+
+* **link-header:** prevent empty header value and add self link ([5d41063](https://github.com/fleetyards/fleetyards/commit/5d41063e60a387a12fdc990e5b55f70aeb20ea20))
+
 ## [5.12.0](https://github.com/fleetyards/fleetyards/compare/v5.11.4...v5.12.0) (2022-12-03)
 
 
