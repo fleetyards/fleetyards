@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.2](https://github.com/fleetyards/fleetyards/compare/v5.12.1...v5.12.2) (2022-12-04)
+
+
+### Bug Fixes
+
+* **fleet-vehicles:** update scheduling to prevent double update jobs ([a3e2c76](https://github.com/fleetyards/fleetyards/commit/a3e2c7601ee91f6fbac2c1ebffb3e73e79e1ef35))
+
 ### [5.12.1](https://github.com/fleetyards/fleetyards/compare/v5.12.0...v5.12.1) (2022-12-04)
 
 
