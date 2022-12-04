@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/davydovanton/sidekiq-statistic.git
-  revision: 1905002064f8bf45e1a130787fc67df0e8cbda99
-  branch: v1.5.1
-  specs:
-    sidekiq-statistic (1.5.1)
-      sidekiq (>= 5.0)
-      tilt (~> 2.0)
-
-GIT
   remote: https://github.com/r38y/griddler-postmark.git
   revision: 55904355a44066d94c24b49613a22e1face387a5
   specs:
@@ -763,7 +754,6 @@ DEPENDENCIES
   shoulda-matchers
   sidekiq (< 7)
   sidekiq-cron
-  sidekiq-statistic!
   simplecov
   simplecov-console
   simplecov-html

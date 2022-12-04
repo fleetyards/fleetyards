@@ -10,7 +10,13 @@
 #  fleet_id   :uuid
 #  vehicle_id :uuid
 #
+# Indexes
+#
+#  index_fleet_vehicles_on_fleet_id_and_vehicle_id  (fleet_id,vehicle_id) UNIQUE
+#
 class FleetVehicle < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :vehicle
+
+  validates :vehicle_id, uniqueness: { scope: [:fleet_id] }
 end

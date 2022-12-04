@@ -46,9 +46,9 @@ class FleetMembership < ApplicationRecord
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username
 
-  after_create :broadcast_create, :setup_fleet_vehicles
-  after_update :update_fleet_vehicles
-  after_destroy :broadcast_destroy, :teardown_fleet_vehicles
+  after_create :broadcast_create, :schedule_setup_fleet_vehicles
+  after_update :schedule_update_fleet_vehicles
+  after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
   after_commit :broadcast_update
 
@@ -80,39 +80,73 @@ class FleetMembership < ApplicationRecord
     end
   end
 
+  def schedule_setup_fleet_vehicles
+    return unless accepted?
+    return if ships_filter_hide?
+
+    Updater::FleetMembershipVehiclesSetupJob.perform_later(fleet_membership_id: id)
+  end
+
+  def schedule_update_fleet_vehicles
+    return unless accepted?
+    return unless saved_change_to_ships_filter? || saved_change_to_hangar_group_id?
+
+    Updater::FleetMembershipVehiclesUpdateJob.perform_later(fleet_membership_id: id)
+  end
+
   def setup_fleet_vehicles
+    return unless accepted?
     return if ships_filter_hide?
 
     user.vehicles.each do |vehicle|
-      add_fleet_vehicle(vehicle)
+      update_fleet_vehicle(vehicle)
     end
   end
 
   def update_fleet_vehicles
-    return unless ships_filter_changed?
+    return unless accepted?
 
-    teardown_fleet_vehicles
-
-    setup_fleet_vehicles
+    if ships_filter_hide?
+      remove_fleet_vehicles
+    else
+      user.vehicles.each do |vehicle|
+        update_fleet_vehicle(vehicle)
+      end
+    end
   end
 
-  def teardown_fleet_vehicles
+  def remove_fleet_vehicles
     fleet.fleet_vehicles.where(vehicle_id: user.vehicle_ids).destroy_all
   end
 
-  def add_fleet_vehicle(vehicle)
-    return if ships_filter_hide?
+  def update_fleet_vehicle(vehicle)
+    case ships_filter
+    when 'purchased'
+      update_fleet_vehicle_for_purchased(vehicle)
+    when 'hangar_group'
+      update_fleet_vehicle_for_hangar_group(vehicle)
+    else
+      fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
+    end
+  end
 
-    return if ships_filter_purchased? && !vehicle.purchased?
+  def update_fleet_vehicle_for_purchased(vehicle)
+    if vehicle.purchased?
+      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
+    else
+      fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
+    end
+  end
 
+  def update_fleet_vehicle_for_hangar_group(vehicle)
     parent_vehicle = Vehicle.find_by(id: vehicle.vehicle_id) if vehicle.loaner?
     hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
-    return if ships_filter_hangar_group? && hangar_group_ids.exclude?(hangar_group_id)
 
-    FleetVehicle.create(
-      fleet_id: fleet_id,
-      vehicle_id: vehicle.id
-    )
+    if hangar_group_ids.include?(hangar_group_id)
+      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
+    else
+      fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
+    end
   end
 
   def set_primary
@@ -132,6 +166,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def on_accept_invitation
+    schedule_setup_fleet_vehicles
+
     notify_fleet_admins
 
     fleet.fleet_memberships.find_each do |member|
@@ -152,6 +188,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def on_accept_request
+    schedule_setup_fleet_vehicles
+
     notify_new_member
 
     fleet.fleet_memberships.find_each do |member|

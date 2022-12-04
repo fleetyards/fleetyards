@@ -18,4 +18,11 @@
 class TaskForce < ApplicationRecord
   belongs_to :vehicle, touch: true
   belongs_to :hangar_group, touch: true
+
+  after_create :schedule_fleet_vehicle_update
+  after_destroy :schedule_fleet_vehicle_update
+
+  def schedule_fleet_vehicle_update
+    Updater::FleetVehicleUpdateJob.perform_later(vehicle_id: vehicle.id)
+  end
 end

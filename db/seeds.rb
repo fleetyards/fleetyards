@@ -44,12 +44,16 @@ if ENV['TEST_SEEDS'].present?
     )
   end
 
-  Fleet.find_or_create_by!(
+  fleet = Fleet.find_or_create_by!(
     name: 'TestFleet',
     fid: 'TESTFLEET',
     created_by: test_user.id,
     public_fleet: true
   )
+
+  fleet.fleet_memberships.each do |membership|
+    membership.setup_fleet_vehicles
+  end
 
   RoadmapItem.create(
     rsi_id: 500,
