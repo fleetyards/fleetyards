@@ -189,6 +189,7 @@ v1_api_routes = lambda do
       get 'members' => 'fleet_members#index'
       get 'member-quick-stats' => 'fleet_members#quick_stats'
 
+      get 'stats/vehicles-by-model' => 'fleet_stats#vehicles_by_model'
       get 'stats/models-by-size' => 'fleet_stats#models_by_size'
       get 'stats/models-by-production-status' => 'fleet_stats#models_by_production_status'
       get 'stats/models-by-manufacturer' => 'fleet_stats#models_by_manufacturer'
