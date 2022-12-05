@@ -132,7 +132,7 @@ class FleetMembership < ApplicationRecord
 
   def update_fleet_vehicle_for_purchased(vehicle)
     if vehicle.purchased?
-      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
+      fleet.fleet_vehicles.create_or_find_by(vehicle_id: vehicle.id)
     else
       fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
     end
@@ -143,7 +143,7 @@ class FleetMembership < ApplicationRecord
     hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
 
     if hangar_group_ids.include?(hangar_group_id)
-      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
+      fleet.fleet_vehicles.create_or_find_by(vehicle_id: vehicle.id)
     else
       fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
     end
