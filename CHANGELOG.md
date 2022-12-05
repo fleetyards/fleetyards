@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.3](https://github.com/fleetyards/fleetyards/compare/v5.12.2...v5.12.3) (2022-12-05)
+
+
+### Bug Fixes
+
+* **pagination:** exclude zero from per_page and also allow snakecase ([8c11f3a](https://github.com/fleetyards/fleetyards/commit/8c11f3a5a50f8d0eca59fe41a68e57fb42e8f05c))
+
 ### [5.12.2](https://github.com/fleetyards/fleetyards/compare/v5.12.1...v5.12.2) (2022-12-04)
 
 
