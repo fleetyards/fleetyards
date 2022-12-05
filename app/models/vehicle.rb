@@ -96,13 +96,13 @@ class Vehicle < ApplicationRecord
     return if hidden?
     return unless saved_change_to_purchased?
 
-    Updater::FleetVehicleUpdateJob.perform_later(vehicle_id: id)
+    Updater::FleetVehicleUpdateJob.perform_async(id)
   end
 
   def schedule_fleet_vehicle_create
     return if hidden?
 
-    Updater::FleetVehicleUpdateJob.perform_later(vehicle_id: id)
+    Updater::FleetVehicleUpdateJob.perform_async(id)
   end
 
   def update_fleet_vehicle

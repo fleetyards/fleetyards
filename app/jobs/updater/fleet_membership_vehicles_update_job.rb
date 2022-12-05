@@ -2,7 +2,9 @@
 
 module Updater
   class FleetMembershipVehiclesUpdateJob < ::Updater::BaseJob
-    def perform(fleet_membership_id:)
+    sidekiq_options lock: :until_executed, on_conflict: :reject
+
+    def perform(fleet_membership_id)
       fleet_membership = FleetMembership.find_by(id: fleet_membership_id)
 
       return if fleet_membership.blank?

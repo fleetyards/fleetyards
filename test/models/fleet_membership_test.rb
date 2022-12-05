@@ -29,8 +29,6 @@
 require 'test_helper'
 
 class FleetMembershipTest < ActiveSupport::TestCase
-  include ActiveJob::TestHelper
-
   should belong_to(:user)
   should belong_to(:fleet)
 
@@ -41,30 +39,32 @@ class FleetMembershipTest < ActiveSupport::TestCase
   describe '#schedule_setup_fleet_vehicles' do
     it 'enqueues update setup_fleet_vehicles job on on_accept_request' do
       membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, aasm_state: :requested)
-      assert_enqueued_with(job: Updater::FleetMembershipVehiclesUpdateJob) do
-        membership.accept_request!
-      end
+
+      membership.accept_request!
+
+      assert_equal 1, Updater::FleetMembershipVehiclesUpdateJob.jobs.size
     end
 
     it 'enqueues update setup_fleet_vehicles job on on_accept_invitation' do
       membership = FleetMembership.create(fleet_id: fleet.id, user_id: user.id, aasm_state: :invited)
-      assert_enqueued_with(job: Updater::FleetMembershipVehiclesUpdateJob) do
-        membership.accept_invitation!
-      end
+
+      membership.accept_invitation!
+
+      assert_equal 1, Updater::FleetMembershipVehiclesUpdateJob.jobs.size
     end
   end
 
   describe '#schedule_update_fleet_vehicles' do
     it 'enqueues update update_fleet_vehicles job' do
-      assert_enqueued_with(job: Updater::FleetMembershipVehiclesUpdateJob) do
-        membership.update(ships_filter: :hide)
-      end
+      membership.update(ships_filter: :hide)
+
+      assert_equal 1, Updater::FleetMembershipVehiclesUpdateJob.jobs.size
     end
 
     it 'does not enqueue setup_fleet_vehicles job when ships_filter did not change' do
-      assert_no_enqueued_jobs(only: Updater::FleetMembershipVehiclesSetupJob) do
-        membership.update(primary: !membership.primary)
-      end
+      membership.update(primary: !membership.primary)
+
+      assert_equal 0, Updater::FleetMembershipVehiclesSetupJob.jobs.size
     end
   end
 
@@ -73,7 +73,9 @@ class FleetMembershipTest < ActiveSupport::TestCase
       user.vehicles.create(model_id: Model.first.id, purchased: true)
       new_fleet_membership = FleetMembership.create!(fleet_id: fleet.id, user_id: user.id, aasm_state: :accepted)
 
-      perform_enqueued_jobs
+      assert_equal 1, Updater::FleetMembershipVehiclesSetupJob.jobs.size
+
+      Updater::FleetMembershipVehiclesSetupJob.drain
 
       assert_difference -> { new_fleet_membership.fleet.fleet_vehicles.count }, -1 do
         new_fleet_membership.destroy

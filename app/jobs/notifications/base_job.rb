@@ -2,7 +2,6 @@
 
 module Notifications
   class BaseJob < ::ApplicationJob
-    queue_as :notifications
-    sidekiq_options retry: true
+    sidekiq_options retry: true, queue: 'notifications'
   end
 end

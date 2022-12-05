@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class VehicleTest < ActiveSupport::TestCase
-  include ActiveJob::TestHelper
-
   should belong_to(:user)
   should belong_to(:model)
   should belong_to(:model_paint).optional(true)
@@ -15,17 +13,17 @@ class VehicleTest < ActiveSupport::TestCase
 
   describe '#schedule_fleet_vehicle_update' do
     it 'enqueues update job on purchase change' do
-      assert_enqueued_with(job: Updater::FleetVehicleUpdateJob) do
-        raven.update(purchased: !raven.purchased)
-      end
+      raven.update(purchased: !raven.purchased)
+
+      assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
     end
 
     it 'does not enqueues update job if vehicle is hidden' do
       raven.update(hidden: true)
 
-      assert_no_enqueued_jobs(only: Updater::FleetVehicleUpdateJob) do
-        raven.update(purchased: !raven.purchased)
-      end
+      raven.update(purchased: !raven.purchased)
+
+      assert_equal 0, Updater::FleetVehicleUpdateJob.jobs.size
     end
   end
 end

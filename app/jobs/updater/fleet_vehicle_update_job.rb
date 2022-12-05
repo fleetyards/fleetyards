@@ -2,7 +2,7 @@
 
 module Updater
   class FleetVehicleUpdateJob < ::Updater::BaseJob
-    def perform(vehicle_id:)
+    def perform(vehicle_id)
       vehicle = Vehicle.find_by(id: vehicle_id)
 
       return if vehicle.blank?

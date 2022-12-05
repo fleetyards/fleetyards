@@ -23,6 +23,6 @@ class TaskForce < ApplicationRecord
   after_destroy :schedule_fleet_vehicle_update
 
   def schedule_fleet_vehicle_update
-    Updater::FleetVehicleUpdateJob.perform_later(vehicle_id: vehicle.id)
+    Updater::FleetVehicleUpdateJob.perform_async(vehicle_id)
   end
 end

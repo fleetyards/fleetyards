@@ -5,12 +5,12 @@ class Broadcast < Thor
   desc 'version', 'Broadcast Version'
   def version
     require './config/environment'
-    Notifications::AppVersionJob.set(wait: 1.minute).perform_later
+    Notifications::AppVersionJob.perform_in(1.minute)
   end
 
   desc 'check_sc_data', 'Check for new SC Data Version'
   def check_sc_data
     require './config/environment'
-    ScDataCheckJob.set(wait: 5.minutes).perform_later
+    ScDataCheckJob.perform_in(5.minutes)
   end
 end
