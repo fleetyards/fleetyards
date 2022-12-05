@@ -98,7 +98,7 @@ class FleetMembership < ApplicationRecord
     return unless accepted?
     return if ships_filter_hide?
 
-    user.vehicles.each do |vehicle|
+    user.vehicles.visible.each do |vehicle|
       update_fleet_vehicle(vehicle)
     end
   end
@@ -109,7 +109,7 @@ class FleetMembership < ApplicationRecord
     if ships_filter_hide?
       remove_fleet_vehicles
     else
-      user.vehicles.each do |vehicle|
+      user.vehicles.visible.each do |vehicle|
         update_fleet_vehicle(vehicle)
       end
     end
@@ -132,10 +132,12 @@ class FleetMembership < ApplicationRecord
 
   def update_fleet_vehicle_for_purchased(vehicle)
     if vehicle.purchased?
-      fleet.fleet_vehicles.create_or_find_by(vehicle_id: vehicle.id)
+      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
     else
       fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
     end
+  rescue ActiveRecord::RecordNotUnique
+    nil
   end
 
   def update_fleet_vehicle_for_hangar_group(vehicle)
@@ -143,10 +145,12 @@ class FleetMembership < ApplicationRecord
     hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
 
     if hangar_group_ids.include?(hangar_group_id)
-      fleet.fleet_vehicles.create_or_find_by(vehicle_id: vehicle.id)
+      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
     else
       fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
     end
+  rescue ActiveRecord::RecordNotUnique
+    nil
   end
 
   def set_primary
