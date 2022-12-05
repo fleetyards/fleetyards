@@ -4,11 +4,11 @@ module Pagination
   class MaxPerPageReached < StandardError; end
 
   def per_page(model)
-    return model.default_per_page if params[:perPage].blank?
+    return model.default_per_page if per_page_params.blank? || per_page_params.to_i.zero?
 
-    raise Pagination::MaxPerPageReached if params[:perPage].to_i > model.max_per_page
+    raise Pagination::MaxPerPageReached if per_page_params.to_i > model.max_per_page
 
-    params[:perPage].to_i
+    per_page_params.to_i
   end
 
   def pagination_header(name)
@@ -16,7 +16,7 @@ module Pagination
       self: page_link(nil),
     }
 
-    if params[:perPage] != 'all'
+    if per_page_params != 'all' && !per_page_params.to_i.zero?
       scope = name
       scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
       links = links.merge(pagination_links(instance_variable_get("@#{scope}")))
@@ -30,7 +30,7 @@ module Pagination
   end
 
   private def result_with_pagination(result, per_page)
-    if params[:perPage] == 'all'
+    if per_page_params == 'all'
       result.all
     else
       result.page(params[:page])
@@ -48,6 +48,15 @@ module Pagination
   end
 
   private def page_link(page)
-    url_for(controller: controller_name, action: action_name, page: page, per_page: page.present? ? params[:perPage].to_i : nil)
+    url_for(
+      controller: controller_name,
+      action: action_name,
+      page: page,
+      per_page: page.present? && !per_page_params.to_i.zero? ? per_page_params.to_i : nil
+    )
+  end
+
+  private def per_page_params
+    @per_page_params ||= params[:perPage] || params[:per_page]
   end
 end
