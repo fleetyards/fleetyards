@@ -472,7 +472,7 @@ class Model < ApplicationRecord
   private def send_new_model_notification
     return if notified? || hidden?
 
-    Notifications::NewModelJob.perform_later(id)
+    Notifications::NewModelJob.perform_async(id)
 
     ActionCable.server.broadcast('new_model', to_json)
   end
@@ -481,7 +481,7 @@ class Model < ApplicationRecord
     return unless on_sale?
     return if created_at > 24.hours.ago
 
-    Notifications::ModelOnSaleJob.perform_later(id)
+    Notifications::ModelOnSaleJob.perform_async(id)
 
     ActionCable.server.broadcast('on_sale', to_json)
   end

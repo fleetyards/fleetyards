@@ -18,8 +18,6 @@
 require 'test_helper'
 
 class TaskForceTest < ActiveSupport::TestCase
-  include ActiveJob::TestHelper
-
   should belong_to(:vehicle)
   should belong_to(:hangar_group)
 
@@ -28,17 +26,23 @@ class TaskForceTest < ActiveSupport::TestCase
 
   describe '#schedule_fleet_vehicle_update' do
     it 'enqueues update job on task_force create' do
-      assert_enqueued_with(job: Updater::FleetVehicleUpdateJob) do
-        TaskForce.create(vehicle_id: raven.id, hangar_group_id: hangargroup.id)
-      end
+      TaskForce.create(vehicle_id: raven.id, hangar_group_id: hangargroup.id)
+
+      assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
     end
 
     it 'enqueues update job on task_force destroy' do
       taskforce = TaskForce.create(vehicle_id: raven.id, hangar_group_id: hangargroup.id)
 
-      assert_enqueued_with(job: Updater::FleetVehicleUpdateJob) do
-        taskforce.destroy
-      end
+      assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
+
+      Updater::FleetVehicleUpdateJob.drain
+
+      assert_equal 0, Updater::FleetVehicleUpdateJob.jobs.size
+
+      taskforce.destroy
+
+      assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
     end
   end
 end

@@ -2,6 +2,6 @@
 
 module Updater
   class BaseJob < ::ApplicationJob
-    queue_as :updater
+    sidekiq_options queue: 'updater'
   end
 end

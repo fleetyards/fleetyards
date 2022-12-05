@@ -6,7 +6,7 @@ class ScDataCheckJob < ApplicationJob
 
     return if Imports::ScDataImport.finished.exists?(version: new_version)
 
-    Loaders::ScDataShipsJob.perform_later(version: new_version)
+    Loaders::ScDataShipsJob.perform_async(new_version)
   end
 
   private def load_version_from_s3
