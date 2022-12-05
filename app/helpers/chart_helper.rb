@@ -15,4 +15,14 @@ module ChartHelper
       point
     end
   end
+
+  def transform_for_bar_chart(data)
+    data.sort_by { |_label, count| count }.reverse.each.map do |label, count|
+      {
+        label: label,
+        count: count,
+        tooltip: label
+      }
+    end
+  end
 end

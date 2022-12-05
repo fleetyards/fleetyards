@@ -5,6 +5,18 @@ module Api
     class FleetStatsController < ::Api::BaseController
       include ChartHelper
 
+      def vehicles_by_model
+        authorize! :show, fleet
+
+        vehicles_by_model = transform_for_bar_chart(
+          fleet.vehicles.visible.where(loaner: false)
+               .joins(:model)
+               .group('models.name').count
+        ).take(params[:limit].present? ? params[:limit].to_i : Model.count)
+
+        render json: vehicles_by_model.to_json
+      end
+
       def models_by_size
         authorize! :show, fleet
 

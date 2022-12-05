@@ -65,6 +65,7 @@ export default {
     },
     modelsByClassification: "Ships by Classification",
     modelsBySize: "Ships by Size",
+    vehiclesByModel: "Ships by Model (Top %{limit})",
     modelsPerMonth: "Ships per Month",
     modelsByManufacturer: "Ships by Manufacturer",
     modelsByProductionStatus: "Ships by Production Status",
