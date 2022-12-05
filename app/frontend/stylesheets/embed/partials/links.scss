@@ -1,5 +1,5 @@
 a {
-  color: $text-color;
+  color: $fleetyards-view-text-color;
   text-decoration: none;
   transition: all ease 0.5s;
 
@@ -9,7 +9,7 @@ a {
   }
 
   &:focus {
-    color: $text-color;
+    color: $fleetyards-view-text-color;
     text-decoration: none;
   }
 }

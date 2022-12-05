@@ -1,32 +1,34 @@
-.tooltip {
-  z-index: 10000;
-  display: block !important;
-  padding: 4px;
+#fleetyards-view {
+  .tooltip {
+    z-index: 10000;
+    display: block !important;
+    padding: 4px;
 
-  .tooltip-inner {
-    padding: 5px 10px 4px;
-    color: $text-color;
-    background: $gray-darker;
-    border-radius: $border-radius-base;
-  }
+    .tooltip-inner {
+      padding: 5px 10px 4px;
+      color: $fleetyards-view-text-color;
+      background: $fleetyards-view-gray-darker;
+      border-radius: $fleetyards-view-border-radius-base;
+    }
 
-  .tooltip-arrow {
-    display: none;
-  }
+    .tooltip-arrow {
+      display: none;
+    }
 
-  &[aria-hidden="true"] {
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity ease 0.15s, visibility ease 0.15s;
-  }
+    &[aria-hidden="true"] {
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity ease 0.15s, visibility ease 0.15s;
+    }
 
-  &[aria-hidden="false"] {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity ease 0.15s;
-  }
+    &[aria-hidden="false"] {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity ease 0.15s;
+    }
 
-  &.nav-item-tooltip {
-    margin-left: 60px;
+    &.nav-item-tooltip {
+      margin-left: 60px;
+    }
   }
 }

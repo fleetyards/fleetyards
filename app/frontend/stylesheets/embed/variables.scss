@@ -1,0 +1,78 @@
+$fleetyards-view-background: #000;
+
+$fleetyards-view-text-color: #c8c8c8;
+$fleetyards-view-primary: #428bca;
+$fleetyards-view-success: #5cb85c;
+$fleetyards-view-danger: #dc3545;
+$fleetyards-view-warning: darken(#ffc107, 10%);
+
+$fleetyards-view-gray-lighter: #999;
+$fleetyards-view-gray-light: #7a8288;
+$fleetyards-view-gray: #52575c;
+$fleetyards-view-gray-dark: #3a3f44;
+$fleetyards-view-gray-darker: #272b30;
+$fleetyards-view-gray-black: #222;
+
+// $fleetyards-view-gold: goldenrod;
+$fleetyards-view-gold: #d4af37;
+
+$fleetyards-view-input-bg: $fleetyards-view-gray-dark;
+$fleetyards-view-input-border: $fleetyards-view-gray-darker;
+$fleetyards-view-input-color: $fleetyards-view-text-color;
+$fleetyards-view-input-placerholder: #757575;
+
+$fleetyards-view-tablet-breakpoint: 768px;
+$fleetyards-view-desktop-breakpoint: 992px;
+$fleetyards-view-large-desktop-breakpoint: 1800px;
+
+$fleetyards-view-border-radius-base: 4px;
+
+$fleetyards-view-panel-bg: rgba($fleetyards-view-gray-darker, 0.9);
+$fleetyards-view-panel-outer-border: lighten(#555, 10%);
+$fleetyards-view-panel-inner-border: rgba(#c8c8c8, 0.9);
+$fleetyards-view-panel-border-width: 2px;
+$fleetyards-view-panel-border-radius: 10px;
+$fleetyards-view-panel-content-border-radius: 6px;
+$fleetyards-view-panelOuterBorderRadius: 24px;
+$fleetyards-view-panelInnerBorderRadius: 20px;
+$fleetyards-view-panelContentBorderRadius: 16px;
+
+$fleetyards-view-navigation-mobile-height: 60px;
+$fleetyards-view-navigation-mobile-bottom-offset: 20px;
+
+$fleetyards-view-transition-base-speed: 0.5s;
+
+// bootstrap overrides
+$fleetyards-view-grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 992px,
+  lg: 1500px,
+  xl: 2100px,
+  xxl: 2800px,
+  3xl: 3200px,
+);
+
+$fleetyards-view-container-max-widths: (
+  xs: 100%,
+  sm: 100%,
+  md: 95%,
+  lg: 95%,
+  xl: 95%,
+  xxl: 95%,
+  3xl: 95%,
+);
+
+$fleetyards-view-font-size-base: 1rem;
+$fleetyards-view-h1-large-font-size: $fleetyards-view-font-size-base * 2.5;
+$fleetyards-view-h1-font-size: $fleetyards-view-font-size-base * 2.15;
+$fleetyards-view-h2-font-size: $fleetyards-view-font-size-base * 1.7;
+$fleetyards-view-h3-font-size: $fleetyards-view-font-size-base * 1.25;
+$fleetyards-view-h4-font-size: $fleetyards-view-font-size-base;
+$fleetyards-view-h5-font-size: $fleetyards-view-font-size-base * 0.85;
+$fleetyards-view-h6-font-size: $fleetyards-view-font-size-base * 0.85;
+
+$fleetyards-view-body-bg: $fleetyards-view-background;
+$fleetyards-view-body-color: $fleetyards-view-text-color;
+
+$fleetyards-view-progress-bg: #1c1e22;

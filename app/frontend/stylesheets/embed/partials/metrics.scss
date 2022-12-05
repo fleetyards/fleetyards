@@ -11,7 +11,7 @@
 .metrics-label,
 .metrics-group-label {
   margin-top: 6px;
-  color: darken($text-color, 20%);
+  color: darken($fleetyards-view-text-color, 20%);
 }
 
 .metrics-group-label {
@@ -19,7 +19,7 @@
   margin-bottom: 5px;
   padding-bottom: 5px;
   font-size: 110%;
-  border-bottom: 2px solid $gray-dark;
+  border-bottom: 2px solid $fleetyards-view-gray-dark;
 }
 
 :first-child > .metrics-group-label {

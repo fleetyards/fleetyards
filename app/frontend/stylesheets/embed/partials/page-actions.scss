@@ -34,7 +34,7 @@
   }
 }
 
-@media (max-width: $desktop-breakpoint) {
+@media (max-width: $fleetyards-view-desktop-breakpoint) {
   .page-actions {
     display: flex;
     flex-wrap: wrap;

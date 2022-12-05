@@ -51,7 +51,7 @@
   position: fixed !important;
 }
 
-@media (max-width: $desktop-breakpoint) {
+@media (max-width: $fleetyards-view-desktop-breakpoint) {
   .fleetchart {
     justify-content: center;
   }

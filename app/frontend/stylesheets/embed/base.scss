@@ -1,13 +1,13 @@
-& {
+#fleetyards-view {
   margin-right: auto;
   margin-left: auto;
   padding-right: 15px;
   padding-left: 15px;
-  color: $text-color;
+  color: $fleetyards-view-text-color;
   font-family: "Open Sans", sans-serif;
 
   .row > [class*="col-"] {
-    transition: width ease $transition-base-speed;
+    transition: width ease $fleetyards-view-transition-base-speed;
   }
 
   a,
@@ -19,7 +19,7 @@
   hr {
     height: 3px;
     margin: 20px 5%;
-    background-color: $gray;
+    background-color: $fleetyards-view-gray;
     border: none;
     border-radius: 50%;
 
@@ -28,7 +28,7 @@
     }
 
     &.dark {
-      background-color: $gray-black;
+      background-color: $fleetyards-view-gray-black;
     }
 
     &.slim-spacer {
