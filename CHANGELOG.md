@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.13.0](https://github.com/fleetyards/fleetyards/compare/v5.12.6...v5.13.0) (2022-12-05)
+
+
+### Features
+
+* **fleet-stats:** add vehicles by model bar chart ([3627a0d](https://github.com/fleetyards/fleetyards/commit/3627a0d167ba0ef41b25b138fe970a61ae30202f))
+
 ### [5.12.6](https://github.com/fleetyards/fleetyards/compare/v5.12.5...v5.12.6) (2022-12-05)
 
 ### [5.12.5](https://github.com/fleetyards/fleetyards/compare/v5.12.4...v5.12.5) (2022-12-05)
