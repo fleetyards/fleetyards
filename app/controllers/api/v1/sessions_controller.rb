@@ -31,8 +31,12 @@ module Api
           end
 
           if resource.otp_required_for_login && !resource.validate_and_consume_otp!(login_params[:twoFactorCode])
-            render json: { code: 'session.create.invalid', message: I18n.t('devise.failure.not_found_in_database') }, status: :bad_request
-            return
+            if resource.invalidate_otp_backup_code!(login_params[:twoFactorCode])
+              resource.save!
+            else
+              render json: { code: 'session.create.invalid', message: I18n.t('devise.failure.two_factor_invalid') }, status: :bad_request
+              return
+            end
           end
         end
 
