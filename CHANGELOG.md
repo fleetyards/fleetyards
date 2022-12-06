@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.13.2](https://github.com/fleetyards/fleetyards/compare/v5.13.1...v5.13.2) (2022-12-06)
+
+
+### Bug Fixes
+
+* **2FA:** allow usage of backup codes to disable 2FA ([404fb0c](https://github.com/fleetyards/fleetyards/commit/404fb0c615f18972af633955dbb05dc708573aa3))
+
 ### [5.13.1](https://github.com/fleetyards/fleetyards/compare/v5.13.0...v5.13.1) (2022-12-06)
 
 
