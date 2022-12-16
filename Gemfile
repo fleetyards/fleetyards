@@ -102,7 +102,7 @@ gem 'ssrf_filter', '~> 1.0.8'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
-gem 'nokogiri', '1.13.9'
+gem 'nokogiri', '1.13.10'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
@@ -124,6 +124,8 @@ gem 'pg_query', '>= 0.9.0'
 
 gem 'git'
 gem 'rdoc'
+
+gem 'psych', '~> 4.0.6'
 
 group :development do
   gem 'annotate'
