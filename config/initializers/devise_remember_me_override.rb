@@ -4,7 +4,7 @@
 
 require 'devise/controllers/rememberable'
 
-::Devise::Controllers::Rememberable.class_eval do
+Devise::Controllers::Rememberable.class_eval do
   protected
 
   def remember_key(resource, scope)
@@ -21,7 +21,7 @@ end
 require 'devise/strategies/base'
 require 'devise/strategies/rememberable'
 
-::Devise::Strategies::Rememberable.class_eval do
+Devise::Strategies::Rememberable.class_eval do
   private
 
   def remember_key
