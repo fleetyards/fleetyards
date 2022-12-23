@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.13.3](https://github.com/fleetyards/fleetyards/compare/v5.13.2...v5.13.3) (2022-12-23)
+
+
+### Bug Fixes
+
+* **pagination:** readd missing pagination headers ([f49ba91](https://github.com/fleetyards/fleetyards/commit/f49ba91059ec4a58048659439cbda2607b3d8f79))
+
 ### [5.13.2](https://github.com/fleetyards/fleetyards/compare/v5.13.1...v5.13.2) (2022-12-06)
 
 
