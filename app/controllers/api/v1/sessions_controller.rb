@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class SessionsController < ::Api::BaseController
+    class SessionsController < ::Api::V1::BaseController
       skip_authorization_check except: [:confirm_access]
       before_action :authenticate_user!, except: [:create]
 

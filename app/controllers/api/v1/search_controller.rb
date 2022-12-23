@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class SearchController < ::Api::BaseController
+    class SearchController < ::Api::V1::BaseController
       before_action :authenticate_user!, only: %i[]
       after_action -> { pagination_header(:results) }, only: [:index]
 

@@ -3,6 +3,8 @@
 module Api
   module V1
     class BaseController < ::Api::BaseController
+      include Pagination
+
       def root
         respond_to do |format|
           format.html do

@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class FleetStatsController < ::Api::BaseController
+    class FleetStatsController < ::Api::V1::BaseController
       include ChartHelper
 
       def vehicles_by_model

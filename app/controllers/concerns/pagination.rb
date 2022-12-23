@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 module Pagination
+  extend ActiveSupport::Concern
+
   class MaxPerPageReached < StandardError; end
+
+  included do
+    rescue_from Pagination::MaxPerPageReached do |_exception|
+      render json: { code: 'pagination.max_per_page_reached', message: I18n.t('errors.pagination.max_per_page_reached') }, status: :bad_request
+    end
+  end
 
   def per_page(model)
     return model.default_per_page if per_page_params.blank? || per_page_params.to_i.zero?

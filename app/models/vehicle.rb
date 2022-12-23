@@ -37,7 +37,7 @@
 require "csv"
 
 class Vehicle < ApplicationRecord
-  paginates_per 30
+  paginates_per 15
   max_paginates_per 240
 
   PAGINATION_OPTIONS = [15, 30, 60, 120, 240, :all].freeze
@@ -243,6 +243,16 @@ class Vehicle < ApplicationRecord
 
   def to_json(*_args)
     to_jbuilder_json
+  end
+
+  def self.url; end
+
+  def url
+    # api_v1_vehicle_url(slug: slug)
+  end
+
+  def frontend_url
+    # frontend_model_url(slug: slug)
   end
 
   protected def normalize_serial

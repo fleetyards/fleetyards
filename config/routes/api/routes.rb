@@ -9,7 +9,8 @@ api_options = {
 namespace :api, **api_options do
   devise_for :users, singular: :user, only: []
 
-  draw :api_v1_routes
+  draw 'api/v1/routes'
+  draw 'api/v2/routes'
 
   root to: "base#root"
 end

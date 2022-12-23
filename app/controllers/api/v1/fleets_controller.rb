@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class FleetsController < ::Api::BaseController
+    class FleetsController < ::Api::V1::BaseController
       before_action :authenticate_user!, except: %i[show]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|

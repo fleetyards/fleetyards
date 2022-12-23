@@ -1,0 +1,343 @@
+# frozen_string_literal: true
+
+module Api
+  module V2
+    class ModelsController < ::Api::V2::BaseController
+      before_action :authenticate_user!, only: []
+
+      rescue_from ActiveRecord::RecordNotFound do |_exception|
+        not_found(I18n.t('messages.record_not_found.model', slug: params[:slug]))
+      end
+
+      def index
+        authorize! :index, :api_models
+
+        @q = index_scope
+
+        @models = @q.result
+          .page(params[:page])
+          .per(per_page(Model))
+      end
+
+      def embed
+        authorize! :index, :api_models
+
+        @models = Model.visible.active.where(slug: params[:models]).order(name: :asc).all
+
+        render 'api/v2/models/index'
+      end
+
+      def show
+        authorize! :show, :api_models
+        @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+      end
+
+      # def slugs
+      #   authorize! :index, :api_models
+      #   render json: Model.order(slug: :asc).all.pluck(:slug)
+      # end
+
+      # def production_states
+      #   authorize! :index, :api_models
+      #   @production_states = Model.production_status_filters
+      # end
+
+      # def classifications
+      #   authorize! :index, :api_models
+      #   @classifications = Model.classification_filters
+      # end
+
+      # def focus
+      #   authorize! :index, :api_models
+      #   @focus = Model.focus_filters
+      # end
+
+      # def sizes
+      #   authorize! :index, :api_models
+      #   @sizes = Model.size_filters
+      # end
+
+      # def filters
+      #   authorize! :index, :api_models
+      #   @filters ||= begin
+      #     filters = []
+      #     filters << Manufacturer.model_filters
+      #     filters << Model.production_status_filters
+      #     filters << Model.classification_filters
+      #     filters << Model.focus_filters
+      #     filters << Model.size_filters
+      #     filters.flatten
+      #       .sort_by { |filter| [filter.category, filter.name] }
+      #   end
+      # end
+
+      def hardpoints
+        authorize! :show, :api_models
+
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        scope = model.model_hardpoints.includes(:component).undeleted
+
+        scope = scope.where(source: params[:source]) if params[:source].present?
+
+        @hardpoints = scope
+      end
+
+      def images
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @images = model.images
+          .enabled
+          .order('images.created_at desc')
+          .page(params[:page])
+          .per(per_page(Image))
+      end
+
+      def videos
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @videos = model.videos
+          .order('videos.created_at desc')
+          .page(params[:page])
+          .per(per_page(Video))
+      end
+
+      def variants
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        scope = model.variants.includes(:manufacturer).visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'last_pledge_price asc'
+          scope = scope.where(last_pledge_price: pledge_price_range)
+        end
+        if price_range.present?
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        model_query_params['sorts'] = sort_by_name
+
+        @q = scope.ransack(model_query_params)
+
+        @variants = @q.result
+          .page(params[:page])
+          .per(per_page(Model))
+      end
+
+      def loaners
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        scope = model.loaners.includes(:manufacturer).visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'last_pledge_price asc'
+          scope = scope.where(last_pledge_price: pledge_price_range)
+        end
+        if price_range.present?
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        model_query_params['sorts'] = sort_by_name
+
+        @q = scope.ransack(model_query_params)
+
+        @loaners = @q.result
+          .page(params[:page])
+          .per(per_page(Model))
+      end
+
+      def modules
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_modules = model.modules
+          .visible
+          .active
+          .order(name: :asc)
+          .page(params[:page])
+          .per(per_page(ModelModule))
+      end
+
+      def module_packages
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @module_packages = model.module_packages
+          .visible
+          .active
+          .order(name: :asc)
+          .page(params[:page])
+          .per(per_page(ModelModule))
+      end
+
+      def upgrades
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_upgrades = model.upgrades
+          .visible
+          .active
+          .order(name: :asc)
+      end
+
+      def paints
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @paints = model.paints
+          .visible
+          .active
+          .order(name: :asc)
+      end
+
+      private def price_range
+        @price_range ||= price_in.map do |prices|
+          gt_price, lt_price = prices.split('-')
+          gt_price = if gt_price.blank?
+                       0
+                     else
+                       gt_price.to_i
+                     end
+          lt_price = if lt_price.blank?
+                       Float::INFINITY
+                     else
+                       lt_price.to_i
+                     end
+          (gt_price...lt_price)
+        end
+      end
+
+      private def pledge_price_range
+        @pledge_price_range ||= pledge_price_in.map do |prices|
+          gt_price, lt_price = prices.split('-')
+          gt_price = if gt_price.blank?
+                       0
+                     else
+                       gt_price.to_i
+                     end
+          lt_price = if lt_price.blank?
+                       Float::INFINITY
+                     else
+                       lt_price.to_i
+                     end
+          (gt_price...lt_price)
+        end
+      end
+
+      private def index_scope
+        scope = Model.includes([:manufacturer]).visible.active
+
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'last_pledge_price asc'
+          scope = scope.where(last_pledge_price: pledge_price_range)
+        end
+
+        if price_range.present?
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        scope = scope.with_dock if params[:withDock]
+        scope = will_it_fit?(scope) if model_query_params['will_it_fit'].present?
+
+        model_query_params['sorts'] = sort_by_name
+
+        scope.ransack(model_query_params)
+      end
+
+      private def will_it_fit?(scope)
+        slug = model_query_params.delete('will_it_fit')
+        parent = Model.visible.active.where(slug: slug).or(Model.where(rsi_slug: slug)).first
+
+        return scope if parent.blank? || parent.docks.blank?
+
+        vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).order(length: :desc).first
+        ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).order(length: :desc).first
+
+        dock_metrics = extract_dock_metrics(ship_dock, vehicle_dock)
+
+        if ship_dock && vehicle_dock
+          will_it_fit_ship_or_vehicle_dock?(scope, dock_metrics)
+        elsif ship_dock
+          will_it_fit_ship_dock?(scope, dock_metrics)
+        else
+          will_it_fit_vehicle_dock?(scope, dock_metrics)
+        end
+      end
+
+      private def extract_dock_metrics(ship_dock, vehicle_dock)
+        {
+          ship_length: (ship_dock&.length || 0) - 2.0,
+          ship_beam: (ship_dock&.beam || 0) - 2.0,
+          ship_height: (ship_dock&.height || 0) - 1.0,
+          vehicle_length: (vehicle_dock&.length || 0) - 1.0,
+          vehicle_beam: (vehicle_dock&.beam || 0) - 1.0,
+          vehicle_height: (vehicle_dock&.height || 0) - 0.5
+        }
+      end
+
+      private def will_it_fit_ship_or_vehicle_dock?(scope, dock_metrics)
+        scope.where(
+          %{
+            ((ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height) or
+            (ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height)
+          },
+          dock_metrics
+        )
+      end
+
+      private def will_it_fit_ship_dock?(scope, dock_metrics)
+        scope.where(
+          '(ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height',
+          dock_metrics
+        )
+      end
+
+      private def will_it_fit_vehicle_dock?(scope, dock_metrics)
+        scope.where(
+          'ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height',
+          dock_metrics
+        )
+      end
+
+      private def pledge_price_in
+        pledge_price_in = model_query_params.delete('pledge_price_in')
+        pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
+        pledge_price_in
+      end
+
+      private def price_in
+        price_in = model_query_params.delete('price_in')
+        price_in = price_in.to_s.split unless price_in.is_a?(Array)
+        price_in
+      end
+
+      private def updated_range
+        return if updated_params[:from].blank?
+
+        to = updated_params[:to] || Time.zone.now
+        [updated_params[:from]...to]
+      end
+
+      private def updated_params
+        @updated_params ||= params.permit(
+          :from, :to
+        )
+      end
+
+      private def model_query_params
+        @model_query_params ||= query_params(
+          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
+          :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
+          :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :will_it_fit,
+          :search_cont,
+          name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
+          production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
+          id_not_in: [], id_in: []
+        )
+      end
+    end
+  end
+end

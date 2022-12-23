@@ -6,7 +6,6 @@ module Api
     include ActionController::MimeResponds
     include ActionController::Caching
     include RansackHelper
-    include Pagination
 
     respond_to :json
 
@@ -29,10 +28,6 @@ module Api
 
     rescue_from ActiveRecord::RecordNotFound do |_exception|
       render json: { code: "not_found", message: I18n.t("errors.not_found.message") }, status: :not_found
-    end
-
-    rescue_from Pagination::MaxPerPageReached do |_exception|
-      render json: { code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached") }, status: :bad_request
     end
 
     def current_ability

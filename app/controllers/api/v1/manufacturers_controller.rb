@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ManufacturersController < ::Api::BaseController
+    class ManufacturersController < ::Api::V1::BaseController
       before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:manufacturers) }, only: [:index]
 

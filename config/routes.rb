@@ -5,8 +5,8 @@ require "sidekiq/web"
 Rails.application.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
 
 Rails.application.routes.draw do
-  draw :api_routes
-  draw :admin_routes
+  draw 'api/routes'
+  draw 'admin/routes'
   draw :frontend_routes
   draw :short_routes if Rails.configuration.app.short_domain.present?
 

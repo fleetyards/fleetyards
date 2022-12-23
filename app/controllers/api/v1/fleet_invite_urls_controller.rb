@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class FleetInviteUrlsController < ::Api::BaseController
+    class FleetInviteUrlsController < ::Api::V1::BaseController
       after_action -> { pagination_header(:fleet_invite_urls) }, only: %i[index]
 
       def index

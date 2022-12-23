@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class CommodityPricesController < ::Api::BaseController
+    class CommodityPricesController < ::Api::V1::BaseController
       before_action :authenticate_user!, only: [:create]
 
       def create

@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class TwoFactorsController < ::Api::BaseController
+    class TwoFactorsController < ::Api::V1::BaseController
       def start
         authorize! :update, current_user
 

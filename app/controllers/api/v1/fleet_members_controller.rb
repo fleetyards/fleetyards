@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class FleetMembersController < ::Api::BaseController
+    class FleetMembersController < ::Api::V1::BaseController
       after_action -> { pagination_header(:members) }, only: %i[index]
 
       def index

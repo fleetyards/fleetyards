@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class StatsController < Api::BaseController
+    class StatsController < Api::V1::BaseController
       include ChartHelper
 
       before_action :authenticate_user!, only: []

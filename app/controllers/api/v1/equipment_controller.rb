@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class EquipmentController < ::Api::BaseController
+    class EquipmentController < ::Api::V1::BaseController
       before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:equipment) }, only: [:index]
 

@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class FleetMembershipsController < ::Api::BaseController
+    class FleetMembershipsController < ::Api::V1::BaseController
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
       end

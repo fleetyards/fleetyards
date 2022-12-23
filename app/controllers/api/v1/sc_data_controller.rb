@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ScDataController < ::Api::BaseController
+    class ScDataController < ::Api::V1::BaseController
       before_action :authenticate_user!, only: []
 
       def current_version

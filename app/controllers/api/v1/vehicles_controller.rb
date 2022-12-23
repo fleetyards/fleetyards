@@ -4,7 +4,7 @@ require "hangar_importer"
 
 module Api
   module V1
-    class VehiclesController < ::Api::BaseController
+    class VehiclesController < ::Api::V1::BaseController
       include ChartHelper
 
       skip_authorization_check only: %i[public public_quick_stats public_fleetchart public_wishlist embed]

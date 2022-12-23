@@ -113,7 +113,7 @@ class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   include Routing
 
-  paginates_per 30
+  paginates_per 15
   max_paginates_per 240
 
   PAGINATION_OPTIONS = [15, 30, 60, 120, 240].freeze
