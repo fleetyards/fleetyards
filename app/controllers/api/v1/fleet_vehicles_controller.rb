@@ -3,7 +3,9 @@
 module Api
   module V1
     class FleetVehiclesController < ::Api::BaseController
-      before_action :authenticate_user!, except: %i[public public_fleetchart embed]
+      before_action :authenticate_user!, except: %i[
+        public public_fleetchart public_model_counts embed
+      ]
 
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index public]
 
