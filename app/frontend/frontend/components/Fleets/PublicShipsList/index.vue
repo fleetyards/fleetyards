@@ -60,6 +60,8 @@
           <template #default="{ record }">
             <FleetVehiclePanel
               :fleet-vehicle="record"
+              :model-counts="modelCounts"
+              :fleet-slug="fleet.slug"
               :details="detailsVisible"
               :show-owner="false"
             />
@@ -149,6 +151,10 @@ export default class FleetPublicShipsList extends Vue {
     };
   }
 
+  get modelCounts() {
+    return this.collection.modelCounts;
+  }
+
   @Watch("grouped")
   onGroupedChange() {
     this.fetch();
@@ -159,8 +165,26 @@ export default class FleetPublicShipsList extends Vue {
     this.fetch();
   }
 
+  @Watch("$route")
+  onRouteChange() {
+    this.fetchModelCounts();
+  }
+
+  @Watch("fleet")
+  onFleetChange() {
+    this.fetchModelCounts();
+  }
+
+  mounted() {
+    this.fetchModelCounts();
+  }
+
   async fetch() {
     await this.collection.findAll(this.filters);
+  }
+
+  async fetchModelCounts() {
+    await this.collection.findModelCounts(this.filters);
   }
 }
 </script>

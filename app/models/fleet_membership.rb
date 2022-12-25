@@ -81,16 +81,10 @@ class FleetMembership < ApplicationRecord
   end
 
   def schedule_setup_fleet_vehicles
-    return unless accepted?
-    return if ships_filter_hide?
-
     Updater::FleetMembershipVehiclesSetupJob.perform_async(id)
   end
 
   def schedule_update_fleet_vehicles
-    return unless saved_change_to_ships_filter? || saved_change_to_hangar_group_id? ||
-                  (saved_change_to_aasm_state? && accepted?)
-
     Updater::FleetMembershipVehiclesUpdateJob.perform_async(id)
   end
 
