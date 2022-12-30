@@ -155,7 +155,7 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    css_parser (1.12.0)
+    css_parser (1.13.0)
       addressable
     dalli (3.2.3)
     date (3.3.3)
@@ -322,8 +322,8 @@ GEM
     kaminari-core (1.2.2)
     knapsack (4.0.0)
       rake
-    launchy (2.5.0)
-      addressable (~> 2.7)
+    launchy (2.5.2)
+      addressable (~> 2.8)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
     listen (3.7.1)
@@ -518,7 +518,7 @@ GEM
       rubocop-ast (>= 1.23.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.24.0)
+    rubocop-ast (1.24.1)
       parser (>= 3.1.1.0)
     rubocop-minitest (0.11.1)
       rubocop (>= 0.90, < 2.0)
@@ -533,7 +533,7 @@ GEM
       rubocop (~> 1.0)
     ruby-graphviz (1.2.5)
       rexml
-    ruby-prof (1.4.4)
+    ruby-prof (1.4.5)
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
