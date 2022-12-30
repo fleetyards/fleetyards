@@ -151,6 +151,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    committee (4.4.0)
+      json_schema (~> 0.14, >= 0.14.3)
+      openapi_parser (>= 0.11.1, < 1.0)
+      rack (>= 1.5)
     concurrent-ruby (1.2.0)
     connection_pool (2.3.0)
     crack (0.4.5)
@@ -283,6 +287,7 @@ GEM
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
+    json_schema (0.21.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -362,6 +367,7 @@ GEM
       opensearch-transport (~> 2.0)
     opensearch-transport (2.1.0)
       faraday (>= 1.0, < 3)
+    openapi_parser (0.14.1)
       multi_json
     options (2.3.2)
     orm_adapter (0.5.0)
@@ -667,6 +673,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.1)
   carrierwave
   coffee-rails
+  committee
   dalli
   data_migrate
   devise

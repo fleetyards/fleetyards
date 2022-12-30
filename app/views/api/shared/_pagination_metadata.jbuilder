@@ -5,7 +5,7 @@ json.metadata do
   json.limit per_page(model)
   json.links do
     json.self request.url
-    json.prev prev_url(scope)
-    json.next next_url(scope)
+    json.prev(prev_url(scope)) if prev_url(scope)
+    json.next(next_url(scope)) if next_url(scope)
   end
 end

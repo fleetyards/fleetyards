@@ -1,0 +1,1473 @@
+openapi: 3.1.0
+x-stoplight:
+  id: dd4a2d0985b96
+info:
+  title: schema-v2
+  description: FleetYards Api Schema V2
+  summary: API Schema V2
+  version: '1.0'
+  contact:
+    name: Marten Klitzke
+    url: 'https://fleetyards.net'
+    email: info@fleetyards.net
+  license:
+    name: GNU General Public License v3.0
+    url: 'https://github.com/fleetyards/fleetyards/blob/main/LICENSE'
+tags:
+  - name: Components
+    description: Components
+  - name: Images
+    description: Images
+  - name: Filters
+    description: Filters
+  - name: Manufacturers
+    description: Manufacturers
+  - name: Models
+    description: Models
+  - name: Security
+    description: Security
+servers:
+  - url: 'http://api.fleetyards.test/v2'
+    description: development
+  - url: 'https://stage.fleetyards.net/api/v2'
+    description: stage
+  - url: 'https://api.fleetyards.net/v2'
+    description: live
+paths:
+  /models:
+    get:
+      summary: Models Index
+      tags:
+        - Models
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+      operationId: get-models
+      description: List of Models
+  '/models/{slug}':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Slug of Model
+    get:
+      summary: Model Detail
+      tags:
+        - Models
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+      operationId: get-model
+      description: Model Detail
+  '/models/{slug}/images':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Slug of Model
+    get:
+      summary: Model Images
+      tags:
+        - Models
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageList'
+      operationId: get-model-images
+      description: Model Images
+  '/models/{slug}/videos':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+        description: Slug of Model
+    get:
+      summary: Model Videos
+      tags:
+        - Models
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoList'
+      operationId: get-model-videos
+      description: Model Videos
+  /manufacturers:
+    get:
+      summary: Manufacturers Index
+      tags:
+        - Manufacturers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManufacturerList'
+      operationId: get-manufacturers
+      description: List of Manufacturers
+  /images:
+    get:
+      summary: Images Index
+      tags:
+        - Images
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageList'
+      operationId: get-images
+      description: List of Images
+  /images/random:
+    get:
+      summary: Images Index with Random sorting
+      tags:
+        - Images
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageList'
+      operationId: get-random-images
+      description: List of Images sorted Random
+    parameters: []
+  /components:
+    get:
+      summary: Components Index
+      tags:
+        - Components
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentList'
+      operationId: get-components
+      description: List of Components
+  /filters/models/slugs:
+    get:
+      summary: Filters Model Slugs
+      tags:
+        - Filters
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      operationId: get-filters-models-slugs
+      description: Get a list of all Model slugs
+  /filters/models/sizes:
+    get:
+      summary: Filters Model Sizes
+      tags:
+        - Filters
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Filter'
+      operationId: get-filters-models-sizes
+      description: All Models Size Filters
+  /filters/models/focus:
+    get:
+      summary: Filters Models Focus
+      tags:
+        - Filters
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Filter'
+      operationId: get-filters-models-focus
+      description: All Models Focus Filters
+  /filters/models/filters:
+    get:
+      summary: Filters Models
+      tags:
+        - Filters
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Filter'
+      operationId: get-filters-models-filters
+      description: All Model Filters
+    parameters: []
+  /filters/models/classifications:
+    get:
+      summary: Filters Models Classifications
+      tags:
+        - Filters
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Filter'
+      operationId: get-filters-models-classifications
+      description: All Models Classification Filters
+  /filters/models/production-states:
+    get:
+      summary: Filters Models Production States
+      tags:
+        - Filters
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Filter'
+      operationId: get-filters-models-production-states
+      description: All Models Production State Filters
+  /users/auth-tokens:
+    get:
+      summary: Auth Tokens Index
+      tags:
+        - Security
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenList'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: List of AuthTokens
+      operationId: get-users-auth-tokens
+    post:
+      summary: Create AuthToken
+      tags:
+        - Security
+      description: Create a new AuthToken
+      operationId: create-users-auth-tokens
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenCreate'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+  '/users/auth-tokens/{id}':
+    put:
+      summary: Update AuthToken
+      tags:
+        - Security
+      description: Update an AuthToken
+      operationId: update-users-auth-tokens
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+    delete:
+      summary: Delete AuthToken
+      tags:
+        - Security
+      description: Delete an AuthToken
+      operationId: delete-users-auth-tokens
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: id
+        in: path
+        required: true
+        description: Auth Token ID
+components:
+  schemas:
+    AuthToken:
+      title: AuthToken
+      description: AuthToken
+      x-stoplight:
+        id: 08r42idnz8l80
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        expiredAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - description
+        - createdAt
+        - updatedAt
+    AuthTokenCreate:
+      title: AuthToken
+      description: AuthToken
+      x-stoplight:
+        id: 08r42idnz8l80
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        token:
+          type: string
+        description:
+          type: string
+        expiredAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - description
+        - token
+        - createdAt
+        - updatedAt
+    AuthTokenList:
+      title: AuthToken List
+      description: List of AuthTokens
+      x-stoplight:
+        id: lp5ukd7fukjh6
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PaginationMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthToken'
+      required:
+        - metadata
+        - items
+    Component:
+      type: object
+      x-examples:
+        Example 1:
+          id: 49947ff0-108c-4931-997c-e2d8a6153883
+          name: '"Singe" Tachyon Cannon'
+          slug: singe-tachyon-cannon
+          grade: null
+          class: RSIWeapon
+          size: '2'
+          type: weapons
+          typeLabel: Ship Weapons
+          itemClass: null
+          itemClassLabel: null
+          trackingSignal: null
+          trackingSignalLabel: null
+          storeImageIsFallback: true
+          storeImage: 'http://fleetyards.test/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg'
+          storeImageMedium: 'http://fleetyards.test/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg'
+          storeImageSmall: 'http://fleetyards.test/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg'
+          soldAt: []
+          boughtAt: []
+          listedAt: []
+          manufacturer:
+            name: Banu
+            slug: banu
+            code: BANU
+            logo: 'http://fleetyards.test/uploads/manufacturer/logo/81/05/746f-ab75-441a-a467-89d54636d569/small_banu-cd6f8ed5-b194-4475-a7da-46aa3098ac5b.png'
+          createdAt: '2017-10-28T16:55:08Z'
+          updatedAt: '2017-10-29T10:31:41Z'
+      description: Ship Components
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        grade:
+          type:
+            - string
+            - 'null'
+        class:
+          type: string
+        size:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        itemClass:
+          type:
+            - string
+            - 'null'
+        itemClassLabel:
+          type:
+            - string
+            - 'null'
+        trackingSignal:
+          type:
+            - string
+            - 'null'
+        trackingSignalLabel:
+          type:
+            - string
+            - 'null'
+        storeImageIsFallback:
+          type: boolean
+        storeImage:
+          type: string
+          format: uri
+        storeImageMedium:
+          type: string
+          format: uri
+        storeImageSmall:
+          type: string
+          format: uri
+        soldAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        boughtAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        listedAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        manufacturer:
+          $ref: '#/components/schemas/ManufacturerBase'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - slug
+        - createdAt
+        - updatedAt
+    ComponentList:
+      type: object
+      x-stoplight:
+        id: sp1a3t4nkejo7
+      title: Component List
+      description: List of Components
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PaginationMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Component'
+      required:
+        - metadata
+        - items
+    Error:
+      title: Error
+      x-stoplight:
+        id: d37iioqdn109v
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+    Filter:
+      type: object
+      x-examples:
+        Example 1:
+          name: Crusader Industries
+          value: crusader-industries
+          category: manufacturer
+          icon: 'http://fleetyards.test/uploads/manufacturer/logo/58/1c/f9ca-befc-4be0-a4df-1065e3c1c10b/small_crusader.png'
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        category:
+          type: string
+        icon:
+          type:
+            - string
+            - 'null'
+      required:
+        - name
+        - value
+        - category
+      description: Filter Object
+    Gallery:
+      type: object
+      title: Gallery
+      description: Gallery for Images
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+        - id
+        - name
+        - slug
+    Image:
+      type: object
+      title: Image
+      description: Image
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        caption:
+          type:
+            - string
+            - 'null'
+        url:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        type:
+          type: string
+        background:
+          type: boolean
+        smallUrl:
+          type: string
+          format: uri
+        bigUrl:
+          type: string
+          format: uri
+        model:
+          $ref: '#/components/schemas/Gallery'
+        gallery:
+          $ref: '#/components/schemas/Gallery'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - url
+        - smallUrl
+        - bigUrl
+        - createdAt
+        - updatedAt
+    ImageList:
+      type: object
+      x-stoplight:
+        id: 5d31649d86a01
+      title: Image List
+      description: List of Images
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PaginationMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+      required:
+        - metadata
+        - items
+    Manufacturer:
+      type: object
+      x-stoplight:
+        id: 5e8d0af085873
+      title: Manufacturer
+      description: Manufacturer
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type:
+            - string
+            - 'null'
+          example: ORIG
+        logo:
+          type:
+            - string
+            - 'null'
+          format: uri
+          example: 'http://fleetyards.test/uploads/manufacturer/logo/40/52/e7cf-5451-4a9f-a7e2-797daa26ccd8/small_logo_origin_active__1_.png'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - name
+        - slug
+        - code
+        - logo
+        - createdAt
+        - updatedAt
+    ManufacturerBase:
+      type: object
+      x-stoplight:
+        id: v66fp6ylyzhx7
+      title: Manufacturer Base
+      description: Manufacturer
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type:
+            - string
+            - 'null'
+          example: ORIG
+        logo:
+          type:
+            - string
+            - 'null'
+          format: uri
+          example: 'http://fleetyards.test/uploads/manufacturer/logo/40/52/e7cf-5451-4a9f-a7e2-797daa26ccd8/small_logo_origin_active__1_.png'
+      required:
+        - name
+        - slug
+        - code
+        - logo
+    ManufacturerList:
+      type: object
+      x-stoplight:
+        id: 4714d8727085b
+      title: Manufacturer List
+      description: List of Manufacturers
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PaginationMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Manufacturer'
+      required:
+        - metadata
+        - items
+    Model:
+      type: object
+      x-stoplight:
+        id: 2575a15f7c096
+      title: Model
+      description: Ships and Vehicles
+      examples: []
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        scIdentifier:
+          type: string
+        erkulIdentifier:
+          type: string
+        rsiName:
+          type: string
+        slug:
+          type: string
+        rsiSlug:
+          type: string
+        description:
+          type: string
+        length:
+          type: number
+        lengthLabel:
+          type: string
+        fleetchartLength:
+          type: number
+        beam:
+          type: integer
+        beamLabel:
+          type: string
+        height:
+          type: integer
+        heightLabel:
+          type: string
+        mass:
+          type: integer
+        massLabel:
+          type: integer
+        cargo:
+          type: integer
+        cargoLabel:
+          type: string
+        hydrogenFuelTankSize:
+          type: string
+        quantumFuelTankSize:
+          type: string
+        minCrew:
+          type: integer
+        minCrewLabel:
+          type: integer
+        maxCrew:
+          type: integer
+        maxCrewLabel:
+          type: integer
+        scmSpeed:
+          type: string
+        afterburnerSpeed:
+          type: string
+        groundSpeed:
+          type: 'null'
+        afterburnerGroundSpeed:
+          type: 'null'
+        pitchMax:
+          type: string
+        yawMax:
+          type: string
+        rollMax:
+          type: string
+        xaxisAcceleration:
+          type: string
+        yaxisAcceleration:
+          type: string
+        zaxisAcceleration:
+          type: string
+        size:
+          type: string
+        sizeLabel:
+          type: string
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        fleetchartImage:
+          type: string
+        topView:
+          type: string
+        topViewSmall:
+          type: string
+        topViewMedium:
+          type: string
+        topViewLarge:
+          type: string
+        topViewXlarge:
+          type: string
+        topViewWidth:
+          type: integer
+        topViewHeight:
+          type: integer
+        sideView:
+          type: string
+        sideViewSmall:
+          type: string
+        sideViewMedium:
+          type: string
+        sideViewLarge:
+          type: string
+        sideViewXlarge:
+          type: string
+        sideViewWidth:
+          type: integer
+        sideViewHeight:
+          type: integer
+        angledView:
+          type: string
+          format: uri
+        angledViewSmall:
+          type: string
+          format: uri
+        angledViewMedium:
+          type: string
+        angledViewLarge:
+          type: string
+        angledViewXlarge:
+          type: string
+        angledViewWidth:
+          type: integer
+        angledViewHeight:
+          type: integer
+        brochure:
+          type: string
+        holo:
+          type: string
+        holoColored:
+          type: boolean
+        storeUrl:
+          type: string
+        salesPageUrl:
+          type: string
+        price:
+          type: integer
+        priceLabel:
+          type: string
+        pledgePrice:
+          type: integer
+        pledgePriceLabel:
+          type: string
+        lastPledgePrice:
+          type: integer
+        lastPledgePriceLabel:
+          type: string
+        onSale:
+          type: boolean
+        productionStatus:
+          type: string
+        productionNote:
+          type: 'null'
+        classification:
+          type: string
+        classificationLabel:
+          type: string
+        focus:
+          type: string
+        rsiId:
+          type: integer
+        hasImages:
+          type: boolean
+        hasVideos:
+          type: boolean
+        hasModules:
+          type: boolean
+        hasUpgrades:
+          type: boolean
+        hasPaints:
+          type: boolean
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        soldAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        boughtAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        listedAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        rentalAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        manufacturer:
+          $ref: '#/components/schemas/ManufacturerBase'
+        loaners:
+          type: array
+          items:
+            type: object
+            properties:
+              slug:
+                type: string
+              name:
+                type: string
+        docks:
+          type: array
+          items:
+            type: object
+            properties:
+              size:
+                type: string
+              count:
+                type: integer
+              typeLabel:
+                type: string
+              type:
+                type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        links:
+          $ref: '#/components/schemas/RecordLinks'
+      required:
+        - id
+        - name
+        - slug
+        - createdAt
+        - updatedAt
+    ModelList:
+      type: object
+      x-stoplight:
+        id: 278a370207c55
+      title: Model List
+      description: List of Models
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PaginationMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelMinimal'
+      required:
+        - metadata
+        - items
+    ModelMinimal:
+      type: object
+      x-stoplight:
+        id: 6acbbfed0e7fb
+      title: Model Minimal
+      description: Model with minimal properties
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        scIdentifier:
+          type: string
+        erkulIdentifier:
+          type: string
+        rsiName:
+          type: string
+        slug:
+          type: string
+        rsiSlug:
+          type: string
+        description:
+          type: string
+        length:
+          type: number
+        lengthLabel:
+          type: string
+        fleetchartLength:
+          type: number
+        beam:
+          type: integer
+        beamLabel:
+          type: string
+        height:
+          type: integer
+        heightLabel:
+          type: string
+        mass:
+          type: integer
+        massLabel:
+          type: integer
+        cargo:
+          type: integer
+        cargoLabel:
+          type: string
+        hydrogenFuelTankSize:
+          type: string
+        quantumFuelTankSize:
+          type: string
+        minCrew:
+          type: integer
+        minCrewLabel:
+          type: integer
+        maxCrew:
+          type: integer
+        maxCrewLabel:
+          type: integer
+        scmSpeed:
+          type: string
+        afterburnerSpeed:
+          type: 'null'
+        groundSpeed:
+          type: 'null'
+        afterburnerGroundSpeed:
+          type: 'null'
+        pitchMax:
+          type: 'null'
+        yawMax:
+          type: 'null'
+        rollMax:
+          type: 'null'
+        xaxisAcceleration:
+          type: 'null'
+        yaxisAcceleration:
+          type: 'null'
+        zaxisAcceleration:
+          type: 'null'
+        size:
+          type: string
+        sizeLabel:
+          type: string
+        storeImage:
+          type: string
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        fleetchartImage:
+          type: string
+        topView:
+          type: string
+        topViewSmall:
+          type: string
+        topViewMedium:
+          type: string
+        topViewLarge:
+          type: string
+        topViewXlarge:
+          type: string
+        topViewWidth:
+          type: integer
+        topViewHeight:
+          type: integer
+        sideView:
+          type: string
+        sideViewSmall:
+          type: string
+        sideViewMedium:
+          type: string
+        sideViewLarge:
+          type: string
+        sideViewXlarge:
+          type: string
+        sideViewWidth:
+          type: integer
+        sideViewHeight:
+          type: integer
+        angledView:
+          type: string
+        angledViewSmall:
+          type: string
+        angledViewMedium:
+          type: string
+        angledViewLarge:
+          type: string
+        angledViewXlarge:
+          type: string
+        angledViewWidth:
+          type: integer
+        angledViewHeight:
+          type: integer
+        brochure:
+          type: string
+        holo:
+          type: string
+        holoColored:
+          type: boolean
+        storeUrl:
+          type: string
+        salesPageUrl:
+          type: string
+        price:
+          type: 'null'
+        priceLabel:
+          type: 'null'
+        pledgePrice:
+          type: number
+        pledgePriceLabel:
+          type: string
+        lastPledgePrice:
+          type: integer
+        lastPledgePriceLabel:
+          type: string
+        onSale:
+          type: boolean
+        productionStatus:
+          type: string
+        productionNote:
+          type: 'null'
+        classification:
+          type: string
+        classificationLabel:
+          type: string
+        focus:
+          type: string
+        rsiId:
+          type: integer
+        hasImages:
+          type: boolean
+        hasVideos:
+          type: boolean
+        hasModules:
+          type: boolean
+        hasUpgrades:
+          type: boolean
+        hasPaints:
+          type: boolean
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        soldAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        boughtAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        listedAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        rentalAt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopCommodityMinimal'
+        manufacturer:
+          $ref: '#/components/schemas/ManufacturerBase'
+        loaners:
+          type: array
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        links:
+          $ref: '#/components/schemas/RecordLinks'
+      required:
+        - id
+        - name
+        - slug
+        - createdAt
+        - updatedAt
+    PaginationMetadata:
+      title: Pagination Metadata
+      x-stoplight:
+        id: goryy5s0rfkk6
+      type: object
+      properties:
+        limit:
+          type: number
+        hasMore:
+          type: boolean
+        links:
+          type: object
+          required:
+            - self
+          properties:
+            self:
+              type: string
+              format: uri
+            prev:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+      required:
+        - limit
+        - hasMore
+        - links
+    RecordLinks:
+      title: RecordLinks
+      x-stoplight:
+        id: 6y615atdkv3f5
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        frontend:
+          type: string
+          format: uri
+      required:
+        - self
+    ShopCommodityMinimal:
+      type: object
+      title: ShopCommodity Minimal
+      description: Shop Commodities listed in Shops
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        storeImage:
+          type: string
+          format: uri
+        storeImageLarge:
+          type: string
+          format: uri
+        storeImageMedium:
+          type: string
+          format: uri
+        storeImageSmall:
+          type: string
+          format: uri
+        category:
+          type: string
+        subCategory:
+          type: string
+        subCategoryLabel:
+          type: string
+        description:
+          type: string
+        pricePerUnit:
+          type: boolean
+        sellPrice:
+          type: string
+        averageSellPrice:
+          type: string
+        buyPrice:
+          type: 'null'
+        averageBuyPrice:
+          type: 'null'
+        rentalPrice1Day:
+          type: 'null'
+        averageRentalPrice1Day:
+          type: 'null'
+        rentalPrice3Days:
+          type: 'null'
+        averageRentalPrice3Days:
+          type: 'null'
+        rentalPrice7Days:
+          type: 'null'
+        averageRentalPrice7Days:
+          type: 'null'
+        rentalPrice30Days:
+          type: 'null'
+        averageRentalPrice30Days:
+          type: 'null'
+        locationLabel:
+          type: string
+        confirmed:
+          type: boolean
+        commodityItemType:
+          type: string
+        commodityItemId:
+          type: string
+          format: uuid
+        shop:
+          $ref: '#/components/schemas/ShopMinimal'
+      required:
+        - id
+        - name
+        - slug
+    ShopMinimal:
+      type: object
+      title: Shop Minimal
+      description: 'Shop located on Stations, Landingzones and Outposts'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+        stationLabel:
+          type: string
+        location:
+          type: 'null'
+        locationLabel:
+          type: string
+        rental:
+          type: boolean
+        buying:
+          type: boolean
+        selling:
+          type: boolean
+        storeImage:
+          type: string
+          format: uri
+        storeImageLarge:
+          type: string
+          format: uri
+        storeImageMedium:
+          type: string
+          format: uri
+        storeImageSmall:
+          type: string
+          format: uri
+        refineryTerminal:
+          type: boolean
+        station:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+        links:
+          $ref: '#/components/schemas/RecordLinks'
+      required:
+        - id
+        - name
+        - slug
+    ValidationAttributeError:
+      title: ValidationAttributeError
+      x-stoplight:
+        id: f7xqyvxvg1b9m
+      type: object
+      properties:
+        attribute:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+        - attribute
+        - messages
+    ValidationError:
+      title: ValidationError
+      x-stoplight:
+        id: 6tdn9bfzl6m18
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/ValidationAttributeError'
+      required:
+        - code
+        - message
+    Video:
+      type: object
+      title: Video
+      description: Video
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+        videoId:
+          type: string
+        type:
+          type: string
+          enum:
+            - youtube
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    VideoList:
+      type: object
+      x-stoplight:
+        id: 9a8441555337f
+      title: Video List
+      description: List of Videos
+      properties:
+        metadata:
+          $ref: '#/components/schemas/PaginationMetadata'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Video'
+      required:
+        - metadata
+        - items
+  securitySchemes:
+    sessionCookie:
+      name: FLTYRD
+      type: apiKey
+      in: cookie
+      description: Session Cookie for Authentication

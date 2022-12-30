@@ -4,8 +4,6 @@ module Api
   module V2
     module Hangar
       class GroupsController < ::Api::V2::BaseController
-        before_action :authenticate_user!, except: [:public]
-
         def index
           authorize! :index, :api_hangar_groups
 

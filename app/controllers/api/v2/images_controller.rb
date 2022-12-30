@@ -19,7 +19,7 @@ module Api
 
       def random
         authorize! :index, :api_images
-        
+
         @images = Image.enabled
           .global_enabled
           .in_gallery

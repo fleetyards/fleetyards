@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class JSONFailureApp < Devise::FailureApp
+  def self.call(env)
+    # FIXUP warden PATH_INFO rewrite to /unauthenticated
+    env['PATH_INFO'] = env['ORIGINAL_FULLPATH']
+    super
+  end
+
   def respond
     if request.format == :json
       json_failure

@@ -59,6 +59,7 @@ gem "redis-actionpack"
 
 gem "ransack", "~> 2.4"
 
+gem 'committee'
 gem "jbuilder"
 gem "oj"
 gem "responders"
