@@ -4,10 +4,14 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   config.warden do |manager|
+    manager.strategies.add(:api_token, Devise::Strategies::ApiToken)
+
     manager.default_strategies(scope: :admin_user).unshift :two_factor_authenticatable
     manager.default_strategies(scope: :admin_user).unshift :two_factor_backupable
     manager.default_strategies(scope: :user).unshift :two_factor_authenticatable
     manager.default_strategies(scope: :user).unshift :two_factor_backupable
+    manager.default_strategies(scope: :user).unshift :api_token
+
     manager.failure_app = JSONFailureApp
   end
 

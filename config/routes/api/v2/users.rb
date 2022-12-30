@@ -13,8 +13,6 @@ resources :users, only: [] do
     patch 'current-account' => 'users#update_account'
     delete 'current' => 'users#destroy'
 
-    get ':username' => 'users#public'
-
     resource :two_factor, path: 'two-factor', only: [] do
       collection do
         get :qrcode
@@ -24,6 +22,10 @@ resources :users, only: [] do
         post 'generate-backup-codes' => 'two_factors#generate_backup_codes'
       end
     end
+
+    resources :auth_tokens, path: 'auth-tokens', except: %i[show new edit]
+
+    get ':username' => 'users#public'
   end
 end
 

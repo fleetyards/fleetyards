@@ -49,10 +49,12 @@ class Ability
     return if user.id.blank?
 
     can %i[check_serial], :api_vehicles
-    can %i[index sort], :api_hangar_groups
     can %i[index destroy_all update_bulk destroy_bulk], :api_hangar
     can %i[create update destroy], Vehicle, user_id: user.id
+    can %i[index sort], :api_hangar_groups
     can %i[create update destroy], HangarGroup, user_id: user.id
+    can %i[index], :api_auth_tokens
+    can %i[create destroy], AuthToken, user_id: user.id
     can %i[read confirm_access update destroy], User, id: user.id
     can %i[create], CommodityPrice
   end
