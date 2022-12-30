@@ -8,19 +8,17 @@ To get a custom Ship List on your Website you can just paste the example code on
 ```html
 <div id="fleetyards-view"></div>
 <script>
-    var fleetyards_config = function () {
-        return {
-            details: true, // Set to false if you want to display a minimal version of the Ship Panel
-            grouped: true, // Set to false if you want to display the same Ships multiple times in your Fleetview.
-            fleetchart: false, // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
-            fleetchartGrouped: false, // Set to true if you want to group the Ships on the Fleetchart View or not.
-            fleetchartScale: 50, // Initial Scale of the Fleetchart
-            groupedButton: false, // Allow the User to toggle Groupped Views
-            fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
-            ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
-            users: ['torlekmaru', 'johndoe'], // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
-            fleetId: 'maru', // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
-        }
+    window.FleetYardsFleetchartConfig = {  
+        details: true, // Set to false if you want to display a minimal version of the Ship Panel
+        grouped: true, // Set to false if you want to display the same Ships multiple times in your Fleetview.
+        fleetchart: false, // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
+        fleetchartGrouped: false, // Set to true if you want to group the Ships on the Fleetchart View or not.
+        fleetchartScale: 50, // Initial Scale of the Fleetchart
+        groupedButton: false, // Allow the User to toggle Groupped Views
+        fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
+        ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
+        users: ['torlekmaru', 'johndoe'], // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
+        fleetId: 'maru', // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
     };
     (function() {
         var d = document, s = d.createElement('script');
@@ -28,7 +26,7 @@ To get a custom Ship List on your Website you can just paste the example code on
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.</a></noscript>
+<noscript>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.</noscript>
 ```
 
 ## Options
