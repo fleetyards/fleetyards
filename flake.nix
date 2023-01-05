@@ -80,9 +80,11 @@
             inherit inputs pkgs;
             modules = [
               {
-                packages = [ pkgs.fleet_yards_env pkgs.fleet_yards_env.wrappedRuby pkgs.fleet_yards_update ];
-                env.RAILS_ENV = "devenv";
-                env.RAILS_MASTER_KEY = "foo";
+                packages = [
+                  pkgs.fleet_yards_env
+                  pkgs.fleet_yards_env.wrappedRuby
+                  pkgs.fleet_yards_update
+                ];
 
                 #languages.ruby.enable = true;
                 languages.ruby.package = pkgs.ruby_3_0;
@@ -93,8 +95,11 @@
               }
               {
                 services.postgres.enable = true;
-                services.postgres.initialDatabases =
-                  [{ name = "fleet_yards_dev"; }];
+                services.postgres.initdbArgs = [ "-U fleetyards_dev" ];
+                services.postgres.initialDatabases = [
+                  { name = "fleetyards_dev"; }
+                  { name = "fleetyards_test"; }
+                ];
 
                 services.redis.enable = true;
 
@@ -106,7 +111,10 @@
                 # TODO: minio
               }
               ({ config, ... }: {
+                env.DATABASE_HOST = config.env.PGHOST;
+                env.DATABASE_USER = "fleetyards_dev";
                 env.APP_DIR = "${config.env.DEVENV_STATE}/fleetyards";
+
                 process.implementation = "hivemind";
                 scripts.devenv-up.exec = ''
                   ${config.procfileScript}
@@ -116,10 +124,8 @@
           };
         });
 
-
-      checks = forAllSystems (system: {
-        devenv_ci = self.devShells.${system}.default.ci;
-      });
+      checks = forAllSystems
+        (system: { devenv_ci = self.devShells.${system}.default.ci; });
     };
 
   nixConfig = {
