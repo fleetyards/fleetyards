@@ -352,7 +352,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    minitest (5.16.3)
+    minitest (5.17.0)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
     minitest-rails (6.1.0)
@@ -391,7 +391,7 @@ GEM
     pg (1.4.5)
     pg_query (2.2.0)
       google-protobuf (>= 3.19.2)
-    pghero (3.0.1)
+    pghero (3.1.0)
       activerecord (>= 6)
     postmark (1.22.2)
       json
