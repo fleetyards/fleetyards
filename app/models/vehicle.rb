@@ -209,7 +209,7 @@ class Vehicle < ApplicationRecord
 
   def main_module_package
     packages = model.module_packages.select do |package|
-      (package.model_module_ids - model_module_ids).size.zero?
+      (package.model_module_ids - model_module_ids).empty?
     end
 
     packages.min_by do |package|
