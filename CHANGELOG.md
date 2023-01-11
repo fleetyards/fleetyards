@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.13.5](https://github.com/fleetyards/fleetyards/compare/v5.13.4...v5.13.5) (2023-01-11)
+
+
+### Bug Fixes
+
+* **docs:** update embed documentation to use embed-v2.js ([36bc68f](https://github.com/fleetyards/fleetyards/commit/36bc68f583296afb4ad23b823e1e5ff032e3d734))
+* **fleet-vehicles:** reload membership before update ([94959fa](https://github.com/fleetyards/fleetyards/commit/94959fad2b56d396cbf69db408f41a6f36310950))
+
 ### [5.13.4](https://github.com/fleetyards/fleetyards/compare/v5.13.3...v5.13.4) (2022-12-25)
 
 
