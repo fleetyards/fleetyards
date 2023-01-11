@@ -89,6 +89,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def setup_fleet_vehicles
+    reload
+
     return unless accepted?
     return if ships_filter_hide?
 
@@ -98,6 +100,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def update_fleet_vehicles
+    reload
+
     return unless accepted?
 
     if ships_filter_hide?
@@ -110,7 +114,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def remove_fleet_vehicles
-    fleet.fleet_vehicles.where(vehicle_id: user.vehicle_ids).destroy_all
+    FleetVehicle.where(fleet_id: fleet_id, vehicle_id: user.vehicle_ids).destroy_all
   end
 
   def update_fleet_vehicle(vehicle)
@@ -120,18 +124,16 @@ class FleetMembership < ApplicationRecord
     when 'hangar_group'
       update_fleet_vehicle_for_hangar_group(vehicle)
     else
-      fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
+      FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
     end
   end
 
   def update_fleet_vehicle_for_purchased(vehicle)
     if vehicle.purchased?
-      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
+      FleetVehicle.find_or_create_by(fleet_id: fleet_id, vehicle_id: vehicle.id)
     else
-      fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
+      FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
     end
-  rescue ActiveRecord::RecordNotUnique
-    nil
   end
 
   def update_fleet_vehicle_for_hangar_group(vehicle)
@@ -139,12 +141,10 @@ class FleetMembership < ApplicationRecord
     hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
 
     if hangar_group_ids.include?(hangar_group_id)
-      fleet.fleet_vehicles.find_or_create_by(vehicle_id: vehicle.id)
+      FleetVehicle.find_or_create_by(fleet_id: fleet_id, vehicle_id: vehicle.id)
     else
-      fleet.fleet_vehicles.find_by(vehicle_id: vehicle.id)&.destroy
+      FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
     end
-  rescue ActiveRecord::RecordNotUnique
-    nil
   end
 
   def set_primary
