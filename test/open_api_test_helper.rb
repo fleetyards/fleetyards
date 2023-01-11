@@ -14,8 +14,11 @@ module OpenApiTestHelper
     @committee_options ||= {
       schema: schema,
       prefix: '/api/v2',
+      strict: true,
+      coerce_date_times: true,
+      parse_response_by_content_type: true,
       query_hash_key: 'rack.request.query_hash',
-      parse_response_by_content_type: false
+      params_key: 'action_dispatch.request.request_parameters'
     }
   end
 

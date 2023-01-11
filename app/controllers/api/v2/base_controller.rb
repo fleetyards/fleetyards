@@ -8,7 +8,7 @@ module Api
       def root
         respond_to do |format|
           format.html do
-            render 'api/v2/base'
+            render 'api/v2/base/index'
             # render file: Rails.public_path.join('docs', 'v2.html')
           end
           format.json do

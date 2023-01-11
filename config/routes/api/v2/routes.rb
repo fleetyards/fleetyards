@@ -11,9 +11,7 @@ v2_api_routes = lambda do
 
   draw 'api/v2/hangar'
 
-  resources :images, only: %i[index] do
-    get :random, on: :collection
-  end
+  resources :images, only: %i[index]
 
   resources :manufacturers, param: :slug, only: %i[index]
 

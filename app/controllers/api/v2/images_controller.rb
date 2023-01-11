@@ -8,25 +8,21 @@ module Api
       def index
         authorize! :index, :api_images
 
-        @images = Image.enabled
-          .global_enabled
-          .in_gallery
-          .with_uniq_name
-          .order('images.created_at desc')
-          .page(params[:page])
-          .per(per_page(Image))
-      end
-
-      def random
-        authorize! :index, :api_images
-
-        @images = Image.enabled
+        scope = Image.enabled
           .global_enabled
           .in_gallery
           .with_uniq_name
           .includes(:gallery)
-          .order(Arel.sql('RANDOM()'))
-          .first(14)
+
+        scope = if params[:randomOrder]
+                  scope.order(Arel.sql('RANDOM()'))
+                else
+                  scope.order('images.created_at desc')
+                end
+
+        @images = scope
+          .page(params[:page])
+          .per(per_page(Image))
       end
     end
   end

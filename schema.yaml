@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.1
 x-stoplight:
   id: dd4a2d0985b96
 info:
@@ -125,7 +125,18 @@ paths:
                 $ref: '#/components/schemas/ManufacturerList'
       operationId: get-manufacturers
       description: List of Manufacturers
-  /images:
+      parameters:
+        - schema:
+            type: array
+          in: query
+          name: name
+          description: Filter by name
+        - schema:
+            type: boolean
+          in: query
+          name: withModel
+          description: Filter Manufacturers with Models
+  /images/:
     get:
       summary: Images Index
       tags:
@@ -137,23 +148,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImageList'
-      operationId: get-images
-      description: List of Images
-  /images/random:
-    get:
-      summary: Images Index with Random sorting
-      tags:
-        - Images
-      responses:
-        '200':
-          description: OK
+        '400':
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ImageList'
-      operationId: get-random-images
-      description: List of Images sorted Random
-    parameters: []
+                $ref: '#/components/schemas/Error'
+      operationId: get-images
+      description: List of Images
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: randomOrder
+          description: Sort Images Random
+        - schema:
+            type: number
+          in: query
+          name: perPage
+          description: Set Items per Page
+        - schema:
+            type: number
+          in: query
+          name: page
+          description: Set Page number
   /components:
     get:
       summary: Components Index
@@ -285,6 +303,9 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: List of AuthTokens
       operationId: get-users-auth-tokens
+      security:
+        - authToken: []
+        - sessionCookie: []
     post:
       summary: Create AuthToken
       tags:
@@ -304,26 +325,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthTokenInput'
+      security:
+        - authToken: []
+        - sessionCookie: []
   '/users/auth-tokens/{id}':
-    put:
-      summary: Update AuthToken
-      tags:
-        - Security
-      description: Update an AuthToken
-      operationId: update-users-auth-tokens
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthToken'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationError'
     delete:
       summary: Delete AuthToken
       tags:
@@ -343,6 +359,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - authToken: []
+        - sessionCookie: []
     parameters:
       - schema:
           type: string
@@ -369,6 +394,7 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
           format: date-time
         createdAt:
           type: string
@@ -399,6 +425,7 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
           format: date-time
         createdAt:
           type: string
@@ -412,6 +439,22 @@ components:
         - token
         - createdAt
         - updatedAt
+    AuthTokenInput:
+      title: AuthTokenInput
+      x-stoplight:
+        id: dvo5o99e3ol7a
+      type: object
+      properties:
+        description:
+          type: string
+        expiredAt:
+          type:
+            - string
+            - 'null'
+          nullable: true
+          format: date-time
+      required:
+        - description
     AuthTokenList:
       title: AuthToken List
       description: List of AuthTokens
@@ -471,6 +514,7 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
         class:
           type: string
         size:
@@ -483,18 +527,22 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
         itemClassLabel:
           type:
             - string
             - 'null'
+          nullable: true
         trackingSignal:
           type:
             - string
             - 'null'
+          nullable: true
         trackingSignalLabel:
           type:
             - string
             - 'null'
+          nullable: true
         storeImageIsFallback:
           type: boolean
         storeImage:
@@ -580,6 +628,7 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
       required:
         - name
         - value
@@ -615,6 +664,7 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
         url:
           type: string
           format: uri
@@ -680,11 +730,13 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
           example: ORIG
         logo:
           type:
             - string
             - 'null'
+          nullable: true
           format: uri
           example: 'http://fleetyards.test/uploads/manufacturer/logo/40/52/e7cf-5451-4a9f-a7e2-797daa26ccd8/small_logo_origin_active__1_.png'
         createdAt:
@@ -715,11 +767,13 @@ components:
           type:
             - string
             - 'null'
+          nullable: true
           example: ORIG
         logo:
           type:
             - string
             - 'null'
+          nullable: true
           format: uri
           example: 'http://fleetyards.test/uploads/manufacturer/logo/40/52/e7cf-5451-4a9f-a7e2-797daa26ccd8/small_logo_origin_active__1_.png'
       required:
@@ -1241,10 +1295,16 @@ components:
               type: string
               format: uri
             prev:
-              type: string
+              type:
+                - string
+                - 'null'
+              nullable: true
               format: uri
             next:
-              type: string
+              type:
+                - string
+                - 'null'
+              nullable: true
               format: uri
       required:
         - limit
@@ -1303,7 +1363,7 @@ components:
         averageSellPrice:
           type: string
         buyPrice:
-          type: 'null'
+          type: null
         averageBuyPrice:
           type: 'null'
         rentalPrice1Day:
@@ -1421,6 +1481,7 @@ components:
           type:
             - array
             - 'null'
+          nullable: true
           items:
             $ref: '#/components/schemas/ValidationAttributeError'
       required:
@@ -1471,3 +1532,6 @@ components:
       type: apiKey
       in: cookie
       description: Session Cookie for Authentication
+    authToken:
+      type: http
+      scheme: bearer
