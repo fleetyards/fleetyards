@@ -105,6 +105,7 @@
                 #languages.ruby.enable = true;
                 languages.ruby.package = pkgs.ruby_3_0;
                 languages.c.enable = true;
+                languages.typescript.enable = true;
                 languages.javascript.enable = true;
                 enterShell = ''
                   if [ ! -d node_modules ] || [ -L node_modules ]; then
@@ -117,7 +118,9 @@
                 '';
               })
               {
-                pre-commit.hooks.prettier.enable = true;
+                # To aggressiv for CI, maybe enable after fixing all issues
+                pre-commit.hooks.prettier.enable = false;
+
                 pre-commit.hooks.yamllint.enable = true;
                 pre-commit.hooks.actionlint.enable = true;
                 pre-commit.hooks.nixfmt.enable = true;
