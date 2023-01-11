@@ -50,6 +50,7 @@
             src = self;
             packageJSON = ./package.json;
             yarnLock = ./yarn.lock;
+            yarnNix = ./yarn.nix;
             packageResolutions = (builtins.fromJSON
               (builtins.readFile ./package.json)).resolutions;
 
@@ -98,6 +99,7 @@
                   pkgs.fleet_yards_env.wrappedRuby
                   pkgs.fleet_yards_update
                   pkgs.yarn
+                  pkgs.yarn2nix
                 ];
 
                 #languages.ruby.enable = true;
@@ -137,7 +139,7 @@
 
                 # TODO: minio
               }
-              ({ config, ... }: {
+              ({ config, pkgs, ... }: {
                 env.DATABASE_HOST = config.env.PGHOST;
                 env.DATABASE_USER = "fleetyards_dev";
                 #env.APP_DIR = "${config.env.DEVENV_STATE}/fleetyards";
@@ -154,7 +156,7 @@
       formatter = forAllSystems (system: nixpkgsFor.${system}.nixfmt);
 
       checks = forAllSystems
-        (system: { devenv_ci = self.devShells.${system}.default.default; });
+        (system: { devenv_ci = self.devShells.${system}.default.ci; });
     };
 
   nixConfig = {
