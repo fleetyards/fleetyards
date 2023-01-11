@@ -134,6 +134,8 @@ class FleetMembership < ApplicationRecord
     else
       FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
     end
+  rescue ActiveRecord::RecordNotUnique
+    nil
   end
 
   def update_fleet_vehicle_for_hangar_group(vehicle)
@@ -145,6 +147,8 @@ class FleetMembership < ApplicationRecord
     else
       FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
     end
+  rescue ActiveRecord::RecordNotUnique
+    nil
   end
 
   def set_primary
