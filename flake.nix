@@ -44,6 +44,18 @@
             gemdir = self;
           }) { };
 
+        fleet_yards_yarn = final.callPackage ({ mkYarnPackage }:
+          mkYarnPackage {
+            name = "fleet_yards_yarn";
+            src = self;
+            packageJSON = ./package.json;
+            yarnLock = ./yarn.lock;
+            packageResolutions = (builtins.fromJSON
+              (builtins.readFile ./package.json)).resolutions;
+
+            dontStrip = true;
+          }) { };
+
         fleet_yards_update = final.callPackage
           ({ runCommandNoCC, substituteAll, bundix, fleet_yards_env }:
             let
@@ -67,7 +79,8 @@
       overlays.default = self.overlays.fleet;
 
       packages = forAllSystems (system: {
-        inherit (nixpkgsFor.${system}) fleet_yards_env fleet_yards_update;
+        inherit (nixpkgsFor.${system})
+          fleet_yards_env fleet_yards_update fleet_yards_yarn;
         #default = self.packages.${system}.ex_fleet_yards;
       });
 
@@ -79,19 +92,31 @@
           default = devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [
-              {
+              ({ pkgs, ... }: {
                 packages = [
                   pkgs.fleet_yards_env
                   pkgs.fleet_yards_env.wrappedRuby
                   pkgs.fleet_yards_update
+                  pkgs.yarn
                 ];
 
                 #languages.ruby.enable = true;
                 languages.ruby.package = pkgs.ruby_3_0;
                 languages.c.enable = true;
+                languages.javascript.enable = true;
                 enterShell = ''
+                  if [ ! -d node_modules ] || [ -L node_modules ]; then
+                    rm -f node_modules
+                    ln -sf ${pkgs.fleet_yards_yarn.deps}/node_modules node_modules
+                    echo "Linked node_modules"
+                  fi
+
                   mkdir -p $APP_DIR/tmp/pids
                 '';
+              })
+              {
+                pre-commit.hooks.prettier.enable = true;
+                pre-commit.hooks.yamllint.enable = true;
               }
               {
                 services.postgres.enable = true;
@@ -113,16 +138,18 @@
               ({ config, ... }: {
                 env.DATABASE_HOST = config.env.PGHOST;
                 env.DATABASE_USER = "fleetyards_dev";
-                env.APP_DIR = "${config.env.DEVENV_STATE}/fleetyards";
+                #env.APP_DIR = "${config.env.DEVENV_STATE}/fleetyards";
+                env.FLEETYARDS_VITE_CACHE =
+                  "${config.env.DEVENV_STATE}/vite-cache";
+                env.FLEETYARDS_NODE_MODULES = pkgs.fleet_yards_yarn.deps;
 
                 process.implementation = "hivemind";
-                scripts.devenv-up.exec = ''
-                  ${config.procfileScript}
-                '';
               })
             ];
           };
         });
+
+      formatter = forAllSystems (system: nixpkgsFor.${system}.nixfmt);
 
       checks = forAllSystems
         (system: { devenv_ci = self.devShells.${system}.default.ci; });
