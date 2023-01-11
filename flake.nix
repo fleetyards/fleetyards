@@ -121,7 +121,6 @@
                 # To aggressiv for CI, maybe enable after fixing all issues
                 pre-commit.hooks.prettier.enable = false;
 
-                pre-commit.hooks.yamllint.enable = true;
                 pre-commit.hooks.actionlint.enable = true;
                 pre-commit.hooks.nixfmt.enable = true;
               }
