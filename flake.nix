@@ -117,6 +117,7 @@
               {
                 pre-commit.hooks.prettier.enable = true;
                 pre-commit.hooks.yamllint.enable = true;
+                pre-commit.hooks.actionlint.enable = true;
                 pre-commit.hooks.nixfmt.enable = true;
               }
               {
@@ -153,7 +154,7 @@
       formatter = forAllSystems (system: nixpkgsFor.${system}.nixfmt);
 
       checks = forAllSystems
-        (system: { devenv_ci = self.devShells.${system}.default.ci; });
+        (system: { devenv_ci = self.devShells.${system}.default.default; });
     };
 
   nixConfig = {
