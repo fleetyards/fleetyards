@@ -53,7 +53,7 @@ class Setup < Thor
       exit
     end
 
-    admin_user = AdminUser.new(username: username, email: email, password: password, password_confirmation: password_confirmation, admin: true)
+    admin_user = AdminUser.new(username: username, email: email, password: password, password_confirmation: password_confirmation)
     admin_user.skip_confirmation!
     if admin_user.save!
       puts 'Admin User created!'
