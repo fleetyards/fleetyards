@@ -2,6 +2,7 @@
   transition: width 0.4s ease, max-width 0.4s ease;
 }
 
+// slide
 .slide-enter-active,
 .slide-leave-active {
   overflow: hidden;
@@ -24,6 +25,7 @@
   padding: 0;
 }
 
+// fade
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -38,6 +40,7 @@
   opacity: 0;
 }
 
+// fade-slow
 .fade-slow-enter-active,
 .fade-slow-leave-active {
   transition: opacity 1.5s;
@@ -52,6 +55,7 @@
   opacity: 0;
 }
 
+// fade-list
 .fade-list-item {
   opacity: 1;
   transition: all 0.5s;
@@ -71,6 +75,7 @@
   transition-delay: 0.5s;
 }
 
+// fade-nav
 .fade-nav-enter-active {
   transition: opacity 0.3s;
 }
