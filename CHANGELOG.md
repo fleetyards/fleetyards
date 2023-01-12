@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.13.6](https://github.com/fleetyards/fleetyards/compare/v5.13.5...v5.13.6) (2023-01-12)
+
+
+### Bug Fixes
+
+* **setup:** remove admin flag from create admin script ([10013f8](https://github.com/fleetyards/fleetyards/commit/10013f8eb3a810424b2edc8d4529f7835bc926e1))
+* **setup:** update admin user setup script ([6091b6a](https://github.com/fleetyards/fleetyards/commit/6091b6ae48338cc016d4f0a428c2581d33a1ed44))
+
 ### [5.13.5](https://github.com/fleetyards/fleetyards/compare/v5.13.4...v5.13.5) (2023-01-11)
 
 
