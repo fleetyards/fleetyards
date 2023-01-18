@@ -178,6 +178,7 @@ v1_api_routes = lambda do
 
     member do
       get 'vehicles' => 'fleet_vehicles#index'
+      get 'vehicles/export', to: 'fleet_vehicles#export'
       get 'model-counts' => 'fleet_vehicles#model_counts'
       get 'quick-stats' => 'fleet_vehicles#quick_stats'
       get 'fleetchart' => 'fleet_vehicles#fleetchart'

@@ -1,4 +1,4 @@
-import { get } from "@/frontend/api/client";
+import { get, download } from "@/frontend/api/client";
 import Store from "@/frontend/lib/Store";
 import BaseCollection from "./Base";
 
@@ -79,6 +79,18 @@ export class FleetVehiclesCollection extends BaseCollection {
     }
 
     return this.modelCounts;
+  }
+
+  async export(params: FleetVehicleParams): Promise<Vehicle[] | null> {
+    const response = await download(`fleets/${params.slug}/vehicles/export`, {
+      q: params?.filters,
+    });
+
+    if (!response.error) {
+      return response.data;
+    }
+
+    return null;
   }
 }
 
