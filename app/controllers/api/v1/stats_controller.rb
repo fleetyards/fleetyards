@@ -85,7 +85,7 @@ module Api
         models_per_month = Rollup.where('time > ?', 1.year.ago).series('Models', interval: :month).map do |created_at, count|
           {
             label: I18n.l(created_at.to_date, format: :month_year_short),
-            count: count,
+            count:,
             tooltip: I18n.l(created_at.to_date, format: :month_year)
           }
         end

@@ -65,9 +65,9 @@ class FleetInviteUrl < ApplicationRecord
   end
 
   def url
-    return short_fleet_invite_url(token: token) if Rails.configuration.app.short_domain.present?
+    return short_fleet_invite_url(token:) if Rails.configuration.app.short_domain.present?
 
-    frontend_fleet_invite_url(token: token)
+    frontend_fleet_invite_url(token:)
   end
 
   private def generate_token

@@ -7,7 +7,7 @@ module Notifications
     def perform(model_id)
       model = Model.find(model_id)
 
-      Discord::NewShip.new(model: model).run
+      Discord::NewShip.new(model:).run
 
       model.update(notified: true)
     end

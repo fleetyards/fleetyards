@@ -197,7 +197,7 @@ module Api
               label: classification.humanize
             )
           end,
-          groups: HangarGroup.where(user: user, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
+          groups: HangarGroup.where(user:, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
             HangarGroupCount.new(
               group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
               id: group.id,
@@ -284,7 +284,7 @@ module Api
 
         return if errors.blank?
 
-        render json: ValidationError.new('vehicle.bulk_update', errors: errors), status: :bad_request
+        render json: ValidationError.new('vehicle.bulk_update', errors:), status: :bad_request
       end
 
       def destroy

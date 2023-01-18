@@ -27,7 +27,7 @@ module Rsi
 
       component.update(
         component_class: component_data[:component_class],
-        item_type: item_type,
+        item_type:,
         manufacturer_id: manufacturer.id
       )
 

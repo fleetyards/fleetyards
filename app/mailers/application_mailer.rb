@@ -11,7 +11,7 @@ class ApplicationMailer < ActionMailer::Base
 
   private def handle_inactive_error
     message.to.each do |email|
-      EmailRejection.find_or_create_by(email: email)
+      EmailRejection.find_or_create_by(email:)
     end
   end
 end
