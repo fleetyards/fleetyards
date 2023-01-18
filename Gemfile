@@ -69,8 +69,6 @@ gem 'url_plumber'
 
 gem 'dynamic_fields_for_rails'
 
-gem 'state_machine'
-
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
@@ -102,7 +100,7 @@ gem 'ssrf_filter', '~> 1.0.8'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
-gem 'nokogiri', '1.13.10'
+gem 'nokogiri'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
