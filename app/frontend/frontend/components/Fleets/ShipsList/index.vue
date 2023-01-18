@@ -111,6 +111,16 @@
                 <span>{{ $t("actions.groupedByModel") }}</span>
               </template>
             </Btn>
+
+            <Btn
+              size="small"
+              variant="dropdown"
+              :aria-label="$t('actions.export')"
+              @click.native="exportJson"
+            >
+              <i class="fal fa-download" />
+              <span>{{ $t("actions.export") }}</span>
+            </Btn>
           </BtnDropdown>
         </template>
 
@@ -160,6 +170,8 @@ import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import fleetVehiclesCollection from "@/frontend/api/collections/FleetVehicles";
 import debounce from "lodash.debounce";
+import { format } from "date-fns";
+import { displayAlert } from "@/frontend/lib/Noty";
 
 @Component<FleetShipsList>({
   components: {
@@ -291,6 +303,35 @@ export default class FleetShipsList extends Vue {
 
   async fetchModelCounts() {
     await this.collection.findModelCounts(this.filters);
+  }
+
+  async exportJson() {
+    const exportedData = await this.collection.export(this.filters);
+
+    // eslint-disable-next-line compat/compat
+    if (!exportedData || !window.URL) {
+      displayAlert({ text: this.$t("messages.hangarExport.failure") });
+      return;
+    }
+
+    const link = document.createElement("a");
+
+    // eslint-disable-next-line compat/compat
+    link.href = window.URL.createObjectURL(new Blob([exportedData]));
+
+    link.setAttribute(
+      "download",
+      `fleetyards-${this.fleet.slug}-vehicles-${format(
+        new Date(),
+        "yyyy-MM-dd"
+      )}.json`
+    );
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
   }
 }
 </script>
