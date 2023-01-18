@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.14.0](https://github.com/fleetyards/fleetyards/compare/v5.13.6...v5.14.0) (2023-01-18)
+
+
+### Features
+
+* **Fleets:** Add Export for all Vehicles of Fleet ([#2516](https://github.com/fleetyards/fleetyards/issues/2516)) ([73407df](https://github.com/fleetyards/fleetyards/commit/73407dfc9ecfe897012cdf5a5dd4af7ff01cdc69))
+
 ### [5.13.6](https://github.com/fleetyards/fleetyards/compare/v5.13.5...v5.13.6) (2023-01-12)
 
 
