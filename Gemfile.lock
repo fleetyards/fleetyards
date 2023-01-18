@@ -251,6 +251,7 @@ GEM
     git (1.13.1)
       addressable (~> 2.8)
       rchardet (~> 1.8)
+    glob (0.4.0)
     globalid (1.0.1)
       activesupport (>= 5.0)
     google-protobuf (3.21.12)
@@ -277,8 +278,9 @@ GEM
       domain_name (~> 0.5)
     i18n (1.11.0)
       concurrent-ruby (~> 1.0)
-    i18n-js (3.9.2)
-      i18n (>= 0.6.6)
+    i18n-js (4.2.2)
+      glob (>= 0.4.0)
+      i18n
     i18n-tasks (1.0.12)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
@@ -706,7 +708,7 @@ DEPENDENCIES
   haml-rails
   highline
   i18n (= 1.11.0)
-  i18n-js (< 4.0)
+  i18n-js (<= 4.2.2)
   i18n-tasks (~> 1.0.5)
   image_processing (~> 1.0)
   inky-rb
