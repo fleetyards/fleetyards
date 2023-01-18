@@ -1,6 +1,7 @@
 type Fleet = {
   id: string;
   name: string;
+  slug: string;
   description: string;
   myFleet: boolean;
   publicFleet: boolean;
