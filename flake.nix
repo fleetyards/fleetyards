@@ -44,18 +44,31 @@
             gemdir = self;
           }) { };
 
-        fleet_yards_yarn = final.callPackage ({ mkYarnPackage }:
-          mkYarnPackage {
-            name = "fleet_yards_yarn";
-            src = self;
-            packageJSON = ./package.json;
-            yarnLock = ./yarn.lock;
-            yarnNix = ./yarn.nix;
-            packageResolutions = (builtins.fromJSON
-              (builtins.readFile ./package.json)).resolutions;
+        fleet_yards_yarn = final.callPackage
+          ({ mkYarnPackage, runCommand, yarn2nix }:
+            let
+              yarnLock = ./yarn.lock;
+              yarnNix = if builtins ? currentSystem then
+                let pkgs = nixpkgsFor.${builtins.currentSystem};
+                in pkgs.runCommand "yarn.nix" { } ''
+                  ${pkgs.yarn2nix}/bin/yarn2nix --lockfile ${yarnLock} --no-patch > $out
+                ''
+              else
+                runCommand "yarn.nix" { } ''
+                  ${yarn2nix}/bin/yarn2nix --lockfile ${yarnLock} --no-patch > $out
+                '';
+            in mkYarnPackage {
+              name = "fleet_yards_yarn";
+              src = self;
+              packageJSON = ./package.json;
 
-            dontStrip = true;
-          }) { };
+              inherit yarnNix yarnLock;
+
+              packageResolutions = (builtins.fromJSON
+                (builtins.readFile ./package.json)).resolutions;
+
+              dontStrip = true;
+            }) { };
 
         fleet_yards_update = final.callPackage
           ({ runCommandNoCC, substituteAll, bundix, fleet_yards_env }:
@@ -127,6 +140,7 @@
               {
                 services.postgres.enable = true;
                 services.postgres.initdbArgs = [ "-U fleetyards_dev" ];
+                services.postgres.listen_addresses = "0.0.0.0";
                 services.postgres.initialDatabases = [
                   { name = "fleetyards_dev"; }
                   { name = "fleetyards_test"; }
