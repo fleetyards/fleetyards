@@ -41,9 +41,9 @@ class Station < ApplicationRecord
 
   def search_data
     {
-      name: name,
-      station_type: station_type,
-      classification: classification,
+      name:,
+      station_type:,
+      classification:,
       celestial_object: celestial_object.name,
       starsystem: celestial_object.starsystem&.name,
       cargo_hub: cargo_hub?,
@@ -141,7 +141,7 @@ class Station < ApplicationRecord
     if filters[:commodity_item_type].present?
       shop_type = Shop.shop_type_for_commodity_type(filters[:commodity_item_type])
 
-      scope = scope.where(shops: { shop_type: shop_type }) if shop_type.present?
+      scope = scope.where(shops: { shop_type: }) if shop_type.present?
     end
 
     scope
@@ -177,14 +177,14 @@ class Station < ApplicationRecord
 
   def habitation_counts
     habitations.group_by(&:habitation_type).map do |habitation_type, habitations_by_type|
-      HabitationCount.new(habitation_type: habitation_type, habitation_type_label: habitations_by_type.first.habitation_type_label, habitation_count: habitations_by_type.size)
+      HabitationCount.new(habitation_type:, habitation_type_label: habitations_by_type.first.habitation_type_label, habitation_count: habitations_by_type.size)
     end.flatten
   end
 
   def dock_counts
     docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
       docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
-        DockCount.new(dock_size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, dock_count: docks_by_type.size)
+        DockCount.new(dock_size: size, dock_type:, dock_type_label: docks_by_type.first.dock_type_label, dock_count: docks_by_type.size)
       end
     end.flatten
   end

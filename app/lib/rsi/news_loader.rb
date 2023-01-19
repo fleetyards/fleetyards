@@ -45,10 +45,10 @@ module Rsi
 
         news << {
           title: news_element.css('.title-holder .title').text,
-          type: type,
-          sub_type: sub_type,
+          type:,
+          sub_type:,
           url: "#{@base_url}#{url}",
-          slug: slug,
+          slug:,
         }
       end
 

@@ -36,7 +36,7 @@ class Starsystem < ApplicationRecord
 
   def search_data
     {
-      name: name,
+      name:,
     }
   end
 

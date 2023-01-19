@@ -114,7 +114,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def remove_fleet_vehicles
-    FleetVehicle.where(fleet_id: fleet_id, vehicle_id: user.vehicle_ids).destroy_all
+    FleetVehicle.where(fleet_id:, vehicle_id: user.vehicle_ids).destroy_all
   end
 
   def update_fleet_vehicle(vehicle)
@@ -124,15 +124,15 @@ class FleetMembership < ApplicationRecord
     when 'hangar_group'
       update_fleet_vehicle_for_hangar_group(vehicle)
     else
-      FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
+      FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy
     end
   end
 
   def update_fleet_vehicle_for_purchased(vehicle)
     if vehicle.purchased?
-      FleetVehicle.find_or_create_by(fleet_id: fleet_id, vehicle_id: vehicle.id)
+      FleetVehicle.find_or_create_by(fleet_id:, vehicle_id: vehicle.id)
     else
-      FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
+      FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy
     end
   rescue ActiveRecord::RecordNotUnique
     nil
@@ -143,9 +143,9 @@ class FleetMembership < ApplicationRecord
     hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
 
     if hangar_group_ids.include?(hangar_group_id)
-      FleetVehicle.find_or_create_by(fleet_id: fleet_id, vehicle_id: vehicle.id)
+      FleetVehicle.find_or_create_by(fleet_id:, vehicle_id: vehicle.id)
     else
-      FleetVehicle.find_by(fleet_id: fleet_id, vehicle_id: vehicle.id)&.destroy
+      FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy
     end
   rescue ActiveRecord::RecordNotUnique
     nil
@@ -155,8 +155,8 @@ class FleetMembership < ApplicationRecord
     return unless primary?
 
     # rubocop:disable Rails/SkipsModelValidations
-    FleetMembership.where(user_id: user_id, primary: true)
-      .where.not(id: id)
+    FleetMembership.where(user_id:, primary: true)
+      .where.not(id:)
       .update_all(primary: false)
     # rubocop:enable Rails/SkipsModelValidations
   end

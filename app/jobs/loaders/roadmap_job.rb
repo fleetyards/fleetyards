@@ -16,10 +16,10 @@ module Loaders
 
       RoadmapMailer.notify_admin(changes).deliver_later
 
-      Discord::RoadmapUpdate.new(changes: changes).run
+      Discord::RoadmapUpdate.new(changes:).run
 
       ActionCable.server.broadcast('roadmap', {
-        changes: changes
+        changes:
       }.to_json)
     end
   end

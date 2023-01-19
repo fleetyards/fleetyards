@@ -25,8 +25,8 @@ class Commodity < ApplicationRecord
 
   def search_data
     {
-      name: name,
-      commodity_type: commodity_type
+      name:,
+      commodity_type:
     }
   end
 

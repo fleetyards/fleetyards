@@ -131,7 +131,7 @@ class User < ApplicationRecord
 
   def update_urls(force: false)
     %i[discord twitch youtube homepage guilded].each do |field|
-      send("#{field}=", ensure_valid_url(self, field, force: force))
+      send("#{field}=", ensure_valid_url(self, field, force:))
     end
   end
 
@@ -144,9 +144,9 @@ class User < ApplicationRecord
   end
 
   def public_hangar_url
-    return short_public_hangar_url(username: username) if Rails.configuration.app.short_domain.present?
+    return short_public_hangar_url(username:) if Rails.configuration.app.short_domain.present?
 
-    frontend_public_hangar_url(username: username)
+    frontend_public_hangar_url(username:)
   end
 
   def resend_confirmation

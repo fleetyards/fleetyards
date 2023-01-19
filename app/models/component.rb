@@ -38,9 +38,9 @@ class Component < ApplicationRecord
 
   def search_data
     {
-      name: name,
+      name:,
       item_type: (item_type || '').tr('_', ' '),
-      item_class: item_class,
+      item_class:,
       manufacturer_name: manufacturer&.name,
       manufacturer_code: manufacturer&.code
     }

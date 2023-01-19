@@ -26,7 +26,7 @@ module ScData
 
       component = Component.find_or_create_by!(
         sc_identifier: component_data['ClassName'],
-        name: name
+        name:
       )
 
       manufacturer = extract_manufacturer(component_data['Manufacturer'])
@@ -38,7 +38,7 @@ module ScData
         size: component_data['Size'],
         grade: component_data['Grade'],
         item_class: extract_item_class(description),
-        description: description,
+        description:,
         manufacturer: manufacturer || component.manufacturer,
         type_data: extract_type_data(component_data),
         durability: extract_durability(component_data),

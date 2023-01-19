@@ -54,7 +54,7 @@ class Manufacturer < ApplicationRecord
   def to_filter
     Filter.new(
       category: 'manufacturer',
-      name: name,
+      name:,
       icon: (logo.small.url if logo.present?),
       value: slug
     )

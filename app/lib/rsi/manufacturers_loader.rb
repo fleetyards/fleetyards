@@ -15,7 +15,7 @@ module Rsi
         remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data['media'].present?)
       )
 
-      model.update(manufacturer: manufacturer) if model.present?
+      model.update(manufacturer:) if model.present?
 
       manufacturer
     end

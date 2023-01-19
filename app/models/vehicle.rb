@@ -132,26 +132,26 @@ class Vehicle < ApplicationRecord
   def remove_loaners
     return if loaner?
 
-    Vehicle.where(loaner: true, vehicle_id: id, user_id: user_id).destroy_all
+    Vehicle.where(loaner: true, vehicle_id: id, user_id:).destroy_all
 
-    Vehicle.where(loaner: true, user_id: user_id).find_each do |loaner_vehicle|
+    Vehicle.where(loaner: true, user_id:).find_each do |loaner_vehicle|
       loaner_vehicle.update(
-        hidden: Vehicle.where(loaner: true, model_id: loaner_vehicle.model_id, user_id: user_id, hidden: false).where.not(id: loaner_vehicle.id).exists?
+        hidden: Vehicle.where(loaner: true, model_id: loaner_vehicle.model_id, user_id:, hidden: false).where.not(id: loaner_vehicle.id).exists?
       )
     end
   end
 
   def create_loaner(model_loaner)
-    return if Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id: user_id)
+    return if Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id:)
 
     Vehicle.create(
       loaner: true,
       model_id: model_loaner.id,
-      user_id: user_id,
+      user_id:,
       vehicle_id: id,
       public: false,
       purchased: true,
-      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, user_id: user_id)
+      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, user_id:)
     )
   end
 
@@ -194,8 +194,8 @@ class Vehicle < ApplicationRecord
   def set_flagship
     return unless flagship?
 
-    Vehicle.where(user_id: user_id, flagship: true)
-      .where.not(id: id)
+    Vehicle.where(user_id:, flagship: true)
+      .where.not(id:)
       .find_each do |vehicle|
       vehicle.update(flagship: false)
     end

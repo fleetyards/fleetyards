@@ -334,7 +334,7 @@ module Api
 
       private def will_it_fit?(scope)
         slug = model_query_params.delete('will_it_fit')
-        parent = Model.visible.active.where(slug: slug).or(Model.where(rsi_slug: slug)).first
+        parent = Model.visible.active.where(slug:).or(Model.where(rsi_slug: slug)).first
 
         return scope if parent.blank? || parent.docks.blank?
 

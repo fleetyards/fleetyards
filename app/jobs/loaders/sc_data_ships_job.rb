@@ -5,7 +5,7 @@ require 'rsi/news_loader'
 module Loaders
   class ScDataShipsJob < ::Loaders::BaseJob
     def perform(version)
-      import = Imports::ScDataImport.create(version: version)
+      import = Imports::ScDataImport.create(version:)
 
       import.start!
 

@@ -19,8 +19,8 @@ module ChartHelper
   def transform_for_bar_chart(data)
     data.sort_by { |_label, count| count }.reverse.each.map do |label, count|
       {
-        label: label,
-        count: count,
+        label:,
+        count:,
         tooltip: label
       }
     end
