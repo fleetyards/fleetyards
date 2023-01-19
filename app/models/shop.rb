@@ -35,8 +35,8 @@ class Shop < ApplicationRecord
 
   def search_data
     {
-      name: name,
-      shop_type: shop_type,
+      name:,
+      shop_type:,
       station: station.name,
       celestial_object: station.celestial_object.name,
       starsystem: station.celestial_object.starsystem&.name,

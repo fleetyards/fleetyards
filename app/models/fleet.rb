@@ -73,10 +73,10 @@ class Fleet < ApplicationRecord
 
   def update_urls(force: false)
     %i[discord twitch youtube homepage guilded].each do |field|
-      send("#{field}=", ensure_valid_url(self, field, force: force))
+      send("#{field}=", ensure_valid_url(self, field, force:))
     end
 
-    self.ts = ensure_valid_ts_url(self, :ts, force: force)
+    self.ts = ensure_valid_ts_url(self, :ts, force:)
   end
 
   def setup_admin_user
@@ -89,7 +89,7 @@ class Fleet < ApplicationRecord
   end
 
   def role(user_id)
-    membership = fleet_memberships.find_by(user_id: user_id)
+    membership = fleet_memberships.find_by(user_id:)
 
     return if membership.blank? || !membership.accepted?
 
@@ -97,37 +97,37 @@ class Fleet < ApplicationRecord
   end
 
   def my_fleet?(user_id)
-    membership = fleet_memberships.find_by(user_id: user_id)
+    membership = fleet_memberships.find_by(user_id:)
 
     membership.present? && membership.accepted?
   end
 
   def invitation(user_id)
-    fleet_memberships.find_by(user_id: user_id)&.invited?
+    fleet_memberships.find_by(user_id:)&.invited?
   end
 
   def requested(user_id)
-    fleet_memberships.find_by(user_id: user_id)&.requested?
+    fleet_memberships.find_by(user_id:)&.requested?
   end
 
   def primary(user_id)
-    fleet_memberships.find_by(user_id: user_id)&.primary
+    fleet_memberships.find_by(user_id:)&.primary
   end
 
   def ships_filter(user_id)
-    fleet_memberships.find_by(user_id: user_id)&.ships_filter
+    fleet_memberships.find_by(user_id:)&.ships_filter
   end
 
   def hangar_group_id(user_id)
-    fleet_memberships.find_by(user_id: user_id)&.hangar_group_id
+    fleet_memberships.find_by(user_id:)&.hangar_group_id
   end
 
   def accepted_at(user_id)
-    fleet_memberships.find_by(user_id: user_id)&.accepted_at
+    fleet_memberships.find_by(user_id:)&.accepted_at
   end
 
   def model_count(model_id)
-    vehicles.where(model_id: model_id, loaner: false).size
+    vehicles.where(model_id:, loaner: false).size
   end
 
   private def update_slugs

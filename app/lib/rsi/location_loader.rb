@@ -142,7 +142,7 @@ module Rsi
           code: faction_data['code'],
           color: faction_data['color']
         )
-        Affiliation.create(affiliationable: affiliationable, faction_id: faction.id)
+        Affiliation.create(affiliationable:, faction_id: faction.id)
       end
     end
 
@@ -150,7 +150,7 @@ module Rsi
       celestial_object = CelestialObject.find_or_create_by!(rsi_id: data['id'])
 
       celestial_object.update!(
-        starsystem_id: starsystem_id,
+        starsystem_id:,
         parent: CelestialObject.find_by(rsi_id: data['parent_id']),
         name: data['name'] || data['designation'],
         designation: data['designation'],

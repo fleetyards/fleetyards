@@ -51,7 +51,7 @@ module Pagination
     url_for(
       controller: controller_name,
       action: action_name,
-      page: page,
+      page:,
       per_page: page.present? && !per_page_params.to_i.zero? ? per_page_params.to_i : nil
     )
   end

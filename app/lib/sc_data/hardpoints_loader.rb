@@ -155,8 +155,8 @@ module ScData
 
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,
-        model_id: model_id,
-        key: key,
+        model_id:,
+        key:,
         name: port_data['PortName'],
         item_slot: index,
         loadout_identifier: component_data['Name'],
@@ -250,7 +250,7 @@ module ScData
     private def cleanup_ship_matrix_hardpoints(model_id)
       ModelHardpoint.where(
         source: :ship_matrix,
-        model_id: model_id,
+        model_id:,
         hardpoint_type: hardpoint_types
       ).update(deleted_at: Time.zone.now)
     end
@@ -258,7 +258,7 @@ module ScData
     private def cleanup_old_hardpoints(model_id, hardpoint_ids)
       ModelHardpoint.where(
         source: :game_files,
-        model_id: model_id,
+        model_id:,
         hardpoint_type: hardpoint_types
       ).where.not(id: hardpoint_ids.flatten)
         .update(deleted_at: Time.zone.now)

@@ -29,7 +29,7 @@ module Rsi
 
         found_models = Model.where(name: models_map(name)).all
 
-        missing_models << { name: name, loaners: loaners } if found_models.blank?
+        missing_models << { name:, loaners: } if found_models.blank?
 
         found_models.each do |model|
           loaners.each do |loaner|

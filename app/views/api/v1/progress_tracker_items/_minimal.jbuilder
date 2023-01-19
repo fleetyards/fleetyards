@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.cache! ['v1', item] do
-  json.partial! 'api/v1/progress_tracker_items/base', item: item
+  json.partial!('api/v1/progress_tracker_items/base', item:)
   json.model do
     if item.model.blank?
       json.null!

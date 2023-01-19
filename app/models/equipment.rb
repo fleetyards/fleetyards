@@ -41,12 +41,12 @@ class Equipment < ApplicationRecord
 
   def search_data
     {
-      name: name,
-      item_type: item_type,
-      equipment_type: equipment_type,
+      name:,
+      item_type:,
+      equipment_type:,
       manufacturer_name: manufacturer&.name,
       manufacturer_code: manufacturer&.code,
-      slot: slot
+      slot:
     }
   end
 

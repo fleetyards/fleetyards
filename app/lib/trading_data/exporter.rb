@@ -42,7 +42,7 @@ module TradingData
           next if item.blank?
 
           data << {
-            commodity: commodity,
+            commodity:,
             price: item.text,
             location: item['data-location_id'],
             buy: item['data-buy'] == '0'

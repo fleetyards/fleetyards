@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  RUBY_VERSION: 3.0.4
+  RUBY_VERSION: 3.2.0
 
 jobs:
   js-setup:

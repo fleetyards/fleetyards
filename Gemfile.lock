@@ -377,8 +377,10 @@ GEM
     net-ssh (7.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.10)
+    nokogiri (1.14.0)
       mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    nokogiri (1.14.0-x86_64-linux)
       racc (~> 1.4)
     oj (3.13.23)
     orm_adapter (0.5.0)
@@ -616,7 +618,6 @@ GEM
     sshkit-interactive (0.3.0)
       sshkit (~> 1.12)
     ssrf_filter (1.0.8)
-    state_machine (1.2.0)
     stringio (3.0.4)
     temple (0.8.2)
     terminal-table (3.0.2)
@@ -665,6 +666,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   aasm
@@ -724,7 +726,7 @@ DEPENDENCIES
   minitest-ci
   minitest-rails
   mocha
-  nokogiri (= 1.13.10)
+  nokogiri
   oj
   paper_trail
   pg (~> 1.0)
@@ -775,7 +777,6 @@ DEPENDENCIES
   spring-watcher-listen
   sprockets-rails (~> 3.4.2)
   ssrf_filter (~> 1.0.8)
-  state_machine
   thor
   timecop
   typhoeus
@@ -789,7 +790,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 3.0.4
+   ruby 3.2.0p0
 
 BUNDLED WITH
    2.2.33
