@@ -29,6 +29,7 @@
 #  index_stations_on_celestial_object_id  (celestial_object_id)
 #  index_stations_on_name                 (name) UNIQUE
 #  index_stations_on_planet_id            (planet_id)
+#  stations_slug_index                    (slug) UNIQUE
 #
 require 'test_helper'
 

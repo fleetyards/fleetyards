@@ -29,6 +29,7 @@
 #  index_stations_on_celestial_object_id  (celestial_object_id)
 #  index_stations_on_name                 (name) UNIQUE
 #  index_stations_on_planet_id            (planet_id)
+#  stations_slug_index                    (slug) UNIQUE
 #
 class Station < ApplicationRecord
   paginates_per 10
@@ -96,7 +97,6 @@ class Station < ApplicationRecord
   ransack_alias :habs, :habitations_station_id
   ransack_alias :starsystem, :celestial_object_starsystem_slug
   ransack_alias :celestial_object, :celestial_object_slug
-  ransack_alias :name, :name_or_slug
   ransack_alias :search, :name_or_slug_or_celestial_object_starsystem_slug_or_celestial_object_slug
 
   validates :name, :station_type, presence: true

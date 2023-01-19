@@ -43,7 +43,7 @@ export const routes = [
     component: () => import("@/frontend/pages/Hangar/index.vue"),
     meta: {
       needsAuthentication: true,
-      quickSearch: "nameCont",
+      quickSearch: "searchCont",
       title: "hangar.index",
       primaryAction: true,
       backgroundImage: "bg-5",

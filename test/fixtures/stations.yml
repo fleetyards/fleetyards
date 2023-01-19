@@ -27,6 +27,7 @@
 #  index_stations_on_celestial_object_id  (celestial_object_id)
 #  index_stations_on_name                 (name) UNIQUE
 #  index_stations_on_planet_id            (planet_id)
+#  stations_slug_index                    (slug) UNIQUE
 #
 
 portolisar:
@@ -47,7 +48,7 @@ corvolex:
 
 arccorp_daymar:
   name: ArcCorp 001
-  slug: arccorp
+  slug: arccorp_daymar
   celestial_object: daymar
   station_type: outpost
   hidden: false
@@ -55,7 +56,7 @@ arccorp_daymar:
 
 arccorp_yela:
   name: ArcCorp 002
-  slug: arccorp
+  slug: arccorp_yela
   celestial_object: yela
   station_type: outpost
   hidden: false
