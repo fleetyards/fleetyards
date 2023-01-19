@@ -33,7 +33,7 @@ gem 'ahoy_matey'
 gem 'groupdate'
 gem 'rollups'
 
-gem 'i18n', '1.11.0'
+gem 'i18n'
 gem 'i18n-js', '< 4.0'
 gem 'rails-i18n', '~> 7.0'
 
@@ -140,7 +140,7 @@ group :development do
 
   gem 'rubocop', require: false
   gem 'rubocop-ast', require: false
-  gem 'rubocop-minitest', '0.11.1', require: false
+  gem 'rubocop-minitest', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rake', require: false
