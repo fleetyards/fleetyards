@@ -125,7 +125,7 @@ gem 'pg_query', '>= 0.9.0'
 gem 'git'
 gem 'rdoc'
 
-gem 'psych', '~> 4.0.6'
+gem 'psych', '~> 5.0.2'
 
 group :development do
   gem 'annotate'
