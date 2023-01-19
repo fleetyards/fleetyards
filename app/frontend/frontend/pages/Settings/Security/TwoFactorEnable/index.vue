@@ -140,6 +140,7 @@ export default class TwoFactorEnable extends Vue {
 
     if (!response.error) {
       this.started = true;
+      this.$comlink.$emit("user-update");
     }
   }
 
@@ -208,6 +209,7 @@ export default class TwoFactorEnable extends Vue {
 
   img {
     max-width: 250px;
+    margin-bottom: 20px;
   }
 }
 </style>
