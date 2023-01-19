@@ -617,7 +617,7 @@ GEM
       net-ssh (>= 2.8.0)
     sshkit-interactive (0.3.0)
       sshkit (~> 1.12)
-    ssrf_filter (1.0.8)
+    ssrf_filter (1.1.1)
     stringio (3.0.4)
     temple (0.8.2)
     terminal-table (3.0.2)
@@ -776,7 +776,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen
   sprockets-rails (~> 3.4.2)
-  ssrf_filter (~> 1.0.8)
+  ssrf_filter
   thor
   timecop
   typhoeus
