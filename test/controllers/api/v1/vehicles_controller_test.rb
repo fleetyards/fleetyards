@@ -11,6 +11,7 @@ module Api
 
           assert_response :unauthorized
           json = JSON.parse response.body
+
           assert_equal 'unauthorized', json['code']
         end
 
@@ -19,6 +20,7 @@ module Api
 
           assert_response :unauthorized
           json = JSON.parse response.body
+
           assert_equal 'unauthorized', json['code']
         end
 
@@ -41,6 +43,7 @@ module Api
             }],
             'groups' => []
           }
+
           assert_equal expected, json
         end
 
@@ -49,6 +52,7 @@ module Api
 
           assert_response :unauthorized
           json = JSON.parse response.body
+
           assert_equal 'unauthorized', json['code']
         end
       end
@@ -509,6 +513,7 @@ module Api
             'createdAt' => enterprise.created_at.utc.iso8601,
             'updatedAt' => enterprise.updated_at.utc.iso8601
           }]
+
           assert_equal expected, json
         end
 
@@ -711,6 +716,7 @@ module Api
             'createdAt' => enterprise.created_at.utc.iso8601,
             'updatedAt' => enterprise.updated_at.utc.iso8601
           }]
+
           assert_equal expected, json
         end
 
@@ -747,6 +753,7 @@ module Api
               'totalCargo' => 130
             }
           }
+
           assert_equal expected, json
         end
 
@@ -783,6 +790,7 @@ module Api
               'totalCargo' => 0
             }
           }
+
           assert_equal expected, json
         end
 
@@ -796,6 +804,7 @@ module Api
             600i
             andromeda
           ]
+
           assert_equal expected, json
         end
       end
