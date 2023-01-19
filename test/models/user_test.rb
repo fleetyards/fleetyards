@@ -30,6 +30,7 @@
 #  normalized_username       :string
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
+#  otp_secret                :string
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
 #  remember_created_at       :datetime
@@ -54,6 +55,11 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #  index_users_on_username              (username) UNIQUE
+#  users_confirmation_token_index       (confirmation_token)
+#  users_email_index                    (email)
+#  users_reset_password_token_index     (reset_password_token)
+#  users_unlock_token_index             (unlock_token)
+#  users_username_index                 (username)
 #
 require 'test_helper'
 

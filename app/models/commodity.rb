@@ -15,6 +15,7 @@
 #
 # Indexes
 #
+#  commodities_name_index     (name)
 #  index_commodities_on_name  (name) UNIQUE
 #
 class Commodity < ApplicationRecord

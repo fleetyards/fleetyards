@@ -18,6 +18,8 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
+gem 'data_migrate'
+
 gem 'elasticsearch', '~> 7.6'
 gem 'searchkick'
 
@@ -48,9 +50,8 @@ gem 'postmark-rails'
 
 gem 'cancancan'
 
-gem 'attr_encrypted', github: 'PagerTree/attr_encrypted', branch: 'rails-7-0-support'
 gem 'devise'
-gem 'devise-two-factor', '~> 4.0'
+gem 'devise-two-factor'
 gem 'rqrcode'
 
 gem 'useragent'
@@ -124,6 +125,8 @@ gem 'git'
 gem 'rdoc'
 
 gem 'psych', '~> 5.0.2'
+
+gem 'progress_bar'
 
 group :development do
   gem 'annotate'

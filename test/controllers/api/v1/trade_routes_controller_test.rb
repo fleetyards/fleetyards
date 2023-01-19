@@ -13,7 +13,7 @@ module Api
           'id' => titan_daymar_yela.id,
           'origin' => {
             'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
+            'slug' => 'arccorp_daymar',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',
             'shop' => 'Admin Office',
@@ -25,7 +25,7 @@ module Api
           },
           'destination' => {
             'name' => 'ArcCorp 002',
-            'slug' => 'arccorp',
+            'slug' => 'arccorp_yela',
             'type' => 'outpost',
             'locationLabel' => 'on Yela',
             'shop' => 'Admin Office',
@@ -54,7 +54,7 @@ module Api
           'id' => titan_daymar_olisar.id,
           'origin' => {
             'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
+            'slug' => 'arccorp_daymar',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',
             'shop' => 'Admin Office',
@@ -95,7 +95,7 @@ module Api
           'id' => gold_yela_daymar.id,
           'origin' => {
             'name' => 'ArcCorp 002',
-            'slug' => 'arccorp',
+            'slug' => 'arccorp_yela',
             'type' => 'outpost',
             'locationLabel' => 'on Yela',
             'shop' => 'Admin Office',
@@ -107,7 +107,7 @@ module Api
           },
           'destination' => {
             'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
+            'slug' => 'arccorp_daymar',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',
             'shop' => 'Admin Office',
@@ -139,7 +139,7 @@ module Api
           'id' => gold_yela_daymar.id,
           'origin' => {
             'name' => 'ArcCorp 002',
-            'slug' => 'arccorp',
+            'slug' => 'arccorp_yela',
             'type' => 'outpost',
             'locationLabel' => 'on Yela',
             'shop' => 'Admin Office',
@@ -151,7 +151,7 @@ module Api
           },
           'destination' => {
             'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
+            'slug' => 'arccorp_daymar',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',
             'shop' => 'Admin Office',

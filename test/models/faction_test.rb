@@ -13,6 +13,10 @@
 #  updated_at :datetime         not null
 #  rsi_id     :integer
 #
+# Indexes
+#
+#  factions_slug_index  (slug)
+#
 require 'test_helper'
 
 class FactionTest < ActiveSupport::TestCase
