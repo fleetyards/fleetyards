@@ -398,6 +398,7 @@ module Api
           'createdAt' => Model.last.created_at.utc.iso8601,
           'updatedAt' => Model.last.updated_at.utc.iso8601
         }]
+
         assert_equal expected, json
       end
 

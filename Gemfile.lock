@@ -277,7 +277,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (1.11.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     i18n-js (3.9.2)
       i18n (>= 0.6.6)
@@ -381,8 +381,6 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.14.0)
       mini_portile2 (~> 2.8.0)
-      racc (~> 1.4)
-    nokogiri (1.14.0-x86_64-linux)
       racc (~> 1.4)
     oj (3.13.23)
     options (2.3.2)
@@ -530,7 +528,7 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.24.1)
       parser (>= 3.1.1.0)
-    rubocop-minitest (0.11.1)
+    rubocop-minitest (0.26.1)
       rubocop (>= 0.90, < 2.0)
     rubocop-performance (1.15.2)
       rubocop (>= 1.7.0, < 2.0)
@@ -578,7 +576,7 @@ GEM
     shoulda-context (2.0.0)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
-    sidekiq (7.0.2)
+    sidekiq (7.0.3)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
@@ -711,7 +709,7 @@ DEPENDENCIES
   haml
   haml-rails
   highline
-  i18n (= 1.11.0)
+  i18n
   i18n-js (< 4.0)
   i18n-tasks (~> 1.0.5)
   image_processing (~> 1.0)
@@ -758,7 +756,7 @@ DEPENDENCIES
   rqrcode
   rubocop
   rubocop-ast
-  rubocop-minitest (= 0.11.1)
+  rubocop-minitest
   rubocop-performance
   rubocop-rails
   rubocop-rake
@@ -771,7 +769,7 @@ DEPENDENCIES
   sentry-sidekiq
   shoulda
   shoulda-matchers
-  sidekiq (<= 7.0.2)
+  sidekiq (< 8)
   sidekiq-cron
   simplecov
   simplecov-console
