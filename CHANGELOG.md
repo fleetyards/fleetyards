@@ -2,6 +2,99 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.14.0](https://github.com/fleetyards/fleetyards/compare/v5.13.6...v5.14.0) (2023-01-18)
+
+
+### Features
+
+* **Fleets:** Add Export for all Vehicles of Fleet ([#2516](https://github.com/fleetyards/fleetyards/issues/2516)) ([73407df](https://github.com/fleetyards/fleetyards/commit/73407dfc9ecfe897012cdf5a5dd4af7ff01cdc69))
+
+### [5.13.6](https://github.com/fleetyards/fleetyards/compare/v5.13.5...v5.13.6) (2023-01-12)
+
+
+### Bug Fixes
+
+* **setup:** remove admin flag from create admin script ([10013f8](https://github.com/fleetyards/fleetyards/commit/10013f8eb3a810424b2edc8d4529f7835bc926e1))
+* **setup:** update admin user setup script ([6091b6a](https://github.com/fleetyards/fleetyards/commit/6091b6ae48338cc016d4f0a428c2581d33a1ed44))
+
+### [5.13.5](https://github.com/fleetyards/fleetyards/compare/v5.13.4...v5.13.5) (2023-01-11)
+
+
+### Bug Fixes
+
+* **docs:** update embed documentation to use embed-v2.js ([36bc68f](https://github.com/fleetyards/fleetyards/commit/36bc68f583296afb4ad23b823e1e5ff032e3d734))
+* **fleet-vehicles:** reload membership before update ([94959fa](https://github.com/fleetyards/fleetyards/commit/94959fad2b56d396cbf69db408f41a6f36310950))
+
+### [5.13.4](https://github.com/fleetyards/fleetyards/compare/v5.13.3...v5.13.4) (2022-12-25)
+
+
+### Bug Fixes
+
+* **fleet-vehicles:** update scheduling of fleet vehicle updates ([e0ec219](https://github.com/fleetyards/fleetyards/commit/e0ec219138a237fc0764997048f8799557a56a10))
+
+### [5.13.3](https://github.com/fleetyards/fleetyards/compare/v5.13.2...v5.13.3) (2022-12-23)
+
+
+### Bug Fixes
+
+* **pagination:** readd missing pagination headers ([f49ba91](https://github.com/fleetyards/fleetyards/commit/f49ba91059ec4a58048659439cbda2607b3d8f79))
+
+### [5.13.2](https://github.com/fleetyards/fleetyards/compare/v5.13.1...v5.13.2) (2022-12-06)
+
+
+### Bug Fixes
+
+* **2FA:** allow usage of backup codes to disable 2FA ([404fb0c](https://github.com/fleetyards/fleetyards/commit/404fb0c615f18972af633955dbb05dc708573aa3))
+
+### [5.13.1](https://github.com/fleetyards/fleetyards/compare/v5.13.0...v5.13.1) (2022-12-06)
+
+
+### Bug Fixes
+
+* **2fa:** resolve issue which prevented backup codes from working. ([dbd8824](https://github.com/fleetyards/fleetyards/commit/dbd88242f5dee4c4efdbd3b58b70973c72bfa46e))
+
+## [5.13.0](https://github.com/fleetyards/fleetyards/compare/v5.12.6...v5.13.0) (2022-12-05)
+
+
+### Features
+
+* **fleet-stats:** add vehicles by model bar chart ([3627a0d](https://github.com/fleetyards/fleetyards/commit/3627a0d167ba0ef41b25b138fe970a61ae30202f))
+
+### [5.12.6](https://github.com/fleetyards/fleetyards/compare/v5.12.5...v5.12.6) (2022-12-05)
+
+### [5.12.5](https://github.com/fleetyards/fleetyards/compare/v5.12.4...v5.12.5) (2022-12-05)
+
+### [5.12.4](https://github.com/fleetyards/fleetyards/compare/v5.12.3...v5.12.4) (2022-12-05)
+
+### [5.12.3](https://github.com/fleetyards/fleetyards/compare/v5.12.2...v5.12.3) (2022-12-05)
+
+
+### Bug Fixes
+
+* **pagination:** exclude zero from per_page and also allow snakecase ([8c11f3a](https://github.com/fleetyards/fleetyards/commit/8c11f3a5a50f8d0eca59fe41a68e57fb42e8f05c))
+
+### [5.12.2](https://github.com/fleetyards/fleetyards/compare/v5.12.1...v5.12.2) (2022-12-04)
+
+
+### Bug Fixes
+
+* **fleet-vehicles:** update scheduling to prevent double update jobs ([a3e2c76](https://github.com/fleetyards/fleetyards/commit/a3e2c7601ee91f6fbac2c1ebffb3e73e79e1ef35))
+
+### [5.12.1](https://github.com/fleetyards/fleetyards/compare/v5.12.0...v5.12.1) (2022-12-04)
+
+
+### Bug Fixes
+
+* **link-header:** prevent empty header value and add self link ([5d41063](https://github.com/fleetyards/fleetyards/commit/5d41063e60a387a12fdc990e5b55f70aeb20ea20))
+
+## [5.12.0](https://github.com/fleetyards/fleetyards/compare/v5.11.4...v5.12.0) (2022-12-03)
+
+
+### Features
+
+* **models:** add filters for beam and height ([0b1548c](https://github.com/fleetyards/fleetyards/commit/0b1548ce261962a3c27267c43fbc15839ba609d8))
+* **stations:** add filter for refinery and cargo hub ([4705f0c](https://github.com/fleetyards/fleetyards/commit/4705f0c250feae4908d4c1050f7e6e8f4cdf4cbc))
+
 ### [5.11.4](https://github.com/fleetyards/fleetyards/compare/v5.11.3...v5.11.4) (2022-12-01)
 
 

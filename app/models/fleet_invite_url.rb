@@ -26,9 +26,7 @@ class FleetInviteUrl < ApplicationRecord
   belongs_to :fleet
   belongs_to :user
 
-  validates :token,
-            uniqueness: true,
-            presence: true
+  validates :token, uniqueness: true, presence: true
 
   before_validation :generate_token
 
@@ -67,9 +65,9 @@ class FleetInviteUrl < ApplicationRecord
   end
 
   def url
-    return short_fleet_invite_url(token: token) if Rails.configuration.app.short_domain.present?
+    return short_fleet_invite_url(token:) if Rails.configuration.app.short_domain.present?
 
-    frontend_fleet_invite_url(token: token)
+    frontend_fleet_invite_url(token:)
   end
 
   private def generate_token

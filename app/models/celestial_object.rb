@@ -41,7 +41,7 @@ class CelestialObject < ApplicationRecord
 
   def search_data
     {
-      name: name,
+      name:,
       starsystem: starsystem&.name
     }
   end

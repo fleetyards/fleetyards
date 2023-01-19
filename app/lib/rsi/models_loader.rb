@@ -103,7 +103,7 @@ module Rsi
       raw_price = element.text
       price_match = raw_price.match(/^\$(\d?,?\d+.\d+) USD$/)
       price_with_local_vat = price_match[1].gsub(/[$,]/, '').to_d if price_match.present?
-      price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
+      price_with_local_vat * 100 / (vat_percent + 100) if price_with_local_vat.present?
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity
@@ -166,7 +166,7 @@ module Rsi
 
       updates = {
         last_updated_at: new_time_modified(data),
-        model_id: model_id,
+        model_id:,
       }
 
       updates[:rsi_description] = data['description']

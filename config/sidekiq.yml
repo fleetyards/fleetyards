@@ -1,7 +1,8 @@
 ---
 :queues:
-  - fleetyards_default
-  - fleetyards_mailers
-  - fleetyards_notifications
-  - fleetyards_loaders
-  - fleetyards_cleanup
+  - default
+  - mailers
+  - notifications
+  - loaders
+  - cleanup
+  - updater

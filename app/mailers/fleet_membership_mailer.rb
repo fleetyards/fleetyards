@@ -6,7 +6,7 @@ class FleetMembershipMailer < ApplicationMailer
     @fleet = fleet
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.fleet_membership.new_invite.subject')
     )
   end
@@ -16,7 +16,7 @@ class FleetMembershipMailer < ApplicationMailer
     @fleet = fleet
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.fleet_membership.member_requested.subject')
     )
   end
@@ -26,7 +26,7 @@ class FleetMembershipMailer < ApplicationMailer
     @fleet = fleet
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.fleet_membership.member_accepted.subject')
     )
   end
@@ -36,7 +36,7 @@ class FleetMembershipMailer < ApplicationMailer
     @fleet = fleet
 
     mail(
-      to: to,
+      to:,
       subject: I18n.t(:'mailer.fleet_membership.fleet_accepted.subject', fleet: fleet.name)
     )
   end

@@ -4,13 +4,13 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.7'
+gem 'rails', '6.1.7.1'
 
 gem 'pg', '~> 1.0'
 
 gem 'sidekiq', '<= 7.0.2'
 gem 'sidekiq-cron'
-gem 'sidekiq-statistic', github: 'davydovanton/sidekiq-statistic', branch: 'v1.5.1'
+gem 'sidekiq-unique-jobs'
 
 gem 'paper_trail'
 
@@ -69,8 +69,6 @@ gem 'url_plumber'
 
 gem 'dynamic_fields_for_rails'
 
-gem 'state_machine'
-
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
@@ -102,7 +100,7 @@ gem 'ssrf_filter', '~> 1.0.8'
 
 gem 'sprockets-rails', '~> 3.4.2'
 
-gem 'nokogiri', '1.13.9'
+gem 'nokogiri'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
@@ -124,6 +122,8 @@ gem 'pg_query', '>= 0.9.0'
 
 gem 'git'
 gem 'rdoc'
+
+gem 'psych', '~> 4.0.6'
 
 group :development do
   gem 'annotate'

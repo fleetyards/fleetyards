@@ -151,6 +151,27 @@
             </Panel>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <Panel>
+              <div class="panel-heading">
+                <h2 class="panel-title">
+                  {{
+                    $t("labels.stats.vehiclesByModel", {
+                      limit: vehiclesByModelLimit,
+                    })
+                  }}
+                </h2>
+              </div>
+              <Chart
+                key="vehicles-by-model"
+                :load-data="loadVehiclesByModel"
+                tooltip-type="ship"
+                type="bar"
+              />
+            </Panel>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -183,6 +204,8 @@ export default class FleetStats extends Vue {
   vehiclesCollection: FleetVehiclesCollection = vehiclesCollection;
 
   membersCollection: FleetMembersCollection = membersCollection;
+
+  vehiclesByModelLimit = 20;
 
   get fleet() {
     return this.collection.record;
@@ -278,6 +301,13 @@ export default class FleetStats extends Vue {
 
   loadModelsByClassification() {
     return this.collection.findModelsByClassificationBySlug(this.slug);
+  }
+
+  loadVehiclesByModel() {
+    return this.collection.findVehiclesByModelBySlug(
+      this.slug,
+      this.vehiclesByModelLimit
+    );
   }
 
   loadModelsBySize() {

@@ -9,6 +9,8 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
 
   stats: FleetVehicleStats | null = null;
 
+  modelCounts: FleetModelCounts | null = null;
+
   get perPage(): number | string {
     return Store.getters["publicFleet/perPage"];
   }
@@ -63,6 +65,20 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
     }
 
     return this.stats;
+  }
+
+  async findModelCounts(
+    params: FleetVehicleParams
+  ): Promise<FleetModelCounts | null> {
+    const response = await get(`fleets/${params.slug}/public-model-counts`, {
+      q: params?.filters,
+    });
+
+    if (!response.error) {
+      this.modelCounts = response.data;
+    }
+
+    return this.modelCounts;
   }
 }
 

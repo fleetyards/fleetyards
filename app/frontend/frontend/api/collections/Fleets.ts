@@ -54,6 +54,21 @@ export class FleetsCollection extends BaseCollection {
     return [];
   }
 
+  async findVehiclesByModelBySlug(
+    slug: string,
+    limit?: number
+  ): Promise<ChartData[]> {
+    const response = await get(`fleets/${slug}/stats/vehicles-by-model`, {
+      limit,
+    });
+
+    if (!response.error) {
+      return response.data;
+    }
+
+    return [];
+  }
+
   async findModelsBySizeBySlug(slug: string): Promise<ChartData[]> {
     const response = await get(`fleets/${slug}/stats/models-by-size`);
 

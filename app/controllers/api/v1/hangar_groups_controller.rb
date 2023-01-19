@@ -55,7 +55,7 @@ module Api
         sorting = params.permit(sorting: [])
 
         (sorting[:sorting] || []).each_with_index do |id, index|
-          group = HangarGroup.where(user_id: current_user.id, id: id).first
+          group = HangarGroup.where(user_id: current_user.id, id:).first
           next if group.blank?
 
           group.update(sort: index)

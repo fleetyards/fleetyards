@@ -178,6 +178,7 @@ v1_api_routes = lambda do
 
     member do
       get 'vehicles' => 'fleet_vehicles#index'
+      get 'vehicles/export', to: 'fleet_vehicles#export'
       get 'model-counts' => 'fleet_vehicles#model_counts'
       get 'quick-stats' => 'fleet_vehicles#quick_stats'
       get 'fleetchart' => 'fleet_vehicles#fleetchart'
@@ -189,6 +190,7 @@ v1_api_routes = lambda do
       get 'members' => 'fleet_members#index'
       get 'member-quick-stats' => 'fleet_members#quick_stats'
 
+      get 'stats/vehicles-by-model' => 'fleet_stats#vehicles_by_model'
       get 'stats/models-by-size' => 'fleet_stats#models_by_size'
       get 'stats/models-by-production-status' => 'fleet_stats#models_by_production_status'
       get 'stats/models-by-manufacturer' => 'fleet_stats#models_by_manufacturer'

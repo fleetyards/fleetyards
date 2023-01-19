@@ -49,16 +49,16 @@ class ShopCommodity < ApplicationRecord
       station: shop.station.name,
       celestial_object: shop.station.celestial_object.name,
       starsystem: shop.station.celestial_object.starsystem&.name,
-      sell_price: sell_price,
-      buy_price: buy_price,
+      sell_price:,
+      buy_price:,
       category: commodity_item_type,
-      sub_category: sub_category,
+      sub_category:,
       component_item_type: (commodity_item.item_type if commodity_item_type == 'Component'),
       equipment_item_type: (commodity_item.item_type if commodity_item_type == 'Equipment'),
       equipment_type: (commodity_item.equipment_type if commodity_item_type == 'Equipment'),
       equipment_slot: (commodity_item.slot if commodity_item_type == 'Equipment'),
-      confirmed: confirmed,
-      created_at: created_at
+      confirmed:,
+      created_at:
     }
   end
 
@@ -204,7 +204,7 @@ class ShopCommodity < ApplicationRecord
 
       update(
         sell_price: sell_prices.first,
-        average_sell_price: average_sell_price
+        average_sell_price:
       )
     else
       update(

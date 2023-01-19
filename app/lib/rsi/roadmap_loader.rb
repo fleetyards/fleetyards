@@ -153,7 +153,7 @@ module Rsi
           roadmap_item = item.item
           item.destroy
           updated_at = roadmap_item.reload.versions.last&.created_at || 8.days.ago
-          roadmap_item.update(updated_at: updated_at)
+          roadmap_item.update(updated_at:)
         else
           changes = item.changeset.except('release')
           changes.to_hash if changes.is_a?(ActiveSupport::HashWithIndifferentAccess)

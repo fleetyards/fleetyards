@@ -8,7 +8,7 @@ module ScData
       super
 
       self.components_loader = ::ScData::ComponentsLoader.new
-      self.hardpoints_loader = ::ScData::HardpointsLoader.new(components_loader: components_loader)
+      self.hardpoints_loader = ::ScData::HardpointsLoader.new(components_loader:)
     end
 
     def load(model)

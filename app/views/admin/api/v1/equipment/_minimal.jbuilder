@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.cache! ['v1', equipment] do
-  json.partial! 'admin/api/v1/equipment/base', equipment: equipment
+  json.partial!('admin/api/v1/equipment/base', equipment:)
   json.manufacturer do
     json.null! if equipment.manufacturer.blank?
     json.partial! 'api/v1/manufacturers/base', manufacturer: equipment.manufacturer if equipment.manufacturer.present?

@@ -72,9 +72,9 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   before_save :set_module_package
 
-  after_create :broadcast_create
+  after_create :broadcast_create, :schedule_fleet_vehicle_create
   after_destroy :remove_loaners, :broadcast_destroy
-  after_save :set_flagship, :update_loaners, :update_fleet_vehicles
+  after_save :set_flagship, :update_loaners, :schedule_fleet_vehicle_update
   after_commit :broadcast_update
   after_touch :clear_association_cache
 
@@ -92,13 +92,22 @@ class Vehicle < ApplicationRecord
 
   serialize :alternative_names, Array
 
-  def update_fleet_vehicles
+  def schedule_fleet_vehicle_update
+    return if hidden?
+    return unless saved_change_to_purchased?
+
+    Updater::FleetVehicleUpdateJob.perform_async(id)
+  end
+
+  def schedule_fleet_vehicle_create
     return if hidden?
 
-    fleet_vehicles.destroy_all
+    Updater::FleetVehicleUpdateJob.perform_async(id)
+  end
 
+  def update_fleet_vehicle
     user.fleet_memberships.each do |fleet_membership|
-      fleet_membership.add_fleet_vehicle(self)
+      fleet_membership.update_fleet_vehicle(self)
     end
   end
 
@@ -123,26 +132,26 @@ class Vehicle < ApplicationRecord
   def remove_loaners
     return if loaner?
 
-    Vehicle.where(loaner: true, vehicle_id: id, user_id: user_id).destroy_all
+    Vehicle.where(loaner: true, vehicle_id: id, user_id:).destroy_all
 
-    Vehicle.where(loaner: true, user_id: user_id).find_each do |loaner_vehicle|
+    Vehicle.where(loaner: true, user_id:).find_each do |loaner_vehicle|
       loaner_vehicle.update(
-        hidden: Vehicle.where(loaner: true, model_id: loaner_vehicle.model_id, user_id: user_id, hidden: false).where.not(id: loaner_vehicle.id).exists?
+        hidden: Vehicle.where(loaner: true, model_id: loaner_vehicle.model_id, user_id:, hidden: false).where.not(id: loaner_vehicle.id).exists?
       )
     end
   end
 
   def create_loaner(model_loaner)
-    return if Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id: user_id)
+    return if Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id:)
 
     Vehicle.create(
       loaner: true,
       model_id: model_loaner.id,
-      user_id: user_id,
+      user_id:,
       vehicle_id: id,
       public: false,
       purchased: true,
-      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, user_id: user_id)
+      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, user_id:)
     )
   end
 
@@ -185,8 +194,8 @@ class Vehicle < ApplicationRecord
   def set_flagship
     return unless flagship?
 
-    Vehicle.where(user_id: user_id, flagship: true)
-      .where.not(id: id)
+    Vehicle.where(user_id:, flagship: true)
+      .where.not(id:)
       .find_each do |vehicle|
       vehicle.update(flagship: false)
     end
@@ -200,7 +209,7 @@ class Vehicle < ApplicationRecord
 
   def main_module_package
     packages = model.module_packages.select do |package|
-      (package.model_module_ids - model_module_ids).size.zero?
+      (package.model_module_ids - model_module_ids).empty?
     end
 
     packages.min_by do |package|

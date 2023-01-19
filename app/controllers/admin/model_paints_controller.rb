@@ -65,7 +65,7 @@ module Admin
 
       paints_data = JSON.parse(paints_data_raw)
 
-      Loaders::PaintsImportJob.perform_later(paints_data)
+      Loaders::PaintsImportJob.perform_async(paints_data)
 
       redirect_to admin_model_paints_path(params: index_back_params), notice: I18n.t(:'messages.import.success', resource: I18n.t(:'resources.model_paint'))
     end

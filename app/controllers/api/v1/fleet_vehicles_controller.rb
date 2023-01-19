@@ -3,7 +3,9 @@
 module Api
   module V1
     class FleetVehiclesController < ::Api::BaseController
-      before_action :authenticate_user!, except: %i[public public_fleetchart embed]
+      before_action :authenticate_user!, except: %i[
+        public public_fleetchart public_model_counts embed
+      ]
 
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index public]
 
@@ -49,6 +51,22 @@ module Api
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
         end
+      end
+
+      def export
+        authorize! :show, fleet
+
+        scope = fleet.vehicles.includes(:vehicle_upgrades, :vehicle_modules, model: [:manufacturer])
+
+        scope = scope.where(loaner: loaner_included?)
+
+        scope = scope.where(user_id: for_members) if for_members.present?
+
+        vehicle_query_params['sorts'] = 'model_name asc'
+
+        @q = scope.ransack(vehicle_query_params)
+
+        @vehicles = @q.result(distinct: true).includes(:model).joins(:model)
       end
 
       def model_counts

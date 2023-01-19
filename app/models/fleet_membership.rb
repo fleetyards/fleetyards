@@ -46,9 +46,9 @@ class FleetMembership < ApplicationRecord
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username
 
-  after_create :broadcast_create, :setup_fleet_vehicles
-  after_update :update_fleet_vehicles
-  after_destroy :broadcast_destroy, :teardown_fleet_vehicles
+  after_create :broadcast_create, :schedule_setup_fleet_vehicles
+  after_update :schedule_update_fleet_vehicles
+  after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
   after_commit :broadcast_update
 
@@ -80,47 +80,83 @@ class FleetMembership < ApplicationRecord
     end
   end
 
+  def schedule_setup_fleet_vehicles
+    Updater::FleetMembershipVehiclesSetupJob.perform_async(id)
+  end
+
+  def schedule_update_fleet_vehicles
+    Updater::FleetMembershipVehiclesUpdateJob.perform_async(id)
+  end
+
   def setup_fleet_vehicles
+    reload
+
+    return unless accepted?
     return if ships_filter_hide?
 
-    user.vehicles.each do |vehicle|
-      add_fleet_vehicle(vehicle)
+    user.vehicles.visible.each do |vehicle|
+      update_fleet_vehicle(vehicle)
     end
   end
 
   def update_fleet_vehicles
-    return unless ships_filter_changed?
+    reload
 
-    teardown_fleet_vehicles
+    return unless accepted?
 
-    setup_fleet_vehicles
+    if ships_filter_hide?
+      remove_fleet_vehicles
+    else
+      user.vehicles.visible.each do |vehicle|
+        update_fleet_vehicle(vehicle)
+      end
+    end
   end
 
-  def teardown_fleet_vehicles
-    fleet.fleet_vehicles.where(vehicle_id: user.vehicle_ids).destroy_all
+  def remove_fleet_vehicles
+    FleetVehicle.where(fleet_id:, vehicle_id: user.vehicle_ids).destroy_all
   end
 
-  def add_fleet_vehicle(vehicle)
-    return if ships_filter_hide?
+  def update_fleet_vehicle(vehicle)
+    case ships_filter
+    when 'purchased'
+      update_fleet_vehicle_for_purchased(vehicle)
+    when 'hangar_group'
+      update_fleet_vehicle_for_hangar_group(vehicle)
+    else
+      FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy
+    end
+  end
 
-    return if ships_filter_purchased? && !vehicle.purchased?
+  def update_fleet_vehicle_for_purchased(vehicle)
+    if vehicle.purchased?
+      FleetVehicle.find_or_create_by(fleet_id:, vehicle_id: vehicle.id)
+    else
+      FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy
+    end
+  rescue ActiveRecord::RecordNotUnique
+    nil
+  end
 
+  def update_fleet_vehicle_for_hangar_group(vehicle)
     parent_vehicle = Vehicle.find_by(id: vehicle.vehicle_id) if vehicle.loaner?
     hangar_group_ids = (vehicle.hangar_group_ids + (parent_vehicle&.hangar_group_ids || []))
-    return if ships_filter_hangar_group? && hangar_group_ids.exclude?(hangar_group_id)
 
-    FleetVehicle.create(
-      fleet_id: fleet_id,
-      vehicle_id: vehicle.id
-    )
+    if hangar_group_ids.include?(hangar_group_id)
+      FleetVehicle.find_or_create_by(fleet_id:, vehicle_id: vehicle.id)
+    else
+      FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy
+    end
+  rescue ActiveRecord::RecordNotUnique
+    nil
   end
 
   def set_primary
     return unless primary?
 
     # rubocop:disable Rails/SkipsModelValidations
-    FleetMembership.where(user_id: user_id, primary: true)
-      .where.not(id: id)
+    FleetMembership.where(user_id:, primary: true)
+      .where.not(id:)
       .update_all(primary: false)
     # rubocop:enable Rails/SkipsModelValidations
   end

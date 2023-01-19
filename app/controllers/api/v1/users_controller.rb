@@ -87,7 +87,7 @@ module Api
         authorize! :destroy, current_user
 
         if current_user.destroy
-          Cleanup::UserVisitsJob.perform_later(current_user.id)
+          Cleanup::UserVisitsJob.perform_async(current_user.id)
 
           render json: { code: 'current_user.destroyed', message: I18n.t('messages.destroy.success', resource: I18n.t('resources.user')) }
         else
@@ -134,7 +134,7 @@ module Api
 
         return if invite_url.blank?
 
-        member = invite_url.fleet.fleet_memberships.create(user_id: user_id, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
+        member = invite_url.fleet.fleet_memberships.create(user_id:, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
 
         return if member.blank?
 

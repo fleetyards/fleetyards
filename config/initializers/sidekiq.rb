@@ -2,7 +2,6 @@
 
 require 'sidekiq/web'
 require 'sidekiq/cron/web'
-require 'sidekiq-statistic'
 
 sidekiq_config = { url: Rails.configuration.redis.url, db: Rails.configuration.redis.db }
 
