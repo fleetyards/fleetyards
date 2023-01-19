@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.7.1'
+gem 'rails', '7.0.4.1'
 
 gem 'pg', '~> 1.0'
 
@@ -17,6 +17,8 @@ gem 'paper_trail'
 gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
+
+gem 'data_migrate'
 
 gem 'elasticsearch', '~> 7.6'
 gem 'searchkick'
@@ -49,14 +51,14 @@ gem 'postmark-rails'
 gem 'cancancan'
 
 gem 'devise'
-gem 'devise-two-factor', '~> 4.0'
+gem 'devise-two-factor'
 gem 'rqrcode'
 
 gem 'useragent'
 
 gem 'redis-actionpack'
 
-gem 'ransack', '~> 2.4.2'
+gem 'ransack', '~> 2.4'
 
 gem 'jbuilder'
 gem 'oj'
@@ -72,6 +74,7 @@ gem 'dynamic_fields_for_rails'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
+gem 'sprockets-rails'
 
 gem 'jquery-rails'
 gem 'js-routes'
@@ -98,8 +101,6 @@ gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 gem 'ssrf_filter'
 
-gem 'sprockets-rails', '~> 3.4.2'
-
 gem 'nokogiri'
 gem 'typhoeus'
 
@@ -124,6 +125,8 @@ gem 'git'
 gem 'rdoc'
 
 gem 'psych', '~> 5.0.2'
+
+gem 'progress_bar'
 
 group :development do
   gem 'annotate'

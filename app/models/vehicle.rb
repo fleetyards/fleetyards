@@ -16,6 +16,7 @@
 #  purchased         :boolean          default(FALSE)
 #  sale_notify       :boolean          default(FALSE)
 #  serial            :string
+#  slug              :string
 #  created_at        :datetime
 #  updated_at        :datetime
 #  model_id          :uuid
@@ -78,7 +79,7 @@ class Vehicle < ApplicationRecord
   after_commit :broadcast_update
   after_touch :clear_association_cache
 
-  ransack_alias :name, :name_or_model_name_or_model_slug
+  ransack_alias :search, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
   ransack_alias :length, :model_length
   ransack_alias :price, :model_price

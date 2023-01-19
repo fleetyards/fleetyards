@@ -18,7 +18,7 @@ module Api
       let(:index_result) do
         [{
           'name' => 'ArcCorp 001',
-          'slug' => 'arccorp',
+          'slug' => 'arccorp_daymar',
           'location' => nil,
           'locationLabel' => arccorp_daymar.location_label,
           'type' => 'outpost',
@@ -116,7 +116,7 @@ module Api
           'updatedAt' => arccorp_daymar.updated_at.utc.iso8601
         }, {
           'name' => 'ArcCorp 002',
-          'slug' => 'arccorp',
+          'slug' => 'arccorp_yela',
           'location' => nil,
           'locationLabel' => arccorp_yela.location_label,
           'type' => 'outpost',

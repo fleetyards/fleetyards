@@ -25,4 +25,8 @@ class ApplicationRecord < ActiveRecord::Base
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
   end
+
+  private def clear_association_cache
+    instance_variable_set :@association_cache, {}
+  end
 end

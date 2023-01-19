@@ -96,7 +96,7 @@ module Api
           'refineryTerminal' => nil,
           'station' => {
             'name' => 'ArcCorp 001',
-            'slug' => 'arccorp'
+            'slug' => 'arccorp_daymar'
           },
           'celestialObject' => {
             'name' => 'Daymar',
@@ -193,7 +193,7 @@ module Api
           'refineryTerminal' => nil,
           'station' => {
             'name' => 'ArcCorp 002',
-            'slug' => 'arccorp'
+            'slug' => 'arccorp_yela'
           },
           'celestialObject' => {
             'name' => 'Yela',

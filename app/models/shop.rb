@@ -4,28 +4,26 @@
 #
 # Table name: shops
 #
-#  id                   :uuid             not null, primary key
-#  accepts_stolen_goods :boolean          default(FALSE)
-#  buying               :boolean          default(FALSE)
-#  description          :text
-#  hidden               :boolean          default(TRUE)
-#  location             :string
-#  name                 :string
-#  profit_margin        :decimal(15, 2)
-#  refinery_terminal    :boolean
-#  rental               :boolean          default(FALSE)
-#  rsi_reference        :string
-#  selling              :boolean          default(FALSE)
-#  shop_type            :integer
-#  slug                 :string
-#  store_image          :string
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  station_id           :uuid
+#  id                :uuid             not null, primary key
+#  buying            :boolean          default(FALSE)
+#  description       :text
+#  hidden            :boolean          default(TRUE)
+#  location          :string
+#  name              :string
+#  refinery_terminal :boolean
+#  rental            :boolean          default(FALSE)
+#  selling           :boolean          default(FALSE)
+#  shop_type         :integer
+#  slug              :string
+#  store_image       :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  station_id        :uuid
 #
 # Indexes
 #
 #  index_shops_on_station_id  (station_id)
+#  shops_station_id_index     (station_id)
 #
 class Shop < ApplicationRecord
   paginates_per 30
@@ -68,7 +66,7 @@ class Shop < ApplicationRecord
     parent.table[:shop_type]
   end
 
-  ransack_alias :name, :name_or_slug
+  ransack_alias :search, :name_or_slug_or_station_name_or_station_slug
   ransack_alias :model, :shop_commodities_commodity_item_of_Model_type_slug
   ransack_alias :component, :shop_commodities_commodity_item_of_Component_type_slug
   ransack_alias :commodity, :shop_commodities_commodity_item_of_Commodity_type_slug
