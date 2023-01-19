@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'sidekiq/web'
-require 'sidekiq_unique_jobs/web'
 
 Rails.application.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
 

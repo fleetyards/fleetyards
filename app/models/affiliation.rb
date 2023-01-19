@@ -13,8 +13,9 @@
 #
 # Indexes
 #
-#  index_affiliations_on_affiliationable  (affiliationable_type,affiliationable_id)
-#  index_affiliations_on_faction_id       (faction_id)
+#  affiliations_affiliationable_type_affiliationable_id_index  (affiliationable_type,affiliationable_id)
+#  index_affiliations_on_affiliationable                       (affiliationable_type,affiliationable_id)
+#  index_affiliations_on_faction_id                            (faction_id)
 #
 class Affiliation < ApplicationRecord
   belongs_to :affiliationable, polymorphic: true
