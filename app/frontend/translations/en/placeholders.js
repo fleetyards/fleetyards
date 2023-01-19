@@ -21,6 +21,7 @@ export default {
     hangar: "Enterprise, Andromeda...",
     "hangar-fleetchart": "Enterprise, Andromeda...",
     stations: "Search for Stations...",
+    shops: "Search for Shops...",
   },
   search: {
     default: "Search the Verse...",

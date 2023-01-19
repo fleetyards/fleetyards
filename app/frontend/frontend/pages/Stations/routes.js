@@ -32,6 +32,7 @@ export const routes = [
     meta: {
       title: "shops",
       backgroundImage: "bg-2",
+      quickSearch: "searchCont",
     },
   },
   {

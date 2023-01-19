@@ -68,7 +68,7 @@ class Shop < ApplicationRecord
     parent.table[:shop_type]
   end
 
-  ransack_alias :name, :name_or_slug
+  ransack_alias :search, :name_or_slug_or_station_name_or_station_slug
   ransack_alias :model, :shop_commodities_commodity_item_of_Model_type_slug
   ransack_alias :component, :shop_commodities_commodity_item_of_Component_type_slug
   ransack_alias :commodity, :shop_commodities_commodity_item_of_Commodity_type_slug
