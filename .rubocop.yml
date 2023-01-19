@@ -108,6 +108,9 @@ Rails/Delegate:
   Exclude:
     - lib/**/*
 
+Minitest/MultipleAssertions:
+  Max: 5
+
 Rails/UnknownEnv:
   Environments:
     - production

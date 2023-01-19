@@ -14,6 +14,7 @@ module Api
 
           assert_response :unauthorized
           json = JSON.parse response.body
+
           assert_equal 'unauthorized', json['code']
         end
 
@@ -22,6 +23,7 @@ module Api
 
           assert_response :unauthorized
           json = JSON.parse response.body
+
           assert_equal 'unauthorized', json['code']
         end
 
@@ -30,6 +32,7 @@ module Api
 
           assert_response :unauthorized
           json = JSON.parse response.body
+
           assert_equal 'unauthorized', json['code']
         end
       end
@@ -74,6 +77,7 @@ module Api
 
           assert_response :forbidden
           json = JSON.parse response.body
+
           assert_equal 'forbidden', json['code']
         end
 
@@ -82,6 +86,7 @@ module Api
 
           assert_response :forbidden
           json = JSON.parse response.body
+
           assert_equal 'forbidden', json['code']
         end
       end
@@ -129,7 +134,7 @@ module Api
 
             json = JSON.parse response.body
 
-            assert(json.present?)
+            assert_predicate(json, :present?)
           end
         end
 
