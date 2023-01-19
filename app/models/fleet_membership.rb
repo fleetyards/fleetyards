@@ -46,10 +46,11 @@ class FleetMembership < ApplicationRecord
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username
 
-  after_create :broadcast_create, :schedule_setup_fleet_vehicles
-  after_update :schedule_update_fleet_vehicles
+  after_create :broadcast_create
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
+  after_create_commit :schedule_setup_fleet_vehicles
+  after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
 
   aasm timestamps: true do
@@ -89,8 +90,6 @@ class FleetMembership < ApplicationRecord
   end
 
   def setup_fleet_vehicles
-    reload
-
     return unless accepted?
     return if ships_filter_hide?
 
@@ -100,8 +99,6 @@ class FleetMembership < ApplicationRecord
   end
 
   def update_fleet_vehicles
-    reload
-
     return unless accepted?
 
     if ships_filter_hide?
