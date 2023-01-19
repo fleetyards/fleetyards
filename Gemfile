@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.7.1'
+gem 'rails', '7.0.4.1'
 
 gem 'pg', '~> 1.0'
 
@@ -48,6 +48,7 @@ gem 'postmark-rails'
 
 gem 'cancancan'
 
+gem 'attr_encrypted', github: 'PagerTree/attr_encrypted', branch: 'rails-7-0-support'
 gem 'devise'
 gem 'devise-two-factor', '~> 4.0'
 gem 'rqrcode'
@@ -56,7 +57,7 @@ gem 'useragent'
 
 gem 'redis-actionpack'
 
-gem 'ransack', '~> 2.4.2'
+gem 'ransack', '~> 2.4'
 
 gem 'jbuilder'
 gem 'oj'
@@ -72,6 +73,7 @@ gem 'dynamic_fields_for_rails'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
+gem 'sprockets-rails'
 
 gem 'jquery-rails'
 gem 'js-routes'
@@ -97,8 +99,6 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 gem 'ssrf_filter'
-
-gem 'sprockets-rails', '~> 3.4.2'
 
 gem 'nokogiri'
 gem 'typhoeus'
