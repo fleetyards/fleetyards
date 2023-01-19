@@ -19,17 +19,17 @@ module Admin
       elsif file_data.respond_to?(:path)
         html_content = File.read(file_data.path)
       else
-        render 'new', error: I18n.t(:'messages.loaner_upload.failure', class_name: file_data.class.name, content: file_data.inspect)
+        render "new", error: I18n.t(:"messages.loaner_upload.failure", class_name: file_data.class.name, content: file_data.inspect)
         Rails.logger.error "Bad file_data: #{file_data.class.name}: #{file_data.inspect}"
       end
 
       Rsi::LoanerLoader.new.run(html_content) if html_content.present?
 
-      redirect_to admin_models_path(params: index_back_params), notice: I18n.t(:'messages.loaner_upload.success')
+      redirect_to admin_models_path(params: index_back_params), notice: I18n.t(:"messages.loaner_upload.success")
     end
 
     private def set_active_nav
-      @active_nav = 'admin-models'
+      @active_nav = "admin-models"
     end
 
     private def index_back_params

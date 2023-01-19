@@ -2,7 +2,7 @@
 
 class AppVersionChannel < ApplicationCable::Channel
   def subscribed
-    stream_from 'app_version'
+    stream_from "app_version"
   end
 
   def unsubscribed

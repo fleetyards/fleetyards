@@ -29,7 +29,7 @@ module ScData
     private def extract_fuel_tanks(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['HydrogenFuelTanks'].each_with_index.map do |port_data, index|
+      ports_data["HydrogenFuelTanks"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -39,15 +39,15 @@ module ScData
     private def extract_main_thrusters(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['MainThrusters'].each_with_index.map do |port_data, index|
+      ports_data["MainThrusters"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, :main)&.id
       end
 
-      ports_data['VtolThrusters'].each_with_index.map do |port_data, index|
+      ports_data["VtolThrusters"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, :vtol)&.id
       end
 
-      ports_data['RetroThrusters'].each_with_index.map do |port_data, index|
+      ports_data["RetroThrusters"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, :retro)&.id
       end
 
@@ -57,7 +57,7 @@ module ScData
     private def extract_maneuvering_thrusters(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['ManeuveringThrusters'].each_with_index.map do |port_data, index|
+      ports_data["ManeuveringThrusters"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category_for_thruster_mapping(port_data))&.id
       end
 
@@ -67,7 +67,7 @@ module ScData
     private def extract_quantum_drives(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['QuantumDrives'].each_with_index.map do |port_data, index|
+      ports_data["QuantumDrives"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -77,7 +77,7 @@ module ScData
     private def extract_power_plants(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['PowerPlants'].each_with_index.map do |port_data, index|
+      ports_data["PowerPlants"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -87,7 +87,7 @@ module ScData
     private def extract_coolers(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['Coolers'].each_with_index.map do |port_data, index|
+      ports_data["Coolers"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -97,7 +97,7 @@ module ScData
     private def extract_shield_generators(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['Shields'].each_with_index.map do |port_data, index|
+      ports_data["Shields"].each_with_index.map do |port_data, index|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index)&.id
       end
 
@@ -107,9 +107,9 @@ module ScData
     private def extract_missiles(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['MissileRacks'].each_with_index.map do |port_data, index|
-        category = port_data['PortName'].include?('turret') ? 'missile_turret' : nil
-        key_modifier = port_data.dig('InstalledItem', 'Ports', 0, 'Loadout')
+      ports_data["MissileRacks"].each_with_index.map do |port_data, index|
+        category = port_data["PortName"].include?("turret") ? "missile_turret" : nil
+        key_modifier = port_data.dig("InstalledItem", "Ports", 0, "Loadout")
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category, key_modifier)&.id
       end
 
@@ -119,16 +119,16 @@ module ScData
     private def extract_turrets(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['MannedTurrets'].reject do |port_data|
+      ports_data["MannedTurrets"].reject do |port_data|
         missile_turret?(port_data)
       end.each_with_index.map do |port_data, index|
-        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, 'manned_turret')&.id
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "manned_turret")&.id
       end
 
-      ports_data['RemoteTurrets'].reject do |port_data|
+      ports_data["RemoteTurrets"].reject do |port_data|
         missile_turret?(port_data)
       end.each_with_index.map do |port_data, index|
-        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, 'remote_turret')&.id
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "remote_turret")&.id
       end
 
       hardpoint_ids.compact
@@ -137,7 +137,7 @@ module ScData
     private def extract_weapons(hardpoint_type, model_id, ports_data)
       hardpoint_ids = []
 
-      ports_data['PilotHardpoints'].each_with_index.map do |port_data, index|
+      ports_data["PilotHardpoints"].each_with_index.map do |port_data, index|
         key_modifier = "#{port_data['Loadout']}_#{port_data.dig('InstalledItem', 'Ports', 0, 'Loadout')}"
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, nil, key_modifier)&.id
       end
@@ -149,17 +149,17 @@ module ScData
     private def extract_hardpoint(hardpoint_type, model_id, port_data, index, category = nil, key_modifier = nil)
       size = size_for_type(hardpoint_type, port_data, category)
 
-      component_data = port_data['InstalledItem'] || {}
+      component_data = port_data["InstalledItem"] || {}
 
-      key = [key_modifier, hardpoint_type, category, size].compact.join('-')
+      key = [key_modifier, hardpoint_type, category, size].compact.join("-")
 
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,
         model_id:,
         key:,
-        name: port_data['PortName'],
+        name: port_data["PortName"],
         item_slot: index,
-        loadout_identifier: component_data['Name'],
+        loadout_identifier: component_data["Name"],
         group: group_for_hardpoint_type(hardpoint_type)
       ) do |new_hardpoint|
         new_hardpoint.hardpoint_type = hardpoint_type
@@ -169,7 +169,7 @@ module ScData
 
       component = components_loader.extract_component!(component_data)
 
-      extract_loadout(hardpoint, component_data['Ports']) if component_data['Ports'].present?
+      extract_loadout(hardpoint, component_data["Ports"]) if component_data["Ports"].present?
 
       hardpoint.update!(
         component_id: component&.id,
@@ -184,13 +184,13 @@ module ScData
       loadout_ids = []
 
       ports_data.reject do |port_data|
-        port_data.dig('InstalledItem', 'Type')&.include?('WeaponAttachment') ||
-          (port_data['Types'] || []).any? { |type| type.include?('WeaponAttachment') } ||
-          port_data['PortName'] == 'magazine_attach'
+        port_data.dig("InstalledItem", "Type")&.include?("WeaponAttachment") ||
+          (port_data["Types"] || []).any? { |type| type.include?("WeaponAttachment") } ||
+          port_data["PortName"] == "magazine_attach"
       end.each do |port_data|
-        loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data['PortName'])
+        loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data["PortName"])
 
-        component = components_loader.extract_component!(port_data['InstalledItem'])
+        component = components_loader.extract_component!(port_data["InstalledItem"])
 
         loadout.update!(component_id: component&.id)
 
@@ -210,20 +210,20 @@ module ScData
     end
 
     private def category_for_thruster_mapping(port_data)
-      thruster_loadout_type = port_data.dig('InstalledItem', 'Type')
+      thruster_loadout_type = port_data.dig("InstalledItem", "Type")
 
       mapping = {
-        'ManneuverThruster.JointThruster': :joint,
-        'ManneuverThruster.FixedThruster': :fixed,
-        'ManneuverThruster.GimbalThruster': :gimbal,
+        "ManneuverThruster.JointThruster": :joint,
+        "ManneuverThruster.FixedThruster": :fixed,
+        "ManneuverThruster.GimbalThruster": :gimbal,
       }
 
       mapping[thruster_loadout_type&.to_sym]
     end
 
     private def size_for_type(hardpoint_type, component, category = nil)
-      component_size = component['Size'].to_i
-      loadout_size = component.dig('InstalledItem', 'Ports', 0, 'Size').to_i
+      component_size = component["Size"].to_i
+      loadout_size = component.dig("InstalledItem", "Ports", 0, "Size").to_i
 
       return loadout_size if [:turrets].include?(hardpoint_type) && loadout_size.present?
 
@@ -236,15 +236,15 @@ module ScData
 
     private def size_mapping
       {
-        '1' => :small,
-        '2' => :medium,
-        '3' => :large,
-        '4' => :capital
+        "1" => :small,
+        "2" => :medium,
+        "3" => :large,
+        "4" => :capital
       }
     end
 
     private def missile_turret?(component)
-      component.dig('InstalledItem', 'Type') == 'Turret.MissileTurret'
+      component.dig("InstalledItem", "Type") == "Turret.MissileTurret"
     end
 
     private def cleanup_ship_matrix_hardpoints(model_id)

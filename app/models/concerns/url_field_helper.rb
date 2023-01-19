@@ -24,9 +24,9 @@ module UrlFieldHelper
   private def normalize_url(url)
     return if url.blank?
 
-    url.gsub('http:', '')
-      .gsub('https:', '')
-      .gsub('ts3server:', '')
-      .gsub('//', '')
+    url.gsub("http:", "")
+      .gsub("https:", "")
+      .gsub("ts3server:", "")
+      .gsub("//", "")
   end
 end

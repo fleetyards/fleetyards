@@ -116,9 +116,9 @@ class FleetMembership < ApplicationRecord
 
   def update_fleet_vehicle(vehicle)
     case ships_filter
-    when 'purchased'
+    when "purchased"
       update_fleet_vehicle_for_purchased(vehicle)
-    when 'hangar_group'
+    when "hangar_group"
       update_fleet_vehicle_for_hangar_group(vehicle)
     else
       FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy

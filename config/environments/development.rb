@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/integer/time'
-require 'app_endpoint_resolver'
+require "active_support/core_ext/integer/time"
+require "app_endpoint_resolver"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -29,14 +29,14 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp/caching-dev.txt').exist?
+  if Rails.root.join("tmp/caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :redis_cache_store, { url: Rails.configuration.redis.url, db: Rails.configuration.redis.db }
 
     config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{2.days.to_i}"
+      "Cache-Control" => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -52,7 +52,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.deliver_later_queue_name = 'mailers'
+  config.action_mailer.deliver_later_queue_name = "mailers"
   config.action_mailer.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
   config.action_mailer.asset_host = endpoints.frontend_endpoint
 
@@ -98,7 +98,7 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.logger = ActiveSupport::Logger.new(config.paths['log'].first, 1, 10.megabytes)
+  config.logger = ActiveSupport::Logger.new(config.paths["log"].first, 1, 10.megabytes)
 
   config.after_initialize do
     Bullet.enable = true

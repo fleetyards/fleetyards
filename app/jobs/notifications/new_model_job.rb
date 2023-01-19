@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'discord/new_ship'
+require "discord/new_ship"
 
 module Notifications
   class NewModelJob < Notifications::BaseJob

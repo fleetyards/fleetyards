@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.cache! ['v1', member] do
+json.cache! ["v1", member] do
   json.id member.id
   json.username member.user.username
   json.role member.role
@@ -22,5 +22,5 @@ json.cache! ['v1', member] do
   json.twitch member.user.twitch
   json.guilded member.user.guilded
   json.hangar_updated_at member.user.hangar_updated_at&.utc&.iso8601
-  json.partial! 'api/shared/dates', record: member
+  json.partial! "api/shared/dates", record: member
 end

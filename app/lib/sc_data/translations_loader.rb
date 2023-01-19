@@ -13,11 +13,11 @@ module ScData
     def translate(key)
       return if key.blank?
 
-      translations[key.delete('@')] || key
+      translations[key.delete("@")] || key
     end
 
     private def load_translations
-      load_from_export('labels.json')
+      load_from_export("labels.json")
     end
   end
 end

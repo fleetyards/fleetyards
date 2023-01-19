@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 module Api
   module V1
@@ -8,60 +8,60 @@ module Api
       let(:starfleet) { fleets :starfleet }
       let(:fleet_invite_url) { fleet_invite_urls :one }
 
-      describe 'without session' do
-        test 'should render 401 for index' do
+      describe "without session" do
+        test "should render 401 for index" do
           get "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
 
-          assert_equal 'unauthorized', json['code']
+          assert_equal "unauthorized", json["code"]
         end
 
-        test 'should render 401 for create' do
+        test "should render 401 for create" do
           post "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
 
-          assert_equal 'unauthorized', json['code']
+          assert_equal "unauthorized", json["code"]
         end
 
-        test 'should render 401 for destroy' do
+        test "should render 401 for destroy" do
           delete "/api/v1/fleets/#{starfleet.slug}/invite-urls/#{fleet_invite_url.token}", as: :json
 
           assert_response :unauthorized
           json = JSON.parse response.body
 
-          assert_equal 'unauthorized', json['code']
+          assert_equal "unauthorized", json["code"]
         end
       end
 
-      describe 'with session' do
+      describe "with session" do
         let(:data) { users :data }
 
         before do
           sign_in data
         end
 
-        describe '#index' do
+        describe "#index" do
           let(:expected) do
             [
               {
-                'token' => fleet_invite_url.token,
-                'url' => fleet_invite_url.url,
-                'expiresAfter' => fleet_invite_url.expires_after&.utc&.iso8601,
-                'expiresAfterLabel' => fleet_invite_url.expires_after_label,
-                'expired' => fleet_invite_url.expired?,
-                'limit' => fleet_invite_url.limit,
-                'limitReached' => fleet_invite_url.limit_reached?,
-                'createdAt' => fleet_invite_url.created_at.utc.iso8601,
-                'updatedAt' => fleet_invite_url.updated_at.utc.iso8601
+                "token" => fleet_invite_url.token,
+                "url" => fleet_invite_url.url,
+                "expiresAfter" => fleet_invite_url.expires_after&.utc&.iso8601,
+                "expiresAfterLabel" => fleet_invite_url.expires_after_label,
+                "expired" => fleet_invite_url.expired?,
+                "limit" => fleet_invite_url.limit,
+                "limitReached" => fleet_invite_url.limit_reached?,
+                "createdAt" => fleet_invite_url.created_at.utc.iso8601,
+                "updatedAt" => fleet_invite_url.updated_at.utc.iso8601
               }
             ]
           end
 
-          test 'should return list for index' do
+          test "should return list for index" do
             get "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
             assert_response :ok
@@ -72,50 +72,50 @@ module Api
           end
         end
 
-        test 'should render 403 for create' do
+        test "should render 403 for create" do
           post "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
           assert_response :forbidden
           json = JSON.parse response.body
 
-          assert_equal 'forbidden', json['code']
+          assert_equal "forbidden", json["code"]
         end
 
-        test 'should render 403 for destroy' do
+        test "should render 403 for destroy" do
           delete "/api/v1/fleets/#{starfleet.slug}/invite-urls/#{fleet_invite_url.token}", as: :json
 
           assert_response :forbidden
           json = JSON.parse response.body
 
-          assert_equal 'forbidden', json['code']
+          assert_equal "forbidden", json["code"]
         end
       end
 
-      describe 'with admin session' do
+      describe "with admin session" do
         let(:jeanluc) { users :jeanluc }
 
         before do
           sign_in jeanluc
         end
 
-        describe '#index' do
+        describe "#index" do
           let(:expected) do
             [
               {
-                'token' => fleet_invite_url.token,
-                'url' => fleet_invite_url.url,
-                'expiresAfter' => fleet_invite_url.expires_after&.utc&.iso8601,
-                'expiresAfterLabel' => fleet_invite_url.expires_after_label,
-                'expired' => fleet_invite_url.expired?,
-                'limit' => fleet_invite_url.limit,
-                'limitReached' => fleet_invite_url.limit_reached?,
-                'createdAt' => fleet_invite_url.created_at.utc.iso8601,
-                'updatedAt' => fleet_invite_url.updated_at.utc.iso8601
+                "token" => fleet_invite_url.token,
+                "url" => fleet_invite_url.url,
+                "expiresAfter" => fleet_invite_url.expires_after&.utc&.iso8601,
+                "expiresAfterLabel" => fleet_invite_url.expires_after_label,
+                "expired" => fleet_invite_url.expired?,
+                "limit" => fleet_invite_url.limit,
+                "limitReached" => fleet_invite_url.limit_reached?,
+                "createdAt" => fleet_invite_url.created_at.utc.iso8601,
+                "updatedAt" => fleet_invite_url.updated_at.utc.iso8601
               }
             ]
           end
 
-          test 'should return list for index' do
+          test "should return list for index" do
             get "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
             assert_response :ok
@@ -126,8 +126,8 @@ module Api
           end
         end
 
-        describe '#create' do
-          test 'should return list for index' do
+        describe "#create" do
+          test "should return list for index" do
             post "/api/v1/fleets/#{starfleet.slug}/invite-urls", as: :json
 
             assert_response :ok
@@ -138,8 +138,8 @@ module Api
           end
         end
 
-        describe '#destroy' do
-          test 'should return list for index' do
+        describe "#destroy" do
+          test "should return list for index" do
             delete "/api/v1/fleets/#{starfleet.slug}/invite-urls/#{fleet_invite_url.token}", as: :json
 
             assert_response :ok

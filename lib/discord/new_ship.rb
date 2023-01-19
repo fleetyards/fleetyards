@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'discord/webhook'
+require "discord/webhook"
 
 # rubocop:disable Naming/AccessorMethodName
 module Discord
@@ -10,11 +10,11 @@ module Discord
     end
 
     private def get_title
-      I18n.t('discord.new_ship.title')
+      I18n.t("discord.new_ship.title")
     end
 
     private def get_message
-      I18n.t('discord.new_ship.message', manufacturer: model.manufacturer.name, model: model.name)
+      I18n.t("discord.new_ship.message", manufacturer: model.manufacturer.name, model: model.name)
     end
 
     private def get_url

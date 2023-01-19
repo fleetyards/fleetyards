@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_models
       @q = Model.ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = "name asc" if @q.sorts.empty?
 
       @models = @q.result
         .page(params.fetch(:page) { nil })
@@ -19,11 +19,11 @@ module Admin
     def name_diff
       authorize! :index, :admin_models
 
-      @active_nav = 'admin-models-name-diff'
+      @active_nav = "admin-models-name-diff"
 
-      @q = Model.where('name != rsi_name AND rsi_id IS NOT NULL').ransack(params[:q])
+      @q = Model.where("name != rsi_name AND rsi_id IS NOT NULL").ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = "name asc" if @q.sorts.empty?
 
       @models = @q.result
         .page(params.fetch(:page) { nil })
@@ -33,11 +33,11 @@ module Admin
     def price_diff
       authorize! :index, :admin_models
 
-      @active_nav = 'admin-models-price-diff'
+      @active_nav = "admin-models-price-diff"
 
-      @q = Model.where('pledge_price != last_pledge_price AND rsi_id IS NOT NULL').ransack(params[:q])
+      @q = Model.where("pledge_price != last_pledge_price AND rsi_id IS NOT NULL").ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = "name asc" if @q.sorts.empty?
 
       @models = @q.result
         .page(params.fetch(:page) { nil })
@@ -58,27 +58,27 @@ module Admin
       authorize! :create, :admin_models
       @model = Model.new(model_params)
       if model.save
-        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.model'))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.model"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.model"))
       end
     end
 
     def update
       authorize! :update, model
       if model.update(model_params)
-        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.model'))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.model'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model"))
       end
     end
 
     def destroy
       authorize! :destroy, model
       if model.destroy
-        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.model'))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.model"))
       else
-        redirect_to admin_models_path(params: index_back_params, anchor: model.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.model'))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.model"))
       end
     end
 
@@ -86,10 +86,10 @@ module Admin
       authorize! :update, model
 
       if model.update(remote_store_image_url: model.rsi_store_image_url)
-        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.model'))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
       else
         Rails.logger.info model.errors.to_a.to_yaml
-        redirect_to admin_models_path(params: index_back_params, anchor: model.id), error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.model'))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model"))
       end
     end
 
@@ -181,7 +181,7 @@ module Admin
     helper_method :model
 
     private def set_active_nav
-      @active_nav = 'admin-models'
+      @active_nav = "admin-models"
     end
   end
 end

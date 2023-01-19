@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_model_paints
       @q = ModelPaint.ransack(params[:q])
 
-      @q.sorts = ['model_name asc', 'name asc'] if @q.sorts.empty?
+      @q.sorts = ["model_name asc", "name asc"] if @q.sorts.empty?
 
       @model_paints = @q.result
         .page(params.fetch(:page) { nil })
@@ -29,27 +29,27 @@ module Admin
       authorize! :create, :admin_model_paints
       @model_paint = ModelPaint.new(model_paint_params)
       if model_paint.save
-        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.model_paint'))
+        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.model_paint"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model_paint'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.model_paint"))
       end
     end
 
     def update
       authorize! :update, model_paint
       if model_paint.update(model_paint_params)
-        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.model_paint'))
+        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model_paint"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.model_paint'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model_paint"))
       end
     end
 
     def destroy
       authorize! :destroy, model_paint
       if model_paint.destroy
-        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.model_paint'))
+        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.model_paint"))
       else
-        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.model_paint'))
+        redirect_to admin_model_paints_path(params: index_back_params, anchor: model_paint.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.model_paint"))
       end
     end
 
@@ -67,7 +67,7 @@ module Admin
 
       Loaders::PaintsImportJob.perform_async(paints_data)
 
-      redirect_to admin_model_paints_path(params: index_back_params), notice: I18n.t(:'messages.import.success', resource: I18n.t(:'resources.model_paint'))
+      redirect_to admin_model_paints_path(params: index_back_params), notice: I18n.t(:"messages.import.success", resource: I18n.t(:"resources.model_paint"))
     end
 
     private def model_paint_params
@@ -102,7 +102,7 @@ module Admin
     helper_method :model_paint
 
     private def set_active_nav
-      @active_nav = 'admin-model_paints'
+      @active_nav = "admin-model_paints"
     end
 
     private def import_params

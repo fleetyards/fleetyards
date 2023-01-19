@@ -9,7 +9,7 @@ module Admin
         def index
           authorize! :index, :admin_api_images
 
-          image_query_params['sorts'] = 'created_at desc'
+          image_query_params["sorts"] = "created_at desc"
 
           @q = Image.ransack(image_query_params)
 
@@ -26,7 +26,7 @@ module Admin
 
           return if image.save
 
-          render json: ValidationError.new('image.create', errors: image.errors), status: :bad_request
+          render json: ValidationError.new("image.create", errors: image.errors), status: :bad_request
         end
 
         def update
@@ -34,7 +34,7 @@ module Admin
 
           return if image.update(image_params)
 
-          render json: ValidationError.new('image.update', errors: image.errors), status: :bad_request
+          render json: ValidationError.new("image.update", errors: image.errors), status: :bad_request
         end
 
         def destroy
@@ -42,7 +42,7 @@ module Admin
 
           return if image.destroy
 
-          render json: ValidationError.new('image.destroy', errors: image.errors), status: :bad_request
+          render json: ValidationError.new("image.destroy", errors: image.errors), status: :bad_request
         end
 
         private def image_query_params

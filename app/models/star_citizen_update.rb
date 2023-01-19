@@ -13,7 +13,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-require 'discord/rsi_news'
+require "discord/rsi_news"
 
 class StarCitizenUpdate < ApplicationRecord
   after_create :notify_discord

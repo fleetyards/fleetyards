@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'thor'
-require 'rdoc/rdoc'
-require 'git'
+require "thor"
+require "rdoc/rdoc"
+require "git"
 
 class Changelog < Thor
   include Thor::Actions
@@ -11,7 +11,7 @@ class Changelog < Thor
     true
   end
 
-  desc 'update', 'Update the Changelog'
+  desc "update", "Update the Changelog"
   def update
     changelog_data = File.read(changelog_file)
     changelog = RDoc::Markdown.parse(changelog_data)
@@ -21,9 +21,9 @@ class Changelog < Thor
     end
 
     puts changelog.parts.shift(last_version_index)
-    puts '---'
+    puts "---"
     puts changelog.parts
-    puts '---'
+    puts "---"
 
     commits = git.log.since(last_version[:sha])
 
@@ -32,16 +32,16 @@ class Changelog < Thor
     puts messages
   end
 
-  desc 'entry', 'Get Entry from Changelog'
+  desc "entry", "Get Entry from Changelog"
   def entry(tag)
-    changelog = File.read('CHANGELOG.md')
+    changelog = File.read("CHANGELOG.md")
 
     match_string = /\#{2,3} \[#{tag.delete('v')}\]\(\S+(v\S+)...v\S+\) \(\S+\)(.*)/m
     match = changelog.scan(match_string)
 
-    last_tag = match.first&.first&.delete('v')
+    last_tag = match.first&.first&.delete("v")
 
-    raise 'No Tag Found!' if last_tag.nil?
+    raise "No Tag Found!" if last_tag.nil?
 
     File.write("#{tag}.md", %(
 #{match.first.last.scan(/(.*)### \[#{last_tag}/m).first&.first}
@@ -57,7 +57,7 @@ ghcr.io/fleetyards/app:#{tag}
     end
 
     private def changelog_file
-      'CHANGELOG.new.md'
+      "CHANGELOG.new.md"
     end
 
     private def last_version

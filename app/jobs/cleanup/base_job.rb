@@ -2,6 +2,6 @@
 
 module Cleanup
   class BaseJob < ::ApplicationJob
-    sidekiq_options queue: 'cleanup'
+    sidekiq_options queue: "cleanup"
   end
 end

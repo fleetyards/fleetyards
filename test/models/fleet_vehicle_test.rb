@@ -14,7 +14,7 @@
 #
 #  index_fleet_vehicles_on_fleet_id_and_vehicle_id  (fleet_id,vehicle_id) UNIQUE
 #
-require 'test_helper'
+require "test_helper"
 
 class FleetVehicleTest < ActiveSupport::TestCase
   should belong_to(:vehicle)

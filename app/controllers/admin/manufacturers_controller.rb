@@ -26,28 +26,28 @@ module Admin
       authorize! :create, :admin_manufacturers
       @manufacturer = Manufacturer.new(manufacturer_params)
       if manufacturer.save
-        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.manufacturer'))
+        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.manufacturer'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.manufacturer"))
       end
     end
 
     def update
       authorize! :update, manufacturer
       if manufacturer.update(manufacturer_params)
-        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.manufacturer'))
+        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
         Rails.logger.debug manufacturer.errors.to_yaml
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.manufacturer'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.manufacturer"))
       end
     end
 
     def destroy
       authorize! :destroy, manufacturer
       if manufacturer.destroy
-        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.manufacturer'))
+        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.manufacturer"))
       else
-        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.manufacturer'))
+        redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.manufacturer"))
       end
     end
 
@@ -78,7 +78,7 @@ module Admin
     helper_method :manufacturer
 
     private def set_active_nav
-      @active_nav = 'admin-manufacturers'
+      @active_nav = "admin-manufacturers"
     end
   end
 end

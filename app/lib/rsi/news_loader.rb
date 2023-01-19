@@ -5,7 +5,7 @@ module Rsi
     attr_accessor :base_url
 
     def initialize
-      @base_url = 'https://robertsspaceindustries.com'
+      @base_url = "https://robertsspaceindustries.com"
     end
 
     def update
@@ -31,20 +31,20 @@ module Rsi
       page = Nokogiri::HTML(response.body)
 
       news = []
-      (page.css('.hub-blocks .hub-block') || []).each do |news_element|
-        url = news_element['href']
+      (page.css(".hub-blocks .hub-block") || []).each do |news_element|
+        url = news_element["href"]
 
         next if url.blank?
 
-        url_parts = url.split('/')
-        type = news_element.css('.type span').text
+        url_parts = url.split("/")
+        type = news_element.css(".type span").text
         sub_type = url_parts[2]
         slug = url_parts.last
 
-        next if type == 'video' # Videos are fetched directly from YouTube
+        next if type == "video" # Videos are fetched directly from YouTube
 
         news << {
-          title: news_element.css('.title-holder .title').text,
+          title: news_element.css(".title-holder .title").text,
           type:,
           sub_type:,
           url: "#{@base_url}#{url}",

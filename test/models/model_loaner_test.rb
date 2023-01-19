@@ -10,7 +10,7 @@
 #  loaner_model_id :uuid
 #  model_id        :uuid
 #
-require 'test_helper'
+require "test_helper"
 
 class ModelLoanerTest < ActiveSupport::TestCase
   # test "the truth" do

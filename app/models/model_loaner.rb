@@ -12,5 +12,5 @@
 #
 class ModelLoaner < ApplicationRecord
   belongs_to :model, touch: true
-  belongs_to :loaner_model, class_name: 'Model'
+  belongs_to :loaner_model, class_name: "Model"
 end

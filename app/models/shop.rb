@@ -38,7 +38,7 @@ class Shop < ApplicationRecord
       station: station.name,
       celestial_object: station.celestial_object.name,
       starsystem: station.celestial_object.starsystem&.name,
-      refinery: refinery_terminal? ? 'Refinery' : ''
+      refinery: refinery_terminal? ? "Refinery" : ""
     }
   end
 
@@ -86,7 +86,7 @@ class Shop < ApplicationRecord
   def self.type_filters
     Shop.shop_types.map do |(item, _index)|
       Filter.new(
-        category: 'shop_type',
+        category: "shop_type",
         name: Shop.human_enum_name(:shop_type, item),
         value: item
       )
@@ -106,18 +106,18 @@ class Shop < ApplicationRecord
 
   def station_label
     [
-      I18n.t('activerecord.attributes.shop.location_prefix.default'),
+      I18n.t("activerecord.attributes.shop.location_prefix.default"),
       station.name,
-    ].join(' ')
+    ].join(" ")
   end
 
   def location_label
     [
-      I18n.t('activerecord.attributes.shop.location_prefix.default'),
+      I18n.t("activerecord.attributes.shop.location_prefix.default"),
       station.name,
       location,
       station.location_label
-    ].compact.join(' ')
+    ].compact.join(" ")
   end
 
   private def update_shop_commodities

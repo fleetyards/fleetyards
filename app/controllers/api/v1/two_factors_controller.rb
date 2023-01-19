@@ -7,18 +7,18 @@ module Api
         authorize! :update, current_user
 
         unless access_cookie_valid?
-          render json: { code: 'requires_access_confirmation', message: I18n.t('messages.user.requires_access_confirmation') }, status: :bad_request
+          render json: { code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation") }, status: :bad_request
           return
         end
 
         if current_user.otp_required_for_login?
-          render json: { code: 'two_factor_setup.active', message: I18n.t('messages.user.two_factor_setup.active') }, status: :bad_request
+          render json: { code: "two_factor_setup.active", message: I18n.t("messages.user.two_factor_setup.active") }, status: :bad_request
           return
         end
 
         current_user.update(otp_secret: User.generate_otp_secret)
 
-        render json: { code: :success, message: I18n.t('labels.success') }
+        render json: { code: :success, message: I18n.t("labels.success") }
       end
 
       def qrcode
@@ -28,19 +28,19 @@ module Api
 
         qr = RQRCode::QRCode.new(uri, level: :l)
 
-        send_data qr.as_svg(color: 'ccc'), type: 'image/svg+xml', disposition: 'inline'
+        send_data qr.as_svg(color: "ccc"), type: "image/svg+xml", disposition: "inline"
       end
 
       def enable
         authorize! :update, current_user
 
         unless access_cookie_valid?
-          render json: { code: 'requires_access_confirmation', message: I18n.t('messages.user.requires_access_confirmation') }, status: :bad_request
+          render json: { code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation") }, status: :bad_request
           return
         end
 
         if current_user.otp_required_for_login?
-          render json: { code: 'two_factor_setup.active', message: I18n.t('messages.user.two_factor_setup.active') }, status: :bad_request
+          render json: { code: "two_factor_setup.active", message: I18n.t("messages.user.two_factor_setup.active") }, status: :bad_request
           return
         end
 
@@ -51,7 +51,7 @@ module Api
 
           render json: { codes: backup_codes }
         else
-          render json: { code: 'two_factor_setup.enable.failure', message: I18n.t('messages.user.two_factor_setup.enable.failure') }, status: :bad_request
+          render json: { code: "two_factor_setup.enable.failure", message: I18n.t("messages.user.two_factor_setup.enable.failure") }, status: :bad_request
         end
       end
 
@@ -59,12 +59,12 @@ module Api
         authorize! :update, current_user
 
         unless access_cookie_valid?
-          render json: { code: 'requires_access_confirmation', message: I18n.t('messages.user.requires_access_confirmation') }, status: :bad_request
+          render json: { code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation") }, status: :bad_request
           return
         end
 
         unless current_user.otp_required_for_login?
-          render json: { code: 'two_factor_setup.inactive', message: I18n.t('messages.user.two_factor_setup.inactive') }, status: :bad_request
+          render json: { code: "two_factor_setup.inactive", message: I18n.t("messages.user.two_factor_setup.inactive") }, status: :bad_request
           return
         end
 
@@ -73,9 +73,9 @@ module Api
           current_user.otp_required_for_login = false
           current_user.save!
 
-          render json: { code: :success, message: I18n.t('labels.success') }
+          render json: { code: :success, message: I18n.t("labels.success") }
         else
-          render json: { code: 'two_factor_setup.disable.failure', message: I18n.t('messages.user.two_factor_setup.disable.failure') }, status: :bad_request
+          render json: { code: "two_factor_setup.disable.failure", message: I18n.t("messages.user.two_factor_setup.disable.failure") }, status: :bad_request
         end
       end
 
@@ -83,12 +83,12 @@ module Api
         authorize! :update, current_user
 
         unless access_cookie_valid?
-          render json: { code: 'requires_access_confirmation', message: I18n.t('messages.user.requires_access_confirmation') }, status: :bad_request
+          render json: { code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation") }, status: :bad_request
           return
         end
 
         unless current_user.otp_required_for_login?
-          render json: { code: 'two_factor_setup.inactive', message: I18n.t('messages.user.two_factor_setup.inactive') }, status: :bad_request
+          render json: { code: "two_factor_setup.inactive", message: I18n.t("messages.user.two_factor_setup.inactive") }, status: :bad_request
           return
         end
 

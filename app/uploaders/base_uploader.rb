@@ -25,7 +25,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
 
   private def uuid_path
-    model.id.split(/(.{2})(.{2})(.+)/).join('/')
+    model.id.split(/(.{2})(.{2})(.+)/).join("/")
   end
 
   protected def secure_token

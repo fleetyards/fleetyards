@@ -9,7 +9,7 @@ module Admin
         def index
           authorize! :index, :admin_api_commodity_prices
 
-          commodity_prices_query_params['sorts'] = 'created_at desc'
+          commodity_prices_query_params["sorts"] = "created_at desc"
 
           @q = CommodityPrice.ransack(commodity_prices_query_params)
 
@@ -25,7 +25,7 @@ module Admin
 
           return if commodity_price.save
 
-          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
+          render json: ValidationError.new("commodity_price.create", errors: commodity_price.errors), status: :bad_request
         end
 
         def create_buy_price
@@ -35,7 +35,7 @@ module Admin
 
           return if commodity_price.save
 
-          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
+          render json: ValidationError.new("commodity_price.create", errors: commodity_price.errors), status: :bad_request
         end
 
         def create_rental_price
@@ -45,7 +45,7 @@ module Admin
 
           return if commodity_price.save
 
-          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
+          render json: ValidationError.new("commodity_price.create", errors: commodity_price.errors), status: :bad_request
         end
 
         def confirm
@@ -53,7 +53,7 @@ module Admin
 
           return if commodity_price.confirm
 
-          render json: ValidationError.new('commodity_price.create', errors: commodity_price.errors), status: :bad_request
+          render json: ValidationError.new("commodity_price.create", errors: commodity_price.errors), status: :bad_request
         end
 
         def destroy
@@ -61,7 +61,7 @@ module Admin
 
           return if commodity_price.destroy
 
-          render json: ValidationError.new('commodity_price.destroy', errors: commodity_price.errors), status: :bad_request
+          render json: ValidationError.new("commodity_price.destroy", errors: commodity_price.errors), status: :bad_request
         end
 
         def time_ranges
@@ -69,7 +69,7 @@ module Admin
 
           @filters = CommodityRentalPrice.time_range_filters
 
-          render 'api/v1/shared/filters'
+          render "api/v1/shared/filters"
         end
 
         private def commodity_price

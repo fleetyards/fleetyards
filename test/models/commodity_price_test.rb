@@ -19,7 +19,7 @@
 #
 #  index_commodity_prices_on_shop_commodity_id  (shop_commodity_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class CommodityPriceTest < ActiveSupport::TestCase
   # test "the truth" do

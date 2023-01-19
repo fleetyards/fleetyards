@@ -11,7 +11,7 @@ module Api
       after_action -> { pagination_header(:videos) }, only: [:videos]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
-        not_found(I18n.t('messages.record_not_found.model', slug: params[:slug]))
+        not_found(I18n.t("messages.record_not_found.model", slug: params[:slug]))
       end
 
       def index
@@ -52,7 +52,7 @@ module Api
           .active
           .where.not(id: RoadmapItem.pluck(:model_id).compact)
           .where.not(rsi_id: nil)
-          .where.not(production_status: ['flight-ready'])
+          .where.not(production_status: ["flight-ready"])
           .order(name: :asc)
           .all
       end
@@ -99,11 +99,11 @@ module Api
       def cargo_options
         authorize! :index, :api_models
 
-        model_query_params['sorts'] = sort_by_name
+        model_query_params["sorts"] = sort_by_name
 
         @q = Model.visible
           .active
-          .where('cargo > 0')
+          .where("cargo > 0")
           .ransack(model_query_params)
 
         @models = @q.result
@@ -124,7 +124,7 @@ module Api
 
         @models = Model.visible.active.where(slug: params[:models]).order(name: :asc).all
 
-        render 'api/v1/models/index'
+        render "api/v1/models/index"
       end
 
       def updated
@@ -159,7 +159,7 @@ module Api
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @images = model.images
           .enabled
-          .order('images.created_at desc')
+          .order("images.created_at desc")
           .page(params[:page])
           .per(per_page(Image))
       end
@@ -168,7 +168,7 @@ module Api
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @videos = model.videos
-          .order('videos.created_at desc')
+          .order("videos.created_at desc")
           .page(params[:page])
           .per(per_page(Video))
       end
@@ -179,15 +179,15 @@ module Api
 
         scope = model.variants.includes(:manufacturer).visible.active
         if pledge_price_range.present?
-          model_query_params['sorts'] = 'last_pledge_price asc'
+          model_query_params["sorts"] = "last_pledge_price asc"
           scope = scope.where(last_pledge_price: pledge_price_range)
         end
         if price_range.present?
-          model_query_params['sorts'] = 'price asc'
+          model_query_params["sorts"] = "price asc"
           scope = scope.where(price: price_range)
         end
 
-        model_query_params['sorts'] = sort_by_name
+        model_query_params["sorts"] = sort_by_name
 
         @q = scope.ransack(model_query_params)
 
@@ -202,15 +202,15 @@ module Api
 
         scope = model.loaners.includes(:manufacturer).visible.active
         if pledge_price_range.present?
-          model_query_params['sorts'] = 'last_pledge_price asc'
+          model_query_params["sorts"] = "last_pledge_price asc"
           scope = scope.where(last_pledge_price: pledge_price_range)
         end
         if price_range.present?
-          model_query_params['sorts'] = 'price asc'
+          model_query_params["sorts"] = "price asc"
           scope = scope.where(price: price_range)
         end
 
-        model_query_params['sorts'] = sort_by_name
+        model_query_params["sorts"] = sort_by_name
 
         @q = scope.ransack(model_query_params)
 
@@ -279,7 +279,7 @@ module Api
 
       private def price_range
         @price_range ||= price_in.map do |prices|
-          gt_price, lt_price = prices.split('-')
+          gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
                        0
                      else
@@ -296,7 +296,7 @@ module Api
 
       private def pledge_price_range
         @pledge_price_range ||= pledge_price_in.map do |prices|
-          gt_price, lt_price = prices.split('-')
+          gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
                        0
                      else
@@ -315,25 +315,25 @@ module Api
         scope = Model.includes([:manufacturer]).visible.active
 
         if pledge_price_range.present?
-          model_query_params['sorts'] = 'last_pledge_price asc'
+          model_query_params["sorts"] = "last_pledge_price asc"
           scope = scope.where(last_pledge_price: pledge_price_range)
         end
 
         if price_range.present?
-          model_query_params['sorts'] = 'price asc'
+          model_query_params["sorts"] = "price asc"
           scope = scope.where(price: price_range)
         end
 
         scope = scope.with_dock if params[:withDock]
-        scope = will_it_fit?(scope) if model_query_params['will_it_fit'].present?
+        scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
-        model_query_params['sorts'] = sort_by_name
+        model_query_params["sorts"] = sort_by_name
 
         scope.ransack(model_query_params)
       end
 
       private def will_it_fit?(scope)
-        slug = model_query_params.delete('will_it_fit')
+        slug = model_query_params.delete("will_it_fit")
         parent = Model.visible.active.where(slug:).or(Model.where(rsi_slug: slug)).first
 
         return scope if parent.blank? || parent.docks.blank?
@@ -375,26 +375,26 @@ module Api
 
       private def will_it_fit_ship_dock?(scope, dock_metrics)
         scope.where(
-          '(ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height',
+          "(ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height",
           dock_metrics
         )
       end
 
       private def will_it_fit_vehicle_dock?(scope, dock_metrics)
         scope.where(
-          'ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height',
+          "ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height",
           dock_metrics
         )
       end
 
       private def pledge_price_in
-        pledge_price_in = model_query_params.delete('pledge_price_in')
+        pledge_price_in = model_query_params.delete("pledge_price_in")
         pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
         pledge_price_in
       end
 
       private def price_in
-        price_in = model_query_params.delete('price_in')
+        price_in = model_query_params.delete("price_in")
         price_in = price_in.to_s.split unless price_in.is_a?(Array)
         price_in
       end

@@ -32,7 +32,7 @@
 #  index_vehicles_on_serial_and_user_id  (serial,user_id) UNIQUE
 #  index_vehicles_on_user_id             (user_id)
 #
-require 'csv'
+require "csv"
 
 class Vehicle < ApplicationRecord
   paginates_per 30
@@ -46,14 +46,14 @@ class Vehicle < ApplicationRecord
   belongs_to :model_paint, optional: true
   belongs_to :user, touch: :hangar_updated_at
   belongs_to :module_package,
-             class_name: 'ModelModulePackage',
+             class_name: "ModelModulePackage",
              optional: true
 
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces
   has_many :public_hangar_groups,
            -> { where(public: true) },
-           class_name: 'HangarGroup',
+           class_name: "HangarGroup",
            source: :hangar_group,
            through: :task_forces
 

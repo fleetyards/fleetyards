@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rsi/base_loader'
+require "rsi/base_loader"
 
 module Rsi
   class HardpointsLoader < ::Rsi::BaseLoader
@@ -90,11 +90,11 @@ module Rsi
       return if category.blank?
 
       mapping = {
-        'M' => :main,
-        'R' => :retro,
-        'V' => :vtol,
-        'F' => :fixed,
-        'G' => :gimbal
+        "M" => :main,
+        "R" => :retro,
+        "V" => :vtol,
+        "F" => :fixed,
+        "G" => :gimbal
       }
 
       raise "Category missing in Mapping \"#{category}\"" if mapping[category].blank?
@@ -104,11 +104,11 @@ module Rsi
 
     private def component_class_to_group(component_class)
       mapping = {
-        'RSIPropulsion' => :propulsion,
-        'RSIAvionic' => :avionic,
-        'RSIThruster' => :thruster,
-        'RSIModular' => :system,
-        'RSIWeapon' => :weapon
+        "RSIPropulsion" => :propulsion,
+        "RSIAvionic" => :avionic,
+        "RSIThruster" => :thruster,
+        "RSIModular" => :system,
+        "RSIWeapon" => :weapon
       }
 
       raise "Component Class missing in Group Mapping \"#{component_class}\"" if mapping[component_class].blank?
@@ -117,8 +117,8 @@ module Rsi
     end
 
     private def extract_size(hardpoint_data)
-      if hardpoint_data[:type] == 'missiles'
-        size_from_name = (hardpoint_data[:name] || '').scan(/MSD-(\d{1})\d{2}/).last&.first
+      if hardpoint_data[:type] == "missiles"
+        size_from_name = (hardpoint_data[:name] || "").scan(/MSD-(\d{1})\d{2}/).last&.first
 
         return size_mapping(size_from_name || hardpoint_data[:size])
       end
@@ -128,26 +128,26 @@ module Rsi
 
     private def size_mapping(size)
       mapping = {
-        'TBD' => :tbd,
-        '-' => :tbd,
-        'V' => :vehicle,
-        'SN' => :snub,
-        'S' => :small,
-        'M' => :medium,
-        'L' => :large,
-        'C' => :capital,
-        '1' => :one,
-        '2' => :two,
-        '3' => :three,
-        '4' => :four,
-        '5' => :five,
-        '6' => :six,
-        '7' => :seven,
-        '8' => :eight,
-        '9' => :nine,
-        '10' => :ten,
-        '11' => :eleven,
-        '12' => :twelve,
+        "TBD" => :tbd,
+        "-" => :tbd,
+        "V" => :vehicle,
+        "SN" => :snub,
+        "S" => :small,
+        "M" => :medium,
+        "L" => :large,
+        "C" => :capital,
+        "1" => :one,
+        "2" => :two,
+        "3" => :three,
+        "4" => :four,
+        "5" => :five,
+        "6" => :six,
+        "7" => :seven,
+        "8" => :eight,
+        "9" => :nine,
+        "10" => :ten,
+        "11" => :eleven,
+        "12" => :twelve,
       }
 
       raise "Size missing in Mapping \"#{size}\"" if mapping[size.strip].blank?

@@ -40,7 +40,7 @@ class Component < ApplicationRecord
   def search_data
     {
       name:,
-      item_type: (item_type || '').tr('_', ' '),
+      item_type: (item_type || "").tr("_", " "),
       item_class:,
       manufacturer_name: manufacturer&.name,
       manufacturer_code: manufacturer&.code
@@ -124,7 +124,7 @@ class Component < ApplicationRecord
   def self.item_type_filters
     Component.item_types.map do |item|
       Filter.new(
-        category: 'item_type',
+        category: "item_type",
         name: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
         value: item
       )
@@ -134,7 +134,7 @@ class Component < ApplicationRecord
   def self.class_filters
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(
-        category: 'class',
+        category: "class",
         name: I18n.t("filter.component.class.items.#{item.downcase}"),
         value: item
       )

@@ -54,11 +54,11 @@ class CelestialObject < ApplicationRecord
   belongs_to :starsystem, optional: true
 
   belongs_to :parent,
-             class_name: 'CelestialObject',
+             class_name: "CelestialObject",
              optional: true
 
   has_many :moons,
-           class_name: 'CelestialObject',
+           class_name: "CelestialObject",
            foreign_key: :parent_id,
            inverse_of: :parent,
            dependent: :destroy
@@ -81,11 +81,11 @@ class CelestialObject < ApplicationRecord
   end
 
   def self.planet
-    where(object_type: 'PLANET')
+    where(object_type: "PLANET")
   end
 
   def self.moon
-    where(object_type: 'SATELLITE')
+    where(object_type: "SATELLITE")
   end
 
   def self.visible
@@ -93,6 +93,6 @@ class CelestialObject < ApplicationRecord
   end
 
   def location_label
-    I18n.t('activerecord.attributes.celestial_object.location_prefix.default', starsystem: starsystem.name)
+    I18n.t("activerecord.attributes.celestial_object.location_prefix.default", starsystem: starsystem.name)
   end
 end

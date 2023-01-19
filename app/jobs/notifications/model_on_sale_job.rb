@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'discord/ship_on_sale'
+require "discord/ship_on_sale"
 
 module Notifications
   class ModelOnSaleJob < Notifications::BaseJob

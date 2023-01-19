@@ -32,7 +32,7 @@
 #
 #  starsystems_slug_index  (slug) UNIQUE
 #
-require 'test_helper'
+require "test_helper"
 
 class StarsystemTest < ActiveSupport::TestCase
   # test "the truth" do

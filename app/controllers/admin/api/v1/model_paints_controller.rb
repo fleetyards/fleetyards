@@ -7,7 +7,7 @@ module Admin
         def index
           authorize! :index, :admin_api_model_paints
 
-          model_paint_query_params['sorts'] = sort_by_name
+          model_paint_query_params["sorts"] = sort_by_name
 
           @q = ModelPaint.ransack(model_paint_query_params)
 

@@ -4,7 +4,7 @@ module Api
   module V1
     class FleetMembershipsController < ::Api::BaseController
       rescue_from ActiveRecord::RecordNotFound do |_exception|
-        not_found(I18n.t('messages.record_not_found.fleet', slug: params[:slug]))
+        not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
       end
 
       def current
@@ -23,7 +23,7 @@ module Api
         if member.save
           member.invite!
         else
-          render json: ValidationError.new('fleet_memberships.create', errors: member.errors), status: :bad_request
+          render json: ValidationError.new("fleet_memberships.create", errors: member.errors), status: :bad_request
         end
       end
 
@@ -39,7 +39,7 @@ module Api
           member.request!
           invite_url.reduce_limit
         else
-          render json: ValidationError.new('fleet_memberships.create', errors: member.errors), status: :bad_request
+          render json: ValidationError.new("fleet_memberships.create", errors: member.errors), status: :bad_request
         end
       end
 
@@ -48,7 +48,7 @@ module Api
 
         return if my_membership.update(membeship_params)
 
-        render json: ValidationError.new('fleet_memberships.update', errors: my_membership.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.update", errors: my_membership.errors), status: :bad_request
       end
 
       def accept_invite
@@ -56,7 +56,7 @@ module Api
 
         return if my_membership.accept_invitation!
 
-        render json: ValidationError.new('fleet_memberships.accept', errors: my_membership.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.accept", errors: my_membership.errors), status: :bad_request
       end
 
       def decline_invite
@@ -64,7 +64,7 @@ module Api
 
         return if my_membership.decline!
 
-        render json: ValidationError.new('fleet_memberships.decline', errors: my_membership.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.decline", errors: my_membership.errors), status: :bad_request
       end
 
       def accept_request
@@ -72,7 +72,7 @@ module Api
 
         return if member.accept_request!
 
-        render json: ValidationError.new('fleet_memberships.accept', errors: member.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.accept", errors: member.errors), status: :bad_request
       end
 
       def decline_request
@@ -80,7 +80,7 @@ module Api
 
         return if member.decline!
 
-        render json: ValidationError.new('fleet_memberships.decline', errors: member.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.decline", errors: member.errors), status: :bad_request
       end
 
       def promote
@@ -88,7 +88,7 @@ module Api
 
         return if member.promote
 
-        render json: ValidationError.new('fleet_memberships.promote', errors: member.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.promote", errors: member.errors), status: :bad_request
       end
 
       def demote
@@ -96,7 +96,7 @@ module Api
 
         return if member.demote
 
-        render json: ValidationError.new('fleet_memberships.demote', errors: member.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.demote", errors: member.errors), status: :bad_request
       end
 
       def destroy
@@ -104,20 +104,20 @@ module Api
 
         return if member.destroy
 
-        render json: ValidationError.new('fleet_memberships.destroy', errors: member.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.destroy", errors: member.errors), status: :bad_request
       end
 
       def leave
         authorize! :destroy, my_membership
 
         if my_membership.admin?
-          render json: ValidationError.new('fleet_memberships.destroy', message: I18n.t('validation_error.fleet_memberships.destroy_as_admin')), status: :bad_request
+          render json: ValidationError.new("fleet_memberships.destroy", message: I18n.t("validation_error.fleet_memberships.destroy_as_admin")), status: :bad_request
           return
         end
 
         return if my_membership.destroy
 
-        render json: ValidationError.new('fleet_memberships.destroy', errors: my_membership.errors), status: :bad_request
+        render json: ValidationError.new("fleet_memberships.destroy", errors: my_membership.errors), status: :bad_request
       end
 
       private def membeship_params

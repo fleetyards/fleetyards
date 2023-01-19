@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rsi/models_loader'
+require "rsi/models_loader"
 
 module Loaders
   class ModelJob < ::Loaders::BaseJob

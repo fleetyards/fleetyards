@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rsi/paints_loader'
+require "rsi/paints_loader"
 
 module Loaders
   class PaintsImportJob < ::Loaders::BaseJob

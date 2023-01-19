@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'fog/aws'
+require "fog/aws"
 
 module CarrierWave
   module MiniMagick
@@ -14,7 +14,7 @@ module CarrierWave
 
     def darken(percentage)
       manipulate! do |img|
-        img.fill('black')
+        img.fill("black")
         img.colorize("#{percentage}%")
         img = yield(img) if block_given?
         img
@@ -51,9 +51,9 @@ CarrierWave.configure do |config|
     config.storage = :file
     config.enable_processing = false
   elsif Rails.application.credentials.carrierwave_cloud_key.present?
-    config.fog_provider = 'fog/aws'
+    config.fog_provider = "fog/aws"
     config.fog_credentials = {
-      provider: 'AWS',
+      provider: "AWS",
       aws_access_key_id: Rails.application.credentials.carrierwave_cloud_key,
       aws_secret_access_key: Rails.application.credentials.carrierwave_cloud_secret,
       region: Rails.application.credentials.carrierwave_cloud_region,

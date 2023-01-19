@@ -10,7 +10,7 @@ module Admin
     end
 
     private def set_active_nav
-      @active_nav = 'admin-images'
+      @active_nav = "admin-images"
     end
   end
 end

@@ -17,5 +17,5 @@ json.store_image_medium shop.store_image.medium.url
 json.store_image_small shop.store_image.small.url
 json.refinery_terminal shop.refinery_terminal
 json.station do
-  json.partial! 'api/v1/shops/station', station: shop.station
+  json.partial! "api/v1/shops/station", station: shop.station
 end

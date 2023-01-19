@@ -2,7 +2,7 @@
 
 json.total @quick_stats.total
 json.classifications do
-  json.array! @quick_stats.classifications, partial: 'api/v1/vehicles/classification_quick_stats', as: :classification_quick_stats
+  json.array! @quick_stats.classifications, partial: "api/v1/vehicles/classification_quick_stats", as: :classification_quick_stats
 end
 json.metrics do
   json.total_money @quick_stats.metrics[:total_money]

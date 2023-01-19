@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-json.partial! 'api/v1/commodities/minimal', commodity: @commodity
+json.partial! "api/v1/commodities/minimal", commodity: @commodity

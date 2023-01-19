@@ -8,7 +8,7 @@ module Api
       def index
         authorize! :index, :api_roadmap
 
-        roadmap_query_params['sorts'] = ['rsi_category_id asc', 'name asc']
+        roadmap_query_params["sorts"] = ["rsi_category_id asc", "name asc"]
 
         @q = RoadmapItem.ransack(roadmap_query_params)
 
@@ -19,7 +19,7 @@ module Api
         authorize! :index, :api_roadmap
 
         next_roadmap_update = 1.day.from_now.end_of_week(:thursday)
-        oldest_roadmap_update = PaperTrail::Version.where(item_type: 'RoadmapItem').order(:created_at).first.created_at
+        oldest_roadmap_update = PaperTrail::Version.where(item_type: "RoadmapItem").order(:created_at).first.created_at
         updates = (oldest_roadmap_update.to_date..next_roadmap_update.to_date).to_a.select { |date| date.wday == 3 }
 
         @weeks = updates.reverse.each_with_index.map do |update, index|

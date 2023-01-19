@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require 'test_helper'
-require 'rsi/models_loader'
+require "test_helper"
+require "rsi/models_loader"
 
 class RsiModelsLoaderTest < ActiveSupport::TestCase
   let(:loader) { ::Rsi::ModelsLoader.new }
 
   before do
-    Timecop.freeze('2017-01-01 14:00:00')
+    Timecop.freeze("2017-01-01 14:00:00")
   end
 
   after do
     Timecop.return
   end
 
-  test '#all' do
-    VCR.use_cassette('rsi_models_loader_all') do
+  test "#all" do
+    VCR.use_cassette("rsi_models_loader_all") do
       loader.all
 
       expectations = {
@@ -33,15 +33,15 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
                    paints: ModelPaint.count,
                    manufacturers: Manufacturer.count)
 
-      assert_equal(Model.find_by(slug: '300i').rsi_chassis_id, Model.find_by(slug: '315p').rsi_chassis_id)
+      assert_equal(Model.find_by(slug: "300i").rsi_chassis_id, Model.find_by(slug: "315p").rsi_chassis_id)
     end
   end
 
-  test '#updates only when needed' do
-    VCR.use_cassette('rsi_models_loader_all') do
+  test "#updates only when needed" do
+    VCR.use_cassette("rsi_models_loader_all") do
       loader.one(7)
 
-      model = Model.find_by(name: '300i')
+      model = Model.find_by(name: "300i")
 
       Timecop.travel(1.day)
 
@@ -53,29 +53,29 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     end
   end
 
-  test '#updates production status only when time_modified changes' do
-    VCR.use_cassette('rsi_models_loader_all') do
+  test "#updates production status only when time_modified changes" do
+    VCR.use_cassette("rsi_models_loader_all") do
       loader.one(7)
 
-      model = Model.find_by(name: '300i')
+      model = Model.find_by(name: "300i")
 
-      assert_equal('flight-ready', model.production_status)
+      assert_equal("flight-ready", model.production_status)
 
-      model.update(production_status: 'in-concept')
+      model.update(production_status: "in-concept")
 
       Timecop.travel(1.day)
 
       loader.one(model.rsi_id)
       model.reload
 
-      assert_equal('in-concept', model.production_status)
+      assert_equal("in-concept", model.production_status)
     end
   end
 
-  test '#overides present data' do
-    VCR.use_cassette('rsi_models_loader_all') do
+  test "#overides present data" do
+    VCR.use_cassette("rsi_models_loader_all") do
       model_polaris = Model.create(
-        name: 'Polaris',
+        name: "Polaris",
         rsi_id: 116,
         length: 20.0
       )
@@ -90,15 +90,15 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       model_polaris.reload
 
       assert_in_delta(155.0, model_polaris.length.to_f)
-      assert_equal('2022-08-18T16:49:02Z', model_polaris.last_updated_at.utc.iso8601)
+      assert_equal("2022-08-18T16:49:02Z", model_polaris.last_updated_at.utc.iso8601)
     end
   end
 
-  test '#saves hardpoint data' do
-    VCR.use_cassette('rsi_models_loader_all') do
+  test "#saves hardpoint data" do
+    VCR.use_cassette("rsi_models_loader_all") do
       loader.one(7)
 
-      model = Model.find_by(name: '300i')
+      model = Model.find_by(name: "300i")
 
       assert_equal(34, ModelHardpoint.where(model_id: model.id).count)
       assert_equal(6, Component.count)

@@ -11,7 +11,7 @@
 #  component_id       :uuid
 #  model_hardpoint_id :uuid
 #
-require 'test_helper'
+require "test_helper"
 
 class ModelHardpointLoadoutTest < ActiveSupport::TestCase
   # test "the truth" do

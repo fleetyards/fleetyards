@@ -21,8 +21,8 @@ module Admin
         def most_viewed_pages
           authorize! :stats, :admin
 
-          most_viewed_pages = Ahoy::Event.one_month.where(name: '$view').to_a.group_by do |event|
-            event.properties['page']
+          most_viewed_pages = Ahoy::Event.one_month.where(name: "$view").to_a.group_by do |event|
+            event.properties["page"]
           end.map do |page, views|
             {
               label: page,
@@ -53,7 +53,7 @@ module Admin
         def visits_per_month
           authorize! :stats, :admin
 
-          visits_per_month = Rollup.where('time > ?', 1.year.ago).series('Visits', interval: :month).map do |started_at, count|
+          visits_per_month = Rollup.where("time > ?", 1.year.ago).series("Visits", interval: :month).map do |started_at, count|
             {
               label: I18n.l(started_at.to_date, format: :month_year_short),
               count:,
@@ -67,7 +67,7 @@ module Admin
         def registrations_per_month
           authorize! :stats, :admin
 
-          registrations_per_month = Rollup.where('time > ?', 1.year.ago).series('Registrations', interval: :month).map do |created_at, count|
+          registrations_per_month = Rollup.where("time > ?", 1.year.ago).series("Registrations", interval: :month).map do |created_at, count|
             {
               label: I18n.l(created_at.to_date, format: :month_year_short),
               count:,
@@ -81,7 +81,7 @@ module Admin
         private def online_count
           Ahoy::Event.without_users(tracking_blocklist)
             .select(:visit_id).distinct
-            .where('time > ?', 15.minutes.ago).count
+            .where("time > ?", 15.minutes.ago).count
         end
         helper_method :online_count
 

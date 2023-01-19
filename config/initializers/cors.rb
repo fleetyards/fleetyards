@@ -10,7 +10,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: Rails.env.development?, logger: -> { Rails.logger } do
   allow do
     origins [FRONTEND_ENDPOINT, ADMIN_ENDPOINT, API_ENDPOINT]
-    resource '*', headers: :any,
+    resource "*", headers: :any,
                   methods: %i[get post delete put patch options head],
                   expose: %w[Link X-RateLimit-Limit X-RateLimit-Remaining X-RateLimit-Reset],
                   credentials: true,
@@ -18,8 +18,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: Rails.en
   end
 
   allow do
-    origins '*'
-    resource '*', headers: :any,
+    origins "*"
+    resource "*", headers: :any,
                   methods: %i[get options head],
                   expose: %w[Link X-RateLimit-Limit X-RateLimit-Remaining X-RateLimit-Reset],
                   max_age: 0

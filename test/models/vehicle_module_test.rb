@@ -10,7 +10,7 @@
 #  model_module_id :uuid
 #  vehicle_id      :uuid
 #
-require 'test_helper'
+require "test_helper"
 
 class VehicleModuleTest < ActiveSupport::TestCase
   # test "the truth" do

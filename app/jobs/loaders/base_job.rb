@@ -2,6 +2,6 @@
 
 module Loaders
   class BaseJob < ::ApplicationJob
-    sidekiq_options queue: 'loaders'
+    sidekiq_options queue: "loaders"
   end
 end

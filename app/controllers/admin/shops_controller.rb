@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_shops
       @q = Shop.ransack(params[:q])
 
-      @q.sorts = ['name asc', 'id asc'] if @q.sorts.empty?
+      @q.sorts = ["name asc", "id asc"] if @q.sorts.empty?
 
       @shops = @q.result
         .page(params.fetch(:page) { nil })
@@ -29,27 +29,27 @@ module Admin
       authorize! :create, :admin_shops
       @shop = Shop.new(shop_params)
       if shop.save
-        redirect_to edit_admin_shop_path(shop.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.shop'))
+        redirect_to edit_admin_shop_path(shop.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.shop"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.shop'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.shop"))
       end
     end
 
     def update
       authorize! :update, shop
       if shop.update(shop_params)
-        redirect_to edit_admin_shop_path(shop.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.shop'))
+        redirect_to edit_admin_shop_path(shop.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.shop"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.shop'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.shop"))
       end
     end
 
     def destroy
       authorize! :destroy, shop
       if shop.destroy
-        redirect_to admin_shops_path(params: index_back_params, anchor: shop.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.shop'))
+        redirect_to admin_shops_path(params: index_back_params, anchor: shop.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.shop"))
       else
-        redirect_to admin_shops_path(params: index_back_params, anchor: shop.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.shop'))
+        redirect_to admin_shops_path(params: index_back_params, anchor: shop.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.shop"))
       end
     end
 
@@ -80,7 +80,7 @@ module Admin
 
     private def shop_commodities
       @shop_commodities ||= shop.shop_commodities.sort_by do |item|
-        if item.commodity_item_type == 'Equipment'
+        if item.commodity_item_type == "Equipment"
           [item.commodity_item_type, item.commodity_item.equipment_type, item.commodity_item.name, item.created_at]
         elsif item.commodity_item_type.present?
           [item.commodity_item_type, nil, item.commodity_item.name, item.created_at]
@@ -97,7 +97,7 @@ module Admin
     helper_method :shop
 
     private def set_active_nav
-      @active_nav = 'admin-shops'
+      @active_nav = "admin-shops"
     end
   end
 end

@@ -5,7 +5,7 @@ module TradingData
     attr_accessor :json_file_path
 
     def initialize
-      self.json_file_path = 'public/trading_data.json'
+      self.json_file_path = "public/trading_data.json"
     end
 
     def run
@@ -15,11 +15,11 @@ module TradingData
       data = load_data
 
       data.each do |item|
-        shop = Shop.find_by!(slug: item['shop'])
-        commodity = Commodity.find_by!(name: item['commodity'])
+        shop = Shop.find_by!(slug: item["shop"])
+        commodity = Commodity.find_by!(name: item["commodity"])
 
         shop_commodity = ShopCommodity.find_or_create_by(
-          commodity_item_type: 'Commodity',
+          commodity_item_type: "Commodity",
           commodity_item_id: commodity.id,
           shop_id: shop.id,
           confirmed: true
@@ -27,8 +27,8 @@ module TradingData
 
         CommodityPrice.find_or_create_by(
           shop_commodity_id: shop_commodity.id,
-          price: item['price'],
-          type: (item['buy'] ? 'CommodityBuyPrice' : 'CommoditySellPrice'),
+          price: item["price"],
+          type: (item["buy"] ? "CommodityBuyPrice" : "CommoditySellPrice"),
           confirmed: true
         )
       end
@@ -46,7 +46,7 @@ module TradingData
       JSON.parse(file)
     rescue JSON::ParserError => e
       Sentry.capture_exception(e)
-      Rails.logger.error 'Trading Data could not be parsed!'
+      Rails.logger.error "Trading Data could not be parsed!"
       []
     end
   end

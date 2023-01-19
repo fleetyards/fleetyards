@@ -9,7 +9,7 @@ module Api
 
       def index
         authorize! :index, :api_stations
-        station_query_params['sorts'] = sort_by_name if station_query_params['sorts'].blank?
+        station_query_params["sorts"] = sort_by_name if station_query_params["sorts"].blank?
 
         scope = Station.visible.includes(:docks, :habitations, :shops, celestial_object: %i[starsystem parent])
 
@@ -32,7 +32,7 @@ module Api
 
         @filters = Dock.size_filters
 
-        render 'api/v1/shared/filters'
+        render "api/v1/shared/filters"
       end
 
       def station_types
@@ -40,7 +40,7 @@ module Api
 
         @filters = Station.type_filters
 
-        render 'api/v1/shared/filters'
+        render "api/v1/shared/filters"
       end
 
       def classifications
@@ -48,7 +48,7 @@ module Api
 
         @filters = Station.classification_filters
 
-        render 'api/v1/shared/filters'
+        render "api/v1/shared/filters"
       end
 
       def images
@@ -56,7 +56,7 @@ module Api
         station = Station.visible.find_by!(slug: params[:slug])
         @images = station.images
           .enabled
-          .order('images.created_at desc')
+          .order("images.created_at desc")
           .page(params[:page])
           .per(per_page(Image))
       end

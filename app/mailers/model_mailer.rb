@@ -6,8 +6,8 @@ class ModelMailer < ApplicationMailer
 
     mail(
       to:,
-      subject: I18n.t(:'mailer.model.new.subject'),
-      message_stream: 'broadcast'
+      subject: I18n.t(:"mailer.model.new.subject"),
+      message_stream: "broadcast"
     )
   end
 end

@@ -32,7 +32,7 @@
 #  index_vehicles_on_serial_and_user_id  (serial,user_id) UNIQUE
 #  index_vehicles_on_user_id             (user_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class VehicleTest < ActiveSupport::TestCase
   should belong_to(:user)
@@ -43,14 +43,14 @@ class VehicleTest < ActiveSupport::TestCase
   let(:raven) { vehicles :raven }
   let(:hangargroup) { hangar_groups :hangargroupone }
 
-  describe '#schedule_fleet_vehicle_update' do
-    it 'enqueues update job on purchase change' do
+  describe "#schedule_fleet_vehicle_update" do
+    it "enqueues update job on purchase change" do
       raven.update(purchased: !raven.purchased)
 
       assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
     end
 
-    it 'does not enqueues update job if vehicle is hidden' do
+    it "does not enqueues update job if vehicle is hidden" do
       raven.update(hidden: true)
 
       raven.update(purchased: !raven.purchased)

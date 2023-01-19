@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
     @stats = stats
 
     mail(
-      subject: I18n.t(:'mailer.admin.weekly.subject')
+      subject: I18n.t(:"mailer.admin.weekly.subject")
     )
   end
 
@@ -16,7 +16,7 @@ class AdminMailer < ApplicationMailer
     @missing_models = models
 
     mail(
-      subject: I18n.t(:'mailer.admin.missing_loaners.subject')
+      subject: I18n.t(:"mailer.admin.missing_loaners.subject")
     )
   end
 
@@ -24,7 +24,7 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
-      subject: I18n.t(:'mailer.admin.notify_block.subject')
+      subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
   end
 
@@ -32,7 +32,7 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
-      subject: I18n.t(:'mailer.admin.notify_block.subject')
+      subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
   end
 end

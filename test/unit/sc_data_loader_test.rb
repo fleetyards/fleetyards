@@ -1,33 +1,33 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class ScDataLoaderTest < ActiveSupport::TestCase
   let(:loader) { ::ScData::ShipsLoader.new }
 
   before do
-    Timecop.freeze('2017-01-01 14:00:00')
+    Timecop.freeze("2017-01-01 14:00:00")
   end
 
   after do
     Timecop.return
   end
 
-  describe '#one' do
+  describe "#one" do
     let(:constellation_rsi_id) { 45 }
-    let(:constellation_sc_data_id) { 'rsi_constellation_andromeda' }
+    let(:constellation_sc_data_id) { "rsi_constellation_andromeda" }
     let(:model) { Model.find_by(rsi_id: constellation_rsi_id) }
 
     before do
-      VCR.use_cassette('rsi_models_loader_all') do
+      VCR.use_cassette("rsi_models_loader_all") do
         ::Rsi::ModelsLoader.new.one(constellation_rsi_id)
       end
 
       model.update(sc_identifier: constellation_sc_data_id)
     end
 
-    test 'it loads data from game files' do
-      VCR.use_cassette('sc_data_loader_one') do
+    test "it loads data from game files" do
+      VCR.use_cassette("sc_data_loader_one") do
         loader.load(model)
 
         assert_equal(95, ModelHardpoint.where(model_id: model.id).count)

@@ -15,7 +15,7 @@
 #  index_task_forces_on_hangar_group_id  (hangar_group_id)
 #  index_task_forces_on_vehicle_id       (vehicle_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class TaskForceTest < ActiveSupport::TestCase
   should belong_to(:vehicle)
@@ -24,14 +24,14 @@ class TaskForceTest < ActiveSupport::TestCase
   let(:raven) { vehicles :raven }
   let(:hangargroup) { hangar_groups :hangargroupone }
 
-  describe '#schedule_fleet_vehicle_update' do
-    it 'enqueues update job on task_force create' do
+  describe "#schedule_fleet_vehicle_update" do
+    it "enqueues update job on task_force create" do
       TaskForce.create(vehicle_id: raven.id, hangar_group_id: hangargroup.id)
 
       assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
     end
 
-    it 'enqueues update job on task_force destroy' do
+    it "enqueues update job on task_force destroy" do
       taskforce = TaskForce.create(vehicle_id: raven.id, hangar_group_id: hangargroup.id)
 
       assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size

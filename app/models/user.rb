@@ -78,10 +78,10 @@ class User < ApplicationRecord
   has_many :public_vehicles,
            -> { where(purchased: true, public: true) },
            dependent: :destroy,
-           class_name: 'Vehicle',
+           class_name: "Vehicle",
            inverse_of: false
   has_many :public_models,
-           class_name: 'Model',
+           class_name: "Model",
            through: :public_vehicles,
            source: :model,
            inverse_of: false
@@ -116,7 +116,7 @@ class User < ApplicationRecord
     login = conditions.delete(:login)
     if login.present?
       where(conditions.to_h)
-        .find_by(['normalized_username = :value OR normalized_email = :value', { value: login.downcase }])
+        .find_by(["normalized_username = :value OR normalized_email = :value", { value: login.downcase }])
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
@@ -231,7 +231,7 @@ class User < ApplicationRecord
     # create an OpenSSL object which will decrypt the AES cipher with 256 bit
     # keys in Galois Counter Mode (GCM). See
     # https://ruby.github.io/openssl/OpenSSL/Cipher.html
-    cipher = OpenSSL::Cipher.new('aes-256-gcm')
+    cipher = OpenSSL::Cipher.new("aes-256-gcm")
 
     # tell the cipher we want to decrypt. Symmetric algorithms use a very
     # similar process for encryption and decryption, hence the same object can
@@ -256,7 +256,7 @@ class User < ApplicationRecord
     # http://ruby-doc.org/stdlib-2.0.0/libdoc/openssl/rdoc/OpenSSL/Cipher.html#method-i-auth_data-3D
     # we are not adding any authenticated data but OpenSSL docs say this should
     # still be called.
-    cipher.auth_data = ''
+    cipher.auth_data = ""
 
     # #update is (somewhat confusingly named) the method which actually
     # performs the decryption on the given chunk of data. Our OTP secret is

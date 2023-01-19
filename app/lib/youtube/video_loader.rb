@@ -5,8 +5,8 @@ module Youtube
     attr_accessor :base_url, :channel_id, :api_key
 
     def initialize
-      @base_url = 'https://www.googleapis.com/youtube/v3/activities'
-      @channel_id = 'UCTeLqJq1mXUX5WWoNXLmOIA'
+      @base_url = "https://www.googleapis.com/youtube/v3/activities"
+      @channel_id = "UCTeLqJq1mXUX5WWoNXLmOIA"
       @api_key = Rails.application.credentials.google_youtube_api_key
     end
 
@@ -17,10 +17,10 @@ module Youtube
 
       return if activities.blank?
 
-      activities['items'].filter_map do |item|
-        item['contentDetails']['upload']
+      activities["items"].filter_map do |item|
+        item["contentDetails"]["upload"]
       end.reverse_each do |item|
-        YoutubeUpdate.find_or_create_by(video_id: item['videoId'])
+        YoutubeUpdate.find_or_create_by(video_id: item["videoId"])
       end
     end
 

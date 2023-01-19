@@ -15,7 +15,7 @@ module Api
       def public
         authorize! :public, :api_hangar_groups
 
-        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+        user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
 
         @groups = HangarGroup.where(user_id: user.id, public: true)
           .order([{ sort: :asc, name: :asc }])
@@ -29,7 +29,7 @@ module Api
         if hangar_group.save
           render status: :created
         else
-          render json: ValidationError.new('hangar_group.create', errors: @hangar_group.errors), status: :bad_request
+          render json: ValidationError.new("hangar_group.create", errors: @hangar_group.errors), status: :bad_request
         end
       end
 
@@ -38,7 +38,7 @@ module Api
 
         return if hangar_group.update(hangar_group_params)
 
-        render json: ValidationError.new('vehicle.update', errors: @hangar_group.errors), status: :bad_request
+        render json: ValidationError.new("vehicle.update", errors: @hangar_group.errors), status: :bad_request
       end
 
       def destroy
@@ -46,7 +46,7 @@ module Api
 
         return if hangar_group.destroy
 
-        render json: ValidationError.new('hangar_group.destroy', errors: @hangar_group.errors), status: :bad_request
+        render json: ValidationError.new("hangar_group.destroy", errors: @hangar_group.errors), status: :bad_request
       end
 
       def sort

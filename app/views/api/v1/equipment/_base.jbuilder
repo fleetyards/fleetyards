@@ -29,15 +29,15 @@ json.store_image equipment.store_image.url
 json.store_image_medium equipment.store_image.medium.url
 json.store_image_small equipment.store_image.small.url
 json.sold_at do
-  json.array! equipment.sold_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+  json.array! equipment.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
 end
 json.bought_at do
-  json.array! equipment.bought_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+  json.array! equipment.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
 end
 json.listed_at do
-  json.array! equipment.listed_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+  json.array! equipment.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
 end
 json.manufacturer do
   json.null! if equipment.manufacturer.blank?
-  json.partial! 'api/v1/manufacturers/base', manufacturer: equipment.manufacturer if equipment.manufacturer.present?
+  json.partial! "api/v1/manufacturers/base", manufacturer: equipment.manufacturer if equipment.manufacturer.present?
 end

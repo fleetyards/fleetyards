@@ -34,7 +34,7 @@
 #  celestial_objects_slug_index              (slug) UNIQUE
 #  index_celestial_objects_on_starsystem_id  (starsystem_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class CelestialObjectTest < ActiveSupport::TestCase
   should belong_to(:starsystem).optional(true)

@@ -25,7 +25,7 @@
 #  rsi_id              :integer
 #  rsi_release_id      :integer
 #
-require 'test_helper'
+require "test_helper"
 
 class RoadmapItemTest < ActiveSupport::TestCase
   # test "the truth" do

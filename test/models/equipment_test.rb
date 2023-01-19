@@ -33,7 +33,7 @@
 #
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class EquipmentTest < ActiveSupport::TestCase
   # test "the truth" do
