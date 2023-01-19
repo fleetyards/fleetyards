@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rsi/location_loader'
+require "rsi/location_loader"
 
 module Loaders
   class LocationsJob < ::Loaders::BaseJob

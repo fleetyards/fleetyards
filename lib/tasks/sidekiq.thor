@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'thor'
+require "thor"
 
 class Sidekiq < Thor
   include Thor::Actions
 
-  desc 'clear', 'Clear Sidekiq Queues'
+  desc "clear", "Clear Sidekiq Queues"
   def clear
-    require './config/environment'
-    require 'sidekiq/api'
+    require "./config/environment"
+    require "sidekiq/api"
 
     ::Sidekiq::Queue.all.each(&:clear)
     ::Sidekiq::RetrySet.new.clear

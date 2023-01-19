@@ -9,7 +9,7 @@ module Api
       def index
         authorize! :index, :api_commodities
 
-        commodity_query_params['sorts'] = sort_by_name
+        commodity_query_params["sorts"] = sort_by_name
 
         @q = Commodity.ransack(commodity_query_params)
 

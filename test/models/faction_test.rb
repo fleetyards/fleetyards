@@ -17,7 +17,7 @@
 #
 #  factions_slug_index  (slug)
 #
-require 'test_helper'
+require "test_helper"
 
 class FactionTest < ActiveSupport::TestCase
   # test "the truth" do

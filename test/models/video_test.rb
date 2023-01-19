@@ -15,7 +15,7 @@
 #
 #  index_videos_on_model_id  (model_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class VideoTest < ActiveSupport::TestCase
   should belong_to(:model)

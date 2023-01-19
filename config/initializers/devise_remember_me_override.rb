@@ -2,7 +2,7 @@
 
 # rubocop:disable Style/AccessModifierDeclarations
 
-require 'devise/controllers/rememberable'
+require "devise/controllers/rememberable"
 
 Devise::Controllers::Rememberable.class_eval do
   protected
@@ -18,8 +18,8 @@ Devise::Controllers::Rememberable.class_eval do
   end
 end
 
-require 'devise/strategies/base'
-require 'devise/strategies/rememberable'
+require "devise/strategies/base"
+require "devise/strategies/rememberable"
 
 Devise::Strategies::Rememberable.class_eval do
   private

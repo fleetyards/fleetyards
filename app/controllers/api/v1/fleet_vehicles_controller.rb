@@ -22,20 +22,20 @@ module Api
         scope = scope.where(user_id: for_members) if for_members.present?
 
         if price_range.present?
-          vehicle_query_params['sorts'] = 'model_price asc'
+          vehicle_query_params["sorts"] = "model_price asc"
           scope = scope.includes(:model).where(models: { price: price_range })
         end
 
         if pledge_price_range.present?
-          vehicle_query_params['sorts'] = 'model_last_pledge_price asc'
+          vehicle_query_params["sorts"] = "model_last_pledge_price asc"
           scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
         end
 
-        vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
+        vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
 
         @q = scope.ransack(vehicle_query_params)
 
-        if ActiveModel::Type::Boolean.new.cast(params['grouped'])
+        if ActiveModel::Type::Boolean.new.cast(params["grouped"])
           model_ids = @q.result.pluck(:model_id)
 
           result = fleet.models
@@ -45,7 +45,7 @@ module Api
 
           @models = result_with_pagination(result, per_page(Model))
 
-          render 'api/v1/fleet_vehicles/models'
+          render "api/v1/fleet_vehicles/models"
         else
           result = @q.result(distinct: true).includes(:model).joins(:model)
 
@@ -62,7 +62,7 @@ module Api
 
         scope = scope.where(user_id: for_members) if for_members.present?
 
-        vehicle_query_params['sorts'] = 'model_name asc'
+        vehicle_query_params["sorts"] = "model_name asc"
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -87,7 +87,7 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
+        @model_counts = @q.result.includes(:model).joins(:model).group("models.slug").count
       end
 
       def public
@@ -104,11 +104,11 @@ module Api
 
         scope = scope.where(loaner: loaner_included?)
 
-        vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
+        vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
 
         @q = scope.ransack(vehicle_query_params)
 
-        if ActiveModel::Type::Boolean.new.cast(params['grouped'])
+        if ActiveModel::Type::Boolean.new.cast(params["grouped"])
           model_ids = @q.result.pluck(:model_id)
 
           result = fleet.models
@@ -118,7 +118,7 @@ module Api
 
           @models = result_with_pagination(result, per_page(Model))
 
-          render 'api/v1/fleet_vehicles/public_models'
+          render "api/v1/fleet_vehicles/public_models"
         else
           result = @q.result(distinct: true)
             .includes(:model)
@@ -142,7 +142,7 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @model_counts = @q.result.includes(:model).joins(:model).group('models.slug').count
+        @model_counts = @q.result.includes(:model).joins(:model).group("models.slug").count
       end
 
       def embed
@@ -157,7 +157,7 @@ module Api
 
         scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
-        vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
+        vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -214,7 +214,7 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @q.sorts = ['model_classification asc']
+        @q.sorts = ["model_classification asc"]
 
         vehicles = @q.result
         models = vehicles.map(&:model)
@@ -247,7 +247,7 @@ module Api
 
       private def price_range
         @price_range ||= price_in.map do |prices|
-          gt_price, lt_price = prices.split('-')
+          gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
                        0
                      else
@@ -264,7 +264,7 @@ module Api
 
       private def pledge_price_range
         @pledge_price_range ||= pledge_price_in.map do |prices|
-          gt_price, lt_price = prices.split('-')
+          gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
                        0
                      else
@@ -280,13 +280,13 @@ module Api
       end
 
       private def pledge_price_in
-        pledge_price_in = vehicle_query_params.delete('pledge_price_in')
+        pledge_price_in = vehicle_query_params.delete("pledge_price_in")
         pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
         pledge_price_in
       end
 
       private def price_in
-        price_in = vehicle_query_params.delete('price_in')
+        price_in = vehicle_query_params.delete("price_in")
         price_in = price_in.to_s.split unless price_in.is_a?(Array)
         price_in
       end
@@ -314,13 +314,13 @@ module Api
       end
 
       private def loaner_param
-        @loaner_param ||= vehicle_query_params.delete('loaner_eq') || model_query_params.delete('loaner_eq')
+        @loaner_param ||= vehicle_query_params.delete("loaner_eq") || model_query_params.delete("loaner_eq")
       end
 
       private def loaner_included?
         return false if loaner_param.blank?
 
-        return true if loaner_param == 'only'
+        return true if loaner_param == "only"
 
         [false, true]
       end

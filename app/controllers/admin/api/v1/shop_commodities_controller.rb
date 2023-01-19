@@ -10,7 +10,7 @@ module Admin
           authorize! :index, :admin_api_shop_commodities
 
           @shop_commodities = ShopCommodity.search(
-            search_params || '*',
+            search_params || "*",
             fields: [{ name: :word_start }],
             where: query_params.merge(price_params)
                                .merge(shop.present? ? { shop_id: shop.id } : {}),
@@ -46,7 +46,7 @@ module Admin
 
           return if shop_commodity.save
 
-          render json: ValidationError.new('shop_commodity.create', errors: shop_commodity.errors), status: :bad_request
+          render json: ValidationError.new("shop_commodity.create", errors: shop_commodity.errors), status: :bad_request
         end
 
         def confirm
@@ -54,7 +54,7 @@ module Admin
 
           return if shop_commodity.update(confirmed: true)
 
-          render json: ValidationError.new('shop_commodity.update', errors: shop_commodity.errors), status: :bad_request
+          render json: ValidationError.new("shop_commodity.update", errors: shop_commodity.errors), status: :bad_request
         end
 
         def update
@@ -62,7 +62,7 @@ module Admin
 
           return if shop_commodity.update(shop_commodity_params)
 
-          render json: ValidationError.new('shop_commodity.update', errors: shop_commodity.errors), status: :bad_request
+          render json: ValidationError.new("shop_commodity.update", errors: shop_commodity.errors), status: :bad_request
         end
 
         def destroy
@@ -70,7 +70,7 @@ module Admin
 
           return if shop_commodity.destroy
 
-          render json: ValidationError.new('shop_commodity.destroy', errors: shop_commodity.errors), status: :bad_request
+          render json: ValidationError.new("shop_commodity.destroy", errors: shop_commodity.errors), status: :bad_request
         end
 
         private def shop
@@ -105,7 +105,7 @@ module Admin
               ]
             )
 
-            permitted_params[:order] || { 'name' => 'asc', 'created_at' => 'asc' }
+            permitted_params[:order] || { "name" => "asc", "created_at" => "asc" }
           end
         end
 

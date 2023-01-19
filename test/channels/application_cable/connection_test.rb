@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 module ApplicationCable
   class ConnectionTest < ActionCable::Connection::TestCase
-    test 'connects with params' do
+    test "connects with params" do
       # # Simulate a connection opening by calling the `connect` method
       # connect params: { token: 42 }
 

@@ -29,7 +29,7 @@
 #  index_model_hardpoints_on_component_id  (component_id)
 #  index_model_hardpoints_on_model_id      (model_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class ModelHardpointTest < ActiveSupport::TestCase
   # test "the truth" do

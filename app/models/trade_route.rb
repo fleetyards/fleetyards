@@ -34,15 +34,15 @@
 class TradeRoute < ApplicationRecord
   paginates_per 50
 
-  belongs_to :origin_starsystem, class_name: 'Starsystem', optional: true
-  belongs_to :origin_celestial_object, class_name: 'CelestialObject', optional: true
-  belongs_to :origin_station, class_name: 'Station', optional: true
-  belongs_to :destination_starsystem, class_name: 'Starsystem', optional: true
-  belongs_to :destination_celestial_object, class_name: 'CelestialObject', optional: true
-  belongs_to :destination_station, class_name: 'Station', optional: true
+  belongs_to :origin_starsystem, class_name: "Starsystem", optional: true
+  belongs_to :origin_celestial_object, class_name: "CelestialObject", optional: true
+  belongs_to :origin_station, class_name: "Station", optional: true
+  belongs_to :destination_starsystem, class_name: "Starsystem", optional: true
+  belongs_to :destination_celestial_object, class_name: "CelestialObject", optional: true
+  belongs_to :destination_station, class_name: "Station", optional: true
 
-  belongs_to :origin, class_name: 'ShopCommodity'
-  belongs_to :destination, class_name: 'ShopCommodity'
+  belongs_to :origin, class_name: "ShopCommodity"
+  belongs_to :destination, class_name: "ShopCommodity"
 
   validates :origin, uniqueness: { scope: :destination }
 
@@ -53,7 +53,7 @@ class TradeRoute < ApplicationRecord
   before_save :set_location
 
   def self.with_profit
-    where('profit_per_unit > ?', 0)
+    where("profit_per_unit > ?", 0)
   end
 
   def calculate_profit

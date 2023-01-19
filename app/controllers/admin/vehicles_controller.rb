@@ -29,7 +29,7 @@ module Admin
     helper_method :index_back_params
 
     private def set_active_nav
-      @active_nav = 'admin-vehicles'
+      @active_nav = "admin-vehicles"
     end
   end
 end

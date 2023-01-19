@@ -29,5 +29,5 @@ json.confirmed shop_commodity.confirmed
 json.commodity_item_type shop_commodity.commodity_item_type
 json.commodity_item_id shop_commodity.commodity_item_id
 json.shop do
-  json.partial! 'api/v1/shops/base', shop: shop_commodity.shop
+  json.partial! "api/v1/shops/base", shop: shop_commodity.shop
 end

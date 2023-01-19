@@ -4,7 +4,7 @@ module Admin
   class ApplicationController < ActionController::Base
     include RansackHelper
 
-    layout 'admin/application'
+    layout "admin/application"
 
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :authenticate_admin_user!, :set_default_nav
@@ -18,13 +18,13 @@ module Admin
     check_authorization unless: :unauthorized_controllers
 
     rescue_from ActionController::InvalidAuthenticityToken do
-      @action_name = 'unprocessable_entity'
-      render 'errors/error', status: :unprocessable_entity
+      @action_name = "unprocessable_entity"
+      render "errors/error", status: :unprocessable_entity
     end
 
     def worker_running?(name)
       Sidekiq::Workers.new.any? do |_process_id, _thread_id, work|
-        work['queue'] == name
+        work["queue"] == name
       end
     end
     helper_method :worker_running?
@@ -39,7 +39,7 @@ module Admin
     end
 
     private def set_default_nav
-      @active_nav = 'home'
+      @active_nav = "home"
     end
 
     private def current_user

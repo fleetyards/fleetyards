@@ -8,7 +8,7 @@ module Admin
     def index
       authorize! :index, :admin_celestial_objects
 
-      query_params['sorts'] = sort_by_name
+      query_params["sorts"] = sort_by_name
 
       @q = CelestialObject.ransack(query_params)
 
@@ -30,27 +30,27 @@ module Admin
       authorize! :create, :admin_celestial_objects
       @celestial_object = CelestialObject.new(celestial_object_params)
       if celestial_object.save
-        redirect_to admin_celestial_objects_path(params: index_back_params, anchor: celestial_object.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.celestial_object'))
+        redirect_to admin_celestial_objects_path(params: index_back_params, anchor: celestial_object.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.celestial_object"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.celestial_object'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.celestial_object"))
       end
     end
 
     def update
       authorize! :update, celestial_object
       if celestial_object.update(celestial_object_params)
-        redirect_to admin_celestial_objects_path(params: index_back_params, anchor: celestial_object.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.celestial_object'))
+        redirect_to admin_celestial_objects_path(params: index_back_params, anchor: celestial_object.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.celestial_object"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.celestial_object'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.celestial_object"))
       end
     end
 
     def destroy
       authorize! :destroy, celestial_object
       if celestial_object.destroy
-        redirect_to admin_celestial_objects_path(params: index_back_params), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.celestial_object'))
+        redirect_to admin_celestial_objects_path(params: index_back_params), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.celestial_object"))
       else
-        redirect_to admin_celestial_objects_path(params: index_back_params), error: I18n.t(:'messages.destroy.failure', resource: I18n.t(:'resources.celestial_object'))
+        redirect_to admin_celestial_objects_path(params: index_back_params), error: I18n.t(:"messages.destroy.failure", resource: I18n.t(:"resources.celestial_object"))
       end
     end
 
@@ -82,7 +82,7 @@ module Admin
     helper_method :celestial_object
 
     private def set_active_nav
-      @active_nav = 'admin-celestial_objects'
+      @active_nav = "admin-celestial_objects"
     end
   end
 end

@@ -61,18 +61,18 @@
 #  users_unlock_token_index             (unlock_token)
 #  users_username_index                 (username)
 #
-require 'test_helper'
+require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   let(:user_data) { users :data }
-  let(:url) { 'foo.bar' }
-  let(:url_slash) { '//foo.bar' }
-  let(:url_http) { 'http://foo.bar' }
-  let(:url_https) { 'https://foo.bar' }
-  let(:expected_url) { 'foo.bar' }
-  let(:expected_ts_url) { 'ts3server://foo.bar' }
+  let(:url) { "foo.bar" }
+  let(:url_slash) { "//foo.bar" }
+  let(:url_http) { "http://foo.bar" }
+  let(:url_https) { "https://foo.bar" }
+  let(:expected_url) { "foo.bar" }
+  let(:expected_ts_url) { "ts3server://foo.bar" }
 
-  test 'ensure valid urls are saved' do
+  test "ensure valid urls are saved" do
     user_data.update(
       guilded: url,
       homepage: url,
@@ -90,7 +90,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(expected_url, user_data.youtube)
   end
 
-  test 'ensure valid urls are saved with slashes' do
+  test "ensure valid urls are saved with slashes" do
     user_data.update(
       guilded: url_slash,
       homepage: url_slash,
@@ -108,7 +108,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(expected_url, user_data.youtube)
   end
 
-  test 'ensure valid urls are saved with http' do
+  test "ensure valid urls are saved with http" do
     user_data.update(
       guilded: url_http,
       homepage: url_http,
@@ -126,7 +126,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(expected_url, user_data.youtube)
   end
 
-  test 'ensure valid urls are saved with https' do
+  test "ensure valid urls are saved with https" do
     user_data.update(
       guilded: url_https,
       homepage: url_https,

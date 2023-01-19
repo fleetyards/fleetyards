@@ -51,9 +51,9 @@ class Station < ApplicationRecord
       refinery: refinery?,
       habitation: habitations.present?,
       tags: [
-        ('Cargo Hub' if cargo_hub?),
-        ('Habitation' if habitations.present?),
-        ('Refinery' if refinery?)
+        ("Cargo Hub" if cargo_hub?),
+        ("Habitation" if habitations.present?),
+        ("Refinery" if refinery?)
       ].compact
     }
   end
@@ -118,7 +118,7 @@ class Station < ApplicationRecord
   def self.type_filters
     Station.station_types.map do |(item, _index)|
       Filter.new(
-        category: 'station_type',
+        category: "station_type",
         name: Station.human_enum_name(:station_type, item),
         value: item
       )
@@ -128,7 +128,7 @@ class Station < ApplicationRecord
   def self.classification_filters
     Station.classifications.map do |(item, _index)|
       Filter.new(
-        category: 'classification',
+        category: "classification",
         name: Station.human_enum_name(:classification, item),
         value: item
       )
@@ -157,13 +157,13 @@ class Station < ApplicationRecord
 
   def location_prefix
     if location.present?
-      I18n.t('activerecord.attributes.station.location_prefix.near')
+      I18n.t("activerecord.attributes.station.location_prefix.near")
     elsif asteroid_station?
-      I18n.t('activerecord.attributes.station.location_prefix.asteriod')
+      I18n.t("activerecord.attributes.station.location_prefix.asteriod")
     elsif station?
-      I18n.t('activerecord.attributes.station.location_prefix.orbit')
+      I18n.t("activerecord.attributes.station.location_prefix.orbit")
     else
-      I18n.t('activerecord.attributes.station.location_prefix.default')
+      I18n.t("activerecord.attributes.station.location_prefix.default")
     end
   end
 
@@ -172,7 +172,7 @@ class Station < ApplicationRecord
   end
 
   def random_image
-    images.enabled.background.order(Arel.sql('RANDOM()')).first
+    images.enabled.background.order(Arel.sql("RANDOM()")).first
   end
 
   def habitation_counts
@@ -190,7 +190,7 @@ class Station < ApplicationRecord
   end
 
   def shop_list_label
-    shops.map(&:name).join(', ')
+    shops.map(&:name).join(", ")
   end
 
   def station_type_label

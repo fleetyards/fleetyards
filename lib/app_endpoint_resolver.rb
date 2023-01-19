@@ -51,17 +51,17 @@ class AppEndpointResolver
 
   private def scheme
     if Rails.configuration.force_ssl
-      'https'
+      "https"
     else
-      'http'
+      "http"
     end
   end
 
   private def websocket_scheme
     if Rails.configuration.force_ssl
-      'wss'
+      "wss"
     else
-      'ws'
+      "ws"
     end
   end
 end

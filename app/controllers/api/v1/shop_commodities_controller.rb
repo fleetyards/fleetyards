@@ -10,7 +10,7 @@ module Api
         authorize! :index, :api_shop_commodities
 
         @shop_commodities = ShopCommodity.search(
-          search_params || deprecated_search_params || '*',
+          search_params || deprecated_search_params || "*",
           fields: [{ name: :word_start }],
           where: deprecated_query_params.merge(query_params)
                                         .merge(price_params)
@@ -77,7 +77,7 @@ module Api
             ]
           )
 
-          permitted_params[:order] || { 'name' => 'asc', 'created_at' => 'asc' }
+          permitted_params[:order] || { "name" => "asc", "created_at" => "asc" }
         end
       end
 

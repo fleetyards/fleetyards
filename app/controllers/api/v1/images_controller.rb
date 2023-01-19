@@ -12,7 +12,7 @@ module Api
           .global_enabled
           .in_gallery
           .with_uniq_name
-          .order('images.created_at desc')
+          .order("images.created_at desc")
           .page(params[:page])
           .per(per_page(Image))
       end
@@ -24,7 +24,7 @@ module Api
           .in_gallery
           .with_uniq_name
           .includes(:gallery)
-          .order(Arel.sql('RANDOM()'))
+          .order(Arel.sql("RANDOM()"))
           .first(14)
       end
     end

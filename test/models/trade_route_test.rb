@@ -31,7 +31,7 @@
 #  index_trade_routes_on_origin_starsystem_id             (origin_starsystem_id)
 #  index_trade_routes_on_origin_station_id                (origin_station_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class TradeRouteTest < ActiveSupport::TestCase
   # test "the truth" do

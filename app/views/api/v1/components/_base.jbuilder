@@ -17,15 +17,15 @@ json.store_image component.store_image.url
 json.store_image_medium component.store_image.medium.url
 json.store_image_small component.store_image.small.url
 json.sold_at do
-  json.array! component.sold_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+  json.array! component.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
 end
 json.bought_at do
-  json.array! component.bought_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+  json.array! component.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
 end
 json.listed_at do
-  json.array! component.listed_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+  json.array! component.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
 end
 json.manufacturer do
   json.null! if component.manufacturer.blank?
-  json.partial! 'api/v1/manufacturers/base', manufacturer: component.manufacturer if component.manufacturer.present?
+  json.partial! "api/v1/manufacturers/base", manufacturer: component.manufacturer if component.manufacturer.present?
 end

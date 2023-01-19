@@ -2,13 +2,13 @@
 
 json.id trade_route.id
 json.origin do
-  json.partial! 'api/v1/trade_routes/leg', leg: trade_route.origin
+  json.partial! "api/v1/trade_routes/leg", leg: trade_route.origin
 end
 json.destination do
-  json.partial! 'api/v1/trade_routes/leg', leg: trade_route.destination
+  json.partial! "api/v1/trade_routes/leg", leg: trade_route.destination
 end
 json.commodity do
-  json.partial! 'api/v1/trade_routes/commodity', commodity: trade_route.origin.commodity_item
+  json.partial! "api/v1/trade_routes/commodity", commodity: trade_route.origin.commodity_item
 end
 json.buy_price trade_route.origin.sell_price
 json.average_buy_price trade_route.origin.average_sell_price

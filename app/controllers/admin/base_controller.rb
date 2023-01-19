@@ -2,11 +2,11 @@
 
 module Admin
   class BaseController < ::Admin::ApplicationController
-    layout 'admin/application'
+    layout "admin/application"
 
     def index
       authorize! :show, :admin
-      @active_nav = 'admin'
+      @active_nav = "admin"
       @latest_users = User.unscoped.order(created_at: :desc).limit(8)
       @latest_models = Model.order(updated_at: :desc, name: :asc).limit(8)
       @latest_manufacturers = Manufacturer.unscoped.order(updated_at: :desc).limit(8)
@@ -16,7 +16,7 @@ module Admin
     private def online_count
       Ahoy::Event.without_users(tracking_blocklist)
         .select(:visit_id).distinct
-        .where('time > ?', 15.minutes.ago).count
+        .where("time > ?", 15.minutes.ago).count
     end
     helper_method :online_count
 

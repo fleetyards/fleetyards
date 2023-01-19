@@ -13,9 +13,9 @@ module Rsi
 
       case response.code
       when 403
-        RsiRequestLog.find_or_create_by(url: url.split('?').first)
+        RsiRequestLog.find_or_create_by(url: url.split("?").first)
       when 200
-        log_entry = RsiRequestLog.find_by(url: url.split('?').first, resolved: false)
+        log_entry = RsiRequestLog.find_by(url: url.split("?").first, resolved: false)
         log_entry.update(resolved: true) if log_entry.present?
       end
 
@@ -23,7 +23,7 @@ module Rsi
     end
 
     private def strip_name(name)
-      name.gsub(/(?:AEGIS|Aegis|ARGO|Argo|ANVIL|Anvil|BANU|Banu|Crusader|CRUSADER|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|Kruger Intergalactic|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an|CNOU|Consolidated Outland)/, '').strip
+      name.gsub(/(?:AEGIS|Aegis|ARGO|Argo|ANVIL|Anvil|BANU|Banu|Crusader|CRUSADER|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|Kruger Intergalactic|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an|CNOU|Consolidated Outland)/, "").strip
     end
 
     private def nil_or_decimal(value)
@@ -39,7 +39,7 @@ module Rsi
     end
 
     private def prevent_extra_server_requests?
-      Rails.env.test? || ENV.fetch('CI') { Rails.configuration.rsi.load_from_file }
+      Rails.env.test? || ENV.fetch("CI") { Rails.configuration.rsi.load_from_file }
     end
   end
 end

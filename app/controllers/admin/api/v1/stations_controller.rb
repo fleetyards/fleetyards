@@ -8,13 +8,13 @@ module Admin
         after_action -> { pagination_header(:images) }, only: [:images]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
-          not_found(I18n.t('messages.record_not_found.station', slug: params[:slug]))
+          not_found(I18n.t("messages.record_not_found.station", slug: params[:slug]))
         end
 
         def index
           authorize! :index, :admin_api_stations
 
-          station_query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
+          station_query_params["sorts"] = sort_by_name(["station_type asc", "name asc"])
 
           @q = Station.visible
             .ransack(station_query_params)
@@ -26,7 +26,7 @@ module Admin
 
         def options
           authorize! :options, :admin_api_stations
-          station_query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
+          station_query_params["sorts"] = sort_by_name(["station_type asc", "name asc"])
 
           @q = Station.visible
             .ransack(station_query_params)
@@ -40,7 +40,7 @@ module Admin
           authorize! :show, :admin_api_stations
           station = Station.find(params[:id])
           @images = station.images
-            .order('images.created_at desc')
+            .order("images.created_at desc")
             .page(params[:page])
             .per(per_page(Image))
         end

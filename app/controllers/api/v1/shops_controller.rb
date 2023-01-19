@@ -9,7 +9,7 @@ module Api
       def index
         authorize! :index, :api_shops
 
-        shop_query_params['sorts'] = sort_by_name
+        shop_query_params["sorts"] = sort_by_name
 
         @q = Shop.includes(station: { celestial_object: %i[starsystem parent] })
           .visible
@@ -30,7 +30,7 @@ module Api
 
         @filters = Shop.type_filters
 
-        render 'api/v1/shared/filters'
+        render "api/v1/shared/filters"
       end
 
       private def station

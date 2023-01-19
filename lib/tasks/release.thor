@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'thor'
-require 'json'
+require "thor"
+require "json"
 
 class Release < Thor
   include Thor::Actions
@@ -10,26 +10,26 @@ class Release < Thor
     true
   end
 
-  desc 'new', 'Create new Version'
+  desc "new", "Create new Version"
   option :push, type: :boolean, default: false, aliases: :p
   def new(name = nil)
     if name.nil?
-      run('yarn run standard-version')
+      run("yarn run standard-version")
     else
-      run('yarn run standard-version --release-as major')
+      run("yarn run standard-version --release-as major")
     end
 
     bump_version(name)
 
-    run('thor release:push') if options[:push]
+    run("thor release:push") if options[:push]
   end
 
-  desc 'push', 'Push new Version'
+  desc "push", "Push new Version"
   def push
-    puts 'Pushing new Version'
+    puts "Pushing new Version"
 
-    run('git push origin main --tags --no-verify')
-    run('git push origin main --no-verify', capture: true) # push your changes to update your local state
+    run("git push origin main --tags --no-verify")
+    run("git push origin main --no-verify", capture: true) # push your changes to update your local state
   end
 
   no_commands do
@@ -38,7 +38,7 @@ class Release < Thor
       package_data = JSON.parse(File.read(package_file))
 
       current_version = Fleetyards::VERSION
-      next_version = package_data['version']
+      next_version = package_data["version"]
 
       [current_version, "v#{next_version}", Fleetyards::CODENAME]
     end
@@ -49,7 +49,7 @@ class Release < Thor
       next_name = current_name if next_name.nil?
 
       content = File.read(version_file)
-      File.open(version_file, 'w') do |file|
+      File.open(version_file, "w") do |file|
         new_content = content.gsub(current_version, next_version)
         new_content = new_content.gsub(current_name, next_name)
         file.write(new_content)
@@ -59,19 +59,19 @@ class Release < Thor
     end
 
     private def version_file
-      'config/version.rb'
+      "config/version.rb"
     end
 
     private def changelog_file
-      'CHANGELOG.md'
+      "CHANGELOG.md"
     end
 
     private def package_file
-      'package.json'
+      "package.json"
     end
 
     private def bump_version(next_name)
-      puts 'Create new Version'
+      puts "Create new Version"
 
       next_version, name = update_version_file(next_name)
 

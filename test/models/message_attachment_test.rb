@@ -10,7 +10,7 @@
 #  updated_at :datetime         not null
 #  message_id :uuid
 #
-require 'test_helper'
+require "test_helper"
 
 class MessageAttachmentTest < ActiveSupport::TestCase
   # test "the truth" do

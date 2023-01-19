@@ -7,7 +7,7 @@ module Admin
         def index
           authorize! :index, :admin_api_components
 
-          component_query_params['sorts'] = sort_by_name
+          component_query_params["sorts"] = sort_by_name
 
           @q = Component.includes(:manufacturer).ransack(component_query_params)
 
@@ -21,7 +21,7 @@ module Admin
 
           @filters = Component.class_filters
 
-          render 'api/shared/filters'
+          render "api/shared/filters"
         end
 
         def item_type_filters
@@ -29,7 +29,7 @@ module Admin
 
           @filters = Component.item_type_filters
 
-          render 'api/shared/filters'
+          render "api/shared/filters"
         end
 
         private def component_query_params

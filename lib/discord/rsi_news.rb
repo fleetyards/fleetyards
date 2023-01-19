@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'discord/webhook'
+require "discord/webhook"
 
 # rubocop:disable Naming/AccessorMethodName
 module Discord

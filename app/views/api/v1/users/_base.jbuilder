@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.cache! ['v1', user] do
+json.cache! ["v1", user] do
   json.id user.id
   json.email user.email
   json.unconfirmed_email user.unconfirmed_email
@@ -20,5 +20,5 @@ json.cache! ['v1', user] do
   json.two_factor_qr_code_url qrcode_api_v1_two_factor_url unless user.otp_required_for_login?
   json.two_factor_provisioning_url user.otp_provisioning_uri(user.email, issuer: Rails.configuration.app.name) unless user.otp_required_for_login?
   json.hangar_updated_at user.hangar_updated_at&.utc&.iso8601
-  json.partial! 'api/shared/dates', record: user
+  json.partial! "api/shared/dates", record: user
 end

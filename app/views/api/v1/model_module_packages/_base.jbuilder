@@ -31,5 +31,5 @@ json.angled_view_xlarge module_package.angled_view.xlarge.url
 json.angled_view_width module_package.angled_view_width
 json.angled_view_height module_package.angled_view_height
 json.modules do
-  json.array! module_package.model_modules, partial: 'api/v1/model_modules/base', as: :model_module
+  json.array! module_package.model_modules, partial: "api/v1/model_modules/base", as: :model_module
 end

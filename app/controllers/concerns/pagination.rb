@@ -16,21 +16,21 @@ module Pagination
       self: page_link(nil),
     }
 
-    if per_page_params != 'all'
+    if per_page_params != "all"
       scope = name
       scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
       links = links.merge(pagination_links(instance_variable_get("@#{scope}")))
     end
 
-    headers['Link'] = links.filter_map do |k, v|
+    headers["Link"] = links.filter_map do |k, v|
       next if v.blank?
 
       "<#{v}>; rel=\"#{k}\""
-    end.join(', ')
+    end.join(", ")
   end
 
   private def result_with_pagination(result, per_page)
-    if per_page_params == 'all'
+    if per_page_params == "all"
       result.all
     else
       result.page(params[:page])

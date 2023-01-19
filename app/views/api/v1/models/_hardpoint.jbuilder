@@ -18,10 +18,10 @@ json.mount hardpoint.mount
 json.item_slots hardpoint.item_slots
 
 json.component do
-  json.partial! 'api/v1/models/component', component: hardpoint.component if hardpoint.component.present?
+  json.partial! "api/v1/models/component", component: hardpoint.component if hardpoint.component.present?
 end
 json.component nil if hardpoint.component.blank?
 
 json.loadouts do
-  json.array! hardpoint.model_hardpoint_loadouts, partial: 'api/v1/models/hardpoint_loadout', as: :loadout
+  json.array! hardpoint.model_hardpoint_loadouts, partial: "api/v1/models/hardpoint_loadout", as: :loadout
 end

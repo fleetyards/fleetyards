@@ -21,6 +21,6 @@ class ScDataCheckJob < ApplicationJob
     [
       Rails.configuration.app.s3_endpoint,
       Rails.configuration.app.s3_sc_data_bucket
-    ].join('/')
+    ].join("/")
   end
 end

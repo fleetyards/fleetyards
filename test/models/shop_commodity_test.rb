@@ -32,7 +32,7 @@
 #  index_shop_commodities_on_item_type_and_item_id  (commodity_item_type,commodity_item_id)
 #  index_shop_commodities_on_shop_id                (shop_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class ShopCommodityTest < ActiveSupport::TestCase
   # test "the truth" do

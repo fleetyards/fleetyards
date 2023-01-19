@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_model_module_packages
       @q = ModelModulePackage.ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = "name asc" if @q.sorts.empty?
 
       @module_packages = @q.result
         .page(params.fetch(:page) { nil })
@@ -29,27 +29,27 @@ module Admin
       authorize! :create, :admin_model_module_packages
       @module_package = ModelModulePackage.new(module_package_params)
       if module_package.save
-        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.model_module_package'))
+        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.model_module_package"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model_module_package'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.model_module_package"))
       end
     end
 
     def update
       authorize! :update, module_package
       if module_package.update(module_package_params)
-        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.model_module_package'))
+        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model_module_package"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.model_module_package'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model_module_package"))
       end
     end
 
     def destroy
       authorize! :destroy, module_package
       if module_package.destroy
-        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.model_module_package'))
+        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.model_module_package"))
       else
-        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.model_module_package'))
+        redirect_to admin_model_module_packages_path(params: index_back_params, anchor: module_package.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.model_module_package"))
       end
     end
 
@@ -85,7 +85,7 @@ module Admin
     helper_method :module_package
 
     private def set_active_nav
-      @active_nav = 'admin-model_module_packages'
+      @active_nav = "admin-model_module_packages"
     end
   end
 end

@@ -17,7 +17,7 @@
 #  index_affiliations_on_affiliationable                       (affiliationable_type,affiliationable_id)
 #  index_affiliations_on_faction_id                            (faction_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class AffiliationTest < ActiveSupport::TestCase
   # test "the truth" do

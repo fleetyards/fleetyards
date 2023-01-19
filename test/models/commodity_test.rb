@@ -18,7 +18,7 @@
 #  commodities_name_index     (name)
 #  index_commodities_on_name  (name) UNIQUE
 #
-require 'test_helper'
+require "test_helper"
 
 class CommodityTest < ActiveSupport::TestCase
   # test "the truth" do

@@ -2,7 +2,7 @@
 
 class RoadmapChannel < ApplicationCable::Channel
   def subscribed
-    stream_from 'roadmap'
+    stream_from "roadmap"
   end
 
   def unsubscribed

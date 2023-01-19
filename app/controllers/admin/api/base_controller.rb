@@ -16,11 +16,11 @@ module Admin
       check_authorization
 
       rescue_from CanCan::AccessDenied do |exception|
-        render json: { code: 'forbidden', message: exception.message }, status: :forbidden
+        render json: { code: "forbidden", message: exception.message }, status: :forbidden
       end
 
       rescue_from ActionController::InvalidAuthenticityToken do |_exception|
-        render json: { code: 'invalid_authenticity_token', message: I18n.t('error_pages.unprocessable_entity') }, status: :unprocessable_entity
+        render json: { code: "invalid_authenticity_token", message: I18n.t("error_pages.unprocessable_entity") }, status: :unprocessable_entity
       end
 
       private def current_user
@@ -36,8 +36,8 @@ module Admin
         I18n.t(state, scope: "resources.messages.#{action}", resource: I18n.t(:"resources.#{resource}"))
       end
 
-      private def not_found(message = I18n.t('messages.record_not_found.base'))
-        render json: { code: 'not_found', message: }, status: :not_found
+      private def not_found(message = I18n.t("messages.record_not_found.base"))
+        render json: { code: "not_found", message: }, status: :not_found
       end
     end
   end

@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'rsi/roadmap_loader'
-require 'discord/roadmap_update'
+require "rsi/roadmap_loader"
+require "discord/roadmap_update"
 
 module Loaders
   class RoadmapJob < ::Loaders::BaseJob
     def perform
-      count_before = PaperTrail::Version.where(item_type: 'RoadmapItem').count
+      count_before = PaperTrail::Version.where(item_type: "RoadmapItem").count
 
       ::Rsi::RoadmapLoader.new.fetch
 
-      changes = PaperTrail::Version.where(item_type: 'RoadmapItem').count - count_before
+      changes = PaperTrail::Version.where(item_type: "RoadmapItem").count - count_before
 
       return if changes.zero?
 
@@ -18,7 +18,7 @@ module Loaders
 
       Discord::RoadmapUpdate.new(changes:).run
 
-      ActionCable.server.broadcast('roadmap', {
+      ActionCable.server.broadcast("roadmap", {
         changes:
       }.to_json)
     end

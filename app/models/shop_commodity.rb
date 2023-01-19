@@ -53,10 +53,10 @@ class ShopCommodity < ApplicationRecord
       buy_price:,
       category: commodity_item_type,
       sub_category:,
-      component_item_type: (commodity_item.item_type if commodity_item_type == 'Component'),
-      equipment_item_type: (commodity_item.item_type if commodity_item_type == 'Equipment'),
-      equipment_type: (commodity_item.equipment_type if commodity_item_type == 'Equipment'),
-      equipment_slot: (commodity_item.slot if commodity_item_type == 'Equipment'),
+      component_item_type: (commodity_item.item_type if commodity_item_type == "Component"),
+      equipment_item_type: (commodity_item.item_type if commodity_item_type == "Equipment"),
+      equipment_type: (commodity_item.equipment_type if commodity_item_type == "Equipment"),
+      equipment_slot: (commodity_item.slot if commodity_item_type == "Equipment"),
       confirmed:,
       created_at:
     }
@@ -64,44 +64,44 @@ class ShopCommodity < ApplicationRecord
 
   belongs_to :commodity_item, polymorphic: true, optional: true, touch: true
   belongs_to :model,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Model' }) },
-             foreign_key: 'commodity_item_id',
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Model" }) },
+             foreign_key: "commodity_item_id",
              inverse_of: :shop_commodities,
              optional: true
 
   belongs_to :component,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Component' }) },
-             foreign_key: 'commodity_item_id',
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Component" }) },
+             foreign_key: "commodity_item_id",
              inverse_of: :shop_commodities,
              optional: true
 
   belongs_to :commodity,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Commodity' }) },
-             foreign_key: 'commodity_item_id',
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Commodity" }) },
+             foreign_key: "commodity_item_id",
              inverse_of: :shop_commodities,
              optional: true
 
   belongs_to :equipment,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Equipment' }) },
-             foreign_key: 'commodity_item_id',
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Equipment" }) },
+             foreign_key: "commodity_item_id",
              inverse_of: :shop_commodities,
              optional: true
 
   belongs_to :model_module,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'ModelModule' }) },
-             foreign_key: 'commodity_item_id',
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "ModelModule" }) },
+             foreign_key: "commodity_item_id",
              inverse_of: :shop_commodities,
              optional: true
 
   belongs_to :model_paint,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'ModelPaint' }) },
-             foreign_key: 'commodity_item_id',
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "ModelPaint" }) },
+             foreign_key: "commodity_item_id",
              inverse_of: :shop_commodities,
              optional: true
 
   belongs_to :submitter,
-             class_name: 'User',
-             foreign_key: 'submitted_by',
+             class_name: "User",
+             foreign_key: "submitted_by",
              inverse_of: false,
              optional: true
 
@@ -110,15 +110,15 @@ class ShopCommodity < ApplicationRecord
   has_many :commodity_rental_prices, dependent: :destroy
 
   has_many :trade_route_origins,
-           class_name: 'TradeRoute',
+           class_name: "TradeRoute",
            dependent: :destroy,
-           foreign_key: 'origin_id',
+           foreign_key: "origin_id",
            inverse_of: :origin
 
   has_many :trade_route_destinations,
-           class_name: 'TradeRoute',
+           class_name: "TradeRoute",
            dependent: :destroy,
-           foreign_key: 'destination_id',
+           foreign_key: "destination_id",
            inverse_of: :destination
 
   belongs_to :shop
@@ -141,7 +141,7 @@ class ShopCommodity < ApplicationRecord
   end
 
   def self.commodity
-    where(commodity_item_type: ['Commodity'])
+    where(commodity_item_type: ["Commodity"])
   end
 
   def self.visible
@@ -223,7 +223,7 @@ class ShopCommodity < ApplicationRecord
 
   def update_1_day_prices
     scope = commodity_rental_prices
-      .where(time_range: '1-day', confirmed: true)
+      .where(time_range: "1-day", confirmed: true)
       .order(created_at: :desc)
 
     rental_prices = scope.pluck(:price)
@@ -250,7 +250,7 @@ class ShopCommodity < ApplicationRecord
 
   def update_3_days_prices
     scope = commodity_rental_prices
-      .where(time_range: '3-days', confirmed: true)
+      .where(time_range: "3-days", confirmed: true)
       .order(created_at: :desc)
 
     rental_prices = scope.pluck(:price)
@@ -277,7 +277,7 @@ class ShopCommodity < ApplicationRecord
 
   def update_7_days_prices
     scope = commodity_rental_prices
-      .where(time_range: '7-days', confirmed: true)
+      .where(time_range: "7-days", confirmed: true)
       .order(created_at: :desc)
 
     rental_prices = scope.pluck(:price)
@@ -304,7 +304,7 @@ class ShopCommodity < ApplicationRecord
 
   def update_30_days_prices
     scope = commodity_rental_prices
-      .where(time_range: '30-days', confirmed: true)
+      .where(time_range: "30-days", confirmed: true)
       .order(created_at: :desc)
 
     rental_prices = scope.pluck(:price)
@@ -347,36 +347,36 @@ class ShopCommodity < ApplicationRecord
 
   def sub_category
     case commodity_item_type
-    when 'Model'
+    when "Model"
       commodity_item.classification
-    when 'Component'
+    when "Component"
       commodity_item.component_class
-    when 'Equipment'
+    when "Equipment"
       commodity_item.equipment_type
-    when 'Commodity'
+    when "Commodity"
       commodity_item.commodity_type
     end
   end
 
   def sub_category_label
     case commodity_item_type
-    when 'Model'
+    when "Model"
       commodity_item.classification&.humanize
-    when 'Component'
+    when "Component"
       commodity_item.component_class_label
-    when 'Equipment'
+    when "Equipment"
       commodity_item.equipment_type_label
-    when 'Commodity'
+    when "Commodity"
       commodity_item.commodity_type_label
     end
   end
 
   def location_label
     [
-      I18n.t('activerecord.attributes.shop_commodity.location_prefix.default'),
+      I18n.t("activerecord.attributes.shop_commodity.location_prefix.default"),
       shop.name,
-      I18n.t('activerecord.attributes.station.location_prefix.default'),
+      I18n.t("activerecord.attributes.station.location_prefix.default"),
       shop.station.name
-    ].join(' ')
+    ].join(" ")
   end
 end

@@ -21,7 +21,7 @@ module Api
         if @commodity_price.new_record?
           return if @commodity_price.save
 
-          render json: ValidationError.new('commodity_price.create', errors: @commodity_price.errors), status: :bad_request
+          render json: ValidationError.new("commodity_price.create", errors: @commodity_price.errors), status: :bad_request
         elsif @commodity_price.submitters.exclude?(current_user.id)
           @commodity_price.update(
             submitters: @commodity_price.submitters << current_user.id,
@@ -35,7 +35,7 @@ module Api
 
         @filters = CommodityRentalPrice.time_range_filters
 
-        render 'api/v1/shared/filters'
+        render "api/v1/shared/filters"
       end
 
       private def commodity_price_params
@@ -50,12 +50,12 @@ module Api
 
       private def price_type
         @price_type ||= case params[:path]
-                        when 'buy'
-                          'CommodityBuyPrice'
-                        when 'rental'
-                          'CommodityRentalPrice'
+                        when "buy"
+                          "CommodityBuyPrice"
+                        when "rental"
+                          "CommodityRentalPrice"
                         else # fallback to sell prices
-                          'CommoditySellPrice'
+                          "CommoditySellPrice"
                         end
       end
 

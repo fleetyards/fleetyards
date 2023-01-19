@@ -136,7 +136,7 @@ class Model < ApplicationRecord
   belongs_to :manufacturer, optional: true
 
   has_one :addition,
-          class_name: 'ModelAddition',
+          class_name: "ModelAddition",
           dependent: :destroy,
           inverse_of: :model
 
@@ -158,7 +158,7 @@ class Model < ApplicationRecord
            source: :model_module
 
   has_many :module_packages,
-           class_name: 'ModelModulePackage',
+           class_name: "ModelModulePackage",
            dependent: :destroy
 
   has_many :model_loaners,
@@ -174,7 +174,7 @@ class Model < ApplicationRecord
            source: :model_upgrade
 
   has_many :paints,
-           class_name: 'ModelPaint',
+           class_name: "ModelPaint",
            dependent: :destroy,
            inverse_of: :model
 
@@ -228,7 +228,7 @@ class Model < ApplicationRecord
   def self.production_status_filters
     Model.visible.active.all.map(&:production_status).compact_blank.compact.uniq.map do |item|
       Filter.new(
-        category: 'productionStatus',
+        category: "productionStatus",
         name: item.humanize,
         value: item
       )
@@ -238,7 +238,7 @@ class Model < ApplicationRecord
   def self.classification_filters
     Model.classifications.map do |item|
       Filter.new(
-        category: 'classification',
+        category: "classification",
         name: item.humanize,
         value: item
       )
@@ -252,7 +252,7 @@ class Model < ApplicationRecord
   def self.focus_filters
     Model.visible.active.all.map(&:focus).compact_blank.compact.uniq.map do |item|
       Filter.new(
-        category: 'focus',
+        category: "focus",
         name: item.humanize,
         value: item
       )
@@ -262,7 +262,7 @@ class Model < ApplicationRecord
   def self.size_filters
     %w[vehicle snub small medium large extra_large capital].map do |item|
       Filter.new(
-        category: 'size',
+        category: "size",
         name: item.humanize,
         value: item
       )
@@ -270,7 +270,7 @@ class Model < ApplicationRecord
   end
 
   def self.year(year)
-    where('created_at <= ? AND created_at >= ?', "#{year}-12-31", "#{year}-01-01")
+    where("created_at <= ? AND created_at >= ?", "#{year}-12-31", "#{year}-01-01")
   end
 
   def self.visible
@@ -355,7 +355,7 @@ class Model < ApplicationRecord
 
   def snub_crafts
     Model.where(
-      'length <= :length and beam <= :beam and height <= :height',
+      "length <= :length and beam <= :beam and height <= :height",
       length: docks.map(&:length).max,
       beam: docks.map(&:beam).max,
       height: docks.map(&:height).max
@@ -369,7 +369,7 @@ class Model < ApplicationRecord
   end
 
   def random_image
-    images.enabled.background.order(Arel.sql('RANDOM()')).first
+    images.enabled.background.order(Arel.sql("RANDOM()")).first
   end
 
   def cargo_label
@@ -381,7 +381,7 @@ class Model < ApplicationRecord
       strip_insignificant_zeros: true
     )
 
-    [number, 'SCU'].join(' ')
+    [number, "SCU"].join(" ")
   end
 
   def length_label
@@ -393,7 +393,7 @@ class Model < ApplicationRecord
       strip_insignificant_zeros: true
     )
 
-    [number, 'm'].join(' ')
+    [number, "m"].join(" ")
   end
 
   def beam_label
@@ -405,7 +405,7 @@ class Model < ApplicationRecord
       strip_insignificant_zeros: true
     )
 
-    [number, 'm'].join(' ')
+    [number, "m"].join(" ")
   end
 
   def height_label
@@ -417,7 +417,7 @@ class Model < ApplicationRecord
       strip_insignificant_zeros: true
     )
 
-    [number, 'm'].join(' ')
+    [number, "m"].join(" ")
   end
 
   def price_label
@@ -429,7 +429,7 @@ class Model < ApplicationRecord
       strip_insignificant_zeros: true
     )
 
-    [number, 'aUEC'].join(' ')
+    [number, "aUEC"].join(" ")
   end
 
   def pledge_price_label
@@ -465,7 +465,7 @@ class Model < ApplicationRecord
   end
 
   private def broadcast_update
-    ActionCable.server.broadcast('models', to_json)
+    ActionCable.server.broadcast("models", to_json)
   end
 
   private def send_new_model_notification
@@ -473,7 +473,7 @@ class Model < ApplicationRecord
 
     Notifications::NewModelJob.perform_async(id)
 
-    ActionCable.server.broadcast('new_model', to_json)
+    ActionCable.server.broadcast("new_model", to_json)
   end
 
   private def send_on_sale_notification
@@ -482,7 +482,7 @@ class Model < ApplicationRecord
 
     Notifications::ModelOnSaleJob.perform_async(id)
 
-    ActionCable.server.broadcast('on_sale', to_json)
+    ActionCable.server.broadcast("on_sale", to_json)
   end
 
   private def touch_shop_commodities

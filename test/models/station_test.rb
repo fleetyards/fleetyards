@@ -31,7 +31,7 @@
 #  index_stations_on_planet_id            (planet_id)
 #  stations_slug_index                    (slug) UNIQUE
 #
-require 'test_helper'
+require "test_helper"
 
 class StationTest < ActiveSupport::TestCase
   # test "the truth" do

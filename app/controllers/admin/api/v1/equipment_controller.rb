@@ -7,7 +7,7 @@ module Admin
         def index
           authorize! :index, :admin_api_equipment
 
-          equipment_query_params['sorts'] = sort_by_name
+          equipment_query_params["sorts"] = sort_by_name
 
           @q = Equipment.includes(:manufacturer).ransack(equipment_query_params)
 
@@ -39,7 +39,7 @@ module Admin
 
           @filters = Equipment.item_type_filters
 
-          render 'api/shared/filters'
+          render "api/shared/filters"
         end
 
         def type_filters
@@ -47,7 +47,7 @@ module Admin
 
           @filters = Equipment.type_filters
 
-          render 'api/shared/filters'
+          render "api/shared/filters"
         end
 
         def slot_filters
@@ -55,7 +55,7 @@ module Admin
 
           @filters = Equipment.slot_filters
 
-          render 'api/shared/filters'
+          render "api/shared/filters"
         end
 
         private def equipment_query_params

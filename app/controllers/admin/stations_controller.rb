@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_stations
       @q = Station.ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = "name asc" if @q.sorts.empty?
 
       @stations = @q.result
         .page(params.fetch(:page) { nil })
@@ -29,27 +29,27 @@ module Admin
       authorize! :create, :admin_stations
       @station = Station.new(station_params)
       if station.save
-        redirect_to edit_admin_station_path(station.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.station'))
+        redirect_to edit_admin_station_path(station.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.station"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.station'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.station"))
       end
     end
 
     def update
       authorize! :update, station
       if station.update(station_params)
-        redirect_to edit_admin_station_path(station.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.station'))
+        redirect_to edit_admin_station_path(station.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.station"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.station'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.station"))
       end
     end
 
     def destroy
       authorize! :destroy, station
       if station.destroy
-        redirect_to admin_stations_path(params: index_back_params, anchor: station.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.station'))
+        redirect_to admin_stations_path(params: index_back_params, anchor: station.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.station"))
       else
-        redirect_to admin_stations_path(params: index_back_params, anchor: station.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.station'))
+        redirect_to admin_stations_path(params: index_back_params, anchor: station.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.station"))
       end
     end
 
@@ -87,7 +87,7 @@ module Admin
     helper_method :station
 
     private def set_active_nav
-      @active_nav = 'admin-stations'
+      @active_nav = "admin-stations"
     end
   end
 end

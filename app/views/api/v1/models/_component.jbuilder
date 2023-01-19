@@ -13,5 +13,5 @@ json.description component.description
 json.type_data component.type_data
 json.manufacturer do
   json.null! if component.manufacturer.blank?
-  json.partial! 'api/v1/manufacturers/base', manufacturer: component.manufacturer if component.manufacturer.present?
+  json.partial! "api/v1/manufacturers/base", manufacturer: component.manufacturer if component.manufacturer.present?
 end

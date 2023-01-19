@@ -3,7 +3,7 @@
 class ApplicationMailer < ActionMailer::Base
   default from: Rails.configuration.app.mailer_default_from.to_s
 
-  layout 'mailer'
+  layout "mailer"
 
   rescue_from Postmark::InactiveRecipientError do |_exception|
     handle_inactive_error

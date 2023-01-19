@@ -6,7 +6,7 @@ module Api
       before_action :authenticate_user!, except: %i[show]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
-        not_found(I18n.t('messages.record_not_found.fleet', slug: params[:slug]))
+        not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
       end
 
       def invites
@@ -32,7 +32,7 @@ module Api
 
         return if fleet.save
 
-        render json: ValidationError.new('fleet.create', errors: fleet.errors), status: :bad_request
+        render json: ValidationError.new("fleet.create", errors: fleet.errors), status: :bad_request
       end
 
       def update
@@ -40,7 +40,7 @@ module Api
 
         return if fleet.update(fleet_params)
 
-        render json: ValidationError.new('fleet.update', errors: fleet.errors), status: :bad_request
+        render json: ValidationError.new("fleet.update", errors: fleet.errors), status: :bad_request
       end
 
       def destroy
@@ -48,12 +48,12 @@ module Api
 
         return if fleet.destroy
 
-        render json: ValidationError.new('fleet.destroy', errors: fleet.errors), status: :bad_request
+        render json: ValidationError.new("fleet.destroy", errors: fleet.errors), status: :bad_request
       end
 
       def check
         authorize! :check, :api_fleet
-        render json: { taken: Fleet.exists?(fid: (fleet_params[:fid] || '').downcase) }
+        render json: { taken: Fleet.exists?(fid: (fleet_params[:fid] || "").downcase) }
       end
 
       def find_by_invite
@@ -63,7 +63,7 @@ module Api
 
         @fleet = invite_url.fleet
 
-        render 'show'
+        render "show"
       end
 
       private def fleet

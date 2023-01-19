@@ -42,7 +42,7 @@ class RoadmapItem < ApplicationRecord
 
   def last_version(max_created_at = nil)
     max_created_at = 1.day.from_now.to_date if max_created_at.nil?
-    versions.where('created_at < ?', max_created_at).last
+    versions.where("created_at < ?", max_created_at).last
   end
 
   def last_version_changed_at(max_created_at = nil)

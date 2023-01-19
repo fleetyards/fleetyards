@@ -25,9 +25,9 @@
 #
 module Ahoy
   class Visit < ApplicationRecord
-    self.table_name = 'ahoy_visits'
+    self.table_name = "ahoy_visits"
 
-    has_many :events, class_name: 'Ahoy::Event', dependent: :nullify
+    has_many :events, class_name: "Ahoy::Event", dependent: :nullify
     belongs_to :user, optional: true
 
     def self.without_users(user_ids)

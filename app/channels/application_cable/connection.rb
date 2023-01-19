@@ -9,7 +9,7 @@ module ApplicationCable
     end
 
     protected def find_verified_user
-      env['warden'].user
+      env["warden"].user
     end
   end
 end

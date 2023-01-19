@@ -19,24 +19,24 @@ module ScData
     def extract_component!(component_data)
       return if component_data.blank?
 
-      name = component_data['Name']
+      name = component_data["Name"]
       name = translations_loader.translate(name) if needs_translation?(name)
 
-      return if name == '<= PLACEHOLDER =>'
+      return if name == "<= PLACEHOLDER =>"
 
       component = Component.find_or_create_by!(
-        sc_identifier: component_data['ClassName'],
+        sc_identifier: component_data["ClassName"],
         name:
       )
 
-      manufacturer = extract_manufacturer(component_data['Manufacturer'])
+      manufacturer = extract_manufacturer(component_data["Manufacturer"])
 
-      description = component_data['Description']
+      description = component_data["Description"]
       description = translations_loader.translate(description) if needs_translation?(description)
 
       component.update!(
-        size: component_data['Size'],
-        grade: component_data['Grade'],
+        size: component_data["Size"],
+        grade: component_data["Grade"],
         item_class: extract_item_class(description),
         description:,
         manufacturer: manufacturer || component.manufacturer,
@@ -64,36 +64,36 @@ module ScData
     end
 
     private def extract_durability(component_data)
-      component_data['Durability']&.transform_keys(&:underscore)
+      component_data["Durability"]&.transform_keys(&:underscore)
     end
 
     private def extract_power_connection(component_data)
-      component_data['PowerConnection']&.transform_keys(&:underscore)
+      component_data["PowerConnection"]&.transform_keys(&:underscore)
     end
 
     private def extract_heat_connection(component_data)
-      component_data['HeatConnection']&.transform_keys(&:underscore)
+      component_data["HeatConnection"]&.transform_keys(&:underscore)
     end
 
     private def extract_ammunition(component_data)
-      component_data['Ammunition']&.transform_keys(&:underscore)
+      component_data["Ammunition"]&.transform_keys(&:underscore)
     end
 
     private def needs_translation?(string)
       return false if string.blank?
 
-      string.start_with?('@')
+      string.start_with?("@")
     end
 
     private def extract_manufacturer(manufacturer_data)
       return if manufacturer_data.blank?
 
-      manufacturer = Manufacturer.find_by(code: manufacturer_data['Code'])
-      manufacturer = Manufacturer.find_by(name: manufacturer_data['Name']) if manufacturer.blank?
+      manufacturer = Manufacturer.find_by(code: manufacturer_data["Code"])
+      manufacturer = Manufacturer.find_by(name: manufacturer_data["Name"]) if manufacturer.blank?
 
       return manufacturer if manufacturer.present?
 
-      Manufacturer.create!(name: manufacturer_data['Name'], code: manufacturer_data['Code'])
+      Manufacturer.create!(name: manufacturer_data["Name"], code: manufacturer_data["Code"])
     end
   end
 end

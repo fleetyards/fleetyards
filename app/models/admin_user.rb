@@ -64,7 +64,7 @@ class AdminUser < ApplicationRecord
     # create an OpenSSL object which will decrypt the AES cipher with 256 bit
     # keys in Galois Counter Mode (GCM). See
     # https://ruby.github.io/openssl/OpenSSL/Cipher.html
-    cipher = OpenSSL::Cipher.new('aes-256-gcm')
+    cipher = OpenSSL::Cipher.new("aes-256-gcm")
 
     # tell the cipher we want to decrypt. Symmetric algorithms use a very
     # similar process for encryption and decryption, hence the same object can
@@ -89,7 +89,7 @@ class AdminUser < ApplicationRecord
     # http://ruby-doc.org/stdlib-2.0.0/libdoc/openssl/rdoc/OpenSSL/Cipher.html#method-i-auth_data-3D
     # we are not adding any authenticated data but OpenSSL docs say this should
     # still be called.
-    cipher.auth_data = ''
+    cipher.auth_data = ""
 
     # #update is (somewhat confusingly named) the method which actually
     # performs the decryption on the given chunk of data. Our OTP secret is

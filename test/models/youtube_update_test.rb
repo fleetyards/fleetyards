@@ -9,7 +9,7 @@
 #  updated_at :datetime         not null
 #  video_id   :string
 #
-require 'test_helper'
+require "test_helper"
 
 class YoutubeUpdateTest < ActiveSupport::TestCase
   # test "the truth" do

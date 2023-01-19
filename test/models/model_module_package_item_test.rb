@@ -10,7 +10,7 @@
 #  model_module_id         :uuid
 #  model_module_package_id :uuid
 #
-require 'test_helper'
+require "test_helper"
 
 class ModelModulePackageItemTest < ActiveSupport::TestCase
   # test "the truth" do

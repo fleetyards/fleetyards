@@ -10,13 +10,13 @@ module Admin
     end
 
     def confirmation
-      @active_nav = 'admin-shop_commodities-confirmation'
+      @active_nav = "admin-shop_commodities-confirmation"
       authorize! :index, :shop_commodities
       @app_enabled = true
     end
 
     private def set_active_nav
-      @active_nav = 'admin-shop_commodities'
+      @active_nav = "admin-shop_commodities"
     end
 
     private def shop

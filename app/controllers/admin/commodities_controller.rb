@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_commodities
       @q = Commodity.ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = "name asc" if @q.sorts.empty?
 
       @commodities = @q.result
         .page(params.fetch(:page) { nil })
@@ -29,27 +29,27 @@ module Admin
       authorize! :create, :admin_commodities
       @commodity = Commodity.new(commodity_params)
       if commodity.save
-        redirect_to admin_commodities_path, notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.commodity'))
+        redirect_to admin_commodities_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.commodity"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.commodity'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.commodity"))
       end
     end
 
     def update
       authorize! :update, commodity
       if commodity.update(commodity_params)
-        redirect_to admin_commodities_path, notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.commodity'))
+        redirect_to admin_commodities_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.commodity"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.commodity'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.commodity"))
       end
     end
 
     def destroy
       authorize! :destroy, commodity
       if commodity.destroy
-        redirect_to admin_commodities_path, notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.commodity'))
+        redirect_to admin_commodities_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.commodity"))
       else
-        redirect_to admin_commodities_path, error: I18n.t(:'messages.destroy.failure', resource: I18n.t(:'resources.commodity'))
+        redirect_to admin_commodities_path, error: I18n.t(:"messages.destroy.failure", resource: I18n.t(:"resources.commodity"))
       end
     end
 
@@ -80,7 +80,7 @@ module Admin
     helper_method :commodity
 
     private def set_active_nav
-      @active_nav = 'admin-commodities'
+      @active_nav = "admin-commodities"
     end
   end
 end

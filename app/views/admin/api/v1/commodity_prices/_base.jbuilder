@@ -7,5 +7,5 @@ json.created_at commodity_price.created_at
 json.confirmed commodity_price.confirmed
 json.type commodity_price.type
 json.submitters do
-  json.array! commodity_price.users, partial: 'admin/api/v1/commodity_prices/submitter', as: :submitter
+  json.array! commodity_price.users, partial: "admin/api/v1/commodity_prices/submitter", as: :submitter
 end

@@ -20,19 +20,19 @@ module Api
     after_action :set_rate_limit_headers
 
     rescue_from CanCan::AccessDenied do |exception|
-      render json: { code: 'forbidden', message: exception.message }, status: :forbidden
+      render json: { code: "forbidden", message: exception.message }, status: :forbidden
     end
 
     rescue_from ActionController::InvalidAuthenticityToken do |_exception|
-      render json: { code: 'invalid_authenticity_token', message: I18n.t('error_pages.unprocessable_entity') }, status: :unprocessable_entity
+      render json: { code: "invalid_authenticity_token", message: I18n.t("error_pages.unprocessable_entity") }, status: :unprocessable_entity
     end
 
     rescue_from ActiveRecord::RecordNotFound do |_exception|
-      render json: { code: 'not_found', message: I18n.t('errors.not_found.message') }, status: :not_found
+      render json: { code: "not_found", message: I18n.t("errors.not_found.message") }, status: :not_found
     end
 
     rescue_from Pagination::MaxPerPageReached do |_exception|
-      render json: { code: 'pagination.max_per_page_reached', message: I18n.t('errors.pagination.max_per_page_reached') }, status: :bad_request
+      render json: { code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached") }, status: :bad_request
     end
 
     def current_ability
@@ -64,20 +64,20 @@ module Api
       I18n.t(state, scope: "resources.messages.#{action}", resource: I18n.t("resources.#{resource}"))
     end
 
-    private def not_found(message = I18n.t('messages.record_not_found.base'))
-      render json: { code: 'not_found', message: }, status: :not_found
+    private def not_found(message = I18n.t("messages.record_not_found.base"))
+      render json: { code: "not_found", message: }, status: :not_found
     end
 
     private def set_rate_limit_headers
-      return if request.env['rack.attack.throttle_data'].blank?
+      return if request.env["rack.attack.throttle_data"].blank?
 
-      match_data = request.env['rack.attack.throttle_data']['api']
+      match_data = request.env["rack.attack.throttle_data"]["api"]
       return if match_data.blank?
 
       now = Time.zone.now
-      headers['X-RateLimit-Limit'] = match_data[:limit].to_s
-      headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
-      headers['X-RateLimit-Reset'] = (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
+      headers["X-RateLimit-Limit"] = match_data[:limit].to_s
+      headers["X-RateLimit-Remaining"] = (match_data[:limit] - match_data[:count]).to_s
+      headers["X-RateLimit-Reset"] = (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
     end
   end
 end

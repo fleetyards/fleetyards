@@ -106,7 +106,7 @@ class Equipment < ApplicationRecord
   def self.type_filters
     Equipment.equipment_types.map do |(item, _index)|
       Filter.new(
-        category: 'equipment_type',
+        category: "equipment_type",
         name: Equipment.human_enum_name(:equipment_type, item),
         value: item
       )
@@ -116,7 +116,7 @@ class Equipment < ApplicationRecord
   def self.item_type_filters
     Equipment.item_types.map do |(item, _index)|
       Filter.new(
-        category: 'item_type',
+        category: "item_type",
         name: Equipment.human_enum_name(:item_type, item),
         value: item
       )
@@ -126,7 +126,7 @@ class Equipment < ApplicationRecord
   def self.slot_filters
     Equipment.slots.map do |(item, _index)|
       Filter.new(
-        category: 'slot',
+        category: "slot",
         name: Equipment.human_enum_name(:slot, item),
         value: item
       )

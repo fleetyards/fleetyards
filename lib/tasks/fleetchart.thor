@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'thor'
-require 'fileutils'
+require "thor"
+require "fileutils"
 
 class Fleetchart < Thor
   include Thor::Actions
@@ -10,7 +10,7 @@ class Fleetchart < Thor
     true
   end
 
-  desc 'prepare', 'Prepare export folder for upload or local import'
+  desc "prepare", "Prepare export folder for upload or local import"
   def prepare(export_folder)
     export_path = "#{export_folder}/export"
     seeds_path = "#{export_folder}/seeds_fleetchart"
@@ -20,7 +20,7 @@ class Fleetchart < Thor
     Dir["#{export_path}/**/*.png"].each do |file|
       name = File.basename(file)
 
-      next unless name.include?('fleetchart')
+      next unless name.include?("fleetchart")
 
       dir_name = File.basename(File.dirname(file))
       dir = "#{seeds_path}/#{dir_name}"
@@ -41,21 +41,21 @@ class Fleetchart < Thor
     end
   end
 
-  desc 'local_import', 'Import prepared seeds'
+  desc "local_import", "Import prepared seeds"
   def local_import(export_folder)
-    require './config/environment'
+    require "./config/environment"
 
     seeds_path = "#{export_folder}/seeds_fleetchart"
 
-    FileUtils.cp_r(seeds_path, Rails.root.join('db/'))
+    FileUtils.cp_r(seeds_path, Rails.root.join("db/"))
   end
 
-  desc 'upload', 'Upload prepared seeds to server'
-  def upload(export_folder, environment = 'stage')
+  desc "upload", "Upload prepared seeds to server"
+  def upload(export_folder, environment = "stage")
     seeds_path = "#{export_folder}/seeds_fleetchart/"
 
-    run("scp -r \"#{seeds_path}\" fleetyards@fleetyards.net:~/shared/db") if environment == 'live'
+    run("scp -r \"#{seeds_path}\" fleetyards@fleetyards.net:~/shared/db") if environment == "live"
 
-    run("scp -r \"#{seeds_path}\" fleetyards@stage.fleetyards.net:~/shared/db") if environment == 'stage'
+    run("scp -r \"#{seeds_path}\" fleetyards@stage.fleetyards.net:~/shared/db") if environment == "stage"
   end
 end

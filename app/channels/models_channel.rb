@@ -2,7 +2,7 @@
 
 class ModelsChannel < ApplicationCable::Channel
   def subscribed
-    stream_from 'models'
+    stream_from "models"
   end
 
   def unsubscribed

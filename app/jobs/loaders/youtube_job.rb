@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'youtube/video_loader'
+require "youtube/video_loader"
 
 module Loaders
   class YoutubeJob < ::Loaders::BaseJob

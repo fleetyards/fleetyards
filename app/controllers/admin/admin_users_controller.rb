@@ -26,36 +26,36 @@ module Admin
       authorize! :create, :admin_users
       @admin_user = AdminUser.new(admin_user_params)
       if admin_user.save
-        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.admin_user'))
+        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.admin_user"))
       else
-        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.admin_user'))
+        render "new", error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.admin_user"))
       end
     end
 
     def update
       authorize! :update, admin_user
       if admin_user.update(admin_user_params)
-        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.admin_user'))
+        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.admin_user"))
       else
-        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.user'))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.user"))
       end
     end
 
     def destroy
       authorize! :destroy, admin_user
       if admin_user.destroy
-        redirect_to admin_admins_path(params: index_back_params), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.admin_user'))
+        redirect_to admin_admins_path(params: index_back_params), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.admin_user"))
       else
-        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.admin_user'))
+        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.admin_user"))
       end
     end
 
     def resend_confirmation
       authorize! :update, admin_user
       if admin_user.resend_confirmation_instructions
-        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:'messages.resend_confirmation.success', resource: I18n.t(:'resources.admin_user'))
+        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:"messages.resend_confirmation.success", resource: I18n.t(:"resources.admin_user"))
       else
-        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:'messages.resend_confirmation.failure', resource: I18n.t(:'resources.admin_user'))
+        redirect_to admin_admins_path(params: index_back_params, anchor: admin_user.id), notice: I18n.t(:"messages.resend_confirmation.failure", resource: I18n.t(:"resources.admin_user"))
       end
     end
 
@@ -86,7 +86,7 @@ module Admin
     helper_method :admin_user
 
     private def set_active_nav
-      @active_nav = 'admin-admin_users'
+      @active_nav = "admin-admin_users"
     end
   end
 end

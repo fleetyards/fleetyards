@@ -23,7 +23,7 @@
 #
 #  index_docks_on_station_id  (station_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class DockTest < ActiveSupport::TestCase
   # test "the truth" do

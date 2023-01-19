@@ -21,7 +21,7 @@ json.submitter do
   json.username shop_commodity.submitter&.username
 end
 json.shop do
-  json.partial! 'api/v1/shops/base', shop: shop_commodity.shop
+  json.partial! "api/v1/shops/base", shop: shop_commodity.shop
 end
 json.item do
   json.partial! "admin/api/v1/#{shop_commodity.category.pluralize}/minimal", shop_commodity.category.to_sym => shop_commodity.commodity_item

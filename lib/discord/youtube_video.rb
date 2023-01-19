@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'discord/webhook'
+require "discord/webhook"
 
 # rubocop:disable Naming/AccessorMethodName
 module Discord
@@ -10,7 +10,7 @@ module Discord
     end
 
     private def get_title
-      I18n.t('discord.youtube_video.title')
+      I18n.t("discord.youtube_video.title")
     end
 
     private def get_url

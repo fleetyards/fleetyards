@@ -9,7 +9,7 @@
 #  updated_at :datetime         not null
 #  video_id   :string
 #
-require 'discord/youtube_video'
+require "discord/youtube_video"
 
 class YoutubeUpdate < ApplicationRecord
   after_create :notify_discord

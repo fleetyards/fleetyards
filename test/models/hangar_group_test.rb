@@ -18,7 +18,7 @@
 #
 #  index_hangar_groups_on_user_id  (user_id)
 #
-require 'test_helper'
+require "test_helper"
 
 class HangarGroupTest < ActiveSupport::TestCase
   # test "the truth" do

@@ -10,7 +10,7 @@
 #  model_id         :uuid
 #  model_upgrade_id :uuid
 #
-require 'test_helper'
+require "test_helper"
 
 class UpgradeKitTest < ActiveSupport::TestCase
   # test "the truth" do
