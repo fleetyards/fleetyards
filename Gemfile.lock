@@ -254,6 +254,7 @@ GEM
     globalid (1.0.1)
       activesupport (>= 5.0)
     google-protobuf (3.21.12)
+    google-protobuf (3.21.12-x86_64-linux)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
@@ -617,7 +618,7 @@ GEM
       net-ssh (>= 2.8.0)
     sshkit-interactive (0.3.0)
       sshkit (~> 1.12)
-    ssrf_filter (1.0.8)
+    ssrf_filter (1.1.1)
     stringio (3.0.4)
     temple (0.8.2)
     terminal-table (3.0.2)
@@ -776,7 +777,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen
   sprockets-rails (~> 3.4.2)
-  ssrf_filter (~> 1.0.8)
+  ssrf_filter (~> 1.1.1)
   thor
   timecop
   typhoeus
