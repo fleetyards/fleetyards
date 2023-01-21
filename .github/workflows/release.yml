@@ -2,8 +2,7 @@ name: Release
 
 on:
   push:
-    tags:
-      - '*'
+    tags: ["v*"]
 
 env:
   RUBY_VERSION: 3.2.0
