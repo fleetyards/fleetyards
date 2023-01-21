@@ -3,7 +3,7 @@
 class JSONFailureApp < Devise::FailureApp
   def self.call(env)
     # FIXUP warden PATH_INFO rewrite to /unauthenticated
-    env['PATH_INFO'] = env['ORIGINAL_FULLPATH']
+    env["PATH_INFO"] = env["ORIGINAL_FULLPATH"]
     super
   end
 

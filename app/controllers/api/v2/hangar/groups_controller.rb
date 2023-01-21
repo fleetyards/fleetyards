@@ -20,7 +20,7 @@ module Api
           if hangar_group.save
             render status: :created
           else
-            render json: ValidationError.new('hangar_group.create', errors: @hangar_group.errors), status: :bad_request
+            render json: ValidationError.new("hangar_group.create", errors: @hangar_group.errors), status: :bad_request
           end
         end
 
@@ -29,7 +29,7 @@ module Api
 
           return if hangar_group.update(hangar_group_params)
 
-          render json: ValidationError.new('vehicle.update', errors: @hangar_group.errors), status: :bad_request
+          render json: ValidationError.new("vehicle.update", errors: @hangar_group.errors), status: :bad_request
         end
 
         def destroy
@@ -37,7 +37,7 @@ module Api
 
           return if hangar_group.destroy
 
-          render json: ValidationError.new('hangar_group.destroy', errors: @hangar_group.errors), status: :bad_request
+          render json: ValidationError.new("hangar_group.destroy", errors: @hangar_group.errors), status: :bad_request
         end
 
         def sort
@@ -46,7 +46,7 @@ module Api
           sorting = params.permit(sorting: [])
 
           (sorting[:sorting] || []).each_with_index do |id, index|
-            group = HangarGroup.where(user_id: current_user.id, id: id).first
+            group = HangarGroup.where(user_id: current_user.id, id:).first
             next if group.blank?
 
             group.update(sort: index)

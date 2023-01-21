@@ -8,11 +8,11 @@ module Api
       def root
         respond_to do |format|
           format.html do
-            render 'api/v2/base/index'
+            render "api/v2/base/index"
             # render file: Rails.public_path.join('docs', 'v2.html')
           end
           format.json do
-            render json: { message: 'FleetYards.net API v2 root' }
+            render json: { message: "FleetYards.net API v2 root" }
           end
         end
       end

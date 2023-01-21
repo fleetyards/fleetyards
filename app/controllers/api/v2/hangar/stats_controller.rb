@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'hangar_importer'
+require "hangar_importer"
 
 module Api
   module V2
@@ -18,7 +18,7 @@ module Api
 
           @q = scope.ransack(vehicle_query_params)
 
-          @q.sorts = ['model_classification asc']
+          @q.sorts = ["model_classification asc"]
 
           vehicles = @q.result
           models = vehicles.map(&:model)
@@ -58,8 +58,8 @@ module Api
           models_by_size = transform_for_pie_chart(
             current_user.vehicles.visible.where(loaner: false)
                  .joins(:model)
-                 .group('models.size').count
-                 .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+                 .group("models.size").count
+                 .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
                  .reduce(:merge) || []
           )
 
@@ -72,8 +72,8 @@ module Api
           models_by_production_status = transform_for_pie_chart(
             current_user.vehicles.visible.where(loaner: false)
                  .joins(:model)
-                 .group('models.production_status').count
-                 .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+                 .group("models.production_status").count
+                 .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
                  .reduce(:merge) || []
           )
 
@@ -101,8 +101,8 @@ module Api
           models_by_classification = transform_for_pie_chart(
             current_user.vehicles.visible.where(loaner: false)
                  .joins(:model)
-                 .group('models.classification').count
-                 .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+                 .group("models.classification").count
+                 .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
                  .reduce(:merge) || []
           )
 

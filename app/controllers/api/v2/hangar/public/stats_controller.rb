@@ -8,7 +8,7 @@ module Api
           before_action :authenticate_user!, only: []
 
           def show
-            user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+            user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
 
             unless user.public_hangar?
               not_found
@@ -22,7 +22,7 @@ module Api
 
             @q = scope.ransack(vehicle_query_params)
 
-            @q.sorts = ['model_classification asc']
+            @q.sorts = ["model_classification asc"]
 
             vehicles = @q.result
 
@@ -38,7 +38,7 @@ module Api
                   label: classification.humanize
                 )
               end,
-              groups: HangarGroup.where(user: user, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
+              groups: HangarGroup.where(user:, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
                 HangarGroupCount.new(
                   group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
                   id: group.id,

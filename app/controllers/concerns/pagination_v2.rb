@@ -8,35 +8,35 @@ module PaginationV2
   end
 
   def per_page(model)
-    return nil if per_page_params == 'all'
+    return nil if per_page_params == "all"
     return model.default_per_page if per_page_params.blank? || per_page_params.to_i.zero? || per_page_params.to_i > model.max_per_page
 
     per_page_params.to_i
   end
 
   def last_page?(scope)
-    return true if per_page_params == 'all'
+    return true if per_page_params == "all"
     return true if scope.current_page > scope.total_pages
 
     scope.last_page?
   end
 
   def prev_url(scope)
-    return if per_page_params == 'all'
+    return if per_page_params == "all"
     return if scope.first_page?
 
     page_link(scope.current_page - 1)
   end
 
   def next_url(scope)
-    return if per_page_params == 'all'
+    return if per_page_params == "all"
     return if scope.last_page? || scope.current_page > scope.total_pages
 
     page_link(scope.current_page + 1)
   end
 
   private def result_with_pagination(result, per_page)
-    if per_page_params == 'all'
+    if per_page_params == "all"
       result.all
     else
       result.page(params[:page])
@@ -48,7 +48,7 @@ module PaginationV2
     url_for(
       controller: controller_name,
       action: action_name,
-      page: page,
+      page:,
       per_page: page.present? && !per_page_params.to_i.zero? ? per_page_params.to_i : nil
     )
   end

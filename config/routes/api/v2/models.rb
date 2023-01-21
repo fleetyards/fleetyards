@@ -15,7 +15,7 @@ resources :models, param: :slug, only: %i[index show] do
     get :variants
     get :loaners
     get :modules
-    get :module_packages, path: 'module-packages'
+    get :module_packages, path: "module-packages"
     get :upgrades
     get :paints
   end

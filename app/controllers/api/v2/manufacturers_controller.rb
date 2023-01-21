@@ -6,7 +6,7 @@ module Api
       before_action :authenticate_user!, only: []
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
-        not_found(I18n.t('messages.record_not_found.manufacturer', slug: params[:slug]))
+        not_found(I18n.t("messages.record_not_found.manufacturer", slug: params[:slug]))
       end
 
       def index
@@ -16,7 +16,7 @@ module Api
 
         scope = scope.with_model if with_model?
 
-        manufacturer_query_params['sorts'] = sort_by_name
+        manufacturer_query_params["sorts"] = sort_by_name
 
         @q = scope.ransack(manufacturer_query_params)
 

@@ -20,7 +20,7 @@ module Api
         if auth_token.save
           render status: :created
         else
-          render json: ValidationError.new('auth_token.create', errors: @auth_token.errors), status: :bad_request
+          render json: ValidationError.new("auth_token.create", errors: @auth_token.errors), status: :bad_request
         end
       end
 
@@ -29,7 +29,7 @@ module Api
 
         return if auth_token.destroy
 
-        render json: ValidationError.new('auth_token.destroy', errors: @auth_token.errors), status: :bad_request
+        render json: ValidationError.new("auth_token.destroy", errors: @auth_token.errors), status: :bad_request
       end
 
       private def auth_token

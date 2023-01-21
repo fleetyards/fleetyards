@@ -7,7 +7,7 @@ module Pagination
 
   included do
     rescue_from Pagination::MaxPerPageReached do |_exception|
-      render json: { code: 'pagination.max_per_page_reached', message: I18n.t('errors.pagination.max_per_page_reached') }, status: :bad_request
+      render json: { code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached") }, status: :bad_request
     end
   end
 

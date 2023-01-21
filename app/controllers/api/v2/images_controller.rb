@@ -15,9 +15,9 @@ module Api
           .includes(:gallery)
 
         scope = if params[:randomOrder]
-                  scope.order(Arel.sql('RANDOM()'))
+                  scope.order(Arel.sql("RANDOM()"))
                 else
-                  scope.order('images.created_at desc')
+                  scope.order("images.created_at desc")
                 end
 
         @images = scope

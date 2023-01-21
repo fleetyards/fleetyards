@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'hangar_importer'
+require "hangar_importer"
 
 module Api
   module V2
@@ -12,18 +12,18 @@ module Api
           scope = current_user.vehicles.visible
 
           if price_range.present?
-            vehicle_query_params['sorts'] = 'model_price asc'
+            vehicle_query_params["sorts"] = "model_price asc"
             scope = scope.includes(:model).where(models: { price: price_range })
           end
 
           if pledge_price_range.present?
-            vehicle_query_params['sorts'] = 'model_last_pledge_price asc'
+            vehicle_query_params["sorts"] = "model_last_pledge_price asc"
             scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
           end
 
           scope = loaner_included?(scope)
 
-          vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+          vehicle_query_params["sorts"] = sort_by_name(["flagship desc", "purchased desc", "name asc", "model_name asc"], "model_name asc")
 
           @q = scope.ransack(vehicle_query_params)
 
@@ -41,7 +41,7 @@ module Api
 
           scope = loaner_included?(scope)
 
-          vehicle_query_params['sorts'] = 'model_name asc'
+          vehicle_query_params["sorts"] = "model_name asc"
 
           @q = scope.ransack(vehicle_query_params)
 
@@ -55,11 +55,11 @@ module Api
 
           import_data = JSON.parse(params[:import].read)
 
-          render json: ValidationError.new('vehicle.import', message: I18n.t('messages.hangar_import.no_data')), status: :bad_request if import_data.blank?
+          render json: ValidationError.new("vehicle.import", message: I18n.t("messages.hangar_import.no_data")), status: :bad_request if import_data.blank?
 
           @response = ::HangarImporter.new(import_data).run(current_user.id)
         rescue JSON::ParserError => e
-          render json: ValidationError.new('vehicle.import', message: e), status: :bad_request
+          render json: ValidationError.new("vehicle.import", message: e), status: :bad_request
         end
 
         def hangar_items
@@ -85,7 +85,7 @@ module Api
           if vehicle.save
             render status: :created
           else
-            render json: ValidationError.new('vehicle.create', errors: @vehicle.errors), status: :bad_request
+            render json: ValidationError.new("vehicle.create", errors: @vehicle.errors), status: :bad_request
           end
         end
 
@@ -98,7 +98,7 @@ module Api
 
           return if vehicle.update(vehicle_params)
 
-          render json: ValidationError.new('vehicle.update', errors: @vehicle.errors), status: :bad_request
+          render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
         end
 
         def update_bulk
@@ -120,7 +120,7 @@ module Api
 
           return if errors.blank?
 
-          render json: ValidationError.new('vehicle.bulk_update', errors: errors), status: :bad_request
+          render json: ValidationError.new("vehicle.bulk_update", errors:), status: :bad_request
         end
 
         def destroy
@@ -128,7 +128,7 @@ module Api
 
           return if vehicle.destroy
 
-          render json: ValidationError.new('vehicle.destroy', errors: @vehicle.errors), status: :bad_request
+          render json: ValidationError.new("vehicle.destroy", errors: @vehicle.errors), status: :bad_request
         end
 
         def destroy_bulk
@@ -193,7 +193,7 @@ module Api
 
         private def price_range
           @price_range ||= price_in.map do |prices|
-            gt_price, lt_price = prices.split('-')
+            gt_price, lt_price = prices.split("-")
             gt_price = if gt_price.blank?
                          0
                        else
@@ -210,7 +210,7 @@ module Api
 
         private def pledge_price_range
           @pledge_price_range ||= pledge_price_in.map do |prices|
-            gt_price, lt_price = prices.split('-')
+            gt_price, lt_price = prices.split("-")
             gt_price = if gt_price.blank?
                          0
                        else
@@ -226,22 +226,22 @@ module Api
         end
 
         private def pledge_price_in
-          pledge_price_in = vehicle_query_params.delete('pledge_price_in')
+          pledge_price_in = vehicle_query_params.delete("pledge_price_in")
           pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
           pledge_price_in
         end
 
         private def price_in
-          price_in = vehicle_query_params.delete('price_in')
+          price_in = vehicle_query_params.delete("price_in")
           price_in = price_in.to_s.split unless price_in.is_a?(Array)
           price_in
         end
 
         private def loaner_included?(scope)
-          if vehicle_query_params['loaner_eq'].blank?
+          if vehicle_query_params["loaner_eq"].blank?
             scope = scope.where(loaner: false)
-          elsif vehicle_query_params['loaner_eq'] == 'true'
-            vehicle_query_params.delete('loaner_eq')
+          elsif vehicle_query_params["loaner_eq"] == "true"
+            vehicle_query_params.delete("loaner_eq")
           else
             scope = scope.where(loaner: true)
           end

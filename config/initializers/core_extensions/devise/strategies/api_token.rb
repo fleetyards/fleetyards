@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'useragent'
+require "useragent"
 
 module Devise
   module Strategies

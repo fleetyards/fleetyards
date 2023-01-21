@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'typhoeus'
+require "typhoeus"
 
 class ApiSchema < Thor
   include Thor::Actions
@@ -9,13 +9,13 @@ class ApiSchema < Thor
     true
   end
 
-  desc 'fetch', 'Fetch API Schema from Github and resolve refs'
+  desc "fetch", "Fetch API Schema from Github and resolve refs"
   def fetch
-    require './config/environment'
+    require "./config/environment"
 
     raw_data = fetch_remote(api_schema_url)
 
-    File.write(Rails.root.join('schema.yaml'), raw_data)
+    Rails.root.join("schema.yaml").write(raw_data)
   end
 
   no_commands do
@@ -31,8 +31,8 @@ class ApiSchema < Thor
     end
 
     private def api_schema_url
-      ENV['API_SCHEMA_BASE_URL'] ||
-      'https://stoplight.io/api/v1/projects/fleetyards/api-schema-v2/nodes/reference/schema-v2.yaml?deref=optimizedBundle'
+      ENV["API_SCHEMA_BASE_URL"] ||
+      "https://stoplight.io/api/v1/projects/fleetyards/api-schema-v2/nodes/reference/schema-v2.yaml?deref=optimizedBundle"
     end
   end
 end

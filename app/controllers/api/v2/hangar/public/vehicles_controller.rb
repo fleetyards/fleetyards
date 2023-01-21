@@ -8,14 +8,14 @@ module Api
           before_action :authenticate_user!, only: []
 
           def index
-            user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+            user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
 
             unless user.public_hangar?
               not_found
               return
             end
 
-            vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'name asc', 'model_name asc'], 'model_name asc')
+            vehicle_query_params["sorts"] = sort_by_name(["flagship desc", "name asc", "model_name asc"], "model_name asc")
 
             @q = user.vehicles
               .public
@@ -30,11 +30,11 @@ module Api
 
           def embed
             usernames = params.fetch(:usernames, []).map(&:downcase)
-            user_ids = User.where('lower(username) IN (?)', usernames)
+            user_ids = User.where("lower(username) IN (?)", usernames)
               .where(public_hangar: true)
               .pluck(:id)
 
-            vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
+            vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
 
             @q = Vehicle.where(user_id: user_ids)
               .public
@@ -44,7 +44,7 @@ module Api
               .includes(:model)
               .joins(:model)
 
-            render 'api/v2/hangar/public/vehicles/index'
+            render "api/v2/hangar/public/vehicles/index"
           end
 
           private def vehicle_query_params

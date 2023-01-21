@@ -5,20 +5,20 @@ module OpenApiTestHelper
 
   def committee_options
     schema ||= begin
-      schema_path = Rails.root.join('schema.yaml')
-      data = YAML.load_file(Rails.root.join('schema.yaml'))
+      schema_path = Rails.root.join("schema.yaml")
+      data = YAML.load_file(Rails.root.join("schema.yaml"))
       openapi = OpenAPIParser.parse_with_filepath(data, schema_path)
       Committee::Drivers::OpenAPI3::Driver.new.parse(openapi)
     end
 
     @committee_options ||= {
-      schema: schema,
-      prefix: '/api/v2',
+      schema:,
+      prefix: "/api/v2",
       strict: true,
       coerce_date_times: true,
       parse_response_by_content_type: true,
-      query_hash_key: 'rack.request.query_hash',
-      params_key: 'action_dispatch.request.request_parameters'
+      query_hash_key: "rack.request.query_hash",
+      params_key: "action_dispatch.request.request_parameters"
     }
   end
 
