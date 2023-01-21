@@ -1,15 +1,8 @@
 name: Main
 
 on:
-  push:
-    branches:
-      - "**"
-    tags-ignore:
-      - "*.*"
-    paths-ignore:
-      - "CHANGELOG.md"
-      - "config/version.rb"
-      - "package.json"
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 env:
