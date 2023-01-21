@@ -140,6 +140,7 @@
 
                 pre-commit.hooks.actionlint.enable = true;
                 pre-commit.hooks.nixfmt.enable = true;
+                pre-commit.excludes = [ "gemset.nix" ];
               }
               {
                 services.postgres.enable = true;
