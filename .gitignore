@@ -47,3 +47,11 @@ blocklist.json
 reserved_usernames.json
 
 REVISION
+
+# Nix files
+result
+result-*
+.devenv
+.devenv.*
+.direnv
+.pre-commit-config.yaml
