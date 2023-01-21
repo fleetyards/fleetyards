@@ -71,6 +71,7 @@ class User < ApplicationRecord
          authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
          otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
+  has_many :auth_tokens, dependent: :destroy
   has_many :vehicles, dependent: :destroy
   has_many :models,
            through: :vehicles

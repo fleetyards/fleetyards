@@ -62,24 +62,6 @@ module Fleetyards
 
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
-    config.middleware.use Committee::Middleware::RequestValidation,
-                          schema_path: Rails.root.join("schema.yaml"),
-                          prefix: "/api/v2",
-                          strict: true,
-                          coerce_date_times: true,
-                          parse_response_by_content_type: true,
-                          query_hash_key: "rack.request.query_hash",
-                          params_key: "action_dispatch.request.request_parameters"
-    # query_hash_key: 'rack.request.query_hash',
-    # params_key: 'action_dispatch.request.request_parameters'
-    config.middleware.use Committee::Middleware::ResponseValidation,
-                          schema_path: Rails.root.join("schema.yaml"),
-                          prefix: "/api/v2",
-                          parse_response_by_content_type: true,
-                          query_hash_key: "rack.request.query_hash",
-                          params_key: "action_dispatch.request.request_parameters"
-    # query_hash_key: 'rack.request.query_hash',
-    # params_key: 'action_dispatch.request.request_parameters'
 
     config.app = config_for("app/main")
     config.maintainer = config_for("app/maintainer")

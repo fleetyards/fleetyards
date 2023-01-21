@@ -5,6 +5,7 @@ module Api
     class AuthTokensController < ::Api::V2::BaseController
       def index
         authorize! :index, :api_auth_tokens
+
         @auth_tokens = AuthToken.where(user_id: current_user.id)
           .order([{ created_at: :asc }])
           .page(params[:page])

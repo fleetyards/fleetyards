@@ -21,7 +21,9 @@ module Api
 
         describe "POST /api/v2/users/auth-tokens" do
           it "conforms to response schema with 401 response code" do
-            post "/api/v2/users/auth-tokens", as: :json
+            post "/api/v2/users/auth-tokens", as: :json, params: {
+              description: "Test Token"
+            }
 
             assert_response_schema_confirm(401)
           end
