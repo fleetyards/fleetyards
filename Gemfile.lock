@@ -90,7 +90,7 @@ GEM
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
     ansi (1.5.0)
-    appsignal (3.3.1)
+    appsignal (3.3.2)
       rack
     ast (2.4.2)
     bcrypt (3.1.18)
@@ -202,7 +202,7 @@ GEM
       tzinfo
     ethon (0.16.0)
       ffi (>= 1.15.0)
-    excon (0.97.1)
+    excon (0.97.2)
     execjs (2.8.1)
     faker (3.1.0)
       i18n (>= 1.8.11, < 2)
@@ -247,7 +247,7 @@ GEM
       nokogiri (>= 1.5.11, < 2.0.0)
     formatador (1.1.0)
     foundation_emails (2.2.1.0)
-    fugit (1.8.0)
+    fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     git (1.13.1)
@@ -496,7 +496,7 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.9.1)
       redis (>= 4, < 5)
-    regexp_parser (2.6.1)
+    regexp_parser (2.6.2)
     request_store (1.5.1)
       rack (>= 1.4)
     responders (3.0.1)
@@ -667,7 +667,6 @@ GEM
 
 PLATFORMS
   ruby
-  x86_64-linux
 
 DEPENDENCIES
   aasm
@@ -795,4 +794,4 @@ RUBY VERSION
    ruby 3.2.0p0
 
 BUNDLED WITH
-   2.2.33
+   2.4.4
