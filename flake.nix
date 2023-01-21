@@ -37,12 +37,16 @@
         });
     in {
       overlays.fleet = final: prev: {
-        fleet_yards_env = final.callPackage ({ bundlerEnv, ruby_3_0 }:
-          bundlerEnv {
-            name = "fleet-yards-env";
-            ruby = ruby_3_0;
-            gemdir = self;
-          }) { };
+        fleet_yards_env = final.callPackage
+          ({ bundlerEnv, ruby_3_0, defaultGemConfig, libyaml }:
+            bundlerEnv {
+              name = "fleet-yards-env";
+              ruby = ruby_3_0;
+              gemdir = self;
+              gemConfig = defaultGemConfig // {
+                psych = attrs: { buildInputs = [ libyaml ]; };
+              };
+            }) { };
 
         fleet_yards_yarn = final.callPackage
           ({ mkYarnPackage, runCommand, yarn2nix }:
