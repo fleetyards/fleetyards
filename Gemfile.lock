@@ -256,7 +256,6 @@ GEM
     globalid (1.0.1)
       activesupport (>= 5.0)
     google-protobuf (3.21.12)
-    google-protobuf (3.21.12-x86_64-linux)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
@@ -382,8 +381,6 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.14.0)
       mini_portile2 (~> 2.8.0)
-      racc (~> 1.4)
-    nokogiri (1.14.0-x86_64-linux)
       racc (~> 1.4)
     oj (3.13.23)
     options (2.3.2)
@@ -670,7 +667,6 @@ GEM
 
 PLATFORMS
   ruby
-  x86_64-linux
 
 DEPENDENCIES
   aasm
