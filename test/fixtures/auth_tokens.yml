@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: auth_tokens
+#
+#  id          :uuid             not null, primary key
+#  description :string
+#  expired_at  :datetime
+#  token       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :uuid
+#
+# Indexes
+#
+#  index_auth_tokens_on_token    (token) UNIQUE
+#  index_auth_tokens_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
+test_token:
+  user: data
+  token: test_token
+  description: Test Token
