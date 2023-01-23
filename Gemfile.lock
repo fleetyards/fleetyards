@@ -396,7 +396,7 @@ GEM
       google-protobuf (>= 3.19.2)
     pghero (3.1.0)
       activerecord (>= 6)
-    postmark (1.22.3)
+    postmark (1.23.0)
       json
     postmark-rails (0.22.1)
       actionmailer (>= 3.0.0)
@@ -516,7 +516,7 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
-    rubocop (1.43.0)
+    rubocop (1.44.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.2.0.0)
