@@ -344,10 +344,10 @@ jobs:
       - name: Deploy
         run: bundle exec cap stage deploy
       - run: |
-          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
+          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
           -H 'Content-Type: application/json' \
           -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"$GITHUB_USER\"}"
       - run: |
-          curl -X POST "$DISCORD_WEBHOOK" \
+          curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
           -d "{\"content\": \"**New Stage Release:**\" }"
