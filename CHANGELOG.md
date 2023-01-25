@@ -2,14 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [5.14.1](https://github.com/fleetyards/fleetyards/compare/v5.14.0...v5.14.1) (2023-01-24)
-
-
-### Bug Fixes
-
-* **2FA:** update user on enable 2FA page. ([396576d](https://github.com/fleetyards/fleetyards/commit/396576d3ea44c76a25d74c2834c8907add2dde69))
-* **fleet:** run update fleet_vehicle callbacks after commit ([68d739c](https://github.com/fleetyards/fleetyards/commit/68d739cc079cf7a05fb8e7f2b1d86c4f76d6584c))
-
 ## [5.14.0](https://github.com/fleetyards/fleetyards/compare/v5.13.6...v5.14.0) (2023-01-18)
 
 
