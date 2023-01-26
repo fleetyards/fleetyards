@@ -20,7 +20,7 @@ jobs:
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
       - uses: cachix/cachix-action@v11
         with:
-          name: fleetbot
+          name: fleetyards
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - run: nix build -L .#fleet_yards_yarn.deps
       - run: nix build -L .#fleet_yards_env
