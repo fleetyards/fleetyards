@@ -8,7 +8,7 @@ gem "rails", "7.0.4.2"
 
 gem "pg", "~> 1.0"
 
-gem "sidekiq", "< 7"
+gem "sidekiq", "< 8"
 gem "sidekiq-cron"
 
 gem "paper_trail"
