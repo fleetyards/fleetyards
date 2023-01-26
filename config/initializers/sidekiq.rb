@@ -8,6 +8,9 @@ sidekiq_config = { url: Rails.configuration.redis.url, db: Rails.configuration.r
 Sidekiq.configure_server do |config|
   config.redis = sidekiq_config
 
+  config.queues = %w[default mailers notifications loaders cleanup updater]
+  config.concurrency = Integer(ENV.fetch("MAX_THREADS", 5))
+
   config.on(:startup) do
     schedule_file = Rails.root.join("config/sidekiq_schedule.yml")
     schedule = YAML.load_file(schedule_file)[Rails.env] || {}
