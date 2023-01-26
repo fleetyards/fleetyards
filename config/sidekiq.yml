@@ -1,4 +1,5 @@
 ---
+:concurrency: <%= Integer(ENV.fetch("MAX_THREADS", 2)) %>
 :queues:
   - default
   - mailers
