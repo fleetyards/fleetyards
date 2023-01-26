@@ -112,7 +112,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       redis:
-        image: redis
+        image: redis:6.2.10-alpine
         ports:
           - 6379:6379
         options: >-
@@ -270,7 +270,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       redis:
-        image: redis
+        image: redis:6.2.10-alpine
         ports:
           - 6379:6379
         options: >-
