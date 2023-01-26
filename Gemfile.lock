@@ -103,7 +103,7 @@ GEM
       parser (>= 2.4)
       smart_properties
     bindex (0.8.1)
-    bootsnap (1.15.0)
+    bootsnap (1.16.0)
       msgpack (~> 1.2)
     bourbon (7.3.0)
       thor (~> 1.0)
@@ -230,7 +230,7 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
-    fog-aws (3.15.0)
+    fog-aws (3.16.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
@@ -364,7 +364,7 @@ GEM
       ruby2_keywords (>= 0.0.5)
     msgpack (1.6.0)
     multi_json (1.15.0)
-    multipart-post (2.2.3)
+    multipart-post (2.3.0)
     net-imap (0.3.4)
       date
       net-protocol
