@@ -1,0 +1,8 @@
+---
+:queues:
+  - default
+  - mailers
+  - notifications
+  - loaders
+  - cleanup
+  - updater
