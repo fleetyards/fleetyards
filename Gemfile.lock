@@ -202,7 +202,7 @@ GEM
       tzinfo
     ethon (0.16.0)
       ffi (>= 1.15.0)
-    excon (0.97.2)
+    excon (0.98.0)
     execjs (2.8.1)
     faker (3.1.0)
       i18n (>= 1.8.11, < 2)
@@ -629,7 +629,7 @@ GEM
     timeout (0.3.1)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
-    tzinfo (2.0.5)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
