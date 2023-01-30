@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_19_135447) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_30_144403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -329,6 +329,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_19_135447) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "sort"
     t.boolean "public", default: false
+    t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_hangar_groups_on_user_id"
   end
 

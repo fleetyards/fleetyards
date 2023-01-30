@@ -16,7 +16,8 @@
 #
 # Indexes
 #
-#  index_hangar_groups_on_user_id  (user_id)
+#  index_hangar_groups_on_user_id           (user_id)
+#  index_hangar_groups_on_user_id_and_name  (user_id,name) UNIQUE
 #
 class HangarGroup < ApplicationRecord
   belongs_to :user
