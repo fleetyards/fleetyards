@@ -4,6 +4,8 @@ module SlugHelper
   def self.generate_slug(name)
     return if name.blank?
 
-    name.downcase.gsub(/\s/, "-")
+    slug = name.parameterize
+
+    slug.presence || name
   end
 end
