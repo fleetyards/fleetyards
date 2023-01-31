@@ -259,7 +259,7 @@ GEM
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
-    groupdate (6.1.0)
+    groupdate (6.2.0)
       activesupport (>= 5.2)
     haml (6.1.1)
       temple (>= 0.8.2)
@@ -528,7 +528,7 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.24.1)
       parser (>= 3.1.1.0)
-    rubocop-minitest (0.26.1)
+    rubocop-minitest (0.27.0)
       rubocop (>= 0.90, < 2.0)
     rubocop-performance (1.15.2)
       rubocop (>= 1.7.0, < 2.0)
@@ -558,7 +558,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    searchkick (5.1.1)
+    searchkick (5.1.2)
       activemodel (>= 5.2)
       hashie
     selectize-rails (0.12.6)
