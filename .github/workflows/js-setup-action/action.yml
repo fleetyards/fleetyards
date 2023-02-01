@@ -1,0 +1,11 @@
+name: JS Setup Job
+description: JS Setup Tasks
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache@v3
+      with:
+        path: "**/node_modules"
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+    - run: yarn install
+      shell: bash

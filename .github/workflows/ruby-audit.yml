@@ -1,0 +1,17 @@
+name: Ruby Audit Job
+
+on:
+  workflow_call:
+
+jobs:
+  ruby-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Update Audit DB
+        run: bundle exec bundle-audit update
+      - name: Check Audit DB
+        run: bundle exec bundle-audit check
