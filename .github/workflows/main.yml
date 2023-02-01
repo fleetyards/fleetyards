@@ -75,17 +75,21 @@ jobs:
   notify-app_signal:
     runs-on: ubuntu-latest
     needs: [deploy-to-stage]
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
     steps:
       - run: |
-          curl -X POST ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }} \
+          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
           -H 'Content-Type: application/json' \
           -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
 
   notify-discord:
     runs-on: ubuntu-latest
     needs: [deploy-to-stage]
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     steps:
       - run: |
-          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+          curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
           -d "{\"content\": \"**New Stage Release:**\" }"

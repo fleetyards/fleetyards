@@ -37,9 +37,11 @@ jobs:
   notify_app_signal:
     runs-on: ubuntu-latest
     needs: [deploy-to-live]
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
     steps:
       - run: |
-          curl -X POST ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }} \
+          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
           -H 'Content-Type: application/json' \
           -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
 
@@ -69,10 +71,12 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     needs: [create-release]
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     steps:
       - name: Set TAG_NAME
         run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - run: |
-          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+          curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
           -d "{\"content\": \"**New Release:** $TAG_NAME\nhttps://github.com/fleetyards/fleetyards/releases/tag/$TAG_NAME\" }"
