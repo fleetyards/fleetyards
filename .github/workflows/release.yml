@@ -27,12 +27,11 @@ jobs:
 
   deploy-to-live:
     needs: [smoke-test]
-    environment:
-      name: Live
-      url: https://fleetyards.net
     uses: ./.github/workflows/deploy.job.yml
     with:
       capEnv: live
+      name: Live
+      url: https://fleetyards.net
     secrets: inherit
 
   notify_app_signal:

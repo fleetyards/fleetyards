@@ -6,10 +6,20 @@ on:
       capEnv:
         required: true
         type: string
+      name:
+        required: true
+        type: string
+      url:
+        required: true
+        type: string
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: ${{ inputs.name }}
+      url: ${{ inputs.url }}
 
     steps:
       - uses: actions/checkout@v3
