@@ -1,0 +1,13 @@
+name: JS Audit Job
+
+on:
+  workflow_call:
+
+jobs:
+  js-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/js-setup-action
+      - name: Check Audit DB
+        run: yarn audit --groups dependencies

@@ -1,0 +1,12 @@
+name: JS Lint Job
+
+on:
+  workflow_call:
+
+jobs:
+  js-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/js-setup-action
+      - run: yarn run lint:js

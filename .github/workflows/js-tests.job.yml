@@ -1,0 +1,13 @@
+name: JS Tests Job
+
+on:
+  workflow_call:
+
+jobs:
+  js-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/js-setup-action
+      - name: Run Javascript Tests
+        run: yarn test

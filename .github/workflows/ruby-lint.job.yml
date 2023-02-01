@@ -1,0 +1,15 @@
+name: Ruby Lint Job
+
+on:
+  workflow_call:
+
+jobs:
+  ruby-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: rubocoptering
+        run: bundle exec rubocop --format progress

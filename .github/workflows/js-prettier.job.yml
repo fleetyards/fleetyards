@@ -1,0 +1,12 @@
+name: JS Prettier Job
+
+on:
+  workflow_call:
+
+jobs:
+  js-prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/js-setup-action
+      - run: yarn run lint:prettier

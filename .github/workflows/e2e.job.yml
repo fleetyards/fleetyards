@@ -1,0 +1,84 @@
+name: E2E Job
+
+on:
+  workflow_call:
+
+jobs:
+  e2e-test:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_USER: root
+      TEST_SEEDS: 1
+      RAILS_ENV: ci
+      VITE_RUBY_MODE: production
+      ON_SUBDOMAIN: false
+      RAILS_SERVE_STATIC_FILES: 1
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      JOBS: 1
+
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:6.2.10-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: ./.github/workflows/js-setup-action
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 7.6.0
+      - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
+      - name: Setup DB
+        run: bundle exec rails db:create db:schema:load
+      - name: Create ES Index
+        run: bundle exec thor search:index
+      - name: Assets Compile
+        run: bundle exec rails assets:precompile
+      - name: Prefill DB
+        run: bundle exec rails db:seed
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: bundle exec puma -C config/puma.rb
+          wait-on: 'http://localhost:8270'
+          wait-on-timeout: 120
+          browser: chrome
+          record: true
+          parallel: true
+        env:
+          PORT: 8270
+          CYPRESS_BASE_URL: http://localhost:8270
