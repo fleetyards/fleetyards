@@ -3,23 +3,13 @@ name: Deploy Job
 on:
   workflow_call:
     inputs:
-      environment:
-        required: true
-        type: string
-      environment_name:
-        required: true
-        type: string
-      environment_url:
+      capEnv:
         required: true
         type: string
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    environment:
-      name: ${{ inputs.environment_name }}
-      url: ${{ inputs.environment_url }}
 
     steps:
       - uses: actions/checkout@v3
@@ -33,4 +23,4 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: ignore
       - name: Deploy
-        run: bundle exec cap ${{ inputs.environment }} deploy
+        run: bundle exec cap ${{ inputs.capEnv }} deploy

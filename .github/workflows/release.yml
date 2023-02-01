@@ -27,16 +27,18 @@ jobs:
 
   deploy-to-live:
     needs: [smoke-test]
+    environment:
+      name: Live
+      url: https://fleetyards.net
     uses: ./.github/workflows/deploy.job.yml
     with:
-      environment: live
-      environment_name: Live
-      environment_url: https://fleetyards.net
+      capEnv: live
     secrets: inherit
 
   notify_app_signal:
     runs-on: ubuntu-latest
     needs: [deploy-to-live]
+    environment: Live
     env:
       APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
     steps:
@@ -48,9 +50,7 @@ jobs:
   create-release:
     needs: [deploy-to-live]
     runs-on: ubuntu-latest
-
     environment: Live
-
     steps:
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
@@ -71,6 +71,7 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     needs: [create-release]
+    environment: Live
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     steps:
