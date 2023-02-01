@@ -70,6 +70,7 @@ jobs:
       environment: stage
       environment_name: Stage
       environment_url: https://stage.fleetyards.net
+    secrets: inherit
 
   notify-app_signal:
     runs-on: ubuntu-latest
