@@ -382,7 +382,7 @@ GEM
     nokogiri (1.14.1)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    oj (3.14.0)
+    oj (3.14.1)
     options (2.3.2)
     orm_adapter (0.5.0)
     paper_trail (14.0.0)
