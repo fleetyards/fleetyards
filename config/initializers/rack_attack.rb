@@ -19,6 +19,8 @@ Rack::Attack.throttle("api", limit: limit_proc, period: 1.hour) do |req|
   end
 end
 
+Rack::Attack.throttled_response_retry_after_header = true
+
 Rack::Attack.throttled_responder = lambda do |env|
   now = Time.zone.now
   match_data = env["rack.attack.match_data"]

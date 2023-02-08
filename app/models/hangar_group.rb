@@ -31,7 +31,6 @@ class HangarGroup < ApplicationRecord
   before_save :update_slugs
   after_save :touch_vehicles
   after_commit :broadcast_update
-  after_touch :clear_association_cache
 
   def broadcast_update
     HangarChannel.broadcast_to(user, {}.to_json)

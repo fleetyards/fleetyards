@@ -73,11 +73,10 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   before_save :set_module_package
 
-  after_create :broadcast_create, :schedule_fleet_vehicle_create
+  after_create :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
-  after_save :set_flagship, :update_loaners, :schedule_fleet_vehicle_update
-  after_commit :broadcast_update
-  after_touch :clear_association_cache
+  after_save :set_flagship, :update_loaners
+  after_commit :broadcast_update, :schedule_fleet_vehicle_update
 
   ransack_alias :search, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
@@ -94,13 +93,6 @@ class Vehicle < ApplicationRecord
   serialize :alternative_names, Array
 
   def schedule_fleet_vehicle_update
-    return if hidden?
-    return unless saved_change_to_purchased?
-
-    Updater::FleetVehicleUpdateJob.perform_async(id)
-  end
-
-  def schedule_fleet_vehicle_create
     return if hidden?
 
     Updater::FleetVehicleUpdateJob.perform_async(id)
