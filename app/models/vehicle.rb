@@ -127,7 +127,7 @@ class Vehicle < ApplicationRecord
 
     Vehicle.where(loaner: true, vehicle_id: id, user_id:).destroy_all
 
-    Vehicle.where(loaner: true, user_id:).find_each do |loaner_vehicle|
+    Vehicle.where(loaner: true, model_id:, user_id:).find_each do |loaner_vehicle|
       loaner_vehicle.update(
         hidden: Vehicle.where(loaner: true, model_id: loaner_vehicle.model_id, user_id:, hidden: false).where.not(id: loaner_vehicle.id).exists?
       )

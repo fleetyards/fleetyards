@@ -18,10 +18,4 @@
 class TaskForce < ApplicationRecord
   belongs_to :vehicle, touch: true
   belongs_to :hangar_group, touch: true
-
-  after_commit :schedule_fleet_vehicle_update
-
-  def schedule_fleet_vehicle_update
-    Updater::FleetVehicleUpdateJob.perform_async(vehicle_id)
-  end
 end
