@@ -230,7 +230,7 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
-    fog-aws (3.16.0)
+    fog-aws (3.17.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
@@ -496,7 +496,7 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.9.1)
       redis (>= 4, < 5)
-    regexp_parser (2.6.2)
+    regexp_parser (2.7.0)
     request_store (1.5.1)
       rack (>= 1.4)
     responders (3.1.0)
@@ -558,7 +558,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    searchkick (5.1.2)
+    searchkick (5.2.0)
       activemodel (>= 5.2)
       hashie
     selectize-rails (0.12.6)
@@ -642,7 +642,7 @@ GEM
       activesupport (>= 3.0.0)
     useragent (0.16.10)
     vcr (6.1.0)
-    vite_rails (3.0.13)
+    vite_rails (3.0.14)
       railties (>= 5.1, < 8)
       vite_ruby (~> 3.0, >= 3.2.2)
     vite_ruby (3.2.14)
