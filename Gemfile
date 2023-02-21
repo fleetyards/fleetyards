@@ -164,7 +164,6 @@ group :test do
   gem "minitest-rails"
   gem "mocha", require: false
   gem "rails-perftest"
-  gem "ruby-prof"
   gem "shoulda"
   gem "shoulda-matchers"
   gem "simplecov", require: false
