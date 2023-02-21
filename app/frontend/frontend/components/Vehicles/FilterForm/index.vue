@@ -154,26 +154,17 @@
     />
 
     <RadioList
-      v-if="$route.name === 'hangar'"
-      v-model="form.purchasedEq"
-      :label="$t('labels.filters.vehicles.purchased')"
-      :reset-label="$t('labels.all')"
-      :options="booleanOptions"
-      name="purchased"
-    />
-
-    <RadioList
-      v-if="$route.name === 'hangar'"
+      v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
       v-model="form.loanerEq"
       :label="$t('labels.filters.vehicles.loaner')"
       :reset-label="$t('labels.hide')"
       :options="[
         {
-          name: 'Show',
+          name: $t('labels.show'),
           value: 'true',
         },
         {
-          name: 'Only',
+          name: $t('labels.only'),
           value: 'only',
         },
       ]"
@@ -189,7 +180,7 @@
     />
 
     <RadioList
-      v-if="$route.name === 'hangar'"
+      v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
       v-model="form.publicEq"
       :label="$t('labels.filters.vehicles.public')"
       :reset-label="$t('labels.all')"
@@ -247,7 +238,7 @@ export default {
       form: {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
-        purchasedEq: query.purchasedEq,
+        wantedEq: query.wantedEq,
         loanerEq: query.loanerEq,
         publicEq: query.publicEq,
         priceLteq: query.priceLteq,
@@ -289,7 +280,7 @@ export default {
       this.form = {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
-        purchasedEq: query.purchasedEq,
+        wantedEq: query.wantedEq,
         loanerEq: query.loanerEq,
         publicEq: query.publicEq,
         priceLteq: query.priceLteq,

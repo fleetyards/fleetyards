@@ -8,6 +8,17 @@
     :inline="true"
   >
     <Btn
+      v-if="editable && !hideEdit"
+      :aria-label="$t('actions.edit')"
+      size="small"
+      variant="dropdown"
+      data-test="vehicle-edit"
+      @click.native="openEditModal"
+    >
+      <i class="fa fa-pencil" />
+      <span>{{ $t("actions.edit") }}</span>
+    </Btn>
+    <Btn
       v-if="vehicle.model"
       :to="{
         name: 'model',
@@ -22,18 +33,31 @@
       <span>{{ $t("actions.showDetailPage") }}</span>
     </Btn>
     <Btn
-      v-if="editable"
-      :aria-label="$t('actions.edit')"
+      v-if="editable && !wishlist"
+      :aria-label="$t('actions.addToWishlist')"
       size="small"
       variant="dropdown"
-      data-test="vehicle-edit"
-      @click.native="openEditModal"
+      :disabled="updating"
+      data-test="vehicle-add-to-wishlist"
+      @click.native="addToWishlist"
     >
-      <i class="fa fa-pencil" />
-      <span>{{ $t("actions.edit") }}</span>
+      <i class="fad fa-wand-sparkles" />
+      <span>{{ $t("actions.addToWishlist") }}</span>
     </Btn>
     <Btn
-      v-if="editable"
+      v-if="editable && wishlist"
+      :aria-label="$t('actions.addToHangar')"
+      size="small"
+      variant="dropdown"
+      :disabled="updating"
+      data-test="vehicle-add-to-hangar"
+      @click.native="addToHangar"
+    >
+      <i class="fad fa-garage" />
+      <span>{{ $t("actions.addToHangar") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable && !wishlist"
       :aria-label="$t('actions.hangar.editName')"
       size="small"
       variant="dropdown"
@@ -44,7 +68,7 @@
       <span>{{ $t("actions.hangar.editName") }}</span>
     </Btn>
     <Btn
-      v-if="editable"
+      v-if="editable && !wishlist"
       :aria-label="$t('actions.hangar.editGroups')"
       size="small"
       variant="dropdown"
@@ -86,8 +110,9 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import { displayConfirm } from "@/frontend/lib/Noty";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import wishlistCollection from "@/frontend/api/collections/Wishlist";
 
-@Component<GroupModal>({
+@Component<ContextMenu>({
   components: {
     Btn,
     BtnDropdown,
@@ -96,13 +121,19 @@ import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 export default class ContextMenu extends Vue {
   deleting = false;
 
-  @Prop({ default: null }) vehicle: Vehicle | null;
+  updating = false;
+
+  @Prop({ default: null }) vehicle!: Vehicle | null;
 
   @Prop({ default: false }) editable!: boolean;
 
+  @Prop({ default: false }) hideEdit!: boolean;
+
+  @Prop({ default: false }) wishlist!: boolean;
+
   @Prop({
     default: "link",
-    validator(value) {
+    validator(value: string) {
       return (
         ["default", "transparent", "link", "danger", "dropdown"].indexOf(
           value
@@ -114,23 +145,55 @@ export default class ContextMenu extends Vue {
 
   @Prop({
     default: "small",
-    validator(value) {
+    validator(value: string) {
       return ["default", "small", "large"].indexOf(value) !== -1;
     },
   })
   size!: string;
 
   get hasAddons() {
+    if (!this.vehicle) {
+      return false;
+    }
+
     return (
       this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length
     );
   }
 
   get upgradable() {
+    if (!this.vehicle) {
+      return false;
+    }
+
     return (
       (this.editable || this.hasAddons) &&
       (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
     );
+  }
+
+  async addToWishlist() {
+    if (!this.vehicle) {
+      return;
+    }
+
+    this.updating = true;
+
+    await vehiclesCollection.addToWishlist(this.vehicle.id);
+
+    this.updating = false;
+  }
+
+  async addToHangar() {
+    if (!this.vehicle) {
+      return;
+    }
+
+    this.updating = true;
+
+    await wishlistCollection.addToHangar(this.vehicle.id);
+
+    this.updating = false;
   }
 
   remove() {
@@ -147,6 +210,10 @@ export default class ContextMenu extends Vue {
   }
 
   async destroy() {
+    if (!this.vehicle) {
+      return;
+    }
+
     await vehiclesCollection.destroy(this.vehicle.id);
 
     this.deleting = false;
@@ -157,6 +224,7 @@ export default class ContextMenu extends Vue {
       component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
       props: {
         vehicle: this.vehicle,
+        wishlist: this.wishlist,
       },
     });
   }

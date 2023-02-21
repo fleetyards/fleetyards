@@ -51,16 +51,17 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
 import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import modelsCollection from "@/frontend/api/collections/Models";
+import type { ModelsCollection } from "@/frontend/api/collections/Models";
 
 type VehicleFormData = {
-  vehicles: Vehicle[];
+  vehicles: Partial<Vehicle>[];
 };
 
 @Component<NewVehiclesModal>({
@@ -72,6 +73,8 @@ type VehicleFormData = {
   },
 })
 export default class NewVehiclesModal extends Vue {
+  @Prop({ default: false }) wanted: boolean;
+
   submitting = false;
 
   modelsCollection: ModelsCollection = modelsCollection;
@@ -100,7 +103,14 @@ export default class NewVehiclesModal extends Vue {
     this.submitting = true;
 
     await this.form.vehicles.forEach(async (item) => {
-      await vehiclesCollection.create({ modelId: item.model.id });
+      if (!item.model) {
+        return;
+      }
+
+      await vehiclesCollection.create({
+        wanted: this.wanted,
+        modelId: item.model.id,
+      });
     });
 
     vehiclesCollection.refresh();

@@ -121,9 +121,38 @@ export class VehiclesCollection extends BaseCollection {
     return response;
   }
 
-  async markAsPurchasedBulk(ids: string): Promise<boolean> {
+  async addToWishlist(id: string): Promise<boolean> {
+    const response = await put(`vehicles/${id}`, {
+      wanted: true,
+    });
+
+    if (!response.error) {
+      this.refresh();
+
+      return true;
+    }
+
+    return false;
+  }
+
+  async addToWishlistBulk(ids: string): Promise<boolean> {
     const response = await put(`vehicles/bulk`, {
-      purchased: true,
+      wanted: true,
+      ids,
+    });
+
+    if (!response.error) {
+      this.refresh();
+
+      return true;
+    }
+
+    return false;
+  }
+
+  async addToHangarBulk(ids: string): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      wanted: false,
       ids,
     });
 

@@ -8,19 +8,15 @@
         <div class="row">
           <div class="col-12 col-md-6">
             <Checkbox
+              v-if="!wishlist"
               id="flagship"
               v-model="form.flagship"
               :label="$t('labels.vehicle.flagship')"
             />
             <Checkbox
-              id="purchased"
-              v-model="form.purchased"
-              :label="$t('labels.vehicle.purchased')"
-            />
-            <Checkbox
+              v-if="wishlist"
               id="saleNotify"
               v-model="form.saleNotify"
-              :disabled="form.purchased"
               :label="$t('labels.vehicle.saleNotify')"
             />
             <Checkbox
@@ -81,10 +77,9 @@ import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 
 type VehicleFormData = {
   flagship: boolean;
-  purchased: boolean;
   saleNotify: boolean;
   public: boolean;
-  modelPaintId: string | null;
+  modelPaintId: string | undefined;
 };
 
 @Component<VehicleModal>({
@@ -98,6 +93,8 @@ type VehicleFormData = {
 })
 export default class VehicleModal extends Vue {
   @Prop({ required: true }) vehicle: Vehicle;
+
+  @Prop({ default: false }) wishlist: boolean;
 
   submitting = false;
 
@@ -114,15 +111,18 @@ export default class VehicleModal extends Vue {
 
   setupForm() {
     this.form = {
-      purchased: this.vehicle.purchased,
       flagship: this.vehicle.flagship,
       public: this.vehicle.public,
       saleNotify: this.vehicle.saleNotify,
-      modelPaintId: this.vehicle.paint?.id || null,
+      modelPaintId: this.vehicle.paint?.id,
     };
   }
 
   async save() {
+    if (!this.form) {
+      return;
+    }
+
     this.submitting = true;
 
     const response = await vehiclesCollection.update(

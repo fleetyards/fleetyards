@@ -15,11 +15,13 @@ namespace :frontend,
   get "ships/:slug/videos" => "base#model_videos", as: :model_videos
 
   get "hangar" => "base#index"
+  get "hangar/wishlist" => "base#index"
   get "hangar/preview" => "base#index"
   get "hangar/import" => "base#index"
   get "hangar/stats" => "base#index"
   get "hangar/:username" => "hangar#index", as: :public_hangar
   get "hangar/:username/fleetchart" => "hangar#index"
+  get "hangar/:username/wishlist" => "hangar#wishlist", as: :public_wishlist
 
   get "compare/ships" => "base#compare_models"
 

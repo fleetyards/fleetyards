@@ -182,6 +182,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_122154) do
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "docks", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "dock_type"
     t.uuid "station_id"
@@ -236,6 +239,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_122154) do
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 
+  create_table "ex_imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "started_at", precision: 0
+    t.datetime "failed_at", precision: 0
+    t.datetime "finished_at", precision: 0
+    t.text "info"
+    t.string "version", limit: 255
+    t.string "source", limit: 255
+    t.string "name", limit: 255
+  end
+
   create_table "factions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.string "name"
@@ -255,6 +268,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_122154) do
     t.datetime "updated_at", null: false
     t.datetime "expires_after", precision: nil
     t.integer "limit"
+    t.index ["token"], name: "fleet_invite_urls_token_index", unique: true
     t.index ["token"], name: "index_fleet_invite_urls_on_token", unique: true
   end
 
@@ -275,6 +289,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_122154) do
     t.datetime "invited_at", precision: nil
     t.datetime "requested_at", precision: nil
     t.string "used_invite_token"
+    t.index ["fleet_id", "user_id"], name: "fleet_memberships_fleet_id_user_id_index", unique: true
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
   end
 
@@ -330,6 +345,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_122154) do
     t.integer "sort"
     t.boolean "public", default: false
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
+    t.index ["user_id", "slug"], name: "hangar_groups_user_id_slug_index", unique: true
     t.index ["user_id"], name: "index_hangar_groups_on_user_id"
   end
 

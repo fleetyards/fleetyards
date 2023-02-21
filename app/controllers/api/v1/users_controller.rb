@@ -103,8 +103,8 @@ module Api
       private def user_params
         @user_params ||= params.transform_keys(&:underscore)
           .permit(
-            :avatar, :remove_avatar, :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage,
-            :youtube, :twitch, :guilded, :public_hangar_loaners
+            :avatar, :remove_avatar, :sale_notify, :public_hangar, :public_wishlist, :rsi_handle,
+            :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners
           )
       end
 

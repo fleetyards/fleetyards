@@ -69,8 +69,7 @@ export default {
   updatePassword: "Update Password",
   copyBackupCodes: "Copy Backup Codes",
   add: "Add",
-  addAsPurchased: "Add as Purchased",
-  markAsPurchased: "Mark as Purchased",
+  addAsWanted: "Add to Wishlist",
   addAnother: "Add another",
   addVehicle: "Add Ships",
   addGroup: "Add Group",
@@ -87,7 +86,7 @@ export default {
     showOnPublicHangar: "Make Public",
     hideFromPublicHangar: "Hide from Public",
     editGroupsSelected: "Add/Remove from Groups",
-    markAsPurchasedSelected: "Mark as Purchased",
+    markAsWantedSelected: "Mark as Wanted",
   },
   empty: {
     reset: "Reset Filters/Pages",

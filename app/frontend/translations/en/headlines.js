@@ -22,6 +22,8 @@ export default {
     stats: "My Hangar Stats",
     public: "%{user} Hangar",
     import: "Import",
+    wishlist: "Wishlist",
+    publicWishlist: "%{user} Wishlist",
   },
   editMyVehicle: "Edit my %{vehicle}",
   nameMyVehicle: "Name my %{vehicle}",

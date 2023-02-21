@@ -5,6 +5,8 @@ import fleet from "@/frontend/lib/Store/modules/fleet";
 import publicFleet from "@/frontend/lib/Store/modules/publicFleet";
 import hangar from "@/frontend/lib/Store/modules/hangar";
 import publicHangar from "@/frontend/lib/Store/modules/publicHangar";
+import wishlist from "@/frontend/lib/Store/modules/wishlist";
+import publicWishlist from "@/frontend/lib/Store/modules/publicWishlist";
 import models from "@/frontend/lib/Store/modules/models";
 import stations from "@/frontend/lib/Store/modules/stations";
 import shops from "@/frontend/lib/Store/modules/shops";
@@ -20,6 +22,8 @@ export default () => ({
   publicFleet: publicFleet(),
   hangar: hangar(),
   publicHangar: publicHangar(),
+  wishlist: wishlist(),
+  publicWishlist: publicWishlist(),
   models: models(),
   stations: stations(),
   shops: shops(),

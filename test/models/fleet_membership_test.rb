@@ -14,7 +14,7 @@
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
 #  role              :integer
-#  ships_filter      :integer          default("purchased")
+#  ships_filter      :integer          default("all")
 #  used_invite_token :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -24,6 +24,7 @@
 #
 # Indexes
 #
+#  fleet_memberships_fleet_id_user_id_index         (fleet_id,user_id) UNIQUE
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
 #
 require "test_helper"
@@ -70,7 +71,7 @@ class FleetMembershipTest < ActiveSupport::TestCase
 
   describe "#remove_fleet_vehicles" do
     it "removes all relevant fleet_vehicles" do
-      user.vehicles.create(model_id: Model.first.id, purchased: true)
+      user.vehicles.create(model_id: Model.first.id, wanted: false)
       new_fleet_membership = FleetMembership.create!(fleet_id: fleet.id, user_id: user.id, aasm_state: :accepted)
 
       assert_equal 1, Updater::FleetMembershipVehiclesSetupJob.jobs.size

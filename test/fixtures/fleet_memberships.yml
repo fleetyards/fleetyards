@@ -12,7 +12,7 @@
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
 #  role              :integer
-#  ships_filter      :integer          default("purchased")
+#  ships_filter      :integer          default("all")
 #  used_invite_token :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -22,6 +22,7 @@
 #
 # Indexes
 #
+#  fleet_memberships_fleet_id_user_id_index         (fleet_id,user_id) UNIQUE
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
 #
 
@@ -36,7 +37,7 @@ starfleet_data:
   fleet: starfleet
   user: data
   role: :member
-  ships_filter: :purchased
+  ships_filter: :all
   aasm_state: :accepted
   accepted_at: <%= Time.now %>
 

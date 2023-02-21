@@ -40,6 +40,7 @@
                 query: filterFor('hangar'),
               }"
               :label="$t('nav.hangar')"
+              :active="isHangarRoute"
               icon="fad fa-warehouse"
             />
             <NavItem
@@ -142,6 +143,14 @@ export default class Navigation extends Vue {
     }
 
     return this.$route.name.includes("model");
+  }
+
+  get isHangarRoute() {
+    if (!this.$route.name) {
+      return false;
+    }
+
+    return this.$route.name.includes("hangar");
   }
 
   @Watch("$route")

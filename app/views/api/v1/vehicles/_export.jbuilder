@@ -8,7 +8,7 @@ json.manufacturer_code vehicle.model.manufacturer.code
 json.paint_slug vehicle.model_paint&.slug
 json.ship_name vehicle.name
 json.ship_serial vehicle.serial
-json.purchased vehicle.purchased
+json.wanted vehicle.wanted
 json.flagship vehicle.flagship
 json.public vehicle.public
 json.name_visible vehicle.name_visible

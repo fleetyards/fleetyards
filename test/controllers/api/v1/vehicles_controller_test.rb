@@ -76,7 +76,7 @@ module Api
             "id" => explorer.id,
             "name" => "",
             "serial" => nil,
-            "purchased" => true,
+            "wanted" => false,
             "loaner" => false,
             "flagship" => false,
             "public" => true,
@@ -327,7 +327,7 @@ module Api
             "id" => enterprise.id,
             "name" => "Enterprise",
             "serial" => nil,
-            "purchased" => true,
+            "wanted" => false,
             "loaner" => false,
             "flagship" => false,
             "public" => true,
@@ -530,7 +530,7 @@ module Api
             "id" => enterprise.id,
             "name" => "Enterprise",
             "serial" => nil,
-            "purchased" => true,
+            "wanted" => false,
             "loaner" => false,
             "flagship" => false,
             "public" => true,
@@ -728,6 +728,7 @@ module Api
 
           expected = {
             "total" => 2,
+            "wishlistTotal" => 0,
             "classifications" => [{
               "name" => "explorer",
               "label" => "Explorer",
@@ -765,6 +766,7 @@ module Api
 
           expected = {
             "total" => 0,
+            "wishlistTotal" => 0,
             "classifications" => [{
               "name" => "explorer",
               "label" => "Explorer",

@@ -37,6 +37,21 @@
             />
           </ValidationProvider>
         </div>
+        <div class="col-12 col-md-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="publicWishlist"
+            :name="$t('labels.user.publicWishlist')"
+            :slim="true"
+          >
+            <Checkbox
+              id="publicWishlist"
+              v-model="form.publicWishlist"
+              :label="$t('labels.user.publicWishlist')"
+              :class="{ 'has-error has-feedback': errors[0] }"
+            />
+          </ValidationProvider>
+        </div>
       </div>
       <br />
       <Btn :loading="submitting" type="submit" size="large">
@@ -85,6 +100,7 @@ export default class SettingsHangar extends Vue {
     this.form = {
       publicHangar: this.currentUser.publicHangar,
       publicHangarLoaners: this.currentUser.publicHangarLoaners,
+      publicWishlist: this.currentUser.publicWishlist,
     };
   }
 

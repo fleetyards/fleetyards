@@ -33,6 +33,7 @@
 #  otp_secret                :string
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
+#  public_wishlist           :boolean          default(FALSE)
 #  remember_created_at       :datetime
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)

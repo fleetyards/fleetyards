@@ -57,10 +57,10 @@ Cypress.Commands.add("success", (message) => {
   });
 });
 
-Cypress.Commands.add("addToHangar", (ship, purchased = false) => {
+Cypress.Commands.add("addToHangar", (ship, wanted = false) => {
   cy.get(`.model-panel#${ship} [data-test="add-to-hangar"]`).click();
-  if (purchased) {
-    cy.get(`[data-test="add-to-hangar-as-purchased"]`).click();
+  if (wanted) {
+    cy.get(`[data-test="add-to-hangar-as-wanted"]`).click();
   } else {
     cy.get(`[data-test="add-to-hangar-as-normal"]`).click();
   }

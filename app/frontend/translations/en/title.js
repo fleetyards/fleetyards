@@ -18,6 +18,8 @@ export default {
     stats: "My Hangar Stats",
     import: "Import",
     public: "%{user} Hangar",
+    wishlist: "Wishlist",
+    publicWishlist: "%{user} Wishlist",
   },
   stations: "Stations",
   shops: "Shops",

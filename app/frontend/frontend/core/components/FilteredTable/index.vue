@@ -44,6 +44,7 @@
             :style="{
               'flex-grow': column.flexGrow,
               width: column.width,
+              'min-width': column.minWidth,
             }"
           >
             {{ column.label }}
@@ -71,6 +72,7 @@
                   :style="{
                     'flex-grow': column.flexGrow,
                     width: column.width,
+                    'min-width': column.minWidth,
                   }"
                 >
                   <slot :record="record" :name="`col-${column.name}`">
