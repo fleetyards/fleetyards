@@ -5,6 +5,7 @@ require "capistrano/deploy"
 require "capistrano/rbenv"
 require "capistrano/rails"
 require "capistrano/rails/console"
+require "capistrano/data_migrate"
 
 require "capistrano/scm/git"
 install_plugin Capistrano::SCM::Git
