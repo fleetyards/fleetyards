@@ -541,7 +541,6 @@ GEM
       rubocop (~> 1.0)
     ruby-graphviz (1.2.5)
       rexml
-    ruby-prof (1.6.0)
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -759,7 +758,6 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rake
-  ruby-prof
   sass-rails
   searchkick
   selectize-rails
