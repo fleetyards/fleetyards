@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_30_144403) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_21_122154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -928,6 +928,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_144403) do
     t.string "normalized_email"
     t.datetime "hangar_updated_at", precision: nil
     t.string "otp_secret"
+    t.boolean "public_wishlist", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["confirmation_token"], name: "users_confirmation_token_index"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -974,6 +975,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_144403) do
     t.string "alternative_names"
     t.uuid "module_package_id"
     t.string "slug"
+    t.boolean "wanted", default: false
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
