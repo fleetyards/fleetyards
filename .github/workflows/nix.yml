@@ -9,6 +9,8 @@ on:
       - "package.json"
   pull_request:
     branches: ["main"]
+  merge_group:
+    branches: ["main"]
 jobs:
   nix-build:
     strategy:
