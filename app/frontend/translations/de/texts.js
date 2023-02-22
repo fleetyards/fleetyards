@@ -31,7 +31,7 @@ export default {
     fleetchart:
       'To view a scaled fleetchart of your ships from an above view angle just click on the "Fleetchart" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.',
     public:
-      'Your hangar has a public visible page where all ships marked as "purchased" are listed. You can access your public hangar by clicking on the "Public URL" button in the top right corner.',
+      'Your hangar has a public visible page where all ships which are not marked as "wanted" are listed. You can access your public hangar by clicking on the "Public URL" button in the top right corner.',
     icon: "Lookout for this icon:",
   },
   hangarPreview: {
@@ -41,7 +41,7 @@ export default {
     },
     manage: {
       headline: "Manage your Hangar",
-      text: "Add Ships to your Hangar, name your Ships, mark them as purchased or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insides into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?",
+      text: "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insides into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?",
     },
     fleetchart: {
       headline: "Fleetchart and Public Hangar",
@@ -55,7 +55,7 @@ export default {
     },
     overview: {
       headline: "Overview & Manage",
-      text: "Invite your Org Mates and get a filterable and searchable list of all public and purchased Ships. ",
+      text: "Invite your Org Mates and get a filterable and searchable list of all public Ships. ",
     },
     fleetchart: {
       headline: "Fleetchart",

@@ -6,17 +6,17 @@
     <div class="page-actions page-actions-block">
       <Btn
         :inline="true"
-        data-test="add-to-hangar-as-purchased"
-        @click.native="saveVehicleAsPurchase"
+        data-test="add-to-hangar-as-normal"
+        @click.native="addToHangar"
       >
-        {{ $t("actions.addAsPurchased") }}
+        {{ $t("actions.addToHangar") }}
       </Btn>
       <Btn
         :inline="true"
-        data-test="add-to-hangar-as-normal"
-        @click.native="saveVehicle"
+        data-test="add-to-hangar-as-wanted"
+        @click.native="addToWishlist"
       >
-        {{ $t("actions.add") }}
+        {{ $t("actions.addToWishlist") }}
       </Btn>
     </div>
   </Modal>
@@ -40,20 +40,37 @@ import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 export default class AddToHangarModal extends Vue {
   @Prop({ required: true }) model: Model;
 
-  @Action("add", { namespace: "hangar" }) addToHangar;
+  @Action("add", { namespace: "hangar" }) saveToHangar;
 
-  saveVehicleAsPurchase() {
-    this.saveVehicle({ purchased: true });
-  }
+  @Action("add", { namespace: "wishlist" }) saveToWishlist;
 
-  async saveVehicle(params = {}) {
+  async addToWishlist() {
     const success = await vehiclesCollection.create({
-      ...params,
+      wanted: true,
       modelId: this.model.id,
     });
 
     if (success) {
-      await this.addToHangar(this.model.slug);
+      await this.saveToWishlist(this.model.slug);
+
+      displaySuccess({
+        text: this.$t("messages.vehicle.addToWishlist.success", {
+          model: this.model.name,
+        }),
+        icon: this.model.storeImageSmall,
+      });
+
+      this.$comlink.$emit("close-modal");
+    }
+  }
+
+  async addToHangar() {
+    const success = await vehiclesCollection.create({
+      modelId: this.model.id,
+    });
+
+    if (success) {
+      await this.saveToHangar(this.model.slug);
 
       displaySuccess({
         text: this.$t("messages.vehicle.add.success", {

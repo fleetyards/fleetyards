@@ -17,6 +17,7 @@
 #  sale_notify       :boolean          default(FALSE)
 #  serial            :string
 #  slug              :string
+#  wanted            :boolean          default(FALSE)
 #  created_at        :datetime
 #  updated_at        :datetime
 #  model_id          :uuid
@@ -107,11 +108,7 @@ class Vehicle < ApplicationRecord
   def update_loaners
     return if loaner?
 
-    if purchased?
-      add_loaners
-    else
-      remove_loaners
-    end
+    add_loaners
   end
 
   def add_loaners
@@ -143,7 +140,7 @@ class Vehicle < ApplicationRecord
       user_id:,
       vehicle_id: id,
       public: false,
-      purchased: true,
+      wanted:,
       hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, user_id:)
     )
   end
@@ -151,23 +148,36 @@ class Vehicle < ApplicationRecord
   def broadcast_update
     return if loaner? || !notify?
 
+    WishlistChannel.broadcast_to(user, to_json)
     HangarChannel.broadcast_to(user, to_json)
   end
 
   def broadcast_create
     return if loaner? || !notify?
 
-    HangarCreateChannel.broadcast_to(user, to_json)
+    if wanted?
+      WishlistCreateChannel.broadcast_to(user, to_json)
+    else
+      HangarCreateChannel.broadcast_to(user, to_json)
+    end
   end
 
   def broadcast_destroy
     return if loaner? || !notify?
 
-    HangarDestroyChannel.broadcast_to(user, to_json)
+    if wanted?
+      WishlistDestroyChannel.broadcast_to(user, to_json)
+    else
+      HangarDestroyChannel.broadcast_to(user, to_json)
+    end
   end
 
   def self.purchased
-    where(purchased: true)
+    where(wanted: false)
+  end
+
+  def self.wanted
+    where(wanted: true)
   end
 
   def self.public

@@ -33,6 +33,7 @@
 #  otp_secret                :string
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
+#  public_wishlist           :boolean          default(FALSE)
 #  remember_created_at       :datetime
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
@@ -76,7 +77,7 @@ class User < ApplicationRecord
   has_many :manufacturers,
            through: :models
   has_many :public_vehicles,
-           -> { where(purchased: true, public: true) },
+           -> { where(wanted: false, public: true) },
            dependent: :destroy,
            class_name: "Vehicle",
            inverse_of: false
@@ -153,6 +154,12 @@ class User < ApplicationRecord
     return short_public_hangar_url(username:) if Rails.configuration.app.short_domain.present?
 
     frontend_public_hangar_url(username:)
+  end
+
+  def public_wishlist_url
+    return short_public_wishlist_url(username:) if Rails.configuration.app.short_domain.present?
+
+    frontend_public_wishlist_url(username:)
   end
 
   def resend_confirmation

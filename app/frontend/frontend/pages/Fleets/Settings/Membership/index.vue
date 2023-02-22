@@ -150,8 +150,8 @@ export default class FleetMembershipSettings extends Vue {
   get shipsFilterOptions() {
     return [
       {
-        name: this.$t("labels.fleet.members.shipsFilter.values.purchased"),
-        value: "purchased",
+        name: this.$t("labels.fleet.members.shipsFilter.values.all"),
+        value: "all",
       },
       {
         name: this.$t("labels.fleet.members.shipsFilter.values.hangar_group"),

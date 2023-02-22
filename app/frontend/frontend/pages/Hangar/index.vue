@@ -27,6 +27,16 @@
             />
           </div>
           <div v-if="!mobile" class="page-actions page-actions-right">
+            <Btn :to="{ name: 'hangar-wishlist' }">
+              <i class="fad fa-wand-sparkles" />
+              {{ $t("labels.wishlist") }}
+              <transition name="fade" mode="out-in" appear>
+                <span v-if="hangarStats && hangarStats.wishlistTotal">
+                  ({{ hangarStats.wishlistTotal }})
+                </span>
+              </transition>
+            </Btn>
+
             <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
               <i class="fad fa-starship" />
               {{ $t("labels.fleetchart") }}
@@ -111,6 +121,15 @@
       <template slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
+            <Btn
+              :to="{ name: 'hangar-wishlist' }"
+              size="small"
+              variant="dropdown"
+            >
+              <i class="fad fa-wand-sparkles" />
+              <span>{{ $t("labels.wishlist") }}</span>
+            </Btn>
+
             <Btn
               data-test="fleetchart-link"
               size="small"
@@ -267,7 +286,9 @@ import MetaInfo from "@/frontend/mixins/MetaInfo";
 import HangarItemsMixin from "@/frontend/mixins/HangarItems";
 import { format } from "date-fns";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
 import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
+import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGroups";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import debounce from "lodash.debounce";
 
@@ -298,7 +319,7 @@ export default class Hangar extends Vue {
 
   vehiclesChannel = null;
 
-  highlightedGroup: string = null;
+  highlightedGroup: string | null = null;
 
   collection: VehiclesCollection = vehiclesCollection;
 
@@ -377,7 +398,7 @@ export default class Hangar extends Vue {
   get filters() {
     return {
       filters: this.$route.query.q,
-      page: this.$route.query.page,
+      page: Number(this.$route.query.page),
     };
   }
 

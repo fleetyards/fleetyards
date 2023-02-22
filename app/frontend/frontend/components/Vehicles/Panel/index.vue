@@ -58,6 +58,7 @@
           v-if="editable && !vehicle.loaner"
           :vehicle="vehicle"
           :editable="editable"
+          :wishlist="wishlist"
         />
 
         <AddToHangar
@@ -86,15 +87,6 @@
             class="loaner-label"
           >
             <i class="fal fa-exchange" />
-          </div>
-          <div
-            v-else-if="editable && !vehicle.loaner"
-            v-tooltip="purchasedLabel"
-            class="purchased-label"
-            :class="{ purchased: vehicle.purchased }"
-            @click.prevent="togglePurchased"
-          >
-            <i class="fal fa-check" />
           </div>
           <div
             v-else-if="!mobile && hasLoaners && loanersHintVisible"
@@ -163,7 +155,6 @@ import PanelDetails from "@/frontend/core/components/Panel/PanelDetails/index.vu
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 
@@ -184,6 +175,8 @@ export default class VehiclePanel extends Vue {
   @Prop({ default: false }) details: boolean;
 
   @Prop({ default: false }) editable: boolean;
+
+  @Prop({ default: false }) wishlist: boolean;
 
   @Prop({ default: false }) highlight: boolean;
 
@@ -260,14 +253,6 @@ export default class VehiclePanel extends Vue {
     );
   }
 
-  get purchasedLabel() {
-    if (this.vehicle.purchased) {
-      return this.$t("labels.vehicle.purchased");
-    }
-
-    return this.$t("actions.markAsPurchased");
-  }
-
   get loanersTooltip() {
     return [
       this.$t("labels.vehicle.hasLoaners"),
@@ -281,16 +266,6 @@ export default class VehiclePanel extends Vue {
 
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] };
-  }
-
-  async togglePurchased() {
-    if (!this.editable || this.vehicle.loaner) {
-      return;
-    }
-
-    await vehiclesCollection.update(this.vehicle.id, {
-      purchased: !this.vehicle.purchased,
-    });
   }
 
   openAddonsModal() {

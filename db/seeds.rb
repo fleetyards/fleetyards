@@ -39,7 +39,7 @@ if ENV['TEST_SEEDS'].present?
       user_id: test_user.id,
       model_id: Model.find_by(slug: slug).id,
       name: "#{slug}-#{index}",
-      purchased: true,
+      wanted: false,
       public: true
     )
   end

@@ -39,6 +39,8 @@ export default {
         this.setupOnSaleChannel();
         this.setupHangarCreateChannel();
         this.setupHangarDestroyChannel();
+        this.setupWishlistCreateChannel();
+        this.setupWishlistDestroyChannel();
       }
     },
 
@@ -55,13 +57,13 @@ export default {
       delete this.channels[channel];
     },
 
-    connected(_channel) {
-      // console.info('Connected to Channel:', channel)
+    connected(channel) {
+      console.info("Connected to Channel:", channel);
     },
 
     disconnected(channel) {
       this.unsubscribeChannel(channel);
-      // console.info('Disconnected from Channel:', channel)
+      console.info("Disconnected from Channel:", channel);
     },
 
     setupAppVersionChannel() {
@@ -116,6 +118,46 @@ export default {
           },
           disconnected: () => {
             this.disconnected("hangarDestroy");
+          },
+        }
+      );
+    },
+
+    setupWishlistCreateChannel() {
+      if (this.channels.wishlistCreate) {
+        return;
+      }
+      this.channels.wishlistCreate = this.$cable.consumer.subscriptions.create(
+        {
+          channel: "WishlistCreateChannel",
+        },
+        {
+          received: this.addShipToWishlist,
+          connected: () => {
+            this.connected("wishlistCreate");
+          },
+          disconnected: () => {
+            this.disconnected("wishlistCreate");
+          },
+        }
+      );
+    },
+
+    setupWishlistDestroyChannel() {
+      if (this.channels.wishlistDestroy) {
+        return;
+      }
+      this.channels.wishlistDestroy = this.$cable.consumer.subscriptions.create(
+        {
+          channel: "WishlistDestroyChannel",
+        },
+        {
+          received: this.removeShipFromWishlist,
+          connected: () => {
+            this.connected("wishlistDestroy");
+          },
+          disconnected: () => {
+            this.disconnected("wishlistDestroy");
           },
         }
       );
@@ -183,6 +225,26 @@ export default {
       }
 
       this.$store.dispatch("hangar/remove", vehicle.model.slug);
+    },
+
+    addShipToWishlist(data) {
+      const vehicle = JSON.parse(data);
+
+      if (!vehicle.model) {
+        return;
+      }
+
+      this.$store.dispatch("wishlist/add", vehicle.model.slug);
+    },
+
+    removeShipFromWishlist(data) {
+      const vehicle = JSON.parse(data);
+
+      if (!vehicle.model) {
+        return;
+      }
+
+      this.$store.dispatch("wishlist/remove", vehicle.model.slug);
     },
 
     notifyVehicleOnSale(data) {

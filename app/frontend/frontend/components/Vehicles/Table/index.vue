@@ -31,14 +31,29 @@
           </Btn>
         </BtnGroup>
         <Btn
+          v-if="wishlist"
           size="small"
           :inline="true"
           :disabled="updating"
-          @click.native="markAsPurchasedBulk"
+          @click.native="addToHangarBulk"
         >
-          {{ $t("actions.hangar.markAsPurchasedSelected") }}
+          {{ $t("actions.addToHangar") }}
         </Btn>
-        <Btn size="small" :inline="true" @click.native="openBulkGroupEditModal">
+        <Btn
+          v-else
+          size="small"
+          :inline="true"
+          :disabled="updating"
+          @click.native="addToWishlistBulk"
+        >
+          {{ $t("actions.addToWishlist") }}
+        </Btn>
+        <Btn
+          v-if="!wishlist"
+          size="small"
+          :inline="true"
+          @click.native="openBulkGroupEditModal"
+        >
           {{ $t("actions.hangar.editGroupsSelected") }}
         </Btn>
         <Btn
@@ -88,7 +103,7 @@
     <template #col-states="{ record }">
       <div class="vehicle-states">
         <i
-          v-if="record.flagship"
+          v-if="record.flagship && !wishlist"
           v-tooltip="$t('labels.vehicle.flagship')"
           class="fad fa-certificate flagship-icon"
         />
@@ -98,22 +113,17 @@
           class="fad fa-dollar-sign on-sale"
         />
         <i
-          v-if="record.purchased"
-          v-tooltip="$t('labels.vehicle.purchased')"
-          class="fas fa-check"
-        />
-        <i
-          v-if="record.purchased && record.public && record.nameVisible"
+          v-if="record.public && record.nameVisible"
           v-tooltip="$t('labels.vehicle.fullPublic')"
           class="fad fa-eye-evil full-public-icon"
         />
         <i
-          v-else-if="record.purchased && record.public"
+          v-else-if="record.public"
           v-tooltip="$t('labels.vehicle.public')"
           class="fad fa-eye"
         />
         <i
-          v-if="record.saleNotify && !record.purchased"
+          v-if="wishlist && record.saleNotify"
           v-tooltip="$t('labels.vehicle.saleNotify')"
           class="fad fa-bell"
         />
@@ -123,7 +133,7 @@
       <HangarGroups :groups="record.hangarGroups" size="large" />
     </template>
     <template #col-actions="{ record }">
-      <BtnGroup :inline="true">
+      <BtnGroup :inline="true" class="vehicles-table-btn-group">
         <Btn
           v-if="record && editable && !record.loaner"
           :aria-label="$t('actions.edit')"
@@ -135,7 +145,12 @@
         >
           {{ $t("actions.edit") }}
         </Btn>
-        <VehicleContextMenu :vehicle="record" :editable="editable" />
+        <VehicleContextMenu
+          :vehicle="record"
+          :editable="editable && !record.loaner"
+          :wishlist="wishlist"
+          :hide-edit="true"
+        />
       </BtnGroup>
     </template>
   </FilteredTable>
@@ -168,6 +183,8 @@ export default class FilteredGrid extends Vue {
 
   @Prop({ default: false }) editable!: boolean;
 
+  @Prop({ default: false }) wishlist!: boolean;
+
   selected: string[] = [];
 
   deleting = false;
@@ -193,7 +210,7 @@ export default class FilteredGrid extends Vue {
       label: this.$t("labels.vehicle.hangarGroups"),
       width: "10%",
     },
-    { name: "actions", label: this.$t("labels.actions"), width: "10%" },
+    { name: "actions", label: this.$t("labels.actions"), minWidth: "140px" },
   ];
 
   mounted() {
@@ -230,14 +247,23 @@ export default class FilteredGrid extends Vue {
       component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
       props: {
         vehicle,
+        wishlist: this.wishlist,
       },
     });
   }
 
-  async markAsPurchasedBulk() {
+  async addToWishlistBulk() {
     this.updating = true;
 
-    await vehiclesCollection.markAsPurchasedBulk(this.selected);
+    await vehiclesCollection.addToWishlistBulk(this.selected);
+
+    this.updating = false;
+  }
+
+  async addToHangarBulk() {
+    this.updating = true;
+
+    await vehiclesCollection.addToWishlistBulk(this.selected);
 
     this.updating = false;
   }

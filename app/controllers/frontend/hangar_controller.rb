@@ -5,8 +5,20 @@ module Frontend
     def index
       @user = User.find_by(["normalized_username = :value", { value: params[:username].downcase }])
       if @user.present?
-        vehicle = @user.vehicles.public.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
+        vehicle = @user.vehicles.public.purchased.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_hangar", user: username(@user.username))
+        @og_type = "article"
+        @og_image = vehicle.model.store_image.url if vehicle.present?
+      end
+
+      render_frontend
+    end
+
+    def wishlist
+      @user = User.find_by(["normalized_username = :value", { value: params[:username].downcase }])
+      if @user.present?
+        vehicle = @user.vehicles.wanted.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
+        @title = I18n.t("title.frontend.public_wishlist", user: username(@user.username))
         @og_type = "article"
         @og_image = vehicle.model.store_image.url if vehicle.present?
       end

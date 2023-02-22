@@ -14,7 +14,7 @@
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
 #  role              :integer
-#  ships_filter      :integer          default("purchased")
+#  ships_filter      :integer          default("all")
 #  used_invite_token :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -24,6 +24,7 @@
 #
 # Indexes
 #
+#  fleet_memberships_fleet_id_user_id_index         (fleet_id,user_id) UNIQUE
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
 #
 class FleetMembership < ApplicationRecord
@@ -34,7 +35,7 @@ class FleetMembership < ApplicationRecord
 
   paginates_per 30
 
-  enum ships_filter: { purchased: 0, hangar_group: 1, hide: 2 }, _prefix: true
+  enum ships_filter: { all: 0, hangar_group: 1, hide: 2 }, _prefix: true
 
   enum role: { admin: 0, officer: 1, member: 2 }
   ransacker :role, formatter: proc { |v| FleetMembership.roles[v] } do |parent|
@@ -116,8 +117,8 @@ class FleetMembership < ApplicationRecord
 
   def update_fleet_vehicle(vehicle)
     case ships_filter
-    when "purchased"
-      update_fleet_vehicle_for_purchased(vehicle)
+    when "all"
+      update_fleet_vehicle_for_all(vehicle)
     when "hangar_group"
       update_fleet_vehicle_for_hangar_group(vehicle)
     else
@@ -125,11 +126,11 @@ class FleetMembership < ApplicationRecord
     end
   end
 
-  def update_fleet_vehicle_for_purchased(vehicle)
-    if vehicle.purchased?
-      FleetVehicle.find_or_create_by(fleet_id:, vehicle_id: vehicle.id)
-    else
+  def update_fleet_vehicle_for_all(vehicle)
+    if vehicle.wanted?
       FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy
+    else
+      FleetVehicle.find_or_create_by(fleet_id:, vehicle_id: vehicle.id)
     end
   rescue ActiveRecord::RecordNotUnique
     nil

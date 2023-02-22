@@ -82,6 +82,10 @@ export default {
       success:
         'Your new <b>%{model}</b> will be delivered to your <a href="/hangar">Hangar</a>',
     },
+    addToWishlist: {
+      success:
+        'Your new <b>%{model}</b> was added to your <a href="/hangar/wishlist">Wishlist</a>',
+    },
   },
   model: {
     onSale: "%{model} now on Sale!",

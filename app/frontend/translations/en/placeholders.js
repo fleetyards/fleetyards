@@ -20,6 +20,7 @@ export default {
     "models-fleetchart": "Avenger, Carrack, Cutlass...",
     hangar: "Enterprise, Andromeda...",
     "hangar-fleetchart": "Enterprise, Andromeda...",
+    "hangar-wishlist": "Avenger, Carrack, Cutlass...",
     stations: "Search for Stations...",
     shops: "Search for Shops...",
   },

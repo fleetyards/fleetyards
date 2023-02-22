@@ -50,6 +50,18 @@ export const routes = [
     },
   },
   {
+    path: "/hangar/wishlist",
+    name: "hangar-wishlist",
+    component: () => import("@/frontend/pages/Hangar/Wishlist/index.vue"),
+    meta: {
+      needsAuthentication: true,
+      quickSearch: "searchCont",
+      title: "hangar.wishlist",
+      primaryAction: true,
+      backgroundImage: "bg-5",
+    },
+  },
+  {
     path: "/hangar/preview",
     name: "hangar-preview",
     component: () => import("@/frontend/pages/Hangar/Preview/index.vue"),
@@ -90,6 +102,14 @@ export const routes = [
     redirect: {
       name: "hangar-public",
       query: { fleetchart: true },
+    },
+  },
+  {
+    path: "/hangar/:username/wishlist",
+    name: "wishlist-public",
+    component: () => import("@/frontend/pages/Hangar/PublicWishlist/index.vue"),
+    meta: {
+      backgroundImage: "bg-5",
     },
   },
   {

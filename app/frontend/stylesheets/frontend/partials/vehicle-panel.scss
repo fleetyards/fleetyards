@@ -45,7 +45,7 @@
       }
     }
 
-    .purchased-label {
+    .wanted-label {
       position: absolute;
       top: 0;
       right: 0;
@@ -57,7 +57,7 @@
       border-left: 20px solid transparent;
       cursor: pointer;
 
-      &.purchased {
+      &.wanted {
         border-top: 20px solid $success;
         border-right: 20px solid $success;
       }

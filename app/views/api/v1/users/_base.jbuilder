@@ -16,6 +16,8 @@ json.cache! ["v1", user] do
   json.public_hangar user.public_hangar
   json.public_hangar_url user.public_hangar_url
   json.public_hangar_loaners user.public_hangar_loaners
+  json.public_wishlist user.public_wishlist
+  json.public_wishlist_url user.public_wishlist_url
   json.two_factor_required user.otp_required_for_login?
   json.two_factor_qr_code_url qrcode_api_v1_two_factor_url unless user.otp_required_for_login?
   json.two_factor_provisioning_url user.otp_provisioning_uri(user.email, issuer: Rails.configuration.app.name) unless user.otp_required_for_login?

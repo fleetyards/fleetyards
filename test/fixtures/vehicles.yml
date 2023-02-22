@@ -15,6 +15,7 @@
 #  sale_notify       :boolean          default(FALSE)
 #  serial            :string
 #  slug              :string
+#  wanted            :boolean          default(FALSE)
 #  created_at        :datetime
 #  updated_at        :datetime
 #  model_id          :uuid
@@ -34,14 +35,14 @@ enterprise:
   name: 'Enterprise'
   model: andromeda
   user: data
-  purchased: true
+  wanted: false
   public: true
 
 raven:
   name: ''
   model: explorer
   user: data
-  purchased: true
+  wanted: false
   public: true
   hidden: false
 
@@ -49,5 +50,5 @@ ptv_loaner:
   model: ptv
   loaner: true
   user: data
-  purchased: true
+  wanted: false
   public: true

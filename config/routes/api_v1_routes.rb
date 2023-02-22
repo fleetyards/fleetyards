@@ -96,19 +96,23 @@ v1_api_routes = lambda do
 
   resources :vehicles, only: %i[index create update destroy] do
     collection do
+      get :wishlist
       get "quick-stats" => "vehicles#quick_stats"
       get :fleetchart
       get :export
+      get "export-wishlist", to: :export_wishlist
       put :import
       put "bulk" => "vehicles#update_bulk"
       put "destroy-bulk" => "vehicles#destroy_bulk"
       delete "destroy-all" => "vehicles#destroy_all"
+      delete "destroy-all-wishlist" => "vehicles#destroy_all_wishlist"
       get :embed
       get "hangar-items" => "vehicles#hangar_items"
       get :hangar
       get ":username" => "vehicles#public", as: :public
       get ":username/quick-stats" => "vehicles#public_quick_stats", as: :public_quick_stats
       get ":username/fleetchart" => "vehicles#public_fleetchart", as: :public_fleetchart
+      get ":username/wishlist" => "vehicles#public_wishlist", as: :public_wishlist
       get "stats/models-by-size" => "vehicles#models_by_size"
       get "stats/models-by-production-status" => "vehicles#models_by_production_status"
       get "stats/models-by-manufacturer" => "vehicles#models_by_manufacturer"

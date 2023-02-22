@@ -15,6 +15,7 @@
 #
 # Indexes
 #
+#  fleet_invite_urls_token_index     (token) UNIQUE
 #  index_fleet_invite_urls_on_token  (token) UNIQUE
 #
 require "test_helper"

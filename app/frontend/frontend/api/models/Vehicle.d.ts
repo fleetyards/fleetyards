@@ -3,20 +3,25 @@ type Vehicle = {
   name: string;
   model: Model;
   loaner: boolean;
+  public: boolean;
+  wanted: boolean;
+  flagship: boolean;
+  saleNotify: boolean;
   modelModuleIds: string[];
   modelUpgradeIds: string[];
   paint: ModelPaint;
 };
 
 type VehicleForm = {
-  name: string;
-  purchased: boolean;
-  flagship: boolean;
-  public: boolean;
-  saleNotify: boolean;
-  nameVisible: boolean;
-  hangarGroupIds: string[];
-  modelPaintId: string;
+  name?: string;
+  wanted?: boolean;
+  modelId?: string;
+  flagship?: boolean;
+  public?: boolean;
+  saleNotify?: boolean;
+  nameVisible?: boolean;
+  hangarGroupIds?: string[];
+  modelPaintId?: string;
 };
 
 type VehiclesFilter = {

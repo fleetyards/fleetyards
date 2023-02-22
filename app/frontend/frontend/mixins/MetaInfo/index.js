@@ -5,11 +5,9 @@ export default {
       if (title) {
         return this.$t(`title.${title}`);
       }
-
       return null;
     },
   },
-
   head() {
     return {
       title: this.metaTitle,
@@ -17,7 +15,6 @@ export default {
         if (title) {
           return `${title} | ${this.$t("app")}`;
         }
-
         return this.$t("app");
       },
     };
