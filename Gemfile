@@ -19,7 +19,7 @@ gem "slim-rails"
 
 gem "data_migrate"
 
-gem "elasticsearch", "~> 7.6"
+gem "opensearch-ruby"
 gem "searchkick"
 
 gem "discordrb-webhooks"
