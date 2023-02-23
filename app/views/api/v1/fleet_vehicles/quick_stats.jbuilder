@@ -6,6 +6,7 @@ json.classifications do
 end
 json.metrics do
   json.total_money @quick_stats.metrics[:total_money]
+  json.total_credits @quick_stats.metrics[:total_credits]
   json.total_min_crew @quick_stats.metrics[:total_min_crew]
   json.total_max_crew @quick_stats.metrics[:total_max_crew]
   json.total_cargo @quick_stats.metrics[:total_cargo]

@@ -22,6 +22,14 @@
               {{ $toDollar(fleetStats.metrics.totalMoney) }}
             </div>
           </div>
+          <div v-if="money" class="metrics-item">
+            <div class="metrics-label">
+              {{ $t("labels.hangarMetrics.totalCredits") }}:
+            </div>
+            <div class="metrics-value">
+              <span v-html="$toUEC(fleetStats.metrics.totalCredits)" />
+            </div>
+          </div>
           <div class="metrics-item">
             <div class="metrics-label">
               {{ $t("labels.hangarMetrics.total") }}:

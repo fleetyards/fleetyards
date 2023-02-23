@@ -182,6 +182,7 @@ export default {
   hangarMetrics: {
     total: "Total",
     totalMoney: "Money Value",
+    totalCredits: "Credits",
     totalMinCrew: "Min. Crew",
     totalMaxCrew: "Max. Crew",
     totalCargo: "Total Cargo",

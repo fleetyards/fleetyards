@@ -217,7 +217,9 @@ module Api
         @q.sorts = ["model_classification asc"]
 
         vehicles = @q.result
+        ingame_vehicles = vehicles.select(&:bought_via_ingame?)
         models = vehicles.map(&:model)
+        ingame_models = ingame_vehicles.map(&:model)
         upgrades = vehicles.map(&:model_upgrades).flatten
         modules = vehicles.map(&:model_modules).flatten
 
@@ -233,6 +235,7 @@ module Api
           end,
           metrics: {
             total_money: models.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
+            total_credits: ingame_models.map(&:price).sum(&:to_i),
             total_min_crew: models.map(&:min_crew).sum(&:to_i),
             total_max_crew: models.map(&:max_crew).sum(&:to_i),
             total_cargo: models.map(&:cargo).sum(&:to_i)
