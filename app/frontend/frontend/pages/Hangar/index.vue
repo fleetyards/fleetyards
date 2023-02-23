@@ -395,10 +395,10 @@ export default class Hangar extends Vue {
     return this.starterGuideVisible || this.guideVisible;
   }
 
-  get filters() {
+  get filters(): VehicleParams {
     return {
-      filters: this.$route.query.q,
-      page: Number(this.$route.query.page),
+      filters: this.$route.query.q as VehiclesFilter,
+      page: this.$route.query.page ? Number(this.$route.query.page) : 1,
     };
   }
 

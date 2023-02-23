@@ -4,6 +4,7 @@
 #
 #  id                :uuid             not null, primary key
 #  alternative_names :string
+#  bought_via        :integer          default(0)
 #  flagship          :boolean          default(FALSE)
 #  hidden            :boolean          default(FALSE)
 #  loaner            :boolean          default(FALSE)

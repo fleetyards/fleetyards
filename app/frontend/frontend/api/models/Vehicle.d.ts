@@ -10,6 +10,8 @@ type Vehicle = {
   modelModuleIds: string[];
   modelUpgradeIds: string[];
   paint: ModelPaint;
+  boughtVia: string;
+  boughtViaLabel: string;
 };
 
 type VehicleForm = {

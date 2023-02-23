@@ -1,8 +1,20 @@
 <template>
-  <Modal
-    v-if="vehicle && form"
-    :title="$t('headlines.editMyVehicle', { vehicle: vehicle.model.name })"
-  >
+  <Modal v-if="vehicle && form">
+    <template #title>
+      <span>{{ $t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
+      <small v-if="vehicle.serial" class="text-muted">
+        {{ vehicle.serial }}
+      </small>
+      <template v-if="vehicle.name">
+        <br />
+
+        <small class="text-muted">
+          <span v-html="vehicle.model.manufacturer.name" />
+          {{ vehicle.model.name }}
+        </small>
+      </template>
+    </template>
+
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
       <form :id="`vehicle-${vehicle.id}`" @submit.prevent="handleSubmit(save)">
         <div class="row">
@@ -12,17 +24,6 @@
               id="flagship"
               v-model="form.flagship"
               :label="$t('labels.vehicle.flagship')"
-            />
-            <Checkbox
-              v-if="wishlist"
-              id="saleNotify"
-              v-model="form.saleNotify"
-              :label="$t('labels.vehicle.saleNotify')"
-            />
-            <Checkbox
-              id="public"
-              v-model="form.public"
-              :label="$t('labels.vehicle.public')"
             />
           </div>
           <div
@@ -42,6 +43,43 @@
                 :nullable="true"
                 :no-label="true"
               />
+            </div>
+          </div>
+          <div class="col-12">
+            <hr class="dark slim-spacer" />
+          </div>
+          <div class="col-12 col-md-6">
+            <Checkbox
+              v-if="wishlist"
+              id="saleNotify"
+              v-model="form.saleNotify"
+              :label="$t('labels.vehicle.saleNotify')"
+            />
+            <Checkbox
+              id="public"
+              v-model="form.public"
+              :label="$t('labels.vehicle.public')"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <ValidationProvider
+                v-slot="{ errors }"
+                vid="boughtVia"
+                rules="required"
+                :name="$t('labels.vehicle.boughtVia')"
+                :slim="true"
+              >
+                <FilterGroup
+                  :key="`bought-via-${vehicle.model.id}`"
+                  v-model="form.boughtVia"
+                  translation-key="vehicle.boughtViaSelect"
+                  fetch-path="vehicles/filters/bought-via"
+                  name="boughtVia"
+                  :error="errors[0]"
+                  :nullable="false"
+                />
+              </ValidationProvider>
             </div>
           </div>
         </div>
@@ -79,7 +117,8 @@ type VehicleFormData = {
   flagship: boolean;
   saleNotify: boolean;
   public: boolean;
-  modelPaintId: string | undefined;
+  boughtVia: string;
+  modelPaintId?: string;
 };
 
 @Component<VehicleModal>({
@@ -92,13 +131,21 @@ type VehicleFormData = {
   },
 })
 export default class VehicleModal extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle;
+  @Prop({ required: true }) vehicle!: Vehicle;
 
-  @Prop({ default: false }) wishlist: boolean;
+  @Prop({ default: false }) wishlist!: boolean;
 
   submitting = false;
 
   form: VehicleFormData | null = null;
+
+  get vehicleName() {
+    if (this.vehicle && this.vehicle.name) {
+      return this.vehicle.name;
+    }
+
+    return this.vehicle.model.name;
+  }
 
   mounted() {
     this.setupForm();
@@ -115,6 +162,7 @@ export default class VehicleModal extends Vue {
       public: this.vehicle.public,
       saleNotify: this.vehicle.saleNotify,
       modelPaintId: this.vehicle.paint?.id,
+      boughtVia: this.vehicle.boughtVia,
     };
   }
 

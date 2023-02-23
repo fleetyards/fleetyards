@@ -146,7 +146,11 @@ export default class FilteredList extends Vue {
   }
 
   get page() {
-    return parseInt(this.routeQuery.page, 10) || 1;
+    if (!this.routeQuery.page) {
+      return 1;
+    }
+
+    return parseInt(this.routeQuery.page, 10);
   }
 
   get filterVisible() {

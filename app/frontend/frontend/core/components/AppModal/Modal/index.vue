@@ -7,11 +7,13 @@
             <i class="fal fa-times" />
           </a>
           <h2 class="modal-title">
-            {{ title }}
+            <slot name="title">
+              {{ title }}
+            </slot>
           </h2>
         </div>
         <div class="modal-body">
-          <slot />
+          <slot name="default" />
         </div>
       </div>
     </Panel>
