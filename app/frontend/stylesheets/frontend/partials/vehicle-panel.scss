@@ -45,32 +45,6 @@
       }
     }
 
-    .wanted-label {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 0;
-      height: 0;
-      border-top: 20px solid $gray;
-      border-right: 20px solid $gray;
-      border-bottom: 20px solid transparent;
-      border-left: 20px solid transparent;
-      cursor: pointer;
-
-      &.wanted {
-        border-top: 20px solid $success;
-        border-right: 20px solid $success;
-      }
-
-      i,
-      svg {
-        position: absolute;
-        top: -15px;
-        right: -15px;
-        color: #fff;
-      }
-    }
-
     .addons {
       position: absolute;
       bottom: 0;

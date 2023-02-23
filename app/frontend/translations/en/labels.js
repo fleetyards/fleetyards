@@ -381,6 +381,9 @@ export default {
       hint: "Existing Groups will be overridden!",
     },
     hasLoaners: "Loaners",
+    boughtViaSelect: {
+      label: "Bought via",
+    },
   },
   image: {
     background: "Use as Background?",
@@ -480,6 +483,9 @@ export default {
       public: "Public",
       group: "Group",
       loaner: "Loaners",
+      boughtVia: {
+        nullablePrompt: "Bought via?",
+      },
     },
     tradeRoutes: {
       sortBy: "Sort by",

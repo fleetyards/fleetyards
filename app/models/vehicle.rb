@@ -6,6 +6,7 @@
 #
 #  id                :uuid             not null, primary key
 #  alternative_names :string
+#  bought_via        :integer          default(0)
 #  flagship          :boolean          default(FALSE)
 #  hidden            :boolean          default(FALSE)
 #  loaner            :boolean          default(FALSE)
@@ -70,6 +71,8 @@ class Vehicle < ApplicationRecord
 
   NULL_ATTRS = %w[name serial].freeze
 
+  enum bought_via: { pledge_store: 0, ingame: 1 }
+
   before_validation :normalize_serial
   before_save :nil_if_blank
   before_save :set_module_package
@@ -91,7 +94,25 @@ class Vehicle < ApplicationRecord
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
 
+  ransacker :bought_via, formatter: proc { |v| Vehicle.bought_via[v] } do |parent|
+    parent.table[:bought_via]
+  end
+
   serialize :alternative_names, Array
+
+  def self.bought_via_filters
+    Vehicle.bought_via.map do |(item, _index)|
+      Filter.new(
+        category: "bought_via",
+        name: Vehicle.human_enum_name(:bought_via, item),
+        value: item
+      )
+    end
+  end
+
+  def bought_via_label
+    Vehicle.human_enum_name(:bought_via, bought_via)
+  end
 
   def schedule_fleet_vehicle_update
     return if hidden?

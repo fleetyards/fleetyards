@@ -118,6 +118,7 @@ v1_api_routes = lambda do
       get "stats/models-by-manufacturer" => "vehicles#models_by_manufacturer"
       get "stats/models-by-classification" => "vehicles#models_by_classification"
       post "check-serial"
+      get "filters/bought-via", to: "vehicles#bought_via_filters"
     end
   end
 

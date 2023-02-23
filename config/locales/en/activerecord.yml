@@ -2,6 +2,10 @@
 en:
   activerecord:
     attributes:
+      vehicle:
+        bought_via:
+          pledge_store: Pledge Store
+          ingame: Ingame Store
       celestial_object:
         hidden: hidden?
         location_prefix:

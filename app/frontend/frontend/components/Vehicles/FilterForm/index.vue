@@ -94,6 +94,15 @@
       :no-label="true"
     />
 
+    <FilterGroup
+      v-model="form.boughtViaEq"
+      fetch-path="vehicles/filters/bought-via"
+      :label="$t('labels.filters.vehicles.boughtVia')"
+      translation-key="filters.vehicles.boughtVia"
+      name="boughtVia"
+      :no-label="true"
+    />
+
     <div class="row">
       <div class="col-6">
         <FormInput
@@ -247,6 +256,7 @@ export default {
         pledgePriceGteq: query.pledgePriceGteq,
         lengthLteq: query.lengthLteq,
         lengthGteq: query.lengthGteq,
+        boughtViaEq: query.boughtViaEq,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
@@ -289,6 +299,7 @@ export default {
         pledgePriceGteq: query.pledgePriceGteq,
         lengthLteq: query.lengthLteq,
         lengthGteq: query.lengthGteq,
+        boughtViaEq: query.boughtViaEq,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],

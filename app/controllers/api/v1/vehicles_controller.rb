@@ -478,6 +478,14 @@ module Api
         render json: { serialTaken: current_user.vehicles.visible.purchased.exists?(serial: vehicle_params[:serial].upcase) }
       end
 
+      def bought_via_filters
+        authorize! :index, :api_hangar
+
+        @filters = Vehicle.bought_via_filters
+
+        render "api/v1/shared/filters"
+      end
+
       private def vehicle
         @vehicle ||= Vehicle.find(params[:id])
       end
@@ -486,7 +494,8 @@ module Api
       private def vehicle_params
         @vehicle_params ||= params.transform_keys(&:underscore)
           .permit(
-            :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
+            :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship,
+            :model_paint_id, :bought_via,
             hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
           ).merge(user_id: current_user.id)
       end
@@ -560,7 +569,7 @@ module Api
         @vehicle_query_params ||= query_params(
           :search_cont, :name_cont, :model_name_or_model_description_cont, :on_sale_eq,
           :public_eq, :length_gteq, :length_lteq, :price_gteq, :price_lteq,
-          :pledge_price_gteq, :pledge_price_lteq, :loaner_eq,
+          :pledge_price_gteq, :pledge_price_lteq, :loaner_eq, :bought_via_eq,
           manufacturer_in: [], classification_in: [], focus_in: [],
           size_in: [], price_in: [], pledge_price_in: [],
           production_status_in: [], hangar_groups_in: [], hangar_groups_not_in: []
