@@ -24,6 +24,7 @@ export default {
     import: "Import",
     wishlist: "Wishlist",
     publicWishlist: "%{user} Wishlist",
+    resetIngame: "Reset Ingame Ships after Wipe",
   },
   editMyVehicle: "Edit my %{vehicle}",
   nameMyVehicle: "Name my %{vehicle}",

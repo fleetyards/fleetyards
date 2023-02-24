@@ -57,7 +57,7 @@
       <span>{{ $t("actions.addToHangar") }}</span>
     </Btn>
     <Btn
-      v-if="editable && !wishlist"
+      v-if="editable"
       :aria-label="$t('actions.hangar.editName')"
       size="small"
       variant="dropdown"

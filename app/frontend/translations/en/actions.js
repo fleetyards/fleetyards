@@ -88,6 +88,11 @@ export default {
     showOnPublicHangar: "Make Public",
     hideFromPublicHangar: "Hide from Public",
     editGroupsSelected: "Add/Remove from Groups",
+    resetIngame: {
+      openModal: "Reset Ingame Ships after Wipe",
+      moveToWishlist: "Move to Wishlist",
+      removeAll: "Remove all",
+    },
   },
   empty: {
     reset: "Reset Filters/Pages",

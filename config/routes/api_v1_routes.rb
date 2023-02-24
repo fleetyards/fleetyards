@@ -104,8 +104,10 @@ v1_api_routes = lambda do
       put :import
       put "bulk" => "vehicles#update_bulk"
       put "destroy-bulk" => "vehicles#destroy_bulk"
+      put "move-all-ingame-to-wishlist" => "vehicles#move_all_ingame_to_wishlist"
       delete "destroy-all" => "vehicles#destroy_all"
       delete "destroy-all-wishlist" => "vehicles#destroy_all_wishlist"
+      delete "destroy-all-ingame" => "vehicles#destroy_all_ingame"
       get :embed
       get "hangar-items" => "vehicles#hangar_items"
       get :hangar

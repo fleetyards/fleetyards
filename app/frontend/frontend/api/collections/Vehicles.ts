@@ -250,6 +250,30 @@ export class VehiclesCollection extends BaseCollection {
 
     return false;
   }
+
+  async ingameMoveToWishlist(): Promise<boolean> {
+    const response = await put("vehicles/move-all-ingame-to-wishlist");
+
+    if (!response.error) {
+      this.refresh();
+
+      return true;
+    }
+
+    return false;
+  }
+
+  async destroyAllIngame(): Promise<boolean> {
+    const response = await destroy("vehicles/destroy-all-ingame");
+
+    if (!response.error) {
+      this.refresh();
+
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export default new VehiclesCollection();

@@ -120,7 +120,7 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
-import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { sum as sumArray } from "@/frontend/utils/Array";
 import { sortBy } from "@/frontend/lib/Helpers";

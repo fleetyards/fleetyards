@@ -79,7 +79,7 @@ class Vehicle < ApplicationRecord
 
   after_create :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
-  after_save :set_flagship, :update_loaners
+  after_save :set_flagship, :update_loaners, :reset_hangar_groups
   after_commit :broadcast_update, :schedule_fleet_vehicle_update
 
   ransack_alias :search, :name_or_model_name_or_model_slug
@@ -108,6 +108,12 @@ class Vehicle < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def reset_hangar_groups
+    return unless wanted?
+
+    task_forces.destroy_all
   end
 
   def bought_via_label

@@ -198,7 +198,7 @@ import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTyp
 import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
 import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import Modal from "@/frontend/core/components/AppModal/Modal/index.vue";
+import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 
 // TODO: move to collection model or use openapi schema types when available
 type ShopCommoditiesFormData = {
