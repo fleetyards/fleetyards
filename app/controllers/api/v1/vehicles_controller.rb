@@ -386,6 +386,26 @@ module Api
         end
       end
 
+      def move_all_ingame_to_wishlist
+        authorize! :update_bulk, :api_hangar
+
+        errors = []
+
+        Vehicle.transaction do
+          scope = current_user.vehicles.purchased.where(bought_via: :ingame)
+
+          scope.find_each do |vehicle|
+            next if vehicle.update(wanted: true)
+
+            errors << vehicle.errors
+          end
+        end
+
+        return if errors.blank?
+
+        render json: ValidationError.new("vehicle.move_all_ingame_to_wish_list", errors:), status: :bad_request
+      end
+
       def destroy_all
         authorize! :destroy_all, :api_hangar
 
@@ -411,6 +431,22 @@ module Api
           # rubocop:enable Rails/SkipsModelValidations
 
           vehicle_ids = current_user.vehicles.wanted.pluck(:id)
+
+          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+          Vehicle.where(id: vehicle_ids).delete_all
+        end
+      end
+
+      def destroy_all_ingame
+        authorize! :destroy_all, :api_hangar
+
+        Vehicle.transaction do
+          # rubocop:disable Rails/SkipsModelValidations
+          current_user.vehicles.purchased.where(bought_via: :ingame).update_all(notify: false)
+          # rubocop:enable Rails/SkipsModelValidations
+
+          vehicle_ids = current_user.vehicles.purchased.where(bought_via: :ingame).pluck(:id)
 
           VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
           VehicleModule.where(vehicle_id: vehicle_ids).delete_all

@@ -73,7 +73,9 @@
       text-align: left;
 
       i {
-        width: 25px;
+        width: 16px;
+        display: flex;
+        justify-content: center;
       }
     }
 
@@ -84,7 +86,7 @@
       text-align: left;
 
       > :first-child {
-        margin-right: 6px;
+        margin-right: 10px;
       }
 
       > :not(:first-child) {

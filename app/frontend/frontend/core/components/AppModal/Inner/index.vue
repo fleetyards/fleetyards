@@ -24,22 +24,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
+import { defineProps } from "vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
+import useComlink from "@/frontend/composables/useComlink";
 
-@Component<Modal>({
-  components: {
-    Panel,
-  },
-})
-export default class Modal extends Vue {
-  @Prop({ required: true })
-  private title!: string;
+export type ModalProps = {
+  title?: string;
+};
 
-  close() {
-    this.$comlink.$emit("close-modal");
-  }
-}
+defineProps<ModalProps>();
+
+const comlink = useComlink();
+
+const close = () => {
+  comlink.$emit("close-modal");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AppModalInner",
+};
 </script>

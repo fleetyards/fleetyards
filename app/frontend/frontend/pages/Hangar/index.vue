@@ -212,6 +212,15 @@
 
           <HangarImportBtn size="small" variant="dropdown" @uploaded="fetch" />
 
+          <Btn
+            size="small"
+            variant="dropdown"
+            :aria-label="$t('actions.hangar.resetIngame.openModal')"
+            @click.native="showResetIngameModal"
+          >
+            <i class="fal fa-arrow-rotate-left" />
+            <span>{{ $t("actions.hangar.resetIngame.openModal") }}</span>
+          </Btn>
           <hr />
 
           <Btn
@@ -505,6 +514,13 @@ export default class Hangar extends Vue {
     link.click();
 
     document.body.removeChild(link);
+  }
+
+  showResetIngameModal() {
+    this.$comlink.$emit("open-modal", {
+      component: () =>
+        import("@/frontend/components/Vehicles/ResetIngameModal/index.vue"),
+    });
   }
 
   async destroyAll() {

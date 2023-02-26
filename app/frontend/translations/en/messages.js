@@ -86,6 +86,16 @@ export default {
       success:
         'Your new <b>%{model}</b> was added to your <a href="/hangar/wishlist">Wishlist</a>',
     },
+    resetIngame: {
+      moveToWishlist: {
+        success: "Moved all Ingame bought Ships to your Wishlist.",
+        failure: "Could not move all Ingame bought Ships to your Wishlist.",
+      },
+      removeAll: {
+        success: "Removed all Ingame bought Ships from your Hangar.",
+        failure: "Could not remove all Ingame bought Ships from your Hangar.",
+      },
+    },
   },
   model: {
     onSale: "%{model} now on Sale!",

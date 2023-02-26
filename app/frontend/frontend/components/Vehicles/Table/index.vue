@@ -105,7 +105,7 @@
         <i
           v-if="record.flagship && !wishlist"
           v-tooltip="$t('labels.vehicle.flagship')"
-          class="fad fa-certificate flagship-icon"
+          class="fa fa-certificate flagship-icon"
         />
         <i
           v-if="record.model.onSale"
