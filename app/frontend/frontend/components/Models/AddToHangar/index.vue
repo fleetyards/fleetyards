@@ -8,10 +8,10 @@
     data-test="add-to-hangar"
     @click.native="add"
   >
-    <span v-show="inHangar">
+    <span v-show="inHangar || onWishlist">
       <i class="fa fa-bookmark" />
     </span>
-    <span v-show="!inHangar">
+    <span v-show="!inHangar && !onWishlist">
       <i class="fal fa-bookmark" />
     </span>
   </Btn>
@@ -44,8 +44,16 @@ export default class AddToHangar extends Vue {
 
   @Getter("ships", { namespace: "hangar" }) ships;
 
+  @Getter("ships", { namespace: "wishlist" }) wishlistShips;
+
   get inHangar() {
     return !!(this.ships || []).find((item) => item === this.model.slug);
+  }
+
+  get onWishlist() {
+    return !!(this.wishlistShips || []).find(
+      (item) => item === this.model.slug
+    );
   }
 
   get btnVariant() {
