@@ -308,6 +308,16 @@ module Api
         @models = Model.where(id: model_ids).order(name: :asc).pluck(:slug)
       end
 
+      def wishlist_items
+        authorize! :index, :api_hangar
+        model_ids = current_user.vehicles
+          .where(loaner: false)
+          .visible
+          .wanted
+          .pluck(:model_id)
+        @models = Model.where(id: model_ids).order(name: :asc).pluck(:slug)
+      end
+
       def hangar
         authorize! :index, :api_hangar
         @vehicles = current_user.vehicles.where(loaner: false).purchased.visible

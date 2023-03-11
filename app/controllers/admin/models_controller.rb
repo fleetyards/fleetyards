@@ -141,6 +141,14 @@ module Admin
       end
     end
 
+    private def load_version_from_s3
+      response = Typhoeus.get("#{ScData::BaseLoader.new.s3_base_url}/version")
+
+      raise "Failed to load version from S3" unless response.success?
+
+      response.body.strip
+    end
+
     private def model_params
       @model_params ||= params.require(:model).permit(
         :name, :hidden, :notified, :active, :ground, :store_image, :store_image_cache,
