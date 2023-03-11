@@ -1,63 +1,67 @@
-ARG RUBY_VERSION=3.0.2
+# syntax = docker/dockerfile:1
 
-FROM ruby:$RUBY_VERSION-slim
+# Make sure it matches the Ruby version in .ruby-version and Gemfile
+ARG RUBY_VERSION=3.2.1
+FROM ruby:$RUBY_VERSION-slim as base
 
-ARG NODE_VERSION=14
-ARG BUNDLER_VERSION=2.2.23
+# Rails app lives here
+WORKDIR /rails
 
-ENV RAILS_ENV=production
+# Set production environment
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development"
 
-## install main deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && apt-get clean \
-    && rm -rf /tmp/* /var/lib/apt/lists/*
+# Throw-away build stage to reduce size of final image
+FROM base as build
 
-RUN curl https://deb.nodesource.com/setup_current.x | bash - \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+# Install packages need to build gems
+RUN apt-get update -qq && \
+    apt-get install -y build-essential default-libmysqlclient-dev git libpq-dev libvips pkg-config
 
-RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -\
-    && echo "deb https://deb.nodesource.com/node_${NODE_VERSION}.x focal main" | tee /etc/apt/sources.list.d/node.list
+# Install application gems
+COPY --link Gemfile Gemfile.lock .ruby-version ./
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    bundle exec bootsnap precompile --gemfile
 
-## install main deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    nodejs=$NODE_VERSION* yarn git gcc g++ make rsync patch postgresql-client build-essential \
-    cmake imagemagick openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev \
-    libpq-dev libxml2-dev libxslt-dev libc6-dev libicu-dev xvfb bzip2 libssl-dev \
-    unzip shared-mime-info \
-    && apt-get clean \
-    && rm -rf /tmp/* /var/lib/apt/lists/*
 
-## install bundler
-RUN gem update --system && gem install bundler -v $BUNDLER_VERSION
+# Copy application code
+COPY --link . .
 
-WORKDIR /fleetyards
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
 
-COPY app /fleetyards/app
-COPY config /fleetyards/config
-COPY db /fleetyards/db
-COPY bin /fleetyards/bin
-COPY lib /fleetyards/lib
-COPY public /fleetyards/public
-COPY vendor /fleetyards/vendor
-COPY .ruby-version /fleetyards/.ruby-version
-COPY Rakefile /fleetyards/Rakefile
-COPY Gemfile /fleetyards/Gemfile
-COPY Gemfile.lock /fleetyards/Gemfile.lock
-COPY config.ru /fleetyards/config.ru
+# Install Node.js for Assets
+RUN apt-get update -yq \
+    && apt-get install curl gnupg -yq \
+    && curl -sL https://deb.nodesource.com/setup_lts.x | bash \
+    && apt-get install nodejs -yq
 
-RUN bundle install
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+# RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile #TODO will be available in Rails 7.1.x
+RUN SECRET_KEY_BASE=DummyValueToPassAssetsCompilation ./bin/rails assets:precompile
 
-# Add a script to be executed every time the container starts.
-COPY docker/entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
 
-RUN mkdir -p /fleetyards/tmp/pids && mkdir -p /fleetyards/log
+# Final stage for app image
+FROM base
 
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y default-mysql-client libsqlite3-0 libvips postgresql-client && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Run and own the application files as a non-root user for security
+RUN useradd rails
+USER rails:rails
+
+# Copy built artifacts: gems, application
+COPY --from=build --chown=rails:rails /usr/local/bundle /usr/local/bundle
+COPY --from=build --chown=rails:rails /rails /rails
+
+# Entrypoint prepares the database.
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+
+# Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
-
-
+CMD ["./bin/rails", "server"]

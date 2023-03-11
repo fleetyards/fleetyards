@@ -1,0 +1,14 @@
+{
+  "name": "fleetyards-pulumi",
+  "private": true,
+  "main": "index.ts",
+  "devDependencies": {
+    "@types/node": "^14"
+  },
+  "dependencies": {
+    "@pulumi/digitalocean": "^4.15.2",
+    "@pulumi/dnsimple": "^3.3.0",
+    "@pulumi/hcloud": "^1.10.1",
+    "@pulumi/pulumi": "^3.0.0"
+  }
+}

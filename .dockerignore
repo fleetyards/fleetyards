@@ -1,30 +1,57 @@
-dumps/*
-data/*
+# See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
 
-# config files
-.env
-blocklist.json
-.idea
+# Ignore git directory.
+/.git/
 
-# app files
-public/uploads
-public/compare
-public/vite
+# Ignore bundler config.
+/.bundle
 
-# yarn files
-yarn-error.log
-yarn-debug.log*
-.yarn-integrity
-build
-node_mobules/*
-vendor/assets*
+# Ignore all default key files.
+/config/master.key
+/config/credentials/*.key
 
-# cache & history files
-.eslintcache
-log/*
-tmp/*
-.byebug_history
+# Ignore all environment files.
+/.env*
+!/.env.example
 
-# test files
-test/*
-spec/*
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and any SQLite databases).
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+
+# Ignore assets.
+/node_modules/
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/public/assets
+/public/uploads
+/public/compare
+/public/vite
+/public/vite-dev
+/public/vite-test
+
+
+/yarn-error.log
+/yarn-debug.log*
+/.yarn-integrity
+/build
+
+/.byebug_history
+/.eslintcache
+
+/blocklist.json
+/dumps/*
+/data/*

@@ -1,0 +1,13 @@
+servers:
+  web:
+    - 162.55.212.230
+  jobs:
+    hosts:
+      - 162.55.212.230
+accessories:
+  db:
+    host: 162.55.212.230
+  redis:
+    host: 162.55.212.230
+  opensearch:
+    host: 162.55.212.230

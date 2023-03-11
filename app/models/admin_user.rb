@@ -36,7 +36,7 @@
 class AdminUser < ApplicationRecord
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
          :validatable, :timeoutable, :rememberable,
-         authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
+         authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret,
          otp_backup_code_length: 32, otp_number_of_backup_codes: 10
 
   ## TODO: remove once Deivse Two Factor upgrade to 5.x is done
