@@ -7,9 +7,9 @@ export const modelRouteGuard = async function modelRouteGuard(
   _from: Route,
   next: NavigationGuardNext
 ) {
-  const model = await modelsCollection.findBySlug(to.params.slug);
+  const response = await modelsCollection.findBySlug(to.params.slug);
 
-  if (!model) {
+  if (!response.data) {
     next({ name: "404" });
   } else {
     next();

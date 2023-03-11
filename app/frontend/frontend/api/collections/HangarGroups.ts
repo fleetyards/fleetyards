@@ -1,59 +1,61 @@
 import { get, post, put, destroy } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class HangarGroupsCollection extends BaseCollection {
+export class HangarGroupsCollection extends BaseCollection<
+  THangarGroup,
+  undefined
+> {
   primaryKey = "id";
 
-  records: HangarGroup[] = [];
-
-  async findAll(): Promise<HangarGroup[]> {
-    const response = await get("hangar/groups");
+  async findAll(): Promise<TCollectionResponse<THangarGroup>> {
+    const response = await get<THangarGroup[]>("hangar/groups");
 
     if (!response.error) {
       this.records = response.data;
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async create(
-    form: HangarGroupForm,
+    form: THangarGroupForm,
     refetch = false
-  ): Promise<HangarGroup | null> {
-    const response = await post("hangar/groups", form);
+  ): Promise<TRecordResponse<THangarGroup>> {
+    const response = await post<THangarGroup>("hangar/groups", form);
 
-    if (!response.error) {
-      if (refetch) {
-        this.findAll();
-      }
-
-      return response.data;
-    }
-
-    return null;
-  }
-
-  async update(hangarGroupId: string, form: HangarGroupForm): Promise<boolean> {
-    const response = await put(`hangar/groups/${hangarGroupId}`, form);
-    if (!response.error) {
+    if (!response.error && refetch) {
       this.findAll();
-
-      return true;
     }
 
-    return false;
+    return this.recordResponse(response.data, response.error);
   }
 
-  async destroy(hangarGroupId: string): Promise<boolean> {
-    const response = await destroy(`hangar/groups/${hangarGroupId}`);
+  async update(
+    hangarGroupId: string,
+    form: THangarGroupForm
+  ): Promise<TRecordResponse<THangarGroup>> {
+    const response = await put<THangarGroup>(
+      `hangar/groups/${hangarGroupId}`,
+      form
+    );
 
     if (!response.error) {
       this.findAll();
-
-      return true;
     }
 
-    return false;
+    return this.recordResponse(response.data, response.error);
+  }
+
+  async destroy(hangarGroupId: string): Promise<TRecordResponse<THangarGroup>> {
+    const response = await destroy<THangarGroup>(
+      `hangar/groups/${hangarGroupId}`
+    );
+
+    if (!response.error) {
+      this.findAll();
+    }
+
+    return this.recordResponse(response.data, response.error);
   }
 }
 

@@ -6,7 +6,8 @@ export const fleetRouteGuard = async function fleetRouteGuard(
   _from: Route,
   next: NavigationGuardNext
 ) {
-  const fleet = await fleetsCollection.findBySlug(to.params.slug);
+  const response = await fleetsCollection.findBySlug(to.params.slug);
+  const fleet = response.data;
 
   if (!fleet || !fleet.myFleet) {
     next({ name: "404" });
@@ -20,9 +21,9 @@ export const publicFleetRouteGuard = async function publicFleetRouteGuard(
   _from: Route,
   next: NavigationGuardNext
 ) {
-  const fleet = await fleetsCollection.findBySlug(to.params.slug);
+  const response = await fleetsCollection.findBySlug(to.params.slug);
 
-  if (!fleet) {
+  if (!response.data) {
     next({ name: "404" });
   } else {
     next();
@@ -35,7 +36,8 @@ export const publicFleetShipsRouteGuard =
     _from: Route,
     next: NavigationGuardNext
   ) {
-    const fleet = await fleetsCollection.findBySlug(to.params.slug);
+    const response = await fleetsCollection.findBySlug(to.params.slug);
+    const fleet = response.data;
 
     if (!fleet || (!fleet.publicFleet && !fleet.myFleet)) {
       next({ name: "404" });

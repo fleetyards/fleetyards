@@ -1,4 +1,4 @@
-type ChartData = {
+type TChartData = {
   name: string;
   y: number;
   selected?: boolean;

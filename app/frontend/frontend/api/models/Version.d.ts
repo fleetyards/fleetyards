@@ -1,4 +1,4 @@
-type Version = {
+type TVersion = {
   version: string;
   codename: string;
 };

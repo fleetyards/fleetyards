@@ -11,110 +11,125 @@
     class="app-modal fade"
     @click.self="() => close()"
   >
-    <Component :is="component" ref="modelComponent" v-bind="props" />
+    <Component :is="component" ref="modalComponent" v-bind="props" />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Ref } from "vue-property-decorator";
-import { Action } from "vuex-class";
+<script lang="ts" setup>
+import { ref, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { displayConfirm } from "@/frontend/lib/Noty";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useAppStore } from "@/frontend/stores/App";
+import { useI18n } from "@/frontend/composables/useI18n";
 
 type AppModalOptions = {
-  component: Promise<VueComponent>;
+  component: Promise<Component>;
   title: string;
   wide: boolean;
   fixed: boolean;
+  dirty: boolean;
   props: any;
 };
 
-@Component<AppModal>({})
-export default class AppModal extends Vue {
-  @Action("showOverlay", { namespace: "app" }) showOverlay: any;
-
-  @Action("hideOverlay", { namespace: "app" }) hideOverlay: any;
-
-  @Ref("modal") readonly modal!: HTMLElement;
-
-  component: string = null;
-
-  props: any = null;
-
-  wide = false;
-
-  fixed = false;
-
-  isShow = false;
-
-  isOpen = false;
-
-  title: string = null;
-
-  mounted() {
-    this.$comlink.$on("open-modal", this.open);
-    this.$comlink.$on("close-modal", this.close);
-  }
-
-  beforeDestroy() {
-    this.$comlink.$off("open-modal");
-    this.$comlink.$off("close-modal");
-  }
-
-  public open(options: AppModalOptions) {
-    this.props = options.props;
-    this.wide = !!options.wide;
-    this.fixed = !!options.fixed;
-    this.dirty = !!options.dirty;
-    this.component = options.component;
-
-    this.isShow = true;
-    this.showOverlay();
-
-    this.$nextTick(() => {
-      // make sure the component is present
-      setTimeout(() => {
-        // make sure initial animations have enough time
-        this.isOpen = true;
-
-        if (this.$refs.modal) {
-          this.$refs.modal.focus();
-        }
-
-        this.$emit("modal-opened");
-      }, 100);
-    });
-  }
-
-  public close(force = false) {
-    if (this.fixed && !force) {
-      return;
-    }
-
-    if (this.$refs.modelComponent?.dirty) {
-      displayConfirm({
-        text: this.$t("messages.confirm.modal.dirty"),
-        onConfirm: () => {
-          this.internalClose();
-        },
-      });
-    } else {
-      this.internalClose();
-    }
-  }
-
-  internalClose() {
-    this.isOpen = false;
-    this.hideOverlay();
-
-    this.$nextTick(function onClose() {
-      setTimeout(() => {
-        this.isShow = false;
-        this.component = null;
-        this.props = null;
-        this.$emit("modal-closed");
-      }, 300);
-    });
-  }
+interface AppModalComponent extends HTMLElement {
+  dirty?: boolean;
 }
+
+const component = ref<Promise<Component>>();
+
+const props = ref<any>();
+
+const wide = ref(false);
+
+const fixed = ref(false);
+
+const dirty = ref(false);
+
+const isShow = ref(false);
+
+const isOpen = ref(false);
+
+const comlink = useComlink();
+
+const emit = defineEmits(["modal-closed", "modal-opened"]);
+
+const modal = ref<HTMLElement | null>(null);
+
+const open = (options: AppModalOptions) => {
+  props.value = options.props;
+  wide.value = !!options.wide;
+  fixed.value = !!options.fixed;
+  dirty.value = !!options.dirty;
+  component.value = options.component;
+
+  isShow.value = true;
+  appStore.showOverlay();
+
+  nextTick(() => {
+    // make sure the component is present
+    setTimeout(() => {
+      // make sure initial animations have enough time
+      isOpen.value = true;
+
+      if (modal.value) {
+        modal.value.focus();
+      }
+
+      emit("modal-opened");
+    }, 100);
+  });
+};
+
+const appStore = useAppStore();
+
+const internalClose = () => {
+  isOpen.value = false;
+  appStore.hideOverlay();
+
+  nextTick(() => {
+    setTimeout(() => {
+      isShow.value = false;
+      component.value = undefined;
+      props.value = undefined;
+      emit("modal-closed");
+    }, 300);
+  });
+};
+
+const modalComponent = ref<AppModalComponent | null>(null);
+
+const { t } = useI18n();
+
+const close = (force = false) => {
+  if (fixed.value && !force) {
+    return;
+  }
+
+  if (modalComponent.value?.dirty) {
+    displayConfirm({
+      text: t("messages.confirm.modal.dirty"),
+      onConfirm: () => {
+        internalClose();
+      },
+    });
+  } else {
+    internalClose();
+  }
+};
+
+onMounted(() => {
+  comlink.$on("open-modal", open);
+  comlink.$on("close-modal", close);
+});
+
+onBeforeUnmount(() => {
+  comlink.$off("open-modal");
+  comlink.$off("close-modal");
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "AppModal",
+};
 </script>

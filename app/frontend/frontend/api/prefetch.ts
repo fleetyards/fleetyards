@@ -1,16 +1,17 @@
-const getByKey = function getByKey(key) {
+const getByKey = function getByKey(key: string) {
   return (window.DATA_PREFILL || {})[key];
 };
 
-const cleanData = function cleanData(key) {
+const cleanData = function cleanData(key: string) {
   if (!window.DATA_PREFILL || !window.DATA_PREFILL[key]) {
     return;
   }
+
   window.DATA_PREFILL[key] = null;
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const prefetch = function prefetch(key) {
+export const prefetch = function prefetch(key: string) {
   const json = getByKey(key);
   cleanData(key);
 
@@ -19,8 +20,10 @@ export const prefetch = function prefetch(key) {
   }
 
   const element = JSON.parse(json);
+
   if (Array.isArray(element)) {
     return element.map((item) => JSON.parse(item));
   }
+
   return element;
 };

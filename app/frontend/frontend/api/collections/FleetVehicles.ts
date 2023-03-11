@@ -2,14 +2,15 @@ import { get, download } from "@/frontend/api/client";
 import Store from "@/frontend/lib/Store";
 import BaseCollection from "./Base";
 
-export class FleetVehiclesCollection extends BaseCollection {
+export class FleetVehiclesCollection extends BaseCollection<
+  TVehicle | TModel,
+  TFleetVehicleParams
+> {
   primaryKey = "id";
 
-  records: (Vehicle | Model)[] = [];
+  stats: TFleetVehicleStats | null = null;
 
-  stats: FleetVehicleStats | null = null;
-
-  modelCounts: FleetModelCounts | null = null;
+  modelCounts: TFleetModelCounts | null = null;
 
   get perPage(): number {
     return Store.getters["fleet/perPage"];
@@ -23,28 +24,36 @@ export class FleetVehiclesCollection extends BaseCollection {
     Store.dispatch("fleet/updatePerPage", perPage);
   }
 
-  async findAll(params: FleetVehicleParams): Promise<(Vehicle | Model)[]> {
-    const response = await get(`fleets/${params.slug}/vehicles`, {
-      q: params?.filters,
-      page: params?.page,
-      perPage: params?.perPage || this.perPage,
-      grouped: params?.grouped,
-    });
+  async findAll(
+    params: TFleetVehicleParams
+  ): Promise<TCollectionResponse<TVehicle | TModel>> {
+    const response = await get<(TVehicle | TModel)[]>(
+      `fleets/${params.slug}/vehicles`,
+      {
+        q: params?.filters,
+        page: params?.page,
+        perPage: params?.perPage || this.perPage,
+        grouped: params?.grouped,
+      }
+    );
 
     if (!response.error) {
       this.records = response.data;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async findStats(
-    params: FleetVehicleParams
-  ): Promise<FleetVehicleStats | null> {
-    const response = await get(`fleets/${params.slug}/quick-stats`, {
-      q: params?.filters,
-    });
+    params: TFleetVehicleParams
+  ): Promise<TFleetVehicleStats | null> {
+    const response = await get<TFleetVehicleStats>(
+      `fleets/${params.slug}/quick-stats`,
+      {
+        q: params?.filters,
+      }
+    );
 
     if (!response.error) {
       this.stats = response.data;
@@ -54,11 +63,14 @@ export class FleetVehiclesCollection extends BaseCollection {
   }
 
   async findModelCounts(
-    params: FleetVehicleParams
-  ): Promise<FleetModelCounts | null> {
-    const response = await get(`fleets/${params.slug}/model-counts`, {
-      q: params?.filters,
-    });
+    params: TFleetVehicleParams
+  ): Promise<TFleetModelCounts | null> {
+    const response = await get<TFleetModelCounts>(
+      `fleets/${params.slug}/model-counts`,
+      {
+        q: params?.filters,
+      }
+    );
 
     if (!response.error) {
       this.modelCounts = response.data;
@@ -67,10 +79,13 @@ export class FleetVehiclesCollection extends BaseCollection {
     return this.modelCounts;
   }
 
-  async export(params: FleetVehicleParams): Promise<Vehicle[] | null> {
-    const response = await download(`fleets/${params.slug}/vehicles/export`, {
-      q: params?.filters,
-    });
+  async export(params: TFleetVehicleParams): Promise<TVehicle[] | null> {
+    const response = await download<TVehicle[]>(
+      `fleets/${params.slug}/vehicles/export`,
+      {
+        q: params?.filters,
+      }
+    );
 
     if (!response.error) {
       return response.data;

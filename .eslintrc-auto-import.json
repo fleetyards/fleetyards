@@ -76,6 +76,7 @@
     "watchEffect": true,
     "watchPostEffect": true,
     "watchSyncEffect": true,
-    "toValue": true
+    "toValue": true,
+    "useI18n": true
   }
 }

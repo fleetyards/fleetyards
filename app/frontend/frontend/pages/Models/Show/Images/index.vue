@@ -15,9 +15,9 @@
     <FilteredList
       :collection="collection"
       collection-method="findAllForGallery"
-      :name="$route.name"
-      :route-query="$route.query"
-      :hash="$route.hash"
+      :name="route.name"
+      :route-query="route.query"
+      :hash="route.hash"
       :params="routeParams"
       :paginated="true"
       class="images"
@@ -46,83 +46,97 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed, ref } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Gallery from "@/frontend/core/components/Gallery/index.vue";
 import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
 import imagesCollection from "@/frontend/api/collections/Images";
+import type { ImagesCollection } from "@/frontend/api/collections/Images";
+import modelsCollection from "@/frontend/api/collections/Models";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { modelRouteGuard } from "@/frontend/utils/RouteGuards/Models";
 
-@Component<ModelImages>({
-  components: {
-    FilteredList,
-    FilteredGrid,
-    BreadCrumbs,
-    Gallery,
-    GalleryImage,
-  },
-})
-export default class ModelImages extends Vue {
-  collection: ImagesCollection = imagesCollection;
+const collection: ImagesCollection = imagesCollection;
 
-  model: Model | null = null;
+const model = ref<Model | null>(null);
 
-  get metaTitle() {
-    if (!this.model) {
-      return null;
-    }
+const { t } = useI18n();
 
-    return this.$t("title.modelImages", {
-      name: this.model.name,
-    });
+const metaTitle = computed(() => {
+  if (!model.value) {
+    return undefined;
   }
 
-  get routeParams() {
-    return {
-      ...this.$route.params,
-      galleryType: "models",
-    };
+  return t("title.modelImages", {
+    name: model.value.name,
+  });
+});
+
+useMetaInfo(metaTitle);
+
+const route = useRoute();
+
+const routeParams = computed(() => ({
+  ...route.params,
+  galleryType: "models",
+}));
+
+const crumbs = computed(() => {
+  if (!model.value) {
+    return null;
   }
 
-  get crumbs() {
-    if (!this.model) {
-      return null;
-    }
-
-    return [
-      {
-        to: {
-          name: "models",
-          hash: `#${this.model.slug}`,
-        },
-        label: this.$t("nav.models.index"),
+  return [
+    {
+      to: {
+        name: "models",
+        hash: `#${model.value.slug}`,
       },
-      {
-        to: { name: "model", param: { slug: this.$route.params.slug } },
-        label: this.model.name,
-      },
-    ];
+      label: t("nav.models.index"),
+    },
+    {
+      to: { name: "model", param: { slug: route.params.slug } },
+      label: model.value.name,
+    },
+  ];
+});
+
+const router = useRouter();
+
+const fetchModel = async () => {
+  const data = await modelsCollection.findBySlug(route.params.slug);
+
+  if (data) {
+    model.value = data;
+  } else {
+    router.replace({ name: "404" });
   }
+};
 
-  created() {
-    this.fetchModel();
-  }
+fetchModel();
 
-  openGallery(index) {
-    this.$refs.gallery.open(index);
-  }
+const gallery = ref<InstanceType<typeof Gallery> | null>(null);
 
-  async fetchModel() {
-    const response = await this.$api.get(`models/${this.$route.params.slug}`);
-
-    if (!response.error) {
-      this.model = response.data;
-    } else if (response.error.response.status === 404) {
-      this.$router.replace({ name: "404" });
-    }
+const openGallery = (index: number) => {
+  if (gallery.value) {
+    gallery.value.open(index);
   }
 }
 </script>
+
+<script lang="ts">
+export default {
+  name: "ModelImagesPage",
+  beforeRouteEnter: modelRouteGuard,
+};
+
+<script lang="ts">
+export default {
+  name: "ModelImagesPage",
+  beforeRouteEnter: modelRouteGuard,
+};

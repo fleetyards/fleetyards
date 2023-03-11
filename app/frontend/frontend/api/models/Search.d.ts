@@ -1,16 +1,14 @@
-interface SearchResult
-  extends Model,
-    Station,
-    Shop,
-    CelestialObject,
-    Starsystem {
+interface TSearchResult
+  extends TModel,
+    TStation,
+    TShop,
+    TCelestialObject,
+    TStarsystem {
   resultType: string;
 }
 
-type SearchFilter = {
+type TSearchFilter = {
   search: string;
 };
 
-interface SearchParams extends CollectionParams {
-  filters: SearchFilter;
-}
+type TSearchParams = TCollectionParams<TSearchFilter>;

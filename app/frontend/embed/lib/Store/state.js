@@ -11,7 +11,7 @@ export default () => {
   const scale = Math.max(config.fleetchartScale || 0, 10);
 
   return {
-    locale: "en-US",
+    locale: "en",
     storeVersion: null,
     details: config.details || true,
     fleetchart: config.fleetchart || false,

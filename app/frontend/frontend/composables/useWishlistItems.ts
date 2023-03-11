@@ -1,29 +1,19 @@
 import { watch } from "vue";
 import { useRoute } from "vue-router/composables";
-// import { useSessionStore } from "@/frontend/stores/Session";
-// import { useWishlistStore } from "@/frontend/stores/Wishlist";
-import Store from "@/frontend/lib/Store";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { useWishlistStore } from "@/frontend/stores/Wishlist";
 import WishlistItemsCollection from "@/frontend/api/collections/WishlistItems";
 
 export const useWishlistItems = () => {
-  // const sessionStore = useSessionStore();
-  // const wishlistStore = useWishlistStore();
-
-  const isAuthenticated = computed(
-    () => Store.getters["session/isAuthenticated"]
-  );
+  const sessionStore = useSessionStore();
+  const wishlistStore = useWishlistStore();
 
   const fetchHangarItems = async () => {
-    // if (!sessionStore.isAuthenticated) {
-    if (!isAuthenticated.value) {
+    if (!sessionStore.isAuthenticated) {
       return;
     }
 
-    // wishlistStore.save(await WishlistItemsCollection.findAll());
-    await Store.dispatch(
-      "wishlist/saveHangar",
-      await WishlistItemsCollection.findAll()
-    );
+    wishlistStore.save(await WishlistItemsCollection.findAll());
   };
 
   fetchHangarItems();
@@ -31,15 +21,14 @@ export const useWishlistItems = () => {
   const route = useRoute();
 
   watch(
-    () => route.path,
+    () => route,
     () => {
       fetchHangarItems();
     }
   );
 
   watch(
-    // () => sessionStore.isAuthenticated,
-    () => isAuthenticated.value,
+    () => sessionStore.isAuthenticated,
     () => {
       fetchHangarItems();
     }

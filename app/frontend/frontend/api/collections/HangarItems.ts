@@ -4,7 +4,7 @@ export class HangarItemsCollection {
   records: string[] = [];
 
   async findAll(): Promise<string[]> {
-    const response = await get("hangar/items", {}, true);
+    const response = await get<string[]>("hangar/items", {}, true);
 
     if (!response.error) {
       this.records = response.data;

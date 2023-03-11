@@ -2,25 +2,26 @@ import Vue from "vue";
 import App from "@/frontend/App.vue";
 import router from "@/frontend/lib/Router";
 import store from "@/frontend/lib/Store";
+import pinia from "@/frontend/plugins/Pinia";
 import "@/frontend/plugins/LazyLoad";
 import "@/frontend/lib/Sentry";
 import I18nPlugin from "@/frontend/lib/I18n";
 import ApiClient from "@/frontend/api/client";
 import Subscriptions from "@/frontend/plugins/Subscriptions";
 import Comlink from "@/frontend/plugins/Comlink";
-import Ahoy from "@/frontend/plugins/Ahoy";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
+import Ahoy from "@/frontend/plugins/Ahoy";
 
 Vue.use(Subscriptions);
 Vue.use(ApiClient);
 Vue.use(Comlink);
 Vue.use(I18nPlugin);
-Vue.use(Ahoy);
 Vue.use(Validations);
 
 declare global {
   interface Window {
+    APP_NAME: string;
     APP_VERSION: string;
     STORE_VERSION: string;
     SC_DATA_VERSION: string;
@@ -29,6 +30,9 @@ declare global {
     DATA_PREFILL: KeyValuePair;
     FRONTEND_ENDPOINT: string;
     CABLE_ENDPOINT: string;
+    GIT_REVISION: string;
+    SENTRY_DSN: string;
+    NODE_ENV: string;
   }
 }
 
@@ -62,19 +66,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
   }
+});
 
-  if (store.state.storeVersion !== window.STORE_VERSION) {
-    console.info("Updating Store Version and resetting Store");
+if (store.state.storeVersion !== window.STORE_VERSION) {
+  console.info("Updating Store Version and resetting Store");
 
-    store.dispatch("reset");
-    store.commit("setStoreVersion", window.STORE_VERSION);
-  }
+  store.dispatch("reset");
+  store.commit("setStoreVersion", window.STORE_VERSION);
+}
 
-  // eslint-disable-next-line no-new
-  new Vue({
-    el: "#app",
-    router,
-    store,
-    render: (h) => h(App),
-  });
+// eslint-disable-next-line no-new
+new Vue({
+  el: "#app",
+  router,
+  store,
+  pinia,
+  render: (h) => h(App),
 });

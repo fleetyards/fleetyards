@@ -1,22 +1,24 @@
 import { get, post, put } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class FleetMembersCollection extends BaseCollection {
+export class FleetMembersCollection extends BaseCollection<
+  TFleetMember,
+  TFleetMembersParams
+> {
   primaryKey = "id";
 
-  records: FleetMember[] = [];
+  stats: TFleetMemberStats | null = null;
 
-  record: FleetMember | null = null;
-
-  stats: FleetMemberStats | null = null;
-
-  params: FleetMembersParams | null = null;
-
-  async findAll(params: FleetMembersParams | null): Promise<FleetMember[]> {
-    const response = await get(`fleets/${params?.slug}/members`, {
-      q: params?.filters,
-      page: params?.page,
-    });
+  async findAll(
+    params?: TFleetMembersParams
+  ): Promise<TCollectionResponse<TFleetMember>> {
+    const response = await get<TFleetMember[]>(
+      `fleets/${params?.slug}/members`,
+      {
+        q: params?.filters,
+        page: params?.page,
+      }
+    );
 
     this.params = params;
 
@@ -25,15 +27,18 @@ export class FleetMembersCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async findStats(
-    params: FleetMembersParams | null
-  ): Promise<FleetMemberStats | null> {
-    const response = await get(`fleets/${params?.slug}/member-quick-stats`, {
-      q: params?.filters,
-    });
+    params: TFleetMembersParams | null
+  ): Promise<TFleetMemberStats | null> {
+    const response = await get<TFleetMemberStats>(
+      `fleets/${params?.slug}/member-quick-stats`,
+      {
+        q: params?.filters,
+      }
+    );
 
     if (!response.error) {
       this.stats = response.data;
@@ -42,70 +47,83 @@ export class FleetMembersCollection extends BaseCollection {
     return this.stats;
   }
 
-  async findByFleet(slug: string): Promise<FleetMember | null> {
-    const response = await get(`fleets/${slug}/members/current`);
+  async findByFleet(slug: string): Promise<TRecordResponse<TFleetMember>> {
+    const response = await get<TFleetMember>(`fleets/${slug}/members/current`);
 
-    if (!response.error) {
-      this.record = response.data;
-    }
-
-    return this.record;
+    return this.recordResponse(response.data, response.error, true);
   }
 
   async create(
     slug: string,
-    form: FleetMemberForm,
+    form: TFleetMemberForm,
     refetch = false
-  ): Promise<RecordResponse<FleetMember>> {
-    const response = await post(`fleets/${slug}/members`, form);
+  ): Promise<TRecordResponse<TFleetMember>> {
+    const response = await post<TFleetMember>(`fleets/${slug}/members`, form);
 
-    if (!response.error) {
-      if (refetch) {
-        this.findAll(this.params);
-      }
-
-      return {
-        data: response.data,
-        error: null,
-      };
+    if (!response.error && refetch) {
+      this.findAll(this.params);
     }
 
-    return {
-      data: null,
-      error: this.extractErrorCode(response.error),
-    };
+    return this.recordResponse(response.data, response.error);
   }
 
-  async acceptRequest(slug: string, username: string, refetch = false) {
-    const response = await put(
+  async update(
+    slug: string,
+    form: TFleetMembershipForm,
+    refetch = false
+  ): Promise<TRecordResponse<TFleetMember>> {
+    const response = await put<TFleetMember>(`fleets/${slug}/members`, form);
+
+    if (!response.error && refetch) {
+      this.findAll(this.params);
+    }
+
+    return this.recordResponse(response.data, response.error);
+  }
+
+  async leave(
+    slug: string,
+    refetch = false
+  ): Promise<TRecordResponse<TFleetMember>> {
+    const response = await put<TFleetMember>(`fleets/${slug}/members/leave`);
+
+    if (!response.error && refetch) {
+      this.findAll(this.params);
+    }
+
+    return this.recordResponse(response.data, response.error);
+  }
+
+  async acceptRequest(
+    slug: string,
+    username: string,
+    refetch = false
+  ): Promise<TRecordResponse<TFleetMember>> {
+    const response = await put<TFleetMember>(
       `fleets/${slug}/members/${username}/accept-request`
     );
 
-    if (!response.error) {
-      if (refetch) {
-        this.findAll(this.params);
-      }
-
-      return response.data;
+    if (!response.error && refetch) {
+      this.findAll(this.params);
     }
 
-    return null;
+    return this.recordResponse(response.data, response.error);
   }
 
-  async declineRequest(slug: string, username: string, refetch = false) {
-    const response = await put(
+  async declineRequest(
+    slug: string,
+    username: string,
+    refetch = false
+  ): Promise<TRecordResponse<TFleetMember>> {
+    const response = await put<TFleetMember>(
       `fleets/${slug}/members/${username}/decline-request`
     );
 
-    if (!response.error) {
-      if (refetch) {
-        this.findAll(this.params);
-      }
-
-      return response.data;
+    if (!response.error && refetch) {
+      this.findAll(this.params);
     }
 
-    return null;
+    return this.recordResponse(response.data, response.error);
   }
 }
 

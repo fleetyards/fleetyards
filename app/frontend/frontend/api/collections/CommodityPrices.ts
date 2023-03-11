@@ -1,23 +1,24 @@
 import { get, post } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class CommodityPricesCollection extends BaseCollection {
+export class CommodityPricesCollection extends BaseCollection<
+  TCommodityPrice,
+  undefined
+> {
   primaryKey = "id";
 
-  async create(form: CommodityPriceForm): Promise<CommodityPrice | null> {
-    const response = await post("commodity-prices", form);
+  async create(
+    form: TCommodityPriceForm
+  ): Promise<TRecordResponse<TCommodityPrice>> {
+    const response = await post<TCommodityPrice>("commodity-prices", form);
 
-    if (!response.error) {
-      return response.data;
-    }
-
-    return {
-      error: response.error,
-    };
+    return this.recordResponse(response.data, response.error);
   }
 
-  async timeRanges(): Promise<FilterGroupItem[]> {
-    const response = await get("commodity-prices/time-ranges");
+  async timeRanges(): Promise<TFilterGroupItem[]> {
+    const response = await get<TFilterGroupItem[]>(
+      "commodity-prices/time-ranges"
+    );
 
     if (!response.error) {
       return response.data;

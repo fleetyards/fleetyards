@@ -7,9 +7,9 @@ export const stationRouteGuard = async function stationRouteGuard(
   _from: Route,
   next: NavigationGuardNext
 ) {
-  const station = await stationsCollection.findBySlug(to.params.slug);
+  const response = await stationsCollection.findBySlug(to.params.slug);
 
-  if (!station) {
+  if (!response.data) {
     next({ name: "404" });
   } else {
     next();

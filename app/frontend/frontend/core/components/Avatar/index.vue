@@ -12,60 +12,85 @@
     <div v-else class="no-avatar">
       <i :class="icon" />
     </div>
-    <div v-if="editable || creatable" class="edit" @click.prevent="emitClick">
-      <template v-if="avatar">
-        <i class="fa fa-times" />
 
-        {{ $t("actions.remove") }}
-      </template>
-      <template v-else>
-        <i class="fa fa-upload" />
-
-        <template v-if="editable">
-          {{ $t("actions.change") }}
+    <div v-if="editable || creatable" class="edit">
+      <BtnDropdown
+        size="small"
+        variant="link"
+        class="panel-edit-menu"
+        data-test="avatar-edit-menu"
+        :inline="true"
+        icon="fad fa-gear"
+      >
+        <template slot="label">
+          <i class="fad fa-gear" />
         </template>
-        <template v-else>
-          {{ $t("actions.upload") }}
-        </template>
-      </template>
+        <Btn
+          :aria-label="$t('actions.change')"
+          size="xsmall"
+          variant="dropdown"
+          data-test="avatar-change"
+          @click.native="changeAvatar"
+        >
+          <i class="fa fa-upload" />
+          <span v-if="avatar">{{ $t("actions.change") }}</span>
+          <span v-else>{{ $t("actions.upload") }}</span>
+        </Btn>
+        <Btn
+          v-if="avatar"
+          :aria-label="$t('actions.remove')"
+          size="xsmall"
+          variant="dropdown"
+          data-test="avatar-edit"
+          @click.native="removeAvatar"
+        >
+          <i class="fal fa-trash" />
+          <span>{{ $t("actions.remove") }}</span>
+        </Btn>
+      </BtnDropdown>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 
-@Component<Avatar>()
-export default class Avatar extends Vue {
-  @Prop({ default: null }) avatar!: string;
-
-  @Prop({
-    default: "default",
-    validator(value) {
-      return ["default", "small", "large"].indexOf(value) !== -1;
-    },
-  })
-  size!: string;
-
-  @Prop({ default: false }) editable!: boolean;
-
-  @Prop({ default: false }) creatable!: boolean;
-
-  @Prop({ default: "fad fa-user" }) icon!: string;
-
-  @Prop({ default: false }) transparent!: boolean;
-
-  @Prop({ default: true }) round!: boolean;
-
-  emitClick() {
-    if (this.avatar) {
-      this.$emit("destroy");
-    } else {
-      this.$emit("upload");
-    }
-  }
+interface Props {
+  avatar?: string;
+  size?: "default" | "small" | "large";
+  editable?: boolean;
+  creatable?: boolean;
+  icon?: string;
+  transparent?: boolean;
+  round?: boolean;
 }
+
+withDefaults(defineProps<Props>(), {
+  avatar: undefined,
+  size: "default",
+  editable: false,
+  creatable: false,
+  icon: "fad fa-user",
+  transparent: false,
+  round: true,
+});
+
+const emit = defineEmits(["destroy", "upload"]);
+
+const removeAvatar = () => {
+  emit("destroy");
+};
+
+const changeAvatar = () => {
+  emit("upload");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AvatarComponent",
+};
 </script>
 
 <style lang="scss" scoped>

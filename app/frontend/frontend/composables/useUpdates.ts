@@ -1,24 +1,14 @@
 import { watch, ref, onMounted, onUnmounted } from "vue";
 import { displayInfo } from "@/frontend/lib/Noty";
-// import { useSessionStore } from "@/frontend/stores/Session";
-// import { useAppStore } from "@/frontend/stores/App";
-// import { useHangarStore } from "@/frontend/stores/Hangar";
-// import { useWishlistStore } from "@/frontend/stores/Wishlist";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { useAppStore } from "@/frontend/stores/App";
+import { useHangarStore } from "@/frontend/stores/Hangar";
+import { useWishlistStore } from "@/frontend/stores/Wishlist";
 import { useCable } from "@/frontend/composables/useCable";
 import { useI18n } from "@/frontend/composables/useI18n";
 import type { Subscription } from "@rails/actioncable";
-import Store from "@/frontend/lib/Store";
 
-type ChannelName =
-  | "appVersion"
-  | "hangarCreate"
-  | "hangarDestroy"
-  | "wishlistCreate"
-  | "wishlistDestroy"
-  | "onSaleHangar"
-  | "onSale";
-
-interface Channels {
+interface Channel {
   appVersion?: Subscription;
   hangarCreate?: Subscription;
   hangarDestroy?: Subscription;
@@ -29,39 +19,38 @@ interface Channels {
 }
 
 export const useUpdates = () => {
-  const channels = ref<Channels>({});
+  const channels = ref<Channel>({});
 
-  const unsubscribeChannel = (channel: ChannelName) => {
-    if (channels.value[channel]) {
-      (channels.value[channel] as Subscription).unsubscribe();
-      delete channels.value[channel];
-    }
+  const sessionStore = useSessionStore();
+
+  const unsubscribeChannel = (channel: string) => {
+    channels.value[channel].unsubscribe();
+    delete channels[channel];
   };
 
   const { consumer: cable, refresh } = useCable();
 
   const disconnectUpdates = () => {
-    Object.keys(channels.value).forEach((channelName) => {
-      unsubscribeChannel(channelName as ChannelName);
+    Object.keys(channels.value).forEach((channel) => {
+      unsubscribeChannel(channel);
     });
 
     refresh();
   };
 
-  const connected = (channel: ChannelName) => {
+  const connected = (channel: string) => {
     console.info("Connected to Channel:", channel);
   };
 
-  const disconnected = (channel: ChannelName) => {
+  const disconnected = (channel: string) => {
     unsubscribeChannel(channel);
     console.info("Disconnected from Channel:", channel);
   };
 
-  // const appStore = useAppStore();
+  const appStore = useAppStore();
 
   const updateAppVersion = (data: string) => {
-    Store.dispatch("app/updateVersion", JSON.parse(data));
-    // appStore.updateVersion(JSON.parse(data));
+    appStore.updateVersion(JSON.parse(data));
   };
 
   const setupAppVersionChannel = () => {
@@ -81,7 +70,7 @@ export const useUpdates = () => {
     );
   };
 
-  // const hangarStore = useHangarStore();
+  const hangarStore = useHangarStore();
 
   const addShipToHangar = (data: string) => {
     const vehicle = JSON.parse(data);
@@ -90,8 +79,7 @@ export const useUpdates = () => {
       return;
     }
 
-    // hangarStore.add(vehicle.model.slug);
-    Store.dispatch("hangar/add", vehicle.model.slug);
+    hangarStore.add(vehicle.model.slug);
   };
 
   const setupHangarCreateChannel = () => {
@@ -122,8 +110,7 @@ export const useUpdates = () => {
       return;
     }
 
-    // hangarStore.remove(vehicle.model.slug);
-    Store.dispatch("hangar/remove", vehicle.model.slug);
+    hangarStore.remove(vehicle.model.slug);
   };
 
   const setupHangarDestroyChannel = () => {
@@ -147,7 +134,7 @@ export const useUpdates = () => {
     );
   };
 
-  // const wishlistStore = useWishlistStore();
+  const wishlistStore = useWishlistStore();
 
   const addShipToWishlist = (data: string) => {
     const vehicle = JSON.parse(data);
@@ -156,8 +143,7 @@ export const useUpdates = () => {
       return;
     }
 
-    // wishlistStore.add(vehicle.model.slug);
-    Store.dispatch("wishlist/add", vehicle.model.slug);
+    wishlistStore.add(vehicle.model.slug);
   };
 
   const setupWishlistCreateChannel = () => {
@@ -188,8 +174,7 @@ export const useUpdates = () => {
       return;
     }
 
-    // wishlistStore.remove(vehicle.model.slug);
-    Store.dispatch("wishlist/remove", vehicle.model.slug);
+    wishlistStore.remove(vehicle.model.slug);
   };
 
   const setupWishlistDestroyChannel = () => {
@@ -277,13 +262,10 @@ export const useUpdates = () => {
     );
   };
 
-  // const sessionStore = useSessionStore();
-
   const setupUpdates = () => {
     setupAppVersionChannel();
 
-    // if (sessionStore.isAuthenticated) {
-    if (Store.getters["session/isAuthenticated"]) {
+    if (sessionStore.isAuthenticated) {
       setupOnSaleVehiclesChannel();
       setupOnSaleChannel();
       setupHangarCreateChannel();
@@ -302,7 +284,7 @@ export const useUpdates = () => {
   });
 
   watch(
-    () => Store.getters["session/isAuthenticated"],
+    () => sessionStore.isAuthenticated,
     () => {
       disconnectUpdates();
       setupUpdates();

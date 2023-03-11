@@ -1,7 +1,7 @@
-type Vehicle = {
+type TVehicle = {
   id: string;
   name: string;
-  model: Model;
+  model: TModel;
   loaner: boolean;
   public: boolean;
   wanted: boolean;
@@ -9,7 +9,7 @@ type Vehicle = {
   saleNotify: boolean;
   modelModuleIds: string[];
   modelUpgradeIds: string[];
-  paint: ModelPaint;
+  paint: TModelPaint;
   boughtVia: string;
   boughtViaLabel: string;
   username?: string;
@@ -18,7 +18,7 @@ type Vehicle = {
   modulePackage: ModelModulePackage;
 };
 
-type VehicleForm = {
+type TVehicleForm = {
   name?: string;
   wanted?: boolean;
   modelId?: string;
@@ -30,21 +30,14 @@ type VehicleForm = {
   modelPaintId?: string;
 };
 
-type VehiclesFilter = {
+type TVehiclesFilter = {
   modelNameCont?: string;
   modelSlugIn?: string[];
 };
 
-interface VehicleParams extends CollectionParams {
-  filters: VehiclesFilter;
-}
+type TVehicleParams = TCollectionParams<TVehiclesFilter>;
 
-interface PublicVehicleParams extends CollectionParams {
-  username: string;
-  filters: VehiclesFilter;
-}
-
-type VehicleMetrics = {
+type TVehicleMetrics = {
   totalMoney: number;
   totalMinCrew: number;
   totalMaxCrew: number;
@@ -52,27 +45,31 @@ type VehicleMetrics = {
   totalCredits: number;
 };
 
-type ClassificationMetrics = {
+type TClassificationMetrics = {
   name: string;
   label: string;
   count: number;
 };
 
-type HangarGroupMetrics = {
+type THangarGroupMetrics = {
   id: string;
   slug: string;
   count: number;
 };
 
-type VehicleStats = {
+type TVehicleStats = {
   total: number;
   wishlistTotal: number;
-  classifications: ClassificationMetrics;
-  groups: HangarGroupMetrics[];
-  metrics: VehicleMetrics;
+  classifications: TClassificationMetrics;
+  groups: THangarGroupMetrics[];
+  metrics: TVehicleMetrics;
 };
 
-type PublicVehicleStats = {
+interface TPublicVehicleParams extends TCollectionParams<TVehiclesFilter> {
+  username: string;
+}
+
+type TPublicVehicleStats = {
   total: number;
-  classifications: ClassificationMetrics;
+  classifications: TClassificationMetrics;
 };

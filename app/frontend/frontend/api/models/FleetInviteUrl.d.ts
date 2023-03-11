@@ -1,4 +1,4 @@
-type FleetInviteUrl = {
+type TFleetInviteUrl = {
   token: string;
   url: string;
   expired: boolean;
@@ -8,11 +8,11 @@ type FleetInviteUrl = {
   limitReached: boolean;
 };
 
-type InviteUrlForm = {
+type TInviteUrlForm = {
   expiresAfterMinutes: number | null;
   limit: number | null;
   fleetSlug: string;
 };
-interface FleetInviteUrlParams extends CollectionParams {
+interface TFleetInviteUrlParams extends TCollectionParams<undefined> {
   fleetSlug: string;
 }

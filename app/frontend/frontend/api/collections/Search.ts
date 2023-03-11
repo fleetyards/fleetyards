@@ -1,26 +1,26 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class SearchCollection extends BaseCollection {
-  records: SearchResult[] = [];
-
-  params: SearchParams | null = null;
-
-  async findAll(params: SearchParams): Promise<SearchResult[]> {
+export class SearchCollection extends BaseCollection<
+  TSearchResult,
+  TSearchParams
+> {
+  async findAll(
+    params: TSearchParams
+  ): Promise<TCollectionResponse<TSearchResult>> {
     this.params = params;
 
-    const response = await get("search", {
+    const response = await get<TSearchResult[]>("search", {
       q: params.filters,
       page: params.page,
     });
 
     if (!response.error) {
       this.records = response.data;
-      this.loaded = true;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 }
 

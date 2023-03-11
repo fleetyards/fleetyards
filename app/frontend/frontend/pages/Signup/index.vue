@@ -1,7 +1,7 @@
 <template>
   <section class="container signup">
     <div class="row">
-      <div v-if="form" class="col-12">
+      <div v-if="signupForm" class="col-12">
         <ValidationObserver ref="form" v-slot="{ handleSubmit }" :slim="true">
           <form @submit.prevent="handleSubmit(signup)">
             <h1>
@@ -18,7 +18,7 @@
             >
               <FormInput
                 id="username"
-                v-model="form.username"
+                v-model="signupForm.username"
                 :error="errors[0]"
                 :hide-label-on-empty="true"
                 :autofocus="true"
@@ -33,7 +33,7 @@
             >
               <FormInput
                 id="email"
-                v-model="form.email"
+                v-model="signupForm.email"
                 :error="errors[0]"
                 :hide-label-on-empty="true"
               />
@@ -47,7 +47,7 @@
             >
               <FormInput
                 id="password"
-                v-model="form.password"
+                v-model="signupForm.password"
                 :error="errors[0]"
                 type="password"
                 :hide-label-on-empty="true"
@@ -62,7 +62,7 @@
             >
               <FormInput
                 id="passwordConfirmation"
-                v-model="form.passwordConfirmation"
+                v-model="signupForm.passwordConfirmation"
                 :error="errors[0]"
                 type="password"
                 :hide-label-on-empty="true"
@@ -70,9 +70,9 @@
             </ValidationProvider>
 
             <FormInput
-              v-if="fleetInviteToken"
+              v-if="inviteToken"
               id="fleetInviteToken"
-              v-model="form.fleetInviteToken"
+              v-model="signupForm.fleetInviteToken"
               :disabled="true"
               :hide-label-on-empty="true"
               :clearable="true"
@@ -81,7 +81,7 @@
 
             <Checkbox
               id="saleNotify"
-              v-model="form.saleNotify"
+              v-model="signupForm.saleNotify"
               :label="$t('labels.user.saleNotify')"
             />
 
@@ -118,92 +118,97 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
+<script lang="ts" setup>
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import { transformErrors } from "@/frontend/api/helpers";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import { useFleetStore } from "@/frontend/stores/Fleet";
+import { ValidationObserver } from "vee-validate";
+import { useI18n } from "@/frontend/composables/useI18n";
+import userCollection from "@/frontend/api/collections/User";
+import { storeToRefs } from "pinia";
 
-@Component<Signup>({
-  components: {
-    FormInput,
-    Btn,
-    Checkbox,
-  },
-})
-export default class Signup extends Vue {
-  @Getter("inviteToken", { namespace: "fleet" }) fleetInviteToken;
+const fleetStore = useFleetStore();
 
-  @Action("resetInviteToken", { namespace: "fleet" })
-  resetFleetInviteToken: any;
+const { inviteToken } = storeToRefs(fleetStore);
 
-  form: SignupForm | null = null;
+const signupForm = ref<Partial<TSignupForm> | null>(null);
 
-  submitting = false;
+const submitting = ref(false);
 
-  mounted() {
-    this.setupForm();
-  }
+const setupForm = () => {
+  signupForm.value = {
+    username: undefined,
+    email: undefined,
+    saleNotify: false,
+    password: undefined,
+    passwordConfirmation: undefined,
+    fleetInviteToken: inviteToken?.value,
+  };
+};
 
-  setupForm() {
-    this.form = {
-      username: null,
-      email: null,
-      saleNotify: false,
-      password: null,
-      passwordConfirmation: null,
-      fleetInviteToken: this.fleetInviteToken,
-    };
-  }
+onMounted(() => {
+  setupForm();
+});
 
-  async signup() {
-    this.submitting = true;
+const router = useRouter();
 
-    const response = await this.$api.post("users/signup", this.form);
+const form = ref<InstanceType<typeof ValidationObserver> | null>(null);
 
-    this.submitting = false;
+const { t } = useI18n();
 
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t("messages.signup.success"),
+const signup = async () => {
+  submitting.value = true;
+
+  const response = await userCollection.signup(signupForm.value as TSignupForm);
+
+  submitting.value = false;
+
+  if (userCollection.isErrorResponse(response)) {
+    const errorCode = response.error;
+    if (errorCode === "blocked") {
+      displayAlert({
+        text: t("texts.signup.blocked"),
       });
 
-      this.resetFleetInviteToken();
+      return;
+    }
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push("/").catch(() => {});
-    } else if (
-      response.error.response &&
-      response.error.response.data &&
-      response.error.response.data.code === "blocked"
-    ) {
+    const { errors } = response;
+
+    if (errors) {
+      form.value?.setErrors(errors);
+
       displayAlert({
-        text: this.$t("texts.signup.blocked"),
+        text: response.message,
       });
     } else {
-      const { error } = response;
-      if (error.response && error.response.data) {
-        const { data: errorData } = error.response;
-
-        this.$refs.form.setErrors(transformErrors(errorData.errors));
-
-        displayAlert({
-          text: errorData.message,
-        });
-      } else {
-        displayAlert({
-          text: this.$t("messages.signup.failure"),
-        });
-      }
+      displayAlert({
+        text: t("messages.signup.failure"),
+      });
     }
+  } else {
+    displaySuccess({
+      text: t("messages.signup.success"),
+    });
+
+    fleetStore.resetInviteToken();
+
+    router.push("/").catch(() => {
+      // ignore
+    });
   }
-}
+};
 </script>
 
+<script lang="ts">
+export default {
+  name: "SignupPage",
+};
+</script>
 <style lang="scss">
 @import "index";
 </style>

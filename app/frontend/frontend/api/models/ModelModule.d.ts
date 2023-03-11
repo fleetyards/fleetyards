@@ -1,14 +1,12 @@
-type ModelModulesFilter = {
+type TModelModule = {
+  id: string;
+};
+
+type TModelModulesFilter = {
   nameCont: string;
   media: {
     storeImage?: FyMediaImage;
   };
 };
 
-interface ModelModuleParams extends CollectionParams {
-  filters: ModelModulesFilter;
-}
-
-type ModelModule = {
-  id: string;
-};
+type TModelModuleParams = TCollectionParams<TModelModulesFilter>;

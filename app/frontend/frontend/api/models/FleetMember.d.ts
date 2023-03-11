@@ -1,34 +1,42 @@
-type FleetMember = {
+type TFleetMember = {
   id: string;
   username: string;
+  primary: boolean;
+  shipsFilter: string;
+  hangarGroupId: string;
 };
 
-type FleetMemberForm = {
+type TFleetMemberForm = {
   username: string;
 };
 
-type FleetMemberInviteForm = {
+type TFleetMembershipForm = {
+  primary: boolean;
+  shipsFilter: string | null;
+  hangarGroupId: string | null;
+};
+
+type TFleetMemberInviteForm = {
   token: string;
   username: string;
 };
 
-type FleetMembersFilter = {
+type TFleetMembersFilter = {
   usernameCont: string;
   roleIn: string[];
 };
 
-interface FleetMembersParams extends CollectionParams {
+interface TFleetMembersParams extends TCollectionParams<TFleetMembersFilter> {
   slug: string;
-  filters: FleetMembersFilter;
 }
 
-type FleetMemberMetrics = {
+type TFleetMemberMetrics = {
   totalAdmins: number;
   totalOfficers: number;
   totalMembers: number;
 };
 
-type FleetMemberStats = {
+type TFleetMemberStats = {
   total: number;
-  metrics: FleetMemberMetrics;
+  metrics: TFleetMemberMetrics;
 };

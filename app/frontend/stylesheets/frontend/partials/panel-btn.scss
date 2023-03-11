@@ -116,6 +116,15 @@
     }
   }
 
+  &.panel-btn-xsmall {
+    min-width: 45px;
+
+    .panel-btn-inner {
+      padding: 5px 10px;
+      font-size: 80%;
+    }
+  }
+
   &.panel-btn-small {
     min-width: 45px;
 

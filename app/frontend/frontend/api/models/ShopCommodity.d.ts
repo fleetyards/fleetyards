@@ -1,13 +1,20 @@
-type ShopCommodity = {
+type TShopCommodity = {
   id: string;
 };
 
-type ShopCommoditiesFilter = {
+type TShopCommoditiesFilter = {
   nameCont: string;
+  subCategoryIn: string[];
 };
 
-interface ShopCommodityParams extends CollectionParams {
-  filters: ShopCommoditiesFilter;
+interface TShopCommodityParams
+  extends TCollectionParams<TShopCommoditiesFilter> {
   stationSlug: string;
   slug: string;
 }
+
+type TShopCommoditySubCategroy = {
+  name: string;
+  value: string;
+  category: string;
+};

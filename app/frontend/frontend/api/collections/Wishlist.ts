@@ -2,14 +2,11 @@ import { get, put, destroy, download } from "@/frontend/api/client";
 import Store from "@/frontend/lib/Store";
 import BaseCollection from "./Base";
 
-export class WishlistCollection extends BaseCollection {
+export class WishlistCollection extends BaseCollection<
+  TVehicle,
+  TVehicleParams
+> {
   primaryKey = "id";
-
-  records: Vehicle[] = [];
-
-  params: VehicleParams | null = null;
-
-  lastUsedMethod = "findAll";
 
   get perPage(): number | string {
     return Store.getters["wishlist/perPage"];
@@ -23,11 +20,12 @@ export class WishlistCollection extends BaseCollection {
     Store.dispatch("wishlist/updatePerPage", perPage);
   }
 
-  async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
-    this.lastUsedMethod = "findAll";
+  async findAll(
+    params?: TVehicleParams
+  ): Promise<TCollectionResponse<TVehicle>> {
     this.params = params;
 
-    const response = await get("wishlist", {
+    const response = await get<TVehicle[]>("wishlist", {
       q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
@@ -38,15 +36,15 @@ export class WishlistCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async refresh(): Promise<void> {
-    await this[this.lastUsedMethod || "findAll"](this.params);
+    await this.findAll(this.params);
   }
 
-  async export(params: VehicleParams): Promise<Vehicle[] | null> {
-    const response = await download("wishlist/export", {
+  async export(params: TVehicleParams): Promise<TVehicle[] | null> {
+    const response = await download<TVehicle[]>("wishlist/export", {
       q: params.filters,
     });
 
@@ -58,7 +56,7 @@ export class WishlistCollection extends BaseCollection {
   }
 
   async addToHangar(id: string): Promise<boolean> {
-    const response = await put(`vehicles/${id}`, {
+    const response = await put<boolean>(`vehicles/${id}`, {
       wanted: false,
     });
 
@@ -72,7 +70,7 @@ export class WishlistCollection extends BaseCollection {
   }
 
   async destroy(id: string): Promise<boolean> {
-    const response = await destroy(`vehicles/${id}`);
+    const response = await destroy<boolean>(`vehicles/${id}`);
 
     if (!response.error) {
       this.refresh();
@@ -84,7 +82,7 @@ export class WishlistCollection extends BaseCollection {
   }
 
   async destroyBulk(ids: string[]): Promise<boolean> {
-    const response = await put("vehicles/destroy-bulk", {
+    const response = await put<boolean>("vehicles/destroy-bulk", {
       ids,
     });
 
@@ -98,7 +96,7 @@ export class WishlistCollection extends BaseCollection {
   }
 
   async destroyAll(): Promise<boolean> {
-    const response = await destroy("wishlist");
+    const response = await destroy<boolean>("wishlist");
 
     if (!response.error) {
       this.refresh();

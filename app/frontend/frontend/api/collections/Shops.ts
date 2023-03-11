@@ -2,47 +2,43 @@ import { get } from "@/frontend/api/client";
 import { prefetch } from "@/frontend/api/prefetch";
 import BaseCollection from "./Base";
 
-export class ShopsCollection extends BaseCollection {
+export class ShopsCollection extends BaseCollection<TShop, TShopParams> {
   primaryKey = "id";
 
-  records: Shop[] = [];
-
-  record: Shop | null = null;
-
-  params: ShopParams | null = null;
-
-  async findAll(params: ShopParams): Promise<Shop[]> {
+  async findAll(params: TShopParams): Promise<TCollectionResponse<TShop>> {
     this.params = params;
 
-    const response = await get("shops", {
+    const response = await get<TShop[]>("shops", {
       q: params.filters,
       page: params.page,
     });
 
     if (!response.error) {
       this.records = response.data;
-      this.loaded = true;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
-  async findBySlugAndStation(params: ShopParams): Promise<Station | null> {
+  async findBySlugAndStation(
+    params: TShopParams
+  ): Promise<TRecordResponse<TShop>> {
     if (prefetch("shop")) {
       this.record = prefetch("shop");
-      return this.record;
+
+      if (this.record) {
+        return {
+          data: this.record,
+        };
+      }
     }
 
-    const response = await get(
+    const response = await get<TShop>(
       `stations/${params?.stationSlug}/shops/${params?.slug}`
     );
 
-    if (!response.errors) {
-      this.record = response.data;
-    }
-
-    return this.record;
+    return this.recordResponse(response.data, response.error, true);
   }
 }
 

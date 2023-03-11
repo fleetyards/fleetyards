@@ -34,10 +34,10 @@
     <FilteredList
       key="shop"
       :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :params="$route.params"
-      :hash="$route.hash"
+      :name="route.name"
+      :route-query="route.query"
+      :params="route.params"
+      :hash="route.hash"
       :paginated="true"
       :hide-empty-box="true"
       :hide-loading="true"
@@ -197,13 +197,12 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { Getter } from "vuex-class";
 import shopCommoditiesCollection from "@/frontend/api/collections/ShopCommodities";
 import shopsCollection from "@/frontend/api/collections/Shops";
 import AddToCartBtn from "@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue";
@@ -213,245 +212,261 @@ import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilterForm from "@/frontend/components/Shops/ShopItemFilterForm/index.vue";
 import ShopBaseMetrics from "@/frontend/components/Shops/BaseMetrics/index.vue";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/frontend/stores/App";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { TBreadCrumb } from "@/@types/breadcrumbs";
+import type { FilteredTableColumn } from "@/frontend/core/components/FilteredTable/index.vue";
+import type { FleetYardsLocation } from "@/frontend/utils/Sorting";
 
-@Component<Shop>({
-  beforeRouteEnter: shopRouteGuard,
-  components: {
-    ShopBaseMetrics,
-    FilterForm,
-    Btn,
-    Panel,
-    PriceModalBtn,
-    BreadCrumbs,
-    FilteredList,
-    FilteredTable,
-    AddToCartBtn,
-  },
-})
-export default class Shop extends Vue {
-  collection: ShopCommoditiesCollection = shopCommoditiesCollection;
+const collection = shopCommoditiesCollection;
 
-  subCategories = [];
+const subCategories = ref<TShopCommoditySubCategroy[]>([]);
 
-  @Getter("mobile") mobile;
+const appStore = useAppStore();
 
-  get shop() {
-    return shopsCollection.record;
-  }
+const { mobile } = storeToRefs(appStore);
 
-  get tableColumns() {
-    const columns = [
-      { name: "store_image", class: "store-image" },
-      { name: "description", class: "description" },
-    ];
+const shop = computed(() => shopsCollection.record);
 
-    if (this.shop.buying) {
+const { t } = useI18n();
+
+const tableColumns = computed<FilteredTableColumn[]>(() => {
+  const columns: FilteredTableColumn[] = [
+    { name: "store_image", class: "store-image" },
+    { name: "description", class: "description" },
+  ];
+
+  if (shop.value) {
+    if (shop.value.buying) {
       columns.push({
         name: "buy_price",
-        label: this.$t("labels.shop.buyPrice"),
+        label: t("labels.shop.buyPrice"),
         class: "price",
       });
     }
 
-    if (this.shop.selling) {
+    if (shop.value.selling) {
       columns.push({
         name: "sell_price",
-        label: this.$t("labels.shop.sellPrice"),
+        label: t("labels.shop.sellPrice"),
         class: "price",
       });
     }
 
-    if (this.shop.rental) {
+    if (shop.value.rental) {
       columns.push({
         name: "rental_price",
-        label: this.$t("labels.shop.rentalPrice"),
+        label: t("labels.shop.rentalPrice"),
         class: "rent-price",
       });
     }
-
-    columns.push({ name: "actions", class: "actions actions-1x" });
-
-    return columns;
   }
 
-  get title() {
-    if (!this.shop) {
-      return "";
-    }
-    return this.$t("title.shop", {
-      shop: this.shop.name,
-      station: this.shop.station.name,
-    });
+  columns.push({ name: "actions", class: "actions actions-1x" });
+
+  return columns;
+});
+
+const metaTitle = computed(() => {
+  if (!shop.value) {
+    return undefined;
   }
 
-  get subCategory() {
-    if (
-      !this.$route.query ||
-      !this.$route.query.q ||
-      !this.$route.query.q.subCategoryIn
-    ) {
-      return null;
-    }
+  return t("title.shop", {
+    shop: shop.value.name,
+    station: shop.value.station.name,
+  });
+});
 
-    return this.$route.query.q.subCategoryIn;
+useMetaInfo(metaTitle);
+
+const route = useRoute();
+
+const query = computed(() => {
+  if (!route.query || !route.query.q) {
+    return null;
   }
 
-  get station() {
-    return this.shop.station;
+  return route.query.q as Partial<TShopCommoditiesFilter>;
+});
+
+const subCategory = computed(() => {
+  if (!query.value?.subCategoryIn) {
+    return null;
   }
 
-  get crumbs() {
-    if (!this.shop) {
-      return null;
-    }
+  return query.value.subCategoryIn;
+});
 
-    const crumbs = [
-      {
-        to: {
-          name: "starsystems",
-          hash: `#${this.shop.celestialObject.starsystem.slug}`,
-        },
-        label: this.$t("nav.starsystems"),
+const crumbs = computed(() => {
+  if (!shop.value) {
+    return null;
+  }
+
+  const crumbs: TBreadCrumb[] = [
+    {
+      to: {
+        name: "starsystems",
+        hash: `#${shop.value.celestialObject.starsystem.slug}`,
       },
-      {
-        to: {
-          name: "starsystem",
-          params: {
-            slug: this.shop.celestialObject.starsystem.slug,
-          },
-          hash: `#${this.shop.celestialObject.slug}`,
+      label: t("nav.starsystems"),
+    },
+    {
+      to: {
+        name: "starsystem",
+        params: {
+          slug: shop.value.celestialObject.starsystem.slug,
         },
-        label: this.shop.celestialObject.starsystem.name,
+        hash: `#${shop.value.celestialObject.slug}`,
       },
-    ];
+      label: shop.value.celestialObject.starsystem.name,
+    },
+  ];
 
-    if (this.shop.celestialObject.parent) {
-      crumbs.push({
-        to: {
-          name: "celestial-object",
-          params: {
-            starsystem: this.shop.celestialObject.starsystem.slug,
-            slug: this.shop.celestialObject.parent.slug,
-          },
-        },
-        label: this.shop.celestialObject.parent.name,
-      });
-    }
-
+  if (shop.value.celestialObject.parent) {
     crumbs.push({
       to: {
         name: "celestial-object",
         params: {
-          starsystem: this.shop.celestialObject.starsystem.slug,
-          slug: this.shop.celestialObject.slug,
-        },
-        hash: `#${this.station.slug}`,
-      },
-      label: this.shop.celestialObject.name,
-    });
-
-    crumbs.push({
-      to: {
-        name: "station",
-        params: {
-          slug: this.station.slug,
+          starsystem: shop.value.celestialObject.starsystem.slug,
+          slug: shop.value.celestialObject.parent.slug,
         },
       },
-      label: this.station.name,
+      label: shop.value.celestialObject.parent.name,
     });
-
-    return crumbs;
   }
 
-  mounted() {
-    if (this.shop) {
-      this.fetchSubCategories();
-    }
-  }
-
-  manufacturer(record) {
-    if (!record.item || !record.item.manufacturer) {
-      return null;
-    }
-
-    return record.item.manufacturer;
-  }
-
-  name(record) {
-    if (this.manufacturer(record)) {
-      if (this.manufacturer(record).code) {
-        return `${this.manufacturer(record).code} ${record.name}`;
-      }
-      return `${this.manufacturer(record).name} ${record.name}`;
-    }
-
-    return record.name;
-  }
-
-  link(record) {
-    if (record.category !== "model") {
-      return null;
-    }
-
-    return {
-      name: "model",
+  crumbs.push({
+    to: {
+      name: "celestial-object",
       params: {
-        slug: record.slug,
+        starsystem: shop.value.celestialObject.starsystem.slug,
+        slug: shop.value.celestialObject.slug,
       },
+      hash: `#${shop.value.station.slug}`,
+    },
+    label: shop.value.celestialObject.name,
+  });
+
+  crumbs.push({
+    to: {
+      name: "station",
+      params: {
+        slug: shop.value.station.slug,
+      },
+    },
+    label: shop.value.station.name,
+  });
+
+  return crumbs;
+});
+
+const fetchSubCategories = async () => {
+  if (!shop.value) {
+    return;
+  }
+
+  const response = await shopCommoditiesCollection.subCategories(
+    shop.value.station.slug,
+    shop.value.slug
+  );
+
+  if (!response) {
+    subCategories.value = response;
+  }
+};
+
+onMounted(() => {
+  if (shop.value) {
+    fetchSubCategories();
+  }
+});
+
+const manufacturer = (record) => {
+  if (!record.item || !record.item.manufacturer) {
+    return null;
+  }
+
+  return record.item.manufacturer;
+};
+
+const name = (record) => {
+  if (manufacturer(record)) {
+    if (manufacturer(record).code) {
+      return `${manufacturer(record).code} ${record.name}`;
+    }
+    return `${manufacturer(record).name} ${record.name}`;
+  }
+
+  return record.name;
+};
+
+const link = (record) => {
+  if (record.category !== "model") {
+    return null;
+  }
+
+  return {
+    name: "model",
+    params: {
+      slug: record.slug,
+    },
+  };
+};
+
+const router = useRouter();
+
+const toggleSubcategory = (value) => {
+  if (!route.name) {
+    return;
+  }
+
+  if ((subCategory.value || []).includes(value)) {
+    const q = {
+      ...JSON.parse(JSON.stringify(route.query.q)),
     };
-  }
 
-  toggleSubcategory(value) {
-    if ((this.subCategory || []).includes(value)) {
-      const q = {
-        ...JSON.parse(JSON.stringify(this.$route.query.q)),
-      };
+    delete q.subCategoryIn;
 
-      delete q.subCategoryIn;
-
-      this.$router
-        .replace({
-          name: this.$route.name,
-          query: {
-            ...this.$route.query,
-            q: {
-              ...q,
-            },
+    router
+      .replace({
+        name: route.name,
+        query: {
+          ...route.query,
+          q: {
+            ...q,
           },
-        })
-        .catch((err) => {
-          console.info(err);
-        });
-    } else {
-      this.$router
-        .replace({
-          name: this.$route.name,
-          query: {
-            ...this.$route.query,
-            q: {
-              ...this.$route.query.q,
-              subCategoryIn: [value],
-            },
-          },
-        })
-        .catch((err) => {
-          console.info(err);
-        });
-    }
-  }
+        },
+      })
+      .catch((err) => {
+        console.info(err);
+      });
+  } else {
+    const newQuery: Partial<TShopCommoditiesFilter> = {
+      ...query.value,
+      subCategoryIn: [value],
+    };
 
-  async fetchSubCategories() {
-    const response = await this.$api.get(
-      "filters/shop-commodities/sub-categories",
-      {
-        stationSlug: this.shop.station.slug,
-        shopSlug: this.shop.slug,
-      }
-    );
-
-    if (!response.error) {
-      this.subCategories = response.data;
-    }
+    router
+      .replace({
+        name: route.name,
+        query: {
+          ...route.query,
+          q: newQuery,
+        },
+      } as FleetYardsLocation)
+      .catch((err) => {
+        console.info(err);
+      });
   }
-}
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShopDetailPage",
+  beforeRouteEnter: shopRouteGuard,
+};
 </script>

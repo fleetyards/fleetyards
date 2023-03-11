@@ -1,17 +1,18 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 
-export class ComponentsCollection extends BaseCollection {
+export class ComponentsCollection extends BaseCollection<
+  TComponent,
+  TComponentParams
+> {
   primaryKey = "id";
 
-  records: Component[] = [];
-
-  params: ComponentParams | null = null;
-
-  async findAll(params: ComponentParams): Promise<Component[]> {
+  async findAll(
+    params: TComponentParams
+  ): Promise<TCollectionResponse<TComponent>> {
     this.params = params;
 
-    const response = await get("components", {
+    const response = await get<TComponent[]>("components", {
       q: params.filters,
       page: params?.page,
     });
@@ -21,7 +22,7 @@ export class ComponentsCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 }
 

@@ -32,7 +32,7 @@
                 :active="holoviewerVisible"
                 class="toggle-3d"
                 size="small"
-                @click.native="toggleHoloviewer"
+                @click.native="modelsStore.toggleHoloviewer"
               >
                 {{ t("labels.3dView") }}
               </Btn>
@@ -319,11 +319,13 @@ import modelUpgradesCollection from "@/frontend/api/collections/ModelUpgrades";
 import modelVariantsCollection from "@/frontend/api/collections/ModelVariants";
 import modelLoanersCollection from "@/frontend/api/collections/ModelLoaners";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import { useAppStore } from "@/frontend/stores/App";
+import { useModelsStore } from "@/frontend/stores/Models";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
+import { storeToRefs } from "pinia";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
-import Store from "@/frontend/lib/Store";
 
 useHangarItems();
 useWishlistItems();
@@ -348,86 +350,16 @@ const upgrades = ref<ModelUpgrade[]>([]);
 
 const model = ref<Model | null>(null);
 
-const mobile = computed(() => Store.getters.mobile);
+const appStore = useAppStore();
 
-const holoviewerVisible = computed(
-  () => Store.getters["models/holoviewerVisible"]
-);
-
-const route = useRoute();
-
-const modelSlug = computed(() => route.params.slug);
+const { mobile } = storeToRefs(appStore);
 
 const storeImage = computed(() => {
-  if (mobile.value) {
-    return model.value?.media.storeImage?.medium;
+  if (appStore.mobile) {
+    return model.value?.storeImageMedium;
   }
 
-  return model.value?.media.storeImage?.large;
-});
-
-const fleetchartImageAngled = computed(() => {
-  if (model.value?.media.angledViewColored) {
-    if (mobile.value) {
-      return model.value?.media.angledViewColored.medium;
-    }
-
-    return model.value?.media.angledViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.angledView) {
-    return model.value?.media.angledView.medium;
-  }
-
-  return model.value?.media.angledView?.large;
-});
-
-const fleetchartImageFront = computed(() => {
-  if (model.value?.media.frontViewColored) {
-    if (mobile.value) {
-      return model.value?.media.frontViewColored.medium;
-    }
-
-    return model.value?.media.frontViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.frontView) {
-    return model.value?.media.frontView.medium;
-  }
-
-  return model.value?.media.frontView?.large;
-});
-
-const fleetchartImageTop = computed(() => {
-  if (model.value?.media.topViewColored) {
-    if (mobile.value) {
-      return model.value?.media.topViewColored.medium;
-    }
-
-    return model.value?.media.topViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.topView) {
-    return model.value?.media.topView.medium;
-  }
-
-  return model.value?.media.topView?.large;
-});
-
-const fleetchartImageSide = computed(() => {
-  if (model.value?.media.sideViewColored) {
-    if (mobile.value) {
-      return model.value?.media.sideViewColored.medium;
-    }
-
-    return model.value?.media.sideViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.sideView?.medium) {
-    return model.value?.media.sideView.medium;
-  }
-
-  return model.value?.media.sideView?.large;
+  return model.value?.storeImageLarge;
 });
 
 const starship42Url = computed(
@@ -439,7 +371,7 @@ const starship42IframeUrl = computed(
     `https://starship42.com/fleetview/fleetyards/?s=${model.value?.rsiName}&type=matrix`
 );
 
-const { t, toDollar } = useI18n();
+const { t } = useI18n();
 
 const metaTitle = computed(() => {
   if (!model.value) {
@@ -468,8 +400,6 @@ const metaImage = computed(() => {
   return model.value.media.storeImage?.large;
 });
 
-const { updateMetaInfo } = useMetaInfo();
-
 const crumbs = computed(() => {
   if (!model.value) {
     return null;
@@ -488,17 +418,48 @@ const crumbs = computed(() => {
 
 const shareUrl = computed(() => window.location.href);
 
-onMounted(() => {
-  fetch();
-  fetchExtras();
+const route = useRoute();
 
-  if (route.query.holoviewer) {
-    Store.dispatch("models/enableHoloviewer");
-  }
-});
+const modelsStore = useModelsStore();
 
-const toggleHoloviewer = () => {
-  Store.dispatch("models/toggleHoloviewer");
+const { holoviewerVisible } = storeToRefs(modelsStore);
+
+const fetchModules = async () => {
+  loadingModules.value = true;
+
+  modules.value = await modelsCollection.modules(route.params.slug);
+
+  loadingModules.value = false;
+};
+
+const fetchUpgrades = async () => {
+  loadingUpgrades.value = true;
+
+  upgrades.value = await modelsCollection.upgrades(route.params.slug);
+
+  loadingUpgrades.value = false;
+};
+
+const fetchVariants = async () => {
+  loadingVariants.value = true;
+
+  variants.value = await modelsCollection.variants(route.params.slug);
+
+  loadingVariants.value = false;
+};
+  loadingVariants.value = false;
+};
+
+const fetchLoaners = async () => {
+  loadingLoaners.value = true;
+const fetchLoaners = async () => {
+  loadingLoaners.value = true;
+
+  loaners.value = await modelsCollection.loaners(route.params.slug);
+
+  loadingLoaners.value = false;
+};
+  loadingLoaners.value = false;
 };
 
 const fetchExtras = () => {
@@ -508,57 +469,34 @@ const fetchExtras = () => {
   fetchLoaners();
 };
 
-const fetchModules = async () => {
-  loadingModules.value = true;
-
-  modules.value = await modelModulesCollection.findAll(modelSlug.value);
-
-  loadingModules.value = false;
-};
-
-const fetchUpgrades = async () => {
-  loadingUpgrades.value = true;
-
-  upgrades.value = await modelUpgradesCollection.findAll(modelSlug.value);
-
-  loadingUpgrades.value = false;
-};
-
-const fetchVariants = async () => {
-  loadingVariants.value = true;
-
-  variants.value = await modelVariantsCollection.findAll(modelSlug.value);
-
-  loadingVariants.value = false;
-};
-
-const fetchLoaners = async () => {
-  loadingLoaners.value = true;
-
-  loaners.value = await modelLoanersCollection.findAll(modelSlug.value);
-
-  loadingLoaners.value = false;
-};
-
 const fetch = async () => {
   loading.value = true;
-
   model.value = await modelsCollection.findBySlug(route.params.slug);
+  loading.value = false;
+};
 
-  updateMetaInfo(
+const { updateMetaInfo } = useMetaInfo();
+
+updateMetaInfo(
     metaTitle.value,
     metaDescription.value,
     metaImage.value,
     "article"
   );
 
-  loading.value = false;
-};
+onMounted(() => {
+  fetch();
+  fetchExtras();
+
+  if (route.query.holoviewer) {
+    modelsStore.enableHoloviewer();
+  }
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: "ModelDetail",
+  name: "ModelDetailPage",
   beforeRouteEnter: modelRouteGuard,
 };
 </script>

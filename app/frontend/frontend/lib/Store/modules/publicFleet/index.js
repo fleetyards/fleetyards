@@ -53,18 +53,6 @@ export default () => ({
       return state.grouped;
     },
 
-    money(state) {
-      return state.money;
-    },
-
-    preview(state) {
-      return state.preview;
-    },
-
-    inviteToken(state) {
-      return state.inviteToken;
-    },
-
     perPage(state) {
       return state.perPage;
     },

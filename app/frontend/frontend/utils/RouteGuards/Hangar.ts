@@ -7,9 +7,11 @@ export const publicHangarRouteGuard = async function publicHangarRouteGuard(
   _from: Route,
   next: NavigationGuardNext
 ) {
-  const user = await publicUserCollection.findByUsername(to.params.username);
+  const response = await publicUserCollection.findByUsername(
+    to.params.username
+  );
 
-  if (!user) {
+  if (!response.data) {
     next({ name: "404" });
   } else {
     next();

@@ -1,4 +1,4 @@
-type Model = {
+type TModel = {
   id: string;
   slug: string;
   name: string;
@@ -9,7 +9,7 @@ type Model = {
   productionStatus: string;
   classification: string;
   classificationLabel: string;
-  manufacturer: Manufacturer;
+  manufacturer: TManufacturer;
   fleetchartLength: number;
   isGroundVehicle: boolean;
   metrics: {
@@ -32,6 +32,8 @@ type Model = {
   crew: {
     min: number;
     minLabel: string;
+    storeImageMedium: string;
+    storeImageLarge: string;
     max: number;
     maxLabel: string;
   };
@@ -75,6 +77,7 @@ type Model = {
   hasUpgrades: boolean;
   rsiId: string;
   rsiName: string;
+  cargo: number;
   salesPageUrl: string;
   storeUrl: string;
   onSale: boolean;
@@ -96,19 +99,17 @@ type Model = {
   count?: number;
 };
 
-type ModelsFilter = {
-  nameCont: string;
+type TModelsFilter = {
+  nameCont?: string;
 };
 
-interface ModelParams extends CollectionParams {
-  filters: ModelsFilter;
-}
+type TModelParams = TCollectionParams<TModelsFilter>;
 
-type ModelLoaner = {
+type TModelLoaner = {
   id: string;
   slug: string;
 };
 
-type ModelUpgrade = {
+type TModelUpgrade = {
   id: string;
 };

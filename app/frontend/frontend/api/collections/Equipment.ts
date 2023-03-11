@@ -1,17 +1,18 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 
-export class EquipmentCollection extends BaseCollection {
+export class EquipmentCollection extends BaseCollection<
+  TEquipment,
+  TEquipmentParams
+> {
   primaryKey = "id";
 
-  records: Equipment[] = [];
-
-  params: EquipmentParams | null = null;
-
-  async findAll(params: EquipmentParams): Promise<Equipment[]> {
+  async findAll(
+    params: TEquipmentParams
+  ): Promise<TCollectionResponse<TEquipment>> {
     this.params = params;
 
-    const response = await get("equipment", {
+    const response = await get<TEquipment[]>("equipment", {
       q: params.filters,
       page: params?.page,
     });
@@ -21,7 +22,7 @@ export class EquipmentCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 }
 

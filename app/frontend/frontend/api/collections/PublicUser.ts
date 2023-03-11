@@ -1,16 +1,15 @@
 import { get } from "@/frontend/api/client";
+import BaseCollection from "./Base";
 
-export class PublicUserCollection {
-  record: User | null = null;
-
-  async findByUsername(username: string): Promise<User | null> {
-    const response = await get(`users/${username}`);
+export class PublicUserCollection extends BaseCollection<TUser, undefined> {
+  async findByUsername(username: string): Promise<TRecordResponse<TUser>> {
+    const response = await get<TUser>(`users/${username}`);
 
     if (!response.error) {
       this.record = response.data;
     }
 
-    return this.record;
+    return this.recordResponse(response.data, response.error, true);
   }
 }
 

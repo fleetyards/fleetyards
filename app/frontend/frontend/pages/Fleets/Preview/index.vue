@@ -113,23 +113,21 @@
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
+import { useFleetStore } from "@/frontend/stores/Fleet";
 
+const fleetStore = useFleetStore();
+
+const hidePreview = () => {
+  fleetStore.hidePreview();
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "FleetPreview",
-
-  components: {
-    Btn,
-    Panel,
-  },
-
-  methods: {
-    hidePreview() {
-      this.$store.dispatch("fleet/hidePreview");
-    },
-  },
 };
 </script>
 

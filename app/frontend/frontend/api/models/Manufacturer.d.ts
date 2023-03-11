@@ -1,4 +1,4 @@
-type Manufacturer = {
+type TManufacturer = {
   id: string;
   name: string;
   code: string;

@@ -2,14 +2,13 @@ import { get } from "@/frontend/api/client";
 import Store from "@/frontend/lib/Store";
 import BaseCollection from "./Base";
 
-export class PublicVehiclesCollection extends BaseCollection {
+export class PublicVehiclesCollection extends BaseCollection<
+  TVehicle,
+  TPublicVehicleParams
+> {
   primaryKey = "id";
 
-  records: Vehicle[] = [];
-
-  stats: PublicVehicleStats | null = null;
-
-  params: PublicVehicleParams | null = null;
+  stats: TPublicVehicleStats | null = null;
 
   username: string | null = null;
 
@@ -17,33 +16,40 @@ export class PublicVehiclesCollection extends BaseCollection {
     return Store.getters["publicHangar/perPage"];
   }
 
-  get perPageSteps(): (number | string)[] {
+  get perPageSteps(): (number | "all")[] {
     return [15, 30, 60, 120, 240, "all"];
   }
 
-  updatePerPage(perPage) {
+  updatePerPage(perPage: number | "all") {
     Store.dispatch("publicHangar/updatePerPage", perPage);
   }
 
-  async findAll(params: PublicVehicleParams | null): Promise<Vehicle[]> {
+  async findAll(
+    params?: TPublicVehicleParams
+  ): Promise<TCollectionResponse<TVehicle>> {
     if (!params?.username) {
-      return [];
+      return {
+        data: [],
+      };
     }
 
     this.params = params;
 
-    const response = await get(`public/hangars/${params?.username}`, {
-      q: params?.filters,
-      page: params?.page,
-      perPage: this.perPage,
-    });
+    const response = await get<TVehicle[]>(
+      `public/hangars/${params?.username}`,
+      {
+        q: params?.filters,
+        page: params?.page,
+        perPage: this.perPage,
+      }
+    );
 
     if (!response.error) {
       this.records = response.data;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async refresh(): Promise<void> {
@@ -52,11 +58,14 @@ export class PublicVehiclesCollection extends BaseCollection {
 
   async findStatsByUsername(
     username: string,
-    params: PublicVehicleParams | null
-  ): Promise<PublicVehicleStats | null> {
-    const response = await get(`public/hangars/${username}/stats`, {
-      q: params?.filters,
-    });
+    params: TPublicVehicleParams | null
+  ): Promise<TPublicVehicleStats | null> {
+    const response = await get<TPublicVehicleStats>(
+      `public/hangars/${username}/stats`,
+      {
+        q: params?.filters,
+      }
+    );
 
     if (!response.error) {
       this.stats = response.data;

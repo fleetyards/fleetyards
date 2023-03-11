@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" slim>
+  <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
     <Modal v-if="fleet && form" :title="$t('headlines.fleets.inviteMember')">
       <form
         :id="`fleet-member-${fleet.id}`"

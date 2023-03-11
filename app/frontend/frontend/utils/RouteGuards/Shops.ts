@@ -7,9 +7,9 @@ export const shopRouteGuard = async function shopRouteGuard(
   _from: Route,
   next: NavigationGuardNext
 ) {
-  const shop = await shopsCollection.findBySlugAndStation(to.params);
+  const response = await shopsCollection.findBySlugAndStation(to.params);
 
-  if (!shop) {
+  if (!response.data) {
     next({ name: "404" });
   } else {
     next();

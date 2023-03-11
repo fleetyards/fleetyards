@@ -4,7 +4,7 @@ export class WishlistItemsCollection {
   records: string[] = [];
 
   async findAll(): Promise<string[]> {
-    const response = await get("wishlist/items", {}, true);
+    const response = await get<string[]>("wishlist/items", {}, true);
 
     if (!response.error) {
       this.records = response.data;

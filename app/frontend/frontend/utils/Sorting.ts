@@ -1,22 +1,32 @@
-import { Location } from "vue-router";
+import { Location, Route } from "vue-router";
 
 type QueryParams = {
   sorts: string[];
+  cargoShip?: string;
 };
 
 type Dictionary<T> = { [key: string]: T };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface FleetYardsRouteQuery extends Dictionary<any> {
-  q: QueryParams | null;
+export interface FleetYardsRouteParams extends Dictionary<any> {
+  slug?: string;
 }
 
-interface FleetYardsLocation extends Location {
-  query?: FleetYardsRouteQuery;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface FleetYardsRouteQuery extends Dictionary<any> {
+  q?: QueryParams;
+}
+
+export interface FleetYardsLocation extends Location {
+  query: FleetYardsRouteQuery;
+}
+
+export interface FleetYardsRoute extends Route {
+  query: FleetYardsRouteQuery;
 }
 
 export const sortByToggle = function sortByToggle(
-  currentRoute: FleetYardsLocation,
+  currentRoute: FleetYardsRoute,
   field: string,
   direction = "asc"
 ) {
@@ -59,12 +69,12 @@ export const sortByToggle = function sortByToggle(
 };
 
 export const sortBy = function sortBy(
-  currentRoute: FleetYardsLocation,
+  currentRoute: FleetYardsRoute,
   field: string,
   direction = "asc"
-) {
+): FleetYardsLocation {
   return {
-    name: currentRoute.name,
+    name: currentRoute.name || undefined,
     params: currentRoute.params,
     query: {
       ...currentRoute.query,

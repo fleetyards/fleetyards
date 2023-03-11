@@ -187,6 +187,7 @@ import fleetsCollection from "@/frontend/api/collections/Fleets";
 import vehiclesCollection from "@/frontend/api/collections/FleetVehicles";
 import membersCollection from "@/frontend/api/collections/FleetMembers";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import MetaInfoMixin from "@/frontend/mixins/MetaInfo";
 
 @Component({
   beforeRouteEnter: fleetRouteGuard,

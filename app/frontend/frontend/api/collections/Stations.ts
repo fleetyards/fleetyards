@@ -2,17 +2,16 @@ import { get } from "@/frontend/api/client";
 import { prefetch } from "@/frontend/api/prefetch";
 import BaseCollection from "./Base";
 
-export class StationsCollection extends BaseCollection {
-  records: Station[] = [];
-
-  record: Station | null = null;
-
-  params: StationParams | null = null;
-
-  async findAll(params: StationParams): Promise<Station[]> {
+export class StationsCollection extends BaseCollection<
+  TStation,
+  TStationParams
+> {
+  async findAll(
+    params: TStationParams
+  ): Promise<TCollectionResponse<TStation>> {
     this.params = params;
 
-    const response = await get("stations", {
+    const response = await get<TStation[]>("stations", {
       q: {
         ...params.filters,
         sorts: ["station_type asc", "name asc"],
@@ -22,26 +21,30 @@ export class StationsCollection extends BaseCollection {
 
     if (!response.error) {
       this.records = response.data;
-      this.loaded = true;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
-  async findBySlug(slug: string): Promise<Station | null> {
+  async findBySlug(slug: string): Promise<TRecordResponse<TStation>> {
     if (prefetch("station")) {
       this.record = prefetch("station");
-      return this.record;
+
+      if (this.record) {
+        return {
+          data: this.record,
+        };
+      }
     }
 
-    const response = await get(`stations/${slug}`);
+    const response = await get<TStation>(`stations/${slug}`);
 
-    if (!response.errors) {
+    if (!response.error) {
       this.record = response.data;
     }
 
-    return this.record;
+    return this.recordResponse(response.data, response.error, true);
   }
 }
 

@@ -1,14 +1,12 @@
-type ComponentsFilter = {
+type TComponentsFilter = {
   nameCont: string;
   media: {
     storeImage?: FyMediaImage;
   };
 };
 
-interface ComponentParams extends CollectionParams {
-  filters: ComponentsFilter;
-}
+type TComponentParams = TCollectionParams<TComponentsFilter>;
 
-type Component = {
+type TComponent = {
   id: string;
 };

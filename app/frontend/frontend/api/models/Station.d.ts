@@ -1,16 +1,15 @@
-type Station = {
+type TStation = {
   id: string;
   name: string;
   slug: string;
+  celestialObject: TCelestialObject;
   media: {
-    storeImage?: FyMediaImage;
+    storeImage?: TMediaImage;
   };
 };
 
-type StationsFilter = {
+type TStationsFilter = {
   nameCont: string;
 };
 
-interface StationParams extends CollectionParams {
-  filters: StationsFilter;
-}
+type TStationParams = TCollectionParams<TStationsFilter>;

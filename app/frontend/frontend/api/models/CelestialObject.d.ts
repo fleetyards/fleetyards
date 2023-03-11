@@ -1,7 +1,9 @@
-type CelestialObject = {
+type TCelestialObject = {
   id: string;
   slug: string;
   name: string;
+  starsystem: TStarsystem;
+  parent?: TCelestialObject;
   type: string;
   subType: string;
   starsystem: Starsystem;
@@ -17,10 +19,8 @@ type CelestialObject = {
   };
 };
 
-type CelestialObjectsFilter = {
+type TCelestialObjectsFilter = {
   nameCont: string;
 };
 
-interface CelestialObjectParams extends CollectionParams {
-  filters: CelestialObjectsFilter;
-}
+type TCelestialObjectParams = TCollectionParams<TCelestialObjectsFilter>;

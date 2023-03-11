@@ -62,67 +62,69 @@
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { mapGetters } from "vuex";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useSessionStore } from "@/frontend/stores/Session";
+import passwordCollection from "@/frontend/api/collections/Password";
 
+const submitting = ref(false);
+
+const form = ref<Partial<PasswordChangeForm>>({
+  currentPassword: undefined,
+  password: undefined,
+  passwordConfirmation: undefined,
+});
+
+const router = useRouter();
+
+const sessionStore = useSessionStore();
+
+onMounted(() => {
+  if (sessionStore.isAuthenticated) {
+    router.push({ name: "settings-change-password" }).catch(() => {
+      // ignore
+    });
+  }
+});
+
+const route = useRoute();
+
+const { t } = useI18n();
+
+const changePassword = async () => {
+  submitting.value = true;
+
+  const response = await passwordCollection.update(
+    route.params.token,
+    form.value as PasswordChangeForm
+  );
+
+  submitting.value = false;
+
+  if (!response.error) {
+    displaySuccess({
+      text: t("messages.changePassword.success"),
+    });
+
+    router.push("/").catch(() => {
+      // ignore
+    });
+  } else {
+    displayAlert({
+      text: t("messages.changePassword.failure"),
+    });
+  }
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "ChangePassword",
-
-  components: {
-    FormInput,
-    Btn,
-  },
-
-  data() {
-    return {
-      submitting: false,
-      form: {
-        currentPassword: null,
-        password: null,
-        passwordConfirmation: null,
-      },
-    };
-  },
-
-  computed: {
-    ...mapGetters("session", ["isAuthenticated"]),
-  },
-
-  mounted() {
-    if (this.isAuthenticated) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push({ name: "settings-change-password" }).catch(() => {});
-    }
-  },
-
-  methods: {
-    async changePassword() {
-      this.submitting = true;
-
-      const response = await this.$api.put(
-        `password/update/${this.$route.params.token}`,
-        this.form
-      );
-
-      this.submitting = false;
-
-      if (!response.error) {
-        displaySuccess({
-          text: this.$t("messages.changePassword.success"),
-        });
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this.$router.push("/").catch(() => {});
-      } else {
-        displayAlert({
-          text: this.$t("messages.changePassword.failure"),
-        });
-      }
-    },
-  },
 };
 </script>
 

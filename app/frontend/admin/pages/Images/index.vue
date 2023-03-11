@@ -1,9 +1,9 @@
 <template>
   <FilteredList
     :collection="collection"
-    :name="$route.name"
-    :route-query="$route.query"
-    :hash="$route.hash"
+    :name="route.name"
+    :route-query="route.query"
+    :hash="route.hash"
     :paginated="true"
     class="images"
   >
@@ -22,47 +22,31 @@
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router/composables";
 import ImageUploader from "@/admin/components/ImageUploader/index.vue";
 import FilterForm from "@/admin/components/Images/FilterForm/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import imagesCollection, {
-  AdminImagesCollection,
-} from "@/admin/api/collections/Images";
+import imagesCollection from "@/admin/api/collections/Images";
 
-@Component<AdminImages>({
-  components: {
-    ImageUploader,
-    FilterForm,
-    FilteredList,
-  },
-})
-export default class AdminImages extends Vue {
-  collection: AdminImagesCollection = imagesCollection;
+const collection = imagesCollection;
 
-  get toggleFiltersTooltip() {
-    if (this.filterVisible) {
-      return this.$t("actions.hideFilter");
-    }
-    return this.$t("actions.showFilter");
-  }
+const route = useRoute();
 
-  get query() {
-    return this.$route.query.q || {};
-  }
+const query = computed<GalleryFilter>(() => route.query.q || {});
 
-  get galleryId() {
-    return this.query.galleryIdEq;
-  }
+const galleryId = computed(() => query.value.galleryIdEq);
 
-  get galleryType() {
-    return this.query.galleryTypeEq;
-  }
+const galleryType = computed(() => query.value.galleryTypeEq);
 
-  async fetch() {
-    await this.collection.refresh();
-  }
-}
+const fetch = async () => {
+  await collection.refresh();
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AdminImagesPage",
+};
 </script>

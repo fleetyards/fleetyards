@@ -1,9 +1,9 @@
-type Session = {
+type TSession = {
   token: string;
   expires: string;
 };
 
-type SessionParams = {
+type TSessionParams = {
   login: string;
   password: string;
   rememberMe: boolean;

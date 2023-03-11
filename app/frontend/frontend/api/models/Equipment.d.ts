@@ -1,14 +1,12 @@
-type EquipmentFilter = {
+type TEquipmentFilter = {
   nameCont: string;
   media: {
     storeImage?: FyMediaImage;
   };
 };
 
-interface EquipmentParams extends CollectionParams {
-  filters: EquipmentFilter;
-}
+type TEquipmentParams = TCollectionParams<TEquipmentFilter>;
 
-type Equipment = {
+type TEquipment = {
   id: string;
 };

@@ -1,10 +1,11 @@
-// eslint-disable-next-line import/prefer-default-export
-export const transformErrors = function transformErrors(errors) {
+export const transformErrors = (
+  errors?: TApiError[]
+): TErrorMessages | undefined => {
   if (!errors) {
-    return null;
+    return undefined;
   }
 
-  const errorData = {};
+  const errorData: TErrorMessages = {};
 
   errors.forEach((error) => {
     errorData[error.attribute] = error.messages.map(

@@ -1,10 +1,10 @@
-type HangarGroup = {
+type THangarGroup = {
   id: string;
   name: string;
   color: string;
 };
 
-type HangarGroupForm = {
+type THangarGroupForm = {
   name: string;
   color: string;
 };

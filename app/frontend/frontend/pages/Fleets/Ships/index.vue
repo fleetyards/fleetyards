@@ -50,7 +50,9 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, watch, onMounted } from "vue";
 import { useRoute } from "vue-router/composables";
+import { storeToRefs } from "pinia";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { publicFleetShipsRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
@@ -58,15 +60,19 @@ import fleetsCollection from "@/frontend/api/collections/Fleets";
 import PublicShipsList from "@/frontend/components/Fleets/PublicShipsList/index.vue";
 import ShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import Store from "@/frontend/lib/Store";
+import { useAppStore } from "@/frontend/stores/App";
+import { useFleetStore } from "@/frontend/stores/Fleet";
+import { usePublicFleetStore } from "@/frontend/stores/PublicFleet";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useHangarItems } from "@/frontend/composables/useHangarItems";
+import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 
-const { updateMetaInfo } = useMetaInfo();
+useHangarItems();
+useWishlistItems();
 
-const { t } = useI18n();
+const appStore = useAppStore();
 
-const mobile = computed(() => Store.getters.mobile);
+const { mobile } = storeToRefs(appStore);
 
 const fleet = computed(() => fleetsCollection.record);
 
@@ -78,16 +84,30 @@ const metaTitle = computed(() => {
   return fleet.value.name;
 });
 
-const shareUrl = computed(() => {
+const { updateMetaInfo } = useMetaInfo();
+
+const shareUrl = () => {
   if (!fleet.value) {
     return "";
   }
   const host = `${window.location.protocol}//${window.location.host}`;
 
   return `${host}/fleets/${fleet.value.slug}/ships`;
-});
+};
 
 const route = useRoute();
+
+const fetch = async () => {
+  await fleetsCollection.findBySlug(route.params.slug);
+};
+
+watch(
+  () => route,
+  () => {
+    fetch();
+  },
+  { deep: true }
+);
 
 watch(
   () => fleet.value,
@@ -96,30 +116,27 @@ watch(
   }
 );
 
-watch(
-  () => route.path,
-  () => {
-    fetch();
-  }
-);
-
 onMounted(() => {
   fetch();
 });
 
+const fleetStore = useFleetStore();
+const publicFleetStore = usePublicFleetStore();
+
 const toggleFleetchart = () => {
   if (fleet.value?.myFleet) {
-    Store.dispatch("fleet/toggleFleetchart");
+    fleetStore.toggleFleetchart();
   } else {
-    Store.dispatch("publicFleet/toggleFleetchart");
+    publicFleetStore.toggleFleetchart();
   }
-};
-
-const fetch = async () => {
-  await fleetsCollection.findBySlug(route.params.slug);
 };
 </script>
 
+<script lang="ts">
+export default {
+  name: "FleetShipsPage",
+  beforeRouteEnter: publicFleetShipsRouteGuard,
+};
 <script lang="ts">
 export default {
   name: "FleetShipsPage",

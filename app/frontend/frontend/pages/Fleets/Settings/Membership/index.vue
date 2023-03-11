@@ -78,155 +78,165 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
+import { ref, computed, watch, onMounted } from "vue";
+import { useRoute } from "vue-router/composables";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
-import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import type { FleetMembersCollection } from "@/frontend/api/collections/FleetMembers";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
+import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 
-@Component<FleetMembershipSettings>({
-  beforeRouteEnter: fleetRouteGuard,
-  components: {
-    BreadCrumbs,
-    Btn,
-    Checkbox,
-    FilterGroup,
-  },
-})
-export default class FleetMembershipSettings extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection;
+const collection: FleetMembersCollection = fleetMembersCollection;
 
-  submitting = false;
+const submitting = ref(false);
 
-  form: FleetMembershipForm = {
-    primary: false,
-    shipsFilter: null,
-    hangarGroupId: null,
-  };
+const form = ref<FleetMembershipForm>({
+  primary: false,
+  shipsFilter: null,
+  hangarGroupId: null,
+});
 
-  get fleet() {
-    return fleetsCollection.record;
+const fleet = computed(() => fleetsCollection.record);
+
+const { t } = useI18n();
+
+const metaTitle = computed(() => {
+  if (!fleet.value) {
+    return undefined;
   }
 
-  get metaTitle() {
-    if (!this.fleet) {
-      return null;
-    }
+  return t("title.fleets.settings", { fleet: fleet.value.name });
+});
 
-    return this.$t("title.fleets.settings", { fleet: this.fleet.name });
+useMetaInfo(metaTitle);
+
+const crumbs = computed(() => {
+  if (!fleet.value) {
+    return [];
   }
 
-  get crumbs() {
-    if (!this.fleet) {
-      return [];
-    }
-
-    return [
-      {
-        to: {
-          name: "fleet",
-          params: {
-            slug: this.fleet.slug,
-          },
+  return [
+    {
+      to: {
+        name: "fleet",
+        params: {
+          slug: fleet.value.slug,
         },
-
-        label: this.fleet.name,
       },
-    ];
+
+      label: fleet.value.name,
+    },
+  ];
+});
+
+const shipsFilterIsHangarGroup = computed(
+  () => form.value.shipsFilter === "hangar_group"
+);
+
+const shipsFilterOptions = computed(() => [
+  {
+    name: t("labels.fleet.members.shipsFilter.values.all"),
+    value: "all",
+  },
+  {
+    name: t("labels.fleet.members.shipsFilter.values.hangar_group"),
+    value: "hangar_group",
+  },
+  {
+    name: t("labels.fleet.members.shipsFilter.values.hide"),
+    value: "hide",
+  },
+]);
+
+const membership = computed(() => collection.record);
+
+const setupForm = () => {
+  if (!membership.value) {
+    return;
   }
 
-  get shipsFilterIsHangarGroup() {
-    return this.form.shipsFilter === "hangar_group";
-  }
+  form.value = {
+    primary: membership.value.primary,
+    shipsFilter: membership.value.shipsFilter,
+    hangarGroupId: membership.value.hangarGroupId,
+  };
+};
 
-  get shipsFilterOptions() {
-    return [
-      {
-        name: this.$t("labels.fleet.members.shipsFilter.values.all"),
-        value: "all",
-      },
-      {
-        name: this.$t("labels.fleet.members.shipsFilter.values.hangar_group"),
-        value: "hangar_group",
-      },
-      {
-        name: this.$t("labels.fleet.members.shipsFilter.values.hide"),
-        value: "hide",
-      },
-    ];
-  }
+const route = useRoute();
 
-  get membership() {
-    return this.collection.record;
-  }
+const fetch = async () => {
+  await collection.findByFleet(route.params.slug);
 
-  @Watch("$route")
-  onRouteChange() {
-    this.fetchFleet();
-  }
+  setupForm();
+};
 
-  @Watch("fleet")
-  onFleetChange() {
-    this.fetch();
-  }
+const fetchFleet = async () => {
+  await fleetsCollection.findBySlug(route.params.slug);
+};
 
-  @Watch("shipsFilterIsHangarGroup")
-  onShipsFilterChange() {
-    if (!this.shipsFilterIsHangarGroup) {
-      this.form.hangarGroupId = null;
+watch(
+  () => route,
+  () => {
+    fetchFleet();
+  },
+  { deep: true }
+);
+
+watch(
+  () => fleet.value,
+  () => {
+    fetch();
+  }
+);
+
+watch(
+  () => shipsFilterIsHangarGroup.value,
+  () => {
+    if (!shipsFilterIsHangarGroup.value) {
+      form.value.hangarGroupId = null;
     }
   }
+);
 
-  mounted() {
-    this.fetchFleet();
-    this.fetch();
-  }
+onMounted(() => {
+  fetchFleet();
+  fetch();
+});
 
-  setupForm() {
-    this.form = {
-      primary: this.membership?.primary,
-      shipsFilter: this.membership?.shipsFilter,
-      hangarGroupId: this.membership?.hangarGroupId,
-    };
-  }
+const comlink = useComlink();
 
-  async fetch() {
-    await this.collection.findByFleet(this.$route.params.slug);
+const submit = async () => {
+  submitting.value = true;
 
-    this.setupForm();
-  }
+  const response = await collection.update(route.params.slug, form.value);
 
-  async fetchFleet() {
-    await fleetsCollection.findBySlug(this.$route.params.slug);
-  }
+  submitting.value = false;
 
-  async submit() {
-    this.submitting = true;
 
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members`,
-      this.form
-    );
+if (!response.error) {
+  displaySuccess({
+    text: t("messages.fleet.members.update.success"),
+  });
 
-    this.submitting = false;
-
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t("messages.fleet.members.update.success"),
-      });
-
-      this.$comlink.$emit("fleet-update");
-    } else {
-      displayAlert({
-        text: this.$t("messages.fleet.members.update.failure"),
-      });
-    }
-  }
+  comlink.$emit("fleet-update");
+} else {
+  displayAlert({
+    text: t("messages.fleet.members.update.failure"),
+  });
+}
 }
 </script>
+
+<script lang="ts">
+export default {
+  name: "FleetMembershipSettings",
+  beforeRouteEnter: fleetRouteGuard,
+};

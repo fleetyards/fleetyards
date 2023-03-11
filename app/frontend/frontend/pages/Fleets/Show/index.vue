@@ -90,53 +90,58 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed, watch, onMounted } from "vue";
+import { useRoute } from "vue-router/composables";
 import { publicFleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 
-@Component<FleetDetail>({
-  beforeRouteEnter: publicFleetRouteGuard,
-  components: {
-    Avatar,
+const fleet = computed(() => fleetsCollection.record);
+
+const description = computed<string | null>(() => {
+  if (!fleet.value || !fleet.value.description) {
+    return null;
+  }
+
+  return fleet.value.description.replaceAll("\n", "<br>");
+});
+
+const metaTitle = computed(() => {
+  if (!fleet.value) {
+    return undefined;
+  }
+
+  return fleet.value.name;
+});
+
+useMetaInfo(metaTitle);
+
+const route = useRoute();
+
+const fetch = async () => {
+  await fleetsCollection.findBySlug(route.params.slug);
+};
+
+watch(
+  () => route,
+  () => {
+    fetch();
   },
-})
-export default class FleetDetail extends Vue {
-  get fleet() {
-    return fleetsCollection.record;
-  }
+  { deep: true }
+);
 
-  get description(): string | null {
-    if (!this.fleet || !this.fleet.description) {
-      return null;
-    }
+onMounted(() => {
+  fetch();
+});
+</script>
 
-    return this.fleet.description.replaceAll("\n", "<br>");
-  }
-
-  get metaTitle() {
-    if (!this.fleet) {
-      return null;
-    }
-
-    return this.fleet.name;
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    this.fetch();
-  }
-
-  mounted() {
-    this.fetch();
-  }
-
-  async fetch() {
-    await fleetsCollection.findBySlug(this.$route.params.slug);
-  }
-}
+<script lang="ts">
+export default {
+  name: "FleetDetailPage",
+  beforeRouteEnter: publicFleetRouteGuard,
+};
 </script>
 
 <style lang="scss" scoped>

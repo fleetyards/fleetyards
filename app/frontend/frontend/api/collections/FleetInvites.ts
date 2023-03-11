@@ -1,13 +1,16 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class FleetInvitesCollection extends BaseCollection {
+export class FleetInvitesCollection extends BaseCollection<
+  TFleetInvite,
+  undefined
+> {
   primaryKey = "id";
 
-  records: FleetInvite[] = [];
-
-  async findAllForCurrent(identifier = "default"): Promise<FleetInvite[]> {
-    const response = await get(`fleets/invites`, {
+  async findAllForCurrent(
+    identifier = "default"
+  ): Promise<TCollectionResponse<TFleetInvite>> {
+    const response = await get<TFleetInvite[]>(`fleets/invites`, {
       [identifier]: true,
     });
 
@@ -15,7 +18,7 @@ export class FleetInvitesCollection extends BaseCollection {
       this.records = response.data;
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 }
 

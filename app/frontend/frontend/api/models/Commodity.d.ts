@@ -1,14 +1,12 @@
-type Commodity = {
+type TCommodity = {
   id: string;
   media: {
     storeImage?: FyMediaImage;
   };
 };
 
-type CommoditiesFilter = {
+type TCommoditiesFilter = {
   nameCont: string;
 };
 
-interface CommodityParams extends CollectionParams {
-  filters: CommoditiesFilter;
-}
+type TCommodityParams = TCollectionParams<TCommoditiesFilter>;

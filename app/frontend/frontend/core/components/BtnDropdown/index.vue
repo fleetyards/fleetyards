@@ -47,7 +47,7 @@ export default class BtnDropdown extends Vue {
   @Prop({
     default: "default",
     validator(value) {
-      return ["default", "small", "large"].indexOf(value) !== -1;
+      return ["default", "xsmall", "small", "large"].indexOf(value) !== -1;
     },
   })
   size!: string;

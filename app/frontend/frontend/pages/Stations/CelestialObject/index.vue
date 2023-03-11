@@ -47,174 +47,118 @@
         </transition-group>
       </div>
     </div>
-    <div v-if="celestialObject && stations.length" class="row">
-      <div class="col-12 col-lg-6">
-        <h2>{{ $t("headlines.stations") }}</h2>
-      </div>
-      <div class="col-12 col-lg-6">
-        <Paginator
-          v-if="stations.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-      <div class="col-12">
+
+    <FilteredList
+      v-if="celestialObject"
+      key="clestialObjectStations"
+      :collection="collection"
+      :name="route.name"
+      :route-query="route.query"
+      :hash="route.hash"
+      :params="{ filters: { celestialObjectEq: celestialObject.slug } }"
+      :paginated="true"
+    >
+      <template #headline="{ records }">
+        <h2 v-if="records.length">{{ $t("headlines.stations") }}</h2>
+      </template>
+      <template #default="{ records }">
         <transition-group name="fade-list" class="row" tag="div" appear>
           <div
-            v-for="station in stations"
+            v-for="station in records"
             :key="station.slug"
             class="col-12 fade-list-item"
           >
             <StationPanel :station="station" />
           </div>
         </transition-group>
-        <Loader :loading="loading" :fixed="true" />
-      </div>
-      <div class="col-12">
-        <Paginator
-          v-if="stations.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
+      </template>
+    </FilteredList>
   </section>
 </template>
 
-<script>
-import Loader from "@/frontend/core/components/Loader/index.vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
-import { scrollToAnchor } from "@/frontend/utils/scrolling";
-import Pagination from "@/frontend/mixins/Pagination";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import ItemPanel from "@/frontend/components/Stations/Item/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import CelestialObjectMetrics from "@/frontend/components/CelestialObjects/Metrics/index.vue";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useRoute } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
+import celestialObjectsCollection from "@/frontend/api/collections/CelestialObjects";
+import stationsCollection from "@/frontend/api/collections/Stations";
+import { TBreadCrumb } from "@/@types/breadcrumbs";
+import { celestialObjectRouteGuard } from "@/frontend/utils/RouteGuards/CelestialObjects";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 
+const collection = stationsCollection;
+
+const route = useRoute();
+
+const celestialObject = computed(() => celestialObjectsCollection.record);
+
+const { t } = useI18n();
+
+const metaTitle = computed(() => {
+  if (!celestialObject.value) {
+    return undefined;
+  }
+
+  return t("title.celestialObject", {
+    celestialObject: celestialObject.value.name,
+    starsystem: celestialObject.value.starsystem.name,
+  });
+});
+
+useMetaInfo(metaTitle);
+
+const crumbs = computed(() => {
+  if (!celestialObject.value) {
+    return [];
+  }
+
+  const crumbs: TBreadCrumb[] = [
+    {
+      to: {
+        name: "starsystems",
+        hash: `#${celestialObject.value.starsystem.slug}`,
+      },
+      label: t("nav.starsystems"),
+    },
+    {
+      to: {
+        name: "starsystem",
+        params: {
+          slug: celestialObject.value.starsystem.slug,
+        },
+        hash: `#${celestialObject.value.slug}`,
+      },
+      label: celestialObject.value.starsystem.name,
+    },
+  ];
+
+  if (celestialObject.value.parent) {
+    crumbs.push({
+      to: {
+        name: "celestial-object",
+        params: {
+          starsystem: celestialObject.value.starsystem.slug,
+          slug: celestialObject.value.parent.slug,
+        },
+      },
+      label: celestialObject.value.parent.name,
+    });
+  }
+
+  return crumbs;
+});
+</script>
+
+<script lang="ts">
 export default {
-  name: "CelestialObjectDetail",
-
-  components: {
-    Loader,
-    Panel,
-    StationPanel,
-    ItemPanel,
-    CelestialObjectMetrics,
-    BreadCrumbs,
-  },
-
-  mixins: [Pagination],
-
-  data() {
-    return {
-      loading: false,
-      celestialObject: null,
-      stations: [],
-    };
-  },
-
-  computed: {
-    metaTitle() {
-      if (!this.celestialObject) {
-        return null;
-      }
-
-      return this.$t("title.celestialObject", {
-        celestialObject: this.celestialObject.name,
-        starsystem: this.celestialObject.starsystem.name,
-      });
-    },
-
-    crumbs() {
-      if (!this.celestialObject) {
-        return null;
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: "starsystems",
-            hash: `#${this.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t("nav.starsystems"),
-        },
-        {
-          to: {
-            name: "starsystem",
-            params: {
-              slug: this.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.celestialObject.slug}`,
-          },
-          label: this.celestialObject.starsystem.name,
-        },
-      ];
-
-      if (this.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: "celestial-object",
-            params: {
-              starsystem: this.celestialObject.starsystem.slug,
-              slug: this.celestialObject.parent.slug,
-            },
-          },
-          label: this.celestialObject.parent.name,
-        });
-      }
-
-      return crumbs;
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch();
-    },
-  },
-
-  created() {
-    this.fetch();
-  },
-
-  methods: {
-    async fetch() {
-      this.loading = true;
-      const response = await this.$api.get(
-        `celestial-objects/${this.$route.params.slug}`
-      );
-      this.loading = false;
-      if (!response.error) {
-        this.celestialObject = response.data;
-        this.fetchStations();
-      }
-    },
-
-    async fetchStations() {
-      this.loading = true;
-      const response = await this.$api.get("stations", {
-        q: {
-          ...this.$route.query.q,
-          celestialObjectEq: this.$route.params.slug,
-          sorts: ["station_type asc", "name asc"],
-        },
-        page: this.$route.query.page,
-      });
-
-      this.loading = false;
-      if (!response.error) {
-        this.stations = response.data;
-
-        this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash);
-        });
-      }
-
-      this.setPages(response.meta);
-    },
-  },
+  name: "CelestialObjectDetailPage",
+  beforeRouteEnter: celestialObjectRouteGuard,
 };
 </script>
 

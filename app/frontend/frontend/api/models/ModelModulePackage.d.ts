@@ -1,23 +1,27 @@
-type ModelModulePackagesFilter = {
+type TModelModulePackage = {
+  id: string;
+};
+
+type TModelModulePackagesFilter = {
   nameCont: string;
 };
 
-interface ModelModulePackageParams extends CollectionParams {
-  filters: ModelModulesFilter;
+interface TModelModulePackageParams extends TCollectionParams {
+  filters: TModelModulesFilter;
 }
 
-type ModelModulePackage = {
+type TModelModulePackage = {
   id: string;
   media: {
-    storeImage?: FyMediaImage;
+    storeImage?: TMediaImage;
     fleetchartImage?: string;
-    angledView?: FyMediaViewImage;
-    frontView?: FyMediaViewImage;
-    sideView?: FyMediaViewImage;
-    topView?: FyMediaViewImage;
-    angledViewColored?: FyMediaViewImage;
-    frontViewColored?: FyMediaViewImage;
-    sideViewColored?: FyMediaViewImage;
-    topViewColored?: FyMediaViewImage;
+    angledView?: TMediaViewImage;
+    frontView?: TMediaViewImage;
+    sideView?: TMediaViewImage;
+    topView?: TMediaViewImage;
+    angledViewColored?: TMediaViewImage;
+    frontViewColored?: TMediaViewImage;
+    sideViewColored?: TMediaViewImage;
+    topViewColored?: TMediaViewImage;
   };
 };

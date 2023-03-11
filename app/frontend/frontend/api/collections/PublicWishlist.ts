@@ -2,12 +2,11 @@ import { get } from "@/frontend/api/client";
 import Store from "@/frontend/lib/Store";
 import BaseCollection from "./Base";
 
-export class PublicWishlistCollection extends BaseCollection {
+export class PublicWishlistCollection extends BaseCollection<
+  TVehicle,
+  TPublicVehicleParams
+> {
   primaryKey = "id";
-
-  records: Vehicle[] = [];
-
-  params: PublicVehicleParams | null = null;
 
   username: string | null = null;
 
@@ -23,25 +22,32 @@ export class PublicWishlistCollection extends BaseCollection {
     Store.dispatch("publicWishlist/updatePerPage", perPage);
   }
 
-  async findAll(params: PublicVehicleParams | null): Promise<Vehicle[]> {
+  async findAll(
+    params?: TPublicVehicleParams
+  ): Promise<TCollectionResponse<TVehicle>> {
     if (!params?.username) {
-      return [];
+      return {
+        data: [],
+      };
     }
 
     this.params = params;
 
-    const response = await get(`vehicles/${params?.username}/wishlist`, {
-      q: params?.filters,
-      page: params?.page,
-      perPage: this.perPage,
-    });
+    const response = await get<TVehicle[]>(
+      `vehicles/${params?.username}/wishlist`,
+      {
+        q: params?.filters,
+        page: params?.page,
+        perPage: this.perPage,
+      }
+    );
 
     if (!response.error) {
       this.records = response.data;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async refresh(): Promise<void> {

@@ -1,3 +1,3 @@
-type TwoFactorBackupCodes = {
+type TTwoFactorBackupCodes = {
   codes: string[];
 };

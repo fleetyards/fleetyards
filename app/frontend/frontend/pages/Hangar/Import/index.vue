@@ -67,6 +67,7 @@ import Panel from "@/frontend/core/components/Panel/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import { displayAlert } from "@/frontend/lib/Noty";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
 
 export default {
   name: "HangarImport",

@@ -1,12 +1,11 @@
-type TradeRoute = {
+type TTradeRoute = {
+  id: string;
   sellPrice: string;
   buyPrice: string;
 };
 
-type TradeRoutesFilter = {
+type TTradeRoutesFilter = {
   originIn: string[];
 };
 
-interface TradeRouteParams extends CollectionParams {
-  filters: TradeRoutesFilter;
-}
+type TTradeRouteParams = TCollectionParams<TTradeRoutesFilter>;

@@ -152,149 +152,168 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { ref, computed, watch } from "vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import VueUploadComponent from "vue-upload-component";
 import userCollection from "@/frontend/api/collections/User";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<SettingsAccount>({
-  components: {
-    VueUploadComponent,
-    FormInput,
-    Btn,
-    Avatar,
-  },
-})
-export default class SettingsAccount extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
-
-  form: UserForm | null = null;
-
-  files = [];
-
-  fileExtensions = "jpg,jpeg,png,webp";
-
-  acceptedMimeTypes = "image/png,image/jpeg,image/webp";
-
-  submitting = false;
-
-  get avatarUrl() {
-    return this.newAvatar.url || (this.currentUser && this.currentUser.avatar);
-  }
-
-  get newAvatar() {
-    return (this.files && this.files[0]) || {};
-  }
-
-  get fileExtensionsList() {
-    return this.fileExtensions.split(",");
-  }
-
-  @Watch("currentUser")
-  onCurrentUserChange() {
-    this.setupForm();
-  }
-
-  created() {
-    if (this.currentUser) {
-      this.setupForm();
-    }
-  }
-
-  selectAvatar() {
-    this.form.removeAvatar = false;
-    this.$refs.upload.$el.querySelector("input").click();
-  }
-
-  removeAvatar() {
-    this.files = [];
-    this.currentUser.avatar = null;
-    this.form.removeAvatar = true;
-  }
-
-  setupForm() {
-    this.form = {
-      rsiHandle: this.currentUser.rsiHandle,
-      homepage: this.currentUser.homepage,
-      discord: this.currentUser.discord,
-      youtube: this.currentUser.youtube,
-      twitch: this.currentUser.twitch,
-      guilded: this.currentUser.guilded,
-      removeAvatar: false,
-    };
-  }
-
-  async submit() {
-    this.submitting = true;
-
-    const uploadResponse = await this.uploadAvatar();
-
-    const response = await userCollection.updateProfile(this.form);
-
-    this.submitting = false;
-
-    if (!uploadResponse.error && !response.error) {
-      this.$comlink.$emit("user-update");
-
-      setTimeout(() => {
-        this.files = [];
-      }, 1000);
-
-      displaySuccess({
-        text: this.$t("messages.updateProfile.success"),
-      });
-    }
-  }
-
-  async uploadAvatar() {
-    let uploadResponse = { error: null };
-
-    if (this.newAvatar && this.newAvatar.file) {
-      const uploadData = new FormData();
-      uploadData.append("avatar", this.newAvatar.file);
-
-      uploadResponse = await this.$api.upload("users/current", uploadData);
-    }
-
-    return uploadResponse;
-  }
-
-  updatedValue(value) {
-    this.files = value;
-  }
-
-  inputFilter(newFile, oldFile, prevent) {
-    if (newFile && !oldFile) {
-      if (
-        !this.fileExtensionsList.some((extension) =>
-          newFile.name.endsWith(extension)
-        )
-      ) {
-        displayAlert({
-          text: this.$t("messages.avatarUpload.invalidExtension", {
-            extensions: this.fileExtensions,
-          }),
-        });
-        return prevent();
-      }
-    }
-    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-      // eslint-disable-next-line no-param-reassign
-      newFile.url = "";
-      const URL = window.URL || window.webkitURL;
-      if (URL && URL.createObjectURL) {
-        // eslint-disable-next-line no-param-reassign
-        newFile.url = URL.createObjectURL(newFile.file);
-      }
-    }
-
-    return null;
-  }
+interface UploadFile extends VUFile {
+  url?: string;
 }
+
+const form = ref<Partial<UserForm>>({});
+
+const files = ref<UploadFile[]>([]);
+
+const fileExtensions = "jpg,jpeg,png,webp";
+
+const acceptedMimeTypes = "image/png,image/jpeg,image/webp";
+
+const submitting = ref(false);
+
+const sessionStore = useSessionStore();
+
+const avatarUrl = computed(
+  () =>
+    newAvatar.value.url ||
+    (sessionStore.currentUser && sessionStore.currentUser.avatar)
+);
+
+const newAvatar = computed<UploadFile>(
+  () => (files.value && files.value[0]) || {}
+);
+
+const fileExtensionsList = computed(() => fileExtensions.split(","));
+
+watch(
+  () => sessionStore.currentUser,
+  () => {
+    setupForm();
+  },
+  { deep: true }
+);
+
+const setupForm = () => {
+  if (!sessionStore.currentUser) {
+    return;
+  }
+
+  form.value = {
+    rsiHandle: sessionStore.currentUser.rsiHandle,
+    homepage: sessionStore.currentUser.homepage,
+    discord: sessionStore.currentUser.discord,
+    youtube: sessionStore.currentUser.youtube,
+    twitch: sessionStore.currentUser.twitch,
+    guilded: sessionStore.currentUser.guilded,
+    removeAvatar: false,
+  };
+};
+
+if (sessionStore.currentUser) {
+  setupForm();
+}
+
+const upload = ref<InstanceType<typeof VueUploadComponent> | null>(null);
+
+const selectAvatar = () => {
+  form.value.removeAvatar = false;
+
+  if (upload.value && upload.value.$el.querySelector("input")) {
+    upload.value.$el.querySelector("input")?.click();
+  }
+};
+
+const removeAvatar = () => {
+  files.value = [];
+
+  if (sessionStore.currentUser) {
+    sessionStore.currentUser.avatar = undefined;
+  }
+
+  form.value.removeAvatar = true;
+};
+
+const comlink = useComlink();
+
+const uploadAvatar = async () => {
+  let uploadResponse: RecordResponse<User> = { error: null };
+
+  if (newAvatar.value && newAvatar.value.file) {
+    const uploadData = new FormData();
+    uploadData.append("avatar", newAvatar.value.file);
+
+    uploadResponse = await userCollection.uploadAvatar(uploadData);
+  }
+
+  return uploadResponse;
+};
+
+const { t } = useI18n();
+
+const submit = async () => {
+  submitting.value = true;
+
+  const uploadResponse = await uploadAvatar();
+
+  const response = await userCollection.updateProfile(form.value as UserForm);
+
+  submitting.value = false;
+
+  if (!uploadResponse.error && !response.error) {
+    comlink.$emit("user-update");
+
+    setTimeout(() => {
+      files.value = [];
+    }, 1000);
+
+    displaySuccess({
+      text: t("messages.updateProfile.success"),
+    });
+  }
+};
+
+const updatedValue = (value) => {
+  files.value = value;
+};
+
+const inputFilter = (newFile, oldFile, prevent) => {
+  if (newFile && !oldFile) {
+    if (
+      !fileExtensionsList.value.some((extension) =>
+        newFile.name.endsWith(extension)
+      )
+    ) {
+      displayAlert({
+        text: t("messages.avatarUpload.invalidExtension", {
+          extensions: fileExtensions,
+        }),
+      });
+      return prevent();
+    }
+  }
+  if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+    // eslint-disable-next-line no-param-reassign
+    newFile.url = "";
+    const URL = window.URL || window.webkitURL;
+    if (URL && URL.createObjectURL) {
+      // eslint-disable-next-line no-param-reassign
+      newFile.url = URL.createObjectURL(newFile.file);
+    }
+  }
+
+  return null;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "SettingsProfilePage",
+};
 </script>

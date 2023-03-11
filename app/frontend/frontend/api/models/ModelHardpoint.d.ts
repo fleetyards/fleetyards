@@ -1,3 +1,3 @@
-type ModelHardpoint = {
+type TModelHardpoint = {
   id: string;
 };

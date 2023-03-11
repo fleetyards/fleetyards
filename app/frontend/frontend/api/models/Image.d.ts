@@ -1,11 +1,16 @@
-type Image = {
+type TImage = {
   id: string;
   name: string;
   smallUrl: string;
   model?: Model;
 };
 
-interface GalleryParams extends CollectionParams {
+type TGalleryFilter = {
+  galleryIdEq?: string;
+  galleryTypeEq?: string;
+};
+
+interface TGalleryParams extends TCollectionParams<TGalleryFilter> {
   galleryType: string;
   slug: string;
 }

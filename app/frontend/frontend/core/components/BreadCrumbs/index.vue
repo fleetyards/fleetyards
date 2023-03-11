@@ -13,22 +13,20 @@
   </ol>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
+<script lang="ts" setup>
+import type { TBreadCrumb } from "@/@types/breadcrumbs";
 
-@Component({
-  components: {
-    Panel,
-  },
-})
-export default class BreadCrumbs extends Vue {
-  @Prop({
-    default() {
-      return [];
-    },
-  })
-  crumbs!: Route[];
-}
+type Props = {
+  crumbs: TBreadCrumb[];
+};
+
+withDefaults(defineProps<Props>(), {
+  crumbs: () => [],
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "BreadCrumbs",
+};
 </script>

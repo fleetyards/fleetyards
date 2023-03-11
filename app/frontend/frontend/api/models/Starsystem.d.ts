@@ -1,4 +1,4 @@
-type Starsystem = {
+type TStarsystem = {
   id: string;
   slug: string;
   name: string;
@@ -8,10 +8,8 @@ type Starsystem = {
   };
 };
 
-type StarsystemFilter = {
+type TStarsystemFilter = {
   nameCont: string;
 };
 
-interface StarsystemParams extends CollectionParams {
-  filters: StarsystemFilter;
-}
+type TStarsystemParams = TCollectionParams<TStarsystemFilter>;

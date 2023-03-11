@@ -4,7 +4,7 @@
       <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="starsystem">
-          {{ $t("headlines.starsystem", { starsystem: starsystem.name }) }}
+          {{ t("headlines.starsystem", { starsystem: starsystem.name }) }}
         </h1>
       </div>
     </div>
@@ -21,21 +21,21 @@
         </Panel>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <Paginator
-          v-if="celestialObjects.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
+
+    <FilteredList
+      v-if="starsystem"
+      key="celestialObjects"
+      :collection="collection"
+      :name="route.name"
+      :route-query="route.query"
+      :hash="route.hash"
+      :params="{ filters: { starsystemEq: starsystem.slug } }"
+      :paginated="true"
+    >
+      <template #default="{ records }">
         <transition-group name="fade-list" class="row" tag="div" appear>
           <div
-            v-for="celestialObject in celestialObjects"
+            v-for="celestialObject in records"
             :key="celestialObject.slug"
             class="col-12 fade-list-item"
           >
@@ -51,7 +51,7 @@
             >
               <template v-if="celestialObject.moons.length">
                 <h3 class="sr-only">
-                  {{ $t("headlines.celestialObjects") }}
+                  {{ t("headlines.celestialObjects") }}
                 </h3>
                 <transition-group name="fade-list" class="row" tag="div" appear>
                   <div
@@ -75,129 +75,66 @@
             </PlanetList>
           </div>
         </transition-group>
-        <Loader :loading="loading" :fixed="true" />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <Paginator
-          v-if="celestialObjects.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
+      </template>
+    </FilteredList>
   </section>
 </template>
 
-<script>
-import Loader from "@/frontend/core/components/Loader/index.vue";
+<script lang="ts" setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router/composables";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useI18n } from "@/frontend/composables/useI18n";
+import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
-import Pagination from "@/frontend/mixins/Pagination";
-import { scrollToAnchor } from "@/frontend/utils/scrolling";
 import PlanetList from "@/frontend/components/Planets/List/index.vue";
 import MoonPanel from "@/frontend/components/Planets/Panel/index.vue";
 import StarsystemBaseMetrics from "@/frontend/components/Starsystems/BaseMetrics/index.vue";
 import StarsystemLevelsMetrics from "@/frontend/components/Starsystems/LevelsMetrics/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import celestialObjectCollection from "@/frontend/api/collections/CelestialObjects";
+import starsystemCollection from "@/frontend/api/collections/Starsystems";
+import { starsystemRouteGuard } from "@/frontend/utils/RouteGuards/Starsystems";
 
+const route = useRoute();
+
+const collection = celestialObjectCollection;
+
+const { t } = useI18n();
+
+const starsystem = computed<TStarsystem | undefined>(
+  () => starsystemCollection.record
+);
+
+const metaTitle = computed(() => {
+  if (!starsystem.value) {
+    return undefined;
+  }
+  return t("title.starsystem", { starsystem: starsystem.value.name });
+});
+
+useMetaInfo(metaTitle);
+
+const crumbs = computed(() => {
+  if (!starsystem.value) {
+    return null;
+  }
+
+  return [
+    {
+      to: {
+        name: "starsystems",
+        hash: `#${starsystem.value.slug}`,
+      },
+      label: t("nav.starsystems"),
+    },
+  ];
+});
+</script>
+
+<script lang="ts">
 export default {
-  name: "StarsystemDetail",
-
-  components: {
-    Loader,
-    PlanetList,
-    MoonPanel,
-    StarsystemBaseMetrics,
-    StarsystemLevelsMetrics,
-    Panel,
-    BreadCrumbs,
-  },
-
-  mixins: [Pagination],
-
-  data() {
-    return {
-      loading: false,
-      starsystem: null,
-      celestialObjects: [],
-    };
-  },
-
-  computed: {
-    starsystemName() {
-      if (this.celestialObjects.length === 0) {
-        return "";
-      }
-      return this.celestialObjects[0].starsystem.name;
-    },
-
-    metaTitle() {
-      if (!this.starsystem) {
-        return null;
-      }
-      return this.$t("title.starsystem", { starsystem: this.starsystem.name });
-    },
-
-    crumbs() {
-      if (!this.starsystem) {
-        return null;
-      }
-
-      return [
-        {
-          to: {
-            name: "starsystems",
-            hash: `#${this.starsystem.slug}`,
-          },
-          label: this.$t("nav.starsystems"),
-        },
-      ];
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetchCelestialObjects();
-    },
-  },
-
-  created() {
-    this.fetch();
-    this.fetchCelestialObjects();
-  },
-
-  methods: {
-    async fetch() {
-      const response = await this.$api.get(
-        `starsystems/${this.$route.params.slug}`
-      );
-      if (!response.error) {
-        this.starsystem = response.data;
-      }
-    },
-
-    async fetchCelestialObjects() {
-      this.loading = true;
-      const response = await this.$api.get("celestial-objects", {
-        q: {
-          ...this.$route.query.q,
-          starsystemEq: this.$route.params.slug,
-          main: true,
-        },
-        page: this.$route.query.page,
-      });
-      this.loading = false;
-      if (!response.error) {
-        this.celestialObjects = response.data;
-
-        this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash);
-        });
-      }
-      this.setPages(response.meta);
-    },
-  },
+  name: "StarsystemDetailPage",
+  beforeRouteEnter: starsystemRouteGuard,
 };
 </script>

@@ -144,102 +144,116 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { ref, computed, watch, onMounted } from "vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useCookiesStore } from "@/frontend/stores/Cookies";
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 
-@Component<PrivacySettings>({
-  components: {
-    Modal,
-    Checkbox,
-    Btn,
-  },
-})
-export default class PrivacySettings extends Vue {
-  @Prop({ default: false }) settings: boolean;
-
-  info: any = null;
-
-  internalSettings = false;
-
-  form: PrivacySettingForm = {
-    ahoy: false,
-    youtube: false,
-  };
-
-  @Getter("cookies", { namespace: "cookies" }) cookies: any;
-
-  @Getter("infoVisible", { namespace: "cookies" }) infoVisible: boolean;
-
-  get title() {
-    if (this.info) {
-      return this.$t(`privacySettings.info.${this.info}.title`);
-    }
-    if (this.internalSettings) {
-      return this.$t("privacySettings.title");
-    }
-
-    return this.$t("privacySettings.introduction.title");
-  }
-
-  @Watch("cookies", { deep: true })
-  onCookiesChange() {
-    this.setupForm();
-  }
-
-  mounted() {
-    this.internalSettings = this.settings;
-    this.setupForm();
-  }
-
-  showSettings() {
-    this.internalSettings = true;
-  }
-
-  close() {
-    this.$comlink.$emit("close-modal", "privacySetting", true);
-  }
-
-  setupForm() {
-    this.form = {
-      ahoy: this.cookies.ahoy,
-      youtube: this.cookies.youtube,
-    };
-  }
-
-  submit() {
-    this.$store.dispatch("cookies/updateAcceptedCookies", {
-      ...this.form,
-    });
-
-    this.$store.dispatch("cookies/hideInfo");
-
-    this.close();
-  }
-
-  accept() {
-    this.$store.dispatch("cookies/updateAcceptedCookies", {
-      ahoy: true,
-      youtube: true,
-    });
-
-    this.$store.dispatch("cookies/hideInfo");
-
-    this.close();
-  }
-
-  openInfo(key) {
-    this.info = key;
-  }
-
-  hideInfo() {
-    this.info = null;
-  }
+interface Props {
+  settings?: boolean;
 }
+
+type PrivacySettingForm = {
+  ahoy: boolean;
+  youtube: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  settings: false,
+});
+const info = ref<string | null>(null);
+
+const internalSettings = ref(false);
+
+const form = ref<PrivacySettingForm>({
+  ahoy: false,
+  youtube: false,
+});
+
+const { t } = useI18n();
+
+const title = computed(() => {
+  if (info.value) {
+    return t(`privacySettings.info.${info.value}.title`);
+  }
+  if (internalSettings.value) {
+    return t("privacySettings.title");
+  }
+
+  return t("privacySettings.introduction.title");
+});
+
+const cookiesStore = useCookiesStore();
+
+const setupForm = () => {
+  form.value = {
+    ahoy: cookiesStore.cookies.ahoy,
+    youtube: cookiesStore.cookies.youtube,
+  };
+};
+
+watch(
+  () => cookiesStore.cookies,
+  () => {
+    setupForm();
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  internalSettings.value = props.settings;
+
+  setupForm();
+});
+
+const showSettings = () => {
+  internalSettings.value = true;
+};
+
+const comlink = useComlink();
+
+const close = () => {
+  comlink.$emit("close-modal", "privacySetting", true);
+};
+
+const submit = () => {
+  cookiesStore.updateAcceptedCookies({
+    ...form.value,
+  });
+
+  cookiesStore.hideInfo();
+
+  close();
+};
+
+const accept = () => {
+  cookiesStore.updateAcceptedCookies({
+    ahoy: true,
+    youtube: true,
+  });
+
+  cookiesStore.hideInfo();
+
+  close();
+};
+
+const openInfo = (key) => {
+  info.value = key;
+};
+
+const hideInfo = () => {
+  info.value = null;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "PrivacySettings",
+};
 </script>
 
 <style lang="scss" scoped>

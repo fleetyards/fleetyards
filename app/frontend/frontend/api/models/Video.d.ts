@@ -3,3 +3,7 @@ type TVideo = {
   type: "youtube";
   url: string;
 };
+
+interface TVideoParams extends TCollectionParams<undefined> {
+  modelSlug: string;
+}

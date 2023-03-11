@@ -1,4 +1,4 @@
-type Fleet = {
+type TFleet = {
   id: string;
   fid: string;
   name: string;
@@ -7,9 +7,10 @@ type Fleet = {
   description: string;
   myFleet: boolean;
   publicFleet: boolean;
+  myRole: string;
 };
 
-type FleetForm = {
+type TFleetForm = {
   fid: string;
   rsiSid: string;
   name: string;
@@ -22,20 +23,19 @@ type FleetForm = {
   removeLogo: boolean;
 };
 
-interface FleetVehicleParams extends CollectionParams {
+interface TFleetVehicleParams extends TCollectionParams<TVehiclesFilter> {
   slug: string;
-  filters: VehiclesFilter;
   grouped: boolean;
   perPage: "all" | number;
 }
 
-type FleetVehicleStats = {
+type TFleetVehicleStats = {
   total: number;
-  classifications: ClassificationMetrics;
-  metrics: VehicleMetrics;
+  classifications: TClassificationMetrics;
+  metrics: TVehicleMetrics;
 };
 
-type FleetModelCounts = {
+type TFleetModelCounts = {
   modelCounts: {
     [key: string]: number;
   };

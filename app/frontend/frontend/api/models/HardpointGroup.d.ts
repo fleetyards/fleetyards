@@ -1,3 +1,3 @@
-type HardpointGroup = {
+type THardpointGroup = {
   name: string;
 };

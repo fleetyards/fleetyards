@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t("headlines.stations") }}
+          {{ t("headlines.stations") }}
         </h1>
       </div>
     </div>
@@ -12,9 +12,9 @@
     <FilteredList
       key="stations"
       :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :hash="$route.hash"
+      :name="route.name"
+      :route-query="route.query"
+      :hash="route.hash"
       :paginated="true"
     >
       <FilterForm slot="filter" />
@@ -37,26 +37,27 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { computed } from "vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
 import stationsCollection from "@/frontend/api/collections/Stations";
+import type { StationsCollection } from "@/frontend/api/collections/Stations";
+import { useRoute } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<Stations>({
-  components: {
-    FilteredList,
-    StationPanel,
-    FilterForm,
-  },
-})
-export default class Stations extends Vue {
-  collection: StationsCollection = stationsCollection;
+const collection: StationsCollection = stationsCollection;
 
-  get isSubRoute() {
-    return this.$route.name !== "stations";
-  }
-}
+const route = useRoute();
+
+const { t } = useI18n();
+
+const isSubRoute = computed(() => route.name !== "stations");
+</script>
+
+<script lang="ts">
+export default {
+  name: "StationsPage",
+};
 </script>

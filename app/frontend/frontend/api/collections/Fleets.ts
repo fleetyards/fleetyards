@@ -1,13 +1,11 @@
 import { get, post } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class FleetsCollection extends BaseCollection {
-  records: Fleet[] = [];
-
-  record: Fleet | null = null;
-
-  async findAllForCurrent(identifier = "default"): Promise<Fleet[]> {
-    const response = await get(`fleets/current`, {
+export class FleetsCollection extends BaseCollection<TFleet, undefined> {
+  async findAllForCurrent(
+    identifier = "default"
+  ): Promise<TCollectionResponse<TFleet>> {
+    const response = await get<TFleet[]>(`fleets/current`, {
       [identifier]: true,
     });
 
@@ -16,36 +14,29 @@ export class FleetsCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
-  async findBySlug(slug: string): Promise<Fleet | null> {
-    const response = await get(`fleets/${slug}`);
+  async findBySlug(slug: string): Promise<TRecordResponse<TFleet>> {
+    const response = await get<TFleet>(`fleets/${slug}`);
 
-    if (!response.error) {
-      this.record = response.data;
-    }
-
-    return this.record;
+    return this.recordResponse(response.data, response.error, true);
   }
 
   // tslint:disable-next-line variable-name
-  async create(form: FleetForm, _refetch = false) {
-    const response = await post("fleets", form);
+  async create(
+    form: TFleetForm,
+    _refetch = false
+  ): Promise<TRecordResponse<TFleet>> {
+    const response = await post<TFleet>("fleets", form);
 
-    if (!response.error) {
-      // if (refetch) {
-      //   this.findAll(this.params)
-      // }
-
-      return response.data;
-    }
-
-    return null;
+    return this.recordResponse(response.data, response.error, true);
   }
 
-  async findModelsByClassificationBySlug(slug: string): Promise<ChartData[]> {
-    const response = await get(`fleets/${slug}/stats/models-by-classification`);
+  async findModelsByClassificationBySlug(slug: string): Promise<TChartData[]> {
+    const response = await get<TChartData[]>(
+      `fleets/${slug}/stats/models-by-classification`
+    );
 
     if (!response.error) {
       return response.data;
@@ -57,10 +48,13 @@ export class FleetsCollection extends BaseCollection {
   async findVehiclesByModelBySlug(
     slug: string,
     limit?: number
-  ): Promise<ChartData[]> {
-    const response = await get(`fleets/${slug}/stats/vehicles-by-model`, {
-      limit,
-    });
+  ): Promise<TChartData[]> {
+    const response = await get<TChartData[]>(
+      `fleets/${slug}/stats/vehicles-by-model`,
+      {
+        limit,
+      }
+    );
 
     if (!response.error) {
       return response.data;
@@ -69,8 +63,10 @@ export class FleetsCollection extends BaseCollection {
     return [];
   }
 
-  async findModelsBySizeBySlug(slug: string): Promise<ChartData[]> {
-    const response = await get(`fleets/${slug}/stats/models-by-size`);
+  async findModelsBySizeBySlug(slug: string): Promise<TChartData[]> {
+    const response = await get<TChartData[]>(
+      `fleets/${slug}/stats/models-by-size`
+    );
 
     if (!response.error) {
       return response.data;
@@ -79,8 +75,10 @@ export class FleetsCollection extends BaseCollection {
     return [];
   }
 
-  async findModelsByManufacturerBySlug(slug: string): Promise<ChartData[]> {
-    const response = await get(`fleets/${slug}/stats/models-by-manufacturer`);
+  async findModelsByManufacturerBySlug(slug: string): Promise<TChartData[]> {
+    const response = await get<TChartData[]>(
+      `fleets/${slug}/stats/models-by-manufacturer`
+    );
 
     if (!response.error) {
       return response.data;
@@ -89,8 +87,10 @@ export class FleetsCollection extends BaseCollection {
     return [];
   }
 
-  async findModelsByProductionStatusBySlug(slug: string): Promise<ChartData[]> {
-    const response = await get(
+  async findModelsByProductionStatusBySlug(
+    slug: string
+  ): Promise<TChartData[]> {
+    const response = await get<TChartData[]>(
       `fleets/${slug}/stats/models-by-production-status`
     );
 
@@ -101,24 +101,10 @@ export class FleetsCollection extends BaseCollection {
     return [];
   }
 
-  async checkInvite(token: string) {
-    const response = await get(`fleets/check-invite/${token}`);
+  async checkInvite(token: string): Promise<TRecordResponse<TFleet>> {
+    const response = await get<TFleet>(`fleets/check-invite/${token}`);
 
-    if (!response.error) {
-      return response.data;
-    }
-
-    return null;
-  }
-
-  async useInvite(form: FleetMemberInviteForm) {
-    const response = await post(`fleets/use-invite`, form);
-
-    if (!response.error) {
-      return response.data;
-    }
-
-    return null;
+    return this.recordResponse(response.data, response.error);
   }
 }
 

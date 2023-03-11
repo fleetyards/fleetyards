@@ -110,99 +110,94 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { ref, computed, watch } from "vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { uniq as uniqArray } from "@/frontend/utils/Array";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import { useAppStore } from "@/frontend/stores/App";
+import { storeToRefs } from "pinia";
+import { v4 as uuidv4 } from "uuid";
 
 export type FilteredTableColumn = {
   name: string;
-  class: maybe<string>;
-  label: string;
+  class?: string;
+  label?: string;
 };
 
-@Component<FilteredTable>({
-  components: {
-    Panel,
-    Loader,
-    Checkbox,
-    Btn,
-  },
-})
-export default class FilteredTable extends Vue {
-  @Prop({ required: true }) records!: any[];
+type Props = {
+  records: TRecordTypes[];
+  columns: FilteredTableColumn[];
+  primaryKey: string;
+  loading: boolean;
+  emptyBoxVisible: boolean;
+  selectable: boolean;
+  selected: string[];
+};
 
-  @Prop({ required: true }) columns!: FilteredTableColumn[];
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+  emptyBoxVisible: false,
+  selectable: false,
+  selected: () => [],
+});
 
-  @Prop({ required: true }) primaryKey!: string;
+const internalSelected = ref<string[]>([]);
 
-  @Prop({ default: false }) loading!: boolean;
+const appStore = useAppStore();
 
-  @Prop({ default: false }) emptyBoxVisible!: boolean;
+const { mobile } = storeToRefs(appStore);
 
-  @Prop({ default: false }) selectable!: boolean;
+const uuid = uuidv4();
 
-  @Prop({
-    default: () => [],
-  })
-  selected!: string[];
-
-  internalSelected: string[] = [];
-
-  @Getter("mobile") mobile;
-
-  get uuid() {
-    return this._uid;
+const allSelected = computed(() => {
+  if (!props.records.length) {
+    return false;
   }
 
-  get allSelected() {
-    if (!this.records.length) {
-      return false;
-    }
+  return props.records
+    .map((record) => record.id)
+    .every((recordId) => internalSelected.value.includes(recordId));
+});
 
-    return this.records
-      .map((record) => record.id)
-      .every((recordId) => this.internalSelected.includes(recordId));
+watch(
+  () => props.selected,
+  () => {
+    internalSelected.value = props.selected;
   }
+);
 
-  get scopedSlots() {
-    const itemSlotPrefix = "col.";
-    return Object.keys(this.$scopedSlots)
-      .filter((name) => name.startsWith(itemSlotPrefix))
-      .map((name) => name.substring(itemSlotPrefix.length));
-  }
+const emit = defineEmits(["selected-change"]);
 
-  @Watch("selected")
-  onSelectedChange() {
-    this.internalSelected = this.selected;
+watch(
+  () => internalSelected.value,
+  () => {
+    emit("selected-change", internalSelected.value);
   }
+);
 
-  @Watch("internalSelected")
-  onInternalSelectedChange() {
-    this.$emit("selected-change", this.internalSelected);
+const onAllSelectedChange = (value) => {
+  if (value) {
+    internalSelected.value = [
+      ...internalSelected.value,
+      ...props.records.map((record) => record.id),
+    ].filter(uniqArray);
+  } else {
+    internalSelected.value = [...internalSelected.value].filter(
+      (selected) => !props.records.map((record) => record.id).includes(selected)
+    );
   }
+};
 
-  onAllSelectedChange(value) {
-    if (value) {
-      this.internalSelected = [
-        ...this.internalSelected,
-        ...this.records.map((record) => record.id),
-      ].filter(uniqArray);
-    } else {
-      this.internalSelected = [...this.internalSelected].filter(
-        (selected) =>
-          !this.records.map((record) => record.id).includes(selected)
-      );
-    }
-  }
+const resetSelected = () => {
+  internalSelected.value = [];
+};
+</script>
 
-  resetSelected() {
-    this.internalSelected = [];
-  }
-}
+<script lang="ts">
+export default {
+  name: "FilteredTable",
+};
 </script>

@@ -120,6 +120,9 @@
       <div class="app-community-logo">
         <CommunityLogo />
       </div>
+      <div class="app-language-select">
+        {{ currentLocale }}
+      </div>
       <div class="app-version">
         {{ codename }} ({{ version }})
         <span

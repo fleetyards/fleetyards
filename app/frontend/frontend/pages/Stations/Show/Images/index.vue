@@ -15,9 +15,9 @@
     <FilteredList
       :collection="collection"
       collection-method="findAllForGallery"
-      :name="$route.name"
-      :route-query="$route.query"
-      :hash="$route.hash"
+      :name="route.name"
+      :route-query="route.query"
+      :hash="route.hash"
       :params="routeParams"
       :paginated="true"
       class="images"
@@ -46,127 +46,120 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { ref, computed } from "vue";
+import { useRoute } from "vue-router/composables";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Gallery from "@/frontend/core/components/Gallery/index.vue";
 import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
 import imagesCollection from "@/frontend/api/collections/Images";
+import stationsCollection from "@/frontend/api/collections/Stations";
+import { stationRouteGuard } from "@/frontend/utils/RouteGuards/Stations";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import type { TBreadCrumb } from "@/@types/breadcrumbs";
 
-@Component<ModelImages>({
-  components: {
-    FilteredList,
-    FilteredGrid,
-    BreadCrumbs,
-    Gallery,
-    GalleryImage,
-  },
-})
-export default class ModelImages extends Vue {
-  collection: ImagesCollection = imagesCollection;
+const collection = imagesCollection;
 
-  station: Station | null = null;
+const station = computed(() => stationsCollection.record);
 
-  get metaTitle() {
-    if (!this.station) {
-      return null;
-    }
+const { t } = useI18n();
 
-    return this.$t("title.stationImages", {
-      station: this.station.name,
-      celestialObject: this.station.celestialObject.name,
-    });
+const metaTitle = computed(() => {
+  if (!station.value) {
+    return undefined;
   }
 
-  get routeParams() {
-    return {
-      ...this.$route.params,
-      galleryType: "stations",
-    };
+  return t("title.stationImages", {
+    station: station.value.name,
+    celestialObject: station.value.celestialObject.name,
+  });
+});
+
+useMetaInfo(metaTitle);
+
+const route = useRoute();
+
+const routeParams = computed(() => ({
+  ...route.params,
+  galleryType: "stations",
+}));
+
+const crumbs = computed(() => {
+  if (!station.value) {
+    return null;
   }
 
-  get crumbs() {
-    if (!this.station) {
-      return null;
-    }
-
-    const crumbs = [
-      {
-        to: {
-          name: "starsystems",
-          hash: `#${this.station.celestialObject.starsystem.slug}`,
-        },
-        label: this.$t("nav.starsystems"),
+  const crumbs: TBreadCrumb[] = [
+    {
+      to: {
+        name: "starsystems",
+        hash: `#${station.value.celestialObject.starsystem.slug}`,
       },
-      {
-        to: {
-          name: "starsystem",
-          params: {
-            slug: this.station.celestialObject.starsystem.slug,
-          },
-          hash: `#${this.station.celestialObject.slug}`,
+      label: t("nav.starsystems"),
+    },
+    {
+      to: {
+        name: "starsystem",
+        params: {
+          slug: station.value.celestialObject.starsystem.slug,
         },
-        label: this.station.celestialObject.starsystem.name,
+        hash: `#${station.value.celestialObject.slug}`,
       },
-    ];
+      label: station.value.celestialObject.starsystem.name,
+    },
+  ];
 
-    if (this.station.celestialObject.parent) {
-      crumbs.push({
-        to: {
-          name: "celestial-object",
-          params: {
-            starsystem: this.station.celestialObject.starsystem.slug,
-            slug: this.station.celestialObject.parent.slug,
-          },
-        },
-        label: this.station.celestialObject.parent.name,
-      });
-    }
-
+  if (station.value.celestialObject.parent) {
     crumbs.push({
       to: {
         name: "celestial-object",
         params: {
-          starsystem: this.station.celestialObject.starsystem.slug,
-          slug: this.station.celestialObject.slug,
-        },
-        hash: `#${this.station.slug}`,
-      },
-      label: this.station.celestialObject.name,
-    });
-
-    crumbs.push({
-      to: {
-        name: "station",
-        params: {
-          slug: this.station.slug,
+          starsystem: station.value.celestialObject.starsystem.slug,
+          slug: station.value.celestialObject.parent.slug,
         },
       },
-      label: this.station.name,
+      label: station.value.celestialObject.parent.name,
     });
-
-    return crumbs;
   }
 
-  created() {
-    this.fetchStation();
-  }
+  crumbs.push({
+    to: {
+      name: "celestial-object",
+      params: {
+        starsystem: station.value.celestialObject.starsystem.slug,
+        slug: station.value.celestialObject.slug,
+      },
+      hash: `#${station.value.slug}`,
+    },
+    label: station.value.celestialObject.name,
+  });
 
-  openGallery(index) {
-    this.$refs.gallery.open(index);
-  }
+  crumbs.push({
+    to: {
+      name: "station",
+      params: {
+        slug: station.value.slug,
+      },
+    },
+    label: station.value.name,
+  });
 
-  async fetchStation() {
-    const response = await this.$api.get(`stations/${this.$route.params.slug}`);
+  return crumbs;
+});
 
-    if (!response.error) {
-      this.station = response.data;
-    } else if (response.error.response.status === 404) {
-      this.$router.replace({ name: "404" });
-    }
-  }
-}
+const gallery = ref<InstanceType<typeof Gallery> | null>(null);
+
+const openGallery = (index: number) => {
+  gallery.value?.open(index);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelImagesPage",
+  beforeRouteEnter: stationRouteGuard,
+};
 </script>

@@ -1,12 +1,4 @@
-type ModelPaintsFilter = {
-  nameCont: string;
-};
-
-interface ModelPaintParams extends CollectionParams {
-  filters: ModelPaintsFilter;
-}
-
-type ModelPaint = {
+type TModelPaint = {
   id: string;
   name: string;
   rsiId: string;
@@ -20,3 +12,9 @@ type ModelPaint = {
     topView?: FyMediaViewImage;
   };
 };
+
+type TModelPaintsFilter = {
+  nameCont: string;
+};
+
+type TModelPaintParams = TCollectionParams<TModelPaintsFilter>;

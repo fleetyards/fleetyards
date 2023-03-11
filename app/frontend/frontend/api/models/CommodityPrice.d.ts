@@ -1,9 +1,8 @@
-type CommodityPrice = {
-  id?: string;
-  error: any;
+type TCommodityPrice = {
+  id: string;
 };
 
-type CommodityPriceForm = {
+type TCommodityPriceForm = {
   price: number;
   path: string;
   timeRange?: string;

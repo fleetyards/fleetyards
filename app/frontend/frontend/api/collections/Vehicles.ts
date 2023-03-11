@@ -1,23 +1,14 @@
-import {
-  get,
-  post,
-  put,
-  destroy,
-  download,
-  ApiResponse,
-  ApiErrorResponse,
-} from "@/frontend/api/client";
+import { get, post, put, destroy, download } from "@/frontend/api/client";
 import Store from "@/frontend/lib/Store";
 import BaseCollection from "./Base";
 
-export class VehiclesCollection extends BaseCollection {
+export class VehiclesCollection extends BaseCollection<
+  TVehicle,
+  TVehicleParams
+> {
   primaryKey = "id";
 
-  records: Vehicle[] = [];
-
-  stats: VehicleStats | null = null;
-
-  params: VehicleParams | null = null;
+  stats: TVehicleStats | null = null;
 
   lastUsedMethod = "findAll";
 
@@ -33,11 +24,12 @@ export class VehiclesCollection extends BaseCollection {
     Store.dispatch("hangar/updatePerPage", perPage);
   }
 
-  async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
-    this.lastUsedMethod = "findAll";
+  async findAll(
+    params?: TVehicleParams
+  ): Promise<TCollectionResponse<TVehicle>> {
     this.params = params;
 
-    const response = await get("hangar", {
+    const response = await get<TVehicle[]>("hangar", {
       q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
@@ -48,15 +40,15 @@ export class VehiclesCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async refresh(): Promise<void> {
-    await this[this.lastUsedMethod || "findAll"](this.params);
+    await this.findAll(this.params);
   }
 
-  async findStats(params: VehicleParams): Promise<VehicleStats | null> {
-    const response = await get("hangar/stats", {
+  async findStats(params: TVehicleParams): Promise<TVehicleStats | null> {
+    const response = await get<TVehicleStats>("hangar/stats", {
       q: params.filters,
     });
 
@@ -67,8 +59,8 @@ export class VehiclesCollection extends BaseCollection {
     return this.stats;
   }
 
-  async export(params: VehicleParams): Promise<Vehicle[] | null> {
-    const response = await download("hangar/export", {
+  async export(params: TVehicleParams): Promise<TVehicle[] | null> {
+    const response = await download<TVehicle[]>("hangar/export", {
       q: params.filters,
     });
 
@@ -79,31 +71,30 @@ export class VehiclesCollection extends BaseCollection {
     return null;
   }
 
-  async create(form: VehicleForm, refresh = false): Promise<Vehicle | null> {
-    const response = await post("vehicles", form);
+  async create(
+    form: TVehicleForm,
+    refresh = false
+  ): Promise<TRecordResponse<TVehicle>> {
+    const response = await post<TVehicle>("vehicles", form);
 
-    if (!response.error) {
-      if (refresh) {
-        this.refresh();
-      }
-
-      return response.data;
+    if (!response.error && refresh) {
+      this.refresh();
     }
 
-    return null;
+    return this.recordResponse(response.data, response.error);
   }
 
   async update(
     id: string,
-    form: VehicleForm
-  ): Promise<ApiResponse | ApiErrorResponse> {
-    const response = await put(`vehicles/${id}`, form);
+    form: TVehicleForm
+  ): Promise<TRecordResponse<TVehicle>> {
+    const response = await put<TVehicle>(`vehicles/${id}`, form);
 
     if (!response.error) {
       this.refresh();
     }
 
-    return response;
+    return this.recordResponse(response.data, response.error);
   }
 
   async addToWishlist(id: string): Promise<boolean> {

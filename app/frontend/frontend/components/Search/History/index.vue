@@ -44,49 +44,39 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts" setup>
+import { ref, computed, defineEmits } from "vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
+import { useSearchStore } from "@/frontend/stores/Search";
 
+const page = ref<number>(1);
+const perPage = ref<number>(30);
+
+const searchStore = useSearchStore();
+
+const filteredHistory = computed(() =>
+  searchStore.history.slice(0, page.value * perPage.value)
+);
+
+const emit = defineEmits(["restore"]);
+
+const restore = (search: string) => {
+  emit("restore", search);
+};
+
+const showMore = () => {
+  page.value += 1;
+};
+
+const resetHistory = () => {
+  searchStore.$reset();
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "SearchHistory",
-
-  components: {
-    Btn,
-    Panel,
-  },
-
-  data() {
-    return {
-      page: 1,
-      perPage: 30,
-    };
-  },
-
-  computed: {
-    ...mapGetters(["mobile"]),
-
-    ...mapGetters("search", ["history"]),
-
-    filteredHistory() {
-      return this.history.slice(0, this.page * this.perPage);
-    },
-  },
-
-  methods: {
-    restore(search) {
-      this.$emit("restore", search);
-    },
-
-    showMore() {
-      this.page += 1;
-    },
-
-    resetHistory() {
-      this.$store.dispatch("search/reset");
-    },
-  },
 };
 </script>
 

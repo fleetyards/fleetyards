@@ -1,13 +1,16 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class ImagesCollection extends BaseCollection {
+export class ImagesCollection extends BaseCollection<
+  TImage,
+  TCollectionParams<undefined>
+> {
   primaryKey = "id";
 
-  records: Image[] = [];
-
-  async findAll(params: CollectionParams): Promise<Image[]> {
-    const response = await get("images", {
+  async findAll(
+    params: TCollectionParams<undefined>
+  ): Promise<TCollectionResponse<TImage>> {
+    const response = await get<TImage[]>("images", {
       page: params.page,
     });
 
@@ -16,30 +19,35 @@ export class ImagesCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
-  async findAllForGallery(params: GalleryParams): Promise<Image[]> {
-    const response = await get(`${params.galleryType}/${params.slug}/images`, {
-      page: params.page,
-    });
+  async findAllForGallery(
+    params: TGalleryParams
+  ): Promise<TCollectionResponse<TImage>> {
+    const response = await get<TImage[]>(
+      `${params.galleryType}/${params.slug}/images`,
+      {
+        page: params.page,
+      }
+    );
 
     if (!response.error) {
       this.records = response.data;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
-  async random(): Promise<Image[]> {
-    const response = await get("images/random");
+  async random(): Promise<TCollectionResponse<TImage>> {
+    const response = await get<TImage[]>("images/random");
 
     if (!response.error) {
       this.records = response.data;
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 }
 

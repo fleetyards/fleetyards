@@ -1,17 +1,18 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class ShopCommoditiesCollection extends BaseCollection {
+export class ShopCommoditiesCollection extends BaseCollection<
+  TShopCommodity,
+  TShopCommodityParams
+> {
   primaryKey = "id";
 
-  records: ShopCommodity[] = [];
-
-  params: ShopCommodityParams | null = null;
-
-  async findAll(params: ShopCommodityParams): Promise<ShopCommodity[]> {
+  async findAll(
+    params: TShopCommodityParams
+  ): Promise<TCollectionResponse<TShopCommodity>> {
     this.params = params;
 
-    const response = await get(
+    const response = await get<TShopCommodity[]>(
       `stations/${params?.stationSlug}/shops/${params?.slug}/commodities`,
       {
         q: params.filters,
@@ -21,11 +22,29 @@ export class ShopCommoditiesCollection extends BaseCollection {
 
     if (!response.error) {
       this.records = response.data;
-      this.loaded = true;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
+  }
+
+  async subCategories(
+    stationSlug: string,
+    shopSlug: string
+  ): Promise<TShopCommoditySubCategroy[]> {
+    const response = await get<TShopCommoditySubCategroy[]>(
+      "filters/shop-commodities/sub-categories",
+      {
+        stationSlug,
+        shopSlug,
+      }
+    );
+
+    if (!response.error) {
+      return response.data;
+    }
+
+    return [];
   }
 }
 

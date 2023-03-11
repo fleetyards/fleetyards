@@ -76,62 +76,64 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { ref, watch } from "vue";
 import { displaySuccess } from "@/frontend/lib/Noty";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import userCollection from "@/frontend/api/collections/User";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<SettingsHangar>({
-  components: {
-    Btn,
-    Checkbox,
-  },
-})
-export default class SettingsHangar extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
+const form = ref<TNotificationSettingsForm | null>(null);
 
-  form: NotificationSettingsForm = null;
+const submitting = ref(false);
 
-  submitting = false;
+const sessionStore = useSessionStore();
 
-  created() {
-    if (this.currentUser) {
-      this.setupForm();
-    }
-  }
+const setupForm = () => {
+  form.value = {
+    publicHangar: sessionStore.currentUser?.publicHangar,
+    publicHangarLoaners: sessionStore.currentUser?.publicHangarLoaners,
+    publicWishlist: sessionStore.currentUser?.publicWishlist,
+    hideOwner: sessionStore.currentUser?.hideOwner,
+  };
+};
 
-  @Watch("currentUser")
-  onCurrentUserChange() {
-    this.setupForm();
-  }
-
-  setupForm() {
-    this.form = {
-      publicHangar: this.currentUser.publicHangar,
-      publicHangarLoaners: this.currentUser.publicHangarLoaners,
-      publicWishlist: this.currentUser.publicWishlist,
-      hideOwner: this.currentUser.hideOwner,
-    };
-  }
-
-  async submit() {
-    this.submitting = true;
-
-    const response = await userCollection.updateProfile(this.form);
-
-    this.submitting = false;
-
-    if (!response.error) {
-      this.$comlink.$emit("user-update");
-
-      displaySuccess({
-        text: this.$t("messages.updateHangar.success"),
-      });
-    }
-  }
+if (sessionStore.currentUser) {
+  setupForm();
 }
+
+watch(
+  () => sessionStore.currentUser,
+  () => {
+    setupForm();
+  }
+);
+
+const comlink = useComlink();
+
+const { t } = useI18n();
+
+const submit = async () => {
+  submitting.value = true;
+
+  const response = await userCollection.updateProfile(form.value);
+
+  submitting.value = false;
+
+  if (!(response as TRecordErrorResponse).error) {
+    comlink.$emit("user-update");
+
+    displaySuccess({
+      text: t("messages.updateHangar.success"),
+    });
+  }
+};
 </script>
+
+<script lang="ts">
+export default {
+  name: "SettingsHangarPage",
+};

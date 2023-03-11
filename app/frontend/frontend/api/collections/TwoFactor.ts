@@ -1,72 +1,58 @@
 import { post } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
-export class TwoFactorCollection extends BaseCollection {
-  async generateBackupCodes(): Promise<RecordResponse<TwoFactorBackupCodes>> {
-    const response = await post("users/two-factor/generate-backup-codes");
+export class TwoFactorCollection extends BaseCollection<
+  TTwoFactorBackupCodes,
+  undefined
+> {
+  async generateBackupCodes(): Promise<TRecordResponse<TTwoFactorBackupCodes>> {
+    const response = await post<TTwoFactorBackupCodes>(
+      "users/two-factor/generate-backup-codes"
+    );
 
-    if (!response.error) {
+    return this.recordResponse(response.data, response.error);
+  }
+
+  async start(): Promise<TRecordResponse<boolean>> {
+    const response = await post<boolean>("users/two-factor/start");
+
+    if (response.error) {
       return {
-        data: response.data,
-        error: null,
+        error: this.extractErrorCode(response.error),
+        errors: this.extractErrors(response.error),
       };
     }
 
     return {
-      data: null,
-      error: this.extractErrorCode(response.error),
+      data: true,
     };
   }
 
-  async start(): Promise<RecordResponse<boolean>> {
-    const response = await post("users/two-factor/start");
+  async enable(code: string): Promise<TRecordResponse<TTwoFactorBackupCodes>> {
+    const response = await post<TTwoFactorBackupCodes>(
+      "users/two-factor/enable",
+      {
+        twoFactorCode: code,
+      }
+    );
 
-    if (!response.error) {
-      return {
-        data: response.data,
-        error: null,
-      };
-    }
-
-    return {
-      data: null,
-      error: this.extractErrorCode(response.error),
-    };
+    return this.recordResponse(response.data, response.error);
   }
 
-  async enable(code: string): Promise<RecordResponse<TwoFactorBackupCodes>> {
-    const response = await post("users/two-factor/enable", {
+  async disable(code: string): Promise<TRecordResponse<boolean>> {
+    const response = await post<boolean>("users/two-factor/disable", {
       twoFactorCode: code,
     });
 
-    if (!response.error) {
+    if (response.error) {
       return {
-        data: response.data,
-        error: null,
+        error: this.extractErrorCode(response.error),
+        errors: this.extractErrors(response.error),
       };
     }
 
     return {
-      data: null,
-      error: this.extractErrorCode(response.error),
-    };
-  }
-
-  async disable(code: string): Promise<RecordResponse<boolean>> {
-    const response = await post("users/two-factor/disable", {
-      twoFactorCode: code,
-    });
-
-    if (!response.error) {
-      return {
-        data: true,
-        error: null,
-      };
-    }
-
-    return {
-      data: false,
-      error: this.extractErrorCode(response.error),
+      data: true,
     };
   }
 }

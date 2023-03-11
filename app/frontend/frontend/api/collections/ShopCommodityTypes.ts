@@ -1,10 +1,12 @@
 import { get } from "@/frontend/api/client";
 
 export class ShopCommodityTypesCollection {
-  records: FilterGroupItem[] = [];
+  records: TFilterGroupItem[] = [];
 
-  async findAll(): Promise<FilterGroupItem[]> {
-    const response = await get(`shop-commodities/commodity-type-options`);
+  async findAll(): Promise<TFilterGroupItem[]> {
+    const response = await get<TFilterGroupItem[]>(
+      `shop-commodities/commodity-type-options`
+    );
 
     if (!response.error) {
       this.records = response.data;

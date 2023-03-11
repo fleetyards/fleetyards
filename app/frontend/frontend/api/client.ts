@@ -1,27 +1,40 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import type { AxiosResponse, AxiosError, AxiosResponseHeaders } from "axios";
 import nprogress from "nprogress";
 import Store from "@/frontend/lib/Store";
 import Qs from "qs";
 import { useI18n } from "@/frontend/composables/useI18n";
 import linkHeaderParser from "./linkHeaderParser";
 
-type ApiResponseMeta = {
+type TApiResponseMeta = {
   currentPage: number;
   totalPages: number;
 };
 
-export type ApiResponse = {
-  data: any;
-  params: any;
-  meta: ApiResponseMeta | null;
-  error: null;
+type TApiParams = {
+  [key: string]:
+    | string
+    | string[]
+    | number
+    | number[]
+    | boolean
+    | null
+    | undefined
+    | TApiParams;
 };
 
-export type ApiErrorResponse = {
-  data: null;
-  params: any;
-  meta: null;
-  error: any;
+export type TApiResponse<T> = {
+  data: T;
+  params: TApiParams;
+  meta?: TApiResponseMeta;
+  error?: undefined;
+};
+
+export type TApiErrorResponse = {
+  data?: undefined;
+  params: TApiParams;
+  meta?: undefined;
+  error: AxiosError;
 };
 
 const client = axios.create({
@@ -38,32 +51,31 @@ const client = axios.create({
   withCredentials: true,
 });
 
-const extractMetaInfo = function extractMetaInfo(
-  headers: any,
-  params: any
-): ApiResponseMeta | null {
+const extractMetaInfo = (
+  headers: AxiosResponseHeaders,
+  params: TApiParams
+): TApiResponseMeta | undefined => {
   const links = linkHeaderParser(headers.link);
 
-  let meta: ApiResponseMeta | null = null;
-
   if (links) {
-    meta = {
-      currentPage: parseInt(params.page || 1, 10),
-      totalPages: parseInt(
-        (links.last && links.last.page) || params.page || 1,
-        10
-      ),
+    const lastPage =
+      links.last && links.last.page ? parseInt(links.last.page, 10) : null;
+    const page = params.page ? parseInt(params.page as string, 10) : 1;
+
+    return {
+      currentPage: page,
+      totalPages: lastPage || page,
     };
   }
 
-  return meta;
+  return undefined;
 };
 
 const handleError = async function handleError(
-  error: any,
-  params: any,
+  error: AxiosError,
+  params: TApiParams,
   silent: boolean
-): Promise<ApiErrorResponse> {
+): Promise<TApiErrorResponse> {
   if (!silent) {
     nprogress.done();
   }
@@ -77,18 +89,18 @@ const handleError = async function handleError(
   }
 
   return {
-    data: null,
+    data: undefined,
     params,
-    meta: null,
+    meta: undefined,
     error,
   };
 };
 
-const handleResponse = function handleResponse(
-  response: AxiosResponse,
-  params: any,
+const handleResponse = function handleResponse<T>(
+  response: AxiosResponse<T>,
+  params: TApiParams,
   silent: boolean
-): ApiResponse {
+): TApiResponse<T> {
   if (!silent) {
     nprogress.done();
   }
@@ -99,11 +111,15 @@ const handleResponse = function handleResponse(
     data: response.data,
     params,
     meta,
-    error: null,
+    error: undefined,
   };
 };
 
-export async function get(path: string, params: any = {}, silent = false) {
+export async function get<T>(
+  path: string,
+  params: TApiParams = {},
+  silent = false
+) {
   if (!silent) {
     nprogress.start();
   }
@@ -115,19 +131,19 @@ export async function get(path: string, params: any = {}, silent = false) {
         ...languageHeader(),
       },
     });
-    return handleResponse(response, params, silent);
+    return handleResponse<T>(response, params, silent);
   } catch (error) {
-    return handleError(error, params, silent);
+    return handleError(error as AxiosError, params, silent);
   }
 }
 
-export async function post(path: string, body = {}, silent = false) {
+export async function post<T>(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start();
   }
 
   try {
-    return handleResponse(
+    return handleResponse<T>(
       await client.post(path, body, {
         headers: {
           ...languageHeader(),
@@ -137,17 +153,17 @@ export async function post(path: string, body = {}, silent = false) {
       silent
     );
   } catch (error) {
-    return handleError(error, body, silent);
+    return handleError(error as AxiosError, body, silent);
   }
 }
 
-export async function put(path: string, body = {}, silent = false) {
+export async function put<T>(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start();
   }
 
   try {
-    return handleResponse(
+    return handleResponse<T>(
       await client.put(path, body, {
         headers: {
           ...languageHeader(),
@@ -157,17 +173,17 @@ export async function put(path: string, body = {}, silent = false) {
       silent
     );
   } catch (error) {
-    return handleError(error, body, silent);
+    return handleError(error as AxiosError, body, silent);
   }
 }
 
-export async function destroy(path: string, data = {}, silent = false) {
+export async function destroy<T>(path: string, data = {}, silent = false) {
   if (!silent) {
     nprogress.start();
   }
 
   try {
-    return handleResponse(
+    return handleResponse<T>(
       await client.delete(path, {
         data,
 
@@ -179,11 +195,11 @@ export async function destroy(path: string, data = {}, silent = false) {
       silent
     );
   } catch (error) {
-    return handleError(error, data, silent);
+    return handleError(error as AxiosError, data, silent);
   }
 }
 
-export async function upload(path: string, body = {}, silent = false) {
+export async function upload<T>(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start();
   }
@@ -194,23 +210,27 @@ export async function upload(path: string, body = {}, silent = false) {
   };
 
   try {
-    return handleResponse(
+    return handleResponse<T>(
       await client.put(path, body, { headers }),
       body,
       silent
     );
   } catch (error) {
-    return handleError(error, body, silent);
+    return handleError(error as AxiosError, body, silent);
   }
 }
 
-export async function download(path: string, params = {}, silent = false) {
+export async function download<T>(
+  path: string,
+  params: TApiParams = {},
+  silent = false
+) {
   if (!silent) {
     nprogress.start();
   }
 
   try {
-    return handleResponse(
+    return handleResponse<T>(
       await client.get(path, {
         params,
         responseType: "blob",
@@ -222,7 +242,7 @@ export async function download(path: string, params = {}, silent = false) {
       silent
     );
   } catch (error) {
-    return handleError(error, params, silent);
+    return handleError(error as AxiosError, params, silent);
   }
 }
 

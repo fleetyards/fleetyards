@@ -17,76 +17,77 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { computed } from "vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displayWarning } from "@/frontend/lib/Noty";
+import { useHangarStore } from "@/frontend/stores/Hangar";
+import { useWishlistStore } from "@/frontend/stores/Wishlist";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/frontend/composables/useComlink";
 
-@Component<AddToHangar>({
-  components: {
-    Btn,
-  },
-})
-export default class AddToHangar extends Vue {
-  @Prop({ required: true }) model: Model;
-
-  @Prop({
-    default: "default",
-    validator(value) {
-      return ["default", "panel", "menu"].includes(value);
-    },
-  })
-  variant: string;
-
-  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated;
-
-  @Getter("ships", { namespace: "hangar" }) ships;
-
-  @Getter("ships", { namespace: "wishlist" }) wishlistShips;
-
-  get inHangar() {
-    return !!(this.ships || []).find((item) => item === this.model.slug);
-  }
-
-  get onWishlist() {
-    return !!(this.wishlistShips || []).find(
-      (item) => item === this.model.slug
-    );
-  }
-
-  get btnVariant() {
-    if (["panel", "menu"].includes(this.variant)) {
-      return "link";
-    }
-
-    return "default";
-  }
-
-  get btnSize() {
-    if (["panel", "menu"].includes(this.variant)) {
-      return "small";
-    }
-
-    return "default";
-  }
-
-  async add() {
-    if (!this.isAuthenticated) {
-      displayWarning({
-        text: this.$t("messages.error.hangar.accountRequired"),
-      });
-      return;
-    }
-
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Models/AddToHangarModal/index.vue"),
-      props: {
-        model: this.model,
-      },
-    });
-  }
+interface Props {
+  model: Model;
+  variant?: "default" | "panel" | "menu";
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: "default",
+});
+
+const hangarStore = useHangarStore();
+
+const inHangar = computed(
+  () => !!(hangarStore.ships || []).find((item) => item === props.model.slug)
+);
+
+const wishlistStore = useWishlistStore();
+
+const onWishlist = computed(
+  () => !!(wishlistStore.ships || []).find((item) => item === props.model.slug)
+);
+
+const btnVariant = computed(() => {
+  if (["panel", "menu"].includes(props.variant)) {
+    return "link";
+  }
+
+  return "default";
+});
+
+const btnSize = computed(() => {
+  if (["panel", "menu"].includes(props.variant)) {
+    return "small";
+  }
+
+  return "default";
+});
+
+const sessionStore = useSessionStore();
+const { t } = useI18n();
+const comlink = useComlink();
+
+const add = async () => {
+  if (!sessionStore.isAuthenticated) {
+    displayWarning({
+      text: t("messages.error.hangar.accountRequired"),
+    });
+    return;
+  }
+
+  comlink.$emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/AddToHangarModal/index.vue"),
+    props: {
+      model: props.model,
+    },
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AddToHangar",
+};
 </script>

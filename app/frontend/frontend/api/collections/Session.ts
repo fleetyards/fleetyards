@@ -1,10 +1,11 @@
 import { post, destroy } from "@/frontend/api/client";
+import type { TApiResponse, TApiErrorResponse } from "@/frontend/api/client";
 
 export class SessionCollection {
-  record: Session | null = null;
-
-  create(params: SessionParams): Promise<any> {
-    return post("sessions", params, true);
+  create(
+    params: TSessionParams
+  ): Promise<TApiResponse<TPlainResponse> | TApiErrorResponse> {
+    return post<TPlainResponse>("sessions", params, true);
   }
 
   async destroy(): Promise<boolean> {
@@ -17,8 +18,8 @@ export class SessionCollection {
     return false;
   }
 
-  async confirmAccess(password): Promise<boolean> {
-    const response = await post("sessions/confirm-access", {
+  async confirmAccess(password: string): Promise<boolean> {
+    const response = await post<boolean>("sessions/confirm-access", {
       password,
     });
 

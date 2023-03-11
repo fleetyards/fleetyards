@@ -1,5 +1,5 @@
 export default () => ({
-  locale: "en-US",
+  locale: "en",
   mobile: false,
   storeVersion: null,
   online: true,

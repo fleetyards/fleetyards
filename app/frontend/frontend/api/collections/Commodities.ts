@@ -1,17 +1,18 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 
-export class CommoditiesCollection extends BaseCollection {
+export class CommoditiesCollection extends BaseCollection<
+  TCommodity,
+  TCommodityParams
+> {
   primaryKey = "id";
 
-  records: Commodity[] = [];
-
-  params: CommodityParams | null = null;
-
-  async findAll(params: CommodityParams): Promise<Commodity[]> {
+  async findAll(
+    params: TCommodityParams
+  ): Promise<TCollectionResponse<TCommodity>> {
     this.params = params;
 
-    const response = await get("commodities", {
+    const response = await get<TCommodity[]>("commodities", {
       q: params.filters,
       page: params?.page,
     });
@@ -21,7 +22,7 @@ export class CommoditiesCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 }
 

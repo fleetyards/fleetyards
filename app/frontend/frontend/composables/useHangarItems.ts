@@ -1,29 +1,19 @@
 import { watch } from "vue";
 import { useRoute } from "vue-router/composables";
-// import { useSessionStore } from "@/frontend/stores/Session";
-// import { useHangarStore } from "@/frontend/stores/Hangar";
-import Store from "@/frontend/lib/Store";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { useHangarStore } from "@/frontend/stores/Hangar";
 import HangarItemsCollection from "@/frontend/api/collections/HangarItems";
 
 export const useHangarItems = () => {
-  // const sessionStore = useSessionStore();
-  // const hangarStore = useHangarStore();
-
-  const isAuthenticated = computed(
-    () => Store.getters["session/isAuthenticated"]
-  );
+  const sessionStore = useSessionStore();
+  const hangarStore = useHangarStore();
 
   const fetchHangarItems = async () => {
-    // if (!sessionStore.isAuthenticated) {
-    if (!isAuthenticated.value) {
+    if (!sessionStore.isAuthenticated) {
       return;
     }
 
-    // hangarStore.save(await HangarItemsCollection.findAll());
-    await Store.dispatch(
-      "hangar/saveHangar",
-      await HangarItemsCollection.findAll()
-    );
+    hangarStore.save(await HangarItemsCollection.findAll());
   };
 
   fetchHangarItems();
@@ -31,15 +21,14 @@ export const useHangarItems = () => {
   const route = useRoute();
 
   watch(
-    () => route.path,
+    () => route,
     () => {
       fetchHangarItems();
     }
   );
 
   watch(
-    // () => sessionStore.isAuthenticated,
-    () => isAuthenticated.value,
+    () => sessionStore.isAuthenticated,
     () => {
       fetchHangarItems();
     }

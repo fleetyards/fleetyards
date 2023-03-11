@@ -1,19 +1,73 @@
-type Pagination = {
+type TRecordTypes =
+  | TModel
+  | TCelestialObject
+  | TImage
+  | TStarsystem
+  | TVehicle
+  | TUser
+  | TStation
+  | TShop
+  | TCommodity
+  | TEquipment
+  | TManufacturer
+  | THangarGroup
+  | TModelPaint
+  | TModelModule
+  | TModelUpgrade
+  | TModelModulePackage
+  | TShopCommodity
+  | TTradeRoute;
+
+type TPagination = {
   currentPage: number;
   totalPages: number;
 };
 
-type CollectionParams = {
+type TCollectionParams<T> = {
+  search?: string;
+  filters?: T;
   page?: number;
   cacheId?: string;
 };
 
-type CollectionResponse<T> = {
-  data: T[] | null;
-  error: string | null;
+type TCollectionResponse<T> =
+  | TCollectionSuccessResponse<T>
+  | TCollectionErrorResponse;
+
+type TCollectionSuccessResponse<T> = {
+  data: T[];
 };
 
-type RecordResponse<T> = {
-  data?: T | null;
-  error?: string | null;
+type TCollectionErrorResponse = {
+  error: string;
 };
+
+type TRecordResponse<T> = TRecordSuccessResponse<T> | TRecordErrorResponse;
+
+type TRecordSuccessResponse<T> = {
+  data: T;
+};
+
+type TRecordErrorResponse = {
+  data?: undefined;
+  error: string;
+  errors?: TErrorMessages;
+  message?: string;
+};
+
+type TPlainResponse = {
+  code: string;
+  message: string;
+  field?: string;
+};
+
+type TApiError = {
+  attribute: string;
+  messages: TErrorMessage[];
+};
+
+type TErrorMessage = {
+  message: string;
+};
+
+type TErrorMessages = Record<string, string[]>;

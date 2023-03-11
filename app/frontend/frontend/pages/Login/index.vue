@@ -106,72 +106,78 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useSessionStore } from "@/frontend/stores/Session";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displayAlert } from "@/frontend/lib/Noty";
 import sessionCollection from "@/frontend/api/collections/Session";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import type { SessionParams } from "@/@types/models/Session";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 
-@Component<Login>({
-  components: {
-    Btn,
-    FormInput,
-    Checkbox,
-  },
-})
-export default class Login extends Vue {
-  submitting = false;
+const submitting = ref(false);
 
-  twoFactorRequired = false;
+const twoFactorRequired = ref(false);
 
-  form: LoginForm = null;
+const form = ref<Partial<SessionParams>>({});
 
-  mounted() {
-    this.setupForm();
-  }
+const setupForm = () => {
+  form.value = {
+    rememberMe: false,
+    password: undefined,
+    login: undefined,
+    twoFactorCode: undefined,
+  };
+};
 
-  setupForm() {
-    this.form = {
-      rememberMe: false,
-      password: null,
-      login: null,
-      twoFactorCode: null,
-    };
-  }
+onMounted(() => {
+  setupForm();
+});
 
-  async login() {
-    this.submitting = true;
+const route = useRoute();
+const router = useRouter();
+const sessionStore = useSessionStore();
 
-    const response = await sessionCollection.create(this.form);
+// const { head } = useMetaInfo();
 
-    this.submitting = false;
+const login = async () => {
+  submitting.value = true;
 
-    if (
-      response.error &&
-      response.error.response?.data?.code ===
-        "session.create.two_factor_required"
-    ) {
-      this.twoFactorRequired = true;
-    } else if (!response.error) {
-      await this.$store.dispatch("session/login");
-      if (this.$route.params.redirectToRoute) {
-        await this.$router.replace({
-          name: this.$route.params.redirectToRoute,
-        });
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        await this.$router.push("/").catch(() => {});
-      }
-    } else {
-      displayAlert({
-        text: response.error.response.data.message,
+  const response = await sessionCollection.create(form.value as SessionParams);
+
+  submitting.value = false;
+
+  if (
+    response.error &&
+    response.error.response?.data?.code === "session.create.two_factor_required"
+  ) {
+    twoFactorRequired.value = true;
+  } else if (!response.error) {
+    sessionStore.login();
+
+    if (route.params.redirectToRoute) {
+      await router.replace({
+        name: route.params.redirectToRoute,
       });
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      await router.push("/").catch(() => {});
     }
+  } else {
+    displayAlert({
+      text: response.error.response.data.message,
+    });
   }
-}
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "LoginPage",
+};
 </script>
 
 <style lang="scss">

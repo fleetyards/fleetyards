@@ -66,6 +66,7 @@ import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
+import MetaInfo from "@/frontend/mixins/MetaInfo";
 
 @Component<PublicHangar>({
   beforeRouteEnter: publicHangarRouteGuard,

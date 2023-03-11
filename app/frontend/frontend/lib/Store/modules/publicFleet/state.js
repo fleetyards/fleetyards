@@ -11,7 +11,4 @@ export default () => ({
   fleetchartColored: false,
   perPage: 30,
   grouped: true,
-  money: true,
-  preview: true,
-  inviteToken: null,
 });

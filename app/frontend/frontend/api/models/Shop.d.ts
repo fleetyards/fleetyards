@@ -1,21 +1,27 @@
-type Shop = {
+type TShop = {
   id: string;
+  slug: string;
+  name: string;
+  station: TStation;
+  celestialObject: TCelestialObject;
+  buying: boolean;
+  selling: boolean;
+  rental: boolean;
   name: string;
   slug: string;
   stationSlug: string;
-  station: Station;
+  station: TStation;
   location: string;
   media: {
-    storeImage?: FyMediaImage;
+    storeImage?: TMediaImage;
   };
 };
 
-type ShopsFilter = {
+type TShopsFilter = {
   nameCont: string;
 };
 
-interface ShopParams extends CollectionParams {
-  filters?: ShopsFilter;
+interface TShopParams extends TCollectionParams<TShopsFilter> {
   stationSlug?: string;
   slug?: string;
 }
