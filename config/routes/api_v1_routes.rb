@@ -110,6 +110,7 @@ v1_api_routes = lambda do
       delete "destroy-all-ingame" => "vehicles#destroy_all_ingame"
       get :embed
       get "hangar-items" => "vehicles#hangar_items"
+      get "wishlist-items" => "vehicles#wishlist_items"
       get :hangar
       get ":username" => "vehicles#public", as: :public
       get ":username/quick-stats" => "vehicles#public_quick_stats", as: :public_quick_stats
