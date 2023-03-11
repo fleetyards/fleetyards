@@ -5,6 +5,7 @@
     "watchAdditionalPaths": []
   },
   "development": {
+    "host": "fleetyards.test",
     "autoBuild": true,
     "publicOutputDir": "vite-dev",
     "port": 3136
