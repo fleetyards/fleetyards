@@ -145,6 +145,30 @@ module ScData
       hardpoint_ids.compact
     end
 
+    private def extract_qed(hardpoint_type, model_id, ports_data)
+      hardpoint_ids = []
+
+      ports_data["InterdictionHardpoints"].select do |port_data|
+        port_data["Types"].include?("QuantumInterdictionGenerator")
+      end.each_with_index.map do |port_data, index|
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "qed")&.id
+      end
+
+      hardpoint_ids.compact
+    end
+
+    private def extract_emp(hardpoint_type, model_id, ports_data)
+      hardpoint_ids = []
+
+      ports_data["InterdictionHardpoints"].select do |port_data|
+        port_data["Types"].include?("EMP")
+      end.each_with_index.map do |port_data, index|
+        hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, "emp")&.id
+      end
+
+      hardpoint_ids.compact
+    end
+
     # rubocop:disable Metrics/ParameterLists
     private def extract_hardpoint(hardpoint_type, model_id, port_data, index, category = nil, key_modifier = nil)
       size = size_for_type(hardpoint_type, port_data, category)
@@ -223,13 +247,14 @@ module ScData
 
     private def size_for_type(hardpoint_type, component, category = nil)
       component_size = component["Size"].to_i
+      component_size = component.dig("InstalledItem", "Size").to_i if component_size.zero?
       loadout_size = component.dig("InstalledItem", "Ports", 0, "Size").to_i
 
       return loadout_size if [:turrets].include?(hardpoint_type) && loadout_size.present?
 
       return loadout_size if %w[manned_missile_turrets remote_missile_turrets].include?(category) && loadout_size.present? && category.present?
 
-      return size_mapping[component_size] if %i[power_plants coolers shield_generators quantum_drives].include?(hardpoint_type) && size_mapping[component_size].present?
+      return size_mapping[component_size.to_s] if %i[power_plants coolers shield_generators quantum_drives].include?(hardpoint_type) && size_mapping[component_size.to_s].present?
 
       component_size
     end

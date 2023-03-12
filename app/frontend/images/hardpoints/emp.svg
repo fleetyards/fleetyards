@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="45px" viewBox="0 0 44 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>power_plants</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="power_plants" transform="translate(2.000000, 2.000000)" stroke="#428BCA">
+            <path d="M34.29,40.87 L28.8,40.87 L28.8,37.87 L33,37.87 L36.87,34 L36.87,7.82 L33,4 L28.8,4 L28.8,1 L34.29,1 L39.87,6.58 L39.87,35.29 L34.29,40.87 Z M11.06,40.87 L5.58,40.87 L0,35.29 L0,6.58 L5.58,1 L11.07,1 L11.07,4 L6.82,4 L3,7.82 L3,34 L6.82,37.82 L11.07,37.82 L11.06,40.87 Z M14.81,35.24 L25.88,19.81 L20.33,19.35 L25,7.94 L16.18,7.94 L14,21.36 L17.54,21.8 L14.81,35.24 Z" id="Shape" fill="#428BCA" fill-rule="nonzero"></path>
+            <line x1="39.5" y1="0.5" x2="0.5" y2="40.5" id="Line" stroke-width="3" stroke-linecap="square"></line>
+        </g>
+    </g>
+</svg>

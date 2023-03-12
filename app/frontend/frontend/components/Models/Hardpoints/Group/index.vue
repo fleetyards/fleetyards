@@ -52,6 +52,8 @@ import weaponsIconUrl from "@/images/hardpoints/weapons.svg";
 import turretsIconUrl from "@/images/hardpoints/turrets.svg";
 import missilesIconUrl from "@/images/hardpoints/missiles.svg";
 import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
+import qedIconUrl from "@/images/hardpoints/qed.svg";
+import empIconUrl from "@/images/hardpoints/emp.svg";
 import HardpointItems from "../Items/index.vue";
 
 @Component<HardpointGroup>({
@@ -84,6 +86,8 @@ export default class HardpointGroup extends Vue {
     turrets: turretsIconUrl,
     missiles: missilesIconUrl,
     utility_items: utilityItemsIconUrl,
+    qed: qedIconUrl,
+    emp: empIconUrl,
   };
 
   grouped(type) {

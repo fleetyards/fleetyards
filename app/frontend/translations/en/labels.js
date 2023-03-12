@@ -340,6 +340,8 @@ export default {
       turrets: "Turrets",
       missiles: "Missiles",
       utility_items: "Utility Items",
+      emp: "EMP",
+      qed: "QED",
     },
   },
   blank: {

@@ -57,7 +57,7 @@ module ScData
     private def extract_type_data(component_data)
       %w[
         Shield MissileRack Missile Weapon PowerPlant Cooler QuantumDrive QuantumFuelTank Thruster
-        HydrogenFuelTank HydrogenFuelIntake CargoGrid Radar
+        HydrogenFuelTank HydrogenFuelIntake CargoGrid Radar QuantumInterdiction Emp
       ].filter_map do |type_data_key|
         component_data[type_data_key]
       end.first&.transform_keys(&:underscore)

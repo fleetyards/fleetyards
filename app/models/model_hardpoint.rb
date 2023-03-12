@@ -44,7 +44,7 @@ class ModelHardpoint < ApplicationRecord
     power_plants: 10, coolers: 11, shield_generators: 12,
     quantum_drives: 22,
     main_thrusters: 30, maneuvering_thrusters: 31,
-    weapons: 40, turrets: 41, missiles: 42,
+    weapons: 40, turrets: 41, missiles: 42, qed: 43, emp: 44
   }.freeze
 
   SHIP_MATRIX_HARDPOINT_TYPES = {
@@ -61,7 +61,8 @@ class ModelHardpoint < ApplicationRecord
     main: 0, retro: 1, vtol: 2,
     fixed: 3, gimbal: 4, joint: 5,
     manned_turret: 20, remote_turret: 21, missile_turret: 22,
-    missile_rack: 30
+    missile_rack: 30,
+    qed: 40, emp: 41
   }
 
   enum sub_category: {

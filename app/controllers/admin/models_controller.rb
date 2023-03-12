@@ -118,7 +118,7 @@ module Admin
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
-          Loaders::ScDataShipsJob.perform_async(version: load_version_from_s3)
+          Loaders::ScDataShipsJob.perform_async(load_version_from_s3)
           render json: true
         end
         format.html do
