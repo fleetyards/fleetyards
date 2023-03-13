@@ -1,0 +1,15 @@
+---
+it:
+  errors:
+    method_not_allowed:
+      message: Metodo non permesso
+    not_acceptable:
+      message: Non accettabile
+    not_found:
+      message: Non trovato
+    server_error:
+      message: Errore del server
+    unprocessable_entity:
+      message: Entità non elaborabile
+    pagination:
+      max_per_page_reached: Max per pagina raggiunto
