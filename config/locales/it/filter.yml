@@ -1,0 +1,20 @@
+---
+it:
+  filter:
+    all: Tutto
+    component:
+      class:
+        items:
+          rsiavionic: Avionica
+          rsimodular: Sistema
+          rsipropulsion: Propulsione
+          rsithruster: Motore
+          rsiweapon: Armamento
+    image:
+      model:
+        title: Modello
+    shop_commodities:
+      sub_categories:
+        class: Componente
+        classification: Nave
+        equipment_type: Equipaggiamento
