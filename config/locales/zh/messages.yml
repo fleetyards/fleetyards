@@ -1,5 +1,5 @@
 ---
-zh-TW:
+zh-CN:
   messages:
     background_disabled:
       success: "%{resource} not used for Background."
