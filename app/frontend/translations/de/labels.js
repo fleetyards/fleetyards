@@ -152,6 +152,7 @@ export default {
   hangar: "Hangar",
   public: "Public",
   hangarStats: "Stats",
+  wishlist: "Wishlist",
   fleetchart: "Fleetchart",
   fleetchartApp: {
     screenHeight: "Screen Height",
@@ -179,6 +180,7 @@ export default {
   hangarMetrics: {
     total: "Total",
     totalMoney: "Money Value",
+    totalCredits: "Credits",
     totalMinCrew: "Min. Crew",
     totalMaxCrew: "Max. Crew",
     totalCargo: "Total Cargo",
@@ -332,6 +334,8 @@ export default {
       turrets: "Turrets",
       missiles: "Missiles",
       utility_items: "Utility Items",
+      emp: "EMP",
+      qed: "QED",
     },
   },
   blank: {
@@ -370,6 +374,7 @@ export default {
     modelPaintSelect: { nullablePrompt: "Select a Paint" },
     bulkGroupEdit: { hint: "Existing Groups will be overridden!" },
     hasLoaners: "Loaners",
+    boughtViaSelect: { label: "Bought via" },
   },
   image: {
     background: "Use as Background?",
@@ -468,6 +473,7 @@ export default {
       public: "Public",
       group: "Group",
       loaner: "Loaners",
+      boughtVia: { nullablePrompt: "Bought via?" },
     },
     tradeRoutes: {
       sortBy: "Sort by",
