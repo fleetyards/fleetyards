@@ -64,7 +64,7 @@ export default {
     type: "Type",
     subType: "Sub Type",
     habitable: "Habitable?",
-    fairchanceakt: "Fair Chance Akt?",
+    fairchanceact: "Fair Chance Act?",
     population: "Population",
     economy: "Economy",
     danger: "Danger",

@@ -64,7 +64,7 @@ export default {
     type: "Tipo",
     subType: "Sottotipo",
     habitable: "Abitabile?",
-    fairchanceakt: "Fair Chance Act?",
+    fairchanceact: "Fair Chance Act?",
     population: "Popolazione",
     economy: "Economia",
     danger: "Pericolo",

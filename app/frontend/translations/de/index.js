@@ -64,7 +64,7 @@ export default {
     type: "Typ",
     subType: "Unterart",
     habitable: "Bewohnbar?",
-    fairchanceakt: "Fair Chance Akt?",
+    fairchanceact: "Fair Chance Act?",
     population: "Bevölkerung",
     economy: "Wirtschaft",
     danger: "Gefahr",

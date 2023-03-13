@@ -11,6 +11,7 @@
     "test:e2e": "cypress run --browser chrome --headless",
     "test:e2e:report": "generate-mochawesome-report --jsonDir test/reports/e2e --output test/reports/e2e/html --charts",
     "lint": "yarn run lint:js && yarn run lint:prettier",
+    "lint:fix": "yarn run lint:js && yarn run lint:prettier:fix",
     "lint:js": "eslint --ext .js,.ts,.vue --fix app/frontend test/javascript",
     "lint:prettier": "prettier app/frontend --check",
     "lint:prettier:fix": "prettier app/frontend --write"
