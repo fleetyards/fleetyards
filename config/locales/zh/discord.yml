@@ -1,5 +1,5 @@
 ---
-zh-CN:
+zh-TW:
   discord:
     new_ship:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
