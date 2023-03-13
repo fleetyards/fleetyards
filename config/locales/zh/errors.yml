@@ -1,5 +1,5 @@
 ---
-zh-TW:
+zh-CN:
   errors:
     method_not_allowed:
       message: Method not allowed
