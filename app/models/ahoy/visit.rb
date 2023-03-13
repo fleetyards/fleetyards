@@ -5,6 +5,7 @@
 # Table name: ahoy_visits
 #
 #  id               :bigint           not null, primary key
+#  accept_language  :string
 #  browser          :string
 #  device_type      :string
 #  ip               :string
