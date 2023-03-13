@@ -5,6 +5,7 @@ export default function getStorePlugins() {
     createPersistedState({
       key: "FleetYards",
       paths: [
+        "locale",
         "storeVersion",
         "app.navSlim",
         "session.authenticated",

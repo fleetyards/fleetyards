@@ -5,6 +5,7 @@
       :variant="variant"
       :active="visible"
       :inline="true"
+      :text-inline="textInline"
       :mobile-block="mobileBlock"
       @click.native="toggle"
     >
@@ -71,6 +72,8 @@ export default class BtnDropdown extends Vue {
 
   @Prop({ default: false }) inline!: boolean;
 
+  @Prop({ default: false }) textInline!: boolean;
+
   get cssClasses() {
     return {
       "panel-btn-dropdown-inline": this.inline,
@@ -96,7 +99,8 @@ export default class BtnDropdown extends Vue {
 
     this.innerExpandLeft =
       this.expandLeft || window.innerWidth - bounding.left < 200;
-    this.innerExpandTop = window.innerHeight - bounding.top < 200;
+    this.innerExpandTop =
+      this.expandTop || window.innerHeight - bounding.top < 200;
 
     this.visible = !this.visible;
   }

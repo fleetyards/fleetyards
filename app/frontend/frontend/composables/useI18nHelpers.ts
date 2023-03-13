@@ -4,7 +4,8 @@ import { format } from "date-fns-tz";
 import en from "@/translations/en";
 import de from "@/translations/de";
 
-const availableLocales = ["en", "de"];
+// const availableLocales = ["de", "en", "eo", "es", "fr", "it", "zh"];
+const availableLocales = ["de", "en", "fr", "it"];
 I18n.defaultLocale = "en";
 I18n.locale = "en";
 I18n.fallbacks = true;
@@ -78,7 +79,7 @@ const toUEC = (value: number, unit: string) => {
   });
 };
 
-export default function useI18n() {
+export default function useI18nHelpers() {
   return {
     I18n,
     availableLocales,

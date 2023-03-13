@@ -70,6 +70,26 @@
         <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
           {{ $t("nav.api") }}
         </a>
+        |
+        <BtnDropdown
+          :text-inline="true"
+          size="small"
+          variant="link"
+          :expand-top="true"
+        >
+          <template #label>
+            <i class="fad fa-language" /> {{ currentLocale }}
+          </template>
+          <Btn
+            v-for="locale in locales"
+            :key="`locale-${locale}`"
+            size="small"
+            variant="dropdown"
+            @click.native="setLocale(locale)"
+          >
+            {{ localeMapping[locale] }} - {{ locale.toUpperCase() }}
+          </Btn>
+        </BtnDropdown>
       </div>
       <div class="app-footer-support">
         <Btn :inline="true" variant="link" @click.native="openSupportModal">
@@ -121,13 +141,18 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+import { Getter, Mutation } from "vuex-class";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import useI18nHelpers from "@/frontend/composables/useI18nHelpers";
+
+const { I18n, availableLocales } = useI18nHelpers();
 
 @Component<AppFooter>({
   components: {
     Btn,
+    BtnDropdown,
     CommunityLogo,
   },
 })
@@ -140,12 +165,31 @@ export default class AppFooter extends Vue {
 
   @Getter("gitRevision", { namespace: "app" }) gitRevision: string;
 
+  @Mutation("setLocale") setLocale;
+
+  localeMapping = {
+    de: "Deutsch",
+    en: "English",
+    es: "Español",
+    fr: "Français",
+    it: "Italiano",
+    zh: "中文",
+  };
+
   get copyrightOwner() {
     return window.COPYRIGHT_OWNER;
   }
 
   get scDataVersion() {
     return window.SC_DATA_VERSION;
+  }
+
+  get locales() {
+    return availableLocales;
+  }
+
+  get currentLocale() {
+    return (I18n.currentLocale().split("-")[0] || "").toUpperCase();
   }
 
   openSupportModal() {

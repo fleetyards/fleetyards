@@ -15,6 +15,10 @@ const store = new Vuex.Store({
   modules: getStoreModules(),
 
   getters: {
+    locale(state) {
+      return state.locale;
+    },
+
     mobile(state) {
       return state.mobile;
     },

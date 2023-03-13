@@ -1,7 +1,7 @@
-import useI18n from "@/frontend/composables/useI18n";
+import useI18nHelpers from "@/frontend/composables/useI18nHelpers";
 
-const { I18n, availableLocales, t, l, toNumber, toDollar, toAu, toUEC } =
-  useI18n();
+const { I18n, t, l, toNumber, toDollar, toAu, toUEC, availableLocales } =
+  useI18nHelpers();
 
 export { I18n };
 
@@ -15,13 +15,5 @@ export default {
     Vue.prototype.$toDollar = toDollar;
     Vue.prototype.$toAu = toAu;
     Vue.prototype.$toUEC = toUEC;
-
-    Vue.mixin({
-      created() {
-        if (this.$store && I18n.locale !== this.$store.state.locale) {
-          I18n.locale = this.$store.state.locale;
-        }
-      },
-    });
   },
 };

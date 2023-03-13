@@ -1,6 +1,7 @@
 <template>
   <div
     id="app"
+    :key="locale"
     :class="{
       [`page-${$route.name}`]: true,
     }"
@@ -37,7 +38,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+import { Getter, Mutation } from "vuex-class";
 import Updates from "@/frontend/mixins/Updates";
 import userCollection from "@/frontend/api/collections/User";
 import versionCollection from "@/frontend/api/collections/Version";
@@ -49,8 +50,11 @@ import AppModal from "@/frontend/core/components/AppModal/index.vue";
 import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vue";
 import BackgroundImage from "@/frontend/core/components/BackgroundImage/index.vue";
 import { requestPermission } from "@/frontend/lib/Noty";
+import useI18nHelpers from "@/frontend/composables/useI18nHelpers";
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
+
+const { I18n } = useI18nHelpers();
 
 @Component<FrontendApp>({
   components: {
@@ -69,6 +73,8 @@ export default class FrontendApp extends Vue {
 
   @Getter("mobile") mobile;
 
+  @Getter("locale") locale;
+
   @Getter("navCollapsed", { namespace: "app" }) navCollapsed: boolean;
 
   @Getter("overlayVisible", { namespace: "app" }) overlayVisible: boolean;
@@ -81,6 +87,8 @@ export default class FrontendApp extends Vue {
 
   @Getter("infoVisible", { namespace: "cookies" })
   cookiesInfoVisible: boolean;
+
+  @Mutation("setLocale") setLocale;
 
   get ahoyAccepted() {
     return this.cookies.ahoy;
@@ -124,6 +132,7 @@ export default class FrontendApp extends Vue {
     ) {
       this.$comlink.$emit("close-modal", true);
     }
+    this.setupLocale();
   }
 
   @Watch("ahoyAccepted")
@@ -135,6 +144,14 @@ export default class FrontendApp extends Vue {
       this.$ahoy.trackChanges("input, textarea, select");
     } else {
       window.location.reload(true);
+    }
+  }
+
+  @Watch("locale")
+  onLocaleChange() {
+    console.log("localeChange");
+    if (this.locale) {
+      I18n.locale = this.locale;
     }
   }
 
@@ -167,6 +184,8 @@ export default class FrontendApp extends Vue {
     this.$comlink.$on("user-update", this.fetchCurrentUser);
     this.$comlink.$on("fleet-create", this.fetchCurrentUser);
     this.$comlink.$on("fleet-update", this.fetchCurrentUser);
+
+    this.setupLocale();
   }
 
   beforeDestroy() {
@@ -174,6 +193,16 @@ export default class FrontendApp extends Vue {
     this.$comlink.$off("user-update");
     this.$comlink.$off("fleet-create");
     this.$comlink.$off("fleet-update");
+  }
+
+  setupLocale() {
+    if (!this.locale) {
+      this.setLocale(navigator.language);
+    }
+
+    if (this.locale) {
+      I18n.locale = this.locale;
+    }
   }
 
   openPrivacySettings(settings = false) {

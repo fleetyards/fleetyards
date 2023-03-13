@@ -103,11 +103,6 @@ router.beforeResolve((to, _from, next) => {
 });
 
 router.beforeEach((to, from, next) => {
-  const newLocale = navigator.language;
-  if (!Store.state.locale || Store.state.locale !== newLocale) {
-    Store.commit("setLocale", newLocale);
-  }
-
   if (to.name === "fleet-invite") {
     Store.dispatch("fleet/saveInviteToken", to.params.token);
   }
