@@ -36,13 +36,13 @@
           </div>
           <div class="col-6">
             <div class="metrics-label">
-              {{ $t("celestialObject.fairchanceakt") }}:
+              {{ $t("celestialObject.fairchanceact") }}:
             </div>
             <div
-              v-tooltip="celestialObject.fairchanceakt"
+              v-tooltip="celestialObject.fairchanceact"
               class="metrics-value"
             >
-              {{ $t(`labels.${!!celestialObject.fairchanceakt}`) }}
+              {{ $t(`labels.${!!celestialObject.fairchanceact}`) }}
             </div>
           </div>
         </div>
