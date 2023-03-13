@@ -1,111 +1,111 @@
 export default {
-  welcome: 'Welcome to',
-  welcomeShips: 'Latest Ships',
-  welcomeImages: 'Random Images',
+  welcome: 'Bienvenue sur',
+  welcomeShips: 'Derniers vaisseaux',
+  welcomeImages: 'Images Aléatoires',
   models: {
-    index: 'Ships Index',
-    fleetchart: 'Ships Fleetchart'
+    index: 'Index des vaisseaux',
+    fleetchart: 'Fleetchart des vaisseaux'
   },
-  images: 'Images Index',
-  stats: 'Stats',
-  error: 'Navigation Error',
-  comments: 'Comments',
-  login: 'Login',
+  images: 'Index des images',
+  stats: 'Statistiques',
+  error: 'Erreur de navigation',
+  comments: 'Commentaires',
+  login: 'Se connecter',
   hangar: {
-    index: 'My Hangar',
+    index: 'Mon Hangar',
     preview: {
-      h1: 'My Hangar Preview',
-      h2: 'Your personal Hangar requires an FleetYards.net Account',
-      h3: 'What Features does the Hangar include?'
+      h1: 'Aperçu de mon Hangar',
+      h2: 'Votre Hangar personnel nécessite un compte FleetYards.net',
+      h3: 'Quelles sont les fonctionnalités du Hangar ?'
     },
-    alternativeNames: 'Alternative Names',
-    stats: 'My Hangar Stats',
-    public: '%{user} Hangar',
-    import: 'Import',
-    wishlist: 'Wishlist',
-    publicWishlist: '%{user} Wishlist',
-    resetIngame: 'Reset Ingame Ships after Wipe'
+    alternativeNames: 'Noms alternatifs',
+    stats: 'Mes statistiques de Hangar',
+    public: 'Hangar de %{user}',
+    import: 'Importer',
+    wishlist: 'Liste de souhaits',
+    publicWishlist: 'Liste de souhaits de %{user}',
+    resetIngame: 'Réinitialiser les vaisseaux obtenus dans le jeu'
   },
-  editMyVehicle: 'Edit my %{vehicle}',
-  nameMyVehicle: 'Name my %{vehicle}',
-  editGroups: 'Edit Groups',
-  newVehicles: 'Add Ships',
-  myVehicleAddons: 'Add Modules / Upgrades for %{vehicle}',
-  addToHangar: 'Add "%{model}" to your Hangar',
+  editMyVehicle: 'Éditer mon %{vehicle}',
+  nameMyVehicle: 'Nommer mon %{vehicle}',
+  editGroups: 'Editer les groupes',
+  newVehicles: 'Ajouter des vaisseaux',
+  myVehicleAddons: 'Ajouter des modules / mises à jour pour %{vehicle}',
+  addToHangar: 'Ajoutez «%{model}» à votre Hangar',
   impressum: 'Impressum',
-  privacy: 'Privacy policy',
-  cookie: 'Cookie policy',
-  requestPassword: 'Request Password',
-  changePassword: 'Change Password',
-  confirmAccess: 'Confirm access',
-  filterModels: 'Filter Ships',
-  filterVehicles: 'Filter Hangar',
-  filterCargoRoutes: 'Filter Cargo routes',
-  filterCommodities: 'Filter Commodities',
+  privacy: 'Politique de confidentialité',
+  cookie: 'Politique relative aux cookies',
+  requestPassword: 'Demander un mot de passe',
+  changePassword: 'Modifier le mot de passe',
+  confirmAccess: 'Confirmer l\'accès',
+  filterModels: 'Filtrer les vaisseaux',
+  filterVehicles: 'Filtrer Hangar',
+  filterCargoRoutes: 'Filtrer les routes de fret',
+  filterCommodities: 'Filtrer les marchandises',
   fleets: {
-    owners: 'Owners',
-    add: 'Create a new Fleet',
-    invites: 'Fleet Invites',
-    inviteUrls: 'Invite Urls',
-    members: 'Members',
-    stats: 'Stats',
+    owners: 'Propriétaires',
+    add: 'Créer une nouvelle Flotte',
+    invites: 'Invitations à la flotte',
+    inviteUrls: 'Liens d\'invitation',
+    members: 'Membres',
+    stats: 'Statistiques',
     preview: {
-      h1: 'Fleet Preview',
-      h2: 'To create a Fleet you need to have a FleetYards.net Account',
-      h3: 'What Features does your Fleet include?'
+      h1: 'Aperçu de la Flotte',
+      h2: 'Pour créer une Flotte, vous devez avoir un compte FleetYards.net',
+      h3: 'Quelles sont les fonctionnalités de la Flotte ?'
     },
     settings: {
-      fleet: 'Fleet Settings',
-      membership: 'Membership Settings'
+      fleet: 'Paramètres de la Flotte',
+      membership: 'Paramètres des membres'
     },
-    inviteMember: 'Invite new Member'
+    inviteMember: 'Inviter un nouveau membre'
   },
-  empty: 'There\'s nothing to see here...',
+  empty: 'Il n\'y a rien à voir ici...',
   hangarGroup: {
-    create: 'Create Group',
-    edit: 'Edit Group'
+    create: 'Créer un groupe',
+    edit: 'Modifier le groupe'
   },
-  searchHistory: 'Search History',
-  compare: { models: 'Compare Ships' },
+  searchHistory: 'Historique de recherche',
+  compare: { models: 'Comparer les vaisseaux' },
   settings: {
-    account: 'Account',
-    profile: 'Profile Settings',
-    hangar: 'Hangar Settings',
-    notifications: 'Notification Settings',
-    verify: 'Verify your RSI Account',
+    account: 'Mon compte',
+    profile: 'Paramètres du profil',
+    hangar: 'Paramètres de Hangar',
+    notifications: 'Paramètres de notification',
+    verify: 'Vérifier votre compte RSI',
     security: {
-      index: 'Account Security',
-      twoFactor: 'Two-factor Authentiation'
+      index: 'Sécurité du Compte',
+      twoFactor: 'Authentification à deux facteurs'
     },
     twoFactor: {
-      enable: 'Enable Two-factor Authentiation',
-      disable: 'Disable Two-factor Authentiation',
-      backupCodes: 'Generate Two-Factor Backup Codes'
+      enable: 'Activer l\'authentification à deux facteurs',
+      disable: 'Désactiver l\'authentification en deux étapes',
+      backupCodes: 'Générer des codes de sauvegarde'
     }
   },
-  roadmap: 'Ship-Roadmap',
+  roadmap: 'Roadmap des vaisseaux',
   tools: {
-    profitCalculator: { index: 'Profit Calculator' },
+    profitCalculator: { index: 'Calculatrice de profits' },
     tradeRoutes: {
-      index: 'Trade Routes',
-      withShip: 'Trade Routes for %{name} (%{cargo})'
+      index: 'Routes commerciales',
+      withShip: 'Routes commerciales pour %{name} (%{cargo})'
     }
   },
-  starsystems: 'Starsystems',
-  starsystem: '%{starsystem} Starsystem',
-  celestialObjects: 'Celestial Objects',
-  celestialObject: '%{celestialObject} in the %{starsystem} System',
-  moons: 'Moons',
+  starsystems: 'Systèmes planétaires',
+  starsystem: 'Le système %{starsystem}',
+  celestialObjects: 'Objets célestes',
+  celestialObject: '%{celestialObject} dans le système %{starsystem}',
+  moons: 'Lunes',
   stations: 'Stations',
-  station: '%{station} near %{celestialObject}',
-  stationImages: 'Images of %{station} near %{celestialObject}',
-  shops: 'Shops',
-  shop: '%{shop} on %{station}',
-  commodities: 'Commodities',
-  rsiVerification: 'Verify your RSI-Account',
-  hangarGuideEmpty: 'Not much to see here?',
-  hangarGuide: 'Hangar Guide',
-  support: 'Support FleetYards.net',
+  station: '%{station} à proximité de %{celestialObject}',
+  stationImages: '%{station} à proximité de %{celestialObject}',
+  shops: 'Points de vente',
+  shop: '%{shop} sur %{station}',
+  commodities: 'Marchandises',
+  rsiVerification: 'Vérifier votre compte RSI',
+  hangarGuideEmpty: 'Rien à voir ici.',
+  hangarGuide: 'Guide du Hangar',
+  support: 'Soutenir FleetYards.net',
   vehicle: { bulkGroupEdit: 'Add/Remove Groups' },
   modals: {
     shopCommodity: {
