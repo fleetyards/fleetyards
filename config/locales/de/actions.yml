@@ -1,18 +1,18 @@
 ---
 de:
   actions:
-    add: Add
+    add: Hinzufügen
     add_commodity: Add Commodity
     add_dock: Add Dock
     add_module_hardpoint: Add Model
     add_module_package_item: Add Module
     add_trade_commodity: Add Commodity
     add_upgrade_kit: Add Model
-    add_video: Add Video
-    login_in_as: Login as
+    add_video: Video hinzufügen
+    login_in_as: Anmelden als
     admin:
       celestial_object:
-        new: Create new Celestial Object
+        new: Neuen Himmelskörper erstellen
       commodity:
         new: Create new Commodity
       component:
@@ -40,18 +40,18 @@ de:
         new: Create new Station
       user:
         new: Create new User
-    back: Back
-    cancel: Cancel
-    confirm: Confirm Account
-    copy: Copy
-    delete: Delete
-    edit: Edit
-    loading: Please wait...
+    back: Zurück
+    cancel: Abbrechen
+    confirm: Konto bestätigen
+    copy: Kopieren
+    delete: Löschen
+    edit: Bearbeiten
+    loading: Einen Augenblick bitte...
     model:
-      images: Images
-      reload: Reload Models
-      reload_data: Reload Models Data
-      use_rsi_image: Use RSI Image
+      images: Bilder
+      reload: Modelle neu laden
+      reload_data: Modelldaten neu laden
+      use_rsi_image: RSI Bild verwenden
     more: More Entries
     ok: OK
     prefill_attachments: Add all Attachments
@@ -59,10 +59,10 @@ de:
     prefill_weapons: Add all Weapons
     resend_confirmation: Resend Confirmation
     reset_password: Forgot password?
-    save: Save
-    save_password: Save password
-    sign_in: Login
-    sign_out: Logout
+    save: Speichern
+    save_password: Passwort speichern
+    sign_in: Anmelden
+    sign_out: Abmelden
     station:
-      images: Images
-    unlock: Unlock Account
+      images: Bilder
+    unlock: Konto entsperren
