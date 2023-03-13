@@ -1,0 +1,91 @@
+---
+zh-TW:
+  mailer:
+    account:
+      action: Manage Account Settings
+    admin:
+      missing_loaners:
+        headline: FleetYards.net Missing Loaners
+        subject: FleetYards.net Missing Loaners
+      notify_block:
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Connection to RSI blocked
+        text: Automated updates from RSI using "%{url}" has been blocked
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Connection to RSI restored
+        text: Automated updates from RSI using "%{url}" has been restored
+      weekly:
+        fleets: New Fleets
+        headline: FleetYards.net Command - Weekly
+        registrations: New Registrations
+        ships: New Ships
+        subject: FleetYards.net Command Weekly
+        vehicles: New Vehicles
+    fleet_membership:
+      fleet_accepted:
+        action: "%{fleet} Homepage"
+        body: 'To view the fleets Ships and other Members please click on the following link:'
+        headline: Your Membership Request to Join %{fleet} has been accepted
+        subject: "%{fleet} accepted your Membership Request"
+      member_accepted:
+        action: "%{fleet} Memberlist"
+        body: 'To look at the new members information please click on the following link:'
+        headline: "%{username} accepted his Fleet Invitation"
+        subject: New Fleet Member
+      member_requested:
+        action: "%{fleet} Memberlist"
+        body: 'To accept the request please click on the following link:'
+        headline: "%{username} wants to Join %{fleet}"
+        subject: New Fleet Membership Request
+      new_invite:
+        action: Join %{fleet}
+        body: 'To accept the invite please click on the following link:'
+        headline: You have been invited to Join %{fleet}
+        subject: New Fleet Invite
+    hello: Hello %{username}
+    model:
+      new:
+        headline_part_1: 'Allow me to introduce:'
+        headline_part_2: The %{manufacturer}
+        subject: New Ship/Vehicle
+    notification_settings: Unsubscribe Notifications
+    plain_hello: Hello
+    privacy: Privacy policy
+    progress_tracker:
+      admin:
+        body: There have been %{changes} changes on the Progress Tracker
+        headline: New changes on the Progress Tracker
+        subject: New changes on the Progress Tracker
+    roadmap:
+      admin:
+        body: There have been %{changes} changes to the Roadmap
+        headline: New changes on the Roadmap
+        subject: New changes on the Roadmap
+    security:
+      action: Manage Security Settings
+      info: If you did not initiate the change please contact us at info@fleetyards.net.
+    transmission_end: "--- incomming transmission ---"
+    transmission_start: "--- incomming transmission ---"
+    two_factor:
+      disabled:
+        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
+        subject: Two-factor disabled
+      enabled:
+        body: Great, you activated Two-factor Authentication for your Fleetyards.net Account.
+        subject: Two-factor enabled
+      login:
+        body: Please enter the following Code on the Login page to verify your identity.
+        headline: Two-factor Authentication Code
+        subject: Two-factor Authentication Code
+    user:
+      username_changed:
+        body: You changed your Fleetyards.net Account Username.
+        subject: Username changed
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: is now on Sale!
+        price: Starting at %{price}
+        subject: "%{model} now on Sale!"
