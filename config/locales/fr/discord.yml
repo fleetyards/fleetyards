@@ -1,0 +1,17 @@
+---
+fr:
+  discord:
+    new_ship:
+      message: 'Permettez-moi de vous présenter : %{manufacturer} %{model}'
+      title: Nouveau vaisseau / véhicule ajouté
+    progress_tracker_update:
+      message: Il y a eu %{changes} modifications sur le Progress Tracker
+      title: Nouveaux changements sur le Progress Tracker
+    roadmap_update:
+      message: Il y a eu %{changes} modifications sur la Roadmap
+      title: Nouveaux changements sur la Roadmap
+    ship_on_sale:
+      message: À partir de %{price} hors TVA
+      title: Le %{model} est maintenant en vente !
+    youtube_video:
+      title: Nouvelle vidéo sur YouTube !
