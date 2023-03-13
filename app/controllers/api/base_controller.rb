@@ -86,7 +86,7 @@ module Api
     end
 
     private def extract_locale
-      parsed_locale = params[:locale] || request.env["HTTP_ACCEPT_LANGUAGE"]
+      parsed_locale = params[:locale] || request.env["HTTP_ACCEPT_LANGUAGE"] || ""
 
       AcceptLanguage.parse(parsed_locale).match(*I18n.available_locales)
     end
