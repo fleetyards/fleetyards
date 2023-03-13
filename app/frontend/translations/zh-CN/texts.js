@@ -31,7 +31,7 @@ export default {
     fleetchart:
       'To view a scaled fleetchart of your ships from an above view angle just click on the "Fleetchart" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.',
     public:
-      'Your hangar has a public visible page where all ships not marked as "wanted" are listed. You can access your public hangar by clicking on the "Public URL" button in the top right corner.',
+      'Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the "Public URL" button in the top right corner.',
     icon: "Lookout for this icon:",
   },
   hangarPreview: {

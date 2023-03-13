@@ -1,5 +1,5 @@
 export default {
-  welcome: "Welcome to",
+  welcome: "hallo2 to",
   welcomeShips: "Latest Ships",
   welcomeImages: "Random Images",
   models: {

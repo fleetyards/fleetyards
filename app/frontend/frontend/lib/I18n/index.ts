@@ -1,7 +1,7 @@
-import useI18nHelpers from "@/frontend/composables/useI18nHelpers";
+import { useI18n } from "@/frontend/composables/useI18n";
 
 const { I18n, t, l, toNumber, toDollar, toAu, toUEC, availableLocales } =
-  useI18nHelpers();
+  useI18n();
 
 export { I18n };
 

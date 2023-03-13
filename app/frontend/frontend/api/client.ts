@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import nprogress from "nprogress";
 import Store from "@/frontend/lib/Store";
 import Qs from "qs";
+import { useI18n } from "@/frontend/composables/useI18n";
 import linkHeaderParser from "./linkHeaderParser";
 
 type ApiResponseMeta = {
@@ -109,6 +110,10 @@ export async function get(path: string, params: any = {}, silent = false) {
   try {
     const response = await client.get(path, {
       params,
+
+      headers: {
+        ...languageHeader(),
+      },
     });
     return handleResponse(response, params, silent);
   } catch (error) {
@@ -120,8 +125,17 @@ export async function post(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start();
   }
+
   try {
-    return handleResponse(await client.post(path, body), body, silent);
+    return handleResponse(
+      await client.post(path, body, {
+        headers: {
+          ...languageHeader(),
+        },
+      }),
+      body,
+      silent
+    );
   } catch (error) {
     return handleError(error, body, silent);
   }
@@ -131,8 +145,17 @@ export async function put(path: string, body = {}, silent = false) {
   if (!silent) {
     nprogress.start();
   }
+
   try {
-    return handleResponse(await client.put(path, body), body, silent);
+    return handleResponse(
+      await client.put(path, body, {
+        headers: {
+          ...languageHeader(),
+        },
+      }),
+      body,
+      silent
+    );
   } catch (error) {
     return handleError(error, body, silent);
   }
@@ -144,7 +167,17 @@ export async function destroy(path: string, data = {}, silent = false) {
   }
 
   try {
-    return handleResponse(await client.delete(path, { data }), data, silent);
+    return handleResponse(
+      await client.delete(path, {
+        data,
+
+        headers: {
+          ...languageHeader(),
+        },
+      }),
+      data,
+      silent
+    );
   } catch (error) {
     return handleError(error, data, silent);
   }
@@ -157,6 +190,7 @@ export async function upload(path: string, body = {}, silent = false) {
 
   const headers = {
     "Content-Type": "multipart/form-data",
+    ...languageHeader(),
   };
 
   try {
@@ -174,11 +208,15 @@ export async function download(path: string, params = {}, silent = false) {
   if (!silent) {
     nprogress.start();
   }
+
   try {
     return handleResponse(
       await client.get(path, {
         params,
         responseType: "blob",
+        headers: {
+          ...languageHeader(),
+        },
       }),
       {},
       silent
@@ -187,6 +225,14 @@ export async function download(path: string, params = {}, silent = false) {
     return handleError(error, params, silent);
   }
 }
+
+const languageHeader = () => {
+  const { I18n } = useI18n();
+
+  return {
+    "Accept-Language": `${I18n.currentLocale()},en;q=0.8`,
+  };
+};
 
 const apiClient = {
   get,
