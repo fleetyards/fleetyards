@@ -1,0 +1,360 @@
+---
+it:
+  activerecord:
+    attributes:
+      vehicle:
+        bought_via:
+          pledge_store: Pledge Store
+          ingame: Ingame Store
+      celestial_object:
+        hidden: nascosto?
+        location_prefix:
+          default: nel Sistema %{starsystem}
+      commodity:
+        commodity_types:
+          agricultural_supply: Forniture per l'agricoltura
+          consumer_goods: Beni di consumo
+          food: Alimenti
+          gas: Carburante
+          harvestable: Raccoglibile
+          medical_supply: Forniture mediche
+          metal: Metalli
+          mineral: Minerali
+          non_metals: Non-Metalli
+          processed_goods: Merci Lavorate
+          scrap: Rottami
+          vice: Vice
+          waste: Rifiuti
+      commodity_rental_price:
+        time_ranges:
+          1-day: 1 Giorno
+          3-days: 3 Giorni
+          30-days: 30 Giorni
+          7-days: 7 Giorni
+      component:
+        component_classes:
+          RSIAvionic: Avionica
+          RSIModular: Modulare
+          RSIPropulsion: Propulsione
+          RSIThruster: Propulsori
+          RSIWeapon: Armamenti
+        item_classes:
+          civilian: Civile
+          competition: Competizione
+          industrial: Industriale
+          military: Militare
+          stealth: Stealth
+        item_types:
+          cargo_grids: Cargogrids
+          coolers: Refrigeranti
+          countermeasure_launcher: Lanciatore Contromisure
+          fixed_thrusters: Propulsori fissi
+          fuel_intakes: Bocchettoni carburante
+          fuel_tanks: Serbatoi Carburante
+          joint_thrusters: Propulsori articolati
+          manned_turrets: Torrette
+          mid_range_radar: Radar a Medio Raggio
+          mining_lasers: Laser per Mining
+          missile_racks: Scomparti Missili
+          missile_turrets: Torrette Missilistiche
+          missiles: Missili
+          power_plants: Generatori di energia
+          quantum_drives: Drive Quantici
+          quantum_fuel_tanks: Serbatoi di Carburante Quantico
+          remote_turrets: Torrette Remote
+          scanners: Scanners
+          shield_generators: Generatori di Scudi
+          thrusters: Propulsori
+          turrets: Torrette
+          weapon_defensive: Armi Difensive
+          weapons: Ship Weapons
+        tracking_signals:
+          cross_section: Cross Section
+          electromagnetic: Electromagnetic
+          infrared: infrared
+      dock:
+        dock_types:
+          dockingport: Dockingport
+          garage: Garage
+          hangar: Hangar
+          landingpad: Landingpad
+          vehiclepad: Vehiclepad
+        ship_sizes:
+          capital: Capital (C)
+          extra_extra_small: Snubcraft (XXS)
+          extra_large: Extra Large (XL)
+          extra_small: Extra Small (XS)
+          large: Large (L)
+          medium: Medium (M)
+          small: Small (S)
+      equipment:
+        backpack_compatibilities:
+          all: All
+          light: Light
+          light_medium: Light & Medium
+        core_compatibilities:
+          all: All
+          heavy: Heavy
+          medium_heavy: Medium & Heavy
+        equipment_types:
+          armor: Armor
+          clothing: Clothing
+          hacking_tool: Hacking Tool
+          medical: Medical
+          tool: Tool
+          undersuit: Undersuit
+          weapon: Weapon
+          weapon_attachment: Weapon Attachment
+        hidden: hidden?
+        item_types:
+          assault_rifle: Assault Rifle
+          backpack: Backpack
+          battery: Battery
+          flightsuit: Flightsuit
+          grenade: Grenade
+          grenade_launcher: Grenade Launcher
+          heavy_armor: Heavy Armor
+          heavy_backpack: Heavy Backpack
+          knife: Knife
+          light_armor: Light Armor
+          light_backpack: Light Backpack
+          lmg: LMG
+          magazine: Magazine
+          medium_armor: Medium Armor
+          medium_backpack: Medium Backpack
+          pistol: Pistol
+          rifle: Rifle
+          rocket_launcher: Rocket Launcher
+          shotgun: Fucile a Pompa
+          smg: SMG
+          sniper_rifle: Fucile da Cecchino
+          special_railgun: Speciale - Railgun
+          utility: Utilità
+          weapon_scope: Mirino
+        slots:
+          arms: Braccia
+          backpack: Zaino
+          footwear: Calzature
+          gloves: Guanti
+          hat: Cappelli
+          helmet: Elmetti
+          jacket: Giacche
+          legs: Gambe
+          pants: Pantaloni
+          shirt: Maglia
+          torso: Busto
+          undersuit: Sottovesti
+        temperature_rating: Temp.
+        types:
+          additional: Equipaggiamento Aggiuntivo
+          powerplant: Generatore
+          primary_thrusters: Propulsori Primari
+          shield: Scudi
+          thrusters: Propulsori di manovra
+        weapon_classes:
+          ballistic: Balistico
+          energy: Energia
+          frag: Frag
+      fleet_membership:
+        roles:
+          admin: Admin
+          member: Membro
+          officer: Ufficiale
+        user_id: Membro
+      habitation:
+        habitation_types:
+          container: Container
+          large_apartment: Appartamento Grande
+          medium_apartment: Appartamento Medio
+          small_apartment: Appartamento Piccolo
+          suite: Suite
+      manufacturer:
+        code: CODICE
+        known_for: Noto per?
+      model:
+        active: attivo?
+        beam: Raggio
+        cargo: Carico
+        crew: Equipaggio
+        equipment: Equipaggiamento
+        ground: Veicolo Di Terra?
+        hardpoints: Hardpoints
+        height: Altezza
+        hidden: nascosto?
+        holo_colored: Il file 3D ha materiali colorati?
+        length: Lunghezza
+        manufacturer: Produttore
+        mass: Mass
+        max_upgrades: Upgrades
+        notified: Suppress "New Ship" Notification?
+        on_sale: On sale?
+        production_status: Production Status
+        variants: Variants
+        weapons: Weapons
+      model_hardpoint:
+        categories:
+          fixed: Fixed Maneuvering Thruster
+          gimbal: Gimbal Maneuvering Thruster
+          joint: Joint Maneuvering Thruster
+          main: Main Thruster
+          manned_turret: Manned Turret
+          missile_turret: Missile Turret
+          remote_turret: Remote Turret
+          retro: Retro Thruster
+          vtol: VTOL Thruster
+          qed: QED
+          emp: EMP
+        sizes:
+          capital: C (4)
+          eight: 8
+          eleven: 11
+          five: 5
+          four: 4
+          large: L (3)
+          medium: M (2)
+          nine: 9
+          one: 1
+          seven: 7
+          six: 6
+          small: S (1)
+          tbd: TBD
+          ten: 10
+          three: 3
+          twelve: 12
+          two: 2
+          vehicle: V (0)
+      progress_tracker_item:
+        statuses:
+          done: Done
+          in_progress: In Progress
+          planned: Planned
+      setting:
+        base:
+          registration: Registration active?
+        mailer:
+          default_from: Default From
+          host: SMTP Host
+          password: SMPT Password or Token
+          port: SMTP Port
+          user: SMTP User
+      shop:
+        buying: Does buy Items?
+        hidden: hidden?
+        location_prefix:
+          default: at
+        refinery_terminal: Has a Refinery Terminal?
+        rental: Does offer Rentals?
+        selling: Does sell Items?
+        shop_types:
+          admin: Admin Office
+          armor: Negozio Di Armature
+          armor_and_weapons: Negozio Armature e Armi
+          bar: Bar
+          blackmarket: Mercato Nero
+          cargo: Cargo Center
+          clothing: Negozio di vestiti
+          components: Negozio Di Componenti
+          computers: Negozio di computer
+          courier: Corriere
+          equipment: Equipaggiamento
+          hospital: Ospedale
+          kiosk: Chiosco
+          mining_equipment: Attrezzature Minerarie
+          pharmacy: farmacia
+          refinery: Raffineria
+          rental: Noleggio
+          resources: Broker Di Risorse
+          salvage: Cantiere Di Recupero
+          ship_customizations: Personalizzazioni Navi E Veicoli
+          ships: Concessionario di Navi
+          souvenirs: Souvenir
+          superstore: Superstore
+          weapons: Negozio Di Armi
+      shop_commodity:
+        commodity_item_types:
+          Commodity: Commodities
+          Component: Components
+          Equipment: Equipment
+          Model: Ships
+          ModelModule: Ship Modules
+          ModelPaint: Ship Paints
+        location_prefix:
+          default: sold at
+        price_per_unit: Price per Unit?
+      station:
+        cargo_hub: Has Cargo Hub?
+        classifications:
+          city: City
+          drug_lab: Drug lab
+          farming: Farming
+          mining: Mining
+          poi: Point of Interest
+          rest_stop: Rest Stop
+          salvaging: Salvaging
+          science: Science
+          security: Security
+          settlement: Settlement
+          town: Town
+          trading: Trading
+        hidden: hidden?
+        location_prefix:
+          asteriod: on asteroid near
+          default: 'on'
+          near: near
+          orbit: in orbit around
+        refinery: Has Refinery Station?
+        station_types:
+          aid_shelter: Aid Shelter
+          asteroid_station: Asteriod Station
+          district: District
+          landing_zone: Landing Zone
+          outpost: Outpost
+          station: Station
+      trade_commodity:
+        buy: Buy?
+        sell: Sale?
+      updated_at: "%{time} ago"
+      user:
+        admin: Admin?
+        confirmation_token: Token
+        current_password: Password
+        email: Email
+        enabled: Active?
+        gravatar: Gravatar email Address
+        login: Username or email
+        username: Username
+      weapon:
+        classes:
+          class1: Class 1
+          class2: Class 2
+          class3: Class 3
+          class4: Class 4
+          class5: Class 5
+          class6: Class 6
+          class7: Class 7
+          class8: Class 8
+    errors:
+      messages:
+        blank: can't be blank
+        record_invalid: Bad Data
+      models:
+        fleet_membership:
+          attributes:
+            user_id:
+              taken: already present or has a pending invite
+        user:
+          attributes:
+            confirmation_token:
+              invalid: is invalid
+            current_password:
+              invalid: is invalid.
+            email:
+              taken: is already taken.
+            password:
+              too_short:
+            password_confirmation:
+              confirmation: Passwords do not match
+            reset_password_token:
+              invalid: Token is invalid
+            username:
+              taken: is already taken.

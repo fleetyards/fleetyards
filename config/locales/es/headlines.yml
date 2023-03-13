@@ -1,0 +1,96 @@
+---
+es:
+  headlines:
+    account: My Information
+    admin:
+      admin_user:
+        edit: Edit %{admin_user}
+        index: Admin Users
+        new: New Admin User
+      celestial_object:
+        edit: Celestial Object %{celestial_object}
+        index: Celestial Objects
+        new: New Celestial Object
+      commodity:
+        edit: Commodity %{commodity}
+        index: Commodities
+        new: New Commodity
+      commodity_price:
+        confirmation: Confirm submitted Prices
+      component:
+        edit: Edit %{component}
+        index: Component
+        new: New Component
+      dashboard: Dashboard
+      equipment:
+        edit: Equipment %{equipment}
+        index: Equipment
+        new: New Equipment
+      image:
+        index: Images
+      loaner_uploads:
+        new: New Loaner Upload
+      manufacturer:
+        edit: Edit %{manufacturer}
+        index: Manufacturer
+        new: New Manufacturer
+      model:
+        edit: Edit %{model}
+        images: Imageupload for %{model}
+        index: Models
+        name_diff: Models with different RSI Name
+        new: New Model
+        price_diff: Models with outdated Pledge price
+      model_module:
+        edit: Module %{model_module}
+        index: Modules
+        new: New Module
+      model_module_package:
+        edit: Module Package %{model_module_package}
+        index: Module Packages
+        new: New Module Package
+      model_paint:
+        edit: Paint %{model_paint}
+        index: Paints
+        new: New Paint
+      model_upgrade:
+        edit: Upgrade %{model_upgrade}
+        index: Upgrades
+        new: New Upgrade
+      shop:
+        edit: Shop %{shop}
+        index: Shops
+        new: New Shop
+      shop_commodities:
+        index: Shop Commodities for %{shop}
+      shop_commodity:
+        confirmation: Confirm submitted Shop Commodities
+      starsystem:
+        edit: Starsystem %{starsystem}
+        index: Starsystems
+        new: New Starsystem
+      station:
+        edit: Station %{station}
+        images: Imageupload for %{station}
+        index: Stations
+        new: New Station
+      user:
+        edit: Edit %{user}
+        index: Users
+        new: New User
+      maintenance:
+        rsi_api_status:
+          index: RSI API Status
+    change_password: Change your Password
+    comments: Comments
+    confirm: Confirm your Account
+    forgot_password: Forgot your Password?
+    impressum: Impressum
+    not_found: Navigation Error
+    privacy: Privacy policy
+    server_error: Server Error
+    sign_in: Login
+    sign_up: Sign Up
+    unlock: Unlock your Account
+    unprocessable_entity: False Request
+    welcome: Welcome

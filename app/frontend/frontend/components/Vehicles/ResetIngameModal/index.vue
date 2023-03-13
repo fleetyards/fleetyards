@@ -24,10 +24,10 @@ import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import useI18nHelpers from "@/frontend/composables/useI18nHelpers";
+import { useI18n } from "@/frontend/composables/useI18n";
 import useComlink from "@/frontend/composables/useComlink";
 
-const { t } = useI18nHelpers();
+const { t } = useI18n();
 
 const comlink = useComlink();
 

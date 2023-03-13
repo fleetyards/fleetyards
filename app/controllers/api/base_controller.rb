@@ -14,6 +14,7 @@ module Api
 
     before_action :authenticate_user!, except: %i[root version]
     before_action :current_ability
+    before_action :set_locale
 
     check_authorization except: %i[root version]
 
@@ -78,6 +79,16 @@ module Api
       headers["X-RateLimit-Limit"] = match_data[:limit].to_s
       headers["X-RateLimit-Remaining"] = (match_data[:limit] - match_data[:count]).to_s
       headers["X-RateLimit-Reset"] = (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
+    end
+
+    private def set_locale
+      I18n.locale = extract_locale || I18n.default_locale
+    end
+
+    private def extract_locale
+      parsed_locale = params[:locale] || request.env["HTTP_ACCEPT_LANGUAGE"] || ""
+
+      AcceptLanguage.parse(parsed_locale).match(*I18n.available_locales)
     end
   end
 end

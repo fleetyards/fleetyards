@@ -1,0 +1,17 @@
+---
+zh-TW:
+  discord:
+    new_ship:
+      message: 'Allow me to introduce: The %{manufacturer} %{model}'
+      title: New Ship/Vehicle added
+    progress_tracker_update:
+      message: There have been %{changes} changes on the Progress Tracker
+      title: New changes on the Progress Tracker
+    roadmap_update:
+      message: There have been %{changes} changes to the Roadmap
+      title: New changes on the Roadmap
+    ship_on_sale:
+      message: Starting at %{price} excl. VAT
+      title: The %{model} is now on Sale!
+    youtube_video:
+      title: New Video on Youtube!

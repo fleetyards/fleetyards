@@ -1,9 +1,9 @@
 export default {
   index:
-    "Your database for all information around Ships and Stations in Star Citizen.",
+    "Deine Datenbank für alle Informationen rund um Schiffe und Stationen in Star Citizen.",
   indexQuote:
     "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
-  indexQuoteSource: "Author Unknown, Source:",
+  indexQuoteSource: "Autor unbekannt, Quelle:",
   support: {
     code: 'Additionally you can get 5000 UEC starting money by using the following Recruitment Code <a href="https://robertsspaceindustries.com/enlist?referral=%{code}" target="_blank" rel="noopener"><b>"%{code}"</b></a> when you buy Star Citizen or you can:',
     info: 'If you like FleetYards.net and want to support the further development and maintenance of this project please upvote our <a href="https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net" target="_blank" rel="noopener"><b>Spectrum Post</b></a> and our Post on the <a href="https://robertsspaceindustries.com/community/deep-space-radar/1730-FleetYardsnet" target="_blank" rel="noopener"><b>Deep Space Radar</b></a>.',
@@ -31,7 +31,7 @@ export default {
     fleetchart:
       'To view a scaled fleetchart of your ships from an above view angle just click on the "Fleetchart" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.',
     public:
-      'Your hangar has a public visible page where all ships which are not marked as "wanted" are listed. You can access your public hangar by clicking on the "Public URL" button in the top right corner.',
+      'Dein Hangar hat eine öffentlich sichtbare Seite, auf der alle Schiffe aufgelistet sind. Sie können auf Ihren öffentlichen Hangar zugreifen, indem Sie oben rechts auf die Schaltfläche "Öffentliche URL" klicken.',
     icon: "Lookout for this icon:",
   },
   hangarPreview: {

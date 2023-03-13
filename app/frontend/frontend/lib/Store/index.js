@@ -16,7 +16,7 @@ const store = new Vuex.Store({
 
   getters: {
     locale(state) {
-      return state.locale;
+      return state.locale || "en";
     },
 
     mobile(state) {

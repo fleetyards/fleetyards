@@ -32,6 +32,7 @@ gem "ahoy_matey"
 gem "groupdate"
 gem "rollups"
 
+gem "accept_language"
 gem "i18n"
 gem "i18n-js", "< 4.0"
 gem "rails-i18n", "~> 7.0"

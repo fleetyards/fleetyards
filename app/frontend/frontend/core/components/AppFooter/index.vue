@@ -85,9 +85,10 @@
             :key="`locale-${locale}`"
             size="small"
             variant="dropdown"
+            :active="activeLocale(locale)"
             @click.native="setLocale(locale)"
           >
-            {{ localeMapping[locale] }} - {{ locale.toUpperCase() }}
+            {{ localeMapping[locale] }} - {{ locale }}
           </Btn>
         </BtnDropdown>
       </div>
@@ -145,9 +146,9 @@ import { Getter, Mutation } from "vuex-class";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
-import useI18nHelpers from "@/frontend/composables/useI18nHelpers";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-const { I18n, availableLocales } = useI18nHelpers();
+const { availableLocales } = useI18n();
 
 @Component<AppFooter>({
   components: {
@@ -165,6 +166,8 @@ export default class AppFooter extends Vue {
 
   @Getter("gitRevision", { namespace: "app" }) gitRevision: string;
 
+  @Getter("locale") currentLocale;
+
   @Mutation("setLocale") setLocale;
 
   localeMapping = {
@@ -174,6 +177,8 @@ export default class AppFooter extends Vue {
     fr: "Français",
     it: "Italiano",
     zh: "中文",
+    "zh-CN": "中文 (简体)",
+    "zh-TW": "中文 (繁體)",
   };
 
   get copyrightOwner() {
@@ -188,8 +193,11 @@ export default class AppFooter extends Vue {
     return availableLocales;
   }
 
-  get currentLocale() {
-    return (I18n.currentLocale().split("-")[0] || "").toUpperCase();
+  activeLocale(locale: string) {
+    return (
+      locale === this.currentLocale ||
+      (!locale.includes("zh") && locale === this.currentLocale.split("-")[0])
+    );
   }
 
   openSupportModal() {

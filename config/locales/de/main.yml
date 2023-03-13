@@ -404,6 +404,7 @@ de:
       hangar_import: Import
       hangar_preview: My Hangar Preview
       hangar_stats: My Hangar Stats
+      hangar_wishlist: Wishlist
       home: Home
       images: Images
       impressum: Impressum
@@ -412,6 +413,7 @@ de:
       password_request: Request Password
       privacy-policy: Privacy Policy
       public_hangar: "%{user} Hangar"
+      public_wishlist: "%{user} Wishlist"
       roadmap: Roadmap
       roadmap_changes: Roadmap Changes
       roadmap_progress-tracker: Progress Tracker

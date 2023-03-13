@@ -3,14 +3,24 @@ import { parseISO } from "date-fns";
 import { format } from "date-fns-tz";
 import en from "@/translations/en";
 import de from "@/translations/de";
+import it from "@/translations/it";
+import fr from "@/translations/fr";
+import es from "@/translations/es";
+import zhCN from "@/translations/zh-CN";
+import zhTW from "@/translations/zh-TW";
 
-// const availableLocales = ["de", "en", "eo", "es", "fr", "it", "zh"];
-const availableLocales = ["de", "en", "fr", "it"];
+const availableLocales = ["de", "en", "es", "fr", "it", "zh", "zh-CN", "zh-TW"];
 I18n.defaultLocale = "en";
 I18n.locale = "en";
 I18n.fallbacks = true;
 I18n.translations.en = en;
 I18n.translations.de = de;
+I18n.translations.es = es;
+I18n.translations.fr = fr;
+I18n.translations.it = it;
+I18n.translations.zh = zhCN;
+I18n.translations["zh-CN"] = zhCN;
+I18n.translations["zh-TW"] = zhTW;
 
 type I18nTranslateOptions = {
   [key: string]: I18nTranslateOptions | string;
@@ -79,15 +89,13 @@ const toUEC = (value: number, unit: string) => {
   });
 };
 
-export default function useI18nHelpers() {
-  return {
-    I18n,
-    availableLocales,
-    t,
-    l,
-    toNumber,
-    toDollar,
-    toAu,
-    toUEC,
-  };
-}
+export const useI18n = () => ({
+  I18n,
+  availableLocales,
+  t,
+  l,
+  toNumber,
+  toDollar,
+  toAu,
+  toUEC,
+});

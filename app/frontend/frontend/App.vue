@@ -50,11 +50,11 @@ import AppModal from "@/frontend/core/components/AppModal/index.vue";
 import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vue";
 import BackgroundImage from "@/frontend/core/components/BackgroundImage/index.vue";
 import { requestPermission } from "@/frontend/lib/Noty";
-import useI18nHelpers from "@/frontend/composables/useI18nHelpers";
+import { useI18n } from "@/frontend/composables/useI18n";
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
-const { I18n } = useI18nHelpers();
+const { I18n, availableLocales } = useI18n();
 
 @Component<FrontendApp>({
   components: {
@@ -149,7 +149,6 @@ export default class FrontendApp extends Vue {
 
   @Watch("locale")
   onLocaleChange() {
-    console.log("localeChange");
     if (this.locale) {
       I18n.locale = this.locale;
     }
@@ -196,7 +195,7 @@ export default class FrontendApp extends Vue {
   }
 
   setupLocale() {
-    if (!this.locale) {
+    if (!this.locale && availableLocales.includes(navigator.language)) {
       this.setLocale(navigator.language);
     }
 
