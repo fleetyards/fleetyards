@@ -1,0 +1,20 @@
+---
+zh-CN:
+  filter:
+    all: All
+    component:
+      class:
+        items:
+          rsiavionic: Avionic
+          rsimodular: System
+          rsipropulsion: Propulsion
+          rsithruster: Thruster
+          rsiweapon: Weapon
+    image:
+      model:
+        title: Model
+    shop_commodities:
+      sub_categories:
+        class: Component
+        classification: Ship
+        equipment_type: Equipment
