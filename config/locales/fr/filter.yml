@@ -1,0 +1,20 @@
+---
+fr:
+  filter:
+    all: Tout
+    component:
+      class:
+        items:
+          rsiavionic: Avionique
+          rsimodular: Systèmes principaux
+          rsipropulsion: Propulsion
+          rsithruster: Propulseur
+          rsiweapon: Arme
+    image:
+      model:
+        title: Modèle
+    shop_commodities:
+      sub_categories:
+        class: Composant
+        classification: Vaisseau
+        equipment_type: Équipements
