@@ -17,8 +17,8 @@ export default {
   back: 'Précédent',
   open: 'Ouvrir',
   copy: 'Copier',
-  more: 'More...',
-  showMore: 'Show more',
+  more: 'Détails...',
+  showMore: 'Afficher plus',
   export: 'Exporter',
   import: 'Importer',
   here: 'ici',
@@ -59,8 +59,8 @@ export default {
   deleteSelected: 'Supprimer la sélection',
   close: 'Fermer',
   filter: 'Filtrer',
-  showStatusColor: 'Show Status as Color',
-  hideStatusColor: 'Hide Status as Color',
+  showStatusColor: 'Afficher l\'état en tant que couleur',
+  hideStatusColor: 'Masquer le statut en tant que couleur',
   addToHangar: 'Ajouter à votre Hangar',
   resetFilter: 'Réinitialiser les filtres',
   resetPrices: 'Réinitialiser les prix',
@@ -73,8 +73,8 @@ export default {
   addAnother: 'Ajouter un autre',
   addVehicle: 'Ajouter un vaisseau',
   addGroup: 'Ajouter un groupe',
-  addModule: 'Add another Module',
-  addUpgrade: 'Add another Upgrade',
+  addModule: 'Ajouter un autre module',
+  addUpgrade: 'Ajouter une autre mise à niveau',
   showTableView: 'Afficher sous forme de liste',
   showGridView: 'Afficher sous forme de grille',
   compare: { models: 'Comparer' },
@@ -87,9 +87,9 @@ export default {
     hideFromPublicHangar: 'Rendre privé',
     editGroupsSelected: 'Ajouter/Retirer des groupes',
     resetIngame: {
-      openModal: 'Reset Ingame Ships after Wipe',
-      moveToWishlist: 'Move to Wishlist',
-      removeAll: 'Remove all'
+      openModal: 'Réinitialiser les vaisseaux obtenus dans le jeu',
+      moveToWishlist: 'Déplacer dans la liste de souhaits',
+      removeAll: 'Tout supprimer'
     }
   },
   empty: {
