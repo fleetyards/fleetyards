@@ -1,117 +1,117 @@
 export default {
-  true: 'Yes',
-  false: 'No',
+  true: 'Oui',
+  false: 'Non',
   null: '-',
-  and: 'and',
-  hide: 'Hide',
-  show: 'Show',
-  only: 'Only',
+  and: 'et',
+  hide: 'Masquer',
+  show: 'Afficher',
+  only: 'Uniquement',
   description: 'Description',
-  unavailable: 'unavailable',
-  selected: 'Selected',
+  unavailable: 'indisponible',
+  selected: 'Sélectionné',
   actions: 'Actions',
-  enabled: 'Enabled',
-  disabled: 'Disabled',
-  collapse: 'Collapse',
-  price: 'Price',
-  expand: 'Expand',
-  toggleNavigation: 'Toggle Navigation',
-  enableYoutube: 'Click to enable Youtube embeds or right click to copy Video URL',
-  or: 'or',
-  deselect: 'Click to deselect',
-  networkStatusOffline: 'Network Status: Offline - Service Unavailable',
-  groups: 'Groups',
-  fleetInviteToken: 'Fleet Invite',
-  scDataVersion: 'Patch Version',
-  home: { search: 'Search for Ships...' },
+  enabled: 'Activé',
+  disabled: 'Désactivé',
+  collapse: 'Réduire',
+  price: 'Prix',
+  expand: 'Agrandir',
+  toggleNavigation: 'Déplier/Replier',
+  enableYoutube: 'Cliquez pour activer l\'intégration Youtube ou clic droit pour copier le lien',
+  or: 'ou',
+  deselect: 'Cliquez pour désélectionner',
+  networkStatusOffline: 'Statut du réseau : Hors ligne - Service indisponible',
+  groups: 'Groupes',
+  fleetInviteToken: 'Invitations à la flotte',
+  scDataVersion: 'Version du correctif',
+  home: { search: 'Recherche de vaisseaux...' },
   shop: {
-    rentalPrice: 'rental',
-    sellPrice: 'sells for',
-    buyPrice: 'buys for'
+    rentalPrice: 'location',
+    sellPrice: 'prix de vente',
+    buyPrice: 'prix d\'achat'
   },
   shopCommodity: {
-    item: 'Item',
-    shop: 'Shop',
-    sellPrices: 'Sell Prices',
-    buyPrices: 'Buy Prices',
-    rentalPrices: 'Rental Prices',
-    confirmed: 'Confirmed?',
-    submittedBy: 'Submitted By',
+    item: 'Article',
+    shop: 'Points de vente',
+    sellPrices: 'Prix de vente',
+    buyPrices: 'Prix d\'achat',
+    rentalPrices: 'Prix de location',
+    confirmed: 'Confirmé ?',
+    submittedBy: 'Soumis par',
     prices: {
-      label: 'Prices',
-      rentalPrice: 'rental',
-      averageRentalPrice: 'rental (Ø)',
-      sellPrice: 'sells for',
-      averageSellPrice: 'sells for (Ø)',
-      buyPrice: 'buys for',
-      averageBuyPrice: 'buys for (Ø)',
-      rentalPrice1Day: '1 Day for',
-      averageRentalPrice1Day: '1 Day for (Ø)',
-      rentalPrice3Days: '3 Days for',
-      averageRentalPrice3Days: '3 Days for (Ø)',
-      rentalPrice7Days: '7 Days for',
-      averageRentalPrice7Days: '7 Days for (Ø)',
-      rentalPrice30Days: '30 Days for',
-      averageRentalPrice30Days: '30 Days for (Ø)'
+      label: 'Prix',
+      rentalPrice: 'location',
+      averageRentalPrice: 'location (Ø)',
+      sellPrice: 'prix de vente',
+      averageSellPrice: 'se vend pour (Ø)',
+      buyPrice: 'prix d\'achat',
+      averageBuyPrice: 's\'achète pour (Ø)',
+      rentalPrice1Day: '1 jour pour',
+      averageRentalPrice1Day: '1 jour pour (Ø)',
+      rentalPrice3Days: '3 jours pour',
+      averageRentalPrice3Days: '3 jours pour (Ø)',
+      rentalPrice7Days: '7 jours pour',
+      averageRentalPrice7Days: '7 jours pour (Ø)',
+      rentalPrice30Days: '30 jours pour',
+      averageRentalPrice30Days: '30 jours pour (Ø)'
     }
   },
   stats: {
     quickStats: {
-      newShips: 'New Ships in %{year}',
-      totalShips: 'Total Ships',
-      totalMembers: 'Total Members'
+      newShips: 'Nouveaux vaisseaux en %{year}',
+      totalShips: 'Nombre de vaisseaux',
+      totalMembers: 'Nombre de membres'
     },
-    modelsByClassification: 'Ships by Classification',
-    modelsBySize: 'Ships by Size',
-    vehiclesByModel: 'Ships by Model (Top %{limit})',
-    modelsPerMonth: 'Ships per Month',
-    modelsByManufacturer: 'Ships by Manufacturer',
-    modelsByProductionStatus: 'Ships by Production Status'
+    modelsByClassification: 'Vaisseaux par catégorie',
+    modelsBySize: 'Vaisseaux par taille',
+    vehiclesByModel: 'Vaisseau par modèle (Top %{limit})',
+    modelsPerMonth: 'Vaisseaux par mois',
+    modelsByManufacturer: 'Vaisseaux par constructeur',
+    modelsByProductionStatus: 'Vaisseau par état de production'
   },
   roadmap: {
-    selectWeek: 'Select Week',
-    shipRoadmap: 'Ship-Roadmap',
+    selectWeek: 'Sélectionnez une semaine',
+    shipRoadmap: 'Roadmap pour vaisseau',
     releases: 'Releases',
-    unscheduled: 'Unscheduled',
-    lastUpdate: 'Last Update',
-    released: 'Released',
-    recentlyUpdated: 'Recently Updated',
-    committed: 'Committed',
+    unscheduled: 'Non planifiées',
+    lastUpdate: 'Dernière mise à jour',
+    released: 'Releases',
+    recentlyUpdated: 'Mis à jour récemment',
+    committed: 'Engagé',
     lastVersion: {
       active: {
-        decreased: 'Item was removed from the Roadmap',
-        increased: 'Item was readded to the Roadmap'
+        decreased: 'L\'élément a été retiré de la roadmap',
+        increased: 'L\'élément a été rajouter à la roadmap'
       },
-      committed: 'Item was marked as committed',
-      released: 'Item was released to PU',
-      release: 'Item moved from release %{old} to %{new}',
-      addedToRelease: 'Item new in release %{release}'
+      committed: 'L\'élément a été marqué comme validé',
+      released: 'L\'élément a été publier dans le PU',
+      release: 'Élément déplacé de la version %{old} à %{new}',
+      addedToRelease: 'Nouvel élément dans la version %{release}'
     },
     stories: {
-      one: '%{count} Story',
-      other: '%{count} Stories'
+      one: '%{count} livrable',
+      other: '%{count} livrables'
     },
     tasks: {
-      one: 'of %{count} Task',
-      other: 'of %{count} Tasks'
+      one: 'de %{count} tâche',
+      other: 'de %{count} tâches'
     },
     ships: {
-      one: '%{count} Ship',
-      other: '%{count} Ships'
+      one: '%{count} vaisseau',
+      other: '%{count} Vaisseaux'
     }
   },
   charts: {
     view: {
-      one: '%{label}:<br><b>%{count}</b> View',
-      other: '%{label}:<br><b>%{count}</b> Views'
+      one: '%{label}:<br><b>%{count}</b> Vue',
+      other: '%{label}:<br><b>%{count}</b> Vues'
     },
     ship: {
-      one: '%{label}:<br><b>%{count}</b> Ship',
-      other: '%{label}:<br><b>%{count}</b> Ships'
+      one: '%{label}:<br><b>%{count}</b> Vaisseau',
+      other: '%{label}:<br><b>%{count}</b> Vaisseaux'
     },
     'ship-pie': {
-      one: '%{label}:<br><b>%{count}</b> Ship (%{percentage} %)',
-      other: '%{label}:<br><b>%{count}</b> Ships (%{percentage} %)'
+      one: '%{label}:<br><b>%{count}</b> Vaisseau (%{percentage} %)',
+      other: '%{label}:<br><b>%{count}</b> Vaisseaux (%{percentage} %)'
     },
     'component-pie': {
       one: '%{label}:<br><b>%{count}</b> Component (%{percentage} %)',
