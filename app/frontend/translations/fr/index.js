@@ -84,38 +84,38 @@ export default {
   commodityItem: {
     grade: 'Niveau',
     type: 'Type',
-    itemType: 'Item Type',
+    itemType: 'Type de l\'article',
     itemClass: 'Item Class',
-    weaponClass: 'Weapon Class',
-    size: 'Size',
-    range: 'Range',
-    damageReduction: 'Damage Reduction',
-    rateOfFire: 'Rate of Fire',
-    extras: 'Additional Info',
-    location: 'Location',
-    slot: 'Slot',
-    storage: 'Storage',
-    shop: 'Shop',
-    unconfirmed: 'Item is unconfirmed',
-    manufacturer: 'Manufacturer'
+    weaponClass: 'Classe de l\'arme',
+    size: 'Taille',
+    range: 'Portée',
+    damageReduction: 'Réduction de dégâts',
+    rateOfFire: 'Cadence de Tir',
+    extras: 'Informations complémentaires',
+    location: 'Lieu',
+    slot: 'Emplacement',
+    storage: 'Stockage',
+    shop: 'Points de vente',
+    unconfirmed: 'L\'article n\'est pas confirmé',
+    manufacturer: 'Fabricant'
   },
   shopCommodity: {
-    listedAt: 'Listed at',
-    soldAt: 'Sold at',
-    boughtAt: 'Bought at'
+    listedAt: 'Listé à',
+    soldAt: 'Vendu à',
+    boughtAt: 'Acheté à'
   },
   resources: {
-    models: 'Ships',
+    models: 'Vaisseaux',
     images: 'Images'
   },
   pagination: {
-    previous: 'Previous Page',
-    next: 'Next Page',
+    previous: 'Page précédente',
+    next: 'Page suivante',
     gap: '&hellip;'
   },
   datetime: {
     formats: {
-      default: 'd MMMM y \'at\' HH:mm z',
+      default: 'd MMMM y \'à\' HH:mm z',
       iso: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx'
     }
   },
@@ -130,17 +130,17 @@ export default {
     distance: '%{count} m',
     weight: '%{count} t',
     speed: '%{count} m/s',
-    rateOfFire: '%{count} shots/min',
+    rateOfFire: '%{count} tirs/min',
     rotation: '%{count} deg/s',
     cargo: '%{count} SCU',
     fuel: '%{count}',
     ships: {
-      one: '%{count} ship',
-      other: '%{count} ships'
+      one: '%{count} vaisseau',
+      other: '%{count} vaisseaux'
     },
     people: {
-      one: '%{count} person',
-      other: '%{count} persons'
+      one: '%{count} personne',
+      other: '%{count} personnes'
     }
   }
 };
