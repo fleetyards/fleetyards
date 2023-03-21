@@ -41,7 +41,7 @@ export default {
     length: 'Longueur',
     mass: 'Masse',
     manufacturer: 'Fabricant',
-    hardpoints: 'Hardpoints',
+    hardpoints: 'point d\'ancrage',
     weapons: 'Armes',
     equipment: 'Équipement',
     variants: 'Variantes',
@@ -62,7 +62,7 @@ export default {
     type: 'Type',
     subType: 'Sous-type',
     habitable: 'Habitable?',
-    fairchanceact: 'Fair Chance Act?',
+    fairchanceact: 'loi sur l\'équité des chances',
     population: 'Population',
     economy: 'Économie',
     danger: 'Danger'
@@ -85,7 +85,7 @@ export default {
     grade: 'Niveau',
     type: 'Type',
     itemType: 'Type de l\'article',
-    itemClass: 'Item Class',
+    itemClass: 'Classe d\'objets',
     weaponClass: 'Classe de l\'arme',
     size: 'Taille',
     range: 'Portée',
@@ -111,12 +111,12 @@ export default {
   pagination: {
     previous: 'Page précédente',
     next: 'Page suivante',
-    gap: '&hellip;'
+    gap: 'écart entre les lignes'
   },
   datetime: {
     formats: {
-      default: 'd MMMM y \'à\' HH:mm z',
-      iso: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx'
+      default: 'jour mois année et heures:minutes',
+      iso: 'année-mois-jour et heures:minutes:secondes'
     }
   },
   number: {
