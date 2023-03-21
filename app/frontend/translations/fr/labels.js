@@ -204,108 +204,108 @@ export default {
     name: 'Nom',
     logo: 'Logo',
     rsiSid: 'SID',
-    public: 'Public Fleetview',
-    ts: 'Teamspeak Server',
-    awaitingConfirmation: 'Awaiting confirmation by Fleet',
+    public: 'Aperçu publique de la Flotte',
+    ts: 'Serveur chat de l\'équipe',
+    awaitingConfirmation: 'En attente de confirmation par la Flotte',
     members: {
-      primary: 'Primary Fleet?',
-      hideShips: 'Hide your Ships for this Fleet?',
+      primary: 'Flotte principale?',
+      hideShips: 'Cacher vos Vaisseaux pour cette Flotte ?',
       shipsFilter: {
-        label: 'Which Ships should be added to the Fleet?',
-        nullablePrompt: 'No Option selected',
-        field: 'Ships Select',
+        label: 'Quels vaisseaux doivent être ajoutés à la Flotte ?',
+        nullablePrompt: 'Aucune option sélectionnée',
+        field: 'Sélection des vaisseaux',
         values: {
-          all: 'All Ships',
-          hangar_group: 'All Ships in a given Hangar Group',
-          hide: 'No Ships'
+          all: 'Tous les Vaisseaux',
+          hangar_group: 'Tous les vaisseaux dans un Hangar de groupe donné',
+          hide: 'Pas de Vaisseaux'
         }
       },
       hangarGroupId: {
-        field: 'Hangar Group',
-        label: 'Specify a Hangar Group',
-        nullablePrompt: 'No Group selected'
+        field: 'Hangar de groupe',
+        label: 'Spécifier un Hangar de groupe',
+        nullablePrompt: 'Aucun Groupe sélectionné'
       },
       total: 'Total: %{count}',
-      joined: 'Joined at',
-      invited: 'Invited',
-      requested: 'Membership Requested',
-      declined: 'Declined',
+      joined: 'Inscrit le',
+      invited: 'Invité',
+      requested: 'Demande d\'adhésion requise',
+      declined: 'Refusée',
       roles: {
         admin: 'Admin',
-        officer: 'Officer',
-        member: 'Member'
+        officer: 'Officier',
+        member: 'Membre'
       }
     },
     inviteUrls: {
-      noLimit: 'No limit',
-      noExpiration: 'Never expires',
-      usesLeft: '%{count} uses left',
-      expiresIn: 'Expires in %{time}',
-      expired: 'Expired',
+      noLimit: 'Pas de limite',
+      noExpiration: 'N\'expire jamais',
+      usesLeft: '%{count} de jours restants',
+      expiresIn: 'Expire dans %{time}',
+      expired: 'Expirée',
       expiresAfterOptions: {
-        infinite: 'Never',
-        '30_minutes': '30 minutes',
-        '1_hour': '1 hour',
-        '6_hours': '6 hours',
-        '12_hours': '12 hours',
-        '1_day': '1 day',
-        '7_days': '7 days'
+        infinite: 'Jamais',
+        '30_minutes': '30 minutes',
+        '1_hour': '1 heure',
+        '6_hours': '6 heures',
+        '12_hours': '12 heures',
+        '1_day': '1 jour',
+        '7_days': '7 jours'
       },
       limitOptions: {
-        infinite: 'No limit',
-        1: '1 use',
-        5: '5 uses',
-        10: '10 uses',
-        25: '25 uses',
-        50: '50 uses',
-        100: '100 uses'
+        infinite: 'Pas de limite',
+        1: '1 utilisée',
+        5: '5 utilisées',
+        10: '10 utilisées',
+        25: '25 utilisées',
+        50: '50 utilisées',
+        100: '100 utilisées'
       }
     }
   },
   hangarGroup: {
-    name: 'Name',
-    color: 'Color',
-    sort: 'Sort Order',
-    public: 'Show on Public Hangar?'
+    name: 'Nom',
+    color: 'Couleur ',
+    sort: 'Ordre de Tri',
+    public: 'Afficher sur le hangar publique ?'
   },
   source: 'Source',
   model: {
-    variants: 'Variants',
-    manufacturer: 'Manufacturer',
-    loaners: 'Loaners',
-    paints: 'Paints',
+    variants: 'Variantes',
+    manufacturer: 'Fabricant',
+    loaners: 'Prêts',
+    paints: 'Peintures',
     modules: 'Modules',
-    modulePackages: 'Module Packages',
-    upgrades: 'Upgrade-Kits',
+    modulePackages: 'Paquets de module',
+    upgrades: 'Kits d\'Amélioration',
     brochure: 'Brochure',
-    onSale: 'On Sale',
-    salesPage: 'Sales Page',
-    addons: 'Modules & Upgrade-Kits',
+    onSale: 'En Vente',
+    salesPage: 'Page des Ventes',
+    addons: 'Kits de Modules et d\'Amélioration',
     productionStatus: {
-      'in-production': 'In Production',
-      'in-concept': 'In Concept',
-      ready: 'Hangar Ready',
-      'flight-ready': 'Flight Ready',
-      announced: 'Announced'
+      'in-production': 'En cours de production',
+      'in-concept': 'En concept',
+      ready: 'Hangar prêt',
+      'flight-ready': 'Le vol est prêt',
+      announced: 'Annoncée'
     }
   },
   metrics: {
-    info: 'Info',
-    levels: 'Levels',
-    topView: 'Top View',
+    info: 'Information',
+    levels: 'Niveaux',
+    topView: 'Vue de dessus',
     base: 'Base',
-    crew: 'Crew',
-    speed: 'Speed',
-    missileOptions: 'Missle Options (if available)'
+    crew: 'Équipe',
+    speed: 'Vitesse',
+    missileOptions: 'Options de Missile (si disponible)'
   },
-  component: { size: 'Size: %{size}' },
+  component: { size: 'Taille : %{size}' },
   hardpoint: {
     legend: {
-      headline: 'Legend',
-      slotTaken: 'Slot taken',
-      slotAvailable: 'Slot available'
+      headline: 'Légende',
+      slotTaken: 'Emplacement pris',
+      slotAvailable: 'Emplacement disponible'
     },
-    size: 'Size',
+    size: 'Taille',
     rackSize: 'Rack Size',
     details: 'Details',
     group: 'Group',
