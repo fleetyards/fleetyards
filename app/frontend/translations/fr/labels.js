@@ -16,14 +16,14 @@ export default {
   price: 'Prix',
   expand: 'Agrandir',
   toggleNavigation: 'Changer de navigation',
-  enableYoutube: 'activer Youtube',
+  enableYoutube: 'Cliquez pour activer les liens Youtube ou cliquez avec le bouton droit de la souris pour copier l\'URL de la vidéo',
   or: 'ou',
-  deselect: 'désélectionner',
-  networkStatusOffline: 'Mettre le réseau hors ligne',
+  deselect: 'cliquer pour désélectionner',
+  networkStatusOffline: 'statut du serveur : hors-ligne - service indisponible',
   groups: 'Groupes',
-  fleetInviteToken: 'notification d\'invitation à la flotte',
-  scDataVersion: 'Donnée Star Citizen',
-  home: { search: 'Menu principal : rechercher' },
+  fleetInviteToken: 'invitation de la flotte',
+  scDataVersion: 'Version corrigée',
+  home: { search: 'Recherche de vaisseaux' },
   shop: {
     rentalPrice: 'prix de location',
     sellPrice: 'prix de vente',
@@ -38,28 +38,28 @@ export default {
     confirmed: 'Confirmé ',
     submittedBy: 'Soumis par',
     prices: {
-      label: 'nom',
+      label: 'prix',
       rentalPrice: 'prix de location',
-      averageRentalPrice: 'prix moyen de location',
+      averageRentalPrice: 'location (Ø)',
       sellPrice: 'prix de vente',
-      averageSellPrice: 'prix moyen de vente',
-      buyPrice: 'prix d\'achat',
-      averageBuyPrice: 'prix moyen d\'achat',
-      rentalPrice1Day: 'prix de location 1 jour',
-      averageRentalPrice1Day: 'prix moyen de location 1 jour',
-      rentalPrice3Days: 'prix de location 3 jours',
-      averageRentalPrice3Days: 'prix moyen de location 3 jours',
-      rentalPrice7Days: 'Prix de location 7 jours',
-      averageRentalPrice7Days: 'Prix moyen de location 7 jours',
-      rentalPrice30Days: 'Prix de location 30 jours',
-      averageRentalPrice30Days: 'Prix moyen de location 30 jours'
+      averageSellPrice: 'vente pour (Ø)',
+      buyPrice: 'Achats pour',
+      averageBuyPrice: 'achats pour (Ø)',
+      rentalPrice1Day: '1 jour pour',
+      averageRentalPrice1Day: '1 jour pour (Ø)',
+      rentalPrice3Days: '3 jours pour',
+      averageRentalPrice3Days: '3 jours pour (Ø)',
+      rentalPrice7Days: '7 jours pour',
+      averageRentalPrice7Days: '7 jours pour (Ø)',
+      rentalPrice30Days: '30 jours pour',
+      averageRentalPrice30Days: '30 jours pour (Ø)'
     }
   },
   stats: {
     quickStats: {
-      newShips: 'Nouveaux vaisseaux',
+      newShips: 'Nouveaux vaisseaux en %{year}',
       totalShips: 'Nombre total de vaisseaux',
-      totalMembers: 'Nombre de membres'
+      totalMembers: 'Nombre total de membres'
     },
     modelsByClassification: 'Vaisseaux par catégorie',
     modelsBySize: 'Vaisseaux par taille',
@@ -69,27 +69,27 @@ export default {
     modelsByProductionStatus: 'Vaisseau par état de production'
   },
   roadmap: {
-    selectWeek: 'Sélectionnez une semaine',
-    shipRoadmap: 'Roadmap pour vaisseau',
-    releases: 'Releases',
+    selectWeek: 'Sélectionnez une carte',
+    shipRoadmap: 'Carte du vaisseau',
+    releases: 'toutes les publications',
     unscheduled: 'Non planifiées',
     lastUpdate: 'Dernière mise à jour',
-    released: 'Releases',
+    released: 'publiée',
     recentlyUpdated: 'Mis à jour récemment',
-    committed: 'Engagé',
+    committed: 'enclenchée',
     lastVersion: {
       active: {
         decreased: 'L\'élément a été retiré de la roadmap',
-        increased: 'L\'élément a été rajouter à la roadmap'
+        increased: 'L\'élément a été rajouté à la roadmap'
       },
-      committed: 'L\'élément a été marqué comme validé',
-      released: 'L\'élément a été publier dans le PU',
+      committed: 'L\'élément a été marqué comme engagé',
+      released: 'L\'élément a été publié dans le PU',
       release: 'Élément déplacé de la version %{old} à %{new}',
       addedToRelease: 'Nouvel élément dans la version %{release}'
     },
     stories: {
-      one: '%{count} livrable',
-      other: '%{count} livrables'
+      one: '%{count} stocké',
+      other: '%{count} stockés'
     },
     tasks: {
       one: 'de %{count} tâche',
@@ -114,48 +114,48 @@ export default {
       other: '%{label}:<br><b>%{count}</b> Vaisseaux (%{percentage} %)'
     },
     'component-pie': {
-      one: '%{label}:<br><b>%{count}</b> Component (%{percentage} %)',
-      other: '%{label}:<br><b>%{count}</b> Components (%{percentage} %)'
+      one: '%{label}:<br><b>%{count}</b> Composant (%{percentage} %)',
+      other: '%{label}:<br><b>%{count}</b> Composants (%{percentage} %)'
     },
     user: {
-      one: '%{label}:<br><b>%{count}</b> User',
-      other: '%{label}:<br><b>%{count}</b> Users'
+      one: '%{label}:<br><b>%{count}</b> Utilisateur',
+      other: '%{label}:<br><b>%{count}</b> Utilisateurs'
     },
     visit: {
-      one: '%{label}:<br><b>%{count}</b> Visit',
-      other: '%{label}:<br><b>%{count}</b> Visits'
+      one: '%{label}:<br><b>%{count}</b> Visite',
+      other: '%{label}:<br><b>%{count}</b> Visites'
     }
   },
-  rsiRoadmap: 'RSI Roadmap',
-  unknown: 'Unknown',
-  none: '-',
+  rsiRoadmap: 'Carte RSI',
+  unknown: 'inconnu',
+  none: 'nul',
   search: {
-    default: 'Search',
-    shareTitle: 'Search for: %{query}'
+    default: 'Recherche',
+    shareTitle: 'Recherche pour: %{query}'
   },
-  unknownModel: '%{slug} Unknown',
+  unknownModel: '%{slug} Inconnu',
   'not-available': 'N/A',
   receiveSaleNotifications: '',
-  publicUrl: 'Public URL',
-  name: 'Name',
-  homepage: 'Homepage',
-  discord: 'Discord Server',
-  youtube: 'Youtube Channel',
-  twitch: 'Twitch Channel',
-  guilded: 'Guilded Server',
+  publicUrl: 'URL publique',
+  name: 'Nom',
+  homepage: 'Page principale',
+  discord: 'Serveur Discord',
+  youtube: 'Chaîne Youtube',
+  twitch: 'Chaîne Twitch',
+  guilded: 'Serveur Guilded',
   '3dView': '3D',
-  poweredByStarship42: 'Powered by starship42.com',
-  exportStarship42: 'View on Starship42',
-  filter: 'Filter',
+  poweredByStarship42: 'Développé par starship42.com',
+  exportStarship42: 'Vu sur Starship42',
+  filter: 'Filtre',
   taxExcluded: 'excl. VAT',
   hangar: 'Hangar',
-  public: 'Public',
-  hangarStats: 'Stats',
-  wishlist: 'Wishlist',
-  fleetchart: 'Fleetchart',
+  public: 'Publique',
+  hangarStats: 'Statistiques',
+  wishlist: 'Liste de souhait',
+  fleetchart: 'Graphique de la Flotte',
   fleetchartApp: {
-    screenHeight: 'Screen Height',
-    viewpoint: 'Viewpoint',
+    screenHeight: 'Hauteur de l\'écran',
+    viewpoint: 'Point de vue',
     screenHeightOptions: {
       '1x': '1x',
       '1_5x': '1.5x',
@@ -164,44 +164,44 @@ export default {
       '4x': '4x'
     },
     viewpointOptions: {
-      side: 'Side',
-      top: 'Top',
-      angled: 'Angled'
+      side: 'Côté',
+      top: 'Haut',
+      angled: 'En biais'
     },
-    gridSize: '%{size} meter per grid box',
+    gridSize: '%{size} mètre par zone de grille',
     mode: 'Mode',
     modeOptions: {
-      classic: 'Classic',
+      classic: 'Classique',
       panzoom: 'v2'
     }
   },
-  fleetStats: 'Stats',
+  fleetStats: 'Statistiques',
   hangarMetrics: {
     total: 'Total',
-    totalMoney: 'Money Value',
-    totalCredits: 'Credits',
-    totalMinCrew: 'Min. Crew',
-    totalMaxCrew: 'Max. Crew',
-    totalCargo: 'Total Cargo'
+    totalMoney: 'Valeur de la monnaie',
+    totalCredits: 'Crédits',
+    totalMinCrew: 'Équipage minimum',
+    totalMaxCrew: 'Équipage maximum',
+    totalCargo: 'Cargaison totale'
   },
-  selectModel: 'Select a Ship',
+  selectModel: 'Sélectionner un vaisseau',
   compare: {
-    removeModel: 'Remove Ship',
-    addModel: { nullablePrompt: 'Add a Ship' },
-    enough: 'Don\'t you think 8 Ships are enough? ;)'
+    removeModel: 'Enlever un vaisseau',
+    addModel: { nullablePrompt: 'Ajouter un vaisseau' },
+    enough: 'Ne pensez-vous pas que 8 vaisseaux suffisent ? ;)'
   },
-  cargoRoutes: 'Cargo routes',
-  uecPerUnit: 'aUEC / Unit',
+  cargoRoutes: 'Routes de cargaisons',
+  uecPerUnit: 'aUEC / Unité',
   au: 'AU',
   uec: 'aUEC',
-  sell: 'Sell',
-  buy: 'Buy',
-  yourFlagship: 'Your Flagship',
-  flagship: 'Flagship',
+  sell: 'Vente',
+  buy: 'Achat',
+  yourFlagship: 'Votre vaisseau amiral',
+  flagship: 'Vaisseau amiral',
   fleet: {
-    classes: 'Fleet',
-    fid: 'Fleet ID',
-    name: 'Name',
+    classes: 'Flotte',
+    fid: 'Identifiant de la Flotte',
+    name: 'Nom',
     logo: 'Logo',
     rsiSid: 'SID',
     public: 'Public Fleetview',
