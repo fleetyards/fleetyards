@@ -95,7 +95,7 @@ export default {
     location: 'Lieu',
     slot: 'Emplacement',
     storage: 'Stockage',
-    shop: 'Points de vente',
+    shop: 'Magasin',
     unconfirmed: 'L\'article n\'est pas confirmé',
     manufacturer: 'Fabricant'
   },
@@ -123,24 +123,24 @@ export default {
     format: {
       precision: 2,
       strip_insignificant_zeros: true,
-      delimiter: 'délimiteur',
-      separator: 'séparateur'
+      delimiter: '.',
+      separator: ','
     },
-    percent: 'pourcentage',
-    distance: 'distance',
-    weight: 'poids',
-    speed: 'vitesse',
-    rateOfFire: 'cadence de tir',
-    rotation: 'rotation',
-    cargo: 'cargaison',
-    fuel: 'carburant',
+    percent: '%{count} %',
+    distance: '%{count} m',
+    weight: '%{count} t',
+    speed: '%{count} m/s',
+    rateOfFire: '%{count} tirs/min',
+    rotation: '%{count} deg/s',
+    cargo: '%{count} SCU',
+    fuel: '%{count}',
     ships: {
-      one: 'principal',
-      other: 'autre'
+      one: '%{count} vaisseau',
+      other: '%{count} vaisseaux'
     },
     people: {
-      one: 'principal',
-      other: 'autre'
+      one: '%{count} personne',
+      other: '%{count} personnes'
     }
   }
 };
