@@ -123,24 +123,24 @@ export default {
     format: {
       precision: 2,
       strip_insignificant_zeros: true,
-      delimiter: '.',
-      separator: ','
+      delimiter: 'délimiteur',
+      separator: 'séparateur'
     },
-    percent: '%{count} %',
-    distance: '%{count} m',
-    weight: '%{count} t',
-    speed: '%{count} m/s',
-    rateOfFire: '%{count} tirs/min',
-    rotation: '%{count} deg/s',
-    cargo: '%{count} SCU',
-    fuel: '%{count}',
+    percent: 'pourcentage',
+    distance: 'distance',
+    weight: 'poids',
+    speed: 'vitesse',
+    rateOfFire: 'cadence de tir',
+    rotation: 'rotation',
+    cargo: 'cargaison',
+    fuel: 'carburant',
     ships: {
-      one: '%{count} vaisseau',
-      other: '%{count} vaisseaux'
+      one: 'principal',
+      other: 'autre'
     },
     people: {
-      one: '%{count} personne',
-      other: '%{count} personnes'
+      one: 'principal',
+      other: 'autre'
     }
   }
 };
