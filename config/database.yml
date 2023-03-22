@@ -1,6 +1,6 @@
-production:
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: <%= ENV["DATABASE_POOL_SIZE"] %>
+# production:
+#   url: <%= ENV["DATABASE_URL"] %>
+#   pool: <%= ENV["DATABASE_POOL_SIZE"] %>
 
 staging:
   url: <%= ENV["DATABASE_URL"] %>
@@ -22,3 +22,10 @@ test:
   host: <%= ENV["DATABASE_HOST"] || 'localhost' %>
   user: <%= ENV["DATABASE_USER"] || 'root' %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
+
+production:
+  database: fleetyards_production
+  adapter: postgresql
+  host: <%= ENV["DB_HOST"] %>
+  user: root
+  password: <%= ENV["POSTGRES_PASSWORD"] %>

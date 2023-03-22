@@ -1,0 +1,81 @@
+# Name of your application. Used to uniquely configure containers.
+service: fleetyards-app
+
+# Name of the container image.
+image: fleetyards/app
+
+# Deploy to these servers.
+servers:
+  web:
+  jobs:
+    cmd: bin/sidekiq
+
+# Credentials for your image host.
+registry:
+  server: ghcr.io
+  username: mortik
+  password:
+    - MRSK_REGISTRY_PASSWORD
+
+# Inject ENV variables into containers (secrets come from .env).
+env:
+  clear:
+    DB_HOST: localhost
+  secret:
+    - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
+
+# Call a broadcast command on deploys.
+# audit_broadcast_cmd:
+#   bin/broadcast_to_bc
+
+# Use a different ssh user than root
+# ssh:
+#   user: app
+
+# Configure builder setup.
+builder:
+  args:
+    RUBY_VERSION: 3.2.1
+  env:
+    secret:
+      - RAILS_MASTER_KEY
+  # secrets:
+  #   - RAILS_MASTER_KEY
+#   remote:
+#     arch: amd64
+#     host: ssh://app@192.168.0.1
+
+# Use accessory services (secrets come from .env).
+accessories:
+  db:
+    image: postgres:14.7-alpine
+    port: 5432
+    env:
+      secret:
+        - POSTGRES_PASSWORD
+    files:
+      - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
+    directories:
+      - data:/var/lib/postgresql/data
+  redis:
+    image: redis:7.0
+    port: 6379
+    directories:
+      - data:/data
+  opensearch:
+    image: opensearchproject/opensearch:2.5.0
+    port: 9200
+    directories:
+      - data:/usr/share/opensearch/data
+
+# Configure custom arguments for Traefik
+# traefik:
+#   args:
+#     accesslog: true
+#     accesslog.format: json
+
+# Configure a custom healthcheck (default is /up on port 3000)
+# healthcheck:
+#   path: /healthz
+#   port: 4000

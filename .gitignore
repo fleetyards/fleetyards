@@ -12,6 +12,9 @@ pids/*
 config/credentials/*.key
 config/*.key
 .env
+.env.*
+!.env.erb
+!.env.*.erb
 
 # test files
 coverage/*
