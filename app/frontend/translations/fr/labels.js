@@ -371,216 +371,216 @@ export default {
     selectGroup: 'Sélectionner un Groupe',
     modelPaintSelect: { nullablePrompt: 'Sélectionner une peinture' },
     bulkGroupEdit: { hint: 'Les groupes existants seront remplacés !' },
-    hasLoaners: 'Loaners',
-    boughtViaSelect: { label: 'Bought via' }
+    hasLoaners: 'Prêteurs',
+    boughtViaSelect: { label: 'Acheté via' }
   },
   image: {
-    background: 'Use as Background?',
-    enabled: 'Enabled?',
+    background: 'Utiliser comme arrière-plan ?',
+    enabled: 'Activé?',
     global: 'Global?',
-    delete: 'Delete',
-    start: 'Start',
-    cancel: 'Cancel',
-    processing: 'Processing...',
-    error: 'Error',
-    name: 'Name',
-    size: 'File size',
-    dropzone: 'Drop images here',
-    cancelUpload: 'Cancel upload',
-    startUpload: 'Start upload',
-    selectImages: 'Add images...',
-    selectFolder: 'Add a folder...'
+    delete: 'Supprimer',
+    start: 'Démarrer',
+    cancel: 'Annuler',
+    processing: 'Traitement en cours...',
+    error: 'Erreur',
+    name: 'Nom',
+    size: 'Taille du fichier',
+    dropzone: 'Déposer les images ici',
+    cancelUpload: 'Annuler le téléchargement',
+    startUpload: 'Démarrer le téléchargement',
+    selectImages: 'Ajouter des images...',
+    selectFolder: 'Ajouter un dossier...'
   },
   signup: {
-    link: 'Don\'t have an Account?',
-    privacyPolicy: 'By creating a FleetYards account, you agree to our'
+    link: 'Vous n’avez pas de compte ?',
+    privacyPolicy: 'En créant un compte FleetYards, vous acceptez notre'
   },
-  privacyPolicy: 'Privacy Policy',
-  login: 'Username or email',
-  username: 'Username',
-  twoFactorCode: 'Two-factor code',
+  privacyPolicy: 'Politique de Confidentialité',
+  login: 'Nom d\'utilisateur ou e-mail',
+  username: 'Nom d’utilisateur',
+  twoFactorCode: 'Code d’authentification à deux facteurs',
   email: 'Email',
   avatar: 'Avatar',
-  alreadyRegistered: 'Already have an Account?',
-  currentPassword: 'Current Password',
-  password: 'Password',
-  passwordConfirmation: 'Password Confirmation',
-  rememberMe: 'Remember me',
-  emptyList: 'No %{name} present',
-  all: 'All',
-  supportUs: 'Support FleetYards.net',
-  account: { destroyInfo: 'If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can\'t be reverted.' },
+  alreadyRegistered: 'Vous avez déjà un compte?',
+  currentPassword: 'Mot de passe actuel',
+  password: 'Mot de passe',
+  passwordConfirmation: 'Confirmation du mot de passe',
+  rememberMe: 'Se souvenir de moi',
+  emptyList: 'Pas de %{name} présent',
+  all: 'Tout',
+  supportUs: 'Soutenez FleetYards.net',
+  account: { destroyInfo: 'Si vous voulez supprimer votre compte et enlever toutes vos informations de Fleetyards.net et ses Services cliquez sur le Bouton ci-dessous. Sachez qu\'il s\'agit d\'une action permanente qui ne peut pas être révoquée.' },
   filters: {
     shops: {
-      name: 'Name',
+      name: 'Nom',
       type: 'Type',
-      celestialObject: 'Celestial object',
-      model: 'Ship',
-      equipment: 'Equipment',
-      component: 'Component',
-      commodity: 'Commodity',
-      commodityType: 'Commodity Type',
-      starsystem: 'Starsystem',
+      celestialObject: 'Objet Céleste',
+      model: 'Vaisseau',
+      equipment: 'Équipement',
+      component: 'Composant',
+      commodity: 'Marchandise',
+      commodityType: 'Type de marchandise',
+      starsystem: 'Système planétaire',
       station: 'Station'
     },
     shopCommodities: {
-      commodityType: 'Commodity Type',
+      commodityType: 'Type de marchandise',
       station: 'Station',
-      shopId: 'Shop',
-      equipment: 'Equipment',
-      component: 'Component',
-      componentItemTypeFilter: 'Component Item Types',
-      equipmentItemTypeFilter: 'Equipment Item Types',
-      equipmentTypeFilter: 'Equipment Type',
-      equipmentSlotFilter: 'Equipment Slot',
-      commodity: 'Commodity',
-      model: 'Ship',
-      name: 'Name'
+      shopId: 'Magasin',
+      equipment: 'Équipement',
+      component: 'Composant',
+      componentItemTypeFilter: 'Types d\'éléments de composant',
+      equipmentItemTypeFilter: 'Types d\'objet d\'équipement',
+      equipmentTypeFilter: 'Type d\'équipement',
+      equipmentSlotFilter: 'Emplacement d\'équipement',
+      commodity: 'Marchandise',
+      model: 'Vaisseau',
+      name: 'Nom'
     },
     shopItems: {
-      category: 'Category',
-      subCategory: 'Sub Category',
-      name: 'Name',
-      manufacturer: 'Manufacturer',
-      minPrice: 'min. Price',
-      maxPrice: 'max. Price'
+      category: 'Catégorie',
+      subCategory: 'Sous catégorie',
+      name: 'Nom',
+      manufacturer: 'Fabricant',
+      minPrice: 'Prix min.',
+      maxPrice: 'Prix max.'
     },
     stations: {
-      name: 'Name',
-      celestialObject: 'Celestial Object',
-      starsystem: 'Starsystem',
-      type: 'Station Type',
-      shops: 'Shops',
-      docks: 'Docks',
+      name: 'Nom',
+      celestialObject: 'Objet Céleste',
+      starsystem: 'Système planétaire',
+      type: 'Type de Station',
+      shops: 'Magasins',
+      docks: 'Quais',
       habs: 'Habitation?',
-      cargoHub: 'Cargo Hub?',
-      refinery: 'Refinery Station?'
+      cargoHub: 'plate-forme de fret',
+      refinery: 'Station de raffinerie?'
     },
     vehicles: {
-      name: 'Name or Ship name',
-      lengthLt: 'Length <=',
-      lengthGt: 'Length >=',
-      pledgePriceLt: 'Pledge Price <=',
-      pledgePriceGt: 'Pledge Price >=',
-      priceLt: 'Price <=',
-      priceGt: 'Price >=',
-      wanted: 'Wanted',
-      public: 'Public',
-      group: 'Group',
-      loaner: 'Loaners',
-      boughtVia: { nullablePrompt: 'Bought via?' }
+      name: 'Nom ou nom du vaisseau',
+      lengthLt: 'Longueur <=',
+      lengthGt: 'Longueur >=',
+      pledgePriceLt: 'Prix du Pledge <=',
+      pledgePriceGt: 'Prix du Pledge >=',
+      priceLt: 'Prix <=',
+      priceGt: 'Prix >=',
+      wanted: 'Recherché',
+      public: 'Publique',
+      group: 'Groupe',
+      loaner: 'Prêteurs',
+      boughtVia: { nullablePrompt: 'Acheté via?' }
     },
     tradeRoutes: {
-      sortBy: 'Sort by',
+      sortBy: 'Trier par',
       sortByValues: {
-        percent: 'Max. Percent',
-        profit: 'Max. Profit'
+        percent: 'Pourcentage Max.',
+        profit: 'Bénéfice max.'
       },
-      cargoShip: 'With Cargoship?',
-      origin: 'From?',
-      destination: 'To?',
-      excludeCommodityType: 'Exclude Commodity Type',
-      originCelestialObject: 'Origin Celestial Object',
-      destinationCelestialObject: 'Destination Celestial Object',
-      originStarsystem: 'Origin Starsystem',
-      destinationStarsystem: 'Destination Starsystem'
+      cargoShip: 'Avec le vaisseau de marchandise ?',
+      origin: 'De ?',
+      destination: 'Vers?',
+      excludeCommodityType: 'Exclure le type de marchandise',
+      originCelestialObject: 'Lieu d\'origine d\'objet céleste',
+      destinationCelestialObject: 'Destination d\'objet céleste',
+      originStarsystem: 'Système planétaire d\'origine',
+      destinationStarsystem: 'Destination du système planétaire'
     },
     models: {
-      shipRole: 'Ship Role',
+      shipRole: 'Rôle du vaisseau',
       classification: 'Classification',
       focus: 'Focus',
-      manufacturer: 'Manufacturer',
-      onSale: 'On Sale',
-      size: 'Size',
-      price: 'Price',
-      pledgePrice: 'Pledge Price',
-      productionStatus: 'Production Status',
-      lengthLt: 'Length <=',
-      lengthGt: 'Length >=',
-      beamLt: 'Beam <=',
-      beamGt: 'Beam >=',
-      heightLt: 'Height <=',
-      heightGt: 'Height >=',
-      pledgePriceLt: 'Pledge Price <=',
-      pledgePriceGt: 'Pledge Price >=',
-      priceLt: 'Price <=',
-      priceGt: 'Price >=',
-      willItFit: 'Will it Fit?'
+      manufacturer: 'Fabricant',
+      onSale: 'En Vente',
+      size: 'Taille',
+      price: 'Prix',
+      pledgePrice: 'Prix du Pledge',
+      productionStatus: 'Statut de la production',
+      lengthLt: 'Longueur <=',
+      lengthGt: 'Longueur >=',
+      beamLt: 'Rayon <=',
+      beamGt: 'Rayon >=',
+      heightLt: 'Hauteur <=',
+      heightGt: 'Hauteur >=',
+      pledgePriceLt: 'Prix du Pledge <=',
+      pledgePriceGt: 'Prix du Pledge >=',
+      priceLt: 'Prix <=',
+      priceGt: 'Prix >=',
+      willItFit: 'Est-ce que cela conviendra ?'
     },
     images: {
-      station: 'Station',
-      model: 'Ship'
+      station: '-',
+      model: 'Vaisseau'
     },
     fleets: {
-      member: 'Member',
-      members: { role: 'Role' },
+      member: 'Membre',
+      members: { role: 'Rôle' },
       inviteUrls: {
-        expiresAfter: 'Expire after',
-        limit: 'Max number of uses'
+        expiresAfter: 'Expire après',
+        limit: 'Nombre maximum d’utilisations'
       }
     }
   },
   station: {
-    docks: 'Docks',
-    location: 'Location',
+    docks: 'Quais',
+    location: 'Localisation',
     type: 'Type',
     habitation: 'Habitation',
-    habs: 'Habs',
-    shops: 'Shops',
+    habs: 'Habitat',
+    shops: 'Magasins',
     locationPrefix: {
-      default: 'on',
-      asteriod: 'on asteroid near',
-      orbit: 'in orbit around'
+      default: 'Activé',
+      asteriod: 'à proximité d\'un astéroïde',
+      orbit: 'autour de l\'orbite'
     },
-    locationSuffix: 'near %{location}'
+    locationSuffix: 'à proximité de %{location}'
   },
   tradeRoutes: {
-    buy: 'Buy for: %{uec}',
-    sell: 'Sell for: %{uec}',
-    cargoShip: 'for %{cargo} SCU',
-    sortByPercent: 'Sort by Percent',
-    sortByProfit: 'Sort by Profit',
-    sortByStation: 'Sort by Station',
-    showAveragePrices: 'Display average Prices',
-    showLatestPrices: 'Display latest Prices'
+    buy: 'Acheter pour: %{uec}',
+    sell: 'Vendre pour: %{uec}',
+    cargoShip: 'pour %{cargo} SCU',
+    sortByPercent: 'Trier par Pourcentage',
+    sortByProfit: 'Trier par Bénéfice',
+    sortByStation: 'Trier par Station',
+    showAveragePrices: 'Affichage des prix moyens',
+    showLatestPrices: 'Affichage des derniers prix'
   },
   erkul: {
-    prefix: 'Tryout Loadouts with',
-    link: 'Erkul\'s DPS Calculator'
+    prefix: 'Essayer la configuration avec',
+    link: 'Calculatrice de DPS d\'Erkul'
   },
   scunpacked: {
-    prefix: 'Loadouts based on Gamefiles powered by',
+    prefix: 'Configurations basées sur les produits développés par Gamefiles ',
     link: 'SCunpacked'
   },
   filterGroup: {
-    nullablePrompt: 'No Option selected',
-    prompt: 'Please select an Option'
+    nullablePrompt: 'Aucune option sélectionnée',
+    prompt: 'Merci de sélectionner une option'
   },
-  newVehicle: { nullablePrompt: 'Select a Ship' },
+  newVehicle: { nullablePrompt: 'Sélectionner un vaisseau' },
   addAddon: { nullablePrompt: '' },
   pagination: {
-    perPage: 'Per Page',
-    pages: '%{page} of %{total}'
+    perPage: 'Par Page',
+    pages: '%{page} sur %{total}'
   },
-  table: { selected: '%{count} Selected' },
+  table: { selected: '%{count} sélectionné' },
   commodityPrice: {
-    shopId: 'Shop',
+    shopId: 'Magasin',
     station: 'Station',
-    commodityItemType: 'Commodity Type',
-    commodityItemId: 'Commodity Item',
-    item: 'ShopCommodity',
-    price: 'Price',
+    commodityItemType: 'Type de marchandise',
+    commodityItemId: 'Article de marchandise',
+    item: 'Magasins de marchandise',
+    price: 'Prix',
     type: 'Type',
-    shop: 'Shop',
-    submittedBy: 'Submitted By'
+    shop: 'Magasin',
+    submittedBy: 'Soumis par'
   },
   shoppingCart: {
     total: 'Total',
-    itemTotal: 'Item Total',
-    perItem: 'per Item',
+    itemTotal: 'Total d\'article',
+    perItem: 'par article',
     items: {
-      one: '<b>%{count}</b> Item for <b>%{price}</b>',
-      other: '<b>%{count}</b> Items for <b>%{price}</b>'
+      one: '<b>%{count}</b> Article pour <b>%{price}</b>',
+      other: '<b>%{count}</b> Articles pour <b>%{price}</b>'
     }
   }
 };
