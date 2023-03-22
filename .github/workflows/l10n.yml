@@ -20,7 +20,7 @@ jobs:
       - uses: ./.github/workflows/js-setup-action
       - run: yarn run lint:fix
       - name: Commit changes
-        uses: EndBug/add-and-commit@v8
+        uses: EndBug/add-and-commit@v9
         with:
           message: "chore: lint translations"
           add: "app/frontend/translations/*"
