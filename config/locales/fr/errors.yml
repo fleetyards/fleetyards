@@ -2,14 +2,14 @@
 fr:
   errors:
     method_not_allowed:
-      message: Method not allowed
+      message: Méthode non autorisée
     not_acceptable:
-      message: Not acceptable
+      message: Inacceptable
     not_found:
-      message: Not found
+      message: Introuvable
     server_error:
-      message: Server Error
+      message: Erreur Serveur
     unprocessable_entity:
-      message: Unprocessable Entity
+      message: Entité impossible à traiter
     pagination:
-      max_per_page_reached: Max per Page reached
+      max_per_page_reached: Le maximum par page est atteint
