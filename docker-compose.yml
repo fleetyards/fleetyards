@@ -1,65 +1,58 @@
 version: '3'
-
+name: fleetyards-dev
 services:
-  app:
-    image: fleetyards/app:latest
-    build: .
-    ports:
-      - 3001:3001
-    environment:
-      DATABASE_URL: postgresql://root:root@postgres:5432/fleetyards
-      REDIS_URL: redis://redis:6379
-      ELASTICSEARCH_URL: elasticsearch:9200
-      # INITIAL_DB_SETUP: 1
-      UNSAFE: 1
-      RAILS_SERVE_STATIC_FILES: 1
-      DOMAIN: localhost:3001
-      PORT: 3001
-      ON_SUBDOMAIN: false
-    depends_on:
-      - postgres
-      - redis
-      - elasticsearch
-      # - kibana
-      # - mailhog
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   ports:
+  #     - 8270:3000
+  #     - 3136:3136
+  #     - 3137:3137
+  #   environment:
+  #     RAILS_ENV: development
+  #     DB_HOST: postgres
+  #     REDIS_URL: redis://redis:6379
+  #     OPENSEARCH_URL: opensearch:9200
+  #     # INITIAL_DB_SETUP: 1
+  #     UNSAFE: 1
+  #     RAILS_SERVE_STATIC_FILES: 1
+  #     DOMAIN: fleetyards.test
+  #     PORT: 3000
+  #     ON_SUBDOMAIN: false
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #     - opensearch
   postgres:
-    image: postgres:10.5
+    image: postgres:13-alpine
     restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - 5432:5432
-    volumes:
-      - ./data/postgres-local:/var/lib/postgresql/data
-      - ./dumps:/backups
+      - 8271:5432
   redis:
-    image: redis:6.0.9
+    image: redis:6.2.11-alpine
     ports:
-      - 6379:6379
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
-    ports:
-      - 9200:9200
-      - 9300:9300
+      - 8272:6379
+  opensearch:
+    image: opensearchproject/opensearch:2
     environment:
-      - xpack.security.enabled=false
+      - cluster.name=fleetyards-opensearch-cluster
+      - node.name=fleetyards-opensearch-node1
       - discovery.type=single-node
-      - cluster.name=fleetyards-development-cluster
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - plugins.security.disabled=true
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
     volumes:
-      - ./data/es-local:/usr/share/elasticsearch/data
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.9.2
-  #   ports:
-  #     - 5601:5601
-  #   environment:
-  #     ELASTICSEARCH_URL: http://elasticsearch:9200
-  #     ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-  #   depends_on:
-  #     - elasticsearch
-  # mailhog:
-  #   image: mailhog/mailhog:latest
-  #   ports:
-  #     - 1025:1025
-  #     - 8025:8025
+      - ./data/opensearch-data:/usr/share/opensearch/data
+    ports:
+      - 8273:9200

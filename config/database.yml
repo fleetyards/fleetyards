@@ -1,24 +1,22 @@
-production:
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: <%= ENV["DATABASE_POOL_SIZE"] %>
+production: &default
+  database: <%= ENV["DB_NAME"] || 'fleetyards' %>
+  adapter: postgresql
+  host: <%= ENV["DB_HOST"] || 'localhost' %>
+  port: <%= ENV["DB_PORT"] || 5432 %>
+  user: <%= ENV["DB_USER"] || 'root' %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  pool: <%= ENV["DB_POOL_SIZE"] %>
 
 staging:
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: <%= ENV["DATABASE_POOL_SIZE"] %>
+  <<: *default
 
 ci:
-  url: <%= ENV["DATABASE_URL"] %>
+  <<: *default
 
 development:
+  <<: *default
   database: fleetyards_dev
-  adapter: postgresql
-  host: <%= ENV["DATABASE_HOST"] || 'localhost' %>
-  user: <%= ENV["DATABASE_USER"] || 'root' %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>
 
 test:
+  <<: *default
   database: fleetyards_test
-  adapter: postgresql
-  host: <%= ENV["DATABASE_HOST"] || 'localhost' %>
-  user: <%= ENV["DATABASE_USER"] || 'root' %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>

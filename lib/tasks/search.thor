@@ -33,7 +33,7 @@ class Search < Thor
     puts "Finished"
     puts
 
-    run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    run("curl -XPUT -H \"Content-Type: application/json\" #{opensearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
   end
   desc "index", "Create index/reindex for all Relevant Models"
   def index
@@ -59,7 +59,7 @@ class Search < Thor
     puts "Finished"
     puts
 
-    run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+    run("curl -XPUT -H \"Content-Type: application/json\" #{opensearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
   end
   # rubocop:disable Metrics/CyclomaticComplexity
   desc "delete_index", "Delete index for all Relevant Models"
@@ -88,12 +88,12 @@ class Search < Thor
   # rubocop:enable Metrics/CyclomaticComplexity
 
   no_commands do
-    private def elasticsearch_url
-      ENV.fetch("ELASTICSEARCH_URL", "http://localhost:9200")
+    private def opensearch_url
+      ENV.fetch("OPENSEARCH_URL", "http://localhost:9200")
     end
 
     private def set_elasticsearch_settings
-      run("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+      run("curl -XPUT -H \"Content-Type: application/json\" #{opensearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
     end
   end
 end
