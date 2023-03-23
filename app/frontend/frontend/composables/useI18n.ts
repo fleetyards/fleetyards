@@ -9,7 +9,9 @@ import es from "@/translations/es";
 import zhCN from "@/translations/zh-CN";
 import zhTW from "@/translations/zh-TW";
 
-const availableLocales = ["de", "en", "es", "fr", "it", "zh", "zh-CN", "zh-TW"];
+// const availableLocales = ["de", "en", "es", "fr", "it", "zh", "zh-CN", "zh-TW"];
+// Temporarly disable languages without translations
+const availableLocales = ["de", "en", "fr", "it"];
 I18n.defaultLocale = "en";
 I18n.locale = "en";
 I18n.fallbacks = true;
