@@ -14,7 +14,7 @@ jobs:
       - uses: ./.github/workflows/js-setup-action
       - run: yarn cypress install
       - name: Run E2E Tests
-        run: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net --parallel
+        run: yarn run test:e2e --record --config baseUrl=https://${{ vars.STAGE_DOMAIN }} --parallel
 
   # build:
   #   needs: [smoke-test]

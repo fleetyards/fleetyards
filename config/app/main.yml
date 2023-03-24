@@ -26,6 +26,9 @@ shared:
 
   opensearch_url: <%= ENV["OPENSEARCH_URL"] || 'localhost:9200' %>
 
+staging:
+  on_subdomain?: true
+
 production:
   on_subdomain?: true
 
