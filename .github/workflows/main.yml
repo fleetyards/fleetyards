@@ -66,12 +66,13 @@ jobs:
 
   deploy-to-stage:
     if: github.ref == 'refs/heads/main'
-    needs: [ruby-lint, ruby-tests, js-tests, js-lint, js-prettier, seeds, e2e-test]
+    needs:
+      [ruby-lint, ruby-tests, js-tests, js-lint, js-prettier, seeds, e2e-test]
     uses: ./.github/workflows/deploy.job.yml
     with:
       capEnv: stage
       name: Stage
-      url: https://stage.fleetyards.net
+      url: https://{{ vars.STAGE_DOMAIN }}
     secrets: inherit
 
   notify-app_signal:

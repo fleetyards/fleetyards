@@ -16,6 +16,7 @@ if (window.SENTRY_DSN) {
           "localhost",
           "fleetyards.test",
           "stage.fleetyards.net",
+          "fleetyards.dev",
           "fleetyards.net",
           /^\//,
         ],
