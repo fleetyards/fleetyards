@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.15.0](https://github.com/fleetyards/fleetyards/compare/v5.14.4...v5.15.0) (2023-03-27)
+
+
+### Features
+
+* **language-support:** add language select to footer ([09113d0](https://github.com/fleetyards/fleetyards/commit/09113d00e53a2003e8eec9500d570f7761c531e3))
+* **purchased-ingame:** Allow Ships to be marked as purchased-ingame ([#2282](https://github.com/fleetyards/fleetyards/issues/2282)) ([4c3306b](https://github.com/fleetyards/fleetyards/commit/4c3306bcc184661cde04beea5cc77b3233a3a959))
+* **vehicles:** add bought-via information ([#2563](https://github.com/fleetyards/fleetyards/issues/2563)) ([0efe318](https://github.com/fleetyards/fleetyards/commit/0efe3185d6549e05efea0b84bfbc573db864a28e))
+* **vehicles:** add wipe actions for ingame bought vehicles ([#2565](https://github.com/fleetyards/fleetyards/issues/2565)) ([0fe13cb](https://github.com/fleetyards/fleetyards/commit/0fe13cb9473b166e100565cbb9ece918012d45a2))
+* **wishlist:** use wishlist state for addToHangar status ([b34f82b](https://github.com/fleetyards/fleetyards/commit/b34f82b7574f8600e391a992a35b0e0795b81131))
+
+
+### Bug Fixes
+
+* load emp and qed data from gamefiles ([75006e3](https://github.com/fleetyards/fleetyards/commit/75006e3b33d08dea89c2c99c238de5455e973f11))
+
 ### [5.14.4](https://github.com/fleetyards/fleetyards/compare/v5.14.3...v5.14.4) (2023-02-22)
 
 ### [5.14.3](https://github.com/fleetyards/fleetyards/compare/v5.14.2...v5.14.3) (2023-02-09)
