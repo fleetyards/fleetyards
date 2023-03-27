@@ -5,6 +5,7 @@
     :style="{
       width: `${width}px`,
       'max-height': height ? `${height}px` : null,
+      'max-width': maxWidth,
     }"
     :alt="label"
     class="fleetchart-item-image"
@@ -28,5 +29,7 @@ export default class FleetchartListItemImage extends Vue {
   @Prop({ required: true }) width!: number;
 
   @Prop({ default: null }) height!: number | null;
+
+  @Prop({ default: null }) maxWidth!: number | null;
 }
 </script>

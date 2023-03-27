@@ -4,21 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
     <title><%= title %></title>
-
     <meta content="<%= description %>" name="description">
     <meta content="<%= keywords %>" name="keywords">
-
     <meta property="og:site_name" content="<%= I18n.t(:"title.default") %>">
     <meta property="og:title" content="<%= og_title %>">
     <meta property="og:description" content="<%= og_description %>">
     <meta property="og:type" content="<%= og_type %>">
     <meta property="og:url" content="<%= og_url %>">
     <meta property="og:image" content="<%= og_image %>">
-
     <link rel="shortcut icon" type="image/png" href="<%= asset_path('favicon.png') %>">
-
     <meta name="color-scheme" content="light dark">
-
     <meta name="theme-color" content="#333333"/>
     <meta name="application-name" content="<%= I18n.t("title.default") %>">
     <meta name="mobile-web-app-capable" content="yes">
@@ -26,25 +21,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="<%= I18n.t("title.default") %>">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <link rel="manifest" href="<%= asset_path('manifest.json') %>" />
-
     <%= favicon_link_tag 'icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>
     <%= favicon_link_tag 'icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
     <%= favicon_link_tag 'icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' %>
     <%= favicon_link_tag 'icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' %>
     <%= favicon_link_tag 'icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png' %>
-
     <link rel="preconnect" href="<%= API_ENDPOINT %>">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://storage.googleapis.com">
     <link rel="preconnect" href="https://kit-pro.fontawesome.com">
-
     <script src="https://kit.fontawesome.com/497179c6ff.js" crossorigin="anonymous"></script>
-
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
     <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900|Major+Mono+Display&display=swap" crossorigin>
-
     <%= vite_stylesheet_tag 'frontend.scss' %>
     <script>
       window.APP_VERSION = '<%= Fleetyards::VERSION %>'
@@ -88,7 +77,6 @@
         </div>
       </div>
     </div>
-
     <%= yield %>
   </body>
 </html>
