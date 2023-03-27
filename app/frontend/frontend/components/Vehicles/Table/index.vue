@@ -160,6 +160,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import wishlistCollection from "@/frontend/api/collections/Wishlist";
 import { displayConfirm } from "@/frontend/lib/Noty";
 import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
@@ -257,13 +258,19 @@ export default class FilteredGrid extends Vue {
 
     await vehiclesCollection.addToWishlistBulk(this.selected);
 
+    this.resetSelected();
+
     this.updating = false;
   }
 
   async addToHangarBulk() {
     this.updating = true;
 
-    await vehiclesCollection.addToWishlistBulk(this.selected);
+    await vehiclesCollection.addToHangarBulk(this.selected);
+
+    wishlistCollection.refresh();
+
+    this.resetSelected();
 
     this.updating = false;
   }
@@ -273,6 +280,8 @@ export default class FilteredGrid extends Vue {
 
     await vehiclesCollection.hideFromPublicHangar(this.selected);
 
+    wishlistCollection.refresh();
+
     this.updating = false;
   }
 
@@ -280,6 +289,8 @@ export default class FilteredGrid extends Vue {
     this.updating = true;
 
     await vehiclesCollection.showOnPublicHangar(this.selected);
+
+    wishlistCollection.refresh();
 
     this.updating = false;
   }
@@ -295,6 +306,8 @@ export default class FilteredGrid extends Vue {
       text: this.$t("messages.confirm.hangar.destroySelected"),
       onConfirm: async () => {
         await vehiclesCollection.destroyBulk(this.selected);
+
+        wishlistCollection.refresh();
 
         this.resetSelected();
 
