@@ -66,6 +66,7 @@
     "vuex-persistedstate": "3.2.1"
   },
   "devDependencies": {
+    "@prettier/plugin-ruby": "^3.2.2",
     "@types/i18n-js": "3.8.4",
     "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "5.55.0",
@@ -93,6 +94,7 @@
     "postcss-import": "15.1.0",
     "postcss-preset-env": "8.0.1",
     "prettier": "2.8.4",
+    "prettier-plugin-erb": "^0.4.0",
     "sass": "1.59.3",
     "standard-version": "9.5.0",
     "typescript": "5.0.2",

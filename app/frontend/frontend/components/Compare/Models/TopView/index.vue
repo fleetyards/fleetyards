@@ -33,6 +33,7 @@
             :label="model.name"
             :src="model.sideViewSmall"
             :width="length(model)"
+            max-width="100%"
           />
         </div>
       </div>
@@ -49,6 +50,7 @@
             :label="model.name"
             :src="model.topViewSmall"
             :width="length(model)"
+            max-width="100%"
           />
         </div>
       </div>
