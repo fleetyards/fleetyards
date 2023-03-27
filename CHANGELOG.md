@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.15.1](https://github.com/fleetyards/fleetyards/compare/v5.15.0...v5.15.1) (2023-03-27)
+
+
+### Bug Fixes
+
+* **wishlist:** reload list on bulk actions ([d94dc48](https://github.com/fleetyards/fleetyards/commit/d94dc484e99e03d24773f0188814b6e558e843f3))
+
 ## [5.15.0](https://github.com/fleetyards/fleetyards/compare/v5.14.4...v5.15.0) (2023-03-27)
 
 
