@@ -2,6 +2,7 @@ type User = {
   id: string;
   username: string;
   twoFactorRequired: boolean;
+  hideOwner: boolean;
 };
 
 type UserForm = {

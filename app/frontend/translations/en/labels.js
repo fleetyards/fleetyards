@@ -15,6 +15,7 @@ export default {
   collapse: "Collapse",
   price: "Price",
   expand: "Expand",
+  anonymous: "Anonymous",
   toggleNavigation: "Toggle Navigation",
   enableYoutube:
     "Click to enable Youtube embeds or right click to copy Video URL",
@@ -362,6 +363,8 @@ export default {
     saleNotify: "I want to receive Sale Notifications",
     publicHangar: "Public Hangar enabled",
     publicHangarLoaners: "Show Loaners Hint on Public Hangar",
+    publicWishlist: "Public Wishlist enabled",
+    hideOwner: "Hide Ownership for Fleets",
   },
   vehicle: {
     name: "Name",

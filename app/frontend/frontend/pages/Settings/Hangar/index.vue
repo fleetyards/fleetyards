@@ -52,6 +52,21 @@
             />
           </ValidationProvider>
         </div>
+        <div class="col-12 col-md-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="hideOwner"
+            :name="$t('labels.user.hideOwner')"
+            :slim="true"
+          >
+            <Checkbox
+              id="hideOwner"
+              v-model="form.hideOwner"
+              :label="$t('labels.user.hideOwner')"
+              :class="{ 'has-error has-feedback': errors[0] }"
+            />
+          </ValidationProvider>
+        </div>
       </div>
       <br />
       <Btn :loading="submitting" type="submit" size="large">
@@ -101,6 +116,7 @@ export default class SettingsHangar extends Vue {
       publicHangar: this.currentUser.publicHangar,
       publicHangarLoaners: this.currentUser.publicHangarLoaners,
       publicWishlist: this.currentUser.publicWishlist,
+      hideOwner: this.currentUser.hideOwner,
     };
   }
 
