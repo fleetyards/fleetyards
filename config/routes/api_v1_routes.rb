@@ -102,7 +102,7 @@ v1_api_routes = lambda do
 
     put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 
-    resource :hangar_stats, path: 'stats', only: %i[show] do
+    resource :hangar_stats, path: "stats", only: %i[show] do
       get "models-by-size", to: "hangar_stats#models_by_size"
       get "models-by-production-status", to: "hangar_stats#models_by_production_status"
       get "models-by-manufacturer", to: "hangar_stats#models_by_manufacturer"
@@ -123,13 +123,12 @@ v1_api_routes = lambda do
 
   namespace :public do
     resources :hangars, param: :username, only: %i[show] do
-      resource :hangar_stats, path: 'stats', only: %i[show]
+      resource :hangar_stats, path: "stats", only: %i[show]
       resources :hangar_groups, path: "groups", only: %i[index]
     end
 
     resources :wishlists, param: :username, only: %i[show]
   end
-
 
   resources :vehicles, only: %i[create update destroy] do
     collection do
@@ -141,6 +140,7 @@ v1_api_routes = lambda do
       get "filters/bought-via", to: "vehicles#bought_via_filters"
 
       # DEPRECATED
+      get "/", to: "hangars#show"
       get :fleetchart
       get ":username/fleetchart", to: "vehicles#public_fleetchart", as: :public_fleetchart
 
@@ -165,8 +165,6 @@ v1_api_routes = lambda do
       get "stats/models-by-manufacturer", to: "hangar_stats#models_by_manufacturer"
       get "stats/models-by-classification", to: "hangar_stats#models_by_classification"
     end
-
-    get "/", to: "hangars#show" # DEPRECATED
   end
 
   # DEPRECATED
@@ -225,29 +223,29 @@ v1_api_routes = lambda do
       post :check
       get :invites
       get :current
-      get "check-invite/:token" => "fleets#find_by_invite"
-      post "use-invite" => "fleet_memberships#create_by_invite"
+      get "check-invite/:token", to: "fleets#find_by_invite"
+      post "use-invite", to: "fleet_memberships#create_by_invite"
     end
 
     member do
-      get "vehicles" => "fleet_vehicles#index"
+      get "vehicles", to: "fleet_vehicles#index"
       get "vehicles/export", to: "fleet_vehicles#export"
-      get "model-counts" => "fleet_vehicles#model_counts"
-      get "quick-stats" => "fleet_vehicles#quick_stats"
-      get "fleetchart" => "fleet_vehicles#fleetchart"
-      get "public-vehicles" => "fleet_vehicles#public"
-      get "public-model-counts" => "fleet_vehicles#public_model_counts"
-      get "embed" => "fleet_vehicles#embed"
-      get "public-fleetchart" => "fleet_vehicles#public_fleetchart"
+      get "model-counts", to: "fleet_vehicles#model_counts"
+      get "quick-stats", to: "fleet_vehicles#quick_stats"
+      get "fleetchart", to: "fleet_vehicles#fleetchart"
+      get "public-vehicles", to: "fleet_vehicles#public"
+      get "public-model-counts", to: "fleet_vehicles#public_model_counts"
+      get "embed", to: "fleet_vehicles#embed"
+      get "public-fleetchart", to: "fleet_vehicles#public_fleetchart"
 
-      get "members" => "fleet_members#index"
-      get "member-quick-stats" => "fleet_members#quick_stats"
+      get "members", to: "fleet_members#index"
+      get "member-quick-stats", to: "fleet_members#quick_stats"
 
-      get "stats/vehicles-by-model" => "fleet_stats#vehicles_by_model"
-      get "stats/models-by-size" => "fleet_stats#models_by_size"
-      get "stats/models-by-production-status" => "fleet_stats#models_by_production_status"
-      get "stats/models-by-manufacturer" => "fleet_stats#models_by_manufacturer"
-      get "stats/models-by-classification" => "fleet_stats#models_by_classification"
+      get "stats/vehicles-by-model", to: "fleet_stats#vehicles_by_model"
+      get "stats/models-by-size", to: "fleet_stats#models_by_size"
+      get "stats/models-by-production-status", to: "fleet_stats#models_by_production_status"
+      get "stats/models-by-manufacturer", to: "fleet_stats#models_by_manufacturer"
+      get "stats/models-by-classification", to: "fleet_stats#models_by_classification"
     end
 
     resources :fleet_memberships, path: "members", param: :username, only: %i[create destroy] do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HangarFiltersConcern
   private def vehicle_query_params
     @vehicle_query_params ||= query_params(
