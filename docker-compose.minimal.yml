@@ -1,29 +1,6 @@
 version: '3'
 name: fleetyards-dev
 services:
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #   ports:
-  #     - 8270:3000
-  #     - 3136:3136
-  #     - 3137:3137
-  #   environment:
-  #     RAILS_ENV: development
-  #     DB_HOST: postgres
-  #     REDIS_URL: redis://redis:6379
-  #     OPENSEARCH_URL: opensearch:9200
-  #     # INITIAL_DB_SETUP: 1
-  #     UNSAFE: 1
-  #     RAILS_SERVE_STATIC_FILES: 1
-  #     DOMAIN: fleetyards.test
-  #     PORT: 3000
-  #     ON_SUBDOMAIN: false
-  #   depends_on:
-  #     - postgres
-  #     - redis
-  #     - opensearch
   postgres:
     image: postgres:13-alpine
     restart: always
@@ -55,6 +32,6 @@ services:
         soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
         hard: 65536
     volumes:
-      - ./data/opensearch-data:/usr/share/opensearch/data
+      - ./data/opensearch-local:/usr/share/opensearch/data
     ports:
       - 8273:9200

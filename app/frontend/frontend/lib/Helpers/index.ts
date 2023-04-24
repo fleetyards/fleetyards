@@ -1,4 +1,4 @@
-export const groupBy = function groupBy(list, key) {
+export const groupBy = function groupBy(list: any[], key: any) {
   return list.reduce((rv, x) => {
     const value = JSON.parse(JSON.stringify(rv));
 
@@ -9,8 +9,12 @@ export const groupBy = function groupBy(list, key) {
   }, {});
 };
 
-export const sortBy = function sortBy(list, key, decending = false) {
-  return JSON.parse(JSON.stringify(list)).sort((a, b) => {
+export const sortBy = function sortBy(
+  list: any[],
+  key: any,
+  decending = false
+) {
+  return JSON.parse(JSON.stringify(list)).sort((a: any, b: any) => {
     if (decending) {
       if (a[key] < b[key]) {
         return 1;

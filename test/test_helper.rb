@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'dotenv'
+Dotenv.load('.env')
+
 if ENV["RAILS_TEST_COVERAGE"]
   require "simplecov"
   require "simplecov-console"
