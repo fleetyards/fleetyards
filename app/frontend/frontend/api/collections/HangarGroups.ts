@@ -7,7 +7,7 @@ export class HangarGroupsCollection extends BaseCollection {
   records: HangarGroup[] = [];
 
   async findAll(): Promise<HangarGroup[]> {
-    const response = await get("hangar-groups");
+    const response = await get("hangar/groups");
 
     if (!response.error) {
       this.records = response.data;
@@ -20,7 +20,7 @@ export class HangarGroupsCollection extends BaseCollection {
     form: HangarGroupForm,
     refetch = false
   ): Promise<HangarGroup | null> {
-    const response = await post("hangar-groups", form);
+    const response = await post("hangar/groups", form);
 
     if (!response.error) {
       if (refetch) {
@@ -34,7 +34,7 @@ export class HangarGroupsCollection extends BaseCollection {
   }
 
   async update(hangarGroupId: string, form: HangarGroupForm): Promise<boolean> {
-    const response = await put(`hangar-groups/${hangarGroupId}`, form);
+    const response = await put(`hangar/groups/${hangarGroupId}`, form);
     if (!response.error) {
       this.findAll();
 
@@ -45,7 +45,7 @@ export class HangarGroupsCollection extends BaseCollection {
   }
 
   async destroy(hangarGroupId: string): Promise<boolean> {
-    const response = await destroy(`hangar-groups/${hangarGroupId}`);
+    const response = await destroy(`hangar/groups/${hangarGroupId}`);
 
     if (!response.error) {
       this.findAll();

@@ -104,7 +104,7 @@ module Api
         @user_params ||= params.transform_keys(&:underscore)
           .permit(
             :avatar, :remove_avatar, :sale_notify, :public_hangar, :public_wishlist, :rsi_handle,
-            :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners
+            :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hide_owner
           )
       end
 

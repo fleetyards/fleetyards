@@ -27,7 +27,7 @@ export class WishlistCollection extends BaseCollection {
     this.lastUsedMethod = "findAll";
     this.params = params;
 
-    const response = await get("vehicles/wishlist", {
+    const response = await get("wishlist", {
       q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
@@ -46,7 +46,7 @@ export class WishlistCollection extends BaseCollection {
   }
 
   async export(params: VehicleParams): Promise<Vehicle[] | null> {
-    const response = await download("vehicles/export-wishlist", {
+    const response = await download("wishlist/export", {
       q: params.filters,
     });
 
@@ -98,7 +98,7 @@ export class WishlistCollection extends BaseCollection {
   }
 
   async destroyAll(): Promise<boolean> {
-    const response = await destroy("vehicles/destroy-all-wishlist");
+    const response = await destroy("wishlist");
 
     if (!response.error) {
       this.refresh();

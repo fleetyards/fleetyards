@@ -37,7 +37,7 @@ export class VehiclesCollection extends BaseCollection {
     this.lastUsedMethod = "findAll";
     this.params = params;
 
-    const response = await get("vehicles", {
+    const response = await get("hangar", {
       q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
@@ -51,27 +51,12 @@ export class VehiclesCollection extends BaseCollection {
     return this.records;
   }
 
-  async findAllFleetchart(params: VehicleParams | null): Promise<Vehicle[]> {
-    this.lastUsedMethod = "findAllFleetchart";
-    this.params = params;
-
-    const response = await get("vehicles/fleetchart", {
-      q: params?.filters,
-    });
-
-    if (!response.error) {
-      this.records = response.data;
-    }
-
-    return this.records;
-  }
-
   async refresh(): Promise<void> {
     await this[this.lastUsedMethod || "findAll"](this.params);
   }
 
   async findStats(params: VehicleParams): Promise<VehicleStats | null> {
-    const response = await get("vehicles/quick-stats", {
+    const response = await get("hangar/stats", {
       q: params.filters,
     });
 
@@ -83,7 +68,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async export(params: VehicleParams): Promise<Vehicle[] | null> {
-    const response = await download("vehicles/export", {
+    const response = await download("hangar/export", {
       q: params.filters,
     });
 
@@ -240,7 +225,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async destroyAll(): Promise<boolean> {
-    const response = await destroy("vehicles/destroy-all");
+    const response = await destroy("hangar");
 
     if (!response.error) {
       this.refresh();
@@ -252,7 +237,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async ingameMoveToWishlist(): Promise<boolean> {
-    const response = await put("vehicles/move-all-ingame-to-wishlist");
+    const response = await put("hangar/move-all-ingame-to-wishlist");
 
     if (!response.error) {
       this.refresh();
