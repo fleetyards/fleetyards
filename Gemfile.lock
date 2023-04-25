@@ -306,10 +306,12 @@ GEM
     kaminari-core (1.2.2)
     knapsack (4.0.0)
       rake
+    language_server-protocol (3.17.0.3)
     launchy (2.5.2)
       addressable (~> 2.8)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
+    lint_roller (1.0.0)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -516,17 +518,9 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.28.0)
       parser (>= 3.2.1.0)
-    rubocop-minitest (0.30.0)
-      rubocop (>= 1.39, < 2.0)
-    rubocop-performance (1.17.1)
+    rubocop-performance (1.16.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    rubocop-rails (2.19.1)
-      activesupport (>= 4.2.0)
-      rack (>= 1.1)
-      rubocop (>= 1.33.0, < 2.0)
-    rubocop-rake (0.6.0)
-      rubocop (~> 1.0)
     ruby-graphviz (1.2.5)
       rexml
     ruby-progressbar (1.13.0)
@@ -607,6 +601,17 @@ GEM
     sshkit-interactive (0.3.0)
       sshkit (~> 1.12)
     ssrf_filter (1.1.1)
+    standard (1.28.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.50.2)
+      standard-custom (~> 1.0.0)
+      standard-performance (~> 1.0.1)
+    standard-custom (1.0.0)
+      lint_roller (~> 1.0)
+    standard-performance (1.0.1)
+      lint_roller (~> 1.0)
+      rubocop-performance (~> 1.16.0)
     stringio (3.0.6)
     temple (0.10.0)
     terminal-table (3.0.2)
@@ -743,12 +748,6 @@ DEPENDENCIES
   responders
   rollups
   rqrcode
-  rubocop
-  rubocop-ast
-  rubocop-minitest
-  rubocop-performance
-  rubocop-rails
-  rubocop-rake
   sass-rails
   searchkick
   selectize-rails
@@ -767,6 +766,7 @@ DEPENDENCIES
   spring-watcher-listen
   sprockets-rails
   ssrf_filter
+  standard
   thor
   timecop
   typhoeus
