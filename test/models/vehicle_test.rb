@@ -14,7 +14,6 @@
 #  name_visible      :boolean          default(FALSE)
 #  notify            :boolean          default(TRUE)
 #  public            :boolean          default(FALSE)
-#  purchased         :boolean          default(FALSE)
 #  sale_notify       :boolean          default(FALSE)
 #  serial            :string
 #  slug              :string

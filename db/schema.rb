@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_195050) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_25_162321) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -979,7 +979,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_195050) do
     t.string "name", limit: 255
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.boolean "purchased", default: false
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
     t.boolean "name_visible", default: false
