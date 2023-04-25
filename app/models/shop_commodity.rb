@@ -36,7 +36,7 @@ class ShopCommodity < ApplicationRecord
   paginates_per 30
 
   searchkick word_start: %i[name manufacturer_name],
-             searchable: %i[name manufacturer_name created_at]
+    searchable: %i[name manufacturer_name created_at]
 
   def search_data
     {
@@ -64,62 +64,62 @@ class ShopCommodity < ApplicationRecord
 
   belongs_to :commodity_item, polymorphic: true, optional: true, touch: true
   belongs_to :model,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Model" }) },
-             foreign_key: "commodity_item_id",
-             inverse_of: :shop_commodities,
-             optional: true
+    -> { includes(:shop_commodities).where(shop_commodities: {commodity_item_type: "Model"}) },
+    foreign_key: "commodity_item_id",
+    inverse_of: :shop_commodities,
+    optional: true
 
   belongs_to :component,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Component" }) },
-             foreign_key: "commodity_item_id",
-             inverse_of: :shop_commodities,
-             optional: true
+    -> { includes(:shop_commodities).where(shop_commodities: {commodity_item_type: "Component"}) },
+    foreign_key: "commodity_item_id",
+    inverse_of: :shop_commodities,
+    optional: true
 
   belongs_to :commodity,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Commodity" }) },
-             foreign_key: "commodity_item_id",
-             inverse_of: :shop_commodities,
-             optional: true
+    -> { includes(:shop_commodities).where(shop_commodities: {commodity_item_type: "Commodity"}) },
+    foreign_key: "commodity_item_id",
+    inverse_of: :shop_commodities,
+    optional: true
 
   belongs_to :equipment,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "Equipment" }) },
-             foreign_key: "commodity_item_id",
-             inverse_of: :shop_commodities,
-             optional: true
+    -> { includes(:shop_commodities).where(shop_commodities: {commodity_item_type: "Equipment"}) },
+    foreign_key: "commodity_item_id",
+    inverse_of: :shop_commodities,
+    optional: true
 
   belongs_to :model_module,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "ModelModule" }) },
-             foreign_key: "commodity_item_id",
-             inverse_of: :shop_commodities,
-             optional: true
+    -> { includes(:shop_commodities).where(shop_commodities: {commodity_item_type: "ModelModule"}) },
+    foreign_key: "commodity_item_id",
+    inverse_of: :shop_commodities,
+    optional: true
 
   belongs_to :model_paint,
-             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: "ModelPaint" }) },
-             foreign_key: "commodity_item_id",
-             inverse_of: :shop_commodities,
-             optional: true
+    -> { includes(:shop_commodities).where(shop_commodities: {commodity_item_type: "ModelPaint"}) },
+    foreign_key: "commodity_item_id",
+    inverse_of: :shop_commodities,
+    optional: true
 
   belongs_to :submitter,
-             class_name: "User",
-             foreign_key: "submitted_by",
-             inverse_of: false,
-             optional: true
+    class_name: "User",
+    foreign_key: "submitted_by",
+    inverse_of: false,
+    optional: true
 
   has_many :commodity_sell_prices, dependent: :destroy
   has_many :commodity_buy_prices, dependent: :destroy
   has_many :commodity_rental_prices, dependent: :destroy
 
   has_many :trade_route_origins,
-           class_name: "TradeRoute",
-           dependent: :destroy,
-           foreign_key: "origin_id",
-           inverse_of: :origin
+    class_name: "TradeRoute",
+    dependent: :destroy,
+    foreign_key: "origin_id",
+    inverse_of: :origin
 
   has_many :trade_route_destinations,
-           class_name: "TradeRoute",
-           dependent: :destroy,
-           foreign_key: "destination_id",
-           inverse_of: :destination
+    class_name: "TradeRoute",
+    dependent: :destroy,
+    foreign_key: "destination_id",
+    inverse_of: :destination
 
   belongs_to :shop
 
@@ -145,7 +145,7 @@ class ShopCommodity < ApplicationRecord
   end
 
   def self.visible
-    includes(:shop).where(shops: { hidden: false })
+    includes(:shop).where(shops: {hidden: false})
   end
 
   def set_commodity_item
@@ -170,10 +170,10 @@ class ShopCommodity < ApplicationRecord
 
     if buy_prices.present?
       average_buy_prices = if average_buy_prices.present?
-                             average_buy_prices.sum / average_buy_prices.size
-                           else
-                             buy_prices.sum / buy_prices.size
-                           end
+        average_buy_prices.sum / average_buy_prices.size
+      else
+        buy_prices.sum / buy_prices.size
+      end
 
       update(
         buy_price: buy_prices.first,
@@ -197,10 +197,10 @@ class ShopCommodity < ApplicationRecord
 
     if sell_prices.present?
       average_sell_price = if average_sell_prices.present?
-                             average_sell_prices.sum / average_sell_prices.size
-                           else
-                             sell_prices.sum / sell_prices.size
-                           end
+        average_sell_prices.sum / average_sell_prices.size
+      else
+        sell_prices.sum / sell_prices.size
+      end
 
       update(
         sell_price: sell_prices.first,
@@ -231,10 +231,10 @@ class ShopCommodity < ApplicationRecord
 
     if rental_prices.present?
       average_rental_price = if average_rental_prices.present?
-                               average_rental_prices.sum / average_rental_prices.size
-                             else
-                               rental_prices.sum / rental_prices.size
-                             end
+        average_rental_prices.sum / average_rental_prices.size
+      else
+        rental_prices.sum / rental_prices.size
+      end
 
       update(
         rental_price_1_day: rental_prices.first,
@@ -258,10 +258,10 @@ class ShopCommodity < ApplicationRecord
 
     if rental_prices.present?
       average_rental_price = if average_rental_prices.present?
-                               average_rental_prices.sum / average_rental_prices.size
-                             else
-                               rental_prices.sum / rental_prices.size
-                             end
+        average_rental_prices.sum / average_rental_prices.size
+      else
+        rental_prices.sum / rental_prices.size
+      end
 
       update(
         rental_price_3_days: rental_prices.first,
@@ -285,10 +285,10 @@ class ShopCommodity < ApplicationRecord
 
     if rental_prices.present?
       average_rental_price = if average_rental_prices.present?
-                               average_rental_prices.sum / average_rental_prices.size
-                             else
-                               rental_prices.sum / rental_prices.size
-                             end
+        average_rental_prices.sum / average_rental_prices.size
+      else
+        rental_prices.sum / rental_prices.size
+      end
 
       update(
         rental_price_7_days: rental_prices.first,
@@ -312,10 +312,10 @@ class ShopCommodity < ApplicationRecord
 
     if rental_prices.present?
       average_rental_price = if average_rental_prices.present?
-                               average_rental_prices.sum / average_rental_prices.size
-                             else
-                               rental_prices.sum / rental_prices.size
-                             end
+        average_rental_prices.sum / average_rental_prices.size
+      else
+        rental_prices.sum / rental_prices.size
+      end
 
       update(
         rental_price_30_days: rental_prices.first,

@@ -20,7 +20,7 @@
 #  index_commodity_prices_on_shop_commodity_id  (shop_commodity_id)
 #
 class CommodityRentalPrice < CommodityPrice
-  enum time_range: { "1-day": 0, "3-days": 1, "7-days": 2, "30-days": 3 }
+  enum time_range: {"1-day": 0, "3-days": 1, "7-days": 2, "30-days": 3}
 
   after_destroy :update_shop_commodity
   after_save :update_shop_commodity

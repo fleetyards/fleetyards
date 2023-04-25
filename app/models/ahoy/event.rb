@@ -29,12 +29,12 @@ module Ahoy
     belongs_to :user, optional: true
 
     def self.without_users(user_ids)
-      includes(:visit).where.not(ahoy_visits: { user_id: user_ids }).references(:ahoy_visits)
+      includes(:visit).where.not(ahoy_visits: {user_id: user_ids}).references(:ahoy_visits)
         .or(user_empty)
     end
 
     def self.user_empty
-      includes(:visit).where(ahoy_visits: { user_id: nil }).references(:ahoy_visits)
+      includes(:visit).where(ahoy_visits: {user_id: nil}).references(:ahoy_visits)
     end
 
     def self.one_month

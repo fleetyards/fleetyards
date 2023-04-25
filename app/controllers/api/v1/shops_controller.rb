@@ -11,7 +11,7 @@ module Api
 
         shop_query_params["sorts"] = sort_by_name
 
-        @q = Shop.includes(station: { celestial_object: %i[starsystem parent] })
+        @q = Shop.includes(station: {celestial_object: %i[starsystem parent]})
           .visible
           .ransack(shop_query_params)
 

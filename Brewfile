@@ -1,3 +1,3 @@
-brew 'imagemagick'
-brew 'postgresql'
-brew 'redis'
+brew "imagemagick"
+brew "postgresql"
+brew "redis"

@@ -36,11 +36,11 @@ class Starsystem < ApplicationRecord
   paginates_per 15
 
   searchkick searchable: %i[name],
-             word_start: %i[name]
+    word_start: %i[name]
 
   def search_data
     {
-      name:,
+      name:
     }
   end
 
@@ -49,21 +49,21 @@ class Starsystem < ApplicationRecord
   end
 
   has_many :celestial_objects,
-           dependent: :destroy
+    dependent: :destroy
   has_many :planets,
-           -> { CelestialObject.planet },
-           dependent: :destroy,
-           inverse_of: :starsystem,
-           class_name: "CelestialObject"
+    -> { CelestialObject.planet },
+    dependent: :destroy,
+    inverse_of: :starsystem,
+    class_name: "CelestialObject"
   has_many :moons,
-           -> { CelestialObject.moon },
-           dependent: :destroy,
-           inverse_of: :starsystem,
-           class_name: "CelestialObject"
+    -> { CelestialObject.moon },
+    dependent: :destroy,
+    inverse_of: :starsystem,
+    class_name: "CelestialObject"
 
   has_many :affiliations,
-           as: :affiliationable,
-           dependent: :destroy
+    as: :affiliationable,
+    dependent: :destroy
   has_many :factions, through: :affiliations
 
   before_save :update_slugs

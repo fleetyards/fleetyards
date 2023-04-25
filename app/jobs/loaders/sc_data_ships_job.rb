@@ -16,7 +16,7 @@ module Loaders
       end
 
       import.finish!
-    rescue StandardError => e
+    rescue => e
       import.fail!
       import.update!(info: e.message)
 

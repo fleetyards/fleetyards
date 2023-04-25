@@ -15,12 +15,12 @@ module Api
 
         if price_range.present?
           vehicle_query_params["sorts"] = "model_price asc"
-          scope = scope.includes(:model).where(models: { price: price_range })
+          scope = scope.includes(:model).where(models: {price: price_range})
         end
 
         if pledge_price_range.present?
           vehicle_query_params["sorts"] = "model_last_pledge_price asc"
-          scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
+          scope = scope.includes(:model).where(models: {last_pledge_price: pledge_price_range})
         end
 
         scope = loaner_included?(scope)

@@ -8,7 +8,7 @@ session_store_options = {
   domain: Rails.configuration.app.cookie_domain,
   secure: Rails.env.production? || Rails.env.staging?,
   expire_after:,
-  same_site: :lax,
+  same_site: :lax
 }
 
 Fleetyards::Application.config.session_store :redis_store, **session_store_options

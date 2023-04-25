@@ -13,7 +13,7 @@ module Pagination
 
   def pagination_header(name)
     links = {
-      self: page_link(nil),
+      self: page_link(nil)
     }
 
     if per_page_params != "all"
@@ -52,7 +52,7 @@ module Pagination
       controller: controller_name,
       action: action_name,
       page:,
-      per_page: page.present? && !per_page_params.to_i.zero? ? per_page_params.to_i : nil
+      per_page: (page.present? && !per_page_params.to_i.zero?) ? per_page_params.to_i : nil
     )
   end
 

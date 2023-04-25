@@ -79,8 +79,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => stanton.location_label,
-            },
+              "locationLabel" => stanton.location_label
+            }
           }, {
             "name" => "Crusader",
             "slug" => "crusader",
@@ -115,8 +115,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => stanton.location_label,
-            },
+              "locationLabel" => stanton.location_label
+            }
           }],
           "createdAt" => stanton.created_at.utc.iso8601,
           "updatedAt" => stanton.updated_at.utc.iso8601
@@ -174,8 +174,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => stanton.location_label,
-            },
+              "locationLabel" => stanton.location_label
+            }
           }, {
             "name" => "Crusader",
             "slug" => "crusader",
@@ -210,8 +210,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => stanton.location_label,
-            },
+              "locationLabel" => stanton.location_label
+            }
           }],
           "createdAt" => stanton.created_at.utc.iso8601,
           "updatedAt" => stanton.updated_at.utc.iso8601

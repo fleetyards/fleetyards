@@ -23,12 +23,12 @@ module Api
 
         if price_range.present?
           vehicle_query_params["sorts"] = "model_price asc"
-          scope = scope.includes(:model).where(models: { price: price_range })
+          scope = scope.includes(:model).where(models: {price: price_range})
         end
 
         if pledge_price_range.present?
           vehicle_query_params["sorts"] = "model_last_pledge_price asc"
-          scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
+          scope = scope.includes(:model).where(models: {last_pledge_price: pledge_price_range})
         end
 
         vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
@@ -81,9 +81,9 @@ module Api
 
         scope = scope.where(user_id: for_members) if for_members.present?
 
-        scope = scope.includes(:model).where(models: { price: price_range }) if price_range.present?
+        scope = scope.includes(:model).where(models: {price: price_range}) if price_range.present?
 
-        scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range }) if pledge_price_range.present?
+        scope = scope.includes(:model).where(models: {last_pledge_price: pledge_price_range}) if pledge_price_range.present?
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -252,15 +252,15 @@ module Api
         @price_range ||= price_in.map do |prices|
           gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
-                       0
-                     else
-                       gt_price.to_i
-                     end
+            0
+          else
+            gt_price.to_i
+          end
           lt_price = if lt_price.blank?
-                       Float::INFINITY
-                     else
-                       lt_price.to_i
-                     end
+            Float::INFINITY
+          else
+            lt_price.to_i
+          end
           (gt_price...lt_price)
         end
       end
@@ -269,15 +269,15 @@ module Api
         @pledge_price_range ||= pledge_price_in.map do |prices|
           gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
-                       0
-                     else
-                       gt_price.to_i
-                     end
+            0
+          else
+            gt_price.to_i
+          end
           lt_price = if lt_price.blank?
-                       Float::INFINITY
-                     else
-                       lt_price.to_i
-                     end
+            Float::INFINITY
+          else
+            lt_price.to_i
+          end
           (gt_price...lt_price)
         end
       end

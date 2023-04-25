@@ -12,4 +12,4 @@ jobs:
         with:
           bundler-cache: true
       - name: rubocoptering
-        run: bundle exec rubocop --format progress
+        run: ./bin/ruby-lint

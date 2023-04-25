@@ -9,7 +9,7 @@ module Api
             render file: Rails.public_path.join("docs", "v1.html")
           end
           format.json do
-            render json: { message: "FleetYards.net API v1 root" }
+            render json: {message: "FleetYards.net API v1 root"}
           end
         end
       end

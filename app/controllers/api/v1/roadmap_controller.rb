@@ -27,9 +27,9 @@ module Api
             value: index,
             query: {
               lastUpdatedAtGteq: I18n.l(update - 7.days),
-              lastUpdatedAtLt: I18n.l(update),
+              lastUpdatedAtLt: I18n.l(update)
             },
-            label: "#{I18n.l(update - 7.days)} - #{I18n.l(update - 13.days)}",
+            label: "#{I18n.l(update - 7.days)} - #{I18n.l(update - 13.days)}"
           }
         end
       end

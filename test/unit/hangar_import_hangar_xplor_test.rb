@@ -191,7 +191,7 @@ class HangarImporterHangarXplorTest < ActiveSupport::TestCase
     assert_equal(
       {
         missing: [
-          "Rover",
+          "Rover"
         ],
         imported: imported_ships,
         success: true

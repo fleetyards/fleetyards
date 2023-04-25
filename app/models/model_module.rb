@@ -24,7 +24,7 @@ class ModelModule < ApplicationRecord
   belongs_to :manufacturer, optional: true
 
   has_many :module_hardpoints,
-           dependent: :destroy
+    dependent: :destroy
   has_many :models, through: :module_hardpoints
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
   has_many :model_module_packge_items, dependent: :destroy

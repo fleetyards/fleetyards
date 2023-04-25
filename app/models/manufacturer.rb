@@ -23,9 +23,9 @@ class Manufacturer < ApplicationRecord
   mount_uploader :logo, LogoUploader
 
   has_many :models,
-           dependent: :nullify
+    dependent: :nullify
   has_many :components,
-           dependent: :nullify
+    dependent: :nullify
 
   before_save :update_slugs
 
@@ -36,11 +36,11 @@ class Manufacturer < ApplicationRecord
   end
 
   def self.with_model
-    includes(:models).where.not(models: { manufacturer_id: nil })
+    includes(:models).where.not(models: {manufacturer_id: nil})
   end
 
   def self.with_component
-    includes(:components).where.not(components: { manufacturer_id: nil })
+    includes(:components).where.not(components: {manufacturer_id: nil})
   end
 
   def self.model_filters

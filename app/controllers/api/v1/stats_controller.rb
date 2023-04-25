@@ -12,7 +12,7 @@ module Api
 
         @quick_stats = {
           ships_count_year: Model.visible.active.year(Time.current.year).count,
-          ships_count_total: Model.visible.active.count,
+          ships_count_total: Model.visible.active.count
         }
       end
 
@@ -21,7 +21,7 @@ module Api
 
         components_by_class = transform_for_pie_chart(
           Component.group(:component_class).count
-              .map { |label, count| { (label.present? ? I18n.t("filter.component.class.items.#{label.downcase}") : I18n.t("labels.unknown")) => count } }
+              .map { |label, count| {(label.present? ? I18n.t("filter.component.class.items.#{label.downcase}") : I18n.t("labels.unknown")) => count} }
               .reduce(:merge) || []
         )
 
@@ -34,7 +34,7 @@ module Api
         models_by_size = transform_for_pie_chart(
           Model.visible.active
                .group(:size).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 
@@ -47,7 +47,7 @@ module Api
         models_by_production_status = transform_for_pie_chart(
           Model.visible.active
                .group(:production_status).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 
@@ -59,7 +59,7 @@ module Api
 
         models_by_manufacturer = transform_for_pie_chart(
           Manufacturer.with_model
-                      .map { |m| { m.name => m.models.count } }
+                      .map { |m| {m.name => m.models.count} }
                       .reduce(:merge) || []
         )
 
@@ -72,7 +72,7 @@ module Api
         models_by_classification = transform_for_pie_chart(
           Model.visible.active
                .group(:classification).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 

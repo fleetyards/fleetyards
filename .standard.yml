@@ -1,0 +1,6 @@
+ignore:
+  - 'db/schema.rb'
+  - 'db/migrate/**/*'
+  - Style/Documentation
+  - 'app/**/*':
+    - Style/Documentation

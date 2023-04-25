@@ -65,7 +65,7 @@ module ScData
       return if station.present?
 
       {
-        type: (data_item["navIcon"] == "Station" ? :station : :outpost),
+        type: ((data_item["navIcon"] == "Station") ? :station : :outpost),
         name: data_item["name"],
         description: data_item["description"]
       }

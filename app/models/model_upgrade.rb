@@ -19,7 +19,7 @@ class ModelUpgrade < ApplicationRecord
   paginates_per 30
 
   has_many :upgrade_kits,
-           dependent: :destroy
+    dependent: :destroy
   has_many :models, through: :upgrade_kits
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 

@@ -53,7 +53,7 @@ module Admin
         current_user.otp_secret = AdminUser.generate_otp_secret
         current_user.otp_required_for_login = false
         current_user.save!
-        redirect_to otp_admin_me_path, flash: { success: I18n.t(:"messages.disable.success", scope: "devise.otp") }
+        redirect_to otp_admin_me_path, flash: {success: I18n.t(:"messages.disable.success", scope: "devise.otp")}
       else
         flash.now[:alert] = I18n.t(:"messages.disable.failure", scope: "devise.otp")
         render "otp"

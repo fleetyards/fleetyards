@@ -403,7 +403,7 @@ module Api
       end
 
       it "should be able to filter the list" do
-        get "/api/v1/models", params: { q: '{ "nameCont": "Andromeda" }' }, as: :json
+        get "/api/v1/models", params: {q: '{ "nameCont": "Andromeda" }'}, as: :json
 
         assert_response :ok
         json = JSON.parse response.body
@@ -413,7 +413,7 @@ module Api
       end
 
       it "should be able to reduce per page size" do
-        get "/api/v1/models", params: { perPage: "15" }, as: :json
+        get "/api/v1/models", params: {perPage: "15"}, as: :json
 
         assert_response :ok
         json = JSON.parse response.body

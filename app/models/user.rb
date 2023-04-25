@@ -68,38 +68,38 @@ class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
-         :validatable, :confirmable, :rememberable, :timeoutable,
-         authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
-         otp_backup_code_length: 10, otp_number_of_backup_codes: 10
+    :validatable, :confirmable, :rememberable, :timeoutable,
+    authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
+    otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
   has_many :vehicles, dependent: :destroy
   has_many :models,
-           through: :vehicles
+    through: :vehicles
   has_many :manufacturers,
-           through: :models
+    through: :models
   has_many :public_vehicles,
-           -> { where(wanted: false, public: true) },
-           dependent: :destroy,
-           class_name: "Vehicle",
-           inverse_of: false
+    -> { where(wanted: false, public: true) },
+    dependent: :destroy,
+    class_name: "Vehicle",
+    inverse_of: false
   has_many :public_models,
-           class_name: "Model",
-           through: :public_vehicles,
-           source: :model,
-           inverse_of: false
+    class_name: "Model",
+    through: :public_vehicles,
+    source: :model,
+    inverse_of: false
   has_many :fleet_memberships,
-           -> { order(primary: :desc) },
-           dependent: :destroy,
-           inverse_of: false
+    -> { order(primary: :desc) },
+    dependent: :destroy,
+    inverse_of: false
   has_many :fleets,
-           through: :fleet_memberships
+    through: :fleet_memberships
 
   validates :username,
-            uniqueness: { case_sensitive: false },
-            format: { with: /\A[a-zA-Z0-9\-_]+\Z/ }
+    uniqueness: {case_sensitive: false},
+    format: {with: /\A[a-zA-Z0-9\-_]+\Z/}
   validates :email,
-            uniqueness: { case_sensitive: false },
-            presence: true
+    uniqueness: {case_sensitive: false},
+    presence: true
 
   attr_accessor :login
 
@@ -118,7 +118,7 @@ class User < ApplicationRecord
     login = conditions.delete(:login)
     if login.present?
       where(conditions.to_h)
-        .find_by(["normalized_username = :value OR normalized_email = :value", { value: login.downcase }])
+        .find_by(["normalized_username = :value OR normalized_email = :value", {value: login.downcase}])
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
@@ -243,7 +243,7 @@ class User < ApplicationRecord
     # The last 16 bytes of the ciphertext are the authentication tag - we use
     # Galois Counter Mode which is an authenticated encryption mode
     cipher_text = raw_cipher_text[0..-17]
-    auth_tag =  raw_cipher_text[-16..]
+    auth_tag = raw_cipher_text[-16..]
 
     # this alrorithm lifted from
     # https://github.com/attr-encrypted/encryptor/blob/master/lib/encryptor.rb#L54

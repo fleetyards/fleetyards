@@ -33,7 +33,7 @@ Rails.application.configure do
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    config.cache_store = :redis_cache_store, { url: Rails.configuration.redis.url, db: Rails.configuration.redis.db }
+    config.cache_store = :redis_cache_store, {url: Rails.configuration.redis.url, db: Rails.configuration.redis.db}
 
     config.public_file_server.headers = {
       "Cache-Control" => "public, max-age=#{2.days.to_i}"
@@ -53,7 +53,7 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.deliver_later_queue_name = "mailers"
-  config.action_mailer.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
+  config.action_mailer.default_url_options = {host: Rails.configuration.app.domain, trailing_slash: true}
   config.action_mailer.asset_host = endpoints.frontend_endpoint
 
   # Print deprecation notices to the Rails logger.

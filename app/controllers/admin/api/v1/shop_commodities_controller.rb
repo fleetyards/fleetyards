@@ -11,9 +11,9 @@ module Admin
 
           @shop_commodities = ShopCommodity.search(
             search_params || "*",
-            fields: [{ name: :word_start }],
+            fields: [{name: :word_start}],
             where: query_params.merge(price_params)
-                               .merge(shop.present? ? { shop_id: shop.id } : {}),
+                               .merge(shop.present? ? {shop_id: shop.id} : {}),
             order: order_params,
             page: params[:page],
             per_page: per_page(ShopCommodity),
@@ -105,7 +105,7 @@ module Admin
               ]
             )
 
-            permitted_params[:order] || { "name" => "asc", "created_at" => "asc" }
+            permitted_params[:order] || {"name" => "asc", "created_at" => "asc"}
           end
         end
 
@@ -124,8 +124,8 @@ module Admin
           price_params = {}
 
           price_params[:_or] = [] if sell_price_range.present? || buy_price_range.present?
-          price_params[:_or].push({ sell_price: sell_price_range }) if sell_price_range.present?
-          price_params[:_or].push({ buy_price: buy_price_range }) if buy_price_range.present?
+          price_params[:_or].push({sell_price: sell_price_range}) if sell_price_range.present?
+          price_params[:_or].push({buy_price: buy_price_range}) if buy_price_range.present?
 
           price_params
         end

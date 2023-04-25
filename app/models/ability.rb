@@ -63,12 +63,12 @@ class Ability
     admin_and_officer_fleet_ids = user.fleets
       .includes(:fleet_memberships)
       .joins(:fleet_memberships)
-      .where(fleet_memberships: { role: %i[officer admin], aasm_state: :accepted })
+      .where(fleet_memberships: {role: %i[officer admin], aasm_state: :accepted})
       .pluck(:id)
     admin_fleet_ids = user.fleets
       .includes(:fleet_memberships)
       .joins(:fleet_memberships)
-      .where(fleet_memberships: { role: :admin, aasm_state: :accepted })
+      .where(fleet_memberships: {role: :admin, aasm_state: :accepted})
       .pluck(:id)
 
     can %i[check invites], :api_fleet
@@ -78,8 +78,8 @@ class Ability
     can %i[show accept_invitation decline_invitation create_by_invite update destroy], FleetMembership, user_id: user.id
     can %i[create accept_request decline_request], FleetMembership, fleet_id: admin_and_officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
-    can :show, Fleet, fleet_memberships: { user_id: user.id }
-    cannot :show, Fleet, fleet_memberships: { user_id: user.id, aasm_state: %i[created invited requested declined] }
-    can %i[update destroy], Fleet, fleet_memberships: { user_id: user.id, role: :admin }
+    can :show, Fleet, fleet_memberships: {user_id: user.id}
+    cannot :show, Fleet, fleet_memberships: {user_id: user.id, aasm_state: %i[created invited requested declined]}
+    can %i[update destroy], Fleet, fleet_memberships: {user_id: user.id, role: :admin}
   end
 end

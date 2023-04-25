@@ -281,15 +281,15 @@ module Api
         @price_range ||= price_in.map do |prices|
           gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
-                       0
-                     else
-                       gt_price.to_i
-                     end
+            0
+          else
+            gt_price.to_i
+          end
           lt_price = if lt_price.blank?
-                       Float::INFINITY
-                     else
-                       lt_price.to_i
-                     end
+            Float::INFINITY
+          else
+            lt_price.to_i
+          end
           (gt_price...lt_price)
         end
       end
@@ -298,15 +298,15 @@ module Api
         @pledge_price_range ||= pledge_price_in.map do |prices|
           gt_price, lt_price = prices.split("-")
           gt_price = if gt_price.blank?
-                       0
-                     else
-                       gt_price.to_i
-                     end
+            0
+          else
+            gt_price.to_i
+          end
           lt_price = if lt_price.blank?
-                       Float::INFINITY
-                     else
-                       lt_price.to_i
-                     end
+            Float::INFINITY
+          else
+            lt_price.to_i
+          end
           (gt_price...lt_price)
         end
       end

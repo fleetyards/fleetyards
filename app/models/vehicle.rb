@@ -48,16 +48,16 @@ class Vehicle < ApplicationRecord
   belongs_to :model_paint, optional: true
   belongs_to :user, touch: :hangar_updated_at
   belongs_to :module_package,
-             class_name: "ModelModulePackage",
-             optional: true
+    class_name: "ModelModulePackage",
+    optional: true
 
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces
   has_many :public_hangar_groups,
-           -> { where(public: true) },
-           class_name: "HangarGroup",
-           source: :hangar_group,
-           through: :task_forces
+    -> { where(public: true) },
+    class_name: "HangarGroup",
+    source: :hangar_group,
+    through: :task_forces
 
   has_many :fleet_vehicles, dependent: :destroy
 
@@ -67,11 +67,11 @@ class Vehicle < ApplicationRecord
   has_many :vehicle_upgrades, dependent: :destroy
   has_many :model_upgrades, through: :vehicle_upgrades
 
-  validates :serial, uniqueness: { scope: :user_id }, allow_nil: true
+  validates :serial, uniqueness: {scope: :user_id}, allow_nil: true
 
   NULL_ATTRS = %w[name serial].freeze
 
-  enum bought_via: { pledge_store: 0, ingame: 1 }, _prefix: true
+  enum bought_via: {pledge_store: 0, ingame: 1}, _prefix: true
 
   before_validation :normalize_serial
   before_save :nil_if_blank

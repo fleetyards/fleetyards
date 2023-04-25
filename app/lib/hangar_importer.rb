@@ -89,12 +89,13 @@ class HangarImporter
     {
       missing: missing_models.sort,
       imported: imported_models.sort,
-      success: missing_models.size < @data.size,
+      success: missing_models.size < @data.size
     }
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength
 
+  # rubocop:disable Metrics/MethodLength
   private def starship_42_mapping
     {
       "x1" => "X1",
@@ -130,6 +131,7 @@ class HangarImporter
       "retaliator base" => "Retaliator"
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/MethodLength
   private def hangar_xplor_mapping

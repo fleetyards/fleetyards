@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-arccorp = CelestialObject.find_or_create_by!(name: 'ArcCorp')
+arccorp = CelestialObject.find_or_create_by!(name: "ArcCorp")
 
 hidden = true # currently not present 3.8.0
 
-arc_l4 = Station.find_or_initialize_by(name: 'Rest & Relax (ARC-L4)')
+arc_l4 = Station.find_or_initialize_by(name: "Rest & Relax (ARC-L4)")
 arc_l4.update!(
   celestial_object: arccorp,
   station_type: :station,
   classification: :rest_stop,
-  location: 'ARC-L4',
+  location: "ARC-L4",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/arc-l4/arc-l4.jpg',
   hidden: hidden
 )
