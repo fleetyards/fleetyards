@@ -13,9 +13,9 @@
 #
 class Album < ApplicationRecord
   has_many :images,
-           as: :gallery,
-           dependent: :nullify,
-           inverse_of: :album
+    as: :gallery,
+    dependent: :nullify,
+    inverse_of: :album
 
   before_save :update_slugs
 end

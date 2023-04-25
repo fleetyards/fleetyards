@@ -21,19 +21,19 @@ module Api
     after_action :set_rate_limit_headers
 
     rescue_from CanCan::AccessDenied do |exception|
-      render json: { code: "forbidden", message: exception.message }, status: :forbidden
+      render json: {code: "forbidden", message: exception.message}, status: :forbidden
     end
 
     rescue_from ActionController::InvalidAuthenticityToken do |_exception|
-      render json: { code: "invalid_authenticity_token", message: I18n.t("error_pages.unprocessable_entity") }, status: :unprocessable_entity
+      render json: {code: "invalid_authenticity_token", message: I18n.t("error_pages.unprocessable_entity")}, status: :unprocessable_entity
     end
 
     rescue_from ActiveRecord::RecordNotFound do |_exception|
-      render json: { code: "not_found", message: I18n.t("errors.not_found.message") }, status: :not_found
+      render json: {code: "not_found", message: I18n.t("errors.not_found.message")}, status: :not_found
     end
 
     rescue_from Pagination::MaxPerPageReached do |_exception|
-      render json: { code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached") }, status: :bad_request
+      render json: {code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached")}, status: :bad_request
     end
 
     def current_ability
@@ -52,13 +52,13 @@ module Api
           redirect_to api_v1_root_path
         end
         format.json do
-          render json: { message: "#{Rails.configuration.app.name} API root" }
+          render json: {message: "#{Rails.configuration.app.name} API root"}
         end
       end
     end
 
     def version
-      render json: { version: Fleetyards::VERSION, codename: Fleetyards::CODENAME }
+      render json: {version: Fleetyards::VERSION, codename: Fleetyards::CODENAME}
     end
 
     def resource_message(resource, action, state)
@@ -66,7 +66,7 @@ module Api
     end
 
     private def not_found(message = I18n.t("messages.record_not_found.base"))
-      render json: { code: "not_found", message: }, status: :not_found
+      render json: {code: "not_found", message:}, status: :not_found
     end
 
     private def set_rate_limit_headers

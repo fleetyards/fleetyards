@@ -4,11 +4,11 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
   draw :admin_api_routes
 
   devise_for :admin_users,
-             singular: :admin_user, path: "", skip: %i[registration],
-             path_names: {
-               sign_in: "login",
-               sign_out: "logout",
-             }
+    singular: :admin_user, path: "", skip: %i[registration],
+    path_names: {
+      sign_in: "login",
+      sign_out: "logout"
+    }
 
   resource :me, controller: :current_user, only: [] do
     get :otp
@@ -22,14 +22,14 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
 
   resources :users, except: [:show] do
     member do
-      post "login-as" => "users#login_as", as: :login_as
-      put "resend-confirmation" => "users#resend_confirmation", as: :resend_confirmation
+      post "login-as" => "users#login_as", :as => :login_as
+      put "resend-confirmation" => "users#resend_confirmation", :as => :resend_confirmation
     end
   end
 
   resources :admin_users, except: [:show] do
     member do
-      put "resend-confirmation" => "admin_users#resend_confirmation", as: :resend_confirmation
+      put "resend-confirmation" => "admin_users#resend_confirmation", :as => :resend_confirmation
     end
   end
 
@@ -97,10 +97,10 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
   end
 
   resource :maintenance, only: [] do
-    get "rsi-api-status" => "maintenance#rsi_api_status", as: :rsi_api_status
+    get "rsi-api-status" => "maintenance#rsi_api_status", :as => :rsi_api_status
   end
 
-  get "worker/:name/check" => "worker#check_state", as: :check_worker_state
+  get "worker/:name/check" => "worker#check_state", :as => :check_worker_state
 
   root to: "base#index"
 end

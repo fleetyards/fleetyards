@@ -43,7 +43,7 @@ class Images < Thor
       image.send(name).retrieve_from_cache!(image.send(name).cache_name)
       image.send(name).recreate_versions!
       image.save!
-    rescue StandardError => e
+    rescue => e
       puts "ERROR: #{klass}: #{image.id} -> #{e}"
     end
   end

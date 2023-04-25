@@ -10,23 +10,23 @@ module Api
         resource = User.find_for_database_authentication(login: login_params[:login])
 
         if resource.blank?
-          render json: { code: "session.create.not_found_in_database", message: I18n.t("devise.failure.not_found_in_database") }, status: :bad_request
+          render json: {code: "session.create.not_found_in_database", message: I18n.t("devise.failure.not_found_in_database")}, status: :bad_request
           return
         else
           unless resource.active_for_authentication?
             resource.resend_confirmation
 
-            render json: { code: "session.create.unconfirmed", message: I18n.t("devise.failure.unconfirmed") }, status: :bad_request
+            render json: {code: "session.create.unconfirmed", message: I18n.t("devise.failure.unconfirmed")}, status: :bad_request
             return
           end
 
           if resource.otp_required_for_login && login_params[:twoFactorCode].blank?
-            render json: { code: "session.create.two_factor_required", message: I18n.t("devise.failure.two_factor_required") }, status: :bad_request
+            render json: {code: "session.create.two_factor_required", message: I18n.t("devise.failure.two_factor_required")}, status: :bad_request
             return
           end
 
           unless resource.valid_password?(login_params[:password])
-            render json: { code: "session.create.invalid", message: I18n.t("devise.failure.not_found_in_database") }, status: :bad_request
+            render json: {code: "session.create.invalid", message: I18n.t("devise.failure.not_found_in_database")}, status: :bad_request
             return
           end
 
@@ -34,7 +34,7 @@ module Api
             if resource.invalidate_otp_backup_code!(login_params[:twoFactorCode])
               resource.save!
             else
-              render json: { code: "session.create.invalid", message: I18n.t("devise.failure.two_factor_invalid") }, status: :bad_request
+              render json: {code: "session.create.invalid", message: I18n.t("devise.failure.two_factor_invalid")}, status: :bad_request
               return
             end
           end
@@ -44,20 +44,20 @@ module Api
 
         sign_in(:user, resource)
 
-        render json: { code: :success, message: I18n.t("labels.success") }
+        render json: {code: :success, message: I18n.t("labels.success")}
       end
 
       def destroy
         sign_out(:user)
 
-        render json: { code: "sessions.destroy", message: I18n.t("devise.sessions.signed_out") }
+        render json: {code: "sessions.destroy", message: I18n.t("devise.sessions.signed_out")}
       end
 
       def confirm_access
         authorize! :confirm_access, current_user
 
         unless current_user.valid_password?(login_params[:password])
-          render json: { code: "session.confirmAccess.failure", message: I18n.t("messages.confirmAccess.failure") }, status: :bad_request
+          render json: {code: "session.confirmAccess.failure", message: I18n.t("messages.confirmAccess.failure")}, status: :bad_request
           return
         end
 
@@ -67,10 +67,10 @@ module Api
           secure: Rails.env.production? || Rails.env.staging?,
           expires: 15.minutes,
           httponly: true,
-          same_site: :lax,
+          same_site: :lax
         }
 
-        render json: { code: :success, message: I18n.t("labels.success") }
+        render json: {code: :success, message: I18n.t("labels.success")}
       end
 
       private def user_agent
@@ -82,7 +82,7 @@ module Api
       end
 
       private def invalid_login_attempt
-        render json: { code: "session.create", message: I18n.t("devise.failure.invalid") }, status: :bad_request
+        render json: {code: "session.create", message: I18n.t("devise.failure.invalid")}, status: :bad_request
       end
     end
   end

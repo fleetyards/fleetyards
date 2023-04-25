@@ -57,8 +57,8 @@ module Api
             "refineryTerminal" => nil,
             "station" => {
               "name" => explorer.shop.station.name,
-              "slug" => explorer.shop.station.slug,
-            },
+              "slug" => explorer.shop.station.slug
+            }
           },
           "item" => {
             "id" => explorer.commodity_item.id,
@@ -334,8 +334,8 @@ module Api
             "refineryTerminal" => nil,
             "station" => {
               "name" => andromeda.shop.station.name,
-              "slug" => andromeda.shop.station.slug,
-            },
+              "slug" => andromeda.shop.station.slug
+            }
           },
           "item" => {
             "id" => andromeda.commodity_item.id,

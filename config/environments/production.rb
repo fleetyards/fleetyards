@@ -22,7 +22,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
@@ -59,7 +59,7 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = !ENV["UNSAFE"]
   config.ssl_options = {
-    hsts: { preload: !ENV["UNSAFE"] }
+    hsts: {preload: !ENV["UNSAFE"]}
   }
 
   # Include generic and useful information about system operation, but avoid logging too much
@@ -72,10 +72,10 @@ Rails.application.configure do
   # Use a different cache store in production.
   if ENV["MEMCACHED_URL"]
     config.cache_store = :mem_cache_store,
-                         ENV["MEMCACHED_URL"].split(","),
-                         {
-                           namespace: "fleetyards-#{Rails.env}",
-                         }
+      ENV["MEMCACHED_URL"].split(","),
+      {
+        namespace: "fleetyards-#{Rails.env}"
+      }
   end
   # config.cache_store = :mem_cache_store
 
@@ -110,7 +110,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.deliver_later_queue_name = "mailers"
 
-  config.action_mailer.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
+  config.action_mailer.default_url_options = {host: Rails.configuration.app.domain, trailing_slash: true}
 
   config.action_mailer.asset_host = endpoints.frontend_endpoint
 
@@ -123,9 +123,9 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new($stdout)
+    logger = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
   config.action_cable.url = endpoints.cable_endpoint

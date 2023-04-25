@@ -29,7 +29,7 @@ class Shop < ApplicationRecord
   paginates_per 30
 
   searchkick searchable: %i[name shop_type station celestial_object starsystem refinery],
-             word_start: %i[name]
+    word_start: %i[name]
 
   def search_data
     {
@@ -107,7 +107,7 @@ class Shop < ApplicationRecord
   def station_label
     [
       I18n.t("activerecord.attributes.shop.location_prefix.default"),
-      station.name,
+      station.name
     ].join(" ")
   end
 

@@ -59,8 +59,8 @@ module Api
 
       describe "with session" do
         let(:data) { users :data }
-        let(:explorer) { data.vehicles.includes(:model).find_by(models: { name: "600i" }) }
-        let(:enterprise) { data.vehicles.includes(:model).find_by(models: { name: "Andromeda" }) }
+        let(:explorer) { data.vehicles.includes(:model).find_by(models: {name: "600i"}) }
+        let(:enterprise) { data.vehicles.includes(:model).find_by(models: {name: "Andromeda"}) }
 
         before do
           sign_in data
@@ -525,7 +525,7 @@ module Api
           query_params = {
             hangarGroupsIn: enterprise.hangar_groups.map(&:slug)
           }
-          get "/api/v1/vehicles", params: { q: query_params.to_json }, as: :json
+          get "/api/v1/vehicles", params: {q: query_params.to_json}, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -766,7 +766,7 @@ module Api
         end
 
         it "should return counts for quick-stats" do
-          get "/api/v1/vehicles/quick-stats", params: { q: '{ "classificationIn": ["combat"] }' }, as: :json
+          get "/api/v1/vehicles/quick-stats", params: {q: '{ "classificationIn": ["combat"] }'}, as: :json
 
           assert_response :ok
           json = JSON.parse response.body

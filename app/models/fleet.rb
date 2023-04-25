@@ -33,30 +33,30 @@ class Fleet < ApplicationRecord
   include UrlFieldHelper
 
   has_many :fleet_memberships,
-           dependent: :destroy
+    dependent: :destroy
   has_many :fleet_invite_urls,
-           dependent: :destroy
+    dependent: :destroy
   has_many :fleet_vehicles, dependent: :destroy
   has_many :vehicles, through: :fleet_vehicles, source: :vehicle
   has_many :models, through: :vehicles, source: :model
   has_many :manufacturers,
-           through: :models
+    through: :models
 
   validates :fid,
-            uniqueness: { case_sensitive: false },
-            length: { minimum: 3 },
-            presence: true,
-            format: { with: /\A[a-zA-Z0-9\-_]{3,}\Z/ }
+    uniqueness: {case_sensitive: false},
+    length: {minimum: 3},
+    presence: true,
+    format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
   validates :name,
-            length: { minimum: 3 },
-            presence: true,
-            format: { with: /\A[a-zA-Z0-9\-_. ]{3,}\Z/ }
+    length: {minimum: 3},
+    presence: true,
+    format: {with: /\A[a-zA-Z0-9\-_. ]{3,}\Z/}
 
   validates :description,
-            format: {
-              with: /^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäöáíñóú\[\]()\-_'".,?!:;\s]*$/,
-              multiline: true
-            }
+    format: {
+      with: /^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäöáíñóú\[\]()\-_'".,?!:;\s]*$/,
+      multiline: true
+    }
 
   mount_uploader :logo, LogoUploader
   mount_uploader :background_image, ImageUploader
@@ -69,7 +69,7 @@ class Fleet < ApplicationRecord
 
   def self.accepted
     includes(:fleet_memberships).joins(:fleet_memberships)
-      .where(fleet_memberships: { aasm_state: :accepted })
+      .where(fleet_memberships: {aasm_state: :accepted})
   end
 
   def update_urls(force: false)

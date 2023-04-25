@@ -58,10 +58,10 @@ module Admin
 
       file_data = import_params[:paints_import]
       paints_data_raw = if file_data.respond_to?(:read)
-                          file_data.read
-                        elsif file_data.respond_to?(:path)
-                          File.read(file_data.path)
-                        end
+        file_data.read
+      elsif file_data.respond_to?(:path)
+        File.read(file_data.path)
+      end
 
       paints_data = JSON.parse(paints_data_raw)
 

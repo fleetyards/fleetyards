@@ -38,7 +38,7 @@ module Api
                 label: classification.humanize
               )
             end,
-            groups: HangarGroup.where(user:, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
+            groups: HangarGroup.where(user:, public: true).order([{sort: :asc, name: :asc}]).map do |group|
               HangarGroupCount.new(
                 group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
                 id: group.id,

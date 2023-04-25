@@ -134,7 +134,7 @@ module Api
       def check_serial
         authorize! :check_serial, :api_vehicles
 
-        render json: { serialTaken: current_user.vehicles.visible.purchased.exists?(serial: vehicle_params[:serial].upcase) }
+        render json: {serialTaken: current_user.vehicles.visible.purchased.exists?(serial: vehicle_params[:serial].upcase)}
       end
 
       def bought_via_filters

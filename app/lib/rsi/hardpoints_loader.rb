@@ -147,7 +147,7 @@ module Rsi
         "9" => :nine,
         "10" => :ten,
         "11" => :eleven,
-        "12" => :twelve,
+        "12" => :twelve
       }
 
       raise "Size missing in Mapping \"#{size}\"" if mapping[size.strip].blank?

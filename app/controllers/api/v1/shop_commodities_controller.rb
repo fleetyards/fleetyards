@@ -11,10 +11,10 @@ module Api
 
         @shop_commodities = ShopCommodity.search(
           search_params || deprecated_search_params || "*",
-          fields: [{ name: :word_start }],
+          fields: [{name: :word_start}],
           where: deprecated_query_params.merge(query_params)
                                         .merge(price_params)
-                                        .merge({ shop_id: shop.id }),
+                                        .merge({shop_id: shop.id}),
           order: order_params,
           page: params[:page],
           per_page: per_page(ShopCommodity),
@@ -48,7 +48,7 @@ module Api
         @commodity_item_types = ShopCommodity.commodity_item_types.map do |item_type|
           {
             name: I18n.t("activerecord.attributes.shop_commodity.commodity_item_types.#{item_type}"),
-            value: item_type,
+            value: item_type
           }
         end.sort_by { |item| item[:name] }
       end
@@ -77,7 +77,7 @@ module Api
             ]
           )
 
-          permitted_params[:order] || { "name" => "asc", "created_at" => "asc" }
+          permitted_params[:order] || {"name" => "asc", "created_at" => "asc"}
         end
       end
 
@@ -120,8 +120,8 @@ module Api
         price_params = {}
 
         price_params[:_or] = [] if sell_price_range.present? || buy_price_range.present?
-        price_params[:_or].push({ sell_price: sell_price_range }) if sell_price_range.present?
-        price_params[:_or].push({ buy_price: buy_price_range }) if buy_price_range.present?
+        price_params[:_or].push({sell_price: sell_price_range}) if sell_price_range.present?
+        price_params[:_or].push({buy_price: buy_price_range}) if buy_price_range.present?
 
         price_params
       end

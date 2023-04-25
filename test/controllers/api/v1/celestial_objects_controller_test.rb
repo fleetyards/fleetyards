@@ -44,7 +44,7 @@ module Api
             "economy" => nil,
             "danger" => nil,
             "status" => nil,
-            "locationLabel" => hurston.starsystem.location_label,
+            "locationLabel" => hurston.starsystem.location_label
           },
           "moons" => [],
           "createdAt" => hurston.created_at.utc.iso8601,
@@ -83,7 +83,7 @@ module Api
             "economy" => nil,
             "danger" => nil,
             "status" => nil,
-            "locationLabel" => crusader.starsystem.location_label,
+            "locationLabel" => crusader.starsystem.location_label
           },
           "moons" => [{
             "name" => "Yela",
@@ -137,8 +137,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -156,8 +156,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => yela.starsystem.location_label,
-            },
+              "locationLabel" => yela.starsystem.location_label
+            }
           }, {
             "name" => "Daymar",
             "slug" => "daymar",
@@ -210,8 +210,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -229,8 +229,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => daymar.starsystem.location_label,
-            },
+              "locationLabel" => daymar.starsystem.location_label
+            }
           }],
           "createdAt" => crusader.created_at.utc.iso8601,
           "updatedAt" => crusader.updated_at.utc.iso8601
@@ -286,8 +286,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "starsystem" => {
             "name" => "Stanton",
@@ -305,7 +305,7 @@ module Api
             "economy" => nil,
             "danger" => nil,
             "status" => nil,
-            "locationLabel" => yela.starsystem.location_label,
+            "locationLabel" => yela.starsystem.location_label
           },
           "moons" => [],
           "createdAt" => yela.created_at.utc.iso8601,
@@ -362,8 +362,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "starsystem" => {
             "name" => "Stanton",
@@ -381,7 +381,7 @@ module Api
             "economy" => nil,
             "danger" => nil,
             "status" => nil,
-            "locationLabel" => daymar.starsystem.location_label,
+            "locationLabel" => daymar.starsystem.location_label
           },
           "moons" => [],
           "createdAt" => daymar.created_at.utc.iso8601,
@@ -423,7 +423,7 @@ module Api
             "economy" => nil,
             "danger" => nil,
             "status" => nil,
-            "locationLabel" => crusader.starsystem.location_label,
+            "locationLabel" => crusader.starsystem.location_label
           },
           "moons" => [{
             "name" => "Yela",
@@ -477,8 +477,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -496,8 +496,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           }, {
             "name" => "Daymar",
             "slug" => "daymar",
@@ -550,8 +550,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -569,8 +569,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           }],
           "createdAt" => crusader.created_at.utc.iso8601,
           "updatedAt" => crusader.updated_at.utc.iso8601

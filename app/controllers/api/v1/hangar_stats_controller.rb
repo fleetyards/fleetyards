@@ -35,7 +35,7 @@ module Api
               label: classification.humanize
             )
           end,
-          groups: HangarGroup.where(user: current_user).order([{ sort: :asc, name: :asc }]).map do |group|
+          groups: HangarGroup.where(user: current_user).order([{sort: :asc, name: :asc}]).map do |group|
             HangarGroupCount.new(
               group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
               id: group.id,
@@ -60,7 +60,7 @@ module Api
           current_user.vehicles.visible.purchased.where(loaner: false)
                .joins(:model)
                .group("models.size").count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 
@@ -74,7 +74,7 @@ module Api
           current_user.vehicles.visible.purchased.where(loaner: false)
                .joins(:model)
                .group("models.production_status").count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 
@@ -88,7 +88,7 @@ module Api
           current_user.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                { manufacturer.name => current_user.vehicles.visible.purchased.where(loaner: false, model_id: model_ids).count }
+                {manufacturer.name => current_user.vehicles.visible.purchased.where(loaner: false, model_id: model_ids).count}
               end
               .reduce(:merge) || []
         )
@@ -103,7 +103,7 @@ module Api
           current_user.vehicles.visible.purchased.where(loaner: false)
                .joins(:model)
                .group("models.classification").count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 

@@ -45,7 +45,7 @@ class Items < Thor
       next if item_type.blank?
 
       imported_data.each do |item_data|
-        puts "importing #{item_type}: #{item_data['name']}"
+        puts "importing #{item_type}: #{item_data["name"]}"
         item = item_type.constantize.find_or_create_by(name: item_data["name"]) do |_new_item|
           puts "- new item!"
         end
@@ -58,7 +58,7 @@ class Items < Thor
           shop = Shop.find_by(station_id: station.id, name: price["shop"])
           next if shop.blank?
 
-          puts "adding price for #{price['shop']} on #{price['location']}"
+          puts "adding price for #{price["shop"]} on #{price["location"]}"
           shop_commodity = ShopCommodity.find_or_create_by(shop_id: shop.id, commodity_item_id: item.id, commodity_item_type: item_type) do |_new_price|
             puts "- new price"
           end

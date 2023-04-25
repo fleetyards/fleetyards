@@ -207,7 +207,7 @@ module Api
         end
 
         it "should return a filtered list for index" do
-          get "/api/v1/trade-routes", params: { q: { commodityIn: ["gold"] } }, as: :json
+          get "/api/v1/trade-routes", params: {q: {commodityIn: ["gold"]}}, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -216,7 +216,7 @@ module Api
         end
 
         it "should return an empty list for different commodity" do
-          get "/api/v1/trade-routes", params: { q: { commodityIn: ["dilithium"] } }, as: :json
+          get "/api/v1/trade-routes", params: {q: {commodityIn: ["dilithium"]}}, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -225,7 +225,7 @@ module Api
         end
 
         it "should return an filtered list for planet" do
-          get "/api/v1/trade-routes", params: { q: { originCelestialObjectIn: ["yela"] } }, as: :json
+          get "/api/v1/trade-routes", params: {q: {originCelestialObjectIn: ["yela"]}}, as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -234,7 +234,7 @@ module Api
         end
 
         it "should return an filtered list for planet" do
-          get "/api/v1/trade-routes", params: { q: { destinationCelestialObjectIn: ["yela"] } }, as: :json
+          get "/api/v1/trade-routes", params: {q: {destinationCelestialObjectIn: ["yela"]}}, as: :json
 
           assert_response :ok
           json = JSON.parse response.body

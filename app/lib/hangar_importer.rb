@@ -89,7 +89,7 @@ class HangarImporter
     {
       missing: missing_models.sort,
       imported: imported_models.sort,
-      success: missing_models.size < @data.size,
+      success: missing_models.size < @data.size
     }
   end
   # rubocop:enable Metrics/CyclomaticComplexity

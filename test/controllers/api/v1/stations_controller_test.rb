@@ -90,8 +90,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -109,8 +109,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => arccorp_daymar.created_at.utc.iso8601,
           "updatedAt" => arccorp_daymar.updated_at.utc.iso8601
@@ -188,8 +188,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -207,8 +207,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => arccorp_yela.created_at.utc.iso8601,
           "updatedAt" => arccorp_yela.updated_at.utc.iso8601
@@ -291,8 +291,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -310,8 +310,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => corvolex.created_at.utc.iso8601,
           "updatedAt" => corvolex.updated_at.utc.iso8601
@@ -385,8 +385,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => portolisar.starsystem.location_label,
-            },
+              "locationLabel" => portolisar.starsystem.location_label
+            }
           },
           "createdAt" => portolisar.created_at.utc.iso8601,
           "updatedAt" => portolisar.updated_at.utc.iso8601
@@ -463,8 +463,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => portolisar.starsystem.location_label,
-            },
+              "locationLabel" => portolisar.starsystem.location_label
+            }
           },
           "starsystem" => {
             "name" => "Stanton",
@@ -482,7 +482,7 @@ module Api
             "economy" => nil,
             "danger" => nil,
             "status" => nil,
-            "locationLabel" => portolisar.starsystem.location_label,
+            "locationLabel" => portolisar.starsystem.location_label
           },
           "shops" => [{
             "id" => portolisar_admin.id,
@@ -503,8 +503,8 @@ module Api
             "refineryTerminal" => nil,
             "station" => {
               "name" => portolisar.name,
-              "slug" => portolisar.slug,
-            },
+              "slug" => portolisar.slug
+            }
           }, {
             "id" => portolisar_dumpers.id,
             "name" => "Dumpers Depot",
@@ -524,8 +524,8 @@ module Api
             "refineryTerminal" => nil,
             "station" => {
               "name" => portolisar.name,
-              "slug" => portolisar.slug,
-            },
+              "slug" => portolisar.slug
+            }
           }, {
             "id" => portolisar_new_deal.id,
             "name" => "New Deal",
@@ -545,8 +545,8 @@ module Api
             "refineryTerminal" => nil,
             "station" => {
               "name" => portolisar.name,
-              "slug" => portolisar.slug,
-            },
+              "slug" => portolisar.slug
+            }
           }],
           "docks" => [{
             "name" => "Dockingport 01",

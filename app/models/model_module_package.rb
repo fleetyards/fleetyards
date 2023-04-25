@@ -31,8 +31,8 @@ class ModelModulePackage < ApplicationRecord
   belongs_to :model, touch: true
 
   has_many :module_package_items,
-           class_name: "ModelModulePackageItem",
-           dependent: :destroy
+    class_name: "ModelModulePackageItem",
+    dependent: :destroy
   has_many :model_modules, through: :module_package_items
 
   mount_uploader :store_image, StoreImageUploader

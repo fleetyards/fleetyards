@@ -35,9 +35,9 @@
 #
 class AdminUser < ApplicationRecord
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
-         :validatable, :timeoutable, :rememberable,
-         authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
-         otp_backup_code_length: 32, otp_number_of_backup_codes: 10
+    :validatable, :timeoutable, :rememberable,
+    authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
+    otp_backup_code_length: 32, otp_number_of_backup_codes: 10
 
   ## TODO: remove once Deivse Two Factor upgrade to 5.x is done
   # Decrypt and return the `encrypted_otp_secret` attribute which was used in
@@ -56,7 +56,7 @@ class AdminUser < ApplicationRecord
     # The last 16 bytes of the ciphertext are the authentication tag - we use
     # Galois Counter Mode which is an authenticated encryption mode
     cipher_text = raw_cipher_text[0..-17]
-    auth_tag =  raw_cipher_text[-16..]
+    auth_tag = raw_cipher_text[-16..]
 
     # this alrorithm lifted from
     # https://github.com/attr-encrypted/encryptor/blob/master/lib/encryptor.rb#L54

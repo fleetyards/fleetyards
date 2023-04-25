@@ -48,7 +48,7 @@ module Rsi
           type:,
           sub_type:,
           url: "#{@base_url}#{url}",
-          slug:,
+          slug:
         }
       end
 
