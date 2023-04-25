@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.16.0](https://github.com/fleetyards/fleetyards/compare/v5.15.1...v5.16.0) (2023-04-25)
+
+
+### Features
+
+* **fleets:** hide fleet vehicle owners ([#2588](https://github.com/fleetyards/fleetyards/issues/2588)) ([f8956ad](https://github.com/fleetyards/fleetyards/commit/f8956adc3fa548e3d3b0addf393dff307e1a838e))
+
+
+### Bug Fixes
+
+* **hangar:** don't mark ships imported as wanted by default ([92e7777](https://github.com/fleetyards/fleetyards/commit/92e77775cd17975c23a8c89777dc6f1442d2c7d0)), closes [#2587](https://github.com/fleetyards/fleetyards/issues/2587)
+
 ### [5.15.1](https://github.com/fleetyards/fleetyards/compare/v5.15.0...v5.15.1) (2023-03-27)
 
 
