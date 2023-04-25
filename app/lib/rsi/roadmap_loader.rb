@@ -123,10 +123,10 @@ module Rsi
 
     private def release_name(item, release)
       new_release_name = if release["name"].count(".") > 1
-                           release["name"].strip.chomp(".0")
-                         else
-                           release["name"].strip
-                         end
+        release["name"].strip.chomp(".0")
+      else
+        release["name"].strip
+      end
       old_release_name = (item.release || "").strip
 
       return old_release_name if new_release_name == old_release_name
@@ -142,6 +142,7 @@ module Rsi
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     private def cleanup_changes
       PaperTrail::Version.where(item_type: "RoadmapItem").select do |item|
         item.changeset.key?("release")
@@ -163,5 +164,6 @@ module Rsi
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

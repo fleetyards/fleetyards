@@ -10,7 +10,7 @@ module Api
           user = User.find_by!("lower(username) = ?", params.fetch(:hangar_username, "").downcase)
 
           @groups = HangarGroup.where(user_id: user.id, public: true)
-            .order([{ sort: :asc, name: :asc }])
+            .order([{sort: :asc, name: :asc}])
             .all
         end
       end

@@ -67,7 +67,7 @@ module Api
           end
 
           it "should return list with loaners for index" do
-            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { q: { loanerEq: true } }, as: :json
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: {q: {loanerEq: true}}, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -77,7 +77,7 @@ module Api
           end
 
           it "should return list with only loaners for index" do
-            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { q: { loanerEq: "only" } }, as: :json
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: {q: {loanerEq: "only"}}, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -89,7 +89,7 @@ module Api
 
         describe "#index grouped" do
           it "should return list for index" do
-            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { grouped: true }, as: :json
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: {grouped: true}, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -99,7 +99,7 @@ module Api
           end
 
           it "should return list with loaners for index" do
-            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { grouped: true, q: { loanerEq: true } }, as: :json
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: {grouped: true, q: {loanerEq: true}}, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -109,7 +109,7 @@ module Api
           end
 
           it "should return list with only loaners for index" do
-            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: { grouped: true, q: { loanerEq: "only" } }, as: :json
+            get "/api/v1/fleets/#{starfleet.slug}/vehicles", params: {grouped: true, q: {loanerEq: "only"}}, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -131,7 +131,7 @@ module Api
           end
 
           it "should return list with loaners for index" do
-            get "/api/v1/fleets/#{starfleet.slug}/fleetchart", params: { q: { loanerEq: true } }, as: :json
+            get "/api/v1/fleets/#{starfleet.slug}/fleetchart", params: {q: {loanerEq: true}}, as: :json
 
             assert_response :ok
             json = JSON.parse response.body
@@ -141,7 +141,7 @@ module Api
           end
 
           it "should return list with only loaners for index" do
-            get "/api/v1/fleets/#{starfleet.slug}/fleetchart", params: { q: { loanerEq: "only" } }, as: :json
+            get "/api/v1/fleets/#{starfleet.slug}/fleetchart", params: {q: {loanerEq: "only"}}, as: :json
 
             assert_response :ok
             json = JSON.parse response.body

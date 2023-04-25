@@ -6,7 +6,7 @@ module Api
       def index
         authorize! :index, :api_hangar_groups
         @groups = HangarGroup.where(user_id: current_user.id)
-          .order([{ sort: :asc, name: :asc }])
+          .order([{sort: :asc, name: :asc}])
           .all
       end
 
@@ -49,7 +49,7 @@ module Api
           group.update(sort: index)
         end
 
-        render json: { succees: true }
+        render json: {succees: true}
       end
 
       private def hangar_group

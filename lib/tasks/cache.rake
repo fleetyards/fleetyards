@@ -24,9 +24,9 @@ namespace :cache do
         maxbytes = stats["engine_maxbytes"].to_f
         utilization = (bytes / maxbytes) * 100.to_f
         puts "   #{host}:"
-        puts "   > items: #{stats['total_items']}"
-        puts "   > utilization: #{number_to_human_size(stats['bytes'])} (~#{number_to_percentage(utilization, precision: 0)})"
-        puts "   > evictions: #{stats['evictions']}"
+        puts "   > items: #{stats["total_items"]}"
+        puts "   > utilization: #{number_to_human_size(stats["bytes"])} (~#{number_to_percentage(utilization, precision: 0)})"
+        puts "   > evictions: #{stats["evictions"]}"
       end
     else
       puts "   > unavailable from #{Rails.cache.class}"

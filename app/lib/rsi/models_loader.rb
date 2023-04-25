@@ -60,10 +60,10 @@ module Rsi
     def sync_model(data)
       model_for_paint = find_model_for_paint(data)
       model = if model_for_paint.present?
-                create_or_update_paint(data, model_for_paint.id)
-              else
-                create_or_update_model(data)
-              end
+        create_or_update_paint(data, model_for_paint.id)
+      else
+        create_or_update_model(data)
+      end
 
       load_buying_options(model) unless Rails.env.test?
 
@@ -166,7 +166,7 @@ module Rsi
 
       updates = {
         last_updated_at: new_time_modified(data),
-        model_id:,
+        model_id:
       }
 
       updates[:rsi_description] = data["description"]
@@ -191,6 +191,7 @@ module Rsi
     end
     # rubocop:enable Metrics/CyclomaticComplexity
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     private def load_store_image(model, media_data)
       return if Rails.env.test? || (model.rsi_store_image.present? && model.store_images_updated_at >= store_images_updated_at(media_data))
 
@@ -207,6 +208,7 @@ module Rsi
       model.remote_store_image_url = image_url if model.store_image.blank?
       model.save
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     private def find_model_for_paint(data)
       mapping = paint_mapping.find { |item| item[:rsi_id] == data["id"].to_i }
@@ -222,7 +224,7 @@ module Rsi
 
     private def store_images_updated_at(media_data)
       Time.zone.parse(media_data["time_modified"])
-    rescue StandardError
+    rescue
       nil
     end
 
@@ -246,83 +248,85 @@ module Rsi
         {
           # Carrack
           rsi_id: 206,
-          model_rsi_id: 62,
+          model_rsi_id: 62
         }, {
           # Ballista
           rsi_id: 185,
-          model_rsi_id: 183,
+          model_rsi_id: 183
         }, {
           rsi_id: 184,
-          model_rsi_id: 183,
+          model_rsi_id: 183
         }, {
           # Caterpillar
           rsi_id: 194,
-          model_rsi_id: 24,
+          model_rsi_id: 24
         }, {
           rsi_id: 125,
-          model_rsi_id: 24,
+          model_rsi_id: 24
         }, {
           # Phoenix
           rsi_id: 156,
-          model_rsi_id: 49,
+          model_rsi_id: 49
         }, {
           # Cutlass
           rsi_id: 193,
-          model_rsi_id: 56,
+          model_rsi_id: 56
         }, {
           # Hammerhead
           rsi_id: 195,
-          model_rsi_id: 151,
+          model_rsi_id: 151
         }, {
           # Reclaimer
           rsi_id: 196,
-          model_rsi_id: 51,
+          model_rsi_id: 51
         }, {
           # Mole
           rsi_id: 202,
-          model_rsi_id: 201,
+          model_rsi_id: 201
         }, {
           rsi_id: 203,
-          model_rsi_id: 201,
+          model_rsi_id: 201
         }, {
           # Mustang
           rsi_id: 172,
-          model_rsi_id: 65,
+          model_rsi_id: 65
         }, {
           # Nautilus
           rsi_id: 187,
-          model_rsi_id: 186,
+          model_rsi_id: 186
         }, {
           # Archimedes
           rsi_id: 207,
-          model_rsi_id: 104,
+          model_rsi_id: 104
         }, {
           # Valkyrie
           rsi_id: 171,
-          model_rsi_id: 169,
-        },
+          model_rsi_id: 169
+        }
       ]
     end
     # rubocop:enable Metrics/MethodLength
 
+    # rubocop:disable Metrics/MethodLength
     private def blocklist
       [{
         rsi_id: 205,
         replacements: [{
           rsi_id: 62,
-          paint_rsi_id: 205,
+          paint_rsi_id: 205
         }, {
-          rsi_id: 192,
-        }],
+          rsi_id: 192
+        }]
       }, {
         rsi_id: 204,
         replacements: [{
-          rsi_id: 62,
+          rsi_id: 62
         }, {
-          rsi_id: 192,
-        }],
+          rsi_id: 192
+        }]
       }]
     end
+    # rubocop:enable Metrics/MethodLength
 
     private def blocked(rsi_id)
       blocklist.find { |item| item[:rsi_id] == rsi_id.to_i }
@@ -346,6 +350,8 @@ module Rsi
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/CyclomaticComplexity
     private def cleanup_blocked
       blocklist.each do |item|
         model = Model.find_by(rsi_id: item[:rsi_id])
@@ -372,5 +378,7 @@ module Rsi
         model.destroy
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/MethodLength
   end
 end

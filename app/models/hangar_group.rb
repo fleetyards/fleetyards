@@ -27,7 +27,7 @@ class HangarGroup < ApplicationRecord
   has_many :vehicles, through: :task_forces
 
   validates :name, :color, presence: true
-  validates :name, uniqueness: { scope: :user_id }
+  validates :name, uniqueness: {scope: :user_id}
 
   before_save :update_slugs
   after_save :touch_vehicles

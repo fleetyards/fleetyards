@@ -24,7 +24,7 @@ module Api
           fleet.vehicles.visible.where(loaner: false)
                .joins(:model)
                .group("models.size").count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 
@@ -38,7 +38,7 @@ module Api
           fleet.vehicles.visible.where(loaner: false)
                .joins(:model)
                .group("models.production_status").count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 
@@ -52,7 +52,7 @@ module Api
           fleet.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                { manufacturer.name => fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count }
+                {manufacturer.name => fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count}
               end
               .reduce(:merge) || []
         )
@@ -67,7 +67,7 @@ module Api
           fleet.vehicles.visible.where(loaner: false)
                .joins(:model)
                .group("models.classification").count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t("labels.unknown")) => count } }
+               .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
                .reduce(:merge) || []
         )
 

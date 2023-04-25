@@ -12,7 +12,7 @@ module Rsi
         code: manufacturer_data["code"].presence,
         known_for: manufacturer_data["known_for"].presence,
         description: manufacturer_data["description"].presence,
-        remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data["media"].present?)
+        remote_logo_url: ("#{base_url}#{manufacturer_data["media"][0]["source_url"]}" if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data["media"].present?)
       )
 
       model.update(manufacturer:) if model.present?

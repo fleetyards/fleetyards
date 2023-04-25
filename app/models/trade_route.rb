@@ -44,7 +44,7 @@ class TradeRoute < ApplicationRecord
   belongs_to :origin, class_name: "ShopCommodity"
   belongs_to :destination, class_name: "ShopCommodity"
 
-  validates :origin, uniqueness: { scope: :destination }
+  validates :origin, uniqueness: {scope: :destination}
 
   ransack_alias :commodity, :origin_commodity_item_of_Commodity_type_slug
   ransack_alias :commodity_type, :origin_commodity_item_of_Commodity_type_commodity_type

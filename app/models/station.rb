@@ -34,11 +34,13 @@
 class Station < ApplicationRecord
   paginates_per 10
 
-  searchkick searchable: %i[
-               name station_type classification celestial_object starsystem refinery
-               cargo_hub habitation tags
-             ],
-             word_start: %i[name]
+  searchkick(
+    searchable: %i[
+      name station_type classification celestial_object starsystem refinery
+      cargo_hub habitation tags
+    ],
+    word_start: %i[name]
+  )
 
   def search_data
     {
@@ -66,18 +68,18 @@ class Station < ApplicationRecord
 
   has_many :shops, dependent: :destroy
   has_many :docks,
-           -> { order(ship_size: :asc) },
-           dependent: :destroy,
-           inverse_of: :station
+    -> { order(ship_size: :asc) },
+    dependent: :destroy,
+    inverse_of: :station
   has_many :habitations,
-           -> { order(habitation_type: :desc) },
-           dependent: :destroy,
-           inverse_of: :station
+    -> { order(habitation_type: :desc) },
+    dependent: :destroy,
+    inverse_of: :station
 
   has_many :images,
-           as: :gallery,
-           dependent: :destroy,
-           inverse_of: :gallery
+    as: :gallery,
+    dependent: :destroy,
+    inverse_of: :gallery
 
   enum station_type: {
     landing_zone: 0, station: 1, asteroid_station: 2, district: 3, outpost: 4, aid_shelter: 5
@@ -136,12 +138,12 @@ class Station < ApplicationRecord
   end
 
   def self.with_shops(filters)
-    scope = includes(:shops).where.not(shops: { station_id: nil })
+    scope = includes(:shops).where.not(shops: {station_id: nil})
 
     if filters[:commodity_item_type].present?
       shop_type = Shop.shop_type_for_commodity_type(filters[:commodity_item_type])
 
-      scope = scope.where(shops: { shop_type: }) if shop_type.present?
+      scope = scope.where(shops: {shop_type:}) if shop_type.present?
     end
 
     scope

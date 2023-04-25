@@ -29,7 +29,8 @@ module Discord
       Rails.application.credentials.discord_updates_endpoint
     end
 
-    private def get_message; end
+    private def get_message
+    end
 
     private def get_title
       raise NotImplementedError
@@ -43,7 +44,7 @@ module Discord
       [
         "**#{title}**",
         message,
-        url,
+        url
       ].compact.join("\n")
     end
 

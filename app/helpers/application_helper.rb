@@ -3,8 +3,8 @@
 module ApplicationHelper
   def sortable(column, title = nil)
     title ||= column.titleize
-    css_class = column == sort_column ? "current #{sort_direction}" : nil
-    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
+    css_class = (column == sort_column) ? "current #{sort_direction}" : nil
+    direction = (column == sort_column && sort_direction == "asc") ? "desc" : "asc"
     link_to title, plumb(sort: column, direction:, page: nil), class: css_class
   end
 
@@ -59,7 +59,7 @@ module ApplicationHelper
   end
 
   def api_url(path)
-    "#{API_ENDPOINT}#{path.gsub(%r{v\d{1}/}, '')}"
+    "#{API_ENDPOINT}#{path.gsub(%r{v\d{1}/}, "")}"
   end
 
   def app_enabled?

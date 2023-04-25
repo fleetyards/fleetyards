@@ -15,16 +15,16 @@ class Setup < Thor
     require "./config/environment"
 
     email = if options.include?("email")
-              options[:email]
-            else
-              HighLine.ask("Email: ")
-            end
+      options[:email]
+    else
+      HighLine.ask("Email: ")
+    end
 
     username = if options.include?("username")
-                 options[:username]
-               else
-                 HighLine.ask("Username: ")
-               end
+      options[:username]
+    else
+      HighLine.ask("Username: ")
+    end
 
     if email.blank?
       puts "Email can't be blank!"
@@ -32,10 +32,10 @@ class Setup < Thor
     end
 
     password = if options.include?("password")
-                 options[:password]
-               else
-                 HighLine.ask("Password: ") { |q| q.echo = "*" }
-               end
+      options[:password]
+    else
+      HighLine.ask("Password: ") { |q| q.echo = "*" }
+    end
 
     if password.blank?
       puts "Password can't be blank!"
@@ -43,10 +43,10 @@ class Setup < Thor
     end
 
     password_confirmation = if options.include?("password_confirmation")
-                              options[:password_confirmation]
-                            else
-                              HighLine.ask("Password (again): ") { |q| q.echo = "*" }
-                            end
+      options[:password_confirmation]
+    else
+      HighLine.ask("Password (again): ") { |q| q.echo = "*" }
+    end
 
     if password_confirmation != password
       puts "Passwords dont match!"
@@ -74,7 +74,7 @@ class Setup < Thor
       image.name.retrieve_from_cache!(image.name.cache_name)
       image.name.recreate_versions!
       image.save!
-    rescue StandardError => e
+    rescue => e
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
     end
 
@@ -83,7 +83,7 @@ class Setup < Thor
       manufacturer.logo.retrieve_from_cache!(manufacturer.logo.cache_name)
       manufacturer.logo.recreate_versions!
       manufacturer.save!
-    rescue StandardError => e
+    rescue => e
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
     end
   end

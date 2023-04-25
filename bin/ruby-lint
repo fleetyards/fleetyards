@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+exec bundle exec standardrb --format progress "$@"

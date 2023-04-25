@@ -12,9 +12,9 @@ end
 
 Rack::Attack.throttle("api", limit: limit_proc, period: 1.hour) do |req|
   if !req.path.match?(%r{^/v\d+$}) &&
-     !req.path.match?(%r{^/v\d+/docs$}) &&
-     req.host.split(".").first == "api" &&
-     !(req.referer || "").start_with?("https://fleetyards.net")
+      !req.path.match?(%r{^/v\d+/docs$}) &&
+      req.host.split(".").first == "api" &&
+      !(req.referer || "").start_with?("https://fleetyards.net")
     req.ip
   end
 end
@@ -34,7 +34,7 @@ Rack::Attack.throttled_responder = lambda do |env|
   [429, headers, [
     {
       code: "rate_limit.exceeded",
-      message: "API rate limit exceeded for #{env['rack.attack.match_discriminator']}"
+      message: "API rate limit exceeded for #{env["rack.attack.match_discriminator"]}"
     }.to_json
   ]]
 end

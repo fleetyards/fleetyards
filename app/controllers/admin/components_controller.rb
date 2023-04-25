@@ -61,7 +61,7 @@ module Admin
           if component.update(component_params)
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.component"))
             message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.component")) if component.enabled?
-            render json: { message: }
+            render json: {message:}
           else
             render json: false, status: :bad_request
           end

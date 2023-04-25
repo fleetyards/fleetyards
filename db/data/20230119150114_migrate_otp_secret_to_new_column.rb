@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'progress_bar'
+require "progress_bar"
 
 class MigrateOtpSecretToNewColumn < ActiveRecord::Migration[7.0]
   def up

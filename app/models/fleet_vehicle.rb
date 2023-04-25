@@ -18,5 +18,5 @@ class FleetVehicle < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :vehicle
 
-  validates :vehicle_id, uniqueness: { scope: [:fleet_id] }
+  validates :vehicle_id, uniqueness: {scope: [:fleet_id]}
 end

@@ -38,7 +38,7 @@ class CelestialObject < ApplicationRecord
   paginates_per 30
 
   searchkick searchable: %i[name starsystem],
-             word_start: %i[name]
+    word_start: %i[name]
 
   def search_data
     {
@@ -54,18 +54,18 @@ class CelestialObject < ApplicationRecord
   belongs_to :starsystem, optional: true
 
   belongs_to :parent,
-             class_name: "CelestialObject",
-             optional: true
+    class_name: "CelestialObject",
+    optional: true
 
   has_many :moons,
-           class_name: "CelestialObject",
-           foreign_key: :parent_id,
-           inverse_of: :parent,
-           dependent: :destroy
+    class_name: "CelestialObject",
+    foreign_key: :parent_id,
+    inverse_of: :parent,
+    dependent: :destroy
 
   has_many :affiliations,
-           as: :affiliationable,
-           dependent: :destroy
+    as: :affiliationable,
+    dependent: :destroy
   has_many :factions, through: :affiliations
 
   before_save :update_slugs

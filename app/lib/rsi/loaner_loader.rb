@@ -29,7 +29,7 @@ module Rsi
 
         found_models = Model.where(name: models_map(name)).all
 
-        missing_models << { name:, loaners: } if found_models.blank?
+        missing_models << {name:, loaners:} if found_models.blank?
 
         found_models.each do |model|
           loaners.each do |loaner|
@@ -43,7 +43,7 @@ module Rsi
               missing_loaners << {
                 model: model.name,
                 model_id: model.id,
-                loaner: loaner_name,
+                loaner: loaner_name
               }
             end
           end
@@ -95,7 +95,7 @@ module Rsi
         "Nox" => ["Nox", "Nox Kue"],
         "X1 & Variants" => ["X1 Base", "X1 Velocity", "X1 Force"],
         "Reliant Variants" => ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"],
-        "Cyclone Variants" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA],
+        "Cyclone Variants" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA]
       }
 
       return models_map[name] if models_map[name].present?

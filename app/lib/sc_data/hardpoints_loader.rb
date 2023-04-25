@@ -138,7 +138,7 @@ module ScData
       hardpoint_ids = []
 
       ports_data["PilotHardpoints"].each_with_index.map do |port_data, index|
-        key_modifier = "#{port_data['Loadout']}_#{port_data.dig('InstalledItem', 'Ports', 0, 'Loadout')}"
+        key_modifier = "#{port_data["Loadout"]}_#{port_data.dig("InstalledItem", "Ports", 0, "Loadout")}"
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, nil, key_modifier)&.id
       end
 
@@ -239,7 +239,7 @@ module ScData
       mapping = {
         "ManneuverThruster.JointThruster": :joint,
         "ManneuverThruster.FixedThruster": :fixed,
-        "ManneuverThruster.GimbalThruster": :gimbal,
+        "ManneuverThruster.GimbalThruster": :gimbal
       }
 
       mapping[thruster_loadout_type&.to_sym]

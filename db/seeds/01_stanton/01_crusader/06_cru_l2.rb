@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
+crusader = CelestialObject.find_or_create_by!(name: "Crusader")
 
 hidden = true # currently not present 3.8.0
 
-cru_l2 = Station.find_or_initialize_by(name: 'Rest & Relax (CRU-L2)')
+cru_l2 = Station.find_or_initialize_by(name: "Rest & Relax (CRU-L2)")
 cru_l2.update!(
   celestial_object: crusader,
   station_type: :station,
   classification: :rest_stop,
-  location: 'CRU-L2',
+  location: "CRU-L2",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/cru-l2.jpg',
   hidden: hidden
 )
@@ -49,7 +49,7 @@ cru_l2.update!(
 #   end
 # end
 
-admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l2)
+admin_office = Shop.find_or_initialize_by(name: "Admin Office", station: cru_l2)
 admin_office.update!(
   shop_type: :admin,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/admin.jpg',
@@ -58,7 +58,7 @@ admin_office.update!(
   hidden: hidden
 )
 
-live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: cru_l2)
+live_fire_weapons = Shop.find_or_initialize_by(name: "Live Fire Weapons", station: cru_l2)
 live_fire_weapons.update!(
   shop_type: :weapons,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/weapons.jpg',
@@ -66,7 +66,7 @@ live_fire_weapons.update!(
   hidden: hidden
 )
 
-casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: cru_l2)
+casaba = Shop.find_or_initialize_by(name: "Casaba Outlet", station: cru_l2)
 casaba.update!(
   shop_type: :clothing,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/casaba.jpg',
@@ -74,7 +74,7 @@ casaba.update!(
   hidden: hidden
 )
 
-platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: cru_l2)
+platinum_bay = Shop.find_or_initialize_by(name: "Platinum Bay", station: cru_l2)
 platinum_bay.update!(
   shop_type: :components,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l2/platinum_bay.jpg',

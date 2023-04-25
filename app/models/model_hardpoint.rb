@@ -36,7 +36,7 @@ class ModelHardpoint < ApplicationRecord
 
   validates :source, :key, :hardpoint_type, :group, presence: true
 
-  enum source: { ship_matrix: 0, game_files: 1 }
+  enum source: {ship_matrix: 0, game_files: 1}
 
   after_save :update_model
 
@@ -55,7 +55,7 @@ class ModelHardpoint < ApplicationRecord
 
   enum hardpoint_type: SHIP_MATRIX_HARDPOINT_TYPES.merge(GAME_FILE_HARDPOINT_TYPES), _suffix: true
 
-  enum group: { avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4 }, _suffix: true
+  enum group: {avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4}, _suffix: true
 
   enum category: {
     main: 0, retro: 1, vtol: 2,

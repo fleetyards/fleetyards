@@ -29,7 +29,7 @@ module Api
         authorize! :update, current_user
 
         unless access_cookie_valid?
-          render json: { code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation") }, status: :bad_request
+          render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end
 
@@ -41,12 +41,12 @@ module Api
 
       def signup
         if blocked(user_create_params[:email])
-          render json: { code: "blocked" }, status: :bad_request
+          render json: {code: "blocked"}, status: :bad_request
           return
         end
 
         if reserved_name(user_create_params[:username])
-          render json: { code: "reserved_username", message: I18n.t("messages.signup.reserved_username") }, status: :bad_request
+          render json: {code: "reserved_username", message: I18n.t("messages.signup.reserved_username")}, status: :bad_request
           return
         end
 
@@ -67,7 +67,7 @@ module Api
       def confirm
         user = User.confirm_by_token(params[:token])
         if user.present? && user.errors.blank?
-          render json: { code: "confirmation", message: I18n.t("devise.confirmations.confirmed") }
+          render json: {code: "confirmation", message: I18n.t("devise.confirmations.confirmed")}
         else
           render json: ValidationError.new("confirmation", errors: user.errors), status: :bad_request
         end
@@ -75,12 +75,12 @@ module Api
 
       def check_email
         authorize! :check, :api_users
-        render json: { emailTaken: User.exists?(normalized_email: (user_create_params[:email] || "").downcase) }
+        render json: {emailTaken: User.exists?(normalized_email: (user_create_params[:email] || "").downcase)}
       end
 
       def check_username
         authorize! :check, :api_users
-        render json: { usernameTaken: User.exists?(normalized_username: (user_create_params[:username] || "").downcase) }
+        render json: {usernameTaken: User.exists?(normalized_username: (user_create_params[:username] || "").downcase)}
       end
 
       def destroy
@@ -89,7 +89,7 @@ module Api
         if current_user.destroy
           Cleanup::UserVisitsJob.perform_async(current_user.id)
 
-          render json: { code: "current_user.destroyed", message: I18n.t("messages.destroy.success", resource: I18n.t("resources.user")) }
+          render json: {code: "current_user.destroyed", message: I18n.t("messages.destroy.success", resource: I18n.t("resources.user"))}
         else
           render json: ValidationError.new("current_user.destroy", errors: @current_user.errors), status: :bad_request
         end

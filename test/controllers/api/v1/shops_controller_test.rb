@@ -69,7 +69,7 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
+              "locationLabel" => crusader.starsystem.location_label
             }
           },
           "createdAt" => new_deal.created_at.utc.iso8601,
@@ -150,8 +150,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -169,8 +169,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => admin_daymar.created_at.utc.iso8601,
           "updatedAt" => admin_daymar.updated_at.utc.iso8601
@@ -247,8 +247,8 @@ module Api
                 "economy" => nil,
                 "danger" => nil,
                 "status" => nil,
-                "locationLabel" => crusader.starsystem.location_label,
-              },
+                "locationLabel" => crusader.starsystem.location_label
+              }
             },
             "starsystem" => {
               "name" => "Stanton",
@@ -266,8 +266,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => admin_yela.created_at.utc.iso8601,
           "updatedAt" => admin_yela.updated_at.utc.iso8601
@@ -326,8 +326,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => admin_olisar.created_at.utc.iso8601,
           "updatedAt" => admin_olisar.updated_at.utc.iso8601
@@ -386,8 +386,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => dumpers.created_at.utc.iso8601,
           "updatedAt" => dumpers.updated_at.utc.iso8601
@@ -446,8 +446,8 @@ module Api
               "economy" => nil,
               "danger" => nil,
               "status" => nil,
-              "locationLabel" => crusader.starsystem.location_label,
-            },
+              "locationLabel" => crusader.starsystem.location_label
+            }
           },
           "createdAt" => new_deal.created_at.utc.iso8601,
           "updatedAt" => new_deal.updated_at.utc.iso8601

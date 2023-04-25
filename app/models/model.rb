@@ -119,7 +119,7 @@ class Model < ApplicationRecord
   PAGINATION_OPTIONS = [15, 30, 60, 120, 240].freeze
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code],
-             word_start: %i[name manufacturer_name]
+    word_start: %i[name manufacturer_name]
 
   def search_data
     {
@@ -136,55 +136,55 @@ class Model < ApplicationRecord
   belongs_to :manufacturer, optional: true
 
   has_one :addition,
-          class_name: "ModelAddition",
-          dependent: :destroy,
-          inverse_of: :model
+    class_name: "ModelAddition",
+    dependent: :destroy,
+    inverse_of: :model
 
   delegate :net_cargo, to: :addition, allow_nil: true
   delegate :height, :length, :cargo, :max_crew, :min_crew,
-           :scm_speed, :afterburner_speed, :mass, :beam, :price, to: :addition, allow_nil: true, prefix: true
+    :scm_speed, :afterburner_speed, :mass, :beam, :price, to: :addition, allow_nil: true, prefix: true
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
   has_many :model_hardpoints,
-           dependent: :destroy,
-           autosave: true
+    dependent: :destroy,
+    autosave: true
   has_many :vehicles, dependent: :destroy
   has_many :components, through: :model_hardpoints
 
   has_many :module_hardpoints, dependent: :destroy
   has_many :modules,
-           through: :module_hardpoints,
-           source: :model_module
+    through: :module_hardpoints,
+    source: :model_module
 
   has_many :module_packages,
-           class_name: "ModelModulePackage",
-           dependent: :destroy
+    class_name: "ModelModulePackage",
+    dependent: :destroy
 
   has_many :model_loaners,
-           dependent: :destroy,
-           inverse_of: :model
+    dependent: :destroy,
+    inverse_of: :model
   has_many :loaners,
-           through: :model_loaners,
-           source: :loaner_model
+    through: :model_loaners,
+    source: :loaner_model
 
   has_many :upgrade_kits, dependent: :destroy
   has_many :upgrades,
-           through: :upgrade_kits,
-           source: :model_upgrade
+    through: :upgrade_kits,
+    source: :model_upgrade
 
   has_many :paints,
-           class_name: "ModelPaint",
-           dependent: :destroy,
-           inverse_of: :model
+    class_name: "ModelPaint",
+    dependent: :destroy,
+    inverse_of: :model
 
   has_many :images,
-           as: :gallery,
-           dependent: :destroy,
-           inverse_of: :gallery
+    as: :gallery,
+    dependent: :destroy,
+    inverse_of: :gallery
 
   has_many :videos,
-           dependent: :destroy
+    dependent: :destroy
 
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
@@ -282,7 +282,7 @@ class Model < ApplicationRecord
   end
 
   def self.with_dock
-    includes(:docks).where.not(docks: { model_id: nil })
+    includes(:docks).where.not(docks: {model_id: nil})
   end
 
   def update_from_hardpoints
