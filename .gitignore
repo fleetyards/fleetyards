@@ -12,6 +12,8 @@ pids/*
 config/credentials/*.key
 config/*.key
 .env*
+!.env.example
+!.env.test.example
 
 # test files
 coverage/*
