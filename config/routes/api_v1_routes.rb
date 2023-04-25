@@ -99,6 +99,7 @@ v1_api_routes = lambda do
     put :import
     get :export
     get :embed
+    get "hangar", to: "hangars#hangar"
 
     put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 

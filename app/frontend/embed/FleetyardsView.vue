@@ -238,7 +238,7 @@ export default {
     async fetchHangarVehicles() {
       this.loading = true;
 
-      const response = await this.$api.get("vehicles/embed", {
+      const response = await this.$api.get("hangar/embed", {
         usernames: this.users,
       });
 
