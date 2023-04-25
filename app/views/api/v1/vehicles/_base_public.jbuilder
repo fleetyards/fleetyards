@@ -13,8 +13,10 @@ end
 json.paint nil if vehicle.model_paint.blank?
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
-json.username vehicle.user.username
-json.user_avatar vehicle.user.avatar.small.url
+unless vehicle.user.hide_owner?
+  json.username vehicle.user.username
+  json.user_avatar vehicle.user.avatar.small.url
+end
 json.hangar_group_ids vehicle.public_hangar_group_ids
 json.hangar_groups do
   json.array! vehicle.public_hangar_groups, partial: "api/v1/vehicles/hangar_group", as: :hangar_group

@@ -39,20 +39,6 @@ export class PublicFleetVehiclesCollection extends BaseCollection {
     return this.records;
   }
 
-  async findAllFleetchart(
-    params: FleetVehicleParams
-  ): Promise<(Vehicle | Model)[]> {
-    const response = await get(`fleets/${params.slug}/public-fleetchart`, {
-      q: params?.filters,
-    });
-
-    if (!response.error) {
-      this.records = response.data;
-    }
-
-    return this.records;
-  }
-
   async findStats(
     params: FleetVehicleParams
   ): Promise<FleetVehicleStats | null> {

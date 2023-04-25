@@ -32,6 +32,8 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - 8271:5432
+    volumes:
+      - ./data/postgres-local:/var/lib/postgresql/data
   redis:
     image: redis:6.2.11-alpine
     ports:

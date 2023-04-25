@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_13_173053) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_11_195050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -946,6 +946,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_13_173053) do
     t.datetime "hangar_updated_at", precision: nil
     t.string "otp_secret"
     t.boolean "public_wishlist", default: false
+    t.boolean "hide_owner", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["confirmation_token"], name: "users_confirmation_token_index"
     t.index ["email"], name: "index_users_on_email", unique: true

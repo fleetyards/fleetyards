@@ -1,5 +1,5 @@
 <template>
-  <Modal :title="$t('headlines.fleets.owners')">
+  <Modal :title="t('headlines.fleets.owners')">
     <div class="row">
       <div v-if="loading" class="col-12">
         <Loader :loading="loading" :inline="true" />
@@ -10,11 +10,29 @@
           :key="vehicle.username"
           class="col-12 col-md-6"
         >
-          <Btn :href="`/hangar/${vehicle.username}`" :block="true">
+          <Btn
+            v-if="vehicle.username"
+            :href="`/hangar/${vehicle.username}`"
+            :block="true"
+          >
             <div class="user-item">
               <Avatar :avatar="vehicle.userAvatar" size="small" />
               <span class="user-item-username">
                 {{ vehicle.username }}
+                <span v-if="vehicle.name" class="user-item-ship">
+                  {{ vehicle.name }}
+                  <span v-if="vehicle.serial" class="user-item-ship-serial">
+                    ({{ vehicle.serial }})
+                  </span>
+                </span>
+              </span>
+            </div>
+          </Btn>
+          <Btn v-else :disabled="true" :block="true">
+            <div class="user-item">
+              <Avatar size="small" />
+              <span class="user-item-username">
+                {{ t("labels.anonymous") }}
                 <span v-if="vehicle.name" class="user-item-ship">
                   {{ vehicle.name }}
                   <span v-if="vehicle.serial" class="user-item-ship-serial">
@@ -30,51 +48,49 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
 import { sortBy } from "@/frontend/lib/Helpers";
 import { uniqByField as uniqByFieldArray } from "@/frontend/utils/Array";
 import { FleetVehiclesCollection } from "@/frontend/api/collections/FleetVehicles";
-import Loader from "@/frontend/core/components/Loader/index.vue";
 
-@Component<OwnersModal>({
-  components: {
-    Btn,
-    Modal,
-    Avatar,
-    Loader,
-  },
-})
-export default class OwnersModal extends Vue {
-  @Prop({ required: true }) modelSlug: string;
+type Props = {
+  modelSlug: string;
+  fleetSlug: string;
+};
 
-  @Prop({ required: true }) fleetSlug: string;
+const props = defineProps<Props>();
 
-  collection: FleetVehiclesCollection = new FleetVehiclesCollection();
+const { t } = useI18n();
 
-  loading = true;
+const collection: FleetVehiclesCollection = new FleetVehiclesCollection();
 
-  get sortedVehicles() {
-    return sortBy(this.collection.records, "username").filter(
-      uniqByFieldArray("username")
-    );
-  }
+const loading = ref(true);
 
-  async mounted() {
-    await this.collection.findAll({
-      slug: this.fleetSlug,
-      filters: { modelSlugIn: [this.modelSlug] },
-      grouped: false,
-      perPage: "all",
-    });
+const sortedVehicles = computed(() =>
+  sortBy(collection.records, "username").filter(uniqByFieldArray("username"))
+);
 
-    this.loading = false;
-  }
-}
+onMounted(async () => {
+  await collection.findAll({
+    slug: props.fleetSlug,
+    filters: { modelSlugIn: [props.modelSlug] },
+    grouped: false,
+    perPage: "all",
+  });
+
+  loading.value = false;
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "VehicleOwnersModal",
+};
 </script>
 
 <style lang="scss" scoped>

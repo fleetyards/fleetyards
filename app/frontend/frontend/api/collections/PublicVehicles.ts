@@ -32,7 +32,7 @@ export class PublicVehiclesCollection extends BaseCollection {
 
     this.params = params;
 
-    const response = await get(`vehicles/${params?.username}`, {
+    const response = await get(`public/hangars/${params?.username}`, {
       q: params?.filters,
       page: params?.page,
       perPage: this.perPage,
@@ -46,24 +46,6 @@ export class PublicVehiclesCollection extends BaseCollection {
     return this.records;
   }
 
-  async findAllFleetchart(
-    params: PublicVehicleParams | null
-  ): Promise<Vehicle[]> {
-    if (!params?.username) {
-      return [];
-    }
-
-    this.params = params;
-
-    const response = await get(`vehicles/${params?.username}/fleetchart`);
-
-    if (!response.error) {
-      this.records = response.data;
-    }
-
-    return this.records;
-  }
-
   async refresh(): Promise<void> {
     await this.findAll(this.params);
   }
@@ -72,7 +54,7 @@ export class PublicVehiclesCollection extends BaseCollection {
     username: string,
     params: PublicVehicleParams | null
   ): Promise<PublicVehicleStats | null> {
-    const response = await get(`vehicles/${username}/quick-stats`, {
+    const response = await get(`public/hangars/${username}/stats`, {
       q: params?.filters,
     });
 

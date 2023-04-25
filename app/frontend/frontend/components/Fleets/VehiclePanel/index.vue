@@ -113,6 +113,7 @@ import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 
 @Component<FleetVehiclePanel>({
+  name: "FleetVehiclePanel",
   components: {
     Panel,
     PanelDetails,

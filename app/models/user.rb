@@ -21,6 +21,7 @@
 #  failed_attempts           :integer          default(0), not null
 #  guilded                   :string
 #  hangar_updated_at         :datetime
+#  hide_owner                :boolean          default(FALSE), not null
 #  homepage                  :string
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
@@ -211,6 +212,18 @@ class User < ApplicationRecord
 
     update_tracked_fields(request)
     save(validate: false)
+  end
+
+  def reset_otp
+    # rubocop:disable Rails/SkipsModelValidations
+    update_column(:otp_required_for_login, false)
+    update_column(:encrypted_otp_secret, nil)
+    update_column(:encrypted_otp_secret_iv, nil)
+    update_column(:encrypted_otp_secret_salt, nil)
+    update_column(:otp_backup_codes, nil)
+    update_column(:otp_secret, nil)
+    # rubocop:enable Rails/SkipsModelValidations
+    update(otp_secret: User.generate_otp_secret)
   end
 
   ## TODO: remove once Deivse Two Factor upgrade to 5.x is done

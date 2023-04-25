@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/PikachuEXE/redis-store.git
+  revision: c395440c3a846657697999ef0c9345037991e7aa
+  branch: fix/redis-client-compatibility
+  specs:
+    redis-store (1.9.2)
+      redis (>= 4, < 6)
+
+GIT
   remote: https://github.com/r38y/griddler-postmark.git
   revision: 55904355a44066d94c24b49613a22e1face387a5
   specs:
@@ -352,7 +360,7 @@ GEM
     net-ssh (7.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.14.2)
+    nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     oj (3.14.2)
@@ -465,7 +473,8 @@ GEM
     rdoc (6.5.0)
       psych (>= 4.0.0)
     redcarpet (3.6.0)
-    redis (4.8.1)
+    redis (5.0.6)
+      redis-client (>= 0.9.0)
     redis-actionpack (5.3.0)
       actionpack (>= 5, < 8)
       redis-rack (>= 2.1.0, < 3)
@@ -475,8 +484,6 @@ GEM
     redis-rack (2.1.4)
       rack (>= 2.0.8, < 3)
       redis-store (>= 1.2, < 2)
-    redis-store (1.9.1)
-      redis (>= 4, < 5)
     regexp_parser (2.7.0)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -731,6 +738,7 @@ DEPENDENCIES
   rdoc
   redcarpet
   redis-actionpack
+  redis-store!
   responders
   rollups
   rqrcode
@@ -771,7 +779,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 3.2.1
+   ruby 3.2.2
 
 BUNDLED WITH
    2.4.4

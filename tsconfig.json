@@ -1,49 +1,31 @@
 {
   "compilerOptions": {
-    "strict": true,
     "target": "esnext",
+    "useDefineForClassFields": true,
     "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "strict": true,
     "jsx": "preserve",
-    "importHelpers": true,
-    "allowJs": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable"
-    ],
-    "moduleResolution": "node",
+    "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["app/frontend/*"],
+      "@/*": ["./app/frontend/*"],
       "~/*": ["*"]
     },
-    "sourceMap": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false,
-    "noImplicitThis": true,
-    "noEmit": true,
-    "types": [
-      "cypress",
-      "node",
-      "vitest/globals"
-    ]
+    "types": ["cypress", "node", "vitest/globals", "vite/client"]
   },
   "include": [
     "@types/*",
     "app/frontend/**/*.ts",
     "app/frontend/**/*.tsx",
     "app/frontend/**/*.vue",
+    "app/frontend/**/*.d.ts",
     "test/javascript/**/*.ts",
-    "cypress/**/*.ts",
-  ],
-  "exclude": [
-    "node_modules",
-    "vendor",
-    "public"
-  ],
-  "compileOnSave": false
+    "cypress/**/*.ts"
+  ]
 }
