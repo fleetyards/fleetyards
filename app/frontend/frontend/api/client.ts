@@ -234,7 +234,7 @@ const languageHeader = () => {
   };
 };
 
-const apiClient = {
+export const apiClient = {
   get,
   post,
   put,

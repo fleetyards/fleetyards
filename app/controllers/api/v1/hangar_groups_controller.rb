@@ -3,21 +3,9 @@
 module Api
   module V1
     class HangarGroupsController < ::Api::BaseController
-      before_action :authenticate_user!, except: [:public]
-
       def index
         authorize! :index, :api_hangar_groups
         @groups = HangarGroup.where(user_id: current_user.id)
-          .order([{ sort: :asc, name: :asc }])
-          .all
-      end
-
-      def public
-        authorize! :public, :api_hangar_groups
-
-        user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
-
-        @groups = HangarGroup.where(user_id: user.id, public: true)
           .order([{ sort: :asc, name: :asc }])
           .all
       end

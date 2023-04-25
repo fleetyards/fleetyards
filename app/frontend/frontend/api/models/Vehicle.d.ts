@@ -12,6 +12,7 @@ type Vehicle = {
   paint: ModelPaint;
   boughtVia: string;
   boughtViaLabel: string;
+  username?: string;
 };
 
 type VehicleForm = {

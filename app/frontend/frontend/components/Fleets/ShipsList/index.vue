@@ -111,11 +111,11 @@
 
             <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
               <template v-if="grouped">
-                <i class="fas fa-square" />
+                <i class="fas fa-object-intersect" />
                 <span>{{ $t("actions.ungrouped") }}</span>
               </template>
               <template v-else>
-                <i class="fas fa-th-large" />
+                <i class="fas fa-object-union" />
                 <span>{{ $t("actions.groupedByModel") }}</span>
               </template>
             </Btn>

@@ -94,40 +94,87 @@ v1_api_routes = lambda do
     end
   end
 
-  resources :vehicles, only: %i[index create update destroy] do
-    collection do
-      get :wishlist
-      get "quick-stats" => "vehicles#quick_stats"
-      get :fleetchart
-      get :export
-      get "export-wishlist", to: :export_wishlist
-      put :import
-      put "bulk" => "vehicles#update_bulk"
-      put "destroy-bulk" => "vehicles#destroy_bulk"
-      put "move-all-ingame-to-wishlist" => "vehicles#move_all_ingame_to_wishlist"
-      delete "destroy-all" => "vehicles#destroy_all"
-      delete "destroy-all-wishlist" => "vehicles#destroy_all_wishlist"
-      delete "destroy-all-ingame" => "vehicles#destroy_all_ingame"
-      get :embed
-      get "hangar-items" => "vehicles#hangar_items"
-      get "wishlist-items" => "vehicles#wishlist_items"
-      get :hangar
-      get ":username" => "vehicles#public", as: :public
-      get ":username/quick-stats" => "vehicles#public_quick_stats", as: :public_quick_stats
-      get ":username/fleetchart" => "vehicles#public_fleetchart", as: :public_fleetchart
-      get ":username/wishlist" => "vehicles#public_wishlist", as: :public_wishlist
-      get "stats/models-by-size" => "vehicles#models_by_size"
-      get "stats/models-by-production-status" => "vehicles#models_by_production_status"
-      get "stats/models-by-manufacturer" => "vehicles#models_by_manufacturer"
-      get "stats/models-by-classification" => "vehicles#models_by_classification"
-      post "check-serial"
-      get "filters/bought-via", to: "vehicles#bought_via_filters"
+  resource :hangar, only: %i[show destroy] do
+    get :items
+    put :import
+    get :export
+    get "hangar", to: "hangars#hangar"
+
+    put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
+
+    resource :hangar_stats, path: "stats", only: %i[show] do
+      get "models-by-size", to: "hangar_stats#models_by_size"
+      get "models-by-production-status", to: "hangar_stats#models_by_production_status"
+      get "models-by-manufacturer", to: "hangar_stats#models_by_manufacturer"
+      get "models-by-classification", to: "hangar_stats#models_by_classification"
+    end
+
+    resources :hangar_groups, path: "groups", only: %i[index create update destroy] do
+      collection do
+        put :sort
+      end
     end
   end
 
+  resource :wishlist, only: %i[show destroy] do
+    get :items
+    get :export
+  end
+
+  namespace :public do
+    resources :hangars, param: :username, only: %i[show] do
+      collection do
+        get :embed
+      end
+
+      resource :hangar_stats, path: "stats", only: %i[show]
+      resources :hangar_groups, path: "groups", only: %i[index]
+    end
+
+    resources :wishlists, param: :username, only: %i[show]
+  end
+
+  resources :vehicles, only: %i[create update destroy] do
+    collection do
+      put "bulk", to: "vehicles#update_bulk"
+      put "destroy-bulk", to: "vehicles#destroy_bulk"
+      delete "destroy-all-ingame" => "vehicles#destroy_all_ingame"
+
+      post "check-serial"
+      get "filters/bought-via", to: "vehicles#bought_via_filters"
+
+      # DEPRECATED
+      get "/", to: "hangars#show"
+      get :fleetchart
+      get ":username/fleetchart", to: "vehicles#public_fleetchart", as: :public_fleetchart
+
+      get "wishlist", to: "wishlists#show"
+      get "quick-stats", to: "hangar_stats#show"
+      get "export", to: "hangars#export"
+      get "export-wishlist", to: "wishlists#export"
+      put "import", to: "hangars#import"
+
+      put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
+      delete "destroy-all", to: "hangars#destroy"
+      delete "destroy-all-wishlist", to: "wishlists#destroy"
+      get "embed", to: "public/hangars#embed"
+      get "hangar-items", to: "hangars#items"
+      get "wishlist-items", to: "wishlists#items"
+      get "hangar", to: "hangars#hangar"
+      get ":username", to: "public/hangars#show", as: :public
+      get ":hangar_username/quick-stats", to: "public/hangar_stats#show", as: :public_quick_stats
+      get ":username/wishlist", to: "public/wishlists#show", as: :public_wishlist
+      get "stats/models-by-size", to: "hangar_stats#models_by_size"
+      get "stats/models-by-production-status", to: "hangar_stats#models_by_production_status"
+      get "stats/models-by-manufacturer", to: "hangar_stats#models_by_manufacturer"
+      get "stats/models-by-classification", to: "hangar_stats#models_by_classification"
+    end
+  end
+
+  # DEPRECATED
   resources :hangar_groups, path: "hangar-groups", only: %i[index create update destroy] do
     collection do
-      get ":username" => "hangar_groups#public", as: :public
+      get ":hangar_username" => "public/hangar_groups#index", as: :public
       put :sort
     end
   end
@@ -180,29 +227,29 @@ v1_api_routes = lambda do
       post :check
       get :invites
       get :current
-      get "check-invite/:token" => "fleets#find_by_invite"
-      post "use-invite" => "fleet_memberships#create_by_invite"
+      get "check-invite/:token", to: "fleets#find_by_invite"
+      post "use-invite", to: "fleet_memberships#create_by_invite"
     end
 
     member do
-      get "vehicles" => "fleet_vehicles#index"
+      get "vehicles", to: "fleet_vehicles#index"
       get "vehicles/export", to: "fleet_vehicles#export"
-      get "model-counts" => "fleet_vehicles#model_counts"
-      get "quick-stats" => "fleet_vehicles#quick_stats"
-      get "fleetchart" => "fleet_vehicles#fleetchart"
-      get "public-vehicles" => "fleet_vehicles#public"
-      get "public-model-counts" => "fleet_vehicles#public_model_counts"
-      get "embed" => "fleet_vehicles#embed"
-      get "public-fleetchart" => "fleet_vehicles#public_fleetchart"
+      get "model-counts", to: "fleet_vehicles#model_counts"
+      get "quick-stats", to: "fleet_vehicles#quick_stats"
+      get "fleetchart", to: "fleet_vehicles#fleetchart"
+      get "public-vehicles", to: "fleet_vehicles#public"
+      get "public-model-counts", to: "fleet_vehicles#public_model_counts"
+      get "embed", to: "fleet_vehicles#embed"
+      get "public-fleetchart", to: "fleet_vehicles#public_fleetchart"
 
-      get "members" => "fleet_members#index"
-      get "member-quick-stats" => "fleet_members#quick_stats"
+      get "members", to: "fleet_members#index"
+      get "member-quick-stats", to: "fleet_members#quick_stats"
 
-      get "stats/vehicles-by-model" => "fleet_stats#vehicles_by_model"
-      get "stats/models-by-size" => "fleet_stats#models_by_size"
-      get "stats/models-by-production-status" => "fleet_stats#models_by_production_status"
-      get "stats/models-by-manufacturer" => "fleet_stats#models_by_manufacturer"
-      get "stats/models-by-classification" => "fleet_stats#models_by_classification"
+      get "stats/vehicles-by-model", to: "fleet_stats#vehicles_by_model"
+      get "stats/models-by-size", to: "fleet_stats#models_by_size"
+      get "stats/models-by-production-status", to: "fleet_stats#models_by_production_status"
+      get "stats/models-by-manufacturer", to: "fleet_stats#models_by_manufacturer"
+      get "stats/models-by-classification", to: "fleet_stats#models_by_classification"
     end
 
     resources :fleet_memberships, path: "members", param: :username, only: %i[create destroy] do

@@ -1,7 +1,10 @@
+import { resolve } from "path";
 import { defineConfig, splitVendorChunkPlugin } from "vite";
 import RubyPlugin from "vite-plugin-ruby";
 import Vue2Plugin from "@vitejs/plugin-vue2";
 import { VitePWA } from "vite-plugin-pwa";
+// import Components from "unplugin-vue-components/vite";
+import AutoImport from "unplugin-auto-import/vite";
 
 const cache: { [key: string]: string } = {};
 
@@ -39,8 +42,35 @@ export default defineConfig({
         navigateFallback: null,
       },
     }),
+    // Components({
+    //   // generate `components.d.ts` global declarations
+    //   // https://github.com/antfu/unplugin-vue-components#typescript
+    //   dts: true,
+    //   directoryAsNamespace: true,
+    //   types: [
+    //     {
+    //       from: "vue-router",
+    //       names: ["RouterLink", "RouterView"],
+    //     },
+    //   ],
+    //   // relative paths to the directory to search for components.
+    //   dirs: ["frontend/components", "frontend/core/components"],
+    // }),
+    AutoImport({
+      dts: true,
+      // fix eslint complaining about missing imports
+      eslintrc: {
+        enabled: true,
+      },
+      imports: ["vue", "vitest", "vue-router", { "vue-i18n": ["useI18n"] }],
+    }),
     splitVendorChunkPlugin(),
   ],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "app/frontend"),
+    },
+  },
   build: {
     rollupOptions: {
       maxParallelFileReads: 5,
