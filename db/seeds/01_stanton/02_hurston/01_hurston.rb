@@ -23,11 +23,11 @@ lorville.docks.destroy_all
     )
   end
 end
-[1, 2, 3, 4, 5, 6].each do |gateNumber|
+[1, 2, 3, 4, 5, 6].each do |gate_number|
   {small: [1, 2]}.each do |ship_size, pads|
     pads.each do |pad|
       lorville.docks << Dock.new(
-        name: ("Gate #{"%02d" % gateNumber} Pad %02d" % pad),
+        name: ("Gate #{"%02d" % gate_number} Pad %02d" % pad),
         dock_type: :vehiclepad,
         ship_size: ship_size
       )

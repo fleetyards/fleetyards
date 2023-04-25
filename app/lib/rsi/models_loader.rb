@@ -191,6 +191,7 @@ module Rsi
     end
     # rubocop:enable Metrics/CyclomaticComplexity
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     private def load_store_image(model, media_data)
       return if Rails.env.test? || (model.rsi_store_image.present? && model.store_images_updated_at >= store_images_updated_at(media_data))
 
@@ -207,6 +208,7 @@ module Rsi
       model.remote_store_image_url = image_url if model.store_image.blank?
       model.save
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     private def find_model_for_paint(data)
       mapping = paint_mapping.find { |item| item[:rsi_id] == data["id"].to_i }
@@ -305,6 +307,7 @@ module Rsi
     end
     # rubocop:enable Metrics/MethodLength
 
+    # rubocop:disable Metrics/MethodLength
     private def blocklist
       [{
         rsi_id: 205,
@@ -323,6 +326,7 @@ module Rsi
         }]
       }]
     end
+    # rubocop:enable Metrics/MethodLength
 
     private def blocked(rsi_id)
       blocklist.find { |item| item[:rsi_id] == rsi_id.to_i }
@@ -346,6 +350,8 @@ module Rsi
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/CyclomaticComplexity
     private def cleanup_blocked
       blocklist.each do |item|
         model = Model.find_by(rsi_id: item[:rsi_id])
@@ -372,5 +378,7 @@ module Rsi
         model.destroy
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/MethodLength
   end
 end

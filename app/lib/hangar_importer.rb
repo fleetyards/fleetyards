@@ -95,6 +95,7 @@ class HangarImporter
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength
 
+  # rubocop:disable Metrics/MethodLength
   private def starship_42_mapping
     {
       "x1" => "X1",
@@ -130,6 +131,7 @@ class HangarImporter
       "retaliator base" => "Retaliator"
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/MethodLength
   private def hangar_xplor_mapping

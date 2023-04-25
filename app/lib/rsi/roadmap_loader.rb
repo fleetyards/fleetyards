@@ -142,6 +142,7 @@ module Rsi
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     private def cleanup_changes
       PaperTrail::Version.where(item_type: "RoadmapItem").select do |item|
         item.changeset.key?("release")
@@ -163,5 +164,6 @@ module Rsi
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end
