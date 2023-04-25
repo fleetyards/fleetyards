@@ -45,18 +45,6 @@ export class ModelsCollection extends BaseCollection {
     return this.records;
   }
 
-  async findAllFleetchart(options: ModelParams): Promise<Model[]> {
-    const response = await get("models/fleetchart", {
-      q: options.filters,
-    });
-
-    if (!response.error) {
-      this.records = response.data;
-    }
-
-    return this.records;
-  }
-
   async findBySlug(slug: string): Promise<Model | null> {
     if (prefetch("model")) {
       this.record = prefetch("model");

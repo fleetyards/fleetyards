@@ -110,26 +110,6 @@ module Api
         render json: ValidationError.new("vehicle.move_all_ingame_to_wish_list", errors:), status: :bad_request
       end
 
-      def embed
-        usernames = params.fetch(:usernames, []).map(&:downcase)
-        user_ids = User.where("lower(username) IN (?)", usernames)
-          .where(public_hangar: true)
-          .pluck(:id)
-
-        vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
-
-        @q = Vehicle.where(user_id: user_ids)
-          .public
-          .purchased
-          .ransack(vehicle_query_params)
-
-        @vehicles = @q.result(distinct: true)
-          .includes(:model)
-          .joins(:model)
-
-        render "api/v1/vehicles/public"
-      end
-
       # DEPRECATED
       def hangar
         authorize! :index, :api_hangar

@@ -29,6 +29,26 @@ module Api
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
         end
+
+        def embed
+          usernames = params.fetch(:usernames, []).map(&:downcase)
+          user_ids = User.where("lower(username) IN (?)", usernames)
+            .where(public_hangar: true)
+            .pluck(:id)
+
+          vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
+
+          @q = Vehicle.where(user_id: user_ids)
+            .public
+            .purchased
+            .ransack(vehicle_query_params)
+
+          @vehicles = @q.result(distinct: true)
+            .includes(:model)
+            .joins(:model)
+
+          render "api/v1/public/hangars/show"
+        end
       end
     end
   end

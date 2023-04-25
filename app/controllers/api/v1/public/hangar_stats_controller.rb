@@ -7,7 +7,7 @@ module Api
         include HangarFiltersConcern
 
         def show
-          user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
+          user = User.find_by!("lower(username) = ?", params.fetch(:hangar_username, "").downcase)
 
           unless user.public_hangar?
             not_found

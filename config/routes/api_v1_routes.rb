@@ -98,7 +98,6 @@ v1_api_routes = lambda do
     get :items
     put :import
     get :export
-    get :embed
     get "hangar", to: "hangars#hangar"
 
     put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
@@ -124,6 +123,10 @@ v1_api_routes = lambda do
 
   namespace :public do
     resources :hangars, param: :username, only: %i[show] do
+      collection do
+        get :embed
+      end
+
       resource :hangar_stats, path: "stats", only: %i[show]
       resources :hangar_groups, path: "groups", only: %i[index]
     end
@@ -154,12 +157,12 @@ v1_api_routes = lambda do
       put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
       delete "destroy-all", to: "hangars#destroy"
       delete "destroy-all-wishlist", to: "wishlists#destroy"
-      get "embed", to: "hangars#embed"
+      get "embed", to: "public/hangars#embed"
       get "hangar-items", to: "hangars#items"
       get "wishlist-items", to: "wishlists#items"
       get "hangar", to: "hangars#hangar"
       get ":username", to: "public/hangars#show", as: :public
-      get ":username/quick-stats", to: "public/hangar_stats#show", as: :public_quick_stats
+      get ":hangar_username/quick-stats", to: "public/hangar_stats#show", as: :public_quick_stats
       get ":username/wishlist", to: "public/wishlists#show", as: :public_wishlist
       get "stats/models-by-size", to: "hangar_stats#models_by_size"
       get "stats/models-by-production-status", to: "hangar_stats#models_by_production_status"
@@ -171,7 +174,7 @@ v1_api_routes = lambda do
   # DEPRECATED
   resources :hangar_groups, path: "hangar-groups", only: %i[index create update destroy] do
     collection do
-      get ":username" => "public/hangar_groups#index", as: :public
+      get ":hangar_username" => "public/hangar_groups#index", as: :public
       put :sort
     end
   end
