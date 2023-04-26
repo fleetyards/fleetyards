@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.16.1](https://github.com/fleetyards/fleetyards/compare/v5.16.0...v5.16.1) (2023-04-26)
+
+
+### Bug Fixes
+
+* caching for new hide owner for fleets option ([1db4c86](https://github.com/fleetyards/fleetyards/commit/1db4c86da2b6c0843614fea94850c4d87009721c))
+
 ## [5.16.0](https://github.com/fleetyards/fleetyards/compare/v5.15.1...v5.16.0) (2023-04-25)
 
 
