@@ -6,7 +6,7 @@
     :inline="true"
   >
     <template #label>
-      <template v-if="!mobile">{{ $t("labels.pagination.perPage") }}:</template>
+      <template v-if="!mobile">{{ t("labels.pagination.perPage") }}:</template>
       {{ perPage }}
     </template>
     <Btn
@@ -21,34 +21,47 @@
   </BtnDropdown>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import type {
+  Props as BtnProps,
+  BtnSizes,
+  BtnVariants,
+} from "@/frontend/core/components/Btn/index.vue";
+import { v4 as uuidv4 } from "uuid";
+import { useAppStore } from "@/frontend/stores/App";
+import { storeToRefs } from "pinia";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<PerPageDropdown>({
-  components: {
-    BtnDropdown,
-    Btn,
-  },
-})
-export default class PerPageDropdown extends BtnDropdown {
-  @Prop({ required: true }) perPage!: number;
-
-  @Prop({
-    default: () => [10, 20, 50, 100],
-  })
-  steps!: number[];
-
-  @Getter("mobile") mobile;
-
-  get uuid() {
-    return this._uid;
-  }
-
-  update(step) {
-    this.$emit("change", step);
-  }
+interface Props extends BtnProps {
+  size: BtnSizes;
+  variant: BtnVariants;
+  perPage: number | "all";
+  steps?: number[] | string[];
 }
+
+withDefaults(defineProps<Props>(), {
+  steps: () => [10, 20, 50, 100],
+});
+
+const { t } = useI18n();
+
+const appStore = useAppStore();
+
+const { mobile } = storeToRefs(appStore);
+
+const uuid = uuidv4();
+
+const emit = defineEmits(["change"]);
+
+const update = (step: string | number) => {
+  emit("change", step);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "PerPageDropdown",
+};
 </script>

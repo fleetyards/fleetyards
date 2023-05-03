@@ -629,4 +629,9 @@ export default {
       missing: "Unable to Import",
     },
   },
+  oauth: {
+    discord: {
+      label: "Mit Discord anmelden",
+    },
+  },
 };

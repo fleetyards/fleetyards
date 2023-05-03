@@ -5,6 +5,10 @@ require "sidekiq/web"
 Rails.application.default_url_options = {host: Rails.configuration.app.domain, trailing_slash: true}
 
 Rails.application.routes.draw do
+  devise_for :users, singular: :user, only: :omniauth_callbacks, controllers: {
+    omniauth_callbacks: "omniauth_callbacks"
+  }
+
   draw :api_routes
   draw :admin_routes
   draw :frontend_routes

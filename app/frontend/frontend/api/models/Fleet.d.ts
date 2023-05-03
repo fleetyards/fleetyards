@@ -8,6 +8,7 @@ type TFleet = {
   myFleet: boolean;
   publicFleet: boolean;
   myRole: string;
+  logo: string;
 };
 
 type TFleetForm = {

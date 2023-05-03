@@ -6,7 +6,7 @@
           <form @submit.prevent="handleSubmit(login)">
             <h1>
               <router-link to="/" exact>
-                {{ $t("app") }}
+                {{ t("app") }}
               </router-link>
             </h1>
             <template v-if="twoFactorRequired">
@@ -14,7 +14,7 @@
                 v-slot="{ errors }"
                 vid="twoFactorCode"
                 rules="required"
-                :name="$t('labels.twoFactorCode')"
+                :name="t('labels.twoFactorCode')"
                 :slim="true"
               >
                 <FormInput
@@ -32,7 +32,7 @@
                 v-slot="{ errors }"
                 vid="login"
                 rules="required"
-                :name="$t('labels.login')"
+                :name="t('labels.login')"
                 :slim="true"
               >
                 <FormInput
@@ -49,7 +49,7 @@
                 v-slot="{ errors }"
                 vid="password"
                 rules="required"
-                :name="$t('labels.password')"
+                :name="t('labels.password')"
                 :slim="true"
               >
                 <FormInput
@@ -64,7 +64,7 @@
               <Checkbox
                 id="rememberMe"
                 v-model="form.rememberMe"
-                :label="$t('labels.rememberMe')"
+                :label="t('labels.rememberMe')"
               />
             </div>
             <Btn
@@ -74,7 +74,7 @@
               size="large"
               :block="true"
             >
-              {{ $t("actions.login") }}
+              {{ t("actions.login") }}
             </Btn>
             <Btn
               :to="{
@@ -84,11 +84,12 @@
               size="small"
               :block="true"
             >
-              {{ $t("actions.reset-password") }}
+              {{ t("actions.reset-password") }}
             </Btn>
             <footer>
+              <!-- <OauthLoginBtn :block="true" provider="discord" /> -->
               <p class="text-center">
-                {{ $t("labels.signup.link") }}
+                {{ t("labels.signup.link") }}
               </p>
               <Btn
                 data-test="signup-link"
@@ -96,7 +97,7 @@
                 size="small"
                 :block="true"
               >
-                {{ $t("actions.signUp") }}
+                {{ t("actions.signUp") }}
               </Btn>
             </footer>
           </form>
@@ -111,12 +112,19 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { useSessionStore } from "@/frontend/stores/Session";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+// import OauthLoginBtn from "@/frontend/components/OAuthLoginBtn/index.vue";
 import { displayAlert } from "@/frontend/lib/Noty";
 import sessionCollection from "@/frontend/api/collections/Session";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import type { SessionParams } from "@/@types/models/Session";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { TApiErrorResponse } from "@/frontend/api/client";
+
+const { t } = useI18n();
+
+useMetaInfo();
 
 const submitting = ref(false);
 
@@ -140,8 +148,6 @@ onMounted(() => {
 const route = useRoute();
 const router = useRouter();
 const sessionStore = useSessionStore();
-
-// const { head } = useMetaInfo();
 
 const login = async () => {
   submitting.value = true;
@@ -168,7 +174,7 @@ const login = async () => {
     }
   } else {
     displayAlert({
-      text: response.error.response.data.message,
+      text: (response as TApiErrorResponse).error.response?.data.message,
     });
   }
 };

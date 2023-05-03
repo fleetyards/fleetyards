@@ -614,6 +614,11 @@ export default {
       other: "<b>%{count}</b> Items for <b>%{price}</b>",
     },
   },
+  oauth: {
+    discord: {
+      label: "Login with Discord",
+    },
+  },
   syncExtension: {
     status: {
       started: "Import Started...",

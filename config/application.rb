@@ -44,6 +44,8 @@ module Fleetyards
     # Use a real queuing backend for Active Job (and separate queues per environment).
     config.active_job.queue_adapter = :sidekiq
 
+    config.active_support.use_rfc4122_namespaced_uuids = true
+
     config.lograge.enabled = true
     config.lograge.ignore_actions = ["Api::BaseController#version"]
 

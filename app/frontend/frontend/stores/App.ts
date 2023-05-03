@@ -90,7 +90,7 @@ export const useAppStore = defineStore("App", {
       wishlistStore.$reset();
       publicWishlistStore.$reset();
     },
-    saveFilters(key: string, filters) {
+    saveFilters(key: string, filters: TFilters) {
       this.filters[key] = filters;
     },
     toggleFilterVisible(key: string) {

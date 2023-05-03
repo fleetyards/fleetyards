@@ -64,7 +64,9 @@ Rails.application.configure do
     ]
 
     form_src = [
-      :self, api_endpoint,
+      :self,
+      api_endpoint,
+      "https://discord.com",
       "https://starship42.com",
       FRONTEND_ENDPOINT
     ]

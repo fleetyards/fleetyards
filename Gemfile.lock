@@ -291,6 +291,7 @@ GEM
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
+    jwt (2.7.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -347,6 +348,7 @@ GEM
       ruby2_keywords (>= 0.0.5)
     msgpack (1.7.1)
     multi_json (1.15.0)
+    multi_xml (0.6.0)
     net-imap (0.3.4)
       date
       net-protocol
@@ -364,7 +366,27 @@ GEM
     nokogiri (1.15.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    oauth2 (2.0.9)
+      faraday (>= 0.17.3, < 3.0)
+      jwt (>= 1.0, < 3.0)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 4)
+      snaky_hash (~> 2.0)
+      version_gem (~> 1.1)
     oj (3.14.3)
+    omniauth (2.1.1)
+      hashie (>= 3.4.6)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-discord (1.1.0)
+      omniauth (~> 2.1.0)
+      omniauth-oauth2
+    omniauth-oauth2 (1.8.0)
+      oauth2 (>= 1.4, < 3)
+      omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.1)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     opensearch-api (2.2.0)
       multi_json
     opensearch-ruby (2.1.0)
@@ -422,6 +444,8 @@ GEM
       rack (>= 1.0, < 3)
     rack-cors (2.0.1)
       rack (>= 2.0.0)
+    rack-protection (3.0.6)
+      rack
     rack-proxy (0.7.6)
       rack
     rack-test (2.1.0)
@@ -583,6 +607,9 @@ GEM
       railties (>= 3.1)
       slim (>= 3.0, < 6.0, != 5.0.0)
     smart_properties (1.17.0)
+    snaky_hash (2.0.1)
+      hashie
+      version_gem (~> 1.1, >= 1.1.1)
     spring (4.1.1)
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
@@ -634,6 +661,7 @@ GEM
       activesupport (>= 3.0.0)
     useragent (0.16.10)
     vcr (6.1.0)
+    version_gem (1.1.2)
     vite_rails (3.0.14)
       railties (>= 5.1, < 8)
       vite_ruby (~> 3.0, >= 3.2.2)
@@ -721,6 +749,9 @@ DEPENDENCIES
   mocha
   nokogiri
   oj
+  omniauth
+  omniauth-discord
+  omniauth-rails_csrf_protection
   opensearch-ruby
   paper_trail
   pg (~> 1.0)

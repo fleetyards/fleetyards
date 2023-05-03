@@ -21,17 +21,6 @@
       >
         <i class="fal fa-search-plus" />
       </Btn>
-      <Btn
-        v-if="colored"
-        v-tooltip="colorTooltip"
-        size="small"
-        variant="dropdown"
-        :inline="true"
-        :active="color"
-        @click.native="toggleColor"
-      >
-        <i class="fad fa-fill-drip" />
-      </Btn>
     </BtnGroup>
 
     <Loader v-if="loading" :loading="loading" :progress="progress" />
@@ -85,8 +74,6 @@ export default class HoloViewer extends Vue {
 
   progress = 0;
 
-  color = false;
-
   @Prop({ required: true }) holo: string;
 
   @Prop({ default: false }) colored: boolean;
@@ -136,13 +123,6 @@ export default class HoloViewer extends Vue {
   onZoomChange() {
     this.controls.enableZoom = this.zoom;
     this.controls.update();
-  }
-
-  @Watch("color")
-  onColorChange() {
-    if (this.model) {
-      this.updateModelMaterial();
-    }
   }
 
   @Watch("autoRotate")
@@ -258,7 +238,7 @@ export default class HoloViewer extends Vue {
     this.model.traverse((node) => {
       if (!node.isMesh) return;
 
-      if (this.color) {
+      if (this.colored) {
         if (node.backupMaterial) {
           node.material = node.backupMaterial;
         }
@@ -330,10 +310,6 @@ export default class HoloViewer extends Vue {
 
   toggleZoom() {
     this.zoom = !this.zoom;
-  }
-
-  toggleColor() {
-    this.color = !this.color;
   }
 
   toggleAutoRotate() {

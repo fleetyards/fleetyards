@@ -24,11 +24,12 @@ import type {
   BtnVariants,
   BtnSizes,
 } from "@/frontend/core/components/Btn/index.vue";
+import { useAppStore } from "@/frontend/stores/App";
+import { storeToRefs } from "pinia";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
 
 interface Props extends BtnProps {
-  items: Vehicle[] | Model[];
+  items: TVehicle[] | TModel[];
   withIcon?: boolean;
   block?: boolean;
   inline?: boolean;
@@ -44,7 +45,9 @@ const props = withDefaults(defineProps<Props>(), {
   size: "default",
 });
 
-const mobile = computed(() => Store.getters.mobile);
+const appStore = useAppStore();
+
+const { mobile } = storeToRefs(appStore);
 
 const basePath = "https://starship42.com/fleetview/";
 
@@ -71,7 +74,7 @@ const openStarship42 = () => {
   form.appendChild(typeField);
 
   props.items.forEach((item) => {
-    const model = (item as Vehicle).model || item;
+    const model = (item as TVehicle).model || item;
     const shipField = document.createElement("input");
     shipField.type = "hidden";
     shipField.name = "s[]";

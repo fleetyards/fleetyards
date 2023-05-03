@@ -22,14 +22,14 @@
               alt="logo"
             />
             <span v-if="!slimNavigation" class="logo-menu-label">
-              {{ $t("app") }}
+              {{ t("app") }}
             </span>
           </NavItem>
           <FleetNav v-if="isFleetRoute" />
           <template v-else>
             <NavItem
               :to="{ name: 'home' }"
-              :label="$t('nav.home')"
+              :label="t('nav.home')"
               icon="fad fa-home-alt"
               :exact="true"
             />
@@ -39,14 +39,14 @@
                 name: 'hangar',
                 query: filterFor('hangar'),
               }"
-              :label="$t('nav.hangar')"
+              :label="t('nav.hangar')"
               :active="isHangarRoute"
               icon="fad fa-warehouse"
             />
             <NavItem
               v-else
               :to="{ name: 'hangar-preview' }"
-              :label="$t('nav.hangar')"
+              :label="t('nav.hangar')"
               icon="fal fa-warehouse"
             />
             <NavItem
@@ -54,7 +54,7 @@
                 name: 'models',
                 query: filterFor('models'),
               }"
-              :label="$t('nav.models.index')"
+              :label="t('nav.models.index')"
               :active="isModelRoute"
               icon="fad fa-starship"
             />
@@ -62,7 +62,7 @@
             <FleetsNav />
             <NavItem
               :to="{ name: 'images' }"
-              :label="$t('nav.images')"
+              :label="t('nav.images')"
               icon="fad fa-images"
             />
             <NavItem
@@ -70,18 +70,18 @@
                 name: 'trade-routes',
                 query: filterFor('trade-routes'),
               }"
-              :label="$t('nav.tradeRoutes')"
+              :label="t('nav.tradeRoutes')"
               icon="fad fa-pallet-alt"
             />
             <NavItem
               :to="{ name: 'roadmap' }"
-              :label="$t('nav.roadmap.index')"
+              :label="t('nav.roadmap.index')"
               icon="fad fa-tasks-alt"
               :active="isRoadmapRoute"
             />
             <NavItem
               :to="{ name: 'stats' }"
-              :label="$t('nav.stats')"
+              :label="t('nav.stats')"
               icon="fad fa-chart-bar"
             />
           </template>
@@ -105,6 +105,9 @@ import FleetNav from "@/frontend/core/components/Navigation/FleetNav/index.vue";
 import FleetsNav from "@/frontend/core/components/Navigation/FleetsNav/index.vue";
 import StationsNav from "@/frontend/core/components/Navigation/StationsNav/index.vue";
 import NavFooter from "@/frontend/core/components/Navigation/NavFooter/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+
+const { t } = useI18n();
 
 const route = useRoute();
 
@@ -145,15 +148,15 @@ const isHangarRoute = computed(() => {
   return route.name.includes("hangar");
 });
 
-const filterFor = (route: string) => {
+const filterFor = (routeName: string) => {
   // // TODO: disabled until vue-router supports navigation to same route
   // return null
-  if (!appStore.filters[route]) {
-    return null;
+  if (!appStore.filters[routeName]) {
+    return undefined;
   }
 
   return {
-    q: appStore.filters[route],
+    q: appStore.filters[routeName],
   };
 };
 

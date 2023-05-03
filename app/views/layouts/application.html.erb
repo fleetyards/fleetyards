@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
     <title><%= title %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
     <meta content="<%= description %>" name="description">
     <meta content="<%= keywords %>" name="keywords">
     <meta property="og:site_name" content="<%= I18n.t(:"title.default") %>">

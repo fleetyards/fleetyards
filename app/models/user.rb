@@ -65,8 +65,9 @@ class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
-    :validatable, :confirmable, :rememberable, :timeoutable,
-    authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
+    :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
+    omniauth_providers: %i[discord], authentication_keys: [:login],
+    otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
   has_many :vehicles, dependent: :destroy
@@ -94,6 +95,7 @@ class User < ApplicationRecord
     inverse_of: false
   has_many :fleets,
     through: :fleet_memberships
+  has_many :oauth_connections, dependent: :destroy, inverse_of: :user
 
   validates :username,
     uniqueness: {case_sensitive: false},
@@ -131,6 +133,26 @@ class User < ApplicationRecord
 
   def self.unconfirmed
     where(confirmed_at: nil)
+  end
+
+  def self.from_omniauth(auth)
+    exisiting_user = find_by(email: auth.info.email)
+
+    if exisiting_user.present?
+      if exisiting_user.oauth_connections.find_by(provider: auth.provider, uid: auth.uid).present?
+        return exisiting_user
+      end
+
+      nil
+    else
+      new_user = new(email: auth.info.email, username: auth.info.name, password: Devise.friendly_token[0, 64])
+
+      new_user.oauth_connections.build(provider: auth.provider, uid: auth.uid)
+
+      new_user.skip_confirmation!
+
+      new_user.save!
+    end
   end
 
   def set_normalized_login_fields

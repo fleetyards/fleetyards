@@ -340,15 +340,15 @@ const loadingModules = ref(false);
 
 const loadingUpgrades = ref(false);
 
-const variants = ref<Model[]>([]);
+const variants = ref<TModel[]>([]);
 
-const loaners = ref<ModelLoaner[]>([]);
+const loaners = ref<TModelLoaner[]>([]);
 
-const modules = ref<ModelModule[]>([]);
+const modules = ref<TModelModule[]>([]);
 
-const upgrades = ref<ModelUpgrade[]>([]);
+const upgrades = ref<TModelUpgrade[]>([]);
 
-const model = ref<Model | null>(null);
+const model = ref<TModel | null>(null);
 
 const appStore = useAppStore();
 
@@ -371,7 +371,7 @@ const starship42IframeUrl = computed(
     `https://starship42.com/fleetview/fleetyards/?s=${model.value?.rsiName}&type=matrix`
 );
 
-const { t } = useI18n();
+const { t, toDollar } = useI18n();
 
 const metaTitle = computed(() => {
   if (!model.value) {
@@ -471,7 +471,12 @@ const fetchExtras = () => {
 
 const fetch = async () => {
   loading.value = true;
-  model.value = await modelsCollection.findBySlug(route.params.slug);
+  const response = await modelsCollection.findBySlug(route.params.slug);
+
+  if (response && response.data) {
+    model.value = response.data;
+  }
+
   loading.value = false;
 };
 

@@ -7,8 +7,6 @@ api_options = {
 }.compact
 
 namespace :api, **api_options do
-  devise_for :users, singular: :user, only: []
-
   draw :api_v1_routes
 
   root to: "base#root"
