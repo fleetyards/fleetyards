@@ -77,6 +77,7 @@ export default {
   addUpgrade: "Add another Upgrade",
   showTableView: "Display as List",
   showGridView: "Display as Grid",
+  syncRsiHangar: "Sync RSI Hangar",
   compare: {
     models: "Compare",
   },

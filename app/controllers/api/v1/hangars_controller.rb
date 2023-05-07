@@ -53,7 +53,7 @@ module Api
       end
 
       def import
-        authorize! :show, :api_hangar
+        authorize! :update, :api_hangar
 
         import_data = JSON.parse(params[:import].read)
 
@@ -78,6 +78,14 @@ module Api
         @vehicles = @q.result(distinct: true)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
+      end
+
+      def sync_rsi_hangar
+        authorize! :update, :api_hangar
+
+        render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request if params[:items].blank?
+
+        @response = ::HangarSync.new(params[:items]).run(current_user.id)
       end
 
       def items

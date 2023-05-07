@@ -267,4 +267,11 @@ export default {
         "Are you sure you want to regenerate your Two-factor Backup Codes?",
     },
   },
+  syncExtension: {
+    started: "Syncing your Hangar...",
+    success: "Your Hangar has been synced.",
+    failure: "Your Hangar could not be synced.",
+    notLoggedIn:
+      'You need to be logged in on <a href="https://robertsspaceindustries.com" target="_blank">https://robertsspaceindustries.com</a> to sync your Hangar.',
+  },
 };

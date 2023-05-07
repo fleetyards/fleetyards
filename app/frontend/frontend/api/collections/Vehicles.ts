@@ -259,6 +259,20 @@ export class VehiclesCollection extends BaseCollection {
 
     return false;
   }
+
+  async syncRsiHangar(items: TRSIHangarItem[]): Promise<boolean> {
+    const response = await put("hangar/sync-rsi-hangar", {
+      items,
+    });
+
+    if (!response.error) {
+      this.refresh();
+
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export default new VehiclesCollection();

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_25_162321) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_07_102331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -994,6 +994,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_162321) do
     t.string "slug"
     t.boolean "wanted", default: false
     t.integer "bought_via", default: 0
+    t.string "rsi_pledge_id"
+    t.datetime "rsi_pledge_synced_at"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
