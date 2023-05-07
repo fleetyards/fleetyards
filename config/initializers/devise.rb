@@ -245,11 +245,13 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :discord, Rails.application.credentials.oauth.discord_id, Rails.application.credentials.oauth.discord_secret, scope: "email"
-  # config.omniauth :github, Rails.application.credentials.github_id, Rails.application.credentials.github_secret, scope: 'user'
-  # config.omniauth :facebook, Rails.application.credentials.facebook_id, Rails.application.credentials.facebook_secret
-  # config.omniauth :twitter, Rails.application.credentials.twitter_id, Rails.application.credentials.twitter_secret
-  # config.omniauth :google_oauth2, Rails.application.credentials.google_id, Rails.application.credentials.google_secret
+  if Rails.application.credentials.oauth.present?
+    config.omniauth :discord, Rails.application.credentials.oauth.discord&.id, Rails.application.credentials.oauth.discord&.secret, scope: "email"
+    config.omniauth :github, Rails.application.credentials.oauth.github&.id, Rails.application.credentials.oauth.github&.secret, scope: "user"
+    config.omniauth :twitter, Rails.application.credentials.oauth.twitter&.id, Rails.application.credentials.oauth.twitter&.secret
+    config.omniauth :google_oauth2, Rails.application.credentials.oauth.google_oauth2&.id, Rails.application.credentials.oauth.google_oauth2&.secret
+    config.omniauth :apple, Rails.application.credentials.oauth.apple&.id, Rails.application.credentials.oauth.apple&.secret, scope: "email name"
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

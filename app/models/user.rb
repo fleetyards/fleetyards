@@ -66,7 +66,7 @@ class User < ApplicationRecord
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
-    omniauth_providers: %i[discord], authentication_keys: [:login],
+    omniauth_providers: (Rails.application.credentials.oauth&.keys || []).map(&:to_sym), authentication_keys: [:login],
     otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
