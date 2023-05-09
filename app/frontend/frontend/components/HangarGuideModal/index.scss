@@ -6,9 +6,13 @@
   align-items: center;
   gap: 20px;
 
+  > div {
+    width: 50%;
+  }
+
   .hangar-guide-gif {
     display: block;
-    max-width: 50%;
+    width: 50%;
     border-radius: $border-radius-base;
   }
 
@@ -28,6 +32,10 @@
 @media (max-width: $desktop-breakpoint) {
   .hangar-guide-topic {
     flex-direction: column-reverse;
+
+    > div {
+      width: 100%;
+    }
 
     .hangar-guide-gif {
       max-width: 100%;

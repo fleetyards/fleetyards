@@ -336,6 +336,7 @@ const finishSync = async () => {
   if (result.value) {
     displaySuccess({ text: t("messages.syncExtension.success") });
     updateStep("submitData", "success");
+    console.log(skins.value.map((item) => item.name));
   } else {
     updateStep("submitData", "failure");
   }

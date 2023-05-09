@@ -16,51 +16,75 @@
 
     <h2>{{ t("sublines.hangarGuide.add") }}</h2>
     <div class="hangar-guide-topic">
-      <div>
+      <div class="hangar-guide-text">
         <p v-html="t('texts.hangarGuide.add')" />
         <div class="hangar-guide-highlight">
           {{ t("texts.hangarGuide.icon") }}
           <i class="fal fa-bookmark" />
         </div>
       </div>
-      <img :src="images.add" class="hangar-guide-gif" alt="add-guide" />
+      <div class="hangar-guide-video">
+        <VideoEmbed :video="videos.add" />
+      </div>
     </div>
     <hr />
     <h2>{{ t("sublines.hangarGuide.edit") }}</h2>
     <div class="hangar-guide-topic">
-      <div>
+      <div class="hangar-guide-text">
         <p v-html="t('texts.hangarGuide.edit')" />
         <div class="hangar-guide-highlight">
           {{ t("texts.hangarGuide.icon") }}
           <i class="fa fa-pencil" />
         </div>
       </div>
-      <img :src="images.edit" class="hangar-guide-gif" alt="edit-guide" />
+      <div class="hangar-guide-video">
+        <VideoEmbed :video="videos.edit" class="hangar-guide-video" />
+      </div>
+    </div>
+    <hr />
+    <h2>{{ t("sublines.hangarGuide.wishlist") }}</h2>
+    <div class="hangar-guide-topic">
+      <div class="hangar-guide-text">
+        <p v-html="t('texts.hangarGuide.wishlist')" />
+        <div class="hangar-guide-highlight">
+          {{ t("texts.hangarGuide.icon") }}
+          <i class="fal fa-bookmark" />
+        </div>
+      </div>
+      <div class="hangar-guide-video">
+        <VideoEmbed :video="videos.edit" class="hangar-guide-video" />
+      </div>
     </div>
     <hr />
     <h2>{{ t("sublines.hangarGuide.public") }}</h2>
     <div class="hangar-guide-topic">
-      <p v-html="t('texts.hangarGuide.public')" />
-      <img :src="images.public" class="hangar-guide-gif" alt="public-guide" />
+      <div class="hangar-guide-text">
+        <p v-html="t('texts.hangarGuide.public')" />
+      </div>
+      <div class="hangar-guide-video">
+        <VideoEmbed :video="videos.public" class="hangar-guide-video" />
+      </div>
     </div>
     <hr />
     <h2>{{ t("sublines.hangarGuide.fleetchart") }}</h2>
     <div class="hangar-guide-topic">
-      <p v-html="t('texts.hangarGuide.fleetchart')" />
-      <img
-        :src="images.fleetchart"
-        class="hangar-guide-gif"
-        alt="fleetchart-guide"
-      />
+      <div class="hangar-guide-text">
+        <p v-html="t('texts.hangarGuide.fleetchart')" />
+      </div>
+      <div class="hangar-guide-video">
+        <VideoEmbed :video="videos.fleetchart" />
+      </div>
     </div>
     <hr />
     <h2>{{ t("sublines.hangarGuide.groups") }}</h2>
     <div class="hangar-guide-topic">
-      <div>
+      <div class="hangar-guide-text">
         <p v-html="t('texts.hangarGuide.groups.add')" />
         <p v-html="t('texts.hangarGuide.groups.edit')" />
       </div>
-      <img :src="images.groups" class="hangar-guide-gif" alt="groups-guide" />
+      <div class="hangar-guide-video">
+        <VideoEmbed :video="videos.groups" class="hangar-guide-video" />
+      </div>
     </div>
   </Modal>
 </template>
@@ -69,22 +93,47 @@
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
-import addImage from "@/images/hangar-guide/add.gif";
-import editImage from "@/images/hangar-guide/edit.gif";
-import publicImage from "@/images/hangar-guide/public.gif";
-import fleetchartImage from "@/images/hangar-guide/fleetchart.gif";
-import groupsImage from "@/images/hangar-guide/groups.gif";
+import VideoEmbed from "@/frontend/core/components/Video/index.vue";
 
 const { t } = useI18n();
 
 const empty = computed(() => Store.getters["hangar/empty"]);
 
-const images = computed(() => ({
-  add: addImage,
-  edit: editImage,
-  public: publicImage,
-  fleetchart: fleetchartImage,
-  groups: groupsImage,
+type VideoList = {
+  [key: string]: TVideo;
+};
+
+const videos = computed<VideoList>(() => ({
+  add: {
+    videoId: "eWS8korWw58",
+    type: "youtube",
+    url: "https://www.youtube-nocookie.com/embed/eWS8korWw58",
+  },
+  edit: {
+    videoId: "6IR251NRb54",
+    type: "youtube",
+    url: "https://www.youtube-nocookie.com/embed/6IR251NRb54",
+  },
+  wishlist: {
+    videoId: "eJ5wSE2Yy6w",
+    type: "youtube",
+    url: "https://www.youtube-nocookie.com/embed/eJ5wSE2Yy6w",
+  },
+  public: {
+    videoId: "_FW1OrErciA",
+    type: "youtube",
+    url: "https://www.youtube-nocookie.com/embed/_FW1OrErciA",
+  },
+  fleetchart: {
+    videoId: "EMgyE6oKyd0",
+    type: "youtube",
+    url: "https://www.youtube-nocookie.com/embed/EMgyE6oKyd0",
+  },
+  groups: {
+    videoId: "1-ssNQRjVIA",
+    type: "youtube",
+    url: "https://www.youtube-nocookie.com/embed/1-ssNQRjVIA",
+  },
 }));
 </script>
 

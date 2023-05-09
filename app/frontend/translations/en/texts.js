@@ -31,6 +31,8 @@ export default {
   hangarGuide: {
     add: "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
     edit: "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
+    wishlist:
+      "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
     groups: {
       add: 'To add a group just click on the plus icon in the line prefixed by "groups".',
       edit: "To edit a group make a right click on the group you want to edit.",
