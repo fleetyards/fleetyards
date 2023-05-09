@@ -2,6 +2,11 @@
   <div class="panel-btn-inner">
     <template v-if="loading">
       {{ t("actions.loading") }}
+      <SmallLoader
+        v-if="spinner"
+        :loading="loading"
+        :alignment="spinnerAlignment"
+      />
     </template>
     <template v-else>
       <slot />
@@ -10,14 +15,26 @@
 </template>
 
 <script lang="ts" setup>
+import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import type { SpinnerAlignment } from "@/frontend/core/components/SmallLoader/index.vue";
 
 type Props = {
-  loading: boolean;
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   loading: false,
+  spinner: false,
+});
+
+const spinnerAlignment = computed(() => {
+  if (typeof props.spinner === "boolean") {
+    return "right";
+  }
+
+  return props.spinner;
 });
 
 const { t } = useI18n();

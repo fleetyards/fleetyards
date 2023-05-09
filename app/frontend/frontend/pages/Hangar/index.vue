@@ -198,6 +198,10 @@
             <span>{{ toggleGuideTooltip }}</span>
           </Btn>
 
+          <hr v-show="extensionReady" />
+
+          <HangarSyncBtn size="small" variant="dropdown" @uploaded="fetch" />
+
           <hr />
 
           <Btn
@@ -221,6 +225,7 @@
             <i class="fal fa-arrow-rotate-left" />
             <span>{{ $t("actions.hangar.resetIngame.openModal") }}</span>
           </Btn>
+
           <hr />
 
           <Btn
@@ -292,6 +297,7 @@ import PrimaryAction from "@/frontend/core/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarImportBtn from "@/frontend/components/HangarImportBtn/index.vue";
+import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import VehiclesFilterForm from "@/frontend/components/Vehicles/FilterForm/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
@@ -319,6 +325,7 @@ import debounce from "lodash.debounce";
     ShareBtn,
     BtnDropdown,
     HangarImportBtn,
+    HangarSyncBtn,
     VehiclePanel,
     VehiclesFilterForm,
     ModelClassLabels,
@@ -353,6 +360,8 @@ export default class Hangar extends Vue {
   @Getter("perPage", { namespace: "hangar" }) perPage;
 
   @Getter("money", { namespace: "hangar" }) money;
+
+  @Getter("extensionReady", { namespace: "hangar" }) extensionReady;
 
   @Getter("starterGuideVisible", { namespace: "hangar" }) starterGuideVisible;
 

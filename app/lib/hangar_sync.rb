@@ -26,7 +26,7 @@ class HangarSync < HangarImporter
     updated_vehicles = []
     missing_vehicles = []
     missing_models = []
-    vehicle_scope = Vehicle.where(user_id: user_id).order(created_at: :asc)
+    vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, hidden: false).order(created_at: :asc)
 
     @ships.each do |item|
       query = generate_query(item)
@@ -34,19 +34,23 @@ class HangarSync < HangarImporter
 
       model = Model.where(query).first
       if model.present?
-        vehicle_with_ref = vehicle_scope.find_by(
+        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model.id,
           rsi_pledge_id: item[:id]
         )
 
         if vehicle_with_ref.present?
-          vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
           vehicle_ids << vehicle_with_ref.id
-          updated_vehicles << vehicle_with_ref.id
+
+          if vehicle_with_ref.rsi_pledge_synced_at.nil?
+            vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
+            updated_vehicles << vehicle_with_ref.id
+          end
+
           next
         end
 
-        vehicle = vehicle_scope.find_by(
+        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model.id
         )
 
@@ -65,20 +69,24 @@ class HangarSync < HangarImporter
 
       model_paint = ModelPaint.where(query).first
       if model_paint.present?
-        vehicle_with_ref = vehicle_scope.find_by(
+        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model_paint.model_id,
           model_paint_id: model_paint.id,
           rsi_pledge_id: item[:id]
         )
 
         if vehicle_with_ref.present?
-          vehicle_with_ref.update(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
           vehicle_ids << vehicle_with_ref.id
-          updated_vehicles << vehicle_with_ref.id
+
+          if vehicle_with_ref.rsi_pledge_synced_at.nil?
+            vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
+            updated_vehicles << vehicle_with_ref.id
+          end
+
           next
         end
 
-        vehicle = vehicle_scope.find_by(
+        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model_paint.model_id,
           model_paint_id: model_paint.id
         )
@@ -100,8 +108,12 @@ class HangarSync < HangarImporter
     end
 
     vehicle_scope.where.not(id: vehicle_ids).find_each do |vehicle|
+      initial_updated_at = vehicle.updated_at
       vehicle.update(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
-      missing_vehicles << vehicle.id
+
+      if initial_updated_at != vehicle.updated_at
+        missing_vehicles << vehicle.id
+      end
     end
 
     [new_vehicles, updated_vehicles, missing_vehicles, missing_models]

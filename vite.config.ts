@@ -1,10 +1,12 @@
 import { resolve } from "path";
 import { defineConfig, splitVendorChunkPlugin } from "vite";
-import RubyPlugin from "vite-plugin-ruby";
-import Vue2Plugin from "@vitejs/plugin-vue2";
+import ViteRails from "vite-plugin-rails";
+import Vue2 from "@vitejs/plugin-vue2";
+// import Vue from '@vitejs/plugin-vue'
 import { VitePWA } from "vite-plugin-pwa";
 // import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
+import browserslistToEsbuild from "browserslist-to-esbuild";
 
 const cache: { [key: string]: string } = {};
 
@@ -25,8 +27,8 @@ export const accessEnv = (key: string, defaultValue?: string): string => {
 
 export default defineConfig({
   plugins: [
-    RubyPlugin(),
-    Vue2Plugin(),
+    ViteRails(),
+    Vue2(),
     VitePWA({
       registerType: "autoUpdate",
       filename: "sw.js",
@@ -72,6 +74,7 @@ export default defineConfig({
     },
   },
   build: {
+    target: browserslistToEsbuild(),
     rollupOptions: {
       maxParallelFileReads: 5,
     },

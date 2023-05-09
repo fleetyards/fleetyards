@@ -260,7 +260,9 @@ export class VehiclesCollection extends BaseCollection {
     return false;
   }
 
-  async syncRsiHangar(items: TRSIHangarItem[]): Promise<boolean> {
+  async syncRsiHangar(
+    items: TRSIHangarItem[]
+  ): Promise<THangarSyncResult | null> {
     const response = await put("hangar/sync-rsi-hangar", {
       items,
     });
@@ -268,10 +270,10 @@ export class VehiclesCollection extends BaseCollection {
     if (!response.error) {
       this.refresh();
 
-      return true;
+      return response.data;
     }
 
-    return false;
+    return null;
   }
 }
 

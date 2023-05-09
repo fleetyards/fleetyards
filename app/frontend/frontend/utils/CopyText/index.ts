@@ -1,6 +1,6 @@
 import Clipboard from "clipboard";
 
-const copyText = function copyText(text, container) {
+const copyText = function copyText(text: string, container?: Element) {
   return new Promise((resolve, reject) => {
     const fakeElement = document.createElement("button");
     const clipboard = new Clipboard(fakeElement, {

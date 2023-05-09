@@ -9,72 +9,77 @@
     @click.native="openStarship42"
   >
     <template v-if="withIcon">
-      <i class="fad fa-cube" /> {{ $t("labels.exportStarship42") }}
+      <i class="fad fa-cube" /> {{ t("labels.exportStarship42") }}
     </template>
     <span v-else>
-      {{ $t("labels.3dView") }}
+      {{ t("labels.3dView") }}
     </span>
   </Btn>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { Getter } from "vuex-class";
+import type { Props as BtnProps } from "@/frontend/core/components/Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import Store from "@/frontend/lib/Store";
 
-@Component({
-  components: {
-    Btn,
-  },
-})
-export default class Starship42Btn extends Btn {
-  @Prop({ required: true }) items!: Vehicle[] | Model[];
-
-  @Prop({ default: false }) withIcon!: boolean;
-
-  @Prop({ default: false }) block!: boolean;
-
-  @Getter("mobile") mobile;
-
-  get basePath() {
-    return "https://starship42.com/fleetview/";
-  }
-
-  get tooltip() {
-    if (this.mobile) {
-      return null;
-    }
-
-    return this.$t("labels.poweredByStarship42");
-  }
-
-  openStarship42() {
-    const form = document.createElement("form");
-    form.method = "post";
-    form.action = this.basePath;
-    form.target = "_blank";
-
-    const typeField = document.createElement("input");
-    typeField.type = "hidden";
-    typeField.name = "type";
-    typeField.value = "matrix";
-    form.appendChild(typeField);
-
-    this.items.forEach((item) => {
-      const model = item.model || item;
-      const shipField = document.createElement("input");
-      shipField.type = "hidden";
-      shipField.name = "s[]";
-      shipField.value = model.rsiName;
-
-      form.appendChild(shipField);
-    });
-
-    document.body.appendChild(form);
-
-    form.submit();
-
-    document.body.removeChild(form);
-  }
+interface Props extends BtnProps {
+  items: Vehicle[] | Model[];
+  withIcon?: boolean;
+  block?: boolean;
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  withIcon: false,
+  block: false,
+});
+
+const mobile = computed(() => Store.getters("app/mobile"));
+
+const basePath = "https://starship42.com/fleetview/";
+
+const { t } = useI18n();
+
+const tooltip = computed(() => {
+  if (mobile.value) {
+    return null;
+  }
+
+  return t("labels.poweredByStarship42");
+});
+
+const openStarship42 = () => {
+  const form = document.createElement("form");
+  form.method = "post";
+  form.action = basePath;
+  form.target = "_blank";
+
+  const typeField = document.createElement("input");
+  typeField.type = "hidden";
+  typeField.name = "type";
+  typeField.value = "matrix";
+  form.appendChild(typeField);
+
+  props.items.forEach((item) => {
+    const model = (item as Vehicle).model || item;
+    const shipField = document.createElement("input");
+    shipField.type = "hidden";
+    shipField.name = "s[]";
+    shipField.value = model.rsiName;
+
+    form.appendChild(shipField);
+  });
+
+  document.body.appendChild(form);
+
+  form.submit();
+
+  document.body.removeChild(form);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "Starship42Btn",
+};
 </script>

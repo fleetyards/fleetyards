@@ -1,67 +1,83 @@
 <template>
   <Btn
-    v-tooltip="variant !== 'dropdown' && $t('actions.share')"
+    v-tooltip="variant !== 'dropdown' && t('actions.share')"
     :variant="variant"
     :size="size"
     :inline="inline"
     @click.native="share"
   >
     <i class="fad fa-share-square" />
-    <span v-if="variant === 'dropdown'">{{ $t("actions.share") }}</span>
+    <span v-if="variant === 'dropdown'">{{ t("actions.share") }}</span>
   </Btn>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import type {
+  Props as BtnProps,
+  BtnVariants,
+  BtnSizes,
+} from "@/frontend/core/components/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component({
-  components: {
-    Btn,
-  },
-})
-export default class ShareBtn extends Btn {
-  @Prop({ required: true }) url!: string;
+interface Props extends BtnProps {
+  url: string;
+  title: string;
+  variant?: BtnVariants;
+  size?: BtnSizes;
+  inline?: boolean;
+}
 
-  @Prop({ required: true }) title!: string;
+const props = withDefaults(defineProps<Props>(), {
+  variant: "default",
+  size: "default",
+  inline: false,
+});
 
-  share() {
-    if (navigator.canShare && navigator.canShare({ url: this.url })) {
-      navigator
-        .share({
-          title: this.title,
-          url: this.url,
-        })
-        .then(() => console.info("Share was successful."))
-        .catch((error) => console.info("Sharing failed", error));
-    } else {
-      this.copyShareUrl();
-    }
+const { t } = useI18n();
+
+const share = () => {
+  if (navigator.canShare && navigator.canShare({ url: props.url })) {
+    navigator
+      .share({
+        title: props.title,
+        url: props.url,
+      })
+      .then(() => console.info("Share was successful."))
+      .catch((error) => console.info("Sharing failed", error));
+  } else {
+    copyShareUrl();
+  }
+};
+
+const copyShareUrl = () => {
+  if (!props.url) {
+    displayAlert({
+      text: t("messages.copyShareUrl.failure"),
+    });
   }
 
-  copyShareUrl() {
-    if (!this.url) {
+  copyText(props.url).then(
+    () => {
+      displaySuccess({
+        text: t("messages.copyShareUrl.success", {
+          url: props.url,
+        }),
+      });
+    },
+    () => {
       displayAlert({
-        text: this.$t("messages.copyShareUrl.failure"),
+        text: t("messages.copyShareUrl.failure"),
       });
     }
+  );
+};
+</script>
 
-    copyText(this.url).then(
-      () => {
-        displaySuccess({
-          text: this.$t("messages.copyShareUrl.success", {
-            url: this.url,
-          }),
-        });
-      },
-      () => {
-        displayAlert({
-          text: this.$t("messages.copyShareUrl.failure"),
-        });
-      }
-    );
-  }
-}
+<script lang="ts">
+export default {
+  name: "ShareBtn",
+};
 </script>

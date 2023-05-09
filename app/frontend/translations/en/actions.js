@@ -95,6 +95,11 @@ export default {
       removeAll: "Remove all",
     },
   },
+  syncExtension: {
+    cancel: "Cancel",
+    start: "Start Sync",
+    close: "Close",
+  },
   empty: {
     reset: "Reset Filters/Pages",
     resetPage: "Go to First Page",

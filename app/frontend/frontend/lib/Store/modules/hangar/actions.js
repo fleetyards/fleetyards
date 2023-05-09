@@ -54,4 +54,8 @@ export default {
   toggleFleetchart({ commit, state }) {
     commit("setFleetchartVisible", !state.fleetchartVisible);
   },
+
+  updateExtensionReady({ commit }, payload) {
+    commit("setExtensionReady", payload);
+  },
 };

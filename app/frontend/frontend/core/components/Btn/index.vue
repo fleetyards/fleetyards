@@ -6,121 +6,112 @@
     :class="cssClasses"
     :disabled="disabled || loading"
   >
-    <BtnInner :loading="loading">
+    <BtnInner :loading="loading" :spinner="spinner">
       <slot />
     </BtnInner>
   </component>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import BtnInner from "@/frontend/core/components/Btn/Inner/index.vue";
-import { RouteConfig } from "vue-router";
+import type { SpinnerAlignment } from "@/frontend/core/components/SmallLoader/index.vue";
+import { RawLocation } from "vue-router";
 
-@Component<Btn>({
-  components: {
-    BtnInner,
-  },
-})
-export default class Btn extends Vue {
-  @Prop({ default: false }) loading!: boolean;
+export type BtnVariants =
+  | "default"
+  | "transparent"
+  | "link"
+  | "danger"
+  | "dropdown";
+export type BtnSizes = "default" | "xsmall" | "small" | "large";
 
-  @Prop({ default: null }) to!: RouteConfig;
+export type Props = {
+  to?: RawLocation;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
+  variant?: BtnVariants;
+  size?: BtnSizes;
+  exact?: boolean;
+  block?: boolean;
+  mobileBlock?: boolean;
+  inline?: boolean;
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+};
 
-  @Prop({ default: null }) href!: string;
+const props = withDefaults(defineProps<Props>(), {
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
+  variant: "default",
+  size: "default",
+  exact: false,
+  block: false,
+  mobileBlock: false,
+  inline: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+});
 
-  @Prop({
-    default: "button",
-    validator(value) {
-      return ["button", "submit"].indexOf(value) !== -1;
-    },
-  })
-  type!: string;
+const btnType = computed(() => {
+  if (props.to && !props.disabled) return "router-link";
 
-  @Prop({
-    default: "default",
-    validator(value) {
-      return (
-        ["default", "transparent", "link", "danger", "dropdown"].indexOf(
-          value
-        ) !== -1
-      );
-    },
-  })
-  variant!: string;
+  if (props.href) return "a";
 
-  @Prop({
-    default: "default",
-    validator(value) {
-      return ["default", "small", "large"].indexOf(value) !== -1;
-    },
-  })
-  size!: string;
+  return "button";
+});
 
-  @Prop({ default: false }) exact!: boolean;
-
-  @Prop({ default: false }) block!: boolean;
-
-  @Prop({ default: false }) mobileBlock!: boolean;
-
-  @Prop({ default: false }) inline!: boolean;
-
-  @Prop({ default: false }) textInline!: boolean;
-
-  @Prop({ default: false }) active!: boolean;
-
-  @Prop({ default: false }) disabled!: boolean;
-
-  @Prop({ default: null }) routeActiveClass!: boolean;
-
-  get btnType() {
-    if (this.to && !this.disabled) return "router-link";
-
-    if (this.href) return "a";
-
-    return "button";
-  }
-
-  get btnProps() {
-    if (this.to) {
-      return {
-        to: this.to,
-        exact: this.exact,
-        // event: this.disabled ? '' : 'click',
-        activeClass: this.routeActiveClass,
-      };
-    }
-
-    if (this.href) {
-      return {
-        href: this.href,
-        target: "_blank",
-        rel: "noopener",
-      };
-    }
-
+const btnProps = computed(() => {
+  if (props.to) {
     return {
-      type: this.type,
+      to: props.to,
+      exact: props.exact,
+      // event: props.disabled ? '' : 'click',
+      activeClass: props.routeActiveClass,
     };
   }
 
-  get cssClasses() {
+  if (props.href) {
     return {
-      "panel-btn-submit": this.type === "submit",
-      "panel-btn-transparent": this.variant === "transparent",
-      "panel-btn-link": this.variant === "link",
-      "panel-btn-danger": this.variant === "danger",
-      "panel-btn-small": this.size === "small",
-      "panel-btn-large": this.size === "large",
-      "panel-btn-block": this.block,
-      "panel-btn-inline": this.inline,
-      "panel-btn-dropdown-link": this.variant === "dropdown",
-      "panel-btn-text-inline": this.textInline,
-      "panel-btn-mobile-block": this.mobileBlock,
-      active: this.active,
-      disabled: this.disabled,
+      href: props.href,
+      target: "_blank",
+      rel: "noopener",
     };
   }
-}
+
+  return {
+    type: props.type,
+  };
+});
+
+const cssClasses = computed(() => ({
+  "panel-btn-submit": props.type === "submit",
+  "panel-btn-transparent": props.variant === "transparent",
+  "panel-btn-link": props.variant === "link",
+  "panel-btn-danger": props.variant === "danger",
+  "panel-btn-small": props.size === "small",
+  "panel-btn-xsmall": props.size === "xsmall",
+  "panel-btn-large": props.size === "large",
+  "panel-btn-block": props.block,
+  "panel-btn-inline": props.inline,
+  "panel-btn-dropdown-link": props.variant === "dropdown",
+  "panel-btn-text-inline": props.textInline,
+  "panel-btn-mobile-block": props.mobileBlock,
+  active: props.active,
+  disabled: props.disabled,
+}));
+</script>
+
+<script lang="ts">
+export default {
+  name: "BaseBtn",
+};
 </script>

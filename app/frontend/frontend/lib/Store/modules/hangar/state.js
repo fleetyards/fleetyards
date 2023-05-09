@@ -14,4 +14,5 @@ export default () => ({
   starterGuideVisible: false,
   perPage: 30,
   gridView: true,
+  extensionReady: false,
 });

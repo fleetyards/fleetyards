@@ -614,4 +614,16 @@ export default {
       other: "<b>%{count}</b> Items for <b>%{price}</b>",
     },
   },
+  syncExtension: {
+    processSteps: {
+      fetchHangar: "Fetching Data from the RSI Hangar",
+      submitData: "Submitting Data to the Fleetyards.net Backend",
+    },
+    checkIdentity: "Check RSI Session",
+    identityStatus: {
+      pending: "Checking...",
+      not_found: "not found",
+      connected: "connected",
+    },
+  },
 };
