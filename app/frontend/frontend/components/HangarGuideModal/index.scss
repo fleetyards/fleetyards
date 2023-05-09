@@ -1,23 +1,22 @@
 @import "@/stylesheets/variables";
 
-.hangar-guide {
-  padding: 15px;
-}
-
 .hangar-guide-topic {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
   .hangar-guide-gif {
-    float: right;
+    display: block;
     max-width: 50%;
-    margin-left: 20px;
-    border-radius: 3px;
+    border-radius: $border-radius-base;
   }
 
   .hangar-guide-highlight {
-    display: inline-block;
     padding: 8px 16px;
     text-align: center;
     background-color: $gray-dark;
-    border-radius: 3px;
+    border-radius: $border-radius-base;
 
     i,
     svg {
@@ -28,16 +27,10 @@
 
 @media (max-width: $desktop-breakpoint) {
   .hangar-guide-topic {
-    .hangar-guide-gif {
-      display: block;
-      float: none;
-      max-width: 100%;
-      margin: 0;
-      margin-bottom: 10px;
-    }
+    flex-direction: column-reverse;
 
-    .hangar-guide-highlight {
-      display: block;
+    .hangar-guide-gif {
+      max-width: 100%;
     }
   }
 }

@@ -11,7 +11,7 @@ export default () => ({
   fleetchartScale: 1,
   preview: true,
   money: true,
-  starterGuideVisible: false,
+  starterGuideVisible: true,
   perPage: 30,
   gridView: true,
   extensionReady: false,

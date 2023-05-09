@@ -103,6 +103,7 @@ export default {
   empty: {
     reset: "Reset Filters/Pages",
     resetPage: "Go to First Page",
+    hangarGuide: "Need Help?",
   },
   fleet: {
     join: "Join %{fleet}!",

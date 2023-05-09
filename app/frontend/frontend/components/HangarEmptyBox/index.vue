@@ -6,6 +6,9 @@
         <template v-if="isQueryPresent">
           <p>{{ t("texts.empty.query") }}</p>
           <div slot="footer" class="empty-box-actions">
+            <Btn @click.native="openGuide">
+              {{ t("actions.empty.hangarGuide") }}
+            </Btn>
             <Btn v-if="isPagePresent" @click.native="resetPage">
               {{ t("actions.empty.resetPage") }}
             </Btn>
@@ -18,6 +21,11 @@
           <p>
             {{ t("texts.empty.info") }}
           </p>
+          <div slot="footer" class="empty-box-actions">
+            <Btn @click.native="openGuide">
+              {{ t("actions.empty.hangarGuide") }}
+            </Btn>
+          </div>
         </template>
       </Box>
     </div>
@@ -28,6 +36,7 @@
 import Box from "@/frontend/core/components/Box/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { useRoute, useRouter } from "vue-router/composables";
+import { useComlink } from "@/frontend/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 const { t } = useI18n();
@@ -76,10 +85,19 @@ const resetPage = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     .catch((_err) => {});
 };
+
+const comlink = useComlink();
+
+const openGuide = () => {
+  comlink.$emit("open-modal", {
+    wide: true,
+    component: () => import("@/frontend/components/HangarGuideModal/index.vue"),
+  });
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: "EmptyBox",
+  name: "HangarEmptyBox",
 };
 </script>
