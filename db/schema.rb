@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_07_102331) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_09_180821) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -395,6 +395,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_07_102331) do
     t.text "info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "input"
+    t.jsonb "output"
+    t.uuid "user_id"
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

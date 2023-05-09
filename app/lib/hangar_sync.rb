@@ -9,15 +9,34 @@ class HangarSync < HangarImporter
   end
 
   def run(user_id)
+    import = Imports::HangarSync.create(
+      user_id:,
+      input: {
+        ships: @ships,
+        components: @components
+      }.to_json
+    )
+    import.start!
+
     new_vehicles, updated_vehicles, missing_vehicles, missing_models = sync_vehicles(user_id)
     # sync_components(user_id)
 
-    {
+    output = {
       new_vehicles:,
       updated_vehicles:,
       missing_vehicles:,
       missing_models:
     }
+
+    import.update!(output: output.to_json)
+    import.finish!
+
+    output
+  rescue => e
+    import.fail!
+    import.update!(info: e.message)
+
+    raise e
   end
 
   def sync_vehicles(user_id)
@@ -120,8 +139,7 @@ class HangarSync < HangarImporter
   end
 
   private def generate_query(item)
-    name = item[:name]
-    name = rsi_hangar_mapping[item[:name]] if rsi_hangar_mapping[item[:name]].present?
+    name = rsi_hangar_mapping(item[:name])
     normalized_name = normalize(name)
     slug = item[:slug].downcase if item[:slug].present?
     slug = item[:paint_slug].downcase if item[:paint_slug].present?
@@ -153,8 +171,8 @@ class HangarSync < HangarImporter
   end
 
   # rubocop:disable Metrics/MethodLength
-  private def rsi_hangar_mapping
-    {
+  private def rsi_hangar_mapping(name)
+    mapping = {
       "X1 Base" => "X1",
       "315p Explorer" => "315p",
       "325a Fighter" => "325a",
@@ -199,6 +217,10 @@ class HangarSync < HangarImporter
       "Crusader C1 Spirit" => "C1 Spirit",
       "Crusader E1 Spirit" => "E1 Spirit"
     }
+
+    return name if mapping[name.strip].nil?
+
+    mapping[name.strip]
   end
   # rubocop:enable Metrics/MethodLength
 end

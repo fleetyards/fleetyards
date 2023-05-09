@@ -9,11 +9,14 @@
 #  failed_at   :datetime
 #  finished_at :datetime
 #  info        :text
+#  input       :jsonb
+#  output      :jsonb
 #  started_at  :datetime
 #  type        :string
 #  version     :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  user_id     :uuid
 #
 require "test_helper"
 

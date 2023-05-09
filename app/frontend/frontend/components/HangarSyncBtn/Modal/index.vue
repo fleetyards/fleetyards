@@ -37,6 +37,7 @@
           }"
         >
           <b v-if="finished">Import Finished</b>
+          <b v-else-if="finishedWithErrors">Import Failed!</b>
           <b v-else>Import Started...</b>
         </p>
         <ul v-if="processSteps.length" class="list-unstyled process-steps-list">
@@ -70,21 +71,17 @@
               class="process-steps-item-info"
             >
               <dl class="row">
-                <template v-if="pledges.length">
-                  <dt class="col-sm-4">All Items:</dt>
-                  <dd class="col-sm-8 text-right">{{ pledges.length }}</dd>
+                <template v-if="items.length">
+                  <dt class="col-sm-7">All Items:</dt>
+                  <dd class="col-sm-5 text-right">{{ items.length }}</dd>
                 </template>
                 <template v-if="ships.length">
-                  <dt class="col-sm-4">Ships:</dt>
-                  <dd class="col-sm-8 text-right">{{ ships.length }}</dd>
+                  <dt class="col-sm-7">Ships:</dt>
+                  <dd class="col-sm-5 text-right">{{ ships.length }}</dd>
                 </template>
                 <template v-if="components.length">
-                  <dt class="col-sm-4">Modules:</dt>
-                  <dd class="col-sm-8 text-right">{{ components.length }}</dd>
-                </template>
-                <template v-if="skins.length">
-                  <dt class="col-sm-4">Paints:</dt>
-                  <dd class="col-sm-8 text-right">{{ skins.length }}</dd>
+                  <dt class="col-sm-7">Components (Modules & Addons):</dt>
+                  <dd class="col-sm-5 text-right">{{ components.length }}</dd>
                 </template>
               </dl>
             </div>
@@ -137,7 +134,7 @@
           size="small"
           :inline="true"
           data-test="reset-ingame-modal-reset-to-wishlist"
-          :disabled="started"
+          :disabled="started && !finishedWithErrors"
           @click.native="cancel"
         >
           {{ t("actions.syncExtension.cancel") }}
@@ -181,6 +178,10 @@ const loadingIdentity = ref(false);
 const currentPage = ref(1);
 
 const pledges = ref<TRSIHangarItem[]>([]);
+
+const items = computed(() =>
+  pledges.value.filter((pledge) => ["ship", "component"].includes(pledge.type))
+);
 
 const ships = computed(() =>
   pledges.value.filter((pledge) => pledge.type === "ship")

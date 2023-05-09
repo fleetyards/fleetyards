@@ -19,7 +19,7 @@
 #  user_id     :uuid
 #
 module Imports
-  class ScDataImport < ::Import
-    validates :version, presence: true
+  class HangarImport < ::Import
+    belongs_to :user
   end
 end
