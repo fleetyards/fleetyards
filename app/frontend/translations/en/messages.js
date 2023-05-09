@@ -231,6 +231,10 @@ export default {
       destroyAll:
         "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted.",
     },
+    wishlist: {
+      destroyAll:
+        "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted.",
+    },
     tradeRoutes: {
       reset: "Are you sure you want to reset all commodity prices?",
     },

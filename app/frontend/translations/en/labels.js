@@ -615,10 +615,16 @@ export default {
     },
   },
   syncExtension: {
+    status: {
+      started: "Import Started...",
+      finished: "Import Finished",
+      failed: "Import Failed!",
+    },
     processSteps: {
       fetchHangar: "Fetching Data from the RSI Hangar",
       submitData: "Submitting Data to the Fleetyards.net Backend",
     },
+    sessionStatus: "RSI Session status",
     checkIdentity: "Check RSI Session",
     identityStatus: {
       pending: "Checking...",
@@ -631,6 +637,19 @@ export default {
       edge: "Microsoft Edge",
       opera: "Opera",
       github: "GitHub",
+    },
+    pledgeItems: {
+      pages: "Pages",
+      all: "All Pledge Items",
+      ships: "Ships",
+      components: "Modules",
+      skins: "Paints",
+    },
+    importedItems: {
+      new: "New",
+      updated: "Updated",
+      movedToWanted: "Moved to Wishlist",
+      missing: "Unable to Import",
     },
   },
 };

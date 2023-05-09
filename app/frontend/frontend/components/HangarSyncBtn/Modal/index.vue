@@ -10,7 +10,7 @@
             'text-danger': identityStatus === 'notFound',
           }"
         >
-          RSI Session status:
+          {{ t("labels.syncExtension.sessionStatus") }}:
           {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
           <SmallLoader :loading="loadingIdentity" alignment="right" />
           <Btn
@@ -36,9 +36,11 @@
             'text-danger': finishedWithErrors,
           }"
         >
-          <b v-if="finished">Import Finished</b>
-          <b v-else-if="finishedWithErrors">Import Failed!</b>
-          <b v-else>Import Started...</b>
+          <b v-if="finished">{{ t("labels.syncExtension.status.finished") }}</b>
+          <b v-else-if="finishedWithErrors">
+            {{ t("labels.syncExtension.status.failed") }}
+          </b>
+          <b v-else>{{ t("labels.syncExtension.status.started") }}</b>
         </p>
         <ul v-if="processSteps.length" class="list-unstyled process-steps-list">
           <li
@@ -71,18 +73,34 @@
               class="process-steps-item-info"
             >
               <dl class="row">
+                <dt class="col-sm-7">
+                  {{ t("labels.syncExtension.pledgeItems.pages") }}:
+                </dt>
+                <dd class="col-sm-5 text-right">{{ currentPage }}</dd>
                 <template v-if="items.length">
-                  <dt class="col-sm-7">All Items:</dt>
+                  <dt class="col-sm-7">
+                    {{ t("labels.syncExtension.pledgeItems.all") }}:
+                  </dt>
                   <dd class="col-sm-5 text-right">{{ items.length }}</dd>
                 </template>
                 <template v-if="ships.length">
-                  <dt class="col-sm-7">Ships:</dt>
+                  <dt class="col-sm-7">
+                    {{ t("labels.syncExtension.pledgeItems.ships") }}:
+                  </dt>
                   <dd class="col-sm-5 text-right">{{ ships.length }}</dd>
                 </template>
                 <template v-if="components.length">
-                  <dt class="col-sm-7">Components (Modules & Addons):</dt>
+                  <dt class="col-sm-7">
+                    {{ t("labels.syncExtension.pledgeItems.components") }}:
+                  </dt>
                   <dd class="col-sm-5 text-right">{{ components.length }}</dd>
                 </template>
+                <!-- <template v-if="skins.length">
+                  <dt class="col-sm-7">
+                    {{ t("labels.syncExtension.pledgeItems.skins") }}:
+                  </dt>
+                  <dd class="col-sm-5 text-right">{{ skins.length }}</dd>
+                </template> -->
               </dl>
             </div>
             <div
@@ -91,21 +109,29 @@
             >
               <dl class="row">
                 <template v-if="imported.length">
-                  <dt class="col-sm-8">New:</dt>
+                  <dt class="col-sm-8">
+                    {{ t("labels.syncExtension.importedItems.new") }}:
+                  </dt>
                   <dd class="col-sm-4 text-right">{{ imported.length }}</dd>
                 </template>
                 <template v-if="updated.length">
-                  <dt class="col-sm-8">Updated:</dt>
+                  <dt class="col-sm-8">
+                    {{ t("labels.syncExtension.importedItems.updated") }}:
+                  </dt>
                   <dd class="col-sm-4 text-right">{{ updated.length }}</dd>
                 </template>
                 <template v-if="movedToWanted.length">
-                  <dt class="col-sm-8">Moved to Wishlist:</dt>
+                  <dt class="col-sm-8">
+                    {{ t("labels.syncExtension.importedItems.movedToWanted") }}:
+                  </dt>
                   <dd class="col-sm-4 text-right">
                     {{ movedToWanted.length }}
                   </dd>
                 </template>
                 <template v-if="missing.length">
-                  <dt class="col-sm-8">Unable to Import:</dt>
+                  <dt class="col-sm-8">
+                    {{ t("labels.syncExtension.importedItems.missing") }}:
+                  </dt>
                   <dd class="col-sm-4 text-right">{{ missing.length }}</dd>
                   <ul>
                     <li v-for="item in missing" :key="`missing-${item}`">
@@ -222,6 +248,7 @@ const processSteps = ref<ProcessStep[]>([
 
 onMounted(() => {
   started.value = false;
+  currentPage.value = 1;
 
   window.addEventListener("message", handleExtensionMessage);
 
@@ -314,15 +341,13 @@ const fetchRSIHangar = (htmlPage: string) => {
 
   const items = new RSIHangarParser().extractPage(htmlPage);
 
-  if (items.length) {
+  if (items) {
     pledges.value = [...pledges.value, ...items];
 
     currentPage.value += 1;
 
     fetchPage();
   } else {
-    currentPage.value = 1;
-
     updateStep("fetchHangar", "success");
 
     finishSync();
@@ -345,6 +370,8 @@ const finishSync = async () => {
       "components:",
       components.value.map((item) => item.name)
     );
+
+    comlink.$emit("hangar-sync-finished");
   } else {
     updateStep("submitData", "failure");
   }

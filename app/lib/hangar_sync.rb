@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 class HangarSync < HangarImporter
-  attr_accessor :ships, :components
+  attr_accessor :ships, :components, :addons
+
+  COMPONENT_FIND_QUERY = [
+    "lower(name) = :name",
+    "slug = :slug",
+    "lower(name) = :normalized_name",
+    "slug = :normalized_name"
+  ].freeze
 
   def initialize(data)
     @ships = data.select { |item| item[:type] == "ship" }
@@ -19,13 +26,17 @@ class HangarSync < HangarImporter
     import.start!
 
     new_vehicles, updated_vehicles, missing_vehicles, missing_models = sync_vehicles(user_id)
-    # sync_components(user_id)
+    new_components, found_components, missing_components, missing_component_vehicles = sync_components(user_id)
 
     output = {
       new_vehicles:,
       updated_vehicles:,
       missing_vehicles:,
-      missing_models:
+      missing_models:,
+      new_components:,
+      found_components:,
+      missing_components:,
+      missing_component_vehicles:
     }
 
     import.update!(output: output.to_json)
@@ -48,7 +59,7 @@ class HangarSync < HangarImporter
     vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, hidden: false).order(created_at: :asc)
 
     @ships.each do |item|
-      query = generate_query(item)
+      query = generate_model_query(item["name"])
       params = default_params(user_id, item)
 
       model = Model.where(query).first
@@ -138,17 +149,75 @@ class HangarSync < HangarImporter
     [new_vehicles, updated_vehicles, missing_vehicles, missing_models]
   end
 
-  private def generate_query(item)
-    name = rsi_hangar_mapping(item[:name])
+  private def sync_components(user_id)
+    new_components = []
+    found_components = []
+    missing_components = []
+    missing_component_vehicles = []
+
+    @components.each do |item|
+      model_name, component_name = item["name"].split(" - ")
+
+      model_query = generate_model_query(model_name)
+      model = Model.where(model_query).first
+      if model.blank?
+        missing_components << item["name"]
+        next
+      end
+
+      component_query = generate_component_query(component_name)
+      component = model.modules.where(component_query).first
+      if component.blank?
+        missing_components << item["name"]
+        next
+      end
+
+      vehicle = Vehicle.where(user_id: user_id, loaner: false, hidden: false, model_id: model.id).first
+      if vehicle.blank?
+        missing_component_vehicles << item["name"]
+        next
+      end
+
+      vehicle_module = vehicle.vehicle_modules.where(model_module_id: component.id).first_or_initialize
+
+      if vehicle_module.new_record?
+        vehicle_module.save!
+        new_components << vehicle_module.id
+        next
+      end
+
+      found_components << vehicle_module.id
+    end
+
+    [new_components, found_components, missing_components, missing_component_vehicles]
+  end
+
+  private def generate_model_query(item_name)
+    name = rsi_hangar_mapping(item_name)
     normalized_name = normalize(name)
-    slug = item[:slug].downcase if item[:slug].present?
-    slug = item[:paint_slug].downcase if item[:paint_slug].present?
 
     [
       MODEL_FIND_QUERY.join(" OR "),
       {
         name: name.downcase,
-        slug:,
+        slug: name.downcase,
+        normalized_name:,
+        search: "%#{normalized_name}%"
+      }
+    ]
+  end
+
+  private def generate_component_query(item_name)
+    name = item_name
+    # Add mapping when needed
+    # name = rsi_hangar_mapping(item_name)
+    normalized_name = normalize(name)
+
+    [
+      COMPONENT_FIND_QUERY.join(" OR "),
+      {
+        name: name.downcase,
+        slug: name.downcase,
         normalized_name:,
         search: "%#{normalized_name}%"
       }

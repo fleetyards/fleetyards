@@ -37,11 +37,11 @@ Cypress.Commands.add("clickNav", (name, subName = null) => {
 });
 
 Cypress.Commands.add("acceptConfirm", () => {
-  cy.get("#noty-confirm .noty_buttons button:first-child").click();
+  cy.get("#noty-confirm .noty_buttons button:last-child").click();
 });
 
 Cypress.Commands.add("cancelConfirm", () => {
-  cy.get("#noty-confirm .noty_buttons button:last-child").click();
+  cy.get("#noty-confirm .noty_buttons button:first-child").click();
 });
 
 Cypress.Commands.add("alert", (message) => {

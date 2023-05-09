@@ -198,7 +198,7 @@
 
           <hr v-show="extensionReady" />
 
-          <HangarSyncBtn size="small" variant="dropdown" @uploaded="fetch" />
+          <HangarSyncBtn size="small" variant="dropdown" />
 
           <hr />
 
@@ -212,7 +212,7 @@
             <span>{{ $t("actions.export") }}</span>
           </Btn>
 
-          <HangarImportBtn size="small" variant="dropdown" @uploaded="fetch" />
+          <HangarImportBtn size="small" variant="dropdown" @finished="fetch" />
 
           <Btn
             size="small"
@@ -429,6 +429,7 @@ export default class Hangar extends Vue {
 
     this.$comlink.$on("hangar-group-delete", this.fetch);
     this.$comlink.$on("hangar-group-save", this.groupsCollection.findAll);
+    this.$comlink.$on("hangar-sync-finished", this.fetch);
   }
 
   beforeDestroy() {
@@ -438,6 +439,7 @@ export default class Hangar extends Vue {
 
     this.$comlink.$off("hangar-group-delete");
     this.$comlink.$off("hangar-group-save");
+    this.$comlink.$off("hangar-sync-finished");
   }
 
   showNewModal() {
@@ -457,9 +459,9 @@ export default class Hangar extends Vue {
   }
 
   async fetch() {
-    await this.collection.findAll(this.filters);
-    await this.groupsCollection.findAll();
     await this.collection.findStats(this.filters);
+    await this.groupsCollection.findAll();
+    await this.collection.findAll(this.filters);
   }
 
   setupUpdates() {

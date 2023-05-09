@@ -1,11 +1,11 @@
 export class RSIHangarParser {
   parser = new DOMParser();
 
-  extractPage(html: string): TRSIHangarItem[] {
+  extractPage(html: string): TRSIHangarItem[] | undefined {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
 
     if (this.checkForLastPage(htmlDoc)) {
-      return [];
+      return undefined;
     }
 
     const pledgeList = htmlDoc.getElementsByClassName("list-items")[0];
@@ -43,9 +43,15 @@ export class RSIHangarParser {
       return undefined;
     }
 
+    const name = item.getElementsByClassName("title")[0].textContent || "";
+
+    if (!name.includes(" - ") && kind === "Component") {
+      return undefined;
+    }
+
     return {
       id,
-      name: item.getElementsByClassName("title")[0].textContent || "",
+      name,
       customName:
         item.getElementsByClassName("custom-name-text")[0]?.textContent ||
         undefined,
