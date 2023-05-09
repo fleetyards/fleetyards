@@ -625,5 +625,12 @@ export default {
       not_found: "not found",
       connected: "connected",
     },
+    platforms: {
+      chrome: "Google Chrome",
+      firefox: "Mozilla Firefox",
+      edge: "Microsoft Edge",
+      opera: "Opera",
+      github: "GitHub",
+    },
   },
 };

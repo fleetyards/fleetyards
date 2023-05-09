@@ -24,7 +24,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
 import QuickSearch from "@/frontend/core/components/Navigation/QuickSearch/index.vue";
 import Search from "@/frontend/core/components/Navigation/Search/index.vue";
 
@@ -35,13 +34,17 @@ import Search from "@/frontend/core/components/Navigation/Search/index.vue";
   },
 })
 export default class NavigationHeader extends Vue {
-  @Getter("mobile") mobile!: boolean;
+  get mobile() {
+    return this.$store.getters["app/mobile"];
+  }
 
-  @Getter("navCollapsed", { namespace: "app" }) navCollapsed!: boolean;
+  get navCollapsed() {
+    return this.$store.getters["app/navCollapsed"];
+  }
 
-  @Getter("gitRevision", { namespace: "app" }) gitRevision!: string;
-
-  @Action("toggleNav", { namespace: "app" }) toggle;
+  get gitRevision() {
+    return this.$store.getters["app/gitRevision"];
+  }
 
   get environmentLabelClasses() {
     const cssClasses = ["pill"];
@@ -61,6 +64,10 @@ export default class NavigationHeader extends Vue {
     }
 
     return (window.NODE_ENV || "").toUpperCase();
+  }
+
+  toggle() {
+    this.$store.dispatch("app/toggleNav");
   }
 }
 </script>

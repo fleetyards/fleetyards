@@ -26,8 +26,8 @@ import { useComlink } from "@/frontend/composables/useComlink";
 import Store from "@/frontend/lib/Store";
 
 interface Props extends BtnProps {
-  variant: BtnVariants;
-  size: BtnSizes;
+  variant?: BtnVariants;
+  size?: BtnSizes;
 }
 
 withDefaults(defineProps<Props>(), {

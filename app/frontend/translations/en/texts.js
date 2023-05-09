@@ -14,6 +14,11 @@ export default {
     info: "We could not find any Records.",
     query:
       "It seems like you have some Filters active or visited a Page without any Records.",
+    hangar: {
+      info: "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
+      extension:
+        "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
+    },
   },
   compare: {
     models: {
