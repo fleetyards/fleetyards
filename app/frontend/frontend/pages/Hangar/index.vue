@@ -187,16 +187,18 @@
           </Btn>
 
           <Btn
-            v-if="!starterGuideVisible"
-            :active="guideVisible"
-            :aria-label="toggleGuideTooltip"
+            :aria-label="$t('actions.showGuide')"
             size="small"
             variant="dropdown"
-            @click.native="toggleGuide"
+            @click.native="openGuide"
           >
             <i class="fad fa-question" />
-            <span>{{ toggleGuideTooltip }}</span>
+            <span>{{ $t("actions.showGuide") }}</span>
           </Btn>
+
+          <hr v-show="extensionReady" />
+
+          <HangarSyncBtn size="small" variant="dropdown" />
 
           <hr />
 
@@ -210,7 +212,7 @@
             <span>{{ $t("actions.export") }}</span>
           </Btn>
 
-          <HangarImportBtn size="small" variant="dropdown" @uploaded="fetch" />
+          <HangarImportBtn size="small" variant="dropdown" @finished="fetch" />
 
           <Btn
             size="small"
@@ -221,6 +223,7 @@
             <i class="fal fa-arrow-rotate-left" />
             <span>{{ $t("actions.hangar.resetIngame.openModal") }}</span>
           </Btn>
+
           <hr />
 
           <Btn
@@ -241,7 +244,9 @@
         :hangar-groups-options="groupsCollection.records"
       />
 
-      <HangarGuideBox v-if="isGuideVisible" />
+      <template #empty="{ hideEmptyBox, emptyBoxVisible }">
+        <HangarEmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
+      </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
@@ -292,11 +297,11 @@ import PrimaryAction from "@/frontend/core/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarImportBtn from "@/frontend/components/HangarImportBtn/index.vue";
+import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import VehiclesFilterForm from "@/frontend/components/Vehicles/FilterForm/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import HangarGuideBox from "@/frontend/components/HangarGuideBox/index.vue";
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import MetaInfo from "@/frontend/mixins/MetaInfo";
@@ -308,6 +313,7 @@ import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGroups";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import debounce from "lodash.debounce";
+import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
 
 @Component<Hangar>({
   components: {
@@ -319,11 +325,12 @@ import debounce from "lodash.debounce";
     ShareBtn,
     BtnDropdown,
     HangarImportBtn,
+    HangarSyncBtn,
+    HangarEmptyBox,
     VehiclePanel,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
-    HangarGuideBox,
     AddonsModal,
     FleetchartApp,
   },
@@ -331,8 +338,6 @@ import debounce from "lodash.debounce";
 })
 export default class Hangar extends Vue {
   deleting = false;
-
-  guideVisible = false;
 
   vehiclesChannel = null;
 
@@ -354,7 +359,7 @@ export default class Hangar extends Vue {
 
   @Getter("money", { namespace: "hangar" }) money;
 
-  @Getter("starterGuideVisible", { namespace: "hangar" }) starterGuideVisible;
+  @Getter("extensionReady", { namespace: "hangar" }) extensionReady;
 
   @Getter("fleetchartVisible", { namespace: "hangar" }) fleetchartVisible;
 
@@ -393,23 +398,12 @@ export default class Hangar extends Vue {
     return this.$t("actions.showGridView");
   }
 
-  get toggleGuideTooltip() {
-    if (this.guideVisible) {
-      return this.$t("actions.hideGuide");
-    }
-    return this.$t("actions.showGuide");
-  }
-
   get shareUrl() {
     if (!this.currentUser) {
       return null;
     }
 
     return this.currentUser.publicHangarUrl;
-  }
-
-  get isGuideVisible() {
-    return this.starterGuideVisible || this.guideVisible;
   }
 
   get filters(): VehicleParams {
@@ -435,6 +429,7 @@ export default class Hangar extends Vue {
 
     this.$comlink.$on("hangar-group-delete", this.fetch);
     this.$comlink.$on("hangar-group-save", this.groupsCollection.findAll);
+    this.$comlink.$on("hangar-sync-finished", this.fetch);
   }
 
   beforeDestroy() {
@@ -444,10 +439,7 @@ export default class Hangar extends Vue {
 
     this.$comlink.$off("hangar-group-delete");
     this.$comlink.$off("hangar-group-save");
-  }
-
-  toggleGuide() {
-    this.guideVisible = !this.guideVisible;
+    this.$comlink.$off("hangar-sync-finished");
   }
 
   showNewModal() {
@@ -467,9 +459,9 @@ export default class Hangar extends Vue {
   }
 
   async fetch() {
-    await this.collection.findAll(this.filters);
-    await this.groupsCollection.findAll();
     await this.collection.findStats(this.filters);
+    await this.groupsCollection.findAll();
+    await this.collection.findAll(this.filters);
   }
 
   setupUpdates() {
@@ -538,6 +530,14 @@ export default class Hangar extends Vue {
       onClose: () => {
         this.deleting = false;
       },
+    });
+  }
+
+  openGuide() {
+    this.$comlink.$emit("open-modal", {
+      wide: true,
+      component: () =>
+        import("@/frontend/components/HangarGuideModal/index.vue"),
     });
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <Btn
-    v-tooltip="!withLabel && $t('actions.saveScreenshot')"
+    v-tooltip="!withLabel && t('actions.saveScreenshot')"
     :loading="downloading"
-    :aria-label="$t('actions.saveScreenshot')"
+    :aria-label="t('actions.saveScreenshot')"
     :variant="variant"
     :size="size"
     :inline="inline"
@@ -11,61 +11,69 @@
     <SmallLoader :loading="downloading" />
     <i class="fad fa-image" />
     <span v-if="withLabel">
-      {{ $t("actions.saveScreenshot") }}
+      {{ t("actions.saveScreenshot") }}
     </span>
   </Btn>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import html2canvas from "html2canvas";
-import download from "downloadjs";
+import downloadJs from "downloadjs";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import type { Props as BtnProps } from "@/frontend/core/components/Btn/index.vue";
 import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<DownloadScreenshotBtn>({
-  components: {
-    SmallLoader,
-    Btn,
-  },
-})
-export default class DownloadScreenshotBtn extends Btn {
-  @Prop({ required: true }) element!: string;
-
-  @Prop({ default: true }) withLabel!: boolean;
-
-  @Prop({ default: "fleetyards-screenshot" }) filename!: string;
-
-  downloading = false;
-
-  async download() {
-    this.downloading = true;
-
-    const element = document.querySelector(this.element);
-
-    if (!element) {
-      return;
-    }
-
-    element.classList.add("fleetchart-download");
-
-    html2canvas(element, {
-      backgroundColor: null,
-      useCORS: true,
-      windowWidth: element.parentNode.scrollWidth,
-      windowHeight: element.parentNode.scrollHeight + 100,
-    })
-      .then((canvas) => {
-        element.classList.remove("fleetchart-download");
-        this.downloading = false;
-        download(canvas.toDataURL(), `fleetyards-${this.filename}.png`);
-      })
-      .catch(() => {
-        element.classList.remove("fleetchart-download");
-        this.downloading = false;
-      });
-  }
+interface Props extends BtnProps {
+  element: string;
+  withLabel?: boolean;
+  filename?: string;
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  withLabel: true,
+  filename: "fleetyards-screenshot",
+});
+
+const { t } = useI18n();
+
+const downloading = ref(false);
+
+const download = async () => {
+  downloading.value = true;
+
+  const element = document.querySelector(props.element) as HTMLElement;
+
+  if (!element) {
+    return;
+  }
+
+  element.classList.add("fleetchart-download");
+
+  const parentNode = element.parentNode as HTMLElement;
+
+  html2canvas(element, {
+    backgroundColor: null,
+    useCORS: true,
+    windowWidth: parentNode.scrollWidth,
+    windowHeight: parentNode.scrollHeight + 100,
+  })
+    .then((canvas) => {
+      element.classList.remove("fleetchart-download");
+      downloading.value = false;
+      downloadJs(canvas.toDataURL(), `fleetyards-${props.filename}.png`);
+    })
+    .catch(() => {
+      element.classList.remove("fleetchart-download");
+      downloading.value = false;
+    });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "DownloadScreenshotBtn",
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,26 +1,33 @@
 interface KeyValuePair {
-  [key: string]: string | null
+  [key: string]: string | null;
 }
 
 type FilterGroupItem = {
-  value: any
-  name: string
-}
+  value: any;
+  name: string;
+};
 
 type CartItemSoldAt = {
-  id: string
-  price: number
-  shopName: string
-  shopSlug: string
-  stationName: string
-  stationSlug: string
-}
+  id: string;
+  price: number;
+  shopName: string;
+  shopSlug: string;
+  stationName: string;
+  stationSlug: string;
+};
 
 type CartItem = {
-  id: string
-  type: string
-  name: string
-  bestSoldAt: CartItemSoldAt
-  soldAt: CartItemSoldAt[]
-  amount: number
+  id: string;
+  type: string;
+  name: string;
+  bestSoldAt: CartItemSoldAt;
+  soldAt: CartItemSoldAt[];
+  amount: number;
+};
+
+interface FleetyardsSyncEvent extends Event {
+  data: {
+    direction: "fy-sync" | "fy";
+    message: string;
+  };
 }

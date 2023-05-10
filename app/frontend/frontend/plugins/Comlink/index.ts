@@ -1,4 +1,4 @@
-import useComlink from "@/frontend/composables/useComlink";
+import { useComlink } from "@/frontend/composables/useComlink";
 
 export default {
   install(Vue) {

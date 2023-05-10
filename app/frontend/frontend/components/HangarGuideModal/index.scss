@@ -1,0 +1,44 @@
+@import "@/stylesheets/variables";
+
+.hangar-guide-topic {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  > div {
+    width: 50%;
+  }
+
+  .hangar-guide-gif {
+    display: block;
+    width: 50%;
+    border-radius: $border-radius-base;
+  }
+
+  .hangar-guide-highlight {
+    padding: 8px 16px;
+    text-align: center;
+    background-color: $gray-dark;
+    border-radius: $border-radius-base;
+
+    i,
+    svg {
+      margin-left: 10px;
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .hangar-guide-topic {
+    flex-direction: column-reverse;
+
+    > div {
+      width: 100%;
+    }
+
+    .hangar-guide-gif {
+      max-width: 100%;
+    }
+  }
+}

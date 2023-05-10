@@ -2,70 +2,84 @@
   <transition name="fade">
     <div v-if="visible" class="empty-box">
       <Box class="info" :large="true">
-        <h1>{{ $t("headlines.empty") }}</h1>
+        <h1>{{ t("headlines.empty") }}</h1>
         <template v-if="isQueryPresent">
-          <p>{{ $t("texts.empty.query") }}</p>
+          <p>{{ t("texts.empty.query") }}</p>
           <div slot="footer" class="empty-box-actions">
             <Btn v-if="isPagePresent" @click.native="resetPage">
-              {{ $t("actions.empty.resetPage") }}
+              {{ t("actions.empty.resetPage") }}
             </Btn>
-            <Btn :to="{ name: $route.name }" :exact="true">
-              {{ $t("actions.empty.reset") }}
+            <Btn :to="{ name: String(route.name) }" :exact="true">
+              {{ t("actions.empty.reset") }}
             </Btn>
           </div>
         </template>
-        <p v-else>
-          {{ $t("texts.empty.info") }}
-        </p>
+        <template v-else>
+          <p>
+            {{ t("texts.empty.info") }}
+          </p>
+        </template>
       </Box>
     </div>
   </transition>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Box from "@/frontend/core/components/Box/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<EmptyBox>({
-  components: {
-    Box,
-    Btn,
-  },
-})
-export default class EmptyBox extends Vue {
-  @Prop({ required: true }) visible: boolean;
+const { t } = useI18n();
 
-  @Prop({ default: false }) ignoreFilter: boolean;
+type Props = {
+  visible?: boolean;
+  ignoreFilter?: boolean;
+};
 
-  get isPagePresent() {
-    return !!this.$route.query.page;
+const props = withDefaults(defineProps<Props>(), {
+  visible: true,
+  ignoreFilter: false,
+});
+
+const route = useRoute();
+
+const isPagePresent = computed(
+  () => !!route.query.page && Number(route.query.page) > 1
+);
+
+const isQueryPresent = computed(
+  () =>
+    !props.ignoreFilter &&
+    (Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value)
+);
+
+const router = useRouter();
+
+const resetPage = () => {
+  const query = {
+    ...JSON.parse(JSON.stringify(route.query)),
+  };
+
+  if (query.page) {
+    delete query.page;
   }
 
-  get isQueryPresent() {
-    return !this.ignoreFilter && Object.keys(this.$route.query).length > 0;
-  }
+  router
+    .replace({
+      name: String(route.name),
+      query: {
+        ...query,
+        q: route.query.q || {},
+      },
+    })
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    .catch((_err) => {});
+};
+</script>
 
-  resetPage() {
-    const query = {
-      ...JSON.parse(JSON.stringify(this.$route.query)),
-    };
-
-    if (query.page) {
-      delete query.page;
-    }
-
-    this.$router
-      .replace({
-        name: this.$route.name,
-        query: {
-          ...query,
-          q: this.$route.query.q || {},
-        },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {});
-  }
-}
+<script lang="ts">
+export default {
+  name: "EmptyBox",
+};
 </script>

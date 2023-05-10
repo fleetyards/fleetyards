@@ -46,6 +46,7 @@ type VehicleMetrics = {
   totalMinCrew: number;
   totalMaxCrew: number;
   totalCargo: number;
+  totalCredits: number;
 };
 
 type ClassificationMetrics = {
@@ -62,6 +63,7 @@ type HangarGroupMetrics = {
 
 type VehicleStats = {
   total: number;
+  wishlistTotal: number;
   classifications: ClassificationMetrics;
   groups: HangarGroupMetrics[];
   metrics: VehicleMetrics;

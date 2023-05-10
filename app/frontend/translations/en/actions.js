@@ -77,6 +77,7 @@ export default {
   addUpgrade: "Add another Upgrade",
   showTableView: "Display as List",
   showGridView: "Display as Grid",
+  syncRsiHangar: "Sync RSI Hangar",
   compare: {
     models: "Compare",
   },
@@ -94,9 +95,15 @@ export default {
       removeAll: "Remove all",
     },
   },
+  syncExtension: {
+    cancel: "Cancel",
+    start: "Start Sync",
+    close: "Close",
+  },
   empty: {
     reset: "Reset Filters/Pages",
     resetPage: "Go to First Page",
+    hangarGuide: "Need Help?",
   },
   fleet: {
     join: "Join %{fleet}!",

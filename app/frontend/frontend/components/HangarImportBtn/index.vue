@@ -150,7 +150,7 @@ export default class HangarImportBtn extends Vue {
       });
     }
 
-    this.$emit("uploaded");
+    this.$emit("finished");
   }
 }
 </script>

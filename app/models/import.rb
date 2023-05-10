@@ -9,16 +9,19 @@
 #  failed_at   :datetime
 #  finished_at :datetime
 #  info        :text
+#  input       :jsonb
+#  output      :jsonb
 #  started_at  :datetime
 #  type        :string
 #  version     :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  user_id     :uuid
 #
 class Import < ApplicationRecord
   include AASM
 
-  validates :version, :type, presence: true
+  validates :type, presence: true
 
   def self.current_version
     finished.last&.version
@@ -39,6 +42,7 @@ class Import < ApplicationRecord
     end
 
     event :fail do
+      transitions from: :created, to: :failed
       transitions from: :started, to: :failed
     end
   end

@@ -6,23 +6,6 @@
   }
 }
 
-.empty-box {
-  width: 90%;
-  margin-right: auto;
-  margin-left: auto;
-
-  .info {
-    p {
-      color: lighten($primary, 10%);
-    }
-  }
-
-  .empty-box-actions {
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-
 @media (min-width: $tablet-breakpoint) {
   .box {
     width: 350px;
@@ -32,10 +15,5 @@
     &.box-large {
       width: 600px;
     }
-  }
-
-  .empty-box {
-    width: 100%;
-    padding: 0;
   }
 }
