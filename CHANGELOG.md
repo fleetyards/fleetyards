@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.17.1](https://github.com/fleetyards/fleetyards/compare/v5.17.0...v5.17.1) (2023-05-10)
+
+
+### Bug Fixes
+
+* **hangar-sync:** components matching for endeavor and tali ([7e43271](https://github.com/fleetyards/fleetyards/commit/7e43271541c51b886bf4dabcde6effcb3eed67df))
+* **hangar-sync:** match components and upgrades to correct models ([89c31ee](https://github.com/fleetyards/fleetyards/commit/89c31eecf132b45aecde6ccda00db908fa32e021))
+* **hangar-sync:** update matching for ships with paints ([61b8834](https://github.com/fleetyards/fleetyards/commit/61b8834cfeec3c332f504e2bba14110e027605ba))
+
 ## [5.17.0](https://github.com/fleetyards/fleetyards/compare/v5.16.1...v5.17.0) (2023-05-10)
 
 
