@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { defineConfig } from "vite";
+import { defineConfig, splitVendorChunkPlugin } from "vite";
 import ViteRails from "vite-plugin-rails";
 import Vue2 from "@vitejs/plugin-vue2";
 // import Vue from '@vitejs/plugin-vue'
@@ -66,6 +66,7 @@ export default defineConfig({
       },
       imports: ["vue", "vitest", "vue-router", { "vue-i18n": ["useI18n"] }],
     }),
+    splitVendorChunkPlugin(),
   ],
   resolve: {
     alias: {
@@ -74,6 +75,12 @@ export default defineConfig({
   },
   build: {
     target: browserslistToEsbuild(),
+    rollupOptions: {
+      maxParallelFileReads: 5,
+    },
+    commonjsOptions: {
+      requireReturnsDefault: true,
+    },
   },
   server: {
     fs: {
