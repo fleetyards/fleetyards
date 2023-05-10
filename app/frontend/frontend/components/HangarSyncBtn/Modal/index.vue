@@ -95,12 +95,6 @@
                   </dt>
                   <dd class="col-sm-5 text-right">{{ components.length }}</dd>
                 </template>
-                <!-- <template v-if="skins.length">
-                  <dt class="col-sm-7">
-                    {{ t("labels.syncExtension.pledgeItems.skins") }}:
-                  </dt>
-                  <dd class="col-sm-5 text-right">{{ skins.length }}</dd>
-                </template> -->
               </dl>
             </div>
             <div
@@ -212,6 +206,61 @@
                     >
                       {{ item }}
                     </li>
+                  </ul> </template
+                ><template v-if="importedUpgrades.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t("labels.syncExtension.importedItems.importedUpgrades")
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ importedUpgrades.length }}
+                  </dd>
+                </template>
+                <template v-if="foundUpgrades.length">
+                  <dt class="col-sm-8">
+                    {{ t("labels.syncExtension.importedItems.foundUpgrades") }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ foundUpgrades.length }}
+                  </dd>
+                </template>
+                <template v-if="missingUpgrades.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t("labels.syncExtension.importedItems.missingUpgrades")
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ missingUpgrades.length }}
+                  </dd>
+                  <ul>
+                    <li
+                      v-for="item in missingUpgrades"
+                      :key="`missing-component-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </template>
+                <template v-if="missingUpgradeVehicles.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t(
+                        "labels.syncExtension.importedItems.missingUpgradeVehicles"
+                      )
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ missingUpgradeVehicles.length }}
+                  </dd>
+                  <ul>
+                    <li
+                      v-for="item in missingUpgradeVehicles"
+                      :key="`missing-component-vehicle-${item}`"
+                    >
+                      {{ item }}
+                    </li>
                   </ul>
                 </template>
               </dl>
@@ -307,6 +356,12 @@ const foundComponents = computed(() => result.value?.foundComponents || []);
 const missingComponents = computed(() => result.value?.missingComponents || []);
 const missingComponentVehicles = computed(
   () => result.value?.missingComponentVehicles || []
+);
+const importedUpgrades = computed(() => result.value?.importedUpgrades || []);
+const foundUpgrades = computed(() => result.value?.foundUpgrades || []);
+const missingUpgrades = computed(() => result.value?.missingUpgrades || []);
+const missingUpgradeVehicles = computed(
+  () => result.value?.missingUpgradeVehicles || []
 );
 
 const collection: VehiclesCollection = vehiclesCollection;

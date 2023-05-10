@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_09_180821) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_10_211352) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -967,6 +967,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_09_180821) do
     t.uuid "vehicle_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "rsi_pledge_id"
+    t.datetime "rsi_pledge_synced_at"
   end
 
   create_table "vehicle_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -974,6 +976,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_09_180821) do
     t.uuid "vehicle_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "rsi_pledge_id"
+    t.datetime "rsi_pledge_synced_at"
   end
 
   create_table "vehicles", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

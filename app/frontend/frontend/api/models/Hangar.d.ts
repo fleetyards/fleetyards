@@ -7,4 +7,8 @@ type THangarSyncResult = {
   foundComponents: string[];
   missingComponents: string[];
   missingComponentVehicles: string[];
+  importedUpgrades: string[];
+  foundUpgrades: string[];
+  missingUpgrades: string[];
+  missingUpgradeVehicles: string[];
 };

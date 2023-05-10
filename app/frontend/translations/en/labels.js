@@ -654,6 +654,10 @@ export default {
       foundComponents: "Found Components",
       missingComponents: "Components not found",
       missingComponentVehicles: "No matching Ship found for Components",
+      importedUpgrades: "Added Upgrades",
+      foundUpgrades: "Found Upgrades",
+      missingUpgrades: "Upgrades not found",
+      missingUpgradeVehicles: "No matching Ship found for Upgrades",
     },
   },
 };

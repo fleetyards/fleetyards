@@ -1,6 +1,14 @@
 export class RSIHangarParser {
   parser = new DOMParser();
 
+  validComponentNames = [
+    "Galaxy",
+    "Endeavor",
+    "Retaliator",
+    "GreyCat Estate Geotack-X Planetary Beacon",
+    "F7A Military Hornet Upgrade",
+  ];
+
   extractPage(html: string): TRSIHangarItem[] | undefined {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
 
@@ -45,7 +53,10 @@ export class RSIHangarParser {
 
     const name = item.getElementsByClassName("title")[0].textContent || "";
 
-    if (!name.includes(" - ") && kind === "Component") {
+    if (
+      !this.validComponentNames.some((validName) => name.includes(validName)) &&
+      kind === "Component"
+    ) {
       return undefined;
     }
 

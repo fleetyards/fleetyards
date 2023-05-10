@@ -75,6 +75,10 @@ class User < ApplicationRecord
   has_many :vehicles, dependent: :destroy
   has_many :models,
     through: :vehicles
+  has_many :vehicle_modules,
+    through: :vehicles
+  has_many :vehicle_upgrades,
+    through: :vehicles
   has_many :manufacturers,
     through: :models
   has_many :public_vehicles,

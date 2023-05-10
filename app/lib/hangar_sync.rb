@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HangarSync < HangarImporter
-  attr_accessor :ships, :components, :addons
+  attr_accessor :ships, :components, :upgrades
 
   COMPONENT_FIND_QUERY = [
     "lower(name) = :name",
@@ -10,9 +10,25 @@ class HangarSync < HangarImporter
     "slug = :normalized_name"
   ].freeze
 
+  COMPONENT_FOR_MODELS = [
+    "GreyCat Estate Geotack-X Planetary Beacon",
+  ]
+
+  UPGRADE_NAMES = [
+    "F7A Military Hornet Upgrade"
+  ]
+
   def initialize(data)
-    @ships = data.select { |item| item[:type] == "ship" }
-    @components = data.select { |item| item[:type] == "component" }
+    @ships = data.select do |item|
+      item[:type] == "ship" ||
+        (item[:type] == "component" && COMPONENT_FOR_MODELS.include?(item[:name]))
+    end
+    @components = data.select do |item|
+      item[:type] == "component" &&
+        UPGRADE_NAMES.exclude?(item[:name]) &&
+        COMPONENT_FOR_MODELS.exclude?(item[:name])
+    end
+    @upgrades = data.select { |item| item[:type] == "component" && UPGRADE_NAMES.include?(item[:name]) }
   end
 
   def run(user_id)
@@ -27,6 +43,7 @@ class HangarSync < HangarImporter
 
     imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models = sync_vehicles(user_id)
     imported_components, found_components, missing_components, missing_component_vehicles = sync_components(user_id)
+    imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles = sync_upgrades(user_id)
 
     output = {
       imported_vehicles:,
@@ -36,7 +53,11 @@ class HangarSync < HangarImporter
       imported_components:,
       found_components:,
       missing_components:,
-      missing_component_vehicles:
+      missing_component_vehicles:,
+      imported_upgrades:,
+      found_upgrades:,
+      missing_upgrades:,
+      missing_upgrade_vehicles:
     }
 
     import.update!(output: output.to_json)
@@ -71,7 +92,7 @@ class HangarSync < HangarImporter
         )
 
         if vehicle_with_ref.present?
-          vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
+          vehicle_with_ref.update!(rsi_pledge_synced_at: Time.current)
 
           vehicle_ids << vehicle_with_ref.id
           found_vehicles << vehicle_with_ref.id
@@ -85,7 +106,7 @@ class HangarSync < HangarImporter
         )
 
         if vehicle.present?
-          vehicle.update(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
+          vehicle.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
 
           vehicle_ids << vehicle.id
           found_vehicles << vehicle.id
@@ -93,7 +114,7 @@ class HangarSync < HangarImporter
           next
         end
 
-        vehicle = vehicle_scope.create(params.merge(model_id: model.id))
+        vehicle = vehicle_scope.create!(params.merge(model_id: model.id))
         vehicle_ids << vehicle.id
         imported_vehicles << vehicle.id
         next
@@ -111,7 +132,7 @@ class HangarSync < HangarImporter
           vehicle_ids << vehicle_with_ref.id
 
           if vehicle_with_ref.rsi_pledge_synced_at.nil?
-            vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
+            vehicle_with_ref.update!(rsi_pledge_synced_at: Time.current)
             found_vehicles << vehicle_with_ref.id
           end
 
@@ -124,13 +145,13 @@ class HangarSync < HangarImporter
         )
 
         if vehicle.present?
-          vehicle.update(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
+          vehicle.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
           vehicle_ids << vehicle.id
           found_vehicles << vehicle.id
           next
         end
 
-        vehicle = vehicle_scope.create(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
+        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
         vehicle_ids << vehicle.id
         imported_vehicles << vehicle.id
         next
@@ -141,7 +162,7 @@ class HangarSync < HangarImporter
 
     vehicle_scope.where.not(id: vehicle_ids).find_each do |vehicle|
       initial_updated_at = vehicle.updated_at
-      vehicle.update(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
+      vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
 
       if initial_updated_at != vehicle.updated_at
         moved_vehicles_to_wanted << vehicle.id
@@ -152,13 +173,15 @@ class HangarSync < HangarImporter
   end
 
   private def sync_components(user_id)
+    vehicle_module_ids = []
     imported_components = []
     found_components = []
     missing_components = []
     missing_component_vehicles = []
 
     @components.each do |item|
-      model_name, component_name = item["name"].split(" - ")
+      model_name = item["name"].split(" ").first
+      component_name = item["name"].gsub(model_name, "").strip.delete_prefix("-").strip
 
       model_query = generate_model_query(model_name)
       model = Model.where(model_query).first
@@ -174,24 +197,117 @@ class HangarSync < HangarImporter
         next
       end
 
-      vehicle = Vehicle.where(user_id: user_id, loaner: false, hidden: false, model_id: model.id).first
+      user = User.find(user_id)
+
+      vehicle_module_with_ref = user.vehicle_modules.where(
+        model_module_id: component.id,
+        rsi_pledge_id: item['id']
+      ).first
+      if vehicle_module_with_ref.present?
+        vehicle_module_with_ref.update!(rsi_pledge_synced_at: Time.current)
+
+        vehicle_module_ids << vehicle_module_with_ref.id
+        found_components << vehicle_module_with_ref.id
+
+        next
+      end
+
+      vehicle_module = user.vehicle_modules.where.not(id: vehicle_module_ids).find_by(
+        model_module_id: component.id
+      )
+      if vehicle_module.present?
+        vehicle_module.update!(rsi_pledge_id: item['id'], rsi_pledge_synced_at: Time.current)
+
+        vehicle_module_ids << vehicle_module.id
+        found_components << vehicle_module.id
+
+        next
+      end
+
+      vehicle = Vehicle.where(
+        user_id: user_id, loaner: false, hidden: false, model_id: model.id
+      ).first
       if vehicle.blank?
         missing_component_vehicles << item["name"]
+
         next
       end
 
-      vehicle_module = vehicle.vehicle_modules.where(model_module_id: component.id).first_or_initialize
+      new_vehicle_module = vehicle.vehicle_modules.create!(model_module_id: component.id)
 
-      if vehicle_module.new_record?
-        vehicle_module.save!
-        imported_components << vehicle_module.id
-        next
-      end
-
-      found_components << vehicle_module.id
+      vehicle_module_ids << new_vehicle_module.id
+      imported_components << new_vehicle_module.id
     end
 
     [imported_components, found_components, missing_components, missing_component_vehicles]
+  end
+
+  private def sync_upgrades(user_id)
+    vehicle_upgrade_ids = []
+    imported_upgrades = []
+    found_upgrades = []
+    missing_upgrades = []
+    missing_upgrade_vehicles = []
+
+    @upgrades.each do |item|
+      model_name = item["name"].split(" ").first
+      upgrade_name = item["name"].gsub(model_name, "").strip.delete_prefix("-").strip
+
+      model_query = generate_model_query(model_name)
+      model = Model.where(model_query).first
+      if model.blank?
+        missing_upgrades << item["name"]
+        next
+      end
+
+      upgrade_query = generate_component_query(upgrade_name)
+      upgrade = model.upgrades.where(upgrade_query).first
+      if upgrade.blank?
+        missing_upgrades << item["name"]
+        next
+      end
+
+      user = User.find(user_id)
+
+      vehicle_upgrade_with_ref = user.vehicle_upgrades.where(
+        model_upgrade_id: upgrade.id,
+        rsi_pledge_id: item['id']
+      ).first
+      if vehicle_upgrade_with_ref.present?
+        vehicle_upgrade_with_ref.update!(rsi_pledge_synced_at: Time.current)
+
+        vehicle_upgrade_ids << vehicle_upgrade_with_ref.id
+        found_upgrades << vehicle_upgrade_with_ref.id
+
+        next
+      end
+
+      vehicle_upgrade = user.vehicle_upgrades.where.not(id: vehicle_upgrade_ids).find_by(
+        model_upgrade_id: upgrade.id
+      )
+      if vehicle_upgrade.present?
+        vehicle_upgrade.update!(rsi_pledge_id: item['id'], rsi_pledge_synced_at: Time.current)
+
+        vehicle_upgrade_ids << vehicle_upgrade.id
+        found_upgrades << vehicle_upgrade.id
+
+        next
+      end
+
+      vehicle = Vehicle.where(user_id: user_id, loaner: false, hidden: false, model_id: model.id).first
+      if vehicle.blank?
+        missing_upgrade_vehicles << item["name"]
+
+        next
+      end
+
+      new_vehicle_upgrade = vehicle.vehicle_upgrades.create!(model_upgrade_id: upgrade.id)
+
+      vehicle_upgrade_ids << new_vehicle_upgrade.id
+      imported_upgrades << new_vehicle_upgrade.id
+    end
+
+    [imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles]
   end
 
   private def generate_model_query(item_name)
@@ -244,6 +360,7 @@ class HangarSync < HangarImporter
   # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_mapping(name)
     mapping = {
+      "GreyCat Estate Geotack-X Planetary Beacon" => "Geotack-X Planetary Beacon",
       "X1 Base" => "X1",
       "315p Explorer" => "315p",
       "325a Fighter" => "325a",
