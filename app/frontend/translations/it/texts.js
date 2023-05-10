@@ -14,6 +14,11 @@ export default {
     info: "Non abbiamo trovato alcun record.",
     query:
       "Sembra che tu abbia alcuni filtri attivi o visitati una pagina senza alcun record.",
+    hangar: {
+      info: "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
+      extension:
+        "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
+    },
   },
   compare: {
     models: {
@@ -24,6 +29,8 @@ export default {
   hangarGuide: {
     add: "Per aggiungere una nuova nave all'hangar visitare la pagina delle navi e fare clic sull'icona del segnalibro nell'angolo in alto a destra della nave che si desidera aggiungere.<br>In alternativa è possibile aggiungere una nave nella sua pagina di dettaglio, il pulsante si trova sul lato destro sotto le caselle delle statistiche.<br>Puoi cliccare più volte sull'icona se vuoi più di una nave dello stesso tipo.",
     edit: "Per modificare una nave basta cliccare sull'icona della matita nell'angolo in alto a destra della nave che si desidera modificare.",
+    wishlist:
+      "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
     groups: {
       add: 'Per aggiungere un gruppo basta cliccare sull\'icona più nella riga prefissata da "gruppi".',
       edit: "Per modificare un gruppo fare clic con il tasto destro del mouse sul gruppo che si desidera modificare.",
@@ -102,5 +109,8 @@ export default {
       "Per disabilitare l'autenticazione a due fattori basta inserire un Token valido.",
     enable:
       " Per proteggere il tuo account FleetYards.net puoi generare Token per l'autenticazione a due fattori con Google Authenticator, 1Password o Authy.",
+  },
+  syncExtension: {
+    info: "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
   },
 };

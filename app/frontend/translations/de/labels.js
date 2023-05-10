@@ -15,6 +15,7 @@ export default {
   collapse: "Collapse",
   price: "Price",
   expand: "Expand",
+  anonymous: "Anonymous",
   toggleNavigation: "Toggle Navigation",
   enableYoutube:
     "Click to enable Youtube embeds or right click to copy Video URL",
@@ -356,6 +357,8 @@ export default {
     saleNotify: "I want to receive Sale Notifications",
     publicHangar: "Public Hangar enabled",
     publicHangarLoaners: "Show Loaners Hint on Public Hangar",
+    publicWishlist: "Public Wishlist enabled",
+    hideOwner: "Hide Ownership for Fleets",
   },
   vehicle: {
     name: "Name",
@@ -586,6 +589,44 @@ export default {
     items: {
       one: "<b>%{count}</b> Item for <b>%{price}</b>",
       other: "<b>%{count}</b> Items for <b>%{price}</b>",
+    },
+  },
+  syncExtension: {
+    status: {
+      started: "Import Started...",
+      finished: "Import Finished",
+      failed: "Import Failed!",
+    },
+    processSteps: {
+      fetchHangar: "Fetching Data from the RSI Hangar",
+      submitData: "Submitting Data to the Fleetyards.net Backend",
+    },
+    sessionStatus: "RSI Session status",
+    checkIdentity: "Check RSI Session",
+    identityStatus: {
+      pending: "Checking...",
+      notFound: "not found",
+      connected: "connected",
+    },
+    platforms: {
+      chrome: "Google Chrome",
+      firefox: "Mozilla Firefox",
+      edge: "Microsoft Edge",
+      opera: "Opera",
+      github: "GitHub",
+    },
+    pledgeItems: {
+      pages: "Pages",
+      all: "All Pledge Items",
+      ships: "Ships",
+      components: "Modules",
+      skins: "Paints",
+    },
+    importedItems: {
+      new: "New",
+      updated: "Updated",
+      movedToWanted: "Moved to Wishlist",
+      missing: "Unable to Import",
     },
   },
 };

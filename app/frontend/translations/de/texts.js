@@ -14,6 +14,11 @@ export default {
     info: "We could not find any Records.",
     query:
       "It seems like you have some Filters active or visited a Page without any Records.",
+    hangar: {
+      info: "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
+      extension:
+        "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
+    },
   },
   compare: {
     models: {
@@ -24,6 +29,8 @@ export default {
   hangarGuide: {
     add: "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
     edit: "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
+    wishlist:
+      "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
     groups: {
       add: 'To add a group just click on the plus icon in the line prefixed by "groups".',
       edit: "To edit a group make a right click on the group you want to edit.",
@@ -101,5 +108,8 @@ export default {
     disable: "To disable 2-Factor-Auth just enter a valid Token.",
     enable:
       " To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy.",
+  },
+  syncExtension: {
+    info: "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
   },
 };
