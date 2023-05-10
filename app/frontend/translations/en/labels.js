@@ -628,7 +628,7 @@ export default {
     checkIdentity: "Check RSI Session",
     identityStatus: {
       pending: "Checking...",
-      not_found: "not found",
+      notFound: "not found",
       connected: "connected",
     },
     platforms: {
