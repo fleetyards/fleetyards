@@ -11,7 +11,7 @@ class HangarSync < HangarImporter
   ].freeze
 
   COMPONENT_FOR_MODELS = [
-    "GreyCat Estate Geotack-X Planetary Beacon",
+    "GreyCat Estate Geotack-X Planetary Beacon"
   ]
 
   UPGRADE_NAMES = [
@@ -201,7 +201,7 @@ class HangarSync < HangarImporter
 
       vehicle_module_with_ref = user.vehicle_modules.where(
         model_module_id: component.id,
-        rsi_pledge_id: item['id']
+        rsi_pledge_id: item["id"]
       ).first
       if vehicle_module_with_ref.present?
         vehicle_module_with_ref.update!(rsi_pledge_synced_at: Time.current)
@@ -216,7 +216,7 @@ class HangarSync < HangarImporter
         model_module_id: component.id
       )
       if vehicle_module.present?
-        vehicle_module.update!(rsi_pledge_id: item['id'], rsi_pledge_synced_at: Time.current)
+        vehicle_module.update!(rsi_pledge_id: item["id"], rsi_pledge_synced_at: Time.current)
 
         vehicle_module_ids << vehicle_module.id
         found_components << vehicle_module.id
@@ -271,7 +271,7 @@ class HangarSync < HangarImporter
 
       vehicle_upgrade_with_ref = user.vehicle_upgrades.where(
         model_upgrade_id: upgrade.id,
-        rsi_pledge_id: item['id']
+        rsi_pledge_id: item["id"]
       ).first
       if vehicle_upgrade_with_ref.present?
         vehicle_upgrade_with_ref.update!(rsi_pledge_synced_at: Time.current)
@@ -286,7 +286,7 @@ class HangarSync < HangarImporter
         model_upgrade_id: upgrade.id
       )
       if vehicle_upgrade.present?
-        vehicle_upgrade.update!(rsi_pledge_id: item['id'], rsi_pledge_synced_at: Time.current)
+        vehicle_upgrade.update!(rsi_pledge_id: item["id"], rsi_pledge_synced_at: Time.current)
 
         vehicle_upgrade_ids << vehicle_upgrade.id
         found_upgrades << vehicle_upgrade.id
