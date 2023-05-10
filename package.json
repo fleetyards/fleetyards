@@ -74,6 +74,7 @@
     "@types/ahoy.js": "^0.4.0",
     "@types/downloadjs": "^1.4.3",
     "@types/i18n-js": "3.8.4",
+    "@types/lodash.debounce": "^4.0.7",
     "@types/qs": "^6.9.7",
     "@types/rails__actioncable": "^6.1.6",
     "@types/rails__actioncable": "^6.1.6",

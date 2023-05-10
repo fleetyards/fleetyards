@@ -328,7 +328,7 @@ export default class CollectionFilterGroup extends Vue {
 
     this.loading = true;
 
-    const options = await this.collection[this.collectionMethod]({
+    const response = await this.collection[this.collectionMethod]({
       ...this.queryParams({
         page: this.page,
         search: this.search,
@@ -336,7 +336,7 @@ export default class CollectionFilterGroup extends Vue {
       cacheId: this.groupID,
     });
 
-    this.$emit("loaded", options);
+    this.$emit("loaded", response.data);
 
     this.loading = false;
 
@@ -344,8 +344,8 @@ export default class CollectionFilterGroup extends Vue {
       this.$refs.infiniteLoading.$emit("infinite-loading-reset");
     }
 
-    if (options) {
-      this.addOptions(options);
+    if (response.data.length) {
+      this.addOptions(response.data);
       this.fetchMissingOption();
     }
   }
@@ -361,7 +361,7 @@ export default class CollectionFilterGroup extends Vue {
 
     this.loading = true;
 
-    const options = await this.collection[this.collectionMethod]({
+    const response = await this.collection[this.collectionMethod]({
       ...this.queryParams({
         missingValue: this.value,
       }),
@@ -369,8 +369,9 @@ export default class CollectionFilterGroup extends Vue {
     });
 
     this.loading = false;
-    if (options.length) {
-      this.addOptions(options);
+
+    if (response.data.length) {
+      this.addOptions(response.data);
     }
   }
 
@@ -378,7 +379,7 @@ export default class CollectionFilterGroup extends Vue {
     this.loading = true;
     this.page += 1;
 
-    const options = await this.collection[this.collectionMethod](
+    const response = await this.collection[this.collectionMethod](
       this.queryParams({
         page: this.page,
       })
@@ -388,8 +389,8 @@ export default class CollectionFilterGroup extends Vue {
 
     this.loading = false;
 
-    if (options.length) {
-      this.addOptions(options);
+    if (response.data.length) {
+      this.addOptions(response.data);
     } else {
       $state.complete();
     }
@@ -408,7 +409,7 @@ export default class CollectionFilterGroup extends Vue {
     });
   }
 
-  addOptions(newOptions) {
+  addOptions(newOptions: any[]) {
     newOptions.forEach((item) => {
       if (
         !this.availableOptions.find(

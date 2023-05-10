@@ -47,7 +47,7 @@ const toNumber = (value: number | string, units: string) => {
       .map((item) => I18n.l("number", item))
       .join(" - ");
   }
-  if (!value || (["speed", "rotation"].includes(units) && value <= 0)) {
+  if (!value || (["speed", "rotation"].includes(units) && Number(value) <= 0)) {
     return I18n.t("labels.not-available");
   }
   return I18n.t(`number.${units}`, {
@@ -72,7 +72,7 @@ const toAu = (value: number) => {
   });
 };
 
-const toUEC = (value: number, unit?: string) => {
+const toUEC = (value: number, unit: string = I18n.t("labels.uec")) => {
   if (!unit) {
     /* tslint:disable:no-parameter-reassignment */
     // eslint-disable-next-line no-param-reassign
