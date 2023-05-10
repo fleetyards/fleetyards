@@ -233,7 +233,7 @@ export default class HoloViewer extends Vue {
   }
 
   setupDirectionalLight(model) {
-    const directionalLight = new THREE.DirectionalLight(0x404040, 5);
+    const directionalLight = new THREE.DirectionalLight(0x404040, 60);
 
     directionalLight.target = model;
     directionalLight.castShadow = true;
