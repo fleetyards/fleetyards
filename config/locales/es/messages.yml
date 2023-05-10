@@ -44,6 +44,8 @@ es:
       success: "%{resource} edited successfully."
     hangar_import:
       no_data: No Data found to import
+    hangar_sync:
+      no_data: No Data found to sync
     user:
       requires_access_confirmation: Access confirmation pending
       two_factor_setup:
