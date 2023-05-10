@@ -21,7 +21,7 @@
           <p>
             {{ t("texts.empty.hangar.info") }}
           </p>
-          <div v-if="extensionReady">
+          <div v-if="!extensionReady">
             <p>{{ t("texts.empty.hangar.extension") }}</p>
             <div class="sync-extension-platforms">
               <a

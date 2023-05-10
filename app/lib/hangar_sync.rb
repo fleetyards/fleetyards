@@ -66,6 +66,7 @@ class HangarSync < HangarImporter
       if model.present?
         vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model.id,
+          model_paint_id: nil,
           rsi_pledge_id: item[:id]
         )
 
@@ -79,6 +80,7 @@ class HangarSync < HangarImporter
         end
 
         vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
+          model_paint_id: nil,
           model_id: model.id
         )
 
