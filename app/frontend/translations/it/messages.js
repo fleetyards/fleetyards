@@ -213,6 +213,10 @@ export default {
       destroyAll:
         "Sei sicuro di voler rimuovere tutte le navi dall'Hangar? Questa azione non può essere annullata.",
     },
+    wishlist: {
+      destroyAll:
+        "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted.",
+    },
     tradeRoutes: {
       reset: "Are you sure you want to reset all commodity prices?",
     },
@@ -244,5 +248,12 @@ export default {
       generateBackupCodes:
         "Sei sicuro di voler generare nuovi Codici di Backup per la 2FA?",
     },
+  },
+  syncExtension: {
+    started: "Syncing your Hangar...",
+    success: "Your Hangar has been synced.",
+    failure: "Your Hangar could not be synced.",
+    notLoggedIn:
+      'You need to be logged in on <a href="https://robertsspaceindustries.com" target="_blank">https://robertsspaceindustries.com</a> to sync your Hangar.',
   },
 };
