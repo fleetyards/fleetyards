@@ -1,6 +1,10 @@
 type THangarSyncResult = {
-  updated: string[];
-  imported: string[];
-  missing: string[];
-  movedToWanted: string[];
+  importedVehicles: string[];
+  foundVehicles: string[];
+  missingModels: string[];
+  movedVehiclesToWanted: string[];
+  importedComponents: string[];
+  foundComponents: string[];
+  missingComponents: string[];
+  missingComponentVehicles: string[];
 };

@@ -25,15 +25,15 @@ class HangarSync < HangarImporter
     )
     import.start!
 
-    new_vehicles, updated_vehicles, missing_vehicles, missing_models = sync_vehicles(user_id)
-    new_components, found_components, missing_components, missing_component_vehicles = sync_components(user_id)
+    imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models = sync_vehicles(user_id)
+    imported_components, found_components, missing_components, missing_component_vehicles = sync_components(user_id)
 
     output = {
-      new_vehicles:,
-      updated_vehicles:,
-      missing_vehicles:,
+      imported_vehicles:,
+      found_vehicles:,
+      moved_vehicles_to_wanted:,
       missing_models:,
-      new_components:,
+      imported_components:,
       found_components:,
       missing_components:,
       missing_component_vehicles:
@@ -52,9 +52,9 @@ class HangarSync < HangarImporter
 
   def sync_vehicles(user_id)
     vehicle_ids = []
-    new_vehicles = []
-    updated_vehicles = []
-    missing_vehicles = []
+    imported_vehicles = []
+    found_vehicles = []
+    moved_vehicles_to_wanted = []
     missing_models = []
     vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, hidden: false).order(created_at: :asc)
 
@@ -70,12 +70,10 @@ class HangarSync < HangarImporter
         )
 
         if vehicle_with_ref.present?
-          vehicle_ids << vehicle_with_ref.id
+          vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
 
-          if vehicle_with_ref.rsi_pledge_synced_at.nil?
-            vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
-            updated_vehicles << vehicle_with_ref.id
-          end
+          vehicle_ids << vehicle_with_ref.id
+          found_vehicles << vehicle_with_ref.id
 
           next
         end
@@ -86,14 +84,16 @@ class HangarSync < HangarImporter
 
         if vehicle.present?
           vehicle.update(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
+
           vehicle_ids << vehicle.id
-          updated_vehicles << vehicle.id
+          found_vehicles << vehicle.id
+
           next
         end
 
         vehicle = vehicle_scope.create(params.merge(model_id: model.id))
         vehicle_ids << vehicle.id
-        new_vehicles << vehicle.id
+        imported_vehicles << vehicle.id
         next
       end
 
@@ -110,7 +110,7 @@ class HangarSync < HangarImporter
 
           if vehicle_with_ref.rsi_pledge_synced_at.nil?
             vehicle_with_ref.update(rsi_pledge_synced_at: Time.current)
-            updated_vehicles << vehicle_with_ref.id
+            found_vehicles << vehicle_with_ref.id
           end
 
           next
@@ -124,13 +124,13 @@ class HangarSync < HangarImporter
         if vehicle.present?
           vehicle.update(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
           vehicle_ids << vehicle.id
-          updated_vehicles << vehicle.id
+          found_vehicles << vehicle.id
           next
         end
 
         vehicle = vehicle_scope.create(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
         vehicle_ids << vehicle.id
-        new_vehicles << vehicle.id
+        imported_vehicles << vehicle.id
         next
       end
 
@@ -142,15 +142,15 @@ class HangarSync < HangarImporter
       vehicle.update(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
 
       if initial_updated_at != vehicle.updated_at
-        missing_vehicles << vehicle.id
+        moved_vehicles_to_wanted << vehicle.id
       end
     end
 
-    [new_vehicles, updated_vehicles, missing_vehicles, missing_models]
+    [imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models]
   end
 
   private def sync_components(user_id)
-    new_components = []
+    imported_components = []
     found_components = []
     missing_components = []
     missing_component_vehicles = []
@@ -182,14 +182,14 @@ class HangarSync < HangarImporter
 
       if vehicle_module.new_record?
         vehicle_module.save!
-        new_components << vehicle_module.id
+        imported_components << vehicle_module.id
         next
       end
 
       found_components << vehicle_module.id
     end
 
-    [new_components, found_components, missing_components, missing_component_vehicles]
+    [imported_components, found_components, missing_components, missing_component_vehicles]
   end
 
   private def generate_model_query(item_name)
