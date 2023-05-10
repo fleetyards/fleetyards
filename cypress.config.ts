@@ -1,7 +1,7 @@
-import { defineConfig } from 'cypress'
+import { defineConfig } from "cypress";
 
 export default defineConfig({
-  projectId: 'vngu15',
+  projectId: "vngu15",
   video: false,
   videoUploadOnPasses: false,
   videoCompression: 0,
@@ -9,6 +9,6 @@ export default defineConfig({
   viewportHeight: 1440,
   defaultCommandTimeout: 10000,
   e2e: {
-    baseUrl: 'http://fleetyards.test',
+    baseUrl: "http://fleetyards.test",
   },
-})
+});

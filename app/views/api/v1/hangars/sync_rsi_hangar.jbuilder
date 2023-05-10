@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-json.updated @response[:updated_vehicles]
-json.imported @response[:new_vehicles]
-json.moved_to_wanted @response[:missing_vehicles]
-json.missing @response[:missing_models]
-json.new_components @response[:new_components]
+json.imported_vehicles @response[:imported_vehicles]
+json.found_vehicles @response[:found_vehicles]
+json.moved_vehicles_to_wanted @response[:moved_vehicles_to_wanted]
+json.missing_models @response[:missing_models]
+json.imported_components @response[:imported_components]
 json.found_components @response[:found_components]
 json.missing_components @response[:missing_components]
 json.missing_component_vehicles @response[:missing_component_vehicles]

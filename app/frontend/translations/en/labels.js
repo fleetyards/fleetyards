@@ -646,10 +646,14 @@ export default {
       skins: "Paints",
     },
     importedItems: {
-      new: "New",
-      updated: "Updated",
-      movedToWanted: "Moved to Wishlist",
-      missing: "Unable to Import",
+      importedVehicles: "Added Ships",
+      foundVehicles: "Found Ships",
+      movedVehiclesToWanted: "Moved Ships to Wishlist",
+      missingModels: "Ships not found",
+      importedComponents: "Added Components",
+      foundComponents: "Found Components",
+      missingComponents: "Components not found",
+      missingComponentVehicles: "No matching Ship found for Components",
     },
   },
 };

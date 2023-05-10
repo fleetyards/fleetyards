@@ -427,6 +427,7 @@ export default class Hangar extends Vue {
     this.fetch();
     this.setupUpdates();
 
+    this.$comlink.$on("vehicles-delete-all", this.fetch);
     this.$comlink.$on("hangar-group-delete", this.fetch);
     this.$comlink.$on("hangar-group-save", this.groupsCollection.findAll);
     this.$comlink.$on("hangar-sync-finished", this.fetch);
@@ -437,6 +438,7 @@ export default class Hangar extends Vue {
       this.vehiclesChannel.unsubscribe();
     }
 
+    this.$comlink.$off("vehicles-delete-all");
     this.$comlink.$off("hangar-group-delete");
     this.$comlink.$off("hangar-group-save");
     this.$comlink.$off("hangar-sync-finished");

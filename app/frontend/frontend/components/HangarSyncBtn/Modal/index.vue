@@ -108,33 +108,108 @@
               class="process-steps-item-info"
             >
               <dl class="row">
-                <template v-if="imported.length">
+                <template v-if="importedVehicles.length">
                   <dt class="col-sm-8">
-                    {{ t("labels.syncExtension.importedItems.new") }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">{{ imported.length }}</dd>
-                </template>
-                <template v-if="updated.length">
-                  <dt class="col-sm-8">
-                    {{ t("labels.syncExtension.importedItems.updated") }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">{{ updated.length }}</dd>
-                </template>
-                <template v-if="movedToWanted.length">
-                  <dt class="col-sm-8">
-                    {{ t("labels.syncExtension.importedItems.movedToWanted") }}:
+                    {{
+                      t("labels.syncExtension.importedItems.importedVehicles")
+                    }}:
                   </dt>
                   <dd class="col-sm-4 text-right">
-                    {{ movedToWanted.length }}
+                    {{ importedVehicles.length }}
                   </dd>
                 </template>
-                <template v-if="missing.length">
+                <template v-if="foundVehicles.length">
                   <dt class="col-sm-8">
-                    {{ t("labels.syncExtension.importedItems.missing") }}:
+                    {{ t("labels.syncExtension.importedItems.foundVehicles") }}:
                   </dt>
-                  <dd class="col-sm-4 text-right">{{ missing.length }}</dd>
+                  <dd class="col-sm-4 text-right">
+                    {{ foundVehicles.length }}
+                  </dd>
+                </template>
+                <template v-if="movedVehiclesToWanted.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t(
+                        "labels.syncExtension.importedItems.movedVehiclesToWanted"
+                      )
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ movedVehiclesToWanted.length }}
+                  </dd>
+                </template>
+                <template v-if="missingModels.length">
+                  <dt class="col-sm-8">
+                    {{ t("labels.syncExtension.importedItems.missingModels") }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ missingModels.length }}
+                  </dd>
                   <ul>
-                    <li v-for="item in missing" :key="`missing-${item}`">
+                    <li
+                      v-for="item in missingModels"
+                      :key="`missing-ship-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </template>
+                <template v-if="importedComponents.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t(
+                        "labels.syncExtension.importedItems.importedComponents"
+                      )
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ importedComponents.length }}
+                  </dd>
+                </template>
+                <template v-if="foundComponents.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t("labels.syncExtension.importedItems.foundComponents")
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ foundComponents.length }}
+                  </dd>
+                </template>
+                <template v-if="missingComponents.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t("labels.syncExtension.importedItems.missingComponents")
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ missingComponents.length }}
+                  </dd>
+                  <ul>
+                    <li
+                      v-for="item in missingComponents"
+                      :key="`missing-component-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </template>
+                <template v-if="missingComponentVehicles.length">
+                  <dt class="col-sm-8">
+                    {{
+                      t(
+                        "labels.syncExtension.importedItems.missingComponentVehicles"
+                      )
+                    }}:
+                  </dt>
+                  <dd class="col-sm-4 text-right">
+                    {{ missingComponentVehicles.length }}
+                  </dd>
+                  <ul>
+                    <li
+                      v-for="item in missingComponentVehicles"
+                      :key="`missing-component-vehicle-${item}`"
+                    >
                       {{ item }}
                     </li>
                   </ul>
@@ -217,16 +292,22 @@ const components = computed(() =>
   pledges.value.filter((pledge) => pledge.type === "component")
 );
 
-const skins = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "skin")
-);
-
 const result = ref<THangarSyncResult | null>(null);
 
-const imported = computed(() => result.value?.imported || []);
-const updated = computed(() => result.value?.updated || []);
-const movedToWanted = computed(() => result.value?.movedToWanted || []);
-const missing = computed(() => result.value?.missing || []);
+const importedVehicles = computed(() => result.value?.importedVehicles || []);
+const foundVehicles = computed(() => result.value?.foundVehicles || []);
+const movedVehiclesToWanted = computed(
+  () => result.value?.movedVehiclesToWanted || []
+);
+const missingModels = computed(() => result.value?.missingModels || []);
+const importedComponents = computed(
+  () => result.value?.importedComponents || []
+);
+const foundComponents = computed(() => result.value?.foundComponents || []);
+const missingComponents = computed(() => result.value?.missingComponents || []);
+const missingComponentVehicles = computed(
+  () => result.value?.missingComponentVehicles || []
+);
 
 const collection: VehiclesCollection = vehiclesCollection;
 
@@ -362,15 +443,6 @@ const finishSync = async () => {
   if (result.value) {
     displaySuccess({ text: t("messages.syncExtension.success") });
     updateStep("submitData", "success");
-    console.info(
-      "skins:",
-      skins.value.map((item) => item.name)
-    );
-    console.info(
-      "components:",
-      components.value.map((item) => item.name)
-    );
-
     comlink.$emit("hangar-sync-finished");
   } else {
     updateStep("submitData", "failure");

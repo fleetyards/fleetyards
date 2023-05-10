@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.17.0](https://github.com/fleetyards/fleetyards/compare/v5.16.1...v5.17.0) (2023-05-10)
+
+
+### Features
+
+* **hangar-sync:** add output for components import ([c977937](https://github.com/fleetyards/fleetyards/commit/c977937a4a85ad26d88d76a76918d6ba196e9679))
+* **hangar:** Integration with Fleetyards Sync Browser Extension ([#2594](https://github.com/fleetyards/fleetyards/issues/2594)) ([45a3081](https://github.com/fleetyards/fleetyards/commit/45a3081d4b9fd8aae9e155ee1d0094109c78cc20))
+
+
+### Bug Fixes
+
+* **hangar:** add missing translation ([0f27067](https://github.com/fleetyards/fleetyards/commit/0f270679c443af67b8c1c5ecf61dd61810d7987f))
+* **holo:** update lightning intensity ([3e08027](https://github.com/fleetyards/fleetyards/commit/3e080278665445a95aeb2b85aa7c2ab580f959e8))
+
 ### [5.16.1](https://github.com/fleetyards/fleetyards/compare/v5.16.0...v5.16.1) (2023-04-26)
 
 
