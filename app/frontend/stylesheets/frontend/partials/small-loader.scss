@@ -5,11 +5,27 @@
 
 .small-loader {
   position: absolute;
-  left: 50%;
   z-index: 100;
+  left: 50%;
+  margin-left: calc(15px * -2);
   width: calc(15px * 4);
-  height: 15px;
-  margin-left: calc(((15px * 4) / 2) * -1);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+
+  &.right {
+    left: auto;
+    right: 15px;
+    margin-left: 0;
+  }
+
+  &.left {
+    left: 15px;
+    right: auto;
+    margin-left: 0;
+  }
 }
 
 .small-loader .rhombus {

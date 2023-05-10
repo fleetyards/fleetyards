@@ -98,6 +98,7 @@ v1_api_routes = lambda do
     get :items
     put :import
     get :export
+    put "sync-rsi-hangar", to: "hangars#sync_rsi_hangar"
     get "hangar", to: "hangars#hangar"
 
     put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"

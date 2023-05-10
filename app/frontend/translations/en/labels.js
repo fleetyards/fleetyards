@@ -614,4 +614,42 @@ export default {
       other: "<b>%{count}</b> Items for <b>%{price}</b>",
     },
   },
+  syncExtension: {
+    status: {
+      started: "Import Started...",
+      finished: "Import Finished",
+      failed: "Import Failed!",
+    },
+    processSteps: {
+      fetchHangar: "Fetching Data from the RSI Hangar",
+      submitData: "Submitting Data to the Fleetyards.net Backend",
+    },
+    sessionStatus: "RSI Session status",
+    checkIdentity: "Check RSI Session",
+    identityStatus: {
+      pending: "Checking...",
+      notFound: "not found",
+      connected: "connected",
+    },
+    platforms: {
+      chrome: "Google Chrome",
+      firefox: "Mozilla Firefox",
+      edge: "Microsoft Edge",
+      opera: "Opera",
+      github: "GitHub",
+    },
+    pledgeItems: {
+      pages: "Pages",
+      all: "All Pledge Items",
+      ships: "Ships",
+      components: "Modules",
+      skins: "Paints",
+    },
+    importedItems: {
+      new: "New",
+      updated: "Updated",
+      movedToWanted: "Moved to Wishlist",
+      missing: "Unable to Import",
+    },
+  },
 };

@@ -72,6 +72,10 @@ export default () => ({
     gridView(state) {
       return state.gridView;
     },
+
+    extensionReady(state) {
+      return state.extensionReady;
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -146,6 +150,10 @@ export default () => ({
 
     setGridView(state, payload) {
       state.gridView = payload;
+    },
+
+    setExtensionReady(state, payload) {
+      state.extensionReady = payload;
     },
   },
   /* eslint-enable no-param-reassign */

@@ -1,7 +1,7 @@
 <template>
   <Btn
-    v-tooltip="!withLabel && $t('actions.showStatusColor')"
-    :aria-label="$t('actions.showStatusColor')"
+    v-tooltip="!withLabel && t('actions.showStatusColor')"
+    :aria-label="t('actions.showStatusColor')"
     :variant="variant"
     :size="size"
     :inline="inline"
@@ -16,45 +16,60 @@
     />
     <span v-if="withLabel">
       <template v-if="showStatus">
-        {{ $t("actions.hideStatusColor") }}
+        {{ t("actions.hideStatusColor") }}
       </template>
       <template v-else>
-        {{ $t("actions.showStatusColor") }}
+        {{ t("actions.showStatusColor") }}
       </template>
     </span>
   </Btn>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import type { Props as BtnProps } from "@/frontend/core/components/Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useRoute } from "vue-router/composables";
 
-@Component<FleetChartStatusBtn>({
-  components: {
-    Btn,
-  },
-})
-export default class FleetChartStatusBtn extends Btn {
-  @Prop({ default: true }) withLabel!: boolean;
-
-  showStatus = false;
-
-  mounted() {
-    this.showStatus = !!this.$route.query?.showStatus;
-
-    this.$comlink.$on("fleetchart-toggle-status", this.setShowStatus);
-  }
-
-  beforeDestroy() {
-    this.$comlink.$off("fleetchart-toggle-status");
-  }
-
-  setShowStatus() {
-    this.showStatus = !this.showStatus;
-  }
-
-  toggleStatus() {
-    this.$comlink.$emit("fleetchart-toggle-status");
-  }
+interface Props extends BtnProps {
+  withLabel?: boolean;
 }
+
+withDefaults(defineProps<Props>(), {
+  withLabel: true,
+  filename: "fleetyards-screenshot",
+});
+
+const { t } = useI18n();
+
+const showStatus = ref(false);
+
+const route = useRoute();
+
+const comlink = useComlink();
+
+onMounted(() => {
+  showStatus.value = !!route.query?.showStatus;
+
+  comlink.$on("fleetchart-toggle-status", setShowStatus);
+});
+
+onBeforeUnmount(() => {
+  comlink.$off("fleetchart-toggle-status");
+});
+
+const setShowStatus = () => {
+  showStatus.value = !showStatus.value;
+};
+
+const toggleStatus = () => {
+  comlink.$emit("fleetchart-toggle-status");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "FleetChartStatusBtn",
+};
 </script>

@@ -3,6 +3,7 @@ export default {
     headline: "maybe we should change that ;)",
     add: "How to add a ship?",
     edit: "How to edit a ship?",
+    wishlist: "How to add a ship to your wishlist?",
     fleetchart: "Fleetchart?",
     public: "Public URL?",
     groups: "How to create and update groups?",

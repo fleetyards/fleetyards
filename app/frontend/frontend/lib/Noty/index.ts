@@ -189,6 +189,14 @@ export const displayConfirm = function displayConfirm(options) {
     },
     buttons: [
       Noty.button(
+        I18n.t("actions.cancel"),
+        "panel-btn panel-btn-inline",
+        () => {
+          n.close();
+          defaults.onCancel();
+        }
+      ),
+      Noty.button(
         I18n.t("actions.confirm"),
         `panel-btn panel-btn-inline${btnClass}`,
         () => {
@@ -196,14 +204,6 @@ export const displayConfirm = function displayConfirm(options) {
           defaults.onConfirm();
         },
         { "data-status": "ok" }
-      ),
-      Noty.button(
-        I18n.t("actions.cancel"),
-        "panel-btn panel-btn-inline",
-        () => {
-          n.close();
-          defaults.onCancel();
-        }
       ),
     ],
     callbacks: {

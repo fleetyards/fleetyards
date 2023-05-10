@@ -2,28 +2,28 @@
 #
 # Table name: vehicles
 #
-#  id                :uuid             not null, primary key
-#  alternative_names :string
-#  bought_via        :integer          default(0)
-#  flagship          :boolean          default(FALSE)
-#  hidden            :boolean          default(FALSE)
-#  loaner            :boolean          default(FALSE)
-#  name              :string(255)
-#  name_visible      :boolean          default(FALSE)
-#  notify            :boolean          default(TRUE)
-#  public            :boolean          default(FALSE)
-#  purchased         :boolean          default(FALSE)
-#  sale_notify       :boolean          default(FALSE)
-#  serial            :string
-#  slug              :string
-#  wanted            :boolean          default(FALSE)
-#  created_at        :datetime
-#  updated_at        :datetime
-#  model_id          :uuid
-#  model_paint_id    :uuid
-#  module_package_id :uuid
-#  user_id           :uuid
-#  vehicle_id        :uuid
+#  id                   :uuid             not null, primary key
+#  alternative_names    :string
+#  bought_via           :integer          default("pledge_store")
+#  flagship             :boolean          default(FALSE)
+#  hidden               :boolean          default(FALSE)
+#  loaner               :boolean          default(FALSE)
+#  name                 :string(255)
+#  name_visible         :boolean          default(FALSE)
+#  notify               :boolean          default(TRUE)
+#  public               :boolean          default(FALSE)
+#  rsi_pledge_synced_at :datetime
+#  sale_notify          :boolean          default(FALSE)
+#  serial               :string
+#  wanted               :boolean          default(FALSE)
+#  created_at           :datetime
+#  updated_at           :datetime
+#  model_id             :uuid
+#  model_paint_id       :uuid
+#  module_package_id    :uuid
+#  rsi_pledge_id        :string
+#  user_id              :uuid
+#  vehicle_id           :uuid
 #
 # Indexes
 #

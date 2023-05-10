@@ -3,6 +3,7 @@ type User = {
   username: string;
   twoFactorRequired: boolean;
   hideOwner: boolean;
+  publicHangarUrl: string;
 };
 
 type UserForm = {

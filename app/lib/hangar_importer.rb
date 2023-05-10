@@ -15,7 +15,7 @@ class HangarImporter
   ].freeze
 
   def initialize(data)
-    @data = data.map do |item|
+    @data = (data || []).map do |item|
       return item unless item.is_a? Hash
 
       item.transform_keys(&:underscore)
@@ -28,6 +28,9 @@ class HangarImporter
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/CyclomaticComplexity
   def run(user_id)
+    import = Imports::HangarImport.create(user_id:, input: @data.to_json)
+    import.start!
+
     missing_models = []
     imported_models = []
 
@@ -55,7 +58,7 @@ class HangarImporter
         name: item[:ship_name] || item[:custom_name],
         serial: item[:ship_serial],
         flagship: item[:flagship] || false,
-        wanted: item[:wanted] || !item[:purchased] || true,
+        wanted: item[:wanted] || !item[:purchased] || false,
         bought_via: item[:bought_via] || :pledge_store,
         public: item[:public] || false,
         name_visible: item[:name_visible] || false,
@@ -86,11 +89,21 @@ class HangarImporter
     Vehicle.where(user_id:).update_all(notify: true)
     # rubocop:enable Rails/SkipsModelValidations
 
-    {
+    output = {
       missing: missing_models.sort,
       imported: imported_models.sort,
       success: missing_models.size < @data.size
     }
+
+    import.update!(output: output)
+    import.finish!
+
+    output
+  rescue => e
+    import.fail!
+    import.update!(info: e.message)
+
+    raise e
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength

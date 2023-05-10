@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import { defineProps } from "vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
-import useComlink from "@/frontend/composables/useComlink";
+import { useComlink } from "@/frontend/composables/useComlink";
 
 export type ModalProps = {
   title?: string;

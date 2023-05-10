@@ -146,7 +146,6 @@ import VehiclesFilterForm from "@/frontend/components/Vehicles/FilterForm/index.
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import HangarGuideBox from "@/frontend/components/HangarGuideBox/index.vue";
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import MetaInfo from "@/frontend/mixins/MetaInfo";
@@ -172,7 +171,6 @@ import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
-    HangarGuideBox,
     AddonsModal,
     FleetchartApp,
     BreadCrumbs,

@@ -6,14 +6,14 @@
         data-test="reset-ingame-modal-reset-to-wishlist"
         @click.native="moveToWishlist"
       >
-        {{ $t("actions.hangar.resetIngame.moveToWishlist") }}
+        {{ t("actions.hangar.resetIngame.moveToWishlist") }}
       </Btn>
       <Btn
         :inline="true"
         data-test="reset-ingame-modal-reset"
         @click.native="removeAll"
       >
-        {{ $t("actions.hangar.resetIngame.removeAll") }}
+        {{ t("actions.hangar.resetIngame.removeAll") }}
       </Btn>
     </div>
   </Modal>
@@ -25,7 +25,7 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import { useI18n } from "@/frontend/composables/useI18n";
-import useComlink from "@/frontend/composables/useComlink";
+import { useComlink } from "@/frontend/composables/useComlink";
 
 const { t } = useI18n();
 

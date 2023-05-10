@@ -43,6 +43,7 @@
           class="col-12 col-animated"
         >
           <slot
+            name="default"
             :records="collection && collection.records"
             :filter-visible="filterVisible"
             :loading="loading"
@@ -50,9 +51,18 @@
             :empty-box-visible="emptyBoxVisible"
           />
 
-          <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
+          <slot
+            name="empty"
+            :filter-visible="filterVisible"
+            :hide-empty-box="hideEmptyBox"
+            :empty-box-visible="emptyBoxVisible"
+          >
+            <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
+          </slot>
 
-          <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
+          <slot name="loader" :loading="loading">
+            <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
+          </slot>
         </div>
       </div>
       <div class="row">

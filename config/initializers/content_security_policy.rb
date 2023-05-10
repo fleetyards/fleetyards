@@ -59,7 +59,7 @@ Rails.application.configure do
     ]
 
     frame_src = [
-      :self, :blob, FRONTEND_ENDPOINT, "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://starship42.com", "https://starship42.fleetyards.net"
+      :self, :blob, FRONTEND_ENDPOINT, "https://youtu.be", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://starship42.com", "https://starship42.fleetyards.net"
     ]
 
     form_src = [

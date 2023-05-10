@@ -9,7 +9,7 @@
       fixed: fixed,
     }"
     class="app-modal fade"
-    @click.self="close"
+    @click.self="() => close()"
   >
     <Component :is="component" ref="modelComponent" v-bind="props" />
   </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_195050) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_09_180821) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -395,6 +395,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_195050) do
     t.text "info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "input"
+    t.jsonb "output"
+    t.uuid "user_id"
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -979,7 +982,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_195050) do
     t.string "name", limit: 255
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.boolean "purchased", default: false
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
     t.boolean "name_visible", default: false
@@ -995,6 +997,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_195050) do
     t.string "slug"
     t.boolean "wanted", default: false
     t.integer "bought_via", default: 0
+    t.string "rsi_pledge_id"
+    t.datetime "rsi_pledge_synced_at"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true

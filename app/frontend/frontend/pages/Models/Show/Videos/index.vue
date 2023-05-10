@@ -31,25 +31,7 @@
             :key="video.id"
             class="col-12 col-lg-6 col-lgx-3 fade-list-item"
           >
-            <div class="video embed-responsive embed-responsive-16by9">
-              <template v-if="video.type === 'youtube' && youtubeEnabled">
-                <iframe :src="video.url" class="embed-responsive-item" />
-              </template>
-              <div
-                v-else-if="video.type === 'youtube'"
-                class="youtube-placeholder"
-              >
-                <i class="fab fa-youtube" />
-                <div class="youtube-placeholder-buttons">
-                  <Btn :inline="true" @click.native="enableYoutube">
-                    Allow video embeds
-                  </Btn>
-                  <Btn :inline="true" @click.native="copyVideoUrl(video)">
-                    Copy Youtube URL
-                  </Btn>
-                </div>
-              </div>
-            </div>
+            <VideoEmbed :video="video" />
           </div>
         </transition-group>
         <div class="row">
@@ -71,19 +53,17 @@
 import { mapGetters } from "vuex";
 import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Pagination from "@/frontend/mixins/Pagination";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import copyText from "@/frontend/utils/CopyText";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
+import VideoEmbed from "@/frontend/core/components/Video/index.vue";
 
 export default {
   name: "ModelVideos",
 
   components: {
     Loader,
-    Btn,
     BreadCrumbs,
+    VideoEmbed,
   },
 
   mixins: [MetaInfo, Pagination],
@@ -128,10 +108,6 @@ export default {
         },
       ];
     },
-
-    youtubeEnabled() {
-      return this.cookies.youtube;
-    },
   },
 
   watch: {
@@ -146,25 +122,6 @@ export default {
   },
 
   methods: {
-    copyVideoUrl(video) {
-      copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(
-        () => {
-          displaySuccess({
-            text: this.$t("messages.copyVideoUrl.success"),
-          });
-        },
-        () => {
-          displayAlert({
-            text: this.$t("messages.copyVideoUrl.failure"),
-          });
-        }
-      );
-    },
-
-    enableYoutube() {
-      this.$comlink.$emit("open-privacy-settings");
-    },
-
     async fetch() {
       this.loading = true;
 
