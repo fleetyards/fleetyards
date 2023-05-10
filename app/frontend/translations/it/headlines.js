@@ -26,6 +26,7 @@ export default {
     publicWishlist: "%{user} Wishlist",
     resetIngame: "Reset Ingame Ships after Wipe",
   },
+  syncExtension: "Sync RSI Hangar",
   editMyVehicle: "Modifica il mio %{vehicle}",
   nameMyVehicle: "Dai un nome al mio %{vehicle}",
   editGroups: "Modifica i Gruppi",
