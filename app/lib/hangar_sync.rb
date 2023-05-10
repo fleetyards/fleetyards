@@ -225,8 +225,8 @@ class HangarSync < HangarImporter
       end
 
       vehicle = Vehicle.where(
-        user_id: user_id, loaner: false, hidden: false, model_id: model.id
-      ).first
+        user_id: user_id, loaner: false, hidden: false, model_id: component.model_ids
+      ).order(created_at: :asc).first
       if vehicle.blank?
         missing_component_vehicles << item["name"]
 
@@ -250,18 +250,8 @@ class HangarSync < HangarImporter
     missing_upgrade_vehicles = []
 
     @upgrades.each do |item|
-      model_name = item["name"].split(" ").first
-      upgrade_name = item["name"].gsub(model_name, "").strip.delete_prefix("-").strip
-
-      model_query = generate_model_query(model_name)
-      model = Model.where(model_query).first
-      if model.blank?
-        missing_upgrades << item["name"]
-        next
-      end
-
-      upgrade_query = generate_component_query(upgrade_name)
-      upgrade = model.upgrades.where(upgrade_query).first
+      upgrade_query = generate_component_query(item["name"])
+      upgrade = ModelUpgrade.where(upgrade_query).first
       if upgrade.blank?
         missing_upgrades << item["name"]
         next
@@ -294,7 +284,7 @@ class HangarSync < HangarImporter
         next
       end
 
-      vehicle = Vehicle.where(user_id: user_id, loaner: false, hidden: false, model_id: model.id).first
+      vehicle = Vehicle.where(user_id: user_id, loaner: false, hidden: false, model_id: upgrade.model_ids).order(created_at: :asc).first
       if vehicle.blank?
         missing_upgrade_vehicles << item["name"]
 
