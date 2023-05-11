@@ -1,13 +1,14 @@
+const VALID_COMPONENT_NAMES = ["Galaxy", "Endeavor", "Retaliator"];
+
+const COMPONENT_FOR_MODELS = [
+  "GreyCat Estate Geotack-X Planetary Beacon",
+  "GreyCat Estate Geotack Planetary Beacon",
+];
+
+const COMPONENT_FOR_UPGRADES = ["F7A Military Hornet Upgrade"];
+
 export class RSIHangarParser {
   parser = new DOMParser();
-
-  validComponentNames = [
-    "Galaxy",
-    "Endeavor",
-    "Retaliator",
-    "GreyCat Estate Geotack-X Planetary Beacon",
-    "F7A Military Hornet Upgrade",
-  ];
 
   extractPage(html: string): TRSIHangarItem[] | undefined {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
@@ -53,9 +54,25 @@ export class RSIHangarParser {
 
     const name = item.getElementsByClassName("title")[0].textContent || "";
 
+    let kindOverride: TRSIHangarItemKind | undefined;
     if (
-      !this.validComponentNames.some((validName) => name.includes(validName)) &&
+      COMPONENT_FOR_MODELS.some((validName) => name.includes(validName)) &&
       kind === "Component"
+    ) {
+      kindOverride = "ship";
+    }
+
+    if (
+      COMPONENT_FOR_UPGRADES.some((validName) => name.includes(validName)) &&
+      kind === "Component"
+    ) {
+      kindOverride = "upgrade";
+    }
+
+    if (
+      !VALID_COMPONENT_NAMES.some((validName) => name.includes(validName)) &&
+      kind === "Component" &&
+      !kindOverride
     ) {
       return undefined;
     }
@@ -66,7 +83,7 @@ export class RSIHangarParser {
       customName:
         item.getElementsByClassName("custom-name-text")[0]?.textContent ||
         undefined,
-      type: kind.toLowerCase() as TRSIHangarItemKind,
+      type: kindOverride || (kind.toLowerCase() as TRSIHangarItemKind),
     };
   }
 

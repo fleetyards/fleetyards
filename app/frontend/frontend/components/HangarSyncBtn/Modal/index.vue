@@ -95,6 +95,12 @@
                   </dt>
                   <dd class="col-sm-5 text-right">{{ components.length }}</dd>
                 </template>
+                <template v-if="upgrades.length">
+                  <dt class="col-sm-7">
+                    {{ t("labels.syncExtension.pledgeItems.upgrades") }}:
+                  </dt>
+                  <dd class="col-sm-5 text-right">{{ upgrades.length }}</dd>
+                </template>
               </dl>
             </div>
             <div
@@ -330,7 +336,9 @@ const currentPage = ref(1);
 const pledges = ref<TRSIHangarItem[]>([]);
 
 const items = computed(() =>
-  pledges.value.filter((pledge) => ["ship", "component"].includes(pledge.type))
+  pledges.value.filter((pledge) =>
+    ["ship", "component", "upgrade"].includes(pledge.type)
+  )
 );
 
 const ships = computed(() =>
@@ -339,6 +347,10 @@ const ships = computed(() =>
 
 const components = computed(() =>
   pledges.value.filter((pledge) => pledge.type === "component")
+);
+
+const upgrades = computed(() =>
+  pledges.value.filter((pledge) => pledge.type === "upgrade")
 );
 
 const result = ref<THangarSyncResult | null>(null);

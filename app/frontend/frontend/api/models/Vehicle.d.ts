@@ -13,6 +13,8 @@ type Vehicle = {
   boughtVia: string;
   boughtViaLabel: string;
   username?: string;
+  storeImageMedium: string;
+  storeImageSmall: string;
 };
 
 type VehicleForm = {

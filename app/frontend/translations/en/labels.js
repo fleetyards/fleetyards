@@ -644,6 +644,7 @@ export default {
       ships: "Ships",
       components: "Modules",
       skins: "Paints",
+      upgrades: "Upgrades",
     },
     importedItems: {
       importedVehicles: "Added Ships",

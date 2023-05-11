@@ -10,25 +10,10 @@ class HangarSync < HangarImporter
     "slug = :normalized_name"
   ].freeze
 
-  COMPONENT_FOR_MODELS = [
-    "GreyCat Estate Geotack-X Planetary Beacon"
-  ]
-
-  UPGRADE_NAMES = [
-    "F7A Military Hornet Upgrade"
-  ]
-
   def initialize(data)
-    @ships = data.select do |item|
-      item[:type] == "ship" ||
-        (item[:type] == "component" && COMPONENT_FOR_MODELS.include?(item[:name]))
-    end
-    @components = data.select do |item|
-      item[:type] == "component" &&
-        UPGRADE_NAMES.exclude?(item[:name]) &&
-        COMPONENT_FOR_MODELS.exclude?(item[:name])
-    end
-    @upgrades = data.select { |item| item[:type] == "component" && UPGRADE_NAMES.include?(item[:name]) }
+    @ships = data.select { |item| item[:type] == "ship" }
+    @components = data.select { |item| item[:type] == "component" }
+    @upgrades = data.select { |item| item[:type] == "upgrade" }
   end
 
   def run(user_id)
@@ -83,41 +68,6 @@ class HangarSync < HangarImporter
       query = generate_model_query(item["name"])
       params = default_params(user_id, item)
 
-      model = Model.where(query).first
-      if model.present?
-        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model.id,
-          rsi_pledge_id: item[:id]
-        )
-
-        if vehicle_with_ref.present?
-          vehicle_with_ref.update!(rsi_pledge_synced_at: Time.current)
-
-          vehicle_ids << vehicle_with_ref.id
-          found_vehicles << vehicle_with_ref.id
-
-          next
-        end
-
-        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model.id
-        )
-
-        if vehicle.present?
-          vehicle.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
-
-          vehicle_ids << vehicle.id
-          found_vehicles << vehicle.id
-
-          next
-        end
-
-        vehicle = vehicle_scope.create!(params.merge(model_id: model.id))
-        vehicle_ids << vehicle.id
-        imported_vehicles << vehicle.id
-        next
-      end
-
       model_paint = ModelPaint.where(query).first
       if model_paint.present?
         vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
@@ -150,6 +100,41 @@ class HangarSync < HangarImporter
         end
 
         vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
+        vehicle_ids << vehicle.id
+        imported_vehicles << vehicle.id
+        next
+      end
+
+      model = Model.where(query).first
+      if model.present?
+        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
+          model_id: model.id,
+          rsi_pledge_id: item[:id]
+        )
+
+        if vehicle_with_ref.present?
+          vehicle_with_ref.update!(rsi_pledge_synced_at: Time.current)
+
+          vehicle_ids << vehicle_with_ref.id
+          found_vehicles << vehicle_with_ref.id
+
+          next
+        end
+
+        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
+          model_id: model.id
+        )
+
+        if vehicle.present?
+          vehicle.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
+
+          vehicle_ids << vehicle.id
+          found_vehicles << vehicle.id
+
+          next
+        end
+
+        vehicle = vehicle_scope.create!(params.merge(model_id: model.id))
         vehicle_ids << vehicle.id
         imported_vehicles << vehicle.id
         next
@@ -348,6 +333,7 @@ class HangarSync < HangarImporter
   # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_mapping(name)
     mapping = {
+      "GreyCat Estate Geotack Planetary Beacon" => "Geotack Planetary Beacon",
       "GreyCat Estate Geotack-X Planetary Beacon" => "Geotack-X Planetary Beacon",
       "X1 Base" => "X1",
       "315p Explorer" => "315p",
@@ -358,7 +344,7 @@ class HangarSync < HangarImporter
       "600i Touring Module" => "600i Touring",
       "Mercury Star Runner" => "Mercury",
       "Captured Vanduul Scythe" => "Scythe",
-      "Caterpillar 2949 Best in Show" => "caterpillar best in show edition",
+      "Caterpillar 2949 Best in Show" => "Caterpillar Best In Show Edition",
       "Cutlass 2949 Best In Show" => "cutlass black best in show edition",
       "Dragonfly" => "Dragonfly Black",
       "F8C Lightning Civilian" => "F8C Lightning",

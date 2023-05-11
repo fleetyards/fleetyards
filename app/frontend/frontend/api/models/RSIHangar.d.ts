@@ -1,4 +1,4 @@
-type TRSIHangarItemKind = "ship" | "component" | "skin";
+type TRSIHangarItemKind = "ship" | "component" | "skin" | "upgrade";
 
 type TRSIHangarItem = {
   id: string;

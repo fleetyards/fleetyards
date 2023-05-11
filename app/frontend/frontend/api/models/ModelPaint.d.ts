@@ -10,4 +10,6 @@ type ModelPaint = {
   id: string;
   rsiId: string;
   rsiName: string;
+  storeImageMedium: string;
+  storeImageSmall: string;
 };
