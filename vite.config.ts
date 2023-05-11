@@ -76,7 +76,7 @@ export default defineConfig({
   build: {
     target: browserslistToEsbuild(),
     rollupOptions: {
-      maxParallelFileReads: 5,
+      maxParallelFileOps: 5,
     },
     commonjsOptions: {
       requireReturnsDefault: true,
