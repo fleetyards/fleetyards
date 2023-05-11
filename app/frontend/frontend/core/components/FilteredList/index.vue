@@ -59,7 +59,6 @@
           >
             <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
           </slot>
-
           <slot name="loader" :loading="loading">
             <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
           </slot>

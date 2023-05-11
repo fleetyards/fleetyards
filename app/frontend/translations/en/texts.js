@@ -19,6 +19,9 @@ export default {
       extension:
         "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
     },
+    wishlist: {
+      info: "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
+    },
   },
   compare: {
     models: {

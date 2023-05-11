@@ -124,6 +124,7 @@
       :route-query="$route.query"
       :hash="$route.hash"
       :paginated="true"
+      :hide-empty-box="!gridView"
       :hide-loading="fleetchartVisible"
     >
       <template slot="actions">
@@ -244,10 +245,6 @@
         :hangar-groups-options="groupsCollection.records"
       />
 
-      <template #empty="{ hideEmptyBox, emptyBoxVisible }">
-        <HangarEmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
-      </template>
-
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
           v-if="gridView"
@@ -278,6 +275,10 @@
           :loading="loading"
           download-name="my-hangar-fleetchart"
         />
+      </template>
+
+      <template #empty="{ hideEmptyBox, emptyBoxVisible }">
+        <HangarEmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
       </template>
     </FilteredList>
 

@@ -32,6 +32,7 @@
       :name="$route.name"
       :route-query="$route.query"
       :hash="$route.hash"
+      :hide-empty-box="!gridView"
       :paginated="true"
     >
       <template slot="actions">
@@ -124,6 +125,10 @@
           :wishlist="true"
         />
       </template>
+
+      <template #empty="{ hideEmptyBox, emptyBoxVisible }">
+        <WishlistEmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
+      </template>
     </FilteredList>
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
@@ -156,6 +161,7 @@ import { format } from "date-fns";
 import wishlistCollection from "@/frontend/api/collections/Wishlist";
 import type { WishlistCollection } from "@/frontend/api/collections/Wishlist";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import WishlistEmptyBox from "@/frontend/components/WishlistEmptyBox/index.vue";
 
 @Component<Hangar>({
   components: {
@@ -174,6 +180,7 @@ import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
     AddonsModal,
     FleetchartApp,
     BreadCrumbs,
+    WishlistEmptyBox,
   },
   mixins: [MetaInfo, HangarItemsMixin],
 })

@@ -5,6 +5,7 @@
     :columns="tableColumns"
     :selectable="editable"
     :selected="selected"
+    :empty-box-visible="!vehicles.length"
     @selected-change="onSelectedChange"
   >
     <template #selected-actions>
@@ -69,8 +70,8 @@
     </template>
     <template #col-store_image="{ record }">
       <div
-        :key="record.model.storeImageSmall"
-        v-lazy:background-image="record.model.storeImageSmall"
+        :key="storeImage(record)"
+        v-lazy:background-image="storeImage(record)"
         class="image lazy"
         alt="storeImage"
       />
@@ -153,6 +154,10 @@
         />
       </BtnGroup>
     </template>
+    <template #empty>
+      <WishlistEmptyTable v-if="wishlist" />
+      <HangarEmptyTable v-else />
+    </template>
   </FilteredTable>
 </template>
 
@@ -167,6 +172,8 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
+import HangarEmptyTable from "@/frontend/components/HangarEmptyTable/index.vue";
+import WishlistEmptyTable from "@/frontend/components/WishlistEmptyTable/index.vue";
 
 @Component<FilteredGrid>({
   components: {
@@ -175,6 +182,8 @@ import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue"
     HangarGroups,
     Btn,
     BtnGroup,
+    HangarEmptyTable,
+    WishlistEmptyTable,
   },
 })
 export default class FilteredGrid extends Vue {
@@ -251,6 +260,18 @@ export default class FilteredGrid extends Vue {
         wishlist: this.wishlist,
       },
     });
+  }
+
+  storeImage(record: Vehicle) {
+    if (record && record.paint) {
+      return record.paint.storeImageSmall;
+    }
+
+    if (record && record.upgrade) {
+      return record.upgrade.storeImageMedium;
+    }
+
+    return record.model.storeImageMedium;
   }
 
   async addToWishlistBulk() {

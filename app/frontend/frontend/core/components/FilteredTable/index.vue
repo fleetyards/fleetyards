@@ -84,13 +84,24 @@
           </slot>
         </div>
       </template>
+
+      <slot
+        name="empty"
+        :filter-visible="filterVisible"
+        :hide-empty-box="hideEmptyBox"
+        :empty-box-visible="emptyBoxVisible"
+      >
+        <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
+      </slot>
       <div
         v-if="loading"
         key="loading-row"
         class="fade-list-item col-12 filtered-table-loader"
       >
         <div class="filtered-table-row">
-          <Loader :loading="loading" :inline="true" />
+          <slot name="loader" :loading="loading">
+            <Loader :loading="loading" :inline="true" />
+          </slot>
         </div>
       </div>
       <div
@@ -99,7 +110,9 @@
         class="fade-list-item col-12 filtered-table-empty"
       >
         <div class="filtered-table-row">
-          {{ $t("texts.empty.info") }}
+          <slot name="empty">
+            {{ $t("texts.empty.info") }}
+          </slot>
         </div>
       </div>
     </transition-group>

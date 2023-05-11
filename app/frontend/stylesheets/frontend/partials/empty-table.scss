@@ -1,7 +1,5 @@
-.empty-box {
-  width: 90%;
-  margin-right: auto;
-  margin-left: auto;
+.empty-table {
+  width: 600px;
 
   h2 {
     font-family: "Orbitron", sans-serif;
@@ -13,15 +11,15 @@
     }
   }
 
-  .empty-box-actions {
+  .empty-table-actions {
     display: flex;
     justify-content: flex-end;
   }
 }
 
-@media (min-width: $tablet-breakpoint) {
-  .empty-box {
-    width: 100%;
+@media (max-width: $desktop-breakpoint) {
+  .empty-table {
+    max-width: 100%;
     padding: 0;
   }
 }

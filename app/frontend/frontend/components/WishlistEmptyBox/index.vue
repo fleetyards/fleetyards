@@ -2,7 +2,7 @@
   <transition name="fade">
     <div v-if="visible" class="empty-box">
       <Box class="info" :large="true">
-        <h2>{{ t("headlines.empty") }}</h2>
+        <h1>{{ t("headlines.empty") }}</h1>
         <template v-if="isQueryPresent">
           <p>{{ t("texts.empty.query") }}</p>
           <div slot="footer" class="empty-box-actions">
@@ -19,24 +19,9 @@
         </template>
         <template v-else>
           <p>
-            {{ t("texts.empty.hangar.info") }}
+            {{ t("texts.empty.wishlist.info") }}
           </p>
-          <div v-if="!extensionReady">
-            <p>{{ t("texts.empty.hangar.extension") }}</p>
-            <div class="sync-extension-platforms">
-              <a
-                v-for="link in extensionUrls"
-                :key="`extension-link-${link.platform}`"
-                v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-                :href="link.url"
-                target="_blank"
-              >
-                <i :class="`fab fa-${link.platform}`" />
-              </a>
-            </div>
-          </div>
           <div slot="footer" class="empty-box-actions">
-            <HangarSyncBtn />
             <Btn @click.native="openGuide">
               {{ t("actions.empty.hangarGuide") }}
             </Btn>
