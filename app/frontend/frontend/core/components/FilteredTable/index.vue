@@ -84,15 +84,6 @@
           </slot>
         </div>
       </template>
-
-      <slot
-        name="empty"
-        :filter-visible="filterVisible"
-        :hide-empty-box="hideEmptyBox"
-        :empty-box-visible="emptyBoxVisible"
-      >
-        <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
-      </slot>
       <div
         v-if="loading"
         key="loading-row"
