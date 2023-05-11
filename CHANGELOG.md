@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.17.4](https://github.com/fleetyards/fleetyards/compare/v5.17.3...v5.17.4) (2023-05-11)
+
+
+### Bug Fixes
+
+* **hangar-sync:** match additional ships and paints ([7c5b4a7](https://github.com/fleetyards/fleetyards/commit/7c5b4a7b524473e3556db68b0f326468290dfd1e))
+
 ### [5.17.3](https://github.com/fleetyards/fleetyards/compare/v5.17.2...v5.17.3) (2023-05-11)
 
 ### [5.17.2](https://github.com/fleetyards/fleetyards/compare/v5.17.1...v5.17.2) (2023-05-11)
