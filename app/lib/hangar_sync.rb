@@ -77,7 +77,7 @@ class HangarSync < HangarImporter
     found_vehicles = []
     moved_vehicles_to_wanted = []
     missing_models = []
-    vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, hidden: false).order(created_at: :asc)
+    vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, hidden: false).order(model_paint_id: :desc, created_at: :asc)
 
     @ships.each do |item|
       query = generate_model_query(item["name"])
@@ -87,7 +87,6 @@ class HangarSync < HangarImporter
       if model.present?
         vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model.id,
-          model_paint_id: nil,
           rsi_pledge_id: item[:id]
         )
 
