@@ -35,11 +35,9 @@
 <script lang="ts" setup>
 import Box from "@/frontend/core/components/Box/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
 
 const { t } = useI18n();
 
@@ -52,23 +50,6 @@ const props = withDefaults(defineProps<Props>(), {
   visible: true,
   ignoreFilter: false,
 });
-
-const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
-
-const extensionUrls = computed(() => [
-  {
-    platform: "chrome",
-    url: "https://chrome.google.com/webstore/detail/fleetyards-sync/glchfaleieoljcimjjkdkeifnejbcokg",
-  },
-  {
-    platform: "firefox",
-    url: "https://addons.mozilla.org/de/firefox/addon/fleetyards-sync/",
-  },
-  {
-    platform: "github",
-    url: "https://github.com/fleetyards/sync/releases",
-  },
-]);
 
 const route = useRoute();
 
