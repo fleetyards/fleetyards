@@ -100,7 +100,6 @@ class HangarSync < HangarImporter
         end
 
         vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_paint_id: nil,
           model_id: model.id
         )
 
