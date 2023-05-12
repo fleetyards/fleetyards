@@ -19,7 +19,11 @@
 
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import type { Props as BtnProps } from "@/frontend/core/components/Btn/index.vue";
+import type {
+  Props as BtnProps,
+  BtnVariants,
+  BtnSizes,
+} from "@/frontend/core/components/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
 
@@ -27,14 +31,20 @@ interface Props extends BtnProps {
   items: Vehicle[] | Model[];
   withIcon?: boolean;
   block?: boolean;
+  inline?: boolean;
+  variant?: BtnVariants;
+  size?: BtnSizes;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   withIcon: false,
   block: false,
+  inline: false,
+  variant: "default",
+  size: "default",
 });
 
-const mobile = computed(() => Store.getters("app/mobile"));
+const mobile = computed(() => Store.getters["app/mobile"]);
 
 const basePath = "https://starship42.com/fleetview/";
 

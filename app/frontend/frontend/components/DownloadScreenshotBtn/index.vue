@@ -20,7 +20,11 @@
 import html2canvas from "html2canvas";
 import downloadJs from "downloadjs";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import type { Props as BtnProps } from "@/frontend/core/components/Btn/index.vue";
+import type {
+  Props as BtnProps,
+  BtnVariants,
+  BtnSizes,
+} from "@/frontend/core/components/Btn/index.vue";
 import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 
@@ -28,11 +32,17 @@ interface Props extends BtnProps {
   element: string;
   withLabel?: boolean;
   filename?: string;
+  variant?: BtnVariants;
+  size?: BtnSizes;
+  inline?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
   filename: "fleetyards-screenshot",
+  variant: "default",
+  size: "default",
+  inline: false,
 });
 
 const { t } = useI18n();
