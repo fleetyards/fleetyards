@@ -83,32 +83,8 @@
             <blockquote class="description">
               <p v-html="model.description" />
             </blockquote>
-            <div class="fleetchart-views">
-              <div>
-                <img :src="fleetchartImageAngled" />
-              </div>
-              <div class="fleetchart-views-topside">
-                <div>
-                  <img :src="fleetchartImageSide" />
-                </div>
-                <div>
-                  <img :src="fleetchartImageTop" />
-                </div>
-              </div>
-            </div>
           </div>
           <div class="col-12 col-lg-4">
-            <!-- <div class="fleetchart-views-side">
-              <div>
-                <img :src="fleetchartImageAngled" />
-              </div>
-              <div>
-                <img :src="fleetchartImageSide" />
-              </div>
-              <div>
-                <img :src="fleetchartImageTop" />
-              </div>
-            </div> -->
             <Panel>
               <ModelBaseMetrics :model="model" />
             </Panel>
@@ -198,6 +174,19 @@
                   <span>{{ $t("labels.model.salesPage") }}</span>
                 </Btn>
               </BtnDropdown>
+            </div>
+          </div>
+        </div>
+        <div class="fleetchart-views">
+          <div>
+            <img :src="fleetchartImageAngled" />
+          </div>
+          <div class="fleetchart-views-topside">
+            <div>
+              <img :src="fleetchartImageSide" />
+            </div>
+            <div>
+              <img :src="fleetchartImageTop" />
             </div>
           </div>
         </div>
