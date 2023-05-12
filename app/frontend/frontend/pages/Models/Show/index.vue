@@ -83,8 +83,32 @@
             <blockquote class="description">
               <p v-html="model.description" />
             </blockquote>
+            <div class="fleetchart-views">
+              <div>
+                <img :src="fleetchartImageAngled" />
+              </div>
+              <div class="fleetchart-views-topside">
+                <div>
+                  <img :src="fleetchartImageSide" />
+                </div>
+                <div>
+                  <img :src="fleetchartImageTop" />
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-12 col-lg-4">
+            <!-- <div class="fleetchart-views-side">
+              <div>
+                <img :src="fleetchartImageAngled" />
+              </div>
+              <div>
+                <img :src="fleetchartImageSide" />
+              </div>
+              <div>
+                <img :src="fleetchartImageTop" />
+              </div>
+            </div> -->
             <Panel>
               <ModelBaseMetrics :model="model" />
             </Panel>
@@ -369,6 +393,30 @@ export default class ModelDetail extends Vue {
     }
 
     return this.model.storeImageLarge;
+  }
+
+  get fleetchartImageAngled() {
+    if (this.mobile) {
+      return this.model.angledViewMedium;
+    }
+
+    return this.model.angledViewLarge;
+  }
+
+  get fleetchartImageTop() {
+    if (this.mobile) {
+      return this.model.topViewMedium;
+    }
+
+    return this.model.topViewLarge;
+  }
+
+  get fleetchartImageSide() {
+    if (this.mobile) {
+      return this.model.sideViewMedium;
+    }
+
+    return this.model.sideViewLarge;
   }
 
   get starship42Url(): string {
