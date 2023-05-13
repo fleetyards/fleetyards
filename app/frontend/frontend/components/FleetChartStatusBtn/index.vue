@@ -27,18 +27,28 @@
 
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import type { Props as BtnProps } from "@/frontend/core/components/Btn/index.vue";
+import type {
+  Props as BtnProps,
+  BtnVariants,
+  BtnSizes,
+} from "@/frontend/core/components/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useRoute } from "vue-router/composables";
 
 interface Props extends BtnProps {
   withLabel?: boolean;
+  variant?: BtnVariants;
+  size?: BtnSizes;
+  inline?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   withLabel: true,
   filename: "fleetyards-screenshot",
+  variant: "default",
+  size: "default",
+  inline: false,
 });
 
 const { t } = useI18n();

@@ -77,12 +77,13 @@ class HangarSync < HangarImporter
         )
 
         if vehicle_with_ref.present?
-          vehicle_ids << vehicle_with_ref.id
+          vehicle_with_ref.update!(
+            rsi_pledge_synced_at: Time.current,
+            name: vehicle_with_ref.name.presence || item[:customName]
+          )
 
-          if vehicle_with_ref.rsi_pledge_synced_at.nil?
-            vehicle_with_ref.update!(rsi_pledge_synced_at: Time.current)
-            found_vehicles << vehicle_with_ref.id
-          end
+          vehicle_ids << vehicle_with_ref.id
+          found_vehicles << vehicle_with_ref.id
 
           next
         end
@@ -93,7 +94,11 @@ class HangarSync < HangarImporter
         )
 
         if vehicle.present?
-          vehicle.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
+          vehicle.update!(
+            rsi_pledge_id: item[:id],
+            rsi_pledge_synced_at: Time.current,
+            name: vehicle.name.presence || item[:customName]
+          )
           vehicle_ids << vehicle.id
           found_vehicles << vehicle.id
           next
@@ -113,7 +118,10 @@ class HangarSync < HangarImporter
         )
 
         if vehicle_with_ref.present?
-          vehicle_with_ref.update!(rsi_pledge_synced_at: Time.current)
+          vehicle_with_ref.update!(
+            rsi_pledge_synced_at: Time.current,
+            name: vehicle_with_ref.name.presence || item[:customName]
+          )
 
           vehicle_ids << vehicle_with_ref.id
           found_vehicles << vehicle_with_ref.id
@@ -126,7 +134,11 @@ class HangarSync < HangarImporter
         )
 
         if vehicle.present?
-          vehicle.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
+          vehicle.update!(
+            rsi_pledge_id: item[:id],
+            rsi_pledge_synced_at: Time.current,
+            name: vehicle.name.presence || item[:customName]
+          )
 
           vehicle_ids << vehicle.id
           found_vehicles << vehicle.id
@@ -319,7 +331,7 @@ class HangarSync < HangarImporter
     {
       notify: false,
       user_id:,
-      name: item[:custom_name],
+      name: item[:customName],
       wanted: false,
       bought_via: :pledge_store,
       public: true,

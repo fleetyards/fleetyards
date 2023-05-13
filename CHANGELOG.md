@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.18.1](https://github.com/fleetyards/fleetyards/compare/v5.18.0...v5.18.1) (2023-05-12)
+
+## [5.18.0](https://github.com/fleetyards/fleetyards/compare/v5.17.4...v5.18.0) (2023-05-12)
+
+
+### Features
+
+* **model-detail:** add fleetchart views to detail page ([bee864e](https://github.com/fleetyards/fleetyards/commit/bee864e6e7e2e33d2b88269dc571f30af4619b14))
+
+
+### Bug Fixes
+
+* **hangar-sync:** sync custom names for ships ([f156fb4](https://github.com/fleetyards/fleetyards/commit/f156fb4001497e95e5582eadef23b9cee2a588cf))
+
 ### [5.17.4](https://github.com/fleetyards/fleetyards/compare/v5.17.3...v5.17.4) (2023-05-11)
 
 
