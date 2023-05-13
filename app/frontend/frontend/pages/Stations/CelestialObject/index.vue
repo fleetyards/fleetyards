@@ -84,7 +84,6 @@
 </template>
 
 <script>
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import { scrollToAnchor } from "@/frontend/utils/scrolling";
@@ -106,7 +105,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [MetaInfo, Pagination],
+  mixins: [Pagination],
 
   data() {
     return {

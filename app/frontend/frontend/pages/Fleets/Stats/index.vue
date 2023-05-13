@@ -180,7 +180,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfoMixin from "@/frontend/mixins/MetaInfo";
 import Chart from "@/frontend/core/components/Chart/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
@@ -196,7 +195,6 @@ import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
     Panel,
     BreadCrumbs,
   },
-  mixins: [MetaInfoMixin],
 })
 export default class FleetStats extends Vue {
   collection: FleetsCollection = fleetsCollection;

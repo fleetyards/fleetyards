@@ -7,7 +7,7 @@
           <div class="col-12">
             <div class="search-form text-center">
               <h1 id="home-welcome">
-                <small class="text-muted">{{ $t("headlines.welcome") }}</small>
+                <small class="text-muted">{{ t("headlines.welcome") }}</small>
                 <img
                   :src="require('@/images/logo-home.png')"
                   class="logo"
@@ -15,7 +15,7 @@
                   height="101px"
                   alt="logo"
                 />
-                {{ $t("app") }}
+                {{ t("app") }}
               </h1>
               <div class="row justify-content-md-center">
                 <div class="col-12 col-lg-6">
@@ -33,7 +33,7 @@
                         />
                         <Btn
                           id="search-submit"
-                          :aria-label="$t('labels.search')"
+                          :aria-label="t('labels.search')"
                           size="large"
                           :inline="true"
                           @click.native="search"
@@ -53,9 +53,9 @@
         <div class="row">
           <div class="col-12">
             <blockquote class="blockquote text-right">
-              <p v-html="$t('texts.indexQuote')" />
+              <p v-html="t('texts.indexQuote')" />
               <footer class="blockquote-footer">
-                {{ $t("texts.indexQuoteSource") }}
+                {{ t("texts.indexQuoteSource") }}
                 <a
                   href="https://robertsspaceindustries.com"
                   target="_blank"
@@ -82,7 +82,7 @@
       <div class="row">
         <div class="col-12 col-lg-6 relative home-ships">
           <h2 class="sr-only">
-            {{ $t("headlines.welcomeShips") }}
+            {{ t("headlines.welcomeShips") }}
           </h2>
           <transition-group
             name="fade-list"
@@ -110,7 +110,7 @@
         <div class="col-12 col-lg-6 relative home-images">
           <Panel>
             <h2 class="sr-only">
-              {{ $t("headlines.welcomeImages") }}
+              {{ t("headlines.welcomeImages") }}
             </h2>
             <div class="panel-body images">
               <transition-group
@@ -130,7 +130,7 @@
                     :title="image.name"
                     :to="{
                       name: 'model-images',
-                      params: { slug: image.model.slug },
+                      params: { slug: image.model?.slug },
                     }"
                     class="home-image image"
                   />
@@ -145,12 +145,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
+import { useRouter } from "vue-router/composables";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
@@ -160,75 +157,72 @@ import Support from "@/frontend/components/Support/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import modelsCollection from "@/frontend/api/collections/Models";
 import imagesCollection from "@/frontend/api/collections/Images";
+import { useI18n } from "@/frontend/composables/useI18n";
+import Store from "@/frontend/lib/Store";
 
-@Component<Home>({
-  components: {
-    Loader,
-    Panel,
-    TeaserPanel,
-    Btn,
-    FormInput,
-    Support,
-    LazyImage,
-  },
-  mixins: [MetaInfo],
-})
-export default class Home extends Vue {
-  modelsCollection: ModelsCollection = modelsCollection;
+const { t } = useI18n();
 
-  imagesCollection: ImagesCollection = imagesCollection;
+const modelsLoading = ref(false);
 
-  modelsLoading = false;
+const imagesLoading = ref(false);
 
-  imagesLoading = false;
+const searchQuery = ref<string | null>(null);
 
-  searchQuery: string = null;
+const showScrollDown = ref(false);
 
-  showScrollDown = false;
+const mobile = computed(() => Store.getters.mobile);
 
-  @Getter("mobile") mobile;
+setTimeout(() => {
+  showScrollDown.value = true;
+}, 2000);
 
-  created() {
-    this.fetchImages();
-    this.fetchModels();
+const router = useRouter();
 
-    setTimeout(() => {
-      this.showScrollDown = true;
-    }, 2000);
+const search = () => {
+  if (!searchQuery.value) {
+    return;
   }
 
-  search() {
-    if (!this.searchQuery) {
-      return;
-    }
-
-    this.$router
-      .push({
-        name: "search",
-        query: {
-          q: {
-            search: this.searchQuery,
-          },
+  router
+    .push({
+      name: "search",
+      query: {
+        q: {
+          search: searchQuery.value,
         },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(() => {});
-  }
+      },
+    })
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    .catch(() => {});
+};
 
-  async fetchModels() {
-    this.modelsLoading = true;
-    await this.modelsCollection.latest();
-    this.modelsLoading = false;
-  }
+const fetchModels = async () => {
+  modelsLoading.value = true;
 
-  async fetchImages() {
-    this.imagesLoading = true;
-    await this.imagesCollection.random();
-    this.imagesLoading = false;
-  }
+  await modelsCollection.latest();
 
-  scrollDown() {
-    VueScrollTo.scrollTo(".home-ships");
-  }
-}
+  modelsLoading.value = false;
+};
+
+fetchModels();
+
+const fetchImages = async () => {
+  imagesLoading.value = true;
+
+  await imagesCollection.random();
+
+  imagesLoading.value = false;
+};
+
+fetchImages();
+
+const scrollDown = () => {
+  VueScrollTo.scrollTo(".home-ships");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "HomePage",
+};
 </script>

@@ -68,7 +68,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
@@ -85,8 +84,6 @@ import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
     RoadmapItem,
     BreadCrumbs,
   },
-
-  mixins: [MetaInfo],
 })
 export default class RoadmapChanges extends Vue {
   loading = true;

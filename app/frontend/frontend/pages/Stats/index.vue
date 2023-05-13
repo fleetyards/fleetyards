@@ -132,7 +132,6 @@
 </template>
 
 <script>
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Chart from "@/frontend/core/components/Chart/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 
@@ -143,8 +142,6 @@ export default {
     Chart,
     Panel,
   },
-
-  mixins: [MetaInfo],
 
   data() {
     return {

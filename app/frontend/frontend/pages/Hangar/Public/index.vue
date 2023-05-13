@@ -131,7 +131,6 @@ import { Component, Watch } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import publicVehiclesCollection from "@/frontend/api/collections/PublicVehicles";
 import publicUserCollection from "@/frontend/api/collections/PublicUser";
 import publicHangarGroupsCollection from "@/frontend/api/collections/PublicHangarGroups";
@@ -157,7 +156,6 @@ import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
     Avatar,
     GroupLabels,
   },
-  mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
   loading = false;

@@ -8,7 +8,6 @@ import I18nPlugin from "@/frontend/lib/I18n";
 import ApiClient from "@/frontend/api/client";
 import Subscriptions from "@/frontend/plugins/Subscriptions";
 import Comlink from "@/frontend/plugins/Comlink";
-import Meta from "vue-meta";
 import Ahoy from "@/frontend/plugins/Ahoy";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
@@ -20,13 +19,6 @@ Vue.use(I18nPlugin);
 Vue.use(Ahoy);
 Vue.use(Validations);
 
-Vue.use(Meta, {
-  keyName: "head",
-  attribute: "data-vue-meta",
-  ssrAttribute: "data-vue-meta-server-rendered",
-  tagIDKeyName: "vmid",
-});
-
 declare global {
   interface Window {
     APP_VERSION: string;
@@ -36,6 +28,7 @@ declare global {
     API_ENDPOINT: string;
     DATA_PREFILL: KeyValuePair;
     FRONTEND_ENDPOINT: string;
+    CABLE_ENDPOINT: string;
   }
 }
 

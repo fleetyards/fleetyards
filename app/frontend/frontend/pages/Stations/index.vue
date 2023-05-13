@@ -40,7 +40,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
@@ -52,7 +51,6 @@ import stationsCollection from "@/frontend/api/collections/Stations";
     StationPanel,
     FilterForm,
   },
-  mixins: [MetaInfo],
 })
 export default class Stations extends Vue {
   collection: StationsCollection = stationsCollection;

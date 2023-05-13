@@ -107,7 +107,6 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import modelsCollection from "@/frontend/api/collections/Models";
 import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
@@ -134,7 +133,6 @@ import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
     HardpointRows,
     Starship42Btn,
   },
-  mixins: [MetaInfo],
 })
 export default class ModelsCompare extends Vue {
   @Getter("navSlim", { namespace: "app" }) navSlim: boolean;

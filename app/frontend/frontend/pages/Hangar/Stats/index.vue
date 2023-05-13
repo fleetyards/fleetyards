@@ -144,7 +144,6 @@
 </template>
 
 <script>
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Chart from "@/frontend/core/components/Chart/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
@@ -157,8 +156,6 @@ export default {
     Panel,
     BreadCrumbs,
   },
-
-  mixins: [MetaInfo],
 
   data() {
     return {

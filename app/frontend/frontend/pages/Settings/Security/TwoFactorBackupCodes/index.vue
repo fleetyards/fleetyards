@@ -28,7 +28,6 @@ import { Getter } from "vuex-class";
 import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
 import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
 import { displayAlert } from "@/frontend/lib/Noty";
@@ -40,7 +39,6 @@ import { displayAlert } from "@/frontend/lib/Noty";
     Btn,
     BackupCodesPanel,
   },
-  mixins: [MetaInfo],
 })
 export default class TwoFactorBackupCodes extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser;

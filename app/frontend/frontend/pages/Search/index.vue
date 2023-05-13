@@ -101,7 +101,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Filters from "@/frontend/mixins/Filters";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -132,7 +131,7 @@ import SearchHistory from "@/frontend/components/Search/History/index.vue";
     FormInput,
     SearchHistory,
   },
-  mixins: [MetaInfo, Filters],
+  mixins: [Filters],
 })
 export default class Search extends Vue {
   collection: SearchCollection = searchCollection;

@@ -34,7 +34,7 @@
                 size="small"
                 @click.native="toggleHoloviewer"
               >
-                {{ $t("labels.3dView") }}
+                {{ t("labels.3dView") }}
               </Btn>
               <a
                 v-show="holoviewerVisible"
@@ -43,12 +43,11 @@
                 target="_blank"
                 rel="noopener"
               >
-                {{ $t("labels.poweredByStarship42") }}
+                {{ t("labels.poweredByStarship42") }}
               </a>
               <HoloViewer
                 v-if="holoviewerVisible && model.holo"
                 :holo="model.holo"
-                :colored="model.holoColored"
               />
               <iframe
                 v-else-if="holoviewerVisible"
@@ -63,7 +62,7 @@
                 <template v-if="model.productionStatus">
                   <h3 class="text-uppercase">
                     {{
-                      $t(
+                      t(
                         `labels.model.productionStatus.${model.productionStatus}`
                       )
                     }}
@@ -74,7 +73,7 @@
               <div class="col-6">
                 <template v-if="model.focus">
                   <h3 class="text-uppercase text-right">
-                    <small class="text-muted">{{ $t("model.focus") }}:</small>
+                    <small class="text-muted">{{ t("model.focus") }}:</small>
                     {{ model.focus }}
                   </h3>
                 </template>
@@ -101,16 +100,16 @@
                 style="flex-grow: 3"
               >
                 {{
-                  $t("actions.model.onSale", {
-                    price: $toDollar(model.pledgePrice),
+                  t("actions.model.onSale", {
+                    price: toDollar(model.pledgePrice),
                   })
                 }}
                 <small class="price-info">
-                  {{ $t("labels.taxExcluded") }}
+                  {{ t("labels.taxExcluded") }}
                 </small>
               </Btn>
               <Btn v-else :href="model.storeUrl" style="flex-grow: 3">
-                {{ $t("actions.model.store") }}
+                {{ t("actions.model.store") }}
               </Btn>
 
               <AddToHangar :model="model" />
@@ -119,7 +118,7 @@
                 v-if="!mobile"
                 data-test="share"
                 :url="shareUrl"
-                :title="metaTitle"
+                :title="metaTitle || ''"
               />
 
               <BtnDropdown data-test="model-dropdown">
@@ -129,7 +128,7 @@
                   variant="dropdown"
                 >
                   <i class="fa fa-images" />
-                  <span>{{ $t("nav.images") }}</span>
+                  <span>{{ t("nav.images") }}</span>
                 </Btn>
                 <Btn
                   v-if="model.hasVideos"
@@ -137,7 +136,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-video" />
-                  <span>{{ $t("nav.videos") }}</span>
+                  <span>{{ t("nav.videos") }}</span>
                 </Btn>
                 <Btn
                   v-if="model.brochure"
@@ -145,7 +144,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-download" />
-                  <span>{{ $t("labels.model.brochure") }}</span>
+                  <span>{{ t("labels.model.brochure") }}</span>
                 </Btn>
                 <Btn
                   :to="{
@@ -156,14 +155,14 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-exchange" />
-                  <span>{{ $t("actions.compare.models") }}</span>
+                  <span>{{ t("actions.compare.models") }}</span>
                 </Btn>
                 <ShareBtn
                   v-if="mobile"
                   data-test="share"
                   variant="dropdown"
                   :url="shareUrl"
-                  :title="metaTitle"
+                  :title="metaTitle || ''"
                 />
                 <Btn
                   v-if="model.salesPageUrl"
@@ -171,7 +170,7 @@
                   variant="dropdown"
                 >
                   <i class="fad fa-megaphone" />
-                  <span>{{ $t("labels.model.salesPage") }}</span>
+                  <span>{{ t("labels.model.salesPage") }}</span>
                 </Btn>
               </BtnDropdown>
             </div>
@@ -205,7 +204,7 @@
     <div class="row">
       <div class="col-12 modules">
         <h2 v-if="modules.length" class="text-uppercase">
-          {{ $t("labels.model.modules") }}
+          {{ t("labels.model.modules") }}
         </h2>
         <div v-if="modules.length" class="row">
           <div
@@ -223,7 +222,7 @@
     <div class="row">
       <div class="col-12 upgrades">
         <h2 v-if="upgrades.length" class="text-uppercase">
-          {{ $t("labels.model.upgrades") }}
+          {{ t("labels.model.upgrades") }}
         </h2>
         <div v-if="upgrades.length" class="row">
           <div
@@ -241,7 +240,7 @@
     <div class="row">
       <div class="col-12 variants">
         <h2 v-if="variants.length" class="text-uppercase">
-          {{ $t("labels.model.variants") }}
+          {{ t("labels.model.variants") }}
         </h2>
         <transition-group
           v-if="variants.length"
@@ -265,7 +264,7 @@
     <div class="row">
       <div class="col-12 loaners">
         <h2 v-if="loaners.length" class="text-uppercase">
-          {{ $t("labels.model.loaners") }}
+          {{ t("labels.model.loaners") }}
         </h2>
         <transition-group
           v-if="loaners.length"
@@ -288,11 +287,8 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
@@ -308,215 +304,215 @@ import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.v
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import HoloViewer from "@/frontend/core/components/HoloViewer/index.vue";
-import HangarItemsMixin from "@/frontend/mixins/HangarItems";
 import { modelRouteGuard } from "@/frontend/utils/RouteGuards/Models";
 import modelsCollection from "@/frontend/api/collections/Models";
+import modelModulesCollection from "@/frontend/api/collections/ModelModules";
+import modelUpgradesCollection from "@/frontend/api/collections/ModelUpgrades";
+import modelVariantsCollection from "@/frontend/api/collections/ModelVariants";
+import modelLoanersCollection from "@/frontend/api/collections/ModelLoaners";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useHangarItems } from "@/frontend/composables/useHangarItems";
+import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import Store from "@/frontend/lib/Store";
 
-@Component<ModelDetail>({
-  components: {
-    Loader,
-    LazyImage,
-    AddToHangar,
-    Panel,
-    TeaserPanel,
-    Btn,
-    BtnDropdown,
-    Hardpoints,
-    ModelBaseMetrics,
-    ModelCrewMetrics,
-    ModelSpeedMetrics,
-    ModelPanel,
-    BreadCrumbs,
-    HoloViewer,
-    Paints,
-    ShareBtn,
-  },
-  mixins: [MetaInfo, HangarItemsMixin],
-  beforeRouteEnter: modelRouteGuard,
-})
-export default class ModelDetail extends Vue {
-  loading = false;
+useHangarItems();
+useWishlistItems();
 
-  loadingVariants = false;
+const loading = ref(false);
 
-  loadingLoaners = false;
+const loadingVariants = ref(false);
 
-  loadingModules = false;
+const loadingLoaners = ref(false);
 
-  loadingUpgrades = false;
+const loadingModules = ref(false);
 
-  show3d = false;
+const loadingUpgrades = ref(false);
 
-  variants: Model[] = [];
+const variants = ref<Model[]>([]);
 
-  loaners: ModelLoaner[] = [];
+const loaners = ref<ModelLoaner[]>([]);
 
-  modules: ModelModule[] = [];
+const modules = ref<ModelModule[]>([]);
 
-  upgrades: ModelUpgrade[] = [];
+const upgrades = ref<ModelUpgrade[]>([]);
 
-  model: Model | null = null;
+const model = ref<Model | null>(null);
 
-  attributes: string[] = [
-    "length",
-    "beam",
-    "height",
-    "mass",
-    "cargo",
-    "minCrew",
-    "maxCrew",
-    "scmSpeed",
-    "afterburnerSpeed",
-  ];
+const mobile = computed(() => Store.getters.mobile);
 
-  @Getter("overlayVisible", { namespace: "app" }) overlayVisible;
+const holoviewerVisible = computed(
+  () => Store.getters["models/holoviewerVisible"]
+);
 
-  @Getter("mobile") mobile;
+const route = useRoute();
 
-  @Getter("holoviewerVisible", { namespace: "models" }) holoviewerVisible;
+const modelSlug = computed(() => route.params.slug);
 
-  get storeImage() {
-    if (this.mobile) {
-      return this.model.storeImageMedium;
-    }
-
-    return this.model.storeImageLarge;
+const storeImage = computed(() => {
+  if (mobile.value) {
+    return model.value?.storeImageMedium;
   }
 
-  get fleetchartImageAngled() {
-    if (this.mobile) {
-      return this.model.angledViewMedium;
-    }
+  return model.value?.storeImageLarge;
+});
 
-    return this.model.angledViewLarge;
+const fleetchartImageAngled = computed(() => {
+  if (mobile.value) {
+    return model.value?.angledViewMedium;
   }
 
-  get fleetchartImageTop() {
-    if (this.mobile) {
-      return this.model.topViewMedium;
-    }
+  return model.value?.angledViewLarge;
+});
 
-    return this.model.topViewLarge;
+const fleetchartImageTop = computed(() => {
+  if (mobile.value) {
+    return model.value?.topViewMedium;
   }
 
-  get fleetchartImageSide() {
-    if (this.mobile) {
-      return this.model.sideViewMedium;
-    }
+  return model.value?.topViewLarge;
+});
 
-    return this.model.sideViewLarge;
+const fleetchartImageSide = computed(() => {
+  if (mobile.value) {
+    return model.value?.sideViewMedium;
   }
 
-  get starship42Url(): string {
-    return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`;
+  return model.value?.sideViewLarge;
+});
+
+const starship42Url = computed(
+  () => `https://starship42.com/inverse/?ship=${model.value?.name}&mode=color`
+);
+
+const starship42IframeUrl = computed(
+  () =>
+    `https://starship42.com/fleetview/fleetyards/?s=${model.value?.rsiName}&type=matrix`
+);
+
+const { t, toDollar } = useI18n();
+
+const metaTitle = computed(() => {
+  if (!model.value) {
+    return undefined;
   }
 
-  get starship42IframeUrl(): string {
-    return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`;
+  return t("title.model", {
+    name: model.value.name,
+    manufacturer: model.value.manufacturer.name,
+  });
+});
+
+const metaDescription = computed(() => {
+  if (!model.value) {
+    return undefined;
   }
 
-  get metaTitle() {
-    if (!this.model) {
-      return null;
-    }
+  return model.value.description;
+});
 
-    return this.$t("title.model", {
-      name: this.model.name,
-      manufacturer: this.model.manufacturer.name,
-    });
+const metaImage = computed(() => {
+  if (!model.value) {
+    return undefined;
   }
 
-  get crumbs() {
-    if (!this.model) {
-      return null;
-    }
+  return model.value.storeImageLarge;
+});
 
-    return [
-      {
-        to: {
-          name: "models",
-          hash: `#${this.model.slug}`,
-        },
-        label: this.$t("nav.models.index"),
+const { updateMetaInfo } = useMetaInfo();
+
+const crumbs = computed(() => {
+  if (!model.value) {
+    return null;
+  }
+
+  return [
+    {
+      to: {
+        name: "models",
+        hash: `#${model.value.slug}`,
       },
-    ];
-  }
+      label: t("nav.models.index"),
+    },
+  ];
+});
 
-  get shareUrl() {
-    return window.location.href;
-  }
+const shareUrl = computed(() => window.location.href);
 
-  mounted() {
-    this.fetch();
-    this.fetchExtras();
+onMounted(() => {
+  fetch();
+  fetchExtras();
 
-    if (this.$route.query.holoviewer) {
-      this.$store.dispatch("models/enableHoloviewer");
-    }
+  if (route.query.holoviewer) {
+    Store.dispatch("models/enableHoloviewer");
   }
+});
 
-  toggleHoloviewer() {
-    this.$store.dispatch("models/toggleHoloviewer");
-  }
+const toggleHoloviewer = () => {
+  Store.dispatch("models/toggleHoloviewer");
+};
 
-  fetchExtras() {
-    this.fetchModules();
-    this.fetchUpgrades();
-    this.fetchVariants();
-    this.fetchLoaners();
-  }
+const fetchExtras = () => {
+  fetchModules();
+  fetchUpgrades();
+  fetchVariants();
+  fetchLoaners();
+};
 
-  async fetchModules() {
-    this.loadingModules = true;
-    const response = await this.$api.get(
-      `models/${this.$route.params.slug}/modules`
-    );
-    this.loadingModules = false;
-    if (!response.error) {
-      this.modules = response.data;
-    }
-  }
+const fetchModules = async () => {
+  loadingModules.value = true;
 
-  async fetchUpgrades() {
-    this.loadingUpgrades = true;
-    const response = await this.$api.get(
-      `models/${this.$route.params.slug}/upgrades`
-    );
-    this.loadingUpgrades = false;
-    if (!response.error) {
-      this.upgrades = response.data;
-    }
-  }
+  modules.value = await modelModulesCollection.findAll(modelSlug.value);
 
-  async fetchVariants() {
-    this.loadingVariants = true;
-    const response = await this.$api.get(
-      `models/${this.$route.params.slug}/variants`
-    );
-    this.loadingVariants = false;
-    if (!response.error) {
-      this.variants = response.data;
-    }
-  }
+  loadingModules.value = false;
+};
 
-  async fetchLoaners() {
-    this.loadingLoaners = true;
-    const response = await this.$api.get(
-      `models/${this.$route.params.slug}/loaners`
-    );
-    this.loadingLoaners = false;
-    if (!response.error) {
-      this.loaners = response.data;
-    }
-  }
+const fetchUpgrades = async () => {
+  loadingUpgrades.value = true;
 
-  async fetch() {
-    this.loading = true;
-    this.model = await modelsCollection.findBySlug(this.$route.params.slug);
-    this.loading = false;
-  }
-}
+  upgrades.value = await modelUpgradesCollection.findAll(modelSlug.value);
+
+  loadingUpgrades.value = false;
+};
+
+const fetchVariants = async () => {
+  loadingVariants.value = true;
+
+  variants.value = await modelVariantsCollection.findAll(modelSlug.value);
+
+  loadingVariants.value = false;
+};
+
+const fetchLoaners = async () => {
+  loadingLoaners.value = true;
+
+  loaners.value = await modelLoanersCollection.findAll(modelSlug.value);
+
+  loadingLoaners.value = false;
+};
+
+const fetch = async () => {
+  loading.value = true;
+
+  model.value = await modelsCollection.findBySlug(route.params.slug);
+
+  updateMetaInfo(
+    metaTitle.value,
+    metaDescription.value,
+    metaImage.value,
+    "article"
+  );
+
+  loading.value = false;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelDetail",
+  beforeRouteEnter: modelRouteGuard,
+};
 </script>
 
 <style lang="scss" scoped>

@@ -260,7 +260,6 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import VueUploadComponent from "vue-upload-component";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import {
@@ -286,7 +285,6 @@ import FormTextarea from "@/frontend/core/components/Form/FormTextarea/index.vue
     Checkbox,
     Avatar,
   },
-  mixins: [MetaInfo],
 })
 export default class FleetSettings extends Vue {
   leaving = false;

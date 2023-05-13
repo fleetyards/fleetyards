@@ -50,7 +50,7 @@
             <ShareBtn
               v-if="currentUser && currentUser.publicHangar"
               :url="shareUrl"
-              :title="metaTitle"
+              :title="shareTitle"
             />
           </div>
         </div>
@@ -157,7 +157,7 @@
             <ShareBtn
               v-if="currentUser && currentUser.publicHangar"
               :url="shareUrl"
-              :title="metaTitle"
+              :title="shareTitle"
               size="small"
               variant="dropdown"
             />
@@ -305,8 +305,6 @@ import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
-import HangarItemsMixin from "@/frontend/mixins/HangarItems";
 import { format } from "date-fns";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
@@ -315,6 +313,7 @@ import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGr
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import debounce from "lodash.debounce";
 import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 
 @Component<Hangar>({
   components: {
@@ -335,7 +334,6 @@ import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
     AddonsModal,
     FleetchartApp,
   },
-  mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class Hangar extends Vue {
   deleting = false;
@@ -372,6 +370,10 @@ export default class Hangar extends Vue {
 
   @Action("toggleFleetchart", { namespace: "hangar" })
   toggleFleetchart;
+
+  get shareTitle() {
+    return this.$t("title.hangar.index");
+  }
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {

@@ -2,14 +2,35 @@ type Model = {
   id: string;
   slug: string;
   name: string;
+  rsiName: string;
+  description: string;
+  focus: string;
+  productionNote: string;
+  productionStatus: string;
   manufacturer: Manufacturer;
-  fleetchartImage: string;
   storeImageSmall: string;
+  storeImageMedium: string;
+  storeImageLarge: string;
+  fleetchartImage: string;
+  angledViewMedium: string;
+  angledViewLarge: string;
+  topViewMedium: string;
+  topViewLarge: string;
+  sideViewMedium: string;
+  sideViewLarge: string;
   length: number;
   hasModules: boolean;
   hasUpgrades: boolean;
   rsiId: string;
   rsiName: string;
+  salesPageUrl: string;
+  storeUrl: string;
+  onSale: boolean;
+  pledgePrice: number;
+  hasVideos: boolean;
+  hasImages: boolean;
+  brochure: string;
+  holo: string;
 };
 
 type ModelsFilter = {
@@ -22,6 +43,7 @@ interface ModelParams extends CollectionParams {
 
 type ModelLoaner = {
   id: string;
+  slug: string;
 };
 
 type ModelUpgrade = {

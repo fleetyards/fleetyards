@@ -54,7 +54,6 @@ import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import publicWishlistCollection from "@/frontend/api/collections/PublicWishlist";
 import type { PublicWishlistCollection } from "@/frontend/api/collections/PublicWishlist";
 import publicUserCollection from "@/frontend/api/collections/PublicUser";
@@ -81,7 +80,6 @@ import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
     Avatar,
     GroupLabels,
   },
-  mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
   loading = false;

@@ -83,7 +83,6 @@ import { Getter } from "vuex-class";
 import { displaySuccess } from "@/frontend/lib/Noty";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import userCollection from "@/frontend/api/collections/User";
 
 @Component<SettingsHangar>({
@@ -91,7 +90,6 @@ import userCollection from "@/frontend/api/collections/User";
     Btn,
     Checkbox,
   },
-  mixins: [MetaInfo],
 })
 export default class SettingsHangar extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser;

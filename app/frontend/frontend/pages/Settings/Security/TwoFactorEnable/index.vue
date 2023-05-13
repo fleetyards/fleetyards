@@ -91,7 +91,6 @@ import { Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 import { disabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
 import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
@@ -107,7 +106,6 @@ import copyText from "@/frontend/utils/CopyText";
     FormInput,
     Btn,
   },
-  mixins: [MetaInfo],
 })
 export default class TwoFactorEnable extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser;

@@ -64,7 +64,6 @@
 import { sortBy } from "@/frontend/lib/Helpers";
 import Papa from "papaparse";
 import Panel from "@/frontend/core/components/Panel/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import { displayAlert } from "@/frontend/lib/Noty";
@@ -77,8 +76,6 @@ export default {
     LazyImage,
     BreadCrumbs,
   },
-
-  mixins: [MetaInfo],
 
   data() {
     return {

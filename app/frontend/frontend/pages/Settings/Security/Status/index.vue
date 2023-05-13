@@ -59,7 +59,6 @@ import { Component } from "vue-property-decorator";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
 import { Getter } from "vuex-class";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import { displayConfirm } from "@/frontend/lib/Noty";
 
 @Component<SettingsSecurityStatus>({
@@ -67,7 +66,6 @@ import { displayConfirm } from "@/frontend/lib/Noty";
     Btn,
     ChangePasswordForm,
   },
-  mixins: [MetaInfo],
 })
 export default class SettingsSecurityStatus extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser;

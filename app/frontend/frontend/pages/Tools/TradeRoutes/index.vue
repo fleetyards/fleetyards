@@ -213,7 +213,6 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
@@ -241,8 +240,6 @@ import TradeRouteProfit from "@/frontend/components/TradeRoutes/Profit/index.vue
     TradeRoutePrice,
     TradeRouteProfit,
   },
-
-  mixins: [MetaInfo],
 })
 export default class TradeRoutes extends Vue {
   collection: TradeRoutesCollection = tradeRoutesCollection;

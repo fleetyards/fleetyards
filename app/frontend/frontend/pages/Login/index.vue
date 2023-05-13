@@ -109,7 +109,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displayAlert } from "@/frontend/lib/Noty";
 import sessionCollection from "@/frontend/api/collections/Session";
@@ -122,7 +121,6 @@ import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
     FormInput,
     Checkbox,
   },
-  mixins: [MetaInfo],
 })
 export default class Login extends Vue {
   submitting = false;

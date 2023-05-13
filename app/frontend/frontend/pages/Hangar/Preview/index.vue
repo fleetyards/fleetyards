@@ -114,8 +114,6 @@
 </template>
 
 <script>
-import MetaInfo from "@/frontend/mixins/MetaInfo";
-
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 
@@ -126,8 +124,6 @@ export default {
     Btn,
     Panel,
   },
-
-  mixins: [MetaInfo],
 
   methods: {
     hidePreview() {

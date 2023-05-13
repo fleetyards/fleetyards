@@ -85,7 +85,6 @@ import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
 import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
@@ -99,7 +98,6 @@ import fleetsCollection from "@/frontend/api/collections/Fleets";
     Checkbox,
     FilterGroup,
   },
-  mixins: [MetaInfo],
 })
 export default class FleetMembershipSettings extends Vue {
   collection: FleetMembersCollection = fleetMembersCollection;

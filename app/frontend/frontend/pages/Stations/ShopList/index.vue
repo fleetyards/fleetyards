@@ -36,7 +36,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import FilterForm from "@/frontend/components/Shops/FilterForm/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
@@ -50,7 +49,6 @@ import shopsCollection from "@/frontend/api/collections/Shops";
     FilteredGrid,
     ShopPanel,
   },
-  mixins: [MetaInfo],
 })
 export default class ShopList extends Vue {
   collection: ShopsCollection = shopsCollection;

@@ -98,7 +98,6 @@ import {
 } from "@/frontend/lib/Noty";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import userCollection from "@/frontend/api/collections/User";
 import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
 
@@ -108,7 +107,6 @@ import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
     Btn,
     FormInput,
   },
-  mixins: [MetaInfo],
 })
 export default class SettingsAccount extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser;

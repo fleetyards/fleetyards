@@ -93,8 +93,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
-import HangarItemsMixin from "@/frontend/mixins/HangarItems";
 import { publicFleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
@@ -104,7 +102,6 @@ import Avatar from "@/frontend/core/components/Avatar/index.vue";
   components: {
     Avatar,
   },
-  mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class FleetDetail extends Vue {
   get fleet() {

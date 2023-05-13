@@ -200,7 +200,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
@@ -228,8 +227,6 @@ import ShopBaseMetrics from "@/frontend/components/Shops/BaseMetrics/index.vue";
     FilteredTable,
     AddToCartBtn,
   },
-
-  mixins: [MetaInfo],
 })
 export default class Shop extends Vue {
   collection: ShopCommoditiesCollection = shopCommoditiesCollection;

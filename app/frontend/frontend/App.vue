@@ -39,7 +39,6 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter, Mutation } from "vuex-class";
-import Updates from "@/frontend/mixins/Updates";
 import userCollection from "@/frontend/api/collections/User";
 import versionCollection from "@/frontend/api/collections/Version";
 import Navigation from "@/frontend/core/components/Navigation/index.vue";
@@ -51,6 +50,8 @@ import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vu
 import BackgroundImage from "@/frontend/core/components/BackgroundImage/index.vue";
 import { requestPermission } from "@/frontend/lib/Noty";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useUpdates } from "@/frontend/composables/useUpdates";
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
@@ -66,7 +67,6 @@ const { I18n, availableLocales } = useI18n();
     AppModal,
     AppShoppingCart,
   },
-  mixins: [Updates],
 })
 export default class FrontendApp extends Vue {
   sessionRenewInterval: boolean = null;
@@ -158,6 +158,9 @@ export default class FrontendApp extends Vue {
     this.checkSessionReload();
     this.setNoScroll();
     this.checkMobile();
+
+    useMetaInfo();
+    useUpdates();
 
     if (this.isAuthenticated) {
       requestPermission();

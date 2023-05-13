@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import Pagination from "@/frontend/mixins/Pagination";
@@ -120,7 +119,7 @@ export default {
     PlanetPanel,
   },
 
-  mixins: [MetaInfo, Pagination],
+  mixins: [Pagination],
 
   data() {
     return {

@@ -51,7 +51,6 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess } from "@/frontend/lib/Noty";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
@@ -61,7 +60,6 @@ import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
     FormInput,
     Btn,
   },
-  mixins: [MetaInfo],
 })
 export default class RequestPassword extends Vue {
   @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated: boolean;

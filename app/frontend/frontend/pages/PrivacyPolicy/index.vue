@@ -210,7 +210,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import AppContact from "@/frontend/core/components/AppContact/index.vue";
@@ -221,7 +220,6 @@ import AppContact from "@/frontend/core/components/AppContact/index.vue";
     Btn,
     AppContact,
   },
-  mixins: [MetaInfo],
 })
 export default class PrivacyPolicy extends Vue {
   get appName() {

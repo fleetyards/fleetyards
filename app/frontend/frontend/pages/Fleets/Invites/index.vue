@@ -85,7 +85,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import {
   displaySuccess,
@@ -101,7 +100,6 @@ import Loader from "@/frontend/core/components/Loader/index.vue";
     Loader,
     Btn,
   },
-  mixins: [MetaInfo],
 })
 export default class FleetInvites extends Vue {
   loading = true;

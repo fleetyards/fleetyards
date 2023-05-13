@@ -73,7 +73,6 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import MetaInfoMixin from "@/frontend/mixins/MetaInfo";
 import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
 import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
@@ -98,7 +97,6 @@ import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue
     Avatar,
     FleetMembersList,
   },
-  mixins: [MetaInfoMixin],
   beforeRouteEnter: fleetRouteGuard,
 })
 export default class FleetMemmbers extends Vue {

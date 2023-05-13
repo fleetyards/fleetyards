@@ -160,7 +160,6 @@ import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import VueUploadComponent from "vue-upload-component";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import userCollection from "@/frontend/api/collections/User";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
 
@@ -171,7 +170,6 @@ import Avatar from "@/frontend/core/components/Avatar/index.vue";
     Btn,
     Avatar,
   },
-  mixins: [MetaInfo],
 })
 export default class SettingsAccount extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser;

@@ -51,7 +51,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Pagination from "@/frontend/mixins/Pagination";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
@@ -66,7 +65,7 @@ export default {
     VideoEmbed,
   },
 
-  mixins: [MetaInfo, Pagination],
+  mixins: [Pagination],
 
   data() {
     return {

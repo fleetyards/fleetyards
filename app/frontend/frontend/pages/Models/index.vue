@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t("headlines.models.index") }}
+              {{ t("headlines.models.index") }}
             </h1>
           </div>
         </div>
@@ -17,11 +17,11 @@
             }"
           >
             <i class="fad fa-exchange" />
-            {{ $t("nav.compare.models") }}
+            {{ t("nav.compare.models") }}
           </Btn>
           <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
             <i class="fad fa-starship" />
-            {{ $t("labels.fleetchart") }}
+            {{ t("labels.fleetchart") }}
           </Btn>
         </div>
       </div>
@@ -29,14 +29,14 @@
 
     <FilteredList
       key="models"
-      :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :hash="$route.hash"
+      :collection="modelsCollection"
+      :name="route.name"
+      :route-query="route.query"
+      :hash="route.hash"
       :paginated="true"
       :hide-loading="fleetchartVisible"
     >
-      <template slot="actions">
+      <template #actions>
         <BtnDropdown size="small">
           <Btn
             :active="detailsVisible"
@@ -51,7 +51,9 @@
         </BtnDropdown>
       </template>
 
-      <ModelsFilterForm slot="filter" />
+      <template #filter>
+        <ModelsFilterForm />
+      </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
@@ -75,67 +77,67 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Action, Getter } from "vuex-class";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
-import modelsCollection, {
-  ModelsCollection,
-} from "@/frontend/api/collections/Models";
-import HangarItemsMixin from "@/frontend/mixins/HangarItems";
+import modelsCollection from "@/frontend/api/collections/Models";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsFilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { useHangarItems } from "@/frontend/composables/useHangarItems";
+import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
+import { useI18n } from "@/frontend/composables/useI18n";
+import Store from "@/frontend/lib/Store";
 
-@Component<Models>({
-  components: {
-    Btn,
-    BtnDropdown,
-    FilteredList,
-    FilteredGrid,
-    FleetchartApp,
-    ModelPanel,
-    ModelsFilterForm,
-  },
-  mixins: [MetaInfo, HangarItemsMixin],
-})
-export default class Models extends Vue {
-  collection: ModelsCollection = modelsCollection;
+useHangarItems();
+useWishlistItems();
 
-  @Getter("detailsVisible", { namespace: "models" }) detailsVisible;
+const { t } = useI18n();
 
-  @Getter("fleetchartVisible", { namespace: "models" }) fleetchartVisible;
+const detailsVisible = computed(() => Store.getters["models/detailsVisible"]);
 
-  @Getter("perPage", { namespace: "models" }) perPage;
+const fleetchartVisible = computed(
+  () => Store.getters["models/fleetchartVisible"]
+);
 
-  @Action("toggleDetails", { namespace: "models" }) toggleDetails;
+const perPage = computed(() => Store.getters["models/perPage"]);
 
-  @Action("toggleFleetchart", { namespace: "models" })
-  toggleFleetchart;
+const toggleDetails = () => {
+  Store.dispatch("models/toggleDetails");
+};
 
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t("actions.hideDetails");
-    }
+const toggleFleetchart = () => {
+  Store.dispatch("models/toggleFleetchart");
+};
 
-    return this.$t("actions.showDetails");
+const toggleDetailsTooltip = computed(() => {
+  if (detailsVisible.value) {
+    return t("actions.hideDetails");
   }
 
-  get filters() {
-    return {
-      filters: this.$route.query.q,
-      page: this.$route.query.page,
-    };
-  }
+  return t("actions.showDetails");
+});
 
-  @Watch("perPage")
-  onPerPageChange() {
-    this.collection.findAll(this.filters);
+const route = useRoute();
+
+const filters = computed(() => ({
+  filters: route.query.q as unknown as ModelsFilter,
+  page: Number(route.query.page),
+}));
+
+watch(
+  () => perPage.value,
+  () => {
+    modelsCollection.findAll(filters.value);
   }
-}
+);
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelsPage",
+};
 </script>

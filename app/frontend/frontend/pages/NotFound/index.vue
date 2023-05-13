@@ -16,7 +16,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Box from "@/frontend/core/components/Box/index.vue";
 
@@ -25,7 +24,6 @@ import Box from "@/frontend/core/components/Box/index.vue";
     Box,
     Btn,
   },
-  mixins: [MetaInfo],
 })
 export default class NotFound extends Vue {}
 </script>

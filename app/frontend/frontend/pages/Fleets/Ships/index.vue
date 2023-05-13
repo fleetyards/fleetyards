@@ -22,13 +22,13 @@
             @click.native="toggleFleetchart"
           >
             <i class="fad fa-starship" />
-            {{ $t("labels.fleetchart") }}
+            {{ t("labels.fleetchart") }}
           </Btn>
 
           <ShareBtn
             v-if="fleet.myFleet && fleet.publicFleet"
             :url="shareUrl"
-            :title="metaTitle"
+            :title="metaTitle || ''"
             :inline="true"
           />
         </div>
@@ -49,76 +49,82 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
-import HangarItemsMixin from "@/frontend/mixins/HangarItems";
 import { publicFleetShipsRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import PublicShipsList from "@/frontend/components/Fleets/PublicShipsList/index.vue";
 import ShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
+import Store from "@/frontend/lib/Store";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<FleetShips>({
+const { updateMetaInfo } = useMetaInfo();
+
+const { t } = useI18n();
+
+const mobile = computed(() => Store.getters.mobile);
+
+const fleet = computed(() => fleetsCollection.record);
+
+const metaTitle = computed(() => {
+  if (!fleet.value) {
+    return undefined;
+  }
+
+  return fleet.value.name;
+});
+
+const shareUrl = computed(() => {
+  if (!fleet.value) {
+    return "";
+  }
+  const host = `${window.location.protocol}//${window.location.host}`;
+
+  return `${host}/fleets/${fleet.value.slug}/ships`;
+});
+
+const route = useRoute();
+
+watch(
+  () => fleet.value,
+  () => {
+    updateMetaInfo(metaTitle.value);
+  }
+);
+
+watch(
+  () => route.path,
+  () => {
+    fetch();
+  }
+);
+
+onMounted(() => {
+  fetch();
+});
+
+const toggleFleetchart = () => {
+  if (fleet.value?.myFleet) {
+    Store.dispatch("fleet/toggleFleetchart");
+  } else {
+    Store.dispatch("publicFleet/toggleFleetchart");
+  }
+};
+
+const fetch = async () => {
+  await fleetsCollection.findBySlug(route.params.slug);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "FleetShipsPage",
   beforeRouteEnter: publicFleetShipsRouteGuard,
-  components: {
-    Avatar,
-    Btn,
-    ShareBtn,
-    ShipsList,
-    PublicShipsList,
-  },
-  mixins: [MetaInfo, HangarItemsMixin],
-})
-export default class FleetShips extends Vue {
-  @Getter("mobile") mobile;
-
-  get fleet() {
-    return fleetsCollection.record;
-  }
-
-  get metaTitle() {
-    if (!this.fleet) {
-      return null;
-    }
-
-    return this.fleet.name;
-  }
-
-  get shareUrl() {
-    if (!this.fleet) {
-      return "";
-    }
-    const host = `${window.location.protocol}//${window.location.host}`;
-
-    return `${host}/fleets/${this.fleet.slug}/ships`;
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    this.fetch();
-  }
-
-  mounted() {
-    this.fetch();
-  }
-
-  toggleFleetchart() {
-    if (this.fleet.myFleet) {
-      this.$store.dispatch("fleet/toggleFleetchart");
-    } else {
-      this.$store.dispatch("publicFleet/toggleFleetchart");
-    }
-  }
-
-  async fetch() {
-    await fleetsCollection.findBySlug(this.$route.params.slug);
-  }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -73,7 +73,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
@@ -99,7 +98,6 @@ import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
     StationHabitations,
     BreadCrumbs,
   },
-  mixins: [MetaInfo],
 })
 export default class StationDetail extends Vue {
   loading = false;

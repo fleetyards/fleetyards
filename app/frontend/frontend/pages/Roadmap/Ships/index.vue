@@ -118,7 +118,6 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { BCollapse } from "bootstrap-vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
@@ -134,8 +133,6 @@ import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
     Btn,
     BreadCrumbs,
   },
-
-  mixins: [MetaInfo],
 })
 export default class ShipsRoadmap extends Vue {
   loading = true;

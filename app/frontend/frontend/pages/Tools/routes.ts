@@ -8,16 +8,6 @@ export const routes = [
       backgroundImage: "bg-7",
     },
   },
-  {
-    path: "profit-calculator/",
-    name: "profit-calculator",
-    component: () =>
-      import("@/frontend/pages/Tools/ProfitCalculator/index.vue"),
-    meta: {
-      title: "tools.profitCalculator",
-      backgroundImage: "bg-8",
-    },
-  },
 ];
 
 export default routes;

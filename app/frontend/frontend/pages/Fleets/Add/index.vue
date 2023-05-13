@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import MetaInfo from "@/frontend/mixins/MetaInfo";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
@@ -81,8 +80,6 @@ export default {
     Btn,
     FormInput,
   },
-
-  mixins: [MetaInfo],
 
   data() {
     return {
