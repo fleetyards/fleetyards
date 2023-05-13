@@ -5,7 +5,7 @@ namespace :frontend,
   host: Rails.configuration.app.domain,
   constraints: ->(req) { req.subdomain.blank? || %w[admin api].exclude?(req.subdomain) } do
   get "ships/mercury", to: redirect("/ships/mercury-star-runner")
-  get "compare/ships", to: redirect("/ships/compare")
+  get "ships/compare", to: redirect("/compare/ships")
 
   get "search" => "base#index"
 

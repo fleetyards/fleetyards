@@ -50,7 +50,7 @@ export const routes = [
     },
   },
   {
-    path: "/hangar/wishlist",
+    path: "/hangar/wishlist/",
     name: "hangar-wishlist",
     component: () => import("@/frontend/pages/Hangar/Wishlist/index.vue"),
     meta: {
@@ -62,7 +62,7 @@ export const routes = [
     },
   },
   {
-    path: "/hangar/preview",
+    path: "/hangar/preview/",
     name: "hangar-preview",
     component: () => import("@/frontend/pages/Hangar/Preview/index.vue"),
     meta: {
@@ -97,7 +97,7 @@ export const routes = [
     },
   },
   {
-    path: "/hangar/:username/fleetchart",
+    path: "/hangar/:username/fleetchart/",
     name: "hangar-public-fleetchart",
     redirect: {
       name: "hangar-public",
@@ -105,7 +105,7 @@ export const routes = [
     },
   },
   {
-    path: "/hangar/:username/wishlist",
+    path: "/hangar/:username/wishlist/",
     name: "wishlist-public",
     component: () => import("@/frontend/pages/Hangar/PublicWishlist/index.vue"),
     meta: {
@@ -122,7 +122,7 @@ export const routes = [
     },
   },
   {
-    path: "/ships/fleetchart",
+    path: "/ships/fleetchart/",
     name: "models-fleetchart",
     redirect: {
       name: "models",
@@ -130,7 +130,7 @@ export const routes = [
     },
   },
   {
-    path: "/ships/compare/",
+    path: "/compare/ships/",
     name: "models-compare",
     component: () => import("@/frontend/pages/Models/Compare/index.vue"),
     meta: {
