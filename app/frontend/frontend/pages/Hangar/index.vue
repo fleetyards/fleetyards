@@ -313,7 +313,6 @@ import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGr
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import debounce from "lodash.debounce";
 import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 
 @Component<Hangar>({
   components: {

@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: "default",
 });
 
-const mobile = computed(() => Store.getters["mobile"]);
+const mobile = computed(() => Store.getters.mobile);
 
 const basePath = "https://starship42.com/fleetview/";
 

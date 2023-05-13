@@ -153,7 +153,6 @@ import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-import HangarItemsMixin from "@/frontend/mixins/HangarItems";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import debounce from "lodash.debounce";
 import { format } from "date-fns";
@@ -181,7 +180,6 @@ import WishlistEmptyBox from "@/frontend/components/WishlistEmptyBox/index.vue";
     BreadCrumbs,
     WishlistEmptyBox,
   },
-  mixins: [HangarItemsMixin],
 })
 export default class Hangar extends Vue {
   deleting = false;
