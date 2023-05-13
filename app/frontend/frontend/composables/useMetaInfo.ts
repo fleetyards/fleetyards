@@ -57,7 +57,7 @@ export const useMetaInfo = () => {
     };
   };
 
-  const getTitle = (title?: string): string => {
+  const getTitle = (title?: string): string | undefined => {
     if (title) {
       return `${title} | ${t("app")}`;
     }
@@ -66,7 +66,7 @@ export const useMetaInfo = () => {
       return `${routeTitle.value} | ${t("app")}`;
     }
 
-    return t("app");
+    return undefined;
   };
 
   const getDescription = (description?: string): string => {
@@ -104,7 +104,7 @@ export const useMetaInfo = () => {
     const currentMetaTags = getCurrentMetaInfo();
 
     const newTitle = getTitle(title);
-    if (newTitle !== currentMetaTags.title) {
+    if (newTitle && newTitle !== currentMetaTags.title) {
       document.title = newTitle;
       if (ogTitleElement.value) {
         ogTitleElement.value.content = newTitle;
@@ -143,7 +143,7 @@ export const useMetaInfo = () => {
   };
 
   watch(
-    () => route.path,
+    () => route.meta?.title,
     () => {
       updateMetaInfo();
     }
