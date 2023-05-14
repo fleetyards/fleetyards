@@ -469,7 +469,7 @@ class Model < ApplicationRecord
   end
 
   private def send_new_model_notification
-    return if notified? || hidden?
+    return if notified? || hidden? || rsi_id.blank?
 
     Notifications::NewModelJob.perform_async(id)
 
