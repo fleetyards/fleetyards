@@ -23,7 +23,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
         components: 137,
         models: 180,
         paints: 17,
-        manufacturers: 49
+        manufacturers: 19
       }
 
       assert_equal(expectations,
