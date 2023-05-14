@@ -157,4 +157,13 @@
   .image-wrapper {
     min-height: 300px;
   }
+
+  .fleetchart-views {
+    flex-direction: column;
+    align-items: center;
+
+    > div {
+      max-width: 90%;
+    }
+  }
 }
