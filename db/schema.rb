@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_10_211352) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -410,6 +410,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_10_211352) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.string "code"
+    t.string "long_name"
+    t.string "code_mapping"
   end
 
   create_table "message_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

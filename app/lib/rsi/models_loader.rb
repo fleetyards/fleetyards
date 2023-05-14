@@ -391,7 +391,7 @@ module Rsi
     private def resolve_sc_identifier(item)
       sc_identifier_parts = [
         item.dig("manufacturer", "code"),
-        item["name"].gsub(" ", "_").downcase
+        item["name"].tr(" ", "_").downcase
       ].compact
 
       if sc_identifier_parts.size > 1

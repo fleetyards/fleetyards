@@ -23,12 +23,12 @@ module Rsi
       item_type = component_data[:type]
       item_type = "weapons" if item_type == "turrets"
 
-      manufacturer = Manufacturer.find_or_create_by!(name: component_data[:manufacturer].strip)
+      manufacturer = Manufacturer.find_by(name: component_data[:manufacturer].strip)
 
       component.update(
         component_class: component_data[:component_class],
         item_type:,
-        manufacturer_id: manufacturer.id
+        manufacturer_id: component.manufacturer_id || manufacturer&.id
       )
 
       component

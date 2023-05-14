@@ -89,7 +89,9 @@ module ScData
       return if manufacturer_data.blank?
 
       manufacturer = Manufacturer.find_by(code: manufacturer_data["Code"])
+      manufacturer = Manufacturer.find_by(code_mapping: manufacturer_data["Code"]) if manufacturer.blank?
       manufacturer = Manufacturer.find_by(name: manufacturer_data["Name"]) if manufacturer.blank?
+      manufacturer = Manufacturer.find_by(long_name: manufacturer_data["Name"]) if manufacturer.blank?
 
       return manufacturer if manufacturer.present?
 
