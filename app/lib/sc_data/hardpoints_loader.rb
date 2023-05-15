@@ -108,6 +108,8 @@ module ScData
       hardpoint_ids = []
 
       ports_data["MissileRacks"].each_with_index.map do |port_data, index|
+        next if ports_data["Flags"].include?("invisible")
+
         category = port_data["PortName"].include?("turret") ? "missile_turret" : nil
         key_modifier = port_data.dig("InstalledItem", "Ports", 0, "Loadout")
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, port_data, index, category, key_modifier)&.id

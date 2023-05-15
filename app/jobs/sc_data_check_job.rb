@@ -4,7 +4,7 @@ class ScDataCheckJob < ApplicationJob
   def perform
     new_version = load_version_from_s3
 
-    return if Imports::ScDataImport.finished.exists?(version: new_version)
+    return if new_version.blank? || Imports::ScDataImport.finished.exists?(version: new_version)
 
     Loaders::ScDataShipsJob.perform_async(new_version)
   end
