@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.18.6](https://github.com/fleetyards/fleetyards/compare/v5.18.5...v5.18.6) (2023-05-15)
+
+
+### Bug Fixes
+
+* **scdata:** dont import hardpoints with invisible flags ([5ce15b9](https://github.com/fleetyards/fleetyards/commit/5ce15b9d9fc83bfd94ea33fe2d349a75bf7ade46))
+
 ### [5.18.5](https://github.com/fleetyards/fleetyards/compare/v5.18.4...v5.18.5) (2023-05-15)
 
 ### [5.18.4](https://github.com/fleetyards/fleetyards/compare/v5.18.3...v5.18.4) (2023-05-15)
