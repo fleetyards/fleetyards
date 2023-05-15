@@ -23,6 +23,7 @@
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
 #  homepage                  :string
+#  last_active_at            :datetime
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
 #  locale                    :string(255)
@@ -199,19 +200,6 @@ class User < ApplicationRecord
     else
       TwoFactorMailer.disabled(email, username).deliver_later
     end
-  end
-
-  # override devise trackable to not save on every single request
-  def update_tracked_fields!(request)
-    # We have to check if the user is already persisted before running
-    # `save` here because invalid users can be saved if we don't.
-    # See https://github.com/heartcombo/devise/issues/4673 for more details.
-    return if new_record?
-
-    return if updated_at < 1.minute.from_now
-
-    update_tracked_fields(request)
-    save(validate: false)
   end
 
   def reset_otp

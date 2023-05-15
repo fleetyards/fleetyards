@@ -73,6 +73,7 @@ en:
         created_at: Created at
         email: Email
         last_sign_in_at: Last sign in
+        last_active_at: Last active
         username: Username
       created_at: Created at
       url: URL

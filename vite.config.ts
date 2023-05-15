@@ -64,7 +64,7 @@ export default defineConfig({
       eslintrc: {
         enabled: true,
       },
-      imports: ["vue", "vitest", "vue-router", { "vue-i18n": ["useI18n"] }],
+      imports: ["vue", "vitest", "vue-router"],
     }),
     splitVendorChunkPlugin(),
   ],

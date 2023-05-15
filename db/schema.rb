@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_15_135714) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_15_181235) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -867,6 +867,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_15_135714) do
     t.string "otp_secret"
     t.boolean "public_wishlist", default: false
     t.boolean "hide_owner", default: false, null: false
+    t.datetime "last_active_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["normalized_username"], name: "index_users_on_normalized_username"

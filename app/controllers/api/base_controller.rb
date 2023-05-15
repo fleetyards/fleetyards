@@ -19,6 +19,7 @@ module Api
     check_authorization except: %i[root version]
 
     after_action :set_rate_limit_headers
+    after_action :set_last_active_at
 
     rescue_from CanCan::AccessDenied do |exception|
       render json: {code: "forbidden", message: exception.message}, status: :forbidden
@@ -79,6 +80,13 @@ module Api
       headers["X-RateLimit-Limit"] = match_data[:limit].to_s
       headers["X-RateLimit-Remaining"] = (match_data[:limit] - match_data[:count]).to_s
       headers["X-RateLimit-Reset"] = (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
+    end
+
+    private def set_last_active_at
+      return if current_user.blank?
+      return if current_user.last_active_at.present? && current_user.last_active_at > 15.minutes.ago
+
+      current_user.update(last_active_at: Time.current)
     end
 
     private def set_locale

@@ -23,6 +23,7 @@
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
 #  homepage                  :string
+#  last_active_at            :datetime
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
 #  locale                    :string(255)
