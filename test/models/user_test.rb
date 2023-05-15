@@ -54,14 +54,10 @@
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_normalized_username   (normalized_username)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #  index_users_on_username              (username) UNIQUE
-#  users_confirmation_token_index       (confirmation_token)
-#  users_email_index                    (email)
-#  users_reset_password_token_index     (reset_password_token)
-#  users_unlock_token_index             (unlock_token)
-#  users_username_index                 (username)
 #
 require "test_helper"
 

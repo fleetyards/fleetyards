@@ -26,7 +26,6 @@
 #
 # Indexes
 #
-#  fleets_fid_index     (fid) UNIQUE
 #  index_fleets_on_fid  (fid) UNIQUE
 #
 require "test_helper"

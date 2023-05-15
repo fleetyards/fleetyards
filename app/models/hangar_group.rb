@@ -16,8 +16,6 @@
 #
 # Indexes
 #
-#  hangar_groups_user_id_slug_index         (user_id,slug) UNIQUE
-#  index_hangar_groups_on_user_id           (user_id)
 #  index_hangar_groups_on_user_id_and_name  (user_id,name) UNIQUE
 #
 class HangarGroup < ApplicationRecord

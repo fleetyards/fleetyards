@@ -13,6 +13,7 @@
 # Indexes
 #
 #  index_fleet_vehicles_on_fleet_id_and_vehicle_id  (fleet_id,vehicle_id) UNIQUE
+#  index_fleet_vehicles_on_vehicle_id               (vehicle_id)
 #
 require "test_helper"
 

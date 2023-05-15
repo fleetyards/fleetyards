@@ -28,10 +28,6 @@
 #  updated_at            :datetime         not null
 #  rsi_id                :integer
 #
-# Indexes
-#
-#  starsystems_slug_index  (slug) UNIQUE
-#
 class Starsystem < ApplicationRecord
   paginates_per 15
 

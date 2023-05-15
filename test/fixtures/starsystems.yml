@@ -26,10 +26,6 @@
 #  updated_at            :datetime         not null
 #  rsi_id                :integer
 #
-# Indexes
-#
-#  starsystems_slug_index  (slug) UNIQUE
-#
 stanton:
   name: Stanton
   slug: stanton

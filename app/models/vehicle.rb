@@ -29,7 +29,6 @@
 #
 # Indexes
 #
-#  index_vehicles_on_model_id            (model_id)
 #  index_vehicles_on_model_id_and_id     (model_id,id)
 #  index_vehicles_on_serial_and_user_id  (serial,user_id) UNIQUE
 #  index_vehicles_on_user_id             (user_id)

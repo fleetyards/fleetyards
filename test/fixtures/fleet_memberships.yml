@@ -22,7 +22,6 @@
 #
 # Indexes
 #
-#  fleet_memberships_fleet_id_user_id_index         (fleet_id,user_id) UNIQUE
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
 #
 

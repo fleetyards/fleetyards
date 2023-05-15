@@ -31,7 +31,6 @@
 #
 # Indexes
 #
-#  celestial_objects_slug_index              (slug) UNIQUE
 #  index_celestial_objects_on_starsystem_id  (starsystem_id)
 #
 class CelestialObject < ApplicationRecord

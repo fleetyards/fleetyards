@@ -10,9 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_15_135714) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "citext"
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
@@ -51,7 +50,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.uuid "faction_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["affiliationable_type", "affiliationable_id"], name: "affiliations_affiliationable_type_affiliationable_id_index"
     t.index ["affiliationable_type", "affiliationable_id"], name: "index_affiliations_on_affiliationable"
     t.index ["faction_id"], name: "index_affiliations_on_faction_id"
   end
@@ -95,17 +93,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.datetime "updated_at", precision: nil
   end
 
-  create_table "auth_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.string "token"
-    t.datetime "expired_at", precision: nil
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["token"], name: "index_auth_tokens_on_token", unique: true
-    t.index ["user_id"], name: "index_auth_tokens_on_user_id"
-  end
-
   create_table "celestial_objects", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -130,7 +117,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.uuid "parent_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["slug"], name: "celestial_objects_slug_index", unique: true
     t.index ["starsystem_id"], name: "index_celestial_objects_on_starsystem_id"
   end
 
@@ -142,7 +128,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.text "description"
     t.string "store_image"
     t.integer "commodity_type"
-    t.index ["name"], name: "commodities_name_index"
     t.index ["name"], name: "index_commodities_on_name", unique: true
   end
 
@@ -179,7 +164,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.string "power_connection"
     t.string "heat_connection"
     t.string "ammunition"
-    t.index ["manufacturer_id"], name: "components_manufacturer_id_index"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -201,10 +185,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.decimal "length", precision: 15, scale: 2
     t.string "group"
     t.index ["station_id"], name: "index_docks_on_station_id"
-  end
-
-  create_table "ecto_schema_migrations", primary_key: "version", id: :bigint, default: nil, force: :cascade do |t|
-    t.datetime "inserted_at", precision: 0
   end
 
   create_table "email_rejections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -240,16 +220,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 
-  create_table "ex_imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "started_at", precision: 0
-    t.datetime "failed_at", precision: 0
-    t.datetime "finished_at", precision: 0
-    t.text "info"
-    t.string "version", limit: 255
-    t.string "source", limit: 255
-    t.string "name", limit: 255
-  end
-
   create_table "factions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.string "name"
@@ -258,7 +228,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.string "color"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["slug"], name: "factions_slug_index"
   end
 
   create_table "fleet_invite_urls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -269,7 +238,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.datetime "updated_at", null: false
     t.datetime "expires_after", precision: nil
     t.integer "limit"
-    t.index ["token"], name: "fleet_invite_urls_token_index", unique: true
     t.index ["token"], name: "index_fleet_invite_urls_on_token", unique: true
   end
 
@@ -290,7 +258,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.datetime "invited_at", precision: nil
     t.datetime "requested_at", precision: nil
     t.string "used_invite_token"
-    t.index ["fleet_id", "user_id"], name: "fleet_memberships_fleet_id_user_id_index", unique: true
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
   end
 
@@ -300,6 +267,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fleet_id", "vehicle_id"], name: "index_fleet_vehicles_on_fleet_id_and_vehicle_id", unique: true
+    t.index ["vehicle_id"], name: "index_fleet_vehicles_on_vehicle_id"
   end
 
   create_table "fleets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -321,7 +289,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.string "guilded"
     t.boolean "public_fleet", default: false
     t.text "description"
-    t.index ["fid"], name: "fleets_fid_index", unique: true
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 
@@ -332,7 +299,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "habitation_name"
-    t.index ["station_id"], name: "habitations_station_id_index"
     t.index ["station_id"], name: "index_habitations_on_station_id"
   end
 
@@ -346,28 +312,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.integer "sort"
     t.boolean "public", default: false
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
-    t.index ["user_id", "slug"], name: "hangar_groups_user_id_slug_index", unique: true
-    t.index ["user_id"], name: "index_hangar_groups_on_user_id"
-  end
-
-  create_table "hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "quantity"
-    t.uuid "model_id"
-    t.uuid "component_id"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
-    t.string "component_class"
-    t.string "hardpoint_type"
-    t.integer "mounts"
-    t.string "size"
-    t.string "details"
-    t.string "category"
-    t.boolean "default_empty", default: false
-    t.string "rsi_key"
-    t.datetime "deleted_at", precision: nil
-    t.string "key"
-    t.index ["component_id"], name: "index_hardpoints_on_component_id"
-    t.index ["model_id"], name: "index_hardpoints_on_model_id"
   end
 
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -696,23 +640,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "progress_tracker_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.string "key"
-    t.string "team"
-    t.string "title"
-    t.string "description"
-    t.date "start_date"
-    t.date "end_date"
-    t.string "projects"
-    t.integer "discipline_counts"
-    t.string "time_allocations"
-    t.uuid "model_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at", precision: nil
-    t.index ["key"], name: "index_progress_tracker_items_on_key", unique: true
-  end
-
   create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.integer "rsi_category_id"
@@ -793,7 +720,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.text "description"
     t.string "location"
     t.index ["station_id"], name: "index_shops_on_station_id"
-    t.index ["station_id"], name: "shops_station_id_index"
   end
 
   create_table "star_citizen_updates", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -829,7 +755,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.text "description"
     t.string "map_y"
     t.string "map_x"
-    t.index ["slug"], name: "starsystems_slug_index", unique: true
   end
 
   create_table "stations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -854,7 +779,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
     t.index ["name"], name: "index_stations_on_name", unique: true
     t.index ["planet_id"], name: "index_stations_on_planet_id"
-    t.index ["slug"], name: "stations_slug_index", unique: true
   end
 
   create_table "task_forces", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -896,15 +820,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.uuid "model_upgrade_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "user_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.binary "token", null: false
-    t.string "context", limit: 255, null: false
-    t.jsonb "scopes"
-    t.uuid "fleet_id"
-    t.datetime "created_at", precision: 0, null: false
   end
 
   create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -953,15 +868,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.boolean "public_wishlist", default: false
     t.boolean "hide_owner", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["confirmation_token"], name: "users_confirmation_token_index"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["email"], name: "users_email_index"
+    t.index ["normalized_username"], name: "index_users_on_normalized_username"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["reset_password_token"], name: "users_reset_password_token_index"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
-    t.index ["unlock_token"], name: "users_unlock_token_index"
     t.index ["username"], name: "index_users_on_username", unique: true
-    t.index ["username"], name: "users_username_index"
   end
 
   create_table "vehicle_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1000,13 +911,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.string "serial"
     t.string "alternative_names"
     t.uuid "module_package_id"
-    t.string "slug"
     t.boolean "wanted", default: false
     t.integer "bought_via", default: 0
     t.string "rsi_pledge_id"
     t.datetime "rsi_pledge_synced_at"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
-    t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end
@@ -1039,7 +948,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_084056) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "auth_tokens", "users"
-  add_foreign_key "user_tokens", "fleets", name: "user_tokens_fleet_id_fkey", on_delete: :nullify
-  add_foreign_key "user_tokens", "users", name: "user_tokens_user_id_fkey", on_delete: :cascade
 end

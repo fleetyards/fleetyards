@@ -14,7 +14,6 @@
 #
 # Indexes
 #
-#  habitations_station_id_index     (station_id)
 #  index_habitations_on_station_id  (station_id)
 #
 class Habitation < ApplicationRecord

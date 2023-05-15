@@ -13,10 +13,6 @@
 #  updated_at :datetime         not null
 #  rsi_id     :integer
 #
-# Indexes
-#
-#  factions_slug_index  (slug)
-#
 class Faction < ApplicationRecord
   before_save :update_slugs
 end
