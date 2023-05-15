@@ -8,7 +8,7 @@ module Api
       def current_version
         authorize! :show, :api
 
-        render json: {version: Import.current_version}, status: :ok
+        render json: {version: Imports::ScDataImport.current_version}, status: :ok
       end
     end
   end

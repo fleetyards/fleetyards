@@ -21,5 +21,9 @@
 module Imports
   class ScDataImport < ::Import
     validates :version, presence: true
+
+    def self.current_version
+      finished.last&.version
+    end
   end
 end
