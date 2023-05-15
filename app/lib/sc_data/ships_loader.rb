@@ -26,6 +26,10 @@ module ScData
 
       model.update!(
         mass: ship_data["Mass"]&.to_f,
+        beam: ship_data["Width"]&.to_f,
+        height: ship_data["Height"]&.to_f,
+        length: ship_data["Length"]&.to_f,
+        ground: !ship_data["IsSpaceship"],
         cargo_holds: extract_cargo_holds(components_data["CargoGrids"]),
         hydrogen_fuel_tanks: extract_hydrogen_fuel_tanks(components_data["HydrogenFuelTanks"]),
         quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data["QuantumFuelTanks"])
