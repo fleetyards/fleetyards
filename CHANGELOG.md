@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.19.0](https://github.com/fleetyards/fleetyards/compare/v5.18.6...v5.19.0) (2023-05-15)
+
+
+### Features
+
+* **scdata:** add additional data from gamefiles ([8a7b6dc](https://github.com/fleetyards/fleetyards/commit/8a7b6dcdec4952057dfb81ae36bd6e081538ce6d))
+
+
+### Bug Fixes
+
+* **scdata:** resolve additional ship data ([f2ec810](https://github.com/fleetyards/fleetyards/commit/f2ec81067a3139905ed9fbda6f52bca757aef71f))
+
 ### [5.18.6](https://github.com/fleetyards/fleetyards/compare/v5.18.5...v5.18.6) (2023-05-15)
 
 
