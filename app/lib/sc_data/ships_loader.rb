@@ -15,6 +15,7 @@ module ScData
       return if model.sc_identifier.blank?
 
       ship_data = load_ship_data(model.sc_identifier)
+
       components_data = load_components_data(model.sc_identifier)
 
       if components_data.blank?
@@ -24,16 +25,22 @@ module ScData
 
       hardpoints_loader.extract_from_components(model, components_data)
 
-      model.update!(
+      update_params = {
         mass: ship_data["Mass"]&.to_f,
-        beam: ship_data["Width"]&.to_f,
-        height: ship_data["Height"]&.to_f,
-        length: ship_data["Length"]&.to_f,
-        ground: !ship_data["IsSpaceship"],
         cargo_holds: extract_cargo_holds(components_data["CargoGrids"]),
         hydrogen_fuel_tanks: extract_hydrogen_fuel_tanks(components_data["HydrogenFuelTanks"]),
         quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data["QuantumFuelTanks"])
-      )
+      }
+
+      update_params[:beam] = ship_data["Width"]&.to_f if ship_data["Width"]
+      update_params[:height] = ship_data["Height"]&.to_f if ship_data["Height"]
+      update_params[:length] = ship_data["Length"]&.to_f if ship_data["Length"]
+      update_params[:ground] = !ship_data["IsSpaceship"] if ship_data["IsSpaceship"].present?
+
+      Rails.logger.debug update_params.to_yaml
+      Rails.logger.debug update_params.inspect
+
+      model.update!(update_params)
     end
 
     private def load_ship_data(sc_identifier)
