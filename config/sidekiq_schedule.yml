@@ -23,6 +23,10 @@ production: &production
   prices_job:
     cron: '0 21 */1 * *' # Daily at 21:00
     class: 'PricesJob'
+  sc_data_check_job:
+    cron: '0 22 */1 * *' # Daily at 22:00
+    class: 'ScDataCheckJob'
+    queue: 'loaders'
   metrics_job:
     cron: '0 1 */1 * *' # Daily at 1:00
     class: 'MetricsJob'
