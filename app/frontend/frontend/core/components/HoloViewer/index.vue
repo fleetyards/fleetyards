@@ -260,7 +260,7 @@ export default class HoloViewer extends Vue {
         if (node.backupMaterial) {
           node.material = node.backupMaterial;
         }
-      } else if (node.name.includes("window")) {
+      } else if (node.name.includes("window") || node.name.includes("Glass")) {
         node.backupMaterial = node.material;
         node.material = windowMaterial;
       } else {
