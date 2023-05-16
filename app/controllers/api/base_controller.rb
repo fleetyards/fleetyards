@@ -15,11 +15,11 @@ module Api
     before_action :authenticate_user!, except: %i[root version]
     before_action :current_ability
     before_action :set_locale
+    before_action :set_last_active_at
 
     check_authorization except: %i[root version]
 
     after_action :set_rate_limit_headers
-    after_action :set_last_active_at
 
     rescue_from CanCan::AccessDenied do |exception|
       render json: {code: "forbidden", message: exception.message}, status: :forbidden

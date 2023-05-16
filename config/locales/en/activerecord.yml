@@ -191,6 +191,7 @@ en:
         production_status: Production Status
         variants: Variants
         weapons: Weapons
+        fleetchart_image: Lagacy Fleetchart Image
       model_hardpoint:
         categories:
           fixed: Fixed Maneuvering Thruster

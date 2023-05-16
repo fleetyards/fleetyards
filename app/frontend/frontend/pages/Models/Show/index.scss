@@ -43,21 +43,29 @@
   gap: 20px;
   margin: 20px 0;
 
-  > div {
+  .fleetchart-views-items {
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     display: flex;
     flex-grow: 1;
-    max-width: 40%;
-
-    img {
-      max-width: 100%;
-    }
-  }
-
-  .fleetchart-views-topside {
-    flex-direction: column;
     gap: 20px;
+
+    > div {
+      max-width: 80%;
+
+      &.big {
+        max-width: 90%;
+      }
+
+      &.small {
+        max-width: 70%;
+      }
+
+      img {
+        max-width: 100%;
+      }
+    }
   }
 }
 
@@ -162,8 +170,10 @@
     flex-direction: column;
     align-items: center;
 
-    > div {
-      max-width: 90%;
+    .fleetchart-views-items {
+      > div {
+        max-width: 90%;
+      }
     }
   }
 }

@@ -56,6 +56,13 @@ json.side_view_large model.side_view.large.url
 json.side_view_xlarge model.side_view.xlarge.url
 json.side_view_width model.side_view_width
 json.side_view_height model.side_view_height
+json.front_view model.front_view.url
+json.front_view_small model.front_view.small.url
+json.front_view_medium model.front_view.medium.url
+json.front_view_large model.front_view.large.url
+json.front_view_xlarge model.front_view.xlarge.url
+json.front_view_width model.front_view_width
+json.front_view_height model.front_view_height
 json.angled_view model.angled_view.url
 json.angled_view_small model.angled_view.small.url
 json.angled_view_medium model.angled_view.medium.url

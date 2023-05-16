@@ -12,8 +12,11 @@ type Model = {
   storeImageMedium: string;
   storeImageLarge: string;
   fleetchartImage: string;
+  fleetchartLength: number;
   angledViewMedium: string;
   angledViewLarge: string;
+  frontViewMedium: string;
+  frontViewLarge: string;
   topViewMedium: string;
   topViewLarge: string;
   sideViewMedium: string;

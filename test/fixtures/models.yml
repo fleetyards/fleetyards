@@ -23,6 +23,9 @@
 #  fleetchart_image_width   :integer
 #  fleetchart_offset_length :decimal(15, 2)
 #  focus                    :string(255)
+#  front_view               :string
+#  front_view_height        :integer
+#  front_view_width         :integer
 #  ground                   :boolean          default(FALSE)
 #  ground_speed             :decimal(15, 2)
 #  height                   :decimal(15, 2)   default(0.0), not null

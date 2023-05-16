@@ -235,7 +235,7 @@
         Remove Brochure
       %small
         = form_errors model, :brochure
-
+  .row
     .col-12.col-md-4.form-group{class: form_error?(model, :fleetchart_image)}
       = form.label :fleetchart_image
       = form.file_field :fleetchart_image, class: 'form-control'
@@ -248,7 +248,7 @@
         Remove Image
       %small
         = form_errors model, :fleetchart_image
-
+  .row
     .col-12.col-md-4.form-group{class: form_error?(model, :top_view)}
       = form.label :top_view
       = form.file_field :top_view, class: 'form-control'
@@ -274,6 +274,19 @@
         Remove Image
       %small
         = form_errors model, :side_view
+
+    .col-12.col-md-4.form-group{class: form_error?(model, :front_view)}
+      = form.label :front_view
+      = form.file_field :front_view, class: 'form-control'
+      - if model.front_view_cache
+        = form.hidden_field :front_view_cache
+      %br
+      - if model.front_view?
+        = image_tag(model.front_view.url)
+        = form.check_box :remove_front_view
+        Remove Image
+      %small
+        = form_errors model, :front_view
 
     .col-12.col-md-4.form-group{class: form_error?(model, :angled_view)}
       = form.label :angled_view
@@ -302,12 +315,6 @@
         Remove Holo
       %small
         = form_errors model, :holo
-
-    .col-12.col-sm-6.col-md-4
-      .form-group
-        = form.check_box :holo_colored, placeholder: I18n.t(:"helpers.placeholder.model.holo_colored"), class: 'checkbox'
-        = form.label :holo_colored do
-          = I18n.t(:"activerecord.attributes.model.holo_colored")
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :rsi_id)}

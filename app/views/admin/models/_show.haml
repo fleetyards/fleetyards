@@ -4,13 +4,8 @@
   %td.preview.text-center
     = image_tag model.rsi_store_image.small.url
   %td.preview.text-center
-    - if model.top_view.present? || model.side_view.present?
-      - if model.top_view.present?
-        = image_tag model.top_view.small.url
-      - if model.side_view.present?
-        = image_tag model.side_view.url
-    - elsif model.fleetchart_image.present?
-      = image_tag model.fleetchart_image.url
+    - if model.angled_view.present?
+      = image_tag model.angled_view.small.url
   %td
     = model.manufacturer.code if model.manufacturer.present?
     = model.name

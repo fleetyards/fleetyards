@@ -177,15 +177,20 @@
           </div>
         </div>
         <div class="fleetchart-views">
-          <div>
-            <img :src="fleetchartImageAngled" />
-          </div>
-          <div class="fleetchart-views-topside">
-            <div>
-              <img :src="fleetchartImageSide" />
+          <div class="fleetchart-views-items">
+            <div v-if="fleetchartImageAngled" class="big">
+              <img :src="fleetchartImageAngled" />
             </div>
-            <div>
+            <div v-if="fleetchartImageFront" class="small">
+              <img :src="fleetchartImageFront" />
+            </div>
+          </div>
+          <div class="fleetchart-views-items">
+            <div v-if="fleetchartImageTop">
               <img :src="fleetchartImageTop" />
+            </div>
+            <div v-if="fleetchartImageSide">
+              <img :src="fleetchartImageSide" />
             </div>
           </div>
         </div>
@@ -364,6 +369,14 @@ const fleetchartImageAngled = computed(() => {
   }
 
   return model.value?.angledViewLarge;
+});
+
+const fleetchartImageFront = computed(() => {
+  if (mobile.value) {
+    return model.value?.frontViewMedium;
+  }
+
+  return model.value?.frontViewLarge;
 });
 
 const fleetchartImageTop = computed(() => {

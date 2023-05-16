@@ -25,6 +25,9 @@
 #  fleetchart_image_width   :integer
 #  fleetchart_offset_length :decimal(15, 2)
 #  focus                    :string(255)
+#  front_view               :string
+#  front_view_height        :integer
+#  front_view_width         :integer
 #  ground                   :boolean          default(FALSE)
 #  ground_speed             :decimal(15, 2)
 #  height                   :decimal(15, 2)   default(0.0), not null
@@ -204,6 +207,7 @@ class Model < ApplicationRecord
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :top_view, FleetchartImageUploader
   mount_uploader :side_view, FleetchartImageUploader
+  mount_uploader :front_view, FleetchartImageUploader
   mount_uploader :angled_view, FleetchartImageUploader
   mount_uploader :brochure, BrochureUploader
   mount_uploader :holo, HoloUploader
