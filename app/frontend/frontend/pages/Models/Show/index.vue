@@ -181,13 +181,13 @@
             <div v-if="fleetchartImageAngled" class="big">
               <img :src="fleetchartImageAngled" />
             </div>
-            <div v-if="fleetchartImageFront" class="small">
-              <img :src="fleetchartImageFront" />
+            <div v-if="fleetchartImageTop">
+              <img :src="fleetchartImageTop" />
             </div>
           </div>
           <div class="fleetchart-views-items">
-            <div v-if="fleetchartImageTop">
-              <img :src="fleetchartImageTop" />
+            <div v-if="fleetchartImageFront" class="small">
+              <img :src="fleetchartImageFront" />
             </div>
             <div v-if="fleetchartImageSide">
               <img :src="fleetchartImageSide" />

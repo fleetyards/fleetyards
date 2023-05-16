@@ -39,31 +39,33 @@
 
 .fleetchart-views {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   gap: 20px;
   margin: 20px 0;
 
   .fleetchart-views-items {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     display: flex;
-    flex-grow: 1;
     gap: 20px;
 
     > div {
-      max-width: 80%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      &.big {
-        max-width: 90%;
-      }
-
-      &.small {
+      img {
         max-width: 70%;
       }
 
-      img {
-        max-width: 100%;
+      &.big {
+        img {
+          max-width: 90%;
+        }
+      }
+
+      &.small {
+        img {
+          max-width: 50%;
+        }
       }
     }
   }
@@ -172,12 +174,11 @@
   }
 
   .fleetchart-views {
-    flex-direction: column;
-    align-items: center;
-
     .fleetchart-views-items {
-      > div {
-        max-width: 90%;
+      flex-direction: column;
+
+      &:last-child {
+        flex-direction: column-reverse;
       }
     }
   }
