@@ -7,6 +7,7 @@ type Model = {
   focus: string;
   productionNote: string;
   productionStatus: string;
+  classification: string;
   classificationLabel: string;
   manufacturer: Manufacturer;
   storeImageSmall: string;
@@ -27,6 +28,8 @@ type Model = {
   height: number;
   mass: number;
   cargo: number;
+  minCrew: number;
+  maxCrew: number;
   sizeLabel: string;
   hasModules: boolean;
   hasUpgrades: boolean;
@@ -40,6 +43,10 @@ type Model = {
   lastPledgePrice: number;
   rentalAt: Shop[];
   soldAt: Shop[];
+  afterburnerSpeed: number;
+  scmSpeed: number;
+  groundSpeed: number;
+  afterburnerGroundSpeed: number;
   hasVideos: boolean;
   hasImages: boolean;
   brochure: string;
