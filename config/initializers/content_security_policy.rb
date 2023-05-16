@@ -53,7 +53,7 @@ Rails.application.configure do
     ].compact
 
     font_src = [
-      :self, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
+      :self, :data, "https://fonts.gstatic.com", "https://pro.fontawesome.com",
       "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com",
       "https://ka-p.fontawesome.com"
     ]
