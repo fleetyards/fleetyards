@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.21.0](https://github.com/fleetyards/fleetyards/compare/v5.20.1...v5.21.0) (2023-05-16)
+
+
+### Features
+
+* **models:** update model detail views arrangement ([0ff2df2](https://github.com/fleetyards/fleetyards/commit/0ff2df25e4c080f7d69e4acea5890f423a01af83))
+
 ### [5.20.1](https://github.com/fleetyards/fleetyards/compare/v5.20.0...v5.20.1) (2023-05-16)
 
 ## [5.20.0](https://github.com/fleetyards/fleetyards/compare/v5.19.1...v5.20.0) (2023-05-16)
