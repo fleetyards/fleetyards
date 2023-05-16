@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.20.0](https://github.com/fleetyards/fleetyards/compare/v5.19.1...v5.20.0) (2023-05-16)
+
+
+### Features
+
+* **models:** update views section to include optional front view ([99df62c](https://github.com/fleetyards/fleetyards/commit/99df62cc214a7d8efe10903c07c0aef88eff0249))
+
+
+### Bug Fixes
+
+* **holoviewer:** update transparent mesh detection ([7ffc09b](https://github.com/fleetyards/fleetyards/commit/7ffc09b12606c3b34a625dc1c420ccc9e84fd3aa))
+
 ### [5.19.1](https://github.com/fleetyards/fleetyards/compare/v5.19.0...v5.19.1) (2023-05-15)
 
 ## [5.19.0](https://github.com/fleetyards/fleetyards/compare/v5.18.6...v5.19.0) (2023-05-15)
