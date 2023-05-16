@@ -100,10 +100,15 @@
   text-transform: uppercase;
 
   .manufacturer-prefix {
-    margin-right: 5px;
+    margin-right: 10px;
+    font-family: "Dancing Script", cursive;
     color: darken($text-color, 30%);
     font-size: 80%;
     font-style: italic;
+    display: inline-block;
+    transform: rotate(-5deg);
+    font-weight: normal;
+    text-transform: lowercase;
   }
 
   .manufacturer-logo {

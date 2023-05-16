@@ -1,5 +1,8 @@
 type Shop = {
   id: string;
+  name: string;
+  slug: string;
+  stationSlug: string;
 };
 
 type ShopsFilter = {

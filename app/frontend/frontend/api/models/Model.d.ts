@@ -7,6 +7,7 @@ type Model = {
   focus: string;
   productionNote: string;
   productionStatus: string;
+  classificationLabel: string;
   manufacturer: Manufacturer;
   storeImageSmall: string;
   storeImageMedium: string;
@@ -22,6 +23,11 @@ type Model = {
   sideViewMedium: string;
   sideViewLarge: string;
   length: number;
+  beam: number;
+  height: number;
+  mass: number;
+  cargo: number;
+  sizeLabel: string;
   hasModules: boolean;
   hasUpgrades: boolean;
   rsiId: string;
@@ -29,11 +35,18 @@ type Model = {
   salesPageUrl: string;
   storeUrl: string;
   onSale: boolean;
+  price: number;
   pledgePrice: number;
+  lastPledgePrice: number;
+  rentalAt: Shop[];
+  soldAt: Shop[];
   hasVideos: boolean;
   hasImages: boolean;
   brochure: string;
   holo: string;
+  lastUpdatedAt: string;
+  lastUpdatedAtLabel: string;
+  count?: number;
 };
 
 type ModelsFilter = {

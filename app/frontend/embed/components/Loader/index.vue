@@ -16,20 +16,20 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts" setup>
+type Props = {
+  loading?: boolean;
+  fixed?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  loading: false,
+  fixed: false,
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "LoaderComponent",
-
-  props: {
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-
-    fixed: {
-      type: Boolean,
-      default: false,
-    },
-  },
 };
 </script>

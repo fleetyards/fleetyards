@@ -10,13 +10,7 @@ styles.rel = 'stylesheet'
 styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
 
-const fonts = d.createElement('link')
-fonts.href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900'
-fonts.rel = 'stylesheet'
-fonts.media = 'all';
-(d.head || d.body).appendChild(fonts)
-
-const chunks = <%= ViteRuby.instance.manifest.resolve_entries('embed.js').fetch(:scripts, []).to_json.html_safe %>
+const chunks = <%= ViteRuby.instance.manifest.resolve_entries('embed.ts').fetch(:scripts, []).to_json.html_safe %>
 
 chunks.forEach((chunkUrl) => {
   const chunk = d.createElement('script')

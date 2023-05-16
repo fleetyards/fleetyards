@@ -10,52 +10,44 @@
   </transition-group>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts" setup>
 import ModelPanel from "@/embed/components/Models/Panel/index.vue";
+import Store from "@/embed/lib/Store";
 
+type Props = {
+  models: Model[];
+};
+
+const props = defineProps<Props>();
+
+const internalModels = ref<Model[]>([]);
+
+const details = computed(() => Store.getters.details);
+
+const grouping = computed(() => Store.getters.grouping);
+
+watch(
+  () => props.models,
+  () => {
+    internalModels.value = props.models;
+  }
+);
+
+onMounted(() => {
+  internalModels.value = props.models;
+});
+
+const count = (model: Model) => {
+  if (!grouping.value) {
+    return null;
+  }
+
+  return model.count;
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "ModelList",
-
-  components: {
-    ModelPanel,
-  },
-
-  props: {
-    models: {
-      type: Array,
-      required: true,
-    },
-  },
-
-  data() {
-    return {
-      internalModels: [],
-    };
-  },
-
-  computed: {
-    ...mapGetters(["details", "grouping"]),
-  },
-
-  watch: {
-    models() {
-      this.internalModels = this.models;
-    },
-  },
-
-  mounted() {
-    this.internalModels = this.models;
-  },
-
-  methods: {
-    count(model) {
-      if (!this.grouping) {
-        return null;
-      }
-
-      return model.count;
-    },
-  },
 };
 </script>

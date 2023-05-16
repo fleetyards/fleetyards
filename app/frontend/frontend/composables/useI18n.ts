@@ -72,7 +72,7 @@ const toAu = (value: number) => {
   });
 };
 
-const toUEC = (value: number, unit: string) => {
+const toUEC = (value: number, unit?: string) => {
   if (!unit) {
     /* tslint:disable:no-parameter-reassignment */
     // eslint-disable-next-line no-param-reassign

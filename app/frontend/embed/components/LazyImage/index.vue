@@ -11,55 +11,49 @@
   </component>
 </template>
 
-<script>
+<script lang="ts" setup>
+type Props = {
+  src: string;
+  alt?: string;
+  href?: string;
+  to?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  alt: "image",
+  href: undefined,
+  to: undefined,
+});
+
+const componentType = computed(() => {
+  if (props.to) {
+    return "router-link";
+  }
+  if (props.href) {
+    return "a";
+  }
+  return "div";
+});
+
+const componentArgs = computed(() => {
+  if (props.to) {
+    return {
+      to: props.to,
+    };
+  }
+
+  if (props.href) {
+    return {
+      href: props.href,
+    };
+  }
+
+  return {};
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "LazyImage",
-
-  props: {
-    src: {
-      type: String,
-      required: true,
-    },
-    alt: {
-      type: String,
-      default: "image",
-    },
-    href: {
-      type: String,
-      default: null,
-    },
-    to: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  computed: {
-    componentType() {
-      if (this.to) {
-        return "router-link";
-      }
-      if (this.href) {
-        return "a";
-      }
-      return "div";
-    },
-
-    componentArgs() {
-      if (this.to) {
-        return {
-          to: this.to,
-        };
-      }
-
-      if (this.href) {
-        return {
-          href: this.href,
-        };
-      }
-
-      return {};
-    },
-  },
 };
 </script>
