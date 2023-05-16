@@ -39,6 +39,18 @@ class AdminUser < ApplicationRecord
     authentication_keys: [:username], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
     otp_backup_code_length: 32, otp_number_of_backup_codes: 10
 
+  def reset_otp
+    # rubocop:disable Rails/SkipsModelValidations
+    update_column(:otp_required_for_login, false)
+    update_column(:encrypted_otp_secret, nil)
+    update_column(:encrypted_otp_secret_iv, nil)
+    update_column(:encrypted_otp_secret_salt, nil)
+    update_column(:otp_backup_codes, nil)
+    update_column(:otp_secret, nil)
+    # rubocop:enable Rails/SkipsModelValidations
+    update(otp_secret: AdminUser.generate_otp_secret)
+  end
+
   ## TODO: remove once Deivse Two Factor upgrade to 5.x is done
   # Decrypt and return the `encrypted_otp_secret` attribute which was used in
   # prior versions of devise-two-factor

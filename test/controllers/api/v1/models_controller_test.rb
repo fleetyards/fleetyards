@@ -233,6 +233,7 @@ module Api
           "rentalAt" => [],
           "manufacturer" => {
             "name" => "Origin",
+            "longName" => "Origin",
             "slug" => "origin",
             "code" => nil,
             "logo" => nil
@@ -404,6 +405,7 @@ module Api
           "rentalAt" => [],
           "manufacturer" => {
             "name" => "RSI",
+            "longName" => "RSI",
             "slug" => "rsi",
             "code" => nil,
             "logo" => nil
