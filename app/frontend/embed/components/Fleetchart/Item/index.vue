@@ -16,36 +16,27 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import FleetchartItemImage from "@/embed/components/Fleetchart/Image/index.vue";
 
+type Props = {
+  model: Model;
+  scale: number;
+};
+
+const props = defineProps<Props>();
+
+const url = computed(
+  () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`
+);
+
+const label = computed(
+  () => `${props.model.manufacturer.code} ${props.model.name}`
+);
+</script>
+
+<script lang="ts">
 export default {
   name: "FleetchartItem",
-
-  components: {
-    FleetchartItemImage,
-  },
-
-  props: {
-    model: {
-      type: Object,
-      required: true,
-    },
-
-    scale: {
-      type: Number,
-      required: true,
-    },
-  },
-
-  computed: {
-    url() {
-      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`;
-    },
-
-    label() {
-      return `${this.model.manufacturer.code} ${this.model.name}`;
-    },
-  },
 };
 </script>

@@ -29,69 +29,55 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import FleetchartSlider from "@/embed/components/Fleetchart/Slider/index.vue";
 import FleetchartItem from "@/embed/components/Fleetchart/Item/index.vue";
-import { mapGetters } from "vuex";
+import Store from "@/embed/lib/Store";
 
+type Props = {
+  models: Model[];
+  slider?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  slider: true,
+});
+
+const fleetchartScale = computed(() => Store.getters.fleetchartScale);
+
+const internalModels = ref<Model[]>([]);
+
+watch(
+  () => props.models,
+  () => {
+    internalModels.value = [...props.models];
+    internalModels.value.sort(sortByFleetchartLength);
+  }
+);
+
+const sortByFleetchartLength = (a: Model, b: Model) => {
+  if (a.fleetchartLength > b.fleetchartLength) {
+    return -1;
+  }
+
+  if (a.fleetchartLength < b.fleetchartLength) {
+    return 1;
+  }
+
+  return 0;
+};
+const updateFleetchartScale = (value: number) => {
+  Store.commit("setFleetchartScale", value);
+};
+
+onMounted(() => {
+  internalModels.value = [...props.models];
+  internalModels.value.sort(sortByFleetchartLength);
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "FleetchartList",
-
-  components: {
-    FleetchartSlider,
-    FleetchartItem,
-  },
-
-  props: {
-    models: {
-      type: Array,
-      required: true,
-    },
-
-    slider: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
-  data() {
-    return {
-      internalModels: [],
-    };
-  },
-
-  computed: {
-    ...mapGetters(["grouping", "fleetchartScale", "fleetchartGrouping"]),
-  },
-
-  watch: {
-    models() {
-      this.internalModels = [...this.models];
-      this.internalModels.sort(this.sortByFleetchartLength);
-    },
-  },
-
-  mounted() {
-    this.internalModels = [...this.models];
-    this.internalModels.sort(this.sortByFleetchartLength);
-  },
-
-  methods: {
-    updateFleetchartScale(value) {
-      this.$store.commit("setFleetchartScale", value);
-    },
-
-    sortByFleetchartLength(a, b) {
-      if (a.fleetchartLength > b.fleetchartLength) {
-        return -1;
-      }
-
-      if (a.fleetchartLength < b.fleetchartLength) {
-        return 1;
-      }
-
-      return 0;
-    },
-  },
 };
 </script>

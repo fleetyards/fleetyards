@@ -14,56 +14,43 @@
   />
 </template>
 
-<script>
+<script lang="ts" setup>
 import VueSlider from "vue-slider-component";
 
+type Props = {
+  initialScale: number;
+};
+
+const props = defineProps<Props>();
+
+const scale = ref<number | null>(null);
+
+const max = computed(() => 300);
+
+onMounted(() => {
+  scale.value = props.initialScale;
+});
+
+const emit = defineEmits(["change"]);
+
+const updateScale = (value: number) => {
+  emit("change", value);
+};
+
+const mark = (value: number) => {
+  if (value % 50 === 0 || value === 10) {
+    return {
+      label: label(value),
+    };
+  }
+  return false;
+};
+
+const label = (value: number) => `${value} %`;
+</script>
+
+<script lang="ts">
 export default {
   name: "SliderComponent",
-
-  components: {
-    VueSlider,
-  },
-
-  props: {
-    initialScale: {
-      type: Number,
-      required: true,
-    },
-  },
-
-  data() {
-    return {
-      scale: null,
-    };
-  },
-
-  computed: {
-    max() {
-      return this.mobile ? 100 : 300;
-    },
-  },
-
-  mounted() {
-    this.scale = this.initialScale;
-  },
-
-  methods: {
-    updateScale(value) {
-      this.$emit("change", value);
-    },
-
-    mark(value) {
-      if (value % 50 === 0 || value === 10) {
-        return {
-          label: this.label(value),
-        };
-      }
-      return false;
-    },
-
-    label(value) {
-      return `${value} %`;
-    },
-  },
 };
 </script>
