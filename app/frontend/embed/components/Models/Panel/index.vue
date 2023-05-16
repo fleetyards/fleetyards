@@ -60,7 +60,7 @@ import ModelTopMetrics from "@/embed/components/Models/TopMetrics/index.vue";
 import ModelBaseMetrics from "@/embed/components/Models/BaseMetrics/index.vue";
 import LazyImage from "@/embed/components/LazyImage/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { uuid as uuidv4 } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   model: Model;
