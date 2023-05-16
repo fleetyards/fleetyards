@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HangarSync < HangarImporter
-  attr_accessor :ships, :components, :upgrades
+  attr_accessor :data, :ships, :components, :upgrades
 
   COMPONENT_FIND_QUERY = [
     "lower(name) = :name",
@@ -11,18 +11,16 @@ class HangarSync < HangarImporter
   ].freeze
 
   def initialize(data)
+    @data = data
     @ships = data.select { |item| item[:type] == "ship" }
     @components = data.select { |item| item[:type] == "component" }
     @upgrades = data.select { |item| item[:type] == "upgrade" }
   end
 
   def run(user_id)
-    import = Imports::HangarSync.create(
+    import = Imports::HangarSync.create!(
       user_id:,
-      input: {
-        ships: @ships,
-        components: @components
-      }.to_json
+      input: @data.to_json
     )
     import.start!
 
@@ -50,8 +48,8 @@ class HangarSync < HangarImporter
 
     output
   rescue => e
-    import.fail!
-    import.update!(info: e.message)
+    import&.fail!
+    import&.update!(info: e.message)
 
     raise e
   end
