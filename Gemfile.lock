@@ -236,7 +236,7 @@ GEM
       rchardet (~> 1.8)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    google-protobuf (3.23.0)
+    google-protobuf (3.23.1)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
@@ -501,7 +501,7 @@ GEM
       activesupport (>= 5.2)
       groupdate (>= 6.1)
     rotp (6.2.2)
-    rqrcode (2.1.2)
+    rqrcode (2.2.0)
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
