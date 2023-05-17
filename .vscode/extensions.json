@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "testdouble.vscode-standard-ruby",
+    "Shopify.ruby-lsp",
+    "Vue.volar",
+    "stylelint.vscode-stylelint",
+    "aliariff.vscode-erb-beautify"
+  ]
+}
