@@ -74,25 +74,25 @@ module Fleetyards
 
     config.cookie_prefix = Rails.env.production? ? Rails.configuration.app.cookie_prefix : "#{Rails.configuration.app.cookie_prefix}_#{Rails.env.upcase}"
 
-    # config.middleware.use ::Committee::Middleware::RequestValidation,
-    #   schema_path: "swagger/v1/schema.yaml",
-    #   parse_response_by_content_type: false,
-    #   query_hash_key: "rack.request.query_hash"
+    config.middleware.use ::Committee::Middleware::RequestValidation,
+      schema_path: "swagger/v1/schema.yaml",
+      parse_response_by_content_type: false,
+      query_hash_key: "rack.request.query_hash"
 
-    # config.middleware.use ::Committee::Middleware::ResponseValidation,
-    #   schema_path: "swagger/v1/schema.yaml",
-    #   parse_response_by_content_type: false,
-    #   query_hash_key: "rack.request.query_hash"
+    config.middleware.use ::Committee::Middleware::ResponseValidation,
+      schema_path: "swagger/v1/schema.yaml",
+      parse_response_by_content_type: false,
+      query_hash_key: "rack.request.query_hash"
 
-    # config.middleware.use ::Committee::Middleware::RequestValidation,
-    #   schema_path: "swagger/admin/v1/schema.yaml",
-    #   parse_response_by_content_type: false,
-    #   query_hash_key: "rack.request.query_hash"
+    config.middleware.use ::Committee::Middleware::RequestValidation,
+      schema_path: "swagger/admin/v1/schema.yaml",
+      parse_response_by_content_type: false,
+      query_hash_key: "rack.request.query_hash"
 
-    # config.middleware.use ::Committee::Middleware::ResponseValidation,
-    #   schema_path: "swagger/admin/v1/schema.yaml",
-    #   parse_response_by_content_type: false,
-    #   query_hash_key: "rack.request.query_hash"
+    config.middleware.use ::Committee::Middleware::ResponseValidation,
+      schema_path: "swagger/admin/v1/schema.yaml",
+      parse_response_by_content_type: false,
+      query_hash_key: "rack.request.query_hash"
   end
 end
 
