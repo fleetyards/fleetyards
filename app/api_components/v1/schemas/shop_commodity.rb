@@ -2,17 +2,20 @@
 
 module V1
   module Schemas
-    class ShopCommodity < ::BaseSchema
-      data_type :object
+    class ShopCommodity
+      include SchemaConcern
 
-      property :id, {type: :string, format: :uuid}
-      property :name, {type: :string}
-      property :slug, {type: :string}
-
-      property :createdAt, {type: :string, format: "date-time"}
-      property :updatedAt, {type: :string, format: "date-time"}
-
-      required %w[id name slug createdAt updatedAt]
+      schema :base, {
+        type: :object,
+        properties: {
+          id: {type: :string, format: :uuid},
+          name: {type: :string},
+          slug: {type: :string},
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"}
+        },
+        required: %w[id name slug createdAt updatedAt]
+      }
     end
   end
 end

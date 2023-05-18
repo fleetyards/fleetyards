@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.1
 info:
-  title: FleetYards.net API v1
+  title: FleetYards.net API
   version: v1
   description: "> “Strap into one of dozens of ships and embark on a life within the
     Star Citizen universe. Unbound by profession or skill sets, you choose the path
@@ -42,23 +42,24 @@ info:
     previous page of results.\n\n## Rate Limiting\n\n# Embed Fleetview\n\n## Setup\n\nTo
     get a custom Ship List on your Website you can just paste the example code on
     the right side at the position where you want to render a Ship List.\n\n```html\n<div
-    id=\"fleetyards-view\"></div>\n<script>\n    var fleetyards_config = function
-    () {\n        return {\n            details: true, // Set to false if you want
-    to display a minimal version of the Ship Panel\n            grouped: true, //
-    Set to false if you want to display the same Ships multiple times in your Fleetview.\n
-    \           fleetchart: false, // Set to true if you want to display a Fleetchart
-    instead of the normal Ship Panels.\n            fleetchartGrouped: false, // Set
-    to true if you want to group the Ships on the Fleetchart View or not.\n            fleetchartScale:
-    50, // Initial Scale of the Fleetchart\n            groupedButton: false, // Allow
-    the User to toggle Groupped Views\n            fleetchartSlider: false, // Set
-    to true to display a slider which allows users to scale the Fleetchart\n            ships:
-    ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List
-    of Shipnames (slugs) you want to display,\n            users: ['torlekmaru', 'johndoe'],
-    // Replace the Array with a list of Fleetyards.net usernames, alternative to the
-    ships option.\n        }\n    };\n    (function() {\n        var d = document,
-    s = d.createElement('script');\n        s.src = 'https://fleetyards.net/embed.js#'
+    id=\"fleetyards-view\"></div>\n<script>\n    window.FleetYardsFleetchartConfig
+    = {  \n        details: true, // Set to false if you want to display a minimal
+    version of the Ship Panel\n        grouped: true, // Set to false if you want
+    to display the same Ships multiple times in your Fleetview.\n        fleetchart:
+    false, // Set to true if you want to display a Fleetchart instead of the normal
+    Ship Panels.\n        fleetchartGrouped: false, // Set to true if you want to
+    group the Ships on the Fleetchart View or not.\n        fleetchartScale: 50, //
+    Initial Scale of the Fleetchart\n        groupedButton: false, // Allow the User
+    to toggle Groupped Views\n        fleetchartSlider: false, // Set to true to display
+    a slider which allows users to scale the Fleetchart\n        ships: ['100i', '300i',
+    '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs)
+    you want to display,\n        users: ['torlekmaru', 'johndoe'], // Replace the
+    Array with a list of Fleetyards.net usernames, alternative to the ships option.\n
+    \       fleetId: 'maru', // Replace the value with a your Fleetyards.net fleet
+    id, alternative to the ships option.\n    };\n    (function() {\n        var d
+    = document, s = d.createElement('script');\n        s.src = 'https://fleetyards.net/embed-v2.js#'
     + new Date().getTime();\n        (d.head || d.body).appendChild(s);\n    })();\n</script>\n<noscript>Please
-    enable JavaScript to view your custom Fleetview powered by FleetYards.net.</a></noscript>\n```\n\n##
+    enable JavaScript to view your custom Fleetview powered by FleetYards.net.</noscript>\n```\n\n##
     Options\n\n### Show Details\n\n```details```: `true|false` (boolean) default is
     `true` \n\nDisplay details about the given Ship or just a minimal version. \n\n<br>\n\n###
     Grouped View\n\n```grouped```: `true|false` (boolean) default is `true` \n\nGroup
@@ -155,10 +156,10 @@ servers:
       default: https
 - url: https://api.fleetyards.net/v1
   description: Production Server
-- url: https://stage.fleetyards.net/api/v1
-  description: Test Server
+- url: https://api.fleetyards.dev/v1
+  description: Staging Server
 - url: http://api.fleetyards.test/v1
-  description: Local Test Server
+  description: Dev Server
 paths:
   "/celestial-objects":
     get:
@@ -1897,9 +1898,6 @@ components:
           type: string
         slug:
           type: string
-        type:
-          type: string
-          nullable: true
         designation:
           type: string
         storeImageIsFallback:
@@ -1913,6 +1911,12 @@ components:
           type: string
         storeImageSmall:
           type: string
+        description:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
         habitable:
           type: boolean
           nullable: true
@@ -1934,7 +1938,70 @@ components:
         population:
           type: integer
           nullable: true
-        localtionLabel:
+        locationLabel:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - name
+      - slug
+      - designation
+      - createdAt
+      - updatedAt
+      title: CelestialObject
+    CelestialObjectMinimal:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        designation:
+          type: string
+        storeImageIsFallback:
+          type: boolean
+        storeImage:
+          type: string
+          format: url
+        storeImageLarge:
+          type: string
+        storeImageMedium:
+          type: string
+        storeImageSmall:
+          type: string
+        description:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        habitable:
+          type: boolean
+          nullable: true
+        fairchanceact:
+          type: boolean
+          nullable: true
+        subType:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        danger:
+          type: integer
+          nullable: true
+        economy:
+          type: integer
+          nullable: true
+        population:
+          type: integer
+          nullable: true
+        locationLabel:
           type: string
           nullable: true
         createdAt:
@@ -1946,82 +2013,15 @@ components:
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
         parent:
-          "$ref": "#/components/schemas/CelestialObjectBase"
+          "$ref": "#/components/schemas/CelestialObject"
           nullable: true
         moons:
           type: array
           items:
-            "$ref": "#/components/schemas/CelestialObjectBase"
+            "$ref": "#/components/schemas/CelestialObject"
       required:
-      - name
-      - slug
-      - designation
-      - createdAt
-      - updatedAt
       - starsystem
-      additionalProperties: false
-      title: CelestialObject
-    CelestialObjectBase:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        type:
-          type: string
-          nullable: true
-        designation:
-          type: string
-        storeImageIsFallback:
-          type: boolean
-        storeImage:
-          type: string
-          format: url
-        storeImageLarge:
-          type: string
-        storeImageMedium:
-          type: string
-        storeImageSmall:
-          type: string
-        habitable:
-          type: boolean
-          nullable: true
-        fairchanceact:
-          type: boolean
-          nullable: true
-        subType:
-          type: string
-          nullable: true
-        size:
-          type: string
-          nullable: true
-        danger:
-          type: integer
-          nullable: true
-        economy:
-          type: integer
-          nullable: true
-        population:
-          type: integer
-          nullable: true
-        localtionLabel:
-          type: string
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-      - name
-      - slug
-      - designation
-      - createdAt
-      - updatedAt
-      additionalProperties: false
-      title: CelestialObjectBase
+      title: CelestialObjectMinimal
     Commodity:
       type: object
       properties:
@@ -2065,7 +2065,6 @@ components:
       - storeImageIsFallback
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: Commodity
     CommodityPrice:
       type: object
@@ -2100,7 +2099,6 @@ components:
       - confirmed
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: CommodityPrice
     Component:
       type: object
@@ -2141,10 +2139,10 @@ components:
         storeImageSmall:
           type: string
         soldAt:
-          "$ref": "#/components/schemas/ShopCommodity"
+          "$ref": "#/components/schemas/ShopComponent"
           nullable: true
         boughtAt:
-          "$ref": "#/components/schemas/ShopCommodity"
+          "$ref": "#/components/schemas/ShopComponent"
           nullable: true
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
@@ -2162,7 +2160,6 @@ components:
       - storeImageIsFallback
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: Component
     Equipment:
       type: object
@@ -2217,10 +2214,10 @@ components:
         storeImageSmall:
           type: string
         soldAt:
-          "$ref": "#/components/schemas/ShopCommodity"
+          "$ref": "#/components/schemas/ShopEquipment"
           nullable: true
         boughtAt:
-          "$ref": "#/components/schemas/ShopCommodity"
+          "$ref": "#/components/schemas/ShopEquipment"
           nullable: true
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
@@ -2238,7 +2235,6 @@ components:
       - storeImageIsFallback
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: Equipment
     FieldError:
       type: object
@@ -2252,7 +2248,6 @@ components:
       required:
       - attribute
       - messages
-      additionalProperties: false
       title: FieldError
     FilterOption:
       type: object
@@ -2270,7 +2265,6 @@ components:
       - name
       - value
       - category
-      additionalProperties: false
       title: FilterOption
     Gallery:
       type: object
@@ -2286,7 +2280,6 @@ components:
       - id
       - name
       - slug
-      additionalProperties: false
       title: Gallery
     Image:
       type: object
@@ -2301,6 +2294,8 @@ components:
         url:
           type: string
         width:
+          type: string
+        height:
           type: string
         type:
           type: string
@@ -2331,7 +2326,6 @@ components:
       - bigUrl
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: Image
     Manufacturer:
       type: object
@@ -2356,7 +2350,6 @@ components:
       - slug
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: Manufacturer
     ShopCommodity:
       type: object
@@ -2380,7 +2373,6 @@ components:
       - slug
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: ShopCommodity
     StandardError:
       type: object
@@ -2392,7 +2384,6 @@ components:
       required:
       - code
       - message
-      additionalProperties: false
       title: StandardError
     Starsystem:
       type: object
@@ -2450,7 +2441,6 @@ components:
       - slug
       - createdAt
       - updatedAt
-      additionalProperties: false
       title: Starsystem
     ValidationError:
       type: object
@@ -2466,5 +2456,4 @@ components:
       required:
       - code
       - message
-      additionalProperties: false
       title: ValidationError

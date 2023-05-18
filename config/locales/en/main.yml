@@ -286,6 +286,9 @@ en:
       edit: Edit Admin User
       index: Admin Users
       new: New Admin User
+    api:
+      docs:
+        swagger: Swagger
     celestial_object:
       edit: Edit Celestial Object
       index: Celestial Objects

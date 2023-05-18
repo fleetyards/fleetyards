@@ -3,20 +3,31 @@
 class ComponentsLoader
   attr_accessor :identifier, :type
 
-  def initialize(identifier: nil)
+  VALID_TYPES = %w[
+    schemas parameters securitySchemes requestBodies responses headers examples links callbacks
+  ].freeze
+
+  def initialize(identifier)
     @identifier = identifier
   end
 
-  def schemas(identifier)
-    @identifier = identifier
-    @type = "schemas"
+  VALID_TYPES.each do |type|
+    define_method(type) do
+      @type = type
 
-    load_components
+      load_components
+    end
   end
 
   private def load_components
     load_classes.map do |klass|
-      {extract_component_name(klass) => klass.new.to_schema.merge(title: extract_component_name(klass))}
+      klass.new.to_schema.map do |name, definition|
+        component_name = extract_component_name(klass, name)
+
+        {
+          component_name => definition.merge(title: component_name)
+        }
+      end.reduce(:merge)
     end.reduce(:merge)
   end
 
@@ -30,10 +41,12 @@ class ComponentsLoader
     end
   end
 
-  private def extract_component_name(klass)
+  private def extract_component_name(klass, name)
     klass_name = extract_class_name(klass)
 
     klass_name_parts = klass_name.split("::").reject(&:blank?)
+
+    klass_name_parts << name.to_s.camelize unless name == :base
 
     klass_name_parts.join
   end
@@ -47,6 +60,6 @@ class ComponentsLoader
   end
 
   private def base_path
-    @base_path ||= Rails.root.join("app/components")
+    @base_path ||= Rails.root.join("app/api_components")
   end
 end

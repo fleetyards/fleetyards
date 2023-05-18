@@ -1,14 +1,24 @@
 ---
 openapi: 3.0.1
 info:
-  title: FleetYards.net Command API v1
+  title: FleetYards.net Command API
   version: v1
 servers:
-- url: "{adminHost}"
+- url: "{protocol}://{host}"
   variables:
-    adminHost:
-      default: https://admin.fleetyards.net/api/v1
-- url: http://admin.fleetyards.test/api/v1
+    host:
+      default: admin.fleetyards.net/api/v1
+    protocol:
+      enum:
+      - https
+      - http
+      default: https
+- url: admin.fleetyards.test/api/v1
+  description: Production Server
+- url: admin.fleetyards.dev/api/v1
+  description: Staging Server
+- url: admin.fleetyards.test/api/v1
+  description: Dev Server
 paths:
   "/images":
     get:
@@ -54,3 +64,4 @@ paths:
       responses:
         '200':
           description: successful
+components: {}
