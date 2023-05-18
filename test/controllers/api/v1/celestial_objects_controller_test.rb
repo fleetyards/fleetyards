@@ -5,6 +5,10 @@ require "test_helper"
 module Api
   module V1
     class CelestialObjectsControllerTest < ActionDispatch::IntegrationTest
+      setup do
+        @request.host = "api.fleetyards.test"
+      end
+
       let(:crusader) { celestial_objects :crusader }
       let(:hurston) { celestial_objects :hurston }
       let(:yela) { celestial_objects :yela }
@@ -669,7 +673,7 @@ module Api
 
       describe "without session" do
         it "should return list for index" do
-          get "/api/v1/celestial-objects", as: :json
+          get "/v1/celestial-objects", as: :json, host: "api.fleetyards.test"
 
           assert_response :ok
           json = JSON.parse response.body
@@ -678,7 +682,7 @@ module Api
         end
 
         it "should return a single record for show" do
-          get "/api/v1/celestial-objects/#{crusader.slug}", as: :json
+          get "/v1/celestial-objects/#{crusader.slug}", as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -695,7 +699,7 @@ module Api
         end
 
         it "should return list for index" do
-          get "/api/v1/celestial-objects", as: :json
+          get "/v1/celestial-objects", as: :json
 
           assert_response :ok
           json = JSON.parse response.body
@@ -704,7 +708,7 @@ module Api
         end
 
         it "should return a single record for show" do
-          get "/api/v1/celestial-objects/#{crusader.slug}", as: :json
+          get "/v1/celestial-objects/#{crusader.slug}", as: :json
 
           assert_response :ok
           json = JSON.parse response.body

@@ -5,7 +5,7 @@ Rails.application.reloader.to_prepare do
 
   Rails.application.configure do
     config.api = {
-      "v1.yaml" => {
+      "v1/schema.yaml" => {
         openapi: "3.0.1",
         info: {
           title: "FleetYards.net API v1",
@@ -44,7 +44,7 @@ Rails.application.reloader.to_prepare do
           schemas: components_loader.schemas("v1")
         }
       },
-      "admin-v1.yaml" => {
+      "admin/v1/schema.yaml" => {
         openapi: "3.0.1",
         info: {
           title: "FleetYards.net Command API v1",

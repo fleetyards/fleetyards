@@ -5,7 +5,7 @@ module Api
     def v1
       @title = I18n.t("title.api.docs.v1")
 
-      schema_file = Rails.root.join("api/v1.yaml")
+      schema_file = Rails.root.join("swagger/v1/schema.yaml")
 
       not_found! unless File.exist?(schema_file)
 

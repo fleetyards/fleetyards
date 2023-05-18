@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/commodity_prices", type: :request, swagger_doc: "v1.yaml" do
+RSpec.describe "api/v1/commodity_prices", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :users
 
   before do

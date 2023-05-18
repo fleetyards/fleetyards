@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/fleet_stats", type: :request, swagger_doc: "v1.yaml" do
+RSpec.describe "api/v1/fleet_stats", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/fleets/{slug}/stats/models-by-size" do
     parameter name: "slug", in: :path, type: :string, description: "slug"
 

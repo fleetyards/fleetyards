@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/two_factors", type: :request, swagger_doc: "v1.yaml" do
+RSpec.describe "api/v1/two_factors", type: :request, swagger_doc: "v1/schema.yaml" do
   before do
     host! "api.fleetyards.test"
   end

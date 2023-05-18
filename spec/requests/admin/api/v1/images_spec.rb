@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin-v1.yaml" do
+RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
   before do
     host! "admin.fleetyards.test"
   end

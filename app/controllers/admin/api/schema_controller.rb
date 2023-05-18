@@ -6,11 +6,11 @@ module Admin
       def index
         authorize! :show, :admin
 
-        not_found! unless File.exist?(Rails.root.join("api/admin-#{params[:api_version]}.yaml"))
+        not_found! unless File.exist?(Rails.root.join("swagger/admin/#{params[:api_version]}/schema.yaml"))
 
         respond_to do |format|
           format.yaml do
-            render file: Rails.root.join("api/admin-#{params[:api_version]}.yaml")
+            render file: Rails.root.join("swagger/admin/#{params[:api_version]}/schema.yaml")
           end
         end
       end
