@@ -1,4 +1,9 @@
-interface SearchResult extends Model, Station, Shop {
+interface SearchResult
+  extends Model,
+    Station,
+    Shop,
+    CelestialObject,
+    Starsystem {
   resultType: string;
 }
 

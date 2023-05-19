@@ -1,71 +1,67 @@
 <template>
   <Panel
-    v-if="item"
-    :id="`${item.resultType}-${item.id}`"
+    v-if="location"
+    :id="`${item.resultType}-${location.id}`"
     class="celestial-object-panel"
   >
     <div class="panel-image text-center">
       <LazyImage
         :to="route"
-        :aria-label="item.name"
+        :aria-label="location.name"
         :src="item.storeImageMedium"
-        :alt="item.name"
+        :alt="location.name"
         class="image"
       />
     </div>
     <div class="panel-heading">
       <h2 class="panel-title">
         <router-link :to="route">
-          {{ item.name }}
+          {{ location.name }}
         </router-link>
 
         <br />
 
         <small class="text-muted">
-          {{ item.locationLabel }}
+          {{ location.locationLabel }}
         </small>
       </h2>
     </div>
   </Panel>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 
+type Props = {
+  item: SearchResult;
+};
+
+const props = defineProps<Props>();
+
+const location = computed(() => props.item as CelestialObject | Starsystem);
+
+const route = computed(() => {
+  switch (props.item.resultType) {
+    case "celestial_object":
+      return {
+        name: "celestial-object",
+        params: {
+          starsystem: (props.item as CelestialObject).starsystem.slug,
+          slug: props.item.slug,
+        },
+      };
+    case "starsystem":
+      return { name: "starsystem", params: { slug: props.item.slug } };
+    default:
+      return "";
+  }
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "CelestalObjectPanel",
-
-  components: {
-    Panel,
-    LazyImage,
-  },
-
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  computed: {
-    route() {
-      switch (this.item.resultType) {
-        case "celestial_object":
-          return {
-            name: "celestial-object",
-            params: {
-              starsystem: this.item.starsystem.slug,
-              slug: this.item.slug,
-            },
-          };
-        case "starsystem":
-          return { name: "starsystem", params: { slug: this.item.slug } };
-        default:
-          return "";
-      }
-    },
-  },
 };
 </script>
 

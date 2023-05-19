@@ -253,6 +253,8 @@ export default class HoloViewer extends Vue {
       transparent: true,
     });
 
+    const windowRefs = ["window", "glass"];
+
     this.model.traverse((node) => {
       if (!node.isMesh) return;
 
@@ -260,7 +262,9 @@ export default class HoloViewer extends Vue {
         if (node.backupMaterial) {
           node.material = node.backupMaterial;
         }
-      } else if (node.name.includes("window") || node.name.includes("Glass")) {
+      } else if (
+        windowRefs.some((item) => node.name.toLowerCase().includes(item))
+      ) {
         node.backupMaterial = node.material;
         node.material = windowMaterial;
       } else {

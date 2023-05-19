@@ -2,6 +2,16 @@ type CelestialObject = {
   id: string;
   slug: string;
   name: string;
+  type: string;
+  subType: string;
+  starsystem: Starsystem;
+  description: string;
+  habitable: boolean;
+  fairchanceact: boolean;
+  population: number;
+  economy: string;
+  danger: string;
+  locationLabel: string;
 };
 
 type CelestialObjectsFilter = {

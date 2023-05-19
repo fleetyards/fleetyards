@@ -2,6 +2,7 @@ type Starsystem = {
   id: string;
   slug: string;
   name: string;
+  locationLabel: string;
 };
 
 type StarsystemFilter = {
