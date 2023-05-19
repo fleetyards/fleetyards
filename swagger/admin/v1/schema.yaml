@@ -4,15 +4,6 @@ info:
   title: FleetYards.net Command API
   version: v1
 servers:
-- url: "{protocol}://{host}"
-  variables:
-    host:
-      default: admin.fleetyards.net/api/v1
-    protocol:
-      enum:
-      - https
-      - http
-      default: https
 - url: admin.fleetyards.test/api/v1
   description: Production Server
 - url: admin.fleetyards.dev/api/v1

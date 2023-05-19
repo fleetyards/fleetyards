@@ -5,13 +5,13 @@ Rails.application.reloader.to_prepare do
   admin_v1_components_loader = ComponentsLoader.new("admin/v1")
 
   Rails.application.configure do
-    config.api = {
+    config.api_schema.schemas = {
       "v1/schema.yaml" => {
         openapi: "3.0.1",
         info: {
           title: "FleetYards.net API",
           version: "v1",
-          description: File.read(Rails.root.join("docs/v1/api.md")),
+          # description: File.read(Rails.root.join("docs/v1/api.md")),
           "x-logo": {
             url: "http://fleetyards.test/docs/logo.png",
             altText: "FleetYards.net logo"
@@ -19,17 +19,6 @@ Rails.application.reloader.to_prepare do
         },
         servers: [
           {
-            url: "{protocol}://{host}",
-            variables: {
-              host: {
-                default: "api.fleetyards.net/v1"
-              },
-              protocol: {
-                enum: %w[https http],
-                default: "https"
-              }
-            }
-          }, {
             url: "https://api.fleetyards.net/v1",
             description: "Production Server"
           }, {
@@ -61,17 +50,6 @@ Rails.application.reloader.to_prepare do
         },
         servers: [
           {
-            url: "{protocol}://{host}",
-            variables: {
-              host: {
-                default: "admin.fleetyards.net/api/v1"
-              },
-              protocol: {
-                enum: %w[https http],
-                default: "https"
-              }
-            }
-          }, {
             url: "admin.fleetyards.test/api/v1",
             description: "Production Server"
           }, {

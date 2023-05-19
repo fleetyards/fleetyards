@@ -5,7 +5,7 @@ module Api
     def v1
       @title = I18n.t("title.api.docs.v1")
 
-      schema_file = Rails.root.join("swagger/v1/schema.yaml")
+      schema_file = Rails.root.join("#{schema_folder}/v1/schema.yaml")
 
       not_found! unless File.exist?(schema_file)
 
@@ -59,6 +59,10 @@ module Api
 
     private def api_version
       @api_version ||= params[:api_version].downcase
+    end
+
+    private def schema_folder
+      Rails.configuration.api_schema.folder
     end
   end
 end
