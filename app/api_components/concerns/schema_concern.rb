@@ -7,10 +7,9 @@ module SchemaConcern
     class_attribute :schema_value
 
     class << self
-      def schema(*args, **kwargs)
+      def schema(*args, extends: nil)
         name = (args.size == 2) ? args.first : :base
         definition = (args.size == 2) ? args.last : args.first
-        extends = kwargs[:extends]
 
         self.schema_value ||= {}
 
