@@ -224,6 +224,7 @@ en:
           twelve: 12
           two: 2
           vehicle: V (0)
+          snub: Snub (0)
       progress_tracker_item:
         statuses:
           done: Done
