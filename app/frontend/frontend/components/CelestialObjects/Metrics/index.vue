@@ -88,6 +88,7 @@ type Props = {
   celestialObject: CelestialObject;
   padding?: boolean;
 };
+
 withDefaults(defineProps<Props>(), {
   padding: false,
 });

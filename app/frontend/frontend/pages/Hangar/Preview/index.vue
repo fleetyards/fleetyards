@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t("headlines.hangar.preview.h1") }}
+              {{ t("headlines.hangar.preview.h1") }}
             </h1>
           </div>
         </div>
@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col-12">
             <h2 class="text-center main-headline">
-              {{ $t("headlines.hangar.preview.h2") }}
+              {{ t("headlines.hangar.preview.h2") }}
             </h2>
           </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="row">
           <div class="col-12">
             <h3 class="text-center main-subheadline">
-              {{ $t("headlines.hangar.preview.h3") }}
+              {{ t("headlines.hangar.preview.h3") }}
             </h3>
           </div>
         </div>
@@ -35,11 +35,11 @@
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
-                  {{ $t("texts.hangarPreview.notified.headline") }}
+                  {{ t("texts.hangarPreview.notified.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
-                <p v-html="$t('texts.hangarPreview.notified.text')" />
+                <p v-html="t('texts.hangarPreview.notified.text')" />
               </div>
             </Panel>
           </div>
@@ -47,11 +47,11 @@
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
-                  {{ $t("texts.hangarPreview.manage.headline") }}
+                  {{ t("texts.hangarPreview.manage.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
-                <p v-html="$t('texts.hangarPreview.manage.text')" />
+                <p v-html="t('texts.hangarPreview.manage.text')" />
               </div>
             </Panel>
           </div>
@@ -59,11 +59,11 @@
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
-                  {{ $t("texts.hangarPreview.fleetchart.headline") }}
+                  {{ t("texts.hangarPreview.fleetchart.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
-                <p v-html="$t('texts.hangarPreview.fleetchart.text')" />
+                <p v-html="t('texts.hangarPreview.fleetchart.text')" />
               </div>
             </Panel>
           </div>
@@ -84,13 +84,13 @@
               size="large"
               :block="true"
             >
-              {{ $t("actions.signUp") }}
+              {{ t("actions.signUp") }}
             </Btn>
 
             <hr />
 
             <p class="text-center">
-              {{ $t("labels.alreadyRegistered") }}
+              {{ t("labels.alreadyRegistered") }}
             </p>
 
             <Btn
@@ -104,7 +104,7 @@
               :block="true"
               @click.native="hidePreview"
             >
-              {{ $t("actions.login") }}
+              {{ t("actions.login") }}
             </Btn>
           </div>
         </div>
@@ -113,23 +113,22 @@
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
+import Store from "@/frontend/lib/Store";
+import { useI18n } from "@/frontend/composables/useI18n";
 
+const hidePreview = () => {
+  Store.dispatch("hangar/hidePreview");
+};
+
+const { t } = useI18n();
+</script>
+
+<script lang="ts">
 export default {
   name: "HangarPreview",
-
-  components: {
-    Btn,
-    Panel,
-  },
-
-  methods: {
-    hidePreview() {
-      this.$store.dispatch("hangar/hidePreview");
-    },
-  },
 };
 </script>
 

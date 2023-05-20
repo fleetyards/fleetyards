@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="filter">
+  <form @submit.prevent="() => filter">
     <FormInput
       id="model-name"
       v-model="form.modelNameCont"
@@ -10,7 +10,7 @@
 
     <FilterGroup
       v-model="form.memberIn"
-      :label="$t('labels.filters.fleets.member')"
+      :label="t('labels.filters.fleets.member')"
       :fetch-path="`fleets/${$route.params.slug}/members`"
       name="member"
       value-attr="username"
@@ -24,7 +24,7 @@
 
     <FilterGroup
       v-model="form.manufacturerIn"
-      :label="$t('labels.filters.models.manufacturer')"
+      :label="t('labels.filters.models.manufacturer')"
       fetch-path="manufacturers/with-models"
       name="manufacturer"
       value-attr="slug"
@@ -37,7 +37,7 @@
 
     <FilterGroup
       v-model="form.productionStatusIn"
-      :label="$t('labels.filters.models.productionStatus')"
+      :label="t('labels.filters.models.productionStatus')"
       fetch-path="models/production-states"
       name="production-status"
       :multiple="true"
@@ -46,7 +46,7 @@
 
     <FilterGroup
       v-model="form.classificationIn"
-      :label="$t('labels.filters.models.classification')"
+      :label="t('labels.filters.models.classification')"
       fetch-path="models/classifications"
       name="classification"
       :searchable="true"
@@ -56,7 +56,7 @@
 
     <FilterGroup
       v-model="form.focusIn"
-      :label="$t('labels.filters.models.focus')"
+      :label="t('labels.filters.models.focus')"
       fetch-path="models/focus"
       name="focus"
       :searchable="true"
@@ -66,7 +66,7 @@
 
     <FilterGroup
       v-model="form.sizeIn"
-      :label="$t('labels.filters.models.size')"
+      :label="t('labels.filters.models.size')"
       fetch-path="models/sizes"
       name="size"
       :multiple="true"
@@ -76,7 +76,7 @@
     <FilterGroup
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
-      :label="$t('labels.filters.models.pledgePrice')"
+      :label="t('labels.filters.models.pledgePrice')"
       name="pledge-price"
       :multiple="true"
       :no-label="true"
@@ -85,7 +85,7 @@
     <FilterGroup
       v-model="form.priceIn"
       :options="priceOptions"
-      :label="$t('labels.filters.models.price')"
+      :label="t('labels.filters.models.price')"
       name="price"
       :multiple="true"
       :no-label="true"
@@ -150,16 +150,16 @@
 
     <RadioList
       v-model="form.onSaleEq"
-      :label="$t('labels.filters.models.onSale')"
-      :reset-label="$t('labels.all')"
+      :label="t('labels.filters.models.onSale')"
+      :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="sale"
     />
 
     <RadioList
       v-model="form.loanerEq"
-      :label="$t('labels.filters.vehicles.loaner')"
-      :reset-label="$t('labels.hide')"
+      :label="t('labels.filters.vehicles.loaner')"
+      :reset-label="t('labels.hide')"
       :options="[
         {
           name: 'Show',
@@ -179,97 +179,105 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
+  booleanOptions as booleanFilterOptions,
+  priceOptions as priceFilterOptions,
+  pledgePriceOptions as pledgePriceFilterOptions,
 } from "@/frontend/utils/FilterOptions";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilters } from "@/frontend/composables/useFilters";
 
+type FleetsFilterForm = {
+  modelNameCont?: string;
+  onSaleEq?: string;
+  loanerEq?: string;
+  priceLteq?: string;
+  priceGteq?: string;
+  pledgePriceLteq?: string;
+  pledgePriceGteq?: string;
+  lengthLteq?: string;
+  lengthGteq?: string;
+  manufacturerIn?: string[];
+  classificationIn?: string[];
+  focusIn?: string[];
+  sizeIn?: string[];
+  priceIn?: string[];
+  pledgePriceIn?: string[];
+  productionStatusIn?: string[];
+  memberIn?: string[];
+};
+
+const booleanOptions = booleanFilterOptions;
+const priceOptions = priceFilterOptions;
+const pledgePriceOptions = pledgePriceFilterOptions;
+
+const { t } = useI18n();
+
+const route = useRoute();
+
+const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
+
+const { resetFilter, isFilterSelected, filter, form, updateFilter } =
+  useFilters({
+    modelNameCont: query.value.modelNameCont,
+    onSaleEq: query.value.onSaleEq,
+    loanerEq: query.value.loanerEq,
+    priceLteq: query.value.priceLteq,
+    priceGteq: query.value.priceGteq,
+    pledgePriceLteq: query.value.pledgePriceLteq,
+    pledgePriceGteq: query.value.pledgePriceGteq,
+    lengthLteq: query.value.lengthLteq,
+    lengthGteq: query.value.lengthGteq,
+    manufacturerIn: query.value.manufacturerIn || [],
+    classificationIn: query.value.classificationIn || [],
+    focusIn: query.value.focusIn || [],
+    sizeIn: query.value.sizeIn || [],
+    priceIn: query.value.priceIn || [],
+    pledgePriceIn: query.value.pledgePriceIn || [],
+    productionStatusIn: query.value.productionStatusIn || [],
+    memberIn: query.value.memberIn || [],
+  });
+
+watch(
+  () => route.query,
+  () => {
+    updateFilter({
+      modelNameCont: query.value.modelNameCont,
+      onSaleEq: query.value.onSaleEq,
+      loanerEq: query.value.loanerEq,
+      priceLteq: query.value.priceLteq,
+      priceGteq: query.value.priceGteq,
+      pledgePriceLteq: query.value.pledgePriceLteq,
+      pledgePriceGteq: query.value.pledgePriceGteq,
+      lengthLteq: query.value.lengthLteq,
+      lengthGteq: query.value.lengthGteq,
+      manufacturerIn: query.value.manufacturerIn || [],
+      classificationIn: query.value.classificationIn || [],
+      focusIn: query.value.focusIn || [],
+      sizeIn: query.value.sizeIn || [],
+      priceIn: query.value.priceIn || [],
+      pledgePriceIn: query.value.pledgePriceIn || [],
+      productionStatusIn: query.value.productionStatusIn || [],
+      memberIn: query.value.memberIn || [],
+    });
+  },
+  { deep: true }
+);
+</script>
+
+<script lang="ts">
 export default {
   name: "FleetFilterForm",
-
-  components: {
-    RadioList,
-    FilterGroup,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-    return {
-      form: {
-        modelNameCont: query.modelNameCont,
-        onSaleEq: query.onSaleEq,
-        loanerEq: query.loanerEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
-        classificationIn: query.classificationIn || [],
-        focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-        memberIn: query.memberIn || [],
-      },
-    };
-  },
-
-  computed: {
-    booleanOptions() {
-      return booleanOptions;
-    },
-
-    priceOptions() {
-      return priceOptions;
-    },
-
-    pledgePriceOptions() {
-      return pledgePriceOptions;
-    },
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        modelNameCont: query.modelNameCont,
-        onSaleEq: query.onSaleEq,
-        loanerEq: query.loanerEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
-        classificationIn: query.classificationIn || [],
-        focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-        memberIn: query.memberIn || [],
-      };
-    },
-  },
 };
 </script>

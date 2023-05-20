@@ -45,6 +45,7 @@
 
   .fleetchart-views-items {
     display: flex;
+    justify-content: center;
     gap: 20px;
 
     > div {
@@ -54,6 +55,7 @@
 
       img {
         max-width: 70%;
+        max-height: 70vh;
       }
 
       &.big {
