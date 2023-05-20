@@ -158,7 +158,7 @@ class Vehicle < ApplicationRecord
   end
 
   def create_loaner(model_loaner)
-    return if Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id:)
+    return if Vehicle.exists?(loaner: true, vehicle_id: id, model_id: model_loaner.id, wanted:, user_id:)
 
     Vehicle.create(
       loaner: true,
@@ -167,7 +167,7 @@ class Vehicle < ApplicationRecord
       vehicle_id: id,
       public: false,
       wanted:,
-      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, user_id:)
+      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, wanted:, user_id:)
     )
   end
 

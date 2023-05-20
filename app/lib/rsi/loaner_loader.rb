@@ -25,7 +25,7 @@ module Rsi
 
       (page.css("table tbody tr") || []).each do |loaner_data_row|
         name = loaner_data_row.css("td:first-child").text.squish
-        loaners = loaner_data_row.css("td:last-child").text.split(", ")
+        loaners = loaner_data_row.css("td:last-child").text.split(",").map(&:squish)
 
         found_models = Model.where(name: models_map(name)).all
 
@@ -52,7 +52,7 @@ module Rsi
 
       ModelLoaner.where.not(id: model_loaners).destroy_all
 
-      [missing_loaners, missing_models]
+      [missing_loaners, missing_models, model_loaners]
     end
 
     private def fetch_loaners
