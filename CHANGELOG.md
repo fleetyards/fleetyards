@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.21.2](https://github.com/fleetyards/fleetyards/compare/v5.21.1...v5.21.2) (2023-05-20)
+
+
+### Bug Fixes
+
+* **loaner:** update importer to correctly add loaners for wishlist and hangar ([de56bf2](https://github.com/fleetyards/fleetyards/commit/de56bf20cb105881426e7a1d98472c16e06715ef))
+
 ### [5.21.1](https://github.com/fleetyards/fleetyards/compare/v5.21.0...v5.21.1) (2023-05-19)
 
 
