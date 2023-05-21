@@ -100,9 +100,9 @@
 #  store_images_updated_at    :datetime
 #  store_url                  :string(255)
 #  top_view                   :string
-#  top_view_colore_height     :integer
-#  top_view_colore_width      :integer
 #  top_view_colored           :string
+#  top_view_colored_height    :integer
+#  top_view_colored_width     :integer
 #  top_view_height            :integer
 #  top_view_width             :integer
 #  upgrade_kits_count         :integer          default(0)
