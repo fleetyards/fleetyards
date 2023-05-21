@@ -52,7 +52,7 @@ module Rsi
 
       ModelLoaner.where.not(id: model_loaners).destroy_all
 
-      [missing_loaners, missing_models, model_loaners]
+      [missing_loaners, missing_models]
     end
 
     private def fetch_loaners
