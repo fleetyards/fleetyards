@@ -7,14 +7,8 @@ require "rsi/models_loader"
 class HangarImporterTest < ActiveSupport::TestCase
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
-  let(:import) do
-    Imports::HangarImport.create(
-      user_id: user.id,
-      import: Rails.root.join("test/fixtures/imports/export.json").read
-    )
-  end
+  let(:import) { ::Imports::HangarImport.create!(user_id: user.id, import: import_file) }
   let(:user) { users :data }
-  let(:subject) { ::HangarImporter.new(import).run }
   let(:imported_ships) do
     [
       "100i",
@@ -184,6 +178,7 @@ class HangarImporterTest < ActiveSupport::TestCase
       "X1 Velocity"
     ]
   end
+  let(:import_file) { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/export.json")) }
 
   before do
     VCR.use_cassette("rsi_models_loader_all") do
@@ -191,14 +186,20 @@ class HangarImporterTest < ActiveSupport::TestCase
     end
   end
 
+  after do
+    Import.destroy_all
+  end
+
   it "imports all data" do
+    result = ::HangarImporter.new(import).run
+
     assert_equal(
       {
         missing: [],
         imported: imported_ships,
         success: true
       },
-      subject
+      result
     )
   end
 end
