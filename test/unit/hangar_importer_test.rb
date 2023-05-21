@@ -7,8 +7,14 @@ require "rsi/models_loader"
 class HangarImporterTest < ActiveSupport::TestCase
   let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
+  let(:import) do
+    Imports::HangarImport.create(
+      user_id: user.id,
+      import: Rails.root.join("test/fixtures/imports/export.json").read
+    )
+  end
   let(:user) { users :data }
-  let(:subject) { ::HangarImporter.new(data).run(user.id) }
+  let(:subject) { ::HangarImporter.new(import).run }
   let(:imported_ships) do
     [
       "100i",
@@ -184,8 +190,6 @@ class HangarImporterTest < ActiveSupport::TestCase
       loader.all
     end
   end
-
-  let(:data) { JSON.parse(Rails.root.join("test/fixtures/imports/export.json").read) }
 
   it "imports all data" do
     assert_equal(
