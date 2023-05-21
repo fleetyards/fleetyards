@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.21.3](https://github.com/fleetyards/fleetyards/compare/v5.21.2...v5.21.3) (2023-05-21)
+
+
+### Bug Fixes
+
+* **hangar-import:** update importer to better handle error cases ([e7740a4](https://github.com/fleetyards/fleetyards/commit/e7740a421566b00d9571aae7ecdb98c798d68e6a))
+* **loaners:** update loaners cleanup after new import ([8ba63ea](https://github.com/fleetyards/fleetyards/commit/8ba63eab216e01c83ecdcd5c6c1cbaafabe3aeec))
+
 ### [5.21.2](https://github.com/fleetyards/fleetyards/compare/v5.21.1...v5.21.2) (2023-05-20)
 
 
