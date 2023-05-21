@@ -8,6 +8,8 @@
 #  aasm_state  :string
 #  failed_at   :datetime
 #  finished_at :datetime
+#  import      :string
+#  import_data :text
 #  info        :text
 #  input       :jsonb
 #  output      :jsonb

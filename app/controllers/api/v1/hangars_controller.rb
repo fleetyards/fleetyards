@@ -55,13 +55,17 @@ module Api
       def import
         authorize! :update, :api_hangar
 
-        import_data = JSON.parse(params[:import].read)
+        import = Imports::HangarImport.new(import_params.merge(user_id: current_user.id))
 
-        render json: ValidationError.new("vehicle.import", message: I18n.t("messages.hangar_import.no_data")), status: :bad_request if import_data.blank?
+        unless import.save
+          puts import.import_integrity_errors.inspect
+          render json: ValidationError.new("hangar.import", errors: import.errors), status: :bad_request
+          return
+        end
 
-        @response = ::HangarImporter.new(import_data).run(current_user.id)
+        @response = ::HangarImporter.new(import).run
       rescue JSON::ParserError => e
-        render json: ValidationError.new("vehicle.import", message: e), status: :bad_request
+        render json: ValidationError.new("hangar.import", message: e), status: :bad_request
       end
 
       def export
@@ -122,6 +126,10 @@ module Api
       def hangar
         authorize! :index, :api_hangar
         @vehicles = current_user.vehicles.where(loaner: false).purchased.visible
+      end
+
+      private def import_params
+        @import_params ||= params.permit(:import)
       end
     end
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HangarImporter
-  attr_accessor :data
+  attr_accessor :import
 
   MODEL_FIND_QUERY = [
     "lower(name) = :name",
@@ -14,27 +14,19 @@ class HangarImporter
     "rsi_slug = :normalized_name"
   ].freeze
 
-  def initialize(data)
-    @data = (data || []).map do |item|
-      return item unless item.is_a? Hash
-
-      item.transform_keys(&:underscore)
-        .transform_keys(&:to_sym)
-    end.filter do |item|
-      item[:type].blank? || item[:type] == "ship"
-    end
+  def initialize(import)
+    @import = import
   end
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/CyclomaticComplexity
-  def run(user_id)
-    import = Imports::HangarImport.create(user_id:, input: @data.to_json)
-    import.start!
+  def run
+    @import.start!
 
     missing_models = []
     imported_models = []
 
-    @data.each do |item|
+    @import.import_data.each do |item|
       name = item[:name]
       name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
       name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
@@ -54,7 +46,7 @@ class HangarImporter
 
       params = {
         notify: false,
-        user_id:,
+        user_id: @import.user_id,
         name: item[:ship_name] || item[:custom_name],
         serial: item[:ship_serial],
         flagship: item[:flagship] || false,
@@ -63,7 +55,7 @@ class HangarImporter
         public: item[:public] || false,
         name_visible: item[:name_visible] || false,
         sale_notify: item[:sale_notify] || false,
-        hangar_group_ids: HangarGroup.where(user_id:, name: item[:groups]).pluck(:id),
+        hangar_group_ids: HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id),
         model_module_ids: ModelModule.where(name: item[:modules]).pluck(:id),
         model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
       }
@@ -86,22 +78,22 @@ class HangarImporter
     end
 
     # rubocop:disable Rails/SkipsModelValidations
-    Vehicle.where(user_id:).update_all(notify: true)
+    Vehicle.where(user_id: @import.user_id).update_all(notify: true)
     # rubocop:enable Rails/SkipsModelValidations
 
     output = {
       missing: missing_models.sort,
       imported: imported_models.sort,
-      success: missing_models.size < @data.size
+      success: missing_models.size < @import.import_data.size
     }
 
-    import.update!(output: output)
-    import.finish!
+    @import.update!(output: output)
+    @import.finish!
 
     output
   rescue => e
-    import.fail!
-    import.update!(info: e.message)
+    @import.fail!
+    @import.update!(info: e.message)
 
     raise e
   end

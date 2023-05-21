@@ -21,3 +21,5 @@ en:
       update: Group could not be updated
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
+    hangar:
+      import: Import failed
