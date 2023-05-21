@@ -58,8 +58,12 @@ module Api
         import = Imports::HangarImport.new(import_params.merge(user_id: current_user.id))
 
         unless import.save
-          puts import.import_integrity_errors.inspect
           render json: ValidationError.new("hangar.import", errors: import.errors), status: :bad_request
+          return
+        end
+
+        if import.import_data.blank?
+          render json: {code: "hangar.import", message: I18n.t("errors.messages.hangar.import.no_data")}, status: :bad_request
           return
         end
 

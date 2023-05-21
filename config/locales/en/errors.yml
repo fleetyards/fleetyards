@@ -18,3 +18,6 @@ en:
     messages:
       extension_allowlist_error: "extension not allowed. You are not allowed to upload %{extension} files, allowed types: %{allowed_types}"
       content_type_allowlist_error: "content type not allowed. You are not allowed to upload %{content_type} files, allowed types: %{allowed_types}"
+      hangar:
+        import:
+          no_data: "No data found in the import file"

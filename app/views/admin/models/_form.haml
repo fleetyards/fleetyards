@@ -302,6 +302,59 @@
         = form_errors model, :angled_view
 
   .row
+    .col-12.col-md-4.form-group{class: form_error?(model, :top_view_colored)}
+      = form.label :top_view_colored
+      = form.file_field :top_view_colored, class: 'form-control'
+      - if model.top_view_colored_cache
+        = form.hidden_field :top_view_cache
+      %br
+      - if model.top_view_colored?
+        = image_tag(model.top_view_colored.small.url)
+        = form.check_box :remove_top_view_colored
+        Remove Image
+      %small
+        = form_errors model, :top_view_colored
+
+    .col-12.col-md-4.form-group{class: form_error?(model, :side_view_colored)}
+      = form.label :side_view_colored
+      = form.file_field :side_view_colored, class: 'form-control'
+      - if model.side_view_colored_cache
+        = form.hidden_field :side_view_colored_cache
+      %br
+      - if model.side_view_colored?
+        = image_tag(model.side_view_colored.url)
+        = form.check_box :remove_side_view_colored
+        Remove Image
+      %small
+        = form_errors model, :side_view_colored
+
+    .col-12.col-md-4.form-group{class: form_error?(model, :front_view_colored)}
+      = form.label :front_view_colored
+      = form.file_field :front_view_colored, class: 'form-control'
+      - if model.front_view_colored_cache
+        = form.hidden_field :front_view_colored_cache
+      %br
+      - if model.front_view_colored?
+        = image_tag(model.front_view_colored.url)
+        = form.check_box :remove_front_view_colored
+        Remove Image
+      %small
+        = form_errors model, :front_view_colored
+
+    .col-12.col-md-4.form-group{class: form_error?(model, :angled_view_colored)}
+      = form.label :angled_view_colored
+      = form.file_field :angled_view_colored, class: 'form-control'
+      - if model.angled_view_colored_cache
+        = form.hidden_field :angled_view_colored_cache
+      %br
+      - if model.angled_view_colored?
+        = image_tag(model.angled_view_colored.small.url)
+        = form.check_box :remove_angled_view_colored
+        Remove Image
+      %small
+        = form_errors model, :angled_view_colored
+
+  .row
     .col-12.col-md-4.form-group{class: form_error?(model, :holo)}
       = form.label :holo
       = form.file_field :holo, class: 'form-control'

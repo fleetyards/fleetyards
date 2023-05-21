@@ -163,7 +163,11 @@ module Admin
         :yaw_max, :roll_max, :max_crew, :min_crew, :price, :last_pledge_price, :rsi_id, :dock_size,
         :sc_identifier, :erkul_identifier, :sales_page_url, :angled_view, :angled_view_cache,
         :remove_angled_view, :front_view, :front_view_cache, :remove_front_view,
-        :fleetchart_offset_length,
+        :fleetchart_offset_length, :angled_view_colored, :angled_view_colored_cache,
+        :remove_angled_view_colored, :top_view_colored, :top_view_colored_cache,
+        :remove_top_view_colored, :side_view_colored, :side_view_colored_cache,
+        :remove_side_view_colored, :front_view_colored, :front_view_colored_cache,
+        :remove_front_view_colored,
         videos_attributes: %i[id url video_type _destroy],
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )

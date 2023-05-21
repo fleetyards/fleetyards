@@ -26,7 +26,7 @@ class HangarImporter
     missing_models = []
     imported_models = []
 
-    @import.import_data.each do |item|
+    (@import.import_data || []).each do |item|
       name = item[:name]
       name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
       name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?

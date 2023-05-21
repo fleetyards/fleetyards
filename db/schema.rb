@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_21_095410) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_21_194918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -635,6 +635,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_095410) do
     t.string "front_view"
     t.integer "front_view_width"
     t.integer "front_view_height"
+    t.string "angled_view_colored"
+    t.integer "angled_view_colored_width"
+    t.integer "angled_view_colored_height"
+    t.string "side_view_colored"
+    t.integer "side_view_colored_width"
+    t.integer "side_view_colored_height"
+    t.string "top_view_colored"
+    t.integer "top_view_colore_width"
+    t.integer "top_view_colore_height"
+    t.string "front_view_colored"
+    t.integer "front_view_colored_width"
+    t.integer "front_view_colored_height"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
