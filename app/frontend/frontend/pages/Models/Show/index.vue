@@ -364,6 +364,14 @@ const storeImage = computed(() => {
 });
 
 const fleetchartImageAngled = computed(() => {
+  if (model.value?.angledViewColored) {
+    if (mobile.value) {
+      return model.value?.angledViewColoredMedium;
+    }
+
+    return model.value?.angledViewColoredLarge;
+  }
+
   if (mobile.value) {
     return model.value?.angledViewMedium;
   }
@@ -372,6 +380,14 @@ const fleetchartImageAngled = computed(() => {
 });
 
 const fleetchartImageFront = computed(() => {
+  if (model.value?.frontViewColored) {
+    if (mobile.value) {
+      return model.value?.frontViewColoredMedium;
+    }
+
+    return model.value?.frontViewColoredLarge;
+  }
+
   if (mobile.value) {
     return model.value?.frontViewMedium;
   }
@@ -380,6 +396,14 @@ const fleetchartImageFront = computed(() => {
 });
 
 const fleetchartImageTop = computed(() => {
+  if (model.value?.topViewColored) {
+    if (mobile.value) {
+      return model.value?.topViewColoredMedium;
+    }
+
+    return model.value?.topViewColoredLarge;
+  }
+
   if (mobile.value) {
     return model.value?.topViewMedium;
   }
@@ -388,6 +412,14 @@ const fleetchartImageTop = computed(() => {
 });
 
 const fleetchartImageSide = computed(() => {
+  if (model.value?.sideViewColored) {
+    if (mobile.value) {
+      return model.value?.sideViewColoredMedium;
+    }
+
+    return model.value?.sideViewColoredLarge;
+  }
+
   if (mobile.value) {
     return model.value?.sideViewMedium;
   }

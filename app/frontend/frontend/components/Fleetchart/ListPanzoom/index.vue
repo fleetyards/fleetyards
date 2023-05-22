@@ -50,6 +50,14 @@
           <i class="fad fa-th" />
         </Btn>
 
+        <Btn
+          size="small"
+          :active="coloredEnabled"
+          @click.native="toggleColored"
+        >
+          <i class="fad fa-palette" />
+        </Btn>
+
         <BtnDropdown size="small">
           <template v-if="downloadName">
             <DownloadScreenshotBtn
@@ -114,6 +122,7 @@
               :show-status="showStatus"
               :size-multiplicator="sizeMultiplicator"
               :scale="scale"
+              :colored="coloredEnabled"
             />
           </transition-group>
 
@@ -196,6 +205,8 @@ export default class FleetchartListPanzoom extends Vue {
   marginBottom = 40;
 
   gridEnabled = false;
+
+  coloredEnabled = false;
 
   screenWidth: number | null = null;
 
@@ -414,6 +425,10 @@ export default class FleetchartListPanzoom extends Vue {
     this.gridEnabled = !this.gridEnabled;
 
     this.drawGridLines();
+  }
+
+  toggleColored() {
+    this.coloredEnabled = !this.coloredEnabled;
   }
 
   setViewpoint(viewpoint) {

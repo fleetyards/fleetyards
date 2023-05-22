@@ -15,6 +15,7 @@ type Vehicle = {
   username?: string;
   storeImageMedium: string;
   storeImageSmall: string;
+  modulePackage: ModelModulePackage;
 };
 
 type VehicleForm = {

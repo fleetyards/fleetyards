@@ -38,368 +38,298 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import { useI18n } from "@/frontend/composables/useI18n";
 import FleetchartItemImage from "./Image/index.vue";
 
-@Component({
-  components: {
-    Btn,
-    FleetchartItemImage,
-  },
-})
-export default class FleetchartListItem extends Vue {
-  @Prop({ required: true }) item!: Model | Vehicle;
+type ViewType = "top" | "side" | "angled" | "front";
 
-  @Prop({ default: "side" }) viewpoint!: string;
+type ModelViewType =
+  | "topView"
+  | "topViewColored"
+  | "sideView"
+  | "sideViewColored"
+  | "angledView"
+  | "angledViewColored"
+  | "frontView"
+  | "frontViewColored";
 
-  @Prop({ default: false }) showLabel!: boolean;
+type Props = {
+  item: Model | Vehicle;
+  viewpoint?: ViewType;
+  showLabel?: boolean;
+  showStatus?: boolean;
+  sizeMultiplicator?: number;
+  scale?: number;
+  colored?: boolean;
+};
 
-  @Prop({ default: false }) showStatus!: boolean;
+const props = withDefaults(defineProps<Props>(), {
+  viewpoint: "side",
+  showLabel: false,
+  showStatus: false,
+  sizeMultiplicator: 1,
+  scale: 1,
+  colored: false,
+});
 
-  @Prop({ default: 1 }) sizeMultiplicator!: number;
+const { t } = useI18n();
 
-  @Prop({ default: 1 }) scale!: number;
-
-  get cssClasses() {
-    const cssClasses = [`fleetchart-item-${this.model.slug}`];
-
-    if (this.showStatus) {
-      cssClasses.push(`status-${this.model.productionStatus}`);
-    }
-
-    if (this.showLabel) {
-      cssClasses.push("fleetchart-item-with-labels");
-    }
-
-    return cssClasses;
+const view = computed<ModelViewType>(() => {
+  if (props.colored && model.value[`${props.viewpoint}ViewColored`]) {
+    return `${props.viewpoint}ViewColored`;
   }
 
-  get model() {
-    if (this.item && this.item.model) {
-      return this.item.model;
-    }
+  return `${props.viewpoint}View`;
+});
 
-    return this.item;
+const model = computed<Model>(() => {
+  if (props.item && (props.item as Vehicle).model) {
+    return (props.item as Vehicle).model as Model;
   }
 
-  get vehicle() {
-    if (this.item && this.item.model) {
-      return this.item;
-    }
+  return props.item as Model;
+});
 
-    return null;
+const vehicle = computed<Vehicle | null>(() => {
+  if (props.item && (props.item as Vehicle).model) {
+    return props.item as Vehicle;
   }
 
-  get paint() {
-    if (this.vehicle && this.vehicle.paint) {
-      return this.vehicle.paint;
-    }
+  return null;
+});
 
-    return null;
+const paint = computed<ModelPaint | null>(() => {
+  if (vehicle.value && vehicle.value.paint) {
+    return props.item as ModelPaint;
   }
 
-  get modulePackage() {
-    if (this.vehicle && this.vehicle.modulePackage) {
-      return this.vehicle.modulePackage;
-    }
+  return null;
+});
 
-    return null;
+const cssClasses = computed(() => {
+  const cssClasses = [`fleetchart-item-${model.value.slug}`];
+
+  if (props.showStatus) {
+    cssClasses.push(`status-${model.value.productionStatus}`);
   }
 
-  get image() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const url = this.extractImageFromModel(this.modulePackage);
-      if (url) {
-        return url;
-      }
-    }
-
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const url = this.extractImageFromModel(this.paint);
-      if (url) {
-        return url;
-      }
-    }
-
-    return this.extractImageFromModel(this.model);
+  if (props.showLabel) {
+    cssClasses.push("fleetchart-item-with-labels");
   }
 
-  get viewpointTop() {
-    return this.viewpoint === "top";
+  return cssClasses;
+});
+
+const modulePackage = computed<ModelModulePackage | null>(() => {
+  if (vehicle.value && vehicle.value.modulePackage) {
+    return vehicle.value.modulePackage as ModelModulePackage;
   }
 
-  get viewpointSide() {
-    return this.viewpoint === "side";
+  return null;
+});
+
+const image = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.topView ||
+      modulePackage.value.sideView ||
+      modulePackage.value.angledView)
+  ) {
+    const url = extractImageFromModel(modulePackage.value);
+    if (url) {
+      return url;
+    }
   }
 
-  get viewpointAngled() {
-    return this.viewpoint === "angled";
+  if (
+    paint.value &&
+    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+  ) {
+    const url = extractImageFromModel(paint.value);
+    if (url) {
+      return url;
+    }
   }
 
-  get productionStatus() {
-    return this.$t(
-      `labels.model.productionStatus.${this.model.productionStatus}`
-    );
+  return extractImageFromModel(model.value);
+});
+
+const productionStatus = computed(() =>
+  t(`labels.model.productionStatus.${model.value.productionStatus}`)
+);
+
+const name = computed(() => {
+  if (vehicle.value && vehicle.value.name) {
+    return vehicle.value.name;
   }
 
-  get tooltip() {
-    if (this.showStatus) {
-      return `${this.label}<small>${this.productionStatus}`;
-    }
+  return null;
+});
 
-    return this.label;
+const modelName = computed(() => {
+  if (paint.value && paint.value.rsiId) {
+    return `${model.value.manufacturer.code} ${paint.value.name}`;
   }
 
-  get name() {
-    if (this.vehicle && this.vehicle.name) {
-      return this.vehicle.name;
-    }
+  return `${model.value.manufacturer.code} ${model.value.name}`;
+});
 
-    return null;
+const length = computed(
+  () => model.value.fleetchartLength * props.sizeMultiplicator
+);
+
+const height = computed(
+  () => (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value
+);
+
+const imageWidth = computed(() =>
+  Math.min(
+    (height.value * sourceImageWidth.value) / sourceImageHeight.value,
+    length.value
+  )
+);
+
+const sourceImageHeightMax = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.topView ||
+      modulePackage.value.sideView ||
+      modulePackage.value.angledView)
+  ) {
+    const height = extractMaxHeightFromModel(modulePackage.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get modelName() {
-    if (this.paint && this.paint.rsiId) {
-      return `${this.model.manufacturer.code} ${this.paint.name}`;
+  if (
+    paint.value &&
+    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+  ) {
+    const height = extractMaxHeightFromModel(paint.value);
+    if (height) {
+      return height;
     }
-
-    return `${this.model.manufacturer.code} ${this.model.name}`;
   }
 
-  get length() {
-    return this.model.fleetchartLength * this.sizeMultiplicator;
+  return extractMaxHeightFromModel(model.value);
+});
+
+const sourceImageHeight = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.topView ||
+      modulePackage.value.sideView ||
+      modulePackage.value.angledView)
+  ) {
+    const height = extractImageHeightFromModel(modulePackage.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get height() {
-    return (this.length * this.sourceImageHeightMax) / this.sourceImageWidthMax;
+  if (
+    paint.value &&
+    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+  ) {
+    const height = extractImageHeightFromModel(paint.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get imageWidth() {
-    return Math.min(
-      (this.height * this.sourceImageWidth) / this.sourceImageHeight,
-      this.length
-    );
+  return extractImageHeightFromModel(model.value);
+});
+
+const sourceImageWidth = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.topView ||
+      modulePackage.value.sideView ||
+      modulePackage.value.angledView)
+  ) {
+    const height = extractImageWidthFromModel(modulePackage.value);
+    if (height) {
+      return height;
+    }
   }
 
-  get sourceImageHeightMax() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(this.modulePackage);
-      if (height) {
-        return height;
-      }
+  if (
+    paint.value &&
+    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+  ) {
+    const width = extractImageWidthFromModel(paint.value);
+    if (width) {
+      return width;
     }
-
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const height = this.extractMaxHeightFromModel(this.paint);
-      if (height) {
-        return height;
-      }
-    }
-
-    return this.extractMaxHeightFromModel(this.model);
   }
 
-  get sourceImageHeight() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractImageHeightFromModel(this.modulePackage);
-      if (height) {
-        return height;
-      }
-    }
+  return extractImageWidthFromModel(model.value);
+});
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const height = this.extractImageHeightFromModel(this.paint);
-      if (height) {
-        return height;
-      }
+const sourceImageWidthMax = computed(() => {
+  if (
+    modulePackage.value &&
+    (modulePackage.value.topView ||
+      modulePackage.value.sideView ||
+      modulePackage.value.angledView)
+  ) {
+    const width = extractMaxWidthFromModel(modulePackage.value);
+    if (width) {
+      return width;
     }
-
-    return this.extractImageHeightFromModel(this.model);
   }
 
-  get sourceImageWidth() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const height = this.extractImageWidthFromModel(this.modulePackage);
-      if (height) {
-        return height;
-      }
+  if (
+    paint.value &&
+    (paint.value.topView || paint.value.sideView || paint.value.angledView)
+  ) {
+    const width = extractMaxWidthFromModel(paint.value);
+    if (width) {
+      return width;
     }
-
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const width = this.extractImageWidthFromModel(this.paint);
-      if (width) {
-        return width;
-      }
-    }
-
-    return this.extractImageWidthFromModel(this.model);
   }
 
-  get sourceImageWidthMax() {
-    if (
-      this.modulePackage &&
-      (this.modulePackage.topView ||
-        this.modulePackage.sideView ||
-        this.modulePackage.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(this.modulePackage);
-      if (width) {
-        return width;
-      }
-    }
+  return extractMaxWidthFromModel(model.value);
+});
 
-    if (
-      this.paint &&
-      (this.paint.topView || this.paint.sideView || this.paint.angledView)
-    ) {
-      const width = this.extractMaxWidthFromModel(this.paint);
-      if (width) {
-        return width;
-      }
-    }
+const extractImageFromModel = (
+  model: Model | ModelModulePackage | ModelPaint
+) => {
+  const width = length.value * props.sizeMultiplicator * props.scale;
 
-    return this.extractMaxWidthFromModel(this.model);
+  if (width > 1900) {
+    return model[view.value];
   }
 
-  extractImageFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return this.topView(model);
-    }
-
-    if (this.viewpointSide && model.sideView) {
-      return this.sideView(model);
-    }
-
-    if (this.viewpointAngled && model.angledView) {
-      return this.angledView(model);
-    }
-
-    return null;
+  if (width > 900) {
+    return model[`${view.value}Large`];
   }
 
-  extractMaxWidthFromModel(model) {
-    return Math.max(
-      model.topViewWidth,
-      model.sideViewWidth,
-      model.angledViewWidth
-    );
-  }
+  return model[`${view.value}Medium`];
+};
 
-  extractMaxHeightFromModel(model) {
-    return Math.max(
-      model.topViewHeight,
-      model.sideViewHeight,
-      model.angledViewHeight
-    );
-  }
+const extractMaxWidthFromModel = (
+  model: Model | ModelModulePackage | ModelPaint
+) => Math.max(model.topViewWidth, model.sideViewWidth, model.angledViewWidth);
 
-  extractImageHeightFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return model.topViewHeight;
-    }
+const extractMaxHeightFromModel = (
+  model: Model | ModelModulePackage | ModelPaint
+) =>
+  Math.max(model.topViewHeight, model.sideViewHeight, model.angledViewHeight);
 
-    if (this.viewpointSide && model.sideView) {
-      return model.sideViewHeight;
-    }
+const extractImageHeightFromModel = (
+  model: Model | ModelModulePackage | ModelPaint
+) => model[`${view.value}Height`];
 
-    if (this.viewpointAngled && model.angledView) {
-      return model.angledViewHeight;
-    }
+const extractImageWidthFromModel = (
+  model: Model | ModelModulePackage | ModelPaint
+) => model[`${view.value}Width`];
+</script>
 
-    return null;
-  }
-
-  extractImageWidthFromModel(model) {
-    if (this.viewpointTop && model.topView) {
-      return model.topViewWidth;
-    }
-
-    if (this.viewpointSide && model.sideView) {
-      return model.sideViewWidth;
-    }
-
-    if (this.viewpointAngled && model.angledView) {
-      return model.angledViewWidth;
-    }
-
-    return null;
-  }
-
-  topView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale;
-
-    if (width > 1900) {
-      return model.topView;
-    }
-
-    if (width > 900) {
-      return model.topViewLarge;
-    }
-
-    return model.topViewMedium;
-  }
-
-  sideView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale;
-
-    if (width > 1900) {
-      return model.sideView;
-    }
-
-    if (width > 900) {
-      return model.sideViewLarge;
-    }
-
-    return model.sideViewMedium;
-  }
-
-  angledView(model) {
-    const width = this.length * this.sizeMultiplicator * this.scale;
-
-    if (width > 1900) {
-      return model.angledView;
-    }
-
-    if (width > 900) {
-      return model.angledViewLarge;
-    }
-
-    return model.angledViewMedium;
-  }
-}
+<script lang="ts">
+export default {
+  name: "FleetchartListItem",
+};
 </script>
