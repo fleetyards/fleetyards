@@ -11,6 +11,11 @@ json.location_label shop.location_label
 json.rental shop.rental
 json.buying shop.buying
 json.selling shop.selling
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: shop.store_image
+  end
+end
 json.store_image shop.store_image.url
 json.store_image_large shop.store_image.large.url
 json.store_image_medium shop.store_image.medium.url

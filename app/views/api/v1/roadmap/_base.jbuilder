@@ -9,6 +9,11 @@ json.description item.description
 json.body item.body
 json.rsi_category_id item.rsi_category_id
 json.image item.image
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: item.store_image
+  end
+end
 json.store_image item.store_image.url
 json.store_image_large item.store_image.large.url
 json.store_image_medium item.store_image.medium.url

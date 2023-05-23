@@ -5,6 +5,11 @@ json.name commodity.name
 json.slug commodity.slug
 json.type commodity.commodity_type
 json.type_label commodity.commodity_type_label
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: commodity.store_image
+  end
+end
 json.store_image_is_fallback commodity.store_image.identifier.nil?
 json.store_image commodity.store_image.url
 json.store_image_large commodity.store_image.large.url

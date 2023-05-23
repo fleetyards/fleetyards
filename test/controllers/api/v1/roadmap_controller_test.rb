@@ -18,6 +18,9 @@ module Api
           "body" => "MyText",
           "rsiCategoryId" => 1,
           "image" => "MyString",
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => second_roadmap_item.store_image.url,
           "storeImageLarge" => second_roadmap_item.store_image.large.url,
           "storeImageMedium" => second_roadmap_item.store_image.medium.url,
@@ -41,6 +44,9 @@ module Api
           "body" => "MyText",
           "rsiCategoryId" => 1,
           "image" => "MyString",
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => first_roadmap_item.store_image.url,
           "storeImageLarge" => first_roadmap_item.store_image.large.url,
           "storeImageMedium" => first_roadmap_item.store_image.medium.url,

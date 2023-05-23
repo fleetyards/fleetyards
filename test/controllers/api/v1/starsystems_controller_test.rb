@@ -11,6 +11,9 @@ module Api
         [{
           "name" => "Oberon",
           "slug" => "oberon",
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => oberon.store_image.url,
           "storeImageLarge" => oberon.store_image.large.url,
           "storeImageMedium" => oberon.store_image.medium.url,
@@ -31,6 +34,9 @@ module Api
         }, {
           "name" => "Stanton",
           "slug" => "stanton",
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => stanton.store_image.url,
           "storeImageLarge" => stanton.store_image.large.url,
           "storeImageMedium" => stanton.store_image.medium.url,
@@ -50,6 +56,9 @@ module Api
             "slug" => "hurston",
             "type" => nil,
             "designation" => "1",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => stanton.celestial_objects.first.store_image.url,
             "storeImageLarge" => stanton.celestial_objects.first.store_image.large.url,
             "storeImageMedium" => stanton.celestial_objects.first.store_image.medium.url,
@@ -66,6 +75,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => stanton.store_image.url,
               "storeImageLarge" => stanton.store_image.large.url,
               "storeImageMedium" => stanton.store_image.medium.url,
@@ -86,6 +98,9 @@ module Api
             "slug" => "crusader",
             "type" => nil,
             "designation" => "2",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => stanton.celestial_objects.last.store_image.url,
             "storeImageLarge" => stanton.celestial_objects.last.store_image.large.url,
             "storeImageMedium" => stanton.celestial_objects.last.store_image.medium.url,
@@ -102,6 +117,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => stanton.store_image.url,
               "storeImageLarge" => stanton.store_image.large.url,
               "storeImageMedium" => stanton.store_image.medium.url,
@@ -126,6 +144,9 @@ module Api
         {
           "name" => "Stanton",
           "slug" => "stanton",
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => stanton.store_image.url,
           "storeImageLarge" => stanton.store_image.large.url,
           "storeImageMedium" => stanton.store_image.medium.url,
@@ -145,6 +166,9 @@ module Api
             "slug" => "hurston",
             "type" => nil,
             "designation" => "1",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => stanton.celestial_objects.first.store_image.url,
             "storeImageLarge" => stanton.celestial_objects.first.store_image.large.url,
             "storeImageMedium" => stanton.celestial_objects.first.store_image.medium.url,
@@ -161,6 +185,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => stanton.store_image.url,
               "storeImageLarge" => stanton.store_image.large.url,
               "storeImageMedium" => stanton.store_image.medium.url,
@@ -181,6 +208,9 @@ module Api
             "slug" => "crusader",
             "type" => nil,
             "designation" => "2",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => stanton.celestial_objects.last.store_image.url,
             "storeImageLarge" => stanton.celestial_objects.last.store_image.large.url,
             "storeImageMedium" => stanton.celestial_objects.last.store_image.medium.url,
@@ -197,6 +227,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => stanton.store_image.url,
               "storeImageLarge" => stanton.store_image.large.url,
               "storeImageMedium" => stanton.store_image.medium.url,

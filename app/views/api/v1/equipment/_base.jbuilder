@@ -24,6 +24,11 @@ json.volume equipment.volume
 json.temperature_rating equipment.temperature_rating
 json.backpack_compatibility equipment.backpack_compatibility_label
 json.core_compatibility equipment.core_compatibility_label
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: equipment.store_image
+  end
+end
 json.store_image_is_fallback equipment.store_image.identifier.nil?
 json.store_image equipment.store_image.url
 json.store_image_medium equipment.store_image.medium.url

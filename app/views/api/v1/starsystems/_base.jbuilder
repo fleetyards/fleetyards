@@ -2,6 +2,11 @@
 
 json.name starsystem.name
 json.slug starsystem.slug
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: starsystem.store_image
+  end
+end
 json.store_image starsystem.store_image.url
 json.store_image_large starsystem.store_image.large.url
 json.store_image_medium starsystem.store_image.medium.url

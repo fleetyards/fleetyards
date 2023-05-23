@@ -5,6 +5,11 @@ json.name model_module.name
 json.description model_module.description
 json.pledge_price model_module.pledge_price
 json.has_store_image model_module.store_image.present?
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: model_module.store_image
+  end
+end
 json.store_image model_module.store_image.url
 json.store_image_large model_module.store_image.large.url
 json.store_image_medium model_module.store_image.medium.url

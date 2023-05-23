@@ -4,6 +4,11 @@ json.name celestial_object.name
 json.slug celestial_object.slug
 json.type celestial_object.object_type&.humanize
 json.designation celestial_object.designation
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: celestial_object.store_image
+  end
+end
 json.store_image celestial_object.store_image.url
 json.store_image_large celestial_object.store_image.large.url
 json.store_image_medium celestial_object.store_image.medium.url

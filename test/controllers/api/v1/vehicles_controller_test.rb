@@ -197,6 +197,9 @@ module Api
                 "id" => "e2befa3a-fe27-53f7-9405-268d23b2dfb7",
                 "name" => "600i",
                 "slug" => "600i",
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" =>
                         "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                 "storeImageLarge" =>
@@ -238,6 +241,9 @@ module Api
                   "rental" => false,
                   "buying" => false,
                   "selling" => false,
+                  "media" => {
+                    "storeImage" => nil
+                  },
                   "storeImage" =>
                           "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                   "storeImageLarge" =>
@@ -256,6 +262,9 @@ module Api
                 "id" => "46f72ce4-81f1-50d5-8428-5587ef23c320",
                 "name" => "600i",
                 "slug" => "600i",
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" =>
                         "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                 "storeImageLarge" =>
@@ -297,6 +306,9 @@ module Api
                   "rental" => false,
                   "buying" => false,
                   "selling" => false,
+                  "media" => {
+                    "storeImage" => nil
+                  },
                   "storeImage" =>
                           "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                   "storeImageLarge" =>
@@ -468,6 +480,9 @@ module Api
                 "id" => "c38015d3-a8f7-5419-9aed-03e80ec3169a",
                 "name" => "Andromeda",
                 "slug" => "andromeda",
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" =>
                         "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                 "storeImageLarge" =>
@@ -509,6 +524,9 @@ module Api
                   "rental" => false,
                   "buying" => false,
                   "selling" => false,
+                  "media" => {
+                    "storeImage" => nil
+                  },
                   "storeImage" =>
                   "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                   "storeImageLarge" =>
@@ -691,6 +709,9 @@ module Api
                 "id" => "c38015d3-a8f7-5419-9aed-03e80ec3169a",
                 "name" => "Andromeda",
                 "slug" => "andromeda",
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" =>
                         "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                 "storeImageLarge" =>
@@ -732,6 +753,9 @@ module Api
                   "rental" => false,
                   "buying" => false,
                   "selling" => false,
+                  "media" => {
+                    "storeImage" => nil
+                  },
                   "storeImage" =>
                   "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                   "storeImageLarge" =>

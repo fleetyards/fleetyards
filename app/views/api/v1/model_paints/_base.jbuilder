@@ -31,7 +31,6 @@ json.store_image model_paint.store_image.url
 json.store_image_large model_paint.store_image.large.url
 json.store_image_medium model_paint.store_image.medium.url
 json.store_image_small model_paint.store_image.small.url
-
 json.fleetchart_image model_paint.fleetchart_image.url
 json.top_view model_paint.top_view.url
 json.top_view_small model_paint.top_view.small.url

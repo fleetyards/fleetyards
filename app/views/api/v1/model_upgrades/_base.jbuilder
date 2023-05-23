@@ -4,6 +4,11 @@ json.id model_upgrade.id
 json.name model_upgrade.name
 json.description model_upgrade.description
 json.pledge_price model_upgrade.pledge_price
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: model_upgrade.store_image
+  end
+end
 json.store_image model_upgrade.store_image.url
 json.store_image_large model_upgrade.store_image.large.url
 json.store_image_medium model_upgrade.store_image.medium.url

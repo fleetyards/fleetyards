@@ -9,6 +9,12 @@ json.type_label station.station_type_label
 json.classification station.classification
 json.classification_label station.classification_label
 json.habitable station.habitable
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: station.store_image
+  end
+  json.background_image station.random_image&.name&.url
+end
 json.store_image station.store_image.url
 json.store_image_large station.store_image.large.url
 json.store_image_medium station.store_image.medium.url

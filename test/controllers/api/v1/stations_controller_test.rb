@@ -26,6 +26,9 @@ module Api
           "classification" => nil,
           "classificationLabel" => nil,
           "habitable" => true,
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => arccorp_daymar.store_image.url,
           "storeImageLarge" => arccorp_daymar.store_image.large.url,
           "storeImageMedium" => arccorp_daymar.store_image.medium.url,
@@ -43,6 +46,9 @@ module Api
             "slug" => "daymar",
             "type" => nil,
             "designation" => "4",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => daymar.store_image.url,
             "storeImageLarge" => daymar.store_image.large.url,
             "storeImageMedium" => daymar.store_image.medium.url,
@@ -61,6 +67,9 @@ module Api
               "slug" => "crusader",
               "type" => nil,
               "designation" => "2",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => crusader.store_image.url,
               "storeImageLarge" => crusader.store_image.large.url,
               "storeImageMedium" => crusader.store_image.medium.url,
@@ -77,6 +86,9 @@ module Api
               "starsystem" => {
                 "name" => "Stanton",
                 "slug" => "stanton",
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" => crusader.starsystem.store_image.url,
                 "storeImageLarge" => crusader.starsystem.store_image.large.url,
                 "storeImageMedium" => crusader.starsystem.store_image.medium.url,
@@ -96,6 +108,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => crusader.starsystem.store_image.url,
               "storeImageLarge" => crusader.starsystem.store_image.large.url,
               "storeImageMedium" => crusader.starsystem.store_image.medium.url,
@@ -124,6 +139,9 @@ module Api
           "classification" => nil,
           "classificationLabel" => nil,
           "habitable" => true,
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => arccorp_yela.store_image.url,
           "storeImageLarge" => arccorp_yela.store_image.large.url,
           "storeImageMedium" => arccorp_yela.store_image.medium.url,
@@ -141,6 +159,9 @@ module Api
             "slug" => "yela",
             "type" => nil,
             "designation" => "3",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => yela.store_image.url,
             "storeImageLarge" => yela.store_image.large.url,
             "storeImageMedium" => yela.store_image.medium.url,
@@ -159,6 +180,9 @@ module Api
               "slug" => "crusader",
               "type" => nil,
               "designation" => "2",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => crusader.store_image.url,
               "storeImageLarge" => crusader.store_image.large.url,
               "storeImageMedium" => crusader.store_image.medium.url,
@@ -175,6 +199,9 @@ module Api
               "starsystem" => {
                 "name" => "Stanton",
                 "slug" => "stanton",
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" => crusader.starsystem.store_image.url,
                 "storeImageLarge" => crusader.starsystem.store_image.large.url,
                 "storeImageMedium" => crusader.starsystem.store_image.medium.url,
@@ -194,6 +221,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => crusader.starsystem.store_image.url,
               "storeImageLarge" => crusader.starsystem.store_image.large.url,
               "storeImageMedium" => crusader.starsystem.store_image.medium.url,
@@ -222,6 +252,9 @@ module Api
           "classification" => nil,
           "classificationLabel" => nil,
           "habitable" => true,
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => corvolex.store_image.url,
           "storeImageLarge" => corvolex.store_image.large.url,
           "storeImageMedium" => corvolex.store_image.medium.url,
@@ -244,6 +277,9 @@ module Api
             "slug" => "daymar",
             "type" => nil,
             "designation" => "4",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => daymar.store_image.url,
             "storeImageLarge" => daymar.store_image.large.url,
             "storeImageMedium" => daymar.store_image.medium.url,
@@ -262,6 +298,9 @@ module Api
               "slug" => "crusader",
               "type" => nil,
               "designation" => "2",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => crusader.store_image.url,
               "storeImageLarge" => crusader.store_image.large.url,
               "storeImageMedium" => crusader.store_image.medium.url,
@@ -278,6 +317,9 @@ module Api
               "starsystem" => {
                 "name" => "Stanton",
                 "slug" => "stanton",
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" => crusader.starsystem.store_image.url,
                 "storeImageLarge" => crusader.starsystem.store_image.large.url,
                 "storeImageMedium" => crusader.starsystem.store_image.medium.url,
@@ -297,6 +339,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => crusader.starsystem.store_image.url,
               "storeImageLarge" => crusader.starsystem.store_image.large.url,
               "storeImageMedium" => crusader.starsystem.store_image.medium.url,
@@ -325,6 +370,9 @@ module Api
           "classification" => nil,
           "classificationLabel" => nil,
           "habitable" => true,
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => portolisar.store_image.url,
           "storeImageLarge" => portolisar.store_image.large.url,
           "storeImageMedium" => portolisar.store_image.medium.url,
@@ -356,6 +404,9 @@ module Api
             "slug" => "crusader",
             "type" => nil,
             "designation" => "2",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => portolisar.celestial_object.store_image.url,
             "storeImageLarge" => portolisar.celestial_object.store_image.large.url,
             "storeImageMedium" => portolisar.celestial_object.store_image.medium.url,
@@ -372,6 +423,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => portolisar.starsystem.store_image.url,
               "storeImageLarge" => portolisar.starsystem.store_image.large.url,
               "storeImageMedium" => portolisar.starsystem.store_image.medium.url,
@@ -403,6 +457,9 @@ module Api
           "classification" => nil,
           "classificationLabel" => nil,
           "habitable" => true,
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => portolisar.store_image.url,
           "storeImageLarge" => portolisar.store_image.large.url,
           "storeImageMedium" => portolisar.store_image.medium.url,
@@ -434,6 +491,9 @@ module Api
             "slug" => "crusader",
             "type" => nil,
             "designation" => "2",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => portolisar.celestial_object.store_image.url,
             "storeImageLarge" => portolisar.celestial_object.store_image.large.url,
             "storeImageMedium" => portolisar.celestial_object.store_image.medium.url,
@@ -450,6 +510,9 @@ module Api
             "starsystem" => {
               "name" => "Stanton",
               "slug" => "stanton",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" => portolisar.starsystem.store_image.url,
               "storeImageLarge" => portolisar.starsystem.store_image.large.url,
               "storeImageMedium" => portolisar.starsystem.store_image.medium.url,
@@ -469,6 +532,9 @@ module Api
           "starsystem" => {
             "name" => "Stanton",
             "slug" => "stanton",
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => portolisar.starsystem.store_image.url,
             "storeImageLarge" => portolisar.starsystem.store_image.large.url,
             "storeImageMedium" => portolisar.starsystem.store_image.medium.url,
@@ -496,6 +562,9 @@ module Api
             "rental" => false,
             "buying" => false,
             "selling" => false,
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => portolisar_admin.store_image.url,
             "storeImageLarge" => portolisar_admin.store_image.large.url,
             "storeImageMedium" => portolisar_admin.store_image.medium.url,
@@ -517,6 +586,9 @@ module Api
             "rental" => false,
             "buying" => false,
             "selling" => false,
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => portolisar_dumpers.store_image.url,
             "storeImageLarge" => portolisar_dumpers.store_image.large.url,
             "storeImageMedium" => portolisar_dumpers.store_image.medium.url,
@@ -538,6 +610,9 @@ module Api
             "rental" => false,
             "buying" => false,
             "selling" => false,
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => portolisar_new_deal.store_image.url,
             "storeImageLarge" => portolisar_new_deal.store_image.large.url,
             "storeImageMedium" => portolisar_new_deal.store_image.medium.url,

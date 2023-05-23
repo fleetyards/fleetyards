@@ -13,6 +13,9 @@ module Api
           "id" => explorer.id,
           "name" => "600i",
           "slug" => "600i",
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => explorer.commodity_item.store_image.url,
           "storeImageLarge" => explorer.commodity_item.store_image.large.url,
           "storeImageMedium" => explorer.commodity_item.store_image.medium.url,
@@ -50,6 +53,9 @@ module Api
             "rental" => false,
             "buying" => false,
             "selling" => false,
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => explorer.shop.store_image.url,
             "storeImageLarge" => explorer.shop.store_image.large.url,
             "storeImageMedium" => explorer.shop.store_image.medium.url,
@@ -99,12 +105,7 @@ module Api
             "size" => nil,
             "sizeLabel" => nil,
             "media" => {
-              "storeImage" => {
-                "source" => explorer.commodity_item.store_image.url,
-                "small" => explorer.commodity_item.store_image.small.url,
-                "medium" => explorer.commodity_item.store_image.medium.url,
-                "large" => explorer.commodity_item.store_image.large.url
-              },
+              "storeImage" => nil,
               "fleetchartImage" => nil,
               "angledView" => nil,
               "frontView" => nil,
@@ -172,6 +173,9 @@ module Api
               "id" => "e2befa3a-fe27-53f7-9405-268d23b2dfb7",
               "name" => "600i",
               "slug" => "600i",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" =>
                       "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
               "storeImageLarge" =>
@@ -213,6 +217,9 @@ module Api
                 "rental" => false,
                 "buying" => false,
                 "selling" => false,
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" =>
                         "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                 "storeImageLarge" =>
@@ -231,6 +238,9 @@ module Api
               "id" => "46f72ce4-81f1-50d5-8428-5587ef23c320",
               "name" => "600i",
               "slug" => "600i",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" =>
                       "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
               "storeImageLarge" =>
@@ -272,6 +282,9 @@ module Api
                 "rental" => false,
                 "buying" => false,
                 "selling" => false,
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" =>
                         "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                 "storeImageLarge" =>
@@ -308,6 +321,9 @@ module Api
           "id" => andromeda.id,
           "name" => "Andromeda",
           "slug" => "andromeda",
+          "media" => {
+            "storeImage" => nil
+          },
           "storeImage" => andromeda.commodity_item.store_image.url,
           "storeImageLarge" => andromeda.commodity_item.store_image.large.url,
           "storeImageMedium" => andromeda.commodity_item.store_image.medium.url,
@@ -345,6 +361,9 @@ module Api
             "rental" => false,
             "buying" => false,
             "selling" => false,
+            "media" => {
+              "storeImage" => nil
+            },
             "storeImage" => andromeda.shop.store_image.url,
             "storeImageLarge" => andromeda.shop.store_image.large.url,
             "storeImageMedium" => andromeda.shop.store_image.medium.url,
@@ -394,12 +413,7 @@ module Api
             "size" => nil,
             "sizeLabel" => nil,
             "media" => {
-              "storeImage" => {
-                "source" => andromeda.commodity_item.store_image.url,
-                "small" => andromeda.commodity_item.store_image.small.url,
-                "medium" => andromeda.commodity_item.store_image.medium.url,
-                "large" => andromeda.commodity_item.store_image.large.url
-              },
+              "storeImage" => nil,
               "fleetchartImage" => nil,
               "angledView" => nil,
               "frontView" => nil,
@@ -467,6 +481,9 @@ module Api
               "id" => "c38015d3-a8f7-5419-9aed-03e80ec3169a",
               "name" => "Andromeda",
               "slug" => "andromeda",
+              "media" => {
+                "storeImage" => nil
+              },
               "storeImage" =>
                       "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
               "storeImageLarge" =>
@@ -508,6 +525,9 @@ module Api
                 "rental" => false,
                 "buying" => false,
                 "selling" => false,
+                "media" => {
+                  "storeImage" => nil
+                },
                 "storeImage" =>
                 "http://localhost:3000/assets/fallback/store_image-fcc06a6ea7aa61c50d1758b22ccb76734440fe42ad80b87546f612b067d96394.jpg",
                 "storeImageLarge" =>

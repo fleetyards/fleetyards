@@ -3,6 +3,11 @@
 json.id shop_commodity.id
 json.name shop_commodity.commodity_item.name
 json.slug shop_commodity.commodity_item.slug
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: shop_commodity.commodity_item.store_image
+  end
+end
 json.store_image shop_commodity.commodity_item.store_image.url
 json.store_image_large shop_commodity.commodity_item.store_image.large.url
 json.store_image_medium shop_commodity.commodity_item.store_image.medium.url
