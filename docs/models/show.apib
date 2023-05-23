@@ -1,0 +1,127 @@
+## Model [/v1/models/{slug}]
+
+### GET Detail [GET]
+Get Detail of a Model referenced by its Slug
+
++ Parameters
+
+    + slug: `600i-explorer` (required, string) - The Model Slug
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
+
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+    
+            {
+                "id": "bd062120-034e-4bdc-a979-9b02644b5f3c",
+                "name": "600i Explorer",
+                "rsiName": "600i Explorer",
+                "slug": "600i-explorer",
+                "rsiSlug": "600i-explorer",
+                "description": "Let the voyage begin with the 2947 600i from Origin Jumpworks. This multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs. Looking to stamp your name in history with the discovery of a new star system? The 600i's Explorer module swaps the lounge for a robust scanning station as well as additional utility hardpoints to increase the ship's effectiveness even more.",
+                "length": 91.5,
+                "beam": 52,
+                "height": 17,
+                "mass": 1576792,
+                "cargo": 40,
+                "cargoLabel": "600i Explorer (40 SCU)",
+                "minCrew": 2,
+                "maxCrew": 5,
+                "scmSpeed": "145.0",
+                "afterburnerSpeed": "975.0",
+                "groundSpeed": null,
+                "afterburnerGroundSpeed": null,
+                "pitchMax": "30.0",
+                "yawMax": "30.0",
+                "rollMax": "50.0",
+                "xaxisAcceleration": "15.6",
+                "yaxisAcceleration": "21.6",
+                "zaxisAcceleration": "18.1",
+                "size": "large",
+                "sizeLabel": "Large",
+                "storeImage": "http://api.fleetyards.test/uploads/model/store_image/bd062120-034e-4bdc-a979-9b02644b5f3c/600i-Exploration-1503514950.jpg",
+                "fleetchartImage": "http://api.fleetyards.test/uploads/model/fleetchart_image/bd062120-034e-4bdc-a979-9b02644b5f3c/ORIG_-_600i__Concept__Correct_Size_-1519582284.png",
+                "backgroundImage": "http://api.fleetyards.test/uploads/image/name/e05f20aa-0671-4cbc-906b-e45c3fb69424/Tohil_jumppoint_02-slim.jpg",
+                "brochure": "http://api.fleetyards.test/uploads/model/brochure/bd062120-034e-4bdc-a979-9b02644b5f3c/origin600i-brochure-optimised.pdf",
+                "storeUrl": "https://robertsspaceindustries.com/pledge/ships/600i/600i-Explorer",
+                "price": null,
+                "pledgePrice": 435,
+                "lastPledgePrice": 475,
+                "onSale": false,
+                "productionStatus": "flight-ready",
+                "productionNote": null,
+                "classification": "exploration",
+                "classificationLabel": "Exploration",
+                "focus": "Expedition",
+                "rsiId": 141,
+                "hasImages": true,
+                "hasVideos": true,
+                "manufacturer": {
+                    "name": "Origin Jumpworks GmbH",
+                    "slug": "origin-jumpworks-gmbh",
+                    "code": "ORIG",
+                    "logo": "http://api.fleetyards.test/uploads/manufacturer/logo/4052e7cf-5451-4a9f-a7e2-797daa26ccd8/small_Origin.png"
+                },
+                "hardpoints": [
+                    ...
+                    {
+                        "id": "8a240e5d-3eb9-48cd-9dcf-485a083181f0",
+                        "type": "turrets",
+                        "class": "RSIWeapon",
+                        "size": "2",
+                        "quantity": 2,
+                        "mounts": 2,
+                        "details": "Remote",
+                        "category": null,
+                        "defaultEmpty": false,
+                        "component": {
+                            "id": "bdf84ac0-cee9-47bc-8075-7740278ef51e",
+                            "name": "CF-227 Badger Laser Repeater",
+                            "slug": "cf-227-badger-laser-repeater",
+                            "size": "2",
+                            "class": "RSIWeapon",
+                            "type": "turrets",
+                            "manufacturer": {
+                                "name": "Klaus &amp; Werner",
+                                "slug": "klaus-amp-werner",
+                                "code": null,
+                                "logo": null
+                            }
+                        }
+                    },
+                    ...
+                ],
+                "images": [
+                    {
+                        "id": "21b3cb34-983b-43c6-93dc-d2f98b4c7762",
+                        "name": "Macro-Semi-Back.jpg",
+                        "url": "http://api.fleetyards.test/uploads/image/name/21b3cb34-983b-43c6-93dc-d2f98b4c7762/Macro-Semi-Back.jpg",
+                        "width": 2000,
+                        "height": 1000,
+                        "type": "image/jpeg",
+                        "background": true,
+                        "smallUrl": "http://api.fleetyards.test/uploads/image/name/21b3cb34-983b-43c6-93dc-d2f98b4c7762/small_Macro-Semi-Back.jpg",
+                        "bigUrl": "http://api.fleetyards.test/uploads/image/name/21b3cb34-983b-43c6-93dc-d2f98b4c7762/big_Macro-Semi-Back.jpg"
+                    },
+                    ...
+                ],
+                "videos": [
+                    {
+                        "id": "6c5f649c-a7a6-45ee-a9b4-9881795f6af8",
+                        "url": "https://www.youtube.com/embed/gbCSQDhPOlk",
+                        "videoId": "gbCSQDhPOlk",
+                        "type": "youtube",
+                        "createdAt": "2017-08-28T23:46:01+02:00",
+                        "updatedAt": "2018-05-06T21:50:00+02:00"
+                    }
+                ],
+                "createdAt": "2017-08-25T23:16:40+02:00",
+                "updatedAt": "2018-07-17T09:01:07+02:00"
+            }

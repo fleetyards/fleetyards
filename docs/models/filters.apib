@@ -1,0 +1,65 @@
+## Filters [/v1/models/filters]
+
+### GET Filters [GET]
+Get all available Model Filters with Options
+
+## Categories
+Model Filters belong to one of 4 different Filter Categories:
+
+::: note
+- classification
+- focus
+- manufacturer
+- productionStatus
+- size
+:::
+
+All these Filters can also be fetched directly via ```/v1/models/:category```
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            [
+                {
+                    "name": "Combat",
+                    "value": "combat",
+                    "category": "classification",
+                    "icon": null
+                },
+                ...
+                {
+                    "name": "Medium cargo/medium data",
+                    "value": "Medium Cargo/Medium Data",
+                    "category": "focus",
+                    "icon": null
+                },
+                ...
+                {
+                    "name": "ARGO Astronautics",
+                    "value": "argo-astronautics",
+                    "category": "manufacturer",
+                    "icon": "http://api.fleetyards.test/uploads/manufacturer/logo/ff6dc660-7caf-454d-9e4a-2050cfac632e/small_Argo.png"
+                },
+                ...
+                {
+                    "name": "Announced",
+                    "value": "announced",
+                    "category": "productionStatus",
+                    "icon": null
+                },
+                ...
+                {
+                    "name": "Capital",
+                    "value": "capital",
+                    "category": "size",
+                    "icon": null
+                },
+                ...
+            ]

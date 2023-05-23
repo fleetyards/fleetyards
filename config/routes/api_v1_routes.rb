@@ -294,5 +294,5 @@ end
 scope :v1, as: :v1 do
   scope module: :v1, &v1_api_routes
 
-  root to: "docs#v1"
+  root to: "v1/base#root"
 end
