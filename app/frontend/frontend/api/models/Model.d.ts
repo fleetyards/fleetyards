@@ -12,17 +12,18 @@ type Model = {
   manufacturer: Manufacturer;
   fleetchartLength: number;
   media: {
-    storeImage: FyMediaImage;
-    fleetchartImage: string;
-    angledView: FyMediaViewImage;
-    frontView: FyMediaViewImage;
-    sideView: FyMediaViewImage;
-    topView: FyMediaViewImage;
-    angledViewColored: FyMediaViewImage;
-    frontViewColored: FyMediaViewImage;
-    sideViewColored: FyMediaViewImage;
-    topViewColored: FyMediaViewImage;
+    storeImage?: FyMediaImage;
+    fleetchartImage?: string;
+    angledView?: FyMediaViewImage;
+    frontView?: FyMediaViewImage;
+    sideView?: FyMediaViewImage;
+    topView?: FyMediaViewImage;
+    angledViewColored?: FyMediaViewImage;
+    frontViewColored?: FyMediaViewImage;
+    sideViewColored?: FyMediaViewImage;
+    topViewColored?: FyMediaViewImage;
   };
+  shipRole: ShipRole;
   length: number;
   beam: number;
   height: number;

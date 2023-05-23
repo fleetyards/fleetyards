@@ -5,8 +5,17 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 const model = {
   name: "Enterprise",
   slug: "enterprise",
-  storeImageMedium: "TestImage",
+  media: {
+    storeImage: {
+      source: "TestImage",
+      small: "TestImage",
+      medium: "TestImage",
+      large: "TestImage",
+    },
+  },
   manufacturer: {
+    id: "1",
+    code: "FED",
     name: "Utopia Planitia",
   },
   shipRole: {
