@@ -27,7 +27,8 @@ module Api
           "classificationLabel" => nil,
           "habitable" => true,
           "media" => {
-            "storeImage" => nil
+            "storeImage" => nil,
+            "backgroundImage" => nil
           },
           "storeImage" => arccorp_daymar.store_image.url,
           "storeImageLarge" => arccorp_daymar.store_image.large.url,
@@ -140,7 +141,8 @@ module Api
           "classificationLabel" => nil,
           "habitable" => true,
           "media" => {
-            "storeImage" => nil
+            "storeImage" => nil,
+            "backgroundImage" => nil
           },
           "storeImage" => arccorp_yela.store_image.url,
           "storeImageLarge" => arccorp_yela.store_image.large.url,
@@ -253,7 +255,8 @@ module Api
           "classificationLabel" => nil,
           "habitable" => true,
           "media" => {
-            "storeImage" => nil
+            "storeImage" => nil,
+            "backgroundImage" => nil
           },
           "storeImage" => corvolex.store_image.url,
           "storeImageLarge" => corvolex.store_image.large.url,
@@ -371,7 +374,8 @@ module Api
           "classificationLabel" => nil,
           "habitable" => true,
           "media" => {
-            "storeImage" => nil
+            "storeImage" => nil,
+            "backgroundImage" => nil
           },
           "storeImage" => portolisar.store_image.url,
           "storeImageLarge" => portolisar.store_image.large.url,
@@ -458,7 +462,8 @@ module Api
           "classificationLabel" => nil,
           "habitable" => true,
           "media" => {
-            "storeImage" => nil
+            "storeImage" => nil,
+            "backgroundImage" => nil
           },
           "storeImage" => portolisar.store_image.url,
           "storeImageLarge" => portolisar.store_image.large.url,

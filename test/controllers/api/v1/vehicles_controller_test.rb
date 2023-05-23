@@ -124,12 +124,7 @@ module Api
               "size" => nil,
               "sizeLabel" => nil,
               "media" => {
-                "storeImage" => {
-                  "source" => explorer.model.store_image.url,
-                  "small" => explorer.model.store_image.small.url,
-                  "medium" => explorer.model.store_image.medium.url,
-                  "large" => explorer.model.store_image.large.url
-                },
+                "storeImage" => nil,
                 "fleetchartImage" => nil,
                 "angledView" => nil,
                 "frontView" => nil,
@@ -407,12 +402,7 @@ module Api
               "size" => nil,
               "sizeLabel" => nil,
               "media" => {
-                "storeImage" => {
-                  "source" => enterprise.model.store_image.url,
-                  "small" => enterprise.model.store_image.small.url,
-                  "medium" => enterprise.model.store_image.medium.url,
-                  "large" => enterprise.model.store_image.large.url
-                },
+                "storeImage" => nil,
                 "fleetchartImage" => nil,
                 "angledView" => nil,
                 "frontView" => nil,
@@ -636,12 +626,7 @@ module Api
               "size" => nil,
               "sizeLabel" => nil,
               "media" => {
-                "storeImage" => {
-                  "source" => enterprise.model.store_image.url,
-                  "small" => enterprise.model.store_image.small.url,
-                  "medium" => enterprise.model.store_image.medium.url,
-                  "large" => enterprise.model.store_image.large.url
-                },
+                "storeImage" => nil,
                 "fleetchartImage" => nil,
                 "angledView" => nil,
                 "frontView" => nil,
