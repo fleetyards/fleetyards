@@ -21,7 +21,7 @@
         class="panel-image text-center"
       >
         <LazyImage
-          v-if="model.media.storeImage.medium"
+          v-if="model.media.storeImage?.medium"
           :href="url"
           target="_blank"
           rel="noopener"

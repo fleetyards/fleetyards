@@ -111,7 +111,7 @@ export default class ModelPanel extends Vue {
   }
 
   get storeImage() {
-    return this.model.media.storeImage.medium;
+    return this.model.media.storeImage?.medium;
   }
 
   filterManufacturerQuery(manufacturer) {
