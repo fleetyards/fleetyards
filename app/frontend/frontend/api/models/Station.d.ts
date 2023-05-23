@@ -1,5 +1,7 @@
 type Station = {
   id: string;
+  name: string;
+  slug: string;
   media: {
     storeImage?: FyMediaImage;
   };

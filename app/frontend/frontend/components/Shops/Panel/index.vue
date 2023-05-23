@@ -1,8 +1,8 @@
 <template>
-  <Panel :id="`${shop.station.slug}-${shop.slug}`" class="shop-list">
+  <Panel :id="`${shop.stationSlug}-${shop.slug}`" class="shop-list">
     <div
-      :key="shop.storeImageMedium"
-      v-lazy:background-image="shop.storeImageMedium"
+      :key="storeImage"
+      v-lazy:background-image="storeImage"
       class="panel-bg lazy"
     />
     <div class="row">
@@ -13,7 +13,7 @@
               :to="{
                 name: 'shop',
                 params: {
-                  stationSlug: shop.station.slug,
+                  stationSlug: shop.stationSlug,
                   slug: shop.slug,
                 },
               }"
@@ -32,17 +32,35 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/frontend/composables/useWebpCheck";
 
-@Component<ShopPanel>({
-  components: {
-    Panel,
-  },
-})
-export default class ShopPanel extends Vue {
-  @Prop({ required: true }) shop!: Shop;
-}
+type Props = {
+  shop: Shop;
+};
+
+const props = defineProps<Props>();
+
+const { supported: webpSupported } = useWebpCheck();
+
+const storeImage = computed(() => {
+  if (!props.shop.media.storeImage) {
+    if (webpSupported) {
+      return fallbackImage;
+    }
+
+    return fallbackImageJpg;
+  }
+
+  return props.shop.media.storeImage.medium;
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShopPanel",
+};
 </script>

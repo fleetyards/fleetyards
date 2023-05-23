@@ -3,6 +3,8 @@ type Shop = {
   name: string;
   slug: string;
   stationSlug: string;
+  station: Station;
+  location: string;
   media: {
     storeImage?: FyMediaImage;
   };
