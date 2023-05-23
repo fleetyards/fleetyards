@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.22.0](https://github.com/fleetyards/fleetyards/compare/v5.21.3...v5.22.0) (2023-05-23)
+
+
+### Features
+
+* **fleetchart:** add toggle to choose colored or greyscale version ([878c1a3](https://github.com/fleetyards/fleetyards/commit/878c1a3e044cda2ba52140a458e825817627f2da))
+* **model-views:** add colored views to models ([bc7b157](https://github.com/fleetyards/fleetyards/commit/bc7b157eb6dd41d9014788a3085502b8d6060cf8))
+
+
+### Bug Fixes
+
+* **loaners:** update cleanup script to use the right reference. ([4f6927b](https://github.com/fleetyards/fleetyards/commit/4f6927b6cbcc521bc5cbd7c2510f943cf7db7060))
+
 ### [5.21.3](https://github.com/fleetyards/fleetyards/compare/v5.21.2...v5.21.3) (2023-05-21)
 
 
