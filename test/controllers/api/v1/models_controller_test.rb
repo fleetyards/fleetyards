@@ -52,12 +52,7 @@ module Api
           "size" => nil,
           "sizeLabel" => nil,
           "media" => {
-            "storeImage" => {
-              "source" => origin.store_image.url,
-              "small" => origin.store_image.small.url,
-              "medium" => origin.store_image.medium.url,
-              "large" => origin.store_image.large.url
-            },
+            "storeImage" => nil,
             "fleetchartImage" => nil,
             "angledView" => nil,
             "frontView" => nil,
@@ -306,12 +301,7 @@ module Api
           "sizeLabel" => nil,
 
           "media" => {
-            "storeImage" => {
-              "source" => Model.last.store_image.url,
-              "small" => Model.last.store_image.small.url,
-              "medium" => Model.last.store_image.medium.url,
-              "large" => Model.last.store_image.large.url
-            },
+            "storeImage" => nil,
             "fleetchartImage" => nil,
             "angledView" => nil,
             "frontView" => nil,
