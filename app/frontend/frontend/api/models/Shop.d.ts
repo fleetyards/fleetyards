@@ -3,6 +3,9 @@ type Shop = {
   name: string;
   slug: string;
   stationSlug: string;
+  media: {
+    storeImage?: FyMediaImage;
+  };
 };
 
 type ShopsFilter = {

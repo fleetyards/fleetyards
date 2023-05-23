@@ -12,11 +12,11 @@ type ModelPaint = {
   rsiId: string;
   rsiName: string;
   media: {
-    storeImage: FyMediaImage;
-    fleetchartImage: string;
-    angledView: FyMediaViewImage;
-    frontView: FyMediaViewImage;
-    sideView: FyMediaViewImage;
-    topView: FyMediaViewImage;
+    storeImage?: FyMediaImage;
+    fleetchartImage?: string;
+    angledView?: FyMediaViewImage;
+    frontView?: FyMediaViewImage;
+    sideView?: FyMediaViewImage;
+    topView?: FyMediaViewImage;
   };
 };

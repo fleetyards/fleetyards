@@ -1,5 +1,8 @@
 type Station = {
   id: string;
+  media: {
+    storeImage?: FyMediaImage;
+  };
 };
 
 type StationsFilter = {

@@ -1,5 +1,8 @@
 type ComponentsFilter = {
   nameCont: string;
+  media: {
+    storeImage?: FyMediaImage;
+  };
 };
 
 interface ComponentParams extends CollectionParams {

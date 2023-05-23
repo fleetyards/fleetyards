@@ -9,15 +9,15 @@ interface ModelModulePackageParams extends CollectionParams {
 type ModelModulePackage = {
   id: string;
   media: {
-    storeImage: FyMediaImage;
-    fleetchartImage: string;
-    angledView: FyMediaViewImage;
-    frontView: FyMediaViewImage;
-    sideView: FyMediaViewImage;
-    topView: FyMediaViewImage;
-    angledViewColored: FyMediaViewImage;
-    frontViewColored: FyMediaViewImage;
-    sideViewColored: FyMediaViewImage;
-    topViewColored: FyMediaViewImage;
+    storeImage?: FyMediaImage;
+    fleetchartImage?: string;
+    angledView?: FyMediaViewImage;
+    frontView?: FyMediaViewImage;
+    sideView?: FyMediaViewImage;
+    topView?: FyMediaViewImage;
+    angledViewColored?: FyMediaViewImage;
+    frontViewColored?: FyMediaViewImage;
+    sideViewColored?: FyMediaViewImage;
+    topViewColored?: FyMediaViewImage;
   };
 };

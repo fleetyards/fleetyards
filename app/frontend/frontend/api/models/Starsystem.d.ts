@@ -3,6 +3,9 @@ type Starsystem = {
   slug: string;
   name: string;
   locationLabel: string;
+  media: {
+    storeImage?: FyMediaImage;
+  };
 };
 
 type StarsystemFilter = {

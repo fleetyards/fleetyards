@@ -12,6 +12,9 @@ type CelestialObject = {
   economy: string;
   danger: string;
   locationLabel: string;
+  media: {
+    storeImage?: FyMediaImage;
+  };
 };
 
 type CelestialObjectsFilter = {

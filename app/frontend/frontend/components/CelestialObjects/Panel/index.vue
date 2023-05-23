@@ -8,7 +8,7 @@
       <LazyImage
         :to="route"
         :aria-label="location.name"
-        :src="item.media.storeImage.medium"
+        :src="storeImage"
         :alt="location.name"
         class="image"
       />
@@ -32,6 +32,9 @@
 <script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/frontend/composables/useWebpCheck";
 
 type Props = {
   item: SearchResult;
@@ -40,6 +43,20 @@ type Props = {
 const props = defineProps<Props>();
 
 const location = computed(() => props.item as CelestialObject | Starsystem);
+
+const { supported: webpSupported } = useWebpCheck();
+
+const storeImage = computed(() => {
+  if (props.item.media.storeImage) {
+    return props.item.media.storeImage?.medium;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
+});
 
 const route = computed(() => {
   switch (props.item.resultType) {

@@ -1,5 +1,8 @@
 type Commodity = {
   id: string;
+  media: {
+    storeImage?: FyMediaImage;
+  };
 };
 
 type CommoditiesFilter = {

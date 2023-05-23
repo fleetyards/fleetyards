@@ -9,54 +9,29 @@
   />
 </template>
 
-<script>
-import axios from "axios";
+<script lang="ts" setup>
+import { v4 as uuidv4 } from "uuid";
+import { useRoute } from "vue-router/composables";
+import { useWebpCheck } from "@/frontend/composables/useWebpCheck";
 
+const backgroundImageFallback = "bg-6";
+const uuid = uuidv4();
+
+const { supported: webpSupported } = useWebpCheck();
+
+const route = useRoute();
+
+const backgroundImageKey = computed(() => {
+  if (route.meta?.backgroundImage) {
+    return route.meta.backgroundImage;
+  }
+
+  return backgroundImageFallback;
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "BackgroundImage",
-
-  data() {
-    return {
-      backgroundImageFallback: "bg-6",
-      webpSupported: true,
-    };
-  },
-
-  computed: {
-    backgroundImageKey() {
-      if (this.$route.meta.backgroundImage) {
-        return this.$route.meta.backgroundImage;
-      }
-
-      return this.backgroundImageFallback;
-    },
-
-    uuid() {
-      return this._uid;
-    },
-  },
-
-  async created() {
-    this.checkWebpSupport();
-  },
-
-  methods: {
-    async checkWebpSupport() {
-      if (typeof createImageBitmap === "undefined") {
-        return false;
-      }
-
-      const webpData =
-        "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=";
-      const response = await axios.get(webpData, { responseType: "blob" });
-
-      this.webpSupported = await createImageBitmap(response.data).then(
-        () => true,
-        () => false
-      );
-
-      return this.webpSupported;
-    },
-  },
 };
 </script>
