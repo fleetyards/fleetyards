@@ -45,6 +45,10 @@ export default () => ({
       return state.fleetchartScale;
     },
 
+    fleetchartColored(state) {
+      return state.fleetchartColored;
+    },
+
     grouped(state) {
       return state.grouped;
     },
@@ -106,6 +110,10 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload;
+    },
+
+    setFleetchartColored(state, payload) {
+      state.fleetchartColored = payload;
     },
 
     setGrouped(state, payload) {

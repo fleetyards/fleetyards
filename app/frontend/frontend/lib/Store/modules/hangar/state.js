@@ -9,6 +9,7 @@ export default () => ({
   fleetchartScreenHeight: "1x",
   fleetchartMode: "panzoom",
   fleetchartScale: 1,
+  fleetchartColored: false,
   preview: true,
   money: true,
   starterGuideVisible: true,

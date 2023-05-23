@@ -21,12 +21,12 @@
         class="panel-image text-center"
       >
         <LazyImage
-          v-if="model.storeImageMedium"
+          v-if="model.media.storeImage.medium"
           :href="url"
           target="_blank"
           rel="noopener"
           :aria-label="model.name"
-          :src="model.storeImageMedium"
+          :src="model.media.storeImage.medium"
           :alt="model.name"
           class="image"
         />

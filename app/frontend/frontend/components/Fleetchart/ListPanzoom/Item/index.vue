@@ -44,16 +44,6 @@ import FleetchartItemImage from "./Image/index.vue";
 
 type ViewType = "top" | "side" | "angled" | "front";
 
-type ModelViewType =
-  | "topView"
-  | "topViewColored"
-  | "sideView"
-  | "sideViewColored"
-  | "angledView"
-  | "angledViewColored"
-  | "frontView"
-  | "frontViewColored";
-
 type Props = {
   item: Model | Vehicle;
   viewpoint?: ViewType;
@@ -75,12 +65,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const view = computed<ModelViewType>(() => {
-  if (props.colored && model.value[`${props.viewpoint}ViewColored`]) {
-    return `${props.viewpoint}ViewColored`;
+const imageByViewpoint = computed(() => {
+  if (props.viewpoint === "angled") {
+    return angledView.value;
   }
 
-  return `${props.viewpoint}View`;
+  if (props.viewpoint === "front") {
+    return frontView.value;
+  }
+
+  if (props.viewpoint === "side") {
+    return sideView.value;
+  }
+
+  return topView.value;
 });
 
 const model = computed<Model>(() => {
@@ -99,12 +97,100 @@ const vehicle = computed<Vehicle | null>(() => {
   return null;
 });
 
-const paint = computed<ModelPaint | null>(() => {
-  if (vehicle.value && vehicle.value.paint) {
-    return props.item as ModelPaint;
+const modulePackage = computed<ModelModulePackage | null>(() => {
+  if (vehicle.value && vehicle.value.modulePackage) {
+    return vehicle.value.modulePackage;
   }
 
   return null;
+});
+
+const paint = computed<ModelPaint | null>(() => {
+  if (vehicle.value && vehicle.value.paint) {
+    return vehicle.value.paint;
+  }
+
+  return null;
+});
+
+const angledView = computed(() => {
+  if (props.colored && paint.value && paint.value.media.angledView?.source) {
+    return paint.value.media.angledView;
+  }
+
+  if (modulePackage.value && modulePackage.value.media.angledView?.source) {
+    if (props.colored && modulePackage.value.media.angledViewColored?.source) {
+      return modulePackage.value.media.angledViewColored;
+    }
+
+    return modulePackage.value.media.angledView;
+  }
+
+  if (props.colored && model.value.media.angledViewColored?.source) {
+    return model.value.media.angledViewColored;
+  }
+
+  return model.value.media.angledView;
+});
+
+const frontView = computed(() => {
+  if (props.colored && paint.value && paint.value.media.frontView?.source) {
+    return paint.value.media.frontView;
+  }
+
+  if (modulePackage.value && modulePackage.value.media.frontView?.source) {
+    if (props.colored && modulePackage.value.media.frontViewColored?.source) {
+      return modulePackage.value.media.frontViewColored;
+    }
+
+    return modulePackage.value.media.frontView;
+  }
+
+  if (props.colored && model.value.media.frontViewColored?.source) {
+    return model.value.media.frontViewColored;
+  }
+
+  return model.value.media.frontView;
+});
+
+const sideView = computed(() => {
+  if (props.colored && paint.value && paint.value.media.sideView?.source) {
+    return paint.value.media.sideView;
+  }
+
+  if (modulePackage.value && modulePackage.value.media.sideView?.source) {
+    if (props.colored && modulePackage.value.media.sideViewColored?.source) {
+      return modulePackage.value.media.sideViewColored;
+    }
+
+    return modulePackage.value.media.sideView;
+  }
+
+  if (props.colored && model.value.media.sideViewColored?.source) {
+    return model.value.media.sideViewColored;
+  }
+
+  return model.value.media.sideView;
+});
+
+const topView = computed(() => {
+  if (props.colored && paint.value && paint.value.media.topView?.source) {
+    return paint.value.media.topView;
+  }
+
+  if (modulePackage.value && modulePackage.value.media.topView?.source) {
+    if (props.colored && modulePackage.value.media.topViewColored?.source) {
+      return modulePackage.value.media.topViewColored;
+    }
+
+    return modulePackage.value.media.topView;
+  }
+
+  if (props.colored && model.value.media.topViewColored?.source) {
+    return model.value.media.topViewColored;
+  }
+
+  return model.value.media.topView;
 });
 
 const cssClasses = computed(() => {
@@ -119,40 +205,6 @@ const cssClasses = computed(() => {
   }
 
   return cssClasses;
-});
-
-const modulePackage = computed<ModelModulePackage | null>(() => {
-  if (vehicle.value && vehicle.value.modulePackage) {
-    return vehicle.value.modulePackage as ModelModulePackage;
-  }
-
-  return null;
-});
-
-const image = computed(() => {
-  if (
-    modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
-  ) {
-    const url = extractImageFromModel(modulePackage.value);
-    if (url) {
-      return url;
-    }
-  }
-
-  if (
-    paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
-  ) {
-    const url = extractImageFromModel(paint.value);
-    if (url) {
-      return url;
-    }
-  }
-
-  return extractImageFromModel(model.value);
 });
 
 const productionStatus = computed(() =>
@@ -190,142 +242,45 @@ const imageWidth = computed(() =>
   )
 );
 
-const sourceImageHeightMax = computed(() => {
-  if (
-    modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
-  ) {
-    const height = extractMaxHeightFromModel(modulePackage.value);
-    if (height) {
-      return height;
-    }
-  }
+const sourceImageHeight = computed(() => imageByViewpoint.value?.height);
 
-  if (
-    paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
-  ) {
-    const height = extractMaxHeightFromModel(paint.value);
-    if (height) {
-      return height;
-    }
-  }
+const sourceImageHeightMax = computed(() =>
+  Math.max(
+    ...[
+      angledView.value?.height,
+      frontView.value?.width,
+      sideView.value?.height,
+      topView.value?.height,
+    ].filter(Boolean)
+  )
+);
 
-  return extractMaxHeightFromModel(model.value);
-});
+const sourceImageWidth = computed(() => imageByViewpoint.value?.width);
 
-const sourceImageHeight = computed(() => {
-  if (
-    modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
-  ) {
-    const height = extractImageHeightFromModel(modulePackage.value);
-    if (height) {
-      return height;
-    }
-  }
+const sourceImageWidthMax = computed(() =>
+  Math.max(
+    ...[
+      angledView.value?.width,
+      frontView.value?.width,
+      sideView.value?.width,
+      topView.value?.width,
+    ].filter(Boolean)
+  )
+);
 
-  if (
-    paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
-  ) {
-    const height = extractImageHeightFromModel(paint.value);
-    if (height) {
-      return height;
-    }
-  }
-
-  return extractImageHeightFromModel(model.value);
-});
-
-const sourceImageWidth = computed(() => {
-  if (
-    modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
-  ) {
-    const height = extractImageWidthFromModel(modulePackage.value);
-    if (height) {
-      return height;
-    }
-  }
-
-  if (
-    paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
-  ) {
-    const width = extractImageWidthFromModel(paint.value);
-    if (width) {
-      return width;
-    }
-  }
-
-  return extractImageWidthFromModel(model.value);
-});
-
-const sourceImageWidthMax = computed(() => {
-  if (
-    modulePackage.value &&
-    (modulePackage.value.topView ||
-      modulePackage.value.sideView ||
-      modulePackage.value.angledView)
-  ) {
-    const width = extractMaxWidthFromModel(modulePackage.value);
-    if (width) {
-      return width;
-    }
-  }
-
-  if (
-    paint.value &&
-    (paint.value.topView || paint.value.sideView || paint.value.angledView)
-  ) {
-    const width = extractMaxWidthFromModel(paint.value);
-    if (width) {
-      return width;
-    }
-  }
-
-  return extractMaxWidthFromModel(model.value);
-});
-
-const extractImageFromModel = (
-  model: Model | ModelModulePackage | ModelPaint
-) => {
+const image = computed(() => {
   const width = length.value * props.sizeMultiplicator * props.scale;
 
   if (width > 1900) {
-    return model[view.value];
+    return imageByViewpoint.value?.source;
   }
 
   if (width > 900) {
-    return model[`${view.value}Large`];
+    return imageByViewpoint.value?.large;
   }
 
-  return model[`${view.value}Medium`];
-};
-
-const extractMaxWidthFromModel = (
-  model: Model | ModelModulePackage | ModelPaint
-) => Math.max(model.topViewWidth, model.sideViewWidth, model.angledViewWidth);
-
-const extractMaxHeightFromModel = (
-  model: Model | ModelModulePackage | ModelPaint
-) =>
-  Math.max(model.topViewHeight, model.sideViewHeight, model.angledViewHeight);
-
-const extractImageHeightFromModel = (
-  model: Model | ModelModulePackage | ModelPaint
-) => model[`${view.value}Height`];
-
-const extractImageWidthFromModel = (
-  model: Model | ModelModulePackage | ModelPaint
-) => model[`${view.value}Width`];
+  return imageByViewpoint.value?.medium;
+});
 </script>
 
 <script lang="ts">

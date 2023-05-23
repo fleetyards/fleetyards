@@ -23,6 +23,10 @@ export default {
     commit("setFleetchartVisible", !state.fleetchartVisible);
   },
 
+  toggleColored({ commit, state }) {
+    commit("setFleetchartColored", !state.fleetchartColored);
+  },
+
   updatePerPage({ commit }, payload) {
     commit("setPerPage", payload);
   },

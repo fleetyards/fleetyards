@@ -37,6 +37,37 @@ json.yaxis_acceleration model.yaxis_acceleration
 json.zaxis_acceleration model.zaxis_acceleration
 json.size model.size
 json.size_label model.size&.humanize
+json.media do
+  json.store_image do
+    json.partial! "api/v1/shared/media_image", media_image: model.store_image
+  end
+  json.fleetchart_image model.fleetchart_image.url
+  json.angled_view do
+    json.partial! "api/v1/shared/view_image", view_image: model.angled_view, width: model.angled_view_width, height: model.angled_view_height
+  end
+  json.front_view do
+    json.partial! "api/v1/shared/view_image", view_image: model.front_view, width: model.front_view_width, height: model.front_view_height
+  end
+  json.side_view do
+    json.partial! "api/v1/shared/view_image", view_image: model.side_view, width: model.side_view_width, height: model.side_view_height
+  end
+  json.top_view do
+    json.partial! "api/v1/shared/view_image", view_image: model.top_view, width: model.top_view_width, height: model.top_view_height
+  end
+  json.angled_view_colored do
+    json.partial! "api/v1/shared/view_image", view_image: model.angled_view_colored, width: model.angled_view_colored_width, height: model.angled_view_colored_height
+  end
+  json.front_view_colored do
+    json.partial! "api/v1/shared/view_image", view_image: model.front_view_colored, width: model.front_view_colored_width, height: model.front_view_colored_height
+  end
+  json.side_view_colored do
+    json.partial! "api/v1/shared/view_image", view_image: model.side_view_colored, width: model.side_view_colored_width, height: model.side_view_colored_height
+  end
+  json.top_view_colored do
+    json.partial! "api/v1/shared/view_image", view_image: model.top_view_colored, width: model.top_view_colored_width, height: model.top_view_colored_height
+  end
+end
+
 json.store_image model.store_image.url
 json.store_image_large model.store_image.large.url
 json.store_image_medium model.store_image.medium.url
@@ -56,13 +87,6 @@ json.side_view_large model.side_view.large.url
 json.side_view_xlarge model.side_view.xlarge.url
 json.side_view_width model.side_view_width
 json.side_view_height model.side_view_height
-json.front_view model.front_view.url
-json.front_view_small model.front_view.small.url
-json.front_view_medium model.front_view.medium.url
-json.front_view_large model.front_view.large.url
-json.front_view_xlarge model.front_view.xlarge.url
-json.front_view_width model.front_view_width
-json.front_view_height model.front_view_height
 json.angled_view model.angled_view.url
 json.angled_view_small model.angled_view.small.url
 json.angled_view_medium model.angled_view.medium.url
@@ -70,34 +94,6 @@ json.angled_view_large model.angled_view.large.url
 json.angled_view_xlarge model.angled_view.xlarge.url
 json.angled_view_width model.angled_view_width
 json.angled_view_height model.angled_view_height
-json.top_view_colored model.top_view_colored.url
-json.top_view_colored_small model.top_view_colored.small.url
-json.top_view_colored_medium model.top_view_colored.medium.url
-json.top_view_colored_large model.top_view_colored.large.url
-json.top_view_colored_xlarge model.top_view_colored.xlarge.url
-json.top_view_colored_width model.top_view_colored_width
-json.top_view_colored_height model.top_view_colored_height
-json.side_view_colored model.side_view_colored.url
-json.side_view_colored_small model.side_view_colored.small.url
-json.side_view_colored_medium model.side_view_colored.medium.url
-json.side_view_colored_large model.side_view_colored.large.url
-json.side_view_colored_xlarge model.side_view_colored.xlarge.url
-json.side_view_colored_width model.side_view_colored_width
-json.side_view_colored_height model.side_view_colored_height
-json.front_view_colored model.front_view_colored.url
-json.front_view_colored_small model.front_view_colored.small.url
-json.front_view_colored_medium model.front_view_colored.medium.url
-json.front_view_colored_large model.front_view_colored.large.url
-json.front_view_colored_xlarge model.front_view_colored.xlarge.url
-json.front_view_colored_width model.front_view_colored_width
-json.front_view_colored_height model.front_view_colored_height
-json.angled_view_colored model.angled_view_colored.url
-json.angled_view_colored_small model.angled_view_colored.small.url
-json.angled_view_colored_medium model.angled_view_colored.medium.url
-json.angled_view_colored_large model.angled_view_colored.large.url
-json.angled_view_colored_xlarge model.angled_view_colored.xlarge.url
-json.angled_view_colored_width model.angled_view_colored_width
-json.angled_view_colored_height model.angled_view_colored_height
 json.brochure model.brochure.url
 json.holo model.holo.url
 json.holo_colored model.holo_colored

@@ -31,6 +31,10 @@ export default {
     commit("setInviteToken", null);
   },
 
+  toggleColored({ commit, state }) {
+    commit("setFleetchartColored", !state.fleetchartColored);
+  },
+
   toggleFleetchart({ commit, state }) {
     commit("setFleetchartVisible", !state.fleetchartVisible);
   },

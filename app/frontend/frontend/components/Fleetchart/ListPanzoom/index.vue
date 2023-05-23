@@ -206,8 +206,6 @@ export default class FleetchartListPanzoom extends Vue {
 
   gridEnabled = false;
 
-  coloredEnabled = false;
-
   screenWidth: number | null = null;
 
   screenHeight: number | null = null;
@@ -253,6 +251,10 @@ export default class FleetchartListPanzoom extends Vue {
 
   get showLabels() {
     return this.$store.getters[`${this.namespace}/fleetchartLabels`];
+  }
+
+  get coloredEnabled() {
+    return this.$store.getters[`${this.namespace}/fleetchartColored`];
   }
 
   get selectedScreenHeight() {
@@ -428,7 +430,10 @@ export default class FleetchartListPanzoom extends Vue {
   }
 
   toggleColored() {
-    this.coloredEnabled = !this.coloredEnabled;
+    this.$store.commit(
+      `${this.namespace}/setFleetchartColored`,
+      !this.coloredEnabled
+    );
   }
 
   setViewpoint(viewpoint) {

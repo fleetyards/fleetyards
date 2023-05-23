@@ -8,7 +8,7 @@
       <LazyImage
         :to="route"
         :aria-label="location.name"
-        :src="item.storeImageMedium"
+        :src="item.media.storeImage.medium"
         :alt="location.name"
         class="image"
       />

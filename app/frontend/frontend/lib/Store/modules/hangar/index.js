@@ -57,6 +57,10 @@ export default () => ({
       return state.fleetchartScale;
     },
 
+    fleetchartColored(state) {
+      return state.fleetchartColored;
+    },
+
     money(state) {
       return state.money;
     },
@@ -126,6 +130,10 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload;
+    },
+
+    setFleetchartColored(state, payload) {
+      state.fleetchartColored = payload;
     },
 
     setShips(state, payload) {

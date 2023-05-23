@@ -41,6 +41,10 @@ export default () => ({
       return state.fleetchartScale;
     },
 
+    fleetchartColored(state) {
+      return state.fleetchartColored;
+    },
+
     holoviewerVisible(state) {
       return state.holoviewerVisible;
     },
@@ -86,6 +90,10 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload;
+    },
+
+    setFleetchartColored(state, payload) {
+      state.fleetchartColored = payload;
     },
 
     setHoloviewerVisible(state, payload) {
