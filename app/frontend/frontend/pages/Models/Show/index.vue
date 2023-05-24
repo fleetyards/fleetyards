@@ -357,74 +357,74 @@ const modelSlug = computed(() => route.params.slug);
 
 const storeImage = computed(() => {
   if (mobile.value) {
-    return model.value?.storeImageMedium;
+    return model.value?.media.storeImage?.medium;
   }
 
-  return model.value?.storeImageLarge;
+  return model.value?.media.storeImage?.large;
 });
 
 const fleetchartImageAngled = computed(() => {
-  if (model.value?.angledViewColored) {
+  if (model.value?.media.angledViewColored) {
     if (mobile.value) {
-      return model.value?.angledViewColoredMedium;
+      return model.value?.media.angledViewColored.medium;
     }
 
-    return model.value?.angledViewColoredLarge;
+    return model.value?.media.angledViewColored.large;
   }
 
-  if (mobile.value) {
-    return model.value?.angledViewMedium;
+  if (mobile.value && model.value?.media.angledView) {
+    return model.value?.media.angledView.medium;
   }
 
-  return model.value?.angledViewLarge;
+  return model.value?.media.angledView?.large;
 });
 
 const fleetchartImageFront = computed(() => {
-  if (model.value?.frontViewColored) {
+  if (model.value?.media.frontViewColored) {
     if (mobile.value) {
-      return model.value?.frontViewColoredMedium;
+      return model.value?.media.frontViewColored.medium;
     }
 
-    return model.value?.frontViewColoredLarge;
+    return model.value?.media.frontViewColored.large;
   }
 
-  if (mobile.value) {
-    return model.value?.frontViewMedium;
+  if (mobile.value && model.value?.media.frontView) {
+    return model.value?.media.frontView.medium;
   }
 
-  return model.value?.frontViewLarge;
+  return model.value?.media.frontView?.large;
 });
 
 const fleetchartImageTop = computed(() => {
-  if (model.value?.topViewColored) {
+  if (model.value?.media.topViewColored) {
     if (mobile.value) {
-      return model.value?.topViewColoredMedium;
+      return model.value?.media.topViewColored.medium;
     }
 
-    return model.value?.topViewColoredLarge;
+    return model.value?.media.topViewColored.large;
   }
 
-  if (mobile.value) {
-    return model.value?.topViewMedium;
+  if (mobile.value && model.value?.media.topView) {
+    return model.value?.media.topView.medium;
   }
 
-  return model.value?.topViewLarge;
+  return model.value?.media.topView?.large;
 });
 
 const fleetchartImageSide = computed(() => {
-  if (model.value?.sideViewColored) {
+  if (model.value?.media.sideViewColored) {
     if (mobile.value) {
-      return model.value?.sideViewColoredMedium;
+      return model.value?.media.sideViewColored.medium;
     }
 
-    return model.value?.sideViewColoredLarge;
+    return model.value?.media.sideViewColored.large;
   }
 
-  if (mobile.value) {
-    return model.value?.sideViewMedium;
+  if (mobile.value && model.value?.media.sideView?.medium) {
+    return model.value?.media.sideView.medium;
   }
 
-  return model.value?.sideViewLarge;
+  return model.value?.media.sideView?.large;
 });
 
 const starship42Url = computed(
@@ -462,7 +462,7 @@ const metaImage = computed(() => {
     return undefined;
   }
 
-  return model.value.storeImageLarge;
+  return model.value.media.storeImage?.large;
 });
 
 const { updateMetaInfo } = useMetaInfo();

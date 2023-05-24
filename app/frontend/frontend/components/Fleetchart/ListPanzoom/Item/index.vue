@@ -65,20 +65,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const imageByViewpoint = computed(() => {
+const imageByViewpoint = computed<FyMediaViewImage>(() => {
   if (props.viewpoint === "angled") {
-    return angledView.value;
+    return angledView.value as FyMediaViewImage;
   }
 
   if (props.viewpoint === "front") {
-    return frontView.value;
+    return frontView.value as FyMediaViewImage;
   }
 
   if (props.viewpoint === "side") {
-    return sideView.value;
+    return sideView.value as FyMediaViewImage;
   }
 
-  return topView.value;
+  return topView.value as FyMediaViewImage;
 });
 
 const model = computed<Model>(() => {
@@ -114,19 +114,19 @@ const paint = computed<ModelPaint | null>(() => {
 });
 
 const angledView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.angledView?.source) {
+  if (props.colored && paint.value && paint.value.media.angledView) {
     return paint.value.media.angledView;
   }
 
-  if (modulePackage.value && modulePackage.value.media.angledView?.source) {
-    if (props.colored && modulePackage.value.media.angledViewColored?.source) {
+  if (modulePackage.value && modulePackage.value.media.angledView) {
+    if (props.colored && modulePackage.value.media.angledViewColored) {
       return modulePackage.value.media.angledViewColored;
     }
 
     return modulePackage.value.media.angledView;
   }
 
-  if (props.colored && model.value.media.angledViewColored?.source) {
+  if (props.colored && model.value.media.angledViewColored) {
     return model.value.media.angledViewColored;
   }
 
@@ -134,19 +134,19 @@ const angledView = computed(() => {
 });
 
 const frontView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.frontView?.source) {
+  if (props.colored && paint.value && paint.value.media.frontView) {
     return paint.value.media.frontView;
   }
 
-  if (modulePackage.value && modulePackage.value.media.frontView?.source) {
-    if (props.colored && modulePackage.value.media.frontViewColored?.source) {
+  if (modulePackage.value && modulePackage.value.media.frontView) {
+    if (props.colored && modulePackage.value.media.frontViewColored) {
       return modulePackage.value.media.frontViewColored;
     }
 
     return modulePackage.value.media.frontView;
   }
 
-  if (props.colored && model.value.media.frontViewColored?.source) {
+  if (props.colored && model.value.media.frontViewColored) {
     return model.value.media.frontViewColored;
   }
 
@@ -154,19 +154,19 @@ const frontView = computed(() => {
 });
 
 const sideView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.sideView?.source) {
+  if (props.colored && paint.value && paint.value.media.sideView) {
     return paint.value.media.sideView;
   }
 
-  if (modulePackage.value && modulePackage.value.media.sideView?.source) {
-    if (props.colored && modulePackage.value.media.sideViewColored?.source) {
+  if (modulePackage.value && modulePackage.value.media.sideView) {
+    if (props.colored && modulePackage.value.media.sideViewColored) {
       return modulePackage.value.media.sideViewColored;
     }
 
     return modulePackage.value.media.sideView;
   }
 
-  if (props.colored && model.value.media.sideViewColored?.source) {
+  if (props.colored && model.value.media.sideViewColored) {
     return model.value.media.sideViewColored;
   }
 
@@ -174,12 +174,12 @@ const sideView = computed(() => {
 });
 
 const topView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.topView?.source) {
+  if (props.colored && paint.value && paint.value.media.topView) {
     return paint.value.media.topView;
   }
 
-  if (modulePackage.value && modulePackage.value.media.topView?.source) {
-    if (props.colored && modulePackage.value.media.topViewColored?.source) {
+  if (modulePackage.value && modulePackage.value.media.topView) {
+    if (props.colored && modulePackage.value.media.topViewColored) {
       return modulePackage.value.media.topViewColored;
     }
 
@@ -246,12 +246,12 @@ const sourceImageHeight = computed(() => imageByViewpoint.value?.height);
 
 const sourceImageHeightMax = computed(() =>
   Math.max(
-    ...[
+    ...([
       angledView.value?.height,
-      frontView.value?.width,
+      frontView.value?.height,
       sideView.value?.height,
       topView.value?.height,
-    ].filter(Boolean)
+    ].filter(Boolean) as number[])
   )
 );
 
@@ -259,12 +259,12 @@ const sourceImageWidth = computed(() => imageByViewpoint.value?.width);
 
 const sourceImageWidthMax = computed(() =>
   Math.max(
-    ...[
+    ...([
       angledView.value?.width,
       frontView.value?.width,
       sideView.value?.width,
       topView.value?.width,
-    ].filter(Boolean)
+    ].filter(Boolean) as number[])
   )
 );
 
