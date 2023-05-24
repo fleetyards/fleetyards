@@ -248,7 +248,6 @@ const sourceImageHeightMax = computed(() =>
   Math.max(
     ...([
       angledView.value?.height,
-      frontView.value?.height,
       sideView.value?.height,
       topView.value?.height,
     ].filter(Boolean) as number[])
@@ -261,7 +260,6 @@ const sourceImageWidthMax = computed(() =>
   Math.max(
     ...([
       angledView.value?.width,
-      frontView.value?.width,
       sideView.value?.width,
       topView.value?.width,
     ].filter(Boolean) as number[])
