@@ -54,6 +54,7 @@ en:
         model_module: No Module could be found.
         model_module_package: No Module Package could be found.
         model_upgrade: No Upgrade could be found.
+        model_paint: No Paint could be found.
         planet: No Planets could be found.
         shop: No Shops could be found.
         starsystem: No Starsystems could be found.
