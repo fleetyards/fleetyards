@@ -349,6 +349,7 @@ class HangarSync < HangarImporter
       "315p Explorer" => "315p",
       "325a Fighter" => "325a",
       "350r Racer" => "350r",
+      "Ursa Rover" => "Ursa",
       "600i" => "600i Explorer",
       "600i Exploration Module" => "600i Explorer",
       "600i Touring Module" => "600i Touring",

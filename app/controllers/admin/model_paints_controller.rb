@@ -24,8 +24,8 @@ module Admin
       @model_paint = ModelPaint.new(
         model_id: copy_from&.model_id,
         name: copy_from&.name,
-        hidden: copy_from&.hidden,
-        active: copy_from&.active,
+        hidden: copy_from&.hidden || false,
+        active: copy_from&.active || true,
         description: copy_from&.description,
         pledge_price: copy_from&.pledge_price,
         remote_store_image_url: (copy_from&.store_image&.url unless copy_from&.store_image&.blank?),
