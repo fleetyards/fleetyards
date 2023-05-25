@@ -6,6 +6,7 @@
         %th=sort_link(@q, :email)
         %th=sort_link(@q, :last_active_at)
         %th=sort_link(@q, :created_at)
+        %th=sort_link(@q, :confirmed_at)
         %th.actions.actions-three
     %tbody
       = render partial: "admin/users/show", collection: @users, as: :user

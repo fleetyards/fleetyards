@@ -9,6 +9,7 @@
         %th=sort_link(@q, :model_name, 'Models')
         %th=sort_link(@q, :hidden)
         %th=sort_link(@q, :active)
+        %th=sort_link(@q, :created_at)
         %th.actions.actions-two=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/model_paints/show", collection: @model_paints, as: :model_paint

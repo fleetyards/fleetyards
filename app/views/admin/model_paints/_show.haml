@@ -21,6 +21,8 @@
       %i.fa.fa-check
     - else
       %i.fa.fa-square
+  %td
+    = l(model_paint.created_at, format: :short)
   %td.text-right
     .btn-group
       = link_to edit_admin_model_paint_path(model_paint), 'data-turbolinks': "false", title: I18n.t(:"actions.edit"), class: "btn btn-dark" do

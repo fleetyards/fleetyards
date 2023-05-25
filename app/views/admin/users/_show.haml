@@ -11,6 +11,10 @@
     = time_ago_in_words(user.created_at)
     = "(#{l(user.created_at, format: :short)})"
   %td
+    - if user.confirmed_at.present?
+      = time_ago_in_words(user.confirmed_at)
+      = "(#{l(user.confirmed_at, format: :short)})"
+  %td
     .btn-group
       = link_to edit_admin_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-dark" do
         %i.fa.fa-edit
