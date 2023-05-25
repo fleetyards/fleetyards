@@ -18,7 +18,22 @@ module Admin
 
     def new
       authorize! :create, :admin_model_paints
-      @model_paint = ModelPaint.new
+      copy_from = if params[:copy_from].present?
+        ModelPaint.find_by(id: params[:copy_from])
+      end
+      @model_paint = ModelPaint.new(
+        model_id: copy_from&.model_id,
+        name: copy_from&.name,
+        hidden: copy_from&.hidden,
+        active: copy_from&.active,
+        description: copy_from&.description,
+        pledge_price: copy_from&.pledge_price,
+        remote_store_image_url: (copy_from&.store_image&.url unless copy_from&.store_image&.blank?),
+        remote_fleetchart_image_url: (copy_from&.fleetchart_image&.url unless copy_from&.fleetchart_image&.blank?),
+        remote_top_view_url: (copy_from&.top_view&.url unless copy_from&.top_view&.blank?),
+        remote_side_view_url: (copy_from&.side_view&.url unless copy_from&.side_view&.blank?),
+        remote_angled_view_url: (copy_from&.angled_view&.url unless copy_from&.angled_view&.blank?)
+      )
     end
 
     def edit
@@ -77,7 +92,8 @@ module Admin
         :top_view, :top_view_cache, :remove_top_view,
         :side_view, :side_view_cache, :remove_side_view,
         :angled_view, :angled_view_cache, :remove_angled_view,
-        :pledge_price, :description, :model_id
+        :pledge_price, :description, :model_id, :remote_angled_view_url, :remote_side_view_url,
+        :remote_top_view_url, :remote_fleetchart_image_url, :remote_store_image_url
       )
     end
 

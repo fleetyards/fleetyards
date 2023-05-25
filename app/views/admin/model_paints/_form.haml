@@ -1,4 +1,14 @@
 = form_for [:admin, model_paint], html: { multipart: true } do |form|
+  - if model_paint.remote_store_image_url.present?
+    = form.hidden_field :remote_store_image_url
+  - if model_paint.remote_fleetchart_image_url.present?
+    = form.hidden_field :remote_fleetchart_image_url
+  - if model_paint.remote_top_view_url.present?
+    = form.hidden_field :remote_top_view_url
+  - if model_paint.remote_side_view_url.present?
+    = form.hidden_field :remote_side_view_url
+  - if model_paint.remote_angled_view_url.present?
+    = form.hidden_field :remote_angled_view_url
   .row
     .col-12.col-md-6.form-group{class: form_error?(model_paint, :name)}
       = form.label :name
