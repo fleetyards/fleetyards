@@ -138,10 +138,20 @@ module Rsi
       updates[:rsi_cargo] = nil_or_decimal(data["cargocapacity"])
       updates[:cargo] = nil_or_decimal(data["cargocapacity"]) if (model_updated(model, data) && nil_or_decimal(data["cargocapacity"]) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?
 
-      %w[max_crew min_crew scm_speed afterburner_speed pitch_max yaw_max roll_max xaxis_acceleration yaxis_acceleration zaxis_acceleration].each do |attr|
+      %w[max_crew min_crew scm_speed].each do |attr|
         updates["rsi_#{attr}"] = nil_or_decimal(data[attr])
         updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send("rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
       end
+
+      updates[:rsi_max_speed] = nil_or_decimal(data["afterburner_speed"])
+      updates[:max_speed] = nil_or_decimal(data["afterburner_speed"]) if model_updated(model, data) && nil_or_decimal(data["afterburner_speed"]) != model.rsi_max_speed || model.rsi_max_speed.blank? || model.rsi_max_speed.zero?
+
+      updates[:rsi_pitch] = nil_or_decimal(data["pitch_max"])
+      updates[:pitch] = nil_or_decimal(data["pitch_max"]) if model_updated(model, data) && nil_or_decimal(data["pitch_max"]) != model.rsi_pitch || model.rsi_pitch.blank? || model.rsi_pitch.zero?
+      updates[:rsi_yaw] = nil_or_decimal(data["yaw_max"])
+      updates[:yaw] = nil_or_decimal(data["yaw_max"]) if model_updated(model, data) && nil_or_decimal(data["yaw_max"]) != model.rsi_yaw || model.rsi_yaw.blank? || model.rsi_yaw.zero?
+      updates[:rsi_roll] = nil_or_decimal(data["roll_max"])
+      updates[:roll] = nil_or_decimal(data["roll_max"]) if model_updated(model, data) && nil_or_decimal(data["roll_max"]) != model.rsi_roll || model.rsi_roll.blank? || model.rsi_roll.zero?
 
       updates[:ground] = true if data["type"] == "ground" && model_updated(model, data) && data["type"] != model.classification
 

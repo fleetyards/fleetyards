@@ -25,6 +25,16 @@ module ScData
 
       hardpoints_loader.extract_from_components(model, components_data)
 
+      update_params = extract_metrics(ship_data, components_data)
+      update_params = extract_speeds(ship_data, update_params)
+
+      Rails.logger.debug update_params.to_yaml
+      Rails.logger.debug update_params.inspect
+
+      model.update!(update_params)
+    end
+
+    private def extract_metrics(ship_data, components_data)
       update_params = {
         mass: ship_data["Mass"]&.to_f,
         cargo_holds: extract_cargo_holds(components_data["CargoGrids"]),
@@ -35,12 +45,34 @@ module ScData
       update_params[:beam] = ship_data["Width"]&.to_f if ship_data["Width"]
       update_params[:height] = ship_data["Height"]&.to_f if ship_data["Height"]
       update_params[:length] = ship_data["Length"]&.to_f if ship_data["Length"]
-      update_params[:ground] = !ship_data["IsSpaceship"] if ship_data["IsSpaceship"].present?
+      update_params[:ground] = !ship_data["IsVehicle"] if ship_data["IsVehicle"].present?
 
-      Rails.logger.debug update_params.to_yaml
-      Rails.logger.debug update_params.inspect
+      update_params
+    end
 
-      model.update!(update_params)
+    private def extract_speeds(ship_data, update_params)
+      flight_speeds = ship_data["FlightCharacteristics"] || {}
+      if flight_speeds.present?
+        update_params[:scm_speed] = flight_speeds["ScmSpeed"]&.to_f if flight_speeds["ScmSpeed"].present?
+        update_params[:max_speed] = flight_speeds["ScmSpeed"]&.to_f if flight_speeds["ScmSpeed"].present?
+        update_params[:scm_speed_acceleration] = flight_speeds["ZeroToScm"]&.to_f if flight_speeds["ZeroToScm"].present?
+        update_params[:scm_speed_decceleration] = flight_speeds["ScmToZero"]&.to_f if flight_speeds["ScmToZero"].present?
+        update_params[:max_speed_acceleration] = flight_speeds["ZeroToMax"]&.to_f if flight_speeds["ZeroToMax"].present?
+        update_params[:max_speed_decceleration] = flight_speeds["MaxToZero"]&.to_f if flight_speeds["MaxToZero"].present?
+        update_params[:pitch] = flight_speeds["Pitch"]&.to_f if flight_speeds["Pitch"].present?
+        update_params[:yar] = flight_speeds["Yaw"]&.to_f if flight_speeds["Yaw"].present?
+        update_params[:roll] = flight_speeds["Roll"]&.to_f if flight_speeds["Roll"].present?
+      end
+
+      ground_speeds = ship_data["DriveCharacteristics"] || {}
+      if ground_speeds.present?
+        update_params[:ground_max_speed] = ground_speeds["TopSpeed"]&.to_f if ground_speeds["TopSpeed"].present?
+        update_params[:ground_reverse_speed] = ground_speeds["ReverseSpeed"]&.to_f if ground_speeds["ReverseSpeed"].present?
+        update_params[:ground_acceleration] = ground_speeds["Acceleration"]&.to_f if ground_speeds["Acceleration"].present?
+        update_params[:ground_decceleration] = ground_speeds["Decceleration"]&.to_f if ground_speeds["Decceleration"].present?
+      end
+
+      update_params
     end
 
     private def load_ship_data(sc_identifier)
