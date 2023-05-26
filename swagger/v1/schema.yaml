@@ -1495,17 +1495,22 @@ components:
           type: string
         designation:
           type: string
-        storeImageIsFallback:
-          type: boolean
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
         storeImage:
           type: string
           format: url
+          deprecated: true
         storeImageLarge:
           type: string
+          deprecated: true
         storeImageMedium:
           type: string
+          deprecated: true
         storeImageSmall:
           type: string
+          deprecated: true
         description:
           type: string
           nullable: true
@@ -1536,6 +1541,11 @@ components:
         locationLabel:
           type: string
           nullable: true
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+        parent:
+          "$ref": "#/components/schemas/CelestialObject"
+          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -1546,6 +1556,7 @@ components:
       - name
       - slug
       - designation
+      - starsystem
       - createdAt
       - updatedAt
       title: CelestialObject
@@ -1558,17 +1569,22 @@ components:
           type: string
         designation:
           type: string
-        storeImageIsFallback:
-          type: boolean
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
         storeImage:
           type: string
           format: url
+          deprecated: true
         storeImageLarge:
           type: string
+          deprecated: true
         storeImageMedium:
           type: string
+          deprecated: true
         storeImageSmall:
           type: string
+          deprecated: true
         description:
           type: string
           nullable: true
@@ -1599,23 +1615,28 @@ components:
         locationLabel:
           type: string
           nullable: true
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+        parent:
+          "$ref": "#/components/schemas/CelestialObject"
+          nullable: true
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-        starsystem:
-          "$ref": "#/components/schemas/Starsystem"
-        parent:
-          "$ref": "#/components/schemas/CelestialObject"
-          nullable: true
         moons:
           type: array
           items:
             "$ref": "#/components/schemas/CelestialObject"
       required:
+      - name
+      - slug
+      - designation
       - starsystem
+      - createdAt
+      - updatedAt
       title: CelestialObjectMinimal
     Commodity:
       type: object
@@ -1946,6 +1967,27 @@ components:
       - createdAt
       - updatedAt
       title: Manufacturer
+    MediaImage:
+      type: object
+      properties:
+        source:
+          type: string
+          format: uri
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+        large:
+          type: string
+          format: uri
+      required:
+      - source
+      - small
+      - medium
+      - large
+      title: MediaImage
     ShopCommodity:
       type: object
       properties:

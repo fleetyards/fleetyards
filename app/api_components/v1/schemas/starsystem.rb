@@ -10,10 +10,13 @@ module V1
         properties: {
           name: {type: :string},
           slug: {type: :string},
-          storeImage: {type: :string},
-          storeImageLarge: {type: :string},
-          storeImageMedium: {type: :string},
-          storeImageSmall: {type: :string},
+          media: {
+            storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+          },
+          storeImage: {type: :string, format: :uri, deprecated: true},
+          storeImageLarge: {type: :string, format: :uri, deprecated: true},
+          storeImageMedium: {type: :string, format: :uri, deprecated: true},
+          storeImageSmall: {type: :string, format: :uri, deprecated: true},
           mapX: {type: :string, nullable: true},
           mapY: {type: :string, nullable: true},
           description: {type: :string, nullable: true},

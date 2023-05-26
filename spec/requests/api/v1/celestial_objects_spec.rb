@@ -17,9 +17,23 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref" => "#/components/schemas/CelestialObject"}
+          items: {"$ref" => "#/components/schemas/CelestialObjectMinimal"}
 
-        run_test!
+        after do |example|
+          if response&.body.present?
+            example.metadata[:response][:content] = {
+              "application/json" => {
+                example: JSON.parse(response.body, symbolize_names: true)
+              }
+            }
+          end
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.count).to be > 0
+        end
       end
     end
   end
@@ -33,10 +47,20 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref" => "#/components/schemas/CelestialObject"
+        schema "$ref" => "#/components/schemas/CelestialObjectMinimal"
 
         let(:crusader) { celestial_objects :crusader }
         let(:slug) { crusader.slug }
+
+        after do |example|
+          if response&.body.present?
+            example.metadata[:response][:content] = {
+              "application/json" => {
+                example: JSON.parse(response.body, symbolize_names: true)
+              }
+            }
+          end
+        end
 
         run_test!
       end

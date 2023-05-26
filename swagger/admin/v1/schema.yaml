@@ -35,6 +35,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Image"
       requestBody:
         content:
           multipart/form-data:
@@ -59,6 +63,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Image"
       requestBody:
         content:
           application/json:
@@ -74,6 +82,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Image"
       requestBody:
         content:
           application/json:
@@ -134,13 +146,13 @@ components:
           type: boolean
         url:
           type: string
-          format: url
+          format: uri
         smallUrl:
           type: string
-          format: url
+          format: uri
         bigUrl:
           type: string
-          format: url
+          format: uri
         gallery:
           "$ref": "#/components/schemas/Gallery"
           nullable: true
