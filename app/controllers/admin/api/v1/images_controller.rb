@@ -54,7 +54,7 @@ module Admin
         private def image_params
           @image_params ||= params.transform_keys(&:underscore)
             .permit(
-              :name, :file, :gallery_id, :gallery_type, :enabled,
+              :file, :gallery_id, :gallery_type, :enabled,
               :global, :background, :caption
             )
         end

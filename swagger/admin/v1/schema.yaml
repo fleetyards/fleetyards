@@ -4,32 +4,49 @@ info:
   title: FleetYards.net Command API
   version: v1
 servers:
-- url: admin.fleetyards.test/api/v1
+- url: http://admin.fleetyards.test/api/v1
   description: Production Server
-- url: admin.fleetyards.dev/api/v1
+- url: https://admin.fleetyards.dev/api/v1
   description: Staging Server
-- url: admin.fleetyards.test/api/v1
+- url: https://admin.fleetyards.test/api/v1
   description: Dev Server
 paths:
   "/images":
     get:
       summary: list images
+      description: Get a List of Images
       tags:
       - Images
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Image"
     post:
       summary: create image
+      description: Create a new Image
       tags:
       - Images
+      parameters: []
       responses:
         '200':
           description: successful
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                "$ref": "#/components/schemas/ImageInputCreate"
   "/images/{id}":
     parameters:
     - name: id
       in: path
+      format: uuid
       description: id
       required: true
       schema:
@@ -38,16 +55,32 @@ paths:
       summary: update image
       tags:
       - Images
+      parameters: []
       responses:
         '200':
           description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                "$ref": "#/components/schemas/ImageInput"
     put:
       summary: update image
       tags:
       - Images
+      parameters: []
       responses:
         '200':
           description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                "$ref": "#/components/schemas/ImageInput"
     delete:
       summary: delete image
       tags:
@@ -55,4 +88,123 @@ paths:
       responses:
         '200':
           description: successful
-components: {}
+components:
+  schemas:
+    Gallery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+      - id
+      - name
+      - slug
+      title: Gallery
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        caption:
+          type: string
+          nullable: true
+        size:
+          type: number
+        width:
+          type: integer
+          nullable: true
+        height:
+          type: integer
+          nullable: true
+        type:
+          type: string
+        enabled:
+          type: boolean
+        global:
+          type: boolean
+        background:
+          type: boolean
+        url:
+          type: string
+          format: url
+        smallUrl:
+          type: string
+          format: url
+        bigUrl:
+          type: string
+          format: url
+        gallery:
+          "$ref": "#/components/schemas/Gallery"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: Image
+    ImageInput:
+      type: object
+      properties:
+        caption:
+          type: string
+        enabled:
+          type: boolean
+        global:
+          type: boolean
+        background:
+          type: boolean
+        galleryId:
+          type: string
+          format: uuid
+        galleryType:
+          type: string
+          enum:
+          - Model
+          - Station
+          - Album
+      title: ImageInput
+    ImageInputCreate:
+      type: object
+      properties:
+        caption:
+          type: string
+        enabled:
+          type: boolean
+        global:
+          type: boolean
+        background:
+          type: boolean
+        galleryId:
+          type: string
+          format: uuid
+        galleryType:
+          type: string
+          enum:
+          - Model
+          - Station
+          - Album
+        file:
+          type: string
+      title: ImageInputCreate
+  parameters: {}
+  securitySchemes: {}
+  requestBodies: {}
+  responses: {}
+  headers: {}
+  examples: {}
+  links: {}
+  callbacks: {}

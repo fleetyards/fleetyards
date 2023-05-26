@@ -50,13 +50,13 @@ Rails.application.reloader.to_prepare do
         },
         servers: [
           {
-            url: "admin.fleetyards.test/api/v1",
+            url: "http://admin.fleetyards.test/api/v1",
             description: "Production Server"
           }, {
-            url: "admin.fleetyards.dev/api/v1",
+            url: "https://admin.fleetyards.dev/api/v1",
             description: "Staging Server"
           }, {
-            url: "admin.fleetyards.test/api/v1",
+            url: "https://admin.fleetyards.test/api/v1",
             description: "Dev Server"
           }
         ],

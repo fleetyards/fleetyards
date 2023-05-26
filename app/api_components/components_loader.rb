@@ -20,15 +20,21 @@ class ComponentsLoader
   end
 
   private def load_components
-    load_classes.map do |klass|
-      klass.new.to_schema.map do |name, definition|
+    components = {}
+
+    load_classes.each do |klass|
+      klass.new.to_schema.each do |name, definition|
         component_name = extract_component_name(klass, name)
 
-        {
-          component_name => definition.merge(title: component_name)
-        }
-      end.reduce(:merge)
-    end.reduce(:merge)
+        if components[component_name].present?
+          raise "Duplicate component name \"#{component_name}\" found in \"#{identifier}/#{type}\""
+        end
+
+        components[component_name] = definition.merge(title: component_name)
+      end
+    end
+
+    components
   end
 
   private def load_classes
@@ -52,7 +58,7 @@ class ComponentsLoader
   end
 
   private def extract_class_name(klass)
-    klass.to_s.remove(definitions_path.camelize)
+    klass.name.split("::").last
   end
 
   private def definitions_path

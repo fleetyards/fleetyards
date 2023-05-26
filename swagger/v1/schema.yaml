@@ -777,14 +777,6 @@ paths:
       responses:
         '200':
           description: successful
-  "/models/fleetchart":
-    get:
-      summary: fleetchart model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
   "/models/with-docks":
     get:
       summary: with_docks model
@@ -1401,46 +1393,6 @@ paths:
       responses:
         '200':
           description: successful
-  "/trade-routes":
-    get:
-      summary: list trade_routes
-      tags:
-      - TradeRoutes
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/qrcode":
-    get:
-      summary: qrcode two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/enable":
-    post:
-      summary: enable two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/disable":
-    post:
-      summary: disable two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/generate-backup-codes":
-    post:
-      summary: generate_backup_codes two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
   "/users/current":
     get:
       summary: current user
@@ -1529,216 +1481,6 @@ paths:
       summary: public user
       tags:
       - Users
-      responses:
-        '200':
-          description: successful
-  "/vehicles":
-    get:
-      summary: list vehicles
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    patch:
-      summary: update vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/fleetchart":
-    get:
-      summary: fleetchart vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/export":
-    get:
-      summary: export vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/import":
-    put:
-      summary: import vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/bulk":
-    put:
-      summary: update_bulk vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/destroy-bulk":
-    put:
-      summary: destroy_bulk vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/destroy-all":
-    delete:
-      summary: destroy_all vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/embed":
-    get:
-      summary: embed vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/hangar-items":
-    get:
-      summary: hangar_items vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/hangar":
-    get:
-      summary: hangar vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/quick-stats":
-    get:
-      summary: quick_stats vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-size":
-    get:
-      summary: models_by_size vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-production-status":
-    get:
-      summary: models_by_production_status vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-manufacturer":
-    get:
-      summary: models_by_manufacturer vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-classification":
-    get:
-      summary: models_by_classification vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{username}":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public vehicle
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{username}/fleetchart":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public_fleetchart vehicle
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{username}/quick-stats":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public_quick_stats vehicle
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-  "/vehicles/check-serial":
-    post:
-      summary: check_serial vehicle
-      tags:
-      - Vehicles
       responses:
         '200':
           description: successful
@@ -2310,3 +2052,11 @@ components:
       - code
       - message
       title: ValidationError
+  parameters: {}
+  securitySchemes: {}
+  requestBodies: {}
+  responses: {}
+  headers: {}
+  examples: {}
+  links: {}
+  callbacks: {}
