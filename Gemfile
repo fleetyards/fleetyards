@@ -61,7 +61,6 @@ gem "redis-store", github: "PikachuEXE/redis-store", branch: "fix/redis-client-c
 
 gem "ransack", "~> 2.4"
 
-gem "committee"
 gem "jbuilder"
 gem "oj"
 gem "responders"

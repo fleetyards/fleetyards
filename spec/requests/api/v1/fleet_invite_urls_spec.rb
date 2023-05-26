@@ -19,7 +19,7 @@ RSpec.describe "api/v1/fleet_invite_urls", type: :request, swagger_doc: "v1/sche
 
         after do |example|
           example.metadata[:response][:content] = {
-            "application/json" => {
+            "application/json": {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }
@@ -38,7 +38,7 @@ RSpec.describe "api/v1/fleet_invite_urls", type: :request, swagger_doc: "v1/sche
 
         after do |example|
           example.metadata[:response][:content] = {
-            "application/json" => {
+            "application/json": {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }

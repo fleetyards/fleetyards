@@ -74,26 +74,6 @@ module Fleetyards
     config.action_dispatch.default_headers["Permissions-Policy"] = "interest-cohort=()"
 
     config.cookie_prefix = Rails.env.production? ? Rails.configuration.app.cookie_prefix : "#{Rails.configuration.app.cookie_prefix}_#{Rails.env.upcase}"
-
-    config.middleware.use ::Committee::Middleware::RequestValidation,
-      schema_path: "#{Rails.configuration.api_schema.folder}/v1/schema.yaml",
-      parse_response_by_content_type: false,
-      query_hash_key: "rack.request.query_hash"
-
-    config.middleware.use ::Committee::Middleware::ResponseValidation,
-      schema_path: "#{Rails.configuration.api_schema.folder}/v1/schema.yaml",
-      parse_response_by_content_type: false,
-      query_hash_key: "rack.request.query_hash"
-
-    config.middleware.use ::Committee::Middleware::RequestValidation,
-      schema_path: "#{Rails.configuration.api_schema.folder}/admin/v1/schema.yaml",
-      parse_response_by_content_type: false,
-      query_hash_key: "rack.request.query_hash"
-
-    config.middleware.use ::Committee::Middleware::ResponseValidation,
-      schema_path: "#{Rails.configuration.api_schema.folder}/admin/v1/schema.yaml",
-      parse_response_by_content_type: false,
-      query_hash_key: "rack.request.query_hash"
   end
 end
 

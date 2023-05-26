@@ -23,6 +23,10 @@ module Admin
         render json: {code: "invalid_authenticity_token", message: I18n.t("error_pages.unprocessable_entity")}, status: :unprocessable_entity
       end
 
+      rescue_from ActiveRecord::RecordNotFound do |_exception|
+        render json: {code: "not_found", message: I18n.t("errors.not_found.message")}, status: :not_found
+      end
+
       private def current_user
         @current_user ||= current_admin_user
       end
