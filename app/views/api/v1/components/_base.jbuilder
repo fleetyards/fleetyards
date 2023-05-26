@@ -19,6 +19,7 @@ json.media do
 end
 json.store_image_is_fallback component.store_image.identifier.nil?
 json.store_image component.store_image.url
+json.store_image_large component.store_image.large.url
 json.store_image_medium component.store_image.medium.url
 json.store_image_small component.store_image.small.url
 json.sold_at do

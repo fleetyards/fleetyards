@@ -5,34 +5,45 @@ module V1
     class Component
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
           name: {type: :string},
           slug: {type: :string},
-          grade: {type: :string},
-          class: {type: :string},
-          size: {type: :string},
-          type: {type: :string},
-          typeLabel: {type: :string},
-          itemClass: {type: :string},
-          itemClassLabel: {type: :string},
-          trackingSignal: {type: :string},
-          trackingSignalLabel: {type: :string},
-          storeImageIsFallback: {type: :boolean},
-          storeImage: {type: :string},
-          storeImageLarge: {type: :string},
-          storeImageMedium: {type: :string},
-          storeImageSmall: {type: :string},
-          soldAt: {"$ref" => "#/components/schemas/ShopComponent", :nullable => true},
-          boughtAt: {"$ref" => "#/components/schemas/ShopComponent", :nullable => true},
-          manufacturer: {"$ref" => "#/components/schemas/Manufacturer", :nullable => true},
+          grade: {type: :string, nullable: true},
+          class: {type: :string, nullable: true},
+          size: {type: :string, nullable: true},
+          type: {type: :string, nullable: true},
+          typeLabel: {type: :string, nullable: true},
+          itemClass: {type: :string, nullable: true},
+          itemClassLabel: {type: :string, nullable: true},
+          trackingSignal: {type: :string, nullable: true},
+          trackingSignalLabel: {type: :string, nullable: true},
+          media: {
+            storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+          },
+          storeImageIsFallback: {type: :boolean, deprecated: true},
+          storeImage: {type: :string, deprecated: true},
+          storeImageLarge: {type: :string, deprecated: true},
+          storeImageMedium: {type: :string, deprecated: true},
+          storeImageSmall: {type: :string, deprecated: true},
+          soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
+          boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
+          listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
+          manufacturer: {"$ref": "#/components/schemas/Manufacturer", nullable: true}
+        },
+        required: %w[id name slug storeImageIsFallback]
+      })
+
+      schema :minimal, {
+        properties: {
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
-        required: %w[id name slug storeImageIsFallback createdAt updatedAt]
-      }
+        required: %w[createdAt updatedAt]
+
+      }, extends: :base
     end
   end
 end
