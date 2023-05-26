@@ -117,7 +117,6 @@ json.has_videos model.videos_count.positive?
 json.has_modules model.module_hardpoints_count.positive?
 json.has_upgrades model.upgrade_kits_count.positive?
 json.has_paints model.model_paints_count.positive?
-json.has_loaners model.loaners_count.positive?
 
 json.last_updated_at model.last_updated_at&.utc&.iso8601
 json.last_updated_at_label((I18n.l(model.last_updated_at.utc, format: :label) if model.last_updated_at.present?))
@@ -143,6 +142,10 @@ end
 json.manufacturer do
   json.null! if model.manufacturer.blank?
   json.partial! "api/v1/manufacturers/base", manufacturer: model.manufacturer if model.manufacturer.present?
+end
+
+json.loaners do
+  json.array! model.loaners, partial: "api/v1/models/loaner", as: :loaner
 end
 
 # deprecated
