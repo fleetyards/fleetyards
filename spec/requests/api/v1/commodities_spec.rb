@@ -17,7 +17,17 @@ RSpec.describe "api/v1/commodities", type: :request, swagger_doc: "v1/schema.yam
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref" => "#/components/schemas/Commodity"}
+          items: {"$ref": "#/components/schemas/CommodityMinimal"}
+
+        after do |example|
+          if response&.body.present?
+            example.metadata[:response][:content] = {
+              "application/json": {
+                example: JSON.parse(response.body, symbolize_names: true)
+              }
+            }
+          end
+        end
 
         run_test!
       end
@@ -32,7 +42,17 @@ RSpec.describe "api/v1/commodities", type: :request, swagger_doc: "v1/schema.yam
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref" => "#/components/schemas/FilterOption"}
+          items: {"$ref": "#/components/schemas/FilterOption"}
+
+        after do |example|
+          if response&.body.present?
+            example.metadata[:response][:content] = {
+              "application/json": {
+                example: JSON.parse(response.body, symbolize_names: true)
+              }
+            }
+          end
+        end
 
         run_test!
       end

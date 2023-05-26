@@ -17,12 +17,12 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref" => "#/components/schemas/CelestialObjectMinimal"}
+          items: {"$ref": "#/components/schemas/CelestialObjectMinimal"}
 
         after do |example|
           if response&.body.present?
             example.metadata[:response][:content] = {
-              "application/json" => {
+              "application/json": {
                 example: JSON.parse(response.body, symbolize_names: true)
               }
             }
@@ -47,7 +47,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref" => "#/components/schemas/CelestialObjectMinimal"
+        schema "$ref": "#/components/schemas/CelestialObjectMinimal"
 
         let(:crusader) { celestial_objects :crusader }
         let(:slug) { crusader.slug }
@@ -55,7 +55,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
         after do |example|
           if response&.body.present?
             example.metadata[:response][:content] = {
-              "application/json" => {
+              "application/json": {
                 example: JSON.parse(response.body, symbolize_names: true)
               }
             }
@@ -66,7 +66,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       end
 
       response(404, "not_found") do
-        schema "$ref" => "#/components/schemas/StandardError"
+        schema "$ref": "#/components/schemas/StandardError"
 
         let(:slug) { "unknown_slug" }
 

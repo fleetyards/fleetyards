@@ -22,12 +22,12 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref" => "#/components/schemas/Image"}
+          items: {"$ref": "#/components/schemas/Image"}
 
         after do |example|
           if response&.body.present?
             example.metadata[:response][:content] = {
-              "application/json" => {
+              "application/json": {
                 example: JSON.parse(response.body, symbolize_names: true)
               }
             }
@@ -50,11 +50,11 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
 
       parameter name: :'', in: :formData, schema: {
         type: :object,
-        properties: {"$ref" => "#/components/schemas/ImageInputCreate"}
+        properties: {"$ref": "#/components/schemas/ImageInputCreate"}
       }
 
       response(200, "successful") do
-        schema "$ref" => "#/components/schemas/Image"
+        schema "$ref": "#/components/schemas/Image"
 
         let(:'') do
           {
@@ -70,7 +70,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         after do |example|
           if response&.body.present?
             example.metadata[:response][:content] = {
-              "application/json" => {
+              "application/json": {
                 example: JSON.parse(response.body, symbolize_names: true)
               }
             }
@@ -92,11 +92,11 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
 
       parameter name: :'', in: :body, schema: {
         type: :object,
-        properties: {"$ref" => "#/components/schemas/ImageInput"}
+        properties: {"$ref": "#/components/schemas/ImageInput"}
       }
 
       response(200, "successful") do
-        schema "$ref" => "#/components/schemas/Image"
+        schema "$ref": "#/components/schemas/Image"
 
         let(:id) { model_image.id }
         let(:'') do
@@ -110,7 +110,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         after do |example|
           if response&.body.present?
             example.metadata[:response][:content] = {
-              "application/json" => {
+              "application/json": {
                 example: JSON.parse(response.body, symbolize_names: true)
               }
             }
@@ -128,11 +128,11 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
 
       parameter name: :'', in: :body, schema: {
         type: :object,
-        properties: {"$ref" => "#/components/schemas/ImageInput"}
+        properties: {"$ref": "#/components/schemas/ImageInput"}
       }
 
       response(200, "successful") do
-        schema "$ref" => "#/components/schemas/Image"
+        schema "$ref": "#/components/schemas/Image"
 
         let(:id) { model_image.id }
         let(:'') do
@@ -146,7 +146,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         after do |example|
           if response&.body.present?
             example.metadata[:response][:content] = {
-              "application/json" => {
+              "application/json": {
                 example: JSON.parse(response.body, symbolize_names: true)
               }
             }
@@ -166,7 +166,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         after do |example|
           if response&.body.present?
             example.metadata[:response][:content] = {
-              "application/json" => {
+              "application/json": {
                 example: JSON.parse(response.body, symbolize_names: true)
               }
             }

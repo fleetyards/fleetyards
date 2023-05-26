@@ -26,25 +26,6 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     end
   end
 
-  path "/models/fleetchart" do
-    get("fleetchart model") do
-      tags "Models"
-      produces "application/json"
-
-      response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
-        run_test!
-      end
-    end
-  end
-
   path "/models/with-docks" do
     get("with_docks model") do
       tags "Models"
