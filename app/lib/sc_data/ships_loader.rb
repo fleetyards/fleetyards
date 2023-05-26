@@ -28,9 +28,6 @@ module ScData
       update_params = extract_metrics(ship_data, components_data)
       update_params = extract_speeds(ship_data, update_params)
 
-      Rails.logger.debug update_params.to_yaml
-      Rails.logger.debug update_params.inspect
-
       model.update!(update_params)
     end
 
@@ -54,13 +51,13 @@ module ScData
       flight_speeds = ship_data["FlightCharacteristics"] || {}
       if flight_speeds.present?
         update_params[:scm_speed] = flight_speeds["ScmSpeed"]&.to_f if flight_speeds["ScmSpeed"].present?
-        update_params[:max_speed] = flight_speeds["ScmSpeed"]&.to_f if flight_speeds["ScmSpeed"].present?
+        update_params[:max_speed] = flight_speeds["MaxSpeed"]&.to_f if flight_speeds["MaxSpeed"].present?
         update_params[:scm_speed_acceleration] = flight_speeds["ZeroToScm"]&.to_f if flight_speeds["ZeroToScm"].present?
         update_params[:scm_speed_decceleration] = flight_speeds["ScmToZero"]&.to_f if flight_speeds["ScmToZero"].present?
         update_params[:max_speed_acceleration] = flight_speeds["ZeroToMax"]&.to_f if flight_speeds["ZeroToMax"].present?
         update_params[:max_speed_decceleration] = flight_speeds["MaxToZero"]&.to_f if flight_speeds["MaxToZero"].present?
         update_params[:pitch] = flight_speeds["Pitch"]&.to_f if flight_speeds["Pitch"].present?
-        update_params[:yar] = flight_speeds["Yaw"]&.to_f if flight_speeds["Yaw"].present?
+        update_params[:yaw] = flight_speeds["Yaw"]&.to_f if flight_speeds["Yaw"].present?
         update_params[:roll] = flight_speeds["Roll"]&.to_f if flight_speeds["Roll"].present?
       end
 

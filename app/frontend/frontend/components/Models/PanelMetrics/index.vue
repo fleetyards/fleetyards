@@ -7,7 +7,7 @@
           {{ model.focus }}
         </div>
       </div>
-      <div v-if="model.minCrew || model.maxCrew" class="col-6 col-md-4">
+      <div v-if="model.crew.min || model.crew.max" class="col-6 col-md-4">
         <div class="metrics-label">{{ $t("model.crew") }}:</div>
         <div class="metrics-value">
           {{ crew }}
@@ -15,7 +15,17 @@
       </div>
       <div class="col-12 col-md-4">
         <div class="metrics-label">{{ $t("model.speed") }}:</div>
-        <div class="metrics-value" v-html="speeds" />
+        <div v-if="isGroundVehicle" class="metrics-value">
+          {{ $t("model.max") }}:
+          {{ $toNumber(model.speeds.groundMaxSpeed, "speed") }}
+        </div>
+        <div v-else class="metrics-value">
+          {{ $t("model.scm") }}:
+          {{ $toNumber(model.speeds.scmSpeed, "speed") }}
+          <br />
+          {{ $t("model.max") }}:
+          {{ $toNumber(model.speeds.maxSpeed, "speed") }}
+        </div>
       </div>
     </div>
 
@@ -27,21 +37,21 @@
           <div class="col-6 col-lg-4">
             <div class="metrics-label">{{ $t("model.length") }}:</div>
             <div class="metrics-value">
-              {{ $toNumber(model.length, "distance") }}
+              {{ $toNumber(model.metrics.length, "distance") }}
             </div>
             <div class="metrics-label">{{ $t("model.beam") }}:</div>
             <div class="metrics-value">
-              {{ $toNumber(model.beam, "distance") }}
+              {{ $toNumber(model.metrics.beam, "distance") }}
             </div>
           </div>
           <div class="col-6 col-lg-4">
             <div class="metrics-label">{{ $t("model.height") }}:</div>
             <div class="metrics-value">
-              {{ $toNumber(model.height, "distance") }}
+              {{ $toNumber(model.metrics.height, "distance") }}
             </div>
             <div class="metrics-label">{{ $t("model.mass") }}:</div>
             <div class="metrics-value">
-              {{ $toNumber(model.mass, "weight") }}
+              {{ $toNumber(model.metrics.mass, "weight") }}
             </div>
           </div>
           <div class="col-12 col-lg-4">
@@ -49,7 +59,7 @@
               <div class="col-6 col-lg-12">
                 <div class="metrics-label">{{ $t("model.cargo") }}:</div>
                 <div class="metrics-value">
-                  {{ $toNumber(model.cargo, "cargo") }}
+                  {{ $toNumber(model.metrics.cargo, "cargo") }}
                 </div>
               </div>
               <div v-if="model.price" class="col-6 col-lg-12">
@@ -81,22 +91,22 @@ export default class PanelMetrics extends Vue {
   }
 
   get crew() {
-    let { minCrew, maxCrew } = this.model;
+    let { min, max } = this.model.crew;
 
-    if (minCrew && minCrew <= 0) {
-      minCrew = null;
+    if (min && min <= 0) {
+      min = null;
     }
 
-    if (maxCrew && maxCrew <= 0) {
-      maxCrew = null;
+    if (max && max <= 0) {
+      max = null;
     }
 
-    if (minCrew === maxCrew) {
-      return this.$toNumber(this.model.minCrew, "people");
+    if (min === max) {
+      return this.$toNumber(this.model.crew.min, "people");
     }
 
     return this.$toNumber(
-      [minCrew, maxCrew].filter((item) => item).join(" - "),
+      [min, max].filter((item) => item).join(" - "),
       "people"
     );
   }
@@ -113,31 +123,31 @@ export default class PanelMetrics extends Vue {
   }
 
   get airSpeeds() {
-    let { scmSpeed, afterburnerSpeed } = this.model;
+    let { scmSpeed, maxSpeed } = this.model.speeds;
 
     if (scmSpeed && scmSpeed <= 0) {
       scmSpeed = null;
     }
 
-    if (afterburnerSpeed && afterburnerSpeed <= 0) {
-      afterburnerSpeed = null;
+    if (maxSpeed && maxSpeed <= 0) {
+      maxSpeed = null;
     }
 
-    return [scmSpeed, afterburnerSpeed].filter((item) => item).join(" - ");
+    return [scmSpeed, maxSpeed].filter((item) => item).join(" - ");
   }
 
   get groundSpeeds() {
-    let { groundSpeed, afterburnerGroundSpeed } = this.model;
+    let { groundMaxSpeed, groundReverseSpeed } = this.model.speeds;
 
-    if (groundSpeed && groundSpeed <= 0) {
-      groundSpeed = null;
+    if (groundMaxSpeed && groundMaxSpeed <= 0) {
+      groundMaxSpeed = null;
     }
 
-    if (afterburnerGroundSpeed && afterburnerGroundSpeed <= 0) {
-      afterburnerGroundSpeed = null;
+    if (groundReverseSpeed && groundReverseSpeed <= 0) {
+      groundReverseSpeed = null;
     }
 
-    return [groundSpeed, afterburnerGroundSpeed]
+    return [groundMaxSpeed, groundReverseSpeed]
       .filter((item) => item)
       .join(" - ");
   }
