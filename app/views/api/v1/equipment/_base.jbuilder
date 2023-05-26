@@ -31,8 +31,9 @@ json.media do
 end
 json.store_image_is_fallback equipment.store_image.identifier.nil?
 json.store_image equipment.store_image.url
-json.store_image_medium equipment.store_image.medium.url
 json.store_image_small equipment.store_image.small.url
+json.store_image_medium equipment.store_image.medium.url
+json.store_image_large equipment.store_image.large.url
 json.sold_at do
   json.array! equipment.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
 end
