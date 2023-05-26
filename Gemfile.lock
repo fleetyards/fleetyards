@@ -18,7 +18,7 @@ GEM
   specs:
     aasm (5.5.0)
       concurrent-ruby (~> 1.0)
-    accept_language (2.0.3)
+    accept_language (2.0.4)
     actioncable (7.0.4.3)
       actionpack (= 7.0.4.3)
       activesupport (= 7.0.4.3)
@@ -555,7 +555,7 @@ GEM
     shoulda-context (2.0.0)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
-    sidekiq (7.1.0)
+    sidekiq (7.1.1)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
