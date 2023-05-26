@@ -3,7 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/commodity_prices", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users
+  fixtures :users, :models, :shops, :stations, :manufacturers
+
+  let(:model) { models :andromeda }
+  let(:shop) { shops :dumpers }
 
   before do
     host! "api.fleetyards.test"
@@ -16,9 +19,16 @@ RSpec.describe "api/v1/commodity_prices", type: :request, swagger_doc: "v1/schem
       consumes "application/json"
       produces "application/json"
 
+      parameter name: :commodityPrice, in: :body, schema: {
+        type: :object,
+        properties: {"$ref": "#/components/schemas/CommodityPriceInput"}
+      }, required: true
+
       context "without session" do
         response(401, "unauthorized") do
           schema "$ref" => "#/components/schemas/StandardError"
+
+          let(:commodityPrice) {}
 
           run_test!
         end
@@ -34,11 +44,22 @@ RSpec.describe "api/v1/commodity_prices", type: :request, swagger_doc: "v1/schem
         response(200, "successful") do
           schema "$ref" => "#/components/schemas/CommodityPrice"
 
+          let(:commodityPrice) do
+            {
+              commodityItemType: "Model",
+              commodityItemId: model.id,
+              shopId: shop.id,
+              price: 100
+            }
+          end
+
           run_test!
         end
 
         response(400, "invalid data") do
           schema "$ref" => "#/components/schemas/ValidationError"
+
+          let(:commodityPrice) {}
 
           run_test!
         end

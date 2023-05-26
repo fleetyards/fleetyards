@@ -48,7 +48,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       produces "application/json"
       tags "Images"
 
-      parameter name: :'', in: :formData, schema: {
+      parameter name: :image, in: :formData, schema: {
         type: :object,
         properties: {"$ref": "#/components/schemas/ImageInputCreate"}
       }
@@ -56,7 +56,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
 
-        let(:'') do
+        let(:image) do
           {
             file: ActionDispatch::Http::UploadedFile.new(
               filename: "img.png",
@@ -90,7 +90,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       produces "application/json"
       tags "Images"
 
-      parameter name: :'', in: :body, schema: {
+      parameter name: :image, in: :body, schema: {
         type: :object,
         properties: {"$ref": "#/components/schemas/ImageInput"}
       }
@@ -99,7 +99,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         schema "$ref": "#/components/schemas/Image"
 
         let(:id) { model_image.id }
-        let(:'') do
+        let(:image) do
           {
             galleryId: model.id,
             galleryType: "Model",
@@ -126,7 +126,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       produces "application/json"
       tags "Images"
 
-      parameter name: :'', in: :body, schema: {
+      parameter name: :image, in: :body, schema: {
         type: :object,
         properties: {"$ref": "#/components/schemas/ImageInput"}
       }
@@ -135,7 +135,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         schema "$ref": "#/components/schemas/Image"
 
         let(:id) { model_image.id }
-        let(:'') do
+        let(:image) do
           {
             galleryId: model.id,
             galleryType: "Model",

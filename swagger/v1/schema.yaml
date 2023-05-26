@@ -28,7 +28,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/CelestialObject"
+                  "$ref": "#/components/schemas/CelestialObjectMinimal"
   "/celestial-objects/{slug}":
     get:
       summary: Celestial Object Detail
@@ -48,7 +48,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/CelestialObject"
+                "$ref": "#/components/schemas/CelestialObjectMinimal"
         '404':
           description: not_found
           content:
@@ -69,7 +69,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Commodity"
+                  "$ref": "#/components/schemas/CommodityMinimal"
   "/commodities/types":
     get:
       summary: commodity_types commodity
@@ -91,6 +91,7 @@ paths:
       description: Create new CommodityPrice
       tags:
       - Commodities
+      parameters: []
       responses:
         '401':
           description: unauthorized
@@ -110,6 +111,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                "$ref": "#/components/schemas/CommodityPriceInput"
+        required: true
   "/commodity-prices/time-ranges":
     get:
       summary: time_ranges commodity_price
@@ -1498,6 +1507,7 @@ components:
         media:
           storeImage:
             "$ref": "#/components/schemas/MediaImage"
+            nullable: true
         storeImage:
           type: string
           format: url
@@ -1543,22 +1553,10 @@ components:
           nullable: true
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
-        parent:
-          "$ref": "#/components/schemas/CelestialObject"
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - name
       - slug
       - designation
-      - starsystem
-      - createdAt
-      - updatedAt
       title: CelestialObject
     CelestialObjectMinimal:
       type: object
@@ -1572,6 +1570,7 @@ components:
         media:
           storeImage:
             "$ref": "#/components/schemas/MediaImage"
+            nullable: true
         storeImage:
           type: string
           format: url
@@ -1620,20 +1619,17 @@ components:
         parent:
           "$ref": "#/components/schemas/CelestialObject"
           nullable: true
+        moons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-        moons:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
       required:
-      - name
-      - slug
-      - designation
       - starsystem
       - createdAt
       - updatedAt
@@ -1650,24 +1646,87 @@ components:
           type: string
         type:
           type: string
+          nullable: true
         typeLabel:
           type: string
+          nullable: true
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
+            nullable: true
         storeImageIsFallback:
           type: boolean
+          deprecated: true
         storeImage:
           type: string
+          deprecated: true
         storeImageLarge:
           type: string
+          deprecated: true
         storeImageMedium:
           type: string
+          deprecated: true
         storeImageSmall:
           type: string
+          deprecated: true
         soldAt:
-          "$ref": "#/components/schemas/ShopCommodity"
-          nullable: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopCommodity"
         boughtAt:
-          "$ref": "#/components/schemas/ShopCommodity"
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopCommodity"
+      required:
+      - id
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      title: Commodity
+    CommodityMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          type: string
           nullable: true
+        typeLabel:
+          type: string
+          nullable: true
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
+            nullable: true
+        storeImageIsFallback:
+          type: boolean
+          deprecated: true
+        storeImage:
+          type: string
+          deprecated: true
+        storeImageLarge:
+          type: string
+          deprecated: true
+        storeImageMedium:
+          type: string
+          deprecated: true
+        storeImageSmall:
+          type: string
+          deprecated: true
+        soldAt:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopCommodity"
+        boughtAt:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopCommodity"
         createdAt:
           type: string
           format: date-time
@@ -1675,13 +1734,9 @@ components:
           type: string
           format: date-time
       required:
-      - id
-      - name
-      - slug
-      - storeImageIsFallback
       - createdAt
       - updatedAt
-      title: Commodity
+      title: CommodityMinimal
     CommodityPrice:
       type: object
       properties:
@@ -1943,6 +1998,32 @@ components:
       - createdAt
       - updatedAt
       title: Image
+    CommodityPriceInput:
+      type: object
+      properties:
+        commodityItemId:
+          type: string
+          format: uuid
+        commodityItemType:
+          type: string
+        path:
+          type: string
+          enum:
+          - buy
+          - sell
+          - rental
+        shopId:
+          type: string
+          format: uuid
+        timeRange:
+          type: string
+          nullable: true
+      required:
+      - commodityItemId
+      - commodityItemType
+      - path
+      - shopId
+      title: CommodityPriceInput
     Manufacturer:
       type: object
       properties:
@@ -2029,14 +2110,26 @@ components:
           type: string
         slug:
           type: string
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
+            nullable: true
         storeImage:
           type: string
+          format: uri
+          deprecated: true
         storeImageLarge:
           type: string
+          format: uri
+          deprecated: true
         storeImageMedium:
           type: string
+          format: uri
+          deprecated: true
         storeImageSmall:
           type: string
+          format: uri
+          deprecated: true
         mapX:
           type: string
           nullable: true

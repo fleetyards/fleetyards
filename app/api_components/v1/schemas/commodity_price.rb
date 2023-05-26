@@ -17,7 +17,7 @@ module V1
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
-        required: %w[id price type shop_commodity_id confirmed createdAt updatedAt]
+        required: %w[id price type shopCommodityId confirmed createdAt updatedAt]
       }
     end
   end

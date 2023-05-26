@@ -102,6 +102,13 @@ paths:
           description: successful
 components:
   schemas:
+    GalleryTypeEnum:
+      type: string
+      enum:
+      - Model
+      - Station
+      - Album
+      title: GalleryTypeEnum
     Gallery:
       type: object
       properties:
@@ -183,11 +190,7 @@ components:
           type: string
           format: uuid
         galleryType:
-          type: string
-          enum:
-          - Model
-          - Station
-          - Album
+          "$ref": "#/components/schemas/GalleryTypeEnum"
       title: ImageInput
     ImageInputCreate:
       type: object
@@ -204,11 +207,7 @@ components:
           type: string
           format: uuid
         galleryType:
-          type: string
-          enum:
-          - Model
-          - Station
-          - Album
+          "$ref": "#/components/schemas/GalleryTypeEnum"
         file:
           type: string
       title: ImageInputCreate

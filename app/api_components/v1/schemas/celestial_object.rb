@@ -27,7 +27,8 @@ module V1
           danger: {type: :integer, nullable: true},
           economy: {type: :integer, nullable: true},
           population: {type: :integer, nullable: true},
-          locationLabel: {type: :string, nullable: true}
+          locationLabel: {type: :string, nullable: true},
+          starsystem: {"$ref": "#/components/schemas/Starsystem"}
         },
         required: %w[name slug designation]
       })
@@ -35,7 +36,6 @@ module V1
       schema :minimal,
         {
           properties: {
-            starsystem: {"$ref": "#/components/schemas/Starsystem"},
             parent: {"$ref": "#/components/schemas/CelestialObject", nullable: true},
             moons: {type: :array, items: {"$ref" => "#/components/schemas/CelestialObject"}},
             createdAt: {type: :string, format: "date-time"},
