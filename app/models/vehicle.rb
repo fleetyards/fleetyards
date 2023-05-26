@@ -75,6 +75,7 @@ class Vehicle < ApplicationRecord
   before_validation :normalize_serial
   before_save :nil_if_blank
   before_save :set_module_package
+  before_save :reset_pledge_id_if_wanted
 
   after_create :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
@@ -107,6 +108,13 @@ class Vehicle < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def reset_pledge_id_if_wanted
+    return unless wanted?
+
+    self.rsi_pledge_id = nil
+    self.rsi_pledge_synced_at = nil
   end
 
   def reset_hangar_groups
