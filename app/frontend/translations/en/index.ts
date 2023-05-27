@@ -36,7 +36,7 @@ export default {
     roll: "Roll",
     price: "Price",
     groundAcceleration: "Acceleration",
-    groundDeceleration: "Decceleration",
+    groundDecceleration: "Decceleration",
     scmSpeedAcceleration: "Zero to SCM",
     scmSpeedDecceleration: "SCM to Zero",
     maxSpeedAcceleration: "Zero to Max",

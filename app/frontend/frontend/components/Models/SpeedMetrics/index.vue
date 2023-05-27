@@ -6,7 +6,21 @@
       </div>
     </div>
     <div class="col-12 col-lg-9 metrics-block">
-      <div v-if="!isGroundVehicle" class="row">
+      <div v-if="isGroundVehicle" class="row">
+        <div class="col-6">
+          <div class="metrics-label">{{ $t("model.groundMaxSpeed") }}:</div>
+          <div class="metrics-value">
+            {{ $toNumber(model.speeds.groundMaxSpeed, "speed") }}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="metrics-label">{{ $t("model.groundReverseSpeed") }}:</div>
+          <div class="metrics-value">
+            {{ $toNumber(model.speeds.groundReverseSpeed, "speed") }}
+          </div>
+        </div>
+      </div>
+      <div v-else class="row">
         <div class="col-6">
           <div class="metrics-label">{{ $t("model.scmSpeed") }}:</div>
           <div class="metrics-value">
@@ -17,22 +31,6 @@
           <div class="metrics-label">{{ $t("model.maxSpeed") }}:</div>
           <div class="metrics-value">
             {{ $toNumber(model.speeds.maxSpeed, "speed") }}
-          </div>
-        </div>
-      </div>
-      <div v-if="model.speeds.groundMaxSpeed" class="row">
-        <div v-if="model.speeds.groundMaxSpeed" class="col-6">
-          <div class="metrics-label">{{ $t("model.groundSpeed") }}:</div>
-          <div class="metrics-value">
-            {{ $toNumber(model.speeds.groundMaxSpeed, "speed") }}
-          </div>
-        </div>
-        <div v-if="model.speeds.groundReverseSpeed" class="col-6">
-          <div class="metrics-label">
-            {{ $t("model.afterburnerGroundSpeed") }}:
-          </div>
-          <div class="metrics-value">
-            {{ $toNumber(model.speeds.groundReverseSpeed, "speed") }}
           </div>
         </div>
       </div>
