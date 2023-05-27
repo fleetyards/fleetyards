@@ -93,7 +93,7 @@ module Api
 
         render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request if params[:items].blank?
 
-        @response = ::HangarSync.new(sync_params.to_h).run(current_user.id)
+        @response = ::HangarSync.new(sync_params[:items].to_a.map(&:to_h)).run(current_user.id)
       end
 
       def items
@@ -137,7 +137,7 @@ module Api
       end
 
       private def sync_params
-        @sync_params ||= params.permit(:items)
+        @sync_params ||= params.permit(items: [:id, :name, :type, :customName])
       end
     end
   end

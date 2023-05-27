@@ -212,8 +212,9 @@
                     >
                       {{ item }}
                     </li>
-                  </ul> </template
-                ><template v-if="importedUpgrades.length">
+                  </ul>
+                </template>
+                <template v-if="importedUpgrades.length">
                   <dt class="col-sm-8">
                     {{
                       t("labels.syncExtension.importedItems.importedUpgrades")
