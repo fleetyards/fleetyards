@@ -39,9 +39,9 @@ module ScData
         quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data["QuantumFuelTanks"])
       }
 
-      update_params[:beam] = ship_data["Width"]&.to_f if ship_data["Width"]
-      update_params[:height] = ship_data["Height"]&.to_f if ship_data["Height"]
-      update_params[:length] = ship_data["Length"]&.to_f if ship_data["Length"]
+      # update_params[:beam] = ship_data["Width"]&.to_f if ship_data["Width"]
+      # update_params[:height] = ship_data["Height"]&.to_f if ship_data["Height"]
+      # update_params[:length] = ship_data["Length"]&.to_f if ship_data["Length"]
       update_params[:ground] = !ship_data["IsVehicle"] if ship_data["IsVehicle"].present?
 
       update_params
