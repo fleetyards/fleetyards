@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_21_194918) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_26_071522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -555,16 +555,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_194918) do
     t.decimal "cargo", precision: 15, scale: 2
     t.string "size"
     t.decimal "scm_speed", precision: 15, scale: 2
-    t.decimal "afterburner_speed", precision: 15, scale: 2
-    t.decimal "cruise_speed", precision: 15, scale: 2
     t.integer "min_crew"
     t.integer "max_crew"
-    t.decimal "pitch_max", precision: 15, scale: 2
-    t.decimal "yaw_max", precision: 15, scale: 2
-    t.decimal "roll_max", precision: 15, scale: 2
-    t.decimal "xaxis_acceleration", precision: 15, scale: 2
-    t.decimal "yaxis_acceleration", precision: 15, scale: 2
-    t.decimal "zaxis_acceleration", precision: 15, scale: 2
+    t.decimal "pitch", precision: 15, scale: 2
+    t.decimal "yaw", precision: 15, scale: 2
+    t.decimal "roll", precision: 15, scale: 2
     t.string "fleetchart_image"
     t.datetime "store_images_updated_at", precision: nil
     t.boolean "hidden", default: true
@@ -573,8 +568,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_194918) do
     t.string "rsi_name"
     t.string "rsi_slug"
     t.string "brochure"
-    t.decimal "ground_speed", precision: 15, scale: 2
-    t.decimal "afterburner_ground_speed", precision: 15, scale: 2
     t.boolean "notified", default: false
     t.boolean "active", default: true
     t.decimal "price", precision: 15, scale: 2
@@ -589,13 +582,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_194918) do
     t.integer "rsi_max_crew"
     t.integer "rsi_min_crew"
     t.decimal "rsi_scm_speed", precision: 15, scale: 2
-    t.decimal "rsi_afterburner_speed", precision: 15, scale: 2
-    t.decimal "rsi_pitch_max", precision: 15, scale: 2
-    t.decimal "rsi_yaw_max", precision: 15, scale: 2
-    t.decimal "rsi_roll_max", precision: 15, scale: 2
-    t.decimal "rsi_xaxis_acceleration", precision: 15, scale: 2
-    t.decimal "rsi_yaxis_acceleration", precision: 15, scale: 2
-    t.decimal "rsi_zaxis_acceleration", precision: 15, scale: 2
+    t.decimal "rsi_max_speed", precision: 15, scale: 2
+    t.decimal "rsi_pitch", precision: 15, scale: 2
+    t.decimal "rsi_yaw", precision: 15, scale: 2
+    t.decimal "rsi_roll", precision: 15, scale: 2
     t.text "rsi_description"
     t.string "rsi_size"
     t.string "rsi_focus"
@@ -610,7 +600,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_194918) do
     t.integer "upgrade_kits_count", default: 0
     t.integer "module_hardpoints_count", default: 0
     t.decimal "max_speed", precision: 15, scale: 2
-    t.decimal "speed", precision: 15, scale: 2
     t.decimal "hydrogen_fuel_tank_size", precision: 15, scale: 2
     t.decimal "quantum_fuel_tank_size", precision: 15, scale: 2
     t.string "cargo_holds"
@@ -647,6 +636,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_194918) do
     t.string "front_view_colored"
     t.integer "front_view_colored_width"
     t.integer "front_view_colored_height"
+    t.decimal "ground_max_speed", precision: 15, scale: 2
+    t.decimal "ground_reverse_speed", precision: 15, scale: 2
+    t.decimal "ground_acceleration", precision: 15, scale: 2
+    t.decimal "ground_decceleration", precision: 15, scale: 2
+    t.decimal "scm_speed_acceleration", precision: 15, scale: 2
+    t.decimal "scm_speed_decceleration", precision: 15, scale: 2
+    t.decimal "max_speed_acceleration", precision: 15, scale: 2
+    t.decimal "max_speed_decceleration", precision: 15, scale: 2
+    t.integer "loaners_count", default: 0, null: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

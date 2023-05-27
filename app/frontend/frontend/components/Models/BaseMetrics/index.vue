@@ -10,27 +10,27 @@
         <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ $t("model.length") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.length, "distance") }}
+            {{ $toNumber(model.metrics.length, "distance") }}
           </div>
           <div class="metrics-label">{{ $t("model.beam") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.beam, "distance") }}
+            {{ $toNumber(model.metrics.beam, "distance") }}
           </div>
         </div>
         <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ $t("model.height") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.height, "distance") }}
+            {{ $toNumber(model.metrics.height, "distance") }}
           </div>
           <div class="metrics-label">{{ $t("model.mass") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.mass, "weight") }}
+            {{ $toNumber(model.metrics.mass, "weight") }}
           </div>
         </div>
         <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ $t("model.cargo") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.cargo, "cargo") }}
+            {{ $toNumber(model.metrics.cargo, "cargo") }}
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
             <div class="col-6">
               <div class="metrics-label">{{ $t("model.size") }}:</div>
               <div class="metrics-value">
-                {{ model.sizeLabel }}
+                {{ model.metrics.sizeLabel }}
               </div>
             </div>
           </div>
@@ -83,20 +83,20 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
-            <div v-if="model.hydrogenFuelTankSize" class="col-6">
+            <div v-if="model.metrics.hydrogenFuelTankSize" class="col-6">
               <div class="metrics-label">
                 {{ $t("model.hydrogenFuelTankSize") }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(model.hydrogenFuelTankSize, "fuel") }}
+                {{ $toNumber(model.metrics.hydrogenFuelTankSize, "fuel") }}
               </div>
             </div>
-            <div v-if="model.quantumFuelTankSize" class="col-6">
+            <div v-if="model.metrics.quantumFuelTankSize" class="col-6">
               <div class="metrics-label">
                 {{ $t("model.quantumFuelTankSize") }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(model.quantumFuelTankSize, "fuel") }}
+                {{ $toNumber(model.metrics.quantumFuelTankSize, "fuel") }}
               </div>
             </div>
           </div>

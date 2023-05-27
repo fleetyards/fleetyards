@@ -10,13 +10,13 @@
         <div class="col-6 col-md-6">
           <div class="metrics-label">{{ $t("model.minCrew") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.minCrew, "people") }}
+            {{ $toNumber(model.crew.min, "people") }}
           </div>
         </div>
         <div class="col-6 col-md-6">
           <div class="metrics-label">{{ $t("model.maxCrew") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.maxCrew, "people") }}
+            {{ $toNumber(model.crew.max, "people") }}
           </div>
         </div>
       </div>

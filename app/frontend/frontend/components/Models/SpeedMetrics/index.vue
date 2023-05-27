@@ -10,82 +10,111 @@
         <div class="col-6">
           <div class="metrics-label">{{ $t("model.scmSpeed") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.scmSpeed, "speed") }}
+            {{ $toNumber(model.speeds.scmSpeed, "speed") }}
           </div>
         </div>
         <div class="col-6">
-          <div class="metrics-label">{{ $t("model.afterburnerSpeed") }}:</div>
+          <div class="metrics-label">{{ $t("model.maxSpeed") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.afterburnerSpeed, "speed") }}
+            {{ $toNumber(model.speeds.maxSpeed, "speed") }}
           </div>
         </div>
       </div>
-      <div v-if="model.groundSpeed || model.afterburnerGroundSpeed" class="row">
-        <div v-if="model.groundSpeed" class="col-6">
+      <div v-if="model.speeds.groundMaxSpeed" class="row">
+        <div v-if="model.speeds.groundMaxSpeed" class="col-6">
           <div class="metrics-label">{{ $t("model.groundSpeed") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.groundSpeed, "speed") }}
+            {{ $toNumber(model.speeds.groundMaxSpeed, "speed") }}
           </div>
         </div>
-        <div v-if="model.afterburnerGroundSpeed" class="col-6">
+        <div v-if="model.speeds.groundReverseSpeed" class="col-6">
           <div class="metrics-label">
             {{ $t("model.afterburnerGroundSpeed") }}:
           </div>
           <div class="metrics-value">
-            {{ $toNumber(model.afterburnerGroundSpeed, "speed") }}
+            {{ $toNumber(model.speeds.groundReverseSpeed, "speed") }}
           </div>
         </div>
       </div>
-      <div v-if="!isGroundVehicle" class="row">
+      <div class="row">
         <div class="col-12">
           <div class="seperator" />
         </div>
       </div>
-      <div v-if="!isGroundVehicle" class="row">
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ $t("model.pitchMax") }}:</div>
+      <div v-if="isGroundVehicle" class="row">
+        <div class="col-6">
+          <div class="metrics-label">{{ $t("model.groundAcceleration") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.pitchMax, "rotation") }}
+            {{ $toNumber(model.speeds.groundAcceleration, "speed") }}
           </div>
         </div>
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ $t("model.yawMax") }}:</div>
-          <div class="metrics-value">
-            {{ $toNumber(model.yawMax, "rotation") }}
+        <div class="col-6">
+          <div class="metrics-label">
+            {{ $t("model.groundDecceleration") }}:
           </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ $t("model.rollMax") }}:</div>
           <div class="metrics-value">
-            {{ $toNumber(model.rollMax, "rotation") }}
+            {{ $toNumber(model.speeds.groundDecceleration, "speed") }}
           </div>
         </div>
       </div>
-      <div v-if="!isGroundVehicle" class="row">
-        <div class="col-12">
-          <div class="seperator" />
-        </div>
-      </div>
-      <div v-if="!isGroundVehicle" class="row">
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ $t("model.xaxisAcceleration") }}:</div>
-          <div class="metrics-value">
-            {{ $toNumber(model.xaxisAcceleration, "speed") }}
+      <template v-else>
+        <div class="row">
+          <div class="col-6">
+            <div class="metrics-label">
+              {{ $t("model.scmSpeedAcceleration") }}:
+            </div>
+            <div class="metrics-value">
+              {{ $toNumber(model.speeds.scmSpeedAcceleration, "seconds") }}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="metrics-label">
+              {{ $t("model.scmSpeedDecceleration") }}:
+            </div>
+            <div class="metrics-value">
+              {{ $toNumber(model.speeds.scmSpeedDecceleration, "seconds") }}
+            </div>
           </div>
         </div>
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ $t("model.yaxisAcceleration") }}:</div>
-          <div class="metrics-value">
-            {{ $toNumber(model.yaxisAcceleration, "speed") }}
+        <div class="row">
+          <div class="col-6">
+            <div class="metrics-label">
+              {{ $t("model.maxSpeedAcceleration") }}:
+            </div>
+            <div class="metrics-value">
+              {{ $toNumber(model.speeds.maxSpeedAcceleration, "seconds") }}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="metrics-label">
+              {{ $t("model.maxSpeedDecceleration") }}:
+            </div>
+            <div class="metrics-value">
+              {{ $toNumber(model.speeds.maxSpeedDecceleration, "seconds") }}
+            </div>
           </div>
         </div>
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ $t("model.zaxisAcceleration") }}:</div>
-          <div class="metrics-value">
-            {{ $toNumber(model.zaxisAcceleration, "speed") }}
+        <div class="row">
+          <div class="col-6 col-lg-4">
+            <div class="metrics-label">{{ $t("model.pitch") }}:</div>
+            <div class="metrics-value">
+              {{ $toNumber(model.speeds.pitch, "rotation") }}
+            </div>
+          </div>
+          <div class="col-6 col-lg-4">
+            <div class="metrics-label">{{ $t("model.yaw") }}:</div>
+            <div class="metrics-value">
+              {{ $toNumber(model.speeds.yaw, "rotation") }}
+            </div>
+          </div>
+          <div class="col-6 col-lg-4">
+            <div class="metrics-label">{{ $t("model.roll") }}:</div>
+            <div class="metrics-value">
+              {{ $toNumber(model.speeds.roll, "rotation") }}
+            </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>

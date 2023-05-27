@@ -59,7 +59,6 @@ module Api
 
       describe "with session" do
         let(:data) { users :data }
-        let(:explorer) { data.vehicles.includes(:model).find_by(models: {name: "600i"}) }
         let(:enterprise) { data.vehicles.includes(:model).find_by(models: {name: "Andromeda"}) }
 
         before do

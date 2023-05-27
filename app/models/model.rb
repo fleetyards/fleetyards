@@ -6,8 +6,6 @@
 #
 #  id                         :uuid             not null, primary key
 #  active                     :boolean          default(TRUE)
-#  afterburner_ground_speed   :decimal(15, 2)
-#  afterburner_speed          :decimal(15, 2)
 #  angled_view                :string
 #  angled_view_colored        :string
 #  angled_view_colored_height :integer
@@ -19,7 +17,6 @@
 #  cargo                      :decimal(15, 2)
 #  cargo_holds                :string
 #  classification             :string(255)
-#  cruise_speed               :decimal(15, 2)
 #  description                :text
 #  dock_size                  :integer
 #  erkul_identifier           :string
@@ -35,7 +32,10 @@
 #  front_view_height          :integer
 #  front_view_width           :integer
 #  ground                     :boolean          default(FALSE)
-#  ground_speed               :decimal(15, 2)
+#  ground_acceleration        :decimal(15, 2)
+#  ground_decceleration       :decimal(15, 2)
+#  ground_max_speed           :decimal(15, 2)
+#  ground_reverse_speed       :decimal(15, 2)
 #  height                     :decimal(15, 2)   default(0.0), not null
 #  hidden                     :boolean          default(TRUE)
 #  holo                       :string
@@ -46,24 +46,26 @@
 #  last_pledge_price          :decimal(15, 2)
 #  last_updated_at            :datetime
 #  length                     :decimal(15, 2)   default(0.0), not null
+#  loaners_count              :integer          default(0), not null
 #  mass                       :decimal(15, 2)   default(0.0), not null
 #  max_crew                   :integer
 #  max_speed                  :decimal(15, 2)
+#  max_speed_acceleration     :decimal(15, 2)
+#  max_speed_decceleration    :decimal(15, 2)
 #  min_crew                   :integer
 #  model_paints_count         :integer          default(0)
 #  module_hardpoints_count    :integer          default(0)
 #  name                       :string(255)
 #  notified                   :boolean          default(FALSE)
 #  on_sale                    :boolean          default(FALSE)
-#  pitch_max                  :decimal(15, 2)
+#  pitch                      :decimal(15, 2)
 #  pledge_price               :decimal(15, 2)
 #  price                      :decimal(15, 2)
 #  production_note            :string(255)
 #  production_status          :string(255)
 #  quantum_fuel_tank_size     :decimal(15, 2)
 #  quantum_fuel_tanks         :string
-#  roll_max                   :decimal(15, 2)
-#  rsi_afterburner_speed      :decimal(15, 2)
+#  roll                       :decimal(15, 2)
 #  rsi_beam                   :decimal(15, 2)   default(0.0), not null
 #  rsi_cargo                  :decimal(15, 2)
 #  rsi_classification         :string
@@ -73,22 +75,22 @@
 #  rsi_length                 :decimal(15, 2)   default(0.0), not null
 #  rsi_mass                   :decimal(15, 2)   default(0.0), not null
 #  rsi_max_crew               :integer
+#  rsi_max_speed              :decimal(15, 2)
 #  rsi_min_crew               :integer
 #  rsi_name                   :string
-#  rsi_pitch_max              :decimal(15, 2)
-#  rsi_roll_max               :decimal(15, 2)
+#  rsi_pitch                  :decimal(15, 2)
+#  rsi_roll                   :decimal(15, 2)
 #  rsi_scm_speed              :decimal(15, 2)
 #  rsi_size                   :string
 #  rsi_slug                   :string
 #  rsi_store_image            :string
 #  rsi_store_url              :string
-#  rsi_xaxis_acceleration     :decimal(15, 2)
-#  rsi_yaw_max                :decimal(15, 2)
-#  rsi_yaxis_acceleration     :decimal(15, 2)
-#  rsi_zaxis_acceleration     :decimal(15, 2)
+#  rsi_yaw                    :decimal(15, 2)
 #  sales_page_url             :string
 #  sc_identifier              :string
 #  scm_speed                  :decimal(15, 2)
+#  scm_speed_acceleration     :decimal(15, 2)
+#  scm_speed_decceleration    :decimal(15, 2)
 #  side_view                  :string
 #  side_view_colored          :string
 #  side_view_colored_height   :integer
@@ -97,7 +99,6 @@
 #  side_view_width            :integer
 #  size                       :string
 #  slug                       :string(255)
-#  speed                      :decimal(15, 2)
 #  store_image                :string(255)
 #  store_images_updated_at    :datetime
 #  store_url                  :string(255)
@@ -109,10 +110,7 @@
 #  top_view_width             :integer
 #  upgrade_kits_count         :integer          default(0)
 #  videos_count               :integer          default(0)
-#  xaxis_acceleration         :decimal(15, 2)
-#  yaw_max                    :decimal(15, 2)
-#  yaxis_acceleration         :decimal(15, 2)
-#  zaxis_acceleration         :decimal(15, 2)
+#  yaw                        :decimal(15, 2)
 #  created_at                 :datetime
 #  updated_at                 :datetime
 #  base_model_id              :uuid
