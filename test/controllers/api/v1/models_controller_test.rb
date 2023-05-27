@@ -88,7 +88,6 @@ module Api
           "classification" => "explorer",
           "classificationLabel" => "Explorer",
           "focus" => nil,
-          "rsiId" => 141,
           "hasImages" => false,
           "hasVideos" => false,
           "hasModules" => false,
