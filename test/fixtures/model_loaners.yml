@@ -13,3 +13,4 @@
 ptv_for_600i:
   model: explorer
   loaner_model: ptv
+  hidden: false
