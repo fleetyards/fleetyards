@@ -26,6 +26,8 @@ json.metrics do
   json.height model.height.to_f
   json.height_label model.height_label
 
+  json.is_ground_vehicle model.ground
+
   json.mass model.mass.to_f
   json.mass_label model.mass.to_f
 

@@ -11,6 +11,45 @@ type Model = {
   classificationLabel: string;
   manufacturer: Manufacturer;
   fleetchartLength: number;
+  isGroundVehicle: boolean;
+  metrics: {
+    size: string;
+    sizeLabel: string;
+    length: number;
+    lengthLabel: string;
+    beam: number;
+    beamLabel: string;
+    height: number;
+    heightLabel: string;
+    isGroundVehicle: boolean;
+    mass: number;
+    massLabel: string;
+    cargo: number;
+    cargoLabel: string;
+    hydrogenFuelTankSize: number;
+    quantumFuelTankSize: number;
+  };
+  crew: {
+    min: number;
+    minLabel: string;
+    max: number;
+    maxLabel: string;
+  };
+  speeds: {
+    scmSpeed: number;
+    maxSpeed: number;
+    groundMaxSpeed: number;
+    groundReverseSpeed: number;
+    groundAcceleration: number;
+    groundDecceleration: number;
+    scmSpeedAcceleration: number;
+    scmSpeedDecceleration: number;
+    maxSpeedAcceleration: number;
+    maxSpeedDecceleration: number;
+    pitch: number;
+    yaw: number;
+    roll: number;
+  };
   media: {
     storeImage?: FyMediaImage;
     fleetchartImage?: string;

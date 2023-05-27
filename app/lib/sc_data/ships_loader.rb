@@ -42,7 +42,7 @@ module ScData
       update_params[:sc_beam] = ship_data["Width"]&.to_f if ship_data["Width"]
       update_params[:sc_height] = ship_data["Height"]&.to_f if ship_data["Height"]
       update_params[:sc_length] = ship_data["Length"]&.to_f if ship_data["Length"]
-      update_params[:ground] = !ship_data["IsVehicle"] if ship_data["IsVehicle"].present?
+      update_params[:ground] = ship_data["IsVehicle"] if ship_data["IsVehicle"].present?
 
       update_params
     end
