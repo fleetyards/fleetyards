@@ -176,21 +176,24 @@
             </div>
           </div>
         </div>
-        <div class="fleetchart-views">
-          <div class="fleetchart-views-items">
-            <div v-if="fleetchartImageAngled" class="big">
-              <img :src="fleetchartImageAngled" />
-            </div>
-            <div v-if="fleetchartImageTop">
-              <img :src="fleetchartImageTop" />
-            </div>
-          </div>
-          <div class="fleetchart-views-items">
-            <div v-if="fleetchartImageFront" class="small">
-              <img :src="fleetchartImageFront" />
-            </div>
-            <div v-if="fleetchartImageSide">
-              <img :src="fleetchartImageSide" />
+        <div class="row">
+          <div class="col-12">
+            <div class="fleetchart-views">
+              <div>
+                <img
+                  v-if="fleetchartImageAngled"
+                  :src="fleetchartImageAngled"
+                />
+              </div>
+              <div>
+                <img v-if="fleetchartImageTop" :src="fleetchartImageTop" />
+              </div>
+              <div class="small">
+                <img v-if="fleetchartImageFront" :src="fleetchartImageFront" />
+              </div>
+              <div>
+                <img v-if="fleetchartImageSide" :src="fleetchartImageSide" />
+              </div>
             </div>
           </div>
         </div>

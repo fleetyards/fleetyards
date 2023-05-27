@@ -145,7 +145,7 @@ json.manufacturer do
 end
 
 json.loaners do
-  json.array! model.loaners, partial: "api/v1/models/loaner", as: :loaner
+  json.array! model.loaners.where(hidden: false), partial: "api/v1/models/loaner", as: :loaner
 end
 
 # deprecated
