@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "5.23.1",
+  "version": "5.23.2",
   "scripts": {
     "docs:old": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",

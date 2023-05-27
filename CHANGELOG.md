@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.23.2](https://github.com/fleetyards/fleetyards/compare/v5.23.1...v5.23.2) (2023-05-27)
+
+
+### Bug Fixes
+
+* **speeds:** missing translations ([e854041](https://github.com/fleetyards/fleetyards/commit/e85404156478cf1e89880dda5e5f96ea7ab2c425))
+
 ### [5.23.1](https://github.com/fleetyards/fleetyards/compare/v5.23.0...v5.23.1) (2023-05-27)
 
 ## [5.23.0](https://github.com/fleetyards/fleetyards/compare/v5.22.5...v5.23.0) (2023-05-27)
