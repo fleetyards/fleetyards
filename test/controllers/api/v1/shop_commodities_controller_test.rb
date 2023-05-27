@@ -6,8 +6,6 @@ module Api
   module V1
     class ShopCommoditiesControllerTest < ActionDispatch::IntegrationTest
       let(:new_deal) { shops :new_deal }
-      let(:explorer) { shop_commodities :commodity_three }
-      let(:andromeda) { shop_commodities :commodity_four }
 
       def setup
         Searchkick.enable_callbacks
