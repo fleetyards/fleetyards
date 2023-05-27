@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.23.0](https://github.com/fleetyards/fleetyards/compare/v5.22.5...v5.23.0) (2023-05-27)
+
+
+### Features
+
+* **speeds:** update models to include speeds from gamefiles ([#2612](https://github.com/fleetyards/fleetyards/issues/2612)) ([b08f6fe](https://github.com/fleetyards/fleetyards/commit/b08f6fe729b48cc28c4d07b67a2b4fdb46cd3a25))
+
+
+### Bug Fixes
+
+* **hangar-sync:** reset pledge_id for wanted ships ([14596ff](https://github.com/fleetyards/fleetyards/commit/14596ffc67f1128ed6e3b1adbe692849f21d1a12))
+
 ### [5.22.5](https://github.com/fleetyards/fleetyards/compare/v5.22.4...v5.22.5) (2023-05-25)
 
 ### [5.22.4](https://github.com/fleetyards/fleetyards/compare/v5.22.3...v5.22.4) (2023-05-25)
