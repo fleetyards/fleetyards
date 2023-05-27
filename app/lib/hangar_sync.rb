@@ -11,10 +11,10 @@ class HangarSync < HangarImporter
   ].freeze
 
   def initialize(data)
-    @data = data
-    @ships = data.select { |item| item[:type] == "ship" }
-    @components = data.select { |item| item[:type] == "component" }
-    @upgrades = data.select { |item| item[:type] == "upgrade" }
+    @data = data.map(&:deep_symbolize_keys)
+    @ships = @data.select { |item| item[:type] == "ship" }
+    @components = @data.select { |item| item[:type] == "component" }
+    @upgrades = @data.select { |item| item[:type] == "upgrade" }
   end
 
   def run(user_id)
@@ -63,7 +63,7 @@ class HangarSync < HangarImporter
     vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, hidden: false).order(model_paint_id: :desc, created_at: :asc)
 
     @ships.each do |item|
-      query = generate_model_query(item["name"])
+      query = generate_model_query(item[:name])
       params = default_params(user_id, item)
 
       model_paint = ModelPaint.where(query).first
@@ -77,7 +77,8 @@ class HangarSync < HangarImporter
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
             rsi_pledge_synced_at: Time.current,
-            name: vehicle_with_ref.name.presence || item[:customName]
+            name: item[:customName]&.strip.presence || vehicle_with_ref.name,
+            wanted: false
           )
 
           vehicle_ids << vehicle_with_ref.id
@@ -95,7 +96,8 @@ class HangarSync < HangarImporter
           vehicle.update!(
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
-            name: vehicle.name.presence || item[:customName]
+            name: item[:customName]&.strip.presence || vehicle.name,
+            wanted: false
           )
           vehicle_ids << vehicle.id
           found_vehicles << vehicle.id
@@ -118,7 +120,8 @@ class HangarSync < HangarImporter
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
             rsi_pledge_synced_at: Time.current,
-            name: vehicle_with_ref.name.presence || item[:customName]
+            name: item[:customName]&.strip.presence || vehicle_with_ref.name,
+            wanted: false
           )
 
           vehicle_ids << vehicle_with_ref.id
@@ -135,7 +138,8 @@ class HangarSync < HangarImporter
           vehicle.update!(
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
-            name: vehicle.name.presence || item[:customName]
+            name: item[:customName]&.strip.presence || vehicle.name,
+            wanted: false
           )
 
           vehicle_ids << vehicle.id
@@ -173,20 +177,20 @@ class HangarSync < HangarImporter
     missing_component_vehicles = []
 
     @components.each do |item|
-      model_name = item["name"].split(" ").first
-      component_name = item["name"].gsub(model_name, "").strip.delete_prefix("-").strip
+      model_name = item[:name].split(" ").first
+      component_name = item[:name].gsub(model_name, "").strip.delete_prefix("-").strip
 
       model_query = generate_model_query(model_name)
       model = Model.where(model_query).first
       if model.blank?
-        missing_components << item["name"]
+        missing_components << item[:name]
         next
       end
 
       component_query = generate_component_query(component_name)
       component = model.modules.where(component_query).first
       if component.blank?
-        missing_components << item["name"]
+        missing_components << item[:name]
         next
       end
 
@@ -194,7 +198,7 @@ class HangarSync < HangarImporter
 
       vehicle_module_with_ref = user.vehicle_modules.where(
         model_module_id: component.id,
-        rsi_pledge_id: item["id"]
+        rsi_pledge_id: item[:id]
       ).first
       if vehicle_module_with_ref.present?
         vehicle_module_with_ref.update!(rsi_pledge_synced_at: Time.current)
@@ -209,7 +213,7 @@ class HangarSync < HangarImporter
         model_module_id: component.id
       )
       if vehicle_module.present?
-        vehicle_module.update!(rsi_pledge_id: item["id"], rsi_pledge_synced_at: Time.current)
+        vehicle_module.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
 
         vehicle_module_ids << vehicle_module.id
         found_components << vehicle_module.id
@@ -221,7 +225,7 @@ class HangarSync < HangarImporter
         user_id: user_id, loaner: false, hidden: false, model_id: component.model_ids
       ).order(created_at: :asc).first
       if vehicle.blank?
-        missing_component_vehicles << item["name"]
+        missing_component_vehicles << item[:name]
 
         next
       end
@@ -243,10 +247,10 @@ class HangarSync < HangarImporter
     missing_upgrade_vehicles = []
 
     @upgrades.each do |item|
-      upgrade_query = generate_component_query(item["name"])
+      upgrade_query = generate_component_query(item[:name])
       upgrade = ModelUpgrade.where(upgrade_query).first
       if upgrade.blank?
-        missing_upgrades << item["name"]
+        missing_upgrades << item[:name]
         next
       end
 
@@ -254,7 +258,7 @@ class HangarSync < HangarImporter
 
       vehicle_upgrade_with_ref = user.vehicle_upgrades.where(
         model_upgrade_id: upgrade.id,
-        rsi_pledge_id: item["id"]
+        rsi_pledge_id: item[:id]
       ).first
       if vehicle_upgrade_with_ref.present?
         vehicle_upgrade_with_ref.update!(rsi_pledge_synced_at: Time.current)
@@ -269,7 +273,7 @@ class HangarSync < HangarImporter
         model_upgrade_id: upgrade.id
       )
       if vehicle_upgrade.present?
-        vehicle_upgrade.update!(rsi_pledge_id: item["id"], rsi_pledge_synced_at: Time.current)
+        vehicle_upgrade.update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
 
         vehicle_upgrade_ids << vehicle_upgrade.id
         found_upgrades << vehicle_upgrade.id
@@ -279,7 +283,7 @@ class HangarSync < HangarImporter
 
       vehicle = Vehicle.where(user_id: user_id, loaner: false, hidden: false, model_id: upgrade.model_ids).order(created_at: :asc).first
       if vehicle.blank?
-        missing_upgrade_vehicles << item["name"]
+        missing_upgrade_vehicles << item[:name]
 
         next
       end

@@ -52,3 +52,19 @@ ptv_loaner:
   user: data
   wanted: false
   public: true
+
+explorer_troi:
+  name: 'USS Troi'
+  model: explorer
+  user: troi
+  wanted: false
+  public: true
+  flagship: false
+
+jav_troi:
+  name: 'USS Troi'
+  model: javelin
+  user: troi
+  wanted: false
+  public: true
+  flagship: true
