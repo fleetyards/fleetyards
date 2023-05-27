@@ -37,7 +37,7 @@ module Rsi
             loaner_model = Model.where(name: model_map(loaner_name)).first
 
             if loaner_model.present?
-              model_loaner = ModelLoaner.create(model_id: model.id, loaner_model_id: loaner_model.id)
+              model_loaner = ModelLoaner.find_or_create_by(model_id: model.id, loaner_model_id: loaner_model.id)
               model_loaners << model_loaner.id
             else
               missing_loaners << {
