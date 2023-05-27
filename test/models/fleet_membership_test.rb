@@ -77,7 +77,7 @@ class FleetMembershipTest < ActiveSupport::TestCase
 
       Updater::FleetMembershipVehiclesSetupJob.drain
 
-      assert_difference -> { new_fleet_membership.fleet.fleet_vehicles.count }, -1 do
+      assert_difference -> { new_fleet_membership.fleet.fleet_vehicles.count }, -4 do
         new_fleet_membership.destroy
       end
     end

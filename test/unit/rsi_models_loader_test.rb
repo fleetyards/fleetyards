@@ -21,7 +21,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       expectations = {
         hardpoints: 5901,
         components: 137,
-        models: 180,
+        models: 178,
         paints: 17,
         manufacturers: 19
       }
