@@ -175,6 +175,7 @@ class Model < ApplicationRecord
     dependent: :destroy
 
   has_many :model_loaners,
+    -> { where(hidden: false) },
     dependent: :destroy,
     inverse_of: :model
   has_many :loaners,
