@@ -125,7 +125,7 @@
 andromeda:
   name: "Andromeda"
   slug: "andromeda"
-  rsi_id: 14100
+  rsi_id: 45
   classification: multi_role
   manufacturer: rsi
   length: 61.2
@@ -146,7 +146,7 @@ andromeda:
 explorer:
   name: "600i"
   slug: "600i"
-  rsi_id: 14101
+  rsi_id: 141
   manufacturer: origin
   classification: explorer
   length: 20
@@ -220,7 +220,18 @@ javelin:
   name: Javelin
   slug: javelin
   rsi_name: Javelin
-  rsi_id: 123
+  rsi_id: 63
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0
+
+corsair:
+  name: Corsair
+  slug: corsair
+  rsi_name: Corsair
+  rsi_id: 178
   images_count: 0
   videos_count: 0
   model_paints_count: 0

@@ -53,16 +53,20 @@ ptv_loaner:
   wanted: false
   public: true
 
-explorer_troi:
+andromeda_troi:
   name: 'USS Troi'
-  model: explorer
+  model: andromeda
   user: troi
   wanted: false
   public: true
   flagship: false
 
+pirate_troi:
+  model: corsair
+  user: troi
+  wanted: false
+
 jav_troi:
-  name: 'USS Troi'
   model: javelin
   user: troi
   wanted: false
