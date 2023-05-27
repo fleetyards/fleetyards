@@ -85,7 +85,10 @@
 #  rsi_store_url              :string
 #  rsi_yaw                    :decimal(15, 2)
 #  sales_page_url             :string
+#  sc_beam                    :decimal(15, 2)
+#  sc_height                  :decimal(15, 2)
 #  sc_identifier              :string
+#  sc_length                  :decimal(15, 2)
 #  scm_speed                  :decimal(15, 2)
 #  scm_speed_acceleration     :decimal(15, 2)
 #  scm_speed_decceleration    :decimal(15, 2)

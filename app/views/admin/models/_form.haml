@@ -88,24 +88,27 @@
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :beam)}
       = form.label :beam
+      = model.sc_beam
       = form.number_field :beam, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :beam
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :length)}
       = form.label :length
+      = model.sc_length
       = form.number_field :length, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :length
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :height)}
+      = form.label :height
+      = model.sc_height
+      = form.number_field :height, required: true, min: 0, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :height
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :fleetchart_offset_length)}
       = form.label :fleetchart_offset_length
       = form.number_field :fleetchart_offset_length, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :fleetchart_offset_length
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :height)}
-      = form.label :height
-      = form.number_field :height, required: true, min: 0, step: 'any', class: 'form-control'
-      %small
-        = form_errors model, :height
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :size)}
@@ -142,42 +145,38 @@
       = form.number_field :scm_speed, step: 'any', class: 'form-control'
       %small
         = form_errors model, :scm_speed
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :afterburner_speed)}
-      = form.label :afterburner_speed
-      = form.number_field :afterburner_speed, step: 'any', class: 'form-control'
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :max_speed)}
+      = form.label :max_speed
+      = form.number_field :max_speed, step: 'any', class: 'form-control'
       %small
-        = form_errors model, :afterburner_speed
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :cruise_speed)}
-      = form.label :cruise_speed
-      = form.number_field :cruise_speed, step: 'any', class: 'form-control'
-      %small
-        = form_errors model, :cruise_speed
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :ground_speed)}
-      = form.label :ground_speed
-      = form.number_field :ground_speed, step: 'any', class: 'form-control'
-      %small
-        = form_errors model, :ground_speed
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :afterburner_ground_speed)}
-      = form.label :afterburner_ground_speed
-      = form.number_field :afterburner_ground_speed, step: 'any', class: 'form-control'
-      %small
-        = form_errors model, :afterburner_ground_speed
+        = form_errors model, :max_speed
   .row
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :pitch_max)}
-      = form.label :pitch_max
-      = form.number_field :pitch_max, step: 'any', class: 'form-control'
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :ground_max_speed)}
+      = form.label :ground_max_speed
+      = form.number_field :ground_max_speed, step: 'any', class: 'form-control'
       %small
-        = form_errors model, :pitch_max
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :yaw_max)}
-      = form.label :yaw_max
-      = form.number_field :yaw_max, step: 'any', class: 'form-control'
+        = form_errors model, :ground_max_speed
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :ground_reverse_speed)}
+      = form.label :ground_reverse_speed
+      = form.number_field :ground_reverse_speed, step: 'any', class: 'form-control'
       %small
-        = form_errors model, :yaw_max
-    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :roll_max)}
-      = form.label :roll_max
-      = form.number_field :roll_max, step: 'any', class: 'form-control'
+        = form_errors model, :ground_reverse_speed
+  .row
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :pitch)}
+      = form.label :pitch
+      = form.number_field :pitch, step: 'any', class: 'form-control'
       %small
-        = form_errors model, :roll_max
+        = form_errors model, :pitch
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :yaw)}
+      = form.label :yaw
+      = form.number_field :yaw, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :yaw
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :roll)}
+      = form.label :roll
+      = form.number_field :roll, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :roll
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :min_crew)}

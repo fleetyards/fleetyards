@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_153324) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_27_195635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -646,6 +646,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_153324) do
     t.decimal "max_speed_acceleration", precision: 15, scale: 2
     t.decimal "max_speed_decceleration", precision: 15, scale: 2
     t.integer "loaners_count", default: 0, null: false
+    t.decimal "sc_length", precision: 15, scale: 2
+    t.decimal "sc_beam", precision: 15, scale: 2
+    t.decimal "sc_height", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

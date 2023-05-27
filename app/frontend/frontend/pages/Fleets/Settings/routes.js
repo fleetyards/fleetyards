@@ -4,7 +4,6 @@ export const routes = [
     name: "fleet-settings-fleet",
     component: () => import("@/frontend/pages/Fleets/Settings/Fleet/index.vue"),
     meta: {
-      title: "fleet.settings.fleet",
       needsAuthentication: true,
     },
   },
@@ -14,7 +13,6 @@ export const routes = [
     component: () =>
       import("@/frontend/pages/Fleets/Settings/Membership/index.vue"),
     meta: {
-      title: "fleet.settings.membership",
       needsAuthentication: true,
     },
   },
