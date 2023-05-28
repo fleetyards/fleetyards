@@ -107,7 +107,7 @@ module Rsi
       model_map = {
         "85x" => "85X",
         "F7C - Hornet" => "F7C Hornet",
-        "URSA Rover" => "Ursa Rover",
+        "URSA Rover" => "Ursa",
         "MPUV Passenger" => "MPUV Personnel",
         "Hercules C2" => "C2 Hercules",
         "Hercules M2" => "M2 Hercules",
