@@ -1,6 +1,6 @@
 <template>
   <Btn
-    v-if="extensionReady"
+    v-if="!mobile"
     :size="size"
     :variant="variant"
     :aria-label="t('actions.import')"
@@ -24,6 +24,7 @@ import type {
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
 import Store from "@/frontend/lib/Store";
+import { useRouter, useRoute } from "vue-router/composables";
 
 interface Props extends BtnProps {
   variant?: BtnVariants;
@@ -37,14 +38,26 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const extensionReady = ref(false);
-
 const loading = ref(false);
+
+const mobile = computed(() => Store.getters.mobile);
+
+const router = useRouter();
+const route = useRoute();
 
 onMounted(() => {
   window.addEventListener("message", handleExtensionMessage);
 
   checkExtension();
+
+  if (route.query.openSync) {
+    router.replace({
+      name: "hangar",
+      query: { ...route.query, openSync: undefined },
+    });
+
+    openModal();
+  }
 });
 
 onBeforeUnmount(() => {
@@ -58,21 +71,14 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
     if (message.action === "health") {
       if (message.code === 200) {
         console.info("FY Extension: Ready");
-        extensionReady.value = true;
+        Store.dispatch("hangar/updateExtensionReady", true);
       } else {
         console.info("FY Extension: Unavailable");
-        extensionReady.value = false;
+        Store.dispatch("hangar/updateExtensionReady", false);
       }
     }
   }
 };
-
-watch(
-  () => extensionReady.value,
-  () => {
-    Store.dispatch("hangar/updateExtensionReady", extensionReady.value);
-  }
-);
 
 const checkExtension = () => {
   window.postMessage({ direction: "fy", message: '{ "action": "health" }' });

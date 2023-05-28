@@ -128,6 +128,7 @@
       :hide-loading="fleetchartVisible"
     >
       <template slot="actions">
+        <HangarSyncBtn size="small" />
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Btn
@@ -196,10 +197,6 @@
             <i class="fad fa-question" />
             <span>{{ $t("actions.showGuide") }}</span>
           </Btn>
-
-          <hr v-show="extensionReady" />
-
-          <HangarSyncBtn size="small" variant="dropdown" />
 
           <hr />
 

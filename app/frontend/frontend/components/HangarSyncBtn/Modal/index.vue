@@ -1,7 +1,21 @@
 <template>
   <Modal :title="t('headlines.syncExtension')">
     <transition name="fade" mode="out-in">
-      <div v-if="!started">
+      <div v-if="!extensionReady">
+        <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
+        <div class="sync-extension-platforms">
+          <a
+            v-for="link in extensionUrls"
+            :key="`extension-link-${link.platform}`"
+            v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
+            :href="link.url"
+            target="_blank"
+          >
+            <i :class="`fab fa-${link.platform}`" />
+          </a>
+        </div>
+      </div>
+      <div v-else-if="!started">
         <p
           class="flex justify-content-center text-uppercase relative"
           :class="{
@@ -281,7 +295,7 @@
         v-if="finished"
         size="small"
         :inline="true"
-        data-test="reset-ingame-modal-reset-to-wishlist"
+        data-test="close-sync"
         @click.native="cancel"
       >
         {{ t("actions.syncExtension.close") }}
@@ -290,20 +304,29 @@
         <Btn
           size="small"
           :inline="true"
-          data-test="reset-ingame-modal-reset-to-wishlist"
+          data-test="cancel-sync"
           :disabled="started && !finishedWithErrors"
           @click.native="cancel"
         >
           {{ t("actions.syncExtension.cancel") }}
         </Btn>
         <Btn
+          v-if="extensionReady"
           :inline="true"
-          data-test="reset-ingame-modal-reset"
+          data-test="start-sync"
           :loading="started || loadingIdentity"
           :disabled="identityStatus !== 'connected'"
           @click.native="start"
         >
           {{ t("actions.syncExtension.start") }}
+        </Btn>
+        <Btn
+          v-else
+          :inline="true"
+          data-test="recheck-sync"
+          @click.native="refreshPage"
+        >
+          {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>
     </div>
@@ -325,6 +348,9 @@ import { useComlink } from "@/frontend/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
+import Store from "@/frontend/lib/Store";
+import { useRouter, useRoute } from "vue-router/composables";
+import { extensionUrls } from "@/types/extension";
 
 const started = ref(false);
 
@@ -333,6 +359,8 @@ const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
 const loadingIdentity = ref(false);
 
 const currentPage = ref(1);
+
+const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
 
 const pledges = ref<TRSIHangarItem[]>([]);
 
@@ -401,7 +429,9 @@ onMounted(() => {
 
   window.addEventListener("message", handleExtensionMessage);
 
-  checkRSIIdentity();
+  if (extensionReady.value) {
+    checkRSIIdentity();
+  }
 });
 
 onBeforeUnmount(() => {
@@ -433,6 +463,15 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
     }
   }
 };
+
+watch(
+  () => extensionReady.value,
+  () => {
+    if (extensionReady.value) {
+      checkRSIIdentity();
+    }
+  }
+);
 
 const checkRSIIdentity = () => {
   identityStatus.value = "pending";
@@ -515,6 +554,17 @@ const finishSync = async () => {
   } else {
     updateStep("submitData", "failure");
   }
+};
+
+const router = useRouter();
+const route = useRoute();
+
+const refreshPage = () => {
+  router.replace({
+    name: "hangar",
+    query: { ...route.query, openSync: "1" },
+  });
+  window.location.reload();
 };
 </script>
 

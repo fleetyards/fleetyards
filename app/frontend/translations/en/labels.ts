@@ -632,7 +632,7 @@ export default {
       connected: "connected",
     },
     platforms: {
-      chrome: "Google Chrome",
+      chrome: "Google Chrome or Chromium based Browsers",
       firefox: "Mozilla Firefox",
       edge: "Microsoft Edge",
       opera: "Opera",

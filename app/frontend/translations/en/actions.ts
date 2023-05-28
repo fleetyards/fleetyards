@@ -99,6 +99,7 @@ export default {
     cancel: "Cancel",
     start: "Start Sync",
     close: "Close",
+    refresh: "Refresh Page",
   },
   empty: {
     reset: "Reset Filters/Pages",

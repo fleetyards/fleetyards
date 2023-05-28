@@ -115,6 +115,8 @@ export default {
       " To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy.",
   },
   syncExtension: {
+    gettingStarted:
+      "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
     info: "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
   },
 };

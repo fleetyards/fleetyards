@@ -55,6 +55,7 @@ import { useRoute, useRouter } from "vue-router/composables";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
+import { extensionUrls } from "@/types/extension";
 
 const { t } = useI18n();
 
@@ -69,21 +70,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
-
-const extensionUrls = computed(() => [
-  {
-    platform: "chrome",
-    url: "https://chrome.google.com/webstore/detail/fleetyards-sync/glchfaleieoljcimjjkdkeifnejbcokg",
-  },
-  {
-    platform: "firefox",
-    url: "https://addons.mozilla.org/de/firefox/addon/fleetyards-sync/",
-  },
-  {
-    platform: "github",
-    url: "https://github.com/fleetyards/sync/releases",
-  },
-]);
 
 const route = useRoute();
 
