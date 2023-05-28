@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.23.3](https://github.com/fleetyards/fleetyards/compare/v5.23.2...v5.23.3) (2023-05-28)
+
+
+### Bug Fixes
+
+* **speeds:** update ground vehicle flag ([a838d62](https://github.com/fleetyards/fleetyards/commit/a838d627c293dcf8465a7a75d6421bd70ee0840b))
+
 ### [5.23.2](https://github.com/fleetyards/fleetyards/compare/v5.23.1...v5.23.2) (2023-05-27)
 
 
