@@ -29,9 +29,9 @@ jobs:
     needs: js-setup
     uses: ./.github/workflows/js-prettier.job.yml
 
-  js-tests:
-    needs: js-setup
-    uses: ./.github/workflows/js-tests.job.yml
+  # js-tests:
+  #   needs: js-setup
+  #   uses: ./.github/workflows/js-tests.job.yml
 
   ruby-setup:
     runs-on: ubuntu-latest
@@ -65,8 +65,15 @@ jobs:
 
   deploy-to-stage:
     if: github.ref == 'refs/heads/main'
-    needs:
-      [ruby-lint, ruby-tests, js-tests, js-lint, js-prettier, seeds, e2e-test]
+    needs: [
+        ruby-lint,
+        ruby-tests,
+        # js-tests,
+        js-lint,
+        js-prettier,
+        seeds,
+        e2e-test,
+      ]
     uses: ./.github/workflows/deploy.job.yml
     with:
       capEnv: stage

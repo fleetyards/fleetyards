@@ -10,7 +10,7 @@ module Rsi
       super
 
       self.json_file_path = "public/models.json"
-      self.vat_percent = options[:vat_percent] || 19
+      self.vat_percent = options[:vat_percent] || 0
       self.manufacturers_loader = ::Rsi::ManufacturersLoader.new
       self.hardpoints_loader = ::Rsi::HardpointsLoader.new
     end

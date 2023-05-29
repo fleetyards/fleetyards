@@ -3,12 +3,13 @@ import Router from "vue-router";
 import qs from "qs";
 import Store from "@/frontend/lib/Store";
 import { routes as initialRoutes } from "@/frontend/routes";
+import { t } from "i18n-js";
 
 Vue.use(Router);
 
-const addTrailingSlashToAllRoutes = (routes) =>
+const addTrailingSlashToAllRoutes = (routes: any) =>
   [].concat(
-    ...routes.map((route) => {
+    ...routes.map((route: any) => {
       if (["*", "/"].includes(route.path)) {
         return [route];
       }
@@ -34,7 +35,7 @@ const addTrailingSlashToAllRoutes = (routes) =>
         modifiedRoute,
         {
           path,
-          redirect: (to) => ({
+          redirect: (to: any) => ({
             name: route.name,
             params: to.params || null,
             query: to.query || null,
@@ -74,7 +75,7 @@ const router = new Router({
   routes: addTrailingSlashToAllRoutes(initialRoutes),
 });
 
-const validateAndResolveNewRoute = (to) => {
+const validateAndResolveNewRoute = (to: any) => {
   if (
     to.meta.needsAuthentication &&
     !Store.getters["session/isAuthenticated"]

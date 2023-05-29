@@ -14,13 +14,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
 
-@Component({ components: { Panel } })
-export default class Box extends Vue {
-  @Prop({ default: false }) large!: boolean;
-}
+type Props = {
+  large: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  large: false,
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "BaseBox",
+};
 </script>
