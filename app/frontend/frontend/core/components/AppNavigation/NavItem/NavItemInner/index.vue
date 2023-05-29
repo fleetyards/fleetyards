@@ -34,26 +34,30 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+type Props = {
+  label?: string;
+  icon?: string;
+  image?: string;
+  avatar?: boolean;
+  slim?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  label: "",
+  icon: undefined,
+  image: undefined,
+  avatar: false,
+  slim: false,
+});
+
+const firstLetter = computed(() => props.label.charAt(0));
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-
-@Component<NavItemInner>({})
-export default class NavItemInner extends Vue {
-  @Prop({ default: "" }) label: string;
-
-  @Prop({ default: null }) icon: string | null;
-
-  @Prop({ default: null }) image: string | null;
-
-  @Prop({ default: false }) avatar: boolean;
-
-  @Prop({ default: false }) slim: boolean;
-
-  get firstLetter() {
-    return this.label.charAt(0);
-  }
-}
+export default {
+  name: "NavItemInner",
+};
 </script>
 
 <style lang="scss" scoped>

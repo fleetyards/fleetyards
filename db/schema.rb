@@ -312,7 +312,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_195635) do
     t.integer "sort"
     t.boolean "public", default: false
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
-    t.index ["user_id"], name: "index_hangar_groups_on_user_id"
   end
 
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

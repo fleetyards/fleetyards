@@ -19,10 +19,7 @@
             <i class="fad fa-code-compare" />
             {{ t("actions.compare.models") }}
           </Btn>
-          <Btn
-            data-test="fleetchart-link"
-            @click.native="modelsStore.toggleFleetchart"
-          >
+          <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
             <i class="fad fa-starship" />
             {{ t("labels.fleetchart") }}
           </Btn>
@@ -32,8 +29,8 @@
 
     <FilteredList
       key="models"
-      :collection="collection"
-      :name="route.name"
+      :collection="modelsCollection"
+      :name="route.name || ''"
       :route-query="route.query"
       :hash="route.hash"
       :paginated="true"
@@ -46,7 +43,7 @@
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="dropdown"
-            @click.native="modelsStore.toggleDetails"
+            @click.native="toggleDetails"
           >
             <i class="fad fa-info-square" />
             <span>{{ toggleDetailsTooltip }}</span>
@@ -80,57 +77,64 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Action, Getter } from "vuex-class";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import MetaInfo from "@/frontend/mixins/MetaInfo";
-import modelsCollection, {
-  ModelsCollection,
-} from "@/frontend/api/collections/Models";
-import HangarItemsMixin from "@/frontend/mixins/HangarItems";
+import modelsCollection from "@/frontend/api/collections/Models";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsFilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { useHangarItems } from "@/frontend/composables/useHangarItems";
+import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useModelsStore } from "@/frontend/stores/Models";
+import { storeToRefs } from "pinia";
 
 useHangarItems();
 useWishlistItems();
 
-  @Getter("detailsVisible", { namespace: "models" }) detailsVisible;
+const { t } = useI18n();
 
-  @Getter("fleetchartVisible", { namespace: "models" }) fleetchartVisible;
+const modelsStore = useModelsStore();
 
-  @Getter("perPage", { namespace: "models" }) perPage;
+const { detailsVisible, fleetchartVisible, perPage } = storeToRefs(modelsStore);
 
-  @Action("toggleDetails", { namespace: "models" }) toggleDetails;
+const toggleDetails = () => {
+  modelsStore.toggleDetails();
+};
 
-  @Action("toggleFleetchart", { namespace: "models" })
-  toggleFleetchart;
+const toggleFleetchart = () => {
+  modelsStore.toggleFleetchart();
+};
 
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t("actions.hideDetails");
-    }
-
-    return this.$t("actions.showDetails");
+const toggleDetailsTooltip = computed(() => {
+  if (detailsVisible.value) {
+    return t("actions.hideDetails");
   }
 
-  get filters() {
-    return {
-      filters: this.$route.query.q,
-      page: this.$route.query.page,
-    };
+  return t("actions.showDetails");
+});
+
+const route = useRoute();
+
+const filters = computed(() => ({
+  filters: route.query.q as unknown as TModelsFilter,
+  page: Number(route.query.page),
+}));
+
+watch(
+  () => perPage.value,
+  () => {
+    modelsCollection.findAll(filters.value);
   }
 );
 </script>
 
-  @Watch("perPage")
-  onPerPageChange() {
-    this.collection.findAll(this.filters);
-  }
-}
+<script lang="ts">
+export default {
+  name: "ModelsPage",
+};
 </script>

@@ -11,7 +11,6 @@ import Subscriptions from "@/frontend/plugins/Subscriptions";
 import Comlink from "@/frontend/plugins/Comlink";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
-import Ahoy from "@/frontend/plugins/Ahoy";
 
 Vue.use(Subscriptions);
 Vue.use(ApiClient);

@@ -41,7 +41,6 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import NavigationMixin from "@/frontend/mixins/Navigation";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import fleetInvitesCollection from "@/frontend/api/collections/FleetInvites";
 import NavItem from "../NavItem/index.vue";
@@ -50,7 +49,6 @@ import NavItem from "../NavItem/index.vue";
   components: {
     NavItem,
   },
-  mixins: [NavigationMixin],
 })
 export default class FleetsNav extends Vue {
   collection: FleetsCollection = fleetsCollection;

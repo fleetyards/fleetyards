@@ -12,7 +12,7 @@
             <BreadCrumbs :crumbs="crumbs" />
             <br />
             <h1 class="sr-only">
-              {{ $t("headlines.compare.models") }}
+              {{ t("headlines.compare.models") }}
             </h1>
           </div>
         </div>
@@ -24,7 +24,7 @@
                   v-model="newModel"
                   v-tooltip="disabledTooltip"
                   name="new-model"
-                  :search-label="$t('actions.findModel')"
+                  :search-label="t('actions.findModel')"
                   :collection="modelsCollection"
                   value-attr="slug"
                   translation-key="compare.addModel"
@@ -37,7 +37,7 @@
                 />
                 <Btn :href="erkulUrl" :block="true" class="erkul-link">
                   <i />
-                  {{ $t("labels.erkul.link") }}
+                  {{ t("labels.erkul.link") }}
                 </Btn>
                 <Starship42Btn
                   :items="sortedModels"
@@ -59,7 +59,7 @@
                     class="lazy"
                   />
                   <div
-                    v-tooltip="$t('labels.compare.removeModel')"
+                    v-tooltip="t('labels.compare.removeModel')"
                     class="remove-model"
                     @click="remove(model)"
                   >
@@ -84,8 +84,8 @@
             <div v-if="!sortedModels.length" class="row compare-row">
               <div class="col-12">
                 <Box class="info" :large="true">
-                  <h1>{{ $t("headlines.compare.models") }}</h1>
-                  <p>{{ $t("texts.compare.models.info") }}</p>
+                  <h1>{{ t("headlines.compare.models") }}</h1>
+                  <p>{{ t("texts.compare.models.info") }}</p>
                 </Box>
               </div>
             </div>
@@ -103,10 +103,7 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import modelsCollection from "@/frontend/api/collections/Models";
 import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
@@ -119,137 +116,147 @@ import CrewRows from "@/frontend/components/Compare/Models/Crew/index.vue";
 import SpeedRows from "@/frontend/components/Compare/Models/Speed/index.vue";
 import HardpointRows from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useRoute, useRouter } from "vue-router/composables";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/frontend/stores/App";
 
-@Component<ModelsCompare>({
-  components: {
-    CollectionFilterGroup,
-    Box,
-    Btn,
-    BreadCrumbs,
-    TopViewRows,
-    BaseRows,
-    CrewRows,
-    SpeedRows,
-    HardpointRows,
-    Starship42Btn,
-  },
-})
-export default class ModelsCompare extends Vue {
-  @Getter("navSlim", { namespace: "app" }) navSlim: boolean;
+const appStore = useAppStore();
 
-  modelsCollection: ModelsCollection = modelsCollection;
+const { navSlim } = storeToRefs(appStore);
 
-  newModel: Model | null = null;
+type Form = {
+  models?: string[];
+};
 
-  models: Model[] = [];
-
-  form = {};
-
-  get erkulUrl() {
-    return "https://www.erkul.games/calculator";
-  }
-
-  get sortedModels() {
-    const models = JSON.parse(JSON.stringify(this.models));
-
-    return models.sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-
-      if (a.name > b.name) {
-        return 1;
-      }
-
-      return 0;
-    });
-  }
-
-  get selectDisabled() {
-    return this.models.length > 7;
-  }
-
-  get disabledTooltip() {
-    if (this.selectDisabled) {
-      return this.$t("labels.compare.enough");
-    }
-
-    return null;
-  }
-
-  get crumbs() {
-    return [
-      {
-        to: {
-          name: "models",
-        },
-        label: this.$t("nav.models.index"),
-      },
-    ];
-  }
-
-  @Watch("form", { deep: true })
-  onFormChange() {
-    this.update();
-  }
-
-  mounted() {
-    this.setupForm();
-    this.form.models.forEach(async (slug) => {
-      const model = await this.fetchModel(slug);
-      this.models.push(model);
-    });
-  }
-
-  setupForm() {
-    const query = JSON.parse(JSON.stringify(this.$route.query || {}));
-    this.form = {
-      models: query.models || [],
-    };
-  }
-
-  update() {
-    this.$router
-      .replace({
-        name: this.$route.name,
-        query: {
-          models: this.form.models,
-        },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(() => {});
-  }
-
-  async add() {
-    if (this.newModel && !this.form.models.includes(this.newModel.slug)) {
-      const model = await this.fetchModel(this.newModel.slug);
-      this.models.push(model);
-      this.form.models.push(this.newModel.slug);
-    }
-    this.newModel = null;
-  }
-
-  remove(model) {
-    if (this.form.models.includes(model.slug)) {
-      const index = this.form.models.indexOf(model.slug);
-      this.form.models.splice(index, 1);
-    }
-
-    if (this.models.findIndex((item) => item.slug === model.slug) >= 0) {
-      const index = this.models.findIndex((item) => item.slug === model.slug);
-      this.models.splice(index, 1);
-    }
-  }
-
-  async fetchModel(slug) {
-    const model = await modelsCollection.findBySlug(slug);
-
-    const hardpoints = await modelHardpointsCollection.findAllByModel(slug);
-
-    return {
-      ...model,
-      hardpoints,
-    };
-  }
+interface TCompareModel extends TModel {
+  hardpoints: TModelHardpoint[];
 }
+
+const { t } = useI18n();
+
+const newModel = ref<TCompareModel | null>(null);
+
+const models = ref<TCompareModel[]>([]);
+
+const form = ref<Form>({});
+
+const erkulUrl = computed(() => "https://www.erkul.games/calculator");
+
+const sortedModels = computed(() => {
+  const sortModels = JSON.parse(JSON.stringify(models.value));
+
+  return sortModels.sort((a: TModel, b: TModel) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+
+    if (a.name > b.name) {
+      return 1;
+    }
+
+    return 0;
+  });
+});
+
+const selectDisabled = computed(() => models.value.length > 7);
+
+const disabledTooltip = computed(() => {
+  if (selectDisabled.value) {
+    return t("labels.compare.enough");
+  }
+
+  return null;
+});
+
+const crumbs = computed(() => [
+  {
+    to: {
+      name: "models",
+    },
+    label: t("nav.models.index"),
+  },
+]);
+
+watch(
+  () => form.value,
+  () => {
+    update();
+  },
+  { deep: true }
+);
+
+const route = useRoute();
+
+const setupForm = () => {
+  const query = JSON.parse(JSON.stringify(route.query || {}));
+  form.value = {
+    models: query.models || [],
+  };
+};
+
+onMounted(() => {
+  setupForm();
+
+  form.value.models?.forEach(async (slug) => {
+    const model = await fetchModel(slug);
+    models.value.push(model);
+  });
+});
+
+const router = useRouter();
+
+const update = () => {
+  router
+    .replace({
+      name: route.name || "",
+      query: {
+        models: form.value.models,
+      },
+    })
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    .catch(() => {});
+};
+
+const add = async () => {
+  if (newModel.value && !form.value.models?.includes(newModel.value.slug)) {
+    const model = await fetchModel(newModel.value.slug);
+    models.value.push(model);
+    form.value.models?.push(newModel.value.slug);
+  }
+  newModel.value = null;
+};
+
+const remove = (model: TModel) => {
+  if (form.value.models?.includes(model.slug)) {
+    const index = form.value.models.indexOf(model.slug);
+    form.value.models?.splice(index, 1);
+  }
+
+  if (models.value.findIndex((item) => item.slug === model.slug) >= 0) {
+    const index = models.value.findIndex((item) => item.slug === model.slug);
+    models.value.splice(index, 1);
+  }
+};
+
+const fetchModel = async (slug: string): Promise<TCompareModel> => {
+  const modelResponse = await modelsCollection.findBySlug(slug);
+
+  const hardpointResponse = await modelHardpointsCollection.findAllByModel(
+    slug
+  );
+
+  return {
+    ...(modelResponse as TRecordSuccessResponse<TModel>).data,
+    hardpoints: (
+      hardpointResponse as TCollectionSuccessResponse<TModelHardpoint>
+    ).data,
+  };
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelsCompare",
+};
 </script>

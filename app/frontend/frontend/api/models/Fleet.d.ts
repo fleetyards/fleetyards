@@ -26,8 +26,8 @@ type TFleetForm = {
 
 interface TFleetVehicleParams extends TCollectionParams<TVehiclesFilter> {
   slug: string;
-  grouped: boolean;
-  perPage: "all" | number;
+  grouped?: boolean;
+  perPage?: "all" | number;
 }
 
 type TFleetVehicleStats = {

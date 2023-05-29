@@ -13,14 +13,14 @@
       <NavItem
         :to="{ name: 'settings' }"
         :active="active"
-        :label="$t('nav.settings.index')"
+        :label="t('nav.settings.index')"
         icon="fal fa-cog"
       />
       <NavItem :divider="true" />
       <template v-if="currentUser.rsiHandle">
         <NavItem
           :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
-          :label="$t('nav.rsiProfile')"
+          :label="t('nav.rsiProfile')"
           :image="require('@/images/rsi_logo.png')"
         />
         <NavItem :divider="true" />
@@ -28,49 +28,52 @@
       <NavItem
         :action="logout"
         menu-key="logout"
-        :label="$t('nav.logout')"
+        :label="t('nav.logout')"
         icon="fal fa-sign-out"
       />
     </template>
   </NavItem>
 </template>
 
-<script>
-import NavigationMixin from "@/frontend/mixins/Navigation";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
 import sessionCollection from "@/frontend/api/collections/Session";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { storeToRefs } from "pinia";
 import NavItem from "../NavItem/index.vue";
 
+const { t } = useI18n();
+
+const route = useRoute();
+
+const sessionStore = useSessionStore();
+
+const { currentUser } = storeToRefs(sessionStore);
+
+const active = computed(() =>
+  [
+    "settings-profile",
+    "settings-account",
+    "settings-hangar",
+    "settings-notifications",
+    "settings-security-status",
+    "settings-two-factor-enable",
+    "settings-two-factor-disable",
+    "settings-two-factor-backup-codes",
+    "settings-change-password",
+  ].includes(route.name || "")
+);
+
+const logout = async () => {
+  await sessionCollection.destroy();
+  await sessionStore.logout();
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "UserNav",
-
-  components: {
-    NavItem,
-  },
-
-  mixins: [NavigationMixin],
-
-  computed: {
-    active() {
-      return [
-        "settings-profile",
-        "settings-account",
-        "settings-hangar",
-        "settings-notifications",
-        "settings-security-status",
-        "settings-two-factor-enable",
-        "settings-two-factor-disable",
-        "settings-two-factor-backup-codes",
-        "settings-change-password",
-      ].includes(this.$route.name);
-    },
-  },
-
-  methods: {
-    async logout() {
-      await sessionCollection.destroy();
-      await this.$store.dispatch("session/logout");
-    },
-  },
 };
 </script>
 

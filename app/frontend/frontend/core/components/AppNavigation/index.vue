@@ -96,8 +96,11 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router/composables";
 import { isFleetRoute as fleetRouteCheck } from "@/frontend/utils/Routes/Fleets";
-import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useAppStore } from "@/frontend/stores/App";
+import { useSessionStore } from "@/frontend/stores/Session";
+import { useHangarStore } from "@/frontend/stores/Hangar";
+import { storeToRefs } from "pinia";
 import NavItem from "./NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
@@ -105,31 +108,23 @@ import StationsNav from "./StationsNav/index.vue";
 import NavFooter from "./NavFooter/index.vue";
 import CompareNav from "./CompareNav/index.vue";
 
+const appStore = useAppStore();
+
+const { navSlim, mobile, navCollapsed, filters } = storeToRefs(appStore);
+
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
+
 const { t } = useI18n();
-
-const mobile = computed(() => Store.getters.mobile);
-
-const navSlim = computed(() => Store.getters["app/navSlim"]);
-
-// const currentUser = computed(() => Store.getters["session/currentUser"]);
-
-const isAuthenticated = computed(
-  () => Store.getters["session/isAuthenticated"]
-);
 
 const slim = computed(() => navSlim.value && !mobile.value);
 
 const isFleetRoute = computed(() => fleetRouteCheck(route.name || ""));
 
-const filters = computed(() => Store.getters.filters);
+const hangarStore = useHangarStore();
 
-const navCollapsed = computed(() => Store.getters["app/navCollapsed"]);
-
-// const isUpdateAvailable = computed(
-//   () => Store.getters["app/isUpdateAvailable"]
-// );
-
-const hangarPreview = computed(() => Store.getters["hangar/preview"]);
+const { preview: hangarPreview } = storeToRefs(hangarStore);
 
 const route = useRoute();
 
@@ -199,19 +194,9 @@ const documentClick = (event: Event) => {
   }
 };
 
-// const open = () => {
-//   Store.commit("app/openNav");
-// };
-
 const close = () => {
-  Store.commit("app/closeNav");
+  appStore.closeNav();
 };
-
-// const reload = () => {
-//   close();
-
-//   window.location.reload(true);
-// };
 </script>
 
 <script lang="ts">

@@ -53,10 +53,10 @@ import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vu
 import BackgroundImage from "@/frontend/core/components/BackgroundImage/index.vue";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
-import { useUpdates, useUpdates } from "@/frontend/composables/useUpdates";
+import { useUpdates } from "@/frontend/composables/useUpdates";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
-import { useAppStore } from "@/frontend/stores/App";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useAppStore } from "@/frontend/stores/App";
 
 useMetaInfo();
 

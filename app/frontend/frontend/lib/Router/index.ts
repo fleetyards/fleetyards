@@ -3,7 +3,6 @@ import Router from "vue-router";
 import qs from "qs";
 import Store from "@/frontend/lib/Store";
 import { routes as initialRoutes } from "@/frontend/routes";
-import { t } from "i18n-js";
 
 Vue.use(Router);
 

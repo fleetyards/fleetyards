@@ -1,17 +1,15 @@
-type AdminImage = {
+type TAdminImage = {
   id: string;
 };
 
-interface AdminGalleryParams extends CollectionParams {
+interface TAdminGalleryParams extends TCollectionParams {
   galleryType: string;
   galleryId: string;
 }
 
-type AdminImageFilters = {
+type TAdminImageFilters = {
   modelIdEq: string;
   stationIdEq: string;
 };
 
-interface AdminImageParams extends CollectionParams {
-  filters: AdminImageFilters;
-}
+type TAdminImageParams = TCollectionParams<TAdminImageFilters>;

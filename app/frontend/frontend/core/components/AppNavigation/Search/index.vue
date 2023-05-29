@@ -2,8 +2,8 @@
   <div class="quick-search-bar">
     <form @submit.prevent="filter">
       <FormInput
-        :id="$route.meta.search || 'search'"
-        v-model="form[$route.meta.search]"
+        :id="route.meta?.search || 'search'"
+        v-model="form[route.meta?.search]"
         :translation-key="`search.${$route.name}`"
         :no-label="true"
         :autofocus="!mobile"
@@ -12,69 +12,85 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { useRoute, useRouter } from "vue-router/composables";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import { debounce } from "ts-debounce";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/frontend/stores/App";
 
 type SearchFormType = {
   [key: string]: string;
 };
 
-@Component<SearchForm>({
-  components: {
-    FormInput,
+const form = ref<SearchFormType>({});
+
+const appStore = useAppStore();
+
+const { mobile } = storeToRefs(appStore);
+
+onMounted(() => {
+  setupSearch();
+});
+
+watch(
+  () => form.value,
+  () => {
+    filter();
   },
-})
-export default class SearchForm extends Vue {
-  form: SearchFormType = {};
-
-  filter = debounce(this.debouncedFilter, 500);
-
-  @Getter("mobile") mobile;
-
-  mounted() {
-    this.setupSearch();
-  }
-
-  @Watch("form", {
+  {
     deep: true,
-  })
-  onFormChange() {
-    this.filter();
+  }
+);
+
+const route = useRoute();
+
+watch(
+  () => route,
+  () => {
+    setupSearch();
+  },
+  {
+    deep: true,
+  }
+);
+
+const setupSearch = () => {
+  form.value = {
+    [route.meta?.search as string]: route.query[
+      route.meta?.search as string
+    ] as string,
+  };
+};
+
+const router = useRouter();
+
+const debouncedFilter = () => {
+  const query = {
+    ...route.query,
+    ...form.value,
+  };
+
+  if (!query[route.meta?.search]) {
+    delete query[route.meta?.search];
   }
 
-  @Watch("$route")
-  onRouteChange() {
-    this.setupSearch();
-  }
+  router
+    .replace({
+      name: route.name || undefined,
+      query,
+    })
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    .catch((_err: Error) => {});
+};
 
-  setupSearch() {
-    this.form = {
-      [this.$route.meta.search]:
-        this.$route.query[this.$route.meta.search] || null,
-    };
-  }
+const filter = () => {
+  debounce(debouncedFilter, 500);
+};
+</script>
 
-  debouncedFilter() {
-    const query = {
-      ...this.$route.query,
-      ...this.form,
-    };
-
-    if (!query[this.$route.meta.search]) {
-      delete query[this.$route.meta.search];
-    }
-
-    this.$router
-      .replace({
-        name: this.$route.name || undefined,
-        query,
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {});
-  }
-}
+<script lang="ts">
+export default {
+  name: "SearchForm",
+};
 </script>

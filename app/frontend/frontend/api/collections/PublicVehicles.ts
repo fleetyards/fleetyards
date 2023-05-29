@@ -56,14 +56,13 @@ export class PublicVehiclesCollection extends BaseCollection<
     await this.findAll(this.params);
   }
 
-  async findStatsByUsername(
-    username: string,
-    params: TPublicVehicleParams | null
+  async findStats(
+    params: TPublicVehicleParams
   ): Promise<TPublicVehicleStats | null> {
     const response = await get<TPublicVehicleStats>(
-      `public/hangars/${username}/stats`,
+      `public/hangars/${params.username}/stats`,
       {
-        q: params?.filters,
+        q: params.filters,
       }
     );
 

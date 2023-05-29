@@ -2,9 +2,9 @@
   <FilteredList
     :collection="collection"
     collection-method="findAllForGallery"
-    :name="$route.name"
-    :route-query="$route.query"
-    :hash="$route.hash"
+    :name="route.name || ''"
+    :route-query="route.query"
+    :hash="route.hash"
     :params="routeParams"
     :paginated="true"
     class="images"
@@ -22,44 +22,37 @@
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import ImageUploader from "@/admin/components/ImageUploader/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import imagesCollection, {
   AdminImagesCollection,
 } from "@/admin/api/collections/Images";
 
-@Component<AdminModelImages>({
-  components: {
-    ImageUploader,
-    FilteredList,
-  },
-})
-export default class AdminModelImages extends Vue {
-  collection: AdminImagesCollection = imagesCollection;
+const collection: AdminImagesCollection = imagesCollection;
 
-  get galleryId() {
-    return this.$route.params.uuid;
-  }
+const route = useRoute();
 
-  get routeParams() {
-    return {
-      galleryType: "models",
-      galleryId: this.galleryId,
-    };
-  }
+const galleryId = computed(() => route.params.uuid);
 
-  get filters() {
-    return {
-      ...this.routeParams,
-      page: this.$route.query.page,
-    };
-  }
+const routeParams = computed(() => ({
+  galleryType: "models",
+  galleryId: galleryId.value,
+}));
 
-  async fetch() {
-    await this.collection.findAllForGallery(this.filters);
-  }
-}
+const filters = computed(() => ({
+  ...routeParams.value,
+  page: route.query.page,
+}));
+
+const fetch = async () => {
+  await collection.findAllForGallery(filters.value);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AdminModelImages",
+};
 </script>

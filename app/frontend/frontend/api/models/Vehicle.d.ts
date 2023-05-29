@@ -72,4 +72,5 @@ interface TPublicVehicleParams extends TCollectionParams<TVehiclesFilter> {
 type TPublicVehicleStats = {
   total: number;
   classifications: TClassificationMetrics;
+  groups: THangarGroupMetrics[];
 };

@@ -1,17 +1,18 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 
-export class AdminImagesCollection extends BaseCollection {
+export class AdminImagesCollection extends BaseCollection<
+  TAdminImage,
+  TAdminImageParams
+> {
   primaryKey = "id";
 
-  records: AdminImage[] = [];
-
-  params: AdminImageParams | null = null;
-
-  async findAll(params: AdminImageParams | null): Promise<AdminImage[]> {
+  async findAll(
+    params?: TAdminImageParams
+  ): Promise<TCollectionResponse<TAdminImage[]>> {
     this.params = params;
 
-    const response = await get("images", {
+    const response = await get<TAdminImage[]>("images", {
       q: params?.filters,
       page: params?.page,
     });
@@ -21,14 +22,14 @@ export class AdminImagesCollection extends BaseCollection {
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
   }
 
   async refresh(): Promise<void> {
     await this.findAll(this.params);
   }
 
-  async findAllForGallery(params: AdminGalleryParams): Promise<AdminImage[]> {
+  async findAllForGallery(params: TAdminGalleryParams): Promise<TAdminImage[]> {
     const response = await get(
       `${params.galleryType}/${params.galleryId}/images`,
       {

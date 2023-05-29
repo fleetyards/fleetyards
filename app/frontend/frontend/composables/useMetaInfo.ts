@@ -57,6 +57,18 @@ export const useMetaInfo = () => {
     };
   };
 
+  const getTitle = (title?: string): string | undefined => {
+    if (title) {
+      return `${title} | ${t("app")}`;
+    }
+
+    if (routeTitle.value) {
+      return `${routeTitle.value} | ${t("app")}`;
+    }
+
+    return undefined;
+  };
+
   const getDescription = (description?: string): string => {
     if (description) {
       return description;
