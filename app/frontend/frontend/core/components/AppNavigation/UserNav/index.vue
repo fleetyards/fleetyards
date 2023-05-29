@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
 import NavigationMixin from "@/frontend/mixins/Navigation";
 import sessionCollection from "@/frontend/api/collections/Session";
+import NavItem from "../NavItem/index.vue";
 
 export default {
   name: "UserNav",

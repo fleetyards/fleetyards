@@ -51,8 +51,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
+import NavItem from "../NavItem/index.vue";
 
 @Component<FleetNav>({
   components: {

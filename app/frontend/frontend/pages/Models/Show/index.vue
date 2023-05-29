@@ -154,7 +154,7 @@
                   data-test="compare"
                   variant="dropdown"
                 >
-                  <i class="fal fa-exchange" />
+                  <i class="fal fa-code-compare" />
                   <span>{{ t("actions.compare.models") }}</span>
                 </Btn>
                 <ShareBtn

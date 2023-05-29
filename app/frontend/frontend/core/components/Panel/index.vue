@@ -27,11 +27,11 @@
 
 <script lang="ts" setup>
 type Props = {
-  outerSpacing: boolean;
-  transparency: "default" | "more" | "complete";
-  highlight: boolean;
-  forText: boolean;
-  variant: "default" | "primary" | "success";
+  outerSpacing?: boolean;
+  transparency?: "default" | "more" | "complete";
+  highlight?: boolean;
+  forText?: boolean;
+  variant?: "default" | "primary" | "success";
 };
 
 const props = withDefaults(defineProps<Props>(), {

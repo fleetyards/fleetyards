@@ -11,14 +11,14 @@
 
     <div class="app-content">
       <transition name="fade" mode="out-in">
-        <NavigationMobile v-if="mobile" />
+        <AppNavigationMobile v-if="mobile" />
       </transition>
       <transition name="fade" mode="out-in">
-        <Navigation />
+        <AppNavigation />
       </transition>
       <div class="main-wrapper">
         <div class="main-inner">
-          <NavigationHeader />
+          <AppNavigationHeader />
 
           <transition name="fade" mode="out-in">
             <router-view :key="$route.path" class="main" />
@@ -41,9 +41,9 @@ import { Component, Watch } from "vue-property-decorator";
 import { Getter, Mutation } from "vuex-class";
 import userCollection from "@/frontend/api/collections/User";
 import versionCollection from "@/frontend/api/collections/Version";
-import Navigation from "@/frontend/core/components/Navigation/index.vue";
-import NavigationHeader from "@/frontend/core/components/Navigation/Header/index.vue";
-import NavigationMobile from "@/frontend/core/components/Navigation/Mobile/index.vue";
+import AppNavigation from "@/frontend/core/components/AppNavigation/index.vue";
+import AppNavigationHeader from "@/frontend/core/components/AppNavigation/Header/index.vue";
+import AppNavigationMobile from "@/frontend/core/components/AppNavigation/Mobile/index.vue";
 import AppFooter from "@/frontend/core/components/AppFooter/index.vue";
 import AppModal from "@/frontend/core/components/AppModal/index.vue";
 import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vue";
@@ -60,9 +60,9 @@ const { I18n, availableLocales } = useI18n();
 @Component<FrontendApp>({
   components: {
     BackgroundImage,
-    Navigation,
-    NavigationHeader,
-    NavigationMobile,
+    AppNavigation,
+    AppNavigationHeader,
+    AppNavigationMobile,
     AppFooter,
     AppModal,
     AppShoppingCart,

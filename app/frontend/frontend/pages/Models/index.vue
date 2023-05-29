@@ -16,8 +16,8 @@
               name: 'models-compare',
             }"
           >
-            <i class="fad fa-exchange" />
-            {{ t("nav.compare.models") }}
+            <i class="fad fa-code-compare" />
+            {{ t("actions.compare.models") }}
           </Btn>
           <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
             <i class="fad fa-starship" />

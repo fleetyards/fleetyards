@@ -21,9 +21,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
-import UserNav from "@/frontend/core/components/Navigation/UserNav/index.vue";
 import NavigationMixin from "@/frontend/mixins/Navigation";
+import NavItem from "../NavItem/index.vue";
+import UserNav from "../UserNav/index.vue";
 
 export default {
   name: "NavFooter",

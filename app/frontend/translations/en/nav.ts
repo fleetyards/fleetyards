@@ -5,7 +5,8 @@ export default {
     index: "Ships",
   },
   compare: {
-    models: "Compare",
+    index: "Compare",
+    models: "Compare Ships",
   },
   manufacturers: "Manufacturers",
   images: "Images",

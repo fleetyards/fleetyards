@@ -41,10 +41,10 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
 import NavigationMixin from "@/frontend/mixins/Navigation";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import fleetInvitesCollection from "@/frontend/api/collections/FleetInvites";
+import NavItem from "../NavItem/index.vue";
 
 @Component<FleetsNav>({
   components: {

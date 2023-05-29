@@ -94,16 +94,16 @@
 </template>
 
 <script lang="ts" setup>
-import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
-import FleetNav from "@/frontend/core/components/Navigation/FleetNav/index.vue";
-import FleetsNav from "@/frontend/core/components/Navigation/FleetsNav/index.vue";
-import StationsNav from "@/frontend/core/components/Navigation/StationsNav/index.vue";
-import NavFooter from "@/frontend/core/components/Navigation/NavFooter/index.vue";
 import { useRoute } from "vue-router/composables";
 import { isFleetRoute as fleetRouteCheck } from "@/frontend/utils/Routes/Fleets";
 import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
-import CompareNav from "@/frontend/core/components/Navigation/CompareNav/index.vue";
+import NavItem from "./NavItem/index.vue";
+import FleetNav from "./FleetNav/index.vue";
+import FleetsNav from "./FleetsNav/index.vue";
+import StationsNav from "./StationsNav/index.vue";
+import NavFooter from "./NavFooter/index.vue";
+import CompareNav from "./CompareNav/index.vue";
 
 const { t } = useI18n();
 
@@ -146,7 +146,9 @@ const isModelRoute = computed(() => {
     return false;
   }
 
-  return route.name.includes("model");
+  return ["models", "model", "model-images", "model-videos"].includes(
+    route.name || ""
+  );
 });
 
 const isHangarRoute = computed(() => {

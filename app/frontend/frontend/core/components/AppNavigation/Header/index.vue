@@ -24,8 +24,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import QuickSearch from "@/frontend/core/components/Navigation/QuickSearch/index.vue";
-import Search from "@/frontend/core/components/Navigation/Search/index.vue";
+import QuickSearch from "../QuickSearch/index.vue";
+import Search from "../Search/index.vue";
 
 @Component<NavigationHeader>({
   components: {
