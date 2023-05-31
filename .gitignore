@@ -18,9 +18,6 @@ config/*.key
 # test files
 coverage/*
 test/reports/*
-test/javascript/e2e/screenshots/*
-test/javascript/e2e/videos/*
-test/javascript/unit/coverage/*
 
 # app files
 public/uploads/*
