@@ -137,3 +137,4 @@ const submit = async () => {
 export default {
   name: "SettingsHangarPage",
 };
+</script>

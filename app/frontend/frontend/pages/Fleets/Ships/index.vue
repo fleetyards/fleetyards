@@ -137,11 +137,6 @@ export default {
   name: "FleetShipsPage",
   beforeRouteEnter: publicFleetShipsRouteGuard,
 };
-<script lang="ts">
-export default {
-  name: "FleetShipsPage",
-  beforeRouteEnter: publicFleetShipsRouteGuard,
-};
 </script>
 
 <style lang="scss" scoped>

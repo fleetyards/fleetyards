@@ -220,19 +220,18 @@ const submit = async () => {
 
   submitting.value = false;
 
+  if (!response.error) {
+    displaySuccess({
+      text: t("messages.fleet.members.update.success"),
+    });
 
-if (!response.error) {
-  displaySuccess({
-    text: t("messages.fleet.members.update.success"),
-  });
-
-  comlink.$emit("fleet-update");
-} else {
-  displayAlert({
-    text: t("messages.fleet.members.update.failure"),
-  });
-}
-}
+    comlink.$emit("fleet-update");
+  } else {
+    displayAlert({
+      text: t("messages.fleet.members.update.failure"),
+    });
+  }
+};
 </script>
 
 <script lang="ts">
@@ -240,3 +239,4 @@ export default {
   name: "FleetMembershipSettings",
   beforeRouteEnter: fleetRouteGuard,
 };
+</script>
