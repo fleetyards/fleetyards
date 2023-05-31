@@ -1,13 +1,13 @@
-import I18n from "i18n-js";
-import { parseISO } from "date-fns";
-import { format } from "date-fns-tz";
-import en from "@/translations/en";
 import de from "@/translations/de";
-import it from "@/translations/it";
-import fr from "@/translations/fr";
+import en from "@/translations/en";
 import es from "@/translations/es";
+import fr from "@/translations/fr";
+import it from "@/translations/it";
 import zhCN from "@/translations/zh-CN";
 import zhTW from "@/translations/zh-TW";
+import { parseISO } from "date-fns";
+import { format } from "date-fns-tz";
+import I18n from "i18n-js";
 
 // const availableLocales = ["de", "en", "es", "fr", "it", "zh", "zh-CN", "zh-TW"];
 // Temporarly disable languages without translations

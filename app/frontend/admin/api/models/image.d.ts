@@ -1,8 +1,11 @@
 type TAdminImage = {
   id: string;
+  caption: string;
+  enabled: boolean;
+  global: boolean;
 };
 
-interface TAdminGalleryParams extends TCollectionParams {
+interface TAdminGalleryParams extends TCollectionParams<TAdminImageFilters> {
   galleryType: string;
   galleryId: string;
 }

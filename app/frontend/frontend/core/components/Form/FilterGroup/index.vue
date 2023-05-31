@@ -99,393 +99,390 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import { BCollapse } from "bootstrap-vue";
 import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import { debounce } from "ts-debounce";
 import InfiniteLoading from "vue-infinite-loading";
+import { v4 as uuidv4 } from "uuid";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<FilterGroup>({
-  components: {
-    BCollapse,
-    SmallLoader,
-    InfiniteLoading,
-    FormInput,
-  },
-})
-export default class FilterGroup extends Vue {
-  @Prop({ required: true }) name!: string;
+type Props = {
+  name: string;
+  options: any[];
+  value?: string[] | string | number | any | null;
+  valueAttr?: string;
+  labelAttr?: string;
+  iconAttr?: string;
+  multiple?: boolean;
+  disabled?: boolean;
+  searchable?: boolean;
+  error?: string;
+  returnObject?: boolean;
+  nullable?: boolean;
+  paginated?: boolean;
+  hideLabelOnEmpty?: boolean;
+  label?: string;
+  translationKey?: string;
+  noLabel?: boolean;
+  bigIcon?: boolean;
+  fetch?: any;
+  fetchPath?: string;
+  searchLabel?: string;
+  newSearchQuery?: boolean;
+};
 
-  @Prop({
-    default: () => [],
-  })
-  options!: any[];
+const props = withDefaults(defineProps<Props>(), {
+  options: [],
+  value: undefined,
+  valueAttr: "value",
+  labelAttr: "name",
+  iconAttr: "icon",
+  multiple: false,
+  disabled: false,
+  searchable: false,
+  error: undefined,
+  returnObject: false,
+  nullable: false,
+  paginated: false,
+  hideLabelOnEmpty: false,
+  label: undefined,
+  translationKey: "filterGroup",
+  noLabel: false,
+  bigIcon: false,
+  fetch: undefined,
+  fetchPath: undefined,
+  searchLabel: undefined,
+  newSearchQuery: false,
+});
 
-  @Prop({
-    default() {
-      if (this.multiple) {
-        return [];
-      }
-      return null;
-    },
-  })
-  value!: string[] | string | number | any | null;
+const visible = ref(false);
 
-  @Prop({ default: "value" }) valueAttr!: string;
+const search = ref<string>("");
 
-  @Prop({ default: "name" }) labelAttr!: string;
+const page = ref(1);
 
-  @Prop({ default: "icon" }) iconAttr!: string;
+const loading = ref(false);
 
-  @Prop({ default: false }) multiple!: boolean;
+const fetchedOptions = ref<any[]>([]);
 
-  @Prop({ default: false }) disabled!: boolean;
+const selectedId = ref<string>("");
 
-  @Prop({ default: false }) searchable!: boolean;
+const id = uuidv4();
 
-  @Prop({ default: null }) error!: string;
+const onSearch = debounce(debouncedOnSearch, 500);
 
-  @Prop({ default: false }) returnObject!: boolean;
+const { t } = useI18n();
 
-  @Prop({ default: true }) nullable!: boolean;
-
-  @Prop({ default: false }) paginated!: boolean;
-
-  @Prop({ default: false }) hideLabelOnEmpty!: boolean;
-
-  @Prop({ default: null }) label!: string;
-
-  @Prop({ default: "filterGroup" }) translationKey!: string;
-
-  @Prop({ default: false }) noLabel!: boolean;
-
-  @Prop({ default: false }) bigIcon!: boolean;
-
-  @Prop({ default: null }) fetch!;
-
-  @Prop({ default: null }) fetchPath!: string;
-
-  @Prop({ default: null }) searchLabel!: string;
-
-  @Prop({ default: false }) newSearchQuery!: boolean;
-
-  visible = false;
-
-  search = null;
-
-  page = 1;
-
-  loading = false;
-
-  fetchedOptions = [];
-
-  selectedId: string = null;
-
-  id: string = null;
-
-  onSearch = debounce(this.debouncedOnSearch, 500);
-
-  get prompt() {
-    if (this.multiple) {
-      return this.label;
-    }
-
-    if (this.selectedOptions.length > 0) {
-      return this.selectedOptions[0][this.labelAttr];
-    }
-
-    if (this.nullable) {
-      return this.$t(`labels.${this.translationKey}.nullablePrompt`);
-    }
-
-    return this.$t(`labels.${this.translationKey}.prompt`);
+const prompt = computed(() => {
+  if (props.multiple) {
+    return props.label;
   }
 
-  get labelVisible() {
-    return !this.hideLabelOnEmpty || this.selectedOptions.length > 0;
+  if (selectedOptions.value.length > 0) {
+    return selectedOptions.value.at(0)[props.labelAttr];
   }
 
-  get innerLabel() {
-    if (this.label) {
-      return this.label;
-    }
-
-    if (this.translationKey && this.translationKey !== "filterGroup") {
-      return this.$t(`labels.${this.translationKey}.label`);
-    }
-
-    return this.$t(`labels.${this.id}`);
+  if (props.nullable) {
+    return t(`labels.${props.translationKey}.nullablePrompt`);
   }
 
-  get shouldFetch() {
-    return this.fetch || this.fetchPath;
+  return t(`labels.${props.translationKey}.prompt`);
+});
+
+const labelVisible = computed(() => {
+  return !props.hideLabelOnEmpty || selectedOptions.value.length > 0;
+});
+
+const innerLabel = computed(() => {
+  if (props.label) {
+    return props.label;
   }
 
-  get groupID() {
-    return `${this.name}-${this._uid.toString()}`;
+  if (props.translationKey && props.translationKey !== "filterGroup") {
+    return t(`labels.${props.translationKey}.label`);
   }
 
-  get availableOptions() {
-    if (this.shouldFetch) {
-      if (this.paginated) {
-        return this.sort(this.fetchedOptions);
-      }
-      return this.fetchedOptions;
-    }
-    if (this.paginated) {
-      return this.sort(this.options);
-    }
-    return this.options;
-  }
+  return t(`labels.${id}`);
+});
 
-  get selectedOptions() {
-    if (this.multiple) {
-      return this.availableOptions.filter(
-        (item) => this.value && this.value.includes(item[this.valueAttr])
-      );
+const shouldFetch = computed(() => {
+  return props.fetch || props.fetchPath;
+});
+
+const groupID = computed(() => {
+  return `${props.name}-${uuidv4()}`;
+});
+
+const availableOptions = computed(() => {
+  if (shouldFetch.value) {
+    if (props.paginated) {
+      return sort(fetchedOptions.value);
     }
-    const selectedOption = this.availableOptions.find(
-      (item) => item[this.valueAttr] === this.value
+
+    return fetchedOptions.value;
+  }
+  if (props.paginated) {
+    return sort(props.options);
+  }
+  return props.options;
+});
+
+const selectedOptions = computed(() => {
+  if (props.multiple) {
+    return availableOptions.value.filter(
+      (item) => props.value && props.value.includes(item[props.valueAttr])
     );
-    return selectedOption ? [selectedOption] : [];
+  }
+  const selectedOption = availableOptions.value.find(
+    (item) => item[props.valueAttr] === props.value
+  );
+  return selectedOption ? [selectedOption] : [];
+});
+
+const filteredOptions = computed(() => {
+  if (search.value) {
+    return availableOptions.value.filter((item) =>
+      item[props.labelAttr].toLowerCase().includes(search.value.toLowerCase())
+    );
+  }
+  return availableOptions.value;
+});
+
+const cssClasses = computed(() => {
+  return {
+    "has-error has-feedback": props.error,
+  };
+});
+
+onMounted(() => {
+  document.addEventListener("click", documentClick);
+
+  selectedId.value = uuidv4();
+
+  if (shouldFetch.value) {
+    fetchOptions();
+  }
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", documentClick);
+});
+
+const documentClick = (event: Event) => {
+  const element = this.$refs.filterGroup;
+  const { target } = event;
+
+  if (element !== target && !element.contains(target)) {
+    visible.value = false;
+  }
+};
+
+const debouncedOnSearch = () => {
+  if (props.paginated && search.value) {
+    page.value = 1;
+    fetchOptions();
+  }
+};
+
+const internalFetch = (args) => {
+  if (props.fetch) {
+    return props.fetch(args);
   }
 
-  get filteredOptions() {
-    if (this.search) {
-      return this.availableOptions.filter((item) =>
-        item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase())
-      );
+  let query = buildQuery(args);
+  if (props.newSearchQuery) {
+    query = buildNewQuery(args);
+  }
+
+  return this.$api.get(props.fetchPath, query);
+};
+
+const buildQuery = (args) => {
+  const query = {
+    q: {},
+  };
+  if (args.search && this.searchable) {
+    query.q.nameCont = args.search;
+  } else if (args.missingValue && this.paginated) {
+    query.q.nameIn = args.missingValue;
+  } else if (args.page && this.paginated) {
+    query.page = args.page;
+  }
+
+  return query;
+};
+
+const buildNewQuery = (args) => {
+  const query = {
+    filters: {},
+  };
+  if (args.search && props.searchable) {
+    query.search = args.search;
+  } else if (args.missingValue && props.paginated) {
+    query.filters.name = args.missingValue;
+  } else if (args.page && props.paginated) {
+    query.page = args.page;
+  }
+};
+
+const infiniteLoading = ref<HTMLElement | null>(null);
+
+const fetchOptions = async () => {
+  if (!shouldFetch.value) {
+    return;
+  }
+
+  loading.value = true;
+
+  const response = await internalFetch({
+    page: page.value,
+    search: search.value,
+  });
+
+  loading.value = false;
+
+  if (infiniteLoading.value) {
+    infiniteLoading.value.$emit("infinite-loading-reset");
+  }
+
+  if (!response.error) {
+    addOptions(response.data);
+    fetchMissingOption();
+  }
+};
+
+const fetchMissingOption = async () => {
+  if (
+    !props.value ||
+    (props.multiple && this.selectedOptions.length === props.value.length) ||
+    (!props.multiple && this.selectedOptions[0] === props.value)
+  ) {
+    return;
+  }
+
+  loading.value = true;
+
+  const response = await internalFetch({ missingValue: props.value });
+
+  loading.value = false;
+
+  if (!response.error) {
+    addOptions(response.data);
+  }
+};
+
+const fetchMore = async ($state) => {
+  loading.value = true;
+
+  page.value += 1;
+
+  const response = await internalFetch({ page: page.value });
+
+  $state.loaded();
+
+  loading.value = false;
+
+  if (!response.error) {
+    if (response.data.length === 0) {
+      $state.complete();
     }
-    return this.availableOptions;
+    addOptions(response.data);
   }
+};
 
-  get cssClasses() {
-    return {
-      "has-error has-feedback": this.error,
-    };
-  }
-
-  mounted() {
-    this.selectedId = this._uid.toString();
-    this.id = this._uid.toString();
-
-    if (this.shouldFetch) {
-      this.fetchOptions();
+const sort = (options: any[]) => {
+  const sortedOptions = JSON.parse(JSON.stringify(options));
+  return sortedOptions.sort((a: any, b: any) => {
+    if (a[props.labelAttr] < b[props.labelAttr]) {
+      return -1;
     }
-  }
-
-  created() {
-    document.addEventListener("click", this.documentClick);
-  }
-
-  destroyed() {
-    document.removeEventListener("click", this.documentClick);
-  }
-
-  documentClick(event) {
-    const element = this.$refs.filterGroup;
-    const { target } = event;
-
-    if (element !== target && !element.contains(target)) {
-      this.visible = false;
+    if (a[props.labelAttr] > b[props.labelAttr]) {
+      return 1;
     }
-  }
+    return 0;
+  });
+};
 
-  debouncedOnSearch() {
-    if (this.paginated && this.search) {
-      this.page = 1;
-      this.fetchOptions();
-    }
-  }
-
-  internalFetch(args) {
-    if (this.fetch) {
-      return this.fetch(args);
-    }
-
-    let query = this.buildQuery(args);
-    if (this.newSearchQuery) {
-      query = this.buildNewQuery(args);
-    }
-
-    return this.$api.get(this.fetchPath, query);
-  }
-
-  buildQuery(args) {
-    const query = {
-      q: {},
-    };
-    if (args.search && this.searchable) {
-      query.q.nameCont = args.search;
-    } else if (args.missingValue && this.paginated) {
-      query.q.nameIn = args.missingValue;
-    } else if (args.page && this.paginated) {
-      query.page = args.page;
-    }
-
-    return query;
-  }
-
-  buildNewQuery(args) {
-    const query = {
-      filters: {},
-    };
-    if (args.search && this.searchable) {
-      query.search = args.search;
-    } else if (args.missingValue && this.paginated) {
-      query.filters.name = args.missingValue;
-    } else if (args.page && this.paginated) {
-      query.page = args.page;
-    }
-  }
-
-  async fetchOptions() {
-    if (!this.shouldFetch) {
-      return;
-    }
-
-    this.loading = true;
-
-    const response = await this.internalFetch({
-      page: this.page,
-      search: this.search,
-    });
-
-    this.loading = false;
-
-    if (this.$refs.infiniteLoading) {
-      this.$refs.infiniteLoading.$emit("infinite-loading-reset");
-    }
-
-    if (!response.error) {
-      this.addOptions(response.data);
-      this.fetchMissingOption();
-    }
-  }
-
-  async fetchMissingOption() {
+const addOptions = (newOptions: any[]) => {
+  newOptions.forEach((item: any) => {
     if (
-      !this.value ||
-      (this.multiple && this.selectedOptions.length === this.value.length) ||
-      (!this.multiple && this.selectedOptions[0] === this.value)
+      !availableOptions.value.find(
+        (option: any) => option[props.valueAttr] === item[props.valueAttr]
+      )
     ) {
-      return;
+      fetchedOptions.value.push(item);
     }
+  });
+};
 
-    this.loading = true;
+const clearSearch = () => {
+  search.value = "";
+};
 
-    const response = await this.internalFetch({ missingValue: this.value });
-    this.loading = false;
-    if (!response.error) {
-      this.addOptions(response.data);
-    }
+const selected = (option: any) => {
+  if (props.multiple) {
+    return props.value && props.value.includes(option);
   }
 
-  async fetchMore($state) {
-    this.loading = true;
-    this.page += 1;
+  return props.value === option;
+};
 
-    const response = await this.internalFetch({ page: this.page });
+const emit = defineEmits(["input"]);
 
-    $state.loaded();
+const select = (option: any) => {
+  clearSearch();
 
-    this.loading = false;
-
-    if (!response.error) {
-      if (response.data.length === 0) {
-        $state.complete();
-      }
-      this.addOptions(response.data);
+  if (selected(option)) {
+    if (props.multiple) {
+      emit(
+        "input",
+        props.value.filter((item: any) => item !== option)
+      );
+    } else if (props.nullable) {
+      emit("input", null);
     }
+  } else if (props.multiple) {
+    const selectedValue = JSON.parse(JSON.stringify(props.value));
+    selectedValue.push(option);
+    emit("input", selectedValue);
+    focusSearch();
+  } else {
+    emit("input", option);
+    toggle();
+  }
+};
+
+const unselect = (option: any) => {
+  emit(
+    "input",
+    props.value.filter((item: any) => item !== option)
+  );
+};
+
+const toggle = () => {
+  if (props.disabled) {
+    return;
   }
 
-  sort(options) {
-    const sortedOptions = JSON.parse(JSON.stringify(options));
-    return sortedOptions.sort((a, b) => {
-      if (a[this.labelAttr] < b[this.labelAttr]) {
-        return -1;
+  visible.value = !visible.value;
+  focusSearch();
+};
+
+const focusSearch = () => {
+  if (props.searchable && visible.value) {
+    this.$nextTick(() => {
+      if (this.$refs.searchInput) {
+        this.$refs.searchInput.setFocus();
       }
-      if (a[this.labelAttr] > b[this.labelAttr]) {
-        return 1;
-      }
-      return 0;
     });
   }
+};
+</script>
 
-  addOptions(newOptions) {
-    newOptions.forEach((item) => {
-      if (
-        !this.availableOptions.find(
-          (option) => option[this.valueAttr] === item[this.valueAttr]
-        )
-      ) {
-        this.fetchedOptions.push(item);
-      }
-    });
-  }
-
-  clearSearch() {
-    this.search = null;
-  }
-
-  selected(option) {
-    if (this.multiple) {
-      return this.value && this.value.includes(option);
-    }
-
-    return this.value === option;
-  }
-
-  select(option) {
-    this.clearSearch();
-
-    if (this.selected(option)) {
-      if (this.multiple) {
-        this.$emit(
-          "input",
-          this.value.filter((item) => item !== option)
-        );
-      } else if (this.nullable) {
-        this.$emit("input", null);
-      }
-    } else if (this.multiple) {
-      const selected = JSON.parse(JSON.stringify(this.value));
-      selected.push(option);
-      this.$emit("input", selected);
-      this.focusSearch();
-    } else {
-      this.$emit("input", option);
-      this.toggle();
-    }
-  }
-
-  unselect(option) {
-    this.$emit(
-      "input",
-      this.value.filter((item) => item !== option)
-    );
-  }
-
-  toggle() {
-    if (this.disabled) {
-      return;
-    }
-
-    this.visible = !this.visible;
-    this.focusSearch();
-  }
-
-  focusSearch() {
-    if (this.searchable && this.visible) {
-      this.$nextTick(() => {
-        if (this.$refs.searchInput) {
-          this.$refs.searchInput.setFocus();
-        }
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "FilterGroup",
+};
 </script>

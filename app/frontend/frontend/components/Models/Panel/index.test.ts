@@ -1,6 +1,6 @@
+import Component from "@/frontend/components/Models/Panel/index.vue";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import Component from "@/frontend/components/Models/Panel/index.vue";
 
 const model: Model = {
   name: "Enterprise",

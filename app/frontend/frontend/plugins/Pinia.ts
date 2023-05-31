@@ -1,6 +1,6 @@
-import Vue from "vue";
 import { createPinia, PiniaVuePlugin } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import Vue from "vue";
 
 Vue.use(PiniaVuePlugin);
 

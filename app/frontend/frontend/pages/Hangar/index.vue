@@ -127,7 +127,7 @@
       :hide-empty-box="!gridView"
       :hide-loading="fleetchartVisible"
     >
-      <template slot="actions">
+      <template #actions>
         <HangarSyncBtn size="small" />
         <BtnDropdown size="small">
           <template v-if="mobile">

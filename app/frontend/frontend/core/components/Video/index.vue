@@ -18,12 +18,12 @@
 </template>
 
 <script lang="ts" setup>
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import Store from "@/frontend/lib/Store";
 import copyText from "@/frontend/utils/CopyText";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
 
 type Props = {
   video: TVideo;

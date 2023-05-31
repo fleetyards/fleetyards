@@ -1,7 +1,7 @@
 // import type { App } from "vue"; only available in Vue 3
-import * as Sentry from "@sentry/vue";
-import { BrowserTracing } from "@sentry/tracing";
 import router from "@/frontend/lib/Router";
+import { BrowserTracing } from "@sentry/tracing";
+import * as Sentry from "@sentry/vue";
 
 const setupSentry = (app: any) => {
   if (window.SENTRY_DSN) {

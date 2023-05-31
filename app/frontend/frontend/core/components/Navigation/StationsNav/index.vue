@@ -5,7 +5,7 @@
     menu-key="stations-menu"
     icon="fad fa-planet-ringed"
   >
-    <template slot="submenu">
+    <template #submenu>
       <NavItem
         :to="{ name: 'stations' }"
         :label="$t('nav.stations.overview')"

@@ -1,7 +1,7 @@
-import { routes as StationsRoutes } from "@/frontend/pages/Stations/routes";
+import { routes as FleetsRoutes } from "@/frontend/pages/Fleets/routes";
 import { routes as RoadmapRoutes } from "@/frontend/pages/Roadmap/routes";
 import { routes as SettingsRoutes } from "@/frontend/pages/Settings/routes";
-import { routes as FleetsRoutes } from "@/frontend/pages/Fleets/routes";
+import { routes as StationsRoutes } from "@/frontend/pages/Stations/routes";
 import { routes as ToolsRoutes } from "@/frontend/pages/Tools/routes";
 
 export const routes = [
@@ -131,7 +131,7 @@ export const routes = [
   },
   {
     path: "/compare/ships/",
-    name: "models-compare",
+    name: "compare-models",
     component: () => import("@/frontend/pages/Models/Compare/index.vue"),
     meta: {
       title: "compare.models",

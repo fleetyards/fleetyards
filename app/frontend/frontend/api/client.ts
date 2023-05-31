@@ -1,9 +1,10 @@
+import { useI18n } from "@/frontend/composables/useI18n";
+import Store from "@/frontend/lib/Store";
 import axios from "axios";
 import type { AxiosResponse, AxiosError, AxiosResponseHeaders } from "axios";
 import nprogress from "nprogress";
-import Store from "@/frontend/lib/Store";
 import Qs from "qs";
-import { useI18n } from "@/frontend/composables/useI18n";
+
 import linkHeaderParser from "./linkHeaderParser";
 
 type TApiResponseMeta = {

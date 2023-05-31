@@ -15,12 +15,12 @@
     </div>
     <FilteredList
       :collection="collection"
-      :name="route.name"
+      :name="route.name || 'trade-routes'"
       :route-query="route.query"
       :hash="route.hash"
       :paginated="true"
     >
-      <template slot="actions"
+      <template #actions
         >x
         <template v-if="!mobile">
           <BtnGroup>
@@ -125,7 +125,9 @@
         </BtnDropdown>
       </template>
 
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
       <template #default="{ records }">
         <transition-group name="fade-list" class="row" tag="div" :appear="true">
@@ -357,18 +359,14 @@ const showAveragePrices = () => {
       // ignore
     });
   }
-}
+};
 </script>
 
 <script lang="ts">
 export default {
   name: "TradeRoutesPage",
 };
-
-<script lang="ts">
-export default {
-  name: "TradeRoutesPage",
-};
+</script>
 
 <style lang="scss" scoped>
 @import "index";

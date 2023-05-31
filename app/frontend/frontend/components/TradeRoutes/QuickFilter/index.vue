@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import Filters from "@/frontend/mixins/Filters";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import Filters from "@/frontend/mixins/Filters";
 
 export default {
   name: "TradeRoutesQuickFilter",

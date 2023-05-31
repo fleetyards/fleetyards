@@ -1,6 +1,6 @@
+import Component from "@/embed/components/Loader/index.vue";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import Component from "@/embed/components/Loader/index.vue";
 
 describe("EmbedLoader", () => {
   it("renders", () => {

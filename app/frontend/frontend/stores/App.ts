@@ -1,19 +1,20 @@
 import { defineStore } from "pinia";
-import type { TFilters } from "@/@types/filters";
-import { useSessionStore } from "./Session";
+
 import { useCookiesStore } from "./Cookies";
+import { useFiltersStore } from "./Filters";
 import { useFleetStore } from "./Fleet";
-import { usePublicFleetStore } from "./PublicFleet";
 import { useHangarStore } from "./Hangar";
 import { useModelsStore } from "./Models";
+import { usePublicFleetStore } from "./PublicFleet";
 import { usePublicHangarStore } from "./PublicHangar";
+import { usePublicWishlistStore } from "./PublicWishlist";
 import { useSearchStore } from "./Search";
+import { useSessionStore } from "./Session";
 import { useShopStore } from "./Shop";
 import { useShoppingCartStore } from "./ShoppingCart";
 import { useShopsStore } from "./Shops";
 import { useStationsStore } from "./Stations";
 import { useWishlistStore } from "./Wishlist";
-import { usePublicWishlistStore } from "./PublicWishlist";
 
 interface AppState {
   version: string;
@@ -26,8 +27,6 @@ interface AppState {
   mobile: boolean;
   storeVersion: string | null;
   online: boolean;
-  filtersVisible: Record<string, boolean>;
-  filters: Record<string, TFilters>;
 }
 
 export const useAppStore = defineStore("App", {
@@ -42,8 +41,6 @@ export const useAppStore = defineStore("App", {
     mobile: false,
     storeVersion: null,
     online: true,
-    filtersVisible: {},
-    filters: {},
   }),
   getters: {
     slimNavigation(state) {
@@ -69,6 +66,7 @@ export const useAppStore = defineStore("App", {
       const stationsStore = useStationsStore();
       const wishlistStore = useWishlistStore();
       const publicWishlistStore = usePublicWishlistStore();
+      const filtersStore = useFiltersStore();
 
       this.$reset();
 
@@ -89,12 +87,7 @@ export const useAppStore = defineStore("App", {
       stationsStore.$reset();
       wishlistStore.$reset();
       publicWishlistStore.$reset();
-    },
-    saveFilters(key: string, filters: TFilters) {
-      this.filters[key] = filters;
-    },
-    toggleFilterVisible(key: string) {
-      this.filtersVisible[key] = !this.filtersVisible[key];
+      filtersStore.$reset();
     },
     setStoreVersion(newVersion: string) {
       this.storeVersion = newVersion;

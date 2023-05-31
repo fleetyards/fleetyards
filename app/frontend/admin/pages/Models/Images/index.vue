@@ -2,7 +2,7 @@
   <FilteredList
     :collection="collection"
     collection-method="findAllForGallery"
-    :name="route.name || ''"
+    :name="route.name || 'model-images'"
     :route-query="route.query"
     :hash="route.hash"
     :params="routeParams"

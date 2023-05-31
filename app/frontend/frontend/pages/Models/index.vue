@@ -13,7 +13,7 @@
           <Btn
             data-test="model-compare-link"
             :to="{
-              name: 'models-compare',
+              name: 'compare-models',
             }"
           >
             <i class="fad fa-code-compare" />
@@ -30,7 +30,7 @@
     <FilteredList
       key="models"
       :collection="modelsCollection"
-      :name="route.name || ''"
+      :name="route.name || 'models'"
       :route-query="route.query"
       :hash="route.hash"
       :paginated="true"

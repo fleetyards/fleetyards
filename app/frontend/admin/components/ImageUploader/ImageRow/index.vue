@@ -48,13 +48,13 @@
       </h2>
       <div v-if="internalImage.error">
         <span class="pill pill-danger">
-          {{ $t("labels.image.error") }}
+          {{ t("labels.image.error") }}
         </span>
       </div>
       <template v-if="!uploaded">
         <p v-if="internalImage.active">
-          {{ $t("labels.image.processing") }}
-          {{ internalImage.speed | formatSize }}
+          {{ t("labels.image.processing") }}
+          {{ formatSize(internalImage.speed) }}
         </p>
         <div
           v-if="internalImage.active || internalImage.progress !== '0.00'"
@@ -75,7 +75,7 @@
       </template>
     </div>
     <div class="size">
-      {{ internalImage.size | formatSize }}
+      {{ formatSize(internalImage.size) }}
     </div>
     <div class="actions">
       <template v-if="uploaded">
@@ -97,124 +97,166 @@
         </Btn>
         <Btn :disabled="deleting" size="small" @click.native="deleteImage">
           <i class="fa fa-trash" />
-          {{ $t("labels.image.delete") }}
+          {{ t("labels.image.delete") }}
         </Btn>
       </template>
       <template v-else>
-        <Btn v-if="!internalImage.success" @click.native="start(internalImage)">
+        <Btn v-if="!internalImage.success" @click.native="start">
           <i class="fa fa-upload" />
-          {{ $t("labels.image.start") }}
+          {{ t("labels.image.start") }}
         </Btn>
-        <Btn @click.native="cancel(internalImage)">
+        <Btn @click.native="cancel">
           <i class="fa fa-ban" />
-          {{ $t("labels.image.cancel") }}
+          {{ t("labels.image.cancel") }}
         </Btn>
       </template>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import debounce from "lodash.debounce";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { v4 as uuidv4 } from "uuid";
+import { formatSize } from "@/frontend/utils/Formats";
+import { useI18n } from "@/frontend/composables/useI18n";
+import imagesCollection from "@/admin/api/collections/Images";
 
 type Image = {
   id: string;
+  url: string;
+  caption: string;
+  enabled: boolean;
+  global: boolean;
+  size: number;
+  success: boolean;
+  progress: string;
+  speed: number;
+  active: boolean;
+  error: string;
+  name: string;
+  smallUrl: string;
 };
 
-@Component<ImageRow>({
-  components: {
-    Btn,
-    FormInput,
-  },
-})
-export default class ImageRow extends Vue {
-  @Prop({ required: true }) image!: Image;
+type Props = {
+  image: Image;
+};
 
-  deleting = false;
+const { t } = useI18n();
 
-  updating = false;
+const props = defineProps<Props>();
 
-  internalImage: Image = null;
+const deleting = ref(false);
 
-  updateCaption = debounce(this.debouncedUpdateCaption, 500);
+const updating = ref(false);
 
-  get uuid() {
-    return this._uid;
+const internalImage = ref<Image | null>(null);
+
+const uuid = uuidv4();
+
+const uploaded = computed(() => {
+  return !!internalImage.value?.url;
+});
+
+watch(
+  () => props.image,
+  (image) => {
+    internalImage.value = image;
+  }
+);
+
+onMounted(() => {
+  internalImage.value = props.image;
+});
+
+const emit = defineEmits(["start", "cancel", "image-deleted"]);
+
+const start = () => {
+  emit("start", internalImage.value);
+};
+
+const cancel = () => {
+  emit("cancel", internalImage.value);
+};
+
+const toggleEnabled = async () => {
+  if (!internalImage.value) {
+    return;
   }
 
-  get uploaded() {
-    return !!this.internalImage.url;
+  updating.value = true;
+
+  internalImage.value.enabled = !internalImage.value.enabled;
+
+  const response = await imagesCollection.update(internalImage.value.id, {
+    enabled: internalImage.value.enabled,
+  });
+
+  updating.value = false;
+
+  if ((response as TRecordErrorResponse).error) {
+    internalImage.value.enabled = !internalImage.value.enabled;
+  }
+};
+
+const toggleGlobal = async () => {
+  if (!internalImage.value) {
+    return;
   }
 
-  @Watch("image")
-  onImageChange() {
-    this.internalImage = this.image;
+  updating.value = true;
+
+  internalImage.value.global = !internalImage.value.global;
+
+  const response = await imagesCollection.update(internalImage.value.id, {
+    global: internalImage.value.global,
+  });
+
+  if ((response as TRecordErrorResponse).error) {
+    internalImage.value.global = !internalImage.value.global;
   }
 
-  mounted() {
-    this.internalImage = this.image;
+  updating.value = false;
+};
+
+const deleteImage = async () => {
+  if (!internalImage.value) {
+    return;
   }
 
-  start() {
-    this.$emit("start", this.internalImage);
+  deleting.value = true;
+
+  const response = await imagesCollection.destroy(internalImage.value.id);
+
+  if ((response as TRecordErrorResponse).error) {
+    emit("image-deleted", internalImage.value);
   }
 
-  cancel() {
-    this.$emit("cancel", this.internalImage);
+  deleting.value = false;
+};
+
+const debouncedUpdateCaption = async () => {
+  if (!internalImage.value) {
+    return;
   }
 
-  async toggleEnabled() {
-    this.updating = true;
-    this.internalImage.enabled = !this.internalImage.enabled;
-    const response = await this.$api.put(`images/${this.internalImage.id}`, {
-      enabled: this.internalImage.enabled,
-    });
+  updating.value = true;
 
-    this.updating = false;
+  await imagesCollection.update(internalImage.value.id, {
+    caption: internalImage.value.caption,
+  });
 
-    if (response.error) {
-      this.internalImage.enabled = !this.internalImage.enabled;
-    }
-  }
+  updating.value = false;
+};
 
-  async toggleGlobal() {
-    this.updating = true;
-    this.internalImage.global = !this.internalImage.global;
-    const response = await this.$api.put(`images/${this.internalImage.id}`, {
-      global: this.internalImage.global,
-    });
+const updateCaption = debounce(debouncedUpdateCaption, 500);
+</script>
 
-    this.updating = false;
-
-    if (response.error) {
-      this.internalImage.global = !this.internalImage.global;
-    }
-  }
-
-  async deleteImage() {
-    this.deleting = true;
-    const response = await this.$api.destroy(`images/${this.internalImage.id}`);
-
-    if (!response.error) {
-      this.$emit("image-deleted", this.internalImage);
-      this.deleting = false;
-    }
-  }
-
-  async debouncedUpdateCaption() {
-    this.updating = true;
-
-    await this.$api.put(`images/${this.internalImage.id}`, {
-      caption: this.internalImage.caption,
-    });
-
-    this.updating = false;
-  }
-}
+<script lang="ts">
+export default {
+  name: "ImageUploader",
+};
 </script>
 
 <style lang="scss" scoped>

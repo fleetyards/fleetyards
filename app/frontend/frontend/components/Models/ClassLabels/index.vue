@@ -5,8 +5,8 @@
     size="small"
     class="labels-dropdown"
   >
-    <template slot="label">Classifications</template>
-    <template slot="default">
+    <template #label>Classifications</template>
+    <template #default>
       <Btn
         v-for="classification in countData"
         :key="`dropdown-${classification.name}`"
@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import { mapGetters } from "vuex";
 
 export default {

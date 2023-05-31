@@ -13,11 +13,9 @@
       >
         <div class="filtered-table-row">
           <div class="selected-count">
-            {{
-              $t("labels.table.selected", { count: internalSelected.length })
-            }}
+            {{ t("labels.table.selected", { count: internalSelected.length }) }}
             <Btn
-              v-tooltip="$t('actions.unselect')"
+              v-tooltip="t('actions.unselect')"
               size="small"
               variant="link"
               :inline="true"
@@ -27,7 +25,7 @@
             </Btn>
           </div>
           <slot
-            :selectedCount="internalSelected.length"
+            :selected-count="internalSelected.length"
             name="selected-actions"
           />
         </div>
@@ -102,7 +100,7 @@
       >
         <div class="filtered-table-row">
           <slot name="empty">
-            {{ $t("texts.empty.info") }}
+            {{ t("texts.empty.info") }}
           </slot>
         </div>
       </div>
@@ -120,6 +118,7 @@ import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import { useAppStore } from "@/frontend/stores/App";
 import { storeToRefs } from "pinia";
 import { v4 as uuidv4 } from "uuid";
+import { useI18n } from "@/frontend/composables/useI18n";
 
 export type FilteredTableColumn = {
   name: string;
@@ -131,10 +130,10 @@ type Props = {
   records: TRecordTypes[];
   columns: FilteredTableColumn[];
   primaryKey: string;
-  loading: boolean;
-  emptyBoxVisible: boolean;
-  selectable: boolean;
-  selected: string[];
+  loading?: boolean;
+  emptyBoxVisible?: boolean;
+  selectable?: boolean;
+  selected?: string[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -143,6 +142,8 @@ const props = withDefaults(defineProps<Props>(), {
   selectable: false,
   selected: () => [],
 });
+
+const { t } = useI18n();
 
 const internalSelected = ref<string[]>([]);
 

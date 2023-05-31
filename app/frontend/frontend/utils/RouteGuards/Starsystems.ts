@@ -1,5 +1,4 @@
 import starsystemsCollection from "@/frontend/api/collections/Starsystems";
-
 import { Route, NavigationGuardNext } from "vue-router";
 
 export const starsystemRouteGuard = async function modelRouteGuard(

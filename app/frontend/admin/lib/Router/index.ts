@@ -1,7 +1,7 @@
+import { routes } from "@/admin/routes";
+import qs from "qs";
 import Vue from "vue";
 import Router from "vue-router";
-import qs from "qs";
-import { routes } from "@/admin/routes";
 
 Vue.use(Router);
 

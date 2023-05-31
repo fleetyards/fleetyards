@@ -1,9 +1,12 @@
+/* eslint-enable camelcase */
+import { I18n } from "@/frontend/lib/I18n";
 import {
   ValidationProvider,
   ValidationObserver,
   extend,
   configure,
 } from "vee-validate";
+
 /* eslint-disable camelcase */
 import {
   required,
@@ -16,8 +19,7 @@ import {
   confirmed,
   regex,
 } from "vee-validate/dist/rules";
-/* eslint-enable camelcase */
-import { I18n } from "@/frontend/lib/I18n";
+
 import {
   emailTaken,
   serialTaken,

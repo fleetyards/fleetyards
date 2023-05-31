@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import type { ShipListState } from "@/@types/stores/ShipList";
+import { defineStore } from "pinia";
 
 interface HangarState extends ShipListState {
   ships: string[];

@@ -1,4 +1,5 @@
 import { get, post, put, upload, destroy } from "@/frontend/api/client";
+
 import BaseCollection from "./Base";
 
 export class UserCollection extends BaseCollection<TUser, undefined> {

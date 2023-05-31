@@ -1,4 +1,5 @@
 import { get } from "@/frontend/api/client";
+
 import BaseCollection from "./Base";
 
 export class FleetInvitesCollection extends BaseCollection<

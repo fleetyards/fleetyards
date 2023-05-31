@@ -60,11 +60,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import ModelList from "@/embed/components/Models/List/index.vue";
+import Btn from "@/embed/components/Btn/index.vue";
 import FleetchartList from "@/embed/components/Fleetchart/List/index.vue";
 import Loader from "@/embed/components/Loader/index.vue";
-import Btn from "@/embed/components/Btn/index.vue";
+import ModelList from "@/embed/components/Models/List/index.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "FleetyardsView",

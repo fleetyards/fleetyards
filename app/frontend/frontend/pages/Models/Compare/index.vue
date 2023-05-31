@@ -209,7 +209,7 @@ const router = useRouter();
 const update = () => {
   router
     .replace({
-      name: route.name || "",
+      name: route.name || "compare-models",
       query: {
         models: form.value.models,
       },

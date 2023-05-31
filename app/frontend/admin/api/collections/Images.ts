@@ -1,4 +1,4 @@
-import { get } from "@/frontend/api/client";
+import { get, put, destroy } from "@/frontend/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 
 export class AdminImagesCollection extends BaseCollection<
@@ -9,7 +9,7 @@ export class AdminImagesCollection extends BaseCollection<
 
   async findAll(
     params?: TAdminImageParams
-  ): Promise<TCollectionResponse<TAdminImage[]>> {
+  ): Promise<TCollectionResponse<TAdminImage>> {
     this.params = params;
 
     const response = await get<TAdminImage[]>("images", {
@@ -29,8 +29,10 @@ export class AdminImagesCollection extends BaseCollection<
     await this.findAll(this.params);
   }
 
-  async findAllForGallery(params: TAdminGalleryParams): Promise<TAdminImage[]> {
-    const response = await get(
+  async findAllForGallery(
+    params: TAdminGalleryParams
+  ): Promise<TCollectionResponse<TAdminImage>> {
+    const response = await get<TAdminImage[]>(
       `${params.galleryType}/${params.galleryId}/images`,
       {
         page: params.page,
@@ -38,11 +40,26 @@ export class AdminImagesCollection extends BaseCollection<
     );
 
     if (!response.error) {
-      this.records = response.data;
+      this.records = (response as TCollectionSuccessResponse<TAdminImage>).data;
       this.setPages(response.meta);
     }
 
-    return this.records;
+    return this.collectionResponse(response.error);
+  }
+
+  async update(
+    id: string,
+    params: Partial<TAdminImage>
+  ): Promise<TRecordResponse<TAdminImage>> {
+    const response = await put<TAdminImage>(`images/${id}`, params);
+
+    return this.recordResponse(response.data, response.error);
+  }
+
+  async destroy(id: string): Promise<TRecordResponse<TAdminImage>> {
+    const response = await destroy<TAdminImage>(`images/${id}`);
+
+    return this.recordResponse(response.data, response.error);
   }
 }
 

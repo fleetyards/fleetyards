@@ -22,8 +22,8 @@ const getQuery = (formData: FormData) => {
   return q;
 };
 
-export const useFilters = (formData: FormData) => {
-  const form = ref<FormData>(formData);
+export const useFilters = (formData?: FormData) => {
+  const form = ref<FormData | undefined>(formData);
 
   const route = useRoute();
 
@@ -40,6 +40,10 @@ export const useFilters = (formData: FormData) => {
   const router = useRouter();
 
   const debouncedFilter = () => {
+    if (!form.value) {
+      return;
+    }
+
     router
       .replace({
         name: route.name || undefined,

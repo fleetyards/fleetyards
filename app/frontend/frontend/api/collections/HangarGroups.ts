@@ -1,4 +1,5 @@
 import { get, post, put, destroy } from "@/frontend/api/client";
+
 import BaseCollection from "./Base";
 
 export class HangarGroupsCollection extends BaseCollection<

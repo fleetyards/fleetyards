@@ -1,10 +1,10 @@
-import Router from "vue-router";
-import qs from "qs";
 import { routes as initialRoutes } from "@/frontend/routes";
 import { useAppStore } from "@/frontend/stores/App";
-import { useSessionStore } from "@/frontend/stores/Session";
 import { useFleetStore } from "@/frontend/stores/Fleet";
+import { useSessionStore } from "@/frontend/stores/Session";
 import type { Pinia } from "pinia";
+import qs from "qs";
+import Router from "vue-router";
 
 const addTrailingSlashToAllRoutes = (routes) =>
   [].concat(

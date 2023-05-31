@@ -1,8 +1,8 @@
-import Vue from "vue";
-import Router from "vue-router";
-import qs from "qs";
 import Store from "@/frontend/lib/Store";
 import { routes as initialRoutes } from "@/frontend/routes";
+import qs from "qs";
+import Vue from "vue";
+import Router from "vue-router";
 
 Vue.use(Router);
 

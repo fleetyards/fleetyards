@@ -144,9 +144,9 @@
 </template>
 
 <script>
+import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Chart from "@/frontend/core/components/Chart/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 
 export default {
   name: "HangarStats",

@@ -1,6 +1,6 @@
+import Component from "@/frontend/core/components/AppNavigation/index.vue";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import Component from "@/frontend/core/components/AppNavigation/index.vue";
 
 describe("AppNavigation", () => {
   it("renders", () => {

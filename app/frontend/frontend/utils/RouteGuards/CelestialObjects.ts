@@ -1,5 +1,4 @@
 import celestialObjectsCollection from "@/frontend/api/collections/CelestialObjects";
-
 import { Route, NavigationGuardNext } from "vue-router";
 
 export const celestialObjectRouteGuard = async (

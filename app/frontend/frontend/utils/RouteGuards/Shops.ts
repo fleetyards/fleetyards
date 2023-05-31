@@ -1,5 +1,4 @@
 import shopsCollection from "@/frontend/api/collections/Shops";
-
 import { Route, NavigationGuardNext } from "vue-router";
 
 export const shopRouteGuard = async function shopRouteGuard(

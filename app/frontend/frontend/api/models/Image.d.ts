@@ -1,6 +1,9 @@
 type TImage = {
   id: string;
   name: string;
+  url: string;
+  width: number;
+  height: number;
   smallUrl: string;
   model?: Model;
 };

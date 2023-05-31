@@ -1,6 +1,6 @@
+import Component from "@/frontend/core/components/Box/index.vue";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import Component from "@/frontend/core/components/Box/index.vue";
 
 describe("AppFooter", () => {
   it("renders", () => {

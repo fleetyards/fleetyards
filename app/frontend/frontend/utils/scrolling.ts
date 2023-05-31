@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/prefer-default-export
-export const scrollToAnchor = function scrollToAnchor(hash) {
+export const scrollToAnchor = function scrollToAnchor(hash: string) {
   if (!hash) {
     return;
   }

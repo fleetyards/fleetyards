@@ -8,7 +8,7 @@
       :clearable="true"
     />
 
-    <FilterGroup
+    <FilterGroup2
       v-model="form.categoryIn"
       :options="categoryOptions"
       :label="$t('labels.filters.shopItems.category')"
@@ -17,7 +17,7 @@
       :no-label="true"
     />
 
-    <FilterGroup
+    <!-- <FilterGroup
       v-model="form.subCategoryIn"
       :label="$t('labels.filters.shopItems.subCategory')"
       :fetch="fetchSubCategories"
@@ -37,7 +37,7 @@
       :searchable="true"
       :multiple="true"
       :no-label="true"
-    />
+    /> -->
 
     <FormInput
       id="shopitems-min-price"
@@ -65,16 +65,18 @@
 </template>
 
 <script>
-import Filters from "@/frontend/mixins/Filters";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Filters from "@/frontend/mixins/Filters";
 
 export default {
   name: "ShopsItemFilterForm",
 
   components: {
     FilterGroup,
+    FilterGroup2,
     FormInput,
     Btn,
   },

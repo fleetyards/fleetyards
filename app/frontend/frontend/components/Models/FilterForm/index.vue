@@ -209,11 +209,11 @@
 </template>
 
 <script>
-import Filters from "@/frontend/mixins/Filters";
-import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
+import Filters from "@/frontend/mixins/Filters";
 import {
   booleanOptions,
   priceOptions,

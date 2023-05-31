@@ -15,7 +15,7 @@
     <FilteredList
       :collection="collection"
       collection-method="findAllForGallery"
-      :name="route.name"
+      name="modelImages"
       :route-query="route.query"
       :hash="route.hash"
       :params="routeParams"
@@ -63,7 +63,7 @@ import { modelRouteGuard } from "@/frontend/utils/RouteGuards/Models";
 
 const collection: ImagesCollection = imagesCollection;
 
-const model = ref<Model | null>(null);
+const model = ref<TModel | null>(null);
 
 const { t } = useI18n();
 
@@ -77,8 +77,6 @@ const metaTitle = computed(() => {
   });
 });
 
-useMetaInfo(metaTitle);
-
 const route = useRoute();
 
 const routeParams = computed(() => ({
@@ -88,7 +86,7 @@ const routeParams = computed(() => ({
 
 const crumbs = computed(() => {
   if (!model.value) {
-    return null;
+    return undefined;
   }
 
   return [
@@ -108,11 +106,14 @@ const crumbs = computed(() => {
 
 const router = useRouter();
 
-const fetchModel = async () => {
-  const data = await modelsCollection.findBySlug(route.params.slug);
+const { updateMetaInfo } = useMetaInfo();
 
-  if (data) {
-    model.value = data;
+const fetchModel = async () => {
+  const response = await modelsCollection.findBySlug(route.params.slug);
+
+  if (response.data) {
+    model.value = response.data;
+    updateMetaInfo(metaTitle.value);
   } else {
     router.replace({ name: "404" });
   }
@@ -126,7 +127,7 @@ const openGallery = (index: number) => {
   if (gallery.value) {
     gallery.value.open(index);
   }
-}
+};
 </script>
 
 <script lang="ts">
@@ -134,9 +135,4 @@ export default {
   name: "ModelImagesPage",
   beforeRouteEnter: modelRouteGuard,
 };
-
-<script lang="ts">
-export default {
-  name: "ModelImagesPage",
-  beforeRouteEnter: modelRouteGuard,
-};
+</script>

@@ -10,12 +10,14 @@
     <FilteredList
       key="shops"
       :collection="collection"
-      :name="route.name"
+      :name="route.name || 'shops'"
       :route-query="route.query"
       :hash="route.hash"
       :paginated="true"
     >
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid

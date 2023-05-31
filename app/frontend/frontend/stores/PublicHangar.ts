@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import type { ShipListState } from "@/@types/stores/ShipList";
+import { defineStore } from "pinia";
 
 export const usePublicHangarStore = defineStore("PublicHangar", {
   state: (): ShipListState => ({

@@ -1,6 +1,6 @@
-import { useRoute } from "vue-router/composables";
 import { useI18n } from "@/frontend/composables/useI18n";
 import logo from "@/images/favicon.png";
+import { useRoute } from "vue-router/composables";
 
 type MetaType = "website" | "article";
 

@@ -11,6 +11,7 @@ type TShop = {
   slug: string;
   stationSlug: string;
   station: TStation;
+  description: string;
   location: string;
   media: {
     storeImage?: TMediaImage;

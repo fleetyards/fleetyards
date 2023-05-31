@@ -1,5 +1,6 @@
 import { get } from "@/frontend/api/client";
 import { prefetch } from "@/frontend/api/prefetch";
+
 import BaseCollection from "./Base";
 
 export class StarsystemCollection extends BaseCollection<

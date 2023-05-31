@@ -12,6 +12,7 @@ type TModel = {
   manufacturer: TManufacturer;
   fleetchartLength: number;
   isGroundVehicle: boolean;
+  manufacturer: TManufacturer;
   metrics: {
     size: string;
     sizeLabel: string;

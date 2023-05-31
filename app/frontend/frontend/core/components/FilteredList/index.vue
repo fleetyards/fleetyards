@@ -17,12 +17,13 @@
               size="small"
               @click.native="toggleFilter"
             >
-              <span v-show="isFilterSelected">
-                <i class="fas fa-filter" />
-              </span>
-              <span v-show="!isFilterSelected">
-                <i class="far fa-filter" />
-              </span>
+              <i
+                class="fa-filter"
+                :class="{
+                  fas: isFilterSelected,
+                  far: !isFilterSelected,
+                }"
+              />
             </Btn>
           </div>
           <div class="filtered-header-right">
@@ -85,15 +86,6 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  computed,
-  watch,
-  onMounted,
-  onBeforeUnmount,
-  nextTick,
-  useSlots,
-} from "vue";
 import type {
   FleetYardsRouteQuery,
   FleetYardsRouteParams,
@@ -103,15 +95,18 @@ import Paginator from "@/frontend/core/components/Paginator/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
 import { scrollToAnchor } from "@/frontend/utils/scrolling";
-import { isFilterSelected as filterSelected } from "@/frontend/utils/Filters";
 import type BaseCollection from "@/frontend/api/collections/Base";
 import { useAppStore } from "@/frontend/stores/App";
+import { useFiltersStore } from "@/frontend/stores/Filters";
+import type { TFilteredPage } from "@/frontend/stores/Filters";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
+import { useFilters } from "@/frontend/composables/useFilters";
+import { storeToRefs } from "pinia";
 
 interface Props {
   collection: BaseCollection<TRecordTypes, any>;
-  name: string;
+  name: TFilteredPage;
   recordListClass?: string;
   params?: FleetYardsRouteParams;
   collectionMethod?: string;
@@ -136,6 +131,8 @@ const props = withDefaults(defineProps<Props>(), {
   hideLoading: false,
   routeFilterName: "q",
 });
+
+const { t } = useI18n();
 
 const collectionMethodDefault = "findAll";
 const routeFilterNameDefault = "q";
@@ -166,23 +163,23 @@ const page = computed(() => {
   return parseInt(props.routeQuery.page, 10);
 });
 
-const appStore = useAppStore();
+const { mobile } = storeToRefs(useAppStore());
 
-const filterVisible = computed(
-  () => !!appStore.filtersVisible[props.name] && hasFilterSlot.value
-);
+const filtersStore = useFiltersStore();
 
-const { t } = useI18n();
+const filterVisible = computed<boolean>(() => {
+  return !!filtersStore.filtersVisible[props.name] && hasFilterSlot.value;
+});
 
 const filterTooltip = computed(() => {
-  if (filterVisible.value) {
+  if (filtersStore.filtersVisible[props.name]) {
     return t("actions.hideFilter");
   }
 
   return t("actions.showFilter");
 });
 
-const isFilterSelected = computed(() => filterSelected(filters.value));
+const { isFilterSelected } = useFilters();
 
 const emptyBoxVisible = computed(
   () =>
@@ -216,26 +213,28 @@ const comlink = useComlink();
 
 const saveFilters = () => {
   if (isFilterSelected.value) {
-    appStore.saveFilters(props.name, { ...filters.value });
+    filtersStore.saveFilters(props.name, { ...filters.value });
 
     return;
   }
 
-  appStore.saveFilters(props.name, null);
+  filtersStore.saveFilters(props.name, undefined);
 };
 
 const toggleFullscreen = () => {
   fullscreen.value = !filterVisible.value;
 };
 
+onBeforeMount(() => {
+  if (mobile.value) {
+    filtersStore.filtersVisible[props.name] = false;
+  } else if (props.alwaysFilterVisible) {
+    filtersStore.filtersVisible[props.name] = props.alwaysFilterVisible;
+  }
+});
+
 onMounted(() => {
   fetch();
-
-  if (appStore.mobile) {
-    appStore.filtersVisible[props.name] = false;
-  } else if (props.alwaysFilterVisible) {
-    appStore.filtersVisible[props.name] = true;
-  }
 
   toggleFullscreen();
   saveFilters();
@@ -247,8 +246,8 @@ onBeforeUnmount(() => {
   comlink.$off("filteredListUpdate");
 });
 
-const toggleFilter = () => {
-  appStore.toggleFilterVisible(props.name);
+const toggleFilter = async () => {
+  filtersStore.toggleFilter(props.name);
 };
 
 const fetch = async () => {

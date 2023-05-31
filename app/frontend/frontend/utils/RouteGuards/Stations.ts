@@ -1,5 +1,4 @@
 import stationsCollection from "@/frontend/api/collections/Stations";
-
 import { Route, NavigationGuardNext } from "vue-router";
 
 export const stationRouteGuard = async function stationRouteGuard(

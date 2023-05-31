@@ -5,9 +5,9 @@
     menu-key="compare-menu"
     icon="fad fa-code-compare"
   >
-    <template slot="submenu">
+    <template #submenu>
       <NavItem
-        :to="{ name: 'models-compare' }"
+        :to="{ name: 'compare-models' }"
         :label="t('nav.compare.models')"
         icon="fad fa-starship"
       />
@@ -24,7 +24,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const active = computed(() => ["models-compare"].includes(route.name || ""));
+const active = computed(() => ["compare-models"].includes(route.name || ""));
 </script>
 
 <script lang="ts">

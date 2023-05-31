@@ -1,8 +1,8 @@
+import HangarItemsCollection from "@/frontend/api/collections/HangarItems";
+import { useHangarStore } from "@/frontend/stores/Hangar";
+import { useSessionStore } from "@/frontend/stores/Session";
 import { watch } from "vue";
 import { useRoute } from "vue-router/composables";
-import { useSessionStore } from "@/frontend/stores/Session";
-import { useHangarStore } from "@/frontend/stores/Hangar";
-import HangarItemsCollection from "@/frontend/api/collections/HangarItems";
 
 export const useHangarItems = () => {
   const sessionStore = useSessionStore();

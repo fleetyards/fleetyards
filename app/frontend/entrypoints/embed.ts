@@ -1,10 +1,10 @@
-import Vue from "vue";
-import VTooltip from "v-tooltip";
+import FleetyardsView from "@/embed/FleetyardsView.vue";
+import ApiClient from "@/embed/api/client";
 import store from "@/embed/lib/Store";
 import I18nPlugin from "@/frontend/lib/I18n";
-import ApiClient from "@/embed/api/client";
-import FleetyardsView from "@/embed/FleetyardsView.vue";
 import "@/frontend/plugins/LazyLoad";
+import VTooltip from "v-tooltip";
+import Vue from "vue";
 
 Vue.use(ApiClient);
 Vue.use(I18nPlugin);
@@ -31,11 +31,13 @@ setTimeout(() => {
   new Vue({
     el: "#fleetyards-view",
     store,
-    data: {
-      ships: config.ships || [],
-      groupedButton: config.groupedButton || false,
-      fleetchartSlider: config.fleetchartSlider || false,
-      frontendEndpoint: window.FRONTEND_ENDPOINT,
+    data: function () {
+      return {
+        ships: config.ships || [],
+        groupedButton: config.groupedButton || false,
+        fleetchartSlider: config.fleetchartSlider || false,
+        frontendEndpoint: window.FRONTEND_ENDPOINT,
+      };
     },
     render: (h) => h(FleetyardsView),
   });

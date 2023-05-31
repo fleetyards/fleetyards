@@ -6,7 +6,7 @@
     icon="fad fa-users"
     prefix="04"
   >
-    <template slot="submenu">
+    <template #submenu>
       <NavItem
         v-for="fleet in collection.records"
         :key="fleet.slug"

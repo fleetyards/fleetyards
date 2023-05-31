@@ -93,7 +93,7 @@
     <FilteredList
       key="public-hangar"
       :collection="collection"
-      :name="route.name || ''"
+      :name="route.name || 'hangar-public'"
       :route-query="route.query"
       :params="route.params"
       :hash="route.hash"

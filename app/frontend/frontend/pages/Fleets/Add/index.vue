@@ -68,10 +68,10 @@
 </template>
 
 <script>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
+import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 
 export default {
   name: "FleetAdd",

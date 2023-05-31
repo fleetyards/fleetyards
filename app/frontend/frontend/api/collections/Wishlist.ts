@@ -1,5 +1,6 @@
 import { get, put, destroy, download } from "@/frontend/api/client";
 import Store from "@/frontend/lib/Store";
+
 import BaseCollection from "./Base";
 
 export class WishlistCollection extends BaseCollection<

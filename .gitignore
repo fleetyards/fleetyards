@@ -48,6 +48,11 @@ build
 blocklist.json
 reserved_usernames.json
 
+# generated auto-import files
+app/frontend/auto-imports.d.ts
+app/frontend/components.d.ts
+.eslintrc-auto-import.json
+
 REVISION
 
 # Nix files

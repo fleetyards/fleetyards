@@ -1,6 +1,6 @@
-import { watch } from "vue";
-import ahoy from "ahoy.js";
 import { useCookiesStore } from "@/frontend/stores/Cookies";
+import ahoy from "ahoy.js";
+import { watch } from "vue";
 
 ahoy.configure({
   cookies: false,

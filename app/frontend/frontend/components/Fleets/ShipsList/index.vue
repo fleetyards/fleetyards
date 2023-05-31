@@ -75,7 +75,7 @@
         :paginated="true"
         :hide-loading="fleetchartVisible"
       >
-        <template slot="actions">
+        <template #actions>
           <BtnDropdown size="small">
             <template v-if="mobile">
               <Btn

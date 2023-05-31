@@ -1,4 +1,5 @@
 import { post } from "@/frontend/api/client";
+
 import BaseCollection from "./Base";
 
 export class TwoFactorCollection extends BaseCollection<

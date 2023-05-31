@@ -1,5 +1,9 @@
 type TShopCommodity = {
   id: string;
+  name: string;
+  slug: string;
+  category: string;
+  item: TModel | TEquipment | TComponent;
 };
 
 type TShopCommoditiesFilter = {

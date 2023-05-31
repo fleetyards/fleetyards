@@ -1,5 +1,6 @@
-import { defineStore } from "pinia";
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
+import { defineStore } from "pinia";
+
 import { useHangarStore } from "./Hangar";
 
 interface SessionState {

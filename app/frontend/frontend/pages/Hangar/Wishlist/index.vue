@@ -35,7 +35,7 @@
       :hide-empty-box="!gridView"
       :paginated="true"
     >
-      <template slot="actions">
+      <template #actions>
         <BtnDropdown size="small">
           <template v-if="mobile">
             <ShareBtn

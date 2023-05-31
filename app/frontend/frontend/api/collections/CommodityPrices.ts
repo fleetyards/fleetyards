@@ -1,4 +1,5 @@
 import { get, post } from "@/frontend/api/client";
+
 import BaseCollection from "./Base";
 
 export class CommodityPricesCollection extends BaseCollection<

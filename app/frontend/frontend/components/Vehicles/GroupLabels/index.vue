@@ -5,7 +5,7 @@
     size="small"
     class="labels-dropdown"
   >
-    <template slot="label">
+    <template #label>
       {{ $t("labels.groups") }}
     </template>
     <Btn

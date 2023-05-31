@@ -1,8 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
+import actions from "./actions";
 import getStorePlugins from "./plugins";
 import getDefaultState from "./state";
-import actions from "./actions";
 
 Vue.use(Vuex);
 

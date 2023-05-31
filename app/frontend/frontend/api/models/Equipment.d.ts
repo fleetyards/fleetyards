@@ -1,5 +1,6 @@
 type TEquipmentFilter = {
   nameCont: string;
+  manufacturer: TManufacturer;
   media: {
     storeImage?: FyMediaImage;
   };

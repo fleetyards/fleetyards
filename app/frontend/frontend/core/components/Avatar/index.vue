@@ -22,7 +22,7 @@
         :inline="true"
         icon="fad fa-gear"
       >
-        <template slot="label">
+        <template #label>
           <i class="fad fa-gear" />
         </template>
         <Btn

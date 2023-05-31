@@ -1,5 +1,4 @@
 import modelsCollection from "@/frontend/api/collections/Models";
-
 import { Route, NavigationGuardNext } from "vue-router";
 
 export const modelRouteGuard = async function modelRouteGuard(
@@ -10,7 +9,7 @@ export const modelRouteGuard = async function modelRouteGuard(
   const response = await modelsCollection.findBySlug(to.params.slug);
 
   if (!response.data) {
-    next({ name: "404" });
+    next({ name: "404", replace: true });
   } else {
     next();
   }

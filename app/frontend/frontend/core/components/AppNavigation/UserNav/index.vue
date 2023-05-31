@@ -9,7 +9,7 @@
     :label="currentUser.username"
     class="user-menu"
   >
-    <template slot="submenu">
+    <template #submenu>
       <NavItem
         :to="{ name: 'settings' }"
         :active="active"

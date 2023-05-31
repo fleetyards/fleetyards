@@ -32,7 +32,7 @@
                 :active="holoviewerVisible"
                 class="toggle-3d"
                 size="small"
-                @click.native="modelsStore.toggleHoloviewer"
+                @click.native="toggleHoloviewer"
               >
                 {{ t("labels.3dView") }}
               </Btn>
@@ -148,7 +148,7 @@
                 </Btn>
                 <Btn
                   :to="{
-                    name: 'models-compare',
+                    name: 'compare-models',
                     query: { models: [model.slug] },
                   }"
                   data-test="compare"
@@ -319,13 +319,11 @@ import modelUpgradesCollection from "@/frontend/api/collections/ModelUpgrades";
 import modelVariantsCollection from "@/frontend/api/collections/ModelVariants";
 import modelLoanersCollection from "@/frontend/api/collections/ModelLoaners";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-import { useAppStore } from "@/frontend/stores/App";
-import { useModelsStore } from "@/frontend/stores/Models";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
-import { storeToRefs } from "pinia";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import Store from "@/frontend/lib/Store";
 
 useHangarItems();
 useWishlistItems();
@@ -350,16 +348,86 @@ const upgrades = ref<TModelUpgrade[]>([]);
 
 const model = ref<TModel | null>(null);
 
-const appStore = useAppStore();
+const mobile = computed(() => Store.getters.mobile);
 
-const { mobile } = storeToRefs(appStore);
+const holoviewerVisible = computed(
+  () => Store.getters["models/holoviewerVisible"]
+);
+
+const route = useRoute();
+
+const modelSlug = computed(() => route.params.slug);
 
 const storeImage = computed(() => {
-  if (appStore.mobile) {
-    return model.value?.storeImageMedium;
+  if (mobile.value) {
+    return model.value?.media.storeImage?.medium;
   }
 
-  return model.value?.storeImageLarge;
+  return model.value?.media.storeImage?.large;
+});
+
+const fleetchartImageAngled = computed(() => {
+  if (model.value?.media.angledViewColored) {
+    if (mobile.value) {
+      return model.value?.media.angledViewColored.medium;
+    }
+
+    return model.value?.media.angledViewColored.large;
+  }
+
+  if (mobile.value && model.value?.media.angledView) {
+    return model.value?.media.angledView.medium;
+  }
+
+  return model.value?.media.angledView?.large;
+});
+
+const fleetchartImageFront = computed(() => {
+  if (model.value?.media.frontViewColored) {
+    if (mobile.value) {
+      return model.value?.media.frontViewColored.medium;
+    }
+
+    return model.value?.media.frontViewColored.large;
+  }
+
+  if (mobile.value && model.value?.media.frontView) {
+    return model.value?.media.frontView.medium;
+  }
+
+  return model.value?.media.frontView?.large;
+});
+
+const fleetchartImageTop = computed(() => {
+  if (model.value?.media.topViewColored) {
+    if (mobile.value) {
+      return model.value?.media.topViewColored.medium;
+    }
+
+    return model.value?.media.topViewColored.large;
+  }
+
+  if (mobile.value && model.value?.media.topView) {
+    return model.value?.media.topView.medium;
+  }
+
+  return model.value?.media.topView?.large;
+});
+
+const fleetchartImageSide = computed(() => {
+  if (model.value?.media.sideViewColored) {
+    if (mobile.value) {
+      return model.value?.media.sideViewColored.medium;
+    }
+
+    return model.value?.media.sideViewColored.large;
+  }
+
+  if (mobile.value && model.value?.media.sideView?.medium) {
+    return model.value?.media.sideView.medium;
+  }
+
+  return model.value?.media.sideView?.large;
 });
 
 const starship42Url = computed(
@@ -400,9 +468,11 @@ const metaImage = computed(() => {
   return model.value.media.storeImage?.large;
 });
 
+const { updateMetaInfo } = useMetaInfo();
+
 const crumbs = computed(() => {
   if (!model.value) {
-    return null;
+    return undefined;
   }
 
   return [
@@ -418,48 +488,17 @@ const crumbs = computed(() => {
 
 const shareUrl = computed(() => window.location.href);
 
-const route = useRoute();
+onMounted(() => {
+  fetch();
+  fetchExtras();
 
-const modelsStore = useModelsStore();
+  if (route.query.holoviewer) {
+    Store.dispatch("models/enableHoloviewer");
+  }
+});
 
-const { holoviewerVisible } = storeToRefs(modelsStore);
-
-const fetchModules = async () => {
-  loadingModules.value = true;
-
-  modules.value = await modelsCollection.modules(route.params.slug);
-
-  loadingModules.value = false;
-};
-
-const fetchUpgrades = async () => {
-  loadingUpgrades.value = true;
-
-  upgrades.value = await modelsCollection.upgrades(route.params.slug);
-
-  loadingUpgrades.value = false;
-};
-
-const fetchVariants = async () => {
-  loadingVariants.value = true;
-
-  variants.value = await modelsCollection.variants(route.params.slug);
-
-  loadingVariants.value = false;
-};
-  loadingVariants.value = false;
-};
-
-const fetchLoaners = async () => {
-  loadingLoaners.value = true;
-const fetchLoaners = async () => {
-  loadingLoaners.value = true;
-
-  loaners.value = await modelsCollection.loaners(route.params.slug);
-
-  loadingLoaners.value = false;
-};
-  loadingLoaners.value = false;
+const toggleHoloviewer = () => {
+  Store.dispatch("models/toggleHoloviewer");
 };
 
 const fetchExtras = () => {
@@ -469,39 +508,75 @@ const fetchExtras = () => {
   fetchLoaners();
 };
 
+const fetchModules = async () => {
+  loadingModules.value = true;
+
+  const response = await modelModulesCollection.findAll(modelSlug.value);
+
+  if ((response as TCollectionSuccessResponse<TModelModule>).data) {
+    modules.value = (response as TCollectionSuccessResponse<TModelModule>).data;
+  }
+
+  loadingModules.value = false;
+};
+
+const fetchUpgrades = async () => {
+  loadingUpgrades.value = true;
+
+  const response = await modelUpgradesCollection.findAll(modelSlug.value);
+
+  if ((response as TCollectionSuccessResponse<TModelUpgrade>).data) {
+    upgrades.value = (
+      response as TCollectionSuccessResponse<TModelUpgrade>
+    ).data;
+  }
+
+  loadingUpgrades.value = false;
+};
+
+const fetchVariants = async () => {
+  loadingVariants.value = true;
+
+  const response = await modelVariantsCollection.findAll(modelSlug.value);
+
+  if ((response as TCollectionSuccessResponse<TModel>).data) {
+    variants.value = response.data as TModel[];
+  }
+
+  loadingVariants.value = false;
+};
+
+const fetchLoaners = async () => {
+  loadingLoaners.value = true;
+
+  loaners.value = await modelLoanersCollection.findAll(modelSlug.value);
+
+  loadingLoaners.value = false;
+};
+
 const fetch = async () => {
   loading.value = true;
+
   const response = await modelsCollection.findBySlug(route.params.slug);
 
-  if (response && response.data) {
-    model.value = response.data;
+  if ((response as TRecordSuccessResponse<TModel>).data) {
+    model.value = response.data as TModel;
+
+    updateMetaInfo(
+      metaTitle.value,
+      metaDescription.value,
+      metaImage.value,
+      "article"
+    );
   }
 
   loading.value = false;
 };
-
-const { updateMetaInfo } = useMetaInfo();
-
-updateMetaInfo(
-    metaTitle.value,
-    metaDescription.value,
-    metaImage.value,
-    "article"
-  );
-
-onMounted(() => {
-  fetch();
-  fetchExtras();
-
-  if (route.query.holoviewer) {
-    modelsStore.enableHoloviewer();
-  }
-});
 </script>
 
 <script lang="ts">
 export default {
-  name: "ModelDetailPage",
+  name: "ModelDetail",
   beforeRouteEnter: modelRouteGuard,
 };
 </script>

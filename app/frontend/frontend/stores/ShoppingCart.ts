@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { sortBy } from "@/frontend/lib/Helpers";
 import type {
   TShoppingCartItem,
   TShoppingCartItemType,
 } from "@/@types/models/ShoppingCartItem";
+import { sortBy } from "@/frontend/lib/Helpers";
+import { defineStore } from "pinia";
 
 interface ShoppingCartState {
   items: TShoppingCartItem[];

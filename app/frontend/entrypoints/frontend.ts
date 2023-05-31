@@ -1,16 +1,16 @@
-import Vue from "vue";
 import App from "@/frontend/App.vue";
-import router from "@/frontend/lib/Router";
-import store from "@/frontend/lib/Store";
-import pinia from "@/frontend/plugins/Pinia";
-import "@/frontend/plugins/LazyLoad";
-import "@/frontend/lib/Sentry";
-import I18nPlugin from "@/frontend/lib/I18n";
 import ApiClient from "@/frontend/api/client";
-import Subscriptions from "@/frontend/plugins/Subscriptions";
+import I18nPlugin from "@/frontend/lib/I18n";
+import router from "@/frontend/lib/Router";
+import "@/frontend/lib/Sentry";
+import store from "@/frontend/lib/Store";
 import Comlink from "@/frontend/plugins/Comlink";
+import "@/frontend/plugins/LazyLoad";
+import pinia from "@/frontend/plugins/Pinia";
+import Subscriptions from "@/frontend/plugins/Subscriptions";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
+import Vue from "vue";
 
 Vue.use(Subscriptions);
 Vue.use(ApiClient);

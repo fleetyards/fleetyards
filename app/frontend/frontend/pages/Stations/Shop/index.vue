@@ -34,7 +34,7 @@
     <FilteredList
       key="shop"
       :collection="collection"
-      :name="route.name"
+      :name="route.name || 'shop'"
       :route-query="route.query"
       :params="route.params"
       :hash="route.hash"
@@ -42,9 +42,11 @@
       :hide-empty-box="true"
       :hide-loading="true"
     >
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
-      <template v-if="!mobile" slot="actions">
+      <template v-if="!mobile" #actions>
         <Btn
           v-for="item in subCategories"
           :key="item.value"
@@ -103,27 +105,27 @@
               <div class="col-12 col-lg-6">
                 <ul class="list-unstyled">
                   <li v-if="record.item.grade">
-                    <b>{{ $t("commodityItem.grade") }}:</b>
+                    <b>{{ t("commodityItem.grade") }}:</b>
                     {{ record.item.grade }}
                   </li>
                   <li v-if="record.item.size">
-                    <b>{{ $t("commodityItem.size") }}:</b>
+                    <b>{{ t("commodityItem.size") }}:</b>
                     {{ record.item.size }}
                   </li>
                   <li v-if="record.item.typeLabel">
-                    <b>{{ $t("commodityItem.type") }}:</b>
+                    <b>{{ t("commodityItem.type") }}:</b>
                     {{ record.item.typeLabel }}
                   </li>
                   <li v-if="record.item.itemTypeLabel">
-                    <b>{{ $t("commodityItem.itemType") }}:</b>
+                    <b>{{ t("commodityItem.itemType") }}:</b>
                     {{ record.item.itemTypeLabel }}
                   </li>
                   <li v-if="record.item.weaponClassLabel">
-                    <b>{{ $t("commodityItem.weaponClass") }}:</b>
+                    <b>{{ t("commodityItem.weaponClass") }}:</b>
                     {{ record.item.weaponClassLabel }}
                   </li>
                   <li v-if="record.item.itemClassLabel">
-                    <b>{{ $t("commodityItem.itemClass") }}:</b>
+                    <b>{{ t("commodityItem.itemClass") }}:</b>
                     {{ record.item.itemClassLabel }}
                   </li>
                 </ul>
@@ -131,16 +133,16 @@
               <div class="col-12 col-lg-6">
                 <ul class="list-unstyled">
                   <li v-if="record.item.range">
-                    <b>{{ $t("commodityItem.range") }}:</b>
-                    {{ $toNumber(record.item.range, "distance") }}
+                    <b>{{ t("commodityItem.range") }}:</b>
+                    {{ toNumber(record.item.range, "distance") }}
                   </li>
                   <li v-if="record.item.damageReduction">
-                    <b>{{ $t("commodityItem.damageReduction") }}:</b>
-                    {{ $toNumber(record.item.damageReduction, "percent") }}
+                    <b>{{ t("commodityItem.damageReduction") }}:</b>
+                    {{ toNumber(record.item.damageReduction, "percent") }}
                   </li>
                   <li v-if="record.item.rateOfFire">
-                    <b>{{ $t("commodityItem.rateOfFire") }}:</b>
-                    {{ $toNumber(record.item.rateOfFire, "rateOfFire") }}
+                    <b>{{ t("commodityItem.rateOfFire") }}:</b>
+                    {{ toNumber(record.item.rateOfFire, "rateOfFire") }}
                   </li>
                   <li v-if="record.item.extras">
                     {{ record.item.extras }}
@@ -152,36 +154,36 @@
           </template>
           <template #col-buy_price="{ record }">
             <span v-if="mobile" class="price-label">
-              {{ $t("labels.shopCommodity.prices.buyPrice") }}:&nbsp;
+              {{ t("labels.shopCommodity.prices.buyPrice") }}:&nbsp;
             </span>
-            <b v-html="$toUEC(record.buyPrice)" />
+            <b v-html="toUEC(record.buyPrice)" />
           </template>
           <template #col-sell_price="{ record }">
             <span v-if="mobile" class="price-label">
-              {{ $t("labels.shopCommodity.prices.sellPrice") }}:&nbsp;
+              {{ t("labels.shopCommodity.prices.sellPrice") }}:&nbsp;
             </span>
-            <b v-html="$toUEC(record.sellPrice)" />
+            <b v-html="toUEC(record.sellPrice)" />
           </template>
           <template #col-rental_price="{ record }">
             <span v-if="mobile" class="price-label">
-              {{ $t("labels.shopCommodity.prices.rentalPrice") }}:&nbsp;
+              {{ t("labels.shopCommodity.prices.rentalPrice") }}:&nbsp;
             </span>
             <ul class="list-unstyled">
               <li v-if="record.rentalPrice1Day">
-                {{ $t("labels.shopCommodity.prices.rentalPrice1Day") }}
-                <b v-html="$toUEC(record.rentalPrice1Day)" />
+                {{ t("labels.shopCommodity.prices.rentalPrice1Day") }}
+                <b v-html="toUEC(record.rentalPrice1Day)" />
               </li>
               <li v-if="record.rentalPrice3Days">
-                {{ $t("labels.shopCommodity.prices.rentalPrice3Days") }}
-                <b v-html="$toUEC(record.rentalPrice3Days)" />
+                {{ t("labels.shopCommodity.prices.rentalPrice3Days") }}
+                <b v-html="toUEC(record.rentalPrice3Days)" />
               </li>
               <li v-if="record.rentalPrice7Days">
-                {{ $t("labels.shopCommodity.prices.rentalPrice7Days") }}
-                <b v-html="$toUEC(record.rentalPrice7Days)" />
+                {{ t("labels.shopCommodity.prices.rentalPrice7Days") }}
+                <b v-html="toUEC(record.rentalPrice7Days)" />
               </li>
               <li v-if="record.rentalPrice30Days">
-                {{ $t("labels.shopCommodity.prices.rentalPrice30Days") }}
-                <b v-html="$toUEC(record.rentalPrice30Days)" />
+                {{ t("labels.shopCommodity.prices.rentalPrice30Days") }}
+                <b v-html="toUEC(record.rentalPrice30Days)" />
               </li>
             </ul>
           </template>
@@ -214,6 +216,7 @@ import FilterForm from "@/frontend/components/Shops/ShopItemFilterForm/index.vue
 import ShopBaseMetrics from "@/frontend/components/Shops/BaseMetrics/index.vue";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/frontend/stores/App";
+import { useShopStore } from "@/frontend/stores/Shop";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import { TBreadCrumb } from "@/@types/breadcrumbs";
@@ -230,7 +233,7 @@ const { mobile } = storeToRefs(appStore);
 
 const shop = computed(() => shopsCollection.record);
 
-const { t } = useI18n();
+const { t, toUEC, toNumber } = useI18n();
 
 const tableColumns = computed<FilteredTableColumn[]>(() => {
   const columns: FilteredTableColumn[] = [
@@ -280,7 +283,15 @@ const metaTitle = computed(() => {
   });
 });
 
-useMetaInfo(metaTitle);
+const { updateMetaInfo } = useMetaInfo();
+
+watch(
+  () => shopsCollection.record,
+  () => {
+    updateMetaInfo(metaTitle.value);
+  },
+  { immediate: true }
+);
 
 const route = useRoute();
 
@@ -302,7 +313,7 @@ const subCategory = computed(() => {
 
 const crumbs = computed(() => {
   if (!shop.value) {
-    return null;
+    return undefined;
   }
 
   const crumbs: TBreadCrumb[] = [
@@ -384,7 +395,7 @@ onMounted(() => {
   }
 });
 
-const manufacturer = (record) => {
+const manufacturer = (record: TShopCommodity) => {
   if (!record.item || !record.item.manufacturer) {
     return null;
   }
@@ -392,7 +403,7 @@ const manufacturer = (record) => {
   return record.item.manufacturer;
 };
 
-const name = (record) => {
+const name = (record: TShopCommodity) => {
   if (manufacturer(record)) {
     if (manufacturer(record).code) {
       return `${manufacturer(record).code} ${record.name}`;
@@ -403,7 +414,7 @@ const name = (record) => {
   return record.name;
 };
 
-const link = (record) => {
+const link = (record: TShopCommodity) => {
   if (record.category !== "model") {
     return null;
   }
@@ -418,7 +429,7 @@ const link = (record) => {
 
 const router = useRouter();
 
-const toggleSubcategory = (value) => {
+const toggleSubcategory = (value: string) => {
   if (!route.name) {
     return;
   }

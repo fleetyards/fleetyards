@@ -2,7 +2,7 @@
   <ol aria-label="breadcrumb" class="breadcrumb">
     <li class="breadcrumb-item">
       <router-link :to="{ name: 'home' }">
-        {{ $t("nav.home") }}
+        {{ t("nav.home") }}
       </router-link>
     </li>
     <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
@@ -15,9 +15,12 @@
 
 <script lang="ts" setup>
 import type { TBreadCrumb } from "@/@types/breadcrumbs";
+import { useI18n } from "@/frontend/composables/useI18n";
+
+const { t } = useI18n();
 
 type Props = {
-  crumbs: TBreadCrumb[];
+  crumbs?: TBreadCrumb[];
 };
 
 withDefaults(defineProps<Props>(), {

@@ -69,7 +69,7 @@
             <NavItem
               :to="{
                 name: 'trade-routes',
-                query: filterFor('trade-routes'),
+                query: filterFor('tradeRoutes'),
               }"
               :label="t('nav.tradeRoutes')"
               icon="fad fa-pallet-alt"
@@ -98,6 +98,8 @@ import { useRoute } from "vue-router/composables";
 import { isFleetRoute as fleetRouteCheck } from "@/frontend/utils/Routes/Fleets";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useAppStore } from "@/frontend/stores/App";
+import { useFiltersStore } from "@/frontend/stores/Filters";
+import type { TFilteredPage } from "@/frontend/stores/Filters";
 import { useSessionStore } from "@/frontend/stores/Session";
 import { useHangarStore } from "@/frontend/stores/Hangar";
 import { storeToRefs } from "pinia";
@@ -110,7 +112,8 @@ import CompareNav from "./CompareNav/index.vue";
 
 const appStore = useAppStore();
 
-const { navSlim, mobile, navCollapsed, filters } = storeToRefs(appStore);
+const { navSlim, mobile, navCollapsed } = storeToRefs(appStore);
+const { filters } = storeToRefs(useFiltersStore());
 
 const sessionStore = useSessionStore();
 
@@ -171,15 +174,15 @@ onBeforeUnmount(() => {
   close();
 });
 
-const filterFor = (route: string) => {
+const filterFor = (filterName: TFilteredPage) => {
   // // TODO: disabled until vue-router supports navigation to same route
   // return null
-  if (!filters[route]) {
+  if (!filters.value[filterName]) {
     return null;
   }
 
   return {
-    q: filters[route],
+    q: filters.value[filterName],
   };
 };
 

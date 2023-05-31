@@ -79,8 +79,8 @@
 </template>
 
 <script>
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 export default {
   name: "ShopCommodityPanel",

@@ -12,12 +12,14 @@
     <FilteredList
       key="stations"
       :collection="collection"
-      :name="route.name"
+      :name="route.name || 'stations'"
       :route-query="route.query"
       :hash="route.hash"
       :paginated="true"
     >
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
       <template #default="{ filterVisible, records }">
         <transition-group name="fade-list" class="row" tag="div" :appear="true">
