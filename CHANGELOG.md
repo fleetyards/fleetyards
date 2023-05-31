@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.24.0](https://github.com/fleetyards/fleetyards/compare/v5.23.3...v5.24.0) (2023-05-31)
+
+
+### Features
+
+* **compare:** add link to main navigation ([882c86f](https://github.com/fleetyards/fleetyards/commit/882c86f72e7370e660865d6a843e8356424d341d))
+* **sync:** improve visibility of sync extension ([68492c6](https://github.com/fleetyards/fleetyards/commit/68492c657a10b51e53bed1fda373d8c4f6edb70e))
+
+
+### Bug Fixes
+
+* **icons:** update csp url ([fc5e634](https://github.com/fleetyards/fleetyards/commit/fc5e6342d7915bf33297d1b921162f829f091351))
+* **loaner:** update ursa mapping ([43919b8](https://github.com/fleetyards/fleetyards/commit/43919b8064b2952a9b195f7f892eaf07b71b2cd1))
+
 ### [5.23.3](https://github.com/fleetyards/fleetyards/compare/v5.23.2...v5.23.3) (2023-05-28)
 
 
