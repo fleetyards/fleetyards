@@ -62,9 +62,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-
 @Component<FormInput>({})
 export default class FormInput extends Vue {
   @Prop({ required: true }) id!: string;

@@ -1,20 +1,25 @@
 <template>
-  <BCollapse :visible="visible" class="panel-details">
-    <slot />
-  </BCollapse>
+  <Disclosure :default-open="visible">
+    <DisclosurePanel class="panel-details">
+      <slot />
+    </DisclosurePanel>
+  </Disclosure>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+<script lang="ts" setup>
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 
-@Component<PanelDetails>({
-  components: {
-    BCollapse,
-  },
-})
-export default class PanelDetails extends Vue {
-  @Prop({ default: false }) visible!: boolean;
-}
+type Props = {
+  visible: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  visible: false,
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "PanelDetails",
+};
 </script>

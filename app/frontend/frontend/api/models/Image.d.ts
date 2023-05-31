@@ -8,12 +8,9 @@ type TImage = {
   model?: Model;
 };
 
-type TGalleryFilter = {
-  galleryIdEq?: string;
-  galleryTypeEq?: string;
+type TImageFilters = {
+  galleryType?: "models" | "stations";
+  gallerySlug?: string;
 };
 
-interface TGalleryParams extends TCollectionParams<TGalleryFilter> {
-  galleryType: string;
-  slug: string;
-}
+type TImageParams = TCollectionParams<TImageFilters>;

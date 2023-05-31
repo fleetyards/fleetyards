@@ -84,7 +84,7 @@ import ItemPanel from "@/frontend/components/Stations/Item/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import CelestialObjectMetrics from "@/frontend/components/CelestialObjects/Metrics/index.vue";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import celestialObjectsCollection from "@/frontend/api/collections/CelestialObjects";
 import stationsCollection from "@/frontend/api/collections/Stations";

@@ -1,17 +1,11 @@
 <template>
-  <div>
+  <Disclosure>
     <div class="row compare-row compare-section">
       <div class="col-12 compare-row-label sticky-left">
-        <div
-          :class="{
-            active: visible,
-          }"
-          class="text-right metrics-title"
-          @click="toggle"
-        >
+        <DisclosureButton class="text-right metrics-title">
           {{ t("labels.metrics.base") }}
           <i class="fa fa-chevron-right" />
-        </div>
+        </DisclosureButton>
       </div>
       <div
         v-for="model in models"
@@ -19,7 +13,7 @@
         class="col-12 compare-row-item"
       />
     </div>
-    <BCollapse id="base" :visible="visible">
+    <DisclosurePanel id="base">
       <div class="row compare-row">
         <div
           class="col-12 compare-row-label text-right metrics-label sticky-left"
@@ -208,12 +202,12 @@
           </span>
         </div>
       </div>
-    </BCollapse>
-  </div>
+    </DisclosurePanel>
+  </Disclosure>
 </template>
 
 <script lang="ts" setup>
-import { BCollapse } from "bootstrap-vue";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 type Props = {

@@ -1,5 +1,5 @@
 /* eslint-enable camelcase */
-import { I18n } from "@/frontend/lib/I18n";
+import { t } from "@/frontend/composables/useI18n";
 import {
   ValidationProvider,
   ValidationObserver,
@@ -33,7 +33,7 @@ import {
 
 configure({
   defaultMessage(_, values) {
-    return I18n.t(`validations.${values._rule_}`, values);
+    return t(`validations.${values._rule_}`, values);
   },
 });
 

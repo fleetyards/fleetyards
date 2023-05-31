@@ -6,7 +6,7 @@
     :variant="variant"
     :size="size"
     :inline="inline"
-    @click.native="download"
+    @click="download"
   >
     <SmallLoader :loading="downloading" />
     <i class="fad fa-image" />

@@ -109,7 +109,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/Session";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 // import OauthLoginBtn from "@/frontend/components/OAuthLoginBtn/index.vue";

@@ -94,7 +94,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { isFleetRoute as fleetRouteCheck } from "@/frontend/utils/Routes/Fleets";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useAppStore } from "@/frontend/stores/App";
@@ -123,7 +123,7 @@ const { t } = useI18n();
 
 const slim = computed(() => navSlim.value && !mobile.value);
 
-const isFleetRoute = computed(() => fleetRouteCheck(route.name || ""));
+const isFleetRoute = computed(() => fleetRouteCheck(String(route.name)));
 
 const hangarStore = useHangarStore();
 
@@ -136,7 +136,7 @@ const isRoadmapRoute = computed(() => {
     return false;
   }
 
-  return route.name.includes("roadmap");
+  return String(route.name).includes("roadmap");
 });
 
 const isModelRoute = computed(() => {
@@ -145,7 +145,7 @@ const isModelRoute = computed(() => {
   }
 
   return ["models", "model", "model-images", "model-videos"].includes(
-    route.name || ""
+    String(route.name)
   );
 });
 
@@ -154,7 +154,7 @@ const isHangarRoute = computed(() => {
     return false;
   }
 
-  return route.name.includes("hangar");
+  return String(route.name).includes("hangar");
 });
 
 watch(

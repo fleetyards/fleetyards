@@ -14,7 +14,7 @@
       :key="`per-page-drowndown-${uuid}-${index}-${step}`"
       size="small"
       variant="link"
-      @click.native="update(step)"
+      @click="update(step)"
     >
       {{ step }}
     </Btn>

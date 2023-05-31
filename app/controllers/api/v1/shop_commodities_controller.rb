@@ -90,7 +90,7 @@ module Api
           query_params[:name] = permitted_params.dig(:q, :nameIn) if permitted_params.dig(:q, :nameIn).present?
           query_params[:category] = permitted_params.dig(:q, :categoryIn) if permitted_params.dig(:q, :categoryIn).present?
           query_params[:sub_category] = permitted_params.dig(:q, :subCategoryIn) if permitted_params.dig(:q, :subCategoryIn).present?
-          query_params[:manufacturer] = permitted_params.dig(:q, :manufacturerIn) if permitted_params.dig(:q, :manufacturerIn).present?
+          query_params[:manufacturer_slug] = permitted_params.dig(:q, :manufacturerIn) if permitted_params.dig(:q, :manufacturerIn).present?
 
           query_params
         end
@@ -109,7 +109,7 @@ module Api
         buy_price_range[:gte] = deprecated_price_params.dig(:q, :priceGteq).to_f if deprecated_price_params.dig(:q, :priceGteq).present?
         buy_price_range[:lte] = deprecated_price_params.dig(:q, :priceLteq).to_f if deprecated_price_params.dig(:q, :priceLteq).present?
 
-        price_params = params.permit(query: %i[price_gteq price_lteq])
+        price_params = params.permit(query: %i[priceGteq priceLteq]).deep_transform_keys!(&:underscore)
 
         sell_price_range[:gte] = price_params.dig(:query, :price_gteq).to_f if price_params.dig(:query, :price_gteq).present?
         sell_price_range[:lte] = price_params.dig(:query, :price_lteq).to_f if price_params.dig(:query, :price_lteq).present?
@@ -131,11 +131,11 @@ module Api
         @query_params ||= begin
           permitted_params = params.permit(
             query: [{
-              name: [], manufacturer_slug: [], category: [], sub_category: []
+              name: [], manufacturerSlug: [], category: [], subCategory: []
             }]
           )
 
-          permitted_params[:query] || {}
+          (permitted_params[:query] || {}).deep_transform_keys!(&:underscore)
         end
       end
     end

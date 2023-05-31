@@ -19,7 +19,7 @@
               size="small"
               variant="link"
               :inline="true"
-              @click.native="resetSelected"
+              @click="resetSelected"
             >
               <i class="fal fa-times" />
             </Btn>
@@ -109,7 +109,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from "vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";

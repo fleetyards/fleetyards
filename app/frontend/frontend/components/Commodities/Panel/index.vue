@@ -2,7 +2,7 @@
   <Panel>
     <div class="teaser-panel">
       <LazyImage
-        :src="commodity.storeImageMedium"
+        :src="commodity.media.storeImage?.medium"
         :to="tradeRouteRoute"
         class="teaser-panel-image"
       />
@@ -22,36 +22,37 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
+import type { RouteLocationRaw } from "vue-router";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
 
-@Component<ComponentPanel>({
-  components: {
-    Panel,
-    LazyImage,
-    ShopCommodityLocations,
-  },
-})
-export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) commodity!: Component;
+type Props = {
+  commodity: TComponent;
+  showStats?: boolean;
+};
 
-  @Prop({ default: true }) showStats!: boolean;
+const props = withDefaults(defineProps<Props>(), {
+  showStats: true,
+});
 
-  get tradeRouteRoute() {
-    return {
-      name: "trade-routes",
-      query: {
-        q: {
-          commodityIn: [this.commodity.slug],
-        },
+const tradeRouteRoute = computed<RouteLocationRaw>(() => {
+  return {
+    name: "trade-routes",
+    query: {
+      q: {
+        commodityIn: [props.commodity.slug],
       },
-    };
-  }
-}
+    },
+  };
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "ComponentPanel",
+};
 </script>
 
 <style lang="scss" scoped>

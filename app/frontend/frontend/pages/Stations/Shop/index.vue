@@ -30,12 +30,11 @@
         </Panel>
       </div>
     </div>
-
     <FilteredList
+      v-if="shop"
       key="shop"
       :collection="collection"
-      :name="route.name || 'shop'"
-      :route-query="route.query"
+      name="shop"
       :params="route.params"
       :hash="route.hash"
       :paginated="true"
@@ -43,7 +42,7 @@
       :hide-loading="true"
     >
       <template #filter>
-        <FilterForm />
+        <FilterForm :station-slug="shop.station.slug" :shop-slug="shop.slug" />
       </template>
 
       <template v-if="!mobile" #actions>
@@ -201,7 +200,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
@@ -216,7 +215,6 @@ import FilterForm from "@/frontend/components/Shops/ShopItemFilterForm/index.vue
 import ShopBaseMetrics from "@/frontend/components/Shops/BaseMetrics/index.vue";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/frontend/stores/App";
-import { useShopStore } from "@/frontend/stores/Shop";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import { TBreadCrumb } from "@/@types/breadcrumbs";
@@ -296,19 +294,19 @@ watch(
 const route = useRoute();
 
 const query = computed(() => {
-  if (!route.query || !route.query.q) {
+  if (!route.query || !route.query.query) {
     return null;
   }
 
-  return route.query.q as Partial<TShopCommoditiesFilter>;
+  return route.query.query as Partial<TShopCommodityFilters>;
 });
 
 const subCategory = computed(() => {
-  if (!query.value?.subCategoryIn) {
+  if (!query.value?.subCategory) {
     return null;
   }
 
-  return query.value.subCategoryIn;
+  return query.value.subCategory;
 });
 
 const crumbs = computed(() => {
@@ -395,20 +393,22 @@ onMounted(() => {
   }
 });
 
-const manufacturer = (record: TShopCommodity) => {
+const getManufacturer = (record: TShopCommodity) => {
   if (!record.item || !record.item.manufacturer) {
-    return null;
+    return undefined;
   }
 
   return record.item.manufacturer;
 };
 
 const name = (record: TShopCommodity) => {
-  if (manufacturer(record)) {
-    if (manufacturer(record).code) {
-      return `${manufacturer(record).code} ${record.name}`;
+  const manufacturer = getManufacturer(record);
+
+  if (manufacturer) {
+    if (manufacturer.code) {
+      return `${manufacturer.code} ${record.name}`;
     }
-    return `${manufacturer(record).name} ${record.name}`;
+    return `${manufacturer.name} ${record.name}`;
   }
 
   return record.name;
@@ -435,19 +435,19 @@ const toggleSubcategory = (value: string) => {
   }
 
   if ((subCategory.value || []).includes(value)) {
-    const q = {
-      ...JSON.parse(JSON.stringify(route.query.q)),
+    const query = {
+      ...JSON.parse(JSON.stringify(route.query.query)),
     };
 
-    delete q.subCategoryIn;
+    delete query.subCategory;
 
     router
       .replace({
         name: route.name,
         query: {
           ...route.query,
-          q: {
-            ...q,
+          query: {
+            ...query,
           },
         },
       })
@@ -455,9 +455,9 @@ const toggleSubcategory = (value: string) => {
         console.info(err);
       });
   } else {
-    const newQuery: Partial<TShopCommoditiesFilter> = {
+    const newQuery: Partial<TShopCommodityFilters> = {
       ...query.value,
-      subCategoryIn: [value],
+      subCategory: [value],
     };
 
     router
@@ -465,7 +465,7 @@ const toggleSubcategory = (value: string) => {
         name: route.name,
         query: {
           ...route.query,
-          q: newQuery,
+          query: newQuery,
         },
       } as FleetYardsLocation)
       .catch((err) => {

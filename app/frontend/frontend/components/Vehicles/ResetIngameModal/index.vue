@@ -4,14 +4,14 @@
       <Btn
         :inline="true"
         data-test="reset-ingame-modal-reset-to-wishlist"
-        @click.native="moveToWishlist"
+        @click="moveToWishlist"
       >
         {{ t("actions.hangar.resetIngame.moveToWishlist") }}
       </Btn>
       <Btn
         :inline="true"
         data-test="reset-ingame-modal-reset"
-        @click.native="removeAll"
+        @click="removeAll"
       >
         {{ t("actions.hangar.resetIngame.removeAll") }}
       </Btn>

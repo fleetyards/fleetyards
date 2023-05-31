@@ -1,5 +1,7 @@
 type TModel = {
   id: string;
+  scIdentifier?: string;
+  erkulIdentifier?: string;
   slug: string;
   name: string;
   rsiName: string;
@@ -113,11 +115,11 @@ type TModel = {
   count?: number;
 };
 
-type TModelsFilter = {
+type TModelFilters = {
   nameCont?: string;
 };
 
-type TModelParams = TCollectionParams<TModelsFilter>;
+type TModelParams = TCollectionParams<TModelFilters>;
 
 type TModelLoaner = {
   id: string;

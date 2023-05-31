@@ -9,7 +9,6 @@ type TShop = {
   rental: boolean;
   name: string;
   slug: string;
-  stationSlug: string;
   station: TStation;
   description: string;
   location: string;

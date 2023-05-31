@@ -100,7 +100,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilters } from "@/frontend/composables/useFilters";
 import searchCollection from "@/frontend/api/collections/Search";

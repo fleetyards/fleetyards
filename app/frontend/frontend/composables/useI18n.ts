@@ -28,7 +28,8 @@ type I18nTranslateOptions = {
   [key: string]: I18nTranslateOptions | string;
 };
 
-const t = (key: string, options?: I18nTranslateOptions) => I18n.t(key, options);
+export const t = (key: string, options?: I18nTranslateOptions) =>
+  I18n.t(key, options);
 
 const l = (value: string, dateFormat = "datetime.formats.default") =>
   format(parseISO(value), I18n.t(dateFormat));

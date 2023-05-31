@@ -120,8 +120,7 @@
     <FilteredList
       key="hangar"
       :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
+      name="hangar"
       :hash="$route.hash"
       :paginated="true"
       :hide-empty-box="!gridView"

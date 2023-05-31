@@ -64,7 +64,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";

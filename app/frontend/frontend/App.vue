@@ -3,7 +3,7 @@
     id="app"
     :key="locale"
     :class="{
-      [`page-${$route.name}`]: true,
+      [`page-${String(route.name)}`]: true,
     }"
     class="app-body"
   >
@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, watch } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/Session";
 import { useCookiesStore } from "@/frontend/stores/Cookies";
@@ -57,6 +57,9 @@ import { useUpdates } from "@/frontend/composables/useUpdates";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useAppStore } from "@/frontend/stores/App";
+import { useQueryProvider } from "vue-query";
+
+useQueryProvider();
 
 useMetaInfo();
 

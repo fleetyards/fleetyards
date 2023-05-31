@@ -156,6 +156,10 @@ const setup = () => {
 
   gallery.value.listen("close", onClose);
 };
+
+defineExpose({
+  open,
+});
 </script>
 
 <script lang="ts">

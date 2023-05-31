@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { groupBy } from "@/frontend/lib/Helpers";
+import { groupBy } from "@/frontend/utils/Helpers";
 
 export default {
   name: "StationsHabitations",

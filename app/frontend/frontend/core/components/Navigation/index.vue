@@ -95,7 +95,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch, onUnmounted, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { isFleetRoute as isFleetRouteCheck } from "@/frontend/utils/Routes/Fleets";
 import { useAppStore } from "@/frontend/stores/App";
 import { useHangarStore } from "@/frontend/stores/Hangar";

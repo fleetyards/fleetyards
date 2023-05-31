@@ -15,8 +15,7 @@
     <FilteredList
       key="images"
       :collection="collection"
-      :name="route.name"
-      :route-query="route.query"
+      name="images"
       :hash="route.hash"
       :paginated="true"
       class="images"
@@ -47,11 +46,14 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 import Gallery from "@/frontend/core/components/Gallery/index.vue";
 import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
 import imagesCollection from "@/frontend/api/collections/Images";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+
+const route = useRoute();
 
 const collection = imagesCollection;
 

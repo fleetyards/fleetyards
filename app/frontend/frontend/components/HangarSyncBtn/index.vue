@@ -5,7 +5,7 @@
     :variant="variant"
     :aria-label="t('actions.import')"
     :loading="loading"
-    @click.native="openModal"
+    @click="openModal"
   >
     <i class="fal fa-sync" />
     <span>
@@ -24,7 +24,7 @@ import type {
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
 import Store from "@/frontend/lib/Store";
-import { useRouter, useRoute } from "vue-router/composables";
+import { useRouter, useRoute } from "vue-router";
 
 interface Props extends BtnProps {
   variant?: BtnVariants;

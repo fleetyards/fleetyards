@@ -1,14 +1,14 @@
 <template>
   <FilteredList
     :collection="collection"
-    :name="route.name"
-    :route-query="route.query"
+    name="adminImages"
     :hash="route.hash"
     :paginated="true"
     class="images"
   >
-    <FilterForm slot="filter" />
-
+    <template #filter>
+      <FilterForm />
+    </template>
     <template #default="{ records, loading }">
       <ImageUploader
         :loading="loading"
@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import ImageUploader from "@/admin/components/ImageUploader/index.vue";
 import FilterForm from "@/admin/components/Images/FilterForm/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";

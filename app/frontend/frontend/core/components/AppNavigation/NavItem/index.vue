@@ -136,8 +136,7 @@
 
 <script lang="ts" setup>
 import type { Route } from "vue-router";
-import { useRoute } from "vue-router/composables";
-import { BCollapse } from "bootstrap-vue";
+import { useRoute } from "vue-router";
 import { useAppStore } from "@/frontend/stores/App";
 import NavItemInner from "./NavItemInner/index.vue";
 

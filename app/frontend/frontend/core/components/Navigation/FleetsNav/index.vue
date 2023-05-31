@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, watch } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
 import fleetsCollection from "@/frontend/api/collections/Fleets";

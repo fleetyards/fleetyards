@@ -51,7 +51,7 @@
 
 <script lang="ts" setup>
 import { computed, watch, onMounted } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";

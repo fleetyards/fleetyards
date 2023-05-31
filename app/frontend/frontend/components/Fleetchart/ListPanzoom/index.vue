@@ -155,8 +155,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+// import Vue from "vue";
+// import { Component, Prop } from "vue-property-decorator";
 import panzoom from "panzoom";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";

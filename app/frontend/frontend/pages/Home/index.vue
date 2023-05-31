@@ -147,7 +147,7 @@
 
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";

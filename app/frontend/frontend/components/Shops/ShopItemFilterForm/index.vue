@@ -1,43 +1,48 @@
 <template>
-  <form @submit.prevent="filter">
+  <form
+    @submit.prevent="
+      () => {
+        filter(form);
+      }
+    "
+  >
     <FormInput
       id="shop-name"
-      v-model="form.nameCont"
+      v-model="form.name"
       translation-key="filters.shopItems.name"
       :no-label="true"
       :clearable="true"
     />
 
-    <FilterGroup2
-      v-model="form.categoryIn"
+    <FilterGroup
+      v-model="form.category"
       :options="categoryOptions"
-      :label="$t('labels.filters.shopItems.category')"
+      :label="t('labels.filters.shopItems.category')"
       name="category"
       :multiple="true"
       :no-label="true"
+      :searchable="true"
     />
 
-    <!-- <FilterGroup
-      v-model="form.subCategoryIn"
-      :label="$t('labels.filters.shopItems.subCategory')"
+    <CollectionFilterGroup
+      v-model="form.subCategory"
+      :label="t('labels.filters.shopItems.subCategory')"
       :fetch="fetchSubCategories"
       name="sub-category"
       :multiple="true"
       :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.manufacturerIn"
-      :label="$t('labels.filters.shopItems.manufacturer')"
+    <CollectionFilterGroup
+      v-model="form.manufacturerSlug"
+      :label="t('labels.filters.shopItems.manufacturer')"
       :fetch="fetchCommodityManufacturers"
       name="manufacturer"
-      value-attr="slug"
-      icon-attr="logo"
       :paginated="true"
       :searchable="true"
       :multiple="true"
       :no-label="true"
-    /> -->
+    />
 
     <FormInput
       id="shopitems-min-price"
@@ -59,100 +64,147 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { useRoute } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
+import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+import type { TFilterGroupFetchParams } from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Filters from "@/frontend/mixins/Filters";
+import { useFilters } from "@/frontend/composables/useFilters";
+import { useI18n } from "@/frontend/composables/useI18n";
+import manufacturersCollection from "@/frontend/api/collections/Manufacturer";
+import shopCommoditiesCollection from "@/frontend/api/collections/ShopCommodities";
 
-export default {
-  name: "ShopsItemFilterForm",
+type Props = {
+  stationSlug: string;
+  shopSlug: string;
+};
 
-  components: {
-    FilterGroup,
-    FilterGroup2,
-    FormInput,
-    Btn,
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+const route = useRoute();
+
+const query = computed(() => {
+  return (route.query.query || {}) as TShopCommodityFilters;
+});
+
+const form = ref<TShopCommodityFilters>({
+  name: query.value.name,
+  category: query.value.category || [],
+  subCategory: query.value.subCategory || [],
+  manufacturerSlug: query.value.manufacturerSlug || [],
+  priceGteq: query.value.priceGteq,
+  priceLteq: query.value.priceLteq,
+});
+
+const { resetFilter, filter, isFilterSelected } = useFilters();
+
+const categoryOptions = [
+  {
+    label: "Ship",
+    value: "Model",
   },
+  {
+    label: "Component",
+    value: "Component",
+  },
+  {
+    label: "Equipment",
+    value: "Equipment",
+  },
+  {
+    label: "Commodity",
+    value: "Commodity",
+  },
+  {
+    label: "Module",
+    value: "ModelModule",
+  },
+];
 
-  mixins: [Filters],
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true }
+);
 
-  data() {
-    const query = this.$route.query.q || {};
-
-    return {
-      loading: false,
-      form: {
-        nameCont: query.nameCont,
-        categoryIn: query.categoryIn || [],
-        subCategoryIn: query.subCategoryIn || [],
-        manufacturerIn: query.manufacturerIn || [],
-        priceGteq: query.priceGteq,
-        priceLteq: query.priceLteq,
-      },
-      categoryOptions: [
-        {
-          name: "Ship",
-          value: "Model",
-        },
-        {
-          name: "Component",
-          value: "Component",
-        },
-        {
-          name: "Equipment",
-          value: "Equipment",
-        },
-        {
-          name: "Commodity",
-          value: "Commodity",
-        },
-        {
-          name: "Module",
-          value: "ModelModule",
-        },
-      ],
+watch(
+  () => route,
+  () => {
+    form.value = {
+      name: query.value.name,
+      category: query.value.category || [],
+      subCategory: query.value.subCategory || [],
+      manufacturerSlug: query.value.manufacturerSlug || [],
+      priceGteq: query.value.priceGteq,
+      priceLteq: query.value.priceLteq,
     };
   },
+  { deep: true }
+);
 
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        nameCont: query.nameCont,
-        categoryIn: query.categoryIn || [],
-        subCategoryIn: query.subCategoryIn || [],
-        manufacturerIn: query.manufacturerIn || [],
-        priceGteq: query.priceGteq,
-        priceLteq: query.priceLteq,
-      };
-    },
-  },
+const fetchSubCategories = async () => {
+  const subCategories = await shopCommoditiesCollection.subCategories(
+    props.stationSlug,
+    props.shopSlug
+  );
 
-  methods: {
-    fetchSubCategories() {
-      return this.$api.get("filters/shop-commodities/sub-categories");
-    },
+  return subCategories.map((item) => ({
+    label: item.name,
+    value: item.value,
+  }));
+};
 
-    fetchCommodityManufacturers({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      };
-      if (search) {
-        query.q.nameCont = search;
-      } else if (missingValue) {
-        query.q.nameIn = missingValue;
-      } else if (page) {
-        query.page = page;
-      }
-      return this.$api.get("manufacturers", query);
-    },
-  },
+const fetchCommodityManufacturers = async ({
+  page,
+  search,
+  missing,
+}: TFilterGroupFetchParams) => {
+  const query = {} as TManufacturerParams;
+
+  const filters = {} as TManufacturerFilters;
+  if (search) {
+    filters.nameCont = search;
+  } else if (missing) {
+    if (Array.isArray(missing)) {
+      filters.nameIn = missing;
+    } else {
+      filters.nameCont = missing;
+    }
+  } else if (page) {
+    query.page = page;
+  }
+
+  const response = await manufacturersCollection.findAll({
+    filters,
+    ...query,
+  });
+
+  if ((response as TCollectionErrorResponse).error) {
+    return [];
+  }
+
+  return (response as TCollectionSuccessResponse<TManufacturer>).data.map(
+    (item) => ({
+      label: item.name,
+      value: item.slug,
+      icon: item.logo,
+    })
+  );
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShopsItemFilterForm",
 };
 </script>

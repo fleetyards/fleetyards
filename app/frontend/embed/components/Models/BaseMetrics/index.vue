@@ -143,7 +143,7 @@
 import { useI18n } from "@/frontend/composables/useI18n";
 
 type Props = {
-  model: Model;
+  model: TModel;
   title?: boolean;
   detailed?: boolean;
   padding?: boolean;

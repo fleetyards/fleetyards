@@ -38,9 +38,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import fleetInvitesCollection from "@/frontend/api/collections/FleetInvites";
 import NavItem from "../NavItem/index.vue";

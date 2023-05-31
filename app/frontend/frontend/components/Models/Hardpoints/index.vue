@@ -2,9 +2,9 @@
   <div>
     <div v-if="erkulUrl" class="d-flex justify-content-center">
       <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
-        <small>{{ $t("labels.erkul.prefix") }}</small>
+        <small>{{ t("labels.erkul.prefix") }}</small>
         <i />
-        {{ $t("labels.erkul.link") }}
+        {{ t("labels.erkul.link") }}
       </Btn>
     </div>
     <div class="row">
@@ -40,9 +40,9 @@
         :mobile-block="true"
         class="scunpacked-link"
       >
-        <small>{{ $t("labels.scunpacked.prefix") }}</small>
+        <small>{{ t("labels.scunpacked.prefix") }}</small>
         <i>
-          {{ $t("labels.scunpacked.link") }}
+          {{ t("labels.scunpacked.link") }}
         </i>
       </Btn>
     </div>
@@ -50,75 +50,80 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
+import type { ModelHardpointsCollection } from "@/frontend/api/collections/ModelHardpoints";
 import HardpointGroup from "./Group/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<Hardpoints>({
-  components: {
-    HardpointGroup,
-    Loader,
-    Btn,
-  },
-})
-export default class Hardpoints extends Vue {
-  @Prop({ required: true }) model!: Model;
+const { t } = useI18n();
 
-  collection: ModelHardpointsCollection = modelHardpointsCollection;
+type Props = {
+  model: TModel;
+};
 
-  loading = false;
+const props = defineProps<Props>();
 
-  get hardpoints() {
-    return this.collection.records || [];
+const collection: ModelHardpointsCollection = modelHardpointsCollection;
+
+const loading = ref(false);
+
+const hardpoints = computed(() => {
+  return collection.records || [];
+});
+
+const erkulUrl = computed<string | null>(() => {
+  if (
+    !props.model ||
+    props.model.productionStatus !== "flight-ready" ||
+    !props.model.erkulIdentifier
+  ) {
+    return null;
   }
 
-  get erkulUrl(): string | null {
-    if (
-      !this.model ||
-      this.model.productionStatus !== "flight-ready" ||
-      !this.model.erkulIdentifier
-    ) {
-      return null;
-    }
+  return `https://www.erkul.games/ship/${props.model.erkulIdentifier}`;
+});
 
-    return `https://www.erkul.games/ship/${this.model.erkulIdentifier}`;
+const scunpackedUrl = computed<string | null>(() => {
+  if (!props.model.scIdentifier) {
+    return null;
   }
 
-  get scunpackedUrl(): string | null {
-    if (!this.model.scIdentifier) {
-      return null;
-    }
+  return `https://scunpacked.com/ships/${props.model.scIdentifier}`;
+});
 
-    return `https://scunpacked.com/ships/${this.model.scIdentifier}`;
+const hardpointsForGroup = (group: string) => {
+  return hardpoints.value.filter((hardpoint) => hardpoint.group === group);
+};
+
+watch(
+  () => props.model,
+  () => {
+    fetch();
+  }
+);
+
+onMounted(() => {
+  fetch();
+});
+
+const fetch = async () => {
+  if (!props.model) {
+    return;
   }
 
-  hardpointsForGroup(group) {
-    return this.hardpoints.filter((hardpoint) => hardpoint.group === group);
-  }
+  loading.value = true;
 
-  @Watch("model")
-  onModelChange() {
-    this.fetch();
-  }
+  await collection.findAllByModel(props.model.slug);
 
-  mounted() {
-    this.fetch();
-  }
+  loading.value = false;
+};
+</script>
 
-  async fetch() {
-    if (!this.model) {
-      return;
-    }
-
-    this.loading = true;
-
-    await this.collection.findAllByModel(this.model.slug);
-
-    this.loading = false;
-  }
-}
+<script lang="ts">
+export default {
+  name: "ModelHardpoints",
+};
 </script>

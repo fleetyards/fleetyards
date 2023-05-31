@@ -178,7 +178,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Chart from "@/frontend/core/components/Chart/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";

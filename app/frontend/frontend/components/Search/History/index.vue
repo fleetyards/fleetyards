@@ -4,19 +4,19 @@
       <Panel>
         <div class="panel-heading panel-heading-with-actions">
           <h2 class="panel-title">
-            {{ $t("headlines.searchHistory") }}
+            {{ t("headlines.searchHistory") }}
           </h2>
           <div class="panel-heading-actions">
             <Btn
               v-if="history.length"
               size="small"
               :inline="true"
-              :aria-label="$t('actions.clearHistory')"
-              @click.native="resetHistory"
+              :aria-label="t('actions.clearHistory')"
+              @click="resetHistory"
             >
               <i v-if="mobile" class="fa fa-times" />
               <template v-else>
-                {{ $t("actions.clearHistory") }}
+                {{ t("actions.clearHistory") }}
               </template>
             </Btn>
           </div>
@@ -36,8 +36,8 @@
         </div>
       </Panel>
       <div class="text-center">
-        <Btn v-if="history.length > page * perPage" @click.native="showMore">
-          {{ $t("actions.showMore") }}
+        <Btn v-if="history.length > page * perPage" @click="showMore">
+          {{ t("actions.showMore") }}
         </Btn>
       </div>
     </div>
@@ -48,15 +48,25 @@
 import { ref, computed, defineEmits } from "vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
+import { useAppStore } from "@/frontend/stores/App";
 import { useSearchStore } from "@/frontend/stores/Search";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { storeToRefs } from "pinia";
+
+const { t } = useI18n();
 
 const page = ref<number>(1);
+
 const perPage = ref<number>(30);
+
+const { mobile } = storeToRefs(useAppStore());
 
 const searchStore = useSearchStore();
 
+const { history } = storeToRefs(searchStore);
+
 const filteredHistory = computed(() =>
-  searchStore.history.slice(0, page.value * perPage.value)
+  history.value.slice(0, page.value * perPage.value)
 );
 
 const emit = defineEmits(["restore"]);

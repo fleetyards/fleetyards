@@ -9,7 +9,7 @@
           class="text-right metrics-title"
           @click="toggle"
         >
-          {{ $t("labels.metrics.crew") }}
+          {{ t("labels.metrics.crew") }}
           <i class="fa fa-chevron-right" />
         </div>
       </div>
@@ -19,69 +19,78 @@
         class="col-12 compare-row-item"
       />
     </div>
-    <BCollapse id="crew" :visible="visible">
-      <div class="row compare-row">
-        <div
-          class="col-12 compare-row-label text-right metrics-label sticky-left"
-        >
-          {{ $t("model.minCrew") }}
+
+    <Disclosure :default-open="visible">
+      <DisclosurePanel id="crew">
+        <div class="row compare-row">
+          <div
+            class="col-12 compare-row-label text-right metrics-label sticky-left"
+          >
+            {{ t("model.minCrew") }}
+          </div>
+          <div
+            v-for="model in models"
+            :key="`${model.slug}-min-crew`"
+            class="col-6 text-center compare-row-item"
+          >
+            <span class="metrics-value">
+              {{ toNumber(model.minCrew, "people") }}
+            </span>
+          </div>
         </div>
-        <div
-          v-for="model in models"
-          :key="`${model.slug}-min-crew`"
-          class="col-6 text-center compare-row-item"
-        >
-          <span class="metrics-value">
-            {{ $toNumber(model.minCrew, "people") }}
-          </span>
+        <div class="row compare-row">
+          <div
+            class="col-12 compare-row-label text-right metrics-label sticky-left"
+          >
+            {{ t("model.maxCrew") }}
+          </div>
+          <div
+            v-for="model in models"
+            :key="`${model.slug}-min-crew`"
+            class="col-6 text-center compare-row-item"
+          >
+            <span class="metrics-value">
+              {{ toNumber(model.maxCrew, "people") }}
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="row compare-row">
-        <div
-          class="col-12 compare-row-label text-right metrics-label sticky-left"
-        >
-          {{ $t("model.maxCrew") }}
-        </div>
-        <div
-          v-for="model in models"
-          :key="`${model.slug}-min-crew`"
-          class="col-6 text-center compare-row-item"
-        >
-          <span class="metrics-value">
-            {{ $toNumber(model.maxCrew, "people") }}
-          </span>
-        </div>
-      </div>
-    </BCollapse>
+      </DisclosurePanel>
+    </Disclosure>
   </div>
 </template>
 
+<script lang="ts" setup>
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+
+const { t, toNumber } = useI18n();
+
+type Props = {
+  models: TModel[];
+};
+
+const props = defineProps<Props>();
+
+const visible = ref(false);
+
+onMounted(() => {
+  visible.value = props.models.length > 0;
+});
+
+watch(
+  () => props.models,
+  () => {
+    visible.value = props.models.length > 0;
+  }
+);
+
+const toggle = () => {
+  visible.value = !visible.value;
+};
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
-
-@Component<ModelsCompareCrew>({
-  components: {
-    BCollapse,
-  },
-})
-export default class ModelsCompareCrew extends Vue {
-  @Prop({ required: true }) models!: Model[];
-
-  visible = false;
-
-  mounted() {
-    this.visible = this.models.length > 0;
-  }
-
-  @Watch("models")
-  onModelsChange() {
-    this.visible = this.models.length > 0;
-  }
-
-  toggle() {
-    this.visible = !this.visible;
-  }
-}
+export default {
+  name: "CompareModelCrew",
+};
 </script>

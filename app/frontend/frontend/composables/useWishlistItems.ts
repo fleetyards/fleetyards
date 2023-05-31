@@ -2,7 +2,7 @@ import WishlistItemsCollection from "@/frontend/api/collections/WishlistItems";
 import { useSessionStore } from "@/frontend/stores/Session";
 import { useWishlistStore } from "@/frontend/stores/Wishlist";
 import { watch } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 export const useWishlistItems = () => {
   const sessionStore = useSessionStore();

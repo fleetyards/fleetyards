@@ -143,9 +143,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Mutation } from "vuex-class";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";

@@ -28,6 +28,8 @@ gem "selectize-rails"
 
 gem "vite_rails"
 
+gem "htmlentities"
+
 gem "ahoy_matey"
 gem "groupdate"
 gem "rollups"
@@ -54,13 +56,13 @@ gem "devise"
 gem "devise-two-factor"
 gem "rqrcode"
 
-gem 'omniauth'
-gem 'omniauth-discord'
+gem "omniauth"
+gem "omniauth-discord"
 # gem 'omniauth-github'
 # gem 'omniauth-twitter'
 # gem 'omniauth-apple'
 # gem 'omniauth-google'
-gem 'omniauth-rails_csrf_protection'
+gem "omniauth-rails_csrf_protection"
 
 gem "useragent"
 

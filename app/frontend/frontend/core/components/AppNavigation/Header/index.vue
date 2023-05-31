@@ -22,8 +22,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
 import QuickSearch from "../QuickSearch/index.vue";
 import Search from "../Search/index.vue";
 

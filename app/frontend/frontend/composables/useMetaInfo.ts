@@ -1,6 +1,6 @@
 import { useI18n } from "@/frontend/composables/useI18n";
 import logo from "@/images/favicon.png";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 type MetaType = "website" | "article";
 
@@ -10,7 +10,9 @@ export const useMetaInfo = () => {
   const { t } = useI18n();
 
   const routeTitle = computed(() => {
-    const routeMetaTitle: string | undefined = route.meta?.title;
+    const routeMetaTitle: string | undefined = route.meta?.title as
+      | string
+      | undefined;
 
     if (!routeMetaTitle) {
       return undefined;

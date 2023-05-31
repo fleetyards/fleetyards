@@ -1,22 +1,12 @@
 import App from "@/frontend/App.vue";
-import ApiClient from "@/frontend/api/client";
-import I18nPlugin from "@/frontend/lib/I18n";
-import router from "@/frontend/lib/Router";
-import "@/frontend/lib/Sentry";
-import store from "@/frontend/lib/Store";
-import Comlink from "@/frontend/plugins/Comlink";
 import "@/frontend/plugins/LazyLoad";
 import pinia from "@/frontend/plugins/Pinia";
-import Subscriptions from "@/frontend/plugins/Subscriptions";
+import router from "@/frontend/plugins/Router";
+import setupSentry from "@/frontend/plugins/Sentry";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
-import Vue from "vue";
-
-Vue.use(Subscriptions);
-Vue.use(ApiClient);
-Vue.use(Comlink);
-Vue.use(I18nPlugin);
-Vue.use(Validations);
+import { createApp } from "vue";
+import { VueQueryPlugin } from "vue-query";
 
 declare global {
   interface Window {
@@ -34,19 +24,20 @@ declare global {
     NODE_ENV: string;
   }
 }
+const app = createApp(App);
 
-if (process.env.NODE_ENV !== "production") {
-  Vue.config.devtools = true;
-} else {
-  Vue.config.productionTip = false;
-}
+setupSentry(app, router);
+
+app.use(VueQueryPlugin);
+app.use(Validations);
+app.use(pinia);
+app.use(router);
 
 VTooltip.enabled = window.innerWidth > 768;
-Vue.use(VTooltip);
+app.use(VTooltip);
 
 document.addEventListener("DOMContentLoaded", () => {
   if ("serviceWorker" in navigator) {
-    // eslint-disable-next-line compat/compat
     navigator.serviceWorker
       .register("/sw.js", {
         scope: "/",
@@ -67,18 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-if (store.state.storeVersion !== window.STORE_VERSION) {
-  console.info("Updating Store Version and resetting Store");
+// if (store.state.storeVersion !== window.STORE_VERSION) {
+//   console.info("Updating Store Version and resetting Store");
 
-  store.dispatch("reset");
-  store.commit("setStoreVersion", window.STORE_VERSION);
-}
+//   store.dispatch("reset");
+//   store.commit("setStoreVersion", window.STORE_VERSION);
+// }
 
-// eslint-disable-next-line no-new
-new Vue({
-  el: "#app",
-  router,
-  store,
-  pinia,
-  render: (h) => h(App),
-});
+app.mount("#app");

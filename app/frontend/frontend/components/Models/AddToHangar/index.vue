@@ -1,12 +1,12 @@
 <template>
   <Btn
     :key="`add-to-hangar-${model.slug}`"
-    v-tooltip.bottom="$t('actions.addToHangar')"
+    v-tooltip.bottom="t('actions.addToHangar')"
     :variant="btnVariant"
     :size="btnSize"
     :inline="variant === 'menu'"
     data-test="add-to-hangar"
-    @click.native="add"
+    @click="add"
   >
     <span v-show="inHangar || onWishlist">
       <i class="fa fa-bookmark" />
@@ -27,8 +27,10 @@ import { useSessionStore } from "@/frontend/stores/Session";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
 
+const { t } = useI18n();
+
 interface Props {
-  model: Model;
+  model: TModel;
   variant?: "default" | "panel" | "menu";
 }
 
@@ -65,7 +67,6 @@ const btnSize = computed(() => {
 });
 
 const sessionStore = useSessionStore();
-const { t } = useI18n();
 const comlink = useComlink();
 
 const add = async () => {

@@ -5,13 +5,13 @@
         variant="link"
         :text-inline="true"
         class="owner-more-action"
-        @click.native="openOwnersModal"
+        @click="openOwnersModal"
       >
-        {{ $t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
+        {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
       </Btn>
     </template>
     <template v-else-if="owner">
-      {{ $t("labels.vehicle.owner") }}
+      {{ t("labels.vehicle.owner") }}
       <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
         {{ owner }}
       </Btn>
@@ -19,32 +19,37 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<ModelPanel>({
-  components: {
-    Btn,
-  },
-})
-export default class ModelPanel extends Vue {
-  @Prop({ required: true }) fleetSlug: string;
+const { t } = useI18n();
 
-  @Prop({ default: null }) owner: string | null;
+type Props = {
+  fleetSlug: string;
+  owner?: string;
+  modelSlug?: string;
+};
 
-  @Prop({ default: null }) modelSlug: string | null;
+const props = defineProps<Props>();
 
-  openOwnersModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/OwnersModal/index.vue"),
-      props: {
-        fleetSlug: this.fleetSlug,
-        modelSlug: this.modelSlug,
-      },
-    });
-  }
-}
+const comlink = useComlink();
+
+const openOwnersModal = () => {
+  comlink.$emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/OwnersModal/index.vue"),
+    props: {
+      fleetSlug: props.fleetSlug,
+      modelSlug: props.modelSlug,
+    },
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "VehiclesOwnerLabel",
+};
 </script>

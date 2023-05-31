@@ -6,10 +6,8 @@
     <div v-else-if="video.type === 'youtube'" class="youtube-placeholder">
       <i class="fab fa-youtube" />
       <div class="youtube-placeholder-buttons">
-        <Btn :inline="true" @click.native="enableYoutube">
-          Allow video embeds
-        </Btn>
-        <Btn :inline="true" @click.native="copyVideoUrl(video)">
+        <Btn :inline="true" @click="enableYoutube"> Allow video embeds </Btn>
+        <Btn :inline="true" @click="copyVideoUrl(video)">
           Copy Youtube URL
         </Btn>
       </div>
@@ -56,5 +54,11 @@ const comlink = useComlink();
 
 const enableYoutube = () => {
   comlink.$emit("open-privacy-settings");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "VideoEmbed",
 };
 </script>

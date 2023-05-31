@@ -92,7 +92,7 @@
 
 <script lang="ts" setup>
 import { computed, watch, onMounted } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { publicFleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";

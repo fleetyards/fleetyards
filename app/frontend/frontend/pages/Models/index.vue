@@ -27,11 +27,16 @@
       </div>
     </div>
 
+    isLoading: {{ isLoading }}<br />
+    isError: {{ isError }}<br />
+    data: {{ data.length }}<br />
+    error: {{ error }}<br />
+    isFetching: {{ isFetching }}<br />
+
     <FilteredList
       key="models"
       :collection="modelsCollection"
-      :name="route.name || 'models'"
-      :route-query="route.query"
+      name="models"
       :hash="route.hash"
       :paginated="true"
       :hide-loading="fleetchartVisible"
@@ -78,7 +83,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import modelsCollection from "@/frontend/api/collections/Models";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
@@ -92,6 +97,13 @@ import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useModelsStore } from "@/frontend/stores/Models";
 import { storeToRefs } from "pinia";
+import { useQuery } from "vue-query";
+
+function useModelsQuery() {
+  return useQuery(["models", filters.value], modelsCollection.findAll);
+}
+
+const { isLoading, isError, data, error, isFetching } = useModelsQuery();
 
 useHangarItems();
 useWishlistItems();

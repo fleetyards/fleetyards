@@ -80,7 +80,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";

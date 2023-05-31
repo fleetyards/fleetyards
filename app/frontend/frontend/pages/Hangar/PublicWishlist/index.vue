@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
 import publicWishlistCollection from "@/frontend/api/collections/PublicWishlist";
 import type { PublicWishlistCollection } from "@/frontend/api/collections/PublicWishlist";

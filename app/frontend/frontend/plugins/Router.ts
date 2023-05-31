@@ -1,14 +1,10 @@
 import { routes as initialRoutes } from "@/frontend/routes";
-import { useAppStore } from "@/frontend/stores/App";
-import { useFleetStore } from "@/frontend/stores/Fleet";
-import { useSessionStore } from "@/frontend/stores/Session";
-import type { Pinia } from "pinia";
 import qs from "qs";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
-const addTrailingSlashToAllRoutes = (routes) =>
+const addTrailingSlashToAllRoutes = (routes: any) =>
   [].concat(
-    ...routes.map((route) => {
+    ...routes.map((route: any) => {
       if (["*", "/"].includes(route.path)) {
         return [route];
       }
@@ -34,7 +30,7 @@ const addTrailingSlashToAllRoutes = (routes) =>
         modifiedRoute,
         {
           path,
-          redirect: (to) => ({
+          redirect: (to: any) => ({
             name: route.name,
             params: to.params || null,
             query: to.query || null,
@@ -44,16 +40,16 @@ const addTrailingSlashToAllRoutes = (routes) =>
     })
   );
 
-const router = new Router({
-  mode: "history",
+const router = createRouter({
+  history: createWebHistory(),
   linkActiveClass: "active",
   linkExactActiveClass: "active-exact",
-
+  routes: addTrailingSlashToAllRoutes(initialRoutes),
   scrollBehavior: (to, _from, savedPosition) =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       setTimeout(() => {
         if (to.hash) {
-          reject();
+          resolve(false);
         } else if (savedPosition) {
           resolve(savedPosition);
         } else {
@@ -61,75 +57,59 @@ const router = new Router({
         }
       }, 600);
     }),
-
-  parseQuery(query) {
-    return qs.parse(query);
-  },
-
+  parseQuery: qs.parse,
   stringifyQuery(query) {
     const result = qs.stringify(query, { arrayFormat: "brackets" });
     return result ? `?${result}` : "";
   },
-
-  routes: addTrailingSlashToAllRoutes(initialRoutes),
 });
 
-const setupRouter = (pinia: Pinia) => {
-  const appStore = useAppStore(pinia);
-  const sessionStore = useSessionStore(pinia);
-  const fleetStore = useFleetStore(pinia);
-
-  const validateAndResolveNewRoute = (to) => {
-    if (to.meta.needsAuthentication && !sessionStore.isAuthenticated) {
-      return {
-        routeName: "login",
-        routeParams: {
-          redirectToRoute: to.name,
-        },
-      };
-    }
-    return null;
-  };
-
-  router.beforeResolve((to, _from, next) => {
-    const newRoute = validateAndResolveNewRoute(to);
-    if (newRoute) {
-      router
-        .push({ name: newRoute.routeName, params: newRoute.routeParams })
-        .catch(() => {
-          window.location.reload();
-        });
-    } else {
-      next();
-    }
-  });
-
-  router.beforeEach((to, from, next) => {
-    const newLocale = navigator.language;
-    if (!appStore.locale || appStore.locale !== newLocale) {
-      appStore.locale = newLocale;
-    }
-
-    if (to.name === "fleet-invite") {
-      fleetStore.saveInviteToken(to.params.token);
-    }
-
-    // check if update is available
-    if (
-      appStore.isUpdateAvailable &&
-      Object.keys(to.query).length === 0 &&
-      to.query.constructor === Object &&
-      Object.keys(to.params).length === 0 &&
-      to.params.constructor === Object
-    ) {
-      window.location.href = to.path;
-      return;
-    }
-
-    next();
-  });
-
-  return router;
+const validateAndResolveNewRoute = (to: any) => {
+  if (
+    to.meta.needsAuthentication &&
+    !Store.getters["session/isAuthenticated"]
+  ) {
+    return {
+      routeName: "login",
+      routeParams: {
+        redirectToRoute: to.name,
+      },
+    };
+  }
+  return null;
 };
 
-export default setupRouter;
+router.beforeResolve((to, _from, next) => {
+  const newRoute = validateAndResolveNewRoute(to);
+  if (newRoute) {
+    router
+      .push({ name: newRoute.routeName, params: newRoute.routeParams })
+      .catch(() => {
+        window.location.reload();
+      });
+  } else {
+    next();
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "fleet-invite") {
+    Store.dispatch("fleet/saveInviteToken", to.params.token);
+  }
+
+  // check if update is available
+  if (
+    Store.getters["app/isUpdateAvailable"] &&
+    Object.keys(to.query).length === 0 &&
+    to.query.constructor === Object &&
+    Object.keys(to.params).length === 0 &&
+    to.params.constructor === Object
+  ) {
+    window.location.href = to.path;
+    return;
+  }
+
+  next();
+});
+
+export default router;

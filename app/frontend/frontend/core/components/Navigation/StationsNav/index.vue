@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import NavItem from "@/frontend/core/components/Navigation/NavItem/index.vue";
 
 const route = useRoute();

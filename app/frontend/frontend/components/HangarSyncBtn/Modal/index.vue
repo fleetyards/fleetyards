@@ -34,7 +34,7 @@
             variant="link"
             :text-inline="true"
             :disabled="loadingIdentity"
-            @click.native="checkRSIIdentity"
+            @click="checkRSIIdentity"
           >
             <i class="fal fa-sync" />
           </Btn>
@@ -296,7 +296,7 @@
         size="small"
         :inline="true"
         data-test="close-sync"
-        @click.native="cancel"
+        @click="cancel"
       >
         {{ t("actions.syncExtension.close") }}
       </Btn>
@@ -306,7 +306,7 @@
           :inline="true"
           data-test="cancel-sync"
           :disabled="started && !finishedWithErrors"
-          @click.native="cancel"
+          @click="cancel"
         >
           {{ t("actions.syncExtension.cancel") }}
         </Btn>
@@ -316,7 +316,7 @@
           data-test="start-sync"
           :loading="started || loadingIdentity"
           :disabled="identityStatus !== 'connected'"
-          @click.native="start"
+          @click="start"
         >
           {{ t("actions.syncExtension.start") }}
         </Btn>
@@ -324,7 +324,7 @@
           v-else
           :inline="true"
           data-test="recheck-sync"
-          @click.native="refreshPage"
+          @click="refreshPage"
         >
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
@@ -349,7 +349,7 @@ import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
 import Store from "@/frontend/lib/Store";
-import { useRouter, useRoute } from "vue-router/composables";
+import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
 
 const started = ref(false);

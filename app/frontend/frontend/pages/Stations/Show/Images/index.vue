@@ -14,7 +14,6 @@
     </div>
     <FilteredList
       :collection="collection"
-      collection-method="findAllForGallery"
       :name="route.name"
       :route-query="route.query"
       :hash="route.hash"
@@ -48,7 +47,7 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";

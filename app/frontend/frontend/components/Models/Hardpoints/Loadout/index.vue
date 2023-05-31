@@ -14,7 +14,7 @@
       :class="{ 'has-component': loadout.component }"
     >
       <div v-if="showComponent" class="hardpoint-item-size">
-        {{ $t("labels.hardpoint.size") }} {{ loadout.component.size }}
+        {{ t("labels.hardpoint.size") }} {{ loadout.component.size }}
       </div>
       <div class="hardpoint-item-component">
         <template v-if="showComponent">
@@ -25,37 +25,44 @@
       <div
         v-if="loadout && loadout.component && loadout.component.manufacturer"
         class="hardpoint-item-component-manufacturer"
-        v-html="loadout.component.manufacturer.name"
-      />
+      >
+        {{ loadout.component.manufacturer.name }}
+      </div>
     </div>
   </div>
 </template>
 
+<script lang="ts" setup>
+import loadoutListIcon from "@/images/icons/loadout-list-icon.svg";
+import { useI18n } from "@/frontend/composables/useI18n";
+
+type Props = {
+  hardpoint: TModelHardpoint;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const showComponent = computed(() => {
+  return loadout.value?.component;
+});
+
+const loadoutsCount = computed(() => {
+  return props.hardpoint.loadouts.length;
+});
+
+const loadout = computed(() => {
+  if (!props.hardpoint.loadouts.length) {
+    return null;
+  }
+
+  return props.hardpoint.loadouts[0];
+});
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import loadoutListIconUrl from "@/images/icons/loadout-list-icon.svg";
-
-@Component<HardpointItem>({})
-export default class HardpointItem extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint;
-
-  loadoutListIcon = loadoutListIconUrl;
-
-  get showComponent() {
-    return this.loadout.component;
-  }
-
-  get loadoutsCount() {
-    return this.hardpoint.loadouts.length;
-  }
-
-  get loadout() {
-    if (!this.hardpoint.loadouts.length) {
-      return null;
-    }
-
-    return this.hardpoint.loadouts[0];
-  }
-}
+export default {
+  name: "HardpointLoadout",
+};
 </script>

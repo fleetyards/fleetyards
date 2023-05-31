@@ -28,8 +28,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 
 @Component<BtnDropdown>({

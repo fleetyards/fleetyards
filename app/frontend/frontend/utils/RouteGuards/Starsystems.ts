@@ -1,12 +1,14 @@
 import starsystemsCollection from "@/frontend/api/collections/Starsystems";
-import { Route, NavigationGuardNext } from "vue-router";
+import { RouteLocationNormalized, NavigationGuardNext } from "vue-router";
 
 export const starsystemRouteGuard = async function modelRouteGuard(
-  to: Route,
-  _from: Route,
+  to: RouteLocationNormalized,
+  _from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) {
-  const response = await starsystemsCollection.findBySlug(to.params.slug);
+  const response = await starsystemsCollection.findBySlug(
+    String(to.params.slug)
+  );
 
   if (!response.data) {
     next({ name: "404" });

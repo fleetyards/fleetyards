@@ -2,8 +2,7 @@
   <FilteredList
     :collection="collection"
     collection-method="findAllForGallery"
-    :name="route.name || 'model-images'"
-    :route-query="route.query"
+    name="modelImages"
     :hash="route.hash"
     :params="routeParams"
     :paginated="true"
@@ -23,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import ImageUploader from "@/admin/components/ImageUploader/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import imagesCollection, {

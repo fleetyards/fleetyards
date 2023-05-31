@@ -8,31 +8,41 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+type Props = {
+  visible: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  visible: false,
+});
+
+const height = ref(0);
+
+watch(
+  () => props.visible,
+  () => {
+    setupHeight();
+  }
+);
+
+onMounted(() => {
+  setupHeight();
+});
+
+const panelDetails = ref<HTMLElement | null>(null);
+
+const setupHeight = () => {
+  if (props.visible && panelDetails.value) {
+    height.value = panelDetails.value.scrollHeight;
+  } else {
+    height.value = 0;
+  }
+};
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-
-@Component
-export default class PanelDetails extends Vue {
-  height = 0;
-
-  @Prop({ default: false }) visible!: boolean;
-
-  @Watch("visible")
-  onVisibleChange() {
-    this.setupHeight();
-  }
-
-  mounted() {
-    this.setupHeight();
-  }
-
-  setupHeight() {
-    if (this.visible) {
-      this.height = this.$refs.panelDetails.scrollHeight;
-    } else {
-      this.height = 0;
-    }
-  }
-}
+export default {
+  name: "PanelDetails",
+};
 </script>

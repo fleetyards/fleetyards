@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import { debounce } from "ts-debounce";
 import { storeToRefs } from "pinia";

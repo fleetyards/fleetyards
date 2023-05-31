@@ -185,7 +185,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";

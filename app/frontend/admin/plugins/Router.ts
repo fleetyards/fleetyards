@@ -1,12 +1,9 @@
 import { routes } from "@/admin/routes";
 import qs from "qs";
-import Vue from "vue";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
-Vue.use(Router);
-
-const router = new Router({
-  mode: "history",
+const router = createRouter({
+  history: createWebHistory(),
   base: window.ON_SUBDOMAIN ? "" : "/admin",
   linkActiveClass: "active",
   linkExactActiveClass: "active",
@@ -22,14 +19,12 @@ const router = new Router({
         }
       }, 600);
     }),
-  parseQuery(query) {
-    return qs.parse(query);
-  },
+  routes,
+  parseQuery: qs.parse,
   stringifyQuery(query) {
     const result = qs.stringify(query);
     return result ? `?${result}` : "";
   },
-  routes,
 });
 
 export default router;

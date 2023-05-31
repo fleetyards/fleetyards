@@ -5,14 +5,14 @@
       'nav-slim': navSlim,
     }"
   >
-    <Btn v-if="cartItems.length" @click.native="openModal">
+    <Btn v-if="cartItems.length" @click="openModal">
       <i class="fad fa-shopping-cart" />
       <span
         class="items-label"
         v-html="
-          $t('labels.shoppingCart.items', {
+          t('labels.shoppingCart.items', {
             count: cartItemCount,
-            price: $toUEC(total),
+            price: toUEC(total),
           })
         "
       />
@@ -20,43 +20,52 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { sum as sumArray } from "@/frontend/utils/Array";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/frontend/stores/App";
+import { useShoppingCartStore } from "@/frontend/stores/ShoppingCart";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/frontend/composables/useComlink";
 
-@Component<ShoppingCart>({
-  components: {
-    Btn,
-  },
-})
-export default class ShoppingCart extends Vue {
-  @Getter("navSlim", { namespace: "app" }) navSlim: boolean;
+const { t, toUEC } = useI18n();
 
-  @Getter("items", { namespace: "shoppingCart" }) cartItems: any[];
+const appStore = useAppStore();
 
-  get total() {
-    return sumArray(
-      this.cartItems.map((item) => this.sum(item)).filter((item) => item)
-    );
-  }
+const { navSlim } = storeToRefs(appStore);
 
-  get cartItemCount() {
-    return sumArray(this.cartItems.map((item) => item.amount));
-  }
+const shoppingCartStore = useShoppingCartStore();
 
-  sum(cartItem) {
-    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount);
-  }
+const { items: cartItems } = storeToRefs(shoppingCartStore);
 
-  openModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/core/components/AppShoppingCart/Modal/index.vue"),
-      wide: true,
-    });
-  }
-}
+const total = computed(() => {
+  return sumArray(
+    cartItems.value.map((item) => this.sum(item)).filter((item) => item)
+  );
+});
+
+const cartItemCount = computed(() => {
+  return sumArray(cartItems.value.map((item) => item.amount));
+});
+
+const sum = (cartItem) => {
+  return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount);
+};
+
+const comlink = useComlink();
+
+const openModal = () => {
+  comlink.$emit("open-modal", {
+    component: () =>
+      import("@/frontend/core/components/AppShoppingCart/Modal/index.vue"),
+    wide: true,
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShoppingCart",
+};
 </script>

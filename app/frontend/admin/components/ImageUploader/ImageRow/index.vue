@@ -79,7 +79,7 @@
     </div>
     <div class="actions">
       <template v-if="uploaded">
-        <Btn :disabled="updating" size="small" @click.native="toggleEnabled">
+        <Btn :disabled="updating" size="small" @click="toggleEnabled">
           <span v-show="internalImage.enabled">
             <i class="fa fa-check-square" />
           </span>
@@ -87,7 +87,7 @@
             <i class="far fa-square" />
           </span>
         </Btn>
-        <Btn :disabled="updating" size="small" @click.native="toggleGlobal">
+        <Btn :disabled="updating" size="small" @click="toggleGlobal">
           <span v-show="internalImage.global">
             <i class="fas fa-globe" />
           </span>
@@ -95,17 +95,17 @@
             <i class="fal fa-globe icon-disabled" />
           </span>
         </Btn>
-        <Btn :disabled="deleting" size="small" @click.native="deleteImage">
+        <Btn :disabled="deleting" size="small" @click="deleteImage">
           <i class="fa fa-trash" />
           {{ t("labels.image.delete") }}
         </Btn>
       </template>
       <template v-else>
-        <Btn v-if="!internalImage.success" @click.native="start">
+        <Btn v-if="!internalImage.success" @click="start">
           <i class="fa fa-upload" />
           {{ t("labels.image.start") }}
         </Btn>
-        <Btn @click.native="cancel">
+        <Btn @click="cancel">
           <i class="fa fa-ban" />
           {{ t("labels.image.cancel") }}
         </Btn>

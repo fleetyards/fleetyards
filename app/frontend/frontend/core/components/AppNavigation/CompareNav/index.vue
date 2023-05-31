@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import NavItem from "../NavItem/index.vue";
 
@@ -24,7 +24,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const active = computed(() => ["compare-models"].includes(route.name || ""));
+const active = computed(() => ["compare-models"].includes(String(route.name)));
 </script>
 
 <script lang="ts">

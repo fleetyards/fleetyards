@@ -129,9 +129,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { isFleetRoute } from "@/frontend/utils/Routes/Fleets";
 import fleetsApiCollection from "@/frontend/api/collections/Fleets";

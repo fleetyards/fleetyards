@@ -9,13 +9,13 @@
                 v-show="groupedButton"
                 data-test="fleetview-grouped-button"
                 size="small"
-                @click.native="toggleGrouping"
+                @click="toggleGrouping"
               >
                 <template v-if="grouping">
-                  {{ $t("actions.disableGrouping") }}
+                  {{ t("actions.disableGrouping") }}
                 </template>
                 <template v-else>
-                  {{ $t("actions.enableGrouping") }}
+                  {{ t("actions.enableGrouping") }}
                 </template>
               </Btn>
               <Btn
@@ -23,25 +23,25 @@
                 :active="details"
                 data-test="fleetview-details-button"
                 size="small"
-                @click.native="toggleDetails"
+                @click="toggleDetails"
               >
                 <template v-if="details">
-                  {{ $t("actions.hideDetails") }}
+                  {{ t("actions.hideDetails") }}
                 </template>
                 <template v-else>
-                  {{ $t("actions.showDetails") }}
+                  {{ t("actions.showDetails") }}
                 </template>
               </Btn>
               <Btn
                 size="small"
                 data-test="fleetview-fleetchart-button"
-                @click.native="toggleFleetchart"
+                @click="toggleFleetchart"
               >
                 <template v-if="fleetchart">
-                  {{ $t("actions.hideFleetchart") }}
+                  {{ t("actions.hideFleetchart") }}
                 </template>
                 <template v-else>
-                  {{ $t("actions.showFleetchart") }}
+                  {{ t("actions.showFleetchart") }}
                 </template>
               </Btn>
             </div>
@@ -59,204 +59,243 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Btn from "@/embed/components/Btn/index.vue";
 import FleetchartList from "@/embed/components/Fleetchart/List/index.vue";
 import Loader from "@/embed/components/Loader/index.vue";
 import ModelList from "@/embed/components/Models/List/index.vue";
-import { mapGetters } from "vuex";
+import { useEmbedStore } from "@/embed/stores/Embed";
+import { storeToRefs } from "pinia";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-export default {
-  name: "FleetyardsView",
+const { t } = useI18n();
 
-  components: {
-    FleetchartList,
-    ModelList,
-    Loader,
-    Btn,
-  },
+const initialShips = ref<string[]>([]);
+const users = ref<TUser[]>([]);
+const fleetId = ref<string | null>(null);
+const loading = ref(false);
+const fleetchartSlider = ref(false);
+const groupedButton = ref(false);
+const groupedModels = ref<TModel[]>([]);
+const ungroupedModels = ref<TModel[]>([]);
 
-  data() {
-    return {
-      initialShips: [],
-      users: [],
-      fleetId: null,
-      loading: false,
-      fleetchartSlider: false,
-      groupedButton: false,
-      groupedModels: [],
-      ungroupedModels: [],
-    };
-  },
+const embedStore = useEmbedStore();
 
-  computed: {
-    ...mapGetters(["details", "grouping", "fleetchart"]),
+const { details, fleetchart, grouping } = storeToRefs(embedStore);
 
-    models() {
-      if (this.grouping) {
-        return this.groupedModels;
-      }
+const models = computed(() => {
+  if (grouping.value) {
+    return groupedModels.value;
+  }
 
-      return this.ungroupedModels;
-    },
-  },
+  return ungroupedModels.value;
+});
 
-  watch: {
-    initialShips() {
-      this.fetchModels();
-    },
+watch(
+  () => initialShips.value,
+  () => {
+    fetchModels();
+  }
+);
 
-    users() {
-      this.fetchHangarVehicles();
-    },
+watch(
+  () => users.value,
+  () => {
+    fetchHangarVehicles();
+  }
+);
 
-    fleetId() {
-      this.fetchFleetVehicles();
-    },
-  },
+watch(
+  () => fleetId.value,
+  () => {
+    fetchFleetVehicles();
+  }
+);
 
-  mounted() {
-    this.initialShips = this.$root.ships;
-    this.users = this.$root.users;
-    this.fleetId = this.$root.fleetId;
-    this.fleetchartSlider = this.$root.fleetchartSlider;
-    this.groupedButton = this.$root.groupedButton;
+onMounted(() => {
+  checkStoreVersion();
 
-    if (this.fleetId) {
-      this.fetchFleetVehicles();
-    } else if (this.users) {
-      this.fetchHangarVehicles();
-    } else {
-      this.fetchModels();
-    }
-  },
+  // initialShips.value = this.$root.ships;
+  // users.value = this.$root.users;
+  // this.fleetId = this.$root.fleetId;
+  // this.fleetchartSlider = this.$root.fleetchartSlider;
+  // this.groupedButton = this.$root.groupedButton;
 
-  methods: {
-    sortByName(a, b) {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    },
+  // if (this.fleetId) {
+  //   this.fetchFleetVehicles();
+  // } else if (this.users) {
+  //   this.fetchHangarVehicles();
+  // } else {
+  //   this.fetchModels();
+  // }
+});
 
-    mapModel(item) {
-      if (!item.model) {
-        return null;
-      }
-      return item.model;
-    },
+const checkStoreVersion = () => {
+  if (embedStore.storeVersion !== window.STORE_VERSION) {
+    console.info("Updating Store Version and resetting Store");
 
-    groupModels(models, item, pos) {
-      const firstModel = models.find((model) => model.slug === item.slug);
-      return models.indexOf(firstModel) === pos;
-    },
+    embedStore.$reset();
+    embedStore.storeVersion = window.STORE_VERSION;
+  }
+};
 
-    enhanceGroupedModel(modelSlugs, model) {
-      return {
-        ...model,
-        count: modelSlugs.filter((slug) => slug === model.slug).length,
-      };
-    },
+const sortByName = (a: TModel, b: TModel) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+};
 
-    updateShips(ships) {
-      this.initialShips = ships;
-    },
+// updateShips(ships: TModel) {
+//   const fleetview = (this.$children || [])[0];
+//   if (fleetview) {
+//     fleetview.updateShips(ships);
+//   }
+// },
 
-    updateUsers(users) {
-      this.users = users;
-    },
+// updateUsers(users: TUser) {
+//   const fleetview = (this.$children || [])[0];
+//   if (fleetview) {
+//     fleetview.updateUsers(users);
+//   }
+// },
 
-    updateFleet(fleetId) {
-      this.fleetId = fleetId;
-    },
+// updateFleet(fleetID: string) {
+//   const fleetview = (this.$children || [])[0];
+//   if (fleetview) {
+//     fleetview.updateFleet(fleetID);
+//   }
+// },
 
-    toggleDetails() {
-      this.$store.commit("toggleDetails");
-    },
+const mapModel = (item: TVehicle) => {
+  if (!item.model) {
+    return null;
+  }
+  return item.model;
+};
 
-    toggleFleetchart() {
-      this.$store.commit("toggleFleetchart");
-    },
+const groupModels = (models: TModel[], item: TModel, pos: number) => {
+  const firstModel = models.find((model) => model.slug === item.slug);
 
-    toggleGrouping() {
-      this.$store.commit("toggleGrouping");
-    },
+  if (!firstModel) {
+    return false;
+  }
 
-    async fetchModels() {
-      this.loading = true;
+  return models.indexOf(firstModel) === pos;
+};
 
-      const response = await this.$api.get("models/embed", {
-        models: this.initialShips.filter((v, i, a) => a.indexOf(v) === i),
-      });
+const enhanceGroupedModel = (modelSlugs: string[], model: TModel) => {
+  return {
+    ...model,
+    count: modelSlugs.filter((slug) => slug === model.slug).length,
+  };
+};
 
-      this.loading = false;
+const updateShips = (ships: string[]) => {
+  initialShips.value = ships;
+};
 
-      if (!response.error) {
-        const models = response.data;
-        this.groupedModels = [...models].map((model) =>
-          this.enhanceGroupedModel(this.initialShips, model)
-        );
-        this.ungroupedModels = this.initialShips
-          .map((slug) => ({
-            slug,
-            model: models.find((model) => model.slug === slug),
-          }))
-          .map(this.mapModel)
-          .filter((item) => item)
-          .sort(this.sortByName);
-      }
-    },
+const updateUsers = (newUsers: TUser[]) => {
+  users.value = newUsers;
+};
 
-    async fetchFleetVehicles() {
-      if (!this.fleetId) {
-        return;
-      }
+const updateFleet = (newFleetId: string) => {
+  fleetId.value = newFleetId;
+};
 
-      this.loading = true;
+const toggleDetails = () => {
+  embedStore.toggleDetails();
+};
 
-      const response = await this.$api.get(`fleets/${this.fleetId}/embed`);
+const toggleFleetchart = () => {
+  embedStore.toggleFleetchart();
+};
 
-      this.loading = false;
+const toggleGrouping = () => {
+  embedStore.toggleGrouping();
+};
 
-      if (!response.error) {
-        const models = response.data.map((vehicle) => vehicle.model);
-        this.groupedModels = [...models]
-          .filter((item, pos) => this.groupModels(models, item, pos))
-          .map((model) =>
-            this.enhanceGroupedModel(
-              models.map((item) => item.slug),
-              model
-            )
-          );
-        this.ungroupedModels = [...models].sort(this.sortByName);
-      }
-    },
+const fetchModels = async () => {
+  loading.value = true;
 
-    async fetchHangarVehicles() {
-      this.loading = true;
+  const response = await this.$api.get("models/embed", {
+    models: initialShips.value.filter((v, i, a) => a.indexOf(v) === i),
+  });
 
-      const response = await this.$api.get("public/hangars/embed", {
-        usernames: this.users,
-      });
+  loading.value = false;
 
-      this.loading = false;
+  if (!response.error) {
+    const models = response.data as TModel[];
+    groupedModels.value = [...models].map((model) =>
+      enhanceGroupedModel(initialShips.value, model)
+    );
 
-      if (!response.error) {
-        const models = response.data.map((vehicle) => vehicle.model);
-        this.groupedModels = [...models]
-          .filter((item, pos) => this.groupModels(models, item, pos))
-          .map((model) =>
-            this.enhanceGroupedModel(
-              models.map((item) => item.slug),
-              model
-            )
-          );
-        this.ungroupedModels = [...models].sort(this.sortByName);
-      }
-    },
-  },
+    ungroupedModels.value = initialShips.value
+      .map((slug) => ({
+        slug,
+        model: models.find((model) => model.slug === slug),
+      }))
+      .map(mapModel)
+      .filter((item) => item)
+      .sort(sortByName);
+  }
+};
+
+const fetchFleetVehicles = async () => {
+  if (!fleetId.value) {
+    return;
+  }
+
+  loading.value = true;
+
+  const response = await this.$api.get(`fleets/${fleetId.value}/embed`);
+
+  loading.value = false;
+
+  if (!response.error) {
+    const models = response.data.map((vehicle: TVehicle) => vehicle.model);
+    groupedModels.value = [...models]
+      .filter((item, pos) => groupModels(models, item, pos))
+      .map((model) =>
+        enhanceGroupedModel(
+          models.map((item: TModel) => item.slug),
+          model
+        )
+      );
+    ungroupedModels.value = [...models].sort(sortByName);
+  }
+};
+
+const fetchHangarVehicles = async () => {
+  loading.value = true;
+
+  const response = await this.$api.get("public/hangars/embed", {
+    usernames: users.value,
+  });
+
+  loading.value = false;
+
+  if (!response.error) {
+    const models = response.data.map((vehicle: TVehicle) => vehicle.model);
+    groupedModels.value = [...models]
+      .filter((item, pos) => groupModels(models, item, pos))
+      .map((model) =>
+        enhanceGroupedModel(
+          models.map((item: TModel) => item.slug),
+          model
+        )
+      );
+    ungroupedModels.value = [...models].sort(sortByName);
+  }
 };
 </script>
+
+<script lang="ts">
+export default {
+  name: "FleetyardsView",
+};
+</script>
+```

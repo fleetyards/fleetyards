@@ -214,7 +214,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";

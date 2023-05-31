@@ -35,7 +35,7 @@ import FleetchartItem from "@/embed/components/Fleetchart/Item/index.vue";
 import Store from "@/embed/lib/Store";
 
 type Props = {
-  models: Model[];
+  models: TModel[];
   slider?: boolean;
 };
 
@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const fleetchartScale = computed(() => Store.getters.fleetchartScale);
 
-const internalModels = ref<Model[]>([]);
+const internalModels = ref<TModel[]>([]);
 
 watch(
   () => props.models,
@@ -55,7 +55,7 @@ watch(
   }
 );
 
-const sortByFleetchartLength = (a: Model, b: Model) => {
+const sortByFleetchartLength = (a: TModel, b: TModel) => {
   if (a.fleetchartLength > b.fleetchartLength) {
     return -1;
   }

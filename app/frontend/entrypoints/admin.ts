@@ -1,19 +1,19 @@
 import App from "@/admin/App.vue";
-import router from "@/admin/lib/Router";
-import store from "@/admin/lib/Store";
-import ApiClient from "@/frontend/api/client";
-import I18nPlugin from "@/frontend/lib/I18n";
-import "@/frontend/lib/Sentry";
+import router from "@/admin/plugins/Router";
 import Comlink from "@/frontend/plugins/Comlink";
 import "@/frontend/plugins/LazyLoad";
+import setupSentry from "@/frontend/plugins/Sentry";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
-import Vue from "vue";
+import { createApp } from "vue";
 
-Vue.use(ApiClient);
-Vue.use(Comlink);
-Vue.use(I18nPlugin);
-Vue.use(Validations);
+const app = createApp(App);
+
+setupSentry(app, router);
+
+app.use(Comlink);
+app.use(Validations);
+app.use(router);
 
 declare global {
   interface Window {
@@ -22,23 +22,9 @@ declare global {
   }
 }
 
-if (process.env.NODE_ENV !== "production") {
-  Vue.config.devtools = true;
-} else {
-  Vue.config.productionTip = false;
-}
-
 VTooltip.enabled = window.innerWidth > 768;
-Vue.use(VTooltip);
+app.use(VTooltip);
 
 console.info(`API Endpoint: ${window.API_ENDPOINT}`);
 
-document.addEventListener("DOMContentLoaded", () => {
-  // eslint-disable-next-line no-new
-  new Vue({
-    el: "#app",
-    router,
-    store,
-    render: (h) => h(App),
-  });
-});
+app.mount("#app");

@@ -49,8 +49,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import NavItem from "../NavItem/index.vue";
 

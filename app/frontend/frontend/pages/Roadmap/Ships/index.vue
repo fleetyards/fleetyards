@@ -115,9 +115,9 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+// import Vue from "vue";
+// import { Component } from "vue-property-decorator";
+// import { BCollapse } from "bootstrap-vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";

@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import FilterForm from "@/frontend/components/Shops/FilterForm/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";

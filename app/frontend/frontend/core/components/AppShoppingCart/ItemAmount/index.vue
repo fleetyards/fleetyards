@@ -5,27 +5,37 @@
       :class="{
         disabled: cartItem.amount <= 0,
       }"
-      @click="cartItem.amount <= 0 ? () => {} : reduceAmount(cartItem.id)"
+      @click="
+        cartItem.amount <= 0
+          ? () => {}
+          : shoppingCartStore.reduceAmount(cartItem.id)
+      "
     />
     <span>
       {{ cartItem.amount }}
       <i class="fal fa-times" />
     </span>
-    <i class="fal fa-plus" @click="increaseAmount(cartItem.id)" />
+    <i
+      class="fal fa-plus"
+      @click="shoppingCartStore.increaseAmount(cartItem.id)"
+    />
   </div>
 </template>
 
+<script lang="ts" setup>
+import { useShoppingCartStore } from "@/frontend/stores/ShoppingCart";
+
+type Props = {
+  cartItem: CartItem;
+};
+
+defineProps<Props>();
+
+const shoppingCartStore = useShoppingCartStore();
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Action } from "vuex-class";
-
-@Component<ShoppingCartItemAmount>({})
-export default class ShoppingCartItemAmount extends Vue {
-  @Prop({ required: true }) cartItem!: CartItem;
-
-  @Action("reduceAmount", { namespace: "shoppingCart" }) reduceAmount: any;
-
-  @Action("increaseAmount", { namespace: "shoppingCart" }) increaseAmount: any;
-}
+export default {
+  name: "ShoppingCartItemAmount",
+};
 </script>

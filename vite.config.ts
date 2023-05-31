@@ -1,8 +1,7 @@
 import { resolve } from "path";
 import { defineConfig, splitVendorChunkPlugin } from "vite";
 import ViteRails from "vite-plugin-rails";
-import Vue2 from "@vitejs/plugin-vue2";
-// import Vue from '@vitejs/plugin-vue'
+import Vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
 // import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
@@ -28,7 +27,7 @@ export const accessEnv = (key: string, defaultValue?: string): string => {
 export default defineConfig({
   plugins: [
     ViteRails(),
-    Vue2(),
+    Vue(),
     VitePWA({
       registerType: "autoUpdate",
       filename: "sw.js",

@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import BtnInner from "@/frontend/core/components/Btn/Inner/index.vue";
 import type { SpinnerAlignment } from "@/frontend/core/components/SmallLoader/index.vue";
-import { RawLocation } from "vue-router";
+import type { RouteLocationRaw } from "vue-router";
 
 export type BtnVariants =
   | "default"
@@ -26,7 +26,7 @@ export type BtnVariants =
 export type BtnSizes = "default" | "xsmall" | "small" | "large";
 
 export type Props = {
-  to?: RawLocation;
+  to?: RouteLocationRaw;
   href?: string;
   type?: "button" | "submit";
   loading?: boolean;

@@ -3,26 +3,24 @@
     <div v-if="visible" class="empty-box">
       <Box class="info" :large="true">
         <h1>{{ t("headlines.empty") }}</h1>
-        <template v-if="isQueryPresent">
-          <p>{{ t("texts.empty.query") }}</p>
-          <div slot="footer" class="empty-box-actions">
-            <Btn @click.native="openGuide">
+        <p v-if="isQueryPresent">{{ t("texts.empty.query") }}</p>
+        <p v-else>
+          {{ t("texts.empty.wishlist.info") }}
+        </p>
+        <template #footer>
+          <div v-if="isQueryPresent" class="empty-box-actions">
+            <Btn @click="openGuide">
               {{ t("actions.empty.hangarGuide") }}
             </Btn>
-            <Btn v-if="isPagePresent" @click.native="resetPage">
+            <Btn v-if="isPagePresent" @click="resetPage">
               {{ t("actions.empty.resetPage") }}
             </Btn>
             <Btn :to="{ name: String(route.name) }" :exact="true">
               {{ t("actions.empty.reset") }}
             </Btn>
           </div>
-        </template>
-        <template v-else>
-          <p>
-            {{ t("texts.empty.wishlist.info") }}
-          </p>
-          <div slot="footer" class="empty-box-actions">
-            <Btn @click.native="openGuide">
+          <div v-else class="empty-box-actions">
+            <Btn @click="openGuide">
               {{ t("actions.empty.hangarGuide") }}
             </Btn>
           </div>
@@ -35,7 +33,7 @@
 <script lang="ts" setup>
 import Box from "@/frontend/core/components/Box/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 

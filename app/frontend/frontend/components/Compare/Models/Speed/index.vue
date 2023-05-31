@@ -185,9 +185,9 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+// import Vue from "vue";
+// import { Component, Prop, Watch } from "vue-property-decorator";
+// import { BCollapse } from "bootstrap-vue";
 
 @Component<ModelsCompareSpeed>({
   components: {

@@ -1,17 +1,5 @@
 type TModelModulePackage = {
   id: string;
-};
-
-type TModelModulePackagesFilter = {
-  nameCont: string;
-};
-
-interface TModelModulePackageParams extends TCollectionParams {
-  filters: TModelModulesFilter;
-}
-
-type TModelModulePackage = {
-  id: string;
   media: {
     storeImage?: TMediaImage;
     fleetchartImage?: string;
@@ -25,3 +13,11 @@ type TModelModulePackage = {
     topViewColored?: TMediaViewImage;
   };
 };
+
+type TModelModulePackagesFilter = {
+  nameCont: string;
+};
+
+interface TModelModulePackageParams extends TCollectionParams {
+  filters: TModelModulesFilter;
+}

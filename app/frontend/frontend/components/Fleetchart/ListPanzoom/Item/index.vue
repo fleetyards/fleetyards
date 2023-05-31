@@ -45,7 +45,7 @@ import FleetchartItemImage from "./Image/index.vue";
 type ViewType = "top" | "side" | "angled" | "front";
 
 type Props = {
-  item: Model | Vehicle;
+  item: TModel | TVehicle;
   viewpoint?: ViewType;
   showLabel?: boolean;
   showStatus?: boolean;
@@ -81,23 +81,23 @@ const imageByViewpoint = computed<FyMediaViewImage>(() => {
   return topView.value as FyMediaViewImage;
 });
 
-const model = computed<Model>(() => {
-  if (props.item && (props.item as Vehicle).model) {
-    return (props.item as Vehicle).model as Model;
+const model = computed<TModel>(() => {
+  if (props.item && (props.item as TVehicle).model) {
+    return (props.item as TVehicle).model as TModel;
   }
 
-  return props.item as Model;
+  return props.item as TModel;
 });
 
-const vehicle = computed<Vehicle | null>(() => {
-  if (props.item && (props.item as Vehicle).model) {
-    return props.item as Vehicle;
+const vehicle = computed<TVehicle | null>(() => {
+  if (props.item && (props.item as TVehicle).model) {
+    return props.item as TVehicle;
   }
 
   return null;
 });
 
-const modulePackage = computed<ModelModulePackage | null>(() => {
+const modulePackage = computed<TModelModulePackage | null>(() => {
   if (vehicle.value && vehicle.value.modulePackage) {
     return vehicle.value.modulePackage;
   }
@@ -105,7 +105,7 @@ const modulePackage = computed<ModelModulePackage | null>(() => {
   return null;
 });
 
-const paint = computed<ModelPaint | null>(() => {
+const paint = computed<TModelPaint | null>(() => {
   if (vehicle.value && vehicle.value.paint) {
     return vehicle.value.paint;
   }

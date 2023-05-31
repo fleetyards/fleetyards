@@ -6,7 +6,7 @@
     :size="size"
     :inline="inline"
     :block="block"
-    @click.native="openStarship42"
+    @click="openStarship42"
   >
     <template v-if="withIcon">
       <i class="fad fa-cube" /> {{ t("labels.exportStarship42") }}

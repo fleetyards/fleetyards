@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import VideoEmbed from "@/frontend/core/components/Video/index.vue";

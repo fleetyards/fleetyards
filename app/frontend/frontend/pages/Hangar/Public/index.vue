@@ -126,7 +126,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import publicVehiclesCollection from "@/frontend/api/collections/PublicVehicles";

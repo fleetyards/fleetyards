@@ -6,13 +6,17 @@ type TShopCommodity = {
   item: TModel | TEquipment | TComponent;
 };
 
-type TShopCommoditiesFilter = {
-  nameCont: string;
-  subCategoryIn: string[];
+type TShopCommodityFilters = {
+  name?: string[];
+  category?: string[];
+  manufacturerSlug?: string[];
+  subCategory?: string[];
+  priceGteq?: number;
+  priceLteq?: number;
 };
 
 interface TShopCommodityParams
-  extends TCollectionParams<TShopCommoditiesFilter> {
+  extends TCollectionParams<TShopCommodityFilters> {
   stationSlug: string;
   slug: string;
 }

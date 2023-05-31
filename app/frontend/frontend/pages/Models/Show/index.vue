@@ -296,7 +296,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";

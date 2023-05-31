@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import StarsystemList from "@/frontend/components/Starsystems/List/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";

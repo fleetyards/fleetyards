@@ -15,12 +15,12 @@ import ModelPanel from "@/embed/components/Models/Panel/index.vue";
 import Store from "@/embed/lib/Store";
 
 type Props = {
-  models: Model[];
+  models: TModel[];
 };
 
 const props = defineProps<Props>();
 
-const internalModels = ref<Model[]>([]);
+const internalModels = ref<TModel[]>([]);
 
 const details = computed(() => Store.getters.details);
 
@@ -37,9 +37,9 @@ onMounted(() => {
   internalModels.value = props.models;
 });
 
-const count = (model: Model) => {
+const count = (model: TModel) => {
   if (!grouping.value) {
-    return null;
+    return undefined;
   }
 
   return model.count;

@@ -4,7 +4,7 @@
     :size="size"
     :inline="inline"
     :block="block"
-    @click.native="openProvider"
+    @click="openProvider"
   >
     <slot name="label">
       <i :class="`fab fa-${provider}`"></i>

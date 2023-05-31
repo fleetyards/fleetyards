@@ -3,11 +3,11 @@
     <h2>{{ t("headlines.empty") }}</h2>
     <template v-if="isQueryPresent">
       <p>{{ t("texts.empty.query") }}</p>
-      <div slot="footer" class="empty-table-actions">
-        <Btn @click.native="openGuide">
+      <div class="empty-table-actions">
+        <Btn @click="openGuide">
           {{ t("actions.empty.hangarGuide") }}
         </Btn>
-        <Btn v-if="isPagePresent" @click.native="resetPage">
+        <Btn v-if="isPagePresent" @click="resetPage">
           {{ t("actions.empty.resetPage") }}
         </Btn>
         <Btn :to="{ name: String(route.name) }" :exact="true">
@@ -33,9 +33,9 @@
           </a>
         </div>
       </div>
-      <div slot="footer" class="empty-table-actions">
+      <div class="empty-table-actions">
         <HangarSyncBtn />
-        <Btn @click.native="openGuide">
+        <Btn @click="openGuide">
           {{ t("actions.empty.hangarGuide") }}
         </Btn>
       </div>
@@ -46,7 +46,7 @@
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";

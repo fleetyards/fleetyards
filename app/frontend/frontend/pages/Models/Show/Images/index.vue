@@ -14,9 +14,7 @@
     </div>
     <FilteredList
       :collection="collection"
-      collection-method="findAllForGallery"
       name="modelImages"
-      :route-query="route.query"
       :hash="route.hash"
       :params="routeParams"
       :paginated="true"
@@ -48,7 +46,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
@@ -80,8 +78,10 @@ const metaTitle = computed(() => {
 const route = useRoute();
 
 const routeParams = computed(() => ({
-  ...route.params,
-  galleryType: "models",
+  filters: {
+    gallerySlug: route.params.slug,
+    galleryType: "models",
+  },
 }));
 
 const crumbs = computed(() => {

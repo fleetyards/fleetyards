@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import sessionCollection from "@/frontend/api/collections/Session";
 import { useSessionStore } from "@/frontend/stores/Session";
@@ -62,7 +62,7 @@ const active = computed(() =>
     "settings-two-factor-disable",
     "settings-two-factor-backup-codes",
     "settings-change-password",
-  ].includes(route.name || "")
+  ].includes(String(route.name))
 );
 
 const logout = async () => {

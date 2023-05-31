@@ -14,6 +14,10 @@ export default class BaseCollection<T, P> {
 
   totalPages: number | null = null;
 
+  async findAll(_params: P): Promise<TCollectionResponse<T>> {
+    throw new Error("Not implemented");
+  }
+
   resetRecords() {
     this.records = [];
   }

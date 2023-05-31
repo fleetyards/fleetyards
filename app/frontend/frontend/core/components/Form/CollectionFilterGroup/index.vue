@@ -28,24 +28,15 @@
       :visible="selectedOptions.length > 0 && !visible"
       class="filter-group-items"
     >
-      <a
+      <FilterGroupOption
         v-for="(option, index) in selectedOptions"
-        :key="`${groupID}-${selectedId}-${option[valueAttr]}-${index}`"
-        :class="{
-          active: selected(option[valueAttr]),
-          bigIcon,
-        }"
-        class="filter-group-item fade-list-item"
-        @click="select(option[valueAttr])"
-      >
-        <span v-if="option[iconAttr]" class="filter-group-item-icon">
-          <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
-        </span>
-        <span v-html="option[labelAttr]" />
-        <span v-if="multiple">
-          <i class="fal fa-plus" />
-        </span>
-      </a>
+        :key="`${groupID}-${selectedId}-${option.value}-${index}`"
+        :option="option"
+        :selected="selected(option)"
+        :big-icon="bigIcon"
+        :multiple="multiple"
+        @select="select"
+      />
     </BCollapse>
     <BCollapse
       :id="`${groupID}-${id}`"
@@ -57,8 +48,8 @@
         id="search-input"
         ref="searchInput"
         v-model="search"
-        :placeholder="searchLabel || $t('actions.find')"
-        :label="$t('actions.find')"
+        :placeholder="searchLabel || t('actions.find')"
+        :label="t('actions.find')"
         class="filter-group-search"
         variant="clean"
         :no-label="true"
@@ -66,24 +57,15 @@
         @input="onSearch"
       />
       <div class="filter-group-items">
-        <a
+        <FilterGroupOption
           v-for="(option, index) in filteredOptions"
-          :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
-          :class="{
-            active: selected(option[valueAttr]),
-            bigIcon,
-          }"
-          class="filter-group-item fade-list-item"
-          @click="select(returnObject ? option : option[valueAttr])"
-        >
-          <span v-if="option[iconAttr]" class="filter-group-item-icon">
-            <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
-          </span>
-          <span v-html="option[labelAttr]" />
-          <span v-if="multiple">
-            <i class="fal fa-plus" />
-          </span>
-        </a>
+          :key="`${groupID}-${selectedId}-${option.value}-${index}`"
+          :option="option"
+          :selected="selected(option)"
+          :big-icon="bigIcon"
+          :multiple="multiple"
+          @select="select"
+        />
 
         <InfiniteLoading
           v-if="fetchedOptions.length && !search && paginated"
@@ -91,395 +73,380 @@
           :distance="100"
           @infinite="fetchMore"
         >
-          <span slot="no-more" />
-          <span slot="spinner" />
+          <template #no-more>
+            <span />
+          </template>
+          <template #spinner>
+            <span />
+          </template>
         </InfiniteLoading>
       </div>
     </BCollapse>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+<script lang="ts" setup>
+// import { BCollapse } from "bootstrap-vue";
 import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import debounce from "lodash.debounce";
 import InfiniteLoading from "vue-infinite-loading";
+import type { StateChanger } from "vue-infinite-loading";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { v4 as uuidv4 } from "uuid";
+import type { TFilterData } from "@/frontend/composables/useFilters";
+import FilterGroupOption from "@/frontend/core/components/Form/FilterGroupOption/index.vue";
+import type { TFilterGroupOption } from "@/frontend/core/components/Form/FilterGroupOption/index.vue";
+import type BaseCollection from "@/frontend/api/collections/Base";
 
-@Component<CollectionFilterGroup>({
-  components: {
-    BCollapse,
-    SmallLoader,
-    InfiniteLoading,
-    FormInput,
-  },
-})
-export default class CollectionFilterGroup extends Vue {
-  visible = false;
+export type TFilterGroupFetchParams = {
+  search?: string;
+  missing?: string | string[];
+  page?: number;
+  cacheId?: string;
+};
 
-  search: string | null = null;
+type Props = {
+  name: string;
+  fetch: (params: TFilterGroupFetchParams) => Promise<TFilterGroupOption[]>;
+  value?: string[] | string;
+  multiple?: boolean;
+  disabled?: boolean;
+  searchable?: boolean;
+  nullable?: boolean;
+  error?: string;
+  paginated?: boolean;
+  hideLabelOnEmpty?: boolean;
+  label?: string;
+  translationKey?: string;
+  noLabel?: boolean;
+  bigIcon?: boolean;
+  searchLabel?: string;
+};
 
-  page = 1;
+const props = withDefaults(defineProps<Props>(), {
+  value: undefined,
+  multiple: false,
+  disabled: false,
+  searchable: false,
+  nullable: false,
+  error: undefined,
+  paginated: false,
+  hideLabelOnEmpty: false,
+  label: undefined,
+  translationKey: "filterGroup",
+  noLabel: false,
+  bigIcon: false,
+  searchLabel: undefined,
+});
 
-  loading = false;
+const { t } = useI18n();
 
-  selectedId: string = null;
+const visible = ref(false);
 
-  id: string = null;
+const search = ref<string | undefined>();
 
-  fetchedOptions: FilterGroupOption[] = [];
+const page = ref(1);
 
-  onSearch = debounce(this.debouncedOnSearch, 500);
+const loading = ref(false);
 
-  @Prop({ required: true }) collection!: BaseCollection;
+const selectedId = ref<string | null>(null);
 
-  @Prop({ default: "findAll" }) collectionMethod: string;
+const id = uuidv4();
 
-  @Prop({
-    default: () => ({}),
-  })
-  collectionFilter!: any;
+const fetchedOptions = ref<TFilterGroupOption[]>([]);
 
-  @Prop({ required: true }) name!: string;
-
-  @Prop({
-    default() {
-      if (this.multiple) {
-        return [];
-      }
-      return null;
-    },
-  })
-  value!: string[] | string | number | any | null;
-
-  @Prop({ default: "value" }) valueAttr!: string;
-
-  @Prop({ default: "name" }) labelAttr!: string;
-
-  @Prop({ default: "icon" }) iconAttr!: string;
-
-  @Prop({ default: false }) multiple!: boolean;
-
-  @Prop({ default: false }) disabled!: boolean;
-
-  @Prop({ default: false }) searchable!: boolean;
-
-  @Prop({ default: false }) returnObject!: boolean;
-
-  @Prop({ default: true }) nullable!: boolean;
-
-  @Prop({ default: null }) error!: string;
-
-  @Prop({ default: false }) paginated!: boolean;
-
-  @Prop({ default: false }) hideLabelOnEmpty!: boolean;
-
-  @Prop({ default: null }) label!: string | null;
-
-  @Prop({ default: "filterGroup" }) translationKey!: string;
-
-  @Prop({ default: false }) noLabel!: boolean;
-
-  @Prop({ default: false }) bigIcon!: boolean;
-
-  @Prop({ default: null }) searchLabel!: string | null;
-
-  get prompt() {
-    if (this.multiple) {
-      return this.label;
-    }
-
-    if (this.selectedOptions.length > 0) {
-      return this.selectedOptions[0][this.labelAttr];
-    }
-
-    if (this.nullable) {
-      return this.$t(`labels.${this.translationKey}.nullablePrompt`);
-    }
-
-    return this.$t(`labels.${this.translationKey}.prompt`);
+const prompt = computed(() => {
+  if (props.multiple) {
+    return props.label;
   }
 
-  get labelVisible() {
-    return !this.hideLabelOnEmpty || this.selectedOptions.length > 0;
+  if (selectedOptions.value.length > 0) {
+    return selectedOptions.value[0].label;
   }
 
-  get innerLabel() {
-    if (this.label) {
-      return this.label;
+  if (props.nullable) {
+    return t(`labels.${props.translationKey}.nullablePrompt`);
+  }
+
+  return t(`labels.${props.translationKey}.prompt`);
+});
+
+const labelVisible = computed(() => {
+  return !props.hideLabelOnEmpty || selectedOptions.value.length > 0;
+});
+
+const innerLabel = computed(() => {
+  if (props.label) {
+    return props.label;
+  }
+
+  if (props.translationKey && props.translationKey !== "filterGroup") {
+    return t(`labels.${props.translationKey}.label`);
+  }
+
+  return t(`labels.${id}`);
+});
+
+const groupID = computed(() => {
+  return `${props.name}-${uuidv4()}`;
+});
+
+const availableOptions = computed(() => {
+  if (props.paginated) {
+    return sort(fetchedOptions.value);
+  }
+  return fetchedOptions.value;
+});
+
+const selectedOptions = computed(() => {
+  if (props.multiple) {
+    return availableOptions.value.filter(
+      (item) => props.value && props.value.includes(item.value)
+    );
+  }
+  const selectedOption = availableOptions.value.find(
+    (item) => item.value === props.value
+  );
+  return selectedOption ? [selectedOption] : [];
+});
+
+const filteredOptions = computed(() => {
+  if (search.value) {
+    return availableOptions.value.filter((item) =>
+      item.label.toLowerCase().includes((search.value || "").toLowerCase())
+    );
+  }
+  return availableOptions.value;
+});
+
+const cssClasses = computed(() => {
+  return {
+    "has-error has-feedback": props.error,
+  };
+});
+
+watch(
+  () => props.disabled,
+  () => fetchOptions()
+);
+
+const queryParams = (args: {
+  search?: string;
+  missingValue?: string | string[];
+  page?: number;
+}) => {
+  const query = {} as TFilterGroupFetchParams;
+  if (args.search && props.searchable) {
+    query.search = args.search;
+  } else if (args.missingValue && props.paginated) {
+    query.missing = args.missingValue;
+  } else if (args.page && props.paginated) {
+    query.page = args.page;
+  }
+
+  return query;
+};
+
+onBeforeMount(() => {
+  selectedId.value = uuidv4();
+
+  document.addEventListener("click", documentClick);
+});
+
+onMounted(() => {
+  fetchOptions();
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", documentClick);
+});
+
+const filterGroup = ref<HTMLElement | null>(null);
+
+const documentClick = (event: Event) => {
+  const element = filterGroup.value as HTMLElement;
+  const target = event.target as HTMLElement;
+
+  if (element !== target && !element.contains(target)) {
+    visible.value = false;
+  }
+};
+
+const debouncedOnSearch = () => {
+  if (props.paginated && search.value) {
+    page.value = 1;
+    fetchOptions();
+  }
+};
+
+const onSearch = debounce(debouncedOnSearch, 500);
+
+const emit = defineEmits(["loaded", "input"]);
+
+const infiniteLoading = ref<InstanceType<typeof InfiniteLoading> | null>(null);
+
+const fetchOptions = async () => {
+  if (props.disabled) {
+    fetchMissingOption();
+    return;
+  }
+
+  loading.value = true;
+
+  const options = await props.fetch({
+    ...queryParams({
+      page: page.value,
+      search: search.value,
+    }),
+    cacheId: groupID.value,
+  });
+
+  emit("loaded", options);
+
+  loading.value = false;
+
+  if (infiniteLoading.value) {
+    infiniteLoading.value.stateChanger.reset();
+  }
+
+  if (options.length) {
+    addOptions(options);
+    fetchMissingOption();
+  }
+};
+
+const fetchMissingOption = async () => {
+  if (
+    !props.value ||
+    (props.multiple && selectedOptions.value.length === props.value.length) ||
+    (!props.multiple && selectedOptions.value[0].value === props.value)
+  ) {
+    return;
+  }
+
+  loading.value = true;
+
+  const options = await props.fetch({
+    ...queryParams({
+      missingValue: props.value,
+    }),
+    cacheId: `${groupID.value}-missing`,
+  });
+
+  loading.value = false;
+
+  if (options.length) {
+    addOptions(options);
+  }
+};
+
+const fetchMore = async ($state: StateChanger) => {
+  loading.value = true;
+  page.value += 1;
+
+  const options = await props.fetch({
+    ...queryParams({
+      page: page.value,
+    }),
+  });
+
+  $state.loaded();
+
+  loading.value = false;
+
+  if (options.length) {
+    addOptions(options);
+  } else {
+    $state.complete();
+  }
+};
+
+const sort = (options: TFilterGroupOption[]) => {
+  const sortedOptions = JSON.parse(
+    JSON.stringify(options)
+  ) as TFilterGroupOption[];
+  return sortedOptions.sort((a, b) => {
+    if (a.label < b.label) {
+      return -1;
     }
-
-    if (this.translationKey && this.translationKey !== "filterGroup") {
-      return this.$t(`labels.${this.translationKey}.label`);
+    if (a.label > b.label) {
+      return 1;
     }
+    return 0;
+  });
+};
 
-    return this.$t(`labels.${this.id}`);
-  }
-
-  get groupID() {
-    return `${this.name}-${this._uid.toString()}`;
-  }
-
-  get availableOptions() {
-    if (this.paginated) {
-      return this.sort(this.fetchedOptions);
+const addOptions = (newOptions: TFilterGroupOption[]) => {
+  newOptions.forEach((item) => {
+    if (!availableOptions.value.find((option) => option.value === item.value)) {
+      fetchedOptions.value.push(item);
     }
-    return this.fetchedOptions;
+  });
+};
+
+const clearSearch = () => {
+  search.value = undefined;
+};
+
+const selected = (option: TFilterGroupOption) => {
+  if (props.multiple && props.value) {
+    return props.value?.includes(option.value);
   }
 
-  get selectedOptions() {
-    if (this.multiple) {
-      return this.availableOptions.filter(
-        (item) => this.value && this.value.includes(item[this.valueAttr])
+  return props.value === option.value;
+};
+
+const select = (option: TFilterGroupOption) => {
+  clearSearch();
+
+  if (selected(option)) {
+    if (props.multiple) {
+      emit(
+        "input",
+        (props.value as string[]).filter((item) => item !== option.value)
       );
+    } else if (props.nullable) {
+      emit("input", null);
     }
-    const selectedOption = this.availableOptions.find(
-      (item) => item[this.valueAttr] === this.value
-    );
-    return selectedOption ? [selectedOption] : [];
+  } else if (props.multiple) {
+    const newSelected = JSON.parse(
+      JSON.stringify(props.value || [])
+    ) as string[];
+    newSelected.push(option.value);
+    emit("input", newSelected);
+    focusSearch();
+  } else {
+    emit("input", option.value);
+    toggle();
+  }
+};
+
+const toggle = () => {
+  if (props.disabled) {
+    return;
   }
 
-  get filteredOptions() {
-    if (this.search) {
-      return this.availableOptions.filter((item) =>
-        item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase())
-      );
-    }
-    return this.availableOptions;
-  }
+  visible.value = !visible.value;
 
-  get cssClasses() {
-    return {
-      "has-error has-feedback": this.error,
-    };
-  }
+  focusSearch();
+};
 
-  @Watch("collectionFilter", { deep: true })
-  onCollectionFilterChange(newValue, oldValue) {
-    if (
-      Object.entries(newValue).toString() !==
-      Object.entries(oldValue).toString()
-    ) {
-      this.fetchedOptions = [];
-      this.fetchOptions();
-    }
-  }
+const searchInput = ref<InstanceType<typeof FormInput> | null>(null);
 
-  @Watch("disabled")
-  onDisabled() {
-    this.fetchOptions();
-  }
-
-  queryParams(args) {
-    const query = {
-      filters: {
-        ...this.collectionFilter,
-      },
-    };
-    if (args.search && this.searchable) {
-      query.filters.nameCont = args.search;
-    } else if (args.missingValue && this.paginated) {
-      query.filters[`${this.valueAttr}Eq`] = args.missingValue;
-    } else if (args.page && this.paginated) {
-      query.page = args.page;
-    }
-
-    return query;
-  }
-
-  created() {
-    this.selectedId = this._uid.toString();
-    this.id = this._uid.toString();
-
-    document.addEventListener("click", this.documentClick);
-  }
-
-  mounted() {
-    this.fetchOptions();
-  }
-
-  destroyed() {
-    document.removeEventListener("click", this.documentClick);
-  }
-
-  documentClick(event) {
-    const element = this.$refs.filterGroup;
-    const { target } = event;
-
-    if (element !== target && !element.contains(target)) {
-      this.visible = false;
-    }
-  }
-
-  debouncedOnSearch() {
-    if (this.paginated && this.search) {
-      this.page = 1;
-      this.fetchOptions();
-    }
-  }
-
-  async fetchOptions() {
-    if (this.disabled) {
-      this.fetchMissingOption();
-      return;
-    }
-
-    this.loading = true;
-
-    const response = await this.collection[this.collectionMethod]({
-      ...this.queryParams({
-        page: this.page,
-        search: this.search,
-      }),
-      cacheId: this.groupID,
-    });
-
-    this.$emit("loaded", response.data);
-
-    this.loading = false;
-
-    if (this.$refs.infiniteLoading) {
-      this.$refs.infiniteLoading.$emit("infinite-loading-reset");
-    }
-
-    if (response.data.length) {
-      this.addOptions(response.data);
-      this.fetchMissingOption();
-    }
-  }
-
-  async fetchMissingOption() {
-    if (
-      !this.value ||
-      (this.multiple && this.selectedOptions.length === this.value.length) ||
-      (!this.multiple && this.selectedOptions[0] === this.value)
-    ) {
-      return;
-    }
-
-    this.loading = true;
-
-    const response = await this.collection[this.collectionMethod]({
-      ...this.queryParams({
-        missingValue: this.value,
-      }),
-      cacheId: `${this.groupID}-missing`,
-    });
-
-    this.loading = false;
-
-    if (response.data.length) {
-      this.addOptions(response.data);
-    }
-  }
-
-  async fetchMore($state) {
-    this.loading = true;
-    this.page += 1;
-
-    const response = await this.collection[this.collectionMethod](
-      this.queryParams({
-        page: this.page,
-      })
-    );
-
-    $state.loaded();
-
-    this.loading = false;
-
-    if (response.data.length) {
-      this.addOptions(response.data);
-    } else {
-      $state.complete();
-    }
-  }
-
-  sort(options) {
-    const sortedOptions = JSON.parse(JSON.stringify(options));
-    return sortedOptions.sort((a, b) => {
-      if (a[this.labelAttr] < b[this.labelAttr]) {
-        return -1;
-      }
-      if (a[this.labelAttr] > b[this.labelAttr]) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
-  addOptions(newOptions: any[]) {
-    newOptions.forEach((item) => {
-      if (
-        !this.availableOptions.find(
-          (option) => option[this.valueAttr] === item[this.valueAttr]
-        )
-      ) {
-        this.fetchedOptions.push(item);
+const focusSearch = () => {
+  if (props.searchable && visible.value) {
+    nextTick(() => {
+      if (searchInput.value) {
+        searchInput.value.setFocus();
       }
     });
   }
+};
+</script>
 
-  clearSearch() {
-    this.search = null;
-  }
-
-  selected(option) {
-    if (this.multiple) {
-      return this.value && this.value.includes(option);
-    }
-
-    return this.value === option;
-  }
-
-  select(option) {
-    this.clearSearch();
-
-    if (this.selected(option)) {
-      if (this.multiple) {
-        this.$emit(
-          "input",
-          this.value.filter((item) => item !== option)
-        );
-      } else if (this.nullable) {
-        this.$emit("input", null);
-      }
-    } else if (this.multiple) {
-      const selected = JSON.parse(JSON.stringify(this.value));
-      selected.push(option);
-      this.$emit("input", selected);
-      this.focusSearch();
-    } else {
-      this.$emit("input", option);
-      this.toggle();
-    }
-  }
-
-  unselect(option) {
-    this.$emit(
-      "input",
-      this.value.filter((item) => item !== option)
-    );
-  }
-
-  toggle() {
-    if (this.disabled) {
-      return;
-    }
-
-    this.visible = !this.visible;
-    this.focusSearch();
-  }
-
-  focusSearch() {
-    if (this.searchable && this.visible) {
-      this.$nextTick(() => {
-        if (this.$refs.searchInput) {
-          this.$refs.searchInput.setFocus();
-        }
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "CollectionFilterGroup",
+};
 </script>

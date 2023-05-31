@@ -117,7 +117,7 @@ import SpeedRows from "@/frontend/components/Compare/Models/Speed/index.vue";
 import HardpointRows from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/frontend/stores/App";
 

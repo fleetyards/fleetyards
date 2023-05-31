@@ -5,7 +5,7 @@
     :min="10"
     :max="max"
     :interval="10"
-    dot-size="20"
+    :dot-size="20"
     :marks="mark"
     :tooltip-formatter="label"
     :process="false"

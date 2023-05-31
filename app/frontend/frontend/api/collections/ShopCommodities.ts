@@ -16,7 +16,7 @@ export class ShopCommoditiesCollection extends BaseCollection<
     const response = await get<TShopCommodity[]>(
       `stations/${params?.stationSlug}/shops/${params?.slug}/commodities`,
       {
-        q: params.filters,
+        query: params.filters,
         page: params.page,
       }
     );
@@ -30,8 +30,8 @@ export class ShopCommoditiesCollection extends BaseCollection<
   }
 
   async subCategories(
-    stationSlug: string,
-    shopSlug: string
+    stationSlug?: string,
+    shopSlug?: string
   ): Promise<TShopCommoditySubCategroy[]> {
     const response = await get<TShopCommoditySubCategroy[]>(
       "filters/shop-commodities/sub-categories",

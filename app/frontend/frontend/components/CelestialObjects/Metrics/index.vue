@@ -85,7 +85,7 @@
 import { useI18n } from "@/frontend/composables/useI18n";
 
 type Props = {
-  celestialObject: CelestialObject;
+  celestialObject: TCelestialObject;
   padding?: boolean;
 };
 

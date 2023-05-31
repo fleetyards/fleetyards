@@ -4,7 +4,7 @@
     :variant="variant"
     :size="size"
     :inline="inline"
-    @click.native="share"
+    @click="share"
   >
     <i class="fad fa-share-square" />
     <span v-if="variant === 'dropdown'">{{ t("actions.share") }}</span>

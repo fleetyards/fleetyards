@@ -24,7 +24,6 @@
         name="model"
         :search-label="$t('actions.findModel')"
         :collection="modelsCollection"
-        value-attr="id"
         translation-key="newVehicle"
         :paginated="true"
         :searchable="true"

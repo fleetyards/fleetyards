@@ -54,7 +54,7 @@ import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { sortBy } from "@/frontend/lib/Helpers";
+import { sortBy } from "@/frontend/utils/Helpers";
 import { uniqByField as uniqByFieldArray } from "@/frontend/utils/Array";
 import { FleetVehiclesCollection } from "@/frontend/api/collections/FleetVehicles";
 

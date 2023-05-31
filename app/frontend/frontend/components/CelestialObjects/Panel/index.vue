@@ -37,12 +37,12 @@ import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/frontend/composables/useWebpCheck";
 
 type Props = {
-  item: SearchResult;
+  item: TSearchResult;
 };
 
 const props = defineProps<Props>();
 
-const location = computed(() => props.item as CelestialObject | Starsystem);
+const location = computed(() => props.item as TCelestialObject | TStarsystem);
 
 const { supported: webpSupported } = useWebpCheck();
 
@@ -64,7 +64,7 @@ const route = computed(() => {
       return {
         name: "celestial-object",
         params: {
-          starsystem: (props.item as CelestialObject).starsystem.slug,
+          starsystem: (props.item as TCelestialObject).starsystem.slug,
           slug: props.item.slug,
         },
       };

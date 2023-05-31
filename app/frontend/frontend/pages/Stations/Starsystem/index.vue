@@ -82,7 +82,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";

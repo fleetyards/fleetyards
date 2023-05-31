@@ -15,7 +15,7 @@
               :active="filterVisible"
               :aria-label="filterTooltip"
               size="small"
-              @click.native="toggleFilter"
+              @click="toggleFilter"
             >
               <i
                 class="fa-filter"
@@ -86,10 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  FleetYardsRouteQuery,
-  FleetYardsRouteParams,
-} from "@/frontend/utils/Sorting";
+import type { FleetYardsRouteParams } from "@/frontend/utils/Sorting";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Paginator from "@/frontend/core/components/Paginator/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
@@ -102,6 +99,7 @@ import type { TFilteredPage } from "@/frontend/stores/Filters";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useFilters } from "@/frontend/composables/useFilters";
+import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 
 interface Props {
@@ -109,8 +107,6 @@ interface Props {
   name: TFilteredPage;
   recordListClass?: string;
   params?: FleetYardsRouteParams;
-  collectionMethod?: string;
-  routeQuery?: FleetYardsRouteQuery;
   hash?: string;
   paginated?: boolean;
   alwaysFilterVisible?: boolean;
@@ -122,45 +118,38 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   recordListClass: undefined,
   params: undefined,
-  collectionMethod: "findAll",
-  routeQuery: undefined,
   hash: undefined,
   paginated: false,
   alwaysFilterVisible: false,
   hideEmptyBox: false,
   hideLoading: false,
-  routeFilterName: "q",
+  routeFilterName: "query",
 });
 
 const { t } = useI18n();
-
-const collectionMethodDefault = "findAll";
-const routeFilterNameDefault = "q";
 
 const loading = ref(true);
 
 const fullscreen = ref(false);
 
-const filters = computed(() => {
-  if (!props.routeQuery) {
-    return {};
-  }
+const route = useRoute();
 
-  return props.routeQuery[props.routeFilterName || routeFilterNameDefault];
+const filters = computed(() => {
+  return route.query[props.routeFilterName] || {};
 });
 
-const search = computed(() => props.routeQuery?.search);
+const search = computed(() => route.query?.search);
 
 const slots = useSlots();
 
 const hasFilterSlot = computed(() => !!slots.filter);
 
 const page = computed(() => {
-  if (!props.routeQuery?.page) {
+  if (!route.query?.page) {
     return 1;
   }
 
-  return parseInt(props.routeQuery.page, 10);
+  return Number(route.query.page);
 });
 
 const { mobile } = storeToRefs(useAppStore());
@@ -199,10 +188,11 @@ watch(
 );
 
 watch(
-  () => props.routeQuery,
+  () => route,
   () => {
     fetch();
-  }
+  },
+  { deep: true }
 );
 
 if (props.collection.records.length) {
@@ -254,7 +244,7 @@ const fetch = async () => {
   loading.value = true;
 
   let params: TCollectionParams<any> = {
-    search: search.value,
+    search: search.value as string,
     filters: filters.value,
   };
 
@@ -270,13 +260,7 @@ const fetch = async () => {
     };
   }
 
-  if (!props.collection[props.collectionMethod || collectionMethodDefault]) {
-    throw Error(`Method "${props.collectionMethod}" not found on Collection`);
-  }
-
-  await props.collection[props.collectionMethod || collectionMethodDefault](
-    params
-  );
+  await props.collection.findAll(params);
 
   nextTick(() => {
     scrollToAnchor(props.hash);

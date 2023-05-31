@@ -3,11 +3,11 @@
     <h2>{{ t("headlines.empty") }}</h2>
     <template v-if="isQueryPresent">
       <p>{{ t("texts.empty.query") }}</p>
-      <div slot="footer" class="empty-box-actions">
-        <Btn @click.native="openGuide">
+      <div class="empty-box-actions">
+        <Btn @click="openGuide">
           {{ t("actions.empty.hangarGuide") }}
         </Btn>
-        <Btn v-if="isPagePresent" @click.native="resetPage">
+        <Btn v-if="isPagePresent" @click="resetPage">
           {{ t("actions.empty.resetPage") }}
         </Btn>
         <Btn :to="{ name: String(route.name) }" :exact="true">
@@ -19,8 +19,8 @@
       <p>
         {{ t("texts.empty.wishlist.info") }}
       </p>
-      <div slot="footer" class="empty-box-actions">
-        <Btn @click.native="openGuide">
+      <div class="empty-box-actions">
+        <Btn @click="openGuide">
           {{ t("actions.empty.hangarGuide") }}
         </Btn>
       </div>
@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 

@@ -3,7 +3,7 @@
     <form
       @submit.prevent="
         () => {
-          filter;
+          update;
         }
       "
     >
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/frontend/stores/App";
@@ -34,9 +34,9 @@ const route = useRoute();
 
 const query = computed(() => (route.query.q || {}) as QuickSearchFormData);
 
-const { filter, updateFilter } = useFilters({
-  [route.meta?.quickSearch]: query.value[route.meta?.quickSearch],
-});
+// const { filter, updateFilter } = useFilters({
+//   [route.meta?.quickSearch]: query.value[route.meta?.quickSearch],
+// });
 
 const quickSearch = ref("");
 
@@ -49,18 +49,18 @@ onMounted(() => {
 });
 
 const update = () => {
-  updateFilter({
-    [route.meta?.quickSearch]: query.value[route.meta?.quickSearch],
-  });
+  // updateFilter({
+  //   [route.meta?.quickSearch]: query.value[route.meta?.quickSearch],
+  // });
 };
 
-watch(
-  () => route,
-  () => {
-    update();
-  },
-  { deep: true }
-);
+// watch(
+//   () => route,
+//   () => {
+//     update();
+//   },
+//   { deep: true }
+// );
 </script>
 
 <script lang="ts">

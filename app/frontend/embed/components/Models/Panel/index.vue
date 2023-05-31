@@ -63,7 +63,7 @@ import { useI18n } from "@/frontend/composables/useI18n";
 import { v4 as uuidv4 } from "uuid";
 
 type Props = {
-  model: Model;
+  model: TModel;
   details?: boolean;
   count?: number;
 };

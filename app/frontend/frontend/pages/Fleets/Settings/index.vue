@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import {
   displaySuccess,
   displayAlert,
