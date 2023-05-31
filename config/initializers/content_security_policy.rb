@@ -21,8 +21,9 @@ Rails.application.configure do
       :self, :data, cable_endpoint, api_endpoint, admin_endpoint, "https://img.youtube.com",
       "https://sentry.io", "https://fonts.googleapis.com", "https://fonts.gstatic.com",
       "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
-      "https://kit-pro.fontawesome.com", "https://kit-free.fontawesome.com",
-      "https://ka-p.fontawesome.com", "https://starship42.com", "https://www.gstatic.com"
+      "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
+      "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
+      "https://www.gstatic.com"
     ]
 
     connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development?
