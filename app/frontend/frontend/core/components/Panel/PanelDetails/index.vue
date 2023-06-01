@@ -1,20 +1,21 @@
 <template>
-  <BCollapse :visible="visible" class="panel-details">
+  <div v-show-slide:400:ease-in-out="visible" class="panel-details">
     <slot />
-  </BCollapse>
+  </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+<script lang="ts" setup>
+type Props = {
+  visible: boolean;
+};
 
-@Component<PanelDetails>({
-  components: {
-    BCollapse,
-  },
-})
-export default class PanelDetails extends Vue {
-  @Prop({ default: false }) visible!: boolean;
-}
+withDefaults(defineProps<Props>(), {
+  visible: false,
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "PanelDetails",
+};
 </script>

@@ -9,7 +9,7 @@
           class="text-right metrics-title"
           @click="toggle"
         >
-          {{ $t("labels.metrics.topView") }}
+          {{ t("labels.metrics.topView") }}
           <i class="fa fa-chevron-right" />
         </div>
       </div>
@@ -19,98 +19,104 @@
         class="col-12 compare-row-item"
       />
     </div>
-    <BCollapse id="topView" :visible="visible">
-      <div class="row compare-row">
-        <div
-          class="col-12 compare-row-label text-right metrics-label sticky-left"
-        />
-        <div
-          v-for="model in models"
-          :key="`${model.slug}-top-view`"
-          class="col-6 text-center compare-row-item compare-row-item-top-view"
-        >
-          <FleetchartItemImage
-            :label="model.name"
-            :src="model.sideViewSmall"
-            :width="length(model)"
-            max-width="100%"
+
+    <div id="topView" v-show-slide:400:ease-in-out="visible" class="row">
+      <div class="col-12">
+        <div class="row compare-row">
+          <div
+            class="col-12 compare-row-label text-right metrics-label sticky-left"
           />
+          <div
+            v-for="model in models"
+            :key="`${model.slug}-top-view`"
+            class="col-6 text-center compare-row-item compare-row-item-top-view"
+          >
+            <FleetchartItemImage
+              :label="model.name"
+              :src="model.media.sideView?.small"
+              :width="length(model)"
+              max-width="100%"
+            />
+          </div>
+        </div>
+        <div class="row compare-row">
+          <div
+            class="col-12 compare-row-label text-right metrics-label sticky-left"
+          />
+          <div
+            v-for="model in models"
+            :key="`${model.slug}-top-view`"
+            class="col-6 text-center compare-row-item compare-row-item-top-view"
+          >
+            <FleetchartItemImage
+              :label="model.name"
+              :src="model.media.topView?.small"
+              :width="length(model)"
+              max-width="100%"
+            />
+          </div>
         </div>
       </div>
-      <div class="row compare-row">
-        <div
-          class="col-12 compare-row-label text-right metrics-label sticky-left"
-        />
-        <div
-          v-for="model in models"
-          :key="`${model.slug}-top-view`"
-          class="col-6 text-center compare-row-item compare-row-item-top-view"
-        >
-          <FleetchartItemImage
-            :label="model.name"
-            :src="model.topViewSmall"
-            :width="length(model)"
-            max-width="100%"
-          />
-        </div>
-      </div>
-    </BCollapse>
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+<script lang="ts" setup>
 import FleetchartItemImage from "@/frontend/components/Fleetchart/List/Item/Image/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<ModelsCompareTopView>({
-  components: {
-    BCollapse,
-    FleetchartItemImage,
-  },
-})
-export default class ModelsCompareTopView extends Vue {
-  @Prop({ required: true }) models!: Model[];
+type Props = {
+  models: Model[];
+};
 
-  visible = false;
+const props = defineProps<Props>();
 
-  get maxWidth() {
-    if (!this.$refs.compareTopView) {
-      return 0;
-    }
+const { t } = useI18n();
 
-    return this.$refs.compareTopView.offsetWidth / 4;
+const visible = ref(false);
+
+const compareTopView = ref<HTMLElement | null>(null);
+const maxWidth = computed(() => {
+  if (!compareTopView.value) {
+    return 0;
   }
 
-  get scale() {
-    if (this.models.length <= 0) {
-      return 0;
-    }
+  return compareTopView.value.offsetWidth / 4;
+});
 
-    const maxLength = Math.max(
-      ...this.models.map((model) => model.fleetchartLength),
-      0
-    );
-
-    return this.maxWidth / (maxLength * 3);
+const scale = computed(() => {
+  if (props.models.length <= 0) {
+    return 0;
   }
 
-  length(model) {
-    return model.fleetchartLength * 3 * this.scale;
-  }
+  const maxLength = Math.max(
+    ...props.models.map((model) => model.fleetchartLength),
+    0
+  );
 
-  mounted() {
-    this.visible = this.models.length > 0;
-  }
+  return maxWidth.value / (maxLength * 3);
+});
 
-  @Watch("models")
-  onModelsChange() {
-    this.visible = this.models.length > 0;
-  }
+const length = (model: Model) => model.fleetchartLength * 3 * scale.value;
 
-  toggle() {
-    this.visible = !this.visible;
+onMounted(() => {
+  visible.value = props.models.length > 0;
+});
+
+watch(
+  () => props.models,
+  () => {
+    visible.value = props.models.length > 0;
   }
-}
+);
+
+const toggle = () => {
+  visible.value = !visible.value;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelsCompareTopView",
+};
 </script>

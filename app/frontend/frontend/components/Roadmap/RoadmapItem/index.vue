@@ -8,7 +8,7 @@
     <div v-lazy:background-image="storeImage" class="item-image lazy">
       <div
         v-if="recentlyUpdated"
-        v-tooltip="$t('labels.roadmap.recentlyUpdated')"
+        v-tooltip="t('labels.roadmap.recentlyUpdated')"
         class="roadmap-item-updated"
       />
     </div>
@@ -18,48 +18,45 @@
           {{ item.name }}
         </span>
         <small>
-          <div v-tooltip="$t('labels.roadmap.lastUpdate')" class="text-muted">
-            <span>{{ item.lastVersionChangedAtLabel }}</span>
-            <i
-              v-tooltip="item.lastVersionChangedAtLabel"
-              class="far fa-clock"
-            />
+          <div v-tooltip="t('labels.roadmap.lastUpdate')" class="text-muted">
+            <span>{{ lastVersionChangedAtLabel }}</span>
+            <i v-tooltip="lastVersionChangedAtLabel" class="far fa-clock" />
           </div>
           <div
-            v-if="item.committed"
-            v-tooltip="$t('labels.roadmap.committed')"
+            v-if="committed"
+            v-tooltip="t('labels.roadmap.committed')"
             class="roadmap-item-committed"
           >
-            <span class="text-muted">{{ $t("labels.roadmap.committed") }}</span>
+            <span class="text-muted">{{ t("labels.roadmap.committed") }}</span>
             <i class="far fa-check" />
           </div>
         </small>
       </h3>
       <p v-if="!compact">{{ description }}</p>
-      <ul v-if="item.lastVersion && !compact">
+      <ul v-if="lastVersion && !compact">
         <li v-for="(update, index) in updates" :key="index">
           <template v-if="update.key === 'release' && !update.old">
             {{
-              $t("labels.roadmap.lastVersion.addedToRelease", {
-                release: update.new,
+              t("labels.roadmap.lastVersion.addedToRelease", {
+                release: String(update.new),
               })
             }}
           </template>
           <template v-else-if="update.key === 'released'">
-            {{ $t(`labels.roadmap.lastVersion.released`) }}
+            {{ t(`labels.roadmap.lastVersion.released`) }}
           </template>
           <template v-else-if="update.key === 'commited'">
-            {{ $t(`labels.roadmap.lastVersion.committed`) }}
+            {{ t(`labels.roadmap.lastVersion.committed`) }}
           </template>
           <template v-else-if="update.key === 'active'">
-            {{ $t(`labels.roadmap.lastVersion.active.${update.change}`) }}
+            {{ t(`labels.roadmap.lastVersion.active.${update.change}`) }}
           </template>
           <template v-else>
             {{
-              $t(`labels.roadmap.lastVersion.${update.key}`, {
-                old: update.old,
-                new: update.new,
-                count: update.count,
+              t(`labels.roadmap.lastVersion.${update.key}`, {
+                old: String(update.old),
+                new: String(update.new),
+                count: String(update.count),
               })
             }}
           </template>
@@ -69,126 +66,155 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import { isBefore, addHours } from "date-fns";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-// TODO: move to collection model or use openapi schema types when available
-type RoadmapItemData = {
-  name: string;
-  description: string;
-  lastVersionChangedAt: Date;
-  lastVersion: {
-    active: {
-      change: string;
-      count: number;
-    }[];
-    released: boolean;
-    committed: boolean;
-  };
-  recentlyUpdated: boolean;
-  storeImage: string;
+const { t } = useI18n();
+
+type Props = {
+  item: RoadmapItem | Model;
+  compact?: boolean;
+  showProgress?: boolean;
+  active?: boolean;
 };
 
-@Component<RoadmapItem>({
-  components: {
-    Panel,
-  },
-})
-export default class RoadmapItem extends Vue {
-  @Prop({ required: true }) item!: RoadmapItemData;
+const props = withDefaults(defineProps<Props>(), {
+  compact: true,
+  showProgress: true,
+  active: false,
+});
 
-  @Prop({ default: true }) compact!: boolean;
-
-  @Prop({ default: true }) showProgress!: boolean;
-
-  @Prop({ default: null }) active!: boolean;
-
-  get storeImage() {
-    if (this.item.storeImageSmall) {
-      return this.item.storeImageSmall;
-    }
-
-    return `https://robertsspaceindustries.com${this.item.image}`;
+const storeImage = computed(() => {
+  if (props.item.media.storeImage?.small) {
+    return props.item.media.storeImage.small;
   }
 
-  get description() {
-    if (this.item.body) {
-      return this.item.body;
-    }
-
-    return this.item.description;
+  if ((props.item as RoadmapItem).image) {
+    return `https://robertsspaceindustries.com${
+      (props.item as RoadmapItem).image
+    }`;
   }
 
-  get recentlyUpdated() {
-    return isBefore(
-      new Date(),
-      addHours(new Date(this.item.lastVersionChangedAt), 24)
+  return null;
+});
+
+const lastVersionChangedAtLabel = computed(() => {
+  if ((props.item as RoadmapItem).lastVersionChangedAtLabel) {
+    return (props.item as RoadmapItem).lastVersionChangedAtLabel;
+  }
+
+  return null;
+});
+
+const committed = computed(() => {
+  if ((props.item as RoadmapItem).committed) {
+    return (props.item as RoadmapItem).committed;
+  }
+
+  return null;
+});
+
+const lastVersion = computed(() => {
+  if ((props.item as RoadmapItem).lastVersion) {
+    return (props.item as RoadmapItem).lastVersion;
+  }
+
+  return null;
+});
+
+const description = computed(() => {
+  if ((props.item as RoadmapItem).body) {
+    return (props.item as RoadmapItem).body;
+  }
+
+  return props.item.description;
+});
+
+const recentlyUpdated = computed(() =>
+  isBefore(
+    new Date(),
+    addHours(new Date((props.item as RoadmapItem).lastVersionChangedAt), 24)
+  )
+);
+
+const cssClasses = computed(() => ({
+  compact: props.compact,
+  inactive: !(props.item as RoadmapItem).active && !props.active,
+}));
+
+const inactiveTooltip = computed(() => {
+  if (!(props.item as RoadmapItem).active) {
+    return t("texts.roadmap.inactive");
+  }
+  return null;
+});
+
+const updates = computed(() => {
+  if (!props.item) {
+    return [];
+  }
+
+  const { lastVersion } = props.item as RoadmapItem;
+
+  if (!lastVersion) {
+    return [];
+  }
+
+  return ["committed", "release", "released", "active"]
+    .filter((key) => lastVersion[key as keyof RoadmapVersionItem])
+    .map((key) => {
+      let count = null;
+      if (key === "committed") {
+        const oldValue = lastVersion.committed[0];
+        const newValue = lastVersion.committed[1];
+        count = Number(newValue) - Number(oldValue);
+      }
+
+      let change = null;
+      if (count) {
+        change = count < 0 ? "decreased" : "increased";
+      }
+
+      return {
+        key,
+        change,
+        old: lastVersion[key as keyof RoadmapVersionItem][0],
+        new: lastVersion[key as keyof RoadmapVersionItem][1],
+        count,
+      };
+    })
+    .filter(
+      (update) =>
+        update.key !== "released" || (update.key === "released" && update.old)
+    )
+    .filter(
+      (update) =>
+        update.key !== "commited" || (update.key === "commited" && update.old)
+    )
+    .filter(
+      (update) =>
+        update.key !== "active" || (update.key === "active" && update.old)
     );
-  }
+});
 
-  get cssClasses() {
-    return {
-      compact: this.compact,
-      inactive: !this.item.active && !this.active,
-    };
-  }
+const comlink = useComlink();
 
-  get inactiveTooltip() {
-    if (!this.item.active) {
-      return this.$t("texts.roadmap.inactive");
-    }
-    return null;
-  }
+const openModal = () => {
+  comlink.$emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Roadmap/RoadmapItem/Modal/index.vue"),
+    props: {
+      item: props.item,
+    },
+  });
+};
+</script>
 
-  get updates() {
-    if (!this.item) {
-      return [];
-    }
-
-    const { lastVersion } = this.item;
-
-    if (!lastVersion) {
-      return [];
-    }
-
-    return ["committed", "release", "released", "active"]
-      .filter((key) => lastVersion[key])
-      .map((key) => {
-        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10);
-
-        return {
-          key,
-          change: count < 0 ? "decreased" : "increased",
-          old: lastVersion[key][0],
-          new: lastVersion[key][1],
-          count,
-        };
-      })
-      .filter(
-        (update) =>
-          update.key !== "released" || (update.key === "released" && update.old)
-      )
-      .filter(
-        (update) =>
-          update.key !== "commited" || (update.key === "commited" && update.old)
-      )
-      .filter(
-        (update) =>
-          update.key !== "active" || (update.key === "active" && update.old)
-      );
-  }
-
-  openModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Roadmap/RoadmapItem/Modal/index.vue"),
-      props: {
-        item: this.item,
-      },
-    });
-  }
-}
+<script lang="ts">
+export default {
+  name: "RoadmapItem",
+};
 </script>

@@ -41,6 +41,12 @@ export default {
     scmSpeedDecceleration: "SCM to Zero",
     maxSpeedAcceleration: "Zero to Max",
     maxSpeedDecceleration: "Max to Zero",
+    compare: {
+      groundMaxSpeed: "Max Ground Speed",
+      groundReverseSpeed: "Reverse Ground Speed",
+      groundAcceleration: "Ground Acceleration",
+      groundDecceleration: "Ground Decceleration",
+    },
     quantumFuelTankSize: "Quantum Fuel",
     hydrogenFuelTankSize: "Fuel",
     pledgePrice: "Pledge Price",

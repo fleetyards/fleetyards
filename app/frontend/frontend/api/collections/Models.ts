@@ -18,7 +18,7 @@ export class ModelsCollection extends BaseCollection {
     return [15, 30, 60, 120, 240];
   }
 
-  updatePerPage(perPage) {
+  updatePerPage(perPage: number | string) {
     Store.dispatch("models/updatePerPage", perPage);
   }
 
@@ -62,6 +62,16 @@ export class ModelsCollection extends BaseCollection {
 
   async latest(): Promise<Model[]> {
     const response = await get("models/latest");
+
+    if (!response.error) {
+      this.records = response.data;
+    }
+
+    return this.records;
+  }
+
+  async unscheduled(): Promise<Model[]> {
+    const response = await get("models/unscheduled");
 
     if (!response.error) {
       this.records = response.data;

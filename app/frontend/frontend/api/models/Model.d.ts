@@ -12,6 +12,7 @@ type Model = {
   manufacturer: Manufacturer;
   fleetchartLength: number;
   isGroundVehicle: boolean;
+  hasPaints: boolean;
   metrics: {
     size: string;
     sizeLabel: string;
@@ -94,6 +95,7 @@ type Model = {
   lastUpdatedAt: string;
   lastUpdatedAtLabel: string;
   count?: number;
+  hardpoints: ModelHardpoint[];
 };
 
 type ModelsFilter = {

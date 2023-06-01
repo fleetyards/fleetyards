@@ -4,7 +4,7 @@
       <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 class="sr-only">
-          {{ $t("headlines.roadmap") }}
+          {{ t("headlines.roadmap") }}
         </h1>
       </div>
     </div>
@@ -19,7 +19,7 @@
             {{ toggleCompactTooltip }}
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t("labels.rsiRoadmap") }}
+            {{ t("labels.rsiRoadmap") }}
           </Btn>
         </div>
       </div>
@@ -34,24 +34,24 @@
           >
             <h2
               :class="{
-                open: visible.includes(release),
+                open: visible.includes(String(release)),
               }"
               class="toggleable"
-              @click="toggle(release)"
+              @click="toggle(String(release))"
             >
               <span class="title">{{ release }}</span>
               <span v-if="items[0].releaseDescription" class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
-                {{ $t("labels.roadmap.ships", { count: items.length }) }}
+                {{ t("labels.roadmap.ships", { count: String(items.length) }) }}
               </small>
               <i class="fa fa-chevron-right" />
             </h2>
 
-            <BCollapse
+            <div
               :id="`${release}-cards`"
-              :visible="visible.includes(release)"
+              v-show-slide:400:ease-in-out="visible.includes(String(release))"
             >
               <div class="row">
                 <div
@@ -62,7 +62,7 @@
                   <RoadmapItem :item="item" :compact="compact" />
                 </div>
               </div>
-            </BCollapse>
+            </div>
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
@@ -77,20 +77,21 @@
               @click="toggle('unscheduled')"
             >
               <span class="title">
-                {{ $t("labels.roadmap.unscheduled") }}
+                {{ t("labels.roadmap.unscheduled") }}
               </span>
               <small class="text-muted">
                 {{
-                  $t("labels.roadmap.ships", {
-                    count: unscheduledModels.length,
+                  t("labels.roadmap.ships", {
+                    count: String(unscheduledModels.length),
                   })
                 }}
               </small>
               <i class="fa fa-chevron-right" />
             </h2>
-            <BCollapse
+
+            <div
               id="unscheduled-cards"
-              :visible="visible.includes('unscheduled')"
+              v-show-slide:400:ease-in-out="visible.includes('unscheduled')"
             >
               <div class="row">
                 <div
@@ -106,7 +107,7 @@
                   />
                 </div>
               </div>
-            </BCollapse>
+            </div>
           </div>
         </div>
       </div>
@@ -114,177 +115,146 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
 import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import { useCable } from "@/frontend/composables/useCable";
+import type { Subscription } from "@rails/actioncable";
+import { useI18n } from "@/frontend/composables/useI18n";
+import modelsCollection from "@/frontend/api/collections/Models";
+import roadmapItemsCollection from "@/frontend/api/collections/RoadmapItems";
 
-@Component<ShipsRoadmap>({
-  components: {
-    BCollapse,
-    Loader,
-    EmptyBox,
-    RoadmapItem,
-    Btn,
-    BreadCrumbs,
+const { t } = useI18n();
+const loading = ref(true);
+
+const onlyReleased = ref(true);
+
+const compact = ref(true);
+
+const roadmapItems = ref<RoadmapItem[]>([]);
+
+const visible = ref<string[]>([]);
+
+const unscheduledModels = ref<Model[]>([]);
+
+const roadmapChannel = ref<Subscription | null>(null);
+
+const toggleCompactTooltip = computed(() => {
+  if (compact.value) {
+    return t("actions.showDetails");
+  }
+
+  return t("actions.hideDetails");
+});
+
+const emptyBoxVisible = computed(
+  () => !loading.value && roadmapItems.value.length === 0
+);
+
+const filteredItems = computed<RoadmapItem[]>(() => {
+  const items = roadmapItems.value.filter((item) => item.model);
+
+  if (onlyReleased.value) {
+    return items.filter((item) => !item.released);
+  }
+
+  return items;
+});
+
+const groupedByRelease = computed<RoadmapItemsByRelease>(() =>
+  filteredItems.value.reduce((rv, x) => {
+    const value: RoadmapItemsByRelease = { ...rv };
+
+    value[x.release] = (rv as RoadmapItemsByRelease)[x.release] || [];
+    value[x.release].push(x);
+
+    return value;
+  }, {})
+);
+
+const crumbs = computed(() => [
+  {
+    to: {
+      name: "roadmap",
+    },
+    label: t("nav.roadmap.index"),
   },
-})
-export default class ShipsRoadmap extends Vue {
-  loading = true;
+]);
 
-  onlyReleased = true;
+onMounted(() => {
+  fetch();
+  setupUpdates();
+});
 
-  compact = true;
+onUnmounted(() => {
+  if (roadmapChannel.value) {
+    roadmapChannel.value.unsubscribe();
+  }
+});
 
-  roadmapItems = [];
+const cable = useCable();
 
-  visible = [];
+const setupUpdates = () => {
+  if (roadmapChannel.value) {
+    roadmapChannel.value.unsubscribe();
+  }
 
-  unscheduledModels = [];
-
-  roadmapChannel = null;
-
-  get toggleCompactTooltip() {
-    if (this.compact) {
-      return this.$t("actions.showDetails");
+  roadmapChannel.value = cable.consumer.subscriptions.create(
+    {
+      channel: "RoadmapChannel",
+    },
+    {
+      received: fetch,
     }
+  );
+};
 
-    return this.$t("actions.hideDetails");
+const toggleCompact = () => {
+  compact.value = !compact.value;
+};
+
+const toggle = (release: string) => {
+  if (visible.value.includes(release)) {
+    const index = visible.value.indexOf(release);
+
+    visible.value.splice(index, 1);
+
+    return null;
   }
+  return visible.value.push(release);
+};
 
-  get releasedToggleLabel() {
-    if (this.onlyReleased) {
-      return this.$t("actions.showReleased");
+const openReleased = () => {
+  Object.keys(groupedByRelease.value).forEach((release) => {
+    const items = groupedByRelease.value[release];
+    if (items.length && !items[0].released) {
+      visible.value.push(release);
     }
-    return this.$t("actions.hideReleased");
-  }
+  });
+};
 
-  get emptyBoxVisible() {
-    return !this.loading && this.roadmapItems.length === 0;
-  }
+const fetch = async () => {
+  loading.value = true;
 
-  get filteredItems() {
-    const items = this.roadmapItems.filter((item) => item.model);
+  roadmapItems.value = await roadmapItemsCollection.ships();
 
-    if (this.onlyReleased) {
-      return items.filter((item) => !item.released);
-    }
+  loading.value = false;
 
-    return items;
-  }
+  await fetchModels();
 
-  get groupedByRelease() {
-    return this.filteredItems.reduce((rv, x) => {
-      const value = { ...rv };
+  openReleased();
+};
 
-      value[x.release] = rv[x.release] || [];
-      value[x.release].push(x);
+const fetchModels = async () => {
+  unscheduledModels.value = await modelsCollection.unscheduled();
+};
+</script>
 
-      return value;
-    }, {});
-  }
-
-  get otherModels() {
-    return this.models;
-  }
-
-  get modelsOnRoadmap() {
-    return this.roadmapItems
-      .filter((item) => item.model)
-      .map((item) => item.model.id)
-      .filter((item) => item);
-  }
-
-  get crumbs() {
-    return [
-      {
-        to: {
-          name: "roadmap",
-        },
-        label: this.$t("nav.roadmap.index"),
-      },
-    ];
-  }
-
-  mounted() {
-    this.fetch();
-    this.setupUpdates();
-  }
-
-  beforeDestroy() {
-    if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe();
-    }
-  }
-
-  setupUpdates() {
-    if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe();
-    }
-
-    this.roadmapChannel = this.$cable.consumer.subscriptions.create(
-      {
-        channel: "RoadmapChannel",
-      },
-      {
-        received: this.fetch,
-      }
-    );
-  }
-
-  toggleReleased() {
-    this.onlyReleased = !this.onlyReleased;
-  }
-
-  toggleCompact() {
-    this.compact = !this.compact;
-  }
-
-  toggle(release) {
-    if (this.visible.includes(release)) {
-      const index = this.visible.indexOf(release);
-      this.visible.splice(index, 1);
-      return null;
-    }
-    return this.visible.push(release);
-  }
-
-  openReleased() {
-    Object.keys(this.groupedByRelease).forEach((release) => {
-      const items = this.groupedByRelease[release];
-      if (items.length && !items[0].released) {
-        this.visible.push(release);
-      }
-    });
-  }
-
-  async fetch() {
-    this.loading = true;
-    const response = await this.$api.get("roadmap?ships=1", {
-      q: {
-        rsiCategoryIdIn: [6],
-        activeEq: true,
-      },
-    });
-    this.loading = false;
-
-    if (!response.error) {
-      this.roadmapItems = response.data;
-      await this.fetchModels();
-      this.openReleased();
-    }
-  }
-
-  async fetchModels() {
-    const response = await this.$api.get("models/unscheduled");
-    if (!response.error) {
-      this.unscheduledModels = response.data;
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "RoadmapShipsPage",
+};
 </script>
