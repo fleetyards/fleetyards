@@ -1,0 +1,113 @@
+.filter-group2 {
+  position: relative;
+  margin-bottom: 15px;
+
+  .filter-group-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .filter-group-item-label {
+      padding-right: 14px;
+      flex-grow: 1;
+    }
+
+    i,
+    svg {
+      transition: all 0.5s ease;
+    }
+  }
+
+  .filter-group-search {
+    border: 1px solid $input-border;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .filter-group-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 200px;
+    height: 43px;
+    padding: 0 12px;
+    font-weight: bold;
+    background: rgba($input-bg, 0.9);
+    border: 1px solid $input-border;
+    border-radius: $border-radius-base;
+    cursor: pointer;
+
+    i,
+    svg {
+      display: block;
+      margin-left: 15px;
+      margin-right: 3px;
+    }
+
+    .filter-group-title-prompt {
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &:hover {
+      color: white;
+      background: $input-bg;
+    }
+
+    &.active {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+
+      i,
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &.hasLabel {
+      color: $input-placerholder;
+      font-weight: normal;
+    }
+
+    &.selected {
+      color: white;
+      font-weight: bold;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .filter-group-items {
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: rgba($gray-darker, 0.95);
+    border: 1px solid $input-border;
+    border-top: none;
+    border-bottom-right-radius: $border-radius-base;
+    border-bottom-left-radius: $border-radius-base;
+  }
+
+  .filter-group-items-wrapper {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 3px rgba(black, 0.9);
+  }
+}
+
+.has-error .filter-group-title {
+  border-color: darken($danger, 15%);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}

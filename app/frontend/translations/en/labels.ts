@@ -382,6 +382,7 @@ export default {
     selectGroup: "Select a Group",
     modelPaintSelect: {
       nullablePrompt: "Select a Paint",
+      label: "Paint",
     },
     bulkGroupEdit: {
       hint: "Existing Groups will be overridden!",
@@ -580,6 +581,7 @@ export default {
   filterGroup: {
     nullablePrompt: "No Option selected",
     prompt: "Please select an Option",
+    removeTooltip: "Click to remove Option",
   },
   newVehicle: {
     nullablePrompt: "Select a Ship",

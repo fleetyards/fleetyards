@@ -1,18 +1,16 @@
 <template>
   <Modal v-if="vehicle && form">
     <template #title>
-      <span>{{ $t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
+      <span>{{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
       <small v-if="vehicle.serial" class="text-muted">
         {{ vehicle.serial }}
       </small>
-      <template v-if="vehicle.name">
-        <br />
+      <br />
 
-        <small class="text-muted">
-          <span v-html="vehicle.model.manufacturer.name" />
-          {{ vehicle.model.name }}
-        </small>
-      </template>
+      <small class="text-muted">
+        <span v-html="vehicle.model.manufacturer.name" />
+        {{ vehicle.model.name }}
+      </small>
     </template>
 
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
@@ -23,7 +21,7 @@
               v-if="!wishlist"
               id="flagship"
               v-model="form.flagship"
-              :label="$t('labels.vehicle.flagship')"
+              :label="t('labels.vehicle.flagship')"
             />
           </div>
           <div
@@ -31,17 +29,14 @@
             class="col-12 col-md-6"
           >
             <div class="form-group">
-              <FilterGroup
-                :key="`paints-${vehicle.model.id}`"
+              <FilterGroup2
+                :key="`paints-new-${vehicle.model.id}`"
                 v-model="form.modelPaintId"
                 translation-key="vehicle.modelPaintSelect"
-                :fetch-path="`models/${vehicle.model.slug}/paints`"
+                :fetch="fetchPaints"
                 name="modelPaintId"
-                value-attr="id"
-                icon-attr="storeImageSmall"
                 :big-icon="true"
                 :nullable="true"
-                :no-label="true"
               />
             </div>
           </div>
@@ -53,12 +48,12 @@
               v-if="wishlist"
               id="saleNotify"
               v-model="form.saleNotify"
-              :label="$t('labels.vehicle.saleNotify')"
+              :label="t('labels.vehicle.saleNotify')"
             />
             <Checkbox
               id="public"
               v-model="form.public"
-              :label="$t('labels.vehicle.public')"
+              :label="t('labels.vehicle.public')"
             />
           </div>
           <div class="col-12 col-md-6">
@@ -67,7 +62,7 @@
                 v-slot="{ errors }"
                 vid="boughtVia"
                 rules="required"
-                :name="$t('labels.vehicle.boughtVia')"
+                :name="t('labels.vehicle.boughtVia')"
                 :slim="true"
               >
                 <FilterGroup
@@ -96,22 +91,23 @@
           data-test="vehicle-save"
           :inline="true"
         >
-          {{ $t("actions.save") }}
+          {{ t("actions.save") }}
         </Btn>
       </div>
     </template>
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
 type VehicleFormData = {
   flagship: boolean;
@@ -121,68 +117,110 @@ type VehicleFormData = {
   modelPaintId?: string;
 };
 
-@Component<VehicleModal>({
-  components: {
-    Modal,
-    Checkbox,
-    FormInput,
-    FilterGroup,
-    Btn,
+type Props = {
+  vehicle: Vehicle;
+  wishlist: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  wishlist: false,
+});
+
+const { t } = useI18n();
+
+const submitting = ref(false);
+
+const form = ref<VehicleFormData | null>(null);
+
+const vehicleName = computed(() => {
+  if (props.vehicle.name) {
+    return props.vehicle.name;
+  }
+
+  return props.vehicle.model.name;
+});
+
+onMounted(() => {
+  setupForm();
+});
+
+watch(
+  () => props.vehicle,
+  () => {
+    setupForm();
   },
-})
-export default class VehicleModal extends Vue {
-  @Prop({ required: true }) vehicle!: Vehicle;
+  { deep: true }
+);
 
-  @Prop({ default: false }) wishlist!: boolean;
+const setupForm = () => {
+  form.value = {
+    flagship: props.vehicle.flagship,
+    public: props.vehicle.public,
+    saleNotify: props.vehicle.saleNotify,
+    modelPaintId: props.vehicle.paint?.id,
+    boughtVia: props.vehicle.boughtVia,
+  };
+};
 
-  submitting = false;
+const comlink = useComlink();
 
-  form: VehicleFormData | null = null;
-
-  get vehicleName() {
-    if (this.vehicle && this.vehicle.name) {
-      return this.vehicle.name;
-    }
-
-    return this.vehicle.model.name;
+const save = async () => {
+  if (!form.value) {
+    return;
   }
 
-  mounted() {
-    this.setupForm();
+  submitting.value = true;
+
+  const response = await vehiclesCollection.update(
+    props.vehicle.id,
+    form.value
+  );
+
+  submitting.value = false;
+
+  if (!response.error) {
+    comlink.$emit("close-modal");
+  }
+};
+
+const fetchPaints = async (params?: TFilterGroupParams) => {
+  if (!props.vehicle.model.hasPaints) {
+    return [];
   }
 
-  @Watch("vehicle")
-  onVehicleChange() {
-    this.setupForm();
-  }
+  const filters: ModelPaintFilters = {
+    modelSlugEq: props.vehicle.model.slug,
+  };
 
-  setupForm() {
-    this.form = {
-      flagship: this.vehicle.flagship,
-      public: this.vehicle.public,
-      saleNotify: this.vehicle.saleNotify,
-      modelPaintId: this.vehicle.paint?.id,
-      boughtVia: this.vehicle.boughtVia,
-    };
-  }
-
-  async save() {
-    if (!this.form) {
-      return;
-    }
-
-    this.submitting = true;
-
-    const response = await vehiclesCollection.update(
-      this.vehicle.id,
-      this.form
-    );
-
-    this.submitting = false;
-
-    if (!response.error) {
-      this.$comlink.$emit("close-modal");
+  if (params?.search) {
+    filters.nameCont = params.search;
+  } else if (params?.missing) {
+    if (Array.isArray(params.missing)) {
+      filters.idIn = params.missing;
+    } else {
+      filters.idEq = params.missing;
     }
   }
-}
+
+  const data = await modelPaintsCollection.findAll({
+    filters,
+    page: params?.page || 1,
+  });
+
+  if (!data) {
+    return [];
+  }
+
+  return data.map((paint) => ({
+    label: paint.name,
+    value: paint.id,
+    icon: paint.media.storeImage?.small,
+  }));
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "VehicleEditModal",
+};
 </script>

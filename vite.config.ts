@@ -87,6 +87,13 @@ export default defineConfig({
       allow: [".", accessEnv("FLEETYARDS_NODE_MODULES", "node_modules")],
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/stylesheets/variables.scss";`,
+      },
+    },
+  },
   define: {
     "process.env": {},
   },

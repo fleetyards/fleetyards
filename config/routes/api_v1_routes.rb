@@ -41,6 +41,8 @@ v1_api_routes = lambda do
     end
   end
 
+  resources :model_paints, path: "model-paints", only: %i[index]
+
   resources :manufacturers, param: :slug, only: %i[index] do
     collection do
       get "with-models" => "manufacturers#with_models"

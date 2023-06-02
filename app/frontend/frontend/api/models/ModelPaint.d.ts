@@ -1,9 +1,12 @@
-type ModelPaintsFilter = {
-  nameCont: string;
+type ModelPaintFilters = {
+  modelSlugEq?: string;
+  nameCont?: string;
+  idIn?: string[];
+  idEq?: string;
 };
 
 interface ModelPaintParams extends CollectionParams {
-  filters: ModelPaintsFilter;
+  filters: ModelPaintFilters;
 }
 
 type ModelPaint = {
