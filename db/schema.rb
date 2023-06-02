@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_195635) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_02_084203) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -290,6 +290,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_195635) do
     t.boolean "public_fleet", default: false
     t.text "description"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
+  end
+
+  create_table "flipper_features", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_flipper_features_on_key", unique: true
+  end
+
+  create_table "flipper_gates", force: :cascade do |t|
+    t.string "feature_key", null: false
+    t.string "key", null: false
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
   end
 
   create_table "habitations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -659,6 +675,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_195635) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
+  create_table "oauth_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_oauth_connections_on_user_id"
+  end
+
   create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.integer "rsi_category_id"
@@ -887,6 +912,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_195635) do
     t.boolean "public_wishlist", default: false
     t.boolean "hide_owner", default: false, null: false
     t.datetime "last_active_at"
+    t.boolean "tester", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
@@ -968,4 +994,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_195635) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "oauth_connections", "users"
 end
