@@ -132,18 +132,5 @@ export default class Signup extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheets/variables";
-
-form {
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-button[type="submit"] {
-  transition: color $transition-base-speed ease;
-
-  .confirmed {
-    color: green;
-  }
-}
+@import "./index.scss";
 </style>

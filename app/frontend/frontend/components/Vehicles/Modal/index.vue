@@ -108,6 +108,7 @@ import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type VehicleFormData = {
   flagship: boolean;
