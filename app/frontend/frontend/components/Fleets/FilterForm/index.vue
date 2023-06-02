@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="() => filter">
+  <form @submit.prevent="submit">
     <FormInput
       id="model-name"
       v-model="form.modelNameCont"
@@ -218,6 +218,10 @@ type FleetsFilterForm = {
   memberIn?: string[];
 };
 
+const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
+
+const form = ref<FleetsFilterForm>({});
+
 const booleanOptions = booleanFilterOptions;
 const priceOptions = priceFilterOptions;
 const pledgePriceOptions = pledgePriceFilterOptions;
@@ -226,10 +230,30 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
+const { resetFilter, isFilterSelected, filter } = useFilters("q");
 
-const { resetFilter, isFilterSelected, filter, form, updateFilter } =
-  useFilters({
+watch(
+  () => route.query,
+  () => {
+    setupForm();
+  },
+  { deep: true }
+);
+
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  setupForm();
+});
+
+const setupForm = () => {
+  form.value = {
     modelNameCont: query.value.modelNameCont,
     onSaleEq: query.value.onSaleEq,
     loanerEq: query.value.loanerEq,
@@ -247,33 +271,12 @@ const { resetFilter, isFilterSelected, filter, form, updateFilter } =
     pledgePriceIn: query.value.pledgePriceIn || [],
     productionStatusIn: query.value.productionStatusIn || [],
     memberIn: query.value.memberIn || [],
-  });
+  };
+};
 
-watch(
-  () => route.query,
-  () => {
-    updateFilter({
-      modelNameCont: query.value.modelNameCont,
-      onSaleEq: query.value.onSaleEq,
-      loanerEq: query.value.loanerEq,
-      priceLteq: query.value.priceLteq,
-      priceGteq: query.value.priceGteq,
-      pledgePriceLteq: query.value.pledgePriceLteq,
-      pledgePriceGteq: query.value.pledgePriceGteq,
-      lengthLteq: query.value.lengthLteq,
-      lengthGteq: query.value.lengthGteq,
-      manufacturerIn: query.value.manufacturerIn || [],
-      classificationIn: query.value.classificationIn || [],
-      focusIn: query.value.focusIn || [],
-      sizeIn: query.value.sizeIn || [],
-      priceIn: query.value.priceIn || [],
-      pledgePriceIn: query.value.pledgePriceIn || [],
-      productionStatusIn: query.value.productionStatusIn || [],
-      memberIn: query.value.memberIn || [],
-    });
-  },
-  { deep: true }
-);
+const submit = () => {
+  filter(form.value);
+};
 </script>
 
 <script lang="ts">

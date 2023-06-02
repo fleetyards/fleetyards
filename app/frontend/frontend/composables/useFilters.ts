@@ -1,7 +1,7 @@
 import { debounce } from "ts-debounce";
 import { useRouter, useRoute } from "vue-router/composables";
 
-type FormData = {
+export type TFilterData = {
   [key: string]:
     | string
     | number
@@ -12,44 +12,42 @@ type FormData = {
     | undefined;
 };
 
-const getQuery = (formData: FormData) => {
-  const q = JSON.parse(JSON.stringify(formData));
+const getQuery = (formData: TFilterData) => {
+  const query = JSON.parse(JSON.stringify(formData));
 
-  Object.keys(q)
-    .filter((key) => !q[key] || q[key].length === 0)
-    .forEach((key) => delete q[key]);
+  Object.keys(query)
+    .filter((key) => !query[key] || query[key].length === 0)
+    .forEach((key) => delete query[key]);
 
-  return q;
+  return query;
 };
 
-export const useFilters = (formData: FormData) => {
-  const form = ref<FormData>(formData);
-
+export const useFilters = (routeQueryKey = "query") => {
   const route = useRoute();
 
-  const isFilterSelected = computed(() => {
-    const query = JSON.parse(JSON.stringify(route.query.q || {}));
+  const routeQuery = computed(
+    () => (route.query[routeQueryKey] || {}) as TFilterData
+  );
 
-    Object.keys(query)
-      .filter((key) => !query[key] || query[key].length === 0)
-      .forEach((key) => delete query[key]);
+  const isFilterSelected = computed(() => {
+    const query = getQuery(routeQuery.value);
 
     return Object.keys(query).length > 0;
   });
 
   const router = useRouter();
 
-  const debouncedFilter = () => {
+  const debouncedFilter = (filter: TFilterData) => {
     router
       .replace({
         name: route.name || undefined,
         query: {
           ...route.query,
-          q: getQuery(form.value),
+          [routeQueryKey]: getQuery(filter),
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {});
+      .catch((_error: Error) => {});
   };
 
   const resetFilter = () => {
@@ -59,28 +57,14 @@ export const useFilters = (formData: FormData) => {
         query: {},
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {});
-  };
-
-  const updateFilter = (updatedFormData: FormData) => {
-    form.value = updatedFormData;
+      .catch((_error: Error) => {});
   };
 
   const filter = debounce(debouncedFilter, 500);
 
-  watch(
-    () => form.value,
-    () => {
-      filter();
-    },
-    { deep: true }
-  );
-
   return {
-    form,
     isFilterSelected,
     resetFilter,
-    updateFilter,
     filter,
   };
 };

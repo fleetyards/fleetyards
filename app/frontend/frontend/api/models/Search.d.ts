@@ -8,7 +8,7 @@ interface SearchResult
 }
 
 type SearchFilter = {
-  search: string;
+  search?: string;
 };
 
 interface SearchParams extends CollectionParams {
