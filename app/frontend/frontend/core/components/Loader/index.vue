@@ -33,30 +33,24 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts" setup>
+type Props = {
+  loading?: boolean;
+  fixed?: boolean;
+  inline?: boolean;
+  progress?: number;
+};
+
+withDefaults(defineProps<Props>(), {
+  loading: false,
+  fixed: false,
+  inline: false,
+  progress: undefined,
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "LoaderComponent",
-
-  props: {
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-
-    fixed: {
-      type: Boolean,
-      default: false,
-    },
-
-    inline: {
-      type: Boolean,
-      default: false,
-    },
-
-    progress: {
-      type: Number,
-      default: null,
-    },
-  },
 };
 </script>

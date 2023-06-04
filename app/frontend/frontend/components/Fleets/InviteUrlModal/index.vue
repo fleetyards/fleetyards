@@ -218,30 +218,5 @@ export default class MemberModal extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheets/variables";
-
-.invite-url {
-  margin-bottom: 20px;
-
-  .invite-url-main {
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-
-    .url-input {
-      margin-right: 10px;
-    }
-  }
-
-  .invite-url-subline {
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    padding: 0 10px;
-    color: darken($text-color, 10%);
-    font-size: 90%;
-  }
-}
+@import "./index.scss";
 </style>

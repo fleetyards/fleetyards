@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t("headlines.search") }}
+          {{ t("headlines.search") }}
         </h1>
       </div>
     </div>
@@ -11,7 +11,7 @@
       <div class="col-12">
         <div class="row justify-content-center">
           <div class="col-12 col-lg-6">
-            <form class="search-form" @submit.prevent="filter">
+            <form class="search-form" @submit.prevent="search">
               <div class="form-group">
                 <div class="input-group-flex">
                   <FormInput
@@ -22,11 +22,11 @@
                     :clearable="true"
                     translation-key="search.default"
                     :no-label="true"
-                    @clear="filter"
+                    @clear="search"
                   />
                   <Btn
                     id="search-submit"
-                    :aria-label="$t('labels.search')"
+                    :aria-label="t('labels.search')"
                     size="large"
                     :inline="true"
                     @click.native="search"
@@ -47,9 +47,9 @@
         v-else
         key="search"
         :collection="collection"
-        :name="$route.name"
-        :route-query="$route.query"
-        :hash="$route.hash"
+        :name="route.name"
+        :route-query="route.query"
+        :hash="route.hash"
         :paginated="true"
       >
         <template #actions>
@@ -98,13 +98,11 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import Filters from "@/frontend/mixins/Filters";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import searchCollection from "@/frontend/api/collections/Search";
+import type { SearchCollection } from "@/frontend/api/collections/Search";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
@@ -115,118 +113,99 @@ import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
 import CommodityPanel from "@/frontend/components/Commodities/Panel/index.vue";
 import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import SearchHistory from "@/frontend/components/Search/History/index.vue";
+import { useRoute } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilters } from "@/frontend/composables/useFilters";
+import Store from "@/frontend/lib/Store";
 
-@Component<Search>({
-  components: {
-    Btn,
-    ShareBtn,
-    ModelPanel,
-    SearchPanel,
-    FilteredList,
-    CelestialObjectsPanel,
-    ShopCommodityPanel,
-    ComponentPanel,
-    CommodityPanel,
-    EquipmentPanel,
-    FormInput,
-    SearchHistory,
+const collection: SearchCollection = searchCollection;
+
+const form = ref<SearchFilter>({
+  search: undefined,
+});
+
+const historyVisible = ref(false);
+
+const route = useRoute();
+
+const { filter } = useFilters("q");
+
+const filters = computed<SearchParams>(() => ({
+  filters: route.query.q as SearchFilter,
+  page: Number(route.query.page) || 1,
+}));
+
+const firstPage = computed(
+  () => !route.query.page || Number(route.query.page) === 1
+);
+
+const shareUrl = computed(() => window.location.href);
+
+const { t } = useI18n();
+
+const shareTitle = computed(() =>
+  t("labels.search.shareTitle", { query: String(form.value?.search) })
+);
+
+watch(
+  () => route,
+  () => {
+    setupForm();
   },
-  mixins: [Filters],
-})
-export default class Search extends Vue {
-  collection: SearchCollection = searchCollection;
+  { deep: true }
+);
 
-  form: SearchFilter = {
-    search: null,
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  setupForm();
+
+  historyVisible.value = !collection.records.length && !form.value?.search;
+});
+
+const setupForm = () => {
+  const query = (route.query.q || {}) as SearchFilter;
+  form.value = {
+    search: query.search,
   };
+  fetch();
+};
 
-  get historyVisible() {
-    return !this.collection.records.length && !this.form.search;
+const search = () => {
+  filter(form.value);
+};
+
+const restoreSearch = (search: string) => {
+  form.value = {
+    search,
+  };
+  filter(form.value);
+};
+
+const fetch = async () => {
+  await collection.findAll(filters.value);
+
+  if (collection.records.length && firstPage.value && form.value?.search) {
+    Store.dispatch("search/save", {
+      search: form.value.search,
+      createdAt: new Date(),
+    });
   }
 
-  get filters() {
-    return {
-      filters: this.$route.query.q,
-      page: this.$route.query.page || 1,
-    };
-  }
+  historyVisible.value = !collection.records.length && !form.value?.search;
+};
+</script>
 
-  get firstPage() {
-    return !this.$route.query.page || this.$route.query.page === 1;
-  }
-
-  get shareUrl() {
-    return window.location.href;
-  }
-
-  get shareTitle() {
-    return this.$t("labels.search.shareTitle", { query: this.form.search });
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    const query = this.$route.query.q || {};
-    this.form = {
-      search: query.search,
-    };
-    this.fetch();
-  }
-
-  created() {
-    this.form.search = this.$route.query?.q?.search;
-    this.fetch();
-  }
-
-  routeForResult(result) {
-    switch (result.resultType) {
-      case "celestial_object":
-        return {
-          name: "celestial-object",
-          params: {
-            starsystem: result.starsystem.slug,
-            slug: result.slug,
-          },
-        };
-      case "shop":
-        return {
-          name: "shop",
-          params: {
-            stationSlug: result.station.slug,
-            slug: result.slug,
-          },
-        };
-      case "starsystem":
-        return {
-          name: "starsystem",
-          params: {
-            slug: result.slug,
-          },
-        };
-      default:
-        return null;
-    }
-  }
-
-  search() {
-    this.filter();
-  }
-
-  restoreSearch(search) {
-    this.form.search = search;
-    this.filter();
-  }
-
-  async fetch() {
-    await this.collection.findAll(this.filters);
-
-    if (this.collection.records.length && this.firstPage && this.form.search) {
-      this.$store.dispatch("search/save", {
-        search: this.form.search,
-        createdAt: new Date(),
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "SearchPage",
+};
 </script>
 
 <style lang="scss" scoped>

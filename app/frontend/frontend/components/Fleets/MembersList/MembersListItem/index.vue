@@ -326,12 +326,5 @@ export default class MembersListItem extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/stylesheets/variables";
-
-@media (max-width: $desktop-breakpoint) {
-  .flex-list-row {
-    flex-direction: row !important;
-    flex-wrap: wrap;
-  }
-}
+@import "./index.scss";
 </style>

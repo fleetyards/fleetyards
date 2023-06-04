@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="row">
         <div class="col-12">
-          <h1>{{ $t("headlines.settings.account") }}</h1>
+          <h1>{{ t("headlines.settings.account") }}</h1>
         </div>
       </div>
 
@@ -21,7 +21,7 @@
                     v-slot="{ errors }"
                     vid="username"
                     rules="required|alpha_dash"
-                    :name="$t('labels.username')"
+                    :name="t('labels.username')"
                     :slim="true"
                   >
                     <FormInput
@@ -34,7 +34,7 @@
                     v-slot="{ errors }"
                     vid="email"
                     rules="required|email"
-                    :name="$t('labels.email')"
+                    :name="t('labels.email')"
                     :slim="true"
                   >
                     <FormInput
@@ -51,11 +51,11 @@
                     v-model="currentUser.unconfirmedEmail"
                     type="email"
                     :disabled="true"
-                    :label="$t('labels.user.unconfirmedEmail')"
+                    :label="t('labels.user.unconfirmedEmail')"
                     :no-placeholder="true"
                   />
                   <Btn :loading="submitting" type="submit" size="large">
-                    {{ $t("actions.save") }}
+                    {{ t("actions.save") }}
                   </Btn>
                 </div>
               </div>
@@ -70,7 +70,7 @@
         <div class="col-12">
           <br />
           <p>
-            {{ $t("labels.account.destroyInfo") }}
+            {{ t("labels.account.destroyInfo") }}
           </p>
           <Btn
             :loading="deleting"
@@ -79,7 +79,7 @@
             data-test="destroy-account"
             @click.native="destroy"
           >
-            {{ $t("actions.destroyAccount") }}
+            {{ t("actions.destroyAccount") }}
           </Btn>
         </div>
       </div>
@@ -87,10 +87,8 @@
   </SecurePage>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
+import { useRouter } from "vue-router/composables";
 import {
   displaySuccess,
   displayAlert,
@@ -100,85 +98,98 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import userCollection from "@/frontend/api/collections/User";
 import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
+import Store from "@/frontend/lib/Store";
 
-@Component<SettingsAccount>({
-  components: {
-    SecurePage,
-    Btn,
-    FormInput,
-  },
-})
-export default class SettingsAccount extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
+const currentUser = computed(() => Store.getters["session/currentUser"]);
 
-  form: UserAccountForm | null = null;
+const form = ref<UserAccountForm | null>(null);
 
-  deleting = false;
+const deleting = ref(false);
 
-  submitting = false;
+const submitting = ref(false);
 
-  created() {
-    if (this.currentUser) {
-      this.setupForm();
-    }
+onMounted(() => {
+  if (currentUser.value) {
+    setupForm();
+  }
+});
+
+watch(
+  () => currentUser.value,
+  () => {
+    setupForm();
+  }
+);
+
+const setupForm = () => {
+  form.value = {
+    username: currentUser.value.username,
+    email: currentUser.value.email,
+  };
+};
+
+const comlink = useComlink();
+
+const { t } = useI18n();
+
+const updateAccount = async () => {
+  if (!form.value) {
+    return;
   }
 
-  @Watch("currentUser")
-  onCurrentUserChange() {
-    this.setupForm();
-  }
+  submitting.value = true;
 
-  setupForm() {
-    this.form = {
-      username: this.currentUser.username,
-      email: this.currentUser.email,
-    };
-  }
+  const response = await userCollection.updateAccount(form.value);
 
-  async updateAccount() {
-    this.submitting = true;
+  submitting.value = false;
 
-    const response = await userCollection.updateAccount(this.form);
+  if (!response.error) {
+    comlink.$emit("user-update");
 
-    this.submitting = false;
-
-    if (!response.error) {
-      this.$comlink.$emit("user-update");
-
-      displaySuccess({
-        text: this.$t("messages.updateAccount.success"),
-      });
-    }
-  }
-
-  async destroy() {
-    this.deleting = true;
-    displayConfirm({
-      text: this.$t("messages.confirm.account.destroy"),
-      onConfirm: async () => {
-        const response = await userCollection.destroy();
-
-        this.deleting = false;
-
-        if (!response.error) {
-          displaySuccess({
-            text: this.$t("messages.account.destroy.success"),
-          });
-
-          await this.$store.dispatch("session/logout");
-
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          this.$router.push({ name: "home" }).catch(() => {});
-        } else {
-          displayAlert({
-            text: this.$t("messages.account.destroy.error"),
-          });
-        }
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
+    displaySuccess({
+      text: t("messages.updateAccount.success"),
     });
   }
-}
+};
+
+const router = useRouter();
+
+const destroy = async () => {
+  deleting.value = true;
+
+  displayConfirm({
+    text: t("messages.confirm.account.destroy"),
+    onConfirm: async () => {
+      const response = await userCollection.destroy();
+
+      deleting.value = false;
+
+      if (!response.error) {
+        displaySuccess({
+          text: t("messages.account.destroy.success"),
+        });
+
+        await Store.dispatch("session/logout");
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        router.push({ name: "home" }).catch(() => {});
+      } else {
+        displayAlert({
+          text: t("messages.account.destroy.error"),
+        });
+      }
+    },
+    onClose: () => {
+      deleting.value = false;
+    },
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "SettingsAccount",
+};
 </script>

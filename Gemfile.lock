@@ -211,6 +211,17 @@ GEM
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
     ffi (1.15.5)
+    flipper (0.28.0)
+      concurrent-ruby (< 2)
+    flipper-active_record (0.28.0)
+      activerecord (>= 4.2, < 8)
+      flipper (~> 0.28.0)
+    flipper-ui (0.28.0)
+      erubi (>= 1.0.0, < 2.0.0)
+      flipper (~> 0.28.0)
+      rack (>= 1.4, < 3)
+      rack-protection (>= 1.5.3, <= 4.0.0)
+      sanitize (< 7)
     fog-aws (3.19.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
@@ -422,6 +433,8 @@ GEM
       rack (>= 1.0, < 3)
     rack-cors (2.0.1)
       rack (>= 2.0.0)
+    rack-protection (3.0.6)
+      rack
     rack-proxy (0.7.6)
       rack
     rack-test (2.1.0)
@@ -528,6 +541,9 @@ GEM
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     safely_block (0.4.0)
+    sanitize (6.0.1)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.12.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -691,6 +707,9 @@ DEPENDENCIES
   dynamic_fields_for_rails
   ed25519
   faker
+  flipper
+  flipper-active_record
+  flipper-ui
   fog-aws
   foundation_emails
   git

@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t("headlines.roadmap") }}
+          {{ t("headlines.roadmap") }}
         </h1>
       </div>
     </div>
@@ -16,14 +16,14 @@
             data-test="nav-roadmap-changes"
           >
             <i class="fad fa-tasks" />
-            {{ $t("nav.roadmap.changes") }}
+            {{ t("nav.roadmap.changes") }}
           </Btn>
           <Btn :to="{ name: 'roadmap-ships' }" data-test="nav-roadmap-ships">
             <i class="fad fa-starship" />
-            {{ $t("nav.roadmap.ships") }}
+            {{ t("nav.roadmap.ships") }}
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t("labels.rsiRoadmap") }}
+            {{ t("labels.rsiRoadmap") }}
           </Btn>
         </div>
       </div>
@@ -69,24 +69,26 @@
           >
             <h2
               :class="{
-                open: visible.includes(release),
+                open: visible.includes(String(release)),
               }"
               class="toggleable"
-              @click="toggle(release)"
+              @click="toggle(String(release))"
             >
               <span class="title">{{ release }}</span>
               <span v-if="items[0].releaseDescription" class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
-                {{ $t("labels.roadmap.stories", { count: items.length }) }}
+                {{
+                  t("labels.roadmap.stories", { count: String(items.length) })
+                }}
               </small>
               <i class="fa fa-chevron-right" />
             </h2>
 
-            <BCollapse
+            <div
               :id="`${release}-cards`"
-              :visible="visible.includes(release)"
+              v-show-slide:400:ease-in-out="visible.includes(String(release))"
             >
               <div class="row">
                 <div
@@ -97,7 +99,7 @@
                   <RoadmapItem :item="item" />
                 </div>
               </div>
-            </BCollapse>
+            </div>
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
@@ -107,199 +109,154 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { BCollapse } from "bootstrap-vue";
+<script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
 import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import { Subscription } from "@rails/actioncable";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useCable } from "@/frontend/composables/useCable";
+import roadmapItemsCollection from "@/frontend/api/collections/RoadmapItems";
 
-@Component<RoadmapReleases>({
-  components: {
-    BCollapse,
-    Loader,
-    EmptyBox,
-    RoadmapItem,
-    Btn,
-    BtnDropdown,
-  },
-})
-export default class RoadmapReleases extends Vue {
-  loading = true;
+const { t } = useI18n();
+const loading = ref(true);
 
-  onlyReleased = true;
+const onlyReleased = ref(true);
 
-  showRemoved = false;
+const showRemoved = ref(false);
 
-  // TODO: replace with collection
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  roadmapItems: any[] = [];
+const roadmapItems = ref<RoadmapItem[]>([]);
 
-  visible: string[] = [];
+const visible = ref<string[]>([]);
 
-  roadmapChannel = null;
+const roadmapChannel = ref<Subscription | null>(null);
 
-  get releasedToggleLabel() {
-    if (this.onlyReleased) {
-      return this.$t("actions.showReleased");
+const releasedToggleLabel = computed(() => {
+  if (onlyReleased.value) {
+    return t("actions.showReleased");
+  }
+
+  return t("actions.hideReleased");
+});
+
+const toggleRemovedTooltip = computed(() => {
+  if (showRemoved.value) {
+    return t("actions.roadmap.hideRemoved");
+  }
+
+  return t("actions.roadmap.showRemoved");
+});
+
+const route = useRoute();
+
+const isSubRoute = computed(() => route.name !== "roadmap");
+
+const emptyBoxVisible = computed(
+  () => !loading.value && roadmapItems.value.length === 0
+);
+
+const filteredItems = computed(() => {
+  if (onlyReleased.value) {
+    return roadmapItems.value.filter((item) => !item.released);
+  }
+
+  return roadmapItems.value;
+});
+
+const groupedByRelease = computed<RoadmapItemsByRelease>(() =>
+  filteredItems.value.reduce((rv, x) => {
+    const value = JSON.parse(JSON.stringify(rv));
+
+    value[x.release] = (rv as RoadmapItemsByRelease)[x.release] || [];
+    value[x.release].push(x);
+
+    return value;
+  }, {})
+);
+
+onMounted(() => {
+  fetch();
+  setupUpdates();
+});
+
+onUnmounted(() => {
+  if (roadmapChannel.value) {
+    roadmapChannel.value.unsubscribe();
+  }
+});
+
+watch(
+  () => onlyReleased.value,
+  () => {
+    fetch();
+  }
+);
+
+const cable = useCable();
+
+const setupUpdates = () => {
+  if (roadmapChannel.value) {
+    roadmapChannel.value.unsubscribe();
+  }
+
+  roadmapChannel.value = cable.consumer.subscriptions.create(
+    {
+      channel: "RoadmapChannel",
+    },
+    {
+      received: fetch,
     }
+  );
+};
 
-    return this.$t("actions.hideReleased");
+const toggleReleased = () => {
+  onlyReleased.value = !onlyReleased.value;
+};
+
+const togglerShowRemoved = () => {
+  showRemoved.value = !showRemoved.value;
+
+  fetch();
+};
+
+const toggle = (release: string) => {
+  if (visible.value.includes(release)) {
+    const index = visible.value.indexOf(release);
+
+    visible.value.splice(index, 1);
+
+    return null;
   }
 
-  get toggleRemovedTooltip() {
-    if (this.showRemoved) {
-      return this.$t("actions.roadmap.hideRemoved");
+  return visible.value.push(release);
+};
+
+const openReleased = () => {
+  Object.keys(groupedByRelease.value).forEach((release) => {
+    const items = groupedByRelease.value[release];
+
+    if (items.length && !items[0].released) {
+      visible.value.push(release);
     }
+  });
+};
 
-    return this.$t("actions.roadmap.showRemoved");
-  }
+const fetch = async () => {
+  loading.value = true;
 
-  get isSubRoute() {
-    return this.$route.name !== "roadmap";
-  }
+  roadmapItems.value = await roadmapItemsCollection.overview();
 
-  get emptyBoxVisible() {
-    return !this.loading && this.roadmapItems.length === 0;
-  }
+  loading.value = false;
 
-  get filteredItems() {
-    if (this.onlyReleased) {
-      return this.roadmapItems.filter((item) => !item.released);
-    }
+  openReleased();
+};
+</script>
 
-    return this.roadmapItems;
-  }
-
-  get groupedByRelease() {
-    return this.filteredItems.reduce((rv, x) => {
-      const value = JSON.parse(JSON.stringify(rv));
-
-      value[x.release] = rv[x.release] || [];
-      value[x.release].push(x);
-
-      return value;
-    }, {});
-  }
-
-  get otherModels() {
-    return this.models;
-  }
-
-  get modelsOnRoadmap() {
-    return this.roadmapItems
-      .filter((item) => item.model)
-      .map((item) => item.model.id)
-      .filter((item) => item);
-  }
-
-  mounted() {
-    this.fetch();
-    this.setupUpdates();
-  }
-
-  @Watch("onlyReleased")
-  onOnlyReleasedChange() {
-    this.fetch();
-  }
-
-  beforeDestroy() {
-    if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe();
-    }
-  }
-
-  tasks(items) {
-    return items
-      .filter((item) => item.active)
-      .map((item) => Math.max(0, item.tasks))
-      .reduce((ac, count) => ac + count, 0);
-  }
-
-  completed(items) {
-    return items
-      .map((item) => Math.max(0, item.completed))
-      .reduce((ac, count) => ac + count, 0);
-  }
-
-  progressLabel(items) {
-    return `${this.completed(items)} ${this.$t("labels.roadmap.tasks", {
-      count: this.tasks(items),
-    })}`;
-  }
-
-  completedPercent(items) {
-    if (!this.tasks(items)) {
-      return "?";
-    }
-
-    return Math.round((100 * this.completed(items)) / this.tasks(items));
-  }
-
-  setupUpdates() {
-    if (this.roadmapChannel) {
-      this.roadmapChannel.unsubscribe();
-    }
-
-    this.roadmapChannel = this.$cable.consumer.subscriptions.create(
-      {
-        channel: "RoadmapChannel",
-      },
-      {
-        received: this.fetch,
-      }
-    );
-  }
-
-  toggleReleased() {
-    this.onlyReleased = !this.onlyReleased;
-  }
-
-  togglerShowRemoved() {
-    this.showRemoved = !this.showRemoved;
-    this.fetch();
-  }
-
-  toggle(release) {
-    if (this.visible.includes(release)) {
-      const index = this.visible.indexOf(release);
-      this.visible.splice(index, 1);
-
-      return null;
-    }
-
-    return this.visible.push(release);
-  }
-
-  openReleased() {
-    Object.keys(this.groupedByRelease).forEach((release) => {
-      const items = this.groupedByRelease[release];
-
-      if (items.length && !items[0].released) {
-        this.visible.push(release);
-      }
-    });
-  }
-
-  async fetch() {
-    this.loading = true;
-
-    const response = await this.$api.get("roadmap?overview=1", {
-      q: {
-        activeIn: [true, !this.showRemoved],
-        rsiReleaseIdGteq: this.onlyReleased ? 41 : 1,
-      },
-    });
-
-    this.loading = false;
-
-    if (!response.error) {
-      this.roadmapItems = response.data;
-      this.openReleased();
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "RoadmapPage",
+};
 </script>

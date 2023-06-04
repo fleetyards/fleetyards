@@ -54,7 +54,7 @@
         >
           <div
             v-show="model.onSale"
-            v-tooltip="$t('labels.model.onSale')"
+            v-tooltip="t('labels.model.onSale')"
             class="on-sale"
           >
             <i class="fal fa-dollar-sign" />
@@ -68,12 +68,10 @@
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
-              {{
-                $t(`labels.model.productionStatus.${model.productionStatus}`)
-              }}
+              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
             </template>
             <template v-else>
-              {{ $t(`labels.not-available`) }}
+              {{ t(`labels.not-available`) }}
             </template>
           </strong>
         </div>
@@ -83,41 +81,39 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import PanelDetails from "@/frontend/core/components/Panel/PanelDetails/index.vue";
 import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
+import { v4 as uuidv4 } from "uuid";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<ModelPanel>({
-  components: {
-    Panel,
-    PanelDetails,
-    LazyImage,
-    AddToHangar,
-    ModelPanelMetrics,
-  },
-})
-export default class ModelPanel extends Vue {
-  @Prop({ required: true }) model: Model;
+type Props = {
+  model: Model;
+  details?: boolean;
+};
 
-  @Prop({ default: false }) details: boolean;
+const props = withDefaults(defineProps<Props>(), {
+  details: false,
+});
 
-  get uuid() {
-    return this._uid;
-  }
+const { t } = useI18n();
 
-  get storeImage() {
-    return this.model.media.storeImage?.medium;
-  }
+const uuid = uuidv4();
 
-  filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] };
-  }
-}
+const storeImage = computed(() => props.model.media.storeImage?.medium);
+
+const filterManufacturerQuery = (manufacturer: string) => ({
+  manufacturerIn: [manufacturer],
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelPanel",
+};
 </script>
 
 <style lang="scss" scoped>

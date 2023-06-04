@@ -9,6 +9,8 @@ v1_api_routes = lambda do
 
   get "sc-data/version" => "sc_data#current_version"
 
+  resource :features, only: %i[show]
+
   resources :models, param: :slug, only: %i[index show] do
     collection do
       get :fleetchart
@@ -40,6 +42,8 @@ v1_api_routes = lambda do
       get :fleetchart_image, path: "fleetchart-image"
     end
   end
+
+  resources :model_paints, path: "model-paints", only: %i[index]
 
   resources :manufacturers, param: :slug, only: %i[index] do
     collection do

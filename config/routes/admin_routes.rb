@@ -40,6 +40,7 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
   authenticate :admin_user, (->(u) { u.present? }) do
     mount Sidekiq::Web => "/workers"
     mount PgHero::Engine => "/pghero"
+    mount Flipper::UI.app(Flipper) => "/features", :as => :features
   end
 
   resources :models, except: [:show] do

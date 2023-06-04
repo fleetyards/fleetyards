@@ -11,7 +11,9 @@ import Comlink from "@/frontend/plugins/Comlink";
 import Ahoy from "@/frontend/plugins/Ahoy";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
+import VShowSlide from "v-show-slide";
 
+Vue.use(VShowSlide);
 Vue.use(Subscriptions);
 Vue.use(ApiClient);
 Vue.use(Comlink);

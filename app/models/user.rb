@@ -42,6 +42,7 @@
 #  rsi_handle                :string
 #  sale_notify               :boolean          default(FALSE)
 #  sign_in_count             :integer          default(0), not null
+#  tester                    :boolean          default(FALSE)
 #  tracking                  :boolean          default(TRUE)
 #  twitch                    :string
 #  unconfirmed_email         :string(255)
@@ -199,6 +200,12 @@ class User < ApplicationRecord
       TwoFactorMailer.enabled(email, username).deliver_later
     else
       TwoFactorMailer.disabled(email, username).deliver_later
+    end
+  end
+
+  def features
+    Flipper.features.filter_map do |feature|
+      Flipper.enabled?(feature.name, self) ? feature.name : nil
     end
   end
 

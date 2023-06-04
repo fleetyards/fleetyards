@@ -129,6 +129,11 @@ gem "psych", "~> 5.1.0"
 
 gem "progress_bar"
 
+# feature flag
+gem "flipper"
+gem "flipper-ui"
+gem "flipper-active_record"
+
 group :development do
   gem "annotate"
 

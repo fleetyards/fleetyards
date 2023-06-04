@@ -40,6 +40,7 @@
 #  rsi_handle                :string
 #  sale_notify               :boolean          default(FALSE)
 #  sign_in_count             :integer          default(0), not null
+#  tester                    :boolean          default(FALSE)
 #  tracking                  :boolean          default(TRUE)
 #  twitch                    :string
 #  unconfirmed_email         :string(255)

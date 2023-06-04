@@ -19,6 +19,7 @@ class Ability
     can :read, [:components, Component]
 
     can :check, :api_users
+    can :show, :api_features
 
     can :show, :api
     can :read, :api_stats

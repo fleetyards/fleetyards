@@ -1,6 +1,7 @@
 type Vehicle = {
   id: string;
-  name: string;
+  name?: string;
+  serial?: string;
   model: Model;
   loaner: boolean;
   public: boolean;

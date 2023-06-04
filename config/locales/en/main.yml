@@ -273,6 +273,7 @@ en:
     models_price_diff: Outdated Pledge Price
     otp: Two Factor Auth
     pghero: PGHero
+    features: Features
     shop_commodities:
       confirmation: Confirm Shop Commodities
     starsystems: Starsystems
