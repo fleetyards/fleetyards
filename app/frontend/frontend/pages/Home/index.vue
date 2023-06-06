@@ -9,6 +9,15 @@
               <h1 id="home-welcome">
                 <small class="text-muted">{{ t("headlines.welcome") }}</small>
                 <img
+                  v-if="pride"
+                  :src="require('@/images/pride/logo-home.png')"
+                  class="logo"
+                  width="150px"
+                  height="101px"
+                  alt="logo"
+                />
+                <img
+                  v-else
                   :src="require('@/images/logo-home.png')"
                   class="logo"
                   width="150px"
@@ -175,6 +184,8 @@ const mobile = computed(() => Store.getters.mobile);
 setTimeout(() => {
   showScrollDown.value = true;
 }, 2000);
+
+const pride = computed(() => new Date().getMonth() === 5);
 
 const router = useRouter();
 
