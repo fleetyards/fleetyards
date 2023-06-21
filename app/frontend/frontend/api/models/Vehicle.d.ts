@@ -34,6 +34,7 @@ type VehicleForm = {
 type VehiclesFilter = {
   modelNameCont?: string;
   modelSlugIn?: string[];
+  loanerEq?: boolean | "only";
 };
 
 interface VehicleParams extends CollectionParams {

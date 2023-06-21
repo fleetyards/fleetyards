@@ -49,6 +49,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useRoute } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
@@ -75,10 +76,16 @@ const sortedVehicles = computed(() =>
   sortBy(collection.records, "username").filter(uniqByFieldArray("username"))
 );
 
+const route = useRoute();
+
+const query = computed(() => route.query.q as VehiclesFilter);
+
+const loanerEq = computed(() => query.value.loanerEq as boolean | "only");
+
 onMounted(async () => {
   await collection.findAll({
     slug: props.fleetSlug,
-    filters: { modelSlugIn: [props.modelSlug] },
+    filters: { modelSlugIn: [props.modelSlug], loanerEq: loanerEq.value },
     grouped: false,
     perPage: "all",
   });
