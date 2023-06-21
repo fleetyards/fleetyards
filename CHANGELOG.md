@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.25.0](https://github.com/fleetyards/fleetyards/compare/v5.24.0...v5.25.0) (2023-06-21)
+
+
+### Features
+
+* **paints:** rework paint select ([2d7fdb1](https://github.com/fleetyards/fleetyards/commit/2d7fdb15c1e70a8d22d1369a99fc94b8c30dfdcf))
+
+
+### Bug Fixes
+
+* **compare:** update speed values ([0409c6b](https://github.com/fleetyards/fleetyards/commit/0409c6b9d60c1aae75efaf3a268ea84f4663ba4c))
+* **owner-modal:** load owners of loaners ([4a6d8bc](https://github.com/fleetyards/fleetyards/commit/4a6d8bcd9d8f1e0543ba79e165d055ab539247f2))
+
 ## [5.24.0](https://github.com/fleetyards/fleetyards/compare/v5.23.3...v5.24.0) (2023-05-31)
 
 
