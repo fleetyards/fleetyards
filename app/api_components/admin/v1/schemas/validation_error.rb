@@ -6,7 +6,7 @@ module Admin
       class ValidationError
         include SchemaConcern
 
-        schema :base, {
+        schema({
           type: :object,
           properties: {
             code: {type: :string},
@@ -17,7 +17,7 @@ module Admin
             }
           },
           required: %w[code message]
-        }
+        })
       end
     end
   end

@@ -18,13 +18,6 @@ module Admin
               galleryType: {"$ref": "#/components/schemas/GalleryTypeEnum"}
             }
           })
-
-          schema :create, {
-            type: :object,
-            properties: {
-              file: {type: :string}
-            }
-          }, extends: :base
         end
       end
     end

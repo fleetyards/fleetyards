@@ -5,7 +5,7 @@ module V1
     class CommodityPrice
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
@@ -18,7 +18,7 @@ module V1
           updatedAt: {type: :string, format: "date-time"}
         },
         required: %w[id price type shopCommodityId confirmed createdAt updatedAt]
-      }
+      })
     end
   end
 end

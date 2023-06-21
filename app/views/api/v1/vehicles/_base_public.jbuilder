@@ -19,7 +19,7 @@ unless vehicle.user.hide_owner?
 end
 json.hangar_group_ids vehicle.public_hangar_group_ids
 json.hangar_groups do
-  json.array! vehicle.public_hangar_groups, partial: "api/v1/vehicles/hangar_group", as: :hangar_group
+  json.array! vehicle.public_hangar_groups, partial: "api/v1/hangar_groups/base", as: :group
 end
 json.module_package do
   json.partial! "api/v1/model_module_packages/minimal", module_package: vehicle.module_package if vehicle.module_package.present?

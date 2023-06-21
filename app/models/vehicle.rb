@@ -17,6 +17,7 @@
 #  rsi_pledge_synced_at :datetime
 #  sale_notify          :boolean          default(FALSE)
 #  serial               :string
+#  slug                 :string
 #  wanted               :boolean          default(FALSE)
 #  created_at           :datetime
 #  updated_at           :datetime
@@ -76,6 +77,7 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
+  before_save :update_slugs
 
   after_create :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
@@ -108,6 +110,18 @@ class Vehicle < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def self.purchased
+    where(wanted: false)
+  end
+
+  def self.wanted
+    where(wanted: true)
+  end
+
+  def self.public
+    where(public: true)
   end
 
   def reset_pledge_id_if_wanted
@@ -204,18 +218,6 @@ class Vehicle < ApplicationRecord
     else
       HangarDestroyChannel.broadcast_to(user, to_json)
     end
-  end
-
-  def self.purchased
-    where(wanted: false)
-  end
-
-  def self.wanted
-    where(wanted: true)
-  end
-
-  def self.public
-    where(public: true)
   end
 
   def export_name

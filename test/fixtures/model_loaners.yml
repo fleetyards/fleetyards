@@ -10,6 +10,11 @@
 #  model_id        :uuid
 #
 
+aurora_for_andromeda:
+  model: andromeda
+  loaner_model: aurora
+  hidden: false
+
 ptv_for_600i:
   model: explorer
   loaner_model: ptv

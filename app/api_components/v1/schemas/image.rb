@@ -5,25 +5,22 @@ module V1
     class Image
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
-          name: {type: :string},
-          caption: {type: :string},
-          url: {type: :string},
-          width: {type: :string},
-          height: {type: :string},
-          type: {type: :string},
           background: {type: :boolean},
-          smallUrl: {type: :string},
-          bigUrl: {type: :string},
-          gallery: {"$ref" => "#/components/schemas/Gallery", :nullable => true},
-          createdAt: {type: :string, format: "date-time"},
-          updatedAt: {type: :string, format: "date-time"}
+          bigUrl: {type: :string, format: :uri},
+          caption: {type: :string, nullable: true},
+          height: {type: :number, nullable: true},
+          name: {type: :string},
+          smallUrl: {type: :string, format: :uri},
+          type: {type: :string},
+          url: {type: :string, format: :uri},
+          width: {type: :number, nullable: true}
         },
-        required: %w[id name url width height type background smallUrl bigUrl createdAt updatedAt]
-      }
+        required: %w[id name url width height type background smallUrl bigUrl]
+      })
     end
   end
 end

@@ -18,6 +18,7 @@ config/*.key
 # test files
 coverage/*
 test/reports/*
+spec/reports
 spec/reports/*
 
 # app files

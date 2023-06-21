@@ -11,6 +11,6 @@
 #  model_upgrade_id :uuid
 #
 class UpgradeKit < ApplicationRecord
-  belongs_to :model, optional: false, touch: true, counter_cache: true
-  belongs_to :model_upgrade, optional: false
+  belongs_to :model, touch: true, counter_cache: true
+  belongs_to :model_upgrade
 end

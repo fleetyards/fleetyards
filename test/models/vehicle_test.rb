@@ -17,6 +17,7 @@
 #  rsi_pledge_synced_at :datetime
 #  sale_notify          :boolean          default(FALSE)
 #  serial               :string
+#  slug                 :string
 #  wanted               :boolean          default(FALSE)
 #  created_at           :datetime
 #  updated_at           :datetime

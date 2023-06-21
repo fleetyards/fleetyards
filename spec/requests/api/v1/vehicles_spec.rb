@@ -9,6 +9,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles" do
     get("list vehicles") do
+      deprecated true
       tags "Vehicles"
       produces "application/json"
 

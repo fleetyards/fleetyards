@@ -5,7 +5,7 @@
 # Table name: stations
 #
 #  id                  :uuid             not null, primary key
-#  cargo_hub           :boolean
+#  cargo_hub           :boolean          default(FALSE)
 #  classification      :integer
 #  description         :text
 #  habitable           :boolean          default(TRUE)
@@ -14,7 +14,7 @@
 #  location            :string
 #  map                 :string
 #  name                :string
-#  refinery            :boolean
+#  refinery            :boolean          default(FALSE)
 #  slug                :string
 #  station_type        :integer
 #  status              :integer

@@ -5,18 +5,18 @@ module V1
     class ValidationError
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           code: {type: :string},
-          message: {type: :string},
           errors: {
             type: :array,
             items: {"$ref" => "#/components/schemas/FieldError"}
-          }
+          },
+          message: {type: :string}
         },
         required: %w[code message]
-      }
+      })
     end
   end
 end

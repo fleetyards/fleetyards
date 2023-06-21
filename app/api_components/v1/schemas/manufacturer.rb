@@ -5,18 +5,17 @@ module V1
     class Manufacturer
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           name: {type: :string},
           slug: {type: :string},
-          code: {type: :string},
+          code: {type: :string, nullable: true},
           logo: {type: :string, nullable: true},
-          createdAt: {type: :string, format: "date-time"},
-          updatedAt: {type: :string, format: "date-time"}
+          longName: {type: :string}
         },
-        required: %w[name slug createdAt updatedAt]
-      }
+        required: %w[name slug]
+      })
     end
   end
 end

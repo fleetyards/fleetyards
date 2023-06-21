@@ -5,49 +5,57 @@ module V1
     class ShopCommodity
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
           name: {type: :string},
           slug: {type: :string},
-          createdAt: {type: :string, format: "date-time"},
-          updatedAt: {type: :string, format: "date-time"}
+          description: {type: :string, nullable: true},
+          media: {
+            type: :object,
+            properties: {
+              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+            }
+          },
+          category: {type: :string, nullable: true},
+          subCategory: {type: :string, nullable: true},
+          subCategoryLabel: {type: :string, nullable: true},
+
+          prices: {
+            type: :object,
+            properties: {
+              averageBuyPrice: {type: :number, nullable: true},
+              averageRentalPrice1Day: {type: :number, nullable: true},
+              averageRentalPrice30Days: {type: :number, nullable: true},
+              averageRentalPrice3Days: {type: :number, nullable: true},
+              averageRentalPrice7Days: {type: :number, nullable: true},
+              averageSellPrice: {type: :number, nullable: true},
+              buyPrice: {type: :number, nullable: true},
+              rentalPrice1Day: {type: :number, nullable: true},
+              rentalPrice30Days: {type: :number, nullable: true},
+              rentalPrice3Days: {type: :number, nullable: true},
+              rentalPrice7Days: {type: :number, nullable: true},
+              sellPrice: {type: :number, nullable: true}
+            }
+          },
+          pricePerUnit: {type: :boolean},
+
+          locationLabel: {type: :string, nullable: true},
+          confirmed: {type: :boolean},
+
+          commodityItemType: {type: :string},
+          commodityItemId: {type: :string, format: :uuid},
+
+          shop: {"$ref": "#/components/schemas/Shop"},
+
+          storeImage: {type: :string, nullable: true, format: :uri, deprecated: true},
+          storeImageSmall: {type: :string, nullable: true, format: :uri, deprecated: true},
+          storeImageMedium: {type: :string, nullable: true, format: :uri, deprecated: true},
+          storeImageLarge: {type: :string, nullable: true, format: :uri, deprecated: true}
         },
-        required: %w[id name slug createdAt updatedAt]
-      }
+        required: %w[id name slug media prices pricePerUnit confirmed commodityItemType commodityItemId shop]
+      })
     end
   end
 end
-
-# json.id shop_commodity.id
-# json.name shop_commodity.commodity_item.name
-# json.slug shop_commodity.commodity_item.slug
-# json.store_image shop_commodity.commodity_item.store_image.url
-# json.store_image_large shop_commodity.commodity_item.store_image.large.url
-# json.store_image_medium shop_commodity.commodity_item.store_image.medium.url
-# json.store_image_small shop_commodity.commodity_item.store_image.small.url
-# json.category shop_commodity.category
-# json.sub_category shop_commodity.sub_category
-# json.sub_category_label shop_commodity.sub_category_label
-# json.description shop_commodity.commodity_item.description
-# json.price_per_unit shop_commodity.price_per_unit
-# json.sell_price shop_commodity.sell_price
-# json.average_sell_price shop_commodity.average_sell_price
-# json.buy_price shop_commodity.buy_price
-# json.average_buy_price shop_commodity.average_buy_price
-# json.rental_price_1_day shop_commodity.rental_price_1_day
-# json.average_rental_price_1_day shop_commodity.average_rental_price_1_day
-# json.rental_price_3_days shop_commodity.rental_price_3_days
-# json.average_rental_price_3_days shop_commodity.average_rental_price_3_days
-# json.rental_price_7_days shop_commodity.rental_price_7_days
-# json.average_rental_price_7_days shop_commodity.average_rental_price_7_days
-# json.rental_price_30_days shop_commodity.rental_price_30_days
-# json.average_rental_price_30_days shop_commodity.average_rental_price_30_days
-# json.location_label shop_commodity.location_label
-# json.confirmed shop_commodity.confirmed
-# json.commodity_item_type shop_commodity.commodity_item_type
-# json.commodity_item_id shop_commodity.commodity_item_id
-# json.item do
-#   json.partial! "api/v1/#{shop_commodity.category.pluralize}/minimal", shop_commodity.category.to_sym => shop_commodity.commodity_item
-# end

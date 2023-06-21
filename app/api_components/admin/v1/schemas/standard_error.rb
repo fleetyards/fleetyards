@@ -6,14 +6,14 @@ module Admin
       class StandardError
         include SchemaConcern
 
-        schema :base, {
+        schema({
           type: :object,
           properties: {
             code: {type: :string},
             message: {type: :string}
           },
           required: %w[code message]
-        }
+        })
       end
     end
   end

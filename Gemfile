@@ -61,6 +61,7 @@ gem "redis-store", github: "PikachuEXE/redis-store", branch: "fix/redis-client-c
 
 gem "ransack", "~> 2.4"
 
+gem "deep_merge", require: "deep_merge/rails_compat"
 gem "jbuilder"
 gem "oj"
 gem "responders"

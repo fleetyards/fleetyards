@@ -3,19 +3,23 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users, :vehicles
+  fixtures :all
 
   let(:user) { nil }
 
   before do
     host! "api.fleetyards.test"
-    sign_in user if user.present?
+
+    sign_in(user) if user.present?
   end
 
   path "/hangar" do
-    get("list your personal hangar") do
+    get("Your personal hangar") do
       tags "Hangar"
       produces "application/json"
+
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false, default: Vehicle.default_per_page
 
       response(200, "successful") do
         schema type: :array,

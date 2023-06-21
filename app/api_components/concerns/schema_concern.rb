@@ -7,16 +7,11 @@ module SchemaConcern
     class_attribute :schema_value
 
     class << self
-      def schema(*args, extends: nil)
-        name = (args.size == 2) ? args.first : :base
-        definition = (args.size == 2) ? args.last : args.first
-
-        self.schema_value ||= {}
-
-        self.schema_value[name] = if extends && self.schema_value[extends]
-          self.schema_value[extends].deep_merge(definition)
+      def schema(schema_definition)
+        self.schema_value = if schema_value.present?
+          schema_value.deeper_merge(schema_definition)
         else
-          definition
+          schema_definition
         end
       end
     end

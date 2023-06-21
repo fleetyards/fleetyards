@@ -28,22 +28,10 @@ module V1
           economy: {type: :integer, nullable: true},
           population: {type: :integer, nullable: true},
           locationLabel: {type: :string, nullable: true},
-          starsystem: {"$ref": "#/components/schemas/Starsystem"}
+          starsystem: {"$ref": "#/components/schemas/Starsystem", nullable: true}
         },
         required: %w[name slug designation]
       })
-
-      schema :minimal,
-        {
-          properties: {
-            parent: {"$ref": "#/components/schemas/CelestialObject", nullable: true},
-            moons: {type: :array, items: {"$ref" => "#/components/schemas/CelestialObject"}},
-            createdAt: {type: :string, format: "date-time"},
-            updatedAt: {type: :string, format: "date-time"}
-          },
-          required: %w[starsystem createdAt updatedAt]
-        },
-        extends: :base
     end
   end
 end

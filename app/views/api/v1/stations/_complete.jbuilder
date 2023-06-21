@@ -9,10 +9,10 @@ json.cache! ["v1", station] do
     json.array! station.shops.visible.order(:name), partial: "api/v1/shops/base", as: :shop
   end
   json.docks do
-    json.array! station.docks, partial: "api/v1/stations/dock", as: :dock
+    json.array! station.docks, partial: "api/v1/docks/base", as: :dock
   end
   json.habitations do
-    json.array! station.habitations, partial: "api/v1/stations/habitation", as: :habitation
+    json.array! station.habitations, partial: "api/v1/habitations/base", as: :habitation
   end
   json.images do
     json.array! station.images, partial: "api/v1/images/base", as: :image

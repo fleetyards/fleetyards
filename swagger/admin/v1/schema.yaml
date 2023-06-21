@@ -26,6 +26,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Image"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     post:
       summary: create image
       description: Create a new Image
@@ -39,6 +45,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Image"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
           multipart/form-data:
@@ -67,6 +79,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Image"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
           application/json:
@@ -86,6 +110,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Image"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
           application/json:
@@ -100,6 +136,10 @@ paths:
       responses:
         '200':
           description: successful
+        '401':
+          description: unauthorized
+        '404':
+          description: not_found
 components:
   schemas:
     GalleryTypeEnum:
@@ -191,6 +231,8 @@ components:
           format: uuid
         galleryType:
           "$ref": "#/components/schemas/GalleryTypeEnum"
+        file:
+          type: string
       title: ImageInput
     ImageInputCreate:
       type: object
@@ -211,6 +253,32 @@ components:
         file:
           type: string
       title: ImageInputCreate
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+      title: StandardError
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FieldError"
+      required:
+      - code
+      - message
+      title: ValidationError
   parameters: {}
   securitySchemes: {}
   requestBodies: {}

@@ -59,31 +59,37 @@ module Api
 
       def slugs
         authorize! :index, :api_models
+
         render json: Model.order(slug: :asc).all.pluck(:slug)
       end
 
       def production_states
         authorize! :index, :api_models
+
         @production_states = Model.production_status_filters
       end
 
       def classifications
         authorize! :index, :api_models
+
         @classifications = Model.classification_filters
       end
 
       def focus
         authorize! :index, :api_models
+
         @focus = Model.focus_filters
       end
 
       def sizes
         authorize! :index, :api_models
+
         @sizes = Model.size_filters
       end
 
       def filters
         authorize! :index, :api_models
+
         @filters ||= begin
           filters = []
           filters << Manufacturer.model_filters
@@ -113,6 +119,7 @@ module Api
 
       def latest
         authorize! :index, :api_models
+
         @models = Model.visible.includes(:manufacturer)
           .active
           .order(last_updated_at: :desc, name: :asc)
@@ -129,6 +136,7 @@ module Api
 
       def updated
         authorize! :index, :api_models
+
         if updated_range.present?
           scope = Model.visible.active.where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
@@ -139,6 +147,7 @@ module Api
 
       def show
         authorize! :show, :api_models
+
         @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
@@ -156,7 +165,9 @@ module Api
 
       def images
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
         @images = model.images
           .enabled
           .order("images.created_at desc")
@@ -166,7 +177,9 @@ module Api
 
       def videos
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
         @videos = model.videos
           .order("videos.created_at desc")
           .page(params[:page])
@@ -175,6 +188,7 @@ module Api
 
       def variants
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         scope = model.variants.includes(:manufacturer).visible.active
@@ -198,13 +212,16 @@ module Api
 
       def loaners
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         scope = model.loaners.includes(:manufacturer).visible.active
+
         if pledge_price_range.present?
           model_query_params["sorts"] = "last_pledge_price asc"
           scope = scope.where(last_pledge_price: pledge_price_range)
         end
+
         if price_range.present?
           model_query_params["sorts"] = "price asc"
           scope = scope.where(price: price_range)
@@ -221,6 +238,7 @@ module Api
 
       def modules
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_modules = model.modules
@@ -233,6 +251,7 @@ module Api
 
       def module_packages
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @module_packages = model.module_packages
@@ -245,6 +264,7 @@ module Api
 
       def upgrades
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_upgrades = model.upgrades
@@ -255,6 +275,7 @@ module Api
 
       def paints
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @paints = model.paints
@@ -265,16 +286,37 @@ module Api
 
       def store_image
         authorize! :show, :api_models
+
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
+
         redirect_to model.store_image.url
       end
 
       def fleetchart_image
         authorize! :show, :api_models
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        model = Model
+          .visible
+          .active
+          .where(slug: params[:slug])
+          .or(Model.where(rsi_slug: params[:slug]))
+          .where.not(fleetchart_image: nil)
+          .first!
+
         redirect_to model.fleetchart_image.url
+      end
+
+      def snub_crafts
+        authorize! :show, :api_models
+
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @snub_crafts = model.snub_crafts
+          .visible
+          .active
+          .order(name: :asc)
       end
 
       private def price_range

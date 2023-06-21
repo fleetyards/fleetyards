@@ -14,20 +14,20 @@
 #  updated_at   :datetime         not null
 #
 
-one:
+andromeda_upgrade_one:
   name: MyString
   slug: MyString
   description: MyText
-  active: false
+  active: true
   hidden: false
   store_image: MyString
   pledge_price: 9.99
 
-two:
+andromeda_upgrade_two:
   name: MyString
   slug: MyString
   description: MyText
-  active: false
+  active: true
   hidden: false
   store_image: MyString
   pledge_price: 9.99

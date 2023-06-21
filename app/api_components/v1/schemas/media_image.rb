@@ -8,10 +8,10 @@ module V1
       schema({
         type: :object,
         properties: {
-          source: {type: :string, format: :uri},
-          small: {type: :string, format: :uri},
+          large: {type: :string, format: :uri},
           medium: {type: :string, format: :uri},
-          large: {type: :string, format: :uri}
+          small: {type: :string, format: :uri},
+          source: {type: :string, format: :uri}
         },
         required: %w[source small medium large]
       })

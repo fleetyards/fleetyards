@@ -171,6 +171,7 @@ GEM
       activerecord (>= 6.0)
       railties (>= 6.0)
     date (3.3.3)
+    deep_merge (1.2.2)
     device_detector (1.1.0)
     devise (4.9.2)
       bcrypt (~> 3.0)
@@ -732,6 +733,7 @@ DEPENDENCIES
   coffee-rails
   dalli
   data_migrate
+  deep_merge
   devise
   devise-two-factor
   discordrb-webhooks

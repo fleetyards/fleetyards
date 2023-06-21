@@ -6,8 +6,8 @@
 #  code              :string
 #  description       :text
 #  designation       :string
-#  fairchanceact     :boolean
-#  habitable         :boolean
+#  fairchanceact     :boolean          default(FALSE)
+#  habitable         :boolean          default(FALSE)
 #  hidden            :boolean          default(TRUE)
 #  last_updated_at   :datetime
 #  name              :string

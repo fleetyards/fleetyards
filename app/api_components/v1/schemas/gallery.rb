@@ -5,7 +5,7 @@ module V1
     class Gallery
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
@@ -13,7 +13,7 @@ module V1
           slug: {type: :string}
         },
         required: %w[id name slug]
-      }
+      })
     end
   end
 end

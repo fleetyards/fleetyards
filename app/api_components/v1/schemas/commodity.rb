@@ -5,35 +5,35 @@ module V1
     class Commodity
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
           name: {type: :string},
           slug: {type: :string},
+
+          availability: {
+            type: :object,
+            properties: {
+              boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
+              soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
+            },
+            required: %w[boughtAt soldAt]
+          },
           type: {type: :string, nullable: true},
           typeLabel: {type: :string, nullable: true},
           media: {
             storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
           },
-          storeImageIsFallback: {type: :boolean, deprecated: true},
-          storeImage: {type: :string, deprecated: true},
-          storeImageLarge: {type: :string, deprecated: true},
-          storeImageMedium: {type: :string, deprecated: true},
-          storeImageSmall: {type: :string, deprecated: true},
-          soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
-          boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
-        },
-        required: %w[id name slug createdAt updatedAt]
-      }
 
-      schema :minimal, {
-        properties: {
-          createdAt: {type: :string, format: "date-time"},
-          updatedAt: {type: :string, format: "date-time"}
+          storeImage: {type: :string, format: :uri, deprecated: true},
+          storeImageIsFallback: {type: :boolean, format: :uri, deprecated: true},
+          storeImageLarge: {type: :string, format: :uri, deprecated: true},
+          storeImageMedium: {type: :string, format: :uri, deprecated: true},
+          storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
-        required: %w[createdAt updatedAt]
-      }, extends: :base
+        required: %w[id name slug availability media createdAt updatedAt]
+      })
     end
   end
 end

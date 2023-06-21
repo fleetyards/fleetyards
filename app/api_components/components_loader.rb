@@ -23,15 +23,15 @@ class ComponentsLoader
     components = {}
 
     load_classes.each do |klass|
-      klass.new.to_schema.each do |name, definition|
-        component_name = extract_component_name(klass, name)
+      component_name = extract_component_name(klass)
 
-        if components[component_name].present?
-          raise "Duplicate component name \"#{component_name}\" found in \"#{identifier}/#{type}\""
-        end
+      definition = klass.new.to_schema
 
-        components[component_name] = definition.merge(title: component_name)
+      if components[component_name].present?
+        raise "Duplicate component name \"#{component_name}\" found in \"#{identifier}/#{type}\""
       end
+
+      components[component_name] = definition.merge(title: component_name)
     end
 
     components
@@ -47,12 +47,10 @@ class ComponentsLoader
     end
   end
 
-  private def extract_component_name(klass, name)
+  private def extract_component_name(klass)
     klass_name = extract_class_name(klass)
 
     klass_name_parts = klass_name.split("::").reject(&:blank?)
-
-    klass_name_parts << name.to_s.camelize unless name == :base
 
     klass_name_parts.join
   end

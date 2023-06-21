@@ -5,7 +5,7 @@ module V1
     class FieldError
       include SchemaConcern
 
-      schema :base, {
+      schema({
         type: :object,
         properties: {
           attribute: {type: :string},
@@ -15,7 +15,7 @@ module V1
           }
         },
         required: %w[attribute messages]
-      }
+      })
     end
   end
 end
