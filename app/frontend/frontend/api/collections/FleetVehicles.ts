@@ -15,11 +15,11 @@ export class FleetVehiclesCollection extends BaseCollection {
     return Store.getters["fleet/perPage"];
   }
 
-  get perPageSteps(): (number | string)[] {
+  get perPageSteps(): (number | "all")[] {
     return [15, 30, 60, 120, 240, "all"];
   }
 
-  updatePerPage(perPage) {
+  updatePerPage(perPage: number | "all") {
     Store.dispatch("fleet/updatePerPage", perPage);
   }
 
