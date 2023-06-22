@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.25.1](https://github.com/fleetyards/fleetyards/compare/v5.25.0...v5.25.1) (2023-06-22)
+
+
+### Bug Fixes
+
+* **vehicle-owner:** update owner modal ([342fd5b](https://github.com/fleetyards/fleetyards/commit/342fd5b5a2f0da5016f2e251e8f564959688141b))
+
 ## [5.25.0](https://github.com/fleetyards/fleetyards/compare/v5.24.0...v5.25.0) (2023-06-21)
 
 
