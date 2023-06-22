@@ -78,7 +78,7 @@ const sortedVehicles = computed(() =>
 
 const route = useRoute();
 
-const query = computed(() => route.query.q as VehiclesFilter);
+const query = computed(() => (route.query.q || {}) as VehiclesFilter);
 
 const loanerEq = computed(() => query.value.loanerEq as boolean | "only");
 
