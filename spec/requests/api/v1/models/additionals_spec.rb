@@ -90,7 +90,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
+      parameter name: :from, in: :query, type: :string, format: :datetime, required: false
+      parameter name: :to, in: :query, type: :string, format: :datetime, required: false, default: :now
+
       response(200, "successful") do
+        let(:from) { 1.day.ago }
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -99,6 +104,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           }
         end
 
+        run_test!
+      end
+
+      response(304, "not modified") do
         run_test!
       end
     end

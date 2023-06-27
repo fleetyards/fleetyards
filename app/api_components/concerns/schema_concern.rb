@@ -4,12 +4,13 @@ module SchemaConcern
   extend ActiveSupport::Concern
 
   included do
-    class_attribute :schema_value
-
     class << self
+      attr_accessor :schema_value
+
       def schema(schema_definition)
-        self.schema_value = if schema_value.present?
-          schema_value.deeper_merge(schema_definition)
+        self.schema_value = if superclass.respond_to?(:schema_value)
+          parent_schema_definition = superclass.schema_value.deep_dup
+          parent_schema_definition.deeper_merge(schema_definition)
         else
           schema_definition
         end
@@ -17,7 +18,7 @@ module SchemaConcern
     end
 
     def to_schema
-      schema_value
+      self.class.schema_value
     end
   end
 end

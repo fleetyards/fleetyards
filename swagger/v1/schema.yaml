@@ -2048,26 +2048,10 @@ components:
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
           nullable: true
-        parent:
-          "$ref": "#/components/schemas/CelestialObject"
-          nullable: true
-        moons:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - name
       - slug
       - designation
-      - starsystem
-      - createdAt
-      - updatedAt
       title: CelestialObject
     CelestialObjectMinimal:
       type: object
@@ -2203,12 +2187,6 @@ components:
           type: string
           format: uri
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
@@ -2403,20 +2381,12 @@ components:
           type: string
           format: uri
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
       - slug
       - availability
       - media
-      - createdAt
-      - updatedAt
       title: Component
     ComponentMinimal:
       type: object
@@ -2793,20 +2763,12 @@ components:
           type: string
           format: uri
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
       - slug
       - availability
       - media
-      - createdAt
-      - updatedAt
       title: Equipment
     EquipmentMinimal:
       type: object
@@ -3025,19 +2987,11 @@ components:
           type: string
         color:
           type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
       - slug
       - color
-      - createdAt
-      - updatedAt
       title: HangarGroup
     HangarGroupMinimal:
       type: object
@@ -3095,18 +3049,6 @@ components:
         width:
           type: number
           nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        gallery:
-          "$ref": "#/components/schemas/Gallery"
-          nullable: true
-        model:
-          "$ref": "#/components/schemas/Gallery"
-          nullable: true
       required:
       - id
       - name
@@ -3117,8 +3059,6 @@ components:
       - background
       - smallUrl
       - bigUrl
-      - createdAt
-      - updatedAt
       title: Image
     ImageComplete:
       type: object
@@ -3211,12 +3151,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        gallery:
-          "$ref": "#/components/schemas/Gallery"
-          nullable: true
-        model:
-          "$ref": "#/components/schemas/Gallery"
-          nullable: true
       required:
       - id
       - name
@@ -3271,17 +3205,9 @@ components:
           nullable: true
         longName:
           type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - name
       - slug
-      - createdAt
-      - updatedAt
       title: Manufacturer
     ManufacturerMinimal:
       type: object
@@ -3440,12 +3366,6 @@ components:
             storeUrl:
               type: string
               nullable: true
-            self:
-              type: string
-              format: uri
-            frontend:
-              type: string
-              format: uri
         loaners:
           type: array
           items:
@@ -3835,16 +3755,6 @@ components:
           type: number
           nullable: true
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        dockCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/DockCount"
       required:
       - id
       - name
@@ -3862,9 +3772,6 @@ components:
       - metrics
       - onSale
       - speeds
-      - createdAt
-      - updatedAt
-      - dockCounts
       title: Model
     ModelComplete:
       type: object
@@ -4597,12 +4504,6 @@ components:
             storeUrl:
               type: string
               nullable: true
-            self:
-              type: string
-              format: uri
-            frontend:
-              type: string
-              format: uri
         loaners:
           type: array
           items:
@@ -4998,10 +4899,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        dockCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/DockCount"
       required:
       - id
       - name
@@ -5021,7 +4918,6 @@ components:
       - speeds
       - createdAt
       - updatedAt
-      - dockCounts
       title: ModelMinimal
     ModelModule:
       type: object
@@ -5080,22 +4976,11 @@ components:
           type: string
           format: uri
           deprecated: true
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
       - availability
       - media
-      - createdAt
-      - updatedAt
       title: ModelModule
     ModelModuleMinimal:
       type: object
@@ -5183,17 +5068,9 @@ components:
         slug:
           type: string
           nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - name
       - slug
-      - createdAt
-      - updatedAt
       title: ModelModulePackage
     ModelModulePackageMinimal:
       type: object
@@ -5412,20 +5289,12 @@ components:
           format: uri
           nullable: true
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
       - slug
       - availability
       - media
-      - createdAt
-      - updatedAt
       title: ModelPaint
     ModelPaintMinimal:
       type: object
@@ -5676,18 +5545,10 @@ components:
           format: uri
           nullable: true
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
       - media
-      - createdAt
-      - updatedAt
       title: ModelUpgrade
     ModelUpgradeMinimal:
       type: object
@@ -5910,14 +5771,6 @@ components:
           nullable: true
           format: uri
           deprecated: true
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
@@ -5932,9 +5785,6 @@ components:
       - refineryTerminal
       - media
       - station
-      - celestialObject
-      - createdAt
-      - updatedAt
       title: Shop
     ShopCommodity:
       type: object
@@ -6037,20 +5887,6 @@ components:
           nullable: true
           format: uri
           deprecated: true
-        item:
-          oneOf:
-          - "$ref": "#/components/schemas/Model"
-          - "$ref": "#/components/schemas/Component"
-          - "$ref": "#/components/schemas/Commodity"
-          - "$ref": "#/components/schemas/Equipment"
-          - "$ref": "#/components/schemas/ModelModule"
-          - "$ref": "#/components/schemas/ModelPaint"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - name
@@ -6062,9 +5898,6 @@ components:
       - commodityItemType
       - commodityItemId
       - shop
-      - item
-      - createdAt
-      - updatedAt
       title: ShopCommodity
     ShopCommodityMinimal:
       type: object
@@ -6442,30 +6275,6 @@ components:
           format: uri
           nullable: true
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        starsystem:
-          "$ref": "#/components/schemas/Starsystem"
-        shops:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Shop"
-        docks:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Dock"
-        habitations:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Habitation"
-        images:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Image"
       required:
       - name
       - slug
@@ -6475,8 +6284,6 @@ components:
       - cargoHub
       - celestialObject
       - media
-      - createdAt
-      - updatedAt
       title: Station
     StationComplete:
       type: object
@@ -6686,24 +6493,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        starsystem:
-          "$ref": "#/components/schemas/Starsystem"
-        shops:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Shop"
-        docks:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Dock"
-        habitations:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Habitation"
-        images:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Image"
       required:
       - name
       - slug
@@ -6807,12 +6596,6 @@ components:
           nullable: true
         wanted:
           type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - model
@@ -6828,8 +6611,6 @@ components:
       - hangarGroupIds
       - hangarGroups
       - moduleIds
-      - createdAt
-      - updatedAt
       title: Vehicle
     VehicleMinimal:
       type: object
@@ -6934,19 +6715,11 @@ components:
         videoId:
           type: string
           nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - id
       - url
       - videoId
       - type
-      - createdAt
-      - updatedAt
       title: Video
     VideoMinimal:
       type: object

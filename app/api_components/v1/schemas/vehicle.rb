@@ -32,7 +32,7 @@ module V1
         },
         required: %w[
           id model wanted boughtVia loaner flagship public nameVisible saleNotify alternativeNames
-          upgradeIds hangarGroupIds hangarGroups moduleIds
+          modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds
         ]
       })
     end

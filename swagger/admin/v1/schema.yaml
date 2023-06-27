@@ -231,8 +231,6 @@ components:
           format: uuid
         galleryType:
           "$ref": "#/components/schemas/GalleryTypeEnum"
-        file:
-          type: string
       title: ImageInput
     ImageInputCreate:
       type: object
