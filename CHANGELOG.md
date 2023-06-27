@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.25.3](https://github.com/fleetyards/fleetyards/compare/v5.25.2...v5.25.3) (2023-06-27)
+
+
+### Bug Fixes
+
+* **validations:** allow @ in urls ([7acd6aa](https://github.com/fleetyards/fleetyards/commit/7acd6aaa02416ab6cbae65e9f88f6c2e1e786158))
+
 ### [5.25.2](https://github.com/fleetyards/fleetyards/compare/v5.25.1...v5.25.2) (2023-06-23)
 
 
