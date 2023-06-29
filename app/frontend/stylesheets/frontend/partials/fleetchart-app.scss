@@ -29,6 +29,42 @@
     z-index: 1000;
   }
 
+  &__filter {
+    display: flex;
+    position: fixed;
+    left: 20px;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  &__offcanvas-filter {
+    position: fixed;
+    max-width: 300px;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    transition: transform $transition-base-speed ease-in-out;
+    background-color: rgba(black, 0.8);
+    padding: 20px;
+    z-index: 2000;
+
+    &__backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 2000;
+      background-color: rgba(black, 0.5);
+    }
+
+    &--visible {
+      transform: translateX(0);
+    }
+  }
+
   .fleetchart-app-close {
     position: absolute;
     top: 15px;

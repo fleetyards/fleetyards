@@ -271,7 +271,11 @@
           namespace="hangar"
           :loading="loading"
           download-name="my-hangar-fleetchart"
-        />
+        >
+          <template #pagination>
+            <Paginator :collection="collection" />
+          </template>
+        </FleetchartApp>
       </template>
 
       <template #empty="{ hideEmptyBox, emptyBoxVisible }">
@@ -310,6 +314,7 @@ import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGr
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import debounce from "lodash.debounce";
 import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
+import Paginator from "@/frontend/core/components/Paginator/index.vue";
 
 @Component<Hangar>({
   components: {
@@ -329,6 +334,7 @@ import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
     GroupLabels,
     AddonsModal,
     FleetchartApp,
+    Paginator,
   },
 })
 export default class Hangar extends Vue {

@@ -35,6 +35,42 @@
       <i class="fal fa-times" />
     </Btn>
 
+    <div class="fleetchart-app__filter">
+      <Btn
+        v-if="hasFilterSlot"
+        v-tooltip="filterTooltip"
+        :active="filterVisible"
+        :aria-label="filterTooltip"
+        size="small"
+        @click.native="toggleFilter"
+      >
+        <span v-show="isFilterSelected">
+          <i class="fas fa-filter" />
+        </span>
+        <span v-show="!isFilterSelected">
+          <i class="far fa-filter" />
+        </span>
+      </Btn>
+
+      <slot name="pagination" />
+
+      <transition name="fade">
+        <div
+          v-if="filterVisible"
+          class="fleetchart-app__offcanvas-filter__backdrop"
+          @click="toggleFilter"
+        ></div>
+      </transition>
+      <div
+        class="fleetchart-app__offcanvas-filter"
+        :class="{
+          'fleetchart-app__offcanvas-filter--visible': filterVisible,
+        }"
+      >
+        <slot name="filter" />
+      </div>
+    </div>
+
     <template v-if="innerItems.length && !loading">
       <FleetchartListPanzoom
         v-if="mode == 'panzoom'"
@@ -65,6 +101,7 @@ import FleetchartList from "@/frontend/components/Fleetchart/List/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
+import { isFilterSelected } from "@/frontend/utils/Filters";
 
 @Component({
   components: {
@@ -105,12 +142,40 @@ export default class FleetchartApp extends Vue {
 
   @Getter("mobile") mobile;
 
+  @Getter("filtersVisible") filtersVisible;
+
+  @Action("toggleFilterVisible") toggleFilterVisible;
+
   get visible() {
     return this.$store.getters[`${this.namespace}/fleetchartVisible`];
   }
 
   get mode() {
     return this.$store.getters[`${this.namespace}/fleetchartMode`];
+  }
+
+  get hasFilterSlot() {
+    return !!this.$slots.filter;
+  }
+
+  get filterVisible() {
+    return !!this.filtersVisible[this.namespace] && this.hasFilterSlot;
+  }
+
+  get filterTooltip() {
+    if (this.filterVisible) {
+      return this.$t("actions.hideFilter");
+    }
+
+    return this.$t("actions.showFilter");
+  }
+
+  get filters() {
+    return this.$route.query.q || {};
+  }
+
+  get isFilterSelected() {
+    return isFilterSelected(this.filters);
   }
 
   @Watch("items")
@@ -137,6 +202,10 @@ export default class FleetchartApp extends Vue {
     if (this.visible) {
       this.open();
     }
+  }
+
+  toggleFilter() {
+    this.toggleFilterVisible(this.namespace);
   }
 
   updateItems() {
