@@ -122,4 +122,16 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+router.onError((error) => {
+  if (
+    process.env.NODE_ENV === "production" &&
+    (error.message.includes("Failed to fetch dynamically imported module") ||
+      error.message.includes("error loading dynamically imported module") ||
+      error.message.includes("Importing a module script failed"))
+  ) {
+    // window.location = to.fullPath; TODO: switch once vue-router >= 4
+    window.location.reload();
+  }
+});
+
 export default router;
