@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.26.0](https://github.com/fleetyards/fleetyards/compare/v5.25.3...v5.26.0) (2023-06-29)
+
+
+### Features
+
+* **fleetchart:** show pagination in fleetchart ([517baff](https://github.com/fleetyards/fleetyards/commit/517baff738202584cca72705fdbfca5a36303667))
+
 ### [5.25.3](https://github.com/fleetyards/fleetyards/compare/v5.25.2...v5.25.3) (2023-06-27)
 
 
