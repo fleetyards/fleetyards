@@ -445,4 +445,11 @@
           %i.fa.fa-plus
           = I18n.t(:"actions.add_dock")
 
+  .row
+    .col-12.col-md-6.form-group{class: form_error?(model, :update_reason_description)}
+      = form.label :update_reason_description
+      = form.text_field :update_reason_description, class: 'form-control'
+      %small
+        = form_errors model, :update_reason_description
+
   = render "shared/submit", path: admin_models_path
