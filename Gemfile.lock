@@ -454,8 +454,9 @@ GEM
       activesupport (= 7.0.5.1)
       bundler (>= 1.15.0)
       railties (= 7.0.5.1)
-    rails-dom-testing (2.1.0)
+    rails-dom-testing (2.1.1)
       activesupport (>= 5.0.0)
+      minitest
       nokogiri (>= 1.6)
     rails-erd (1.7.2)
       activerecord (>= 4.2)
