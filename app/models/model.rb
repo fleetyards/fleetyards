@@ -129,6 +129,16 @@ class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   include Routing
 
+  has_paper_trail on: %i[update], only: %i[
+    classification production_status production_note focus pledge_price length beam height mass
+    cargo size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
+    ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
+    max_speed_acceleration max_speed_decceleration pitch yaw roll brochure price store_image
+    store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
+    quantum_fuel_tanks holo sales_page_url top_view side_view angled_view front_view
+    angled_view_colored side_view_colored top_view_colored front_view_colored
+  ]
+
   paginates_per 30
   max_paginates_per 240
 
