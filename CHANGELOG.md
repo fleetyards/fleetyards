@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.26.1](https://github.com/fleetyards/fleetyards/compare/v5.26.0...v5.26.1) (2023-07-03)
+
+
+### Bug Fixes
+
+* **loaners:** match G12 Variants to all G12 vehicles ([ea0b2b3](https://github.com/fleetyards/fleetyards/commit/ea0b2b30c8fe01b40a9e2718eeafad4d9532f3a4))
+
 ## [5.26.0](https://github.com/fleetyards/fleetyards/compare/v5.25.3...v5.26.0) (2023-06-29)
 
 
