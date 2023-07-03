@@ -28,7 +28,7 @@ module ScData
       update_params = extract_metrics(ship_data, components_data)
       update_params = extract_speeds(ship_data, update_params)
 
-      model.update!(update_params)
+      model.update!(update_params.merge(update_reason: :sc_loader))
     end
 
     private def extract_metrics(ship_data, components_data)

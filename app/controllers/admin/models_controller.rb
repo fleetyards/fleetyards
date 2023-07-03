@@ -66,7 +66,7 @@ module Admin
 
     def update
       authorize! :update, model
-      if model.update(model_params)
+      if model.update(model_params.merge(author_id: current_user.id, update_reason: :custom))
         model.touch
         redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
       else
@@ -168,7 +168,7 @@ module Admin
         :remove_angled_view_colored, :top_view_colored, :top_view_colored_cache,
         :remove_top_view_colored, :side_view_colored, :side_view_colored_cache,
         :remove_side_view_colored, :front_view_colored, :front_view_colored_cache,
-        :remove_front_view_colored,
+        :remove_front_view_colored, :update_reason, :update_reason_description,
         videos_attributes: %i[id url video_type _destroy],
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )
