@@ -89,6 +89,7 @@ module Rsi
         "Mole" => ["Mole"],
         "G12A" => ["G12a"],
         "G12R" => ["G12r"],
+        "G12 Variants" => ["G12", "G12a", "G12r"],
         "ROC (+ ROC DS)" => %w[ROC ROC-DS],
         "Retaliator" => ["Retaliator Bomber", "Retaliator Base"],
         "San'Tok.yai" => ["San'tok.yāi"],
