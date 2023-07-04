@@ -1,5 +1,4 @@
 import { resolve } from "path";
-import legacy from "@vitejs/plugin-legacy";
 import { defineConfig, splitVendorChunkPlugin } from "vite";
 import ViteRails from "vite-plugin-rails";
 import Vue2 from "@vitejs/plugin-vue2";
@@ -28,9 +27,6 @@ export const accessEnv = (key: string, defaultValue?: string): string => {
 
 export default defineConfig({
   plugins: [
-    legacy({
-      targets: ["defaults", "not IE 11"],
-    }),
     ViteRails(),
     Vue2(),
     VitePWA({
