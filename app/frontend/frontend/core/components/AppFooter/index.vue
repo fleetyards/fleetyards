@@ -54,22 +54,13 @@
       </div>
       <div class="app-footer-social-links">
         <a
-          v-tooltip="'Mastodon'"
-          href="https://starcitizen.social/@fleetyards"
+          v-tooltip="'Discord'"
+          href="https://discord.gg/6EQKAsb"
           target="_blank"
           rel="noopener"
-          aria-label="Mastodon"
+          aria-label="Discrod"
         >
-          <i class="fab fa-mastodon" />
-        </a>
-        <a
-          v-tooltip="'Twitter'"
-          href="https://twitter.com/FleetYardsNet"
-          target="_blank"
-          rel="noopener"
-          aria-label="Twitter"
-        >
-          <i class="fab fa-twitter" />
+          <i class="fab fa-discord" />
         </a>
         <a
           v-tooltip="'Github'"
@@ -81,13 +72,13 @@
           <i class="fab fa-github" />
         </a>
         <a
-          v-tooltip="'Discord'"
-          href="https://discord.gg/6EQKAsb"
+          v-tooltip="'Mastodon'"
+          href="https://starcitizen.social/@fleetyards"
           target="_blank"
           rel="noopener"
-          aria-label="Discrod"
+          aria-label="Mastodon"
         >
-          <i class="fab fa-discord" />
+          <i class="fab fa-mastodon" />
         </a>
         <a
           v-tooltip="'Instagram'"
@@ -97,6 +88,15 @@
           aria-label="Instagram"
         >
           <i class="fab fa-instagram" />
+        </a>
+        <a
+          v-tooltip="'Twitter'"
+          href="https://twitter.com/FleetYardsNet"
+          target="_blank"
+          rel="noopener"
+          aria-label="Twitter"
+        >
+          <i class="fab fa-twitter" />
         </a>
       </div>
       <div class="app-footer-support">
