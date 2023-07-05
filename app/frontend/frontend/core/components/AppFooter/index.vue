@@ -25,8 +25,18 @@
         <router-link :to="{ name: 'impressum' }">
           {{ $t("nav.impressum") }}
         </router-link>
-        <span class="d-xs-none">|</span>
+        <span class="d-xs-none">| </span>
         <br class="d-sm-none" />
+        <a
+          v-tooltip="'Mastodon'"
+          href="https://starcitizen.social/@fleetyards"
+          target="_blank"
+          rel="noopener"
+          aria-label="Mastodon"
+        >
+          <i class="fab fa-mastodon" />
+        </a>
+        |
         <a
           v-tooltip="'Twitter'"
           href="https://twitter.com/FleetYardsNet"
