@@ -88,8 +88,24 @@ $footerOuterBorderWidth: 2px;
     }
   }
 
-  .app-footer-item {
+  .app-footer-links {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .app-footer-social-links {
+    gap: 15px;
+    display: flex;
+    justify-content: center;
     margin-bottom: 5px;
+    font-size: 180%;
+    position: absolute;
+    top: 10px;
+    right: 25px;
   }
 
   .app-footer-support {
@@ -133,6 +149,12 @@ $footerOuterBorderWidth: 2px;
     right: 0;
     left: auto;
 
+    .app-footer-social-links {
+      position: relative;
+      right: auto;
+      top: auto;
+    }
+
     .app-community-logo {
       position: relative;
       top: auto;
@@ -140,6 +162,10 @@ $footerOuterBorderWidth: 2px;
       width: 100%;
       margin-bottom: 10px;
       background-size: 100px;
+    }
+
+    .app-footer-support {
+      margin: 15px 0;
     }
 
     .app-footer-inner {

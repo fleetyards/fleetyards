@@ -8,7 +8,7 @@
       <div class="app-footer-inner-border app-footer-inner-border-top">
         <div class="app-footer-inner-border-bg" />
       </div>
-      <div class="app-footer-item">
+      <div class="app-footer-links">
         <a
           v-tooltip="'Roberts Space Industries'"
           href="https://robertsspaceindustries.com/"
@@ -25,57 +25,6 @@
         <router-link :to="{ name: 'impressum' }">
           {{ $t("nav.impressum") }}
         </router-link>
-        <span class="d-xs-none">| </span>
-        <br class="d-sm-none" />
-        <a
-          v-tooltip="'Mastodon'"
-          href="https://starcitizen.social/@fleetyards"
-          target="_blank"
-          rel="noopener"
-          aria-label="Mastodon"
-        >
-          <i class="fab fa-mastodon" />
-        </a>
-        |
-        <a
-          v-tooltip="'Twitter'"
-          href="https://twitter.com/FleetYardsNet"
-          target="_blank"
-          rel="noopener"
-          aria-label="Twitter"
-        >
-          <i class="fab fa-twitter" />
-        </a>
-        |
-        <a
-          v-tooltip="'Github'"
-          href="https://github.com/fleetyards"
-          target="_blank"
-          rel="noopener"
-          aria-label="Github"
-        >
-          <i class="fab fa-github" />
-        </a>
-        |
-        <a
-          v-tooltip="'Discord'"
-          href="https://discord.gg/6EQKAsb"
-          target="_blank"
-          rel="noopener"
-          aria-label="Discrod"
-        >
-          <i class="fab fa-discord" />
-        </a>
-        |
-        <a
-          v-tooltip="'Instagram'"
-          href="https://www.instagram.com/fleetyardsnet/"
-          target="_blank"
-          rel="noopener"
-          aria-label="Instagram"
-        >
-          <i class="fab fa-instagram" />
-        </a>
         |
         <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
           {{ $t("nav.api") }}
@@ -83,6 +32,7 @@
         |
         <BtnDropdown
           :text-inline="true"
+          :inline="true"
           size="small"
           variant="link"
           :expand-top="true"
@@ -101,6 +51,53 @@
             {{ localeMapping[locale] }} - {{ locale }}
           </Btn>
         </BtnDropdown>
+      </div>
+      <div class="app-footer-social-links">
+        <a
+          v-tooltip="'Mastodon'"
+          href="https://starcitizen.social/@fleetyards"
+          target="_blank"
+          rel="noopener"
+          aria-label="Mastodon"
+        >
+          <i class="fab fa-mastodon" />
+        </a>
+        <a
+          v-tooltip="'Twitter'"
+          href="https://twitter.com/FleetYardsNet"
+          target="_blank"
+          rel="noopener"
+          aria-label="Twitter"
+        >
+          <i class="fab fa-twitter" />
+        </a>
+        <a
+          v-tooltip="'Github'"
+          href="https://github.com/fleetyards"
+          target="_blank"
+          rel="noopener"
+          aria-label="Github"
+        >
+          <i class="fab fa-github" />
+        </a>
+        <a
+          v-tooltip="'Discord'"
+          href="https://discord.gg/6EQKAsb"
+          target="_blank"
+          rel="noopener"
+          aria-label="Discrod"
+        >
+          <i class="fab fa-discord" />
+        </a>
+        <a
+          v-tooltip="'Instagram'"
+          href="https://www.instagram.com/fleetyardsnet/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Instagram"
+        >
+          <i class="fab fa-instagram" />
+        </a>
       </div>
       <div class="app-footer-support">
         <Btn :inline="true" variant="link" @click.native="openSupportModal">
