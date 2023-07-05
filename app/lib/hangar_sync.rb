@@ -3,6 +3,8 @@
 class HangarSync < HangarImporter
   attr_accessor :data, :ships, :components, :upgrades
 
+  ITEM_TYPES = %w[ship component upgrade skin].freeze
+
   COMPONENT_FIND_QUERY = [
     "lower(name) = :name",
     "slug = :slug",

@@ -680,6 +680,19 @@ paths:
         '200':
           description: successful
   "/hangar":
+    delete:
+      summary: Clear your personal hangar
+      tags:
+      - Hangar
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     get:
       summary: Your personal hangar
       tags:
@@ -712,6 +725,83 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/import":
+    put:
+      summary: Import to your personal hangar
+      tags:
+      - Hangar
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+        required: true
+  "/hangar/move-all-ingame-to-wishlist":
+    put:
+      summary: Move all Ingame Ships from your Hangar to your Wishlist
+      tags:
+      - Hangar
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-hangar":
+    put:
+      summary: Sync RSI Hangar
+      tags:
+      - Hangar
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarSyncResult"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  "$ref": "#/components/schemas/SyncRsiHangarInput"
+              required:
+              - import
+        required: true
   "/hangar-groups":
     get:
       summary: list hangar_groups
@@ -848,9 +938,25 @@ paths:
       summary: updated models
       tags:
       - Models
+      parameters:
+      - name: from
+        in: query
+        format: datetime
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        format: datetime
+        required: false
+        default: now
+        schema:
+          type: string
       responses:
         '200':
           description: successful
+        '304':
+          description: not modified
   "/models/embed":
     get:
       summary: embed models
@@ -910,6 +1016,7 @@ paths:
   "/models":
     get:
       summary: list models
+      operationId: getModels
       tags:
       - Models
       parameters:
@@ -952,6 +1059,7 @@ paths:
         type: string
     get:
       summary: model detail
+      operationId: getModel
       tags:
       - Models
       responses:
@@ -982,6 +1090,7 @@ paths:
       required: false
     get:
       summary: model hardpoints
+      operationId: getHardpoints
       tags:
       - Models
       responses:
@@ -1021,6 +1130,7 @@ paths:
         type: string
     get:
       summary: model images
+      operationId: getImages
       tags:
       - Models
       responses:
@@ -1060,6 +1170,7 @@ paths:
         type: string
     get:
       summary: model videos
+      operationId: getVideos
       tags:
       - Models
       responses:
@@ -1099,6 +1210,7 @@ paths:
         type: string
     get:
       summary: model variants
+      operationId: getVariants
       tags:
       - Models
       responses:
@@ -1138,6 +1250,7 @@ paths:
         type: string
     get:
       summary: model loaners
+      operationId: getLoaners
       tags:
       - Models
       responses:
@@ -1177,6 +1290,7 @@ paths:
         type: string
     get:
       summary: model snub crafts
+      operationId: getSnubCrafts
       tags:
       - Models
       responses:
@@ -1204,6 +1318,7 @@ paths:
         type: string
     get:
       summary: model modules
+      operationId: getModules
       tags:
       - Models
       responses:
@@ -1231,6 +1346,7 @@ paths:
         type: string
     get:
       summary: model upgrades
+      operationId: getUpgrades
       tags:
       - Models
       responses:
@@ -1258,6 +1374,7 @@ paths:
         type: string
     get:
       summary: model paints
+      operationId: getPaints
       tags:
       - Models
       responses:
@@ -1285,6 +1402,7 @@ paths:
         type: string
     get:
       summary: model store image
+      operationId: getStoreImage
       deprecated: true
       tags:
       - Models
@@ -1301,6 +1419,7 @@ paths:
         type: string
     get:
       summary: model fleetchart image
+      operationId: getFleetchartImage
       deprecated: true
       tags:
       - Models
@@ -2616,6 +2735,14 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    RsiHangarItemKindEnum:
+      type: string
+      enum:
+      - ship
+      - component
+      - upgrade
+      - skin
+      title: RsiHangarItemKindEnum
     ShopTypeEnum:
       type: string
       enum:
@@ -3019,6 +3146,78 @@ components:
       - createdAt
       - updatedAt
       title: HangarGroupMinimal
+    HangarSyncResult:
+      type: object
+      properties:
+        importedVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        foundVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        movedVehiclesToWanted:
+          type: array
+          items:
+            type: string
+            format: uuid
+        missingModels:
+          type: array
+          items:
+            type: string
+        importedComponents:
+          type: array
+          items:
+            type: string
+            format: uuid
+        foundComponents:
+          type: array
+          items:
+            type: string
+            format: uuid
+        missingComponents:
+          type: array
+          items:
+            type: string
+        missingComponentVehicles:
+          type: array
+          items:
+            type: string
+        importedUpgrades:
+          type: array
+          items:
+            type: string
+            format: uuid
+        foundUpgrades:
+          type: array
+          items:
+            type: string
+            format: uuid
+        missingUpgrades:
+          type: array
+          items:
+            type: string
+        missingUpgradeVehicles:
+          type: array
+          items:
+            type: string
+      required:
+      - importedVehicles
+      - foundVehicles
+      - movedVehiclesToWanted
+      - missingModels
+      - importedComponents
+      - foundComponents
+      - missingComponents
+      - missingComponentVehicles
+      - importedUpgrades
+      - foundUpgrades
+      - missingUpgrades
+      - missingUpgradeVehicles
+      title: HangarSyncResult
     Image:
       type: object
       properties:
@@ -3190,6 +3389,29 @@ components:
       - path
       - shopId
       title: CommodityPriceInput
+    RsiHangarItemInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        customName:
+          type: string
+          nullable: true
+        type:
+          "$ref": "#/components/schemas/RsiHangarItemKindEnum"
+      required:
+      - id
+      - name
+      - type
+      title: RsiHangarItemInput
+    SyncRsiHangarInput:
+      type: array
+      items:
+        "$ref": "#/components/schemas/RsiHangarItemInput"
+      title: SyncRsiHangarInput
     Manufacturer:
       type: object
       properties:
@@ -6607,10 +6829,10 @@ components:
       - nameVisible
       - saleNotify
       - alternativeNames
-      - upgradeIds
+      - modelUpgradeIds
       - hangarGroupIds
       - hangarGroups
-      - moduleIds
+      - modelModuleIds
       title: Vehicle
     VehicleMinimal:
       type: object
@@ -6694,10 +6916,10 @@ components:
       - nameVisible
       - saleNotify
       - alternativeNames
-      - upgradeIds
+      - modelUpgradeIds
       - hangarGroupIds
       - hangarGroups
-      - moduleIds
+      - modelModuleIds
       - createdAt
       - updatedAt
       title: VehicleMinimal
@@ -6749,6 +6971,37 @@ components:
       - createdAt
       - updatedAt
       title: VideoMinimal
+    ViewImage:
+      type: object
+      properties:
+        source:
+          type: string
+          format: uri
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+        large:
+          type: string
+          format: uri
+        xlarge:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+      required:
+      - source
+      - small
+      - medium
+      - large
+      - xlarge
+      - width
+      - height
+      title: ViewImage
   parameters: {}
   securitySchemes: {}
   requestBodies: {}

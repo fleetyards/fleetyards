@@ -1,1 +1,3 @@
 app/frontend/auto-imports.d.ts
+app/frontend/services/fyApi/*
+app/frontend/services/request.template.ts

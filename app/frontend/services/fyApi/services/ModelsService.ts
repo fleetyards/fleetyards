@@ -1,0 +1,553 @@
+/* generated using openapi-typescript-codegen -- do no edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+import type { ImageMinimal } from '../models/ImageMinimal';
+import type { ModelComplete } from '../models/ModelComplete';
+import type { ModelHardpoint } from '../models/ModelHardpoint';
+import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
+import type { ModelMinimal } from '../models/ModelMinimal';
+import type { ModelModuleMinimal } from '../models/ModelModuleMinimal';
+import type { ModelPaintMinimal } from '../models/ModelPaintMinimal';
+import type { ModelQuery } from '../models/ModelQuery';
+import type { ModelUpgradeMinimal } from '../models/ModelUpgradeMinimal';
+import type { VideoMinimal } from '../models/VideoMinimal';
+
+import type { CancelablePromise } from '../core/CancelablePromise';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
+
+export class ModelsService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
+
+    /**
+     * models with docks
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsWithDocks(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/with-docks',
+        });
+    }
+
+    /**
+     * unscheduled models
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsUnscheduled(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/unscheduled',
+        });
+    }
+
+    /**
+     * latest models
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsLatest(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/latest',
+        });
+    }
+
+    /**
+     * available model slugs
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsSlugs(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/slugs',
+        });
+    }
+
+    /**
+     * updated models
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsUpdated({
+        from,
+        to,
+    }: {
+        from?: string,
+        to?: string,
+    }): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/updated',
+            query: {
+                'from': from,
+                'to': to,
+            },
+            errors: {
+                304: `not modified`,
+            },
+        });
+    }
+
+    /**
+     * embed models
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsEmbed(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/embed',
+        });
+    }
+
+    /**
+     * filters model
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsFilters(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/filters',
+        });
+    }
+
+    /**
+     * classifications model
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsClassifications(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/classifications',
+        });
+    }
+
+    /**
+     * production_states model
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsProductionStates(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/production-states',
+        });
+    }
+
+    /**
+     * focus model
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsFocus(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/focus',
+        });
+    }
+
+    /**
+     * sizes model
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsSizes(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/sizes',
+        });
+    }
+
+    /**
+     * cargo_options model
+     * @returns any successful
+     * @throws ApiError
+     */
+    public getModelsCargoOptions(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/cargo-options',
+        });
+    }
+
+    /**
+     * list models
+     * @returns ModelMinimal successful
+     * @throws ApiError
+     */
+    public getModels({
+        page,
+        perPage,
+        q,
+    }: {
+        page?: number,
+        perPage?: string,
+        q?: ModelQuery,
+    }): CancelablePromise<Array<ModelMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+            },
+        });
+    }
+
+    /**
+     * model detail
+     * @returns ModelComplete successful
+     * @throws ApiError
+     */
+    public getModel({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<ModelComplete> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}',
+            path: {
+                'slug': slug,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model hardpoints
+     * @returns ModelHardpoint successful
+     * @throws ApiError
+     */
+    public getHardpoints({
+        slug,
+        source,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        source?: ModelHardpointSourceEnum,
+    }): CancelablePromise<Array<ModelHardpoint>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/hardpoints',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'source': source,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model images
+     * @returns ImageMinimal successful
+     * @throws ApiError
+     */
+    public getImages({
+        slug,
+        page,
+        perPage,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<Array<ImageMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/images',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model videos
+     * @returns VideoMinimal successful
+     * @throws ApiError
+     */
+    public getVideos({
+        slug,
+        page,
+        perPage,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<Array<VideoMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/videos',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model variants
+     * @returns ModelMinimal successful
+     * @throws ApiError
+     */
+    public getVariants({
+        slug,
+        page,
+        perPage,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<Array<ModelMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/variants',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model loaners
+     * @returns ModelMinimal successful
+     * @throws ApiError
+     */
+    public getLoaners({
+        slug,
+        page,
+        perPage,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<Array<ModelMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/loaners',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model snub crafts
+     * @returns ModelMinimal successful
+     * @throws ApiError
+     */
+    public getSnubCrafts({
+        slug,
+        page,
+        perPage,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<Array<ModelMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/snub-crafts',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model modules
+     * @returns ModelModuleMinimal successful
+     * @throws ApiError
+     */
+    public getModules({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<Array<ModelModuleMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/modules',
+            path: {
+                'slug': slug,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model upgrades
+     * @returns ModelUpgradeMinimal successful
+     * @throws ApiError
+     */
+    public getUpgrades({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<Array<ModelUpgradeMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/upgrades',
+            path: {
+                'slug': slug,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * model paints
+     * @returns ModelPaintMinimal successful
+     * @throws ApiError
+     */
+    public getPaints({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<Array<ModelPaintMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/paints',
+            path: {
+                'slug': slug,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * model store image
+     * @returns void
+     * @throws ApiError
+     */
+    public getStoreImage({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<void> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/store-image',
+            path: {
+                'slug': slug,
+            },
+            errors: {
+                302: `successful`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * model fleetchart image
+     * @returns void
+     * @throws ApiError
+     */
+    public getFleetchartImage({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<void> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/fleetchart-image',
+            path: {
+                'slug': slug,
+            },
+            errors: {
+                302: `successful`,
+                404: `not found`,
+            },
+        });
+    }
+
+}
