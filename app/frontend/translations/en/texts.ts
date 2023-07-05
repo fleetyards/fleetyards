@@ -5,8 +5,9 @@ export default {
     "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
   indexQuoteSource: "Author Unknown, Source:",
   support: {
-    code: 'Additionally you can get 5000 UEC starting money by using the following Recruitment Code <a href="https://robertsspaceindustries.com/enlist?referral=%{code}" target="_blank" rel="noopener"><b>"%{code}"</b></a> when you buy Star Citizen or you can:',
-    info: 'If you like FleetYards.net and want to support the further development and maintenance of this project please upvote our <a href="https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net" target="_blank" rel="noopener"><b>Spectrum Post</b></a> and our Post on the <a href="https://robertsspaceindustries.com/community/deep-space-radar/1730-FleetYardsnet" target="_blank" rel="noopener"><b>Deep Space Radar</b></a>.',
+    info: 'If you like FleetYards.net and want to support the further development and maintenance<br>of this project please upvote our <a href="https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net" target="_blank" rel="noopener"><b>Spectrum Post</b></a>.',
+    code: "Additionally you can get 5000 UEC starting money by using the following Recruitment Code when you buy Star Citizen:",
+    subline: "or you can support us directly via:",
   },
   error:
     "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",

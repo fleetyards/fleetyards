@@ -1,25 +1,28 @@
 <template>
   <Btn size="small" class="support-button" @click.native="open">
-    {{ $t("actions.supportUs") }}
+    {{ t("actions.supportUs") }}
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<Support>({
-  components: {
-    Btn,
-  },
-})
-export default class Support extends Vue {
-  open() {
-    this.$comlink.$emit("open-modal", {
-      component: () => import("@/frontend/components/Support/Modal/index.vue"),
-      wide: true,
-    });
-  }
-}
+const { t } = useI18n();
+
+const comlink = useComlink();
+
+const open = () => {
+  comlink.$emit("open-modal", {
+    component: () => import("@/frontend/components/Support/Modal/index.vue"),
+    wide: true,
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "SupportBtn",
+};
 </script>
