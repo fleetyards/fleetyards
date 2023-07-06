@@ -14,7 +14,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/destroy-all-ingame" do
-    delete("delete all ingame bought vehicles") do
+    delete("Delete all ingame bought Vehicles") do
       operationId "destroyAllIngame"
       tags "Vehicles"
       consumes "application/json"

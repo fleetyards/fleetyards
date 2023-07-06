@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
   let(:user) { nil }
@@ -13,10 +13,10 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
     sign_in(user) if user.present?
   end
 
-  path "/hangar" do
-    delete("Clear your personal Hangar") do
+  path "/wishlist" do
+    delete("Clear your Wishlist") do
       operationId "destroy"
-      tags "Hangar"
+      tags "Wishlist"
       produces "application/json"
 
       response(204, "successful") do

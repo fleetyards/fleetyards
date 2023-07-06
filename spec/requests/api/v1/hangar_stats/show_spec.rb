@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangar/stats", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
   let(:user) { nil }
@@ -13,23 +13,16 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
     sign_in(user) if user.present?
   end
 
-  path "/vehicles" do
-    post("Create new Vehicle") do
-      tags "Vehicles"
-      consumes "application/json"
+  path "/hangar/stats" do
+    get("Your Hangar Quickstats") do
+      operationId "get"
+      tags "HangarStats"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateInput"}, required: true
-
-      response(201, "successful") do
-        schema "$ref": "#/components/schemas/VehicleMinimal"
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/HangarQuickstats"
 
         let(:user) { users :data }
-        let(:data) do
-          {
-            modelId: models(:andromeda).id
-          }
-        end
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -44,8 +37,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
-
-        let(:data) { nil }
 
         run_test!
       end

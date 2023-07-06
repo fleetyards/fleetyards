@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
   let(:user) { nil }
@@ -13,23 +13,20 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
     sign_in(user) if user.present?
   end
 
-  path "/vehicles" do
-    post("Create new Vehicle") do
-      tags "Vehicles"
-      consumes "application/json"
+  path "/wishlist" do
+    get("Your Wishlist") do
+      operationId "get"
+      tags "Wishlist"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateInput"}, required: true
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false, default: Vehicle.default_per_page
 
-      response(201, "successful") do
-        schema "$ref": "#/components/schemas/VehicleMinimal"
+      response(200, "successful") do
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehicleMinimal"}
 
         let(:user) { users :data }
-        let(:data) do
-          {
-            modelId: models(:andromeda).id
-          }
-        end
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -39,13 +36,15 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
           }
         end
 
-        run_test!
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.count).to be > 0
+        end
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
-
-        let(:data) { nil }
 
         run_test!
       end

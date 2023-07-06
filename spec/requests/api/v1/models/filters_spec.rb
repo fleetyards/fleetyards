@@ -10,7 +10,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/models/filters" do
-    get("filters model") do
+    get("Model Filters") do
       operationId "filters"
       tags "Models"
       produces "application/json"
@@ -30,7 +30,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/models/classifications" do
-    get("classifications model") do
+    get("Model classifications") do
       operationId "classifications"
       tags "Models"
       produces "application/json"
@@ -50,7 +50,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/models/production-states" do
-    get("production_states model") do
+    get("Model Production states") do
       operationId "productionStates"
       tags "Models"
       produces "application/json"
@@ -70,7 +70,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/models/focus" do
-    get("focus model") do
+    get("Model focus") do
       operationId "focus"
       tags "Models"
       produces "application/json"
@@ -90,7 +90,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/models/sizes" do
-    get("sizes model") do
+    get("Model Sizes") do
       operationId "sizes"
       tags "Models"
       produces "application/json"
@@ -110,7 +110,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/models/cargo-options" do
-    get("cargo_options model") do
+    get("Model Cargo options") do
       operationId "cargoOptions"
       tags "Models"
       produces "application/json"

@@ -14,7 +14,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/models/{slug}" do
     parameter name: "slug", in: :path, type: :string, description: "slug"
 
-    get("model detail") do
+    get("Model Detail") do
       operationId "detail"
       tags "Models"
       produces "application/json"
@@ -50,7 +50,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "source", in: :query,
       schema: {"$ref": "#/components/schemas/ModelHardpointSourceEnum"}, required: false
 
-    get("model hardpoints") do
+    get("Model Hardpoints") do
       operationId "hardpoints"
       tags "Models"
       produces "application/json"
@@ -92,7 +92,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "page", in: :query, type: :number, required: false, default: 1
     parameter name: "perPage", in: :query, type: :string, required: false, default: Image.default_per_page
 
-    get("model images") do
+    get("Model Images") do
       operationId "images"
       tags "Models"
       produces "application/json"
@@ -134,7 +134,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "page", in: :query, type: :number, required: false, default: 1
     parameter name: "perPage", in: :query, type: :string, required: false, default: Video.default_per_page
 
-    get("model videos") do
+    get("Model Videos") do
       operationId "videos"
       tags "Models"
       produces "application/json"
@@ -176,7 +176,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "page", in: :query, type: :number, required: false, default: 1
     parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
-    get("model variants") do
+    get("Model Variants") do
       operationId "variants"
       tags "Models"
       produces "application/json"
@@ -218,7 +218,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "page", in: :query, type: :number, required: false, default: 1
     parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
-    get("model loaners") do
+    get("Model Loaners") do
       operationId "loaners"
       tags "Models"
       produces "application/json"
@@ -260,7 +260,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "page", in: :query, type: :number, required: false, default: 1
     parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
-    get("model snub crafts") do
+    get("Model Snubcrafts") do
       operationId "snubCrafts"
       tags "Models"
       produces "application/json"
@@ -302,7 +302,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
     let(:model) { models :galaxy }
 
-    get("model modules") do
+    get("Model Modules") do
       operationId "modules"
       tags "Models"
       produces "application/json"
@@ -342,7 +342,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/models/{slug}/upgrades" do
     parameter name: "slug", in: :path, type: :string, description: "slug"
 
-    get("model upgrades") do
+    get("Model Upgrades") do
       operationId "upgrades"
       tags "Models"
       produces "application/json"
@@ -382,7 +382,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/models/{slug}/paints" do
     parameter name: "slug", in: :path, type: :string, description: "slug"
 
-    get("model paints") do
+    get("Model Paints") do
       operationId "paints"
       tags "Models"
       produces "application/json"
@@ -422,7 +422,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/models/{slug}/store-image" do
     parameter name: "slug", in: :path, type: :string, description: "slug"
 
-    get("model store image") do
+    get("Model Storeimage") do
       operationId "storeImage"
       deprecated true
 
@@ -439,7 +439,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/models/{slug}/fleetchart-image" do
     parameter name: "slug", in: :path, type: :string, description: "slug"
 
-    get("model fleetchart image") do
+    get("Model Fleetchart Image") do
       operationId "fleetchartImage"
       deprecated true
 

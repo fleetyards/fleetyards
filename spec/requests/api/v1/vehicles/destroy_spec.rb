@@ -16,7 +16,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   path "/vehicles/{id}" do
     parameter name: "id", in: :path, description: "id", schema: {type: :string, format: :uuid}
 
-    delete("delete vehicle") do
+    delete("Delete Vehicle") do
       operationId "destroy"
       tags "Vehicles"
       consumes "application/json"

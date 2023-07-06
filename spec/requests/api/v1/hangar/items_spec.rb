@@ -14,7 +14,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/hangar/items" do
-    get("Your personal hangar items") do
+    get("Your personal Hangar items") do
       operationId "items"
       tags "Hangar"
       produces "application/json"
