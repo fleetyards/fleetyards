@@ -103,7 +103,6 @@ v1_api_routes = lambda do
     put :import
     get :export
     put "sync-rsi-hangar", to: "hangars#sync_rsi_hangar"
-    get "hangar", to: "hangars#hangar"
 
     put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 
@@ -165,7 +164,7 @@ v1_api_routes = lambda do
       get "embed", to: "public/hangars#embed"
       get "hangar-items", to: "hangars#items"
       get "wishlist-items", to: "wishlists#items"
-      get "hangar", to: "hangars#hangar"
+      get "hangar", to: "vehicles#hangar"
       get ":username", to: "public/hangars#show", as: :public
       get ":hangar_username/quick-stats", to: "public/hangar_stats#show", as: :public_quick_stats
       get ":username/wishlist", to: "public/wishlists#show", as: :public_wishlist

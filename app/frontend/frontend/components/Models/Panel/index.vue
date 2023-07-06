@@ -101,9 +101,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const uuid = uuidv4();
+const uuid = ref<string>(uuidv4());
 
 const storeImage = computed(() => props.model.media.storeImage?.medium);
+
+onMounted(() => {
+  uuid.value = uuidv4();
+});
 
 const filterManufacturerQuery = (manufacturer: string) => ({
   manufacturerIn: [manufacturer],

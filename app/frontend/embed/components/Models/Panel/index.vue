@@ -75,7 +75,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const uuid = computed(() => uuidv4());
+const uuid = ref<string>(uuidv4());
 
 const url = computed(
   () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`
@@ -86,6 +86,10 @@ const countLabel = computed(() => {
     return "";
   }
   return `${props.count}x `;
+});
+
+onMounted(() => {
+  uuid.value = uuidv4();
 });
 </script>
 

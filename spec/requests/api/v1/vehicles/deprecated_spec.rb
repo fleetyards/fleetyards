@@ -3,8 +3,14 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+  fixtures :all
+
+  let(:user) { users(:data) }
+
   before do
     host! "api.fleetyards.test"
+
+    sign_in(user)
   end
 
   path "/vehicles" do
@@ -14,13 +20,8 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehicleMinimal"}
 
         run_test!
       end
@@ -35,13 +36,8 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehicleMinimal"}
 
         run_test!
       end
@@ -56,13 +52,8 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehicleExport"}
 
         run_test!
       end
@@ -74,16 +65,16 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       operationId "import"
       deprecated true
       tags "Vehicles"
-      consumes "application/json"
+      consumes "multipart/form-data"
       produces "application/json"
 
+      parameter name: :import, in: :formData, type: :string, format: :binary, required: true
+
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        schema "$ref": "#/components/schemas/HangarImportResult"
+
+        let(:import) do
+          Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/hangar_import.json")))
         end
 
         run_test!
@@ -99,15 +90,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
+      response(204, "successful") do
         run_test!
       end
     end
@@ -121,13 +104,8 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehicleMinimal"}
 
         run_test!
       end
@@ -142,13 +120,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema type: :array, items: {type: :string}
 
         run_test!
       end
@@ -163,13 +135,8 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehicleMinimal"}
 
         run_test!
       end
@@ -184,14 +151,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test!
       end
     end
@@ -205,14 +164,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test!
       end
     end
@@ -226,14 +177,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test!
       end
     end
@@ -247,14 +190,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test!
       end
     end
@@ -268,14 +203,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test!
       end
     end
@@ -291,15 +218,10 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        let(:username) { "123" }
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        let(:username) { user.username }
 
         run_test!
       end
@@ -316,15 +238,10 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        let(:username) { "123" }
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        let(:username) { user.username }
 
         run_test!
       end
@@ -341,15 +258,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        let(:username) { "123" }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+        let(:username) { user.username }
 
         run_test!
       end

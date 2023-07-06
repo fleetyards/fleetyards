@@ -14,10 +14,12 @@
         <div class="filtered-table-row">
           <div class="selected-count">
             {{
-              $t("labels.table.selected", { count: internalSelected.length })
+              t("labels.table.selected", {
+                count: String(internalSelected.length),
+              })
             }}
             <Btn
-              v-tooltip="$t('actions.unselect')"
+              v-tooltip="t('actions.unselect')"
               size="small"
               variant="link"
               :inline="true"
@@ -102,7 +104,7 @@
       >
         <div class="filtered-table-row">
           <slot name="empty">
-            {{ $t("texts.empty.info") }}
+            {{ t("texts.empty.info") }}
           </slot>
         </div>
       </div>
@@ -110,99 +112,101 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { uniq as uniqArray } from "@/frontend/utils/Array";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import Store from "@/frontend/lib/Store";
+import { v4 as uuidv4 } from "uuid";
 
 export type FilteredTableColumn = {
   name: string;
-  class: maybe<string>;
   label: string;
+  field?: string;
+  class?: string;
+  flexGrow?: number;
+  width?: string;
+  minWidth?: string;
 };
 
-@Component<FilteredTable>({
-  components: {
-    Panel,
-    Loader,
-    Checkbox,
-    Btn,
-  },
-})
-export default class FilteredTable extends Vue {
-  @Prop({ required: true }) records!: any[];
+const { t } = useI18n();
 
-  @Prop({ required: true }) columns!: FilteredTableColumn[];
+type Props = {
+  records: any[];
+  columns: FilteredTableColumn[];
+  primaryKey: string;
+  loading?: boolean;
+  emptyBoxVisible?: boolean;
+  selectable?: boolean;
+  selected?: string[];
+};
 
-  @Prop({ required: true }) primaryKey!: string;
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+  emptyBoxVisible: false,
+  selectable: false,
+  selected: () => [],
+});
 
-  @Prop({ default: false }) loading!: boolean;
+const internalSelected = ref<string[]>([]);
 
-  @Prop({ default: false }) emptyBoxVisible!: boolean;
+const mobile = computed(() => Store.getters.mobile);
 
-  @Prop({ default: false }) selectable!: boolean;
+const uuid = ref<string>(uuidv4());
 
-  @Prop({
-    default: () => [],
-  })
-  selected!: string[];
-
-  internalSelected: string[] = [];
-
-  @Getter("mobile") mobile;
-
-  get uuid() {
-    return this._uid;
+const allSelected = computed(() => {
+  if (!props.records.length) {
+    return false;
   }
 
-  get allSelected() {
-    if (!this.records.length) {
-      return false;
-    }
+  return props.records
+    .map((record) => record.id)
+    .every((recordId) => internalSelected.value.includes(recordId));
+});
 
-    return this.records
-      .map((record) => record.id)
-      .every((recordId) => this.internalSelected.includes(recordId));
+watch(
+  () => props.selected,
+  (value) => {
+    internalSelected.value = value;
   }
+);
 
-  get scopedSlots() {
-    const itemSlotPrefix = "col.";
-    return Object.keys(this.$scopedSlots)
-      .filter((name) => name.startsWith(itemSlotPrefix))
-      .map((name) => name.substring(itemSlotPrefix.length));
-  }
+const emit = defineEmits(["selected-change"]);
 
-  @Watch("selected")
-  onSelectedChange() {
-    this.internalSelected = this.selected;
+watch(
+  () => internalSelected.value,
+  (value) => {
+    emit("selected-change", value);
   }
+);
 
-  @Watch("internalSelected")
-  onInternalSelectedChange() {
-    this.$emit("selected-change", this.internalSelected);
-  }
+onMounted(() => {
+  uuid.value = uuidv4();
+});
 
-  onAllSelectedChange(value) {
-    if (value) {
-      this.internalSelected = [
-        ...this.internalSelected,
-        ...this.records.map((record) => record.id),
-      ].filter(uniqArray);
-    } else {
-      this.internalSelected = [...this.internalSelected].filter(
-        (selected) =>
-          !this.records.map((record) => record.id).includes(selected)
-      );
-    }
+const onAllSelectedChange = (value: string[]) => {
+  if (value) {
+    internalSelected.value = [
+      ...internalSelected.value,
+      ...props.records.map((record) => record.id),
+    ].filter(uniqArray);
+  } else {
+    internalSelected.value = [...internalSelected.value].filter(
+      (selected) => !props.records.map((record) => record.id).includes(selected)
+    );
   }
+};
 
-  resetSelected() {
-    this.internalSelected = [];
-  }
-}
+const resetSelected = () => {
+  internalSelected.value = [];
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "FilteredTable",
+};
 </script>
