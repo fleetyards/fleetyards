@@ -11,6 +11,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/with-docks" do
     get("models with docks") do
+      operationId "withDocks"
       tags "Models"
       produces "application/json"
 
@@ -30,6 +31,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/unscheduled" do
     get("unscheduled models") do
+      operationId "unschduled"
       tags "Models"
       produces "application/json"
 
@@ -49,6 +51,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/latest" do
     get("latest models") do
+      operationId "latest"
       tags "Models"
       produces "application/json"
 
@@ -68,6 +71,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/slugs" do
     get("available model slugs") do
+      operationId "slugs"
       tags "Models"
       produces "application/json"
 
@@ -87,6 +91,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/updated" do
     get("updated models") do
+      operationId "updated"
       tags "Models"
       produces "application/json"
 
@@ -115,6 +120,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/embed" do
     get("embed models") do
+      operationId "embed"
       tags "Models"
       produces "application/json"
 

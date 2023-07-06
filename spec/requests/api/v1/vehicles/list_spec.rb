@@ -2,14 +2,15 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/search", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
   before do
     host! "api.fleetyards.test"
   end
 
-  path "/search" do
-    get("list searches") do
-      tags "Search"
+  path "/vehicles" do
+    get("list vehicles") do
+      deprecated true
+      tags "Vehicles"
       produces "application/json"
 
       response(200, "successful") do

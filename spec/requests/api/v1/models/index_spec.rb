@@ -11,7 +11,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models" do
     get("list models") do
-      operationId "getModels"
+      operationId "list"
       tags "Models"
       produces "application/json"
 

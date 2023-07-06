@@ -11,6 +11,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
 
   path "/celestial-objects" do
     get("Celestial Objects List") do
+      operationId "list"
       description "Get a List of Celestial Objects"
       tags "CelestialObjects"
       produces "application/json"
@@ -42,6 +43,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
     parameter name: "slug", in: :path, description: "slug", schema: {type: :string}
 
     get("Celestial Object Detail") do
+      operationId "detail"
       description "Get Detail of a Celestial Object referenced by its Slug"
       tags "CelestialObjects"
       produces "application/json"

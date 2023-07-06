@@ -15,6 +15,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/hangar/sync-rsi-hangar" do
     put("Sync RSI Hangar") do
+      operationId "syncRsiHangar"
       tags "Hangar"
       consumes "application/json"
       produces "application/json"

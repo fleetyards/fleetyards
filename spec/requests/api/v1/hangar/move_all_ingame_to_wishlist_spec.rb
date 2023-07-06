@@ -15,6 +15,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/hangar/move-all-ingame-to-wishlist" do
     put("Move all Ingame Ships from your Hangar to your Wishlist") do
+      operationId "moveAllIngameToWishlist"
       tags "Hangar"
       produces "application/json"
 
