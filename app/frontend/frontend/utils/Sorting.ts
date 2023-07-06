@@ -11,7 +11,7 @@ interface FleetYardsRouteQuery extends Dictionary<any> {
   q: QueryParams | null;
 }
 
-interface FleetYardsLocation extends Location {
+export interface FleetYardsLocation extends Location {
   query?: FleetYardsRouteQuery;
 }
 

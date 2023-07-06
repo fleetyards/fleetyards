@@ -111,8 +111,6 @@ const mobile = computed(() => Store.getters.mobile);
 
 const navSlim = computed(() => Store.getters["app/navSlim"]);
 
-// const currentUser = computed(() => Store.getters["session/currentUser"]);
-
 const isAuthenticated = computed(
   () => Store.getters["session/isAuthenticated"]
 );
@@ -124,10 +122,6 @@ const isFleetRoute = computed(() => fleetRouteCheck(route.name || ""));
 const filters = computed(() => Store.getters.filters);
 
 const navCollapsed = computed(() => Store.getters["app/navCollapsed"]);
-
-// const isUpdateAvailable = computed(
-//   () => Store.getters["app/isUpdateAvailable"]
-// );
 
 const hangarPreview = computed(() => Store.getters["hangar/preview"]);
 
@@ -177,8 +171,6 @@ onBeforeUnmount(() => {
 });
 
 const filterFor = (route: string) => {
-  // // TODO: disabled until vue-router supports navigation to same route
-  // return null
   if (!filters[route]) {
     return null;
   }
@@ -199,19 +191,9 @@ const documentClick = (event: Event) => {
   }
 };
 
-// const open = () => {
-//   Store.commit("app/openNav");
-// };
-
 const close = () => {
   Store.commit("app/closeNav");
 };
-
-// const reload = () => {
-//   close();
-
-//   window.location.reload(true);
-// };
 </script>
 
 <script lang="ts">

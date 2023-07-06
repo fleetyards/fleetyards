@@ -6,50 +6,37 @@
       tag="div"
       :appear="true"
     >
-      <MembersListHead key="heading" :editable="isAdmin" />
+      <MembersListHead key="heading" :actions-visible="actionsVisible" />
       <MembersListItem
         v-for="(member, index) in members"
         :key="`members-${index}`"
         :member="member"
-        :editable="isAdmin"
-        :editable-member="canEdit(member)"
+        :actions-visible="actionsVisible"
+        :role="role"
       />
     </transition-group>
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import MembersListHead from "./MembersListHead/index.vue";
 import MembersListItem from "./MembersListItem/index.vue";
 
-@Component<MembersList>({
-  components: {
-    Panel,
-    MembersListHead,
-    MembersListItem,
-  },
-})
-export default class Memberslist extends Vue {
-  @Prop({ required: true }) members: Member[];
+type Props = {
+  members: FleetMember[];
+  role: "admin" | "officer" | "member";
+};
 
-  @Prop({ required: true }) role: string;
+const props = defineProps<Props>();
 
-  @Getter("currentUser", { namespace: "session" }) currentUser;
+const actionsVisible = computed(() =>
+  ["admin", "officer"].includes(props.role)
+);
+</script>
 
-  get isAdmin() {
-    return this.role === "admin";
-  }
-
-  canEdit(member) {
-    if (member && this.currentUser) {
-      return this.isAdmin && member.username !== this.currentUser.username;
-    }
-
-    return false;
-  }
-}
+<script lang="ts">
+export default {
+  name: "MembersList",
+};
 </script>

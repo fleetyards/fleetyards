@@ -7,6 +7,7 @@ type Fleet = {
   description: string;
   myFleet: boolean;
   publicFleet: boolean;
+  myRole: "member" | "officer" | "admin";
 };
 
 type FleetForm = {

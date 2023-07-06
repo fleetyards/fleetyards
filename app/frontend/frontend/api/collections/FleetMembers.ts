@@ -1,4 +1,4 @@
-import { get, post, put } from "@/frontend/api/client";
+import { get, post, put, destroy } from "@/frontend/api/client";
 import BaseCollection from "./Base";
 
 export class FleetMembersCollection extends BaseCollection {
@@ -76,6 +76,20 @@ export class FleetMembersCollection extends BaseCollection {
     };
   }
 
+  async destroy(slug: string, username: string, refetch = false) {
+    const response = await destroy(`fleets/${slug}/members/${username}`);
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params);
+      }
+
+      return response.data;
+    }
+
+    return null;
+  }
+
   async acceptRequest(slug: string, username: string, refetch = false) {
     const response = await put(
       `fleets/${slug}/members/${username}/accept-request`
@@ -96,6 +110,34 @@ export class FleetMembersCollection extends BaseCollection {
     const response = await put(
       `fleets/${slug}/members/${username}/decline-request`
     );
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params);
+      }
+
+      return response.data;
+    }
+
+    return null;
+  }
+
+  async promote(slug: string, username: string, refetch = false) {
+    const response = await put(`fleets/${slug}/members/${username}/promote`);
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params);
+      }
+
+      return response.data;
+    }
+
+    return null;
+  }
+
+  async demote(slug: string, username: string, refetch = false) {
+    const response = await put(`fleets/${slug}/members/${username}/demote`);
 
     if (!response.error) {
       if (refetch) {

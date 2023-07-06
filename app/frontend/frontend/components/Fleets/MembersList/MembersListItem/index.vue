@@ -7,7 +7,7 @@
           {{ member.username }}
           <div
             v-if="mobile && member.rsiHandle"
-            v-tooltip="$t('nav.rsiProfile')"
+            v-tooltip="t('nav.rsiProfile')"
             class="rsiHandle"
           >
             (<a
@@ -22,7 +22,7 @@
       <div v-if="!mobile" class="rsi-handle">
         <a
           v-if="member.rsiHandle"
-          v-tooltip="$t('nav.rsiProfile')"
+          v-tooltip="t('nav.rsiProfile')"
           :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
           target="_blank"
           rel="noopener"
@@ -32,13 +32,13 @@
       </div>
       <div class="role">
         <template v-if="member.status === 'invited'">
-          {{ $t("labels.fleet.members.invited") }}
+          {{ t("labels.fleet.members.invited") }}
         </template>
         <template v-else-if="member.status === 'requested'">
-          {{ $t("labels.fleet.members.requested") }}
+          {{ t("labels.fleet.members.requested") }}
         </template>
         <span v-else-if="member.status === 'declined'" class="text-danger">
-          {{ $t("labels.fleet.members.declined") }}
+          {{ t("labels.fleet.members.declined") }}
         </span>
         <template v-else>
           {{ member.roleLabel }}
@@ -60,7 +60,7 @@
       </div>
       <div class="links">
         <a
-          v-tooltip="$t('labels.hangar')"
+          v-tooltip="t('labels.hangar')"
           :href="`/hangar/${member.username}`"
           target="_blank"
           rel="noopener"
@@ -69,7 +69,7 @@
         </a>
         <a
           v-if="member.homepage"
-          v-tooltip="$t('labels.homepage')"
+          v-tooltip="t('labels.homepage')"
           :href="`//${member.homepage}`"
           target="_blank"
           rel="noopener"
@@ -78,7 +78,7 @@
         </a>
         <a
           v-if="member.rsiHandle"
-          v-tooltip="$t('nav.rsiProfile')"
+          v-tooltip="t('nav.rsiProfile')"
           :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
           target="_blank"
           rel="noopener"
@@ -87,7 +87,7 @@
         </a>
         <a
           v-if="member.youtube"
-          v-tooltip="$t('labels.youtube')"
+          v-tooltip="t('labels.youtube')"
           :href="`//${member.youtube}`"
           target="_blank"
           rel="noopener"
@@ -96,7 +96,7 @@
         </a>
         <a
           v-if="member.twitch"
-          v-tooltip="$t('labels.twitch')"
+          v-tooltip="t('labels.twitch')"
           :href="`//${member.twitch}`"
           target="_blank"
           rel="noopener"
@@ -105,7 +105,7 @@
         </a>
         <a
           v-if="member.guilded"
-          v-tooltip="$t('labels.guilded')"
+          v-tooltip="t('labels.guilded')"
           :href="`//${member.guilded}`"
           target="_blank"
           rel="noopener"
@@ -114,7 +114,7 @@
         </a>
         <a
           v-if="member.discord"
-          v-tooltip="$t('labels.discord')"
+          v-tooltip="t('labels.discord')"
           :href="`//${member.discord}`"
           target="_blank"
           rel="noopener"
@@ -122,12 +122,12 @@
           <i class="fab fa-discord" />
         </a>
       </div>
-      <div v-if="editable" class="actions actions-3x">
+      <div v-if="actionsVisible" class="actions actions-3x">
         <Btn
           v-if="member.status === 'requested'"
-          v-tooltip="$t('actions.fleet.members.accept')"
+          v-tooltip="t('actions.fleet.members.accept')"
           size="small"
-          :disabled="!editableMember || updating"
+          :disabled="!canEditOfficerActions(member) || updating"
           :inline="true"
           @click.native="acceptRequest(member)"
         >
@@ -135,9 +135,9 @@
         </Btn>
         <Btn
           v-if="member.status === 'requested'"
-          v-tooltip="$t('actions.fleet.members.decline')"
+          v-tooltip="t('actions.fleet.members.decline')"
           size="small"
-          :disabled="!editableMember || updating"
+          :disabled="!canEditOfficerActions(member) || updating"
           :inline="true"
           @click.native="declineRequest(member)"
         >
@@ -145,9 +145,9 @@
         </Btn>
         <Btn
           v-if="member.role !== 'admin' && member.status === 'accepted'"
-          v-tooltip="$t('actions.fleet.members.promote')"
+          v-tooltip="t('actions.fleet.members.promote')"
           size="small"
-          :disabled="!editableMember || updating"
+          :disabled="!canEditAdminActions(member) || updating"
           :inline="true"
           @click.native="promoteMember(member)"
         >
@@ -155,9 +155,9 @@
         </Btn>
         <Btn
           v-if="member.role !== 'member' && member.status === 'accepted'"
-          v-tooltip="$t('actions.fleet.members.demote')"
+          v-tooltip="t('actions.fleet.members.demote')"
           size="small"
-          :disabled="!editableMember || updating"
+          :disabled="!canEditAdminActions(member) || updating"
           :inline="true"
           @click.native="demoteMember(member)"
         >
@@ -165,7 +165,7 @@
         </Btn>
         <Btn
           size="small"
-          :disabled="!editableMember || deleting"
+          :disabled="!canEditAdminActions(member) || deleting"
           :inline="true"
           @click.native="removeMember(member)"
         >
@@ -176,10 +176,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import {
   displaySuccess,
   displayAlert,
@@ -188,141 +185,185 @@ import {
 import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import Store from "@/frontend/lib/Store";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useRoute } from "vue-router/composables";
 
-@Component<MembersListItem>({
-  components: {
-    Avatar,
-    Btn,
-  },
-})
-export default class MembersListItem extends Vue {
-  collection: FleetMembersCollection = fleetMembersCollection;
+const { t } = useI18n();
 
-  deleting = false;
+type Props = {
+  member: FleetMember;
+  role?: "admin" | "officer" | "member";
+  actionsVisible?: boolean;
+};
 
-  updating = false;
+const props = withDefaults(defineProps<Props>(), {
+  actionsVisible: false,
+  role: "member",
+});
 
-  @Getter("mobile") mobile;
+const collection = fleetMembersCollection;
 
-  @Prop({ required: true }) member: Member;
+const deleting = ref(false);
 
-  @Prop({ default: false }) editable: boolean;
+const updating = ref(false);
 
-  @Prop({ default: false }) editableMember: boolean;
+const mobile = computed(() => Store.getters.mobile);
 
-  async removeMember(member) {
-    this.deleting = true;
-    displayConfirm({
-      text: this.$t("messages.confirm.fleet.members.destroy"),
-      onConfirm: async () => {
-        const response = await this.$api.destroy(
-          `fleets/${this.$route.params.slug}/members/${member.username}`
-        );
+const route = useRoute();
 
-        if (!response.error) {
-          this.$comlink.$emit("fleet-member-update");
-          displaySuccess({
-            text: this.$t("messages.fleet.members.destroy.success"),
-          });
-        } else {
-          displayAlert({
-            text: this.$t("messages.fleet.members.destroy.failure"),
-          });
-          this.deleting = false;
-        }
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
+const comlink = useComlink();
+
+const currentUser = computed(() => Store.getters["session/currentUser"]);
+
+const currentUserAdmin = computed(() => props.role === "admin");
+
+const currentUserOfficer = computed(() => props.role === "officer");
+
+const canEditOfficerActions = (member: FleetMember) => {
+  if (member && currentUser.value) {
+    return (
+      (currentUserAdmin.value || currentUserOfficer.value) &&
+      member.username !== currentUser.value.username
+    );
+  }
+
+  return false;
+};
+
+const canEditAdminActions = (member: FleetMember) => {
+  if (member && currentUser.value) {
+    return (
+      currentUserAdmin.value && member.username !== currentUser.value.username
+    );
+  }
+
+  return false;
+};
+
+const removeMember = async (member: FleetMember) => {
+  deleting.value = true;
+
+  displayConfirm({
+    text: t("messages.confirm.fleet.members.destroy"),
+    onConfirm: async () => {
+      const success = await collection.destroy(
+        route.params.slug,
+        member.username
+      );
+
+      if (success) {
+        comlink.$emit("fleet-member-update");
+
+        displaySuccess({
+          text: t("messages.fleet.members.destroy.success"),
+        });
+      } else {
+        displayAlert({
+          text: t("messages.fleet.members.destroy.failure"),
+        });
+
+        deleting.value = false;
+      }
+    },
+    onClose: () => {
+      deleting.value = false;
+    },
+  });
+};
+
+const demoteMember = async (member: FleetMember) => {
+  updating.value = true;
+
+  const success = await collection.demote(route.params.slug, member.username);
+
+  updating.value = false;
+
+  if (success) {
+    comlink.$emit("fleet-member-update");
+
+    displaySuccess({
+      text: t("messages.fleet.members.demote.success"),
+    });
+  } else {
+    displayAlert({
+      text: t("messages.fleet.members.demote.failure"),
     });
   }
+};
 
-  async demoteMember(member) {
-    this.updating = true;
+const promoteMember = async (member: FleetMember) => {
+  updating.value = true;
 
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/demote`
-    );
+  const success = await collection.promote(route.params.slug, member.username);
 
-    this.updating = false;
+  updating.value = false;
 
-    if (!response.error) {
-      this.$comlink.$emit("fleet-member-update");
-      displaySuccess({
-        text: this.$t("messages.fleet.members.demote.success"),
-      });
-    } else {
-      displayAlert({
-        text: this.$t("messages.fleet.members.demote.failure"),
-      });
-    }
+  if (success) {
+    comlink.$emit("fleet-member-update");
+
+    displaySuccess({
+      text: t("messages.fleet.members.promote.success"),
+    });
+  } else {
+    displayAlert({
+      text: t("messages.fleet.members.promote.failure"),
+    });
   }
+};
 
-  async promoteMember(member) {
-    this.updating = true;
+const acceptRequest = async (member: FleetMember) => {
+  updating.value = true;
 
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/promote`
-    );
+  const success = await collection.acceptRequest(
+    route.params.slug,
+    member.username
+  );
 
-    this.updating = false;
+  updating.value = false;
 
-    if (!response.error) {
-      this.$comlink.$emit("fleet-member-update");
-      displaySuccess({
-        text: this.$t("messages.fleet.members.promote.success"),
-      });
-    } else {
-      displayAlert({
-        text: this.$t("messages.fleet.members.promote.failure"),
-      });
-    }
+  if (success) {
+    comlink.$emit("fleet-member-update");
+
+    displaySuccess({
+      text: t("messages.fleet.members.accept.success"),
+    });
+  } else {
+    displayAlert({
+      text: t("messages.fleet.members.accept.failure"),
+    });
   }
+};
 
-  async acceptRequest(member) {
-    this.updating = true;
+const declineRequest = async (member: FleetMember) => {
+  updating.value = true;
 
-    const success = await this.collection.acceptRequest(
-      this.$route.params.slug,
-      member.username
-    );
+  const success = await collection.declineRequest(
+    route.params.slug,
+    member.username
+  );
 
-    this.updating = false;
+  updating.value = false;
 
-    if (success) {
-      this.$comlink.$emit("fleet-member-update");
-      displaySuccess({
-        text: this.$t("messages.fleet.members.accept.success"),
-      });
-    } else {
-      displayAlert({
-        text: this.$t("messages.fleet.members.accept.failure"),
-      });
-    }
+  if (success) {
+    comlink.$emit("fleet-member-update");
+
+    displaySuccess({
+      text: t("messages.fleet.members.decline.success"),
+    });
+  } else {
+    displayAlert({
+      text: t("messages.fleet.members.decline.failure"),
+    });
   }
+};
+</script>
 
-  async declineRequest(member) {
-    this.updating = true;
-
-    const success = await this.collection.declineRequest(
-      this.$route.params.slug,
-      member.username
-    );
-
-    this.updating = false;
-
-    if (success) {
-      this.$comlink.$emit("fleet-member-update");
-      displaySuccess({
-        text: this.$t("messages.fleet.members.decline.success"),
-      });
-    } else {
-      displayAlert({
-        text: this.$t("messages.fleet.members.decline.failure"),
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "MembersListItem",
+};
 </script>
 
 <style lang="scss" scoped>
