@@ -24,6 +24,7 @@ import { ImagesService } from './services/ImagesService';
 import { ManufacturersService } from './services/ManufacturersService';
 import { ModelsService } from './services/ModelsService';
 import { PasswordsService } from './services/PasswordsService';
+import { PublicHangarGroupsService } from './services/PublicHangarGroupsService';
 import { PublicHangarStatsService } from './services/PublicHangarStatsService';
 import { RoadmapService } from './services/RoadmapService';
 import { SearchService } from './services/SearchService';
@@ -62,6 +63,7 @@ export class FyApi {
     public readonly manufacturers: ManufacturersService;
     public readonly models: ModelsService;
     public readonly passwords: PasswordsService;
+    public readonly publicHangarGroups: PublicHangarGroupsService;
     public readonly publicHangarStats: PublicHangarStatsService;
     public readonly roadmap: RoadmapService;
     public readonly search: SearchService;
@@ -111,6 +113,7 @@ export class FyApi {
         this.manufacturers = new ManufacturersService(this.request);
         this.models = new ModelsService(this.request);
         this.passwords = new PasswordsService(this.request);
+        this.publicHangarGroups = new PublicHangarGroupsService(this.request);
         this.publicHangarStats = new PublicHangarStatsService(this.request);
         this.roadmap = new RoadmapService(this.request);
         this.search = new SearchService(this.request);

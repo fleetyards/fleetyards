@@ -1118,6 +1118,28 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/public/hangars/{username}/groups":
+    parameters:
+    - name: username
+      in: path
+      description: Username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: HangarGroup list
+      operationId: list
+      tags:
+      - PublicHangarGroups
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/HangarGroupMinimalPublic"
   "/public/hangars/{username}/stats":
     parameters:
     - name: username
@@ -3998,6 +4020,48 @@ components:
       - createdAt
       - updatedAt
       title: HangarGroupMinimal
+    HangarGroupMinimalPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type: string
+        sort:
+          type: integer
+          nullable: true
+        vehiclesCount:
+          type: integer
+      required:
+      - id
+      - name
+      - slug
+      - color
+      - vehiclesCount
+      title: HangarGroupMinimalPublic
+    HangarGroupPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type: string
+      required:
+      - id
+      - name
+      - slug
+      - color
+      title: HangarGroupPublic
     HangarImportResult:
       type: object
       properties:
