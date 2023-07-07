@@ -37,12 +37,7 @@ Rails.application.reloader.to_prepare do
         openapi: "3.0.1",
         info: {
           title: "FleetYards.net API",
-          version: "v1",
-          # description: File.read(Rails.root.join("docs/v1/api.md")),
-          "x-logo": {
-            url: "http://fleetyards.net/docs/logo.png",
-            altText: "FleetYards.net logo"
-          }
+          version: "v1"
         },
         servers: api_servers,
         paths: {},

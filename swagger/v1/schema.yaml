@@ -3,9 +3,6 @@ openapi: 3.0.1
 info:
   title: FleetYards.net API
   version: v1
-  x-logo:
-    url: http://fleetyards.net/docs/logo.png
-    altText: FleetYards.net logo
 servers:
 - url: http://api.fleetyards.test/v1
   description: Dev Server
@@ -448,6 +445,57 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ImageComplete"
+  "/manufacturers/with-models":
+    get:
+      summary: with_models manufacturer
+      tags:
+      - Manufacturers
+      deprecated: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ManufacturerMinimal"
+  "/manufacturers":
+    get:
+      summary: Manufacturers list
+      operationId: list
+      tags:
+      - Manufacturers
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ManufacturerQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ManufacturerMinimal"
   "/models/with-docks":
     get:
       summary: Models with Docks
@@ -1297,6 +1345,62 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/stats/quick-stats":
+    get:
+      summary: quick_stats stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-per-month":
+    get:
+      summary: models_per_month stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-size":
+    get:
+      summary: models_by_size stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-production-status":
+    get:
+      summary: models_by_production_status stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-manufacturer":
+    get:
+      summary: models_by_manufacturer stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/models-by-classification":
+    get:
+      summary: models_by_classification stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+  "/stats/components-by-class":
+    get:
+      summary: components_by_class stat
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
   "/vehicles/bulk":
     put:
       summary: Update multiple vehicles
@@ -2423,22 +2527,6 @@ paths:
       responses:
         '200':
           description: successful
-  "/manufacturers":
-    get:
-      summary: list manufacturers
-      tags:
-      - Manufacturers
-      responses:
-        '200':
-          description: successful
-  "/manufacturers/with-models":
-    get:
-      summary: with_models manufacturer
-      tags:
-      - Manufacturers
-      responses:
-        '200':
-          description: successful
   "/password":
     patch:
       summary: update password
@@ -2580,62 +2668,6 @@ paths:
       summary: sub_categories shop_commodity
       tags:
       - ShopCommodities
-      responses:
-        '200':
-          description: successful
-  "/stats/quick-stats":
-    get:
-      summary: quick_stats stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-per-month":
-    get:
-      summary: models_per_month stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-size":
-    get:
-      summary: models_by_size stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-production-status":
-    get:
-      summary: models_by_production_status stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-manufacturer":
-    get:
-      summary: models_by_manufacturer stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-classification":
-    get:
-      summary: models_by_classification stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/components-by-class":
-    get:
-      summary: components_by_class stat
-      tags:
-      - Stats
       responses:
         '200':
           description: successful
@@ -6779,6 +6811,21 @@ components:
             type: string
           nullable: true
       title: ImageQuery
+    ManufacturerQuery:
+      type: object
+      properties:
+        withModels:
+          type: boolean
+          nullable: true
+        nameCont:
+          type: string
+          nullable: true
+        nameIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+      title: ManufacturerQuery
     ModelQuery:
       type: object
       properties:

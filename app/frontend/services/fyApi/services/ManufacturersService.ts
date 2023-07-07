@@ -2,6 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ManufacturerMinimal } from '../models/ManufacturerMinimal';
+import type { ManufacturerQuery } from '../models/ManufacturerQuery';
+
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
@@ -10,26 +13,40 @@ export class ManufacturersService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * list manufacturers
-     * @returns any successful
+     * @deprecated
+     * with_models manufacturer
+     * @returns ManufacturerMinimal successful
      * @throws ApiError
      */
-    public getManufacturers(): CancelablePromise<any> {
+    public getManufacturersWithModels(): CancelablePromise<Array<ManufacturerMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/manufacturers',
+            url: '/manufacturers/with-models',
         });
     }
 
     /**
-     * with_models manufacturer
-     * @returns any successful
+     * Manufacturers list
+     * @returns ManufacturerMinimal successful
      * @throws ApiError
      */
-    public getManufacturersWithModels(): CancelablePromise<any> {
+    public list({
+        page,
+        perPage,
+        q,
+    }: {
+        page?: number,
+        perPage?: string,
+        q?: ManufacturerQuery,
+    }): CancelablePromise<Array<ManufacturerMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/manufacturers/with-models',
+            url: '/manufacturers',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+            },
         });
     }
 

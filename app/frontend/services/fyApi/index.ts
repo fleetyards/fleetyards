@@ -42,6 +42,7 @@ export type { ImageMinimal } from './models/ImageMinimal';
 export type { ImageQuery } from './models/ImageQuery';
 export type { Manufacturer } from './models/Manufacturer';
 export type { ManufacturerMinimal } from './models/ManufacturerMinimal';
+export type { ManufacturerQuery } from './models/ManufacturerQuery';
 export type { MediaImage } from './models/MediaImage';
 export type { Model } from './models/Model';
 export type { ModelComplete } from './models/ModelComplete';
