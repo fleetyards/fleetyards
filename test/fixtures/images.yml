@@ -24,3 +24,9 @@ model_image:
   gallery: andromeda
   enabled: true
   name: 600i.jpg
+
+station_image:
+  gallery_type: Station
+  gallery: portolisar
+  enabled: true
+  name: Olisar.jpg

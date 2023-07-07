@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Image } from '../models/Image';
+import type { ImageComplete } from '../models/ImageComplete';
+import type { ImageQuery } from '../models/ImageQuery';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -12,28 +13,47 @@ export class ImagesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * list images
-     * Get a List of Images
-     * @returns Image successful
+     * Images list
+     * @returns ImageComplete successful
      * @throws ApiError
      */
-    public getImages(): CancelablePromise<Array<Image>> {
+    public list({
+        page,
+        perPage,
+        q,
+    }: {
+        page?: number,
+        perPage?: string,
+        q?: ImageQuery,
+    }): CancelablePromise<Array<ImageComplete>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/images',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+            },
         });
     }
 
     /**
-     * random image
-     * Get a randomized List of Images
-     * @returns Image successful
+     * Images random list
+     * Get a randomized List of 14 Images
+     * @returns ImageComplete successful
      * @throws ApiError
      */
-    public getImagesRandom(): CancelablePromise<Array<Image>> {
+    public random({
+        limit,
+    }: {
+        limit?: number,
+    }): CancelablePromise<Array<ImageComplete>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/images/random',
+            query: {
+                'limit': limit,
+            },
         });
     }
 

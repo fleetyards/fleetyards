@@ -15,9 +15,9 @@ module Api
 
         scope = scope.with_shops(commodity_item_type: station_query_params.delete(:commodity_item_type)) if station_query_params.delete(:with_shops)
 
-        @q = scope.ransack(station_query_params)
+        q = scope.ransack(station_query_params)
 
-        @stations = @q.result(distinct: true)
+        @stations = q.result(distinct: true)
           .page(params[:page])
           .per(per_page(Station))
       end

@@ -39,6 +39,7 @@ export type { HangarSyncResult } from './models/HangarSyncResult';
 export type { Image } from './models/Image';
 export type { ImageComplete } from './models/ImageComplete';
 export type { ImageMinimal } from './models/ImageMinimal';
+export type { ImageQuery } from './models/ImageQuery';
 export type { Manufacturer } from './models/Manufacturer';
 export type { ManufacturerMinimal } from './models/ManufacturerMinimal';
 export type { MediaImage } from './models/MediaImage';
