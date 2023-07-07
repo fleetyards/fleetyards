@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class HangarQuickstats
+    class HangarStats
       include SchemaConcern
 
       schema({

@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { HangarQuickstats } from '../models/HangarQuickstats';
+import type { HangarStats } from '../models/HangarStats';
 import type { PieChartStats } from '../models/PieChartStats';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -73,11 +73,11 @@ export class HangarStatsService {
     }
 
     /**
-     * Your Hangar Quickstats
-     * @returns HangarQuickstats successful
+     * Your Hangar Stats
+     * @returns HangarStats successful
      * @throws ApiError
      */
-    public get(): CancelablePromise<HangarQuickstats> {
+    public get(): CancelablePromise<HangarStats> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/stats',

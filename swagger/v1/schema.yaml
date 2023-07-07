@@ -446,7 +446,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
   "/hangar/stats":
     get:
-      summary: Your Hangar Quickstats
+      summary: Your Hangar Stats
       operationId: get
       tags:
       - HangarStats
@@ -456,7 +456,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/HangarQuickstats"
+                "$ref": "#/components/schemas/HangarStats"
         '401':
           description: unauthorized
           content:
@@ -1127,7 +1127,7 @@ paths:
       schema:
         type: string
     get:
-      summary: Public Hangar Quickstats
+      summary: Public Hangar Stats
       operationId: get
       tags:
       - PublicHangarStats
@@ -1137,7 +1137,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/PublicHangarQuickstats"
+                "$ref": "#/components/schemas/PublicHangarStats"
         '404':
           description: not found
           content:
@@ -1417,69 +1417,116 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ImageMinimal"
+                  "$ref": "#/components/schemas/ImageComplete"
         '404':
           description: not_found
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/stats/quick-stats":
-    get:
-      summary: quick_stats stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-per-month":
-    get:
-      summary: models_per_month stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-size":
-    get:
-      summary: models_by_size stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-production-status":
-    get:
-      summary: models_by_production_status stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-manufacturer":
-    get:
-      summary: models_by_manufacturer stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
-  "/stats/models-by-classification":
-    get:
-      summary: models_by_classification stat
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: successful
   "/stats/components-by-class":
     get:
-      summary: components_by_class stat
+      summary: Stats Components by Class
+      operationId: componentsByClass
       tags:
       - Stats
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+  "/stats/models-by-classification":
+    get:
+      summary: Stats Models by Classification
+      operationId: modelsByClassification
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+  "/stats/models-by-manufacturer":
+    get:
+      summary: Stats Models by Manufacturer
+      operationId: modelsByManufacturer
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+  "/stats/models-by-production-status":
+    get:
+      summary: Stats Models by Production-Status
+      operationId: modelsByProductionStatus
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+  "/stats/models-by-size":
+    get:
+      summary: Stats Models by Size
+      operationId: modelsBySize
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+  "/stats/models-per-month":
+    get:
+      summary: Stats Models per Month
+      operationId: modelsPerMonth
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+  "/stats/quick-stats":
+    get:
+      summary: Stats
+      operationId: get
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stats"
   "/vehicles/bulk":
     put:
       summary: Update multiple vehicles
@@ -3989,7 +4036,7 @@ components:
       - totalMaxCrew
       - totalCargo
       title: HangarMetrics
-    HangarQuickstats:
+    HangarStats:
       type: object
       properties:
         total:
@@ -4012,7 +4059,7 @@ components:
       - classifications
       - groups
       - metrics
-      title: HangarQuickstats
+      title: HangarStats
     HangarSyncResult:
       type: object
       properties:
@@ -6900,7 +6947,7 @@ components:
       - selected
       - sliced
       title: PieChartStats
-    PublicHangarQuickstats:
+    PublicHangarStats:
       type: object
       properties:
         total:
@@ -6917,7 +6964,7 @@ components:
       - total
       - classifications
       - groups
-      title: PublicHangarQuickstats
+      title: PublicHangarStats
     ImageQuery:
       type: object
       properties:
@@ -8069,6 +8116,17 @@ components:
       - name
       - slug
       title: StationShop
+    Stats:
+      type: object
+      properties:
+        shipsCountYear:
+          type: integer
+        shipsCountTotal:
+          type: integer
+      required:
+      - shipsCountYear
+      - shipsCountTotal
+      title: Stats
     ValidationError:
       type: object
       properties:

@@ -10,13 +10,13 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
   path "/public/hangars/{username}/stats" do
     parameter name: "username", in: :path, type: :string, description: "username"
 
-    get("Public Hangar Quickstats") do
+    get("Public Hangar Stats") do
       operationId "get"
       tags "PublicHangarStats"
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PublicHangarQuickstats"
+        schema "$ref": "#/components/schemas/PublicHangarStats"
 
         let(:username) { user.username }
 

@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { PublicHangarQuickstats } from '../models/PublicHangarQuickstats';
+import type { PublicHangarStats } from '../models/PublicHangarStats';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -12,8 +12,8 @@ export class PublicHangarStatsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * Public Hangar Quickstats
-     * @returns PublicHangarQuickstats successful
+     * Public Hangar Stats
+     * @returns PublicHangarStats successful
      * @throws ApiError
      */
     public get({
@@ -23,7 +23,7 @@ export class PublicHangarStatsService {
          * username
          */
         username: string,
-    }): CancelablePromise<PublicHangarQuickstats> {
+    }): CancelablePromise<PublicHangarStats> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/hangars/{username}/stats',

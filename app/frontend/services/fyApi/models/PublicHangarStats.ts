@@ -6,7 +6,7 @@
 import type { HangarClassificationMetric } from './HangarClassificationMetric';
 import type { HangarGroupMetric } from './HangarGroupMetric';
 
-export type PublicHangarQuickstats = {
+export type PublicHangarStats = {
     total: number;
     classifications: Array<HangarClassificationMetric>;
     groups: Array<HangarGroupMetric>;

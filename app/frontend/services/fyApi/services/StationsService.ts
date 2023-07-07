@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
-import type { ImageMinimal } from '../models/ImageMinimal';
+import type { ImageComplete } from '../models/ImageComplete';
 import type { StationComplete } from '../models/StationComplete';
 import type { StationMinimal } from '../models/StationMinimal';
 import type { StationQuery } from '../models/StationQuery';
@@ -103,7 +103,7 @@ export class StationsService {
 
     /**
      * Station Images
-     * @returns ImageMinimal successful
+     * @returns ImageComplete successful
      * @throws ApiError
      */
     public images({
@@ -113,7 +113,7 @@ export class StationsService {
          * Station slug
          */
         slug: string,
-    }): CancelablePromise<Array<ImageMinimal>> {
+    }): CancelablePromise<Array<ImageComplete>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/{slug}/images',
