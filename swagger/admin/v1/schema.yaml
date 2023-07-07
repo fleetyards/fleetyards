@@ -5,11 +5,11 @@ info:
   version: v1
 servers:
 - url: http://admin.fleetyards.test/api/v1
+  description: Dev Server
+- url: http://admin.fleetyards.test/api/v1
   description: Production Server
 - url: https://admin.fleetyards.dev/api/v1
   description: Staging Server
-- url: https://admin.fleetyards.test/api/v1
-  description: Dev Server
 paths:
   "/images":
     get:

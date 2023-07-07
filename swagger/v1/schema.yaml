@@ -4,19 +4,20 @@ info:
   title: FleetYards.net API
   version: v1
   x-logo:
-    url: http://fleetyards.test/docs/logo.png
+    url: http://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 servers:
+- url: http://api.fleetyards.test/v1
+  description: Dev Server
 - url: https://api.fleetyards.net/v1
   description: Production Server
 - url: https://api.fleetyards.dev/v1
   description: Staging Server
-- url: http://api.fleetyards.test/v1
-  description: Dev Server
 paths:
   "/celestial-objects":
     get:
       summary: Celestial Objects List
+      operationId: list
       description: Get a List of Celestial Objects
       tags:
       - CelestialObjects
@@ -39,6 +40,7 @@ paths:
       required: true
     get:
       summary: Celestial Object Detail
+      operationId: detail
       description: Get Detail of a Celestial Object referenced by its Slug
       tags:
       - CelestialObjects
@@ -51,6 +53,1354 @@ paths:
                 "$ref": "#/components/schemas/CelestialObjectMinimal"
         '404':
           description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar":
+    delete:
+      summary: Clear your personal Hangar
+      operationId: destroy
+      tags:
+      - Hangar
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Your personal Hangar
+      operationId: get
+      tags:
+      - Hangar
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimal"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/export":
+    get:
+      summary: Export your personal Hangar
+      operationId: export
+      tags:
+      - Hangar
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleExport"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/import":
+    put:
+      summary: Import to your personal Hangar
+      operationId: import
+      tags:
+      - Hangar
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarImportResult"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+        required: true
+  "/hangar/items":
+    get:
+      summary: Your personal Hangar items
+      operationId: items
+      tags:
+      - Hangar
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/move-all-ingame-to-wishlist":
+    put:
+      summary: Move all Ingame Ships from your Hangar to your Wishlist
+      operationId: moveAllIngameToWishlist
+      tags:
+      - Hangar
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-hangar":
+    put:
+      summary: Sync RSI Hangar
+      operationId: syncRsiHangar
+      tags:
+      - Hangar
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarSyncResult"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  "$ref": "#/components/schemas/SyncRsiHangarInput"
+              required:
+              - import
+        required: true
+  "/hangar/stats/models-by-classification":
+    get:
+      summary: Hangar Stats - Models by Classification
+      operationId: modelsByClassification
+      tags:
+      - HangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/stats/models-by-manufacturer":
+    get:
+      summary: Hangar Stats - Models by Manufacturer
+      operationId: modelsByManufacturer
+      tags:
+      - HangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/stats/models-by-production-status":
+    get:
+      summary: Hangar Stats - Models by Production Status
+      operationId: modelsByProductionStatus
+      tags:
+      - HangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/stats/models-by-size":
+    get:
+      summary: Hangar Stats - Models by Size
+      operationId: modelsBySize
+      tags:
+      - HangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/stats":
+    get:
+      summary: Your Hangar Quickstats
+      operationId: get
+      tags:
+      - HangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarQuickstats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/with-docks":
+    get:
+      summary: Models with Docks
+      operationId: withDocks
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/unscheduled":
+    get:
+      summary: Unscheduled Models
+      operationId: unschduled
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/latest":
+    get:
+      summary: Latest Models
+      operationId: latest
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/slugs":
+    get:
+      summary: Available Model-Slugs
+      operationId: slugs
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/updated":
+    get:
+      summary: Updated Models
+      operationId: updated
+      tags:
+      - Models
+      parameters:
+      - name: from
+        in: query
+        format: datetime
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        format: datetime
+        required: false
+        default: now
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+        '304':
+          description: not modified
+  "/models/embed":
+    get:
+      summary: Embed Models
+      operationId: embed
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/filters":
+    get:
+      summary: Model Filters
+      operationId: filters
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/classifications":
+    get:
+      summary: Model classifications
+      operationId: classifications
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/production-states":
+    get:
+      summary: Model Production states
+      operationId: productionStates
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/focus":
+    get:
+      summary: Model focus
+      operationId: focus
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/sizes":
+    get:
+      summary: Model Sizes
+      operationId: sizes
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models/cargo-options":
+    get:
+      summary: Model Cargo options
+      operationId: cargoOptions
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+  "/models":
+    get:
+      summary: Models List
+      operationId: list
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelMinimal"
+  "/models/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Detail
+      operationId: detail
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelComplete"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/hardpoints":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    - name: source
+      in: query
+      schema:
+        "$ref": "#/components/schemas/ModelHardpointSourceEnum"
+      required: false
+    get:
+      summary: Model Hardpoints
+      operationId: hardpoints
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelHardpoint"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/images":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    - name: page
+      in: query
+      required: false
+      default: 1
+      schema:
+        type: number
+    - name: perPage
+      in: query
+      required: false
+      default: 30
+      schema:
+        type: string
+    get:
+      summary: Model Images
+      operationId: images
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ImageMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/videos":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    - name: page
+      in: query
+      required: false
+      default: 1
+      schema:
+        type: number
+    - name: perPage
+      in: query
+      required: false
+      default: 8
+      schema:
+        type: string
+    get:
+      summary: Model Videos
+      operationId: videos
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VideoMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/variants":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    - name: page
+      in: query
+      required: false
+      default: 1
+      schema:
+        type: number
+    - name: perPage
+      in: query
+      required: false
+      default: 30
+      schema:
+        type: string
+    get:
+      summary: Model Variants
+      operationId: variants
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/loaners":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    - name: page
+      in: query
+      required: false
+      default: 1
+      schema:
+        type: number
+    - name: perPage
+      in: query
+      required: false
+      default: 30
+      schema:
+        type: string
+    get:
+      summary: Model Loaners
+      operationId: loaners
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/snub-crafts":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    - name: page
+      in: query
+      required: false
+      default: 1
+      schema:
+        type: number
+    - name: perPage
+      in: query
+      required: false
+      default: 30
+      schema:
+        type: string
+    get:
+      summary: Model Snubcrafts
+      operationId: snubCrafts
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/modules":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Modules
+      operationId: modules
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelModuleMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/upgrades":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Upgrades
+      operationId: upgrades
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelUpgradeMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/paints":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Paints
+      operationId: paints
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelPaintMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/store-image":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Storeimage
+      operationId: storeImage
+      deprecated: true
+      tags:
+      - Models
+      responses:
+        '302':
+          description: successful
+  "/models/{slug}/fleetchart-image":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Fleetchart Image
+      operationId: fleetchartImage
+      deprecated: true
+      tags:
+      - Models
+      responses:
+        '302':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/hangars/{username}/stats":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Hangar Quickstats
+      operationId: get
+      tags:
+      - PublicHangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicHangarQuickstats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles/bulk":
+    put:
+      summary: Update multiple vehicles
+      operationId: updateBulk
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleBulkUpdateInput"
+        required: true
+  "/vehicles/destroy-bulk":
+    put:
+      summary: Destroy multiple Vehicles
+      operationId: destroyBulk
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleBulkDestroyInput"
+        required: true
+  "/vehicles/check-serial":
+    post:
+      summary: Check Vehicle Serial
+      operationId: checkSerial
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleCheckSerialResponse"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleCheckSerialInput"
+        required: true
+  "/vehicles":
+    post:
+      summary: Create new Vehicle
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleMinimal"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleCreateInput"
+        required: true
+    get:
+      summary: list vehicles
+      deprecated: true
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimal"
+  "/vehicles/fleetchart":
+    get:
+      summary: fleetchart vehicle
+      operationId: fleetchart
+      deprecated: true
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimal"
+  "/vehicles/export":
+    get:
+      summary: export vehicle
+      operationId: export
+      deprecated: true
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleExport"
+  "/vehicles/import":
+    put:
+      summary: import vehicle
+      operationId: import
+      deprecated: true
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarImportResult"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+        required: true
+  "/vehicles/destroy-all":
+    delete:
+      summary: destroy_all vehicle
+      operationId: destroyAll
+      deprecated: true
+      tags:
+      - Vehicles
+      responses:
+        '204':
+          description: successful
+  "/vehicles/embed":
+    get:
+      summary: embed vehicle
+      operationId: embed
+      deprecated: true
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimal"
+  "/vehicles/hangar-items":
+    get:
+      summary: hangar_items vehicle
+      operationId: hangarItems
+      deprecated: true
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  "/vehicles/hangar":
+    get:
+      summary: hangar vehicle
+      operationId: hangar
+      deprecated: true
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimal"
+  "/vehicles/quick-stats":
+    get:
+      summary: quick_stats vehicle
+      operationId: quickStats
+      deprecated: true
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-size":
+    get:
+      summary: models_by_size vehicle
+      operationId: statsModelsBySize
+      deprecated: true
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-production-status":
+    get:
+      summary: models_by_production_status vehicle
+      operationId: statsModelsByProductionStatus
+      deprecated: true
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-manufacturer":
+    get:
+      summary: models_by_manufacturer vehicle
+      operationId: statsModelsByManufacturer
+      deprecated: true
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/stats/models-by-classification":
+    get:
+      summary: models_by_classification vehicle
+      operationId: statsModelsByClassification
+      deprecated: true
+      tags:
+      - Vehicles - Stats
+      responses:
+        '200':
+          description: successful
+  "/vehicles/{username}":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public vehicle
+      operationId: public
+      deprecated: true
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehiclePublicMinimal"
+  "/vehicles/{username}/fleetchart":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public_fleetchart vehicle
+      operationId: publicFleetchart
+      deprecated: true
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehiclePublicMinimal"
+  "/vehicles/{username}/quick-stats":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public_quick_stats vehicle
+      operationId: publicQuickStats
+      deprecated: true
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+  "/vehicles/destroy-all-ingame":
+    delete:
+      summary: Delete all ingame bought Vehicles
+      operationId: destroyAllIngame
+      tags:
+      - Vehicles
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Delete Vehicle
+      operationId: destroy
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Vehicle
+      operationId: update
+      tags:
+      - Vehicles
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleUpdateInput"
+        required: true
+  "/wishlist":
+    delete:
+      summary: Clear your Wishlist
+      operationId: destroy
+      tags:
+      - Wishlist
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Your Wishlist
+      operationId: get
+      tags:
+      - Wishlist
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimal"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/wishlist/export":
+    get:
+      summary: Export your Wishlist
+      operationId: export
+      tags:
+      - Wishlist
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleExport"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/wishlist/items":
+    get:
+      summary: Your Wishlist items
+      operationId: items
+      tags:
+      - Wishlist
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -679,129 +2029,6 @@ paths:
       responses:
         '200':
           description: successful
-  "/hangar":
-    delete:
-      summary: Clear your personal hangar
-      tags:
-      - Hangar
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-    get:
-      summary: Your personal hangar
-      tags:
-      - Hangar
-      parameters:
-      - name: page
-        in: query
-        required: false
-        default: 1
-        schema:
-          type: number
-      - name: perPage
-        in: query
-        required: false
-        default: 30
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/hangar/import":
-    put:
-      summary: Import to your personal hangar
-      tags:
-      - Hangar
-      parameters: []
-      responses:
-        '200':
-          description: successful
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: string
-        required: true
-  "/hangar/move-all-ingame-to-wishlist":
-    put:
-      summary: Move all Ingame Ships from your Hangar to your Wishlist
-      tags:
-      - Hangar
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/hangar/sync-rsi-hangar":
-    put:
-      summary: Sync RSI Hangar
-      tags:
-      - Hangar
-      parameters: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarSyncResult"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                items:
-                  "$ref": "#/components/schemas/SyncRsiHangarInput"
-              required:
-              - import
-        required: true
   "/hangar-groups":
     get:
       summary: list hangar_groups
@@ -901,537 +2128,6 @@ paths:
       responses:
         '200':
           description: successful
-  "/models/with-docks":
-    get:
-      summary: models with docks
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/unscheduled":
-    get:
-      summary: unscheduled models
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/latest":
-    get:
-      summary: latest models
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/slugs":
-    get:
-      summary: available model slugs
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/updated":
-    get:
-      summary: updated models
-      tags:
-      - Models
-      parameters:
-      - name: from
-        in: query
-        format: datetime
-        required: false
-        schema:
-          type: string
-      - name: to
-        in: query
-        format: datetime
-        required: false
-        default: now
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-        '304':
-          description: not modified
-  "/models/embed":
-    get:
-      summary: embed models
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/filters":
-    get:
-      summary: filters model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/classifications":
-    get:
-      summary: classifications model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/production-states":
-    get:
-      summary: production_states model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/focus":
-    get:
-      summary: focus model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/sizes":
-    get:
-      summary: sizes model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models/cargo-options":
-    get:
-      summary: cargo_options model
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-  "/models":
-    get:
-      summary: list models
-      operationId: getModels
-      tags:
-      - Models
-      parameters:
-      - name: page
-        in: query
-        required: false
-        default: 1
-        schema:
-          type: number
-      - name: perPage
-        in: query
-        required: false
-        default: 30
-        schema:
-          type: string
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ModelQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelMinimal"
-  "/models/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: model detail
-      operationId: getModel
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelComplete"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/hardpoints":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    - name: source
-      in: query
-      schema:
-        "$ref": "#/components/schemas/ModelHardpointSourceEnum"
-      required: false
-    get:
-      summary: model hardpoints
-      operationId: getHardpoints
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelHardpoint"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/images":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
-      schema:
-        type: string
-    get:
-      summary: model images
-      operationId: getImages
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ImageMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/videos":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 8
-      schema:
-        type: string
-    get:
-      summary: model videos
-      operationId: getVideos
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VideoMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/variants":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
-      schema:
-        type: string
-    get:
-      summary: model variants
-      operationId: getVariants
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/loaners":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
-      schema:
-        type: string
-    get:
-      summary: model loaners
-      operationId: getLoaners
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/snub-crafts":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
-      schema:
-        type: string
-    get:
-      summary: model snub crafts
-      operationId: getSnubCrafts
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/modules":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: model modules
-      operationId: getModules
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelModuleMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/upgrades":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: model upgrades
-      operationId: getUpgrades
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelUpgradeMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/paints":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: model paints
-      operationId: getPaints
-      tags:
-      - Models
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelPaintMinimal"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/{slug}/store-image":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: model store image
-      operationId: getStoreImage
-      deprecated: true
-      tags:
-      - Models
-      responses:
-        '302':
-          description: successful
-  "/models/{slug}/fleetchart-image":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: model fleetchart image
-      operationId: getFleetchartImage
-      deprecated: true
-      tags:
-      - Models
-      responses:
-        '302':
-          description: successful
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/password":
     patch:
       summary: update password
@@ -1892,217 +2588,6 @@ paths:
       summary: public user
       tags:
       - Users
-      responses:
-        '200':
-          description: successful
-  "/vehicles":
-    get:
-      summary: list vehicles
-      deprecated: true
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    patch:
-      summary: update vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/fleetchart":
-    get:
-      summary: fleetchart vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/export":
-    get:
-      summary: export vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/import":
-    put:
-      summary: import vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/bulk":
-    put:
-      summary: update_bulk vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/destroy-bulk":
-    put:
-      summary: destroy_bulk vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/destroy-all":
-    delete:
-      summary: destroy_all vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/embed":
-    get:
-      summary: embed vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/hangar-items":
-    get:
-      summary: hangar_items vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/hangar":
-    get:
-      summary: hangar vehicle
-      tags:
-      - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/vehicles/quick-stats":
-    get:
-      summary: quick_stats vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-size":
-    get:
-      summary: models_by_size vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-production-status":
-    get:
-      summary: models_by_production_status vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-manufacturer":
-    get:
-      summary: models_by_manufacturer vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/stats/models-by-classification":
-    get:
-      summary: models_by_classification vehicle
-      tags:
-      - Vehicles - Stats
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{username}":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public vehicle
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{username}/fleetchart":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public_fleetchart vehicle
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-  "/vehicles/{username}/quick-stats":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public_quick_stats vehicle
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-  "/vehicles/check-serial":
-    post:
-      summary: check_serial vehicle
-      tags:
-      - Vehicles
       responses:
         '200':
           description: successful
@@ -3102,6 +3587,20 @@ components:
       - type
       - typeLabel
       title: HabitationCount
+    HangarClassificationMetric:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        count:
+          type: integer
+      required:
+      - name
+      - label
+      - count
+      title: HangarClassificationMetric
     HangarGroup:
       type: object
       properties:
@@ -3120,6 +3619,21 @@ components:
       - slug
       - color
       title: HangarGroup
+    HangarGroupMetric:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        count:
+          type: integer
+      required:
+      - id
+      - slug
+      - count
+      title: HangarGroupMetric
     HangarGroupMinimal:
       type: object
       properties:
@@ -3146,6 +3660,68 @@ components:
       - createdAt
       - updatedAt
       title: HangarGroupMinimal
+    HangarImportResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        missing:
+          type: array
+          items:
+            type: string
+        imported:
+          type: array
+          items:
+            type: string
+      required:
+      - success
+      - missing
+      - imported
+      title: HangarImportResult
+    HangarMetrics:
+      type: object
+      properties:
+        totalMoney:
+          type: number
+        totalCredits:
+          type: number
+        totalMinCrew:
+          type: integer
+        totalMaxCrew:
+          type: integer
+        totalCargo:
+          type: number
+      required:
+      - totalMoney
+      - totalCredits
+      - totalMinCrew
+      - totalMaxCrew
+      - totalCargo
+      title: HangarMetrics
+    HangarQuickstats:
+      type: object
+      properties:
+        total:
+          type: integer
+        wishlistTotal:
+          type: integer
+        classifications:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarClassificationMetric"
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroupMetric"
+        metrics:
+          "$ref": "#/components/schemas/HangarMetrics"
+      required:
+      - total
+      - wishlistTotal
+      - classifications
+      - groups
+      - metrics
+      title: HangarQuickstats
     HangarSyncResult:
       type: object
       properties:
@@ -3412,6 +3988,163 @@ components:
       items:
         "$ref": "#/components/schemas/RsiHangarItemInput"
       title: SyncRsiHangarInput
+    VehicleBulkDestroyInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - ids
+      title: VehicleBulkDestroyInput
+    VehicleBulkUpdateInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        wanted:
+          type: boolean
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+      required:
+      - ids
+      title: VehicleBulkUpdateInput
+    VehicleCheckSerialInput:
+      type: object
+      properties:
+        serial:
+          type: string
+      required:
+      - serial
+      title: VehicleCheckSerialInput
+    VehicleCreateInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        wanted:
+          type: boolean
+          nullable: true
+        nameVisible:
+          type: boolean
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+        saleNotify:
+          type: boolean
+          nullable: true
+        flagship:
+          type: boolean
+          nullable: true
+        modelPaintId:
+          type: string
+          format: uuid
+          nullable: true
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        alternativeNames:
+          type: array
+          items:
+            type: string
+          nullable: true
+      required:
+      - modelId
+      title: VehicleCreateInput
+    VehicleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        wanted:
+          type: boolean
+          nullable: true
+        nameVisible:
+          type: boolean
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+        saleNotify:
+          type: boolean
+          nullable: true
+        flagship:
+          type: boolean
+          nullable: true
+        modelPaintId:
+          type: string
+          format: uuid
+          nullable: true
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        alternativeNames:
+          type: array
+          items:
+            type: string
+          nullable: true
+      title: VehicleUpdateInput
     Manufacturer:
       type: object
       properties:
@@ -5826,6 +6559,41 @@ components:
       - createdAt
       - updatedAt
       title: ModelUpgradeMinimal
+    PieChartStats:
+      type: object
+      properties:
+        name:
+          type: string
+        "y":
+          type: integer
+        selected:
+          type: boolean
+        sliced:
+          type: boolean
+      required:
+      - name
+      - "y"
+      - selected
+      - sliced
+      title: PieChartStats
+    PublicHangarQuickstats:
+      type: object
+      properties:
+        total:
+          type: integer
+        classifications:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarClassificationMetric"
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroupMetric"
+      required:
+      - total
+      - classifications
+      - groups
+      title: PublicHangarQuickstats
     ModelQuery:
       type: object
       properties:
@@ -6834,6 +7602,73 @@ components:
       - hangarGroups
       - modelModuleIds
       title: Vehicle
+    VehicleCheckSerialResponse:
+      type: object
+      properties:
+        serialTaken:
+          type: boolean
+      required:
+      - serialTaken
+      title: VehicleCheckSerialResponse
+    VehicleExport:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        shipCode:
+          type: string
+          nullable: true
+        manufacturerName:
+          type: string
+        manufacturerCode:
+          type: string
+          nullable: true
+        paintSlug:
+          type: string
+          nullable: true
+        shipName:
+          type: string
+          nullable: true
+        shipSerial:
+          type: string
+          nullable: true
+        wanted:
+          type: boolean
+        flagship:
+          type: boolean
+        public:
+          type: boolean
+        saleNotify:
+          type: boolean
+        nameVisible:
+          type: boolean
+        groups:
+          type: array
+          items:
+            type: string
+        modules:
+          type: array
+          items:
+            type: string
+        upgrades:
+          type: array
+          items:
+            type: string
+      required:
+      - name
+      - slug
+      - manufacturerName
+      - wanted
+      - flagship
+      - public
+      - saleNotify
+      - nameVisible
+      - groups
+      - modules
+      - upgrades
+      title: VehicleExport
     VehicleMinimal:
       type: object
       properties:
@@ -6923,6 +7758,73 @@ components:
       - createdAt
       - updatedAt
       title: VehicleMinimal
+    VehiclePublicMinimal:
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        hangarGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroup"
+        loaner:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/ModelMinimal"
+        username:
+          type: string
+          nullable: true
+        userAvatar:
+          type: string
+          format: uri
+          nullable: true
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modulePackage:
+          "$ref": "#/components/schemas/ModelModulePackage"
+          nullable: true
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - model
+      - loaner
+      - modelUpgradeIds
+      - hangarGroupIds
+      - hangarGroups
+      - modelModuleIds
+      - createdAt
+      - updatedAt
+      title: VehiclePublicMinimal
     Video:
       type: object
       properties:

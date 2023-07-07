@@ -5,6 +5,33 @@ Rails.application.reloader.to_prepare do
   admin_v1_components_loader = ComponentsLoader.new("admin/v1")
 
   Rails.application.configure do
+    api_servers = [
+      {
+        url: API_ENDPOINT,
+        description: "Dev Server"
+      },
+      {
+        url: "https://api.fleetyards.net/v1",
+        description: "Production Server"
+      }, {
+        url: "https://api.fleetyards.dev/v1",
+        description: "Staging Server"
+      }
+    ]
+
+    admin_api_servers = [
+      {
+        url: ADMIN_API_ENDPOINT,
+        description: "Dev Server"
+      }, {
+        url: "http://admin.fleetyards.test/api/v1",
+        description: "Production Server"
+      }, {
+        url: "https://admin.fleetyards.dev/api/v1",
+        description: "Staging Server"
+      }
+    ]
+
     config.api_schema.schemas = {
       "v1/schema.yaml" => {
         openapi: "3.0.1",
@@ -13,22 +40,11 @@ Rails.application.reloader.to_prepare do
           version: "v1",
           # description: File.read(Rails.root.join("docs/v1/api.md")),
           "x-logo": {
-            url: "http://fleetyards.test/docs/logo.png",
+            url: "http://fleetyards.net/docs/logo.png",
             altText: "FleetYards.net logo"
           }
         },
-        servers: [
-          {
-            url: "https://api.fleetyards.net/v1",
-            description: "Production Server"
-          }, {
-            url: "https://api.fleetyards.dev/v1",
-            description: "Staging Server"
-          }, {
-            url: "http://api.fleetyards.test/v1",
-            description: "Dev Server"
-          }
-        ],
+        servers: api_servers,
         paths: {},
         components: {
           schemas: v1_components_loader.schemas,
@@ -48,18 +64,7 @@ Rails.application.reloader.to_prepare do
           title: "FleetYards.net Command API",
           version: "v1"
         },
-        servers: [
-          {
-            url: "http://admin.fleetyards.test/api/v1",
-            description: "Production Server"
-          }, {
-            url: "https://admin.fleetyards.dev/api/v1",
-            description: "Staging Server"
-          }, {
-            url: "https://admin.fleetyards.test/api/v1",
-            description: "Dev Server"
-          }
-        ],
+        servers: admin_api_servers,
         paths: {},
         components: {
           schemas: admin_v1_components_loader.schemas,

@@ -5,10 +5,6 @@ require "swagger_helper"
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
-  before do
-    host! "api.fleetyards.test"
-  end
-
   let(:model) { models :andromeda }
 
   path "/models/{slug}" do

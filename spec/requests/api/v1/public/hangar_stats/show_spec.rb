@@ -7,10 +7,6 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
   let(:user) { users :data }
 
-  before do
-    host! "api.fleetyards.test"
-  end
-
   path "/public/hangars/{username}/stats" do
     parameter name: "username", in: :path, type: :string, description: "username"
 

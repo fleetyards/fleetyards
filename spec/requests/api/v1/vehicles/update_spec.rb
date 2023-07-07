@@ -8,8 +8,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   let(:user) { nil }
 
   before do
-    host! "api.fleetyards.test"
-
     sign_in(user) if user.present?
   end
 
