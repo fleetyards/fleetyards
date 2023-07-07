@@ -226,7 +226,6 @@ export default class FilteredGrid extends Vue {
   ];
 
   mounted() {
-    console.log(this.vehicles);
     this.$comlink.$on("vehicles-delete-all", this.resetSelected);
   }
 

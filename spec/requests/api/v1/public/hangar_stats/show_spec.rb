@@ -2,27 +2,27 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/hangar/stats", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
-  let(:user) { nil }
+  let(:user) { users :data }
 
   before do
     host! "api.fleetyards.test"
-
-    sign_in(user) if user.present?
   end
 
-  path "/hangar/stats/models-by-size" do
-    get("Hangar Stats - Models by Size") do
-      operationId "modelsBySize"
-      tags "HangarStats"
+  path "/public/hangars/{username}/stats" do
+    parameter name: "username", in: :path, type: :string, description: "username"
+
+    get("Public Hangar Quickstats") do
+      operationId "get"
+      tags "PublicHangarStats"
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/PieChartStats"}
+        schema "$ref": "#/components/schemas/PublicHangarQuickstats"
 
-        let(:user) { users :data }
+        let(:username) { user.username }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -35,8 +35,10 @@ RSpec.describe "api/v1/hangar/stats", type: :request, swagger_doc: "v1/schema.ya
         run_test!
       end
 
-      response(401, "unauthorized") do
+      response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:username) { "non-existent-username" }
 
         run_test!
       end
