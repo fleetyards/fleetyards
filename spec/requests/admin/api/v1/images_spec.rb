@@ -5,14 +5,12 @@ require "swagger_helper"
 RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
   fixtures :admin_users, :images, :models
 
-  let(:jeanluc) { admin_users :jeanluc }
+  let(:user) { nil }
   let(:model_image) { images :model_image }
   let(:model) { models :andromeda }
-  let(:session?) { false }
 
   before do
-    host! "admin.fleetyards.test"
-    sign_in jeanluc if session?
+    sign_in user if user.present?
   end
 
   path "/images" do
@@ -25,7 +23,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         schema type: :array,
           items: {"$ref": "#/components/schemas/Image"}
 
-        let(:session?) { true }
+        let(:user) { admin_users :jeanluc }
 
         after do |example|
           if response&.body.present?
@@ -38,9 +36,9 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
         end
 
         run_test! do |response|
-          data = JSON.parse(response.body)
+          response = JSON.parse(response.body)
 
-          expect(data.count).to be > 0
+          expect(response.count).to be > 0
         end
       end
 
@@ -57,16 +55,13 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       produces "application/json"
       tags "Images"
 
-      parameter name: :'', in: :formData, schema: {
-        type: :object,
-        properties: {"$ref": "#/components/schemas/ImageInputCreate"}
-      }
+      parameter name: :"", in: :formData, schema: {"$ref": "#/components/schemas/ImageInputCreate"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
 
-        let(:session?) { true }
-        let(:'') do
+        let(:user) { admin_users :jeanluc }
+        let(:"") do
           {
             file: ActionDispatch::Http::UploadedFile.new(
               filename: "img.png",
@@ -94,7 +89,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:'') { nil }
+        let(:"") { nil }
 
         run_test!
       end
@@ -117,7 +112,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
 
-        let(:session?) { true }
+        let(:user) { admin_users :jeanluc }
         let(:id) { model_image.id }
         let(:image) do
           {
@@ -152,7 +147,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(404, "not_found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:session?) { true }
+        let(:user) { admin_users :jeanluc }
         let(:id) { "00000000-0000-0000-0000-000000000000" }
         let(:image) { nil }
 
@@ -173,7 +168,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
 
-        let(:session?) { true }
+        let(:user) { admin_users :jeanluc }
         let(:id) { model_image.id }
         let(:image) do
           {
@@ -208,7 +203,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(404, "not_found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:session?) { true }
+        let(:user) { admin_users :jeanluc }
         let(:id) { "00000000-0000-0000-0000-000000000000" }
         let(:image) { nil }
 
@@ -220,7 +215,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       tags "Images"
 
       response(200, "successful") do
-        let(:session?) { true }
+        let(:user) { admin_users :jeanluc }
         let(:id) { model_image.id }
 
         after do |example|
@@ -247,7 +242,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       response(404, "not_found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:session?) { true }
+        let(:user) { admin_users :jeanluc }
         let(:id) { "00000000-0000-0000-0000-000000000000" }
 
         run_test!
