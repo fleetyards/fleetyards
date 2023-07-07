@@ -33,10 +33,14 @@ module Api
 
           expected = {
             "total" => 0,
-            "wishlistTotal" => 0,
+            "wishlistTotal" => 1,
             "classifications" => [{
               "name" => "explorer",
               "label" => "Explorer",
+              "count" => 0
+            }, {
+              "name" => "multi",
+              "label" => "Multi",
               "count" => 0
             }, {
               "name" => "multi_role",

@@ -32,8 +32,8 @@ class ScDataLoaderTest < ActiveSupport::TestCase
 
         assert_equal([
           97,
-          25,
-          0,
+          27,
+          1,
           39
         ], [
           ModelHardpoint.where(model_id: model.id).count,

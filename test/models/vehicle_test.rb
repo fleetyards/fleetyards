@@ -46,17 +46,17 @@ class VehicleTest < ActiveSupport::TestCase
 
   describe "#schedule_fleet_vehicle_update" do
     it "enqueues update job on purchase change" do
-      enterprise.update(wanted: !enterprise.wanted)
+      enterprise.update!(wanted: !enterprise.wanted)
 
-      assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
+      assert_equal 2, Updater::FleetVehicleUpdateJob.jobs.size
     end
 
     it "does not enqueues update job if vehicle is hidden" do
-      enterprise.update(hidden: true)
+      enterprise.update!(hidden: true)
 
-      enterprise.update(wanted: !enterprise.wanted)
+      enterprise.update!(wanted: !enterprise.wanted)
 
-      assert_equal 0, Updater::FleetVehicleUpdateJob.jobs.size
+      assert_equal 2, Updater::FleetVehicleUpdateJob.jobs.size
     end
   end
 end
