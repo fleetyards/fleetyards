@@ -10,11 +10,12 @@ export class VehiclesStatsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * @deprecated
      * quick_stats vehicle
      * @returns any successful
      * @throws ApiError
      */
-    public getVehiclesQuickStats(): CancelablePromise<any> {
+    public quickStats(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/quick-stats',
@@ -22,11 +23,12 @@ export class VehiclesStatsService {
     }
 
     /**
+     * @deprecated
      * models_by_size vehicle
      * @returns any successful
      * @throws ApiError
      */
-    public getVehiclesStatsModelsBySize(): CancelablePromise<any> {
+    public statsModelsBySize(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-size',
@@ -34,11 +36,12 @@ export class VehiclesStatsService {
     }
 
     /**
+     * @deprecated
      * models_by_production_status vehicle
      * @returns any successful
      * @throws ApiError
      */
-    public getVehiclesStatsModelsByProductionStatus(): CancelablePromise<any> {
+    public statsModelsByProductionStatus(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-production-status',
@@ -46,11 +49,12 @@ export class VehiclesStatsService {
     }
 
     /**
+     * @deprecated
      * models_by_manufacturer vehicle
      * @returns any successful
      * @throws ApiError
      */
-    public getVehiclesStatsModelsByManufacturer(): CancelablePromise<any> {
+    public statsModelsByManufacturer(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-manufacturer',
@@ -58,11 +62,12 @@ export class VehiclesStatsService {
     }
 
     /**
+     * @deprecated
      * models_by_classification vehicle
      * @returns any successful
      * @throws ApiError
      */
-    public getVehiclesStatsModelsByClassification(): CancelablePromise<any> {
+    public statsModelsByClassification(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-classification',

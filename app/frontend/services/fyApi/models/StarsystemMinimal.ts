@@ -3,7 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Starsystem = {
+import type { CelestialObject } from './CelestialObject';
+
+export type StarsystemMinimal = {
     name: string;
     slug: string;
     danger?: string | null;
@@ -33,5 +35,8 @@ export type Starsystem = {
      * @deprecated
      */
     storeImageSmall?: string;
+    celestialObjects: Array<CelestialObject>;
+    createdAt: string;
+    updatedAt: string;
 };
 

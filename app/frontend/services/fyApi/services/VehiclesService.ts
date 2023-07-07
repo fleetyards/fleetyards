@@ -2,6 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { HangarImportResult } from '../models/HangarImportResult';
+import type { VehicleBulkDestroyInput } from '../models/VehicleBulkDestroyInput';
+import type { VehicleBulkUpdateInput } from '../models/VehicleBulkUpdateInput';
+import type { VehicleCheckSerialInput } from '../models/VehicleCheckSerialInput';
+import type { VehicleCheckSerialResponse } from '../models/VehicleCheckSerialResponse';
+import type { VehicleCreateInput } from '../models/VehicleCreateInput';
+import type { VehicleExport } from '../models/VehicleExport';
+import type { VehicleMinimal } from '../models/VehicleMinimal';
+import type { VehicleUpdateInput } from '../models/VehicleUpdateInput';
+
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
@@ -10,12 +20,96 @@ export class VehiclesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @deprecated
-     * list vehicles
-     * @returns any successful
+     * Update multiple vehicles
+     * @returns void
      * @throws ApiError
      */
-    public getVehicles(): CancelablePromise<any> {
+    public updateBulk({
+        requestBody,
+    }: {
+        requestBody: VehicleBulkUpdateInput,
+    }): CancelablePromise<void> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/vehicles/bulk',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * Destroy multiple Vehicles
+     * @returns void
+     * @throws ApiError
+     */
+    public destroyBulk({
+        requestBody,
+    }: {
+        requestBody: VehicleBulkDestroyInput,
+    }): CancelablePromise<void> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/vehicles/destroy-bulk',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * Check Vehicle Serial
+     * @returns VehicleCheckSerialResponse successful
+     * @throws ApiError
+     */
+    public checkSerial({
+        requestBody,
+    }: {
+        requestBody: VehicleCheckSerialInput,
+    }): CancelablePromise<VehicleCheckSerialResponse> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/vehicles/check-serial',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * Create new Vehicle
+     * @returns VehicleMinimal successful
+     * @throws ApiError
+     */
+    public postVehicles({
+        requestBody,
+    }: {
+        requestBody: VehicleCreateInput,
+    }): CancelablePromise<VehicleMinimal> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/vehicles',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * list vehicles
+     * @returns VehicleMinimal successful
+     * @throws ApiError
+     */
+    public getVehicles(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles',
@@ -23,89 +117,12 @@ export class VehiclesService {
     }
 
     /**
-     * create vehicle
-     * @returns any successful
-     * @throws ApiError
-     */
-    public postVehicles(): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/vehicles',
-        });
-    }
-
-    /**
-     * update vehicle
-     * @returns any successful
-     * @throws ApiError
-     */
-    public patchVehicles({
-        id,
-    }: {
-        /**
-         * id
-         */
-        id: string,
-    }): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'PATCH',
-            url: '/vehicles/{id}',
-            path: {
-                'id': id,
-            },
-        });
-    }
-
-    /**
-     * update vehicle
-     * @returns any successful
-     * @throws ApiError
-     */
-    public putVehicles({
-        id,
-    }: {
-        /**
-         * id
-         */
-        id: string,
-    }): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/vehicles/{id}',
-            path: {
-                'id': id,
-            },
-        });
-    }
-
-    /**
-     * delete vehicle
-     * @returns any successful
-     * @throws ApiError
-     */
-    public deleteVehicles({
-        id,
-    }: {
-        /**
-         * id
-         */
-        id: string,
-    }): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/vehicles/{id}',
-            path: {
-                'id': id,
-            },
-        });
-    }
-
-    /**
+     * @deprecated
      * fleetchart vehicle
-     * @returns any successful
+     * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehiclesFleetchart(): CancelablePromise<any> {
+    public fleetchart(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/fleetchart',
@@ -113,11 +130,12 @@ export class VehiclesService {
     }
 
     /**
+     * @deprecated
      * export vehicle
-     * @returns any successful
+     * @returns VehicleExport successful
      * @throws ApiError
      */
-    public getVehiclesExport(): CancelablePromise<any> {
+    public export(): CancelablePromise<Array<VehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/export',
@@ -125,47 +143,31 @@ export class VehiclesService {
     }
 
     /**
+     * @deprecated
      * import vehicle
-     * @returns any successful
+     * @returns HangarImportResult successful
      * @throws ApiError
      */
-    public putVehiclesImport(): CancelablePromise<any> {
+    public import({
+        formData,
+    }: {
+        formData: string,
+    }): CancelablePromise<HangarImportResult> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/vehicles/import',
+            formData: formData,
+            mediaType: 'multipart/form-data',
         });
     }
 
     /**
-     * update_bulk vehicle
-     * @returns any successful
-     * @throws ApiError
-     */
-    public putVehiclesBulk(): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/vehicles/bulk',
-        });
-    }
-
-    /**
-     * destroy_bulk vehicle
-     * @returns any successful
-     * @throws ApiError
-     */
-    public putVehiclesDestroyBulk(): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/vehicles/destroy-bulk',
-        });
-    }
-
-    /**
+     * @deprecated
      * destroy_all vehicle
-     * @returns any successful
+     * @returns void
      * @throws ApiError
      */
-    public deleteVehiclesDestroyAll(): CancelablePromise<any> {
+    public destroyAll(): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/vehicles/destroy-all',
@@ -173,11 +175,12 @@ export class VehiclesService {
     }
 
     /**
+     * @deprecated
      * embed vehicle
-     * @returns any successful
+     * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehiclesEmbed(): CancelablePromise<any> {
+    public embed(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/embed',
@@ -185,11 +188,12 @@ export class VehiclesService {
     }
 
     /**
+     * @deprecated
      * hangar_items vehicle
-     * @returns any successful
+     * @returns string successful
      * @throws ApiError
      */
-    public getVehiclesHangarItems(): CancelablePromise<any> {
+    public hangarItems(): CancelablePromise<Array<string>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/hangar-items',
@@ -197,11 +201,12 @@ export class VehiclesService {
     }
 
     /**
+     * @deprecated
      * hangar vehicle
-     * @returns any successful
+     * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehiclesHangar(): CancelablePromise<any> {
+    public hangar(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/hangar',
@@ -209,14 +214,73 @@ export class VehiclesService {
     }
 
     /**
-     * check_serial vehicle
-     * @returns any successful
+     * Delete all ingame bought Vehicles
+     * @returns void
      * @throws ApiError
      */
-    public postVehiclesCheckSerial(): CancelablePromise<any> {
+    public destroyAllIngame(): CancelablePromise<void> {
         return this.httpRequest.request({
-            method: 'POST',
-            url: '/vehicles/check-serial',
+            method: 'DELETE',
+            url: '/vehicles/destroy-all-ingame',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * Delete Vehicle
+     * @returns VehicleMinimal successful
+     * @throws ApiError
+     */
+    public destroy({
+        id,
+    }: {
+        /**
+         * id
+         */
+        id: string,
+    }): CancelablePromise<VehicleMinimal> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/vehicles/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * Update Vehicle
+     * @returns VehicleMinimal successful
+     * @throws ApiError
+     */
+    public update({
+        id,
+        requestBody,
+    }: {
+        /**
+         * id
+         */
+        id: string,
+        requestBody: VehicleUpdateInput,
+    }): CancelablePromise<VehicleMinimal> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/vehicles/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
         });
     }
 

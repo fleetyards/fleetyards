@@ -498,7 +498,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -524,7 +524,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -557,7 +557,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -597,7 +597,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -637,7 +637,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -677,7 +677,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -717,7 +717,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -757,7 +757,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -785,7 +785,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -813,7 +813,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -841,7 +841,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -858,7 +858,7 @@ paths:
     parameters:
     - name: slug
       in: path
-      description: slug
+      description: Model slug
       required: true
       schema:
         type: string
@@ -903,6 +903,212 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/shops/shop-types":
+    get:
+      summary: Shop types
+      tags:
+      - Shops
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/shops":
+    get:
+      summary: Shops list
+      operationId: list
+      tags:
+      - Shops
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ShopQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ShopMinimal"
+  "/stations/{stationSlug}/shops/{slug}":
+    parameters:
+    - name: stationSlug
+      in: path
+      description: Station slug
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      description: Shop slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Shop Detail
+      operationId: get
+      tags:
+      - Shops
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ShopMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/starsystems":
+    get:
+      summary: Starsystems list
+      operationId: list
+      tags:
+      - Starsystems
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 15
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/StarsystemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/StarsystemMinimal"
+  "/starsystems/{slug}":
+    get:
+      summary: show starsystem
+      parameters:
+      - name: slug
+        in: path
+        description: Starsystem slug
+        schema:
+          type: string
+        required: true
+      description: Get Detail of a Starsystem referenced by its Slug
+      tags:
+      - Starsystems
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StarsystemMinimal"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/stations":
+    get:
+      summary: list stations
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/{slug}/images":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: images station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/ship-sizes":
+    get:
+      summary: ship_sizes station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/station-types":
+    get:
+      summary: station_types station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+  "/stations/classifications":
+    get:
+      summary: classifications station
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
   "/vehicles/bulk":
     put:
       summary: Update multiple vehicles
@@ -2269,146 +2475,6 @@ paths:
       summary: sub_categories shop_commodity
       tags:
       - ShopCommodities
-      responses:
-        '200':
-          description: successful
-  "/shops":
-    get:
-      summary: list shops
-      tags:
-      - Shops
-      responses:
-        '200':
-          description: successful
-  "/stations/{station_slug}/shops/{slug}":
-    parameters:
-    - name: station_slug
-      in: path
-      description: station_slug
-      required: true
-      schema:
-        type: string
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: show shop
-      tags:
-      - Shops
-      responses:
-        '200':
-          description: successful
-  "/shops/shop-types":
-    get:
-      summary: shop_types shop
-      tags:
-      - Shops
-      responses:
-        '200':
-          description: successful
-  "/starsystems":
-    get:
-      summary: list starsystems
-      description: Get a List of Starsystems
-      tags:
-      - Starsystems
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Starsystem"
-  "/starsystems/{slug}":
-    get:
-      summary: show starsystem
-      parameters:
-      - name: slug
-        in: path
-        description: slug
-        schema:
-          type: string
-        required: true
-      description: Get Detail of a Starsystem referenced by its Slug
-      tags:
-      - Starsystems
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Starsystem"
-        '404':
-          description: not_found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/stations":
-    get:
-      summary: list stations
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-  "/stations/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: show station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-  "/stations/{slug}/images":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: images station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-  "/stations/ship-sizes":
-    get:
-      summary: ship_sizes station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-  "/stations/station-types":
-    get:
-      summary: station_types station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-  "/stations/classifications":
-    get:
-      summary: classifications station
-      tags:
-      - Stations
       responses:
         '200':
           description: successful
@@ -6704,6 +6770,84 @@ components:
           format: uuid
           nullable: true
       title: ModelQuery
+    ShopQuery:
+      type: object
+      properties:
+        searchCont:
+          type: string
+          nullable: true
+        nameCont:
+          type: string
+          nullable: true
+        commodityNameCont:
+          type: string
+          nullable: true
+        nameIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        modelIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        equipmentIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        componentIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        commodityIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        shop_typeIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        commodityCategoryIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        stationIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        celestialObjectIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        starsystemIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+      title: ShopQuery
+    StarsystemQuery:
+      type: object
+      properties:
+        searchCont:
+          type: string
+          nullable: true
+        nameCont:
+          type: string
+          nullable: true
+        nameIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+      title: StarsystemQuery
     Shop:
       type: object
       properties:
@@ -7154,12 +7298,6 @@ components:
         type:
           type: string
           nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
         storeImage:
           type: string
           format: uri
@@ -7179,9 +7317,81 @@ components:
       required:
       - name
       - slug
+      title: Starsystem
+    StarsystemMinimal:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        danger:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        economy:
+          type: string
+          nullable: true
+        locationLabel:
+          type: string
+          nullable: true
+        mapX:
+          type: string
+          nullable: true
+        mapY:
+          type: string
+          nullable: true
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
+            nullable: true
+        population:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        celestialObjects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - name
+      - slug
+      - celestialObjects
       - createdAt
       - updatedAt
-      title: Starsystem
+      title: StarsystemMinimal
     Station:
       type: object
       properties:

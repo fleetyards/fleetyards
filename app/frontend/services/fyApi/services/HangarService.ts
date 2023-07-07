@@ -2,8 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarSyncResult } from '../models/HangarSyncResult';
 import type { SyncRsiHangarInput } from '../models/SyncRsiHangarInput';
+import type { VehicleExport } from '../models/VehicleExport';
 import type { VehicleMinimal } from '../models/VehicleMinimal';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -14,11 +16,11 @@ export class HangarService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * Clear your personal hangar
+     * Clear your personal Hangar
      * @returns void
      * @throws ApiError
      */
-    public deleteHangar(): CancelablePromise<void> {
+    public destroy(): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/hangar',
@@ -29,11 +31,11 @@ export class HangarService {
     }
 
     /**
-     * Your personal hangar
+     * Your personal Hangar
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getHangar({
+    public get({
         page,
         perPage,
     }: {
@@ -54,15 +56,30 @@ export class HangarService {
     }
 
     /**
-     * Import to your personal hangar
-     * @returns any successful
+     * Export your personal Hangar
+     * @returns VehicleExport successful
      * @throws ApiError
      */
-    public putHangarImport({
+    public export(): CancelablePromise<Array<VehicleExport>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/hangar/export',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * Import to your personal Hangar
+     * @returns HangarImportResult successful
+     * @throws ApiError
+     */
+    public import({
         formData,
     }: {
         formData: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<HangarImportResult> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/hangar/import',
@@ -76,11 +93,26 @@ export class HangarService {
     }
 
     /**
+     * Your personal Hangar items
+     * @returns string successful
+     * @throws ApiError
+     */
+    public items(): CancelablePromise<Array<string>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/hangar/items',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
      * Move all Ingame Ships from your Hangar to your Wishlist
      * @returns void
      * @throws ApiError
      */
-    public putHangarMoveAllIngameToWishlist(): CancelablePromise<void> {
+    public moveAllIngameToWishlist(): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/hangar/move-all-ingame-to-wishlist',
@@ -95,7 +127,7 @@ export class HangarService {
      * @returns HangarSyncResult successful
      * @throws ApiError
      */
-    public putHangarSyncRsiHangar({
+    public syncRsiHangar({
         requestBody,
     }: {
         requestBody: {

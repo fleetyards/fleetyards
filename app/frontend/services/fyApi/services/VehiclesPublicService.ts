@@ -2,6 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { VehiclePublicMinimal } from '../models/VehiclePublicMinimal';
+
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
@@ -10,18 +12,19 @@ export class VehiclesPublicService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * @deprecated
      * public vehicle
-     * @returns any successful
+     * @returns VehiclePublicMinimal successful
      * @throws ApiError
      */
-    public getVehicles({
+    public public({
         username,
     }: {
         /**
          * username
          */
         username: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<Array<VehiclePublicMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/{username}',
@@ -32,18 +35,19 @@ export class VehiclesPublicService {
     }
 
     /**
+     * @deprecated
      * public_fleetchart vehicle
-     * @returns any successful
+     * @returns VehiclePublicMinimal successful
      * @throws ApiError
      */
-    public getVehiclesFleetchart({
+    public publicFleetchart({
         username,
     }: {
         /**
          * username
          */
         username: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<Array<VehiclePublicMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/{username}/fleetchart',
@@ -54,11 +58,12 @@ export class VehiclesPublicService {
     }
 
     /**
+     * @deprecated
      * public_quick_stats vehicle
      * @returns any successful
      * @throws ApiError
      */
-    public getVehiclesQuickStats({
+    public publicQuickStats({
         username,
     }: {
         /**

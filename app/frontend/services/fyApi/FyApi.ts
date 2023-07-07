@@ -19,10 +19,12 @@ import { FleetsStatsService } from './services/FleetsStatsService';
 import { FleetsVehiclesService } from './services/FleetsVehiclesService';
 import { HangarService } from './services/HangarService';
 import { HangarGroupsService } from './services/HangarGroupsService';
+import { HangarStatsService } from './services/HangarStatsService';
 import { ImagesService } from './services/ImagesService';
 import { ManufacturersService } from './services/ManufacturersService';
 import { ModelsService } from './services/ModelsService';
 import { PasswordsService } from './services/PasswordsService';
+import { PublicHangarStatsService } from './services/PublicHangarStatsService';
 import { RoadmapService } from './services/RoadmapService';
 import { SearchService } from './services/SearchService';
 import { SessionsService } from './services/SessionsService';
@@ -36,6 +38,7 @@ import { UsersService } from './services/UsersService';
 import { VehiclesService } from './services/VehiclesService';
 import { VehiclesPublicService } from './services/VehiclesPublicService';
 import { VehiclesStatsService } from './services/VehiclesStatsService';
+import { WishlistService } from './services/WishlistService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
@@ -54,10 +57,12 @@ export class FyApi {
     public readonly fleetsVehicles: FleetsVehiclesService;
     public readonly hangar: HangarService;
     public readonly hangarGroups: HangarGroupsService;
+    public readonly hangarStats: HangarStatsService;
     public readonly images: ImagesService;
     public readonly manufacturers: ManufacturersService;
     public readonly models: ModelsService;
     public readonly passwords: PasswordsService;
+    public readonly publicHangarStats: PublicHangarStatsService;
     public readonly roadmap: RoadmapService;
     public readonly search: SearchService;
     public readonly sessions: SessionsService;
@@ -71,12 +76,13 @@ export class FyApi {
     public readonly vehicles: VehiclesService;
     public readonly vehiclesPublic: VehiclesPublicService;
     public readonly vehiclesStats: VehiclesStatsService;
+    public readonly wishlist: WishlistService;
 
     public readonly request: BaseHttpRequest;
 
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
         this.request = new HttpRequest({
-            BASE: config?.BASE ?? 'https://api.fleetyards.net/v1',
+            BASE: config?.BASE ?? 'http://api.fleetyards.test/v1',
             VERSION: config?.VERSION ?? '1',
             WITH_CREDENTIALS: config?.WITH_CREDENTIALS ?? false,
             CREDENTIALS: config?.CREDENTIALS ?? 'include',
@@ -100,10 +106,12 @@ export class FyApi {
         this.fleetsVehicles = new FleetsVehiclesService(this.request);
         this.hangar = new HangarService(this.request);
         this.hangarGroups = new HangarGroupsService(this.request);
+        this.hangarStats = new HangarStatsService(this.request);
         this.images = new ImagesService(this.request);
         this.manufacturers = new ManufacturersService(this.request);
         this.models = new ModelsService(this.request);
         this.passwords = new PasswordsService(this.request);
+        this.publicHangarStats = new PublicHangarStatsService(this.request);
         this.roadmap = new RoadmapService(this.request);
         this.search = new SearchService(this.request);
         this.sessions = new SessionsService(this.request);
@@ -117,6 +125,7 @@ export class FyApi {
         this.vehicles = new VehiclesService(this.request);
         this.vehiclesPublic = new VehiclesPublicService(this.request);
         this.vehiclesStats = new VehiclesStatsService(this.request);
+        this.wishlist = new WishlistService(this.request);
     }
 }
 

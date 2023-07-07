@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Starsystem } from '../models/Starsystem';
+import type { StarsystemMinimal } from '../models/StarsystemMinimal';
+import type { StarsystemQuery } from '../models/StarsystemQuery';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -12,32 +13,44 @@ export class StarsystemsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * list starsystems
-     * Get a List of Starsystems
-     * @returns Starsystem successful
+     * Starsystems list
+     * @returns StarsystemMinimal successful
      * @throws ApiError
      */
-    public getStarsystems(): CancelablePromise<Array<Starsystem>> {
+    public list({
+        page,
+        perPage,
+        q,
+    }: {
+        page?: number,
+        perPage?: string,
+        q?: StarsystemQuery,
+    }): CancelablePromise<Array<StarsystemMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/starsystems',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+            },
         });
     }
 
     /**
      * show starsystem
      * Get Detail of a Starsystem referenced by its Slug
-     * @returns Starsystem successful
+     * @returns StarsystemMinimal successful
      * @throws ApiError
      */
-    public getStarsystems1({
+    public getStarsystems({
         slug,
     }: {
         /**
-         * slug
+         * Starsystem slug
          */
         slug: string,
-    }): CancelablePromise<Starsystem> {
+    }): CancelablePromise<StarsystemMinimal> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/starsystems/{slug}',

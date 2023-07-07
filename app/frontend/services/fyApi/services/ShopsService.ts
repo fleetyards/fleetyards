@@ -2,6 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FilterOption } from '../models/FilterOption';
+import type { ShopMinimal } from '../models/ShopMinimal';
+import type { ShopQuery } from '../models/ShopQuery';
+
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
@@ -10,54 +14,70 @@ export class ShopsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * list shops
-     * @returns any successful
+     * Shop types
+     * @returns FilterOption successful
      * @throws ApiError
      */
-    public getShops(): CancelablePromise<any> {
+    public getShopsShopTypes(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/shops',
+            url: '/shops/shop-types',
         });
     }
 
     /**
-     * show shop
-     * @returns any successful
+     * Shops list
+     * @returns ShopMinimal successful
      * @throws ApiError
      */
-    public getStationsShops({
-        stationSlug,
-        slug,
+    public list({
+        page,
+        perPage,
+        q,
     }: {
-        /**
-         * station_slug
-         */
-        stationSlug: string,
-        /**
-         * slug
-         */
-        slug: string,
-    }): CancelablePromise<any> {
+        page?: number,
+        perPage?: string,
+        q?: ShopQuery,
+    }): CancelablePromise<Array<ShopMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/stations/{station_slug}/shops/{slug}',
-            path: {
-                'station_slug': stationSlug,
-                'slug': slug,
+            url: '/shops',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
             },
         });
     }
 
     /**
-     * shop_types shop
-     * @returns any successful
+     * Shop Detail
+     * @returns ShopMinimal successful
      * @throws ApiError
      */
-    public getShopsShopTypes(): CancelablePromise<any> {
+    public get({
+        stationSlug,
+        slug,
+    }: {
+        /**
+         * Station slug
+         */
+        stationSlug: string,
+        /**
+         * Shop slug
+         */
+        slug: string,
+    }): CancelablePromise<ShopMinimal> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/shops/shop-types',
+            url: '/stations/{stationSlug}/shops/{slug}',
+            path: {
+                'stationSlug': stationSlug,
+                'slug': slug,
+            },
+            errors: {
+                404: `not found`,
+            },
         });
     }
 

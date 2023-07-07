@@ -21,11 +21,11 @@ export class ModelsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * models with docks
+     * Models with Docks
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsWithDocks(): CancelablePromise<any> {
+    public withDocks(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/with-docks',
@@ -33,11 +33,11 @@ export class ModelsService {
     }
 
     /**
-     * unscheduled models
+     * Unscheduled Models
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsUnscheduled(): CancelablePromise<any> {
+    public unschduled(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/unscheduled',
@@ -45,11 +45,11 @@ export class ModelsService {
     }
 
     /**
-     * latest models
+     * Latest Models
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsLatest(): CancelablePromise<any> {
+    public latest(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/latest',
@@ -57,11 +57,11 @@ export class ModelsService {
     }
 
     /**
-     * available model slugs
+     * Available Model-Slugs
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsSlugs(): CancelablePromise<any> {
+    public slugs(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/slugs',
@@ -69,11 +69,11 @@ export class ModelsService {
     }
 
     /**
-     * updated models
+     * Updated Models
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsUpdated({
+    public updated({
         from,
         to,
     }: {
@@ -94,11 +94,11 @@ export class ModelsService {
     }
 
     /**
-     * embed models
+     * Embed Models
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsEmbed(): CancelablePromise<any> {
+    public embed(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/embed',
@@ -106,11 +106,11 @@ export class ModelsService {
     }
 
     /**
-     * filters model
+     * Model Filters
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsFilters(): CancelablePromise<any> {
+    public filters(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/filters',
@@ -118,11 +118,11 @@ export class ModelsService {
     }
 
     /**
-     * classifications model
+     * Model classifications
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsClassifications(): CancelablePromise<any> {
+    public classifications(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/classifications',
@@ -130,11 +130,11 @@ export class ModelsService {
     }
 
     /**
-     * production_states model
+     * Model Production states
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsProductionStates(): CancelablePromise<any> {
+    public productionStates(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/production-states',
@@ -142,11 +142,11 @@ export class ModelsService {
     }
 
     /**
-     * focus model
+     * Model focus
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsFocus(): CancelablePromise<any> {
+    public focus(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/focus',
@@ -154,11 +154,11 @@ export class ModelsService {
     }
 
     /**
-     * sizes model
+     * Model Sizes
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsSizes(): CancelablePromise<any> {
+    public sizes(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/sizes',
@@ -166,11 +166,11 @@ export class ModelsService {
     }
 
     /**
-     * cargo_options model
+     * Model Cargo options
      * @returns any successful
      * @throws ApiError
      */
-    public getModelsCargoOptions(): CancelablePromise<any> {
+    public cargoOptions(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/cargo-options',
@@ -178,11 +178,11 @@ export class ModelsService {
     }
 
     /**
-     * list models
+     * Models List
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public getModels({
+    public list({
         page,
         perPage,
         q,
@@ -203,15 +203,15 @@ export class ModelsService {
     }
 
     /**
-     * model detail
+     * Model Detail
      * @returns ModelComplete successful
      * @throws ApiError
      */
-    public getModel({
+    public detail({
         slug,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
     }): CancelablePromise<ModelComplete> {
@@ -228,16 +228,16 @@ export class ModelsService {
     }
 
     /**
-     * model hardpoints
+     * Model Hardpoints
      * @returns ModelHardpoint successful
      * @throws ApiError
      */
-    public getHardpoints({
+    public hardpoints({
         slug,
         source,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
         source?: ModelHardpointSourceEnum,
@@ -258,17 +258,17 @@ export class ModelsService {
     }
 
     /**
-     * model images
+     * Model Images
      * @returns ImageMinimal successful
      * @throws ApiError
      */
-    public getImages({
+    public images({
         slug,
         page,
         perPage,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
         page?: number,
@@ -291,17 +291,17 @@ export class ModelsService {
     }
 
     /**
-     * model videos
+     * Model Videos
      * @returns VideoMinimal successful
      * @throws ApiError
      */
-    public getVideos({
+    public videos({
         slug,
         page,
         perPage,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
         page?: number,
@@ -324,17 +324,17 @@ export class ModelsService {
     }
 
     /**
-     * model variants
+     * Model Variants
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public getVariants({
+    public variants({
         slug,
         page,
         perPage,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
         page?: number,
@@ -357,17 +357,17 @@ export class ModelsService {
     }
 
     /**
-     * model loaners
+     * Model Loaners
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public getLoaners({
+    public loaners({
         slug,
         page,
         perPage,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
         page?: number,
@@ -390,17 +390,17 @@ export class ModelsService {
     }
 
     /**
-     * model snub crafts
+     * Model Snubcrafts
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public getSnubCrafts({
+    public snubCrafts({
         slug,
         page,
         perPage,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
         page?: number,
@@ -423,15 +423,15 @@ export class ModelsService {
     }
 
     /**
-     * model modules
+     * Model Modules
      * @returns ModelModuleMinimal successful
      * @throws ApiError
      */
-    public getModules({
+    public modules({
         slug,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
     }): CancelablePromise<Array<ModelModuleMinimal>> {
@@ -448,15 +448,15 @@ export class ModelsService {
     }
 
     /**
-     * model upgrades
+     * Model Upgrades
      * @returns ModelUpgradeMinimal successful
      * @throws ApiError
      */
-    public getUpgrades({
+    public upgrades({
         slug,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
     }): CancelablePromise<Array<ModelUpgradeMinimal>> {
@@ -473,15 +473,15 @@ export class ModelsService {
     }
 
     /**
-     * model paints
+     * Model Paints
      * @returns ModelPaintMinimal successful
      * @throws ApiError
      */
-    public getPaints({
+    public paints({
         slug,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
     }): CancelablePromise<Array<ModelPaintMinimal>> {
@@ -499,15 +499,15 @@ export class ModelsService {
 
     /**
      * @deprecated
-     * model store image
+     * Model Storeimage
      * @returns void
      * @throws ApiError
      */
-    public getStoreImage({
+    public storeImage({
         slug,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
     }): CancelablePromise<void> {
@@ -525,15 +525,15 @@ export class ModelsService {
 
     /**
      * @deprecated
-     * model fleetchart image
+     * Model Fleetchart Image
      * @returns void
      * @throws ApiError
      */
-    public getFleetchartImage({
+    public fleetchartImage({
         slug,
     }: {
         /**
-         * slug
+         * Model slug
          */
         slug: string,
     }): CancelablePromise<void> {

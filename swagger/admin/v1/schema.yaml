@@ -55,9 +55,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                "$ref": "#/components/schemas/ImageInputCreate"
+              "$ref": "#/components/schemas/ImageInputCreate"
   "/images/{id}":
     parameters:
     - name: id

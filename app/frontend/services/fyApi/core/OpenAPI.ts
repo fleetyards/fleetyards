@@ -20,7 +20,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    BASE: 'https://api.fleetyards.net/v1',
+    BASE: 'http://api.fleetyards.test/v1',
     VERSION: '1',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',

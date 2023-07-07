@@ -17,7 +17,7 @@ export class CelestialObjectsService {
      * @returns CelestialObjectMinimal successful
      * @throws ApiError
      */
-    public getCelestialObjects(): CancelablePromise<Array<CelestialObjectMinimal>> {
+    public list(): CancelablePromise<Array<CelestialObjectMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/celestial-objects',
@@ -30,7 +30,7 @@ export class CelestialObjectsService {
      * @returns CelestialObjectMinimal successful
      * @throws ApiError
      */
-    public getCelestialObjects1({
+    public detail({
         slug,
     }: {
         /**
