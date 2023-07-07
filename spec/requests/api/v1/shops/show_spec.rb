@@ -9,8 +9,8 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:shop) { shops :dumpers }
 
   path "/stations/{stationSlug}/shops/{slug}" do
-    parameter name: "stationSlug", in: :path, type: :string, description: "Station slug"
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+    parameter name: "stationSlug", in: :path, type: :string, description: "Station slug", required: true
+    parameter name: "slug", in: :path, type: :string, description: "Shop slug", required: true
 
     get("Shop Detail") do
       operationId "get"

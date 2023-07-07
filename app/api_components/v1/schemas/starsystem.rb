@@ -23,15 +23,12 @@ module V1
           size: {type: :string, nullable: true},
           status: {type: :string, nullable: true},
           type: {type: :string, nullable: true},
-          createdAt: {type: :string, format: "date-time"},
-          updatedAt: {type: :string, format: "date-time"},
-
           storeImage: {type: :string, format: :uri, deprecated: true},
           storeImageLarge: {type: :string, format: :uri, deprecated: true},
           storeImageMedium: {type: :string, format: :uri, deprecated: true},
           storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
-        required: %w[name slug createdAt updatedAt]
+        required: %w[name slug]
       })
     end
   end

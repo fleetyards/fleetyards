@@ -21,4 +21,3 @@ json.economy starsystem.aggregated_economy
 json.danger starsystem.aggregated_danger
 json.status starsystem.status
 json.location_label starsystem.location_label
-json.partial! "api/shared/dates", record: starsystem
