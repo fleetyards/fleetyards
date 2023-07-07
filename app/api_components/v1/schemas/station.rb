@@ -10,17 +10,16 @@ module V1
         properties: {
           name: {type: :string},
           slug: {type: :string},
-
           cargoHub: {type: :boolean},
           celestialObject: {"$ref": "#/components/schemas/CelestialObject"},
-          classification_label: {type: :string, nullable: true},
+          classificationLabel: {type: :string, nullable: true},
           classification: {type: :string, nullable: true},
           description: {type: :string, nullable: true},
           dockCounts: {type: :array, items: {"$ref": "#/components/schemas/DockCount"}},
           habitable: {type: :boolean},
           habitationCounts: {type: :array, items: {"$ref": "#/components/schemas/HabitationCount"}},
           hasImages: {type: :boolean},
-          location_label: {type: :string, nullable: true},
+          locationLabel: {type: :string, nullable: true},
           location: {type: :string, nullable: true},
           media: {
             type: :object,
@@ -31,9 +30,9 @@ module V1
           },
           refinery: {type: :boolean},
           shopListLabel: {type: :string, nullable: true},
-          type_label: {type: :string, nullable: true},
+          typeLabel: {type: :string, nullable: true},
           type: {type: :string, nullable: true},
-
+          # Deprecated
           backgroundImage: {type: :string, format: :uri, nullable: true, deprecated: true},
           storeImage: {type: :string, format: :uri, nullable: true, deprecated: true},
           storeImageLarge: {type: :string, format: :uri, nullable: true, deprecated: true},

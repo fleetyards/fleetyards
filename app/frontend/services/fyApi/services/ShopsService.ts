@@ -18,7 +18,7 @@ export class ShopsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public getShopsShopTypes(): CancelablePromise<Array<FilterOption>> {
+    public types(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/shops/shop-types',

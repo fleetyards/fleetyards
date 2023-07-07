@@ -5,7 +5,7 @@
 
 export type Habitation = {
     name: string;
-    habitationName: string;
+    habitationName?: string | null;
     type: string;
     typeLabel: string;
 };

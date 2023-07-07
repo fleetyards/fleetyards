@@ -38,12 +38,11 @@ export class StarsystemsService {
     }
 
     /**
-     * show starsystem
-     * Get Detail of a Starsystem referenced by its Slug
+     * Starsystem Detail
      * @returns StarsystemMinimal successful
      * @throws ApiError
      */
-    public getStarsystems({
+    public get({
         slug,
     }: {
         /**

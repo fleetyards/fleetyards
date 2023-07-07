@@ -9,11 +9,11 @@ module V1
         type: :object,
         properties: {
           name: {type: :string},
-          habitationName: {type: :string},
+          habitationName: {type: :string, nullable: true},
           type: {type: :string},
           typeLabel: {type: :string}
         },
-        required: %w[name habitationName type typeLabel]
+        required: %w[name type typeLabel]
       })
     end
   end

@@ -906,6 +906,7 @@ paths:
   "/shops/shop-types":
     get:
       summary: Shop types
+      operationId: types
       tags:
       - Shops
       responses:
@@ -1022,16 +1023,16 @@ paths:
                 items:
                   "$ref": "#/components/schemas/StarsystemMinimal"
   "/starsystems/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: Starsystem slug
+      schema:
+        type: string
+      required: true
     get:
-      summary: show starsystem
-      parameters:
-      - name: slug
-        in: path
-        description: Starsystem slug
-        schema:
-          type: string
-        required: true
-      description: Get Detail of a Starsystem referenced by its Slug
+      summary: Starsystem Detail
+      operationId: get
       tags:
       - Starsystems
       responses:
@@ -1047,68 +1048,141 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/stations":
+  "/stations/station-types":
     get:
-      summary: list stations
+      summary: Station types
+      operationId: types
       tags:
       - Stations
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/stations/ship-sizes":
+    get:
+      summary: Station Ship sizes
+      operationId: shipSizes
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/stations/classifications":
+    get:
+      summary: Station classifications
+      operationId: classifications
+      tags:
+      - Stations
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/stations":
+    get:
+      summary: Stations list
+      operationId: list
+      tags:
+      - Stations
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 10
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/StationQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/StationMinimal"
   "/stations/{slug}":
     parameters:
     - name: slug
       in: path
-      description: slug
-      required: true
+      description: Station slug
       schema:
         type: string
+      required: true
     get:
-      summary: show station
+      summary: Station Detail
+      operationId: get
       tags:
       - Stations
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StationComplete"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/stations/{slug}/images":
     parameters:
     - name: slug
       in: path
-      description: slug
-      required: true
+      description: Station slug
       schema:
         type: string
+      required: true
     get:
-      summary: images station
+      summary: Station Images
+      operationId: images
       tags:
       - Stations
       responses:
         '200':
           description: successful
-  "/stations/ship-sizes":
-    get:
-      summary: ship_sizes station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-  "/stations/station-types":
-    get:
-      summary: station_types station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
-  "/stations/classifications":
-    get:
-      summary: classifications station
-      tags:
-      - Stations
-      responses:
-        '200':
-          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ImageMinimal"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/vehicles/bulk":
     put:
       summary: Update multiple vehicles
@@ -3158,10 +3232,11 @@ components:
     Dock:
       type: object
       properties:
-        group:
-          type: string
         name:
           type: string
+        group:
+          type: string
+          nullable: true
         size:
           type: string
         sizeLabel:
@@ -3172,7 +3247,6 @@ components:
           type: string
       required:
       - name
-      - group
       - size
       - sizeLabel
       - type
@@ -3629,13 +3703,13 @@ components:
           type: string
         habitationName:
           type: string
+          nullable: true
         type:
           type: string
         typeLabel:
           type: string
       required:
       - name
-      - habitationName
       - type
       - typeLabel
       title: Habitation
@@ -6848,6 +6922,72 @@ components:
             type: string
           nullable: true
       title: StarsystemQuery
+    StationQuery:
+      type: object
+      properties:
+        searchCont:
+          type: string
+          nullable: true
+        nameCont:
+          type: string
+          nullable: true
+        slugEq:
+          type: string
+          nullable: true
+        celestialObjectEq:
+          type: string
+          nullable: true
+        cargoHubEq:
+          type: boolean
+          nullable: true
+        refineryEq:
+          type: boolean
+          nullable: true
+        withShops:
+          type: boolean
+          nullable: true
+        habsNotNull:
+          type: boolean
+          nullable: true
+        commodityItemType:
+          type: string
+          nullable: true
+        nameIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        celestialObjectIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        starsystemIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        stationTypeIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        shopsShopTypeIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        docksShipSizeIn:
+          type: array
+          items:
+            type: string
+          nullable: true
+        sorts:
+          type: array
+          items:
+            type: string
+          nullable: true
+      title: StationQuery
     Shop:
       type: object
       properties:
@@ -7403,7 +7543,7 @@ components:
           type: boolean
         celestialObject:
           "$ref": "#/components/schemas/CelestialObject"
-        classification_label:
+        classificationLabel:
           type: string
           nullable: true
         classification:
@@ -7424,7 +7564,7 @@ components:
             "$ref": "#/components/schemas/HabitationCount"
         hasImages:
           type: boolean
-        location_label:
+        locationLabel:
           type: string
           nullable: true
         location:
@@ -7444,7 +7584,7 @@ components:
         shopListLabel:
           type: string
           nullable: true
-        type_label:
+        typeLabel:
           type: string
           nullable: true
         type:
@@ -7496,7 +7636,7 @@ components:
           type: boolean
         celestialObject:
           "$ref": "#/components/schemas/CelestialObject"
-        classification_label:
+        classificationLabel:
           type: string
           nullable: true
         classification:
@@ -7517,7 +7657,7 @@ components:
             "$ref": "#/components/schemas/HabitationCount"
         hasImages:
           type: boolean
-        location_label:
+        locationLabel:
           type: string
           nullable: true
         location:
@@ -7537,7 +7677,7 @@ components:
         shopListLabel:
           type: string
           nullable: true
-        type_label:
+        typeLabel:
           type: string
           nullable: true
         type:
@@ -7615,7 +7755,7 @@ components:
           type: boolean
         celestialObject:
           "$ref": "#/components/schemas/CelestialObject"
-        classification_label:
+        classificationLabel:
           type: string
           nullable: true
         classification:
@@ -7636,7 +7776,7 @@ components:
             "$ref": "#/components/schemas/HabitationCount"
         hasImages:
           type: boolean
-        location_label:
+        locationLabel:
           type: string
           nullable: true
         location:
@@ -7656,7 +7796,7 @@ components:
         shopListLabel:
           type: string
           nullable: true
-        type_label:
+        typeLabel:
           type: string
           nullable: true
         type:

@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 export type Dock = {
-    group: string;
     name: string;
+    group?: string | null;
     size: string;
     sizeLabel: string;
     type: string;

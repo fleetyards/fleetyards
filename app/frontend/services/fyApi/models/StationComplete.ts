@@ -18,14 +18,14 @@ export type StationComplete = {
     slug: string;
     cargoHub: boolean;
     celestialObject: CelestialObject;
-    classification_label?: string | null;
+    classificationLabel?: string | null;
     classification?: string | null;
     description?: string | null;
     dockCounts?: Array<DockCount>;
     habitable: boolean;
     habitationCounts?: Array<HabitationCount>;
     hasImages: boolean;
-    location_label?: string | null;
+    locationLabel?: string | null;
     location?: string | null;
     media: {
         backgroundImage?: string | null;
@@ -33,7 +33,7 @@ export type StationComplete = {
     };
     refinery: boolean;
     shopListLabel?: string | null;
-    type_label?: string | null;
+    typeLabel?: string | null;
     type?: string | null;
     /**
      * @deprecated

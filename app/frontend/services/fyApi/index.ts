@@ -80,6 +80,7 @@ export type { StarsystemQuery } from './models/StarsystemQuery';
 export type { Station } from './models/Station';
 export type { StationComplete } from './models/StationComplete';
 export type { StationMinimal } from './models/StationMinimal';
+export type { StationQuery } from './models/StationQuery';
 export type { StationShop } from './models/StationShop';
 export type { SyncRsiHangarInput } from './models/SyncRsiHangarInput';
 export type { ValidationError } from './models/ValidationError';

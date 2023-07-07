@@ -5,6 +5,7 @@ require "swagger_helper"
 RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/shops/shop-types" do
     get("Shop types") do
+      operationId "types"
       tags "Shops"
       produces "application/json"
 
