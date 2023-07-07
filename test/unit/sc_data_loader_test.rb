@@ -30,10 +30,17 @@ class ScDataLoaderTest < ActiveSupport::TestCase
       VCR.use_cassette("sc_data_loader_one") do
         loader.load(model)
 
-        assert_equal(96, ModelHardpoint.where(model_id: model.id).count)
-        assert_equal(25, Component.count)
-        assert_equal(0, ModelHardpoint.where(model_id: model.id, source: :game_files).deleted.count)
-        assert_equal(39, ModelHardpoint.where(model_id: model.id, source: :ship_matrix).deleted.count)
+        assert_equal([
+          97,
+          25,
+          0,
+          39
+        ], [
+          ModelHardpoint.where(model_id: model.id).count,
+          Component.count,
+          ModelHardpoint.where(model_id: model.id, source: :game_files).deleted.count,
+          ModelHardpoint.where(model_id: model.id, source: :ship_matrix).deleted.count
+        ])
       end
     end
   end

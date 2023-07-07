@@ -100,9 +100,15 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       model = Model.find_by(name: "300i")
 
-      assert_equal(34, ModelHardpoint.where(model_id: model.id).count)
-      assert_equal(6, Component.count)
-      assert_equal(0, ModelHardpoint.where(model_id: model.id).deleted.count)
+      assert_equal([
+        34,
+        6,
+        0
+      ], [
+        ModelHardpoint.where(model_id: model.id).count,
+        Component.count,
+        ModelHardpoint.where(model_id: model.id).deleted.count
+      ])
     end
   end
 end
