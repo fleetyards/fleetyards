@@ -2,35 +2,32 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :hangar_groups, :users
+RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.yaml" do
+  fixtures :users
 
   let(:user) { nil }
-  let(:hangar_group) { hangar_groups :hangargroupone }
 
   before do
     sign_in(user) if user.present?
   end
 
-  path "/hangar-groups/{id}" do
-    parameter name: "id", in: :path, description: "HangarGroup ID", schema: {type: :string, format: :uuid}, required: true
-
-    put("HangarGroup Update") do
-      operationId "update"
+  path "/hangar/groups" do
+    post("HangarGroup create") do
+      operationId "create"
       tags "HangarGroups"
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupCreateInput"}, required: true
 
-      response(200, "successful") do
+      response(201, "successful") do
         schema "$ref": "#/components/schemas/HangarGroupMinimal"
 
-        let(:id) { hangar_group.id }
         let(:user) { users :data }
         let(:input) do
           {
-            name: "Hangar Group One Test"
+            name: "Hangar Group One Test",
+            color: "#000000"
           }
         end
 
@@ -49,20 +46,9 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
         end
       end
 
-      response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
-
-        let(:id) { SecureRandom.uuid }
-        let(:user) { users :data }
-        let(:input) { nil }
-
-        run_test!
-      end
-
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:id) { hangar_group.id }
         let(:input) { nil }
 
         run_test!

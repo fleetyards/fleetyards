@@ -41,6 +41,20 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
+      response(200, "successful") do
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+
+        let(:perPage) { 1 }
+        let(:user) { users :data }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.count).to eq(1)
+        end
+      end
+
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 

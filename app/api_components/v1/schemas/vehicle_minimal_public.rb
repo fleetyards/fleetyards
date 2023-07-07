@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class VehiclePublicMinimal
+    class VehicleMinimalPublic
       include SchemaConcern
 
       schema({

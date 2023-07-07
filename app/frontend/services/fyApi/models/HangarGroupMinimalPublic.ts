@@ -10,5 +10,7 @@ export type HangarGroupMinimalPublic = {
     color: string;
     sort?: number | null;
     vehiclesCount: number;
+    createdAt: string;
+    updatedAt: string;
 };
 

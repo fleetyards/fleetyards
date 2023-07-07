@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :hangar_groups, :users
 
   let(:user) { nil }
@@ -11,14 +11,14 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
     sign_in(user) if user.present?
   end
 
-  path "/hangar-groups/sort" do
-    put("HangarGroup sort") do
-      operationId "sort"
+  path "/hangar/groups" do
+    get("HangarGroup list") do
+      operationId "list"
       tags "HangarGroups"
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :object, properties: {success: {type: :boolean}}
+        schema type: :array, items: {"$ref": "#/components/schemas/HangarGroupMinimal"}
 
         let(:user) { users :data }
 
@@ -30,7 +30,11 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
           }
         end
 
-        run_test!
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.size).to eq(2)
+        end
       end
 
       response(401, "unauthorized") do

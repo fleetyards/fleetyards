@@ -5,7 +5,7 @@
         <VueUploadComponent
           ref="upload"
           v-model="newImages"
-          :post-action="postAction"
+          :custom-actions="upload"
           drop="body"
           :headers="headers"
           :data="metaData"
@@ -261,6 +261,10 @@ export default class ImageUploader extends Vue {
 
   cancelSingleUpload(image) {
     this.$refs.upload.remove(image);
+  }
+
+  upload(file, component) {
+    component.uploadHtml4(file);
   }
 
   async inputImage(newImage, oldImage) {

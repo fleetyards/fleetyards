@@ -66,6 +66,8 @@ DEFAULTS: &DEFAULTS
 data:
   email: "data@star.fleet"
   username: "data"
+  public_hangar: true
+  public_wishlist: true
   <<: *DEFAULTS
 
 will:
@@ -86,4 +88,5 @@ worf:
 troi:
   email: "troi@star.fleet"
   username: "troi"
+  public_hangar: false
   <<: *DEFAULTS

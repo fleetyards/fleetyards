@@ -2,80 +2,61 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { HangarEmbedQuery } from '../models/HangarEmbedQuery';
 import type { VehicleMinimalPublic } from '../models/VehicleMinimalPublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
-export class VehiclesPublicService {
+export class PublicHangarService {
 
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @deprecated
-     * public vehicle
-     * @returns VehicleMinimalPublic successful
+     * Public Hangar embed
+     * @returns VehicleMinimalPublic empty response
      * @throws ApiError
      */
-    public public({
-        username,
+    public embed({
+        usernames,
     }: {
-        /**
-         * username
-         */
-        username: string,
+        usernames: HangarEmbedQuery,
     }): CancelablePromise<Array<VehicleMinimalPublic>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/vehicles/{username}',
-            path: {
-                'username': username,
+            url: '/public/hangars/embed',
+            query: {
+                'usernames': usernames,
             },
         });
     }
 
     /**
-     * @deprecated
-     * public_fleetchart vehicle
+     * Public Hangar
      * @returns VehicleMinimalPublic successful
      * @throws ApiError
      */
-    public publicFleetchart({
+    public get({
         username,
+        page,
+        perPage,
     }: {
-        /**
-         * username
-         */
         username: string,
+        page?: number,
+        perPage?: string,
     }): CancelablePromise<Array<VehicleMinimalPublic>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/vehicles/{username}/fleetchart',
+            url: '/public/hangars/{username}',
             path: {
                 'username': username,
             },
-        });
-    }
-
-    /**
-     * @deprecated
-     * public_quick_stats vehicle
-     * @returns any successful
-     * @throws ApiError
-     */
-    public publicQuickStats({
-        username,
-    }: {
-        /**
-         * username
-         */
-        username: string,
-    }): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/vehicles/{username}/quick-stats',
-            path: {
-                'username': username,
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
+            errors: {
+                404: `not found`,
             },
         });
     }

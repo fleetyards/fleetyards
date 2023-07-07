@@ -3,6 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type VehiclePublicMinimal = {
+export type Gallery = {
+    id: string;
+    name: string;
+    slug: string;
 };
 

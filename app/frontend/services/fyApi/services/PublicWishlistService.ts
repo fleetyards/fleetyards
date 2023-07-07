@@ -2,33 +2,38 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { HangarStatsPublic } from '../models/HangarStatsPublic';
+import type { VehicleMinimalPublic } from '../models/VehicleMinimalPublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
-export class PublicHangarStatsService {
+export class PublicWishlistService {
 
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * Public Hangar Stats
-     * @returns HangarStatsPublic successful
+     * Your Wishlist
+     * @returns VehicleMinimalPublic successful
      * @throws ApiError
      */
     public get({
         username,
+        page,
+        perPage,
     }: {
-        /**
-         * username
-         */
         username: string,
-    }): CancelablePromise<HangarStatsPublic> {
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<Array<VehicleMinimalPublic>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/public/hangars/{username}/stats',
+            url: '/public/wishlists/{username}',
             path: {
                 'username': username,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
             },
             errors: {
                 404: `not found`,

@@ -217,7 +217,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
 
         let(:username) { user.username }
 
@@ -237,7 +237,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
 
         let(:username) { user.username }
 

@@ -8,9 +8,11 @@ module V1
       schema({
         properties: {
           sort: {type: :integer, nullable: true},
-          vehiclesCount: {type: :integer}
+          vehiclesCount: {type: :integer},
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"}
         },
-        required: %w[vehiclesCount]
+        required: %w[vehiclesCount createdAt updatedAt]
       })
     end
   end

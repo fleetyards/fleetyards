@@ -2,19 +2,18 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
-  let(:user) { nil }
+  let(:user) { users :data }
+  let(:user_without_public_hangar) { users :troi }
 
-  before do
-    sign_in(user) if user.present?
-  end
+  path "/public/hangars/{username}" do
+    parameter name: "username", in: :path, type: :string, required: true
 
-  path "/wishlist" do
-    get("Your Wishlist") do
+    get("Public Hangar") do
       operationId "get"
-      tags "Wishlist"
+      tags "PublicHangar"
       produces "application/json"
 
       parameter name: "page", in: :query, type: :number, required: false, default: 1
@@ -22,9 +21,9 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
 
-        let(:user) { users :data }
+        let(:username) { user.username }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -43,10 +42,10 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
 
         let(:perPage) { 1 }
-        let(:user) { users :data }
+        let(:username) { user.username }
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -55,8 +54,18 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
         end
       end
 
-      response(401, "unauthorized") do
+      response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:username) { user_without_public_hangar.username }
+
+        run_test!
+      end
+
+      response(404, "not found") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:username) { "not-a-user" }
 
         run_test!
       end

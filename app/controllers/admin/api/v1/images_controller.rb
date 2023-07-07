@@ -21,8 +21,8 @@ module Admin
         def create
           authorize! :create, :admin_api_images
 
-          image_params[:name] = image_params.delete(:file)
-          @image = Image.new(image_params)
+          image_create_params[:name] = image_create_params.delete(:file)
+          @image = Image.new(image_create_params)
 
           return if image.save
 
@@ -51,11 +51,17 @@ module Admin
           )
         end
 
+        private def image_create_params
+          @image_create_params ||= params.transform_keys(&:underscore)
+            .permit(
+              :file, :gallery_id, :gallery_type
+            )
+        end
+
         private def image_params
           @image_params ||= params.transform_keys(&:underscore)
             .permit(
-              :file, :gallery_id, :gallery_type, :enabled,
-              :global, :background, :caption
+              :enabled, :global, :background, :caption
             )
         end
 

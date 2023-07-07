@@ -72,6 +72,7 @@ export default class FilterForm extends Vue {
 
   @Watch("modelIdEq")
   onModelIdFilterChange(value) {
+    console.log("foo", value);
     if (value) {
       this.stationIdEq = null;
       this.form.galleryIdEq = value;

@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
   let(:user) { users :data }
@@ -16,7 +16,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PublicHangarStats"
+        schema "$ref": "#/components/schemas/HangarStatsPublic"
 
         let(:username) { user.username }
 

@@ -25,7 +25,7 @@ export class HangarGroupsService {
     }): CancelablePromise<HangarGroupMinimal> {
         return this.httpRequest.request({
             method: 'POST',
-            url: '/hangar-groups',
+            url: '/hangar/groups',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -42,7 +42,7 @@ export class HangarGroupsService {
     public list(): CancelablePromise<Array<HangarGroupMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/hangar-groups',
+            url: '/hangar/groups',
             errors: {
                 401: `unauthorized`,
             },
@@ -64,7 +64,7 @@ export class HangarGroupsService {
     }): CancelablePromise<HangarGroupMinimal> {
         return this.httpRequest.request({
             method: 'DELETE',
-            url: '/hangar-groups/{id}',
+            url: '/hangar/groups/{id}',
             path: {
                 'id': id,
             },
@@ -92,7 +92,7 @@ export class HangarGroupsService {
     }): CancelablePromise<HangarGroupMinimal> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/hangar-groups/{id}',
+            url: '/hangar/groups/{id}',
             path: {
                 'id': id,
             },
@@ -111,6 +111,120 @@ export class HangarGroupsService {
      * @throws ApiError
      */
     public sort(): CancelablePromise<{
+        success?: boolean;
+    }> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/hangar/groups/sort',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * HangarGroup list
+     * @returns HangarGroupMinimal successful
+     * @throws ApiError
+     */
+    public list1(): CancelablePromise<Array<HangarGroupMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/hangar-groups',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * HangarGroup create
+     * @returns HangarGroupMinimal successful
+     * @throws ApiError
+     */
+    public create1({
+        requestBody,
+    }: {
+        requestBody: HangarGroupCreateInput,
+    }): CancelablePromise<HangarGroupMinimal> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/hangar-groups',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * HangarGroup Destroy
+     * @returns HangarGroupMinimal successful
+     * @throws ApiError
+     */
+    public destroy1({
+        id,
+    }: {
+        /**
+         * HangarGroup ID
+         */
+        id: string,
+    }): CancelablePromise<HangarGroupMinimal> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/hangar-groups/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * HangarGroup Update
+     * @returns HangarGroupMinimal successful
+     * @throws ApiError
+     */
+    public update1({
+        id,
+        requestBody,
+    }: {
+        /**
+         * HangarGroup ID
+         */
+        id: string,
+        requestBody: HangarGroupUpdateInput,
+    }): CancelablePromise<HangarGroupMinimal> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/hangar-groups/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * HangarGroup sort
+     * @returns any successful
+     * @throws ApiError
+     */
+    public sort1(): CancelablePromise<{
         success?: boolean;
     }> {
         return this.httpRequest.request({
