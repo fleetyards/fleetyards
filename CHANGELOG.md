@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.26.5](https://github.com/fleetyards/fleetyards/compare/v5.26.4...v5.26.5) (2023-07-07)
+
+
+### Bug Fixes
+
+* **fleet-members:** update actions to allow officers to accept/decline new members ([239cef9](https://github.com/fleetyards/fleetyards/commit/239cef9481a095bc4022515b8a010144fc4da204))
+
 ### [5.26.4](https://github.com/fleetyards/fleetyards/compare/v5.26.3...v5.26.4) (2023-07-05)
 
 ### [5.26.3](https://github.com/fleetyards/fleetyards/compare/v5.26.2...v5.26.3) (2023-07-05)
