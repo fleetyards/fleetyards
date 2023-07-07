@@ -2,30 +2,29 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
-  path "/models" do
-    get("Models List") do
+  path "/shops" do
+    get("Shops list") do
       operationId "list"
-      tags "Models"
+      tags "Shops"
       produces "application/json"
 
       parameter name: "page", in: :query, type: :number, required: false, default: 1
       parameter name: "perPage", in: :query, type: :string, required: false,
-        default: Model.default_per_page
+        default: Shop.default_per_page
       parameter name: "q", in: :query,
         schema: {
           type: :object,
-          "$ref": "#/components/schemas/ModelQuery"
+          "$ref": "#/components/schemas/ShopQuery"
         },
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/ShopMinimal"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -39,17 +38,16 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           data = JSON.parse(response.body)
 
           expect(data.count).to be > 0
-          expect(data.count).to eq(6)
+          expect(data.count).to eq(5)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/ShopMinimal"}
 
         let(:q) do
           {
-            "nameOrDescriptionCont" => "Galaxy"
+            "nameCont" => "Dumpers Depot"
           }
         end
 
@@ -57,13 +55,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           data = JSON.parse(response.body)
 
           expect(data.count).to eq(1)
-          expect(data.first["name"]).to eq("Galaxy")
+          expect(data.first["name"]).to eq("Dumpers Depot")
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/ShopMinimal"}
 
         let(:perPage) { 2 }
 
