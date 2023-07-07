@@ -3,15 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type HangarGroupMinimal = {
-    id: string;
+export type HangarGroupCreateInput = {
     name: string;
-    slug: string;
     color: string;
-    public: boolean;
     sort?: number | null;
-    vehiclesCount: number;
-    createdAt: string;
-    updatedAt: string;
+    public?: boolean | null;
 };
 

@@ -7,10 +7,13 @@ module V1
 
       schema({
         properties: {
+          public: {type: :boolean},
+          sort: {type: :integer, nullable: true},
+          vehiclesCount: {type: :integer},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
-        required: %w[createdAt updatedAt]
+        required: %w[public vehiclesCount createdAt updatedAt]
       })
     end
   end

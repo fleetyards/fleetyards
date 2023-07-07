@@ -229,58 +229,137 @@ paths:
               - import
         required: true
   "/hangar-groups":
-    get:
-      summary: list hangar_groups
-      tags:
-      - HangarGroups
-      responses:
-        '200':
-          description: successful
     post:
-      summary: create hangar_group
+      summary: HangarGroup create
+      operationId: create
+      tags:
+      - HangarGroups
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarGroupMinimal"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarGroupCreateInput"
+        required: true
+    get:
+      summary: HangarGroup list
+      operationId: list
       tags:
       - HangarGroups
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/HangarGroupMinimal"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar-groups/{id}":
     parameters:
     - name: id
       in: path
-      description: id
+      description: HangarGroup ID
       schema:
         type: string
         format: uuid
       required: true
-    patch:
-      summary: update hangar_group
-      tags:
-      - HangarGroups
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update hangar_group
-      tags:
-      - HangarGroups
-      responses:
-        '200':
-          description: successful
     delete:
-      summary: delete hangar_group
+      summary: HangarGroup Destroy
+      operationId: destroy
       tags:
       - HangarGroups
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarGroupMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: HangarGroup Update
+      operationId: update
+      tags:
+      - HangarGroups
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarGroupMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarGroupUpdateInput"
+        required: true
   "/hangar-groups/sort":
     put:
-      summary: sort hangar_group
+      summary: HangarGroup sort
+      operationId: sort
       tags:
       - HangarGroups
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/stats/models-by-classification":
     get:
       summary: Hangar Stats - Models by Classification
@@ -3849,6 +3928,13 @@ components:
           type: string
         color:
           type: string
+        public:
+          type: boolean
+        sort:
+          type: integer
+          nullable: true
+        vehiclesCount:
+          type: integer
         createdAt:
           type: string
           format: date-time
@@ -3860,6 +3946,8 @@ components:
       - name
       - slug
       - color
+      - public
+      - vehiclesCount
       - createdAt
       - updatedAt
       title: HangarGroupMinimal
@@ -4168,6 +4256,39 @@ components:
       - path
       - shopId
       title: CommodityPriceInput
+    HangarGroupCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        sort:
+          type: integer
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+      required:
+      - name
+      - color
+      title: HangarGroupCreateInput
+    HangarGroupUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+        sort:
+          type: integer
+          nullable: true
+        public:
+          type: boolean
+          nullable: true
+      title: HangarGroupUpdateInput
     RsiHangarItemInput:
       type: object
       properties:
