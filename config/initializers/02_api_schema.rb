@@ -3,6 +3,7 @@
 Rails.application.reloader.to_prepare do
   v1_components_loader = ComponentsLoader.new("v1")
   admin_v1_components_loader = ComponentsLoader.new("admin/v1")
+  shared_v1_components_loader = ComponentsLoader.new("shared/v1")
 
   Rails.application.configure do
     api_servers = [
@@ -42,15 +43,7 @@ Rails.application.reloader.to_prepare do
         servers: api_servers,
         paths: {},
         components: {
-          schemas: v1_components_loader.schemas,
-          parameters: v1_components_loader.parameters,
-          securitySchemes: v1_components_loader.securitySchemes,
-          requestBodies: v1_components_loader.requestBodies,
-          responses: v1_components_loader.responses,
-          headers: v1_components_loader.headers,
-          examples: v1_components_loader.examples,
-          links: v1_components_loader.links,
-          callbacks: v1_components_loader.callbacks
+          schemas: shared_v1_components_loader.schemas.merge(v1_components_loader.schemas)
         }.compact
       },
       "admin/v1/schema.yaml" => {
@@ -62,15 +55,7 @@ Rails.application.reloader.to_prepare do
         servers: admin_api_servers,
         paths: {},
         components: {
-          schemas: admin_v1_components_loader.schemas,
-          parameters: admin_v1_components_loader.parameters,
-          securitySchemes: admin_v1_components_loader.securitySchemes,
-          requestBodies: admin_v1_components_loader.requestBodies,
-          responses: admin_v1_components_loader.responses,
-          headers: admin_v1_components_loader.headers,
-          examples: admin_v1_components_loader.examples,
-          links: admin_v1_components_loader.links,
-          callbacks: admin_v1_components_loader.callbacks
+          schemas: shared_v1_components_loader.schemas.merge(admin_v1_components_loader.schemas)
         }.compact
       }
     }

@@ -12,7 +12,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles" do
-    get("list vehicles") do
+    get("Vehicles List -> use GET /hangar") do
       deprecated true
       tags "Vehicles"
       produces "application/json"
@@ -27,7 +27,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/fleetchart" do
-    get("fleetchart vehicle") do
+    get("Vehicle Fleetchart List -> use GET /hangar") do
       operationId "fleetchart"
       deprecated true
       tags "Vehicles"
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/export" do
-    get("export vehicle") do
+    get("Vehicle Export -> use GET /hangar/export") do
       operationId "export"
       deprecated true
       tags "Vehicles"
@@ -59,7 +59,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/import" do
-    put("import vehicle") do
+    put("Vehicle import -> use PUT /hangar/import") do
       operationId "import"
       deprecated true
       tags "Vehicles"
@@ -81,7 +81,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/destroy-all" do
-    delete("destroy_all vehicle") do
+    delete("Vehicle Destroy all -> use DELETE /hangar") do
       operationId "destroyAll"
       deprecated true
       tags "Vehicles"
@@ -95,7 +95,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/embed" do
-    get("embed vehicle") do
+    get("Vehicle embed -> use GET /public/hangar/embed") do
       operationId "embed"
       deprecated true
       tags "Vehicles"
@@ -111,7 +111,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/hangar-items" do
-    get("hangar_items vehicle") do
+    get("Vehicle Hangar items -> use GET /hangar/items") do
       operationId "hangarItems"
       deprecated true
       tags "Vehicles"
@@ -126,7 +126,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/hangar" do
-    get("hangar vehicle") do
+    get("Vehicle hangar -> no replacement") do
       operationId "hangar"
       deprecated true
       tags "Vehicles"
@@ -142,7 +142,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/quick-stats" do
-    get("quick_stats vehicle") do
+    get("Vehicle Quickstats -> use GET /hangar/stats") do
       operationId "quickStats"
       deprecated true
       tags "Vehicles - Stats"
@@ -155,7 +155,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/stats/models-by-size" do
-    get("models_by_size vehicle") do
+    get("Vehicle Models by size -> use GET /hangar/stats/models-by-size") do
       operationId "statsModelsBySize"
       deprecated true
       tags "Vehicles - Stats"
@@ -168,7 +168,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
   end
 
   path "/vehicles/stats/models-by-production-status" do
-    get("models_by_production_status vehicle") do
+    get("Vehicle Models by ProductionStatus -> use GET /hangar/stats/models-by-production-status") do
       operationId "statsModelsByProductionStatus"
       deprecated true
       tags "Vehicles - Stats"

@@ -1909,7 +1909,7 @@ paths:
               "$ref": "#/components/schemas/VehicleCreateInput"
         required: true
     get:
-      summary: list vehicles
+      summary: Vehicles List -> use GET /hangar
       deprecated: true
       tags:
       - Vehicles
@@ -1924,7 +1924,7 @@ paths:
                   "$ref": "#/components/schemas/VehicleMinimal"
   "/vehicles/fleetchart":
     get:
-      summary: fleetchart vehicle
+      summary: Vehicle Fleetchart List -> use GET /hangar
       operationId: fleetchart
       deprecated: true
       tags:
@@ -1940,7 +1940,7 @@ paths:
                   "$ref": "#/components/schemas/VehicleMinimal"
   "/vehicles/export":
     get:
-      summary: export vehicle
+      summary: Vehicle Export -> use GET /hangar/export
       operationId: export
       deprecated: true
       tags:
@@ -1956,7 +1956,7 @@ paths:
                   "$ref": "#/components/schemas/VehicleExport"
   "/vehicles/import":
     put:
-      summary: import vehicle
+      summary: Vehicle import -> use PUT /hangar/import
       operationId: import
       deprecated: true
       tags:
@@ -1977,7 +1977,7 @@ paths:
         required: true
   "/vehicles/destroy-all":
     delete:
-      summary: destroy_all vehicle
+      summary: Vehicle Destroy all -> use DELETE /hangar
       operationId: destroyAll
       deprecated: true
       tags:
@@ -1987,7 +1987,7 @@ paths:
           description: successful
   "/vehicles/embed":
     get:
-      summary: embed vehicle
+      summary: Vehicle embed -> use GET /public/hangar/embed
       operationId: embed
       deprecated: true
       tags:
@@ -2003,7 +2003,7 @@ paths:
                   "$ref": "#/components/schemas/VehicleMinimal"
   "/vehicles/hangar-items":
     get:
-      summary: hangar_items vehicle
+      summary: Vehicle Hangar items -> use GET /hangar/items
       operationId: hangarItems
       deprecated: true
       tags:
@@ -2019,7 +2019,7 @@ paths:
                   type: string
   "/vehicles/hangar":
     get:
-      summary: hangar vehicle
+      summary: Vehicle hangar -> no replacement
       operationId: hangar
       deprecated: true
       tags:
@@ -2035,7 +2035,7 @@ paths:
                   "$ref": "#/components/schemas/VehicleMinimal"
   "/vehicles/quick-stats":
     get:
-      summary: quick_stats vehicle
+      summary: Vehicle Quickstats -> use GET /hangar/stats
       operationId: quickStats
       deprecated: true
       tags:
@@ -2045,7 +2045,7 @@ paths:
           description: successful
   "/vehicles/stats/models-by-size":
     get:
-      summary: models_by_size vehicle
+      summary: Vehicle Models by size -> use GET /hangar/stats/models-by-size
       operationId: statsModelsBySize
       deprecated: true
       tags:
@@ -2055,7 +2055,7 @@ paths:
           description: successful
   "/vehicles/stats/models-by-production-status":
     get:
-      summary: models_by_production_status vehicle
+      summary: Vehicle Models by ProductionStatus -> use GET /hangar/stats/models-by-production-status
       operationId: statsModelsByProductionStatus
       deprecated: true
       tags:
@@ -2315,899 +2315,130 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/commodities":
-    get:
-      summary: list commodities
-      description: Get a List of Commodities
-      tags:
-      - Commodities
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/CommodityMinimal"
-  "/commodities/types":
-    get:
-      summary: commodity_types commodity
-      description: Get a List of all Commodity Types
-      tags:
-      - Commodities
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/commodity-prices":
-    post:
-      summary: create commodity_price
-      description: Create new CommodityPrice
-      tags:
-      - Commodities
-      parameters: []
-      responses:
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/CommodityPrice"
-        '400':
-          description: invalid data
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                "$ref": "#/components/schemas/CommodityPriceInput"
-        required: true
-  "/commodity-prices/time-ranges":
-    get:
-      summary: time_ranges commodity_price
-      description: Get a List of all Commodity Price TimeRanges
-      tags:
-      - Commodities
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/components":
-    get:
-      summary: list components
-      description: Get a List of Components
-      tags:
-      - Components
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ComponentMinimal"
-  "/components/class_filters":
-    get:
-      summary: class_filters component
-      description: Get a List of all Component Classes
-      tags:
-      - Components
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/components/item_type_filters":
-    get:
-      summary: item_type_filters component
-      description: Get a List of all Component Item Types
-      tags:
-      - Components
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/equipment":
-    get:
-      summary: list equipment
-      description: Get a List of Equipment
-      tags:
-      - Equipment
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/EquipmentMinimal"
-  "/fleets/{slug}/invite-urls":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: list fleet_invite_urls
-      tags:
-      - Fleets - Invite Urls
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create fleet_invite_url
-      tags:
-      - Fleets - Invite Urls
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/invite-urls/{token}":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    - name: token
-      in: path
-      description: token
-      required: true
-      schema:
-        type: string
-    delete:
-      summary: delete fleet_invite_url
-      tags:
-      - Fleets - Invite Urls
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: list fleet_members
-      tags:
-      - Fleets - Members
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/member-quick-stats":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: quick_stats fleet_member
-      tags:
-      - Fleets - Members
-      responses:
-        '200':
-          description: successful
-  "/fleets/use-invite":
-    post:
-      summary: create_by_invite fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/current":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: current fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/accept-invite":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    put:
-      summary: accept_invite fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/decline-invite":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    put:
-      summary: decline_invite fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/leave":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    delete:
-      summary: leave fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/create-by-invite":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    post:
-      summary: create_by_invite fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/{username}/demote":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    put:
-      summary: demote fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/{username}/promote":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    put:
-      summary: promote fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/{username}/accept-request":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    put:
-      summary: accept_request fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/{username}/decline-request":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    put:
-      summary: decline_request fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/members/{username}":
-    parameters:
-    - name: slug
-      in: path
-      description: Fleet slug
-      required: true
-      schema:
-        type: string
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    delete:
-      summary: delete fleet_membership
-      tags:
-      - Fleets - Memberships
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/stats/models-by-size":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: models_by_size fleet_stat
-      tags:
-      - Fleets - Stats
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/stats/models-by-production-status":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: models_by_production_status fleet_stat
-      tags:
-      - Fleets - Stats
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/stats/models-by-manufacturer":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: models_by_manufacturer fleet_stat
-      tags:
-      - Fleets - Stats
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/stats/models-by-classification":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: models_by_classification fleet_stat
-      tags:
-      - Fleets - Stats
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/vehicles":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: list fleet_vehicles
-      tags:
-      - Fleets - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/public-vehicles":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public fleet_vehicle
-      tags:
-      - Fleets - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/fleetchart":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: fleetchart fleet_vehicle
-      tags:
-      - Fleets - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/public-fleetchart":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public_fleetchart fleet_vehicle
-      tags:
-      - Fleets - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}/quick-stats":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: quick_stats fleet_vehicle
-      tags:
-      - Fleets - Vehicles
-      responses:
-        '200':
-          description: successful
-  "/fleets":
-    post:
-      summary: create fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-  "/fleets/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      description: slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: show fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-  "/fleets/check":
-    post:
-      summary: check fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-  "/fleets/invites":
-    get:
-      summary: invites fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-  "/fleets/current":
-    get:
-      summary: current fleet
-      tags:
-      - Fleets
-      responses:
-        '200':
-          description: successful
-  "/password":
-    patch:
-      summary: update password
-      tags:
-      - Passwords
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update password
-      tags:
-      - Passwords
-      responses:
-        '200':
-          description: successful
-  "/password/request":
-    post:
-      summary: request_email password
-      tags:
-      - Passwords
-      responses:
-        '200':
-          description: successful
-  "/password/update":
-    patch:
-      summary: update password
-      tags:
-      - Passwords
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update password
-      tags:
-      - Passwords
-      responses:
-        '200':
-          description: successful
-  "/password/update/{reset_password_token}":
-    parameters:
-    - name: reset_password_token
-      in: path
-      description: reset_password_token
-      required: true
-      schema:
-        type: string
-    patch:
-      summary: update_with_token password
-      tags:
-      - Passwords
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update_with_token password
-      tags:
-      - Passwords
-      responses:
-        '200':
-          description: successful
-  "/roadmap":
-    get:
-      summary: list roadmaps
-      tags:
-      - Roadmap
-      responses:
-        '200':
-          description: successful
-  "/roadmap/weeks":
-    get:
-      summary: weeks roadmap
-      tags:
-      - Roadmap
-      responses:
-        '200':
-          description: successful
-  "/search":
-    get:
-      summary: list searches
-      tags:
-      - Search
-      responses:
-        '200':
-          description: successful
-  "/sessions":
-    post:
-      summary: create session
-      tags:
-      - Sessions
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete session
-      tags:
-      - Sessions
-      responses:
-        '200':
-          description: successful
-  "/sessions/confirm-access":
-    post:
-      summary: confirm_access session
-      tags:
-      - Sessions
-      responses:
-        '200':
-          description: successful
-  "/stations/{station_slug}/shops/{shop_slug}/commodities":
-    parameters:
-    - name: station_slug
-      in: path
-      description: station_slug
-      required: true
-      schema:
-        type: string
-    - name: shop_slug
-      in: path
-      description: shop_slug
-      required: true
-      schema:
-        type: string
-    get:
-      summary: list shop_commodities
-      tags:
-      - ShopCommodities
-      responses:
-        '200':
-          description: successful
-  "/shop-commodities/commodity-type-options":
-    get:
-      summary: commodity_item_types shop_commodity
-      tags:
-      - ShopCommodities
-      responses:
-        '200':
-          description: successful
-  "/filters/shop-commodities/sub-categories":
-    get:
-      summary: sub_categories shop_commodity
-      tags:
-      - ShopCommodities
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/qrcode":
-    get:
-      summary: qrcode two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/enable":
-    post:
-      summary: enable two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/disable":
-    post:
-      summary: disable two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
-  "/users/two-factor/generate-backup-codes":
-    post:
-      summary: generate_backup_codes two_factor
-      tags:
-      - Settings - TwoFactor
-      responses:
-        '200':
-          description: successful
-  "/users/current":
-    get:
-      summary: current user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-  "/users/signup":
-    post:
-      summary: signup user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-  "/users/confirm":
-    post:
-      summary: confirm user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-  "/users/check-email":
-    post:
-      summary: check_email user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-  "/users/check-username":
-    post:
-      summary: check_username user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-  "/users/current-account":
-    put:
-      summary: update_account user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update_account user
-      tags:
-      - CurrentUser
-      responses:
-        '200':
-          description: successful
-  "/users/{username}":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public user
-      tags:
-      - Users
-      responses:
-        '200':
-          description: successful
 components:
   schemas:
+    ShopTypeEnum:
+      type: string
+      enum:
+      - clothing
+      - armor
+      - weapons
+      - components
+      - armor_and_weapons
+      - superstore
+      - ships
+      - admin
+      - bar
+      - hospital
+      - salvage
+      - resources
+      - rental
+      - computers
+      - blackmarket
+      - mining_equipment
+      - equipment
+      - courier
+      - refinery
+      - pharmacy
+      - cargo
+      - souvenirs
+      - kiosk
+      - ship_customizations
+      title: ShopTypeEnum
+    FieldError:
+      type: object
+      properties:
+        attribute:
+          type: string
+        messages:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StandardError"
+      required:
+      - attribute
+      - messages
+      title: FieldError
+    FilterOption:
+      type: object
+      properties:
+        category:
+          type: string
+        icon:
+          type: string
+          nullable: true
+        name:
+          type: string
+        value:
+          type: string
+      required:
+      - name
+      - value
+      - category
+      title: FilterOption
+    MediaImage:
+      type: object
+      properties:
+        large:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+        small:
+          type: string
+          format: uri
+        source:
+          type: string
+          format: uri
+      required:
+      - source
+      - small
+      - medium
+      - large
+      title: MediaImage
+    Meta:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      title: Meta
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+      required:
+      - currentPage
+      - totalPages
+      title: Pagination
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+      title: StandardError
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FieldError"
+      required:
+      - code
+      - message
+      title: ValidationError
     CelestialObject:
       type: object
       properties:
@@ -3843,34 +3074,6 @@ components:
       - upgrade
       - skin
       title: RsiHangarItemKindEnum
-    ShopTypeEnum:
-      type: string
-      enum:
-      - clothing
-      - armor
-      - weapons
-      - components
-      - armor_and_weapons
-      - superstore
-      - ships
-      - admin
-      - bar
-      - hospital
-      - salvage
-      - resources
-      - rental
-      - computers
-      - blackmarket
-      - mining_equipment
-      - equipment
-      - courier
-      - refinery
-      - pharmacy
-      - cargo
-      - souvenirs
-      - kiosk
-      - ship_customizations
-      title: ShopTypeEnum
     VideoTypeEnum:
       type: string
       enum:
@@ -4126,36 +3329,6 @@ components:
       - createdAt
       - updatedAt
       title: EquipmentMinimal
-    FieldError:
-      type: object
-      properties:
-        attribute:
-          type: string
-        messages:
-          type: array
-          items:
-            "$ref": "#/components/schemas/StandardError"
-      required:
-      - attribute
-      - messages
-      title: FieldError
-    FilterOption:
-      type: object
-      properties:
-        category:
-          type: string
-        icon:
-          type: string
-          nullable: true
-        name:
-          type: string
-        value:
-          type: string
-      required:
-      - name
-      - value
-      - category
-      title: FilterOption
     Gallery:
       type: object
       properties:
@@ -4916,27 +4089,6 @@ components:
       - createdAt
       - updatedAt
       title: ManufacturerMinimal
-    MediaImage:
-      type: object
-      properties:
-        large:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-        small:
-          type: string
-          format: uri
-        source:
-          type: string
-          format: uri
-      required:
-      - source
-      - small
-      - medium
-      - large
-      title: MediaImage
     Model:
       type: object
       properties:
@@ -7987,17 +7139,6 @@ components:
       - createdAt
       - updatedAt
       title: ShopMinimal
-    StandardError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - message
-      title: StandardError
     Starsystem:
       type: object
       properties:
@@ -8468,21 +7609,6 @@ components:
       - shipsCountYear
       - shipsCountTotal
       title: Stats
-    ValidationError:
-      type: object
-      properties:
-        code:
-          type: string
-        errors:
-          type: array
-          items:
-            "$ref": "#/components/schemas/FieldError"
-        message:
-          type: string
-      required:
-      - code
-      - message
-      title: ValidationError
     Vehicle:
       type: object
       properties:
@@ -8866,11 +7992,3 @@ components:
       - width
       - height
       title: ViewImage
-  parameters: {}
-  securitySchemes: {}
-  requestBodies: {}
-  responses: {}
-  headers: {}
-  examples: {}
-  links: {}
-  callbacks: {}

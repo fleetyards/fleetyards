@@ -105,7 +105,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * list vehicles
+     * Vehicles List -> use GET /hangar
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
@@ -118,7 +118,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * fleetchart vehicle
+     * Vehicle Fleetchart List -> use GET /hangar
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
@@ -131,7 +131,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * export vehicle
+     * Vehicle Export -> use GET /hangar/export
      * @returns VehicleExport successful
      * @throws ApiError
      */
@@ -144,7 +144,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * import vehicle
+     * Vehicle import -> use PUT /hangar/import
      * @returns HangarImportResult successful
      * @throws ApiError
      */
@@ -163,7 +163,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * destroy_all vehicle
+     * Vehicle Destroy all -> use DELETE /hangar
      * @returns void
      * @throws ApiError
      */
@@ -176,7 +176,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * embed vehicle
+     * Vehicle embed -> use GET /public/hangar/embed
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
@@ -189,7 +189,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * hangar_items vehicle
+     * Vehicle Hangar items -> use GET /hangar/items
      * @returns string successful
      * @throws ApiError
      */
@@ -202,7 +202,7 @@ export class VehiclesService {
 
     /**
      * @deprecated
-     * hangar vehicle
+     * Vehicle hangar -> no replacement
      * @returns VehicleMinimal successful
      * @throws ApiError
      */

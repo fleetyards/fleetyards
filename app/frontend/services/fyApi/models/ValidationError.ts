@@ -7,7 +7,7 @@ import type { FieldError } from './FieldError';
 
 export type ValidationError = {
     code: string;
-    errors?: Array<FieldError>;
     message: string;
+    errors?: Array<FieldError>;
 };
 

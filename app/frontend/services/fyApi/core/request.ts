@@ -1,4 +1,3 @@
-/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -11,12 +10,12 @@ import type {
 import FormData from "form-data";
 import Qs from "qs";
 
-import { ApiError } from "./ApiError";
-import type { ApiRequestOptions } from "./ApiRequestOptions";
-import type { ApiResult } from "./ApiResult";
-import { CancelablePromise } from "./CancelablePromise";
-import type { OnCancel } from "./CancelablePromise";
-import type { OpenAPIConfig } from "./OpenAPI";
+import { ApiError } from "@/services/fyApi/core/ApiError";
+import type { ApiRequestOptions } from "@/services/fyApi/core/ApiRequestOptions";
+import type { ApiResult } from "@/services/fyApi/core/ApiResult";
+import { CancelablePromise } from "@/services/fyApi/core/CancelablePromise";
+import type { OnCancel } from "@/services/fyApi/core/CancelablePromise";
+import type { OpenAPIConfig } from "@/services/fyApi/core/OpenAPI";
 
 const axiosInstance = axios.create({
   headers: {

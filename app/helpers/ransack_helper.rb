@@ -2,7 +2,7 @@
 
 module RansackHelper
   def query_params(*filters)
-    @query_params ||= ActionController::Parameters.new(parse_query_params).permit(filters)
+    ActionController::Parameters.new(parse_query_params).permit(filters)
   end
 
   def sort_by_name(fallback = "name asc", minimum = "name asc")

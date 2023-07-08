@@ -7,12 +7,14 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 
 import { ImagesService } from './services/ImagesService';
+import { StationsService } from './services/StationsService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
 export class FyAdminApi {
 
     public readonly images: ImagesService;
+    public readonly stations: StationsService;
 
     public readonly request: BaseHttpRequest;
 
@@ -30,6 +32,7 @@ export class FyAdminApi {
         });
 
         this.images = new ImagesService(this.request);
+        this.stations = new StationsService(this.request);
     }
 }
 

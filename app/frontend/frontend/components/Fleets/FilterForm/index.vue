@@ -230,7 +230,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const { resetFilter, isFilterSelected, filter } = useFilters("q");
+const { resetFilter, isFilterSelected, filter } = useFilters();
 
 watch(
   () => route.query,

@@ -11,7 +11,7 @@ export class VehiclesStatsService {
 
     /**
      * @deprecated
-     * quick_stats vehicle
+     * Vehicle Quickstats -> use GET /hangar/stats
      * @returns any successful
      * @throws ApiError
      */
@@ -24,7 +24,7 @@ export class VehiclesStatsService {
 
     /**
      * @deprecated
-     * models_by_size vehicle
+     * Vehicle Models by size -> use GET /hangar/stats/models-by-size
      * @returns any successful
      * @throws ApiError
      */
@@ -37,7 +37,7 @@ export class VehiclesStatsService {
 
     /**
      * @deprecated
-     * models_by_production_status vehicle
+     * Vehicle Models by ProductionStatus -> use GET /hangar/stats/models-by-production-status
      * @returns any successful
      * @throws ApiError
      */

@@ -58,4 +58,4 @@ result-*
 .pre-commit-config.yaml
 
 # tmp disable spec todos
-spec/**/todo
+swagger/todo
