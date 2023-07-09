@@ -1,28 +1,37 @@
-import { get } from "@/frontend/api/client";
 import { prefetch } from "@/frontend/api/prefetch";
 import Store from "@/frontend/lib/Store";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type { ModelMinimal } from "@/services/fyApi/models/ModelMinimal";
+import type { ModelComplete } from "@/services/fyApi/models/ModelComplete";
+import type { ModelQuery } from "@/services/fyApi/models/ModelQuery";
 import BaseCollection from "./Base";
 
-export class ModelsCollection extends BaseCollection {
-  records: Model[] = [];
+interface ModelParams extends CollectionParams {
+  filters: ModelQuery;
+}
 
-  record: Model | null = null;
+const { models } = useApiClient();
+
+export class ModelsCollection extends BaseCollection {
+  records: ModelMinimal[] = [];
+
+  record: ModelComplete | null = null;
 
   params: ModelParams | null = null;
 
-  get perPage(): number {
+  get perPage(): string {
     return Store.getters["models/perPage"];
   }
 
-  get perPageSteps(): (number | string)[] {
-    return [15, 30, 60, 120, 240];
+  get perPageSteps(): string[] {
+    return ["15", "30", "60", "120", "240"];
   }
 
   updatePerPage(perPage: number | string) {
     Store.dispatch("models/updatePerPage", perPage);
   }
 
-  async findAll(params: ModelParams): Promise<Model[]> {
+  async findAll(params: ModelParams): Promise<ModelMinimal[]> {
     if (prefetch("models")) {
       this.records = prefetch("models");
       return this.records;
@@ -30,51 +39,53 @@ export class ModelsCollection extends BaseCollection {
 
     this.params = params;
 
-    const response = await get("models", {
-      q: params.filters,
-      page: params.page,
-      perPage: this.perPage,
-    });
+    try {
+      const response = await models.list({
+        q: params.filters,
+        page: params.page,
+        perPage: this.perPage,
+      });
 
-    if (!response.error) {
-      this.records = response.data;
+      this.records = response.items;
       this.loaded = true;
-      this.setPages(response.meta);
+      this.setPages(response.meta.pagination);
+    } catch (error) {
+      console.error(error);
     }
 
     return this.records;
   }
 
-  async findBySlug(slug: string): Promise<Model | null> {
+  async findBySlug(slug: string): Promise<ModelComplete | null> {
     if (prefetch("model")) {
       this.record = prefetch("model");
       return this.record;
     }
 
-    const response = await get(`models/${slug}`);
-
-    if (!response.error) {
-      this.record = response.data;
+    try {
+      this.record = await models.detail({ slug });
+    } catch (error) {
+      console.error(error);
     }
 
     return this.record;
   }
 
-  async latest(): Promise<Model[]> {
-    const response = await get("models/latest");
-
-    if (!response.error) {
-      this.records = response.data;
+  async latest(): Promise<ModelMinimal[]> {
+    try {
+      this.records = await models.latest();
+    } catch (error) {
+      console.error(error);
     }
 
     return this.records;
   }
 
-  async unscheduled(): Promise<Model[]> {
-    const response = await get("models/unscheduled");
-
-    if (!response.error) {
-      this.records = response.data;
+  async unscheduled(): Promise<ModelMinimal[]> {
+    try {
+      this.records = await models.unschduled();
+    } catch (error) {
+      console.error(error);
     }
 
     return this.records;

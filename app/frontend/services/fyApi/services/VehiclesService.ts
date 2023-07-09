@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Hangar } from '../models/Hangar';
 import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { VehicleBulkDestroyInput } from '../models/VehicleBulkDestroyInput';
@@ -107,7 +108,7 @@ export class VehiclesService {
     /**
      * @deprecated
      * Vehicles List -> use GET /hangar
-     * @returns VehicleMinimal successful
+     * @returns Hangar successful
      * @throws ApiError
      */
     public getVehicles({
@@ -118,7 +119,7 @@ export class VehiclesService {
         page?: number,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehicleMinimal>> {
+    }): CancelablePromise<Hangar> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles',

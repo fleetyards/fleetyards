@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarEmbedQuery } from '../models/HangarEmbedQuery';
+import type { HangarPublic } from '../models/HangarPublic';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { VehicleMinimalPublic } from '../models/VehicleMinimalPublic';
 
@@ -34,7 +35,7 @@ export class PublicHangarService {
 
     /**
      * Public Hangar
-     * @returns VehicleMinimalPublic successful
+     * @returns HangarPublic successful
      * @throws ApiError
      */
     public get({
@@ -47,7 +48,7 @@ export class PublicHangarService {
         page?: number,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehicleMinimalPublic>> {
+    }): CancelablePromise<HangarPublic> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/hangars/{username}',

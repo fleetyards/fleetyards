@@ -50,9 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/CelestialObjectMinimal"
+                "$ref": "#/components/schemas/CelestialObjects"
   "/celestial-objects/{slug}":
     parameters:
     - name: slug
@@ -127,9 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                "$ref": "#/components/schemas/Hangar"
         '401':
           description: unauthorized
           content:
@@ -704,9 +700,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ImageComplete"
+                "$ref": "#/components/schemas/Images"
   "/images/random":
     get:
       summary: Images random list
@@ -785,9 +779,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ManufacturerMinimal"
+                "$ref": "#/components/schemas/Manufacturers"
   "/models/with-docks":
     get:
       summary: Models with Docks
@@ -810,6 +802,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Models"
   "/models/unscheduled":
     get:
       summary: Unscheduled Models
@@ -968,6 +964,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CargoOptions"
   "/models":
     get:
       summary: Models List
@@ -1006,9 +1006,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelMinimal"
+                "$ref": "#/components/schemas/Models"
   "/models/{slug}":
     parameters:
     - name: slug
@@ -1101,9 +1099,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ImageMinimal"
+                "$ref": "#/components/schemas/Images"
         '404':
           description: not found
           content:
@@ -1142,9 +1138,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VideoMinimal"
+                "$ref": "#/components/schemas/Videos"
         '404':
           description: not found
           content:
@@ -1183,9 +1177,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelMinimal"
+                "$ref": "#/components/schemas/Models"
         '404':
           description: not found
           content:
@@ -1224,9 +1216,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelMinimal"
+                "$ref": "#/components/schemas/Models"
         '404':
           description: not found
           content:
@@ -1293,9 +1283,46 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelModuleMinimal"
+                "$ref": "#/components/schemas/ModelModules"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/module-packages":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Module Packages
+      operationId: modulePackages
+      tags:
+      - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelModulePackages"
         '404':
           description: not found
           content:
@@ -1483,9 +1510,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                "$ref": "#/components/schemas/HangarPublic"
         '404':
           description: not found
           content:
@@ -1566,9 +1591,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                "$ref": "#/components/schemas/HangarPublic"
         '404':
           description: not found
           content:
@@ -1628,9 +1651,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ShopMinimal"
+                "$ref": "#/components/schemas/Shops"
   "/stations/{stationSlug}/shops/{slug}":
     parameters:
     - name: stationSlug
@@ -1701,9 +1722,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/StarsystemMinimal"
+                "$ref": "#/components/schemas/Starsystems"
   "/starsystems/{slug}":
     parameters:
     - name: slug
@@ -1813,9 +1832,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/StationMinimal"
+                "$ref": "#/components/schemas/Stations"
   "/stations/{slug}":
     parameters:
     - name: slug
@@ -1874,9 +1891,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ImageComplete"
+                "$ref": "#/components/schemas/Images"
         '404':
           description: not_found
           content:
@@ -2113,9 +2128,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                "$ref": "#/components/schemas/Hangar"
   "/vehicles/fleetchart":
     get:
       summary: Vehicle Fleetchart List -> use GET /hangar
@@ -2297,9 +2310,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                "$ref": "#/components/schemas/HangarPublic"
   "/vehicles/{username}/fleetchart":
     parameters:
     - name: username
@@ -2466,9 +2477,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                "$ref": "#/components/schemas/Hangar"
         '401':
           description: unauthorized
           content:
@@ -2663,6 +2672,19 @@ components:
       - value
       - cargo
       title: CargoOption
+    CargoOptions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoOption"
+      required:
+      - meta
+      - items
+      title: CargoOptions
     CelestialObject:
       type: object
       properties:
@@ -2807,6 +2829,19 @@ components:
       - createdAt
       - updatedAt
       title: CelestialObjectMinimal
+    CelestialObjects:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObjectMinimal"
+      required:
+      - meta
+      - items
+      title: CelestialObjects
     Commodity:
       type: object
       properties:
@@ -3599,6 +3634,19 @@ components:
       - type
       - typeLabel
       title: HabitationCount
+    Hangar:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleMinimal"
+      required:
+      - meta
+      - items
+      title: Hangar
     HangarClassificationMetric:
       type: object
       properties:
@@ -3769,6 +3817,19 @@ components:
       - totalMaxCrew
       - totalCargo
       title: HangarMetrics
+    HangarPublic:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleMinimalPublic"
+      required:
+      - meta
+      - items
+      title: HangarPublic
     HangarStats:
       type: object
       properties:
@@ -4028,6 +4089,19 @@ components:
       - createdAt
       - updatedAt
       title: ImageMinimal
+    Images:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ImageMinimal"
+      required:
+      - meta
+      - items
+      title: Images
     CommodityPriceInput:
       type: object
       properties:
@@ -4313,6 +4387,19 @@ components:
       - createdAt
       - updatedAt
       title: ManufacturerMinimal
+    Manufacturers:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ManufacturerMinimal"
+      required:
+      - meta
+      - items
+      title: Manufacturers
     Model:
       type: object
       properties:
@@ -6402,6 +6489,32 @@ components:
       - createdAt
       - updatedAt
       title: ModelModulePackageMinimal
+    ModelModulePackages:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModulePackageMinimal"
+      required:
+      - meta
+      - items
+      title: ModelModulePackages
+    ModelModules:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModuleMinimal"
+      required:
+      - meta
+      - items
+      title: ModelModules
     ModelPaint:
       type: object
       properties:
@@ -6910,6 +7023,19 @@ components:
       - createdAt
       - updatedAt
       title: ModelUpgradeMinimal
+    Models:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelMinimal"
+      required:
+      - meta
+      - items
+      title: Models
     PieChartStats:
       type: object
       properties:
@@ -7658,6 +7784,19 @@ components:
       - createdAt
       - updatedAt
       title: ShopMinimal
+    Shops:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopMinimal"
+      required:
+      - meta
+      - items
+      title: Shops
     Starsystem:
       type: object
       properties:
@@ -7793,6 +7932,19 @@ components:
       - createdAt
       - updatedAt
       title: StarsystemMinimal
+    Starsystems:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StarsystemMinimal"
+      required:
+      - meta
+      - items
+      title: Starsystems
     Station:
       type: object
       properties:
@@ -8117,6 +8269,19 @@ components:
       - name
       - slug
       title: StationShop
+    Stations:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StationMinimal"
+      required:
+      - meta
+      - items
+      title: Stations
     Stats:
       type: object
       properties:
@@ -8480,6 +8645,19 @@ components:
       - createdAt
       - updatedAt
       title: VideoMinimal
+    Videos:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VideoMinimal"
+      required:
+      - meta
+      - items
+      title: Videos
     ViewImage:
       type: object
       properties:

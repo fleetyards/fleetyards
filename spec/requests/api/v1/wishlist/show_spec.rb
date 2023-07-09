@@ -29,8 +29,7 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
         required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+        schema "$ref": "#/components/schemas/Hangar"
 
         let(:user) { users :data }
 
@@ -44,22 +43,42 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
+          expect(items.count).to be > 0
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+        schema "$ref": "#/components/schemas/Hangar"
 
-        let(:perPage) { 1 }
         let(:user) { users :data }
+        let(:q) do
+          {
+            "modelNameOrModelDescriptionCont" => "Galaxy"
+          }
+        end
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
+          expect(items.first.dig("model", "name")).to eq("Galaxy")
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Hangar"
+
+        let(:user) { users :data }
+        let(:perPage) { 1 }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to eq(1)
         end
       end
 

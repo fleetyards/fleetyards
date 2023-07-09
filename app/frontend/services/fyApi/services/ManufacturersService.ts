@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { ManufacturerMinimal } from '../models/ManufacturerMinimal';
 import type { ManufacturerQuery } from '../models/ManufacturerQuery';
+import type { Manufacturers } from '../models/Manufacturers';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -14,7 +15,7 @@ export class ManufacturersService {
 
     /**
      * @deprecated
-     * with_models manufacturer
+     * Manufacturers list only with models.
      * @returns ManufacturerMinimal successful
      * @throws ApiError
      */
@@ -27,7 +28,7 @@ export class ManufacturersService {
 
     /**
      * Manufacturers list
-     * @returns ManufacturerMinimal successful
+     * @returns Manufacturers successful
      * @throws ApiError
      */
     public list({
@@ -40,7 +41,7 @@ export class ManufacturersService {
         perPage?: string,
         q?: ManufacturerQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<ManufacturerMinimal>> {
+    }): CancelablePromise<Manufacturers> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/manufacturers',

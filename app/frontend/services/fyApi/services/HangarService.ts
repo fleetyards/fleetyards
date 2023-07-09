@@ -2,12 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Hangar } from '../models/Hangar';
 import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { HangarSyncResult } from '../models/HangarSyncResult';
 import type { SyncRsiHangarInput } from '../models/SyncRsiHangarInput';
 import type { VehicleExport } from '../models/VehicleExport';
-import type { VehicleMinimal } from '../models/VehicleMinimal';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -33,7 +33,7 @@ export class HangarService {
 
     /**
      * Your personal Hangar
-     * @returns VehicleMinimal successful
+     * @returns Hangar successful
      * @throws ApiError
      */
     public get({
@@ -44,7 +44,7 @@ export class HangarService {
         page?: number,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehicleMinimal>> {
+    }): CancelablePromise<Hangar> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar',

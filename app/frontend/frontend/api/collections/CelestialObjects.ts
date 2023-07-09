@@ -1,15 +1,25 @@
-import { get } from "@/frontend/api/client";
 import { prefetch } from "@/frontend/api/prefetch";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type { CelestialObjectMinimal } from "@/services/fyApi/models/CelestialObjectMinimal";
+import type { CelestialObjectQuery } from "@/services/fyApi/models/CelestialObjectQuery";
 import BaseCollection from "./Base";
 
-export class CelestialObjectCollection extends BaseCollection {
-  records: CelestialObject[] = [];
+interface CelestialObjectParams extends CollectionParams {
+  filters: CelestialObjectQuery;
+}
 
-  record: CelestialObject | null = null;
+const { celestialObjects } = useApiClient();
+
+export class CelestialObjectCollection extends BaseCollection {
+  records: CelestialObjectMinimal[] = [];
+
+  record: CelestialObjectMinimal | null = null;
 
   params: CelestialObjectParams | null = null;
 
-  async findAll(params: CelestialObjectParams): Promise<CelestialObject[]> {
+  async findAll(
+    params: CelestialObjectParams
+  ): Promise<CelestialObjectMinimal[]> {
     if (prefetch("celestialObjects")) {
       this.records = prefetch("celestialObjects");
       return this.records;
@@ -17,16 +27,18 @@ export class CelestialObjectCollection extends BaseCollection {
 
     this.params = params;
 
-    const response = await get("celestial-objects", {
-      q: params.filters,
-      page: params.page,
-      cacheId: params.cacheId,
-    });
+    try {
+      const response = await celestialObjects.list({
+        q: params.filters,
+        page: params.page,
+        cacheId: params.cacheId,
+      });
 
-    if (!response.error) {
-      this.records = response.data;
+      this.records = response.items;
       this.loaded = true;
-      this.setPages(response.meta);
+      this.setPages(response.meta.pagination);
+    } catch (error) {
+      console.error(error);
     }
 
     return this.records;
