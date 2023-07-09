@@ -1,7 +1,6 @@
 import BaseCollection from "@/frontend/api/collections/Base";
 import { useApiClient } from "@/admin/composables/useApiClient";
-import type { Station } from "@/services/fyAdminApi/models/Station";
-import type { StationQuery } from "@/services/fyAdminApi/models/StationQuery";
+import type { Station, StationQuery } from "@/services/fyAdminApi";
 
 const { stations } = useApiClient();
 
@@ -26,7 +25,7 @@ export class AdminStationsCollection extends BaseCollection {
       });
 
       this.records = response.items;
-      this.setPages(response.meta.pagination);
+      this.setPages(response.meta?.pagination);
     } catch (error) {
       console.error(error);
     }

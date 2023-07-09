@@ -177,8 +177,6 @@ components:
       properties:
         meta:
           "$ref": "#/components/schemas/Meta"
-      required:
-      - meta
       title: BaseList
     ShopTypeEnum:
       type: string
@@ -524,7 +522,6 @@ components:
           items:
             "$ref": "#/components/schemas/Image"
       required:
-      - meta
       - items
       title: Images
     ImageInput:
@@ -1068,6 +1065,5 @@ components:
           items:
             "$ref": "#/components/schemas/StationMinimal"
       required:
-      - meta
       - items
       title: Stations

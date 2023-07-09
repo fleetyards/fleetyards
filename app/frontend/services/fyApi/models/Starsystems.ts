@@ -7,7 +7,7 @@ import type { Meta } from './Meta';
 import type { StarsystemMinimal } from './StarsystemMinimal';
 
 export type Starsystems = {
-    meta: Meta;
+    meta?: Meta;
     items: Array<StarsystemMinimal>;
 };
 

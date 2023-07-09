@@ -6,6 +6,6 @@
 import type { Meta } from './Meta';
 
 export type BaseList = {
-    meta: Meta;
+    meta?: Meta;
 };
 

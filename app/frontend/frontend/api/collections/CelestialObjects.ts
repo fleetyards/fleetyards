@@ -1,7 +1,9 @@
 import { prefetch } from "@/frontend/api/prefetch";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import type { CelestialObjectMinimal } from "@/services/fyApi/models/CelestialObjectMinimal";
-import type { CelestialObjectQuery } from "@/services/fyApi/models/CelestialObjectQuery";
+import type {
+  CelestialObjectMinimal,
+  CelestialObjectQuery,
+} from "@/services/fyApi";
 import BaseCollection from "./Base";
 
 interface CelestialObjectParams extends CollectionParams {
@@ -36,7 +38,7 @@ export class CelestialObjectCollection extends BaseCollection {
 
       this.records = response.items;
       this.loaded = true;
-      this.setPages(response.meta.pagination);
+      this.setPages(response.meta?.pagination);
     } catch (error) {
       console.error(error);
     }

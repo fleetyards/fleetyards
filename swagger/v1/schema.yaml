@@ -2533,8 +2533,6 @@ components:
       properties:
         meta:
           "$ref": "#/components/schemas/Meta"
-      required:
-      - meta
       title: BaseList
     ShopTypeEnum:
       type: string
@@ -2682,7 +2680,6 @@ components:
           items:
             "$ref": "#/components/schemas/CargoOption"
       required:
-      - meta
       - items
       title: CargoOptions
     CelestialObject:
@@ -2839,7 +2836,6 @@ components:
           items:
             "$ref": "#/components/schemas/CelestialObjectMinimal"
       required:
-      - meta
       - items
       title: CelestialObjects
     Commodity:
@@ -3644,7 +3640,6 @@ components:
           items:
             "$ref": "#/components/schemas/VehicleMinimal"
       required:
-      - meta
       - items
       title: Hangar
     HangarClassificationMetric:
@@ -3827,7 +3822,6 @@ components:
           items:
             "$ref": "#/components/schemas/VehicleMinimalPublic"
       required:
-      - meta
       - items
       title: HangarPublic
     HangarStats:
@@ -4099,7 +4093,6 @@ components:
           items:
             "$ref": "#/components/schemas/ImageMinimal"
       required:
-      - meta
       - items
       title: Images
     CommodityPriceInput:
@@ -4397,7 +4390,6 @@ components:
           items:
             "$ref": "#/components/schemas/ManufacturerMinimal"
       required:
-      - meta
       - items
       title: Manufacturers
     Model:
@@ -6499,7 +6491,6 @@ components:
           items:
             "$ref": "#/components/schemas/ModelModulePackageMinimal"
       required:
-      - meta
       - items
       title: ModelModulePackages
     ModelModules:
@@ -6512,7 +6503,6 @@ components:
           items:
             "$ref": "#/components/schemas/ModelModuleMinimal"
       required:
-      - meta
       - items
       title: ModelModules
     ModelPaint:
@@ -7033,7 +7023,6 @@ components:
           items:
             "$ref": "#/components/schemas/ModelMinimal"
       required:
-      - meta
       - items
       title: Models
     PieChartStats:
@@ -7794,7 +7783,6 @@ components:
           items:
             "$ref": "#/components/schemas/ShopMinimal"
       required:
-      - meta
       - items
       title: Shops
     Starsystem:
@@ -7942,7 +7930,6 @@ components:
           items:
             "$ref": "#/components/schemas/StarsystemMinimal"
       required:
-      - meta
       - items
       title: Starsystems
     Station:
@@ -8279,7 +8266,6 @@ components:
           items:
             "$ref": "#/components/schemas/StationMinimal"
       required:
-      - meta
       - items
       title: Stations
     Stats:
@@ -8655,7 +8641,6 @@ components:
           items:
             "$ref": "#/components/schemas/VideoMinimal"
       required:
-      - meta
       - items
       title: Videos
     ViewImage:

@@ -7,7 +7,7 @@ import type { ManufacturerMinimal } from './ManufacturerMinimal';
 import type { Meta } from './Meta';
 
 export type Manufacturers = {
-    meta: Meta;
+    meta?: Meta;
     items: Array<ManufacturerMinimal>;
 };
 

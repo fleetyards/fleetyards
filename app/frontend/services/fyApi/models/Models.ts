@@ -7,7 +7,7 @@ import type { Meta } from './Meta';
 import type { ModelMinimal } from './ModelMinimal';
 
 export type Models = {
-    meta: Meta;
+    meta?: Meta;
     items: Array<ModelMinimal>;
 };
 
