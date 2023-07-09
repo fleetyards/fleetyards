@@ -3,12 +3,12 @@
 module Admin
   module V1
     module Schemas
-      class Stations < Shared::V1::Schemas::BaseList
+      class Images < Shared::V1::Schemas::BaseList
         include SchemaConcern
 
         schema({
           properties: {
-            items: {type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}}
+            items: {type: :array, items: {"$ref": "#/components/schemas/Image"}}
           },
           required: %w[items]
         })

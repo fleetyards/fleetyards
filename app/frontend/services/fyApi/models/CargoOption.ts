@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ManufacturerQuery = {
-    withModels?: boolean;
-    nameCont?: string;
-    nameIn?: Array<string>;
+export type CargoOption = {
+    name: string;
+    value: string;
+    cargo: number;
 };
 

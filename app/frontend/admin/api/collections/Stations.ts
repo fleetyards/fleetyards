@@ -1,17 +1,22 @@
 import BaseCollection from "@/frontend/api/collections/Base";
 import { useApiClient } from "@/admin/composables/useApiClient";
 import type { Station } from "@/services/fyAdminApi/models/Station";
+import type { StationQuery } from "@/services/fyAdminApi/models/StationQuery";
 
 const { stations } = useApiClient();
+
+interface AdminStationParams extends CollectionParams {
+  filters: StationQuery;
+}
 
 export class AdminStationsCollection extends BaseCollection {
   primaryKey = "id";
 
   records: Station[] = [];
 
-  params: AdminAdminStationParams | null = null;
+  params: AdminStationParams | null = null;
 
-  async findAll(params: AdminAdminStationParams): Promise<Station[]> {
+  async findAll(params: AdminStationParams): Promise<Station[]> {
     this.params = params;
 
     try {

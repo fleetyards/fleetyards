@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
-module Admin
+module Shared
   module V1
     module Schemas
-      class Stations < Shared::V1::Schemas::BaseList
+      class BaseList
         include SchemaConcern
 
         schema({
+          type: :object,
           properties: {
-            items: {type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}}
+            meta: {"$ref": "#/components/schemas/Meta"}
           },
-          required: %w[items]
+          required: %w[meta]
         })
       end
     end

@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 export type StarsystemQuery = {
-    searchCont?: string | null;
-    nameCont?: string | null;
-    nameIn?: Array<string> | null;
+    searchCont?: string;
+    nameCont?: string;
+    nameIn?: Array<string>;
 };
 

@@ -60,10 +60,12 @@ export class StationsService {
         page,
         perPage,
         q,
+        cacheId,
     }: {
         page?: number,
         perPage?: string,
         q?: StationQuery,
+        cacheId?: string,
     }): CancelablePromise<Array<StationMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -72,6 +74,7 @@ export class StationsService {
                 'page': page,
                 'perPage': perPage,
                 'q': q,
+                'cacheId': cacheId,
             },
         });
     }
@@ -108,17 +111,25 @@ export class StationsService {
      */
     public images({
         slug,
+        page,
+        perPage,
     }: {
         /**
          * Station slug
          */
         slug: string,
+        page?: number,
+        perPage?: string,
     }): CancelablePromise<Array<ImageComplete>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/{slug}/images',
             path: {
                 'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
             },
             errors: {
                 404: `not_found`,

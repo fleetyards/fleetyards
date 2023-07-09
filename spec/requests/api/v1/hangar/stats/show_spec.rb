@@ -17,6 +17,15 @@ RSpec.describe "api/v1/hangar/stats", type: :request, swagger_doc: "v1/schema.ya
       tags "HangarStats"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/HangarQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarStats"
 

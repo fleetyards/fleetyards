@@ -12,6 +12,19 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       tags "CelestialObjects"
       produces "application/json"
 
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false,
+        default: CelestialObject.default_per_page
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/CelestialObjectQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
+      parameter name: "cacheId", in: :query, type: :string, required: false
+
       response(200, "successful") do
         schema type: :array,
           items: {"$ref": "#/components/schemas/CelestialObjectMinimal"}

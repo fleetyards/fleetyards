@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarEmbedQuery } from '../models/HangarEmbedQuery';
+import type { HangarQuery } from '../models/HangarQuery';
 import type { VehicleMinimalPublic } from '../models/VehicleMinimalPublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -40,10 +41,12 @@ export class PublicHangarService {
         username,
         page,
         perPage,
+        q,
     }: {
         username: string,
         page?: number,
         perPage?: string,
+        q?: HangarQuery,
     }): CancelablePromise<Array<VehicleMinimalPublic>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -54,6 +57,7 @@ export class PublicHangarService {
             query: {
                 'page': page,
                 'perPage': perPage,
+                'q': q,
             },
             errors: {
                 404: `not found`,

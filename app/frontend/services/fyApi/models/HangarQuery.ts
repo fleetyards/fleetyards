@@ -3,7 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ModelQuery = {
+import type { BoughtViaEnum } from './BoughtViaEnum';
+
+export type HangarQuery = {
     beamGteq?: number;
     beamLteq?: number;
     classificationIn?: Array<string>;
@@ -29,7 +31,12 @@ export type ModelQuery = {
     productionStatusIn?: Array<string>;
     searchCont?: string;
     sizeIn?: Array<string>;
-    sorts?: (Array<string> | string);
+    modelNameOrModelDescriptionCont?: string;
+    publicEq?: boolean;
+    loanerEq?: boolean;
+    boughtViaEq?: BoughtViaEnum;
+    hangarGroupsIn?: Array<string>;
+    hangarGroupsNotIn?: Array<string>;
     willItFit?: string;
 };
 

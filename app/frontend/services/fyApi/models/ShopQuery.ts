@@ -4,18 +4,18 @@
 /* eslint-disable */
 
 export type ShopQuery = {
-    searchCont?: string | null;
-    nameCont?: string | null;
-    commodityNameCont?: string | null;
-    nameIn?: Array<string> | null;
-    modelIn?: Array<string> | null;
-    equipmentIn?: Array<string> | null;
-    componentIn?: Array<string> | null;
-    commodityIn?: Array<string> | null;
-    shop_typeIn?: Array<string> | null;
-    commodityCategoryIn?: Array<string> | null;
-    stationIn?: Array<string> | null;
-    celestialObjectIn?: Array<string> | null;
-    starsystemIn?: Array<string> | null;
+    searchCont?: string;
+    nameCont?: string;
+    commodityNameCont?: string;
+    nameIn?: Array<string>;
+    modelIn?: Array<string>;
+    equipmentIn?: Array<string>;
+    componentIn?: Array<string>;
+    commodityIn?: Array<string>;
+    shop_typeIn?: Array<string>;
+    commodityCategoryIn?: Array<string>;
+    stationIn?: Array<string>;
+    celestialObjectIn?: Array<string>;
+    starsystemIn?: Array<string>;
 };
 

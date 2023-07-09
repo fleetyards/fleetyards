@@ -3,7 +3,7 @@
 module V1
   module Schemas
     module Queries
-      class ModelQuery
+      class HangarQuery
         include SchemaConcern
 
         schema({
@@ -34,11 +34,12 @@ module V1
             productionStatusIn: {type: :array, items: {type: :string}},
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
-            sorts: {oneOf: [{
-              type: :array, items: {type: :string}
-            }, {
-              type: :string
-            }]},
+            modelNameOrModelDescriptionCont: {type: :string},
+            publicEq: {type: :boolean},
+            loanerEq: {type: :boolean},
+            boughtViaEq: {"$ref": "#/components/schemas/BoughtViaEnum"},
+            hangarGroupsIn: {type: :array, items: {type: :string}},
+            hangarGroupsNotIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid}
           }
         })

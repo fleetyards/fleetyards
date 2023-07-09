@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { HangarQuery } from '../models/HangarQuery';
 import type { VehicleExport } from '../models/VehicleExport';
 import type { VehicleMinimal } from '../models/VehicleMinimal';
 
@@ -35,9 +36,11 @@ export class WishlistService {
     public get({
         page,
         perPage,
+        q,
     }: {
         page?: number,
         perPage?: string,
+        q?: HangarQuery,
     }): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -45,6 +48,7 @@ export class WishlistService {
             query: {
                 'page': page,
                 'perPage': perPage,
+                'q': q,
             },
             errors: {
                 401: `unauthorized`,

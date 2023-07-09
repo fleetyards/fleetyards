@@ -34,10 +34,12 @@ export class ShopsService {
         page,
         perPage,
         q,
+        cacheId,
     }: {
         page?: number,
         perPage?: string,
         q?: ShopQuery,
+        cacheId?: string,
     }): CancelablePromise<Array<ShopMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -46,6 +48,7 @@ export class ShopsService {
                 'page': page,
                 'perPage': perPage,
                 'q': q,
+                'cacheId': cacheId,
             },
         });
     }

@@ -18,6 +18,32 @@ paths:
       description: Get a List of Celestial Objects
       tags:
       - CelestialObjects
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/CelestialObjectQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -87,6 +113,14 @@ paths:
         default: 30
         schema:
           type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -413,6 +447,15 @@ paths:
       operationId: get
       tags:
       - HangarStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -650,6 +693,11 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -726,6 +774,11 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -741,6 +794,19 @@ paths:
       operationId: withDocks
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -814,6 +880,12 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/models/classifications":
     get:
       summary: Model classifications
@@ -823,6 +895,12 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/models/production-states":
     get:
       summary: Model Production states
@@ -832,6 +910,12 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/models/focus":
     get:
       summary: Model focus
@@ -841,6 +925,12 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/models/sizes":
     get:
       summary: Model Sizes
@@ -850,12 +940,31 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/models/cargo-options":
     get:
       summary: Model Cargo options
       operationId: cargoOptions
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -886,6 +995,11 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -929,16 +1043,17 @@ paths:
       required: true
       schema:
         type: string
-    - name: source
-      in: query
-      schema:
-        "$ref": "#/components/schemas/ModelHardpointSourceEnum"
-      required: false
     get:
       summary: Model Hardpoints
       operationId: hardpoints
       tags:
       - Models
+      parameters:
+      - name: source
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ModelHardpointSourceEnum"
+        required: false
       responses:
         '200':
           description: successful
@@ -962,23 +1077,24 @@ paths:
       required: true
       schema:
         type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
-      schema:
-        type: string
     get:
       summary: Model Images
       operationId: images
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1002,23 +1118,24 @@ paths:
       required: true
       schema:
         type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 8
-      schema:
-        type: string
     get:
       summary: Model Videos
       operationId: videos
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 8
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1042,23 +1159,24 @@ paths:
       required: true
       schema:
         type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
-      schema:
-        type: string
     get:
       summary: Model Variants
       operationId: variants
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1082,23 +1200,24 @@ paths:
       required: true
       schema:
         type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
-      schema:
-        type: string
     get:
       summary: Model Loaners
       operationId: loaners
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1120,18 +1239,6 @@ paths:
       in: path
       description: Model slug
       required: true
-      schema:
-        type: string
-    - name: page
-      in: query
-      required: false
-      default: 1
-      schema:
-        type: number
-    - name: perPage
-      in: query
-      required: false
-      default: 30
       schema:
         type: string
     get:
@@ -1167,6 +1274,19 @@ paths:
       operationId: modules
       tags:
       - Models
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1349,6 +1469,14 @@ paths:
         default: 30
         schema:
           type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -1377,6 +1505,15 @@ paths:
       operationId: get
       tags:
       - PublicHangarStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -1415,6 +1552,14 @@ paths:
         default: 30
         schema:
           type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -1472,6 +1617,11 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1540,6 +1690,11 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1647,6 +1802,11 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1695,6 +1855,19 @@ paths:
       operationId: images
       tags:
       - Stations
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -1913,6 +2086,27 @@ paths:
       deprecated: true
       tags:
       - Vehicles
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -2258,6 +2452,14 @@ paths:
         default: 30
         schema:
           type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -2317,6 +2519,14 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
 components:
   schemas:
+    BaseList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - meta
+      title: BaseList
     ShopTypeEnum:
       type: string
       enum:
@@ -2439,6 +2649,20 @@ components:
       - code
       - message
       title: ValidationError
+    CargoOption:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        cargo:
+          type: number
+      required:
+      - name
+      - value
+      - cargo
+      title: CargoOption
     CelestialObject:
       type: object
       properties:
@@ -5897,12 +6121,137 @@ components:
         name:
           type: string
           nullable: true
-        slug:
+        description:
           type: string
           nullable: true
+        modules:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModule"
+        pledgePrice:
+          type: number
+          nullable: true
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/ViewImage"
+              nullable: true
+            sideView:
+              "$ref": "#/components/schemas/ViewImage"
+              nullable: true
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+            topView:
+              "$ref": "#/components/schemas/ViewImage"
+              nullable: true
+        hasStoreImage:
+          type: boolean
+          deprecated: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        angledView:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewHeight:
+          type: number
+          nullable: true
+          deprecated: true
+        angledViewLarge:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewMedium:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewSmall:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewWidth:
+          type: number
+          nullable: true
+          deprecated: true
+        angledViewXlarge:
+          type: string
+          nullable: true
+          deprecated: true
+        sideView:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewHeight:
+          type: number
+          nullable: true
+          deprecated: true
+        sideViewLarge:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewMedium:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewSmall:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewWidth:
+          type: number
+          nullable: true
+          deprecated: true
+        sideViewXlarge:
+          type: string
+          nullable: true
+          deprecated: true
+        topView:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewHeight:
+          type: number
+          nullable: true
+          deprecated: true
+        topViewLarge:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewMedium:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewSmall:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewWidth:
+          type: number
+          nullable: true
+          deprecated: true
+        topViewXlarge:
+          type: string
+          nullable: true
+          deprecated: true
       required:
+      - id
       - name
-      - slug
       title: ModelModulePackage
     ModelModulePackageMinimal:
       type: object
@@ -5913,9 +6262,134 @@ components:
         name:
           type: string
           nullable: true
-        slug:
+        description:
           type: string
           nullable: true
+        modules:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModule"
+        pledgePrice:
+          type: number
+          nullable: true
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/ViewImage"
+              nullable: true
+            sideView:
+              "$ref": "#/components/schemas/ViewImage"
+              nullable: true
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+            topView:
+              "$ref": "#/components/schemas/ViewImage"
+              nullable: true
+        hasStoreImage:
+          type: boolean
+          deprecated: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        angledView:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewHeight:
+          type: number
+          nullable: true
+          deprecated: true
+        angledViewLarge:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewMedium:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewSmall:
+          type: string
+          nullable: true
+          deprecated: true
+        angledViewWidth:
+          type: number
+          nullable: true
+          deprecated: true
+        angledViewXlarge:
+          type: string
+          nullable: true
+          deprecated: true
+        sideView:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewHeight:
+          type: number
+          nullable: true
+          deprecated: true
+        sideViewLarge:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewMedium:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewSmall:
+          type: string
+          nullable: true
+          deprecated: true
+        sideViewWidth:
+          type: number
+          nullable: true
+          deprecated: true
+        sideViewXlarge:
+          type: string
+          nullable: true
+          deprecated: true
+        topView:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewHeight:
+          type: number
+          nullable: true
+          deprecated: true
+        topViewLarge:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewMedium:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewSmall:
+          type: string
+          nullable: true
+          deprecated: true
+        topViewWidth:
+          type: number
+          nullable: true
+          deprecated: true
+        topViewXlarge:
+          type: string
+          nullable: true
+          deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -5923,8 +6397,8 @@ components:
           type: string
           format: date-time
       required:
+      - id
       - name
-      - slug
       - createdAt
       - updatedAt
       title: ModelModulePackageMinimal
@@ -6453,11 +6927,120 @@ components:
       - selected
       - sliced
       title: PieChartStats
+    CelestialObjectQuery:
+      type: object
+      properties:
+        starsystemEq:
+          type: string
+        main:
+          type: boolean
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        searchCont:
+          type: string
+      title: CelestialObjectQuery
     HangarEmbedQuery:
       type: array
       items:
         type: string
       title: HangarEmbedQuery
+    HangarQuery:
+      type: object
+      properties:
+        beamGteq:
+          type: number
+        beamLteq:
+          type: number
+        classificationIn:
+          type: array
+          items:
+            type: string
+        descriptionCont:
+          type: string
+        focusIn:
+          type: array
+          items:
+            type: string
+        heightGteq:
+          type: number
+        heightLteq:
+          type: number
+        idIn:
+          type: array
+          items:
+            type: string
+        idNotIn:
+          type: array
+          items:
+            type: string
+        lengthGteq:
+          type: number
+        lengthLteq:
+          type: number
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+        nameOrDescriptionCont:
+          type: string
+        onSaleEq:
+          type: boolean
+        pledgePriceGteq:
+          type: number
+        pledgePriceLteq:
+          type: number
+        pledgePriceIn:
+          type: array
+          items:
+            type: number
+        priceGteq:
+          type: number
+        priceLteq:
+          type: number
+        priceIn:
+          type: array
+          items:
+            type: number
+        productionStatusIn:
+          type: array
+          items:
+            type: string
+        searchCont:
+          type: string
+        sizeIn:
+          type: array
+          items:
+            type: string
+        modelNameOrModelDescriptionCont:
+          type: string
+        publicEq:
+          type: boolean
+        loanerEq:
+          type: boolean
+        boughtViaEq:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+        hangarGroupsIn:
+          type: array
+          items:
+            type: string
+        hangarGroupsNotIn:
+          type: array
+          items:
+            type: string
+        willItFit:
+          type: string
+          format: uuid
+      title: HangarQuery
     ImageQuery:
       type: object
       properties:
@@ -6465,281 +7048,217 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         stationIn:
           type: array
           items:
             type: string
-          nullable: true
       title: ImageQuery
     ManufacturerQuery:
       type: object
       properties:
         withModels:
           type: boolean
-          nullable: true
         nameCont:
           type: string
-          nullable: true
         nameIn:
           type: array
           items:
             type: string
-          nullable: true
       title: ManufacturerQuery
     ModelQuery:
       type: object
       properties:
         beamGteq:
           type: number
-          nullable: true
         beamLteq:
           type: number
-          nullable: true
         classificationIn:
           type: array
           items:
             type: string
-          nullable: true
         descriptionCont:
           type: string
-          nullable: true
-        focus_in:
+        focusIn:
           type: array
           items:
             type: string
-          nullable: true
         heightGteq:
           type: number
-          nullable: true
         heightLteq:
           type: number
-          nullable: true
         idIn:
           type: array
           items:
             type: string
-          nullable: true
         idNotIn:
           type: array
           items:
             type: string
-          nullable: true
         lengthGteq:
           type: number
-          nullable: true
         lengthLteq:
           type: number
-          nullable: true
         manufacturerIn:
           type: array
           items:
             type: string
-          nullable: true
         nameCont:
           type: string
-          nullable: true
         nameIn:
           type: array
           items:
             type: string
-          nullable: true
         nameOrDescriptionCont:
           type: string
-          nullable: true
         onSaleEq:
           type: boolean
-          nullable: true
         pledgePriceGteq:
           type: number
-          nullable: true
         pledgePriceLteq:
           type: number
-          nullable: true
-        pledge_price_in:
+        pledgePriceIn:
           type: array
           items:
             type: number
-          nullable: true
         priceGteq:
           type: number
-          nullable: true
         priceLteq:
           type: number
-          nullable: true
-        price_in:
+        priceIn:
           type: array
           items:
             type: number
-          nullable: true
-        production_status_in:
+        productionStatusIn:
           type: array
           items:
             type: string
-          nullable: true
         searchCont:
           type: string
-          nullable: true
-        size_in:
+        sizeIn:
           type: array
           items:
             type: string
-          nullable: true
         sorts:
           oneOf:
           - type: array
             items:
               type: string
           - type: string
-          nullable: true
         willItFit:
           type: string
           format: uuid
-          nullable: true
       title: ModelQuery
     ShopQuery:
       type: object
       properties:
         searchCont:
           type: string
-          nullable: true
         nameCont:
           type: string
-          nullable: true
         commodityNameCont:
           type: string
-          nullable: true
         nameIn:
           type: array
           items:
             type: string
-          nullable: true
         modelIn:
           type: array
           items:
             type: string
-          nullable: true
         equipmentIn:
           type: array
           items:
             type: string
-          nullable: true
         componentIn:
           type: array
           items:
             type: string
-          nullable: true
         commodityIn:
           type: array
           items:
             type: string
-          nullable: true
         shop_typeIn:
           type: array
           items:
             type: string
-          nullable: true
         commodityCategoryIn:
           type: array
           items:
             type: string
-          nullable: true
         stationIn:
           type: array
           items:
             type: string
-          nullable: true
         celestialObjectIn:
           type: array
           items:
             type: string
-          nullable: true
         starsystemIn:
           type: array
           items:
             type: string
-          nullable: true
       title: ShopQuery
     StarsystemQuery:
       type: object
       properties:
         searchCont:
           type: string
-          nullable: true
         nameCont:
           type: string
-          nullable: true
         nameIn:
           type: array
           items:
             type: string
-          nullable: true
       title: StarsystemQuery
     StationQuery:
       type: object
       properties:
         searchCont:
           type: string
-          nullable: true
         nameCont:
           type: string
-          nullable: true
         slugEq:
           type: string
-          nullable: true
         celestialObjectEq:
           type: string
-          nullable: true
         cargoHubEq:
           type: boolean
-          nullable: true
         refineryEq:
           type: boolean
-          nullable: true
         withShops:
           type: boolean
-          nullable: true
         habsNotNull:
           type: boolean
-          nullable: true
         commodityItemType:
           type: string
-          nullable: true
         nameIn:
           type: array
           items:
             type: string
-          nullable: true
         celestialObjectIn:
           type: array
           items:
             type: string
-          nullable: true
         starsystemIn:
           type: array
           items:
             type: string
-          nullable: true
         stationTypeIn:
           type: array
           items:
             type: string
-          nullable: true
         shopsShopTypeIn:
           type: array
           items:
             type: string
-          nullable: true
         docksShipSizeIn:
           type: array
           items:
             type: string
-          nullable: true
         sorts:
           type: array
           items:
             type: string
-          nullable: true
       title: StationQuery
     Shop:
       type: object

@@ -18,6 +18,14 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
       parameter name: "page", in: :query, type: :number, required: false, default: 1
       parameter name: "perPage", in: :query, type: :string, required: false, default: Vehicle.default_per_page
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/HangarQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
 
       response(200, "successful") do
         schema type: :array,

@@ -9,19 +9,19 @@ module V1
         schema({
           type: :object,
           properties: {
-            searchCont: {type: :string, nullable: true},
-            nameCont: {type: :string, nullable: true},
-            commodityNameCont: {type: :string, nullable: true},
-            nameIn: {type: :array, items: {type: :string}, nullable: true},
-            modelIn: {type: :array, items: {type: :string}, nullable: true},
-            equipmentIn: {type: :array, items: {type: :string}, nullable: true},
-            componentIn: {type: :array, items: {type: :string}, nullable: true},
-            commodityIn: {type: :array, items: {type: :string}, nullable: true},
-            shop_typeIn: {type: :array, items: {type: :string}, nullable: true},
-            commodityCategoryIn: {type: :array, items: {type: :string}, nullable: true},
-            stationIn: {type: :array, items: {type: :string}, nullable: true},
-            celestialObjectIn: {type: :array, items: {type: :string}, nullable: true},
-            starsystemIn: {type: :array, items: {type: :string}, nullable: true}
+            searchCont: {type: :string},
+            nameCont: {type: :string},
+            commodityNameCont: {type: :string},
+            nameIn: {type: :array, items: {type: :string}},
+            modelIn: {type: :array, items: {type: :string}},
+            equipmentIn: {type: :array, items: {type: :string}},
+            componentIn: {type: :array, items: {type: :string}},
+            commodityIn: {type: :array, items: {type: :string}},
+            shop_typeIn: {type: :array, items: {type: :string}},
+            commodityCategoryIn: {type: :array, items: {type: :string}},
+            stationIn: {type: :array, items: {type: :string}},
+            celestialObjectIn: {type: :array, items: {type: :string}},
+            starsystemIn: {type: :array, items: {type: :string}}
           }
         })
       end

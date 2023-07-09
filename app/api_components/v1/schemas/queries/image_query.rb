@@ -9,8 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            modelIn: {type: :array, items: {type: :string}, nullable: true},
-            stationIn: {type: :array, items: {type: :string}, nullable: true}
+            modelIn: {type: :array, items: {type: :string}},
+            stationIn: {type: :array, items: {type: :string}}
           }
         })
       end

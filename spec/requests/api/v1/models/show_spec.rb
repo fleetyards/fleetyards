@@ -43,13 +43,14 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/{slug}/hardpoints" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
-    parameter name: "source", in: :query,
-      schema: {"$ref": "#/components/schemas/ModelHardpointSourceEnum"}, required: false
 
     get("Model Hardpoints") do
       operationId "hardpoints"
       tags "Models"
       produces "application/json"
+
+      parameter name: "source", in: :query,
+        schema: {"$ref": "#/components/schemas/ModelHardpointSourceEnum"}, required: false
 
       response(200, "successful") do
         let(:slug) { model.slug }
@@ -85,19 +86,20 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/{slug}/images" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
-    parameter name: "page", in: :query, type: :number, required: false, default: 1
-    parameter name: "perPage", in: :query, type: :string, required: false, default: Image.default_per_page
 
     get("Model Images") do
       operationId "images"
       tags "Models"
       produces "application/json"
 
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false, default: Image.default_per_page
+
       response(200, "successful") do
-        let(:slug) { model.slug }
 
         schema type: :array,
           items: {"$ref": "#/components/schemas/ImageMinimal"}
+        let(:slug) { model.slug }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -127,19 +129,20 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/{slug}/videos" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
-    parameter name: "page", in: :query, type: :number, required: false, default: 1
-    parameter name: "perPage", in: :query, type: :string, required: false, default: Video.default_per_page
 
     get("Model Videos") do
       operationId "videos"
       tags "Models"
       produces "application/json"
 
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false, default: Video.default_per_page
+
       response(200, "successful") do
-        let(:slug) { model.slug }
 
         schema type: :array,
           items: {"$ref": "#/components/schemas/VideoMinimal"}
+        let(:slug) { model.slug }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -169,19 +172,20 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/{slug}/variants" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
-    parameter name: "page", in: :query, type: :number, required: false, default: 1
-    parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
     get("Model Variants") do
       operationId "variants"
       tags "Models"
       produces "application/json"
 
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
+
       response(200, "successful") do
-        let(:slug) { model.slug }
 
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelMinimal"}
+        let(:slug) { model.slug }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -211,19 +215,20 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/{slug}/loaners" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
-    parameter name: "page", in: :query, type: :number, required: false, default: 1
-    parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
     get("Model Loaners") do
       operationId "loaners"
       tags "Models"
       produces "application/json"
 
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
+
       response(200, "successful") do
-        let(:slug) { model.slug }
 
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelMinimal"}
+        let(:slug) { model.slug }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -253,8 +258,6 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/{slug}/snub-crafts" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
-    parameter name: "page", in: :query, type: :number, required: false, default: 1
-    parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
     get("Model Snubcrafts") do
       operationId "snubCrafts"
@@ -262,10 +265,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
-        let(:slug) { model.slug }
 
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelMinimal"}
+        let(:slug) { model.slug }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -302,6 +305,9 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       operationId "modules"
       tags "Models"
       produces "application/json"
+
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false, default: ModelModule.default_per_page
 
       response(200, "successful") do
         let(:slug) { model.slug }

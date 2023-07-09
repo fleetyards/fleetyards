@@ -34,10 +34,12 @@ export class ManufacturersService {
         page,
         perPage,
         q,
+        cacheId,
     }: {
         page?: number,
         perPage?: string,
         q?: ManufacturerQuery,
+        cacheId?: string,
     }): CancelablePromise<Array<ManufacturerMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -46,6 +48,7 @@ export class ManufacturersService {
                 'page': page,
                 'perPage': perPage,
                 'q': q,
+                'cacheId': cacheId,
             },
         });
     }

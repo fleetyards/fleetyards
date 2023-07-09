@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarImportResult } from '../models/HangarImportResult';
+import type { HangarQuery } from '../models/HangarQuery';
 import type { HangarSyncResult } from '../models/HangarSyncResult';
 import type { SyncRsiHangarInput } from '../models/SyncRsiHangarInput';
 import type { VehicleExport } from '../models/VehicleExport';
@@ -38,9 +39,11 @@ export class HangarService {
     public get({
         page,
         perPage,
+        q,
     }: {
         page?: number,
         perPage?: string,
+        q?: HangarQuery,
     }): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -48,6 +51,7 @@ export class HangarService {
             query: {
                 'page': page,
                 'perPage': perPage,
+                'q': q,
             },
             errors: {
                 401: `unauthorized`,

@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FilterOption } from '../models/FilterOption';
 import type { ImageMinimal } from '../models/ImageMinimal';
 import type { ModelComplete } from '../models/ModelComplete';
 import type { ModelHardpoint } from '../models/ModelHardpoint';
@@ -25,10 +26,20 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public withDocks(): CancelablePromise<any> {
+    public withDocks({
+        page,
+        perPage,
+    }: {
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/with-docks',
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
         });
     }
 
@@ -107,10 +118,10 @@ export class ModelsService {
 
     /**
      * Model Filters
-     * @returns any successful
+     * @returns FilterOption successful
      * @throws ApiError
      */
-    public filters(): CancelablePromise<any> {
+    public filters(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/filters',
@@ -119,10 +130,10 @@ export class ModelsService {
 
     /**
      * Model classifications
-     * @returns any successful
+     * @returns FilterOption successful
      * @throws ApiError
      */
-    public classifications(): CancelablePromise<any> {
+    public classifications(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/classifications',
@@ -131,10 +142,10 @@ export class ModelsService {
 
     /**
      * Model Production states
-     * @returns any successful
+     * @returns FilterOption successful
      * @throws ApiError
      */
-    public productionStates(): CancelablePromise<any> {
+    public productionStates(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/production-states',
@@ -143,10 +154,10 @@ export class ModelsService {
 
     /**
      * Model focus
-     * @returns any successful
+     * @returns FilterOption successful
      * @throws ApiError
      */
-    public focus(): CancelablePromise<any> {
+    public focus(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/focus',
@@ -155,10 +166,10 @@ export class ModelsService {
 
     /**
      * Model Sizes
-     * @returns any successful
+     * @returns FilterOption successful
      * @throws ApiError
      */
-    public sizes(): CancelablePromise<any> {
+    public sizes(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/sizes',
@@ -170,10 +181,20 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public cargoOptions(): CancelablePromise<any> {
+    public cargoOptions({
+        page,
+        perPage,
+    }: {
+        page?: number,
+        perPage?: string,
+    }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/cargo-options',
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
         });
     }
 
@@ -186,10 +207,12 @@ export class ModelsService {
         page,
         perPage,
         q,
+        cacheId,
     }: {
         page?: number,
         perPage?: string,
         q?: ModelQuery,
+        cacheId?: string,
     }): CancelablePromise<Array<ModelMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -198,6 +221,7 @@ export class ModelsService {
                 'page': page,
                 'perPage': perPage,
                 'q': q,
+                'cacheId': cacheId,
             },
         });
     }
@@ -396,25 +420,17 @@ export class ModelsService {
      */
     public snubCrafts({
         slug,
-        page,
-        perPage,
     }: {
         /**
          * Model slug
          */
         slug: string,
-        page?: number,
-        perPage?: string,
     }): CancelablePromise<Array<ModelMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/snub-crafts',
             path: {
                 'slug': slug,
-            },
-            query: {
-                'page': page,
-                'perPage': perPage,
             },
             errors: {
                 404: `not found`,
@@ -429,17 +445,25 @@ export class ModelsService {
      */
     public modules({
         slug,
+        page,
+        perPage,
     }: {
         /**
          * Model slug
          */
         slug: string,
+        page?: number,
+        perPage?: string,
     }): CancelablePromise<Array<ModelModuleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/modules',
             path: {
                 'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
             },
             errors: {
                 404: `not found`,

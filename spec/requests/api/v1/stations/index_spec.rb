@@ -20,6 +20,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
         style: :deepObject,
         explode: true,
         required: false
+      parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}

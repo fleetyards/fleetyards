@@ -10,6 +10,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { BaseList } from './models/BaseList';
 export type { CelestialObject } from './models/CelestialObject';
 export type { Dock } from './models/Dock';
 export type { DockCount } from './models/DockCount';
@@ -22,6 +23,8 @@ export type { HabitationCount } from './models/HabitationCount';
 export type { Image } from './models/Image';
 export type { ImageInput } from './models/ImageInput';
 export type { ImageInputCreate } from './models/ImageInputCreate';
+export type { ImageQuery } from './models/ImageQuery';
+export type { Images } from './models/Images';
 export type { MediaImage } from './models/MediaImage';
 export type { Meta } from './models/Meta';
 export type { Pagination } from './models/Pagination';

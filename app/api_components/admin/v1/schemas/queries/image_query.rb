@@ -4,15 +4,14 @@ module Admin
   module V1
     module Schemas
       module Queries
-        class StationQuery
+        class ImageQuery
           include SchemaConcern
 
           schema({
             type: :object,
             properties: {
-              searchCont: {type: :string},
-              nameCont: {type: :string},
-              nameIn: {type: :array, items: {type: :string}}
+              galleryIdEq: {type: :string, format: :uuid},
+              galleryTypeEq: {type: :string}
             }
           })
         end

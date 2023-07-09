@@ -9,9 +9,9 @@ module V1
         schema({
           type: :object,
           properties: {
-            withModels: {type: :boolean, nullable: true},
-            nameCont: {type: :string, nullable: true},
-            nameIn: {type: :array, items: {type: :string}, nullable: true}
+            withModels: {type: :boolean},
+            nameCont: {type: :string},
+            nameIn: {type: :array, items: {type: :string}}
           }
         })
       end

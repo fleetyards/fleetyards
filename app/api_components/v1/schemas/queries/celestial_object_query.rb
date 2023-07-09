@@ -3,15 +3,17 @@
 module V1
   module Schemas
     module Queries
-      class StarsystemQuery
+      class CelestialObjectQuery
         include SchemaConcern
 
         schema({
           type: :object,
           properties: {
-            searchCont: {type: :string},
+            starsystemEq: {type: :string},
+            main: {type: :boolean},
             nameCont: {type: :string},
-            nameIn: {type: :array, items: {type: :string}}
+            nameIn: {type: :array, items: {type: :string}},
+            searchCont: {type: :string}
           }
         })
       end

@@ -20,6 +20,8 @@ module Api
             .public
             .where(loaner: false)
 
+          scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
+
           @q = scope.ransack(vehicle_query_params)
 
           @q.sorts = ["model_classification asc"]

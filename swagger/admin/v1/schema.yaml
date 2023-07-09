@@ -13,19 +13,39 @@ servers:
 paths:
   "/images":
     get:
-      summary: list images
+      summary: Images list
+      operationId: list
       description: Get a List of Images
       tags:
       - Images
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: number
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ImageQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Image"
+                "$ref": "#/components/schemas/Images"
         '401':
           description: unauthorized
           content:
@@ -33,7 +53,8 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
     post:
-      summary: create image
+      summary: Image create
+      operationId: create
       description: Create a new Image
       tags:
       - Images
@@ -65,39 +86,8 @@ paths:
       required: true
       schema:
         type: string
-    patch:
-      summary: update image
-      tags:
-      - Images
-      parameters: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Image"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not_found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                "$ref": "#/components/schemas/ImageInput"
     put:
-      summary: update image
+      summary: Image update
       tags:
       - Images
       parameters: []
@@ -128,7 +118,8 @@ paths:
               properties:
                 "$ref": "#/components/schemas/ImageInput"
     delete:
-      summary: delete image
+      summary: Image destroy
+      operationId: destroy
       tags:
       - Images
       responses:
@@ -181,6 +172,14 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
 components:
   schemas:
+    BaseList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - meta
+      title: BaseList
     ShopTypeEnum:
       type: string
       enum:
@@ -515,6 +514,19 @@ components:
       - createdAt
       - updatedAt
       title: Image
+    Images:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Image"
+      required:
+      - meta
+      - items
+      title: Images
     ImageInput:
       type: object
       properties:
@@ -551,20 +563,26 @@ components:
         file:
           type: string
       title: ImageInputCreate
+    ImageQuery:
+      type: object
+      properties:
+        galleryIdEq:
+          type: string
+          format: uuid
+        galleryTypeEq:
+          type: string
+      title: ImageQuery
     StationQuery:
       type: object
       properties:
         searchCont:
           type: string
-          nullable: true
         nameCont:
           type: string
-          nullable: true
         nameIn:
           type: array
           items:
             type: string
-          nullable: true
       title: StationQuery
     Shop:
       type: object
@@ -1043,13 +1061,13 @@ components:
     Stations:
       type: object
       properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
             "$ref": "#/components/schemas/StationMinimal"
-        meta:
-          "$ref": "#/components/schemas/Meta"
       required:
-      - items
       - meta
+      - items
       title: Stations

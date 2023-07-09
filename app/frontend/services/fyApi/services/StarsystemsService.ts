@@ -21,10 +21,12 @@ export class StarsystemsService {
         page,
         perPage,
         q,
+        cacheId,
     }: {
         page?: number,
         perPage?: string,
         q?: StarsystemQuery,
+        cacheId?: string,
     }): CancelablePromise<Array<StarsystemMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -33,6 +35,7 @@ export class StarsystemsService {
                 'page': page,
                 'perPage': perPage,
                 'q': q,
+                'cacheId': cacheId,
             },
         });
     }

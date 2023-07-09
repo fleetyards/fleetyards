@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarImportResult } from '../models/HangarImportResult';
+import type { HangarQuery } from '../models/HangarQuery';
 import type { VehicleBulkDestroyInput } from '../models/VehicleBulkDestroyInput';
 import type { VehicleBulkUpdateInput } from '../models/VehicleBulkUpdateInput';
 import type { VehicleCheckSerialInput } from '../models/VehicleCheckSerialInput';
@@ -109,10 +110,23 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehicles(): CancelablePromise<Array<VehicleMinimal>> {
+    public getVehicles({
+        page,
+        perPage,
+        q,
+    }: {
+        page?: number,
+        perPage?: string,
+        q?: HangarQuery,
+    }): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+            },
         });
     }
 

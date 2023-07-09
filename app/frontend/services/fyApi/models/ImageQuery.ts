@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type ImageQuery = {
-    modelIn?: Array<string> | null;
-    stationIn?: Array<string> | null;
+    modelIn?: Array<string>;
+    stationIn?: Array<string>;
 };
 

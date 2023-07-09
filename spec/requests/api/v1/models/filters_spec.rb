@@ -12,6 +12,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -32,6 +34,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -52,6 +56,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -72,6 +78,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -92,6 +100,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -110,6 +120,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       operationId "cargoOptions"
       tags "Models"
       produces "application/json"
+
+      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "perPage", in: :query, type: :string, required: false,
+        default: Model.default_per_page
 
       response(200, "successful") do
         after do |example|

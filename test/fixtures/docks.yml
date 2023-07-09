@@ -45,3 +45,9 @@ corvolex-dock-one:
   station: corvolex
   name: Dockingport 01
   ship_size: small
+
+galaxy-hangar:
+  dock_type: hangar
+  model: galaxy
+  name: Hangar 01
+  ship_size: xsmall

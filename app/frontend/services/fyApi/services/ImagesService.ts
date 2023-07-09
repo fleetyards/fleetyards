@@ -21,10 +21,12 @@ export class ImagesService {
         page,
         perPage,
         q,
+        cacheId,
     }: {
         page?: number,
         perPage?: string,
         q?: ImageQuery,
+        cacheId?: string,
     }): CancelablePromise<Array<ImageComplete>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -33,6 +35,7 @@ export class ImagesService {
                 'page': page,
                 'perPage': perPage,
                 'q': q,
+                'cacheId': cacheId,
             },
         });
     }

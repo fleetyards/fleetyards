@@ -3,9 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ManufacturerQuery = {
-    withModels?: boolean;
-    nameCont?: string;
-    nameIn?: Array<string>;
+export type ImageQuery = {
+    galleryIdEq?: string;
+    galleryTypeEq?: string;
 };
 

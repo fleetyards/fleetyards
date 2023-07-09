@@ -4,6 +4,8 @@
 /* eslint-disable */
 import type { Image } from '../models/Image';
 import type { ImageInputCreate } from '../models/ImageInputCreate';
+import type { ImageQuery } from '../models/ImageQuery';
+import type { Images } from '../models/Images';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -13,15 +15,28 @@ export class ImagesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * list images
+     * Images list
      * Get a List of Images
-     * @returns Image successful
+     * @returns Images successful
      * @throws ApiError
      */
-    public getImages(): CancelablePromise<Array<Image>> {
+    public list({
+        page,
+        perPage,
+        q,
+    }: {
+        page?: number,
+        perPage?: string,
+        q?: ImageQuery,
+    }): CancelablePromise<Images> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/images',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+            },
             errors: {
                 401: `unauthorized`,
             },
@@ -29,12 +44,12 @@ export class ImagesService {
     }
 
     /**
-     * create image
+     * Image create
      * Create a new Image
      * @returns Image successful
      * @throws ApiError
      */
-    public postImages({
+    public create({
         formData,
     }: {
         formData?: ImageInputCreate,
@@ -51,39 +66,7 @@ export class ImagesService {
     }
 
     /**
-     * update image
-     * @returns Image successful
-     * @throws ApiError
-     */
-    public patchImages({
-        id,
-        requestBody,
-    }: {
-        /**
-         * id
-         */
-        id: string,
-        requestBody?: {
-            $ref?: any;
-        },
-    }): CancelablePromise<Image> {
-        return this.httpRequest.request({
-            method: 'PATCH',
-            url: '/images/{id}',
-            path: {
-                'id': id,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-            errors: {
-                401: `unauthorized`,
-                404: `not_found`,
-            },
-        });
-    }
-
-    /**
-     * update image
+     * Image update
      * @returns Image successful
      * @throws ApiError
      */
@@ -115,11 +98,11 @@ export class ImagesService {
     }
 
     /**
-     * delete image
+     * Image destroy
      * @returns any successful
      * @throws ApiError
      */
-    public deleteImages({
+    public destroy({
         id,
     }: {
         /**

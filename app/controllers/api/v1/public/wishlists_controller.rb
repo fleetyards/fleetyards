@@ -18,9 +18,12 @@ module Api
 
           vehicle_query_params["sorts"] = sort_by_name(["name asc", "model_name asc"], "model_name asc")
 
-          @q = user.vehicles
+          scope = user.vehicles
             .wanted
-            .ransack(vehicle_query_params)
+
+          scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
+
+          @q = scope.ransack(vehicle_query_params)
 
           result = @q.result(distinct: true)
             .includes(:model)
