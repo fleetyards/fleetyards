@@ -17,6 +17,8 @@ export const useApiClient = () =>
       new Promise((resolve) => {
         resolve({
           ...languageHeader(),
+          Accept: "application/json",
+          "Content-Type": "application/json",
         });
       }),
   });
