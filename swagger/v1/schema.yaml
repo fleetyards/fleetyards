@@ -734,7 +734,7 @@ paths:
                   "$ref": "#/components/schemas/ImageComplete"
   "/manufacturers/with-models":
     get:
-      summary: with_models manufacturer
+      summary: Manufacturers list only with models.
       tags:
       - Manufacturers
       deprecated: true
