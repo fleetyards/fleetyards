@@ -14,6 +14,7 @@ module V1
           totalMaxCrew: {type: :integer},
           totalCargo: {type: :number}
         },
+        additionalProperties: false,
         required: %w[totalMoney totalCredits totalMinCrew totalMaxCrew totalCargo]
       })
     end

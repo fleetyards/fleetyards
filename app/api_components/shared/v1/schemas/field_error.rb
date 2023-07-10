@@ -15,6 +15,7 @@ module Shared
               items: {"$ref" => "#/components/schemas/StandardError"}
             }
           },
+          additionalProperties: false,
           required: %w[attribute messages]
         })
       end

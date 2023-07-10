@@ -12,6 +12,7 @@ module V1
           value: {type: "string"},
           cargo: {type: :number}
         },
+        additionalProperties: false,
         required: %w[name value cargo]
       })
     end

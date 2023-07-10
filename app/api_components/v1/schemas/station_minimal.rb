@@ -7,6 +7,7 @@ module V1
 
       schema({
         properties: {
+          celestialObject: {"$ref": "#/components/schemas/CelestialObject"},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },

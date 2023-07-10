@@ -13,6 +13,7 @@ module V1
           slug: {type: :string},
           color: {type: :string}
         },
+        additionalProperties: false,
         required: %w[id name slug color]
       })
     end

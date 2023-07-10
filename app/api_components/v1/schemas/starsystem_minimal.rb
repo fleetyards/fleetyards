@@ -11,6 +11,7 @@ module V1
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
+        additionalProperties: false,
         required: %w[celestialObjects createdAt updatedAt]
       })
     end

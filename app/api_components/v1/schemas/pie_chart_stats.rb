@@ -13,6 +13,7 @@ module V1
           selected: {type: :boolean},
           sliced: {type: :boolean}
         },
+        additionalProperties: false,
         required: %w[name y selected sliced]
       })
     end

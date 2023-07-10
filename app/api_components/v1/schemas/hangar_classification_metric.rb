@@ -12,6 +12,7 @@ module V1
           label: {type: :string},
           count: {type: :integer}
         },
+        additionalProperties: false,
         required: %w[name label count]
       })
     end

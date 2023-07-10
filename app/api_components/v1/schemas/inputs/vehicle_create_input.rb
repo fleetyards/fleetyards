@@ -24,6 +24,7 @@ module V1
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true},
             alternativeNames: {type: :array, items: {type: :string}, nullable: true}
           },
+          additionalProperties: false,
           required: %w[modelId]
         })
       end

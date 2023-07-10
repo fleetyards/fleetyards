@@ -30,6 +30,7 @@ module Admin
             storeImageMedium: {type: :string, format: :uri, deprecated: true},
             storeImageSmall: {type: :string, format: :uri, deprecated: true}
           },
+          additionalProperties: false,
           required: %w[name slug]
         })
       end

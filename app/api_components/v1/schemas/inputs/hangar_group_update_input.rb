@@ -13,7 +13,8 @@ module V1
             color: {type: :string, nullable: true},
             sort: {type: :integer, nullable: true},
             public: {type: :boolean, nullable: true}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

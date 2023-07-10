@@ -14,6 +14,7 @@ module V1
             public: {type: :boolean, nullable: true},
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true}
           },
+          additionalProperties: false,
           required: %w[ids]
         })
       end

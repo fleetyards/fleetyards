@@ -208,6 +208,7 @@ module V1
           yaxisAcceleration: {type: :number, nullable: true, deprecated: true},
           zaxisAcceleration: {type: :number, nullable: true, deprecated: true}
         },
+        additionalProperties: false,
         required: %w[
           id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos links loaners
           media metrics onSale speeds

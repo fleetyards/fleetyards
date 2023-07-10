@@ -9,7 +9,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
       tags "Stations"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false,
         default: Station.default_per_page
       parameter name: "q", in: :query,

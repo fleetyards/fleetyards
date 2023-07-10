@@ -24,6 +24,7 @@ module V1
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
+        additionalProperties: false,
         required: %w[
           id model loaner modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt
           updatedAt

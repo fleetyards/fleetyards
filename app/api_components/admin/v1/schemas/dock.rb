@@ -16,6 +16,7 @@ module Admin
             type: {type: :string},
             typeLabel: {type: :string}
           },
+          additionalProperties: false,
           required: %w[name size sizeLabel type typeLabel]
         })
       end

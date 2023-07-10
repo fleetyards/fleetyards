@@ -14,6 +14,7 @@ module V1
           logo: {type: :string, nullable: true},
           longName: {type: :string}
         },
+        additionalProperties: false,
         required: %w[name slug]
       })
     end

@@ -11,6 +11,7 @@ module V1
           properties: {
             ids: {type: :array, items: {type: :string, format: :uuid}}
           },
+          additionalProperties: false,
           required: %w[ids]
         })
       end

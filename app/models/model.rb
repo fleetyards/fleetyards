@@ -147,8 +147,7 @@ class Model < ApplicationRecord
 
   paginates_per 30
   max_paginates_per 240
-
-  PAGINATION_OPTIONS = [15, 30, 60, 120, 240].freeze
+  per_page_steps [15, 30, 60, 120, 240]
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code],
     word_start: %i[name manufacturer_name]

@@ -19,6 +19,7 @@ module V1
             }
           }
         },
+        additionalProperties: false,
         required: %w[dockCounts links]
       })
     end

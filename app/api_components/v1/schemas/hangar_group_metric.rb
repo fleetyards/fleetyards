@@ -12,6 +12,7 @@ module V1
           slug: {type: :string},
           count: {type: :integer}
         },
+        additionalProperties: false,
         required: %w[id slug count]
       })
     end

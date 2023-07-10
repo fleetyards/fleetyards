@@ -13,6 +13,7 @@ module V1
           url: {type: :string, format: :uri},
           videoId: {type: :string, nullable: true}
         },
+        additionalProperties: false,
         required: %w[id url videoId type]
       })
     end

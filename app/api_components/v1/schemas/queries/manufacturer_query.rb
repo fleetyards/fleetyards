@@ -12,7 +12,8 @@ module V1
             withModels: {type: :boolean},
             nameCont: {type: :string},
             nameIn: {type: :array, items: {type: :string}}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

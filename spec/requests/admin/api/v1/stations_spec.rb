@@ -18,7 +18,7 @@ RSpec.describe "admin/api/v1/stations", type: :request, swagger_doc: "admin/v1/s
       produces "application/json"
       tags "Stations"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false,
         default: Image.default_per_page
       parameter name: "q", in: :query,

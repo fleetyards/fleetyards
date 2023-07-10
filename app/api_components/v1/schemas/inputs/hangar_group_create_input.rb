@@ -14,6 +14,7 @@ module V1
             sort: {type: :integer, nullable: true},
             public: {type: :boolean, nullable: true}
           },
+          additionalProperties: false,
           required: %w[name color]
         })
       end

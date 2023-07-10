@@ -30,6 +30,7 @@ module V1
           upgrade: {"$ref": "#/components/schemas/ModelUpgrade", nullable: true},
           wanted: {type: :boolean}
         },
+        additionalProperties: false,
         required: %w[
           id model wanted boughtVia loaner flagship public nameVisible saleNotify alternativeNames
           modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds

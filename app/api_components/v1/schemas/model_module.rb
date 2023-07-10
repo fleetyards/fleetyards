@@ -34,8 +34,8 @@ module V1
           storeImageLarge: {type: :string, format: :uri, deprecated: true},
           storeImageMedium: {type: :string, format: :uri, deprecated: true},
           storeImageSmall: {type: :string, format: :uri, deprecated: true}
-
         },
+        additionalProperties: false,
         required: %w[id name availability media]
       })
     end

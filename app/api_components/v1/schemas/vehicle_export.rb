@@ -25,6 +25,7 @@ module V1
           modules: {type: :array, items: {type: :string}},
           upgrades: {type: :array, items: {type: :string}}
         },
+        additionalProperties: false,
         required: %w[
           name slug manufacturerName wanted flagship public saleNotify
           nameVisible groups modules upgrades

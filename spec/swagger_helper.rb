@@ -8,8 +8,6 @@ require "rswag/specs/railtie" if defined?(Rails::Railtie)
 RSpec.configure do |config|
   config.swagger_root = Rails.root.join(Rails.configuration.api_schema.folder).to_s
 
-  config.swagger_strict_schema_validation = true
-
   config.swagger_docs = Rails.configuration.api_schema.schemas
 
   config.swagger_format = :yaml

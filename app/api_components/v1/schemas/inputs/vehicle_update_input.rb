@@ -22,7 +22,8 @@ module V1
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true},
             alternativeNames: {type: :array, items: {type: :string}, nullable: true}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

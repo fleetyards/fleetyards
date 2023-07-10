@@ -12,7 +12,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       tags "CelestialObjects"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false,
         default: CelestialObject.default_per_page
       parameter name: "q", in: :query,

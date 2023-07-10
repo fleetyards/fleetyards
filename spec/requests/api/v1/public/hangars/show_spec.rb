@@ -16,7 +16,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
       tags "PublicHangar"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false, default: Vehicle.default_per_page
       parameter name: "q", in: :query,
         schema: {

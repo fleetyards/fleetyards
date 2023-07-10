@@ -10,6 +10,7 @@ module V1
         properties: {
           serialTaken: {type: :boolean}
         },
+        additionalProperties: false,
         required: %w[serialTaken]
       })
     end

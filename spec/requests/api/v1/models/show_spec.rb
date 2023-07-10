@@ -11,7 +11,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Detail") do
-      operationId "detail"
+      operationId "get"
       tags "Models"
       produces "application/json"
 
@@ -92,11 +92,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false, default: Image.default_per_page
 
       response(200, "successful") do
-
         schema type: :array,
           items: {"$ref": "#/components/schemas/ImageMinimal"}
         let(:slug) { model.slug }
@@ -135,11 +134,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false, default: Video.default_per_page
 
       response(200, "successful") do
-
         schema type: :array,
           items: {"$ref": "#/components/schemas/VideoMinimal"}
         let(:slug) { model.slug }
@@ -178,11 +176,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
       response(200, "successful") do
-
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelMinimal"}
         let(:slug) { model.slug }
@@ -221,11 +218,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
 
       response(200, "successful") do
-
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelMinimal"}
         let(:slug) { model.slug }
@@ -265,7 +261,6 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       produces "application/json"
 
       response(200, "successful") do
-
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelMinimal"}
         let(:slug) { model.slug }
@@ -306,14 +301,56 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false, default: ModelModule.default_per_page
 
       response(200, "successful") do
         let(:slug) { model.slug }
 
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelModuleMinimal"}
+        after do |example|
+          example.metadata[:response][:content] = {
+            "application/json" => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to eq(model.modules.count)
+          expect(items.count).to be > 0
+        end
+      end
+
+      response(404, "not found") do
+        let(:slug) { "unknown-model" }
+
+        schema "$ref": "#/components/schemas/StandardError"
+
+        run_test!
+      end
+    end
+  end
+
+  path "/models/{slug}/module-packages" do
+    parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
+
+    let(:model) { models :galaxy }
+
+    get("Model Module Packages") do
+      operationId "modulePackages"
+      tags "Models"
+      produces "application/json"
+
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
+      parameter name: "perPage", in: :query, type: :string, required: false, default: ModelModule.default_per_page
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/ModelModulePackages"
+
+        let(:slug) { model.slug }
 
         after do |example|
           example.metadata[:response][:content] = {

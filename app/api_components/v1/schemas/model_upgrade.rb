@@ -25,6 +25,7 @@ module V1
           storeImageMedium: {type: :string, format: :uri, nullable: true, deprecated: true},
           storeImageSmall: {type: :string, format: :uri, nullable: true, deprecated: true}
         },
+        additionalProperties: false,
         required: %w[id name media]
       })
     end

@@ -73,6 +73,7 @@ module V1
           topViewWidth: {type: :number, nullable: true, deprecated: true},
           topViewXlarge: {type: :string, format: :uri, nullable: true, deprecated: true}
         },
+        additionalProperties: false,
         required: %w[id name slug availability media]
       })
     end

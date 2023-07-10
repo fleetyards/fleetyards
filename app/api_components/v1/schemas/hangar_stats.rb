@@ -14,6 +14,7 @@ module V1
           groups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupMetric"}},
           metrics: {"$ref": "#/components/schemas/HangarMetrics"}
         },
+        additionalProperties: false,
         required: %w[total wishlistTotal classifications groups metrics]
       })
     end

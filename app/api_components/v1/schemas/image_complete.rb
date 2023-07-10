@@ -9,7 +9,8 @@ module V1
         properties: {
           gallery: {"$ref" => "#/components/schemas/Gallery", :nullable => true},
           model: {"$ref" => "#/components/schemas/Gallery", :nullable => true}
-        }
+        },
+        additionalProperties: false
       })
     end
   end

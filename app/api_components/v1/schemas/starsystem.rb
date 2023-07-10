@@ -17,7 +17,10 @@ module V1
           mapX: {type: :string, nullable: true},
           mapY: {type: :string, nullable: true},
           media: {
-            storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+            type: :object,
+            properties: {
+              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+            }
           },
           population: {type: :string, nullable: true},
           size: {type: :string, nullable: true},
@@ -28,6 +31,7 @@ module V1
           storeImageMedium: {type: :string, format: :uri, deprecated: true},
           storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
+        additionalProperties: false,
         required: %w[name slug]
       })
     end
