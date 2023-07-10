@@ -95,15 +95,17 @@ export const useMetaInfo = () => {
     return `${host}${logo}`;
   };
 
-  const updateMetaInfo = (
-    title?: string,
-    description?: string,
-    image?: string,
-    type?: MetaType
-  ) => {
+  type MetaInfoUpdate = {
+    title?: string;
+    description?: string;
+    image?: string;
+    type?: MetaType;
+  };
+
+  const updateMetaInfo = (update?: MetaInfoUpdate) => {
     const currentMetaTags = getCurrentMetaInfo();
 
-    const newTitle = getTitle(title);
+    const newTitle = getTitle(update?.title);
     if (newTitle && newTitle !== currentMetaTags.title) {
       document.title = newTitle;
       if (ogTitleElement.value) {
@@ -111,7 +113,7 @@ export const useMetaInfo = () => {
       }
     }
 
-    const newDescription = getDescription(description);
+    const newDescription = getDescription(update?.description);
     if (
       newDescription !== currentMetaTags.description &&
       descriptionElement.value
@@ -122,13 +124,13 @@ export const useMetaInfo = () => {
       }
     }
 
-    const newType = getType(type);
+    const newType = getType(update?.type);
     const typeElement = ogTypeElement();
     if (newType !== currentMetaTags.type && typeElement) {
       typeElement.content = newType;
     }
 
-    const newImage = getImage(image);
+    const newImage = getImage(update?.image);
     const imageElement = ogImageElement();
     if (newImage !== currentMetaTags.image && imageElement) {
       imageElement.content = newImage;

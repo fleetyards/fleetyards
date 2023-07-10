@@ -116,7 +116,7 @@ export class VehiclesService {
         perPage,
         q,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: HangarQuery,
     }): CancelablePromise<Hangar> {

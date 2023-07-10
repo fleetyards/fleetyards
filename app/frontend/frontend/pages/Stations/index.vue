@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t("headlines.stations") }}
+          {{ t("headlines.stations") }}
         </h1>
       </div>
     </div>
@@ -17,7 +17,9 @@
       :hash="$route.hash"
       :paginated="true"
     >
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
       <template #default="{ filterVisible, records }">
         <transition-group name="fade-list" class="row" tag="div" :appear="true">
@@ -37,26 +39,29 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
 import stationsCollection from "@/frontend/api/collections/Stations";
+import type { StationsCollection } from "@/frontend/api/collections/Stations";
+import { useRoute } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 
-@Component<Stations>({
-  components: {
-    FilteredList,
-    StationPanel,
-    FilterForm,
-  },
-})
-export default class Stations extends Vue {
-  collection: StationsCollection = stationsCollection;
+useMetaInfo();
 
-  get isSubRoute() {
-    return this.$route.name !== "stations";
-  }
-}
+const { t } = useI18n();
+
+const collection: StationsCollection = stationsCollection;
+
+const route = useRoute();
+
+const isSubRoute = computed(() => route.name !== "stations");
+</script>
+
+<script lang="ts">
+export default {
+  name: "StationsPage",
+};
 </script>

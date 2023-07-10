@@ -24,7 +24,7 @@ export class ImagesService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: ImageQuery,
         cacheId?: string,

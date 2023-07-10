@@ -22,9 +22,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -61,7 +61,7 @@ paths:
       required: true
     get:
       summary: Celestial Object Detail
-      operationId: detail
+      operationId: get
       description: Get Detail of a Celestial Object referenced by its Slug
       tags:
       - CelestialObjects
@@ -102,9 +102,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -672,9 +672,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -751,9 +751,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -790,9 +790,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -952,9 +952,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -978,9 +978,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1017,7 +1017,7 @@ paths:
         type: string
     get:
       summary: Model Detail
-      operationId: detail
+      operationId: get
       tags:
       - Models
       responses:
@@ -1084,9 +1084,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1123,9 +1123,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1162,9 +1162,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1201,9 +1201,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1268,9 +1268,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1307,9 +1307,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1487,9 +1487,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1568,9 +1568,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1623,9 +1623,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1694,9 +1694,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1804,9 +1804,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -1876,9 +1876,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -2105,9 +2105,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -2454,9 +2454,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -2533,6 +2533,7 @@ components:
       properties:
         meta:
           "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
       title: BaseList
     ShopTypeEnum:
       type: string
@@ -2571,6 +2572,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StandardError"
+      additionalProperties: false
       required:
       - attribute
       - messages
@@ -2587,6 +2589,7 @@ components:
           type: string
         value:
           type: string
+      additionalProperties: false
       required:
       - name
       - value
@@ -2607,6 +2610,7 @@ components:
         source:
           type: string
           format: uri
+      additionalProperties: false
       required:
       - source
       - small
@@ -2618,6 +2622,7 @@ components:
       properties:
         pagination:
           "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
       title: Meta
     Pagination:
       type: object
@@ -2626,9 +2631,22 @@ components:
           type: integer
         totalPages:
           type: integer
+        defaultPerPage:
+          type: integer
+        maxPerPage:
+          type: integer
+        perPageSteps:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: integer
+      additionalProperties: false
       required:
       - currentPage
       - totalPages
+      - defaultPerPage
+      - maxPerPage
       title: Pagination
     StandardError:
       type: object
@@ -2637,6 +2655,7 @@ components:
           type: string
         message:
           type: string
+      additionalProperties: false
       required:
       - code
       - message
@@ -2652,6 +2671,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FieldError"
+      additionalProperties: false
       required:
       - code
       - message
@@ -2665,6 +2685,7 @@ components:
           type: string
         cargo:
           type: number
+      additionalProperties: false
       required:
       - name
       - value
@@ -2679,6 +2700,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/CargoOption"
+      additionalProperties: false
       required:
       - items
       title: CargoOptions
@@ -2741,6 +2763,7 @@ components:
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
           nullable: true
+      additionalProperties: false
       required:
       - name
       - slug
@@ -2818,6 +2841,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - name
       - slug
@@ -2835,6 +2859,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/CelestialObjectMinimal"
+      additionalProperties: false
       required:
       - items
       title: CelestialObjects
@@ -2892,6 +2917,7 @@ components:
           type: string
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -2961,6 +2987,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -2995,6 +3022,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - price
@@ -3086,6 +3114,7 @@ components:
           type: string
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -3181,6 +3210,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -3206,6 +3236,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - name
       - size
@@ -3224,6 +3255,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - size
       - count
@@ -3448,6 +3480,7 @@ components:
           type: string
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -3575,6 +3608,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -3594,6 +3628,7 @@ components:
           type: string
         slug:
           type: string
+      additionalProperties: false
       required:
       - id
       - name
@@ -3611,6 +3646,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - name
       - type
@@ -3625,6 +3661,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - count
       - type
@@ -3639,6 +3676,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleMinimal"
+      additionalProperties: false
       required:
       - items
       title: Hangar
@@ -3651,6 +3689,7 @@ components:
           type: string
         count:
           type: integer
+      additionalProperties: false
       required:
       - name
       - label
@@ -3668,6 +3707,7 @@ components:
           type: string
         color:
           type: string
+      additionalProperties: false
       required:
       - id
       - name
@@ -3684,6 +3724,7 @@ components:
           type: string
         count:
           type: integer
+      additionalProperties: false
       required:
       - id
       - slug
@@ -3714,6 +3755,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -3747,6 +3789,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -3768,6 +3811,7 @@ components:
           type: string
         color:
           type: string
+      additionalProperties: false
       required:
       - id
       - name
@@ -3787,6 +3831,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       required:
       - success
       - missing
@@ -3805,6 +3850,7 @@ components:
           type: integer
         totalCargo:
           type: number
+      additionalProperties: false
       required:
       - totalMoney
       - totalCredits
@@ -3821,6 +3867,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleMinimalPublic"
+      additionalProperties: false
       required:
       - items
       title: HangarPublic
@@ -3841,6 +3888,7 @@ components:
             "$ref": "#/components/schemas/HangarGroupMetric"
         metrics:
           "$ref": "#/components/schemas/HangarMetrics"
+      additionalProperties: false
       required:
       - total
       - wishlistTotal
@@ -3861,6 +3909,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarGroupMetric"
+      additionalProperties: false
       required:
       - total
       - classifications
@@ -3924,6 +3973,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       required:
       - importedVehicles
       - foundVehicles
@@ -3968,6 +4018,7 @@ components:
         width:
           type: number
           nullable: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -4021,6 +4072,7 @@ components:
         model:
           "$ref": "#/components/schemas/Gallery"
           nullable: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -4070,6 +4122,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -4092,6 +4145,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ImageMinimal"
+      additionalProperties: false
       required:
       - items
       title: Images
@@ -4115,6 +4169,7 @@ components:
         timeRange:
           type: string
           nullable: true
+      additionalProperties: false
       required:
       - commodityItemId
       - commodityItemType
@@ -4134,6 +4189,7 @@ components:
         public:
           type: boolean
           nullable: true
+      additionalProperties: false
       required:
       - name
       - color
@@ -4153,6 +4209,7 @@ components:
         public:
           type: boolean
           nullable: true
+      additionalProperties: false
       title: HangarGroupUpdateInput
     RsiHangarItemInput:
       type: object
@@ -4167,6 +4224,7 @@ components:
           nullable: true
         type:
           "$ref": "#/components/schemas/RsiHangarItemKindEnum"
+      additionalProperties: false
       required:
       - id
       - name
@@ -4185,6 +4243,7 @@ components:
           items:
             type: string
             format: uuid
+      additionalProperties: false
       required:
       - ids
       title: VehicleBulkDestroyInput
@@ -4208,6 +4267,7 @@ components:
             type: string
             format: uuid
           nullable: true
+      additionalProperties: false
       required:
       - ids
       title: VehicleBulkUpdateInput
@@ -4216,6 +4276,7 @@ components:
       properties:
         serial:
           type: string
+      additionalProperties: false
       required:
       - serial
       title: VehicleCheckSerialInput
@@ -4276,6 +4337,7 @@ components:
           items:
             type: string
           nullable: true
+      additionalProperties: false
       required:
       - modelId
       title: VehicleCreateInput
@@ -4333,6 +4395,7 @@ components:
           items:
             type: string
           nullable: true
+      additionalProperties: false
       title: VehicleUpdateInput
     Manufacturer:
       type: object
@@ -4349,6 +4412,7 @@ components:
           nullable: true
         longName:
           type: string
+      additionalProperties: false
       required:
       - name
       - slug
@@ -4374,6 +4438,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - name
       - slug
@@ -4389,6 +4454,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ManufacturerMinimal"
+      additionalProperties: false
       required:
       - items
       title: Manufacturers
@@ -4890,6 +4956,7 @@ components:
           type: number
           nullable: true
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -5422,6 +5489,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/DockCount"
+      additionalProperties: false
       required:
       - id
       - name
@@ -5498,6 +5566,7 @@ components:
           nullable: true
         type:
           "$ref": "#/components/schemas/ModelHardpointTypeEnum"
+      additionalProperties: false
       required:
       - id
       - key
@@ -5515,6 +5584,7 @@ components:
           nullable: true
         name:
           type: string
+      additionalProperties: false
       required:
       - id
       - name
@@ -5526,6 +5596,7 @@ components:
           type: string
         slug:
           type: string
+      additionalProperties: false
       required:
       - name
       - slug
@@ -6034,6 +6105,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -6111,6 +6183,7 @@ components:
           type: string
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -6183,6 +6256,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -6328,6 +6402,7 @@ components:
           type: string
           nullable: true
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -6475,6 +6550,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -6490,6 +6566,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelModulePackageMinimal"
+      additionalProperties: false
       required:
       - items
       title: ModelModulePackages
@@ -6502,6 +6579,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelModuleMinimal"
+      additionalProperties: false
       required:
       - items
       title: ModelModules
@@ -6698,6 +6776,7 @@ components:
           format: uri
           nullable: true
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -6904,6 +6983,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -6954,6 +7034,7 @@ components:
           format: uri
           nullable: true
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -7006,6 +7087,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -7022,6 +7104,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelMinimal"
+      additionalProperties: false
       required:
       - items
       title: Models
@@ -7036,6 +7119,7 @@ components:
           type: boolean
         sliced:
           type: boolean
+      additionalProperties: false
       required:
       - name
       - "y"
@@ -7047,8 +7131,6 @@ components:
       properties:
         starsystemEq:
           type: string
-        main:
-          type: boolean
         nameCont:
           type: string
         nameIn:
@@ -7057,6 +7139,12 @@ components:
             type: string
         searchCont:
           type: string
+        parentIdNull:
+          type: boolean
+        main:
+          type: boolean
+          deprecated: true
+      additionalProperties: false
       title: CelestialObjectQuery
     HangarEmbedQuery:
       type: array
@@ -7155,6 +7243,7 @@ components:
         willItFit:
           type: string
           format: uuid
+      additionalProperties: false
       title: HangarQuery
     ImageQuery:
       type: object
@@ -7167,6 +7256,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       title: ImageQuery
     ManufacturerQuery:
       type: object
@@ -7179,6 +7269,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       title: ManufacturerQuery
     ModelQuery:
       type: object
@@ -7262,6 +7353,7 @@ components:
         willItFit:
           type: string
           format: uuid
+      additionalProperties: false
       title: ModelQuery
     ShopQuery:
       type: object
@@ -7312,6 +7404,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       title: ShopQuery
     StarsystemQuery:
       type: object
@@ -7324,6 +7417,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       title: StarsystemQuery
     StationQuery:
       type: object
@@ -7374,6 +7468,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       title: StationQuery
     Shop:
       type: object
@@ -7432,6 +7527,7 @@ components:
           nullable: true
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -7548,6 +7644,7 @@ components:
           nullable: true
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -7675,6 +7772,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -7755,6 +7853,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -7782,6 +7881,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ShopMinimal"
+      additionalProperties: false
       required:
       - items
       title: Shops
@@ -7811,9 +7911,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         population:
           type: string
           nullable: true
@@ -7842,6 +7944,7 @@ components:
           type: string
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - name
       - slug
@@ -7872,9 +7975,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         population:
           type: string
           nullable: true
@@ -7913,6 +8018,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - name
       - slug
@@ -7929,6 +8035,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StarsystemMinimal"
+      additionalProperties: false
       required:
       - items
       title: Starsystems
@@ -7941,8 +8048,6 @@ components:
           type: string
         cargoHub:
           type: boolean
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
         classificationLabel:
           type: string
           nullable: true
@@ -8034,8 +8139,6 @@ components:
           type: string
         cargoHub:
           type: boolean
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
         classificationLabel:
           type: string
           nullable: true
@@ -8108,12 +8211,6 @@ components:
           format: uri
           nullable: true
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
         shops:
@@ -8132,6 +8229,14 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Image"
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObjectMinimal"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       required:
       - name
       - slug
@@ -8153,8 +8258,6 @@ components:
           type: string
         cargoHub:
           type: boolean
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
         classificationLabel:
           type: string
           nullable: true
@@ -8227,6 +8330,8 @@ components:
           format: uri
           nullable: true
           deprecated: true
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
         createdAt:
           type: string
           format: date-time
@@ -8252,6 +8357,7 @@ components:
           type: string
         slug:
           type: string
+      additionalProperties: false
       required:
       - name
       - slug
@@ -8265,6 +8371,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StationMinimal"
+      additionalProperties: false
       required:
       - items
       title: Stations
@@ -8275,6 +8382,7 @@ components:
           type: integer
         shipsCountTotal:
           type: integer
+      additionalProperties: false
       required:
       - shipsCountYear
       - shipsCountTotal
@@ -8344,6 +8452,7 @@ components:
           nullable: true
         wanted:
           type: boolean
+      additionalProperties: false
       required:
       - id
       - model
@@ -8365,6 +8474,7 @@ components:
       properties:
         serialTaken:
           type: boolean
+      additionalProperties: false
       required:
       - serialTaken
       title: VehicleCheckSerialResponse
@@ -8414,6 +8524,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       required:
       - name
       - slug
@@ -8498,6 +8609,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - model
@@ -8572,6 +8684,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - model
@@ -8597,6 +8710,7 @@ components:
         videoId:
           type: string
           nullable: true
+      additionalProperties: false
       required:
       - id
       - url
@@ -8623,6 +8737,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - url
@@ -8640,6 +8755,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VideoMinimal"
+      additionalProperties: false
       required:
       - items
       title: Videos
@@ -8665,6 +8781,7 @@ components:
           type: integer
         height:
           type: integer
+      additionalProperties: false
       required:
       - source
       - small

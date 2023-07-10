@@ -1,10 +1,11 @@
+import type { RouteConfig } from "vue-router";
 import { routes as StationsRoutes } from "@/frontend/pages/Stations/routes";
 import { routes as RoadmapRoutes } from "@/frontend/pages/Roadmap/routes";
 import { routes as SettingsRoutes } from "@/frontend/pages/Settings/routes";
 import { routes as FleetsRoutes } from "@/frontend/pages/Fleets/routes";
 import { routes as ToolsRoutes } from "@/frontend/pages/Tools/routes";
 
-export const routes = [
+export const routes: RouteConfig[] = [
   {
     path: "/",
     name: "home",
@@ -75,7 +76,7 @@ export const routes = [
     name: "hangar-fleetchart",
     redirect: {
       name: "hangar",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {
@@ -101,7 +102,7 @@ export const routes = [
     name: "hangar-public-fleetchart",
     redirect: {
       name: "hangar-public",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {
@@ -126,7 +127,7 @@ export const routes = [
     name: "models-fleetchart",
     redirect: {
       name: "models",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {

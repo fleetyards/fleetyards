@@ -62,7 +62,7 @@ export class StationsService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: StationQuery,
         cacheId?: string,
@@ -118,7 +118,7 @@ export class StationsService {
          * Station slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Images> {
         return this.httpRequest.request({

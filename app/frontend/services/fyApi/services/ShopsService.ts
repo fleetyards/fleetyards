@@ -37,7 +37,7 @@ export class ShopsService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: ShopQuery,
         cacheId?: string,

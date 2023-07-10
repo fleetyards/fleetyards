@@ -12,7 +12,6 @@ export type StationMinimal = {
     name: string;
     slug: string;
     cargoHub: boolean;
-    celestialObject: CelestialObject;
     classificationLabel?: string | null;
     classification?: string | null;
     description?: string | null;
@@ -50,6 +49,7 @@ export type StationMinimal = {
      * @deprecated
      */
     storeImageSmall?: string | null;
+    celestialObject: CelestialObject;
     createdAt: string;
     updatedAt: string;
 };

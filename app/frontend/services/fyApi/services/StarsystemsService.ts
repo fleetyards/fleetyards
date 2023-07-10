@@ -24,7 +24,7 @@ export class StarsystemsService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: StarsystemQuery,
         cacheId?: string,

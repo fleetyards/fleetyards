@@ -45,7 +45,7 @@ export class PublicHangarService {
         q,
     }: {
         username: string,
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: HangarQuery,
     }): CancelablePromise<HangarPublic> {

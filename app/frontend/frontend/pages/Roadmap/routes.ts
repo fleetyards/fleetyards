@@ -1,4 +1,6 @@
-export const routes = [
+import type { RouteConfig } from "vue-router";
+
+export const routes: RouteConfig[] = [
   {
     path: "changes/",
     name: "roadmap-changes",

@@ -469,7 +469,7 @@ const setupUpdates = () => {
       channel: "HangarChannel",
     },
     {
-      received: debounce(fetch, 500),
+      received: () => debounce(fetch, 500),
     }
   );
 };

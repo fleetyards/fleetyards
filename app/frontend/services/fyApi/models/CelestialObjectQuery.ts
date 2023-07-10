@@ -5,9 +5,13 @@
 
 export type CelestialObjectQuery = {
     starsystemEq?: string;
-    main?: boolean;
     nameCont?: string;
     nameIn?: Array<string>;
     searchCont?: string;
+    parentIdNull?: boolean;
+    /**
+     * @deprecated
+     */
+    main?: boolean;
 };
 

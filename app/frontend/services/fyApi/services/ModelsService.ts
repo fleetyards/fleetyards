@@ -33,7 +33,7 @@ export class ModelsService {
         page,
         perPage,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Models> {
         return this.httpRequest.request({
@@ -188,7 +188,7 @@ export class ModelsService {
         page,
         perPage,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<CargoOptions> {
         return this.httpRequest.request({
@@ -212,7 +212,7 @@ export class ModelsService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: ModelQuery,
         cacheId?: string,
@@ -234,7 +234,7 @@ export class ModelsService {
      * @returns ModelComplete successful
      * @throws ApiError
      */
-    public detail({
+    public get({
         slug,
     }: {
         /**
@@ -298,7 +298,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Images> {
         return this.httpRequest.request({
@@ -331,7 +331,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Videos> {
         return this.httpRequest.request({
@@ -364,7 +364,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Models> {
         return this.httpRequest.request({
@@ -397,7 +397,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Models> {
         return this.httpRequest.request({
@@ -455,7 +455,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<ModelModules> {
         return this.httpRequest.request({
@@ -488,7 +488,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<ModelModulePackages> {
         return this.httpRequest.request({

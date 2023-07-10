@@ -48,7 +48,7 @@ export class ModelsCollection extends BaseCollection {
 
       this.records = response.items;
       this.loaded = true;
-      this.setPages(response.meta.pagination);
+      this.setPages(response.meta?.pagination);
     } catch (error) {
       console.error(error);
     }
@@ -63,7 +63,7 @@ export class ModelsCollection extends BaseCollection {
     }
 
     try {
-      this.record = await models.detail({ slug });
+      this.record = await models.get({ slug });
     } catch (error) {
       console.error(error);
     }

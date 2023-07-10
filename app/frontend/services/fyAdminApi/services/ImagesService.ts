@@ -25,7 +25,7 @@ export class ImagesService {
         perPage,
         q,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: ImageQuery,
     }): CancelablePromise<Images> {

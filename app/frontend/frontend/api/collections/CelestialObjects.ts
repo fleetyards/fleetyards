@@ -15,13 +15,11 @@ const { celestialObjects } = useApiClient();
 export class CelestialObjectCollection extends BaseCollection {
   records: CelestialObjectMinimal[] = [];
 
-  record: CelestialObjectMinimal | null = null;
+  record?: CelestialObjectMinimal;
 
-  params: CelestialObjectParams | null = null;
+  params?: CelestialObjectParams;
 
-  async findAll(
-    params: CelestialObjectParams
-  ): Promise<CelestialObjectMinimal[]> {
+  async list(params: CelestialObjectParams): Promise<CelestialObjectMinimal[]> {
     if (prefetch("celestialObjects")) {
       this.records = prefetch("celestialObjects");
       return this.records;
@@ -44,6 +42,21 @@ export class CelestialObjectCollection extends BaseCollection {
     }
 
     return this.records;
+  }
+
+  async get(slug: string): Promise<CelestialObjectMinimal | undefined> {
+    if (prefetch("celestialObject")) {
+      this.record = prefetch("celestialObject");
+      return this.record;
+    }
+
+    try {
+      this.record = await celestialObjects.get({ slug });
+    } catch (error) {
+      console.error(error);
+    }
+
+    return this.record;
   }
 }
 

@@ -79,6 +79,7 @@ export default function getStorePlugins() {
         "publicFleet.fleetchartScale",
         "publicFleet.fleetchartColored",
         "shoppingCart.items",
+        "stations.perPage",
       ],
     }),
   ];
