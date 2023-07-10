@@ -26,9 +26,9 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public withDocks({
-        page,
-        perPage,
+    public modelsWithDocks({
+        page = '1',
+        perPage = '30',
     }: {
         page?: string,
         perPage?: string,
@@ -48,7 +48,7 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public unschduled(): CancelablePromise<any> {
+    public modelsUnschduled(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/unscheduled',
@@ -60,7 +60,7 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public latest(): CancelablePromise<any> {
+    public modelsLatest(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/latest',
@@ -72,7 +72,7 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public slugs(): CancelablePromise<any> {
+    public modelsSlugs(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/slugs',
@@ -84,9 +84,9 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public updated({
+    public modelsUpdated({
         from,
-        to,
+        to = 'now',
     }: {
         from?: string,
         to?: string,
@@ -121,7 +121,7 @@ export class ModelsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public filters(): CancelablePromise<Array<FilterOption>> {
+    public modelFilters(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/filters',
@@ -133,7 +133,7 @@ export class ModelsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public classifications(): CancelablePromise<Array<FilterOption>> {
+    public modelClassifications(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/classifications',
@@ -145,7 +145,7 @@ export class ModelsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public productionStates(): CancelablePromise<Array<FilterOption>> {
+    public modelProductionStates(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/production-states',
@@ -157,7 +157,7 @@ export class ModelsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public focus(): CancelablePromise<Array<FilterOption>> {
+    public modelFocus(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/focus',
@@ -169,7 +169,7 @@ export class ModelsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public sizes(): CancelablePromise<Array<FilterOption>> {
+    public modelSizes(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/sizes',
@@ -182,8 +182,8 @@ export class ModelsService {
      * @throws ApiError
      */
     public cargoOptions({
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
     }: {
         page?: string,
         perPage?: string,
@@ -203,9 +203,9 @@ export class ModelsService {
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public models({
+        page = '1',
+        perPage = '30',
         q,
         cacheId,
     }: {
@@ -231,7 +231,7 @@ export class ModelsService {
      * @returns ModelComplete successful
      * @throws ApiError
      */
-    public get({
+    public model({
         slug,
     }: {
         /**
@@ -256,7 +256,7 @@ export class ModelsService {
      * @returns ModelHardpoint successful
      * @throws ApiError
      */
-    public hardpoints({
+    public modelHardpoints({
         slug,
         source,
     }: {
@@ -286,10 +286,10 @@ export class ModelsService {
      * @returns ImageMinimal successful
      * @throws ApiError
      */
-    public images({
+    public modelImages({
         slug,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
     }: {
         /**
          * Model slug
@@ -319,10 +319,10 @@ export class ModelsService {
      * @returns VideoMinimal successful
      * @throws ApiError
      */
-    public videos({
+    public modelVideos({
         slug,
-        page,
-        perPage,
+        page = '1',
+        perPage = '8',
     }: {
         /**
          * Model slug
@@ -352,10 +352,10 @@ export class ModelsService {
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public variants({
+    public modelVariants({
         slug,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
     }: {
         /**
          * Model slug
@@ -385,10 +385,10 @@ export class ModelsService {
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public loaners({
+    public modelLoaners({
         slug,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
     }: {
         /**
          * Model slug
@@ -418,7 +418,7 @@ export class ModelsService {
      * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public snubCrafts({
+    public modelSnubCrafts({
         slug,
     }: {
         /**
@@ -443,10 +443,10 @@ export class ModelsService {
      * @returns any successful
      * @throws ApiError
      */
-    public modules({
+    public modelModules({
         slug,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
     }: {
         /**
          * Model slug
@@ -476,10 +476,10 @@ export class ModelsService {
      * @returns ModelModulePackages successful
      * @throws ApiError
      */
-    public modulePackages({
+    public modelModulePackages({
         slug,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
     }: {
         /**
          * Model slug
@@ -509,7 +509,7 @@ export class ModelsService {
      * @returns ModelUpgradeMinimal successful
      * @throws ApiError
      */
-    public upgrades({
+    public modelUpgrades({
         slug,
     }: {
         /**
@@ -534,7 +534,7 @@ export class ModelsService {
      * @returns ModelPaintMinimal successful
      * @throws ApiError
      */
-    public paints({
+    public modelPaints({
         slug,
     }: {
         /**
@@ -560,7 +560,7 @@ export class ModelsService {
      * @returns void
      * @throws ApiError
      */
-    public storeImage({
+    public modelStoreImage({
         slug,
     }: {
         /**
@@ -586,7 +586,7 @@ export class ModelsService {
      * @returns void
      * @throws ApiError
      */
-    public fleetchartImage({
+    public modelFleetchartImage({
         slug,
     }: {
         /**

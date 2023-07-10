@@ -17,7 +17,7 @@ export class VehiclesPublicService {
      * @returns VehicleMinimalPublic successful
      * @throws ApiError
      */
-    public public({
+    public getVehicles({
         username,
     }: {
         /**
@@ -40,7 +40,7 @@ export class VehiclesPublicService {
      * @returns VehicleMinimalPublic successful
      * @throws ApiError
      */
-    public publicFleetchart({
+    public getVehiclesFleetchart({
         username,
     }: {
         /**
@@ -63,7 +63,7 @@ export class VehiclesPublicService {
      * @returns any successful
      * @throws ApiError
      */
-    public publicQuickStats({
+    public getVehiclesQuickStats({
         username,
     }: {
         /**

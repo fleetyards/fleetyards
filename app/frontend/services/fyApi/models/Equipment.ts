@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 import type { Manufacturer } from './Manufacturer';
+import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
 
 export type Equipment = {
@@ -24,7 +25,9 @@ export type Equipment = {
     itemType?: string | null;
     itemTypeLabel?: string | null;
     manufacturer?: Manufacturer | null;
-    media: any;
+    media: {
+        storeImage?: MediaImage | null;
+    };
     range?: string | null;
     rateOfFire?: string | null;
     size?: string | null;

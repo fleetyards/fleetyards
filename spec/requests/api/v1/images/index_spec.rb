@@ -7,13 +7,14 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/images" do
     get("Images list") do
-      operationId "list"
+      operationId "images"
       tags "Images"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false,
-        default: Image.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {
+        type: :string, default: Image.default_per_page
+      }, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,
@@ -78,13 +79,17 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/images/random" do
     get("Images random list") do
-      operationId "random"
+      operationId "imagesRandom"
       description "Get a randomized List of 14 Images"
       tags "Images"
       produces "application/json"
 
-      parameter name: "limit", in: :query, type: :number, required: false,
-        minimum: 1, maximum: Image.default_per_page, default: 14
+      parameter name: "limit", in: :query, schema: {
+        type: :number,
+        minimum: 1,
+        maximum: Image.default_per_page,
+        default: 14
+      }, required: false
 
       response(200, "successful") do
         schema type: :array,

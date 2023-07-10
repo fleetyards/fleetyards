@@ -13,7 +13,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/bulk" do
     put("Update multiple vehicles") do
-      operationId "updateBulk"
+      operationId "vehicleUpdateBulk"
       tags "Vehicles"
       consumes "application/json"
       produces "application/json"
@@ -45,7 +45,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/destroy-bulk" do
     put("Destroy multiple Vehicles") do
-      operationId "destroyBulk"
+      operationId "vehicleDestroyBulk"
       tags "Vehicles"
       consumes "application/json"
       produces "application/json"

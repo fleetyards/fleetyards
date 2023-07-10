@@ -13,14 +13,13 @@ RSpec.describe "admin/api/v1/stations", type: :request, swagger_doc: "admin/v1/s
 
   path "/stations" do
     get("Stations list") do
-      operationId "list"
+      operationId "stations"
       description "Get a List of Images"
       produces "application/json"
       tags "Stations"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false,
-        default: Image.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,

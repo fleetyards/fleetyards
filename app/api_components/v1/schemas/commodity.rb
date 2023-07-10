@@ -23,7 +23,10 @@ module V1
           type: {type: :string, nullable: true},
           typeLabel: {type: :string, nullable: true},
           media: {
-            storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+            type: :object,
+            properties: {
+              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+            }
           },
 
           storeImage: {type: :string, format: :uri, deprecated: true},

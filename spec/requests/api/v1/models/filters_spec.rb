@@ -7,7 +7,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/filters" do
     get("Model Filters") do
-      operationId "filters"
+      operationId "modelFilters"
       tags "Models"
       produces "application/json"
 
@@ -29,7 +29,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/classifications" do
     get("Model classifications") do
-      operationId "classifications"
+      operationId "modelClassifications"
       tags "Models"
       produces "application/json"
 
@@ -51,7 +51,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/production-states" do
     get("Model Production states") do
-      operationId "productionStates"
+      operationId "modelProductionStates"
       tags "Models"
       produces "application/json"
 
@@ -73,7 +73,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/focus" do
     get("Model focus") do
-      operationId "focus"
+      operationId "modelFocus"
       tags "Models"
       produces "application/json"
 
@@ -95,7 +95,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/sizes" do
     get("Model Sizes") do
-      operationId "sizes"
+      operationId "modelSizes"
       tags "Models"
       produces "application/json"
 
@@ -121,9 +121,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false,
-        default: Model.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
 
       response(200, "successful") do
         after do |example|

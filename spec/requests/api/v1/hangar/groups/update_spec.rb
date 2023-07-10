@@ -16,7 +16,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
     parameter name: "id", in: :path, description: "HangarGroup ID", schema: {type: :string, format: :uuid}, required: true
 
     put("HangarGroup Update") do
-      operationId "update"
+      operationId "hangarGroupUpdate"
       tags "HangarGroups"
       consumes "application/json"
       produces "application/json"

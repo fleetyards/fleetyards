@@ -13,7 +13,7 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Shop slug", required: true
 
     get("Shop Detail") do
-      operationId "get"
+      operationId "shop"
       tags "Shops"
       produces "application/json"
 

@@ -18,7 +18,7 @@ export class ShopsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public types(): CancelablePromise<Array<FilterOption>> {
+    public shopsTypes(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/shops/shop-types',
@@ -30,9 +30,9 @@ export class ShopsService {
      * @returns ShopMinimal successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public shops({
+        page = '1',
+        perPage = '30',
         q,
         cacheId,
     }: {
@@ -58,7 +58,7 @@ export class ShopsService {
      * @returns ShopMinimal successful
      * @throws ApiError
      */
-    public get({
+    public shop({
         stationSlug,
         slug,
     }: {

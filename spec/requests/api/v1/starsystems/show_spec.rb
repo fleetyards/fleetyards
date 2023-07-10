@@ -11,7 +11,7 @@ RSpec.describe "api/v1/starsystems", type: :request, swagger_doc: "v1/schema.yam
     parameter name: "slug", in: :path, description: "Starsystem slug", schema: {type: :string}, required: true
 
     get("Starsystem Detail") do
-      operationId "get"
+      operationId "starsystem"
       tags "Starsystems"
       produces "application/json"
 

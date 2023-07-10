@@ -20,7 +20,7 @@ export class StationsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public types(): CancelablePromise<Array<FilterOption>> {
+    public stationsTypes(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/station-types',
@@ -32,7 +32,7 @@ export class StationsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public shipSizes(): CancelablePromise<Array<FilterOption>> {
+    public stationsShipSizes(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/ship-sizes',
@@ -44,7 +44,7 @@ export class StationsService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public classifications(): CancelablePromise<Array<FilterOption>> {
+    public stationsClassifications(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/classifications',
@@ -56,9 +56,9 @@ export class StationsService {
      * @returns StationMinimal successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public stations({
+        page = '1',
+        perPage = '10',
         q,
         cacheId,
     }: {
@@ -84,7 +84,7 @@ export class StationsService {
      * @returns StationComplete successful
      * @throws ApiError
      */
-    public get({
+    public station({
         slug,
     }: {
         /**
@@ -109,10 +109,10 @@ export class StationsService {
      * @returns ImageComplete successful
      * @throws ApiError
      */
-    public images({
+    public stationImages({
         slug,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
     }: {
         /**
          * Station slug

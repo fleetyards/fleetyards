@@ -14,23 +14,23 @@ paths:
   "/images":
     get:
       summary: Images list
-      operationId: list
+      operationId: images
       description: Get a List of Images
       tags:
       - Images
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -132,23 +132,23 @@ paths:
   "/stations":
     get:
       summary: Stations list
-      operationId: list
+      operationId: stations
       description: Get a List of Images
       tags:
       - Stations
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:

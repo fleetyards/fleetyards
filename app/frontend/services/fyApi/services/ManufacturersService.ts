@@ -30,9 +30,9 @@ export class ManufacturersService {
      * @returns ManufacturerMinimal successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public manufacturers({
+        page = '1',
+        perPage = '30',
         q,
         cacheId,
     }: {

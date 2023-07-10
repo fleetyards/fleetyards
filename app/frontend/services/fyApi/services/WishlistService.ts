@@ -18,7 +18,7 @@ export class WishlistService {
      * @returns void
      * @throws ApiError
      */
-    public destroy(): CancelablePromise<void> {
+    public destroyWishlist(): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/wishlist',
@@ -33,9 +33,9 @@ export class WishlistService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public get({
-        page,
-        perPage,
+    public getWishlist({
+        page = '1',
+        perPage = '30',
         q,
     }: {
         page?: string,
@@ -61,7 +61,7 @@ export class WishlistService {
      * @returns VehicleExport successful
      * @throws ApiError
      */
-    public export(): CancelablePromise<Array<VehicleExport>> {
+    public exportWishlist(): CancelablePromise<Array<VehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/wishlist/export',
@@ -76,7 +76,7 @@ export class WishlistService {
      * @returns string successful
      * @throws ApiError
      */
-    public items(): CancelablePromise<Array<string>> {
+    public wishlistItems(): CancelablePromise<Array<string>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/wishlist/items',

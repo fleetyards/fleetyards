@@ -15,7 +15,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
     parameter name: "id", in: :path, description: "id", schema: {type: :string, format: :uuid}
 
     put("Update Vehicle") do
-      operationId "update"
+      operationId "updateVehicle"
       tags "Vehicles"
       consumes "application/json"
       produces "application/json"

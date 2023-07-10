@@ -17,7 +17,7 @@ export class PublicHangarStatsService {
      * @returns HangarStatsPublic successful
      * @throws ApiError
      */
-    public get({
+    public publicHangarStats({
         username,
         q,
     }: {

@@ -18,9 +18,9 @@ export class StationsService {
      * @returns Stations successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public stations({
+        page = '1',
+        perPage = '30',
         q,
     }: {
         page?: string,

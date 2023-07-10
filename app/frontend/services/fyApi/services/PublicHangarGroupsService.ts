@@ -17,7 +17,7 @@ export class PublicHangarGroupsService {
      * @returns HangarGroupMinimalPublic successful
      * @throws ApiError
      */
-    public list({
+    public getHangarGroups({
         username,
     }: {
         /**
@@ -39,7 +39,7 @@ export class PublicHangarGroupsService {
      * @returns HangarGroupMinimalPublic successful
      * @throws ApiError
      */
-    public list1({
+    public publicHangarGroups({
         username,
     }: {
         /**

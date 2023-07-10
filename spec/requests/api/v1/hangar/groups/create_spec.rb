@@ -13,7 +13,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
 
   path "/hangar/groups" do
     post("HangarGroup create") do
-      operationId "create"
+      operationId "hangarGroupCreate"
       tags "HangarGroups"
       consumes "application/json"
       produces "application/json"

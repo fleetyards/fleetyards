@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
 
 export type Commodity = {
@@ -15,7 +16,9 @@ export type Commodity = {
     };
     type?: string | null;
     typeLabel?: string | null;
-    media: any;
+    media: {
+        storeImage?: MediaImage | null;
+    };
     /**
      * @deprecated
      */

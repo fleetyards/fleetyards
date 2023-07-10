@@ -11,7 +11,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
     parameter name: "slug", in: :path, description: "Station slug", schema: {type: :string}, required: true
 
     get("Station Detail") do
-      operationId "get"
+      operationId "station"
       tags "Stations"
       produces "application/json"
 
@@ -37,13 +37,12 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
     parameter name: "slug", in: :path, description: "Station slug", schema: {type: :string}, required: true
 
     get("Station Images") do
-      operationId "images"
+      operationId "stationImages"
       tags "Stations"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false,
-        default: Image.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
 
       response(200, "successful") do
         schema type: :array, items: {"$ref" => "#/components/schemas/ImageComplete"}

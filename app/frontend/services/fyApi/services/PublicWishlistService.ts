@@ -19,8 +19,8 @@ export class PublicWishlistService {
      */
     public get({
         username,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
         q,
     }: {
         username: string,

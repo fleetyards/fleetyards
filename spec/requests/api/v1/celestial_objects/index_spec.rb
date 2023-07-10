@@ -7,14 +7,13 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
 
   path "/celestial-objects" do
     get("Celestial Objects List") do
-      operationId "list"
+      operationId "celestialObjects"
       description "Get a List of Celestial Objects"
       tags "CelestialObjects"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false,
-        default: CelestialObject.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: CelestialObject.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,

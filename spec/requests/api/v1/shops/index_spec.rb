@@ -7,13 +7,12 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/shops" do
     get("Shops list") do
-      operationId "list"
+      operationId "shops"
       tags "Shops"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false,
-        default: Shop.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Shop.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,

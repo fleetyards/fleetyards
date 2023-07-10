@@ -5,7 +5,7 @@ require "swagger_helper"
 RSpec.describe "api/v1/stats", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/stats/quick-stats" do
     get("Stats") do
-      operationId "get"
+      operationId "stats"
       tags "Stats"
       produces "application/json"
 

@@ -89,7 +89,7 @@ export class StatsService {
      * @returns Stats successful
      * @throws ApiError
      */
-    public get(): CancelablePromise<Stats> {
+    public stats(): CancelablePromise<Stats> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stats/quick-stats',

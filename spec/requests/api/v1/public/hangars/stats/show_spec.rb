@@ -11,7 +11,7 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
     parameter name: "username", in: :path, type: :string, description: "username"
 
     get("Public Hangar Stats") do
-      operationId "get"
+      operationId "publicHangarStats"
       tags "PublicHangarStats"
       produces "application/json"
 
