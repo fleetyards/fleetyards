@@ -194,7 +194,4 @@ group :development, :test do
   gem "pry-byebug"
 
   gem "knapsack"
-
-  gem "rspec-rails", require: false
-  gem "rswag-specs", require: false
 end
