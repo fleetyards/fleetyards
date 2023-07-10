@@ -136,6 +136,10 @@ gem "flipper"
 gem "flipper-ui"
 gem "flipper-active_record"
 
+# openapi
+gem "rspec-rails", require: false
+gem "rswag-specs", require: false
+
 group :development do
   gem "annotate"
 
