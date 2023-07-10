@@ -20,13 +20,13 @@ export class AdminStationsCollection extends BaseCollection {
     this.params = params;
 
     try {
-      const response = await stations.list({
+      const response = await stations.stations({
         q: params.filters,
-        page: params.page,
+        page: String(params.page),
       });
 
       this.records = response.items;
-      this.setPages(response.meta.pagination);
+      this.setPages(response.meta?.pagination);
     } catch (error) {
       console.error(error);
     }
