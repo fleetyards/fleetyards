@@ -61,9 +61,11 @@ gem "redis-store", github: "PikachuEXE/redis-store", branch: "fix/redis-client-c
 
 gem "ransack", "~> 2.4"
 
+gem "deep_merge", require: "deep_merge/rails_compat"
 gem "jbuilder"
 gem "oj"
 gem "responders"
+gem "rswag-api"
 
 gem "dalli"
 
@@ -182,8 +184,13 @@ group :development, :test do
 
   gem "bundler-audit"
 
+  gem "factory_bot_rails"
+
   gem "byebug", platform: :mri
   gem "pry-byebug"
 
   gem "knapsack"
+
+  gem "rspec-rails", require: false
+  gem "rswag-specs", require: false
 end

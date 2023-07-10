@@ -18,6 +18,16 @@ module Api
           .per(per_page(Component))
       end
 
+      def class_filters
+        authorize! :index, :api_components
+        @class_filters = Component.class_filters
+      end
+
+      def item_type_filters
+        authorize! :index, :api_components
+        @item_type_filters = Component.item_type_filters
+      end
+
       private def components_query_params
         @components_query_params ||= query_params(:name_cont, id_in: [], name_in: [])
       end

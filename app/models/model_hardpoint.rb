@@ -108,6 +108,10 @@ class ModelHardpoint < ApplicationRecord
     ModelHardpoint.human_enum_name(:category, category)
   end
 
+  def sub_category_label
+    ModelHardpoint.human_enum_name(:sub_category, sub_category)
+  end
+
   def size_label
     ModelHardpoint.human_enum_name(:size, size)
   end

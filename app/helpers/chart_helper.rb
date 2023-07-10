@@ -11,6 +11,9 @@ module ChartHelper
       if index.zero?
         point[:selected] = true
         point[:sliced] = true
+      else
+        point[:selected] = false
+        point[:sliced] = false
       end
       point
     end

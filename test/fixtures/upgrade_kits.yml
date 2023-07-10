@@ -9,10 +9,10 @@
 #  model_upgrade_id :uuid
 #
 
-one:
-  model_id: 
-  model_upgrade_id: 
+andromeda_upgrade_kit_one:
+  model: andromeda
+  model_upgrade: andromeda_upgrade_one
 
-two:
-  model_id: 
-  model_upgrade_id: 
+andromeda_upgrade_kit_two:
+  model: andromeda
+  model_upgrade: andromeda_upgrade_two

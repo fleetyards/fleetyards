@@ -24,6 +24,7 @@ module Api
         end
 
         scope = loaner_included?(scope)
+        scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
         vehicle_query_params["sorts"] = sort_by_name(["flagship desc", "name asc", "model_name asc"], "model_name asc")
 
@@ -124,12 +125,6 @@ module Api
         return if errors.blank?
 
         render json: ValidationError.new("vehicle.move_all_ingame_to_wish_list", errors:), status: :bad_request
-      end
-
-      # DEPRECATED
-      def hangar
-        authorize! :index, :api_hangar
-        @vehicles = current_user.vehicles.where(loaner: false).purchased.visible
       end
 
       private def import_params

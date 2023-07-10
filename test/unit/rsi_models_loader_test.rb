@@ -20,10 +20,10 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       expectations = {
         hardpoints: 5901,
-        components: 137,
-        models: 178,
+        components: 139,
+        models: 179,
         paints: 17,
-        manufacturers: 19
+        manufacturers: 20
       }
 
       assert_equal(expectations,
@@ -100,9 +100,15 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       model = Model.find_by(name: "300i")
 
-      assert_equal(34, ModelHardpoint.where(model_id: model.id).count)
-      assert_equal(6, Component.count)
-      assert_equal(0, ModelHardpoint.where(model_id: model.id).deleted.count)
+      assert_equal([
+        34,
+        8,
+        0
+      ], [
+        ModelHardpoint.where(model_id: model.id).count,
+        Component.count,
+        ModelHardpoint.where(model_id: model.id).deleted.count
+      ])
     end
   end
 end

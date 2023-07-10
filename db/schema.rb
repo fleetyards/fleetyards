@@ -106,8 +106,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.text "description"
     t.boolean "hidden", default: true
     t.string "orbit_period"
-    t.boolean "habitable"
-    t.boolean "fairchanceact"
+    t.boolean "habitable", default: false
+    t.boolean "fairchanceact", default: false
     t.integer "sensor_population"
     t.integer "sensor_economy"
     t.integer "sensor_danger"
@@ -537,6 +537,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.integer "side_view_width"
   end
 
+  create_table "model_snub_crafts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "model_id", null: false
+    t.uuid "snub_craft_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "model_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -694,7 +701,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.uuid "model_id"
     t.text "body"
     t.text "description"
-    t.boolean "released"
+    t.boolean "released", default: false
     t.string "image"
     t.integer "tasks"
     t.integer "inprogress"
@@ -702,7 +709,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "store_image"
-    t.boolean "active"
+    t.boolean "active", default: false
     t.boolean "committed", default: false
   end
 
@@ -760,7 +767,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.boolean "rental", default: false
     t.boolean "buying", default: false
     t.boolean "selling", default: false
-    t.boolean "refinery_terminal"
+    t.boolean "refinery_terminal", default: false
     t.text "description"
     t.string "location"
     t.index ["station_id"], name: "index_shops_on_station_id"
@@ -816,8 +823,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.uuid "celestial_object_id"
     t.integer "status"
     t.integer "images_count", default: 0
-    t.boolean "cargo_hub"
-    t.boolean "refinery"
+    t.boolean "cargo_hub", default: false
+    t.boolean "refinery", default: false
     t.integer "classification"
     t.boolean "habitable", default: true
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
@@ -961,6 +968,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.integer "bought_via", default: 0
     t.string "rsi_pledge_id"
     t.datetime "rsi_pledge_synced_at"
+    t.string "slug"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"

@@ -21,6 +21,7 @@ hangargroupone:
   name: Group One
   slug: group-one
   color: '#330000'
+  public: true,
   user: data
 
 hangargrouptwo:

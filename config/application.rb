@@ -66,6 +66,7 @@ module Fleetyards
     config.app = config_for("app/main")
     config.maintainer = config_for("app/maintainer")
     config.rsi = config_for("app/rsi")
+    config.api_schema = config_for("app/api_schema")
     config.redis = config_for(:redis)
     config.basic_auth = config_for(:basic_auth)
 

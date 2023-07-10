@@ -16,9 +16,10 @@ module Pagination
       self: page_link(nil)
     }
 
-    if per_page_params != "all"
-      scope = name
-      scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
+    scope = name
+    scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
+
+    if per_page_params != "all" && instance_variable_get("@#{scope}").present?
       links = links.merge(pagination_links(instance_variable_get("@#{scope}")))
     end
 

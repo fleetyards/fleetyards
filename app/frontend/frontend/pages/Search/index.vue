@@ -128,7 +128,7 @@ const historyVisible = ref(false);
 
 const route = useRoute();
 
-const { filter } = useFilters("q");
+const { filter } = useFilters();
 
 const filters = computed<SearchParams>(() => ({
   filters: route.query.q as SearchFilter,

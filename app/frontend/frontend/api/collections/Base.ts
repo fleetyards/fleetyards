@@ -7,7 +7,7 @@ export default class BaseCollection {
 
   loaded = false;
 
-  setPages(meta: Pagination | null) {
+  setPages(meta?: Pagination) {
     if (!meta) {
       this.currentPage = 1;
       this.totalPages = null;

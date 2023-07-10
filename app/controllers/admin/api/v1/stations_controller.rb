@@ -16,10 +16,10 @@ module Admin
 
           station_query_params["sorts"] = sort_by_name(["station_type asc", "name asc"])
 
-          @q = Station.visible
+          q = Station.visible
             .ransack(station_query_params)
 
-          @stations = @q.result(distinct: true)
+          @stations = q.result(distinct: true)
             .page(params[:page])
             .per(per_page(Station))
         end
@@ -47,7 +47,7 @@ module Admin
 
         private def station_query_params
           @station_query_params ||= query_params(
-            :name_cont, name_in: []
+            :search_cont, :name_cont, name_in: []
           )
         end
       end

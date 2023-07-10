@@ -24,10 +24,9 @@
 #  model_id           :uuid
 #
 
-one:
-  model_id: 
-  name: MyString
-
-two:
-  model_id: 
-  name: MyString
+galaxy_complete:
+  model: galaxy
+  name: Complete Pack
+  hidden: false
+  model_modules:
+    - galaxy_cargo

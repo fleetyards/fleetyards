@@ -22,3 +22,7 @@ origin:
 rsi:
   name: "RSI"
   slug: "rsi"
+
+kastak:
+  name: "Kastak Arms"
+  slug: "kastak-arms"

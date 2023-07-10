@@ -49,6 +49,10 @@ jobs:
     needs: ruby-setup
     uses: ./.github/workflows/ruby-tests.job.yml
 
+  ruby-api-tests:
+    needs: ruby-setup
+    uses: ./.github/workflows/ruby-api-tests.job.yml
+
   seeds:
     needs: ruby-setup
     uses: ./.github/workflows/seeds.job.yml
@@ -68,6 +72,7 @@ jobs:
     needs: [
         ruby-lint,
         ruby-tests,
+        ruby-api-tests,
         # js-tests,
         js-lint,
         js-prettier,

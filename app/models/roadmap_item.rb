@@ -5,7 +5,7 @@
 # Table name: roadmap_items
 #
 #  id                  :uuid             not null, primary key
-#  active              :boolean
+#  active              :boolean          default(FALSE)
 #  body                :text
 #  committed           :boolean          default(FALSE)
 #  completed           :integer
@@ -15,7 +15,7 @@
 #  name                :string
 #  release             :string
 #  release_description :text
-#  released            :boolean
+#  released            :boolean          default(FALSE)
 #  store_image         :string
 #  tasks               :integer
 #  created_at          :datetime         not null

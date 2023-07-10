@@ -12,6 +12,7 @@ module Api
         scope = current_user.vehicles.visible.purchased.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
 
         scope = loaner_included?(scope)
+        scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
         @q = scope.ransack(vehicle_query_params)
 

@@ -18,10 +18,13 @@ module Api
 
           vehicle_query_params["sorts"] = sort_by_name(["flagship desc", "name asc", "model_name asc"], "model_name asc")
 
-          @q = user.vehicles
+          scope = user.vehicles
             .purchased
             .public
-            .ransack(vehicle_query_params)
+
+          scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
+
+          @q = scope.ransack(vehicle_query_params)
 
           result = @q.result(distinct: true)
             .includes(:model)
@@ -46,8 +49,6 @@ module Api
           @vehicles = @q.result(distinct: true)
             .includes(:model)
             .joins(:model)
-
-          render "api/v1/public/hangars/show"
         end
       end
     end

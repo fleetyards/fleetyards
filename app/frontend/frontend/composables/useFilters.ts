@@ -22,7 +22,7 @@ const getQuery = (formData: TFilterData) => {
   return query;
 };
 
-export const useFilters = (routeQueryKey = "query") => {
+export const useFilters = (routeQueryKey = "q") => {
   const route = useRoute();
 
   const routeQuery = computed(

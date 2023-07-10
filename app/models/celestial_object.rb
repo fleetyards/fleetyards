@@ -8,8 +8,8 @@
 #  code              :string
 #  description       :text
 #  designation       :string
-#  fairchanceact     :boolean
-#  habitable         :boolean
+#  fairchanceact     :boolean          default(FALSE)
+#  habitable         :boolean          default(FALSE)
 #  hidden            :boolean          default(TRUE)
 #  last_updated_at   :datetime
 #  name              :string
@@ -92,6 +92,8 @@ class CelestialObject < ApplicationRecord
   end
 
   def location_label
-    I18n.t("activerecord.attributes.celestial_object.location_prefix.default", starsystem: starsystem.name)
+    if starsystem.present?
+      I18n.t("activerecord.attributes.celestial_object.location_prefix.default", starsystem: starsystem.name)
+    end
   end
 end

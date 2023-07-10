@@ -147,8 +147,7 @@ class Model < ApplicationRecord
 
   paginates_per 30
   max_paginates_per 240
-
-  PAGINATION_OPTIONS = [15, 30, 60, 120, 240].freeze
+  per_page_steps [15, 30, 60, 120, 240]
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code],
     word_start: %i[name manufacturer_name]
@@ -219,6 +218,14 @@ class Model < ApplicationRecord
   has_many :videos,
     dependent: :destroy
 
+  has_many :model_snub_crafts,
+    dependent: :destroy,
+    inverse_of: :model
+
+  has_many :snub_crafts,
+    through: :model_snub_crafts,
+    source: :snub_craft
+
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   has_many :docks, dependent: :destroy
@@ -255,6 +262,8 @@ class Model < ApplicationRecord
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
+
+  validates :name, presence: true, uniqueness: true
 
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug
@@ -389,15 +398,6 @@ class Model < ApplicationRecord
 
   def variants
     Model.where(rsi_chassis_id:).where.not(id:).where.not(rsi_chassis_id: nil)
-  end
-
-  def snub_crafts
-    Model.where(
-      "length <= :length and beam <= :beam and height <= :height",
-      length: docks.map(&:length).max,
-      beam: docks.map(&:beam).max,
-      height: docks.map(&:height).max
-    )
   end
 
   def in_hangar(user)

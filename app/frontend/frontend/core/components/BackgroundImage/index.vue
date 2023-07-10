@@ -15,7 +15,8 @@ import { useRoute } from "vue-router/composables";
 import { useWebpCheck } from "@/frontend/composables/useWebpCheck";
 
 const backgroundImageFallback = "bg-6";
-const uuid = uuidv4();
+
+const uuid = ref<string>(uuidv4());
 
 const { supported: webpSupported } = useWebpCheck();
 
@@ -27,6 +28,10 @@ const backgroundImageKey = computed(() => {
   }
 
   return backgroundImageFallback;
+});
+
+onMounted(() => {
+  uuid.value = uuidv4();
 });
 </script>
 

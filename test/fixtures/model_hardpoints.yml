@@ -34,7 +34,9 @@ one:
   key: MyString
   hardpoint_type: 1
   group: 1
-  model_id:
+  category: 1
+  sub_category: 1
+  model: andromeda
 
 two:
   size: 1
@@ -42,4 +44,6 @@ two:
   key: MyString
   hardpoint_type: 1
   group: 1
+  category: 1
+  sub_category: 1
   model_id:

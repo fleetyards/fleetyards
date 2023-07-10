@@ -99,7 +99,7 @@ type Model = {
 };
 
 type ModelsFilter = {
-  nameCont: string;
+  nameCont?: string;
 };
 
 interface ModelParams extends CollectionParams {

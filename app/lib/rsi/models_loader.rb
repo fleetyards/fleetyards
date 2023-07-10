@@ -114,7 +114,7 @@ module Rsi
 
         model = Model.find_by(sc_identifier: sc_identifier) if sc_identifier.present?
       end
-      model = Model.create!(rsi_id: data["id"]) if model.blank?
+      model = Model.create!(rsi_id: data["id"], name: strip_name(data["name"])) if model.blank?
 
       updates = {
         rsi_id: data["id"],

@@ -14,7 +14,10 @@
     "lint:fix": "yarn run lint:js && yarn run lint:prettier:fix",
     "lint:js": "eslint --ext .js,.ts,.vue --fix app/frontend",
     "lint:prettier": "prettier app/frontend --check",
-    "lint:prettier:fix": "prettier app/frontend --write"
+    "lint:prettier:fix": "prettier app/frontend --write",
+    "postinstall": "yarn generate-api-client && yarn generate-admin-api-client",
+    "generate-api-client": "openapi --input ./swagger/v1/schema.yaml --output ./app/frontend/services/fyApi --useOptions --client axios --request app/frontend/services/request.template.ts --name FyApi",
+    "generate-admin-api-client": "openapi --input ./swagger/admin/v1/schema.yaml --output ./app/frontend/services/fyAdminApi --useOptions --client axios --request app/frontend/services/request.template.ts --name FyAdminApi"
   },
   "dependencies": {
     "@rails/actioncable": "7.0.5",
@@ -93,6 +96,7 @@
     "eslint-plugin-vue": "8.4.1",
     "jsdom": "22.1.0",
     "mocha": "10.2.0",
+    "openapi-typescript-codegen": "^0.25.0",
     "postcss": "8.4.24",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-import": "15.1.0",

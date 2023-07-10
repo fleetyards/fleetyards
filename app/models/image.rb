@@ -26,7 +26,22 @@ class Image < ApplicationRecord
 
   belongs_to :gallery, polymorphic: true, touch: true, counter_cache: true
 
+  belongs_to :model,
+    -> { includes(:images).where(images: {gallery_type: "Model"}) },
+    foreign_key: "gallery_id",
+    inverse_of: :images,
+    optional: true
+
+  belongs_to :station,
+    -> { includes(:images).where(images: {gallery_type: "Station"}) },
+    foreign_key: "gallery_id",
+    inverse_of: :images,
+    optional: true
+
   mount_uploader :name, ImageUploader
+
+  ransack_alias :model, :model_slug
+  ransack_alias :station, :station_slug
 
   def self.in_gallery
     where("gallery_id IS NOT ?", nil)

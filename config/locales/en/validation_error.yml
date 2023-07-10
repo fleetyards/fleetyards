@@ -19,6 +19,9 @@ en:
       create: Group could not be created
       destroy: Group could not be destroyed
       update: Group could not be updated
+    image:
+      create: Image could not be created
+      update: Image could not be updated
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
     hangar:

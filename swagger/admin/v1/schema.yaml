@@ -1,0 +1,1109 @@
+---
+openapi: 3.0.1
+info:
+  title: FleetYards.net Command API
+  version: v1
+servers:
+- url: http://admin.fleetyards.test/api/v1
+  description: Dev Server
+- url: http://admin.fleetyards.test/api/v1
+  description: Production Server
+- url: https://admin.fleetyards.dev/api/v1
+  description: Staging Server
+paths:
+  "/images":
+    get:
+      summary: Images list
+      operationId: list
+      description: Get a List of Images
+      tags:
+      - Images
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: '1'
+        schema:
+          type: string
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ImageQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Images"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Image create
+      operationId: create
+      description: Create a new Image
+      tags:
+      - Images
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Image"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/ImageInputCreate"
+  "/images/{id}":
+    parameters:
+    - name: id
+      in: path
+      format: uuid
+      description: id
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Image update
+      tags:
+      - Images
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Image"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                "$ref": "#/components/schemas/ImageInput"
+    delete:
+      summary: Image destroy
+      operationId: destroy
+      tags:
+      - Images
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+        '404':
+          description: not_found
+  "/stations":
+    get:
+      summary: Stations list
+      operationId: list
+      description: Get a List of Images
+      tags:
+      - Stations
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: '1'
+        schema:
+          type: string
+      - name: perPage
+        in: query
+        required: false
+        default: 30
+        schema:
+          type: string
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/StationQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stations"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+components:
+  schemas:
+    BaseList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      title: BaseList
+    ShopTypeEnum:
+      type: string
+      enum:
+      - clothing
+      - armor
+      - weapons
+      - components
+      - armor_and_weapons
+      - superstore
+      - ships
+      - admin
+      - bar
+      - hospital
+      - salvage
+      - resources
+      - rental
+      - computers
+      - blackmarket
+      - mining_equipment
+      - equipment
+      - courier
+      - refinery
+      - pharmacy
+      - cargo
+      - souvenirs
+      - kiosk
+      - ship_customizations
+      title: ShopTypeEnum
+    FieldError:
+      type: object
+      properties:
+        attribute:
+          type: string
+        messages:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StandardError"
+      additionalProperties: false
+      required:
+      - attribute
+      - messages
+      title: FieldError
+    FilterOption:
+      type: object
+      properties:
+        category:
+          type: string
+        icon:
+          type: string
+          nullable: true
+        name:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - value
+      - category
+      title: FilterOption
+    MediaImage:
+      type: object
+      properties:
+        large:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+        small:
+          type: string
+          format: uri
+        source:
+          type: string
+          format: uri
+      additionalProperties: false
+      required:
+      - source
+      - small
+      - medium
+      - large
+      title: MediaImage
+    Meta:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Meta
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+        defaultPerPage:
+          type: integer
+        maxPerPage:
+          type: integer
+        perPageSteps:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: integer
+      additionalProperties: false
+      required:
+      - currentPage
+      - totalPages
+      - defaultPerPage
+      - maxPerPage
+      title: Pagination
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardError
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FieldError"
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: ValidationError
+    CelestialObject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        designation:
+          type: string
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
+            nullable: true
+        storeImage:
+          type: string
+          format: url
+          deprecated: true
+        storeImageLarge:
+          type: string
+          deprecated: true
+        storeImageMedium:
+          type: string
+          deprecated: true
+        storeImageSmall:
+          type: string
+          deprecated: true
+        description:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        habitable:
+          type: boolean
+          nullable: true
+        fairchanceact:
+          type: boolean
+          nullable: true
+        subType:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        danger:
+          type: integer
+          nullable: true
+        economy:
+          type: integer
+          nullable: true
+        population:
+          type: integer
+          nullable: true
+        locationLabel:
+          type: string
+          nullable: true
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+          nullable: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - designation
+      title: CelestialObject
+    Dock:
+      type: object
+      properties:
+        name:
+          type: string
+        group:
+          type: string
+          nullable: true
+        size:
+          type: string
+        sizeLabel:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - size
+      - sizeLabel
+      - type
+      - typeLabel
+      title: Dock
+    DockCount:
+      type: object
+      properties:
+        count:
+          type: integer
+        size:
+          type: string
+        type:
+          type: string
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - size
+      - count
+      - type
+      - typeLabel
+      title: DockCount
+    GalleryTypeEnum:
+      type: string
+      enum:
+      - Model
+      - Station
+      - Album
+      title: GalleryTypeEnum
+    Gallery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: Gallery
+    Habitation:
+      type: object
+      properties:
+        name:
+          type: string
+        habitationName:
+          type: string
+          nullable: true
+        type:
+          type: string
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - type
+      - typeLabel
+      title: Habitation
+    HabitationCount:
+      type: object
+      properties:
+        count:
+          type: integer
+        type:
+          type: string
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - count
+      - type
+      - typeLabel
+      title: HabitationCount
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        caption:
+          type: string
+          nullable: true
+        size:
+          type: number
+        width:
+          type: integer
+          nullable: true
+        height:
+          type: integer
+          nullable: true
+        type:
+          type: string
+        enabled:
+          type: boolean
+        global:
+          type: boolean
+        background:
+          type: boolean
+        url:
+          type: string
+          format: uri
+        smallUrl:
+          type: string
+          format: uri
+        bigUrl:
+          type: string
+          format: uri
+        gallery:
+          "$ref": "#/components/schemas/Gallery"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: Image
+    Images:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Image"
+      additionalProperties: false
+      required:
+      - items
+      title: Images
+    ImageInput:
+      type: object
+      properties:
+        caption:
+          type: string
+        enabled:
+          type: boolean
+        global:
+          type: boolean
+        background:
+          type: boolean
+        galleryId:
+          type: string
+          format: uuid
+        galleryType:
+          "$ref": "#/components/schemas/GalleryTypeEnum"
+      additionalProperties: false
+      title: ImageInput
+    ImageInputCreate:
+      type: object
+      properties:
+        caption:
+          type: string
+        enabled:
+          type: boolean
+        global:
+          type: boolean
+        background:
+          type: boolean
+        galleryId:
+          type: string
+          format: uuid
+        galleryType:
+          "$ref": "#/components/schemas/GalleryTypeEnum"
+        file:
+          type: string
+      additionalProperties: false
+      title: ImageInputCreate
+    ImageQuery:
+      type: object
+      properties:
+        galleryIdEq:
+          type: string
+          format: uuid
+        galleryTypeEq:
+          type: string
+      additionalProperties: false
+      title: ImageQuery
+    StationQuery:
+      type: object
+      properties:
+        searchCont:
+          type: string
+        nameCont:
+          type: string
+        nameIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: StationQuery
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        buying:
+          type: boolean
+        location:
+          type: string
+          nullable: true
+        locationLabel:
+          type: string
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+        refineryTerminal:
+          type: boolean
+        rental:
+          type: boolean
+        selling:
+          type: boolean
+        station:
+          "$ref": "#/components/schemas/StationShop"
+        stationLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ShopTypeEnum"
+        typeLabel:
+          type: string
+        storeImage:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - type
+      - typeLabel
+      - stationLabel
+      - locationLabel
+      - rental
+      - buying
+      - selling
+      - refineryTerminal
+      - media
+      - station
+      title: Shop
+    Starsystem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        danger:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        economy:
+          type: string
+          nullable: true
+        locationLabel:
+          type: string
+          nullable: true
+        mapX:
+          type: string
+          nullable: true
+        mapY:
+          type: string
+          nullable: true
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
+            nullable: true
+        population:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: Starsystem
+    StarsystemMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        danger:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        economy:
+          type: string
+          nullable: true
+        locationLabel:
+          type: string
+          nullable: true
+        mapX:
+          type: string
+          nullable: true
+        mapY:
+          type: string
+          nullable: true
+        media:
+          storeImage:
+            "$ref": "#/components/schemas/MediaImage"
+            nullable: true
+        population:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        celestialObjects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - celestialObjects
+      - createdAt
+      - updatedAt
+      title: StarsystemMinimal
+    Station:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        cargoHub:
+          type: boolean
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        classificationLabel:
+          type: string
+          nullable: true
+        classification:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        dockCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCount"
+        habitable:
+          type: boolean
+        habitationCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HabitationCount"
+        hasImages:
+          type: boolean
+        locationLabel:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        media:
+          type: object
+          properties:
+            backgroundImage:
+              type: string
+              nullable: true
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+        refinery:
+          type: boolean
+        shopListLabel:
+          type: string
+          nullable: true
+        typeLabel:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - habitable
+      - hasImages
+      - refinery
+      - cargoHub
+      - celestialObject
+      - media
+      title: Station
+    StationComplete:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        cargoHub:
+          type: boolean
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        classificationLabel:
+          type: string
+          nullable: true
+        classification:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        dockCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCount"
+        habitable:
+          type: boolean
+        habitationCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HabitationCount"
+        hasImages:
+          type: boolean
+        locationLabel:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        media:
+          type: object
+          properties:
+            backgroundImage:
+              type: string
+              nullable: true
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+        refinery:
+          type: boolean
+        shopListLabel:
+          type: string
+          nullable: true
+        typeLabel:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+        shops:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Shop"
+        docks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Dock"
+        habitations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Habitation"
+        images:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Image"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - habitable
+      - hasImages
+      - refinery
+      - cargoHub
+      - celestialObject
+      - media
+      - createdAt
+      - updatedAt
+      title: StationComplete
+    StationMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        cargoHub:
+          type: boolean
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        classificationLabel:
+          type: string
+          nullable: true
+        classification:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        dockCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCount"
+        habitable:
+          type: boolean
+        habitationCounts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HabitationCount"
+        hasImages:
+          type: boolean
+        locationLabel:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        media:
+          type: object
+          properties:
+            backgroundImage:
+              type: string
+              nullable: true
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+        refinery:
+          type: boolean
+        shopListLabel:
+          type: string
+          nullable: true
+        typeLabel:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - habitable
+      - hasImages
+      - refinery
+      - cargoHub
+      - celestialObject
+      - media
+      - createdAt
+      - updatedAt
+      title: StationMinimal
+    StationShop:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: StationShop
+    Stations:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StationMinimal"
+      additionalProperties: false
+      required:
+      - items
+      title: Stations

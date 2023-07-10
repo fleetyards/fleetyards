@@ -126,115 +126,179 @@
 andromeda:
   name: "Andromeda"
   slug: "andromeda"
-  rsi_id: 45
-  classification: multi_role
-  manufacturer: rsi
-  length: 61.2
   beam: 10.2
-  height: 10.2
-  mass: 1000.02
   cargo: 90
-  min_crew: 3
-  max_crew: 5
-  last_pledge_price: 225
+  classification: multi_role
+  height: 10.2
   hidden: false
   images_count: 0
-  videos_count: 0
+  last_pledge_price: 225
+  length: 61.2
+  manufacturer: rsi
+  mass: 1000.02
+  max_crew: 5
+  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_chassis_id: 45
+  rsi_id: 45
   upgrade_kits_count: 0
+  videos_count: 0
+  fleetchart_image: test.jpg
+
+aquila:
+  name: "Aquila"
+  slug: "aquila"
+  beam: 10.2
+  cargo: 90
+  classification: multi_role
+  height: 10.2
+  hidden: false
+  images_count: 0
+  last_pledge_price: 225
+  length: 61.2
+  manufacturer: rsi
+  mass: 1000.02
+  max_crew: 5
+  min_crew: 3
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  rsi_chassis_id: 45
+  rsi_id: 47
+  upgrade_kits_count: 0
+  videos_count: 0
+
+galaxy:
+  name: "Galaxy"
+  slug: "galaxy"
+  beam: 60
+  cargo: 64
+  classification: multi
+  height: 22
+  hidden: false
+  length: 110
+  manufacturer: rsi
+  max_crew: 6
+  min_crew: 1
+  module_hardpoints_count: 3
+  rsi_id: 244
 
 explorer:
   name: "600i"
   slug: "600i"
-  rsi_id: 141
-  manufacturer: origin
-  classification: explorer
-  length: 20
   cargo: 40
-  min_crew: 2
-  max_crew: 5
-  last_pledge_price: 400
+  classification: explorer
   hidden: false
   images_count: 0
-  videos_count: 0
+  last_pledge_price: 400
+  length: 20
+  manufacturer: origin
+  max_crew: 5
+  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: 141
   upgrade_kits_count: 0
+  videos_count: 0
 
 ptv:
   name: PTV
   slug: ptv
-  rsi_name: PTV
-  rsi_id: null
   images_count: 0
-  videos_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: null
+  rsi_name: PTV
   upgrade_kits_count: 0
+  videos_count: 0
 
 600i-executive:
   name: '600i Executive Edition'
   slug: '600i-executive-edition'
-  rsi_name: '600i Executive Edition'
-  rsi_id: null
   images_count: 0
-  videos_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: null
+  rsi_name: '600i Executive Edition'
   upgrade_kits_count: 0
+  videos_count: 0
 
 f8c:
   name: 'F8C'
   slug: 'f8c-lightning'
-  rsi_name: 'F8C'
-  rsi_id: null
   images_count: 0
-  videos_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: null
+  rsi_name: 'F8C'
   upgrade_kits_count: 0
+  videos_count: 0
 
 f8c-executive:
   name: 'F8C Lightning Executive-Edition'
   slug: 'f8c-lightning-executive-edition'
-  rsi_name: 'F8C Executive'
-  rsi_id: null
   images_count: 0
-  videos_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: null
+  rsi_name: 'F8C Executive'
   upgrade_kits_count: 0
+  videos_count: 0
 
 starkitten:
   name: 'Dragonfly Star Kitten Edition'
   slug: 'dragonfly-starkitten-edition'
-  rsi_name: 'Dragonfly Star Kitten Edition'
-  rsi_id: null
   images_count: 0
-  videos_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: null
+  rsi_name: 'Dragonfly Star Kitten Edition'
   upgrade_kits_count: 0
+  videos_count: 0
 
 javelin:
   name: Javelin
   slug: javelin
-  rsi_name: Javelin
-  rsi_id: 63
   images_count: 0
-  videos_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: 63
+  rsi_name: Javelin
   upgrade_kits_count: 0
+  videos_count: 0
 
 corsair:
   name: Corsair
   slug: corsair
-  rsi_name: Corsair
-  rsi_id: 178
   images_count: 0
-  videos_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  rsi_id: 178
+  rsi_name: Corsair
   upgrade_kits_count: 0
+  videos_count: 0
+
+aurora:
+  name: Aurora MR
+  slug: aurora-mr
+  hidden: false
+  images_count: 0
+  manufacturer: rsi
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  rsi_id: 4
+  rsi_name: Aurora MR
+  upgrade_kits_count: 0
+  videos_count: 0
+
+merlin:
+  name: P-52 Merlin
+  slug: p-52-merlin
+  images_count: 0
+  hidden: false
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  rsi_id: 92
+  rsi_name: P-52 Merlin
+  upgrade_kits_count: 0
+  videos_count: 0

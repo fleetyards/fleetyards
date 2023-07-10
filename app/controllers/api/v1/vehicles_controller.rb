@@ -3,44 +3,9 @@
 module Api
   module V1
     class VehiclesController < ::Api::BaseController
-      # DEPRECATED
-      def fleetchart
-        authorize! :show, :api_hangar
-        scope = current_user.vehicles.visible.purchased
+      include HangarFiltersConcern
 
-        scope = loaner_included?(scope)
-
-        @q = scope.ransack(vehicle_query_params)
-
-        @vehicles = @q.result(distinct: true)
-          .includes(model: [:manufacturer])
-          .joins(model: [:manufacturer])
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
-      end
-
-      # DEPRECATED
-      def public_fleetchart
-        user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
-
-        unless user.public_hangar?
-          not_found
-          return
-        end
-
-        @q = user.vehicles
-          .visible
-          .purchased
-          .public
-          .ransack(vehicle_query_params)
-
-        @vehicles = []
-        return unless user.public_hangar?
-
-        @vehicles = @q.result(distinct: true)
-          .includes(:model)
-          .joins(:model)
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
-      end
+      skip_authorization_check only: [:public_fleetchart]
 
       def create
         @vehicle = Vehicle.new(
@@ -134,7 +99,7 @@ module Api
       def check_serial
         authorize! :check_serial, :api_vehicles
 
-        render json: {serialTaken: current_user.vehicles.visible.purchased.exists?(serial: vehicle_params[:serial].upcase)}
+        render json: {serialTaken: current_user.vehicles.visible.purchased.exists?(serial: vehicle_params[:serial]&.upcase)}
       end
 
       def bought_via_filters
@@ -143,6 +108,52 @@ module Api
         @filters = Vehicle.bought_via_filters
 
         render "api/v1/shared/filters"
+      end
+
+      # DEPRECATED
+      def fleetchart
+        authorize! :show, :api_hangar
+
+        scope = current_user.vehicles.visible.purchased
+
+        scope = loaner_included?(scope)
+
+        @q = scope.ransack(vehicle_query_params)
+
+        @vehicles = @q.result(distinct: true)
+          .includes(model: [:manufacturer])
+          .joins(model: [:manufacturer])
+          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+      end
+
+      # DEPRECATED
+      def public_fleetchart
+        user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
+
+        unless user.public_hangar?
+          not_found
+          return
+        end
+
+        @q = user.vehicles
+          .visible
+          .purchased
+          .public
+          .ransack(vehicle_query_params)
+
+        @vehicles = []
+        return unless user.public_hangar?
+
+        @vehicles = @q.result(distinct: true)
+          .includes(:model)
+          .joins(:model)
+          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+      end
+
+      # DEPRECATED
+      def hangar
+        authorize! :index, :api_hangar
+        @vehicles = current_user.vehicles.where(loaner: false).purchased.visible
       end
 
       private def vehicle

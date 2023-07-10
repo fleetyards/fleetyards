@@ -16,8 +16,10 @@
 
 one:
   url: MyString
-  video_type: MyString
+  video_type: 0
+  model: andromeda
 
 two:
   url: MyString
-  video_type: MyString
+  video_type: 0
+  model: andromeda

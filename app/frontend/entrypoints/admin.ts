@@ -9,7 +9,9 @@ import Comlink from "@/frontend/plugins/Comlink";
 import I18nPlugin from "@/frontend/lib/I18n";
 import VTooltip from "v-tooltip";
 import Validations from "@/frontend/plugins/Validations";
+import VShowSlide from "v-show-slide";
 
+Vue.use(VShowSlide);
 Vue.use(ApiClient);
 Vue.use(Comlink);
 Vue.use(I18nPlugin);

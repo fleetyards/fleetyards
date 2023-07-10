@@ -1,164 +1,166 @@
 <template>
-  <FilteredTable
-    :records="vehicles"
-    :primary-key="primaryKey"
-    :columns="tableColumns"
-    :selectable="editable"
-    :selected="selected"
-    :empty-box-visible="!vehicles.length"
-    @selected-change="onSelectedChange"
-  >
-    <template #selected-actions>
-      <div class="d-flex">
-        <BtnGroup :inline="true">
-          <span>{{ $t("labels.public") }}</span>
+  <div>
+    <FilteredTable
+      :records="vehicles"
+      :primary-key="primaryKey"
+      :columns="tableColumns"
+      :selectable="editable"
+      :selected="selected"
+      :empty-box-visible="!vehicles.length"
+      @selected-change="onSelectedChange"
+    >
+      <template #selected-actions>
+        <div class="d-flex">
+          <BtnGroup :inline="true">
+            <span>{{ $t("labels.public") }}</span>
+            <Btn
+              v-tooltip="$t('actions.hangar.showOnPublicHangar')"
+              size="small"
+              variant="dropdown"
+              :disabled="updating"
+              @click.native="showOnPublicHangar"
+            >
+              <i class="fad fa-eye" />
+            </Btn>
+            <Btn
+              v-tooltip="$t('actions.hangar.hideFromPublicHangar')"
+              size="small"
+              variant="dropdown"
+              :disabled="updating"
+              @click.native="hideFromPublicHangar"
+            >
+              <i class="fad fa-eye-slash" />
+            </Btn>
+          </BtnGroup>
           <Btn
-            v-tooltip="$t('actions.hangar.showOnPublicHangar')"
+            v-if="wishlist"
             size="small"
-            variant="dropdown"
+            :inline="true"
             :disabled="updating"
-            @click.native="showOnPublicHangar"
+            @click.native="addToHangarBulk"
           >
-            <i class="fad fa-eye" />
+            {{ $t("actions.addToHangar") }}
           </Btn>
           <Btn
-            v-tooltip="$t('actions.hangar.hideFromPublicHangar')"
+            v-else
             size="small"
-            variant="dropdown"
+            :inline="true"
             :disabled="updating"
-            @click.native="hideFromPublicHangar"
+            @click.native="addToWishlistBulk"
           >
-            <i class="fad fa-eye-slash" />
+            {{ $t("actions.addToWishlist") }}
           </Btn>
-        </BtnGroup>
-        <Btn
-          v-if="wishlist"
-          size="small"
-          :inline="true"
-          :disabled="updating"
-          @click.native="addToHangarBulk"
-        >
-          {{ $t("actions.addToHangar") }}
-        </Btn>
-        <Btn
-          v-else
-          size="small"
-          :inline="true"
-          :disabled="updating"
-          @click.native="addToWishlistBulk"
-        >
-          {{ $t("actions.addToWishlist") }}
-        </Btn>
-        <Btn
-          v-if="!wishlist"
-          size="small"
-          :inline="true"
-          @click.native="openBulkGroupEditModal"
-        >
-          {{ $t("actions.hangar.editGroupsSelected") }}
-        </Btn>
-        <Btn
-          v-tooltip="$t('actions.deleteSelected')"
-          size="small"
-          :inline="true"
-          :disabled="deleting"
-          @click.native="destroyBulk"
-        >
-          <i class="fal fa-trash" />
-        </Btn>
-      </div>
-    </template>
-    <template #col-store_image="{ record }">
-      <div
-        :key="storeImage(record)"
-        v-lazy:background-image="storeImage(record)"
-        class="image lazy"
-        alt="storeImage"
-      />
-    </template>
-    <template #col-name="{ record }">
-      <div class="name">
-        <router-link
-          :to="{
-            name: 'model',
-            params: {
-              slug: record.model.slug,
-            },
-          }"
-        >
-          <span v-if="record.name">
-            {{ record.name }}
-          </span>
+          <Btn
+            v-if="!wishlist"
+            size="small"
+            :inline="true"
+            @click.native="openBulkGroupEditModal"
+          >
+            {{ $t("actions.hangar.editGroupsSelected") }}
+          </Btn>
+          <Btn
+            v-tooltip="$t('actions.deleteSelected')"
+            size="small"
+            :inline="true"
+            :disabled="deleting"
+            @click.native="destroyBulk"
+          >
+            <i class="fal fa-trash" />
+          </Btn>
+        </div>
+      </template>
+      <template #col-store_image="{ record }">
+        <div
+          :key="storeImage(record)"
+          v-lazy:background-image="storeImage(record)"
+          class="image lazy"
+          alt="storeImage"
+        />
+      </template>
+      <template #col-name="{ record }">
+        <div class="name">
+          <router-link
+            :to="{
+              name: 'model',
+              params: {
+                slug: record.model.slug,
+              },
+            }"
+          >
+            <span v-if="record.name">
+              {{ record.name }}
+            </span>
 
-          <span v-else>{{ record.model.name }}</span>
-        </router-link>
-        <br />
-        <small>
-          <span v-html="record.model.manufacturer.name" />
-          <template v-if="record.name">
-            {{ record.model.name }}
-          </template>
-        </small>
-      </div>
-    </template>
-    <template #col-states="{ record }">
-      <div class="vehicle-states">
-        <i
-          v-if="record.flagship && !wishlist"
-          v-tooltip="$t('labels.vehicle.flagship')"
-          class="fa fa-certificate flagship-icon"
-        />
-        <i
-          v-if="record.model.onSale"
-          v-tooltip="$t('labels.model.onSale')"
-          class="fad fa-dollar-sign on-sale"
-        />
-        <i
-          v-if="record.public && record.nameVisible"
-          v-tooltip="$t('labels.vehicle.fullPublic')"
-          class="fad fa-eye-evil full-public-icon"
-        />
-        <i
-          v-else-if="record.public"
-          v-tooltip="$t('labels.vehicle.public')"
-          class="fad fa-eye"
-        />
-        <i
-          v-if="wishlist && record.saleNotify"
-          v-tooltip="$t('labels.vehicle.saleNotify')"
-          class="fad fa-bell"
-        />
-      </div>
-    </template>
-    <template #col-groups="{ record }">
-      <HangarGroups :groups="record.hangarGroups" size="large" />
-    </template>
-    <template #col-actions="{ record }">
-      <BtnGroup :inline="true" class="vehicles-table-btn-group">
-        <Btn
-          v-if="record && editable && !record.loaner"
-          :aria-label="$t('actions.edit')"
-          size="small"
-          data-test="vehicle-edit"
-          :inline="true"
-          variant="link"
-          @click.native="openEditModal(record)"
-        >
-          {{ $t("actions.edit") }}
-        </Btn>
-        <VehicleContextMenu
-          :vehicle="record"
-          :editable="editable && !record.loaner"
-          :wishlist="wishlist"
-          :hide-edit="true"
-        />
-      </BtnGroup>
-    </template>
-    <template #empty>
-      <WishlistEmptyTable v-if="wishlist" />
-      <HangarEmptyTable v-else />
-    </template>
-  </FilteredTable>
+            <span v-else>{{ record.model.name }}</span>
+          </router-link>
+          <br />
+          <small>
+            <span v-html="record.model.manufacturer.name" />
+            <template v-if="record.name">
+              {{ record.model.name }}
+            </template>
+          </small>
+        </div>
+      </template>
+      <template #col-states="{ record }">
+        <div class="vehicle-states">
+          <i
+            v-if="record.flagship && !wishlist"
+            v-tooltip="$t('labels.vehicle.flagship')"
+            class="fa fa-certificate flagship-icon"
+          />
+          <i
+            v-if="record.model.onSale"
+            v-tooltip="$t('labels.model.onSale')"
+            class="fad fa-dollar-sign on-sale"
+          />
+          <i
+            v-if="record.public && record.nameVisible"
+            v-tooltip="$t('labels.vehicle.fullPublic')"
+            class="fad fa-eye-evil full-public-icon"
+          />
+          <i
+            v-else-if="record.public"
+            v-tooltip="$t('labels.vehicle.public')"
+            class="fad fa-eye"
+          />
+          <i
+            v-if="wishlist && record.saleNotify"
+            v-tooltip="$t('labels.vehicle.saleNotify')"
+            class="fad fa-bell"
+          />
+        </div>
+      </template>
+      <template #col-groups="{ record }">
+        <HangarGroups :groups="record.hangarGroups" size="large" />
+      </template>
+      <template #col-actions="{ record }">
+        <BtnGroup :inline="true" class="vehicles-table-btn-group">
+          <Btn
+            v-if="record && editable && !record.loaner"
+            :aria-label="$t('actions.edit')"
+            size="small"
+            data-test="vehicle-edit"
+            :inline="true"
+            variant="link"
+            @click.native="openEditModal(record)"
+          >
+            {{ $t("actions.edit") }}
+          </Btn>
+          <VehicleContextMenu
+            :vehicle="record"
+            :editable="editable && !record.loaner"
+            :wishlist="wishlist"
+            :hide-edit="true"
+          />
+        </BtnGroup>
+      </template>
+      <template #empty>
+        <WishlistEmptyTable v-if="wishlist" />
+        <HangarEmptyTable v-else />
+      </template>
+    </FilteredTable>
+  </div>
 </template>
 
 <script lang="ts">

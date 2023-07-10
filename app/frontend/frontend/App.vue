@@ -169,7 +169,7 @@ export default class FrontendApp extends Vue {
 
     if (this.ahoyAccepted) {
       this.$ahoy.trackView();
-      // this.$ahoy.trackClicks()
+      this.$ahoy.trackClicks("[data-click-tracking=true]");
       this.$ahoy.trackSubmits("form");
       this.$ahoy.trackChanges("input, textarea, select");
     }

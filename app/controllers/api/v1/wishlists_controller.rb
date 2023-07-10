@@ -22,6 +22,7 @@ module Api
         end
 
         scope = loaner_included?(scope)
+        scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
         vehicle_query_params["sorts"] = sort_by_name(["name asc", "model_name asc"], "model_name asc")
 

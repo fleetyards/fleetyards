@@ -15,6 +15,7 @@
 #  rsi_pledge_synced_at :datetime
 #  sale_notify          :boolean          default(FALSE)
 #  serial               :string
+#  slug                 :string
 #  wanted               :boolean          default(FALSE)
 #  created_at           :datetime
 #  updated_at           :datetime
@@ -37,6 +38,7 @@ enterprise:
   user: data
   wanted: false
   public: true
+  hidden: false
 
 raven:
   name: ''
@@ -52,6 +54,14 @@ ptv_loaner:
   user: data
   wanted: false
   public: true
+
+galaxy_wanted:
+  name: 'USS Galaxy'
+  model: galaxy
+  user: data
+  wanted: true
+  public: true
+  flagship: false
 
 andromeda_troi:
   name: 'USS Troi'

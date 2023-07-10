@@ -18,6 +18,8 @@ config/*.key
 # test files
 coverage/*
 test/reports/*
+spec/reports
+spec/reports/*
 
 # app files
 public/uploads/*
@@ -54,3 +56,6 @@ result-*
 .devenv.*
 .direnv
 .pre-commit-config.yaml
+
+# tmp disable spec todos
+swagger/todo
