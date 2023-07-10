@@ -25,9 +25,9 @@ export class AdminImagesCollection extends BaseCollection {
     this.params = params;
 
     try {
-      const response = await images.list({
+      const response = await images.images({
         q: params?.filters,
-        page: params?.page,
+        page: String(params?.page),
       });
 
       this.records = response.items;
