@@ -17,8 +17,8 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       tags "Vehicles"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: Vehicle.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Vehicle.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,
@@ -38,7 +38,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/fleetchart" do
     get("Vehicle Fleetchart List -> use GET /hangar") do
-      operationId "fleetchart"
       deprecated true
       tags "Vehicles"
       produces "application/json"
@@ -54,7 +53,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/export" do
     get("Vehicle Export -> use GET /hangar/export") do
-      operationId "export"
       deprecated true
       tags "Vehicles"
       produces "application/json"
@@ -70,7 +68,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/import" do
     put("Vehicle import -> use PUT /hangar/import") do
-      operationId "import"
       deprecated true
       tags "Vehicles"
       consumes "multipart/form-data"
@@ -92,7 +89,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/destroy-all" do
     delete("Vehicle Destroy all -> use DELETE /hangar") do
-      operationId "destroyAll"
       deprecated true
       tags "Vehicles"
       consumes "application/json"
@@ -106,7 +102,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/embed" do
     get("Vehicle embed -> use GET /public/hangar/embed") do
-      operationId "embed"
       deprecated true
       tags "Vehicles"
       produces "application/json"
@@ -122,7 +117,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/hangar-items" do
     get("Vehicle Hangar items -> use GET /hangar/items") do
-      operationId "hangarItems"
       deprecated true
       tags "Vehicles"
       produces "application/json"
@@ -137,7 +131,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/hangar" do
     get("Vehicle hangar -> no replacement") do
-      operationId "hangar"
       deprecated true
       tags "Vehicles"
       produces "application/json"
@@ -153,7 +146,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/quick-stats" do
     get("Vehicle Quickstats -> use GET /hangar/stats") do
-      operationId "quickStats"
       deprecated true
       tags "Vehicles - Stats"
       produces "application/json"
@@ -166,7 +158,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/stats/models-by-size" do
     get("Vehicle Models by size -> use GET /hangar/stats/models-by-size") do
-      operationId "statsModelsBySize"
       deprecated true
       tags "Vehicles - Stats"
       produces "application/json"
@@ -179,7 +170,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/stats/models-by-production-status" do
     get("Vehicle Models by ProductionStatus -> use GET /hangar/stats/models-by-production-status") do
-      operationId "statsModelsByProductionStatus"
       deprecated true
       tags "Vehicles - Stats"
       produces "application/json"
@@ -192,7 +182,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/stats/models-by-manufacturer" do
     get("models_by_manufacturer vehicle") do
-      operationId "statsModelsByManufacturer"
       deprecated true
       tags "Vehicles - Stats"
       produces "application/json"
@@ -205,7 +194,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles/stats/models-by-classification" do
     get("models_by_classification vehicle") do
-      operationId "statsModelsByClassification"
       deprecated true
       tags "Vehicles - Stats"
       produces "application/json"
@@ -220,7 +208,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
     parameter name: "username", in: :path, type: :string, description: "username"
 
     get("public vehicle") do
-      operationId "public"
       deprecated true
       tags "Vehicles - Public"
       produces "application/json"
@@ -239,7 +226,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
     parameter name: "username", in: :path, type: :string, description: "username"
 
     get("public_fleetchart vehicle") do
-      operationId "publicFleetchart"
       deprecated true
       tags "Vehicles - Public"
       produces "application/json"
@@ -259,7 +245,6 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
     parameter name: "username", in: :path, type: :string, description: "username"
 
     get("public_quick_stats vehicle") do
-      operationId "publicQuickStats"
       deprecated true
       tags "Vehicles - Public"
       produces "application/json"

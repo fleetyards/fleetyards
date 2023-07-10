@@ -26,7 +26,7 @@ export class VehiclesService {
      * @returns void
      * @throws ApiError
      */
-    public updateBulk({
+    public vehicleUpdateBulk({
         requestBody,
     }: {
         requestBody: VehicleBulkUpdateInput,
@@ -47,7 +47,7 @@ export class VehiclesService {
      * @returns void
      * @throws ApiError
      */
-    public destroyBulk({
+    public vehicleDestroyBulk({
         requestBody,
     }: {
         requestBody: VehicleBulkDestroyInput,
@@ -68,7 +68,7 @@ export class VehiclesService {
      * @returns VehicleCheckSerialResponse successful
      * @throws ApiError
      */
-    public checkSerial({
+    public vehicleCheckSerial({
         requestBody,
     }: {
         requestBody: VehicleCheckSerialInput,
@@ -89,7 +89,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public postVehicles({
+    public vehicleCreate({
         requestBody,
     }: {
         requestBody: VehicleCreateInput,
@@ -112,8 +112,8 @@ export class VehiclesService {
      * @throws ApiError
      */
     public getVehicles({
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
         q,
     }: {
         page?: string,
@@ -137,7 +137,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public fleetchart(): CancelablePromise<Array<VehicleMinimal>> {
+    public getVehiclesFleetchart(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/fleetchart',
@@ -150,7 +150,7 @@ export class VehiclesService {
      * @returns VehicleExport successful
      * @throws ApiError
      */
-    public export(): CancelablePromise<Array<VehicleExport>> {
+    public getVehiclesExport(): CancelablePromise<Array<VehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/export',
@@ -163,7 +163,7 @@ export class VehiclesService {
      * @returns HangarImportResult successful
      * @throws ApiError
      */
-    public import({
+    public putVehiclesImport({
         formData,
     }: {
         formData: string,
@@ -182,7 +182,7 @@ export class VehiclesService {
      * @returns void
      * @throws ApiError
      */
-    public destroyAll(): CancelablePromise<void> {
+    public deleteVehiclesDestroyAll(): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/vehicles/destroy-all',
@@ -195,7 +195,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public embed(): CancelablePromise<Array<VehicleMinimal>> {
+    public getVehiclesEmbed(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/embed',
@@ -208,7 +208,7 @@ export class VehiclesService {
      * @returns string successful
      * @throws ApiError
      */
-    public hangarItems(): CancelablePromise<Array<string>> {
+    public getVehiclesHangarItems(): CancelablePromise<Array<string>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/hangar-items',
@@ -221,7 +221,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public hangar(): CancelablePromise<Array<VehicleMinimal>> {
+    public getVehiclesHangar(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/hangar',
@@ -248,7 +248,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public destroy({
+    public destroyVehicle({
         id,
     }: {
         /**
@@ -274,7 +274,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public update({
+    public updateVehicle({
         id,
         requestBody,
     }: {

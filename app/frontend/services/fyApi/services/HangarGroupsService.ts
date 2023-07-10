@@ -18,7 +18,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public create({
+    public hangarGroupCreate({
         requestBody,
     }: {
         requestBody: HangarGroupCreateInput,
@@ -39,7 +39,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public list(): CancelablePromise<Array<HangarGroupMinimal>> {
+    public hangarGroups(): CancelablePromise<Array<HangarGroupMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/groups',
@@ -54,7 +54,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public destroy({
+    public hangarGroupDestroy({
         id,
     }: {
         /**
@@ -80,7 +80,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public update({
+    public hangarGroupUpdate({
         id,
         requestBody,
     }: {
@@ -110,7 +110,7 @@ export class HangarGroupsService {
      * @returns any successful
      * @throws ApiError
      */
-    public sort(): CancelablePromise<{
+    public hangarGroupSort(): CancelablePromise<{
         success?: boolean;
     }> {
         return this.httpRequest.request({
@@ -128,7 +128,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public list1(): CancelablePromise<Array<HangarGroupMinimal>> {
+    public getHangarGroups(): CancelablePromise<Array<HangarGroupMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar-groups',
@@ -144,7 +144,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public create1({
+    public postHangarGroups({
         requestBody,
     }: {
         requestBody: HangarGroupCreateInput,
@@ -166,7 +166,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public destroy1({
+    public deleteHangarGroups({
         id,
     }: {
         /**
@@ -193,7 +193,7 @@ export class HangarGroupsService {
      * @returns HangarGroupMinimal successful
      * @throws ApiError
      */
-    public update1({
+    public putHangarGroups({
         id,
         requestBody,
     }: {
@@ -224,7 +224,7 @@ export class HangarGroupsService {
      * @returns any successful
      * @throws ApiError
      */
-    public sort1(): CancelablePromise<{
+    public putHangarGroupsSort(): CancelablePromise<{
         success?: boolean;
     }> {
         return this.httpRequest.request({

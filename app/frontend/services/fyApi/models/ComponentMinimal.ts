@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 import type { Manufacturer } from './Manufacturer';
+import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
 
 export type ComponentMinimal = {
@@ -20,7 +21,9 @@ export type ComponentMinimal = {
     itemClass?: string | null;
     itemClassLabel?: string | null;
     manufacturer?: Manufacturer | null;
-    media: any;
+    media: {
+        storeImage?: MediaImage | null;
+    };
     size?: string | null;
     trackingSignal?: string | null;
     trackingSignalLabel?: string | null;

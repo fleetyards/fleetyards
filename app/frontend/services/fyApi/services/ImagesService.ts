@@ -18,9 +18,9 @@ export class ImagesService {
      * @returns Images successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public images({
+        page = '1',
+        perPage = '30',
         q,
         cacheId,
     }: {
@@ -47,8 +47,8 @@ export class ImagesService {
      * @returns ImageComplete successful
      * @throws ApiError
      */
-    public random({
-        limit,
+    public imagesRandom({
+        limit = 14,
     }: {
         limit?: number,
     }): CancelablePromise<Array<ImageComplete>> {

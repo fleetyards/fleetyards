@@ -11,7 +11,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Detail") do
-      operationId "get"
+      operationId "model"
       tags "Models"
       produces "application/json"
 
@@ -45,7 +45,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Hardpoints") do
-      operationId "hardpoints"
+      operationId "modelHardpoints"
       tags "Models"
       produces "application/json"
 
@@ -88,12 +88,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Images") do
-      operationId "images"
+      operationId "modelImages"
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: Image.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Images"
@@ -131,12 +131,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Videos") do
-      operationId "videos"
+      operationId "modelVideos"
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: Video.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Video.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Videos"
@@ -174,12 +174,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Variants") do
-      operationId "variants"
+      operationId "modelVariants"
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Models"
@@ -217,12 +217,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Loaners") do
-      operationId "loaners"
+      operationId "modelLoaners"
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: Model.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Models"
@@ -260,7 +260,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Snubcrafts") do
-      operationId "snubCrafts"
+      operationId "modelSnubCrafts"
       tags "Models"
       produces "application/json"
 
@@ -301,12 +301,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     let(:model) { models :galaxy }
 
     get("Model Modules") do
-      operationId "modules"
+      operationId "modelModules"
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: ModelModule.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModule.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelModules"
@@ -346,12 +346,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     let(:model) { models :galaxy }
 
     get("Model Module Packages") do
-      operationId "modulePackages"
+      operationId "modelModulePackages"
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: ModelModule.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModule.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelModulePackages"
@@ -389,7 +389,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Upgrades") do
-      operationId "upgrades"
+      operationId "modelUpgrades"
       tags "Models"
       produces "application/json"
 
@@ -429,7 +429,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Paints") do
-      operationId "paints"
+      operationId "modelPaints"
       tags "Models"
       produces "application/json"
 
@@ -469,7 +469,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Storeimage") do
-      operationId "storeImage"
+      operationId "modelStoreImage"
       deprecated true
 
       tags "Models"
@@ -486,7 +486,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
     parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
 
     get("Model Fleetchart Image") do
-      operationId "fleetchartImage"
+      operationId "modelFleetchartImage"
       deprecated true
 
       tags "Models"

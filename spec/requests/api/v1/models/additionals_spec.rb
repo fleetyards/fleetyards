@@ -7,13 +7,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/with-docks" do
     get("Models with Docks") do
-      operationId "withDocks"
+      operationId "modelsWithDocks"
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false,
-        default: Model.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Models"
@@ -51,7 +50,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/unscheduled" do
     get("Unscheduled Models") do
-      operationId "unschduled"
+      operationId "modelsUnschduled"
       tags "Models"
       produces "application/json"
 
@@ -71,7 +70,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/latest" do
     get("Latest Models") do
-      operationId "latest"
+      operationId "modelsLatest"
       tags "Models"
       produces "application/json"
 
@@ -91,7 +90,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/slugs" do
     get("Available Model-Slugs") do
-      operationId "slugs"
+      operationId "modelsSlugs"
       tags "Models"
       produces "application/json"
 
@@ -111,12 +110,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/models/updated" do
     get("Updated Models") do
-      operationId "updated"
+      operationId "modelsUpdated"
       tags "Models"
       produces "application/json"
 
-      parameter name: :from, in: :query, type: :string, format: :datetime, required: false
-      parameter name: :to, in: :query, type: :string, format: :datetime, required: false, default: :now
+      parameter name: :from, in: :query, schema: {type: :string, format: :datetime}, required: false
+      parameter name: :to, in: :query, schema: {type: :string, default: :now, format: :datetime}, required: false
 
       response(200, "successful") do
         let(:from) { 1.day.ago }

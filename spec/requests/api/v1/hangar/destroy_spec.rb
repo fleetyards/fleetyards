@@ -13,7 +13,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/hangar" do
     delete("Clear your personal Hangar") do
-      operationId "destroy"
+      operationId "hangarDestroy"
       tags "Hangar"
       produces "application/json"
 

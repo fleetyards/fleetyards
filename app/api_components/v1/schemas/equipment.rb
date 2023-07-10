@@ -31,7 +31,10 @@ module V1
           itemTypeLabel: {type: :string, nullable: true},
           manufacturer: {"$ref": "#/components/schemas/Manufacturer", nullable: true},
           media: {
-            storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+            type: :object,
+            properties: {
+              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+            }
           },
           range: {type: :string, nullable: true},
           rateOfFire: {type: :string, nullable: true},

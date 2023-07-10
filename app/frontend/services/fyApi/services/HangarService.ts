@@ -21,7 +21,7 @@ export class HangarService {
      * @returns void
      * @throws ApiError
      */
-    public destroy(): CancelablePromise<void> {
+    public hangarDestroy(): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/hangar',
@@ -36,9 +36,9 @@ export class HangarService {
      * @returns Hangar successful
      * @throws ApiError
      */
-    public get({
-        page,
-        perPage,
+    public hangar({
+        page = '1',
+        perPage = '30',
         q,
     }: {
         page?: string,
@@ -64,7 +64,7 @@ export class HangarService {
      * @returns VehicleExport successful
      * @throws ApiError
      */
-    public export(): CancelablePromise<Array<VehicleExport>> {
+    public hangarExport(): CancelablePromise<Array<VehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/export',
@@ -79,7 +79,7 @@ export class HangarService {
      * @returns HangarImportResult successful
      * @throws ApiError
      */
-    public import({
+    public hangarImport({
         formData,
     }: {
         formData: string,
@@ -101,7 +101,7 @@ export class HangarService {
      * @returns string successful
      * @throws ApiError
      */
-    public items(): CancelablePromise<Array<string>> {
+    public hangarItems(): CancelablePromise<Array<string>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/items',

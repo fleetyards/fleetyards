@@ -15,7 +15,7 @@ export class VehiclesStatsService {
      * @returns any successful
      * @throws ApiError
      */
-    public quickStats(): CancelablePromise<any> {
+    public getVehiclesQuickStats(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/quick-stats',
@@ -28,7 +28,7 @@ export class VehiclesStatsService {
      * @returns any successful
      * @throws ApiError
      */
-    public statsModelsBySize(): CancelablePromise<any> {
+    public getVehiclesStatsModelsBySize(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-size',
@@ -41,7 +41,7 @@ export class VehiclesStatsService {
      * @returns any successful
      * @throws ApiError
      */
-    public statsModelsByProductionStatus(): CancelablePromise<any> {
+    public getVehiclesStatsModelsByProductionStatus(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-production-status',
@@ -54,7 +54,7 @@ export class VehiclesStatsService {
      * @returns any successful
      * @throws ApiError
      */
-    public statsModelsByManufacturer(): CancelablePromise<any> {
+    public getVehiclesStatsModelsByManufacturer(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-manufacturer',
@@ -67,7 +67,7 @@ export class VehiclesStatsService {
      * @returns any successful
      * @throws ApiError
      */
-    public statsModelsByClassification(): CancelablePromise<any> {
+    public getVehiclesStatsModelsByClassification(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/stats/models-by-classification',

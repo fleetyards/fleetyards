@@ -18,9 +18,9 @@ export class StarsystemsService {
      * @returns Starsystems successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public starsystems({
+        page = '1',
+        perPage = '15',
         q,
         cacheId,
     }: {
@@ -46,7 +46,7 @@ export class StarsystemsService {
      * @returns StarsystemMinimal successful
      * @throws ApiError
      */
-    public get({
+    public starsystem({
         slug,
     }: {
         /**

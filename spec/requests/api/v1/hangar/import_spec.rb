@@ -13,7 +13,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/hangar/import" do
     put("Import to your personal Hangar") do
-      operationId "import"
+      operationId "hangarImport"
       tags "Hangar"
       consumes "multipart/form-data"
       produces "application/json"

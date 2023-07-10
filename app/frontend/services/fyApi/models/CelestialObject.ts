@@ -3,13 +3,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { MediaImage } from './MediaImage';
 import type { Starsystem } from './Starsystem';
 
 export type CelestialObject = {
     name: string;
     slug: string;
     designation: string;
-    media?: any;
+    media?: {
+        storeImage?: MediaImage | null;
+    };
     /**
      * @deprecated
      */

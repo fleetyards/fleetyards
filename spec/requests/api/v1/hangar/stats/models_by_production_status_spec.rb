@@ -13,7 +13,7 @@ RSpec.describe "api/v1/hangar/stats", type: :request, swagger_doc: "v1/schema.ya
 
   path "/hangar/stats/models-by-production-status" do
     get("Hangar Stats - Models by Production Status") do
-      operationId "modelsByProductionStatus"
+      operationId "hangarModelsByProductionStatus"
       tags "HangarStats"
       produces "application/json"
 

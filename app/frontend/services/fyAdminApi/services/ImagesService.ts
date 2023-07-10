@@ -20,9 +20,9 @@ export class ImagesService {
      * @returns Images successful
      * @throws ApiError
      */
-    public list({
-        page,
-        perPage,
+    public images({
+        page = '1',
+        perPage = '30',
         q,
     }: {
         page?: string,

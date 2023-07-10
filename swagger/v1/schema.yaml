@@ -14,23 +14,23 @@ paths:
   "/celestial-objects":
     get:
       summary: Celestial Objects List
-      operationId: list
+      operationId: celestialObjects
       description: Get a List of Celestial Objects
       tags:
       - CelestialObjects
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -61,7 +61,7 @@ paths:
       required: true
     get:
       summary: Celestial Object Detail
-      operationId: get
+      operationId: celestialObject
       description: Get Detail of a Celestial Object referenced by its Slug
       tags:
       - CelestialObjects
@@ -81,7 +81,7 @@ paths:
   "/hangar":
     delete:
       summary: Clear your personal Hangar
-      operationId: destroy
+      operationId: hangarDestroy
       tags:
       - Hangar
       responses:
@@ -95,22 +95,22 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     get:
       summary: Your personal Hangar
-      operationId: get
+      operationId: hangar
       tags:
       - Hangar
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -135,7 +135,7 @@ paths:
   "/hangar/export":
     get:
       summary: Export your personal Hangar
-      operationId: export
+      operationId: hangarExport
       tags:
       - Hangar
       responses:
@@ -156,7 +156,7 @@ paths:
   "/hangar/groups":
     post:
       summary: HangarGroup create
-      operationId: create
+      operationId: hangarGroupCreate
       tags:
       - HangarGroups
       parameters: []
@@ -181,7 +181,7 @@ paths:
         required: true
     get:
       summary: HangarGroup list
-      operationId: list
+      operationId: hangarGroups
       tags:
       - HangarGroups
       responses:
@@ -210,7 +210,7 @@ paths:
       required: true
     delete:
       summary: HangarGroup Destroy
-      operationId: destroy
+      operationId: hangarGroupDestroy
       tags:
       - HangarGroups
       responses:
@@ -234,7 +234,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     put:
       summary: HangarGroup Update
-      operationId: update
+      operationId: hangarGroupUpdate
       tags:
       - HangarGroups
       parameters: []
@@ -266,7 +266,7 @@ paths:
   "/hangar/groups/sort":
     put:
       summary: HangarGroup sort
-      operationId: sort
+      operationId: hangarGroupSort
       tags:
       - HangarGroups
       responses:
@@ -288,7 +288,7 @@ paths:
   "/hangar/import":
     put:
       summary: Import to your personal Hangar
-      operationId: import
+      operationId: hangarImport
       tags:
       - Hangar
       parameters: []
@@ -320,7 +320,7 @@ paths:
   "/hangar/items":
     get:
       summary: Your personal Hangar items
-      operationId: items
+      operationId: hangarItems
       tags:
       - Hangar
       responses:
@@ -356,7 +356,7 @@ paths:
   "/hangar/stats/models-by-classification":
     get:
       summary: Hangar Stats - Models by Classification
-      operationId: modelsByClassification
+      operationId: hangarModelsByClassification
       tags:
       - HangarStats
       responses:
@@ -377,7 +377,7 @@ paths:
   "/hangar/stats/models-by-manufacturer":
     get:
       summary: Hangar Stats - Models by Manufacturer
-      operationId: modelsByManufacturer
+      operationId: hangarModelsByManufacturer
       tags:
       - HangarStats
       responses:
@@ -398,7 +398,7 @@ paths:
   "/hangar/stats/models-by-production-status":
     get:
       summary: Hangar Stats - Models by Production Status
-      operationId: modelsByProductionStatus
+      operationId: hangarModelsByProductionStatus
       tags:
       - HangarStats
       responses:
@@ -419,7 +419,7 @@ paths:
   "/hangar/stats/models-by-size":
     get:
       summary: Hangar Stats - Models by Size
-      operationId: modelsBySize
+      operationId: hangarModelsBySize
       tags:
       - HangarStats
       responses:
@@ -440,7 +440,7 @@ paths:
   "/hangar/stats":
     get:
       summary: Your Hangar Stats
-      operationId: get
+      operationId: hangarStats
       tags:
       - HangarStats
       parameters:
@@ -505,7 +505,6 @@ paths:
   "/hangar-groups":
     get:
       summary: HangarGroup list
-      operationId: list
       tags:
       - HangarGroups
       deprecated: true
@@ -526,7 +525,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     post:
       summary: HangarGroup create
-      operationId: create
       tags:
       - HangarGroups
       deprecated: true
@@ -561,7 +559,6 @@ paths:
       required: true
     delete:
       summary: HangarGroup Destroy
-      operationId: destroy
       tags:
       - HangarGroups
       deprecated: true
@@ -586,7 +583,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     put:
       summary: HangarGroup Update
-      operationId: update
       tags:
       - HangarGroups
       deprecated: true
@@ -619,7 +615,6 @@ paths:
   "/hangar-groups/sort":
     put:
       summary: HangarGroup sort
-      operationId: sort
       tags:
       - HangarGroups
       deprecated: true
@@ -649,7 +644,6 @@ paths:
         type: string
     get:
       summary: HangarGroup list
-      operationId: list
       tags:
       - PublicHangarGroups
       deprecated: true
@@ -665,22 +659,22 @@ paths:
   "/images":
     get:
       summary: Images list
-      operationId: list
+      operationId: images
       tags:
       - Images
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -704,19 +698,19 @@ paths:
   "/images/random":
     get:
       summary: Images random list
-      operationId: random
+      operationId: imagesRandom
       description: Get a randomized List of 14 Images
       tags:
       - Images
       parameters:
       - name: limit
         in: query
-        required: false
-        minimum: 1
-        maximum: 30
-        default: 14
         schema:
           type: number
+          minimum: 1
+          maximum: 30
+          default: 14
+        required: false
       responses:
         '200':
           description: successful
@@ -744,22 +738,22 @@ paths:
   "/manufacturers":
     get:
       summary: Manufacturers list
-      operationId: list
+      operationId: manufacturers
       tags:
       - Manufacturers
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -783,22 +777,22 @@ paths:
   "/models/with-docks":
     get:
       summary: Models with Docks
-      operationId: withDocks
+      operationId: modelsWithDocks
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -809,7 +803,7 @@ paths:
   "/models/unscheduled":
     get:
       summary: Unscheduled Models
-      operationId: unschduled
+      operationId: modelsUnschduled
       tags:
       - Models
       responses:
@@ -818,7 +812,7 @@ paths:
   "/models/latest":
     get:
       summary: Latest Models
-      operationId: latest
+      operationId: modelsLatest
       tags:
       - Models
       responses:
@@ -827,7 +821,7 @@ paths:
   "/models/slugs":
     get:
       summary: Available Model-Slugs
-      operationId: slugs
+      operationId: modelsSlugs
       tags:
       - Models
       responses:
@@ -836,23 +830,23 @@ paths:
   "/models/updated":
     get:
       summary: Updated Models
-      operationId: updated
+      operationId: modelsUpdated
       tags:
       - Models
       parameters:
       - name: from
         in: query
-        format: datetime
-        required: false
         schema:
           type: string
+          format: datetime
+        required: false
       - name: to
         in: query
-        format: datetime
-        required: false
-        default: now
         schema:
           type: string
+          default: now
+          format: datetime
+        required: false
       responses:
         '200':
           description: successful
@@ -870,7 +864,7 @@ paths:
   "/models/filters":
     get:
       summary: Model Filters
-      operationId: filters
+      operationId: modelFilters
       tags:
       - Models
       responses:
@@ -885,7 +879,7 @@ paths:
   "/models/classifications":
     get:
       summary: Model classifications
-      operationId: classifications
+      operationId: modelClassifications
       tags:
       - Models
       responses:
@@ -900,7 +894,7 @@ paths:
   "/models/production-states":
     get:
       summary: Model Production states
-      operationId: productionStates
+      operationId: modelProductionStates
       tags:
       - Models
       responses:
@@ -915,7 +909,7 @@ paths:
   "/models/focus":
     get:
       summary: Model focus
-      operationId: focus
+      operationId: modelFocus
       tags:
       - Models
       responses:
@@ -930,7 +924,7 @@ paths:
   "/models/sizes":
     get:
       summary: Model Sizes
-      operationId: sizes
+      operationId: modelSizes
       tags:
       - Models
       responses:
@@ -951,16 +945,16 @@ paths:
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -971,22 +965,22 @@ paths:
   "/models":
     get:
       summary: Models List
-      operationId: list
+      operationId: models
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -1017,7 +1011,7 @@ paths:
         type: string
     get:
       summary: Model Detail
-      operationId: get
+      operationId: model
       tags:
       - Models
       responses:
@@ -1043,7 +1037,7 @@ paths:
         type: string
     get:
       summary: Model Hardpoints
-      operationId: hardpoints
+      operationId: modelHardpoints
       tags:
       - Models
       parameters:
@@ -1077,22 +1071,22 @@ paths:
         type: string
     get:
       summary: Model Images
-      operationId: images
+      operationId: modelImages
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -1116,22 +1110,22 @@ paths:
         type: string
     get:
       summary: Model Videos
-      operationId: videos
+      operationId: modelVideos
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 8
         schema:
           type: string
+          default: 8
+        required: false
       responses:
         '200':
           description: successful
@@ -1155,22 +1149,22 @@ paths:
         type: string
     get:
       summary: Model Variants
-      operationId: variants
+      operationId: modelVariants
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -1194,22 +1188,22 @@ paths:
         type: string
     get:
       summary: Model Loaners
-      operationId: loaners
+      operationId: modelLoaners
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -1233,7 +1227,7 @@ paths:
         type: string
     get:
       summary: Model Snubcrafts
-      operationId: snubCrafts
+      operationId: modelSnubCrafts
       tags:
       - Models
       responses:
@@ -1261,22 +1255,22 @@ paths:
         type: string
     get:
       summary: Model Modules
-      operationId: modules
+      operationId: modelModules
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -1300,22 +1294,22 @@ paths:
         type: string
     get:
       summary: Model Module Packages
-      operationId: modulePackages
+      operationId: modelModulePackages
       tags:
       - Models
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -1339,7 +1333,7 @@ paths:
         type: string
     get:
       summary: Model Upgrades
-      operationId: upgrades
+      operationId: modelUpgrades
       tags:
       - Models
       responses:
@@ -1367,7 +1361,7 @@ paths:
         type: string
     get:
       summary: Model Paints
-      operationId: paints
+      operationId: modelPaints
       tags:
       - Models
       responses:
@@ -1395,7 +1389,7 @@ paths:
         type: string
     get:
       summary: Model Storeimage
-      operationId: storeImage
+      operationId: modelStoreImage
       deprecated: true
       tags:
       - Models
@@ -1412,7 +1406,7 @@ paths:
         type: string
     get:
       summary: Model Fleetchart Image
-      operationId: fleetchartImage
+      operationId: modelFleetchartImage
       deprecated: true
       tags:
       - Models
@@ -1428,7 +1422,7 @@ paths:
   "/public/hangars/embed":
     get:
       summary: Public Hangar embed
-      operationId: embed
+      operationId: publicHangarEmbed
       tags:
       - PublicHangar
       parameters:
@@ -1459,7 +1453,7 @@ paths:
         type: string
     get:
       summary: HangarGroup list
-      operationId: list
+      operationId: publicHangarGroups
       tags:
       - PublicHangarGroups
       responses:
@@ -1480,22 +1474,22 @@ paths:
         type: string
     get:
       summary: Public Hangar
-      operationId: get
+      operationId: publicHangar
       tags:
       - PublicHangar
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -1527,7 +1521,7 @@ paths:
         type: string
     get:
       summary: Public Hangar Stats
-      operationId: get
+      operationId: publicHangarStats
       tags:
       - PublicHangarStats
       parameters:
@@ -1567,16 +1561,16 @@ paths:
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -1601,7 +1595,7 @@ paths:
   "/shops/shop-types":
     get:
       summary: Shop types
-      operationId: types
+      operationId: shopsTypes
       tags:
       - Shops
       responses:
@@ -1616,22 +1610,22 @@ paths:
   "/shops":
     get:
       summary: Shops list
-      operationId: list
+      operationId: shops
       tags:
       - Shops
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -1668,7 +1662,7 @@ paths:
         type: string
     get:
       summary: Shop Detail
-      operationId: get
+      operationId: shop
       tags:
       - Shops
       responses:
@@ -1687,22 +1681,22 @@ paths:
   "/starsystems":
     get:
       summary: Starsystems list
-      operationId: list
+      operationId: starsystems
       tags:
       - Starsystems
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 15
         schema:
           type: string
+          default: 15
+        required: false
       - name: q
         in: query
         schema:
@@ -1733,7 +1727,7 @@ paths:
       required: true
     get:
       summary: Starsystem Detail
-      operationId: get
+      operationId: starsystem
       tags:
       - Starsystems
       responses:
@@ -1752,7 +1746,7 @@ paths:
   "/stations/station-types":
     get:
       summary: Station types
-      operationId: types
+      operationId: stationsTypes
       tags:
       - Stations
       responses:
@@ -1767,7 +1761,7 @@ paths:
   "/stations/ship-sizes":
     get:
       summary: Station Ship sizes
-      operationId: shipSizes
+      operationId: stationsShipSizes
       tags:
       - Stations
       responses:
@@ -1782,7 +1776,7 @@ paths:
   "/stations/classifications":
     get:
       summary: Station classifications
-      operationId: classifications
+      operationId: stationsClassifications
       tags:
       - Stations
       responses:
@@ -1797,22 +1791,22 @@ paths:
   "/stations":
     get:
       summary: Stations list
-      operationId: list
+      operationId: stations
       tags:
       - Stations
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 10
         schema:
           type: string
+          default: 10
+        required: false
       - name: q
         in: query
         schema:
@@ -1843,7 +1837,7 @@ paths:
       required: true
     get:
       summary: Station Detail
-      operationId: get
+      operationId: station
       tags:
       - Stations
       responses:
@@ -1869,22 +1863,22 @@ paths:
       required: true
     get:
       summary: Station Images
-      operationId: images
+      operationId: stationImages
       tags:
       - Stations
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       responses:
         '200':
           description: successful
@@ -1991,7 +1985,7 @@ paths:
   "/stats/quick-stats":
     get:
       summary: Stats
-      operationId: get
+      operationId: stats
       tags:
       - Stats
       responses:
@@ -2004,7 +1998,7 @@ paths:
   "/vehicles/bulk":
     put:
       summary: Update multiple vehicles
-      operationId: updateBulk
+      operationId: vehicleUpdateBulk
       tags:
       - Vehicles
       parameters: []
@@ -2026,7 +2020,7 @@ paths:
   "/vehicles/destroy-bulk":
     put:
       summary: Destroy multiple Vehicles
-      operationId: destroyBulk
+      operationId: vehicleDestroyBulk
       tags:
       - Vehicles
       parameters: []
@@ -2048,7 +2042,7 @@ paths:
   "/vehicles/check-serial":
     post:
       summary: Check Vehicle Serial
-      operationId: checkSerial
+      operationId: vehicleCheckSerial
       tags:
       - Vehicles
       parameters: []
@@ -2074,6 +2068,7 @@ paths:
   "/vehicles":
     post:
       summary: Create new Vehicle
+      operationId: vehicleCreate
       tags:
       - Vehicles
       parameters: []
@@ -2104,16 +2099,16 @@ paths:
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -2132,7 +2127,6 @@ paths:
   "/vehicles/fleetchart":
     get:
       summary: Vehicle Fleetchart List -> use GET /hangar
-      operationId: fleetchart
       deprecated: true
       tags:
       - Vehicles
@@ -2148,7 +2142,6 @@ paths:
   "/vehicles/export":
     get:
       summary: Vehicle Export -> use GET /hangar/export
-      operationId: export
       deprecated: true
       tags:
       - Vehicles
@@ -2164,7 +2157,6 @@ paths:
   "/vehicles/import":
     put:
       summary: Vehicle import -> use PUT /hangar/import
-      operationId: import
       deprecated: true
       tags:
       - Vehicles
@@ -2185,7 +2177,6 @@ paths:
   "/vehicles/destroy-all":
     delete:
       summary: Vehicle Destroy all -> use DELETE /hangar
-      operationId: destroyAll
       deprecated: true
       tags:
       - Vehicles
@@ -2195,7 +2186,6 @@ paths:
   "/vehicles/embed":
     get:
       summary: Vehicle embed -> use GET /public/hangar/embed
-      operationId: embed
       deprecated: true
       tags:
       - Vehicles
@@ -2211,7 +2201,6 @@ paths:
   "/vehicles/hangar-items":
     get:
       summary: Vehicle Hangar items -> use GET /hangar/items
-      operationId: hangarItems
       deprecated: true
       tags:
       - Vehicles
@@ -2227,7 +2216,6 @@ paths:
   "/vehicles/hangar":
     get:
       summary: Vehicle hangar -> no replacement
-      operationId: hangar
       deprecated: true
       tags:
       - Vehicles
@@ -2243,7 +2231,6 @@ paths:
   "/vehicles/quick-stats":
     get:
       summary: Vehicle Quickstats -> use GET /hangar/stats
-      operationId: quickStats
       deprecated: true
       tags:
       - Vehicles - Stats
@@ -2253,7 +2240,6 @@ paths:
   "/vehicles/stats/models-by-size":
     get:
       summary: Vehicle Models by size -> use GET /hangar/stats/models-by-size
-      operationId: statsModelsBySize
       deprecated: true
       tags:
       - Vehicles - Stats
@@ -2263,7 +2249,6 @@ paths:
   "/vehicles/stats/models-by-production-status":
     get:
       summary: Vehicle Models by ProductionStatus -> use GET /hangar/stats/models-by-production-status
-      operationId: statsModelsByProductionStatus
       deprecated: true
       tags:
       - Vehicles - Stats
@@ -2273,7 +2258,6 @@ paths:
   "/vehicles/stats/models-by-manufacturer":
     get:
       summary: models_by_manufacturer vehicle
-      operationId: statsModelsByManufacturer
       deprecated: true
       tags:
       - Vehicles - Stats
@@ -2283,7 +2267,6 @@ paths:
   "/vehicles/stats/models-by-classification":
     get:
       summary: models_by_classification vehicle
-      operationId: statsModelsByClassification
       deprecated: true
       tags:
       - Vehicles - Stats
@@ -2300,7 +2283,6 @@ paths:
         type: string
     get:
       summary: public vehicle
-      operationId: public
       deprecated: true
       tags:
       - Vehicles - Public
@@ -2321,7 +2303,6 @@ paths:
         type: string
     get:
       summary: public_fleetchart vehicle
-      operationId: publicFleetchart
       deprecated: true
       tags:
       - Vehicles - Public
@@ -2344,7 +2325,6 @@ paths:
         type: string
     get:
       summary: public_quick_stats vehicle
-      operationId: publicQuickStats
       deprecated: true
       tags:
       - Vehicles - Public
@@ -2377,7 +2357,7 @@ paths:
       required: true
     delete:
       summary: Delete Vehicle
-      operationId: destroy
+      operationId: destroyVehicle
       tags:
       - Vehicles
       responses:
@@ -2401,7 +2381,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     put:
       summary: Update Vehicle
-      operationId: update
+      operationId: updateVehicle
       tags:
       - Vehicles
       parameters: []
@@ -2433,7 +2413,7 @@ paths:
   "/wishlist":
     delete:
       summary: Clear your Wishlist
-      operationId: destroy
+      operationId: destroyWishlist
       tags:
       - Wishlist
       responses:
@@ -2447,22 +2427,22 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     get:
       summary: Your Wishlist
-      operationId: get
+      operationId: getWishlist
       tags:
       - Wishlist
       parameters:
       - name: page
         in: query
-        required: false
-        default: '1'
         schema:
           type: string
+          default: '1'
+        required: false
       - name: perPage
         in: query
-        required: false
-        default: 30
         schema:
           type: string
+          default: 30
+        required: false
       - name: q
         in: query
         schema:
@@ -2487,7 +2467,7 @@ paths:
   "/wishlist/export":
     get:
       summary: Export your Wishlist
-      operationId: export
+      operationId: exportWishlist
       tags:
       - Wishlist
       responses:
@@ -2508,7 +2488,7 @@ paths:
   "/wishlist/items":
     get:
       summary: Your Wishlist items
-      operationId: items
+      operationId: wishlistItems
       tags:
       - Wishlist
       responses:
@@ -2714,9 +2694,11 @@ components:
         designation:
           type: string
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         storeImage:
           type: string
           format: url
@@ -2779,9 +2761,11 @@ components:
         designation:
           type: string
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         storeImage:
           type: string
           format: url
@@ -2894,9 +2878,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         storeImage:
           type: string
           format: uri
@@ -2958,9 +2944,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         storeImage:
           type: string
           format: uri
@@ -3077,9 +3065,11 @@ components:
           "$ref": "#/components/schemas/Manufacturer"
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         size:
           type: string
           nullable: true
@@ -3167,9 +3157,11 @@ components:
           "$ref": "#/components/schemas/Manufacturer"
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         size:
           type: string
           nullable: true
@@ -3422,9 +3414,11 @@ components:
           "$ref": "#/components/schemas/Manufacturer"
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         range:
           type: string
           nullable: true
@@ -3544,9 +3538,11 @@ components:
           "$ref": "#/components/schemas/Manufacturer"
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         range:
           type: string
           nullable: true

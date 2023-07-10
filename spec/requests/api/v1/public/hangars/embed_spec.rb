@@ -10,7 +10,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
   path "/public/hangars/embed" do
     get("Public Hangar embed") do
-      operationId "embed"
+      operationId "publicHangarEmbed"
       tags "PublicHangar"
       produces "application/json"
 

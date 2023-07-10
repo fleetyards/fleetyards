@@ -5,7 +5,7 @@ require "swagger_helper"
 RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" do
   path "/stations/station-types" do
     get("Station types") do
-      operationId "types"
+      operationId "stationsTypes"
       tags "Stations"
       produces "application/json"
 
@@ -27,7 +27,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/stations/ship-sizes" do
     get("Station Ship sizes") do
-      operationId "shipSizes"
+      operationId "stationsShipSizes"
       tags "Stations"
       produces "application/json"
 
@@ -49,7 +49,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/stations/classifications" do
     get("Station classifications") do
-      operationId "classifications"
+      operationId "stationsClassifications"
       tags "Stations"
       produces "application/json"
 

@@ -4,13 +4,16 @@
 /* eslint-disable */
 
 import type { CelestialObject } from './CelestialObject';
+import type { MediaImage } from './MediaImage';
 import type { Starsystem } from './Starsystem';
 
 export type CelestialObjectMinimal = {
     name: string;
     slug: string;
     designation: string;
-    media?: any;
+    media?: {
+        storeImage?: MediaImage | null;
+    };
     /**
      * @deprecated
      */

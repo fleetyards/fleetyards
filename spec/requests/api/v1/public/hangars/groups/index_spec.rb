@@ -11,7 +11,7 @@ RSpec.describe "api/v1/hangars/groups", type: :request, swagger_doc: "v1/schema.
     parameter name: "username", in: :path, type: :string, description: "Username", required: true
 
     get("HangarGroup list") do
-      operationId "list"
+      operationId "publicHangarGroups"
       tags "PublicHangarGroups"
       produces "application/json"
 

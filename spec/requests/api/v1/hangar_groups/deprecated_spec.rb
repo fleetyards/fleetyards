@@ -14,7 +14,6 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
 
   path "/hangar-groups" do
     get("HangarGroup list") do
-      operationId "list"
       tags "HangarGroups"
       produces "application/json"
       deprecated true
@@ -47,7 +46,6 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
     end
 
     post("HangarGroup create") do
-      operationId "create"
       tags "HangarGroups"
       consumes "application/json"
       produces "application/json"
@@ -95,7 +93,6 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
     parameter name: "id", in: :path, description: "HangarGroup ID", schema: {type: :string, format: :uuid}, required: true
 
     delete("HangarGroup Destroy") do
-      operationId "destroy"
       tags "HangarGroups"
       produces "application/json"
       deprecated true
@@ -136,7 +133,6 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
     end
 
     put("HangarGroup Update") do
-      operationId "update"
       tags "HangarGroups"
       consumes "application/json"
       produces "application/json"
@@ -192,7 +188,6 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
 
     path "/hangar-groups/sort" do
       put("HangarGroup sort") do
-        operationId "sort"
         tags "HangarGroups"
         produces "application/json"
         deprecated true
@@ -225,7 +220,6 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
       parameter name: "username", in: :path, type: :string, description: "Username", required: true
 
       get("HangarGroup list") do
-        operationId "list"
         tags "PublicHangarGroups"
         produces "application/json"
         deprecated true

@@ -13,6 +13,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/vehicles" do
     post("Create new Vehicle") do
+      operationId "vehicleCreate"
       tags "Vehicles"
       consumes "application/json"
       produces "application/json"

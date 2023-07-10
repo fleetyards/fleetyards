@@ -18,7 +18,7 @@ export class HangarStatsService {
      * @returns PieChartStats successful
      * @throws ApiError
      */
-    public modelsByClassification(): CancelablePromise<Array<PieChartStats>> {
+    public hangarModelsByClassification(): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/stats/models-by-classification',
@@ -33,7 +33,7 @@ export class HangarStatsService {
      * @returns PieChartStats successful
      * @throws ApiError
      */
-    public modelsByManufacturer(): CancelablePromise<Array<PieChartStats>> {
+    public hangarModelsByManufacturer(): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/stats/models-by-manufacturer',
@@ -48,7 +48,7 @@ export class HangarStatsService {
      * @returns PieChartStats successful
      * @throws ApiError
      */
-    public modelsByProductionStatus(): CancelablePromise<Array<PieChartStats>> {
+    public hangarModelsByProductionStatus(): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/stats/models-by-production-status',
@@ -63,7 +63,7 @@ export class HangarStatsService {
      * @returns PieChartStats successful
      * @throws ApiError
      */
-    public modelsBySize(): CancelablePromise<Array<PieChartStats>> {
+    public hangarModelsBySize(): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/stats/models-by-size',
@@ -78,7 +78,7 @@ export class HangarStatsService {
      * @returns HangarStats successful
      * @throws ApiError
      */
-    public get({
+    public hangarStats({
         q,
     }: {
         q?: HangarQuery,

@@ -19,7 +19,7 @@ export class PublicHangarService {
      * @returns VehicleMinimalPublic empty response
      * @throws ApiError
      */
-    public embed({
+    public publicHangarEmbed({
         usernames,
     }: {
         usernames: HangarEmbedQuery,
@@ -38,10 +38,10 @@ export class PublicHangarService {
      * @returns HangarPublic successful
      * @throws ApiError
      */
-    public get({
+    public publicHangar({
         username,
-        page,
-        perPage,
+        page = '1',
+        perPage = '30',
         q,
     }: {
         username: string,

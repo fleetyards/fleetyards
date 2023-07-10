@@ -13,12 +13,14 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/hangar" do
     get("Your personal Hangar") do
-      operationId "get"
+      operationId "hangar"
       tags "Hangar"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :string, required: false, default: "1"
-      parameter name: "perPage", in: :query, type: :string, required: false, default: Vehicle.default_per_page
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {
+        type: :string, default: Vehicle.default_per_page
+      }, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,
