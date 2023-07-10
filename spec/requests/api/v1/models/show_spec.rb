@@ -305,6 +305,9 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "perPage", in: :query, type: :string, required: false, default: ModelModule.default_per_page
 
       response(200, "successful") do
+        # schema "$ref": "#/components/schemas/ModelModules"
+        schema type: :array, items: {"$ref": "#/components/schemas/ModelModuleMinimal"}
+
         let(:slug) { model.slug }
 
         after do |example|
@@ -317,10 +320,10 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          items = data["items"]
+          # items = data["items"]
 
-          expect(items.count).to eq(model.modules.count)
-          expect(items.count).to be > 0
+          expect(data.count).to eq(model.modules.count)
+          expect(data.count).to be > 0
         end
       end
 
@@ -348,7 +351,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "perPage", in: :query, type: :string, required: false, default: ModelModule.default_per_page
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModulePackages"
+        # schema "$ref": "#/components/schemas/ModelModulePackages"
+        schema type: :array, items: {"$ref": "#/components/schemas/ModelModulePackageMinimal"}
 
         let(:slug) { model.slug }
 
@@ -362,6 +366,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          # items = data["items"]
 
           expect(data.count).to eq(model.modules.count)
           expect(data.count).to be > 0
