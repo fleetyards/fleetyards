@@ -8,7 +8,7 @@ import type { ModelComplete } from '../models/ModelComplete';
 import type { ModelHardpoint } from '../models/ModelHardpoint';
 import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
 import type { ModelMinimal } from '../models/ModelMinimal';
-import type { ModelModuleMinimal } from '../models/ModelModuleMinimal';
+import type { ModelModulePackages } from '../models/ModelModulePackages';
 import type { ModelPaintMinimal } from '../models/ModelPaintMinimal';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { ModelUpgradeMinimal } from '../models/ModelUpgradeMinimal';
@@ -30,7 +30,7 @@ export class ModelsService {
         page,
         perPage,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<any> {
         return this.httpRequest.request({
@@ -185,7 +185,7 @@ export class ModelsService {
         page,
         perPage,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<any> {
         return this.httpRequest.request({
@@ -209,7 +209,7 @@ export class ModelsService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: ModelQuery,
         cacheId?: string,
@@ -231,7 +231,7 @@ export class ModelsService {
      * @returns ModelComplete successful
      * @throws ApiError
      */
-    public detail({
+    public get({
         slug,
     }: {
         /**
@@ -295,7 +295,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Array<ImageMinimal>> {
         return this.httpRequest.request({
@@ -328,7 +328,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Array<VideoMinimal>> {
         return this.httpRequest.request({
@@ -361,7 +361,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Array<ModelMinimal>> {
         return this.httpRequest.request({
@@ -394,7 +394,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
     }): CancelablePromise<Array<ModelMinimal>> {
         return this.httpRequest.request({
@@ -440,7 +440,7 @@ export class ModelsService {
 
     /**
      * Model Modules
-     * @returns ModelModuleMinimal successful
+     * @returns any successful
      * @throws ApiError
      */
     public modules({
@@ -452,12 +452,45 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-        page?: number,
+        page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<ModelModuleMinimal>> {
+    }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/modules',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * Model Module Packages
+     * @returns ModelModulePackages successful
+     * @throws ApiError
+     */
+    public modulePackages({
+        slug,
+        page,
+        perPage,
+    }: {
+        /**
+         * Model slug
+         */
+        slug: string,
+        page?: string,
+        perPage?: string,
+    }): CancelablePromise<ModelModulePackages> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/models/{slug}/module-packages',
             path: {
                 'slug': slug,
             },

@@ -23,7 +23,7 @@ export class StationsService {
         perPage,
         q,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: StationQuery,
     }): CancelablePromise<Stations> {

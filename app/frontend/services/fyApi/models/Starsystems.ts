@@ -4,8 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
+import type { StarsystemMinimal } from './StarsystemMinimal';
 
-export type BaseList = {
+export type Starsystems = {
     meta?: Meta;
+    items: Array<StarsystemMinimal>;
 };
 

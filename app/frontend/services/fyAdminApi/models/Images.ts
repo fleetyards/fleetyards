@@ -7,7 +7,7 @@ import type { Image } from './Image';
 import type { Meta } from './Meta';
 
 export type Images = {
-    meta: Meta;
+    meta?: Meta;
     items: Array<Image>;
 };
 

@@ -24,7 +24,7 @@ export class CelestialObjectsService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: CelestialObjectQuery,
         cacheId?: string,
@@ -47,7 +47,7 @@ export class CelestialObjectsService {
      * @returns CelestialObjectMinimal successful
      * @throws ApiError
      */
-    public detail({
+    public get({
         slug,
     }: {
         /**

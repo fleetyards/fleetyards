@@ -4,8 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
+import type { ModelModulePackageMinimal } from './ModelModulePackageMinimal';
 
-export type BaseList = {
+export type ModelModulePackages = {
     meta?: Meta;
+    items: Array<ModelModulePackageMinimal>;
 };
 

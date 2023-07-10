@@ -3,9 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CargoOption } from './CargoOption';
 import type { Meta } from './Meta';
 
-export type BaseList = {
+export type CargoOptions = {
     meta?: Meta;
+    items: Array<CargoOption>;
 };
 

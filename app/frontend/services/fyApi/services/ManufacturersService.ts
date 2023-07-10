@@ -36,7 +36,7 @@ export class ManufacturersService {
         q,
         cacheId,
     }: {
-        page?: number,
+        page?: string,
         perPage?: string,
         q?: ManufacturerQuery,
         cacheId?: string,

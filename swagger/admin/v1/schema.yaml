@@ -22,9 +22,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -140,9 +140,9 @@ paths:
       - name: page
         in: query
         required: false
-        default: 1
+        default: '1'
         schema:
-          type: number
+          type: string
       - name: perPage
         in: query
         required: false
@@ -177,8 +177,7 @@ components:
       properties:
         meta:
           "$ref": "#/components/schemas/Meta"
-      required:
-      - meta
+      additionalProperties: false
       title: BaseList
     ShopTypeEnum:
       type: string
@@ -217,6 +216,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StandardError"
+      additionalProperties: false
       required:
       - attribute
       - messages
@@ -233,6 +233,7 @@ components:
           type: string
         value:
           type: string
+      additionalProperties: false
       required:
       - name
       - value
@@ -253,6 +254,7 @@ components:
         source:
           type: string
           format: uri
+      additionalProperties: false
       required:
       - source
       - small
@@ -264,6 +266,7 @@ components:
       properties:
         pagination:
           "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
       title: Meta
     Pagination:
       type: object
@@ -272,9 +275,22 @@ components:
           type: integer
         totalPages:
           type: integer
+        defaultPerPage:
+          type: integer
+        maxPerPage:
+          type: integer
+        perPageSteps:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: integer
+      additionalProperties: false
       required:
       - currentPage
       - totalPages
+      - defaultPerPage
+      - maxPerPage
       title: Pagination
     StandardError:
       type: object
@@ -283,6 +299,7 @@ components:
           type: string
         message:
           type: string
+      additionalProperties: false
       required:
       - code
       - message
@@ -298,6 +315,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FieldError"
+      additionalProperties: false
       required:
       - code
       - message
@@ -364,6 +382,7 @@ components:
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
           nullable: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -386,6 +405,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - name
       - size
@@ -404,6 +424,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - size
       - count
@@ -427,6 +448,7 @@ components:
           type: string
         slug:
           type: string
+      additionalProperties: false
       required:
       - id
       - name
@@ -444,6 +466,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - name
       - type
@@ -458,6 +481,7 @@ components:
           type: string
         typeLabel:
           type: string
+      additionalProperties: false
       required:
       - count
       - type
@@ -508,6 +532,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -523,8 +548,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Image"
+      additionalProperties: false
       required:
-      - meta
       - items
       title: Images
     ImageInput:
@@ -543,6 +568,7 @@ components:
           format: uuid
         galleryType:
           "$ref": "#/components/schemas/GalleryTypeEnum"
+      additionalProperties: false
       title: ImageInput
     ImageInputCreate:
       type: object
@@ -562,6 +588,7 @@ components:
           "$ref": "#/components/schemas/GalleryTypeEnum"
         file:
           type: string
+      additionalProperties: false
       title: ImageInputCreate
     ImageQuery:
       type: object
@@ -571,6 +598,7 @@ components:
           format: uuid
         galleryTypeEq:
           type: string
+      additionalProperties: false
       title: ImageQuery
     StationQuery:
       type: object
@@ -583,6 +611,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
       title: StationQuery
     Shop:
       type: object
@@ -641,6 +670,7 @@ components:
           nullable: true
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -716,6 +746,7 @@ components:
           type: string
           format: uri
           deprecated: true
+      additionalProperties: false
       required:
       - name
       - slug
@@ -790,6 +821,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - name
       - slug
@@ -858,6 +890,7 @@ components:
         type:
           type: string
           nullable: true
+      additionalProperties: false
       required:
       - id
       - name
@@ -954,6 +987,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Image"
+      additionalProperties: false
       required:
       - id
       - name
@@ -1034,6 +1068,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
       required:
       - id
       - name
@@ -1054,6 +1089,7 @@ components:
           type: string
         slug:
           type: string
+      additionalProperties: false
       required:
       - name
       - slug
@@ -1067,7 +1103,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StationMinimal"
+      additionalProperties: false
       required:
-      - meta
       - items
       title: Stations

@@ -4,8 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
+import type { VehicleMinimalPublic } from './VehicleMinimalPublic';
 
-export type BaseList = {
+export type HangarPublic = {
     meta?: Meta;
+    items: Array<VehicleMinimalPublic>;
 };
 

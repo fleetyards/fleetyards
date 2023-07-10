@@ -4,8 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
+import type { VideoMinimal } from './VideoMinimal';
 
-export type BaseList = {
+export type Videos = {
     meta?: Meta;
+    items: Array<VideoMinimal>;
 };
 

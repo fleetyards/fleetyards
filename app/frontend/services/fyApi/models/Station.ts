@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CelestialObject } from './CelestialObject';
 import type { DockCount } from './DockCount';
 import type { HabitationCount } from './HabitationCount';
 import type { MediaImage } from './MediaImage';
@@ -12,7 +11,6 @@ export type Station = {
     name: string;
     slug: string;
     cargoHub: boolean;
-    celestialObject: CelestialObject;
     classificationLabel?: string | null;
     classification?: string | null;
     description?: string | null;

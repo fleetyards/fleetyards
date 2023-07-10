@@ -3,9 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ManufacturerMinimal } from './ManufacturerMinimal';
 import type { Meta } from './Meta';
 
-export type BaseList = {
+export type Manufacturers = {
     meta?: Meta;
+    items: Array<ManufacturerMinimal>;
 };
 

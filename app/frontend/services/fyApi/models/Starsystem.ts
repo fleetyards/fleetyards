@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { MediaImage } from './MediaImage';
+
 export type Starsystem = {
     name: string;
     slug: string;
@@ -12,7 +14,9 @@ export type Starsystem = {
     locationLabel?: string | null;
     mapX?: string | null;
     mapY?: string | null;
-    media?: any;
+    media?: {
+        storeImage?: MediaImage | null;
+    };
     population?: string | null;
     size?: string | null;
     status?: string | null;

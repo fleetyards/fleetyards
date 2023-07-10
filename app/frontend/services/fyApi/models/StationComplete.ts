@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CelestialObject } from './CelestialObject';
+import type { CelestialObjectMinimal } from './CelestialObjectMinimal';
 import type { Dock } from './Dock';
 import type { DockCount } from './DockCount';
 import type { Habitation } from './Habitation';
@@ -17,7 +17,6 @@ export type StationComplete = {
     name: string;
     slug: string;
     cargoHub: boolean;
-    celestialObject: CelestialObject;
     classificationLabel?: string | null;
     classification?: string | null;
     description?: string | null;
@@ -55,12 +54,13 @@ export type StationComplete = {
      * @deprecated
      */
     storeImageSmall?: string | null;
-    createdAt: string;
-    updatedAt: string;
     starsystem?: Starsystem;
     shops?: Array<Shop>;
     docks?: Array<Dock>;
     habitations?: Array<Habitation>;
     images?: Array<Image>;
+    celestialObject: CelestialObjectMinimal;
+    createdAt: string;
+    updatedAt: string;
 };
 

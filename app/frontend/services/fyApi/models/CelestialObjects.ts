@@ -3,9 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CelestialObjectMinimal } from './CelestialObjectMinimal';
 import type { Meta } from './Meta';
 
-export type BaseList = {
+export type CelestialObjects = {
     meta?: Meta;
+    items: Array<CelestialObjectMinimal>;
 };
 
