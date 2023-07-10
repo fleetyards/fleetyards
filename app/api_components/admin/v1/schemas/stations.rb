@@ -10,6 +10,7 @@ module Admin
           properties: {
             items: {type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}}
           },
+          additionalProperties: false,
           required: %w[items]
         })
       end

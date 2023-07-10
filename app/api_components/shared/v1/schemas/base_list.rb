@@ -10,7 +10,8 @@ module Shared
           type: :object,
           properties: {
             meta: {"$ref": "#/components/schemas/Meta"}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

@@ -35,6 +35,7 @@ module Admin
             typeLabel: {type: :string, nullable: true},
             type: {type: :string, nullable: true}
           },
+          additionalProperties: false,
           required: %w[id name slug habitable hasImages refinery cargoHub celestialObject media]
         })
       end

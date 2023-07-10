@@ -32,6 +32,7 @@ module Admin
             locationLabel: {type: :string, nullable: true},
             starsystem: {"$ref": "#/components/schemas/Starsystem", nullable: true}
           },
+          additionalProperties: false,
           required: %w[id name slug designation]
         })
       end

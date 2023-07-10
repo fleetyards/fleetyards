@@ -11,7 +11,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false,
         default: Model.default_per_page
       parameter name: "q", in: :query,

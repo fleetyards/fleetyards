@@ -34,6 +34,7 @@ module V1
           storeImageMedium: {type: :string, nullable: true, format: :uri, deprecated: true},
           storeImageLarge: {type: :string, nullable: true, format: :uri, deprecated: true}
         },
+        additionalProperties: false,
         required: %w[
           id name slug type typeLabel stationLabel locationLabel rental buying selling
           refineryTerminal media station

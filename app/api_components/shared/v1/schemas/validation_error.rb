@@ -16,6 +16,7 @@ module Shared
               items: {"$ref" => "#/components/schemas/FieldError"}
             }
           },
+          additionalProperties: false,
           required: %w[code message]
         })
       end

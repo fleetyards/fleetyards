@@ -21,6 +21,7 @@ module V1
           missingUpgrades: {type: :array, items: {type: :string}},
           missingUpgradeVehicles: {type: :array, items: {type: :string}}
         },
+        additionalProperties: false,
         required: %w[
           importedVehicles foundVehicles movedVehiclesToWanted missingModels importedComponents
           foundComponents missingComponents missingComponentVehicles importedUpgrades foundUpgrades

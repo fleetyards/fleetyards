@@ -12,6 +12,7 @@ module V1
           missing: {type: :array, items: {type: :string}},
           imported: {type: :array, items: {type: :string}}
         },
+        additionalProperties: false,
         required: %w[success missing imported]
       })
     end

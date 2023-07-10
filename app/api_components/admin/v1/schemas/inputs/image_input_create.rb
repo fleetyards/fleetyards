@@ -11,7 +11,8 @@ module Admin
             type: :object,
             properties: {
               file: {type: :string}
-            }
+            },
+            additionalProperties: false
           })
         end
       end

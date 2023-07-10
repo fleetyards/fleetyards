@@ -16,7 +16,8 @@ module Admin
               background: {type: :boolean},
               galleryId: {type: :string, format: :uuid},
               galleryType: {"$ref": "#/components/schemas/GalleryTypeEnum"}
-            }
+            },
+            additionalProperties: false
           })
         end
       end

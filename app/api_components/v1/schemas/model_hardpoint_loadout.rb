@@ -12,6 +12,7 @@ module V1
           component: {"$ref": "#/components/schemas/Component", nullable: true},
           name: {type: :string}
         },
+        additionalProperties: false,
         required: %w[id name]
       })
     end

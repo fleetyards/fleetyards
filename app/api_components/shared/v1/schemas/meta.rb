@@ -10,7 +10,8 @@ module Shared
           type: :object,
           properties: {
             pagination: {"$ref": "#/components/schemas/Pagination"}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

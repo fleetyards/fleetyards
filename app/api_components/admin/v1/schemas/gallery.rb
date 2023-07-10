@@ -13,6 +13,7 @@ module Admin
             name: {type: :string},
             slug: {type: :string}
           },
+          additionalProperties: false,
           required: %w[id name slug]
         })
       end

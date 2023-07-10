@@ -22,7 +22,8 @@ module V1
             stationIn: {type: :array, items: {type: :string}},
             celestialObjectIn: {type: :array, items: {type: :string}},
             starsystemIn: {type: :array, items: {type: :string}}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

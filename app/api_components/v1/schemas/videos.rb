@@ -9,6 +9,7 @@ module V1
         properties: {
           items: {type: :array, items: {"$ref": "#/components/schemas/VideoMinimal"}}
         },
+        additionalProperties: false,
         required: %w[items]
       })
     end

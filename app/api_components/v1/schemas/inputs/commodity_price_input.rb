@@ -15,6 +15,7 @@ module V1
             shopId: {type: :string, format: :uuid},
             timeRange: {type: :string, nullable: true}
           },
+          additionalProperties: false,
           required: %w[commodityItemId commodityItemType path shopId]
         })
       end

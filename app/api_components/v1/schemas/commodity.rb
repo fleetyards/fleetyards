@@ -32,6 +32,7 @@ module V1
           storeImageMedium: {type: :string, format: :uri, deprecated: true},
           storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
+        additionalProperties: false,
         required: %w[id name slug availability media createdAt updatedAt]
       })
     end

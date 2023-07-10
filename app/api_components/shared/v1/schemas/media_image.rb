@@ -14,6 +14,7 @@ module Shared
             small: {type: :string, format: :uri},
             source: {type: :string, format: :uri}
           },
+          additionalProperties: false,
           required: %w[source small medium large]
         })
       end

@@ -19,6 +19,7 @@ module V1
           url: {type: :string, format: :uri},
           width: {type: :number, nullable: true}
         },
+        additionalProperties: false,
         required: %w[id name url width height type background smallUrl bigUrl]
       })
     end

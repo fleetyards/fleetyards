@@ -11,7 +11,6 @@ module V1
           name: {type: :string},
           slug: {type: :string},
           cargoHub: {type: :boolean},
-          celestialObject: {"$ref": "#/components/schemas/CelestialObject"},
           classificationLabel: {type: :string, nullable: true},
           classification: {type: :string, nullable: true},
           description: {type: :string, nullable: true},

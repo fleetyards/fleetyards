@@ -14,6 +14,7 @@ module V1
             customName: {type: :string, nullable: true},
             type: {"$ref": "#/components/schemas/RsiHangarItemKindEnum"}
           },
+          additionalProperties: false,
           required: %w[id name type]
         })
       end

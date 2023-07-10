@@ -11,7 +11,8 @@ module V1
           properties: {
             modelIn: {type: :array, items: {type: :string}},
             stationIn: {type: :array, items: {type: :string}}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

@@ -30,6 +30,7 @@ module V1
           locationLabel: {type: :string, nullable: true},
           starsystem: {"$ref": "#/components/schemas/Starsystem", nullable: true}
         },
+        additionalProperties: false,
         required: %w[name slug designation]
       })
     end

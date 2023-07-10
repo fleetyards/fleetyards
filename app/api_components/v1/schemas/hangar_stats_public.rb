@@ -12,6 +12,7 @@ module V1
           classifications: {type: :array, items: {"$ref": "#/components/schemas/HangarClassificationMetric"}},
           groups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupMetric"}}
         },
+        additionalProperties: false,
         required: %w[total classifications groups]
       })
     end

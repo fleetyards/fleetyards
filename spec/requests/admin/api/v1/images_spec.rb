@@ -20,7 +20,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       produces "application/json"
       tags "Images"
 
-      parameter name: "page", in: :query, type: :number, required: false, default: 1
+      parameter name: "page", in: :query, type: :string, required: false, default: "1"
       parameter name: "perPage", in: :query, type: :string, required: false,
         default: Image.default_per_page
       parameter name: "q", in: :query,

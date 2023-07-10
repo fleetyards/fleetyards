@@ -10,9 +10,21 @@ module Shared
           type: :object,
           properties: {
             currentPage: {type: :integer},
-            totalPages: {type: :integer}
+            totalPages: {type: :integer},
+            defaultPerPage: {type: :integer},
+            maxPerPage: {type: :integer},
+            perPageSteps: {
+              type: :array,
+              items: {
+                oneOf: [
+                  {type: :string},
+                  {type: :integer}
+                ]
+              }
+            }
           },
-          required: %w[currentPage totalPages]
+          additionalProperties: false,
+          required: %w[currentPage totalPages defaultPerPage maxPerPage]
         })
       end
     end

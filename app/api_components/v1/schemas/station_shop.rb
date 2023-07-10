@@ -11,6 +11,7 @@ module V1
           name: {type: :string},
           slug: {type: :string}
         },
+        additionalProperties: false,
         required: %w[name slug]
       })
     end

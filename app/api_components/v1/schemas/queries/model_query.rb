@@ -40,7 +40,8 @@ module V1
               type: :string
             }]},
             willItFit: {type: :string, format: :uuid}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

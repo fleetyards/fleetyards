@@ -11,6 +11,7 @@ module V1
           properties: {
             serial: {type: :string}
           },
+          additionalProperties: false,
           required: %w[serial]
         })
       end

@@ -25,7 +25,8 @@ module V1
             shopsShopTypeIn: {type: :array, items: {type: :string}},
             docksShipSizeIn: {type: :array, items: {type: :string}},
             sorts: {type: :array, items: {type: :string}}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

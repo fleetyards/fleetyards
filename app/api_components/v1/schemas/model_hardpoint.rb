@@ -27,6 +27,7 @@ module V1
           subCategoryLabel: {type: :string, nullable: true},
           type: {"$ref": "#/components/schemas/ModelHardpointTypeEnum"}
         },
+        additionalProperties: false,
         required: %w[id key type group]
       })
     end

@@ -16,6 +16,7 @@ module V1
           width: {type: :integer},
           height: {type: :integer}
         },
+        additionalProperties: false,
         required: %w[source small medium large xlarge width height]
       })
     end

@@ -41,7 +41,8 @@ module V1
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

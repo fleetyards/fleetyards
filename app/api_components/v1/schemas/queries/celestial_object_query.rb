@@ -10,11 +10,13 @@ module V1
           type: :object,
           properties: {
             starsystemEq: {type: :string},
-            main: {type: :boolean},
             nameCont: {type: :string},
             nameIn: {type: :array, items: {type: :string}},
-            searchCont: {type: :string}
-          }
+            searchCont: {type: :string},
+            parentIdNull: {type: :boolean},
+            main: {type: :boolean, deprecated: true}
+          },
+          additionalProperties: false
         })
       end
     end

@@ -11,6 +11,7 @@ module V1
           shipsCountYear: {type: :integer},
           shipsCountTotal: {type: :integer}
         },
+        additionalProperties: false,
         required: %w[shipsCountYear shipsCountTotal]
       })
     end

@@ -14,6 +14,7 @@ module Shared
             name: {type: :string},
             value: {type: :string}
           },
+          additionalProperties: false,
           required: %w[name value category]
         })
       end

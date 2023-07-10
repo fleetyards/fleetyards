@@ -12,6 +12,7 @@ module V1
           type: {type: :string},
           typeLabel: {type: :string}
         },
+        additionalProperties: false,
         required: %w[count type typeLabel]
       })
     end

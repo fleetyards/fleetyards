@@ -13,7 +13,8 @@ module Admin
             docks: {type: :array, items: {"$ref": "#/components/schemas/Dock"}},
             habitations: {type: :array, items: {"$ref": "#/components/schemas/Habitation"}},
             images: {type: :array, items: {"$ref": "#/components/schemas/Image"}}
-          }
+          },
+          additionalProperties: false
         })
       end
     end

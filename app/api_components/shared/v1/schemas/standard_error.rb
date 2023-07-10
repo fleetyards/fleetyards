@@ -12,6 +12,7 @@ module Shared
             code: {type: :string},
             message: {type: :string}
           },
+          additionalProperties: false,
           required: %w[code message]
         })
       end
