@@ -29,6 +29,10 @@ jobs:
     needs: js-setup
     uses: ./.github/workflows/js-prettier.job.yml
 
+  api-schema-lint:
+    needs: js-setup
+    uses: ./.github/workflows/api-schema-lint.job.yml
+
   # js-tests:
   #   needs: js-setup
   #   uses: ./.github/workflows/js-tests.job.yml
@@ -74,6 +78,7 @@ jobs:
         ruby-tests,
         ruby-api-tests,
         # js-tests,
+        api-schema-lint,
         js-lint,
         js-prettier,
         seeds,
