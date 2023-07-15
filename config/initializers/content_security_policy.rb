@@ -31,6 +31,7 @@ Rails.application.configure do
     connect_src.push("ws://localhost:3035", "http://localhost:3035", "ws://localhost:3136", "http://localhost:3136") if Rails.env.development?
     connect_src.push("ws://fleetyards.test:3035", "http://fleetyards.test:3035", "ws://fleetyards.test:3136", "http://fleetyards.test:3136") if Rails.env.development?
     connect_src.push("ws://api.fleetyards.test:3035", "http://api.fleetyards.test:3035", "ws://api.fleetyards.test:3136", "http://api.fleetyards.test:3136") if Rails.env.development?
+    connect_src.push("ws://docs.fleetyards.test:3035", "http://docs.fleetyards.test:3035", "ws://docs.fleetyards.test:3136", "http://docs.fleetyards.test:3136") if Rails.env.development?
     connect_src.push("ws://admin.fleetyards.test:3035", "http://admin.fleetyards.test:3035", "ws://admin.fleetyards.test:3136") if Rails.env.development?
 
     script_src = [
