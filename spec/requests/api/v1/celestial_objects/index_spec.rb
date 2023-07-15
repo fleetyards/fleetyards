@@ -25,8 +25,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/CelestialObjectMinimal"}
+        schema "$ref": "#/components/schemas/CelestialObjects"
 
         after do |example|
           if response&.body.present?
@@ -40,8 +39,40 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
+          expect(items.count).to be > 0
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/CelestialObjects"
+
+        let(:q) do
+          {
+            "nameCont" => "Crusader"
+          }
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to eq(1)
+          expect(items.first.dig("name")).to eq("Crusader")
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/CelestialObjects"
+
+        let(:perPage) { 1 }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to eq(1)
         end
       end
     end

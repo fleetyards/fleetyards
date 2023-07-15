@@ -15,6 +15,8 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
 
       response(200, "successful") do
+        schema "$ref": "#/components/schemas/Models"
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {
@@ -23,7 +25,25 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           }
         end
 
-        run_test!
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to be > 0
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Models"
+
+        let(:perPage) { 1 }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          items = data["items"]
+
+          expect(items.count).to eq(1)
+        end
       end
     end
   end

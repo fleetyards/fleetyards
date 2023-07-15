@@ -122,7 +122,7 @@ import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 
-@Component<ImageUploader>({
+@Component({
   components: {
     Loader,
     VueUploadComponent,

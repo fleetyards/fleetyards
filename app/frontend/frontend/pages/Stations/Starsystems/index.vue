@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t("headlines.starsystems") }}
+          {{ t("headlines.starsystems") }}
         </h1>
       </div>
     </div>
@@ -13,7 +13,7 @@
           <div class="starmap">
             <img :src="mapImageUrl" alt="map" />
             <router-link
-              v-for="starsystem in starsystems"
+              v-for="starsystem in items"
               :key="starsystem.slug"
               :to="{
                 name: 'starsystem',
@@ -31,13 +31,13 @@
         </Panel>
       </div>
     </div>
-    <div class="row">
+    <div id="starsystems" class="row">
       <div class="col-12">
-        <Paginator
-          v-if="starsystems.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
+        <Pagination
+          :pagination="pagination"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+          hash="starsystems"
         />
       </div>
     </div>
@@ -45,7 +45,7 @@
       <div class="col-12">
         <transition-group name="fade-list" class="row" tag="div" appear>
           <div
-            v-for="starsystem in starsystems"
+            v-for="starsystem in items"
             :key="starsystem.slug"
             class="col-12 fade-list-item"
           >
@@ -60,7 +60,7 @@
             >
               <template v-if="starsystem.celestialObjects.length">
                 <h3 class="sr-only">
-                  {{ $t("headlines.celestialObjects") }}
+                  {{ t("headlines.celestialObjects") }}
                 </h3>
                 <transition-group name="fade-list" class="row" tag="div" appear>
                   <div
@@ -73,7 +73,7 @@
                       :route="{
                         name: 'celestial-object',
                         params: {
-                          starsystem: celestialObject.starsystem.slug,
+                          starsystem: starsystem?.slug,
                           slug: celestialObject.slug,
                         },
                       }"
@@ -84,79 +84,71 @@
             </StarsystemList>
           </div>
         </transition-group>
-        <Loader :loading="loading" :fixed="true" />
+        <Loader :loading="isLoading" :fixed="true" />
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <Paginator
-          v-if="starsystems.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
+        <Pagination
+          :pagination="pagination"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+          hash="starsystems"
         />
       </div>
     </div>
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import Panel from "@/frontend/core/components/Panel/index.vue";
-import Pagination from "@/frontend/mixins/Pagination";
-import { scrollToAnchor } from "@/frontend/utils/scrolling";
+import Pagination from "@/frontend/core/components/Pagination/index.vue";
 import StarsystemList from "@/frontend/components/Starsystems/List/index.vue";
 import PlanetPanel from "@/frontend/components/Planets/Panel/index.vue";
 import mapImageUrl from "@/images/map.png";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { usePagination } from "@/frontend/composables/usePagination";
+import { useQuery } from "@tanstack/vue-query";
+import { useRoute } from "vue-router/composables";
+import { StarsystemQuery, BaseList } from "@/services/fyApi";
 
+const { t } = useI18n();
+
+useMetaInfo();
+
+const { starsystems: starsystemsClient } = useApiClient();
+
+const route = useRoute();
+
+const items = computed(() => starsystems.value?.items ?? []);
+
+const {
+  isLoading,
+  data: starsystems,
+  refetch,
+} = useQuery({
+  queryKey: ["starsystems"],
+  queryFn: () =>
+    starsystemsClient.list({
+      page: page.value,
+      perPage: perPage.value,
+      q: route.query.q as StarsystemQuery,
+    }),
+});
+
+const { perPage, page, pagination, updatePerPage } = usePagination(
+  "starsystems",
+  starsystems as Ref<BaseList>,
+  refetch
+);
+</script>
+
+<script lang="ts">
 export default {
-  name: "StarsystemsIndex",
-
-  components: {
-    Loader,
-    Panel,
-    StarsystemList,
-    PlanetPanel,
-  },
-
-  mixins: [Pagination],
-
-  data() {
-    return {
-      loading: false,
-      mapImageUrl,
-      starsystems: [],
-    };
-  },
-
-  watch: {
-    $route() {
-      this.fetch();
-    },
-  },
-
-  created() {
-    this.fetch();
-  },
-
-  methods: {
-    async fetch() {
-      this.loading = true;
-      const response = await this.$api.get("starsystems", {
-        q: this.$route.query.q,
-        page: this.$route.query.page,
-      });
-      this.loading = false;
-      if (!response.error) {
-        this.starsystems = response.data;
-
-        this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash);
-        });
-      }
-      this.setPages(response.meta);
-    },
-  },
+  name: "StarsystemsPage",
 };
 </script>
 

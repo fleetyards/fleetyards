@@ -26,8 +26,7 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ImageComplete"}
+        schema "$ref": "#/components/schemas/Images"
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -39,15 +38,15 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(2)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(2)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ImageComplete"}
+        schema "$ref": "#/components/schemas/Images"
 
         let(:q) do
           {
@@ -57,21 +56,22 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ImageComplete"}
+        schema "$ref": "#/components/schemas/Images"
 
         let(:perPage) { 1 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
+          expect(items.count).to eq(1)
         end
       end
     end

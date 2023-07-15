@@ -1,2 +1,4 @@
 extends:
-  - minimal
+  - recommended
+rules:
+  no-unused-components: off

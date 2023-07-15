@@ -1,8 +1,7 @@
 import { get } from "@/frontend/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 import { useApiClient } from "@/admin/composables/useApiClient";
-import type { Image } from "@/services/fyAdminApi/models/Image";
-import type { ImageQuery } from "@/services/fyAdminApi/models/ImageQuery";
+import type { Image, ImageQuery } from "@/services/fyAdminApi";
 
 interface AdminGalleryParams extends CollectionParams {
   galleryType: string;

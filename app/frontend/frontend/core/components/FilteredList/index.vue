@@ -264,7 +264,9 @@ export default class FilteredList extends Vue {
     }
 
     if (!this.collection[this.collectionMethod]) {
-      throw Error(`Method "${this.collectionMethod}" not found on Collection`);
+      throw Error(
+        `Method "${this.collectionMethod}" not found on Collection: ${this.collection.constructor.name}`
+      );
     }
 
     await this.collection[this.collectionMethod](params);

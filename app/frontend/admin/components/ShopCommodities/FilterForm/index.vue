@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="filter">
+  <form @submit.prevent="submit">
     <FormInput
       id="commodity-item-name"
       v-model="search"
@@ -10,8 +10,8 @@
 
     <CollectionFilterGroup
       key="component-item-type-filters-filter-group"
-      v-model="form.component_item_type"
-      :label="$t('labels.filters.shopCommodities.componentItemTypeFilter')"
+      v-model="form.componentItemType"
+      :label="t('labels.filters.shopCommodities.componentItemTypeFilter')"
       :collection="componentItemTypeFiltersCollection"
       name="component-item-type-filter"
       :searchable="true"
@@ -21,8 +21,8 @@
 
     <CollectionFilterGroup
       key="equipment-item-type-filters-filter-group"
-      v-model="form.equipment_item_type"
-      :label="$t('labels.filters.shopCommodities.equipmentItemTypeFilter')"
+      v-model="form.equipmentItemType"
+      :label="t('labels.filters.shopCommodities.equipmentItemTypeFilter')"
       :collection="equipmentItemTypeFiltersCollection"
       name="equipment-item-type-filter"
       :searchable="true"
@@ -32,8 +32,8 @@
 
     <CollectionFilterGroup
       key="equipment-type-filters-filter-group"
-      v-model="form.equipment_type"
-      :label="$t('labels.filters.shopCommodities.equipmentTypeFilter')"
+      v-model="form.equipmentType"
+      :label="t('labels.filters.shopCommodities.equipmentTypeFilter')"
       :collection="equipmentTypeFiltersCollection"
       name="equipment-type-filter"
       :searchable="true"
@@ -43,8 +43,8 @@
 
     <CollectionFilterGroup
       key="equipment-slot-filters-filter-group"
-      v-model="form.equipment_slot"
-      :label="$t('labels.filters.shopCommodities.equipmentSlotFilter')"
+      v-model="form.equipmentSlot"
+      :label="t('labels.filters.shopCommodities.equipmentSlotFilter')"
       :collection="equipmentSlotFiltersCollection"
       name="equipment-slot-filter"
       :searchable="true"
@@ -52,22 +52,17 @@
       :no-label="true"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!filterSelected" :block="true" @click.native="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
 import { debounce } from "ts-debounce";
 import Btn from "@/frontend/core/components/Btn/index.vue";
+import { useRoute, useRouter } from "vue-router/composables";
 import componentItemTypeFiltersCollection from "@/admin/api/collections/ComponentItemTypeFilters";
 import equipmentItemTypeFiltersCollection from "@/admin/api/collections/EquipmentItemTypeFilters";
 import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
@@ -75,97 +70,106 @@ import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlo
 import { getFilters, isFilterSelected } from "@/frontend/utils/Filters";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<ShopCommoditiesFilterForm>({
-  components: {
-    CollectionFilterGroup,
-    FormInput,
-    Btn,
+const { t } = useI18n();
+
+type ShopCommodityFilterForm = {
+  componentItemType: string[];
+  equipmentItemType: string[];
+  equipmentType: string[];
+  equipmentSlot: string[];
+};
+
+const search = ref("");
+
+const form = ref<ShopCommodityFilterForm>({
+  componentItemType: [],
+  equipmentItemType: [],
+  equipmentType: [],
+  equipmentSlot: [],
+});
+
+const route = useRoute();
+
+const queryFilters = computed(
+  () => (route.query.filters || {}) as ShopCommodityFilterForm
+);
+
+const filterSelected = computed(() => isFilterSelected(queryFilters.value));
+
+watch(
+  () => form,
+  () => {
+    filter();
   },
-})
-export default class ShopCommoditiesFilterForm extends Vue {
-  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
-    componentItemTypeFiltersCollection;
-
-  equipmentItemTypeFiltersCollection: EquipmentItemTypeFiltersCollection =
-    equipmentItemTypeFiltersCollection;
-
-  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
-    equipmentTypeFiltersCollection;
-
-  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
-    equipmentSlotFiltersCollection;
-
-  loading = false;
-
-  search: string = null;
-
-  form = {
-    component_item_type: [],
-    equipment_item_type: [],
-    equipment_type: [],
-    equipment_slot: [],
-  };
-
-  filter = debounce(this.debouncedFilter, 500);
-
-  get isFilterSelected() {
-    return isFilterSelected(this.$route.query.filters);
-  }
-
-  @Watch("form", {
+  {
     deep: true,
-  })
-  onFormChange() {
-    this.filter();
   }
+);
 
-  @Watch("search")
-  onSearchChange() {
-    this.filter();
+watch(
+  () => search.value,
+  () => {
+    filter();
   }
+);
 
-  resetFilter() {
-    this.$router
-      .replace({
-        name: this.$route.name || undefined,
-        query: {},
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {});
-  }
+const router = useRouter();
 
-  debouncedFilter() {
-    this.$router
-      .replace({
-        name: this.$route.name || undefined,
-        query: {
-          ...this.$route.query,
-          search: this.search || undefined,
-          filters: getFilters(this.form),
-        },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_err) => {});
-  }
+const resetFilter = () => {
+  router
+    .replace({
+      name: route.name || undefined,
+      query: {},
+    })
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    .catch((_err) => {});
+};
 
-  mounted() {
-    this.setupForm();
-  }
+const debouncedFilter = () => {
+  router
+    .replace({
+      name: route.name || undefined,
+      query: {
+        ...route.query,
+        search: search.value || undefined,
+        filters: getFilters(form.value),
+      },
+    })
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    .catch((_err) => {});
+};
 
-  @Watch("$route")
-  onRouteChange() {
-    this.setupForm();
-  }
+const filter = debounce(debouncedFilter, 500);
 
-  setupForm() {
-    const filters = this.$route.query.filters || {};
-    this.form = {
-      component_item_type: filters.component_item_type || [],
-      equipment_item_type: filters.equipment_item_type || [],
-      equipment_type: filters.equipment_type || [],
-      equipment_slot: filters.equipment_slot || [],
-    };
+const submit = () => {
+  filter();
+};
+
+onMounted(() => {
+  setupForm();
+});
+
+watch(
+  () => route.query,
+  () => {
+    setupForm();
   }
-}
+);
+
+const setupForm = () => {
+  form.value = {
+    componentItemType: queryFilters.value.componentItemType || [],
+    equipmentItemType: queryFilters.value.equipmentItemType || [],
+    equipmentType: queryFilters.value.equipmentType || [],
+    equipmentSlot: queryFilters.value.equipmentSlot || [],
+  };
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShopCommoditiesFilterForm",
+};
 </script>

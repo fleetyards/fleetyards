@@ -2,17 +2,20 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CargoOptions } from '../models/CargoOptions';
 import type { FilterOption } from '../models/FilterOption';
-import type { ImageMinimal } from '../models/ImageMinimal';
+import type { Images } from '../models/Images';
 import type { ModelComplete } from '../models/ModelComplete';
 import type { ModelHardpoint } from '../models/ModelHardpoint';
 import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
 import type { ModelMinimal } from '../models/ModelMinimal';
 import type { ModelModulePackages } from '../models/ModelModulePackages';
+import type { ModelModules } from '../models/ModelModules';
 import type { ModelPaintMinimal } from '../models/ModelPaintMinimal';
 import type { ModelQuery } from '../models/ModelQuery';
+import type { Models } from '../models/Models';
 import type { ModelUpgradeMinimal } from '../models/ModelUpgradeMinimal';
-import type { VideoMinimal } from '../models/VideoMinimal';
+import type { Videos } from '../models/Videos';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -23,7 +26,7 @@ export class ModelsService {
 
     /**
      * Models with Docks
-     * @returns any successful
+     * @returns Models successful
      * @throws ApiError
      */
     public modelsWithDocks({
@@ -32,7 +35,7 @@ export class ModelsService {
     }: {
         page?: string,
         perPage?: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/with-docks',
@@ -178,7 +181,7 @@ export class ModelsService {
 
     /**
      * Model Cargo options
-     * @returns any successful
+     * @returns CargoOptions successful
      * @throws ApiError
      */
     public cargoOptions({
@@ -187,7 +190,7 @@ export class ModelsService {
     }: {
         page?: string,
         perPage?: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<CargoOptions> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/cargo-options',
@@ -200,7 +203,7 @@ export class ModelsService {
 
     /**
      * Models List
-     * @returns ModelMinimal successful
+     * @returns Models successful
      * @throws ApiError
      */
     public models({
@@ -213,7 +216,7 @@ export class ModelsService {
         perPage?: string,
         q?: ModelQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<ModelMinimal>> {
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models',
@@ -283,7 +286,7 @@ export class ModelsService {
 
     /**
      * Model Images
-     * @returns ImageMinimal successful
+     * @returns Images successful
      * @throws ApiError
      */
     public modelImages({
@@ -297,7 +300,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<ImageMinimal>> {
+    }): CancelablePromise<Images> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/images',
@@ -316,7 +319,7 @@ export class ModelsService {
 
     /**
      * Model Videos
-     * @returns VideoMinimal successful
+     * @returns Videos successful
      * @throws ApiError
      */
     public modelVideos({
@@ -330,7 +333,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<VideoMinimal>> {
+    }): CancelablePromise<Videos> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/videos',
@@ -349,7 +352,7 @@ export class ModelsService {
 
     /**
      * Model Variants
-     * @returns ModelMinimal successful
+     * @returns Models successful
      * @throws ApiError
      */
     public modelVariants({
@@ -363,7 +366,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<ModelMinimal>> {
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/variants',
@@ -382,7 +385,7 @@ export class ModelsService {
 
     /**
      * Model Loaners
-     * @returns ModelMinimal successful
+     * @returns Models successful
      * @throws ApiError
      */
     public modelLoaners({
@@ -396,7 +399,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<ModelMinimal>> {
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/loaners',
@@ -440,7 +443,7 @@ export class ModelsService {
 
     /**
      * Model Modules
-     * @returns any successful
+     * @returns ModelModules successful
      * @throws ApiError
      */
     public modelModules({
@@ -454,7 +457,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<ModelModules> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/modules',

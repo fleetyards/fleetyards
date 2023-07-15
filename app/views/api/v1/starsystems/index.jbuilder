@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-json.array! @starsystems, partial: "api/v1/starsystems/minimal", as: :starsystem
+json.items do
+  json.array! @starsystems, partial: "api/v1/starsystems/minimal", as: :starsystem
+end
+json.partial! "api/shared/meta", result: @starsystems

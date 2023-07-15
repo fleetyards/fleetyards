@@ -92,7 +92,7 @@ const route = useRoute();
 watch(
   () => fleet.value,
   () => {
-    updateMetaInfo(metaTitle.value);
+    updateMetaInfo({ title: metaTitle.value });
   }
 );
 

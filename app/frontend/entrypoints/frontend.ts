@@ -12,7 +12,15 @@ import Ahoy from "@/frontend/plugins/Ahoy";
 import Validations from "@/frontend/plugins/Validations";
 import VTooltip from "v-tooltip";
 import VShowSlide from "v-show-slide";
+import { VueQueryPlugin } from "@tanstack/vue-query";
+import { createPinia, PiniaVuePlugin } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
+Vue.use(PiniaVuePlugin);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+
+Vue.use(VueQueryPlugin);
 Vue.use(VShowSlide);
 Vue.use(Subscriptions);
 Vue.use(ApiClient);
@@ -27,8 +35,10 @@ declare global {
     STORE_VERSION: string;
     SC_DATA_VERSION: string;
     APP_CODENAME: string;
+    API_VERSION: string;
+    API_OAS_VERSION: string;
     API_ENDPOINT: string;
-    DATA_PREFILL: KeyValuePair;
+    DATA_PREFETCH: KeyValuePair;
     FRONTEND_ENDPOINT: string;
     CABLE_ENDPOINT: string;
   }
@@ -77,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el: "#app",
     router,
     store,
+    pinia,
     render: (h) => h(App),
   });
 });

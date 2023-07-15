@@ -545,12 +545,12 @@ const fetch = async () => {
 
   model.value = await modelsCollection.findBySlug(route.params.slug);
 
-  updateMetaInfo(
-    metaTitle.value,
-    metaDescription.value,
-    metaImage.value,
-    "article"
-  );
+  updateMetaInfo({
+    title: metaTitle.value,
+    description: metaDescription.value,
+    image: metaImage.value,
+    type: "article",
+  });
 
   loading.value = false;
 };

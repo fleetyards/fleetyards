@@ -6,6 +6,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
   path "/manufacturers/with-models" do
     get("Manufacturers list only with models.") do
       tags "Manufacturers"
+      operationId "DEPRECATEDgetManufacturersWithModels"
       produces "application/json"
       deprecated true
 

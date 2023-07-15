@@ -1,6 +1,7 @@
+import type { RouteConfig } from "vue-router";
 import SecurityRoutes from "./Security/routes";
 
-export const routes = [
+export const routes: RouteConfig[] = [
   {
     path: "profile/",
     name: "settings-profile",

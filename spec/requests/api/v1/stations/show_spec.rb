@@ -45,7 +45,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
       parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref" => "#/components/schemas/ImageComplete"}
+        schema "$ref": "#/components/schemas/Images"
 
         let(:slug) { station.slug }
 
