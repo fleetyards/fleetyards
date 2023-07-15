@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@/stylesheets/frontend/fonts";
+@import "swagger-ui/dist/swagger-ui.css";
+@import "@/stylesheets/docs/vendor/swagger-ui-dark";
+
+body {
+  position: relative;
+  background-color: black;
+}

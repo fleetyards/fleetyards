@@ -5,6 +5,8 @@ module V1
     class HangarGroupPublic
       include SchemaConcern
 
+      schema_hidden true
+
       schema({
         type: :object,
         properties: {

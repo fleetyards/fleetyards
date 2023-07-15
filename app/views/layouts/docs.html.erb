@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+    <title><%= title %></title>
+    <meta content="<%= description %>" name="description">
+    <meta content="<%= keywords %>" name="keywords">
+    <meta property="og:site_name" content="<%= I18n.t(:"title.default") %>">
+    <meta property="og:title" content="<%= og_title %>">
+    <meta property="og:description" content="<%= og_description %>">
+    <meta property="og:type" content="<%= og_type %>">
+    <meta property="og:url" content="<%= og_url %>">
+    <meta property="og:image" content="<%= og_image %>">
+    <link rel="shortcut icon" type="image/png" href="<%= asset_path('favicon.png') %>">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#333333"/>
+    <meta name="application-name" content="<%= I18n.t("title.default") %>">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-title" content="<%= I18n.t("title.default") %>">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<%= I18n.t("title.default") %>">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="<%= asset_path('manifest.json') %>" />
+    <%= favicon_link_tag 'icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>
+    <%= favicon_link_tag 'icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
+    <%= favicon_link_tag 'icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' %>
+    <%= favicon_link_tag 'icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' %>
+    <%= favicon_link_tag 'icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png' %>
+    <link rel="preconnect" href="<%= API_ENDPOINT %>">
+    <link rel="preconnect" href="https://kit.fontawesome.com">
+    <script src="https://kit.fontawesome.com/497179c6ff.js" crossorigin="anonymous"></script>
+    <%= render "layouts/app_intro" %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload"  %>
+    <%= vite_stylesheet_tag 'docs.scss' %>
+    <script>
+      window.APP_VERSION = '<%= Fleetyards::VERSION %>'
+      window.APP_CODENAME = '<%= Fleetyards::CODENAME %>'
+      window.NODE_ENV = '<%= Rails.env %>'
+      window.GIT_REVISION = '<%= Git.revision_short %>'
+      window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
+      window.APP_NAME = '<%= Rails.configuration.app.name %>'
+      window.STORE_VERSION = '<%= Rails.configuration.app.store_version %>'
+      window.API_VERSION = '<%= Rails.configuration.app.api_version %>'
+      window.API_OAS_VERSION = '<%= Rails.configuration.api_schema.oas_version %>'
+      window.API_ENDPOINT = '<%= API_ENDPOINT %>'
+      window.CABLE_ENDPOINT = '<%= CABLE_ENDPOINT %>'
+      window.FRONTEND_ENDPOINT = '<%= FRONTEND_ENDPOINT %>'
+      window.RSI_ENDPOINT = '<%= Rails.configuration.rsi.endpoint %>'
+      window.SENTRY_DSN = '<%= Rails.application.credentials.sentry_frontend_dsn %>'
+      window.MAINTAINER_NAME = '<%= Rails.configuration.maintainer.name %>'
+      window.MAINTAINER_MAIL = '<%= Rails.configuration.maintainer.mail %>'
+      window.MAINTAINER_ADDRESS_STREET = '<%= Rails.configuration.maintainer.address[:street] %>'
+      window.MAINTAINER_ADDRESS_POSTALCODE = '<%= Rails.configuration.maintainer.address[:postalcode] %>'
+      window.MAINTAINER_ADDRESS_CITY = '<%= Rails.configuration.maintainer.address[:city] %>'
+      window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.configuration.maintainer.address[:country] %>'
+      window.COPYRIGHT_OWNER = '<%= Rails.configuration.app.copyright_owner %>'
+    </script>
+    <%= vite_client_tag %>
+    <%= vite_typescript_tag 'docs' %>
+  </head>
+  <body>
+    <div id="docs-app">
+      <div class="app-intro">
+        <h1>
+          <%= image_tag 'logo.png', class: 'logo' %>
+          <%= I18n.t("title.default") %>
+        </h1>
+        <div>
+          <div class="loader">
+            <div class="cube1 cube"></div>
+            <div class="cube2 cube"></div>
+            <div class="cube4 cube"></div>
+            <div class="cube3 cube"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= yield %>
+  </body>
+</html>

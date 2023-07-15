@@ -30,6 +30,7 @@
     <link rel="preconnect" href="<%= API_ENDPOINT %>">
     <link rel="preconnect" href="https://kit.fontawesome.com">
     <script src="https://kit.fontawesome.com/497179c6ff.js" crossorigin="anonymous"></script>
+    <%= render "layouts/app_intro" %>
     <%= vite_stylesheet_tag 'frontend.scss' %>
     <script>
       window.APP_VERSION = '<%= Fleetyards::VERSION %>'
@@ -39,6 +40,8 @@
       window.SC_DATA_VERSION = '<%= Imports::ScDataImport.current_version %>'
       window.APP_NAME = '<%= Rails.configuration.app.name %>'
       window.STORE_VERSION = '<%= Rails.configuration.app.store_version %>'
+      window.API_VERSION = '<%= Rails.configuration.app.api_version %>'
+      window.API_OAS_VERSION = '<%= Rails.configuration.api_schema.oas_version %>'
       window.API_ENDPOINT = '<%= API_ENDPOINT %>'
       window.CABLE_ENDPOINT = '<%= CABLE_ENDPOINT %>'
       window.FRONTEND_ENDPOINT = '<%= FRONTEND_ENDPOINT %>'

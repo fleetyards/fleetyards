@@ -5,7 +5,7 @@ module SchemaConcern
 
   included do
     class << self
-      attr_accessor :schema_value
+      attr_accessor :schema_value, :schema_hidden_value
 
       def schema(schema_definition)
         self.schema_value = if superclass.respond_to?(:schema_value)
@@ -15,10 +15,18 @@ module SchemaConcern
           schema_definition
         end
       end
+
+      def schema_hidden(flag = false)
+        self.schema_hidden_value = flag
+      end
     end
 
     def to_schema
       self.class.schema_value
+    end
+
+    def hidden?
+      self.class.schema_hidden_value
     end
   end
 end

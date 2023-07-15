@@ -2,6 +2,8 @@
 
 module Api
   class DocsController < ApplicationController
+    layout "docs"
+
     def index
       @title = I18n.t("title.api.docs.swagger")
 
@@ -12,11 +14,11 @@ module Api
         }]
       }
 
-      respond_to do |format|
-        format.html do
-          render "swagger_ui/index", layout: false
-        end
-      end
+      # respond_to do |format|
+      #   format.html do
+      #     render "swagger_ui/index", layout: false
+      #   end
+      # end
     end
   end
 end

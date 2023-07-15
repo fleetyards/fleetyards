@@ -17,6 +17,10 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Hangar"
       produces "application/json"
 
+      security [
+        SessionCookie: []
+      ]
+
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
       parameter name: "perPage", in: :query, schema: {
         type: :string, default: Vehicle.default_per_page

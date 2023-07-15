@@ -15,6 +15,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
   path "/hangar-groups" do
     get("HangarGroup list") do
       tags "HangarGroups"
+      operationId "DEPRECATEDgetHangarGroups"
       produces "application/json"
       deprecated true
 
@@ -47,6 +48,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
 
     post("HangarGroup create") do
       tags "HangarGroups"
+      operationId "DEPRECATEDcreateHangarGroup"
       consumes "application/json"
       produces "application/json"
       deprecated true
@@ -94,6 +96,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
 
     delete("HangarGroup Destroy") do
       tags "HangarGroups"
+      operationId "DEPRECATEDdestroyHangarGroup"
       produces "application/json"
       deprecated true
 
@@ -134,6 +137,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
 
     put("HangarGroup Update") do
       tags "HangarGroups"
+      operationId "DEPRECATEDupdateHangarGroup"
       consumes "application/json"
       produces "application/json"
       deprecated true
@@ -185,65 +189,35 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
         run_test!
       end
     end
+  end
 
-    path "/hangar-groups/sort" do
-      put("HangarGroup sort") do
-        tags "HangarGroups"
-        produces "application/json"
-        deprecated true
+  path "/hangar-groups/sort" do
+    put("HangarGroup sort") do
+      tags "HangarGroups"
+      operationId "DEPRECATEDsortHangarGroups"
+      produces "application/json"
+      deprecated true
 
-        response(200, "successful") do
-          schema type: :object, properties: {success: {type: :boolean}}
+      response(200, "successful") do
+        schema type: :object, properties: {success: {type: :boolean}}
 
-          let(:user) { users :data }
+        let(:user) { users :data }
 
-          after do |example|
-            example.metadata[:response][:content] = {
-              "application/json" => {
-                example: JSON.parse(response.body, symbolize_names: true)
-              }
+        after do |example|
+          example.metadata[:response][:content] = {
+            "application/json" => {
+              example: JSON.parse(response.body, symbolize_names: true)
             }
-          end
-
-          run_test!
+          }
         end
 
-        response(401, "unauthorized") do
-          schema "$ref": "#/components/schemas/StandardError"
-
-          run_test!
-        end
+        run_test!
       end
-    end
 
-    path "/hangar-groups/{username}" do
-      parameter name: "username", in: :path, type: :string, description: "Username", required: true
+      response(401, "unauthorized") do
+        schema "$ref": "#/components/schemas/StandardError"
 
-      get("HangarGroup list") do
-        tags "PublicHangarGroups"
-        produces "application/json"
-        deprecated true
-
-        response(200, "successful") do
-          schema type: :array, items: {"$ref": "#/components/schemas/HangarGroupMinimalPublic"}
-
-          let(:user) { users :data }
-          let(:username) { user.username }
-
-          after do |example|
-            example.metadata[:response][:content] = {
-              "application/json" => {
-                example: JSON.parse(response.body, symbolize_names: true)
-              }
-            }
-          end
-
-          run_test! do |response|
-            data = JSON.parse(response.body)
-
-            expect(data.size).to eq(1)
-          end
-        end
+        run_test!
       end
     end
   end

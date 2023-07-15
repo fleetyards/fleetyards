@@ -49,6 +49,22 @@ class AppEndpointResolver
     "#{websocket_scheme}://#{Rails.configuration.app.domain}/cable"
   end
 
+  def docs_domain
+    if Rails.configuration.app.on_subdomain?
+      "docs.#{Rails.configuration.app.domain}"
+    else
+      Rails.configuration.app.domain
+    end
+  end
+
+  def docs_endpoint
+    if Rails.configuration.app.on_subdomain?
+      "#{scheme}://#{docs_domain}"
+    else
+      "#{scheme}://#{docs_domain}/docs"
+    end
+  end
+
   private def scheme
     if Rails.configuration.force_ssl
       "https"

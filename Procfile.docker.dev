@@ -1,4 +1,5 @@
 web: ./bin/rails s
 worker: ./bin/sidekiq -C config/sidekiq.yml -v
 vite: ./bin/vite dev
+css: bin/rails tailwindcss:watch
 docker-compose: docker-compose -f docker-compose.minimal.yml up

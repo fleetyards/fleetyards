@@ -18,19 +18,19 @@ export class VehiclesPublicService {
      * @returns HangarPublic successful
      * @throws ApiError
      */
-    public getVehicles({
-        username,
+    public deprecateDgetPublicVehicles({
+        id,
     }: {
         /**
-         * username
+         * id
          */
-        username: string,
+        id: string,
     }): CancelablePromise<HangarPublic> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/vehicles/{username}',
+            url: '/vehicles/{id}',
             path: {
-                'username': username,
+                'id': id,
             },
         });
     }
@@ -41,19 +41,19 @@ export class VehiclesPublicService {
      * @returns VehicleMinimalPublic successful
      * @throws ApiError
      */
-    public getVehiclesFleetchart({
-        username,
+    public deprecateDgetPublicFleetchart({
+        id,
     }: {
         /**
          * username
          */
-        username: string,
+        id: string,
     }): CancelablePromise<Array<VehicleMinimalPublic>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/vehicles/{username}/fleetchart',
+            url: '/vehicles/{id}/fleetchart',
             path: {
-                'username': username,
+                'id': id,
             },
         });
     }
@@ -64,19 +64,19 @@ export class VehiclesPublicService {
      * @returns any successful
      * @throws ApiError
      */
-    public getVehiclesQuickStats({
-        username,
+    public deprecateDgetPublicQuickStats({
+        id,
     }: {
         /**
          * username
          */
-        username: string,
+        id: string,
     }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/vehicles/{username}/quick-stats',
+            url: '/vehicles/{id}/quick-stats',
             path: {
-                'username': username,
+                'id': id,
             },
         });
     }
