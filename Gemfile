@@ -195,3 +195,5 @@ group :development, :test do
 
   gem "knapsack"
 end
+
+gem "tailwindcss-rails", "~> 2.0"

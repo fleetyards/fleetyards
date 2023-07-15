@@ -5,6 +5,8 @@ module V1
     class Video
       include SchemaConcern
 
+      schema_hidden true
+
       schema({
         type: :object,
         properties: {

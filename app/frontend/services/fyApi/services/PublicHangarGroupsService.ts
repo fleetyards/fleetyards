@@ -12,29 +12,6 @@ export class PublicHangarGroupsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @deprecated
-     * HangarGroup list
-     * @returns HangarGroupMinimalPublic successful
-     * @throws ApiError
-     */
-    public getHangarGroups({
-        username,
-    }: {
-        /**
-         * Username
-         */
-        username: string,
-    }): CancelablePromise<Array<HangarGroupMinimalPublic>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/hangar-groups/{username}',
-            path: {
-                'username': username,
-            },
-        });
-    }
-
-    /**
      * HangarGroup list
      * @returns HangarGroupMinimalPublic successful
      * @throws ApiError

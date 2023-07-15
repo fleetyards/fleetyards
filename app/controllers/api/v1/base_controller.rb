@@ -6,7 +6,7 @@ module Api
       def root
         respond_to do |format|
           format.html do
-            render file: Rails.public_path.join("docs", "v1.html")
+            redirect_to docs_root_url
           end
           format.json do
             render json: {message: "FleetYards.net API v1 root"}

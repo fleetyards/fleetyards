@@ -18,7 +18,7 @@ export class ManufacturersService {
      * @returns ManufacturerMinimal successful
      * @throws ApiError
      */
-    public getManufacturersWithModels(): CancelablePromise<Array<ManufacturerMinimal>> {
+    public deprecateDgetManufacturersWithModels(): CancelablePromise<Array<ManufacturerMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/manufacturers/with-models',

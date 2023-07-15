@@ -135,11 +135,12 @@
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router/composables";
+import type { RawLocation } from "vue-router";
 import Store from "@/frontend/lib/Store";
 import NavItemInner from "./NavItemInner/index.vue";
 
 type Props = {
-  to?: any;
+  to?: RawLocation;
   action?: () => void;
   href?: string;
   label?: string;

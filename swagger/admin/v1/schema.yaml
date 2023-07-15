@@ -1,8 +1,14 @@
 ---
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: FleetYards.net Command API
   version: v1
+  license:
+    name: GNU General Public License v3.0
+    url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
+  x-logo:
+    url: https://fleetyards.net/docs/logo.png
+    altText: FleetYards.net logo
 servers:
 - url: http://admin.fleetyards.test/api/v1
   description: Dev Server
@@ -10,6 +16,8 @@ servers:
   description: Production Server
 - url: https://admin.fleetyards.dev/api/v1
   description: Staging Server
+security:
+- SessionCookie: []
 paths:
   "/images":
     get:
@@ -1107,3 +1115,9 @@ components:
       required:
       - items
       title: Stations
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      description: Session Cookie
+      name: FLTYRD
+      in: cookie

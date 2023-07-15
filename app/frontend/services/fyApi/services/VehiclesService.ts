@@ -110,7 +110,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehicles({
+    public deprecateDgetVehicles({
         page = '1',
         perPage = '30',
         q,
@@ -136,7 +136,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehiclesFleetchart(): CancelablePromise<Array<VehicleMinimal>> {
+    public deprecateDgetVehiclesFleetchart(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/fleetchart',
@@ -149,7 +149,7 @@ export class VehiclesService {
      * @returns VehicleExport successful
      * @throws ApiError
      */
-    public getVehiclesExport(): CancelablePromise<Array<VehicleExport>> {
+    public deprecateDgetVehiclesExport(): CancelablePromise<Array<VehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/export',
@@ -162,7 +162,7 @@ export class VehiclesService {
      * @returns HangarImportResult successful
      * @throws ApiError
      */
-    public putVehiclesImport({
+    public deprecateDputVehiclesImport({
         formData,
     }: {
         formData: string,
@@ -181,7 +181,7 @@ export class VehiclesService {
      * @returns void
      * @throws ApiError
      */
-    public deleteVehiclesDestroyAll(): CancelablePromise<void> {
+    public deprecateDdeleteVehiclesDestroyAll(): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/vehicles/destroy-all',
@@ -194,7 +194,7 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehiclesEmbed(): CancelablePromise<Array<VehicleMinimal>> {
+    public deprecateDgetVehiclesEmbed(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/embed',
@@ -207,7 +207,7 @@ export class VehiclesService {
      * @returns string successful
      * @throws ApiError
      */
-    public getVehiclesHangarItems(): CancelablePromise<Array<string>> {
+    public deprecateDgetVehiclesHangarItems(): CancelablePromise<Array<string>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/hangar-items',
@@ -220,25 +220,10 @@ export class VehiclesService {
      * @returns VehicleMinimal successful
      * @throws ApiError
      */
-    public getVehiclesHangar(): CancelablePromise<Array<VehicleMinimal>> {
+    public deprecateDgetVehiclesHangar(): CancelablePromise<Array<VehicleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/hangar',
-        });
-    }
-
-    /**
-     * Delete all ingame bought Vehicles
-     * @returns void
-     * @throws ApiError
-     */
-    public destroyAllIngame(): CancelablePromise<void> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/vehicles/destroy-all-ingame',
-            errors: {
-                401: `unauthorized`,
-            },
         });
     }
 
@@ -294,6 +279,21 @@ export class VehiclesService {
             errors: {
                 401: `unauthorized`,
                 404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * Delete all ingame bought Vehicles
+     * @returns void
+     * @throws ApiError
+     */
+    public destroyAllIngame(): CancelablePromise<void> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/vehicles/destroy-all-ingame',
+            errors: {
+                401: `unauthorized`,
             },
         });
     }

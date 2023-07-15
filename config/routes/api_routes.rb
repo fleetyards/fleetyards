@@ -11,7 +11,7 @@ namespace :api, **api_options do
 
   draw :api_v1_routes
 
-  get "docs" => "docs#index", :as => :docs
+  get "docs", to: redirect(DOCS_ENDPOINT)
 
   scope format: true, constraints: {format: "yaml"} do
     get ":api_version/schema" => "schema#index", :as => :schema
