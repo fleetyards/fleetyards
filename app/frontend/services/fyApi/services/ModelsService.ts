@@ -8,7 +8,8 @@ import type { ModelComplete } from '../models/ModelComplete';
 import type { ModelHardpoint } from '../models/ModelHardpoint';
 import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
 import type { ModelMinimal } from '../models/ModelMinimal';
-import type { ModelModulePackages } from '../models/ModelModulePackages';
+import type { ModelModuleMinimal } from '../models/ModelModuleMinimal';
+import type { ModelModulePackageMinimal } from '../models/ModelModulePackageMinimal';
 import type { ModelPaintMinimal } from '../models/ModelPaintMinimal';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { ModelUpgradeMinimal } from '../models/ModelUpgradeMinimal';
@@ -440,7 +441,7 @@ export class ModelsService {
 
     /**
      * Model Modules
-     * @returns any successful
+     * @returns ModelModuleMinimal successful
      * @throws ApiError
      */
     public modelModules({
@@ -454,7 +455,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<Array<ModelModuleMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/modules',
@@ -473,7 +474,7 @@ export class ModelsService {
 
     /**
      * Model Module Packages
-     * @returns ModelModulePackages successful
+     * @returns ModelModulePackageMinimal successful
      * @throws ApiError
      */
     public modelModulePackages({
@@ -487,7 +488,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<ModelModulePackages> {
+    }): CancelablePromise<Array<ModelModulePackageMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/module-packages',
