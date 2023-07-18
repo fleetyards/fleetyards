@@ -29,21 +29,6 @@ Vue.use(I18nPlugin);
 Vue.use(Ahoy);
 Vue.use(Validations);
 
-declare global {
-  interface Window {
-    APP_VERSION: string;
-    STORE_VERSION: string;
-    SC_DATA_VERSION: string;
-    APP_CODENAME: string;
-    API_VERSION: string;
-    API_OAS_VERSION: string;
-    API_ENDPOINT: string;
-    DATA_PREFETCH: KeyValuePair;
-    FRONTEND_ENDPOINT: string;
-    CABLE_ENDPOINT: string;
-  }
-}
-
 if (process.env.NODE_ENV !== "production") {
   Vue.config.devtools = true;
 } else {

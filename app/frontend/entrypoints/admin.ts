@@ -17,13 +17,6 @@ Vue.use(Comlink);
 Vue.use(I18nPlugin);
 Vue.use(Validations);
 
-declare global {
-  interface Window {
-    API_ENDPOINT: string;
-    ON_SUBDOMAIN: boolean;
-  }
-}
-
 Vue.filter("formatSize", (size) => {
   if (size > 1024 * 1024 * 1024 * 1024) {
     return `${(size / 1024 / 1024 / 1024 / 1024).toFixed(2)} TB`;
