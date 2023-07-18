@@ -19,6 +19,11 @@ module.exports = {
           grayBgDark: "#1f1f1f",
           grayBorder: "#1e2226",
         },
+        panel: {
+          borderOuter: "#6f6f6f",
+          borderInner: "#c8c8c8",
+          borderInnerOverlay: "#444444",
+        },
         "litepie-primary": colors.sky, // color system for light mode
         "litepie-secondary": colors.gray, // color system for dark mode
         "vtd-primary": colors.sky, // Light mode Datepicker color
@@ -38,6 +43,12 @@ module.exports = {
       },
       height: {
         "3px": "3px",
+      },
+      transitionProperty: {
+        nav: "left, right, width",
+      },
+      screens: {
+        lg: "992px",
       },
     },
   },

@@ -34,10 +34,12 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload"  %>
     <%= vite_stylesheet_tag 'docs.scss' %>
     <script>
+
       window.APP_VERSION = '<%= Fleetyards::VERSION %>'
       window.APP_CODENAME = '<%= Fleetyards::CODENAME %>'
       window.NODE_ENV = '<%= Rails.env %>'
       window.GIT_REVISION = '<%= Git.revision_short %>'
+      window.SC_DATA_VERSION = '<%= Imports::ScDataImport.current_version %>'
       window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
       window.APP_NAME = '<%= Rails.configuration.app.name %>'
       window.STORE_VERSION = '<%= Rails.configuration.app.store_version %>'
@@ -59,7 +61,7 @@
     <%= vite_client_tag %>
     <%= vite_typescript_tag 'docs' %>
   </head>
-  <body>
+  <body class="relative min-w-[320px] min-h-full pb-20 lg:pb-0">
     <div id="docs-app">
       <div class="app-intro">
         <h1>

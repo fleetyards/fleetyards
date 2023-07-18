@@ -14,7 +14,7 @@
 
         <vue-code-highlight
           language="javascript"
-          class="rounded mx-24 my-10 overflow-scroll code-highlight"
+          class="rounded md:mx-24 my-10 overflow-scroll code-highlight"
         >
           <pre>
   &lt;div id=&quot;fleetyards-view&quot;&gt;&lt;/div&gt;

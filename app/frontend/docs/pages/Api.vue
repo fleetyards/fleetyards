@@ -2,14 +2,14 @@
   <main class="api-page">
     <div class="px-4 sm:px-6 lg:px-8 py-6">
       <div class="p-6 bg-brand-grayBgDark/80 rounded">
-        <h1 class="font-hero text-4xl mb-5">
-          FleetYards.net API
+        <h1 class="font-hero text-4xl mb-5 flex flex-wrap gap-1 items-start">
+          <span>FleetYards.net API</span>
           <span
-            class="bg-gray-500 font-sans text-white relative -top-4 mr-2 rounded-xl text-sm px-2 py-1"
+            class="bg-gray-500 font-sans text-white relative rounded-xl text-sm px-2 py-1"
             >{{ apiVersion }}</span
           >
           <span
-            class="bg-lime-600 font-sans text-white relative -top-4 rounded-xl text-base px-2 py-1"
+            class="bg-lime-600 font-sans text-white relative rounded-xl text-sm px-2 py-1"
             >OAS {{ oasVersion }}</span
           >
         </h1>
@@ -31,6 +31,11 @@
           Manufacturers for the upcomming Space Simulation Star Citizen.
         </p>
         <div id="swagger-ui" class="swagger-ui-wrapper"></div>
+        <div class="flex justify-end">
+          <a target="_blank" rel="noopener noreferrer" :href="validatorUrl">
+            <img :src="validatorIconUrl" alt="Online validator badge" />
+          </a>
+        </div>
       </div>
     </div>
   </main>
@@ -43,6 +48,14 @@ const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
 
 const apiVersion = computed(() => window.API_VERSION);
 const oasVersion = computed(() => window.API_OAS_VERSION);
+
+const validatorIconUrl = computed(
+  () => `https://validator.swagger.io/validator?url=${schemaUrl.value}`
+);
+
+const validatorUrl = computed(
+  () => `https://validator.swagger.io/validator/debug?url=${schemaUrl.value}`
+);
 
 onMounted(() => {
   SwaggerUIBundle({
@@ -77,6 +90,7 @@ export default {
 
     .wrapper {
       padding: 0;
+      max-width: none;
     }
 
     .info .title {

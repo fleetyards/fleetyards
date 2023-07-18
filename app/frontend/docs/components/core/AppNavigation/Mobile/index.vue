@@ -1,124 +1,36 @@
 <template>
-  <div class="navigation-mobile noselect">
-    <div v-if="$route.name" class="navigation-items">
-      <template v-if="isFleetRoute && currentFleet">
-        <Btn
-          variant="link"
-          size="large"
-          :inline="true"
-          :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
-          :image="currentFleet.logo"
-          :class="{ active: routeActive('fleet') }"
-          exact
-        >
-          <img
-            v-if="currentFleet.logo"
-            :src="currentFleet.logo"
-            :alt="`${currentFleet.name} image`"
-            class="navigation-item-image"
-          />
-          <span v-else class="nav-item-image-empty">
-            {{ firstLetter }}
-          </span>
-        </Btn>
-        <Btn
-          v-if="currentFleet.publicFleet || currentFleet.myFleet"
-          variant="link"
-          size="large"
-          :inline="true"
-          :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
-          :class="{ active: shipsNavActive }"
-          :active="shipsNavActive"
-        >
-          <i class="fad fa-starship" />
-        </Btn>
-        <template v-if="currentFleet.myFleet">
-          <Btn
-            variant="link"
-            size="large"
-            :inline="true"
-            :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
-            :class="{ active: routeActive('fleet-members') }"
-          >
-            <i class="fad fa-users" />
-          </Btn>
-          <Btn
-            variant="link"
-            size="large"
-            :inline="true"
-            :to="{
-              name: 'fleet-settings',
-              params: { slug: currentFleet.slug },
-            }"
-            :class="{ active: routeActive('fleet-settings') }"
-          >
-            <i class="fad fa-cogs" />
-          </Btn>
-        </template>
-      </template>
-      <template v-else>
-        <Btn
-          variant="link"
-          size="large"
-          :inline="true"
-          :to="{ name: 'home' }"
-          :class="{ active: routeActive('home') }"
-          :exact="true"
-        >
-          <i class="fad fa-home-alt" />
-        </Btn>
-        <Btn
-          variant="link"
-          size="large"
-          :inline="true"
-          :to="{
-            name: 'models',
-            query: filterFor('models'),
-          }"
-        >
-          <i class="fad fa-starship" />
-        </Btn>
-        <Btn
-          variant="link"
-          size="large"
-          :inline="true"
-          :to="{ name: 'search' }"
-        >
-          <i class="fa fa-search" />
-        </Btn>
-        <Btn
-          v-if="isAuthenticated || !hangarPreview"
-          variant="link"
-          size="large"
-          :inline="true"
-          :to="{
-            name: 'hangar',
-            query: filterFor('hangar'),
-          }"
-        >
-          <i class="fad fa-warehouse" />
-        </Btn>
-        <Btn
-          v-else
-          variant="link"
-          size="large"
-          :inline="true"
-          :to="{ name: 'hangar-preview' }"
-        >
-          <i class="fal fa-warehouse" />
-        </Btn>
-      </template>
+  <div
+    class="navigation-mobile noselect transition-nav ease-[ease] duration-500"
+    :class="[collapsed ? 'right-0' : 'right-[300px]']"
+  >
+    <div class="navigation-items">
+      <!-- <Btn
+        variant="link"
+        size="large"
+        :inline="true"
+        :to="{ name: 'home' }"
+        :class="{ active: routeActive('home') }"
+        :exact="true"
+      >
+        <i class="fad fa-home-alt" />
+      </Btn> -->
+      <Btn variant="link" size="large" :inline="true" :to="{ name: 'api' }">
+        <i class="fad fa-books" />
+      </Btn>
+      <Btn variant="link" size="large" :inline="true" :to="{ name: 'embed' }">
+        <i class="fad fa-arrow-up-from-square" />
+      </Btn>
       <button
         :class="{
-          collapsed: navCollapsed,
+          collapsed: collapsed,
         }"
         class="nav-toggle"
         type="button"
         aria-label="Toggle Navigation"
-        @click.stop.prevent="toggle"
+        @click.stop.prevent="navStore.toggle"
       >
         <span class="sr-only">
-          {{ $t("labels.toggleNavigation") }}
+          {{ t("labels.toggleNavigation") }}
         </span>
         <span class="icon-bar top-bar" />
         <span class="icon-bar middle-bar" />
@@ -128,78 +40,143 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+import { useNavStore } from "@/docs/stores/nav";
+import { storeToRefs } from "pinia";
+import { useI18n } from "@/docs/composables/useI18n";
+import Btn from "@/docs/components/core/Btn/index.vue";
+
+const { t } = useI18n();
+
+const navStore = useNavStore();
+
+const { collapsed } = storeToRefs(navStore);
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { isFleetRoute } from "@/frontend/utils/Routes/Fleets";
-import fleetsApiCollection from "@/frontend/api/collections/Fleets";
+export default {
+  name: "AppNavigationMobile",
+};
+</script>
 
-@Component<NavigationHeader>({
-  components: {
-    Btn,
-  },
-})
-export default class NavigationHeader extends Vue {
-  @Getter("mobile") mobile;
+<style lang="scss" scoped>
+.navigation-mobile {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  width: 100%;
 
-  @Getter("filters") filters;
+  .navigation-items {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    min-height: $navigation-mobile-height;
+    padding-bottom: $navigation-mobile-bottom-offset;
+    background-color: rgba(darken($gray-darker, 7%), 0.95);
+    border-top: 1px solid rgba(30, 34, 38, 0.5);
 
-  @Getter("navCollapsed", { namespace: "app" }) navCollapsed!: boolean;
-
-  @Getter("isAuthenticated", { namespace: "session" })
-  isAuthenticated!: boolean;
-
-  @Getter("preview", { namespace: "hangar" }) hangarPreview;
-
-  @Action("toggleNav", { namespace: "app" }) toggle;
-
-  fleetsCollection: FleetsCollection = fleetsApiCollection;
-
-  get isFleetRoute() {
-    return isFleetRoute(this.$route.name);
-  }
-
-  get currentFleet(): Fleet | null {
-    return this.fleetsCollection.record;
-  }
-
-  get shipsNavActive() {
-    return ["fleet-ships", "fleet-fleetchart"].includes(this.$route.name);
-  }
-
-  get firstLetter() {
-    return this.currentFleet?.name?.charAt(0);
-  }
-
-  filterFor(route) {
-    // // TODO: disabled until vue-router supports navigation to same route
-    // return null
-    if (!this.filters[route]) {
-      return null;
+    .navigation-item-image {
+      max-width: 24px;
+      margin-right: 3px;
+      margin-left: 3px;
+      vertical-align: middle;
     }
 
-    return {
-      q: this.filters[route],
-    };
-  }
-
-  routeActive(route) {
-    return route === this.$route.name;
-  }
-
-  mounted() {
-    this.fetchFleet();
-    this.$comlink.$on("fleet-update", this.fetchFleet);
-  }
-
-  async fetchFleet() {
-    if (!this.isFleetRoute) {
-      return;
+    > button {
+      flex-direction: column;
     }
 
-    await this.fleetsCollection.findBySlug(this.$route.params.slug);
+    > * {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: $navigation-mobile-height;
+      margin-right: 0;
+      padding: 0;
+      border-radius: 0;
+      opacity: 0.9;
+
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 10%;
+        display: none;
+        width: 80%;
+        height: 3px;
+        background: $primary;
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px;
+        box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
+        content: "";
+      }
+
+      &.active {
+        opacity: 1;
+
+        &::after {
+          display: block;
+        }
+      }
+    }
   }
 }
-</script>
+.nav-toggle {
+  display: block;
+  height: 43px;
+  margin-right: 10px;
+  padding: 0 11px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-color: transparent;
+  border-radius: 3px;
+
+  .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #c8c8c8;
+    border-radius: 1px;
+    transition: all ease 0.2s;
+  }
+
+  .top-bar {
+    transform: rotate(45deg);
+    transform-origin: 10% 10%;
+  }
+
+  .middle-bar {
+    margin-top: 4px;
+    opacity: 0;
+  }
+
+  .bottom-bar {
+    margin-top: 4px;
+    transform: rotate(-45deg);
+    transform-origin: 10% 90%;
+  }
+
+  .update-icon {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    background-color: $warning;
+    border-radius: 50%;
+    transition: all ease 0.5s;
+  }
+
+  &.collapsed {
+    .top-bar,
+    .bottom-bar {
+      transform: rotate(0);
+    }
+
+    .middle-bar {
+      opacity: 1;
+    }
+  }
+}
+</style>
