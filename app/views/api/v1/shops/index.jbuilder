@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-json.array! @shops, partial: "api/v1/shops/minimal", as: :shop
+json.items do
+  json.array! @shops, partial: "api/v1/shops/minimal", as: :shop
+end
+json.partial! "api/shared/meta", result: @shops

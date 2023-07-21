@@ -61,7 +61,7 @@ export const routes: RouteRecordRaw[] = [
     name: "fleet-fleetchart",
     redirect: {
       name: "fleet-ships",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {

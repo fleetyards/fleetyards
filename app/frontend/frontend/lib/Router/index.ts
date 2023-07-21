@@ -1,14 +1,15 @@
 import Vue from "vue";
 import Router from "vue-router";
+import type { Route, RouteConfig } from "vue-router";
 import qs from "qs";
 import Store from "@/frontend/lib/Store";
 import { routes as initialRoutes } from "@/frontend/routes";
 
 Vue.use(Router);
 
-const addTrailingSlashToAllRoutes = (routes: any) =>
-  [].concat(
-    ...routes.map((route: any) => {
+const addTrailingSlashToAllRoutes = (routes: RouteConfig[]): RouteConfig[] =>
+  ([] as RouteConfig[]).concat(
+    ...routes.map((route: RouteConfig): RouteConfig[] => {
       if (["*", "/"].includes(route.path)) {
         return [route];
       }
@@ -34,10 +35,10 @@ const addTrailingSlashToAllRoutes = (routes: any) =>
         modifiedRoute,
         {
           path,
-          redirect: (to: any) => ({
+          redirect: (to: Route) => ({
             name: route.name,
-            params: to.params || null,
-            query: to.query || null,
+            params: to.params || undefined,
+            query: to.query || undefined,
           }),
         },
       ];
@@ -53,7 +54,7 @@ const router = new Router({
     new Promise((resolve) => {
       setTimeout(() => {
         if (to.hash) {
-          resolve(false);
+          resolve({ selector: to.hash });
         } else if (savedPosition) {
           resolve(savedPosition);
         } else {
@@ -74,15 +75,15 @@ const router = new Router({
   routes: addTrailingSlashToAllRoutes(initialRoutes),
 });
 
-const validateAndResolveNewRoute = (to: any) => {
+const validateAndResolveNewRoute = (to: Route) => {
   if (
-    to.meta.needsAuthentication &&
+    to.meta?.needsAuthentication &&
     !Store.getters["session/isAuthenticated"]
   ) {
     return {
       routeName: "login",
       routeParams: {
-        redirectToRoute: to.name,
+        redirectToRoute: String(to.name),
       },
     };
   }
@@ -93,7 +94,10 @@ router.beforeResolve((to, _from, next) => {
   const newRoute = validateAndResolveNewRoute(to);
   if (newRoute) {
     router
-      .push({ name: newRoute.routeName, params: newRoute.routeParams })
+      .push({
+        name: newRoute.routeName,
+        params: newRoute.routeParams,
+      })
       .catch(() => {
         window.location.reload();
       });
@@ -102,7 +106,7 @@ router.beforeResolve((to, _from, next) => {
   }
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   if (to.name === "fleet-invite") {
     Store.dispatch("fleet/saveInviteToken", to.params.token);
   }

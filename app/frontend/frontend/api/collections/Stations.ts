@@ -1,44 +1,57 @@
-import { get } from "@/frontend/api/client";
 import { prefetch } from "@/frontend/api/prefetch";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type {
+  StationMinimal,
+  StationComplete,
+  StationQuery,
+} from "@/services/fyApi";
 import BaseCollection from "./Base";
 
+interface StationParams extends CollectionParams {
+  filters: StationQuery;
+}
+
+const { stations } = useApiClient();
+
 export class StationsCollection extends BaseCollection {
-  records: Station[] = [];
+  records: StationMinimal[] = [];
 
-  record: Station | null = null;
+  record?: StationComplete;
 
-  params: StationParams | null = null;
+  params?: StationParams;
 
-  async findAll(params: StationParams): Promise<Station[]> {
+  async findAll(params: StationParams): Promise<StationMinimal[]> {
     this.params = params;
 
-    const response = await get("stations", {
-      q: {
-        ...params.filters,
-        sorts: ["station_type asc", "name asc"],
-      },
-      page: params.page,
-    });
+    try {
+      const response = await stations.list({
+        q: {
+          ...params.filters,
+          sorts: ["station_type asc", "name asc"],
+        },
+        page: params.page,
+      });
 
-    if (!response.error) {
-      this.records = response.data;
+      this.records = response.items;
       this.loaded = true;
-      this.setPages(response.meta);
+      this.setPages(response.meta?.pagination);
+    } catch (error) {
+      console.error(error);
     }
 
     return this.records;
   }
 
-  async findBySlug(slug: string): Promise<Station | null> {
+  async get(slug: string): Promise<StationComplete | undefined> {
     if (prefetch("station")) {
       this.record = prefetch("station");
       return this.record;
     }
 
-    const response = await get(`stations/${slug}`);
-
-    if (!response.errors) {
-      this.record = response.data;
+    try {
+      this.record = await stations.get({ slug });
+    } catch (error) {
+      console.error(error);
     }
 
     return this.record;

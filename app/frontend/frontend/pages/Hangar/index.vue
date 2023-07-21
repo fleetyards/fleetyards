@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t("headlines.hangar.index") }}
+              {{ t("headlines.hangar.index") }}
             </h1>
           </div>
         </div>
@@ -14,14 +14,14 @@
             <ModelClassLabels
               v-if="hangarStats"
               :count-data="hangarStats.classifications"
-              :label="$t('labels.hangar')"
+              :label="t('labels.hangar')"
               filter-key="classificationIn"
             />
             <GroupLabels
               v-if="hangarStats"
               :hangar-groups="groupsCollection.records"
               :hangar-group-counts="hangarGroupCounts"
-              :label="$t('labels.groups')"
+              :label="t('labels.groups')"
               :editable="true"
               @highlight="highlightGroup"
             />
@@ -29,7 +29,7 @@
           <div v-if="!mobile" class="page-actions page-actions-right">
             <Btn :to="{ name: 'hangar-wishlist' }">
               <i class="fad fa-wand-sparkles" />
-              {{ $t("labels.wishlist") }}
+              {{ t("labels.wishlist") }}
               <transition name="fade" mode="out-in" appear>
                 <span v-if="hangarStats && hangarStats.wishlistTotal">
                   ({{ hangarStats.wishlistTotal }})
@@ -39,12 +39,12 @@
 
             <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
               <i class="fad fa-starship" />
-              {{ $t("labels.fleetchart") }}
+              {{ t("labels.fleetchart") }}
             </Btn>
 
             <Btn :to="{ name: 'hangar-stats' }">
               <i class="fal fa-chart-bar" />
-              {{ $t("labels.hangarStats") }}
+              {{ t("labels.hangarStats") }}
             </Btn>
 
             <ShareBtn
@@ -54,62 +54,54 @@
             />
           </div>
         </div>
-        <div
-          v-if="
-            collection.records.length &&
-            hangarStats &&
-            hangarStats.metrics &&
-            !mobile
-          "
-          class="row"
-        >
+        <div v-if="hangarStats && !mobile" class="row">
           <div class="col-12 hangar-metrics metrics-block" @click="toggleMoney">
             <div v-if="money" class="metrics-item">
               <div class="metrics-label">
-                {{ $t("labels.hangarMetrics.totalMoney") }}:
+                {{ t("labels.hangarMetrics.totalMoney") }}:
               </div>
               <div class="metrics-value">
-                {{ $toDollar(hangarStats.metrics.totalMoney) }}
+                {{ toDollar(hangarStats.metrics.totalMoney) }}
               </div>
             </div>
             <div v-if="money" class="metrics-item">
               <div class="metrics-label">
-                {{ $t("labels.hangarMetrics.totalCredits") }}:
+                {{ t("labels.hangarMetrics.totalCredits") }}:
               </div>
               <div class="metrics-value">
-                <span v-html="$toUEC(hangarStats.metrics.totalCredits)" />
+                <span v-html="toUEC(hangarStats.metrics.totalCredits)" />
               </div>
             </div>
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ $t("labels.hangarMetrics.total") }}:
+                {{ t("labels.hangarMetrics.total") }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(hangarStats.total, "ships") }}
+                {{ toNumber(hangarStats.total, "ships") }}
               </div>
             </div>
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ $t("labels.hangarMetrics.totalMinCrew") }}:
+                {{ t("labels.hangarMetrics.totalMinCrew") }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(hangarStats.metrics.totalMinCrew, "people") }}
+                {{ toNumber(hangarStats.metrics.totalMinCrew, "people") }}
               </div>
             </div>
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ $t("labels.hangarMetrics.totalMaxCrew") }}:
+                {{ t("labels.hangarMetrics.totalMaxCrew") }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(hangarStats.metrics.totalMaxCrew, "people") }}
+                {{ toNumber(hangarStats.metrics.totalMaxCrew, "people") }}
               </div>
             </div>
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ $t("labels.hangarMetrics.totalCargo") }}:
+                {{ t("labels.hangarMetrics.totalCargo") }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(hangarStats.metrics.totalCargo, "cargo") }}
+                {{ toNumber(hangarStats.metrics.totalCargo, "cargo") }}
               </div>
             </div>
           </div>
@@ -127,7 +119,7 @@
       :hide-empty-box="!gridView"
       :hide-loading="fleetchartVisible"
     >
-      <template slot="actions">
+      <template #actions>
         <HangarSyncBtn size="small" />
         <BtnDropdown size="small">
           <template v-if="mobile">
@@ -137,7 +129,7 @@
               variant="dropdown"
             >
               <i class="fad fa-wand-sparkles" />
-              <span>{{ $t("labels.wishlist") }}</span>
+              <span>{{ t("labels.wishlist") }}</span>
             </Btn>
 
             <Btn
@@ -147,12 +139,12 @@
               @click.native="toggleFleetchart"
             >
               <i class="fad fa-starship" />
-              <span>{{ $t("labels.fleetchart") }}</span>
+              <span>{{ t("labels.fleetchart") }}</span>
             </Btn>
 
             <Btn :to="{ name: 'hangar-stats' }" size="small" variant="dropdown">
               <i class="fad fa-chart-bar" />
-              <span>{{ $t("labels.hangarStats") }}</span>
+              <span>{{ t("labels.hangarStats") }}</span>
             </Btn>
 
             <ShareBtn
@@ -189,13 +181,13 @@
           </Btn>
 
           <Btn
-            :aria-label="$t('actions.showGuide')"
+            :aria-label="t('actions.showGuide')"
             size="small"
             variant="dropdown"
             @click.native="openGuide"
           >
             <i class="fad fa-question" />
-            <span>{{ $t("actions.showGuide") }}</span>
+            <span>{{ t("actions.showGuide") }}</span>
           </Btn>
 
           <hr />
@@ -203,11 +195,11 @@
           <Btn
             size="small"
             variant="dropdown"
-            :aria-label="$t('actions.export')"
+            :aria-label="t('actions.export')"
             @click.native="exportJson"
           >
             <i class="fal fa-download" />
-            <span>{{ $t("actions.export") }}</span>
+            <span>{{ t("actions.export") }}</span>
           </Btn>
 
           <HangarImportBtn size="small" variant="dropdown" @finished="fetch" />
@@ -215,11 +207,11 @@
           <Btn
             size="small"
             variant="dropdown"
-            :aria-label="$t('actions.hangar.resetIngame.openModal')"
+            :aria-label="t('actions.hangar.resetIngame.openModal')"
             @click.native="showResetIngameModal"
           >
             <i class="fal fa-arrow-rotate-left" />
-            <span>{{ $t("actions.hangar.resetIngame.openModal") }}</span>
+            <span>{{ t("actions.hangar.resetIngame.openModal") }}</span>
           </Btn>
 
           <hr />
@@ -228,19 +220,18 @@
             size="small"
             variant="dropdown"
             :disabled="deleting"
-            :aria-label="$t('actions.hangar.destroyAll')"
+            :aria-label="t('actions.hangar.destroyAll')"
             @click.native="destroyAll"
           >
             <i class="fal fa-trash" />
-            <span>{{ $t("actions.hangar.destroyAll") }}</span>
+            <span>{{ t("actions.hangar.destroyAll") }}</span>
           </Btn>
         </BtnDropdown>
       </template>
 
-      <VehiclesFilterForm
-        slot="filter"
-        :hangar-groups-options="groupsCollection.records"
-      />
+      <template #filter>
+        <VehiclesFilterForm :hangar-groups-options="groupsCollection.records" />
+      </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
@@ -283,14 +274,11 @@
       </template>
     </FilteredList>
 
-    <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
+    <PrimaryAction :label="t('actions.addVehicle')" :action="showNewModal" />
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
+<script lang="ts" setup>
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
@@ -304,248 +292,253 @@ import VehiclesFilterForm from "@/frontend/components/Vehicles/FilterForm/index.
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
+import hangarCollection from "@/frontend/api/collections/Hangar";
+import type {
+  HangarCollection,
+  HangarParams,
+} from "@/frontend/api/collections/Hangar";
+import hangarStatsCollection from "@/frontend/api/collections/HangarStats";
+import type { HangarStatsCollection } from "@/frontend/api/collections/HangarStats";
 import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGroups";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import debounce from "lodash.debounce";
 import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
 import Paginator from "@/frontend/core/components/Paginator/index.vue";
+import type { HangarQuery, HangarStats } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/frontend/composables/useComlink";
+import { useCable } from "@/frontend/composables/useCable";
+import { Subscription } from "@rails/actioncable";
+import { useRoute } from "vue-router/composables";
+import Store from "@/frontend/lib/Store";
 
-@Component<Hangar>({
-  components: {
-    FilteredList,
-    FilteredGrid,
-    VehiclesTable,
-    Btn,
-    PrimaryAction,
-    ShareBtn,
-    BtnDropdown,
-    HangarImportBtn,
-    HangarSyncBtn,
-    HangarEmptyBox,
-    VehiclePanel,
-    VehiclesFilterForm,
-    ModelClassLabels,
-    GroupLabels,
-    AddonsModal,
-    FleetchartApp,
-    Paginator,
-  },
-})
-export default class Hangar extends Vue {
-  deleting = false;
+const { t, toDollar, toUEC, toNumber } = useI18n();
 
-  vehiclesChannel = null;
+const comlink = useComlink();
 
-  highlightedGroup: string | null = null;
+const deleting = ref(false);
 
-  collection: VehiclesCollection = vehiclesCollection;
+const vehiclesChannel = ref<Subscription | null>(null);
 
-  groupsCollection: HangarGroupsCollection = hangarGroupsCollection;
+const highlightedGroup = ref<string | undefined>();
 
-  @Getter("mobile") mobile;
+const collection: HangarCollection = hangarCollection;
 
-  @Getter("currentUser", { namespace: "session" }) currentUser;
+const statsCollection: HangarStatsCollection = hangarStatsCollection;
 
-  @Getter("detailsVisible", { namespace: "hangar" }) detailsVisible;
+const hangarStats = ref<HangarStats | undefined>();
 
-  @Getter("gridView", { namespace: "hangar" }) gridView;
+const groupsCollection: HangarGroupsCollection = hangarGroupsCollection;
 
-  @Getter("perPage", { namespace: "hangar" }) perPage;
+const mobile = computed(() => Store.getters.mobile);
 
-  @Getter("money", { namespace: "hangar" }) money;
+const currentUser = computed(() => Store.getters["session/currentUser"]);
 
-  @Getter("extensionReady", { namespace: "hangar" }) extensionReady;
+const detailsVisible = computed(() => Store.getters["hangar/detailsVisible"]);
+const gridView = computed(() => Store.getters["hangar/gridView"]);
+const perPage = computed(() => Store.getters["hangar/perPage"]);
+const money = computed(() => Store.getters["hangar/money"]);
+const fleetchartVisible = computed(
+  () => Store.getters["hangar/fleetchartVisible"]
+);
 
-  @Getter("fleetchartVisible", { namespace: "hangar" }) fleetchartVisible;
+const shareTitle = computed(() => t("title.hangar.index"));
 
-  @Action("toggleDetails", { namespace: "hangar" }) toggleDetails;
-
-  @Action("toggleMoney", { namespace: "hangar" }) toggleMoney;
-
-  @Action("toggleGridView", { namespace: "hangar" }) toggleGridView;
-
-  @Action("toggleFleetchart", { namespace: "hangar" })
-  toggleFleetchart;
-
-  get shareTitle() {
-    return this.$t("title.hangar.index");
+const hangarGroupCounts = computed<HangarGroupMetrics[]>(() => {
+  if (!hangarStats.value) {
+    return [];
   }
 
-  get hangarGroupCounts(): HangarGroupMetrics[] {
-    if (!this.hangarStats) {
-      return [];
+  return hangarStats.value.groups;
+});
+
+const toggleDetailsTooltip = computed(() => {
+  if (detailsVisible.value) {
+    return t("actions.hideDetails");
+  }
+  return t("actions.showDetails");
+});
+
+const toggleGridViewTooltip = computed(() => {
+  if (gridView.value) {
+    return t("actions.showTableView");
+  }
+  return t("actions.showGridView");
+});
+
+const shareUrl = computed(() => {
+  if (!currentUser.value) {
+    return null;
+  }
+
+  return currentUser.value.publicHangarUrl;
+});
+
+const route = useRoute();
+
+const filters = computed<HangarParams>(() => ({
+  filters: route.query.q as HangarQuery,
+  page: route.query.page ? Number(route.query.page) : 1,
+}));
+
+watch(
+  () => route.query.q,
+  () => {
+    fetch();
+  }
+);
+
+watch(
+  () => perPage.value,
+  () => {
+    fetch();
+  }
+);
+
+onMounted(() => {
+  fetch();
+  setupUpdates();
+
+  comlink.$on("vehicles-delete-all", fetch);
+  comlink.$on("hangar-group-delete", fetch);
+  comlink.$on("hangar-group-save", groupsCollection.findAll);
+  comlink.$on("hangar-sync-finished", fetch);
+});
+
+onUnmounted(() => {
+  if (vehiclesChannel.value) {
+    vehiclesChannel.value.unsubscribe();
+  }
+
+  comlink.$off("vehicles-delete-all");
+  comlink.$off("hangar-group-delete");
+  comlink.$off("hangar-group-save");
+  comlink.$off("hangar-sync-finished");
+});
+
+const toggleDetails = () => {
+  Store.dispatch("hangar/toggleDetails");
+};
+
+const toggleMoney = () => {
+  Store.dispatch("hangar/toggleMoney");
+};
+
+const toggleGridView = () => {
+  Store.dispatch("hangar/toggleGridView");
+};
+
+const toggleFleetchart = () => {
+  Store.dispatch("hangar/toggleFleetchart");
+};
+
+const showNewModal = () => {
+  comlink.$emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/NewVehiclesModal/index.vue"),
+  });
+};
+
+const highlightGroup = (group?: HangarGroup) => {
+  if (!group) {
+    highlightedGroup.value = undefined;
+    return;
+  }
+
+  highlightedGroup.value = group.id;
+};
+
+const fetch = async () => {
+  hangarStats.value = await statsCollection.get(filters.value);
+  await groupsCollection.findAll();
+  await collection.findAll(filters.value);
+};
+
+const { consumer } = useCable();
+
+const setupUpdates = () => {
+  if (vehiclesChannel.value) {
+    vehiclesChannel.value.unsubscribe();
+  }
+
+  vehiclesChannel.value = consumer.subscriptions.create(
+    {
+      channel: "HangarChannel",
+    },
+    {
+      received: () => debounce(fetch, 500),
     }
+  );
+};
 
-    return this.hangarStats.groups;
+const exportJson = async () => {
+  const exportedData = await collection.export(filters.value);
+
+  if (!exportedData || !window.URL) {
+    displayAlert({ text: t("messages.hangarExport.failure") });
+    return;
   }
 
-  get hangarStats(): VehicleStats | null {
-    return this.collection.stats;
-  }
+  const link = document.createElement("a");
 
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t("actions.hideDetails");
-    }
-    return this.$t("actions.showDetails");
-  }
+  // eslint-disable-next-line compat/compat
+  link.href = window.URL.createObjectURL(
+    new Blob([exportedData as unknown as BlobPart])
+  );
 
-  get toggleGridViewTooltip() {
-    if (this.gridView) {
-      return this.$t("actions.showTableView");
-    }
-    return this.$t("actions.showGridView");
-  }
+  link.setAttribute(
+    "download",
+    `fleetyards-${currentUser.value.username}-hangar-${format(
+      new Date(),
+      "yyyy-MM-dd"
+    )}.json`
+  );
 
-  get shareUrl() {
-    if (!this.currentUser) {
-      return null;
-    }
+  document.body.appendChild(link);
 
-    return this.currentUser.publicHangarUrl;
-  }
+  link.click();
 
-  get filters(): VehicleParams {
-    return {
-      filters: this.$route.query.q as VehiclesFilter,
-      page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-    };
-  }
+  document.body.removeChild(link);
+};
 
-  @Watch("$route")
-  onRouteChange() {
-    this.fetch();
-  }
+const showResetIngameModal = () => {
+  comlink.$emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/ResetIngameModal/index.vue"),
+  });
+};
 
-  @Watch("perPage")
-  onPerPageChange() {
-    this.fetch();
-  }
+const destroyAll = async () => {
+  deleting.value = true;
 
-  mounted() {
-    this.fetch();
-    this.setupUpdates();
+  displayConfirm({
+    text: t("messages.confirm.hangar.destroyAll"),
+    onConfirm: async () => {
+      await collection.destroyAll();
 
-    this.$comlink.$on("vehicles-delete-all", this.fetch);
-    this.$comlink.$on("hangar-group-delete", this.fetch);
-    this.$comlink.$on("hangar-group-save", this.groupsCollection.findAll);
-    this.$comlink.$on("hangar-sync-finished", this.fetch);
-  }
+      comlink.$emit("vehicles-delete-all");
 
-  beforeDestroy() {
-    if (this.vehiclesChannel) {
-      this.vehiclesChannel.unsubscribe();
-    }
+      deleting.value = false;
+    },
+    onClose: () => {
+      deleting.value = false;
+    },
+  });
+};
 
-    this.$comlink.$off("vehicles-delete-all");
-    this.$comlink.$off("hangar-group-delete");
-    this.$comlink.$off("hangar-group-save");
-    this.$comlink.$off("hangar-sync-finished");
-  }
+const openGuide = () => {
+  comlink.$emit("open-modal", {
+    wide: true,
+    component: () => import("@/frontend/components/HangarGuideModal/index.vue"),
+  });
+};
+</script>
 
-  showNewModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/NewVehiclesModal/index.vue"),
-    });
-  }
-
-  highlightGroup(group) {
-    if (!group) {
-      this.highlightedGroup = null;
-      return;
-    }
-
-    this.highlightedGroup = group.id;
-  }
-
-  async fetch() {
-    await this.collection.findStats(this.filters);
-    await this.groupsCollection.findAll();
-    await this.collection.findAll(this.filters);
-  }
-
-  setupUpdates() {
-    if (this.vehiclesChannel) {
-      this.vehiclesChannel.unsubscribe();
-    }
-
-    this.vehiclesChannel = this.$cable.consumer.subscriptions.create(
-      {
-        channel: "HangarChannel",
-      },
-      {
-        received: debounce(this.fetch, 500),
-      }
-    );
-  }
-
-  async exportJson() {
-    const exportedData = await this.collection.export(this.filters);
-
-    // eslint-disable-next-line compat/compat
-    if (!exportedData || !window.URL) {
-      displayAlert({ text: this.$t("messages.hangarExport.failure") });
-      return;
-    }
-
-    const link = document.createElement("a");
-
-    // eslint-disable-next-line compat/compat
-    link.href = window.URL.createObjectURL(new Blob([exportedData]));
-
-    link.setAttribute(
-      "download",
-      `fleetyards-${this.currentUser.username}-hangar-${format(
-        new Date(),
-        "yyyy-MM-dd"
-      )}.json`
-    );
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-  }
-
-  showResetIngameModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/ResetIngameModal/index.vue"),
-    });
-  }
-
-  async destroyAll() {
-    this.deleting = true;
-
-    displayConfirm({
-      text: this.$t("messages.confirm.hangar.destroyAll"),
-      onConfirm: async () => {
-        await this.collection.destroyAll();
-
-        this.$comlink.$emit("vehicles-delete-all");
-
-        this.deleting = false;
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
-    });
-  }
-
-  openGuide() {
-    this.$comlink.$emit("open-modal", {
-      wide: true,
-      component: () =>
-        import("@/frontend/components/HangarGuideModal/index.vue"),
-    });
-  }
-}
+<script lang="ts">
+export default {
+  name: "HangarPage",
+};
 </script>

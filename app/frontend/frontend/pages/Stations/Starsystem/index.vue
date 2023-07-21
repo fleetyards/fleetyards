@@ -1,203 +1,104 @@
 <template>
-  <section class="container">
-    <div class="row">
-      <div class="col-12">
-        <BreadCrumbs :crumbs="crumbs" />
-        <h1 v-if="starsystem">
-          {{ $t("headlines.starsystem", { starsystem: starsystem.name }) }}
-        </h1>
-      </div>
-    </div>
-    <div v-if="starsystem" class="row">
-      <div class="col-12 col-lg-8">
-        <blockquote v-if="starsystem.description" class="description">
-          <p v-html="starsystem.description" />
-        </blockquote>
-      </div>
-      <div class="col-12 col-lg-4">
-        <Panel>
-          <StarsystemBaseMetrics :starsystem="starsystem" padding />
-          <StarsystemLevelsMetrics :starsystem="starsystem" padding />
-        </Panel>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <Paginator
-          v-if="celestialObjects.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <transition-group name="fade-list" class="row" tag="div" appear>
-          <div
-            v-for="celestialObject in celestialObjects"
-            :key="celestialObject.slug"
-            class="col-12 fade-list-item"
-          >
-            <PlanetList
-              :item="celestialObject"
-              :route="{
-                name: 'celestial-object',
-                params: {
-                  starsystem: celestialObject.starsystem.slug,
-                  slug: celestialObject.slug,
-                },
-              }"
-            >
-              <template v-if="celestialObject.moons.length">
-                <h3 class="sr-only">
-                  {{ $t("headlines.celestialObjects") }}
-                </h3>
-                <transition-group name="fade-list" class="row" tag="div" appear>
-                  <div
-                    v-for="moon in celestialObject.moons"
-                    :key="moon.slug"
-                    class="col-12 col-lg-3 fade-list-item"
-                  >
-                    <MoonPanel
-                      :item="moon"
-                      :route="{
-                        name: 'celestial-object',
-                        params: {
-                          starsystem: celestialObject.starsystem.slug,
-                          slug: moon.slug,
-                        },
-                      }"
-                    />
-                  </div>
-                </transition-group>
-              </template>
-            </PlanetList>
+  <AsyncData :is-error="isError" :is-loading="isLoading || isFetching">
+    <template #resolved>
+      <section class="container">
+        <div class="row">
+          <div class="col-12">
+            <BreadCrumbs :crumbs="crumbs" />
+            <h1 v-if="starsystem">
+              {{ t("headlines.starsystem", { starsystem: starsystem.name }) }}
+            </h1>
           </div>
-        </transition-group>
-        <Loader :loading="loading" :fixed="true" />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <Paginator
-          v-if="celestialObjects.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
-  </section>
+        </div>
+        <div v-if="starsystem" class="row">
+          <div class="col-12 col-lg-8">
+            <blockquote v-if="starsystem.description" class="description">
+              <p v-html="starsystem.description" />
+            </blockquote>
+          </div>
+          <div class="col-12 col-lg-4">
+            <Panel>
+              <StarsystemBaseMetrics :starsystem="starsystem" padding />
+              <StarsystemLevelsMetrics :starsystem="starsystem" padding />
+            </Panel>
+          </div>
+        </div>
+        <CelestialObjectsList />
+      </section>
+    </template>
+  </AsyncData>
 </template>
 
-<script>
-import Pagination from "@/frontend/mixins/Pagination";
-import { scrollToAnchor } from "@/frontend/utils/scrolling";
-import PlanetList from "@/frontend/components/Planets/List/index.vue";
-import MoonPanel from "@/frontend/components/Planets/Panel/index.vue";
+<script lang="ts" setup>
+import Panel from "@/shared/components/Panel/index.vue";
+import CelestialObjectsList from "@/frontend/components/Starsystems/CelestialObjectsList/index.vue";
 import StarsystemBaseMetrics from "@/frontend/components/Starsystems/BaseMetrics/index.vue";
 import StarsystemLevelsMetrics from "@/frontend/components/Starsystems/LevelsMetrics/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
+import type { Crumb } from "@/frontend/core/components/BreadCrumbs/index.vue";
+import AsyncData from "@/frontend/core/components/AsyncData.vue";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import { useRoute } from "vue-router/composables";
 
+const { t } = useI18n();
+
+const { updateMetaInfo } = useMetaInfo();
+
+const { starsystems } = useApiClient();
+
+const route = useRoute();
+
+const crumbs = computed<Crumb[] | undefined>(() => {
+  if (!starsystem.value) {
+    return undefined;
+  }
+
+  return [
+    {
+      to: {
+        name: "starsystems",
+        hash: `#${starsystem.value.slug}`,
+      },
+      label: t("nav.starsystems"),
+    },
+  ];
+});
+
+const {
+  isLoading,
+  isFetching,
+  isError,
+  data: starsystem,
+} = useQuery({
+  queryKey: ["starsystem", route.params.slug],
+  queryFn: () =>
+    starsystems.get({
+      slug: route.params.slug,
+    }),
+});
+
+watch(
+  () => starsystem.value,
+  () => {
+    if (!starsystem.value) {
+      return;
+    }
+
+    updateMetaInfo({
+      title: t("title.starsystem", { starsystem: starsystem.value.name }),
+      description: starsystem.value.description || undefined,
+      image: starsystem.value.media?.storeImage?.medium || undefined,
+      type: "article",
+    });
+  }
+);
+</script>
+
+<script lang="ts">
 export default {
-  name: "StarsystemDetail",
-
-  components: {
-    Loader,
-    PlanetList,
-    MoonPanel,
-    StarsystemBaseMetrics,
-    StarsystemLevelsMetrics,
-    Panel,
-    BreadCrumbs,
-  },
-
-  mixins: [Pagination],
-
-  data() {
-    return {
-      loading: false,
-      starsystem: null,
-      celestialObjects: [],
-    };
-  },
-
-  computed: {
-    starsystemName() {
-      if (this.celestialObjects.length === 0) {
-        return "";
-      }
-      return this.celestialObjects[0].starsystem.name;
-    },
-
-    metaTitle() {
-      if (!this.starsystem) {
-        return null;
-      }
-      return this.$t("title.starsystem", { starsystem: this.starsystem.name });
-    },
-
-    crumbs() {
-      if (!this.starsystem) {
-        return null;
-      }
-
-      return [
-        {
-          to: {
-            name: "starsystems",
-            hash: `#${this.starsystem.slug}`,
-          },
-          label: this.$t("nav.starsystems"),
-        },
-      ];
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetchCelestialObjects();
-    },
-  },
-
-  created() {
-    this.fetch();
-    this.fetchCelestialObjects();
-  },
-
-  methods: {
-    async fetch() {
-      const response = await this.$api.get(
-        `starsystems/${this.$route.params.slug}`
-      );
-      if (!response.error) {
-        this.starsystem = response.data;
-      }
-    },
-
-    async fetchCelestialObjects() {
-      this.loading = true;
-      const response = await this.$api.get("celestial-objects", {
-        q: {
-          ...this.$route.query.q,
-          starsystemEq: this.$route.params.slug,
-          main: true,
-        },
-        page: this.$route.query.page,
-      });
-      this.loading = false;
-      if (!response.error) {
-        this.celestialObjects = response.data;
-
-        this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash);
-        });
-      }
-      this.setPages(response.meta);
-    },
-  },
+  name: "StarsystemPage",
 };
 </script>

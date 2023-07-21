@@ -24,7 +24,7 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ShopMinimal"}
+        schema "$ref": "#/components/schemas/Shops"
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -36,14 +36,15 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(5)
+          expect(items.count).to be > 0
+          expect(items.count).to eq(5)
         end
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ShopMinimal"}
+        schema "$ref": "#/components/schemas/Shops"
 
         let(:q) do
           {
@@ -53,21 +54,23 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(1)
-          expect(data.first["name"]).to eq("Dumpers Depot")
+          expect(items.count).to eq(1)
+          expect(items.first["name"]).to eq("Dumpers Depot")
         end
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ShopMinimal"}
+        schema "$ref": "#/components/schemas/Shops"
 
         let(:perPage) { 2 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.count).to eq(2)
+          expect(items.count).to eq(2)
         end
       end
     end

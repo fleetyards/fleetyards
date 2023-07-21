@@ -1,223 +1,160 @@
 <template>
-  <section class="container">
-    <div class="row">
-      <div class="col-12">
-        <BreadCrumbs :crumbs="crumbs" />
-        <h1 v-if="celestialObject">
-          {{ celestialObject.name }}
-          <small class="text-muted">{{ celestialObject.designation }}</small>
-        </h1>
-      </div>
-    </div>
-    <div v-if="celestialObject" class="row">
-      <div class="col-12 col-lg-8">
-        <blockquote v-if="celestialObject.description" class="description">
-          <p v-html="celestialObject.description" />
-        </blockquote>
-      </div>
-      <div class="col-12 col-lg-4">
-        <Panel>
-          <CelestialObjectMetrics :celestial-object="celestialObject" padding />
-        </Panel>
-      </div>
-    </div>
-    <div class="row">
-      <div
-        v-if="celestialObject && celestialObject.moons.length"
-        class="col-12"
-      >
-        <h2>{{ $t("headlines.moons") }}</h2>
-        <transition-group name="fade-list" class="row" tag="div" appear>
-          <div
-            v-for="moon in celestialObject.moons"
-            :key="moon.slug"
-            class="col-12 col-md-6 col-lg-3 fade-list-item"
-          >
-            <ItemPanel
-              :item="moon"
-              :route="{
-                name: 'celestial-object',
-                params: {
-                  starsystem: celestialObject.starsystem.slug,
-                  slug: moon.slug,
-                },
-              }"
-            />
+  <AsyncData :is-error="isError" :is-loading="isLoading || isFetching">
+    <template #resolved>
+      <section v-if="celestialObject" class="container">
+        <div class="row">
+          <div class="col-12">
+            <BreadCrumbs :crumbs="crumbs" />
+            <h1 v-if="celestialObject">
+              {{ celestialObject.name }}
+              <small class="text-muted">{{
+                celestialObject.designation
+              }}</small>
+            </h1>
           </div>
-        </transition-group>
-      </div>
-    </div>
-    <div v-if="celestialObject && stations.length" class="row">
-      <div class="col-12 col-lg-6">
-        <h2>{{ $t("headlines.stations") }}</h2>
-      </div>
-      <div class="col-12 col-lg-6">
-        <Paginator
-          v-if="stations.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-      <div class="col-12">
-        <transition-group name="fade-list" class="row" tag="div" appear>
-          <div
-            v-for="station in stations"
-            :key="station.slug"
-            class="col-12 fade-list-item"
-          >
-            <StationPanel :station="station" />
+        </div>
+        <div v-if="celestialObject" class="row">
+          <div class="col-12 col-lg-8">
+            <blockquote v-if="celestialObject.description" class="description">
+              <p v-html="celestialObject.description" />
+            </blockquote>
           </div>
-        </transition-group>
-        <Loader :loading="loading" :fixed="true" />
-      </div>
-      <div class="col-12">
-        <Paginator
-          v-if="stations.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
-  </section>
+          <div class="col-12 col-lg-4">
+            <Panel>
+              <CelestialObjectMetrics
+                :celestial-object="celestialObject"
+                padding
+              />
+            </Panel>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            v-if="celestialObject && celestialObject.moons?.length"
+            class="col-12"
+          >
+            <h2>{{ t("headlines.moons") }}</h2>
+            <transition-group name="fade-list" class="row" tag="div" appear>
+              <div
+                v-for="moon in celestialObject.moons"
+                :key="moon.slug"
+                class="col-12 col-md-6 col-lg-3 fade-list-item"
+              >
+                <ItemPanel
+                  :item="moon"
+                  :route="{
+                    name: 'celestial-object',
+                    params: {
+                      starsystem: celestialObject.starsystem?.slug,
+                      slug: moon.slug,
+                    },
+                  }"
+                />
+              </div>
+            </transition-group>
+          </div>
+        </div>
+        <StationsList :celestial-object-slug="celestialObject.slug" />
+      </section>
+    </template>
+  </AsyncData>
 </template>
 
-<script>
-import { scrollToAnchor } from "@/frontend/utils/scrolling";
-import Pagination from "@/frontend/mixins/Pagination";
-import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
+<script lang="ts" setup>
+import Panel from "@/shared/components/Panel/index.vue";
+import StationsList from "@/frontend/components/CelestialObjects/StationsList/index.vue";
 import ItemPanel from "@/frontend/components/Stations/Item/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import type { Crumb } from "@/frontend/core/components/BreadCrumbs/index.vue";
+import AsyncData from "@/frontend/core/components/AsyncData.vue";
 import CelestialObjectMetrics from "@/frontend/components/CelestialObjects/Metrics/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import { useRoute } from "vue-router/composables";
 
-export default {
-  name: "CelestialObjectDetail",
+const { t } = useI18n();
 
-  components: {
-    Loader,
-    Panel,
-    StationPanel,
-    ItemPanel,
-    CelestialObjectMetrics,
-    BreadCrumbs,
-  },
+const { updateMetaInfo } = useMetaInfo();
 
-  mixins: [Pagination],
+const crumbs = computed(() => {
+  if (!celestialObject.value) {
+    return undefined;
+  }
 
-  data() {
-    return {
-      loading: false,
-      celestialObject: null,
-      stations: [],
-    };
-  },
-
-  computed: {
-    metaTitle() {
-      if (!this.celestialObject) {
-        return null;
-      }
-
-      return this.$t("title.celestialObject", {
-        celestialObject: this.celestialObject.name,
-        starsystem: this.celestialObject.starsystem.name,
-      });
+  const crumbs: Crumb[] = [
+    {
+      to: {
+        name: "starsystems",
+        hash: `#${celestialObject.value.starsystem?.slug}`,
+      },
+      label: t("nav.starsystems"),
     },
-
-    crumbs() {
-      if (!this.celestialObject) {
-        return null;
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: "starsystems",
-            hash: `#${this.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t("nav.starsystems"),
+    {
+      to: {
+        name: "starsystem",
+        params: {
+          slug: celestialObject.value.starsystem?.slug,
         },
-        {
-          to: {
-            name: "starsystem",
-            params: {
-              slug: this.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.celestialObject.slug}`,
-          },
-          label: this.celestialObject.starsystem.name,
+        hash: `#${celestialObject.value.slug}`,
+      },
+      label: celestialObject.value.starsystem?.name,
+    },
+  ];
+
+  if (celestialObject.value.parent) {
+    crumbs.push({
+      to: {
+        name: "celestial-object",
+        params: {
+          starsystem: celestialObject.value.starsystem?.slug,
+          slug: celestialObject.value.parent.slug,
         },
-      ];
+      },
+      label: celestialObject.value.parent.name,
+    });
+  }
 
-      if (this.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: "celestial-object",
-            params: {
-              starsystem: this.celestialObject.starsystem.slug,
-              slug: this.celestialObject.parent.slug,
-            },
-          },
-          label: this.celestialObject.parent.name,
-        });
-      }
+  return crumbs;
+});
 
-      return crumbs;
-    },
-  },
+const { celestialObjects } = useApiClient();
 
-  watch: {
-    $route() {
-      this.fetch();
-    },
-  },
+const route = useRoute();
 
-  created() {
-    this.fetch();
-  },
+const {
+  isLoading,
+  isFetching,
+  isError,
+  data: celestialObject,
+} = useQuery({
+  queryKey: ["celestialObject", route.params.slug],
+  queryFn: () => celestialObjects.get({ slug: route.params.slug }),
+});
 
-  methods: {
-    async fetch() {
-      this.loading = true;
-      const response = await this.$api.get(
-        `celestial-objects/${this.$route.params.slug}`
-      );
-      this.loading = false;
-      if (!response.error) {
-        this.celestialObject = response.data;
-        this.fetchStations();
-      }
-    },
+watch(
+  () => celestialObject.value,
+  () => {
+    if (!celestialObject.value) {
+      return;
+    }
 
-    async fetchStations() {
-      this.loading = true;
-      const response = await this.$api.get("stations", {
-        q: {
-          ...this.$route.query.q,
-          celestialObjectEq: this.$route.params.slug,
-          sorts: ["station_type asc", "name asc"],
-        },
-        page: this.$route.query.page,
-      });
-
-      this.loading = false;
-      if (!response.error) {
-        this.stations = response.data;
-
-        this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash);
-        });
-      }
-
-      this.setPages(response.meta);
-    },
-  },
-};
+    updateMetaInfo({
+      title: t("title.celestialObject", {
+        celestialObject: celestialObject.value.name,
+        starsystem: celestialObject.value.starsystem?.name || "",
+      }),
+      description: celestialObject.value.description || undefined,
+      image: celestialObject.value.media.storeImage?.medium || undefined,
+      type: "article",
+    });
+  }
+);
 </script>
 
-<style lang="scss" scoped>
-@import "index";
-</style>
+<script lang="ts">
+export default {
+  name: "CelestialObjectPage",
+};
+</script>

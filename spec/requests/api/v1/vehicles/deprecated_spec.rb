@@ -30,8 +30,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+        schema "$ref": "#/components/schemas/Hangar"
 
         run_test!
       end
@@ -228,8 +227,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
+        schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:id) { user.username }
 

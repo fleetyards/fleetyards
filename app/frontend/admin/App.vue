@@ -35,6 +35,10 @@ const checkMobile = () => {
 };
 </script>
 
+<script lang="ts" setup>
+import AppModal from "@/frontend/core/components/AppModal/index.vue";
+</script>
+
 <script lang="ts">
 export default {
   name: "AdminApp",
