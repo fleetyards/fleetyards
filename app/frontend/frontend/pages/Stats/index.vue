@@ -132,8 +132,8 @@
 </template>
 
 <script>
-import Chart from "@/frontend/core/components/Chart/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
+import Chart from "@/shared/components/Chart/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 export default {
   name: "StatsIndex",

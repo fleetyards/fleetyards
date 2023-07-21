@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import BtnInner from "@/frontend/core/components/Btn/Inner/index.vue";
-import type { SpinnerAlignment } from "@/frontend/core/components/SmallLoader/index.vue";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import { RawLocation } from "vue-router";
 
 export type BtnVariants =

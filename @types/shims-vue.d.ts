@@ -1,7 +1,12 @@
 declare module "*.vue" {
-  import Vue from "vue";
+  import type { DefineComponent } from "vue";
 
-  export default Vue;
+  const component: DefineComponent<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    unknown
+  >;
+  export default component;
 }
 
-declare module "vue-code-highlight";
+declare module "vue3-highlightjs";

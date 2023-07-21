@@ -101,13 +101,13 @@
 </template>
 
 <script>
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import Pagination from "@/frontend/mixins/Pagination";
 import { scrollToAnchor } from "@/frontend/utils/scrolling";
 import StarsystemList from "@/frontend/components/Starsystems/List/index.vue";
 import PlanetPanel from "@/frontend/components/Planets/Panel/index.vue";
 import mapImageUrl from "@/images/map.png";
+import Panel from "@/shared/components/Panel/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
 
 export default {
   name: "StarsystemsIndex",

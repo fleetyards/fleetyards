@@ -98,7 +98,7 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import userCollection from "@/frontend/api/collections/User";
 import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
 

@@ -91,7 +91,7 @@ import {
   displayAlert,
   displayConfirm,
 } from "@/frontend/lib/Noty";
-import Panel from "@/frontend/core/components/Panel/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 
 @Component<FleetInvites>({

@@ -143,7 +143,7 @@ import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import PrimaryAction from "@/frontend/core/components/PrimaryAction/index.vue";
+import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarImportBtn from "@/frontend/components/HangarImportBtn/index.vue";

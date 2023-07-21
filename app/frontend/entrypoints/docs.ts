@@ -1,27 +1,27 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "@/docs/App.vue";
 import router from "@/docs/plugins/Router";
-import "@/frontend/plugins/LazyLoad";
-import VTooltip from "v-tooltip";
-import { createPinia, PiniaVuePlugin } from "pinia";
+import FloatingVue from "floating-vue";
+import i18n from "@/shared/plugins/I18n";
+import noty from "@/shared/plugins/Noty";
+import "floating-vue/dist/style.css";
+import VueLazyload from "vue-lazyload";
+import VueHighlightJS from "vue3-highlightjs";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { useI18n } from "@/docs/composables/useI18n";
 
-Vue.use(PiniaVuePlugin);
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
-if (process.env.NODE_ENV !== "production") {
-  Vue.config.devtools = true;
-} else {
-  Vue.config.productionTip = false;
-}
+const app = createApp(App);
 
-Vue.use(VTooltip);
+app.use(router);
+app.use(VueLazyload);
+app.use(pinia);
+app.use(i18n, useI18n);
+app.use(noty, useI18n);
+app.use(FloatingVue);
+app.use(VueHighlightJS);
 
-document.addEventListener("DOMContentLoaded", () => {
-  // eslint-disable-next-line no-new
-  new Vue({
-    el: "#docs-app",
-    router,
-    pinia,
-    render: (h) => h(App),
-  });
-});
+app.mount("#docs-app");

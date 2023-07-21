@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import Panel from "@/frontend/core/components/Panel/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 import MembersListHead from "./MembersListHead/index.vue";
 import MembersListItem from "./MembersListItem/index.vue";
 

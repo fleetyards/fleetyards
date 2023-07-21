@@ -1,52 +1,12 @@
-import Vue from "vue";
-import Router from "vue-router";
-import type { Route, RouteConfig } from "vue-router";
 import qs from "qs";
 import { routes as initialRoutes } from "@/docs/routes";
+import { createRouter, createWebHistory } from "vue-router";
+import type { LocationQuery } from "vue-router";
+import { addTrailingSlashToAllRoutes } from "@/shared/utils/RouterHelper";
 
-Vue.use(Router);
-
-const addTrailingSlashToAllRoutes = (routes: RouteConfig[]): RouteConfig[] =>
-  ([] as RouteConfig[]).concat(
-    ...routes.map((route: RouteConfig): RouteConfig[] => {
-      if (["*", "/"].includes(route.path)) {
-        return [route];
-      }
-
-      const { pathToRegexpOptions = {} } = route;
-
-      const path = route.path.replace(/\/$/, "");
-
-      const modifiedRoute = {
-        ...route,
-        pathToRegexpOptions: {
-          ...pathToRegexpOptions,
-          strict: true,
-        },
-        path: `${path}/`,
-      };
-
-      if (route.children && route.children.length > 0) {
-        modifiedRoute.children = addTrailingSlashToAllRoutes(route.children);
-      }
-
-      return [
-        modifiedRoute,
-        {
-          path,
-          redirect: (to: Route) => ({
-            name: route.name,
-            params: to.params || undefined,
-            query: to.query || undefined,
-          }),
-        },
-      ];
-    })
-  );
-
-const router = new Router({
-  mode: "history",
-  base: window.ON_SUBDOMAIN ? "" : "/docs/",
+console.log("window.ON_SUBDOMAIN", window.ON_SUBDOMAIN);
+const router = createRouter({
+  history: createWebHistory(window.ON_SUBDOMAIN ? "" : "/docs/"),
   linkActiveClass: "active",
   linkExactActiveClass: "active-exact",
 
@@ -54,17 +14,17 @@ const router = new Router({
     new Promise((resolve) => {
       setTimeout(() => {
         if (to.hash) {
-          resolve({ selector: to.hash });
+          resolve({ el: to.hash });
         } else if (savedPosition) {
           resolve(savedPosition);
         } else {
-          resolve({ x: 0, y: 0 });
+          resolve({ top: 0, left: 0 });
         }
       }, 600);
     }),
 
   parseQuery(query) {
-    return qs.parse(query);
+    return qs.parse(query) as LocationQuery;
   },
 
   stringifyQuery(query) {

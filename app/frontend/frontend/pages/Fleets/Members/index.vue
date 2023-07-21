@@ -77,7 +77,6 @@ import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
 import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import debounce from "lodash.debounce";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
@@ -85,6 +84,7 @@ import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component<FleetMembers>({
   components: {

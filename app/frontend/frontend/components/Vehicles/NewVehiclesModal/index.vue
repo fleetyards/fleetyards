@@ -54,7 +54,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import modelsCollection from "@/frontend/api/collections/Models";

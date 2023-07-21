@@ -205,7 +205,7 @@ import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlo
 import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 
 // TODO: move to collection model or use openapi schema types when available
 type ShopCommoditiesFormData = {

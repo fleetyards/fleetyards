@@ -63,10 +63,10 @@
 <script>
 import { sortBy } from "@/frontend/lib/Helpers";
 import Papa from "papaparse";
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import { displayAlert } from "@/frontend/lib/Noty";
+import Panel from "@/shared/components/Panel/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
 
 export default {
   name: "HangarImport",

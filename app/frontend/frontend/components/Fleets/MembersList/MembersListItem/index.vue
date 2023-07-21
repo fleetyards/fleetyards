@@ -187,7 +187,7 @@ import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useRoute } from "vue-router/composables";
 
 const { t } = useI18n();

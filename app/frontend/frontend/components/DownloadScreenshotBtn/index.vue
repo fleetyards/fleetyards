@@ -25,7 +25,7 @@ import type {
   BtnVariants,
   BtnSizes,
 } from "@/frontend/core/components/Btn/index.vue";
-import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 interface Props extends BtnProps {

@@ -336,7 +336,6 @@
 <script lang="ts" setup>
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
 import {
   displayInfo,
   displaySuccess,
@@ -344,13 +343,14 @@ import {
   displayAlert,
 } from "@/frontend/lib/Noty";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
 import Store from "@/frontend/lib/Store";
 import { useRouter, useRoute } from "vue-router/composables";
 import { extensionUrls } from "@/types/extension";
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 
 const started = ref(false);
 

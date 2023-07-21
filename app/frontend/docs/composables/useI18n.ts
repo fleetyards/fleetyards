@@ -1,26 +1,33 @@
-import I18n from "i18n-js";
-import { parseISO } from "date-fns";
-import { format } from "date-fns-tz";
-import en from "@/docs/translations/en";
+import { I18n } from "i18n-js";
+import type { TranslateOptions, Scope } from "i18n-js";
+import translations from "@/docs/translations";
+import { i18nHelpers } from "@/shared/utils/I18nHelpers";
+import { useI18nStore } from "@/shared/stores/i18n";
 
-const availableLocales = ["en"];
-I18n.defaultLocale = "en";
-I18n.locale = "en";
-I18n.fallbacks = true;
-I18n.translations.en = en;
+const i18n = new I18n(translations);
 
-type I18nTranslateOptions = {
-  [key: string]: I18nTranslateOptions | string;
+i18n.availableLocales = ["en"];
+i18n.defaultLocale = "en";
+
+i18n.enableFallback = true;
+
+export const useI18n = () => {
+  const i18nStore = useI18nStore();
+
+  if (i18nStore.locale) {
+    i18n.locale = i18nStore.locale;
+  }
+
+  watch(
+    () => i18nStore.locale,
+    (locale) => {
+      i18n.locale = locale;
+    }
+  );
+
+  return {
+    t: (scope: Scope, options?: TranslateOptions) => i18n.t(scope, options),
+    currentLocale: () => i18n.locale,
+    ...i18nHelpers(i18n),
+  };
 };
-
-const t = (key: string, options?: I18nTranslateOptions) => I18n.t(key, options);
-
-const l = (value: string, dateFormat = "datetime.formats.default") =>
-  format(parseISO(value), I18n.t(dateFormat));
-
-export const useI18n = () => ({
-  I18n,
-  availableLocales,
-  t,
-  l,
-});

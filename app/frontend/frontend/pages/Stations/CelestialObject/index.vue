@@ -84,14 +84,14 @@
 </template>
 
 <script>
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import { scrollToAnchor } from "@/frontend/utils/scrolling";
 import Pagination from "@/frontend/mixins/Pagination";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import ItemPanel from "@/frontend/components/Stations/Item/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import CelestialObjectMetrics from "@/frontend/components/CelestialObjects/Metrics/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
 
 export default {
   name: "CelestialObjectDetail",

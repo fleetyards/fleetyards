@@ -35,7 +35,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component<AddonsModal>({
   components: {

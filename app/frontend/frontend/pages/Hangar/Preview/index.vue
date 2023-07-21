@@ -115,9 +115,9 @@
 
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
+import Panel from "@/shared/components/Panel/index.vue";
 
 const hidePreview = () => {
   Store.dispatch("hangar/hidePreview");

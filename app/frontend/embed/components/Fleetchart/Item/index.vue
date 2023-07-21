@@ -6,9 +6,9 @@
   >
     <a :href="url" target="_blank" rel="noopener">
       <FleetchartItemImage
-        v-if="model.fleetchartImage"
-        :src="model.fleetchartImage"
-        :length="model.fleetchartLength"
+        v-if="model.media.fleetchartImage"
+        :src="model.media.fleetchartImage"
+        :length="length"
         :label="model.name"
         :scale="scale"
       />
@@ -18,20 +18,29 @@
 
 <script lang="ts" setup>
 import FleetchartItemImage from "@/embed/components/Fleetchart/Image/index.vue";
+import type { ModelMinimal } from "@/services/fyApi";
 
 type Props = {
-  model: Model;
+  model: ModelMinimal;
   scale: number;
 };
 
 const props = defineProps<Props>();
+
+const length = computed(() => {
+  if (props.model.metrics.fleetchartLength) {
+    return props.model.metrics.fleetchartLength;
+  }
+
+  return props.model.metrics.length || 0;
+});
 
 const url = computed(
   () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`
 );
 
 const label = computed(
-  () => `${props.model.manufacturer.code} ${props.model.name}`
+  () => `${props.model.manufacturer?.code} ${props.model.name}`
 );
 </script>
 

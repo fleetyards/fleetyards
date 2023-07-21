@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Panel from "@/frontend/core/components/Panel/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 export default {
   name: "StarsystemsList",

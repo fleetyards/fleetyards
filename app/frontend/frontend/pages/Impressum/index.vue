@@ -61,8 +61,8 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import AppContact from "@/frontend/core/components/AppContact/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component({
   components: {

@@ -165,7 +165,7 @@ import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index
 import { Getter } from "vuex-class";
 import debounce from "lodash.debounce";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
-import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
 
 @Component({

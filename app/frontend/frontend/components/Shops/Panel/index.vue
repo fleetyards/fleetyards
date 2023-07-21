@@ -33,10 +33,10 @@
 </template>
 
 <script lang="ts" setup>
-import Panel from "@/frontend/core/components/Panel/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
-import { useWebpCheck } from "@/frontend/composables/useWebpCheck";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 type Props = {
   shop: Shop;

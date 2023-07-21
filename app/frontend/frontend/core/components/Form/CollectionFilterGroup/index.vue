@@ -103,7 +103,7 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import { BCollapse } from "bootstrap-vue";
-import SmallLoader from "@/frontend/core/components/SmallLoader/index.vue";
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import debounce from "lodash.debounce";
 import InfiniteLoading from "vue-infinite-loading";

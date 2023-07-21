@@ -1,42 +1,29 @@
-import Vue from "vue";
-import VTooltip from "v-tooltip";
-import store from "@/embed/lib/Store";
-import I18nPlugin from "@/frontend/lib/I18n";
-import ApiClient from "@/embed/api/client";
-import FleetyardsView from "@/embed/FleetyardsView.vue";
-import "@/frontend/plugins/LazyLoad";
+import VueLazyload from "vue-lazyload";
+import AppV1 from "@/embed/AppV1.vue";
+import router from "@/embed/plugins/Router";
+import i18n from "@/shared/plugins/I18n";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import FloatingVue from "floating-vue";
+import "floating-vue/dist/style.css";
+import { useI18n } from "@/embed/composables/useI18n";
 
-Vue.use(ApiClient);
-Vue.use(I18nPlugin);
-
-Vue.config.productionTip = false;
-
-VTooltip.enabled = window.innerWidth > 768;
-Vue.use(VTooltip, {
-  defaultContainer: "#fleetyards-view",
-});
-
-// eslint-disable-next-line no-undef
-const config = fleetyards_config();
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 setTimeout(() => {
-  if (store.state.storeVersion !== window.STORE_VERSION) {
-    console.info("Updating Store Version and resetting Store");
+  const app = createApp(AppV1);
 
-    store.dispatch("reset");
-    store.commit("setStoreVersion", window.STORE_VERSION);
-  }
+  app.use(router);
+  app.use(pinia);
+  app.use(i18n, useI18n);
+  app.use(VueLazyload);
 
-  // eslint-disable-next-line no-new
-  new Vue({
-    el: "#fleetyards-view",
-    store,
-    data: {
-      ships: config.ships || [],
-      groupedButton: config.groupedButton || false,
-      fleetchartSlider: config.fleetchartSlider || false,
-      frontendEndpoint: window.FRONTEND_ENDPOINT,
-    },
-    render: (h) => h(FleetyardsView),
+  app.use(FloatingVue, {
+    container: "#fleetyards-view",
   });
+
+  app.mount("#fleetyards-view");
+
+  window.FleetYardsFleetchart = app;
 }, 2000);

@@ -35,7 +35,6 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { groupBy, sortBy } from "@/frontend/lib/Helpers";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import radarIconUrl from "@/images/hardpoints/radar.svg";
 import computersIconUrl from "@/images/hardpoints/computers.svg";
 import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
@@ -54,6 +53,7 @@ import missilesIconUrl from "@/images/hardpoints/missiles.svg";
 import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
+import Panel from "@/shared/components/Panel/index.vue";
 import HardpointItems from "../Items/index.vue";
 
 @Component<HardpointGroup>({

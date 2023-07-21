@@ -78,11 +78,11 @@ import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import modelModulesCollection from "@/frontend/api/collections/ModelModules";
 import modelModulePackagesCollection from "@/frontend/api/collections/ModelModulePackages";
 import modelUpgradesCollection from "@/frontend/api/collections/ModelUpgrades";
+import Panel from "@/shared/components/Panel/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
 import Addons from "./Addons/index.vue";
 import Packages from "./Packages/index.vue";
 

@@ -26,10 +26,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component<TwoFactorBackupCodesPanel>({
   components: {

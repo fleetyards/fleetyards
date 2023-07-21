@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useFilters } from "@/frontend/composables/useFilters";
 import { useI18n } from "@/frontend/composables/useI18n";
 import modelsCollection from "@/admin/api/collections/Models";

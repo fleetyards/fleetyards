@@ -125,7 +125,7 @@ import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/i
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import { Getter } from "vuex-class";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
-import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
 
 @Component({

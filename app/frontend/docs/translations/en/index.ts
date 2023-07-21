@@ -1,4 +1,11 @@
+import main from "./main";
+import labels from "./labels";
+import nav from "./nav";
+import meta from "./meta";
+
 export default {
-  title: "FleetYards.net Documentation",
-  shortTitle: "FleetYards Docs",
+  ...main,
+  nav,
+  labels,
+  meta,
 };

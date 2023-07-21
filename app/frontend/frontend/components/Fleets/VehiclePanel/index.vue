@@ -105,12 +105,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import PanelDetails from "@/frontend/core/components/Panel/PanelDetails/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import PanelDetails from "@/shared/components/Panel/PanelDetails/index.vue";
 
 @Component<FleetVehiclePanel>({
   name: "FleetVehiclePanel",

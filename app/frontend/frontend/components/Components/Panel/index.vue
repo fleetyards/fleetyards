@@ -61,11 +61,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import AddToCartBtn from "@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue";
 import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
 
 @Component<ComponentPanel>({
   components: {

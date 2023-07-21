@@ -215,7 +215,6 @@ import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import { sortBy } from "@/frontend/utils/Sorting";
 import tradeRoutesCollection from "@/frontend/api/collections/TradeRoutes";
 import modelsCollection from "@/frontend/api/collections/Models";
@@ -226,6 +225,7 @@ import FilterForm from "@/frontend/components/TradeRoutes/FilterForm/index.vue";
 import QuickFilter from "@/frontend/components/TradeRoutes/QuickFilter/index.vue";
 import TradeRoutePrice from "@/frontend/components/TradeRoutes/Price/index.vue";
 import TradeRouteProfit from "@/frontend/components/TradeRoutes/Profit/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component<TradeRoutes>({
   components: {

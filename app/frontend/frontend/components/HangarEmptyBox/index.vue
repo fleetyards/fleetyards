@@ -52,7 +52,7 @@ import Box from "@/frontend/core/components/Box/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import { useRoute, useRouter } from "vue-router/composables";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
 import { extensionUrls } from "@/types/extension";

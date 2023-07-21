@@ -4,7 +4,7 @@ import { displayInfo } from "@/frontend/lib/Noty";
 // import { useAppStore } from "@/frontend/stores/App";
 // import { useHangarStore } from "@/frontend/stores/Hangar";
 // import { useWishlistStore } from "@/frontend/stores/Wishlist";
-import { useCable } from "@/frontend/composables/useCable";
+import { useCable } from "@/shared/composables/useCable";
 import { useI18n } from "@/frontend/composables/useI18n";
 import type { Subscription } from "@rails/actioncable";
 import Store from "@/frontend/lib/Store";

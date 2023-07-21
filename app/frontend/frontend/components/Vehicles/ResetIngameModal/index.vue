@@ -25,7 +25,7 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const { t } = useI18n();
 

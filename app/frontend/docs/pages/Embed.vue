@@ -12,48 +12,18 @@
           render a Ship List.
         </p>
 
-        <vue-code-highlight
-          language="javascript"
-          class="rounded md:mx-24 my-10 overflow-scroll code-highlight"
+        <div
+          class="md:mx-24 my-10 relative group cursor-pointer"
+          @click="copyExample"
         >
-          <pre>
-  &lt;div id=&quot;fleetyards-view&quot;&gt;&lt;/div&gt;
-  &lt;script&gt;
-    window.FleetYardsFleetchartConfig = {
-      // Set to false if you want to display a minimal version of the Ship Panel
-      details: true,
-      // Set to false if you want to display the same Ships multiple times in your Fleetview.
-      grouped: true,
-      // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
-      fleetchart: false,
-      // Set to true if you want to group the Ships on the Fleetchart View or not.
-      fleetchartGrouped: false,
-      // Initial Scale of the Fleetchart
-      fleetchartScale: 50,
-      // Allow the User to toggle Groupped Views
-      groupedButton: false,
-      // Set to true to display a slider which allows users to scale the Fleetchart
-      fleetchartSlider: false,
-      // Replace the Array with a List of Shipnames (slugs) you want to display
-      ships: [&quot;100i&quot;, &quot;300i&quot;, &quot;600i-touring&quot;, &quot;890-jump&quot;],
-      // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
-      users: [&quot;torlekmaru&quot;, &quot;johndoe&quot;],
-      // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
-      fleetId: &quot;maru&quot;,
-    };
-    (function () {
-      var d = document, s = d.createElement(&quot;script&quot;);
-      s.src = &quot;https://fleetyards.net/embed-v2.js#&quot; + new Date().getTime();
-      (d.head || d.body).appendChild(s);
-    })();
-  &lt;/script&gt;
-  &lt;noscript&gt;
-    Please enable JavaScript to view your custom Fleetview powered by
-    FleetYards.net.
-  &lt;/noscript&gt;
-        </pre
-          >
-        </vue-code-highlight>
+          <i
+            class="fas fa-copy absolute right-2 top-8 opacity-0 transition-opacity group-hover:opacity-100"
+          ></i>
+          <pre v-highlightjs="widgetExample">
+            <code class="javascript rounded !py-5 !px-4">
+            </code>
+          </pre>
+        </div>
 
         <h2 class="text-2xl my-5">Options</h2>
 
@@ -162,9 +132,53 @@
 </template>
 
 <script lang="ts" setup>
-import "vue-code-highlight/themes/prism-dark.css";
-import "vue-code-highlight/themes/duotone-sea.css";
-import { component as VueCodeHighlight } from "vue-code-highlight";
+import "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
+import copyText from "@/shared/utils/CopyText";
+import { useI18n } from "@/docs/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+
+const widgetExample = `\<div id="fleetyards-view"\>\</div\>
+\<script\>
+    window.FleetYardsFleetchartConfig = {
+        details: true, // Set to false if you want to display a minimal version of the Ship Panel
+        grouped: true, // Set to false if you want to display the same Ships multiple times in your Fleetview.
+        fleetchart: false, // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
+        fleetchartGrouped: false, // Set to true if you want to group the Ships on the Fleetchart View or not.
+        fleetchartScale: 50, // Initial Scale of the Fleetchart
+        groupedButton: false, // Allow the User to toggle Groupped Views
+        fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
+        ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
+        users: ['torlekmaru', 'johndoe'], // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
+        fleetId: 'maru', // Replace the value with a your Fleetyards.net fleet id, alternative to the ships option.
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fleetyards.net/embed-v2.js#' + new Date().getTime();
+        (d.head || d.body).appendChild(s);
+    })();
+\</script\>
+\<noscript\>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.\</noscript\>
+`;
+
+const { t } = useI18n();
+
+const { displayInfo, displayAlert } = useNoty(t);
+
+const copyExample = () => {
+  copyText(widgetExample).then(
+    () => {
+      displayInfo({
+        text: t("messages.copyWidgetExample.success"),
+      });
+    },
+    () => {
+      displayAlert({
+        text: t("messages.copyWidgetExample.failure"),
+      });
+    }
+  );
+};
 </script>
 
 <script lang="ts">
@@ -175,8 +189,13 @@ export default {
 
 <style lang="scss">
 .code-highlight {
-  // pre {
-  //   background-color: transparent !important;
-  // }
+  .v-code-block--tab-highlightjs-atom-one-dark-icon {
+    color: $primary !important;
+    fill: $primary !important;
+  }
+
+  pre > code {
+    padding: 20px 15px;
+  }
 }
 </style>

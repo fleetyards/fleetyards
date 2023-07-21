@@ -106,7 +106,7 @@ import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 type VehicleFormData = {

@@ -47,7 +47,7 @@ import AppNavigationMobile from "@/frontend/core/components/AppNavigation/Mobile
 import AppFooter from "@/frontend/core/components/AppFooter/index.vue";
 import AppModal from "@/frontend/core/components/AppModal/index.vue";
 import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vue";
-import BackgroundImage from "@/frontend/core/components/BackgroundImage/index.vue";
+import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
 import { requestPermission } from "@/frontend/lib/Noty";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";

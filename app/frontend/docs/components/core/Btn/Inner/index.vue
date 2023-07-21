@@ -16,8 +16,8 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/docs/composables/useI18n";
-import SmallLoader from "@/docs/components/core/SmallLoader/index.vue";
-import type { SpinnerAlignment } from "@/docs/components/core/SmallLoader/index.vue";
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 
 type Props = {
   loading?: boolean;

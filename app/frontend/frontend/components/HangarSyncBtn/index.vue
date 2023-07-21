@@ -22,7 +22,7 @@ import type {
   BtnSizes,
 } from "@/frontend/core/components/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 import Store from "@/frontend/lib/Store";
 import { useRouter, useRoute } from "vue-router/composables";
 

@@ -157,17 +157,17 @@
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
 import { useRouter } from "vue-router/composables";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import modelsCollection from "@/frontend/api/collections/Models";
 import imagesCollection from "@/frontend/api/collections/Images";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
+import Panel from "@/shared/components/Panel/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 
 const { t } = useI18n();
 

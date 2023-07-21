@@ -26,13 +26,21 @@
           RSI
         </a>
         |
-        <router-link :to="{ name: 'privacy-policy' }">
+        <a
+          target="_blank"
+          rel="noopener"
+          href="https://fleetyards.net/privacy-policy"
+        >
           {{ t("nav.privacyPolicy") }}
-        </router-link>
+        </a>
         |
-        <router-link :to="{ name: 'impressum' }">
+        <a
+          target="_blank"
+          rel="noopener"
+          href="https://fleetyards.net/impressum"
+        >
           {{ t("nav.impressum") }}
-        </router-link>
+        </a>
       </div>
       <div
         class="gap-4 flex justify-center mb-1 text-[180%] lg:absolute lg:top-[10px] lg:right-[25px]"
@@ -128,7 +136,8 @@
 <script lang="ts" setup>
 import Btn from "@/docs/components/core/Btn/index.vue";
 import { useI18n } from "@/docs/composables/useI18n";
-import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const { t } = useI18n();
 
@@ -142,8 +151,10 @@ const copyrightOwner = computed(() => window.COPYRIGHT_OWNER);
 
 const scDataVersion = computed(() => window.SC_DATA_VERSION);
 
+const comlink = useComlink();
+
 const openSupportModal = () => {
-  this.$comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     component: () => import("@/frontend/components/Support/Modal/index.vue"),
     wide: true,
   });

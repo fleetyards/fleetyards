@@ -107,13 +107,20 @@ export class ModelsService {
 
     /**
      * Embed Models
-     * @returns any successful
+     * @returns ModelMinimal successful
      * @throws ApiError
      */
-    public embed(): CancelablePromise<any> {
+    public embed({
+        models,
+    }: {
+        models: Array<string>,
+    }): CancelablePromise<Array<ModelMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/embed',
+            query: {
+                'models': models,
+            },
         });
     }
 

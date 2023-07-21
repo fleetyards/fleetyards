@@ -113,14 +113,14 @@
 </template>
 
 <script lang="ts" setup>
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { uniq as uniqArray } from "@/frontend/utils/Array";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
 import { v4 as uuidv4 } from "uuid";
+import Panel from "@/shared/components/Panel/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
 
 export type FilteredTableColumn = {
   name: string;

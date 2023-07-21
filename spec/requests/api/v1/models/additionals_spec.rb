@@ -123,7 +123,12 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Models"
       produces "application/json"
 
+      parameter name: :models, in: :query, schema: {type: :array, items: {type: :string}}, required: true
+
       response(200, "successful") do
+        schema type: :array,
+          items: {"$ref": "#/components/schemas/ModelMinimal"}
+
         after do |example|
           example.metadata[:response][:content] = {
             "application/json" => {

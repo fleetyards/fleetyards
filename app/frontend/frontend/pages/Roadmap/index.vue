@@ -112,13 +112,13 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router/composables";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
 import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import { Subscription } from "@rails/actioncable";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useCable } from "@/frontend/composables/useCable";
+import { useCable } from "@/shared/composables/useCable";
 import roadmapItemsCollection from "@/frontend/api/collections/RoadmapItems";
 
 const { t } = useI18n();

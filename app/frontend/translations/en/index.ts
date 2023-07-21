@@ -126,35 +126,4 @@ export default {
     next: "Next Page",
     gap: "&hellip;",
   },
-  datetime: {
-    formats: {
-      default: "d MMMM y 'at' HH:mm z",
-      iso: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-    },
-  },
-  number: {
-    format: {
-      precision: 2,
-      strip_insignificant_zeros: true,
-      delimiter: ".",
-      separator: ",",
-    },
-    percent: "%{count} %",
-    distance: "%{count} m",
-    weight: "%{count} t",
-    speed: "%{count} m/s",
-    seconds: "%{count} s",
-    rateOfFire: "%{count} shots/min",
-    rotation: "%{count} deg/s",
-    cargo: "%{count} SCU",
-    fuel: "%{count}",
-    ships: {
-      one: "%{count} ship",
-      other: "%{count} ships",
-    },
-    people: {
-      one: "%{count} person",
-      other: "%{count} persons",
-    },
-  },
 };

@@ -11,6 +11,8 @@ import texts from "./en/texts";
 import title from "./en/title";
 import privacySettings from "./en/privacySettings";
 import validationError from "./en/validationError";
+import datetime from "./en/datetime";
+import number from "./en/number";
 
 const validations = {};
 Object.keys(validationMessages).forEach((key) => {
@@ -31,4 +33,6 @@ export default {
   messages,
   validations,
   validation_error: validationError,
+  datetime,
+  number,
 };

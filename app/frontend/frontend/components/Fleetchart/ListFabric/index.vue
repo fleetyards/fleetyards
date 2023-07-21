@@ -145,9 +145,9 @@ import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/i
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import { Getter } from "vuex-class";
 // import { fabric } from 'fabric'
-import Loader from "@/frontend/core/components/Loader/index.vue";
 import download from "downloadjs";
-import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 
 @Component({
   components: {

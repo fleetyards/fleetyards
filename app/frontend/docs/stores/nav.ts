@@ -15,4 +15,5 @@ export const useNavStore = defineStore("nav", {
       this.collapsed = !this.collapsed;
     },
   },
+  persist: true,
 });

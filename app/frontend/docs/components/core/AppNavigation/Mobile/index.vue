@@ -14,7 +14,7 @@
       >
         <i class="fad fa-home-alt" />
       </Btn> -->
-      <Btn variant="link" size="large" :inline="true" :to="{ name: 'api' }">
+      <Btn variant="link" size="large" :inline="true" :to="{ name: 'api-v1' }">
         <i class="fad fa-books" />
       </Btn>
       <Btn variant="link" size="large" :inline="true" :to="{ name: 'embed' }">

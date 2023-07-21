@@ -14,15 +14,20 @@
       </transition>
       <div class="flex flex-col justify-between max-w-full h-full flex-[1_1]">
         <div class="min-h-screen">
-          <transition name="fade" mode="out-in">
-            <router-view
-              :key="route.path"
-              class="transition-nav ease-[ease] duration-500 relative w-full max-w-full mb-12"
-              :class="[
-                collapsed ? 'left-0 right-auto' : '-left-[300px] right-[300px]',
-              ]"
-            />
-          </transition>
+          <router-view v-slot="{ Component, route }">
+            <transition name="fade" mode="out-in">
+              <component
+                :is="Component"
+                :key="`${locale}-${route.path}`"
+                class="transition-nav ease-[ease] duration-500 relative w-full max-w-full mb-12"
+                :class="[
+                  collapsed
+                    ? 'left-0 right-auto'
+                    : '-left-[300px] right-[300px]',
+                ]"
+              />
+            </transition>
+          </router-view>
         </div>
 
         <AppFooter />
@@ -35,8 +40,8 @@
 import AppNavigation from "@/docs/components/core/AppNavigation/index.vue";
 import AppNavigationMobile from "@/docs/components/core/AppNavigation/Mobile/index.vue";
 import AppBackground from "@/docs/components/core/AppBackground/index.vue";
-import { useRoute } from "vue-router/composables";
 import { useAppStore } from "@/docs/stores/app";
+import { useI18nStore } from "@/shared/stores/i18n";
 import { storeToRefs } from "pinia";
 import { useNavStore } from "@/docs/stores/nav";
 import AppFooter from "@/docs/components/core/AppFooter/index.vue";
@@ -49,7 +54,9 @@ const appStore = useAppStore();
 
 const { mobile } = storeToRefs(appStore);
 
-const route = useRoute();
+const i18nStore = useI18nStore();
+
+const { locale } = storeToRefs(i18nStore);
 
 onMounted(() => {
   window.addEventListener("resize", checkMobile);

@@ -152,7 +152,7 @@ import { Component } from "vue-property-decorator";
 import { Getter, Mutation } from "vuex-class";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
-import CommunityLogo from "@/frontend/core/components/CommunityLogo/index.vue";
+import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 const { availableLocales } = useI18n();

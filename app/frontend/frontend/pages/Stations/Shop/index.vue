@@ -200,7 +200,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { Getter } from "vuex-class";
@@ -213,6 +212,7 @@ import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilterForm from "@/frontend/components/Shops/ShopItemFilterForm/index.vue";
 import ShopBaseMetrics from "@/frontend/components/Shops/BaseMetrics/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component<Shop>({
   beforeRouteEnter: shopRouteGuard,

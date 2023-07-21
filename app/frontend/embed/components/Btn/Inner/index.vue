@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/embed/composables/useI18n";
 
 type Props = {
   loading?: boolean;

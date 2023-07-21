@@ -73,10 +73,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Loader from "@/frontend/core/components/Loader/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import { stationRouteGuard } from "@/frontend/utils/RouteGuards/Stations";
 import stationsCollection from "@/frontend/api/collections/Stations";
 import ShopPanel from "@/frontend/components/Stations/Item/index.vue";
@@ -84,6 +82,8 @@ import StationBaseMetrics from "@/frontend/components/Stations/BaseMetrics/index
 import StationDocks from "@/frontend/components/Stations/Docks/index.vue";
 import StationHabitations from "@/frontend/components/Stations/Habitations/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import Loader from "@/frontend/core/components/Loader/index.vue";
 
 @Component<StationDetail>({
   beforeRouteEnter: stationRouteGuard,

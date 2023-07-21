@@ -297,11 +297,7 @@
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router/composables";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
@@ -324,6 +320,10 @@ import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import Store from "@/frontend/lib/Store";
+import Panel from "@/shared/components/Panel/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 
 useHangarItems();
 useWishlistItems();

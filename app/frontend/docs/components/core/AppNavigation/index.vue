@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/docs/composables/useI18n";
 import logo from "@/images/favicon-small.png";
 import { useNavStore } from "@/docs/stores/nav";

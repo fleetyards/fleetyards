@@ -1,7 +1,7 @@
-import { useComlink } from "@/frontend/composables/useComlink";
+import { useComlink } from "@/shared/composables/useComlink";
 
 export default {
-  install(Vue) {
+  install(Vue: any) {
     const Bus = useComlink();
 
     // eslint-disable-next-line no-param-reassign
