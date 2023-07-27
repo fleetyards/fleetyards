@@ -15,8 +15,6 @@ export const useApiClient = () =>
     BASE: `${window.API_ENDPOINT}`,
     WITH_CREDENTIALS: true,
     HEADERS: () => {
-      console.log("csrfToken", csrfToken())
-      console.log("languageHeader", languageHeader())
       return new Promise((resolve) => {
         resolve({
           ...languageHeader(),
@@ -24,6 +22,6 @@ export const useApiClient = () =>
           Accept: "application/json",
           "Content-Type": "application/json",
         });
-      }),
-    }
+      });
+    },
   });

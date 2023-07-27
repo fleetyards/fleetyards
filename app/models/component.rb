@@ -124,7 +124,7 @@ class Component < ApplicationRecord
     Component.item_types.map do |item|
       Filter.new(
         category: "item_type",
-        name: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        label: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
         value: item
       )
     end
@@ -134,7 +134,7 @@ class Component < ApplicationRecord
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(
         category: "class",
-        name: I18n.t("filter.component.class.items.#{item.downcase}"),
+        label: I18n.t("filter.component.class.items.#{item.downcase}"),
         value: item
       )
     end

@@ -32,12 +32,12 @@ module V1
           media: {
             type: :object,
             properties: {
-              angledView: {"$ref": "#/components/schemas/ViewImage", nullable: true},
+              angledView: {"$ref": "#/components/schemas/ViewImage"},
               fleetchartImage: {type: :string, nullable: true},
-              # frontView: {"$ref": "#/components/schemas/ViewImage", nullable: true},
-              sideView: {"$ref": "#/components/schemas/ViewImage", nullable: true},
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true},
-              topView: {"$ref": "#/components/schemas/ViewImage", nullable: true}
+              # frontView: {"$ref": "#/components/schemas/ViewImage"},
+              sideView: {"$ref": "#/components/schemas/ViewImage"},
+              storeImage: {"$ref": "#/components/schemas/MediaImage"},
+              topView: {"$ref": "#/components/schemas/ViewImage"}
             }
           },
           nameWithModel: {type: :string, nullable: true},

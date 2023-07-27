@@ -682,15 +682,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "oauth_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "provider"
-    t.string "uid"
-    t.uuid "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_oauth_connections_on_user_id"
-  end
-
   create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.integer "rsi_category_id"
@@ -1005,5 +996,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "oauth_connections", "users"
 end

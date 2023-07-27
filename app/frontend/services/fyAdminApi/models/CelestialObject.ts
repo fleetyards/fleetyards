@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { MediaImage } from './MediaImage';
 import type { Starsystem } from './Starsystem';
 
 export type CelestialObject = {
@@ -10,7 +11,9 @@ export type CelestialObject = {
     name: string;
     slug: string;
     designation: string;
-    media?: any;
+    media?: {
+        storeImage?: MediaImage;
+    };
     /**
      * @deprecated
      */
@@ -37,6 +40,6 @@ export type CelestialObject = {
     economy?: number | null;
     population?: number | null;
     locationLabel?: string | null;
-    starsystem?: Starsystem | null;
+    starsystem?: Starsystem;
 };
 

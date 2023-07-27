@@ -2,13 +2,23 @@
   <form @submit.prevent="submit">
     <FormInput
       id="commodity-item-name"
-      v-model="search"
+      v-model="form.search"
       translation-key="filters.shopCommodities.name"
       :no-label="true"
       :clearable="true"
     />
 
-    <CollectionFilterGroup
+    <FilterGroup
+      name="component-item-type-filter"
+      v-model="form.componentItemType"
+      :query-fn="fetchComponentItemTypeFilters"
+      :label="t('labels.filters.shopCommodities.componentItemTypeFilter')"
+      searchable
+      multiple
+      no-label
+    />
+
+    <!-- <CollectionFilterGroup
       key="component-item-type-filters-filter-group"
       v-model="form.componentItemType"
       :label="t('labels.filters.shopCommodities.componentItemTypeFilter')"
@@ -17,9 +27,9 @@
       :searchable="true"
       :multiple="true"
       :no-label="true"
-    />
+    /> -->
 
-    <CollectionFilterGroup
+    <!-- <CollectionFilterGroup
       key="equipment-item-type-filters-filter-group"
       v-model="form.equipmentItemType"
       :label="t('labels.filters.shopCommodities.equipmentItemTypeFilter')"
@@ -50,9 +60,13 @@
       :searchable="true"
       :multiple="true"
       :no-label="true"
-    />
+    /> -->
 
-    <Btn :disabled="!filterSelected" :block="true" @click.native="resetFilter">
+    <Btn
+      :disabled="!isFilterSelected"
+      :block="true"
+      @click.native="resetFilter"
+    >
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
@@ -60,91 +74,55 @@
 </template>
 
 <script lang="ts" setup>
-import { debounce } from "ts-debounce";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { useRoute, useRouter } from "vue-router/composables";
-import componentItemTypeFiltersCollection from "@/admin/api/collections/ComponentItemTypeFilters";
-import equipmentItemTypeFiltersCollection from "@/admin/api/collections/EquipmentItemTypeFilters";
-import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
-import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
-import { getFilters, isFilterSelected } from "@/frontend/utils/Filters";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import { useRoute } from "vue-router";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import type { FilterGroupParams } from "@/shared/components/Form/FilterGroup/index.vue";
+import { useI18n } from "@/admin/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
+import type { ShopCommodityQuery } from "@/services/fyAdminApi";
+import { useApiClient } from "@/admin/composables/useApiClient";
+
+const { filter, isFilterSelected, resetFilter } =
+  useFilters<ShopCommodityQuery>();
 
 const { t } = useI18n();
 
-type ShopCommodityFilterForm = {
-  componentItemType: string[];
-  equipmentItemType: string[];
-  equipmentType: string[];
-  equipmentSlot: string[];
-};
-
-const search = ref("");
-
-const form = ref<ShopCommodityFilterForm>({
-  componentItemType: [],
-  equipmentItemType: [],
-  equipmentType: [],
-  equipmentSlot: [],
-});
-
 const route = useRoute();
 
-const queryFilters = computed(
-  () => (route.query.filters || {}) as ShopCommodityFilterForm
-);
+const query = computed(() => (route.query.q || {}) as ShopCommodityQuery);
 
-const filterSelected = computed(() => isFilterSelected(queryFilters.value));
+const form = ref<ShopCommodityQuery>({
+  search: query.value.search,
+  componentItemType: query.value.componentItemType,
+  equipmentItemType: query.value.equipmentItemType,
+  equipmentType: query.value.equipmentType,
+  equipmentSlot: query.value.equipmentSlot,
+});
+
+const setupForm = () => {
+  form.value = {
+    search: query.value.search,
+    componentItemType: query.value.componentItemType,
+    equipmentItemType: query.value.equipmentItemType,
+    equipmentType: query.value.equipmentType,
+    equipmentSlot: query.value.equipmentSlot,
+  };
+};
 
 watch(
   () => form,
   () => {
-    filter();
+    filter(form.value);
   },
   {
     deep: true,
   }
 );
 
-watch(
-  () => search.value,
-  () => {
-    filter();
-  }
-);
-
-const router = useRouter();
-
-const resetFilter = () => {
-  router
-    .replace({
-      name: route.name || undefined,
-      query: {},
-    })
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    .catch((_err) => {});
-};
-
-const debouncedFilter = () => {
-  router
-    .replace({
-      name: route.name || undefined,
-      query: {
-        ...route.query,
-        search: search.value || undefined,
-        filters: getFilters(form.value),
-      },
-    })
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    .catch((_err) => {});
-};
-
-const filter = debounce(debouncedFilter, 500);
-
 const submit = () => {
-  filter();
+  filter(form.value);
 };
 
 onMounted(() => {
@@ -158,13 +136,10 @@ watch(
   }
 );
 
-const setupForm = () => {
-  form.value = {
-    componentItemType: queryFilters.value.componentItemType || [],
-    equipmentItemType: queryFilters.value.equipmentItemType || [],
-    equipmentType: queryFilters.value.equipmentType || [],
-    equipmentSlot: queryFilters.value.equipmentSlot || [],
-  };
+const { componentsFilters: componentFiltersService } = useApiClient();
+
+const fetchComponentItemTypeFilters = async (_params: FilterGroupParams) => {
+  return componentFiltersService.itemTypes();
 };
 </script>
 

@@ -1,7 +1,6 @@
-import { watch } from "vue";
-import { useRoute } from "vue-router/composables";
-// import { useSessionStore } from "@/frontend/stores/Session";
-// import { useWishlistStore } from "@/frontend/stores/Wishlist";
+import { useRoute } from "vue-router";
+// import { useSessionStore } from "@/frontend/stores/session";
+// import { useWishlistStore } from "@/frontend/stores/wishlist";
 import Store from "@/frontend/lib/Store";
 import WishlistItemsCollection from "@/frontend/api/collections/WishlistItems";
 

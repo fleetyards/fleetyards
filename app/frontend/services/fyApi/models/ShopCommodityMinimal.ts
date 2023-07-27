@@ -4,13 +4,19 @@
 /* eslint-disable */
 
 import type { Commodity } from './Commodity';
+import type { CommodityTypeEnum } from './CommodityTypeEnum';
 import type { Component } from './Component';
+import type { ComponentClassEnum } from './ComponentClassEnum';
 import type { Equipment } from './Equipment';
+import type { EquipmentTypeEnum } from './EquipmentTypeEnum';
 import type { MediaImage } from './MediaImage';
 import type { Model } from './Model';
+import type { ModelClassificationEnum } from './ModelClassificationEnum';
 import type { ModelModule } from './ModelModule';
 import type { ModelPaint } from './ModelPaint';
 import type { Shop } from './Shop';
+import type { ShopCommodityCategoryEnum } from './ShopCommodityCategoryEnum';
+import type { ShopCommodityItemTypeEnum } from './ShopCommodityItemTypeEnum';
 
 export type ShopCommodityMinimal = {
     id: string;
@@ -18,29 +24,29 @@ export type ShopCommodityMinimal = {
     slug: string;
     description?: string | null;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
-    category?: string | null;
-    subCategory?: string | null;
-    subCategoryLabel?: string | null;
+    category?: ShopCommodityCategoryEnum;
+    subCategory?: (ModelClassificationEnum | ComponentClassEnum | EquipmentTypeEnum | CommodityTypeEnum);
+    subCategoryLabel?: string;
     prices: {
-        averageBuyPrice?: number | null;
-        averageRentalPrice1Day?: number | null;
-        averageRentalPrice30Days?: number | null;
-        averageRentalPrice3Days?: number | null;
-        averageRentalPrice7Days?: number | null;
-        averageSellPrice?: number | null;
-        buyPrice?: number | null;
-        rentalPrice1Day?: number | null;
-        rentalPrice30Days?: number | null;
-        rentalPrice3Days?: number | null;
-        rentalPrice7Days?: number | null;
-        sellPrice?: number | null;
+        averageBuyPrice?: number;
+        averageRentalPrice1Day?: number;
+        averageRentalPrice30Days?: number;
+        averageRentalPrice3Days?: number;
+        averageRentalPrice7Days?: number;
+        averageSellPrice?: number;
+        buyPrice?: number;
+        rentalPrice1Day?: number;
+        rentalPrice30Days?: number;
+        rentalPrice3Days?: number;
+        rentalPrice7Days?: number;
+        sellPrice?: number;
+        pricePerUnit: boolean;
     };
-    pricePerUnit: boolean;
-    locationLabel?: string | null;
+    locationLabel?: string;
     confirmed: boolean;
-    commodityItemType: string;
+    commodityItemType: ShopCommodityItemTypeEnum;
     commodityItemId: string;
     shop: Shop;
     /**

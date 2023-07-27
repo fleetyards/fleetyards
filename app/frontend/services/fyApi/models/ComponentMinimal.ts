@@ -22,7 +22,7 @@ export type ComponentMinimal = {
     itemClassLabel?: string | null;
     manufacturer?: Manufacturer | null;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     size?: string | null;
     trackingSignal?: string | null;

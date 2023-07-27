@@ -7,7 +7,7 @@ import type { Meta } from './Meta';
 import type { VideoMinimal } from './VideoMinimal';
 
 export type Videos = {
-    meta?: Meta;
     items: Array<VideoMinimal>;
+    meta?: Meta;
 };
 

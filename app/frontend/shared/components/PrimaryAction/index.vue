@@ -33,3 +33,7 @@ export default {
   name: "PrimaryAction",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="station.docks.length"
+    v-if="station.docks?.length"
     class="row"
     :class="{
       'metrics-padding': padding,
@@ -8,7 +8,7 @@
   >
     <div class="col-12 col-lg-3">
       <div class="metrics-title">
-        {{ $t("labels.station.docks") }}
+        {{ t("labels.station.docks") }}
       </div>
     </div>
     <div class="col-12 col-lg-9 metrics-block">
@@ -68,36 +68,42 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import { groupBy, sortBy } from "@/frontend/lib/Helpers";
 import DockItem from "./Item/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import type { StationComplete, Dock } from "@/services/fyApi";
 
-@Component<StationsDocks>({
-  components: {
-    DockItem,
-  },
-})
-export default class StationsDocks extends Vue {
-  @Prop({ required: true }) station: Station;
+type Props = {
+  station: StationComplete;
+  padding?: boolean;
+};
 
-  @Prop({ default: false }) padding: boolean;
+const props = withDefaults(defineProps<Props>(), {
+  padding: false,
+});
 
-  get hasGroup() {
-    return this.station.docks.some((dock) => !!dock.group);
-  }
+const { t } = useI18n();
 
-  get docksByGroup() {
-    return groupBy(sortBy(this.station.docks, "name"), "group");
-  }
+const hasGroup = computed(() => {
+  return props.station.docks?.some((dock) => !!dock.group);
+});
 
-  docksBySize(docks) {
-    return groupBy(docks, "sizeLabel");
-  }
+const docksByGroup = computed(() => {
+  return groupBy(sortBy(props.station.docks || [], "name"), "group");
+});
 
-  docksByType(docks) {
-    return groupBy(docks, "typeLabel");
-  }
-}
+const docksBySize = (docks: Dock[]) => {
+  return groupBy(docks, "sizeLabel");
+};
+
+const docksByType = (docks: Dock[]) => {
+  return groupBy(docks, "typeLabel");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "StationsDocks",
+};
 </script>

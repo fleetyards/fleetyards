@@ -21,7 +21,7 @@ paths:
   "/celestial-objects":
     get:
       summary: Celestial Objects List
-      operationId: celestialObjects
+      operationId: list
       description: Get a List of Celestial Objects
       tags:
       - CelestialObjects
@@ -68,7 +68,7 @@ paths:
       required: true
     get:
       summary: Celestial Object Detail
-      operationId: celestialObject
+      operationId: detail
       description: Get Detail of a Celestial Object referenced by its Slug
       tags:
       - CelestialObjects
@@ -165,7 +165,7 @@ paths:
   "/hangar/groups":
     post:
       summary: HangarGroup create
-      operationId: hangarGroupCreate
+      operationId: create
       tags:
       - HangarGroups
       parameters: []
@@ -219,7 +219,7 @@ paths:
       required: true
     delete:
       summary: HangarGroup Destroy
-      operationId: hangarGroupDestroy
+      operationId: destroy
       tags:
       - HangarGroups
       responses:
@@ -324,7 +324,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: string
+              type: object
+              properties:
+                import:
+                  type: string
+                  format: binary
         required: true
   "/hangar/items":
     get:
@@ -2183,7 +2187,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: string
+              type: object
+              properties:
+                import:
+                  type: string
+                  format: binary
         required: true
   "/vehicles/destroy-all":
     delete:
@@ -2522,14 +2530,103 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
 components:
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   schemas:
     BaseList:
       type: object
       properties:
+        items:
+          type: array
+          items:
+            type: object
         meta:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       title: BaseList
+    CommodityTypeEnum:
+      type: string
+      enum:
+      - gas
+      - metal
+      - mineral
+      - non_metals
+      - agricultural_supply
+      - food
+      - medical_supply
+      - processed_goods
+      - waste
+      - scrap
+      - vice
+      - harvestable
+      - consumer_goods
+      title: CommodityTypeEnum
+    ComponentClassEnum:
+      type: string
+      enum:
+      - RSIModular
+      - RSIWeapon
+      - RSIAvionic
+      - RSIPropulsion
+      - RSIThruster
+      title: ComponentClassEnum
+    EquipmentTypeEnum:
+      type: string
+      enum:
+      - undersuit
+      - armor
+      - weapon
+      - tool
+      - clothing
+      - medical
+      - weapon_attachment
+      - hacking_tool
+      title: EquipmentTypeEnum
+    ModelClassificationEnum:
+      type: string
+      enum: []
+      title: ModelClassificationEnum
+    OrderDirectionEnum:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: OrderDirectionEnum
+    ShopCommodityCategoryEnum:
+      type: string
+      enum:
+      - model
+      - equipment
+      - commodity
+      - component
+      - modelmodule
+      - modelpaint
+      title: ShopCommodityCategoryEnum
+    ShopCommodityItemTypeEnum:
+      type: string
+      enum:
+      - Model
+      - Equipment
+      - Commodity
+      - Component
+      - ModelModule
+      - ModelPaint
+      title: ShopCommodityItemTypeEnum
     ShopTypeEnum:
       type: string
       enum:
@@ -2582,6 +2679,9 @@ components:
           nullable: true
         name:
           type: string
+          deprecated: true
+        label:
+          type: string
         value:
           type: string
       additionalProperties: false
@@ -2606,6 +2706,7 @@ components:
           type: string
           format: uri
       additionalProperties: false
+      nullable: true
       required:
       - source
       - small
@@ -2640,8 +2741,6 @@ components:
       required:
       - currentPage
       - totalPages
-      - defaultPerPage
-      - maxPerPage
       title: Pagination
     StandardError:
       type: object
@@ -2671,6 +2770,54 @@ components:
       - code
       - message
       title: ValidationError
+    ViewImage:
+      type: object
+      properties:
+        source:
+          type: string
+          format: uri
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+        large:
+          type: string
+          format: uri
+        xlarge:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+      additionalProperties: false
+      nullable: true
+      required:
+      - source
+      - small
+      - medium
+      - large
+      - xlarge
+      - width
+      - height
+      title: ViewImage
+    BarChartStats:
+      type: object
+      properties:
+        label:
+          type: string
+        count:
+          type: integer
+        tooltip:
+          type: string
+      additionalProperties: false
+      required:
+      - label
+      - count
+      - tooltip
+      title: BarChartStats
     CargoOption:
       type: object
       properties:
@@ -2689,12 +2836,13 @@ components:
     CargoOptions:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/CargoOption"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -2713,7 +2861,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         storeImage:
           type: string
           format: url
@@ -2780,7 +2927,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         storeImage:
           type: string
           format: url
@@ -2852,12 +2998,13 @@ components:
     CelestialObjects:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/CelestialObjectMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -2897,7 +3044,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         storeImage:
           type: string
           format: uri
@@ -2925,8 +3071,6 @@ components:
       - slug
       - availability
       - media
-      - createdAt
-      - updatedAt
       title: Commodity
     CommodityMinimal:
       type: object
@@ -2963,7 +3107,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         storeImage:
           type: string
           format: uri
@@ -3084,7 +3227,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         size:
           type: string
           nullable: true
@@ -3176,7 +3318,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         size:
           type: string
           nullable: true
@@ -3433,7 +3574,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         range:
           type: string
           nullable: true
@@ -3557,7 +3697,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         range:
           type: string
           nullable: true
@@ -3681,12 +3820,13 @@ components:
     Hangar:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/VehicleMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -3853,12 +3993,13 @@ components:
     HangarPublic:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/VehicleMinimalPublic"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -4131,12 +4272,13 @@ components:
     Images:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ImageMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -4440,12 +4582,13 @@ components:
     Manufacturers:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ManufacturerMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -4571,34 +4714,25 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             angledViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             fleetchartImage:
               type: string
               nullable: true
             frontView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             frontViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             topViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
         metrics:
           type: object
           properties:
@@ -5094,34 +5228,25 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             angledViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             fleetchartImage:
               type: string
               nullable: true
             frontView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             frontViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             topViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
         metrics:
           type: object
           properties:
@@ -5714,34 +5839,25 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             angledViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             fleetchartImage:
               type: string
               nullable: true
             frontView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             frontViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             topViewColored:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
         metrics:
           type: object
           properties:
@@ -6149,7 +6265,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         pledgePrice:
           type: number
           nullable: true
@@ -6213,7 +6328,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         pledgePrice:
           type: number
           nullable: true
@@ -6281,16 +6395,12 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
         hasStoreImage:
           type: boolean
           deprecated: true
@@ -6423,16 +6533,12 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
         hasStoreImage:
           type: boolean
           deprecated: true
@@ -6552,12 +6658,13 @@ components:
     ModelModulePackages:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ModelModulePackageMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -6565,12 +6672,13 @@ components:
     ModelModules:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ModelModuleMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -6616,19 +6724,15 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             fleetchartImage:
               type: string
               nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
         nameWithModel:
           type: string
           nullable: true
@@ -6817,19 +6921,15 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             fleetchartImage:
               type: string
               nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
         nameWithModel:
           type: string
           nullable: true
@@ -7002,7 +7102,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         pledgePrice:
           type: number
           nullable: true
@@ -7049,7 +7148,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         pledgePrice:
           type: number
           nullable: true
@@ -7090,12 +7188,13 @@ components:
     Models:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ModelMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -7484,7 +7583,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         refineryTerminal:
           type: boolean
         rental:
@@ -7553,64 +7651,53 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         category:
-          type: string
-          nullable: true
+          "$ref": "#/components/schemas/ShopCommodityCategoryEnum"
         subCategory:
-          type: string
-          nullable: true
+          oneOf:
+          - "$ref": "#/components/schemas/ModelClassificationEnum"
+          - "$ref": "#/components/schemas/ComponentClassEnum"
+          - "$ref": "#/components/schemas/EquipmentTypeEnum"
+          - "$ref": "#/components/schemas/CommodityTypeEnum"
         subCategoryLabel:
           type: string
-          nullable: true
         prices:
           type: object
           properties:
             averageBuyPrice:
               type: number
-              nullable: true
             averageRentalPrice1Day:
               type: number
-              nullable: true
             averageRentalPrice30Days:
               type: number
-              nullable: true
             averageRentalPrice3Days:
               type: number
-              nullable: true
             averageRentalPrice7Days:
               type: number
-              nullable: true
             averageSellPrice:
               type: number
-              nullable: true
             buyPrice:
               type: number
-              nullable: true
             rentalPrice1Day:
               type: number
-              nullable: true
             rentalPrice30Days:
               type: number
-              nullable: true
             rentalPrice3Days:
               type: number
-              nullable: true
             rentalPrice7Days:
               type: number
-              nullable: true
             sellPrice:
               type: number
-              nullable: true
-        pricePerUnit:
-          type: boolean
+            pricePerUnit:
+              type: boolean
+          required:
+          - pricePerUnit
         locationLabel:
           type: string
-          nullable: true
         confirmed:
           type: boolean
         commodityItemType:
-          type: string
+          "$ref": "#/components/schemas/ShopCommodityItemTypeEnum"
         commodityItemId:
           type: string
           format: uuid
@@ -7643,7 +7730,6 @@ components:
       - slug
       - media
       - prices
-      - pricePerUnit
       - confirmed
       - commodityItemType
       - commodityItemId
@@ -7667,64 +7753,53 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         category:
-          type: string
-          nullable: true
+          "$ref": "#/components/schemas/ShopCommodityCategoryEnum"
         subCategory:
-          type: string
-          nullable: true
+          oneOf:
+          - "$ref": "#/components/schemas/ModelClassificationEnum"
+          - "$ref": "#/components/schemas/ComponentClassEnum"
+          - "$ref": "#/components/schemas/EquipmentTypeEnum"
+          - "$ref": "#/components/schemas/CommodityTypeEnum"
         subCategoryLabel:
           type: string
-          nullable: true
         prices:
           type: object
           properties:
             averageBuyPrice:
               type: number
-              nullable: true
             averageRentalPrice1Day:
               type: number
-              nullable: true
             averageRentalPrice30Days:
               type: number
-              nullable: true
             averageRentalPrice3Days:
               type: number
-              nullable: true
             averageRentalPrice7Days:
               type: number
-              nullable: true
             averageSellPrice:
               type: number
-              nullable: true
             buyPrice:
               type: number
-              nullable: true
             rentalPrice1Day:
               type: number
-              nullable: true
             rentalPrice30Days:
               type: number
-              nullable: true
             rentalPrice3Days:
               type: number
-              nullable: true
             rentalPrice7Days:
               type: number
-              nullable: true
             sellPrice:
               type: number
-              nullable: true
-        pricePerUnit:
-          type: boolean
+            pricePerUnit:
+              type: boolean
+          required:
+          - pricePerUnit
         locationLabel:
           type: string
-          nullable: true
         confirmed:
           type: boolean
         commodityItemType:
-          type: string
+          "$ref": "#/components/schemas/ShopCommodityItemTypeEnum"
         commodityItemId:
           type: string
           format: uuid
@@ -7771,7 +7846,6 @@ components:
       - slug
       - media
       - prices
-      - pricePerUnit
       - confirmed
       - commodityItemType
       - commodityItemId
@@ -7802,7 +7876,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         refineryTerminal:
           type: boolean
         rental:
@@ -7867,12 +7940,13 @@ components:
     Shops:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ShopMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -7907,7 +7981,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         population:
           type: string
           nullable: true
@@ -7971,7 +8044,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         population:
           type: string
           nullable: true
@@ -8021,12 +8093,13 @@ components:
     Starsystems:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/StarsystemMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -8075,7 +8148,6 @@ components:
               nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         refinery:
           type: boolean
         shopListLabel:
@@ -8112,6 +8184,14 @@ components:
           format: uri
           nullable: true
           deprecated: true
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
         shops:
@@ -8130,14 +8210,6 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Image"
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObjectMinimal"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       required:
       - name
       - slug
@@ -8194,7 +8266,6 @@ components:
               nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
         refinery:
           type: boolean
         shopListLabel:
@@ -8266,12 +8337,13 @@ components:
     Stations:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/StationMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -8548,48 +8620,17 @@ components:
     Videos:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/VideoMinimal"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
       title: Videos
-    ViewImage:
-      type: object
-      properties:
-        source:
-          type: string
-          format: uri
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-        large:
-          type: string
-          format: uri
-        xlarge:
-          type: string
-          format: uri
-        width:
-          type: integer
-        height:
-          type: integer
-      additionalProperties: false
-      required:
-      - source
-      - small
-      - medium
-      - large
-      - xlarge
-      - width
-      - height
-      title: ViewImage
   securitySchemes:
     SessionCookie:
       type: apiKey

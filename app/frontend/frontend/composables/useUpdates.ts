@@ -1,9 +1,9 @@
 import { watch, ref, onMounted, onUnmounted } from "vue";
 import { displayInfo } from "@/frontend/lib/Noty";
-// import { useSessionStore } from "@/frontend/stores/Session";
-// import { useAppStore } from "@/frontend/stores/App";
-// import { useHangarStore } from "@/frontend/stores/Hangar";
-// import { useWishlistStore } from "@/frontend/stores/Wishlist";
+// import { useSessionStore } from "@/frontend/stores/session";
+// import { useAppStore } from "@/frontend/stores/app";
+// import { useHangarStore } from "@/frontend/stores/hangar";
+// import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useCable } from "@/shared/composables/useCable";
 import { useI18n } from "@/frontend/composables/useI18n";
 import type { Subscription } from "@rails/actioncable";

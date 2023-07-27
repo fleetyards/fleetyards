@@ -1,7 +1,7 @@
 <template>
   <div class="panel-btn-inner">
     <template v-if="loading">
-      {{ i18n?.t("actions.loading") }}
+      {{ i18n?.t("baseBtn.labels.loading") }}
       <SmallLoader
         v-if="spinner"
         :loading="loading"
@@ -37,7 +37,7 @@ const spinnerAlignment = computed(() => {
   return props.spinner;
 });
 
-const i18n = inject("i18n") as I18nPluginOptions;
+const i18n = inject<I18nPluginOptions>("i18n");
 </script>
 
 <script lang="ts">

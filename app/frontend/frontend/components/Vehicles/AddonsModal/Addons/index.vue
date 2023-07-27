@@ -28,7 +28,7 @@
                 </div>
                 <div
                   v-if="selectedAddon(addon.id)"
-                  v-tooltip="editable && $t('labels.selected')"
+                  v-tooltip="editable && t('labels.selected')"
                   class="model-panel-selected"
                 >
                   <i class="fa fa-check" />
@@ -53,113 +53,107 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
 
+type Props = {
+  addons: {
+    id: string;
+    name: string;
+    storeImage: string;
+  }[];
+  label: string;
+  value: string[];
+  initialAddons: string[];
+  editable: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  editable: false,
+});
+
+const { t } = useI18n();
+
+const addonToAdd = ref<string | undefined>();
+
+const internalAddons = ref<string[]>(props.value);
+
+watch(
+  () => props.value,
+  () => {
+    if (internalAddons.value !== props.value) {
+      internalAddons.value = [...props.value];
+    }
+  }
+);
+
+watch(
+  () => props.addons,
+  () => {
+    internalAddons.value = [...props.value];
+  }
+);
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => internalAddons.value,
+  () => {
+    emit("update:modelValue", internalAddons.value);
+  }
+);
+
+const selectTooltip = (addonId: string) => {
+  if (internalAddons.value.includes(addonId)) {
+    return t("labels.deselect");
+  }
+  return null;
+};
+
+const addAddon = () => {
+  if (!addonToAdd.value) {
+    return;
+  }
+
+  internalAddons.value.push(addonToAdd.value);
+  addonToAdd.value = undefined;
+};
+
+const idsForAddon = (addonId: string) => {
+  const ids = internalAddons.value.filter((item) => item === addonId);
+  if (ids.length) {
+    return ids;
+  }
+  return [addonId];
+};
+
+const changeAddon = (addonId: string) => {
+  if (!props.editable) {
+    return;
+  }
+
+  if (internalAddons.value.includes(addonId)) {
+    const index = internalAddons.value.findIndex(
+      (itemId) => itemId === addonId
+    );
+    if (index > -1) {
+      internalAddons.value.splice(index, 1);
+    }
+  } else {
+    internalAddons.value.push(addonId);
+  }
+};
+
+const selectedAddon = (addonId: string) => {
+  return internalAddons.value.includes(addonId);
+};
+</script>
+
+<script lang="ts">
 export default {
-  name: "VehicleAddonsModal",
-
-  components: {
-    Panel,
-    FilterGroup,
-  },
-
-  props: {
-    addons: {
-      type: Array,
-      required: true,
-    },
-
-    label: {
-      type: String,
-      required: true,
-    },
-
-    value: {
-      type: Array,
-      required: true,
-    },
-
-    initialAddons: {
-      type: Array,
-      required: true,
-    },
-
-    editable: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  data() {
-    return {
-      addonToAdd: null,
-      internalAddons: [...this.value],
-    };
-  },
-
-  watch: {
-    value() {
-      if (this.internalAddons !== this.value) {
-        this.internalAddons = [...this.value];
-      }
-    },
-
-    addons() {
-      this.internalAddons = [...this.value];
-    },
-
-    internalAddons() {
-      this.$emit("input", this.internalAddons);
-    },
-  },
-
-  methods: {
-    selectTooltip(addonId) {
-      if (this.internalAddons.includes(addonId)) {
-        return this.$t("labels.deselect");
-      }
-      return null;
-    },
-
-    addAddon() {
-      if (!this.addonToAdd) {
-        return;
-      }
-      this.internalAddons.push(this.addonToAdd);
-      this.addonToAdd = null;
-    },
-
-    idsForAddon(addonId) {
-      const ids = this.internalAddons.filter((item) => item === addonId);
-      if (ids.length) {
-        return ids;
-      }
-      return [addonId];
-    },
-
-    changeAddon(addonId) {
-      if (!this.editable) {
-        return;
-      }
-
-      if (this.internalAddons.includes(addonId)) {
-        const index = this.internalAddons.findIndex(
-          (itemId) => itemId === addonId
-        );
-        if (index > -1) {
-          this.internalAddons.splice(index, 1);
-        }
-      } else {
-        this.internalAddons.push(addonId);
-      }
-    },
-
-    selectedAddon(addonId) {
-      return this.internalAddons.includes(addonId);
-    },
-  },
+  name: "VehicleAddonsModalAddons",
 };
 </script>
 

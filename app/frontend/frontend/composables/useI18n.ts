@@ -1,103 +1,36 @@
-import I18n from "i18n-js";
-import { parseISO } from "date-fns";
-import { format } from "date-fns-tz";
-import en from "@/translations/en";
-import de from "@/translations/de";
-import it from "@/translations/it";
-import fr from "@/translations/fr";
-import es from "@/translations/es";
-import zhCN from "@/translations/zh-CN";
-import zhTW from "@/translations/zh-TW";
+import { I18n } from "i18n-js";
+import type { TranslateOptions, Scope } from "i18n-js";
+import translations from "@/frontend/translations";
+import { i18nHelpers } from "@/shared/utils/I18nHelpers";
+import { useI18nStore } from "@/shared/stores/i18n";
+
+const i18n = new I18n(translations);
 
 // const availableLocales = ["de", "en", "es", "fr", "it", "zh", "zh-CN", "zh-TW"];
 // Temporarly disable languages without translations
-const availableLocales = ["de", "en", "fr", "it"];
-I18n.defaultLocale = "en";
-I18n.locale = "en";
-I18n.fallbacks = true;
-I18n.translations.en = en;
-I18n.translations.de = de;
-I18n.translations.es = es;
-I18n.translations.fr = fr;
-I18n.translations.it = it;
-I18n.translations.zh = zhCN;
-I18n.translations["zh-CN"] = zhCN;
-I18n.translations["zh-TW"] = zhTW;
+i18n.availableLocales = ["de", "en", "fr", "it"];
+i18n.defaultLocale = "en";
 
-type I18nTranslateOptions = {
-  [key: string]: I18nTranslateOptions | string;
+i18n.enableFallback = true;
+
+export const useI18n = () => {
+  const i18nStore = useI18nStore();
+
+  if (i18nStore.locale) {
+    i18n.locale = i18nStore.locale;
+  }
+
+  watch(
+    () => i18nStore.locale,
+    (locale) => {
+      i18n.locale = locale;
+    }
+  );
+
+  return {
+    t: (scope: Scope, options?: TranslateOptions) => i18n.t(scope, options),
+    currentLocale: () => i18n.locale,
+    availableLocales: () => i18n.availableLocales,
+    ...i18nHelpers(i18n),
+  };
 };
-
-const t = (key: string, options?: I18nTranslateOptions) => I18n.t(key, options);
-
-const l = (value: string, dateFormat = "datetime.formats.default") =>
-  format(parseISO(value), I18n.t(dateFormat));
-
-const toNumber = (value: number | string, units: string) => {
-  let count: string | number = I18n.l("number", value);
-  if (units === "weight") {
-    count = I18n.l("number", (value as number) / 1000);
-  }
-  if (units === "people") {
-    count = value;
-  }
-  if (units === "speed" && value) {
-    count = (value as string)
-      .split(" - ")
-      .map((item) => I18n.l("number", item))
-      .join(" - ");
-  }
-  if (!value || (["speed", "rotation"].includes(units) && value <= 0)) {
-    return I18n.t("labels.not-available");
-  }
-  return I18n.t(`number.${units}`, {
-    count,
-  });
-};
-
-const toDollar = (value: number) =>
-  I18n.toCurrency(value, {
-    precision: 2,
-    unit: "$",
-  });
-
-const toAu = (value: number) => {
-  if (!value) {
-    return "-";
-  }
-  return I18n.toCurrency(value, {
-    precision: 2,
-    unit: I18n.t("labels.au"),
-    format: "%n %u",
-  });
-};
-
-const toUEC = (value: number, unit?: string) => {
-  if (!unit) {
-    /* tslint:disable:no-parameter-reassignment */
-    // eslint-disable-next-line no-param-reassign
-    unit = I18n.t("labels.uec");
-    /* tslint:enable:no-parameter-reassignment */
-  }
-
-  if (!value) {
-    return "-";
-  }
-
-  return I18n.toCurrency(value, {
-    precision: 2,
-    unit,
-    format: '%n <span class="text-muted">%u</span>',
-  });
-};
-
-export const useI18n = () => ({
-  I18n,
-  availableLocales,
-  t,
-  l,
-  toNumber,
-  toDollar,
-  toAu,
-  toUEC,
-});

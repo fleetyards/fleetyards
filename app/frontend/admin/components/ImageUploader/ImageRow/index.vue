@@ -48,12 +48,12 @@
       </h2>
       <div v-if="internalImage.error">
         <span class="pill pill-danger">
-          {{ t("labels.image.error") }}
+          {{ t("models.image.error") }}
         </span>
       </div>
       <template v-if="!uploaded">
         <p v-if="internalImage.active">
-          {{ t("labels.image.processing") }}
+          {{ t("models.image.processing") }}
           {{ formatSize(internalImage.speed) }}
         </p>
         <div
@@ -97,17 +97,17 @@
         </Btn>
         <Btn :disabled="deleting" size="small" @click.native="deleteImage">
           <i class="fa fa-trash" />
-          {{ t("labels.image.delete") }}
+          {{ t("models.image.delete") }}
         </Btn>
       </template>
       <template v-else>
         <Btn v-if="!internalImage.success" @click.native="start">
           <i class="fa fa-upload" />
-          {{ t("labels.image.start") }}
+          {{ t("models.image.start") }}
         </Btn>
         <Btn @click.native="cancel">
           <i class="fa fa-ban" />
-          {{ t("labels.image.cancel") }}
+          {{ t("models.image.cancel") }}
         </Btn>
       </template>
     </div>
@@ -115,16 +115,14 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import debounce from "lodash.debounce";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import { formatSize } from "@/shared/utils/Format";
 import { useI18n } from "@/admin/composables/useI18n";
 
-const { t } = useI18n();
-
-type Image = {
+export type Image = {
   id: string;
   name: string;
   url: string;
@@ -145,6 +143,8 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
+const { t } = useI18n();
 
 const deleting = ref(false);
 

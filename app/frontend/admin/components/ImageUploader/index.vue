@@ -7,7 +7,7 @@
           v-model="newImages"
           :custom-actions="upload"
           drop="body"
-          :headers="headers"
+          :headers="headers()"
           :data="metaData"
           multiple
           :add-index="true"
@@ -17,22 +17,22 @@
 
         <Btn @click.native="selectImages">
           <i class="fa fa-plus" />
-          {{ t("labels.image.selectImages") }}
+          {{ t("models.image.selectImages") }}
         </Btn>
 
         <Btn @click.native="selectFolder">
           <i class="fa fa-plus" />
-          {{ t("labels.image.selectFolder") }}
+          {{ t("models.image.selectFolder") }}
         </Btn>
 
         <Btn v-if="newImages.length" @click.native="startUpload">
           <i class="fa fa-upload" />
-          {{ t("labels.image.startUpload") }}
+          {{ t("models.image.startUpload") }}
         </Btn>
 
         <Btn v-if="newImages.length" @click.native="cancelUpload">
           <i class="fa fa-ban" />
-          {{ t("labels.image.cancelUpload") }}
+          {{ t("models.image.cancelUpload") }}
         </Btn>
       </div>
 
@@ -66,7 +66,7 @@
       <div class="dropzone">
         <i class="fal fa-file-plus fa-2x" />
         <h3>
-          {{ t("labels.image.dropzone") }}
+          {{ t("models.image.dropzone") }}
         </h3>
       </div>
     </Panel>
@@ -78,11 +78,11 @@
             <div class="store-image wide" />
 
             <div class="description">
-              {{ t("labels.image.name") }}
+              {{ t("models.image.name") }}
             </div>
 
             <div class="size">
-              {{ t("labels.image.size") }}
+              {{ t("models.image.size") }}
             </div>
 
             <div class="actions" />
@@ -113,17 +113,20 @@
 <script lang="ts" setup>
 import VueUploadComponent from "vue-upload-component";
 import type { VueUploadItem } from "vue-upload-component";
-import Cookies from "js-cookie";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displayAlert } from "@/frontend/lib/Noty";
-import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
+import { useNoty } from "@/shared/composables/useNoty";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
+import type { Image } from "@/admin/components/ImageUploader/ImageRow/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/admin/composables/useI18n";
 import { formatSize } from "@/shared/utils/Format";
+import { csrfToken } from "@/shared/utils/Meta";
 
 const { t } = useI18n();
+
+const { displayAlert } = useNoty(t);
 
 type Props = {
   images: Image[];
@@ -146,10 +149,10 @@ const uploadElement = ref<
   InstanceType<typeof VueUploadComponent> | undefined
 >();
 
-const headers = {
+const headers = () => ({
   Accept: "application/json",
-  "X-CSRF-Token": Cookies.get("COMMAND-CSRF-TOKEN"),
-};
+  "X-CSRF-Token": csrfToken(),
+});
 
 const isUploadActive = computed(() => {
   return !!props.galleryId && !!props.galleryType;

@@ -11,7 +11,7 @@ export type CelestialObject = {
     slug: string;
     designation: string;
     media?: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     /**
      * @deprecated

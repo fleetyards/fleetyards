@@ -1,0 +1,13 @@
+export default {
+  filterGroup: {
+    actions: {
+      fetchMore: "Load more",
+    },
+    labels: {
+      search: "Type to search",
+      nullablePrompt: "No Option selected",
+      prompt: "Please select an Option",
+      removeTooltip: "Click to remove Option",
+    },
+  },
+};

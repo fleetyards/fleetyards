@@ -15,9 +15,10 @@
     </div>
     <div class="panel-image text-center">
       <LazyImage
+        v-if="item.media.storeImage?.medium"
         :to="route"
         :aria-label="item.name"
-        :src="item.storeImageMedium"
+        :src="item.media.storeImage?.medium"
         :alt="item.name"
         class="image"
       />
@@ -25,42 +26,51 @@
   </Panel>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
+import type {
+  ModelMinimal,
+  CommodityMinimal,
+  EquipmentMinimal,
+  ShopMinimal,
+  StationMinimal,
+} from "@/services/fyApi";
 
+type SearchResult = (
+  | ModelMinimal
+  | CommodityMinimal
+  | EquipmentMinimal
+  | ShopMinimal
+  | StationMinimal
+) & { resultType: "shop" | "station" };
+
+type Props = {
+  item: SearchResult;
+};
+
+const props = defineProps<Props>();
+
+const route = computed(() => {
+  switch (props.item.resultType) {
+    case "shop":
+      return {
+        name: "shop",
+        params: {
+          stationSlug: (props.item as ShopMinimal).station.slug,
+          slug: props.item.slug,
+        },
+      };
+    case "station":
+      return { name: "station", params: { slug: props.item.slug } };
+    default:
+      return "";
+  }
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "SearchPanel",
-
-  components: {
-    Panel,
-    LazyImage,
-  },
-
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  computed: {
-    route() {
-      switch (this.item.resultType) {
-        case "shop":
-          return {
-            name: "shop",
-            params: {
-              stationSlug: this.item.station.slug,
-              slug: this.item.slug,
-            },
-          };
-        case "station":
-          return { name: "station", params: { slug: this.item.slug } };
-        default:
-          return "";
-      }
-    },
-  },
 };
 </script>

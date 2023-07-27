@@ -14,7 +14,10 @@ module Admin
             slug: {type: :string},
             designation: {type: :string},
             media: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              type: :object,
+              properties: {
+                storeImage: {"$ref": "#/components/schemas/MediaImage"}
+              }
             },
             storeImage: {type: :string, format: :url, deprecated: true},
             storeImageLarge: {type: :string, deprecated: true},
@@ -30,7 +33,7 @@ module Admin
             economy: {type: :integer, nullable: true},
             population: {type: :integer, nullable: true},
             locationLabel: {type: :string, nullable: true},
-            starsystem: {"$ref": "#/components/schemas/Starsystem", nullable: true}
+            starsystem: {"$ref": "#/components/schemas/Starsystem"}
           },
           additionalProperties: false,
           required: %w[id name slug designation]

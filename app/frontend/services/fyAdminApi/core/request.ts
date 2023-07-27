@@ -7,12 +7,12 @@ import type { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } fro
 import FormData from 'form-data';
 import Qs from "qs";
 
-import { ApiError } from '@/services/fyApi/core/ApiError';
-import type { ApiRequestOptions } from '@/services/fyApi/core/ApiRequestOptions';
-import type { ApiResult } from '@/services/fyApi/core/ApiResult';
-import { CancelablePromise } from '@/services/fyApi/core/CancelablePromise';
-import type { OnCancel } from '@/services/fyApi/core/CancelablePromise';
-import type { OpenAPIConfig } from '@/services/fyApi/core/OpenAPI';
+import { ApiError } from './ApiError';
+import type { ApiRequestOptions } from './ApiRequestOptions';
+import type { ApiResult } from './ApiResult';
+import { CancelablePromise } from './CancelablePromise';
+import type { OnCancel } from './CancelablePromise';
+import type { OpenAPIConfig } from './OpenAPI';
 
 export const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -125,18 +125,16 @@ export const resolve = async <T>(options: ApiRequestOptions, resolver?: T | Reso
     return resolver;
 };
 
-export const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptions, formData?: FormData): Promise<Record<string, string>> => {
+export const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptions): Promise<Record<string, string>> => {
     const token = await resolve(options, config.TOKEN);
     const username = await resolve(options, config.USERNAME);
     const password = await resolve(options, config.PASSWORD);
     const additionalHeaders = await resolve(options, config.HEADERS);
-    const formHeaders = typeof formData?.getHeaders === 'function' && formData?.getHeaders() || {}
 
     const headers = Object.entries({
         Accept: 'application/json',
         ...additionalHeaders,
         ...options.headers,
-        ...formHeaders,
     })
     .filter(([_, value]) => isDefined(value))
     .reduce((headers, [key, value]) => ({
@@ -180,7 +178,6 @@ export const sendRequest = async <T>(
     options: ApiRequestOptions,
     url: string,
     body: any,
-    formData: FormData | undefined,
     headers: Record<string, string>,
     onCancel: OnCancel,
     axiosClient: AxiosInstance
@@ -190,7 +187,7 @@ export const sendRequest = async <T>(
     const requestConfig: AxiosRequestConfig = {
         url,
         headers,
-        data: body ?? formData,
+        data: body,
         method: options.method,
         withCredentials: config.WITH_CREDENTIALS,
         cancelToken: source.token,
@@ -271,13 +268,13 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions, axiosClient: AxiosInstance = axios): CancelablePromise<T> => {
     return new CancelablePromise(async (resolve, reject, onCancel) => {
         try {
+            options.body = options.body ?? options.formData;
             const url = getUrl(config, options);
-            const formData = getFormData(options);
             const body = getRequestBody(options);
-            const headers = await getHeaders(config, options, formData);
+            const headers = await getHeaders(config, options);
 
             if (!onCancel.isCancelled) {
-                const response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel, axiosClient);
+                const response = await sendRequest<T>(config, options, url, body, headers, onCancel, axiosClient);
                 const responseBody = getResponseBody(response);
                 const responseHeader = getResponseHeader(response, options.responseHeader);
 

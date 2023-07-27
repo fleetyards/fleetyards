@@ -40,3 +40,7 @@ export default {
   name: "BackgroundImage",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

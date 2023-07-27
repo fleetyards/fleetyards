@@ -1,0 +1,14 @@
+export default {
+  emptyBox: {
+    headline: "Keine Ergebnisse",
+    actions: {
+      reset: "Filter/Seiten zurücksetzen",
+      resetPage: "Zur ersten Seite",
+    },
+    texts: {
+      info: "We could not find any Records.",
+      query:
+        "It seems like you have some Filters active or visited a Page without any Records.",
+    },
+  },
+};

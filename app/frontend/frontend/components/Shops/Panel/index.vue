@@ -1,5 +1,5 @@
 <template>
-  <Panel :id="`${shop.stationSlug}-${shop.slug}`" class="shop-list">
+  <Panel :id="`${shop.station.slug}-${shop.slug}`" class="shop-list">
     <div
       :key="storeImage"
       v-lazy:background-image="storeImage"
@@ -37,9 +37,10 @@ import Panel from "@/shared/components/Panel/index.vue";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import type { ShopMinimal } from "@/services/fyApi";
 
 type Props = {
-  shop: Shop;
+  shop: ShopMinimal;
 };
 
 const props = defineProps<Props>();

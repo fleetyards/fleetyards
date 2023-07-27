@@ -6,6 +6,8 @@
 export type StationQuery = {
     searchCont?: string;
     nameCont?: string;
+    idEq?: string;
     nameIn?: Array<string>;
+    idIn?: Array<string>;
 };
 

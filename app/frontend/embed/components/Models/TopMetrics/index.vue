@@ -11,7 +11,7 @@
         {{ model.focus }}
       </div>
     </div>
-    <div v-if="model.minCrew || model.maxCrew" class="col-6 col-md-4">
+    <div v-if="model.crew.min || model.crew.max" class="col-6 col-md-4">
       <div class="metrics-label">{{ t("model.crew") }}:</div>
       <div class="metrics-value">
         {{ crew }}

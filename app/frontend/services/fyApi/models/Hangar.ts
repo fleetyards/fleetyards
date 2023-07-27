@@ -7,7 +7,7 @@ import type { Meta } from './Meta';
 import type { VehicleMinimal } from './VehicleMinimal';
 
 export type Hangar = {
-    meta?: Meta;
     items: Array<VehicleMinimal>;
+    meta?: Meta;
 };
 

@@ -16,7 +16,7 @@ export type ShopMinimal = {
     location?: string | null;
     locationLabel: string;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     refineryTerminal: boolean;
     rental: boolean;

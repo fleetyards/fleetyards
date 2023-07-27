@@ -15,36 +15,47 @@ module V1
           media: {
             type: :object,
             properties: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              storeImage: {"$ref": "#/components/schemas/MediaImage"}
             }
           },
-          category: {type: :string, nullable: true},
-          subCategory: {type: :string, nullable: true},
-          subCategoryLabel: {type: :string, nullable: true},
+          category: {"$ref": "#/components/schemas/ShopCommodityCategoryEnum"},
+          subCategory: {
+            oneOf: [{
+              "$ref": "#/components/schemas/ModelClassificationEnum"
+            }, {
+              "$ref": "#/components/schemas/ComponentClassEnum"
+            }, {
+              "$ref": "#/components/schemas/EquipmentTypeEnum"
+            }, {
+              "$ref": "#/components/schemas/CommodityTypeEnum"
+            }]
+          },
+          subCategoryLabel: {type: :string},
 
           prices: {
             type: :object,
             properties: {
-              averageBuyPrice: {type: :number, nullable: true},
-              averageRentalPrice1Day: {type: :number, nullable: true},
-              averageRentalPrice30Days: {type: :number, nullable: true},
-              averageRentalPrice3Days: {type: :number, nullable: true},
-              averageRentalPrice7Days: {type: :number, nullable: true},
-              averageSellPrice: {type: :number, nullable: true},
-              buyPrice: {type: :number, nullable: true},
-              rentalPrice1Day: {type: :number, nullable: true},
-              rentalPrice30Days: {type: :number, nullable: true},
-              rentalPrice3Days: {type: :number, nullable: true},
-              rentalPrice7Days: {type: :number, nullable: true},
-              sellPrice: {type: :number, nullable: true}
-            }
+              averageBuyPrice: {type: :number},
+              averageRentalPrice1Day: {type: :number},
+              averageRentalPrice30Days: {type: :number},
+              averageRentalPrice3Days: {type: :number},
+              averageRentalPrice7Days: {type: :number},
+              averageSellPrice: {type: :number},
+              buyPrice: {type: :number},
+              rentalPrice1Day: {type: :number},
+              rentalPrice30Days: {type: :number},
+              rentalPrice3Days: {type: :number},
+              rentalPrice7Days: {type: :number},
+              sellPrice: {type: :number},
+              pricePerUnit: {type: :boolean}
+            },
+            required: %w[pricePerUnit]
           },
-          pricePerUnit: {type: :boolean},
 
-          locationLabel: {type: :string, nullable: true},
+          locationLabel: {type: :string},
           confirmed: {type: :boolean},
 
-          commodityItemType: {type: :string},
+          commodityItemType: {"$ref": "#/components/schemas/ShopCommodityItemTypeEnum"},
           commodityItemId: {type: :string, format: :uuid},
 
           shop: {"$ref": "#/components/schemas/Shop"},
@@ -55,7 +66,7 @@ module V1
           storeImageLarge: {type: :string, nullable: true, format: :uri, deprecated: true}
         },
         additionalProperties: false,
-        required: %w[id name slug media prices pricePerUnit confirmed commodityItemType commodityItemId shop]
+        required: %w[id name slug media prices confirmed commodityItemType commodityItemId shop]
       })
     end
   end

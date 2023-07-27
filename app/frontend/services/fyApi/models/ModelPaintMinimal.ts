@@ -19,11 +19,11 @@ export type ModelPaintMinimal = {
     lastUpdatedAt?: string | null;
     lastUpdatedAtLabel?: string | null;
     media: {
-        angledView?: ViewImage | null;
+        angledView?: ViewImage;
         fleetchartImage?: string | null;
-        sideView?: ViewImage | null;
-        storeImage?: MediaImage | null;
-        topView?: ViewImage | null;
+        sideView?: ViewImage;
+        storeImage?: MediaImage;
+        topView?: ViewImage;
     };
     nameWithModel?: string | null;
     rsiId?: number | null;

@@ -1,33 +1,20 @@
 import { debounce } from "ts-debounce";
 import { useRouter, useRoute } from "vue-router";
 
-export type TFilterData = {
-  [key: string]:
-    | string
-    | number
-    | boolean
-    | string[]
-    | number[]
-    | boolean[]
-    | undefined;
-};
-
-const getQuery = (formData: TFilterData) => {
-  const query = JSON.parse(JSON.stringify(formData));
-
-  Object.keys(query)
-    .filter((key) => !query[key] || query[key].length === 0)
-    .forEach((key) => delete query[key]);
-
-  return query;
-};
-
-export const useFilters = (routeQueryKey = "q") => {
+export const useFilters = <T>(routeQueryKey = "q") => {
   const route = useRoute();
 
-  const routeQuery = computed(
-    () => (route.query[routeQueryKey] || {}) as TFilterData
-  );
+  const getQuery = (formData: T) => {
+    const query = JSON.parse(JSON.stringify(formData));
+
+    Object.keys(query)
+      .filter((key) => !query[key] || query[key].length === 0)
+      .forEach((key) => delete query[key]);
+
+    return query;
+  };
+
+  const routeQuery = computed(() => (route.query[routeQueryKey] || {}) as T);
 
   const isFilterSelected = computed(() => {
     const query = getQuery(routeQuery.value);
@@ -37,7 +24,7 @@ export const useFilters = (routeQueryKey = "q") => {
 
   const router = useRouter();
 
-  const debouncedFilter = (filter: TFilterData) => {
+  const debouncedFilter = (filter: T) => {
     router
       .replace({
         name: route.name || undefined,

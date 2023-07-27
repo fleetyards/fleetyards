@@ -86,7 +86,7 @@ class Shop < ApplicationRecord
     Shop.shop_types.map do |(item, _index)|
       Filter.new(
         category: "shop_type",
-        name: Shop.human_enum_name(:shop_type, item),
+        label: Shop.human_enum_name(:shop_type, item),
         value: item
       )
     end

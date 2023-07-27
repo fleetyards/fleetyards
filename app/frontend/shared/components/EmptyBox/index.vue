@@ -2,21 +2,21 @@
   <transition name="fade">
     <div v-if="visible" class="empty-box">
       <Box class="info" :large="true">
-        <h1>{{ i18n?.t("headlines.empty") }}</h1>
+        <h1>{{ i18n?.t("emptyBox.headline") }}</h1>
         <template v-if="isQueryPresent">
-          <p>{{ i18n?.t("texts.empty.query") }}</p>
+          <p>{{ i18n?.t("emptyBox.texts.query") }}</p>
           <div slot="footer" class="empty-box-actions">
             <Btn v-if="isPagePresent" @click.native="resetPage">
-              {{ i18n?.t("actions.empty.resetPage") }}
+              {{ i18n?.t("emptyBox.actions.resetPage") }}
             </Btn>
             <Btn :to="{ name: String(route.name) }" :exact="true">
-              {{ i18n?.t("actions.empty.reset") }}
+              {{ i18n?.t("emptyBox.actions.reset") }}
             </Btn>
           </div>
         </template>
         <template v-else>
           <p>
-            {{ i18n?.t("texts.empty.info") }}
+            {{ i18n?.t("emptyBox.texts.info") }}
           </p>
         </template>
       </Box>
@@ -25,12 +25,12 @@
 </template>
 
 <script lang="ts" setup>
-import Box from "@/shared/core/components/BaseBox.vue";
-import Btn from "@/shared/core/components/BaseBtn.vue";
+import Box from "@/shared/components/BaseBox/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useRoute, useRouter } from "vue-router";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
-const i18n = inject("i18n") as I18nPluginOptions;
+const i18n = inject<I18nPluginOptions>("i18n");
 
 type Props = {
   visible?: boolean;
@@ -83,3 +83,7 @@ export default {
   name: "EmptyBox",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

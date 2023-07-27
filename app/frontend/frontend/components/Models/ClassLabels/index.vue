@@ -42,85 +42,88 @@
   </div>
 </template>
 
-<script>
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { mapGetters } from "vuex";
+<script lang="ts" setup>
+import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "@/frontend/composables/useI18n";
 
+type Props = {
+  countData: {
+    name: string;
+    label: string;
+    count: number;
+  }[];
+  filterKey?: string;
+  label?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  filterKey: undefined,
+  label: undefined,
+});
+
+const mobile = useMobile();
+
+const { t } = useI18n();
+
+const route = useRoute();
+
+const router = useRouter();
+
+const allLabel = computed(() => {
+  return props.label || t("labels.fleet.size");
+});
+
+const filter = (filter: string) => {
+  if (!props.filterKey) {
+    return;
+  }
+  const query = JSON.parse(JSON.stringify(route.query.q || {}));
+
+  if ((query[props.filterKey] || []).includes(filter)) {
+    const index = query[props.filterKey].findIndex(
+      (item: string) => item === filter
+    );
+    if (index > -1) {
+      query[props.filterKey].splice(index, 1);
+    }
+  } else {
+    if (!query[props.filterKey]) {
+      query[props.filterKey] = [];
+    }
+    query[props.filterKey].push(filter);
+  }
+
+  router.replace({
+    name: route.name || "home",
+    query: {
+      q: query,
+    },
+  });
+};
+
+const isActive = (classification: string) => {
+  if (!route.query.q || !props.filterKey) {
+    return false;
+  }
+
+  const classFilter = (route.query.q as Record<string, any>)[props.filterKey];
+  if (!classFilter) {
+    return false;
+  }
+
+  if (classFilter.includes(classification)) {
+    return true;
+  }
+
+  return false;
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "ModelClassLabels",
-
-  components: {
-    BtnDropdown,
-    Btn,
-  },
-
-  props: {
-    countData: {
-      type: Array,
-      required: true,
-    },
-    filterKey: {
-      type: String,
-      default: "",
-    },
-    label: {
-      type: String,
-      default: "",
-    },
-  },
-
-  computed: {
-    ...mapGetters(["mobile"]),
-
-    allLabel() {
-      return this.label || this.$t("labels.fleet.size");
-    },
-  },
-  methods: {
-    filter(filter) {
-      if (!this.filterKey) {
-        return;
-      }
-      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}));
-
-      if ((query[this.filterKey] || []).includes(filter)) {
-        const index = query[this.filterKey].findIndex(
-          (item) => item === filter
-        );
-        if (index > -1) {
-          query[this.filterKey].splice(index, 1);
-        }
-      } else {
-        if (!query[this.filterKey]) {
-          query[this.filterKey] = [];
-        }
-        query[this.filterKey].push(filter);
-      }
-
-      this.$router.replace({
-        name: this.$route.name,
-        query: {
-          q: query,
-        },
-      });
-    },
-    isActive(classification) {
-      if (!this.$route.query.q) {
-        return false;
-      }
-
-      const classFilter = this.$route.query.q[this.filterKey];
-      if (!classFilter) {
-        return false;
-      }
-
-      if (classFilter.includes(classification)) {
-        return true;
-      }
-
-      return false;
-    },
-  },
 };
 </script>

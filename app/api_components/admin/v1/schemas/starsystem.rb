@@ -19,7 +19,10 @@ module Admin
             mapX: {type: :string, nullable: true},
             mapY: {type: :string, nullable: true},
             media: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              type: :object,
+              properties: {
+                storeImage: {"$ref": "#/components/schemas/MediaImage"}
+              }
             },
             population: {type: :string, nullable: true},
             size: {type: :string, nullable: true},

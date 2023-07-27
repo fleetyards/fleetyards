@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="id"
+    :id="uuid"
     :class="{
       loading,
     }"
@@ -8,381 +8,196 @@
   />
 </template>
 
-<script>
+<script lang="ts" setup>
 import { chart } from "highcharts";
+import type { TooltipFormatterContextObject } from "highcharts";
+import type { PieChartStats, BarChartStats } from "@/services/fyApi";
+import { v4 as uuidv4 } from "uuid";
+import defaultTheme from "./defaultTheme";
+import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useQuery } from "@tanstack/vue-query";
 
+type TooltipLabelOption = {
+  label: number;
+  count: number;
+  percentage?: number;
+};
+
+type ChartData = PieChartStats | BarChartStats;
+
+type Props = {
+  name: string;
+  loadData: () => Promise<ChartData[]>;
+  type?: "line" | "bar" | "column" | "area" | "pie";
+  reload?: number;
+  tooltipType?: string;
+  height?: number;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  type: "line",
+  tooltipType: "",
+  reload: undefined,
+  height: 400,
+});
+
+const i18n = inject<I18nPluginOptions>("i18n");
+
+const uuid = ref(`chart-${uuidv4()}`);
+
+const instance = ref<Highcharts.Chart | undefined>();
+
+const interval = ref<NodeJS.Timeout | undefined>();
+
+const theme = ref<Highcharts.Options>(defaultTheme);
+
+const chartWithCategory = computed(() => {
+  return ["bar", "line", "column", "area"].includes(props.type);
+});
+
+const xAxis = computed(() => {
+  if (chartWithCategory.value) {
+    return {
+      categories: (data.value as BarChartStats[]).map((item) => item.label),
+    };
+  }
+  return {};
+});
+
+const yAxis = computed(() => {
+  if (chartWithCategory.value) {
+    return {
+      allowDecimals: false,
+    };
+  }
+  return {};
+});
+
+const legend = computed(() => {
+  if (chartWithCategory.value) {
+    return undefined;
+  }
+
+  return theme.value.legend;
+});
+
+const chartData = computed(() => {
+  if (chartWithCategory.value) {
+    return (data.value as BarChartStats[]).map((item) => [
+      item.tooltip,
+      item.count,
+    ]);
+  }
+
+  return data.value;
+});
+
+onMounted(() => {
+  uuid.value = `chart-${uuidv4()}`;
+
+  setupChart();
+
+  if (props.reload) {
+    interval.value = setInterval(() => {
+      refetch();
+      // reloadChart();
+    }, props.reload * 1000);
+  }
+});
+
+const tooltipFormat = (tooltip: TooltipFormatterContextObject) => {
+  const options: TooltipLabelOption = {
+    label: tooltip.key,
+    count: tooltip.y,
+    percentage: undefined,
+  };
+
+  if (props.type === "pie") {
+    options.percentage = Math.round(tooltip.percentage || 0);
+  }
+
+  return i18n?.t(`labels.charts.${props.tooltipType}`, options);
+};
+
+const loading = computed(() => {
+  return isLoading.value || isFetching.value;
+});
+
+const { isLoading, isFetching, data, refetch } = useQuery({
+  queryKey: [props.name],
+  queryFn: () => props.loadData(),
+});
+
+watch(
+  () => data.value,
+  () => {
+    if (instance.value) {
+      reloadChart();
+    } else {
+      setupChart();
+    }
+  }
+);
+
+const reloadChart = async () => {
+  if (!data.value) {
+    return;
+  }
+
+  const series = instance.value?.series[0];
+
+  if (!series) {
+    return;
+  }
+
+  if (chartWithCategory.value) {
+    series.setData(
+      (data.value as BarChartStats[]).map((item) => [item.tooltip, item.count])
+    );
+
+    instance.value?.xAxis[0].setCategories(
+      (data.value as BarChartStats[]).map((item) => item.label || "")
+    );
+  } else {
+    series.setData(data.value);
+  }
+};
+
+const setupChart = () => {
+  instance.value = chart({
+    ...theme.value,
+    chart: {
+      ...theme.value.chart,
+      type: props.type,
+      height: props.height,
+    },
+    xAxis: {
+      ...theme.value.xAxis,
+      ...xAxis.value,
+    },
+    yAxis: {
+      ...theme.value.yAxis,
+      ...yAxis.value,
+    },
+    legend: legend.value,
+    tooltip: {
+      ...theme.value.tooltip,
+      formatter() {
+        return tooltipFormat(this);
+      },
+    },
+    series: [
+      {
+        type: props.type,
+        data: chartData.value,
+      },
+    ],
+  });
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "ChartComponent",
-
-  props: {
-    type: {
-      type: String,
-      default: "line",
-    },
-    loadData: {
-      type: Function,
-      required: true,
-    },
-    reload: {
-      type: Number,
-      default: null,
-    },
-    tooltipType: {
-      type: String,
-      default: "",
-    },
-    height: {
-      type: Number,
-      default: 400,
-    },
-  },
-  data() {
-    return {
-      id: `chart-${this._uid.toString()}`,
-      loading: false,
-      instance: null,
-      interval: null,
-      data: [],
-      theme: {
-        colors: [
-          "#428bca",
-          "#90ee7e",
-          "#f45b5b",
-          "#7798BF",
-          "#aaeeee",
-          "#ff0066",
-          "#eeaaee",
-          "#55BF3B",
-          "#DF5353",
-          "#7798BF",
-          "#aaeeee",
-        ],
-        chart: {
-          backgroundColor: "transparent",
-          style: {
-            fontSize: "11px",
-          },
-          plotBorderColor: "#606063",
-        },
-        title: {
-          style: {
-            color: "#E0E0E3",
-            textTransform: "uppercase",
-            fontSize: "20px",
-          },
-          text: null,
-        },
-        subtitle: {
-          style: {
-            color: "#E0E0E3",
-            textTransform: "uppercase",
-          },
-        },
-        xAxis: {
-          labels: {
-            style: {
-              fontSize: "12px",
-              color: "#E0E0E3",
-            },
-          },
-          lineColor: "#707073",
-          minorGridLineColor: "#505053",
-          tickColor: "#707073",
-          tickWidth: 1,
-          title: {
-            text: null,
-            style: {
-              color: "#A0A0A3",
-            },
-          },
-        },
-        yAxis: {
-          gridLineColor: "#707073",
-          gridLineWidth: 1,
-          labels: {
-            style: {
-              fontSize: "12px",
-              color: "#E0E0E3",
-            },
-          },
-          lineColor: "#707073",
-          minorGridLineColor: "#505053",
-          tickColor: "#707073",
-          tickWidth: 1,
-          title: {
-            text: null,
-            style: {
-              color: "#A0A0A3",
-            },
-          },
-        },
-        tooltip: {
-          backgroundColor: "rgba(0, 0, 0, 0.85)",
-          style: {
-            fontSize: "12px",
-            color: "#F0F0F0",
-          },
-        },
-        plotOptions: {
-          area: {
-            fillColor: "rgba(66, 139, 202, 0.3)",
-          },
-          series: {
-            dataLabels: {
-              color: "#B0B0B3",
-            },
-            marker: {
-              lineColor: "#333",
-            },
-          },
-          boxplot: {
-            fillColor: "#505053",
-          },
-          candlestick: {
-            lineColor: "white",
-          },
-          errorbar: {
-            color: "white",
-          },
-          column: {
-            borderColor: "#333",
-          },
-          bar: {
-            borderColor: "#333",
-          },
-          pie: {
-            borderColor: "#333",
-            innerSize: "50%",
-            cursor: "pointer",
-            dataLabels: {
-              enabled: false,
-            },
-            allowPointSelect: true,
-            showInLegend: true,
-          },
-        },
-        legend: {
-          borderWidth: 0,
-          itemMarginBottom: 3,
-          itemStyle: {
-            color: "#E0E0E3",
-          },
-          itemHoverStyle: {
-            color: "#FFF",
-          },
-          itemHiddenStyle: {
-            color: "#606063",
-          },
-        },
-        credits: {
-          enabled: false,
-        },
-        labels: {
-          style: {
-            color: "#707073",
-          },
-        },
-        drilldown: {
-          activeAxisLabelStyle: {
-            color: "#F0F0F3",
-          },
-          activeDataLabelStyle: {
-            color: "#F0F0F3",
-          },
-        },
-        navigation: {
-          buttonOptions: {
-            symbolStroke: "#DDDDDD",
-            theme: {
-              fill: "#505053",
-            },
-          },
-        },
-        // scroll charts
-        rangeSelector: {
-          buttonTheme: {
-            fill: "#505053",
-            stroke: "#000000",
-            style: {
-              color: "#CCC",
-            },
-            states: {
-              hover: {
-                fill: "#707073",
-                stroke: "#000000",
-                style: {
-                  color: "white",
-                },
-              },
-              select: {
-                fill: "#000003",
-                stroke: "#000000",
-                style: {
-                  color: "white",
-                },
-              },
-            },
-          },
-          inputBoxBorderColor: "#505053",
-          inputStyle: {
-            backgroundColor: "#333",
-            color: "silver",
-          },
-          labelStyle: {
-            color: "silver",
-          },
-        },
-
-        navigator: {
-          handles: {
-            backgroundColor: "#666",
-            borderColor: "#AAA",
-          },
-          outlineColor: "#CCC",
-          maskFill: "rgba(255,255,255,0.1)",
-          series: {
-            color: "#7798BF",
-            lineColor: "#A6C7ED",
-          },
-          xAxis: {
-            gridLineColor: "#505053",
-          },
-        },
-
-        scrollbar: {
-          barBackgroundColor: "#808083",
-          barBorderColor: "#808083",
-          buttonArrowColor: "#CCC",
-          buttonBackgroundColor: "#606063",
-          buttonBorderColor: "#606063",
-          rifleColor: "#FFF",
-          trackBackgroundColor: "#404043",
-          trackBorderColor: "#404043",
-        },
-
-        // special colors for some of the
-        legendBackgroundColor: "rgba(0, 0, 0, 0.5)",
-        background2: "#505053",
-        dataLabelsColor: "#B0B0B3",
-        textColor: "#C0C0C0",
-        contrastTextColor: "#F0F0F3",
-        maskColor: "rgba(255,255,255,0.3)",
-      },
-    };
-  },
-  computed: {
-    chartWithCategory() {
-      return ["bar", "line", "column", "area"].includes(this.type);
-    },
-    xAxis() {
-      if (this.chartWithCategory) {
-        return {
-          categories: this.data.map((item) => item.label),
-        };
-      }
-      return {};
-    },
-    yAxis() {
-      if (this.chartWithCategory) {
-        return {
-          allowDecimals: false,
-        };
-      }
-      return {};
-    },
-    legend() {
-      if (this.chartWithCategory) {
-        return false;
-      }
-      return this.theme.legend;
-    },
-    chartData() {
-      if (this.chartWithCategory) {
-        return this.data.map((item) => [item.tooltip, item.count]);
-      }
-      return this.data;
-    },
-  },
-  created() {
-    this.init();
-  },
-  mounted() {
-    if (this.reload) {
-      this.interval = setInterval(() => {
-        this.reloadChart();
-      }, this.reload * 1000);
-    }
-  },
-  methods: {
-    tooltipFormat(tooltip) {
-      const options = {
-        label: tooltip.key,
-        count: tooltip.y,
-      };
-
-      if (this.type === "pie") {
-        options.percentage = Math.round(tooltip.percentage);
-      }
-
-      return this.$t(`labels.charts.${this.tooltipType}`, options);
-    },
-
-    async init() {
-      this.loading = true;
-
-      this.data = await this.loadData();
-
-      this.loading = false;
-
-      this.setupChart();
-    },
-
-    async reloadChart() {
-      this.data = await this.loadData();
-      const series = this.instance.series[0];
-      if (this.chartWithCategory) {
-        series.setData(this.data.map((item) => [item.tooltip, item.count]));
-        this.instance.xAxis[0].setCategories(
-          this.data.map((item) => item.label)
-        );
-      } else {
-        series.setData(this.data);
-      }
-    },
-
-    setupChart() {
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      const self = this;
-
-      this.instance = chart(this.id, {
-        ...this.theme,
-        chart: {
-          ...this.theme.chart,
-          type: this.type,
-          height: this.height,
-        },
-        xAxis: {
-          ...this.theme.xAxis,
-          ...this.xAxis,
-        },
-        yAxis: {
-          ...this.theme.yAxis,
-          ...this.yAxis,
-        },
-        legend: this.legend,
-        tooltip: {
-          ...this.theme.tooltip,
-          formatter() {
-            return self.tooltipFormat(this);
-          },
-        },
-        series: [
-          {
-            data: this.chartData,
-          },
-        ],
-      });
-    },
-  },
 };
 </script>

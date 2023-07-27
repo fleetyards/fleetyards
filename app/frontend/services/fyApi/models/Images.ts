@@ -7,7 +7,7 @@ import type { ImageMinimal } from './ImageMinimal';
 import type { Meta } from './Meta';
 
 export type Images = {
-    meta?: Meta;
     items: Array<ImageMinimal>;
+    meta?: Meta;
 };
 

@@ -12,7 +12,9 @@
       <transition name="fade" mode="out-in">
         <AppNavigation />
       </transition>
-      <div class="flex flex-col justify-between max-w-full h-full flex-[1_1]">
+      <div
+        class="flex flex-col flex-1 justify-between max-w-full h-full lg:pl-[300px]"
+      >
         <div class="min-h-screen">
           <router-view v-slot="{ Component, route }">
             <transition name="fade" mode="out-in">

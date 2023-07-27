@@ -1,10 +1,10 @@
 <template>
   <component
     :is="btnType"
-    v-bind="btnProps"
     class="panel-btn"
     :class="cssClasses"
     :disabled="disabled || loading"
+    v-bind="btnProps"
   >
     <BtnInner :loading="loading" :spinner="spinner">
       <slot />
@@ -76,6 +76,7 @@ const btnProps = computed(() => {
       exact: props.exact,
       // event: props.disabled ? '' : 'click',
       activeClass: props.routeActiveClass,
+      exactActiveClass: props.routeActiveClass,
     };
   }
 
@@ -115,3 +116,7 @@ export default {
   name: "BaseBtn",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

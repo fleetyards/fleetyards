@@ -1,21 +1,23 @@
 <template>
   <form @submit.prevent="submit">
-    <FilterGroup2
+    <FilterGroup
       key="admin-images-filter-model"
       v-model="modelIdEq"
       :label="t('labels.filters.images.model')"
-      :fetch="fetchModels"
+      :query-fn="fetchModels"
+      :query-response-formatter="modelsFormatter"
       name="model"
       :searchable="true"
       :paginated="true"
       :no-label="true"
     />
 
-    <FilterGroup2
+    <FilterGroup
       key="admin-images-filter-station"
       v-model="stationIdEq"
       :label="t('labels.filters.images.station')"
-      :fetch="fetchStations"
+      :query-fn="fetchStations"
+      :query-response-formatter="stationsFormatter"
       name="station"
       :searchable="true"
       :paginated="true"
@@ -34,13 +36,20 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import type { FilterGroupParams } from "@/shared/components/Form/FilterGroup/index.vue";
 import { useRoute } from "vue-router";
-import { useFilters } from "@/frontend/composables/useFilters";
-import { useI18n } from "@/frontend/composables/useI18n";
-import modelsCollection from "@/admin/api/collections/Models";
-import stationsCollection from "@/admin/api/collections/Stations";
+import { useFilters } from "@/shared/composables/useFilters";
+import { useI18n } from "@/admin/composables/useI18n";
+import type {
+  ImageQuery,
+  ModelMinimal,
+  ModelQuery,
+  StationMinimal,
+  StationQuery,
+} from "@/services/fyAdminApi";
+import { useApiClient } from "@/admin/composables/useApiClient";
 
 const { t } = useI18n();
 
@@ -48,18 +57,13 @@ const modelIdEq = ref<string | undefined>(undefined);
 
 const stationIdEq = ref<string | undefined>(undefined);
 
-const { filter, isFilterSelected, resetFilter } = useFilters();
+const { filter, isFilterSelected, resetFilter } = useFilters<ImageQuery>();
 
 const route = useRoute();
 
-const query = computed(() => (route.query.q || {}) as GalleryFilters);
+const query = computed(() => (route.query.q || {}) as ImageQuery);
 
-type GalleryFilters = {
-  galleryIdEq?: string;
-  galleryTypeEq?: string;
-};
-
-const form = ref<GalleryFilters>({
+const form = ref<ImageQuery>({
   galleryIdEq: query.value.galleryIdEq,
   galleryTypeEq: query.value.galleryTypeEq,
 });
@@ -71,21 +75,24 @@ const setupForm = () => {
   };
 };
 
-watch(
-  () => route.query,
-  () => {
-    setupForm();
-  },
-  { deep: true }
-);
+onMounted(() => {
+  setupForm();
+});
 
 watch(
   () => form.value,
   () => {
     filter(form.value);
+
     if (!form.value.galleryIdEq && !form.value.galleryTypeEq) {
       modelIdEq.value = undefined;
       stationIdEq.value = undefined;
+    } else {
+      if (form.value.galleryTypeEq === "Model") {
+        modelIdEq.value = form.value.galleryIdEq;
+      } else if (form.value.galleryTypeEq === "Station") {
+        stationIdEq.value = form.value.galleryIdEq;
+      }
     }
   },
   { deep: true }
@@ -123,62 +130,64 @@ const submit = () => {
   filter(form.value);
 };
 
-const fetchModels = async (params?: TFilterGroupParams) => {
-  const filters: AdminModelsFilter = {};
+const { models: modelsService, stations: stationsService } = useApiClient();
 
-  if (params?.search) {
-    filters.nameCont = params.search;
-  } else if (params?.missing) {
-    if (Array.isArray(params.missing)) {
-      filters.idIn = params.missing;
-    } else {
-      filters.idEq = params.missing;
-    }
-  }
-
-  const data = await modelsCollection.findAll({
-    filters,
-    page: params?.page || 1,
+const modelsFormatter = (models: ModelMinimal[]) => {
+  return models.map((model) => {
+    return {
+      label: model.name,
+      value: model.id,
+    };
   });
-
-  if (!data) {
-    return [];
-  }
-
-  return data.map((model) => ({
-    label: model.name,
-    value: model.id,
-    icon: model.media.storeImage?.small,
-  }));
 };
 
-const fetchStations = async (params?: TFilterGroupParams) => {
-  const filters: AdminStationsFilter = {};
+const fetchModels = async (params: FilterGroupParams) => {
+  const q: ModelQuery = {};
 
-  if (params?.search) {
-    filters.nameCont = params.search;
-  } else if (params?.missing) {
+  if (params.search) {
+    q.nameCont = params.search;
+  }
+
+  if (params.missing) {
     if (Array.isArray(params.missing)) {
-      filters.idIn = params.missing;
+      q.idIn = params.missing as string[];
     } else {
-      filters.idEq = params.missing;
+      q.idEq = params.missing as string;
     }
   }
 
-  const data = await stationsCollection.findAll({
-    filters,
-    page: params?.page || 1,
+  return modelsService.models({
+    page: String(params.page || 1),
+    s: ["name asc"],
+    q,
   });
+};
 
-  if (!data) {
-    return [];
+const stationsFormatter = (stations: StationMinimal[]) => {
+  return stations.map((station) => {
+    return {
+      label: station.name,
+      value: station.id,
+    };
+  });
+};
+
+const fetchStations = async (params: FilterGroupParams) => {
+  const q: StationQuery = {};
+
+  if (params.search) {
+    q.searchCont = params.search;
   }
 
-  return data.map((station) => ({
-    label: station.name,
-    value: station.id,
-    icon: station.media.storeImage?.small,
-  }));
+  if (params.missing) {
+    q.idEq = params.missing as string;
+  }
+
+  return stationsService.stations({
+    page: String(params.page || 1),
+    s: ["name asc"],
+    q,
+  });
 };
 </script>
 

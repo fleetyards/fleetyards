@@ -7,7 +7,7 @@ import type { CelestialObjectMinimal } from './CelestialObjectMinimal';
 import type { Meta } from './Meta';
 
 export type CelestialObjects = {
-    meta?: Meta;
     items: Array<CelestialObjectMinimal>;
+    meta?: Meta;
 };
 

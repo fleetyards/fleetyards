@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "noty/lib/noty";
-@import "@/stylesheets/frontend/partials/noty";
-@import "@/stylesheets/frontend/partials/transitions";
+@import "@/stylesheets/shared/noty";
+@import "@/stylesheets/shared/transitions";
 @import "@/stylesheets/frontend/fonts";
 @import "swagger-ui/dist/swagger-ui.css";
 @import "@/stylesheets/docs/vendor/swagger-ui-dark";

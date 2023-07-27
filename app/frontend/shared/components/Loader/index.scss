@@ -1,0 +1,150 @@
+.loader {
+  position: absolute;
+  left: 50%;
+  z-index: 3000;
+  width: 80px;
+  height: 80px;
+  margin: 40px auto;
+  margin-left: -40px;
+  -webkit-transform: rotateZ(45deg);
+  transform: rotateZ(45deg);
+
+  &--fixed {
+    top: 20vh;
+  }
+
+  &--relative {
+    top: 50%;
+    margin-top: -20px;
+  }
+
+  &--inline {
+    top: 0;
+    position: relative;
+  }
+}
+
+.loader .cube {
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 50%;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.loader .cube::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $primary;
+  -webkit-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+  -webkit-animation: loader-foldcubeangle 2.4s infinite linear both;
+  animation: loader-foldCubeAngle 2.4s infinite linear both;
+  content: "";
+}
+
+.loader .progress {
+  position: absolute;
+  border-radius: 0;
+  background-color: $primary;
+}
+
+.loader .progress.progress-left {
+  bottom: -10px;
+  right: 0;
+  width: 0%;
+  height: 5px;
+  max-width: 100%;
+  transition: width $transition-base-speed ease;
+}
+
+.loader .progress.progress-right {
+  bottom: 0;
+  right: -10px;
+  height: 0%;
+  width: 5px;
+  max-height: 100%;
+  transition: height $transition-base-speed ease;
+}
+
+.loader .cube2 {
+  -webkit-transform: scale(1.1) rotateZ(90deg);
+  transform: scale(1.1) rotateZ(90deg);
+}
+
+.loader .cube3 {
+  -webkit-transform: scale(1.1) rotateZ(180deg);
+  transform: scale(1.1) rotateZ(180deg);
+}
+
+.loader .cube4 {
+  -webkit-transform: scale(1.1) rotateZ(270deg);
+  transform: scale(1.1) rotateZ(270deg);
+}
+
+.loader .cube2::before {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+
+.loader .cube3::before {
+  -webkit-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+}
+
+.loader .cube4::before {
+  -webkit-animation-delay: 0.9s;
+  animation-delay: 0.9s;
+}
+
+@-webkit-keyframes loader-foldCubeAngle {
+  0%,
+  10% {
+    -webkit-transform: perspective(140px) rotateX(-180deg);
+    transform: perspective(140px) rotateX(-180deg);
+    opacity: 0;
+  }
+
+  25%,
+  75% {
+    -webkit-transform: perspective(140px) rotateX(0deg);
+    transform: perspective(140px) rotateX(0deg);
+    opacity: 1;
+  }
+
+  90%,
+  100% {
+    -webkit-transform: perspective(140px) rotateY(180deg);
+    transform: perspective(140px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes loader-foldCubeAngle {
+  0%,
+  10% {
+    -webkit-transform: perspective(140px) rotateX(-180deg);
+    transform: perspective(140px) rotateX(-180deg);
+    opacity: 0;
+  }
+
+  25%,
+  75% {
+    -webkit-transform: perspective(140px) rotateX(0deg);
+    transform: perspective(140px) rotateX(0deg);
+    opacity: 1;
+  }
+
+  90%,
+  100% {
+    -webkit-transform: perspective(140px) rotateY(180deg);
+    transform: perspective(140px) rotateY(180deg);
+    opacity: 0;
+  }
+}

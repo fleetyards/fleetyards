@@ -1,8 +1,8 @@
 <template>
   <Panel :id="item.slug" class="station-list">
     <div
-      :key="item.storeImage"
-      v-lazy:background-image="item.storeImage"
+      :key="item.media?.storeImage?.large"
+      v-lazy:background-image="item.media?.storeImage?.large"
       class="panel-bg lazy"
     />
     <div class="row">
@@ -25,27 +25,22 @@
   </Panel>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
+import type { RouteLocationRaw } from "vue-router";
+import type { StarsystemMinimal } from "@/services/fyApi";
 
+type Props = {
+  item: StarsystemMinimal;
+  route: RouteLocationRaw;
+};
+
+defineProps<Props>();
+</script>
+
+<script lang="ts">
 export default {
   name: "StarsystemsList",
-
-  components: {
-    Panel,
-  },
-
-  props: {
-    route: {
-      type: Object,
-      required: true,
-    },
-
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
 };
 </script>
 

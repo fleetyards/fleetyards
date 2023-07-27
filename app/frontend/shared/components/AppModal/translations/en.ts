@@ -1,0 +1,9 @@
+export default {
+  appModal: {
+    messages: {
+      confirm: {
+        dirty: "You have unsaved changes that will be lost.",
+      },
+    },
+  },
+};

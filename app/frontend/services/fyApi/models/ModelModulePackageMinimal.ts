@@ -14,10 +14,10 @@ export type ModelModulePackageMinimal = {
     modules?: Array<ModelModule>;
     pledgePrice?: number | null;
     media?: {
-        angledView?: ViewImage | null;
-        sideView?: ViewImage | null;
-        storeImage?: MediaImage | null;
-        topView?: ViewImage | null;
+        angledView?: ViewImage;
+        sideView?: ViewImage;
+        storeImage?: MediaImage;
+        topView?: ViewImage;
     };
     /**
      * @deprecated

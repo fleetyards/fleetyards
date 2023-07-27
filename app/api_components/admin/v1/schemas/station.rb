@@ -27,7 +27,7 @@ module Admin
               type: :object,
               properties: {
                 backgroundImage: {type: :string, nullable: true},
-                storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+                storeImage: {"$ref": "#/components/schemas/MediaImage"}
               }
             },
             refinery: {type: :boolean},
@@ -36,7 +36,7 @@ module Admin
             type: {type: :string, nullable: true}
           },
           additionalProperties: false,
-          required: %w[id name slug habitable hasImages refinery cargoHub celestialObject media]
+          required: %w[id name slug habitable hasImages refinery cargoHub celestialObject]
         })
       end
     end

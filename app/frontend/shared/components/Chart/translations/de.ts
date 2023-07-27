@@ -1,0 +1,30 @@
+export default {
+  chart: {
+    labels: {
+      view: {
+        one: "%{label}:<br><b>%{count}</b> Anzeige",
+        other: "%{label}:<br><b>%{count}</b> Anzeigen",
+      },
+      ship: {
+        one: "%{label}:<br><b>%{count}</b> Schiff",
+        other: "%{label}:<br><b>%{count}</b> Schiffe",
+      },
+      "ship-pie": {
+        one: "%{label}:<br><b>%{count}</b> Schiff (%{percentage} %)",
+        other: "%{label}:<br><b>%{count}</b> Schiffe (%{percentage} %)",
+      },
+      "component-pie": {
+        one: "%{label}:<br><b>%{count}</b> Komponente (%{percentage} %)",
+        other: "%{label}:<br><b>%{count}</b> Komponenten (%{percentage} %)",
+      },
+      user: {
+        one: "%{label}:<br><b>%{count}</b> Benutzer",
+        other: "%{label}:<br><b>%{count}</b> Benuter",
+      },
+      visit: {
+        one: "%{label}:<br><b>%{count}</b> Besuch",
+        other: "%{label}:<br><b>%{count}</b> Besuche",
+      },
+    },
+  },
+};

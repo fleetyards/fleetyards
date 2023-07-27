@@ -61,7 +61,7 @@
 import ModelList from "@/embed/components/Models/List/index.vue";
 import FleetchartList from "@/embed/components/Fleetchart/List/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import Btn from "@/embed/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useEmbedStore } from "@/embed/stores/embed";
 import { storeToRefs } from "pinia";
 import { useApiClient } from "@/embed/composables/useApiClient";

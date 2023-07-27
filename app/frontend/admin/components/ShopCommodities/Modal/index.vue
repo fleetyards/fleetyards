@@ -9,7 +9,7 @@
                 v-slot="{ errors }"
                 vid="commodityItemType"
                 rules="required"
-                :name="$t('labels.shopCommodity.commodityItemType')"
+                :name="t('labels.shopCommodity.commodityItemType')"
                 :slim="true"
               >
                 <FilterGroup
@@ -29,7 +29,7 @@
                 key="component-item-type-filters-filter-group"
                 v-model="componentItemTypeFilter"
                 :label="
-                  $t('labels.filters.shopCommodities.componentItemTypeFilter')
+                  t('labels.filters.shopCommodities.componentItemTypeFilter')
                 "
                 :collection="componentItemTypeFiltersCollection"
                 name="component-item-type-filter"
@@ -41,7 +41,7 @@
                   key="equipment-type-filters-filter-group"
                   v-model="equipmentTypeFilter"
                   :label="
-                    $t('labels.filters.shopCommodities.equipmentTypeFilter')
+                    t('labels.filters.shopCommodities.equipmentTypeFilter')
                   "
                   :collection="equipmentTypeFiltersCollection"
                   name="equipment-type-filter"
@@ -53,7 +53,7 @@
                   key="equipment-slot-filters-filter-group"
                   v-model="equipmentSlotFilter"
                   :label="
-                    $t('labels.filters.shopCommodities.equipmentSlotFilter')
+                    t('labels.filters.shopCommodities.equipmentSlotFilter')
                   "
                   :collection="equipmentSlotFiltersCollection"
                   name="equipment-slot-filter"
@@ -69,14 +69,14 @@
                 v-slot="{ errors }"
                 vid="commodityItemId"
                 rules="required"
-                :name="$t('labels.shopCommodity.commodityItemId')"
+                :name="t('labels.shopCommodity.commodityItemId')"
                 :slim="true"
               >
                 <CollectionFilterGroup
                   v-if="form.commodityItemType === 'Commodity'"
                   key="commodity-filter-group"
                   v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.commodity')"
+                  :label="t('labels.filters.shopCommodities.commodity')"
                   :collection="commoditiesCollection"
                   name="commodity-commodityItemId"
                   value-attr="id"
@@ -89,7 +89,7 @@
                   v-if="form.commodityItemType === 'Component'"
                   key="component-filter-group"
                   v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.component')"
+                  :label="t('labels.filters.shopCommodities.component')"
                   :collection="componentsCollection"
                   :collection-filter="{
                     itemTypeEq: componentItemTypeFilter,
@@ -105,7 +105,7 @@
                   v-if="form.commodityItemType === 'Equipment'"
                   key="equipment-filter-group"
                   v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.equipment')"
+                  :label="t('labels.filters.shopCommodities.equipment')"
                   :collection="equipmentCollection"
                   :collection-filter="{
                     equipmentTypeEq: equipmentTypeFilter,
@@ -122,7 +122,7 @@
                   v-if="form.commodityItemType === 'Model'"
                   key="model-filter-group"
                   v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.model')"
+                  :label="t('labels.filters.shopCommodities.model')"
                   :collection="modelsCollection"
                   name="models-commodityItemId"
                   value-attr="id"
@@ -135,7 +135,7 @@
                   v-if="form.commodityItemType === 'ModelModule'"
                   key="model-module-filter-group"
                   v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.modelModule')"
+                  :label="t('labels.filters.shopCommodities.modelModule')"
                   :collection="modelModulesCollection"
                   name="modelModules-commodityItemId"
                   value-attr="id"
@@ -148,7 +148,7 @@
                   v-if="form.commodityItemType === 'ModelPaint'"
                   key="model-paint-filter-group"
                   v-model="form.commodityItemId"
-                  :label="$t('labels.filters.shopCommodities.modelPaint')"
+                  :label="t('labels.filters.shopCommodities.modelPaint')"
                   :collection="modelPaintsCollection"
                   name="modelPaints-commodityItemId"
                   value-attr="id"
@@ -174,7 +174,7 @@
             data-test="shopCommodity-save"
             :inline="true"
           >
-            {{ $t("actions.save") }}
+            {{ t("actions.save") }}
           </Btn>
         </div>
       </template>
@@ -182,23 +182,21 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import shopCommodityCollection from "@/admin/api/collections/ShopCommodities";
-import modelsCollection from "@/admin/api/collections/Models";
-import commoditiesCollection from "@/admin/api/collections/Commodities";
-import componentsCollection from "@/admin/api/collections/Components";
-import equipmentCollection from "@/admin/api/collections/Equipment";
-import modelModulesCollection from "@/admin/api/collections/ModelModules";
-import modelPaintsCollection from "@/admin/api/collections/ModelPaints";
-import componentItemTypeFiltersCollection from "@/admin/api/collections/ComponentItemTypeFilters";
-import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
-import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
+// import shopCommodityCollection from "@/admin/api/collections/ShopCommodities";
+// import modelsCollection from "@/admin/api/collections/Models";
+// import commoditiesCollection from "@/admin/api/collections/Commodities";
+// import componentsCollection from "@/admin/api/collections/Components";
+// import equipmentCollection from "@/admin/api/collections/Equipment";
+// import modelModulesCollection from "@/admin/api/collections/ModelModules";
+// import modelPaintsCollection from "@/admin/api/collections/ModelPaints";
+// import componentItemTypeFiltersCollection from "@/admin/api/collections/ComponentItemTypeFilters";
+// import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
+// import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import type { ShopCommodityMinimal} from "@/services/fyAdminApi"
 
 // TODO: move to collection model or use openapi schema types when available
 type ShopCommoditiesFormData = {
@@ -206,43 +204,38 @@ type ShopCommoditiesFormData = {
   commodityItemId?: string;
 };
 
-@Component<ShopCommoditiesModal>({
-  components: {
-    Modal,
-    FilterGroup,
-    CollectionFilterGroup,
-    Btn,
-  },
+type Props = {
+  shopId: string;
+  shopCommodity: ShopCommodityMinimal;
+  commodityItemType?: string;
+  itemTypeFilter?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  commodityItemType: undefined,
+  itemTypeFilter: undefined,
 })
-export default class ShopCommoditiesModal extends Vue {
-  @Prop({ required: true }) shopId: string;
 
-  @Prop({ required: true }) shopCommodity: ShopCommodity;
+  // modelsCollection: ModelsCollection = modelsCollection;
 
-  @Prop({ default: null }) commodityItemType: string | null;
+  // commoditiesCollection: CommoditiesCollection = commoditiesCollection;
 
-  @Prop({ default: null }) itemTypeFilter: string | null;
+  // componentsCollection: ComponentsCollection = componentsCollection;
 
-  modelsCollection: ModelsCollection = modelsCollection;
+  // equipmentCollection: EquipmentCollection = equipmentCollection;
 
-  commoditiesCollection: CommoditiesCollection = commoditiesCollection;
+  // modelModulesCollection: ModelModulesCollection = modelModulesCollection;
 
-  componentsCollection: ComponentsCollection = componentsCollection;
+  // modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection;
 
-  equipmentCollection: EquipmentCollection = equipmentCollection;
+  // componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
+  //   componentItemTypeFiltersCollection;
 
-  modelModulesCollection: ModelModulesCollection = modelModulesCollection;
+  // equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
+  //   equipmentTypeFiltersCollection;
 
-  modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection;
-
-  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
-    componentItemTypeFiltersCollection;
-
-  equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
-    equipmentTypeFiltersCollection;
-
-  equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
-    equipmentSlotFiltersCollection;
+  // equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
+  //   equipmentSlotFiltersCollection;
 
   submitting = false;
 
@@ -337,5 +330,10 @@ export default class ShopCommoditiesModal extends Vue {
 
     this.submitting = false;
   }
-}
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShopCommoditiesModal",
+};
 </script>

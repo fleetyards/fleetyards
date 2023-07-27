@@ -54,3 +54,7 @@ export default {
   name: "BasePanel",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

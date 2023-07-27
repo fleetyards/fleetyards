@@ -56,16 +56,16 @@ export type ModelComplete = {
     loaners: Array<ModelLoaner>;
     manufacturer?: Manufacturer | null;
     media: {
-        angledView?: ViewImage | null;
-        angledViewColored?: ViewImage | null;
+        angledView?: ViewImage;
+        angledViewColored?: ViewImage;
         fleetchartImage?: string | null;
-        frontView?: ViewImage | null;
-        frontViewColored?: ViewImage | null;
-        sideView?: ViewImage | null;
-        sideViewColored?: ViewImage | null;
-        storeImage?: MediaImage | null;
-        topView?: ViewImage | null;
-        topViewColored?: ViewImage | null;
+        frontView?: ViewImage;
+        frontViewColored?: ViewImage;
+        sideView?: ViewImage;
+        sideViewColored?: ViewImage;
+        storeImage?: MediaImage;
+        topView?: ViewImage;
+        topViewColored?: ViewImage;
     };
     metrics: {
         beam?: number | null;

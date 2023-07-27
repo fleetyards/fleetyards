@@ -9,7 +9,7 @@
         :to="{
           name: 'celestial-object',
           params: {
-            starsystem: location.starsystem.slug,
+            starsystem: location.starsystem?.slug,
             slug: location.slug,
           },
         }"
@@ -24,7 +24,7 @@
         :to="{
           name: 'celestial-object',
           params: {
-            starsystem: location.starsystem.slug,
+            starsystem: location.starsystem?.slug,
             slug: location.slug,
           },
         }"
@@ -35,65 +35,69 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { useI18n } from "@/frontend/composables/useI18n";
+import type { StationMinimal } from "@/services/fyApi";
+
+type Props = {
+  station: StationMinimal;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const location = computed(() => {
+  return props.station.celestialObject;
+});
+
+const label = computed(() => {
+  if (unref(suffix)) {
+    if (unref(location)) {
+      return `${unref(prefix)} ${unref(location).name}, ${unref(suffix)}`;
+    }
+
+    return unref(suffix);
+  }
+
+  return `${unref(prefix)} ${unref(location).name}`;
+});
+
+const tooltip = computed(() => {
+  if (unref(label)?.length || 0 > 50) {
+    return unref(label);
+  }
+
+  return null;
+});
+
+const prefix = computed(() => {
+  switch (props.station.type) {
+    case "asteroid-station":
+      return t("labels.station.locationPrefix.asteriod");
+    case "hub":
+    case "station":
+    case "cargo-station":
+    case "mining-station":
+      return t("labels.station.locationPrefix.orbit");
+    default:
+      return t("labels.station.locationPrefix.default");
+  }
+});
+
+const suffix = computed(() => {
+  if (props.station.location) {
+    return t("labels.station.locationSuffix", {
+      location: props.station.location,
+    });
+  }
+
+  return null;
+});
+</script>
+
+<script lang="ts">
 export default {
-  name: "StationsLocatioLabel",
-
-  props: {
-    station: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  computed: {
-    location() {
-      return this.station.celestialObject;
-    },
-
-    label() {
-      if (this.suffix) {
-        if (this.location) {
-          return `${this.prefix} ${this.location.name}, ${this.suffix}`;
-        }
-
-        return this.suffix;
-      }
-
-      return `${this.prefix} ${this.location.name}`;
-    },
-
-    tooltip() {
-      if (this.label.length > 50) {
-        return this.label;
-      }
-
-      return null;
-    },
-
-    prefix() {
-      switch (this.station.type) {
-        case "asteroid-station":
-          return this.$t("labels.station.locationPrefix.asteriod");
-        case "hub":
-        case "station":
-        case "cargo-station":
-        case "mining-station":
-          return this.$t("labels.station.locationPrefix.orbit");
-        default:
-          return this.$t("labels.station.locationPrefix.default");
-      }
-    },
-
-    suffix() {
-      if (this.station.location) {
-        return this.$t("labels.station.locationSuffix", {
-          location: this.station.location,
-        });
-      }
-
-      return null;
-    },
-  },
+  name: "StationsLocationLabel",
 };
 </script>

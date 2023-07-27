@@ -29,7 +29,7 @@ const router = createRouter({
 
   stringifyQuery(query) {
     const result = qs.stringify(query, { arrayFormat: "brackets" });
-    return result ? `?${result}` : "";
+    return result ? `${result}` : "";
   },
 
   routes: addTrailingSlashToAllRoutes(initialRoutes),

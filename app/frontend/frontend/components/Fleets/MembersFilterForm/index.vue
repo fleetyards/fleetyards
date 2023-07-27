@@ -28,57 +28,51 @@
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 
+//   data() {
+//     const query = this.$route.query.q || {};
+//     return {
+//       form: {
+//         usernameCont: query.usernameCont,
+//         roleIn: query.roleIn || [],
+//       },
+
+//       roleOptions: [
+//         {
+//           name: this.$t("labels.fleet.members.roles.admin"),
+//           value: "admin",
+//         },
+//         {
+//           name: this.$t("labels.fleet.members.roles.officer"),
+//           value: "officer",
+//         },
+//         {
+//           name: this.$t("labels.fleet.members.roles.member"),
+//           value: "member",
+//         },
+//       ],
+//     };
+//   },
+
+//   watch: {
+//     $route() {
+//       const query = this.$route.query.q || {};
+//       this.form = {
+//         usernameCont: query.usernameCont,
+//         roleIn: query.roleIn || [],
+//         sorts: query.sorts,
+//       };
+//     },
+//   },
+// };
+</script>
+
+<script lang="ts">
 export default {
-  name: "FleetFilterForm",
-
-  components: {
-    FilterGroup,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-    return {
-      form: {
-        usernameCont: query.usernameCont,
-        roleIn: query.roleIn || [],
-      },
-
-      roleOptions: [
-        {
-          name: this.$t("labels.fleet.members.roles.admin"),
-          value: "admin",
-        },
-        {
-          name: this.$t("labels.fleet.members.roles.officer"),
-          value: "officer",
-        },
-        {
-          name: this.$t("labels.fleet.members.roles.member"),
-          value: "member",
-        },
-      ],
-    };
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        usernameCont: query.usernameCont,
-        roleIn: query.roleIn || [],
-        sorts: query.sorts,
-      };
-    },
-  },
+  name: "FleetMembersFilterForm",
 };
 </script>

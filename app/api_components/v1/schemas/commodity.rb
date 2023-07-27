@@ -25,7 +25,7 @@ module V1
           media: {
             type: :object,
             properties: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              storeImage: {"$ref": "#/components/schemas/MediaImage"}
             }
           },
 
@@ -36,7 +36,7 @@ module V1
           storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
         additionalProperties: false,
-        required: %w[id name slug availability media createdAt updatedAt]
+        required: %w[id name slug availability media]
       })
     end
   end

@@ -2,8 +2,8 @@
   <Panel :id="id || item.slug" class="station-item">
     <div class="panel-image text-center">
       <router-link
-        :key="item.storeImageMedium"
-        v-lazy:background-image="item.storeImageMedium"
+        :key="item.media?.storeImage?.medium"
+        v-lazy:background-image="item.media?.storeImage?.medium"
         :to="route"
         :aria-label="item.name"
         class="lazy"
@@ -17,30 +17,25 @@
   </Panel>
 </template>
 
-<script>
+<script lang="ts" setup>
+import type { CelestialObjectMinimal } from "@/services/fyApi";
+import type { RouteLocationRaw } from "vue-router";
 import Panel from "@/shared/components/Panel/index.vue";
 
+type Props = {
+  item: CelestialObjectMinimal;
+  route: RouteLocationRaw;
+  id?: string;
+};
+
+withDefaults(defineProps<Props>(), {
+  id: undefined,
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "PlanetsPanel",
-
-  components: {
-    Panel,
-  },
-
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-    route: {
-      type: Object,
-      required: true,
-    },
-    id: {
-      type: String,
-      default: null,
-    },
-  },
 };
 </script>
 

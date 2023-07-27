@@ -13,50 +13,50 @@
       v-else
       key="user-menu-guest"
       :to="{ name: 'login' }"
-      :label="$t('nav.login')"
+      :label="t('nav.login')"
       icon="fal fa-sign-in"
     />
   </ul>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
-import NavigationMixin from "@/frontend/mixins/Navigation";
+<script lang="ts" setup>
 import NavItem from "../NavItem/index.vue";
 import UserNav from "../UserNav/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useAppStore } from "@/frontend/stores/app";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
 
+const { t } = useI18n();
+
+const mobile = useMobile();
+
+const appStore = useAppStore();
+
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
+
+const slim = computed(() => {
+  return appStore.navSlim && !mobile.value;
+});
+
+const toggleSlimLabel = computed(() => {
+  if (slim.value) {
+    return t("nav.toggleSlimExpand");
+  }
+
+  return t("nav.toggleSlimCollapse");
+});
+
+const toggleSlim = () => {
+  appStore.toggleSlimNav();
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "NavFooter",
-
-  components: {
-    NavItem,
-    UserNav,
-  },
-
-  mixins: [NavigationMixin],
-
-  computed: {
-    ...mapGetters(["mobile"]),
-
-    ...mapGetters("app", ["navSlim"]),
-
-    slim() {
-      return this.navSlim && !this.mobile;
-    },
-
-    toggleSlimLabel() {
-      if (this.slim) {
-        return this.$t("nav.toggleSlimExpand");
-      }
-
-      return this.$t("nav.toggleSlimCollapse");
-    },
-  },
-
-  methods: {
-    toggleSlim() {
-      this.$store.commit("app/toggleSlimNav");
-    },
-  },
 };
 </script>

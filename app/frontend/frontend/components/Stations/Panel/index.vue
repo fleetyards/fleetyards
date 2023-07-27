@@ -1,8 +1,8 @@
 <template>
   <Panel :id="station.slug" class="station-panel">
     <div
-      :key="station.storeImage"
-      v-lazy:background-image="station.storeImage"
+      :key="station.media.storeImage?.large"
+      v-lazy:background-image="station.media.storeImage?.large"
       class="panel-bg lazy"
     />
     <div class="row">
@@ -37,24 +37,21 @@
   </Panel>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Stats from "@/frontend/components/Stations/ListStats/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import type { StationMinimal } from "@/services/fyApi";
 
+type Props = {
+  station: StationMinimal;
+};
+
+defineProps<Props>();
+</script>
+
+<script lang="ts">
 export default {
   name: "StationsPanel",
-
-  components: {
-    Panel,
-    Stats,
-  },
-
-  props: {
-    station: {
-      type: Object,
-      required: true,
-    },
-  },
 };
 </script>
 

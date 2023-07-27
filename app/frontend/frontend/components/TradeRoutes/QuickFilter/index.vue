@@ -46,48 +46,39 @@
   </div>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+<script lang="ts" setup>
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 
+const form = ref({});
+
+const setupForm = () => {
+  const query = queryParams();
+
+  query.originStationIn = query.originStationIn || [];
+  query.commodityIn = query.commodityIn || [];
+  query.destinationStationIn = query.destinationStationIn || [];
+
+  form.value = query;
+};
+
+const route = useRoute();
+
+watch(
+  () => route.query,
+  () => {
+    setupForm();
+  },
+  { deep: true }
+);
+
+const queryParams = () => {
+  return JSON.parse(JSON.stringify(route.query.q || {}));
+};
+</script>
+
+<script lang="ts">
 export default {
   name: "TradeRoutesQuickFilter",
-
-  components: {
-    FilterGroup,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.queryParams();
-
-    query.originStationIn = query.originStationIn || [];
-    query.commodityIn = query.commodityIn || [];
-    query.destinationStationIn = query.destinationStationIn || [];
-
-    return {
-      form: query,
-    };
-  },
-
-  watch: {
-    $route() {
-      const query = this.queryParams();
-
-      query.originStationIn = query.originStationIn || [];
-      query.commodityIn = query.commodityIn || [];
-      query.destinationStationIn = query.destinationStationIn || [];
-
-      this.form = query;
-    },
-  },
-
-  methods: {
-    queryParams() {
-      return JSON.parse(JSON.stringify(this.$route.query.q || {}));
-    },
-  },
 };
 </script>
 

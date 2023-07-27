@@ -1,38 +1,39 @@
 <template>
   <FilteredList
-    :collection="collection"
-    :name="$route.name"
-    :route-query="$route.query"
-    route-filter-name="filters"
-    :hash="$route.hash"
-    :params="routeParams"
-    :paginated="true"
-    :always-filter-visible="true"
-    :hide-empty-box="true"
-    :hide-loading="true"
+    id="admin-commodities"
+    name="admin-commodities"
+    :records="data?.items || []"
+    :loading="isLoading || isFetching"
+    primary-key="id"
+    static-filters
+    hide-empty-box
+    hide-loading
   >
-    <FilterForm slot="filter" />
+    <template #filter>
+      <FilterForm />
+    </template>
 
     <template #actions>
-      <Btn @click.native="openAddModal('Commodity')">
-        {{ $t("actions.add") }} Commodity
+      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.COMMODITY)">
+        {{ t("actions.add") }} Commodity
       </Btn>
       <Btn @click.native="openComponentModal">
-        {{ $t("actions.add") }} Component
+        {{ t("actions.add") }} Component
       </Btn>
-      <Btn @click.native="openAddModal('Equipment')">
-        {{ $t("actions.add") }} Equipment
+      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.EQUIPMENT)">
+        {{ t("actions.add") }} Equipment
       </Btn>
-      <Btn @click.native="openAddModal('Model')">
-        {{ $t("actions.add") }} Model
+      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.MODEL)">
+        {{ t("actions.add") }} Model
       </Btn>
-      <Btn @click.native="openAddModal('ModelPaint')">
-        {{ $t("actions.add") }} ModelPaint
+      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.MODEL_PAINT)">
+        {{ t("actions.add") }} ModelPaint
       </Btn>
-      <Btn @click.native="openAddModal('ModelModule')">
-        {{ $t("actions.add") }} ModelModule
+      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.MODEL_MODULE)">
+        {{ t("actions.add") }} ModelModule
       </Btn>
     </template>
+
     <template #default="{ records, loading, emptyBoxVisible, primaryKey }">
       <FilteredTable
         :records="records"
@@ -40,6 +41,7 @@
         :columns="tableColumns"
         :loading="loading"
         :empty-box-visible="emptyBoxVisible"
+        selectable
       >
         <template #col-item="{ record }">
           {{ record.item.name }}
@@ -48,23 +50,26 @@
             {{ record.item.itemTypeLabel }}
           </small>
         </template>
+
         <template #col-prices="{ record }">
           <div class="d-flex flex-column">
             <div
               v-for="price in prices"
-              :key="`price-${records[primaryKey]}-${price}`"
+              :key="`price-${record[primaryKey]}-${price}`"
             >
               <div v-if="record[price]" class="d-flex justify-content-between">
-                {{ $t(`labels.shopCommodity.prices.${price}`) }}:
-                <span v-html="$toUEC(record[price])" />
+                {{ t(`models.shopCommodity.prices.${price}`) }}:
+                <span v-html="toUEC(record[price])" />
               </div>
             </div>
           </div>
         </template>
+
         <template #col-confirmed="{ record }">
           <i v-if="record.confirmed" class="fal fa-check" />
           <i v-else class="fal fa-times" />
         </template>
+
         <template #col-actions="{ record }">
           <BtnGroup :inline="true">
             <Btn
@@ -73,7 +78,7 @@
               :inline="true"
               @click.native="openEditModal(record)"
             >
-              {{ $t("actions.edit") }}
+              {{ t("actions.edit") }}
             </Btn>
             <BtnDropdown :inline="true" size="small" variant="link">
               <Btn
@@ -82,7 +87,7 @@
                 @click.native="openSellPricesModal(record)"
               >
                 <i class="fal fa-list" />
-                <span>{{ $t("labels.shopCommodity.sellPrices") }}</span>
+                <span>{{ t("models.shopCommodity.sellPrices") }}</span>
               </Btn>
               <Btn
                 size="small"
@@ -90,7 +95,7 @@
                 @click.native="openBuyPricesModal(record)"
               >
                 <i class="fal fa-list" />
-                <span>{{ $t("labels.shopCommodity.buyPrices") }}</span>
+                <span>{{ t("models.shopCommodity.buyPrices") }}</span>
               </Btn>
               <Btn
                 size="small"
@@ -98,7 +103,7 @@
                 @click.native="openRentalPricesModal(record)"
               >
                 <i class="fal fa-list" />
-                <span>{{ $t("labels.shopCommodity.rentalPrices") }}</span>
+                <span>{{ t("models.shopCommodity.rentalPrices") }}</span>
               </Btn>
               <Btn
                 size="small"
@@ -108,190 +113,224 @@
                 @click.native="remove(record)"
               >
                 <i class="fal fa-trash" />
-                <span>{{ $t("actions.remove") }}</span>
+                <span>{{ t("actions.remove") }}</span>
               </Btn>
             </BtnDropdown>
           </BtnGroup>
         </template>
       </FilteredTable>
     </template>
+    <template #pagination-bottom>
+      <Paginator
+        :pagination="pagination"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
+<script lang="ts" setup>
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FilteredTable from "@/shared/components/FilteredTable/index.vue";
 import FilterForm from "@/admin/components/ShopCommodities/FilterForm/index.vue";
-import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import shopCommoditiesCollection from "@/admin/api/collections/ShopCommodities";
-import { displayConfirm } from "@/frontend/lib/Noty";
+import BtnGroup from "@/shared/components/BaseBtnGroup/index.vue";
+import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import { useI18n } from "@/admin/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useRoute } from "vue-router";
+import { usePagination } from "@/shared/composables/usePagination";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useQuery } from "@tanstack/vue-query";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import { useApiClient } from "@/admin/composables/useApiClient";
+import type {
+  ShopCommodityMinimal,
+  ShopCommodityQuery,
+  BaseList,
+} from "@/services/fyAdminApi";
+import { ShopCommodityItemTypeEnum } from "@/services/fyAdminApi";
 
-@Component<AdminStationImages>({
-  components: {
-    FilteredList,
-    FilteredTable,
-    FilterForm,
-    BtnGroup,
-    BtnDropdown,
-    Btn,
+const deleting = ref(false);
+
+const { t, toUEC } = useI18n();
+
+const tableColumns = ref([
+  { name: "item", label: t("models.shopCommodity.item"), width: "30%" },
+  {
+    name: "prices",
+    label: t("models.shopCommodity.prices.label"),
+    width: "20%",
   },
-})
-export default class AdminStationImages extends Vue {
-  collection: ShopCommoditiesCollection = shopCommoditiesCollection;
+  {
+    name: "confirmed",
+    label: t("models.shopCommodity.confirmed"),
+    width: "10%",
+  },
+  {
+    name: "actions",
+    label: t("labels.actions"),
+    width: "10%",
+    class: "actions",
+  },
+]);
 
-  deleting = false;
+const prices = ref([
+  "buyPrice",
+  "averageBuyPrice",
+  "sellPrice",
+  "averageSellPrice",
+  "rentalPrice1Day",
+  "averageRentalPrice1Day",
+  "rentalPrice3Days",
+  "averageRentalPrice3Days",
+  "rentalPrice7Days",
+  "averageRentalPrice7Days",
+  "rentalPrice30Days",
+  "averageRentalPrice30Days",
+]);
 
-  tableColumns = [
-    { name: "item", label: this.$t("labels.shopCommodity.item"), width: "30%" },
-    {
-      name: "prices",
-      label: this.$t("labels.shopCommodity.prices.label"),
-      width: "20%",
+const route = useRoute();
+
+const routeQuery = computed(() => {
+  return (route.query.q || {}) as ShopCommodityQuery;
+});
+
+const { shops: shopsService, shopCommodities: shopCommodityService } =
+  useApiClient();
+
+const { isLoading, isFetching, data, refetch } = useQuery({
+  queryKey: ["admin-commodities"],
+  queryFn: () =>
+    shopsService.shopCommodities({
+      shopId: route.params.shopId as string,
+      page: page.value,
+      perPage: perPage.value,
+      filters: routeQuery.value,
+    }),
+});
+
+const { perPage, page, pagination, updatePerPage } = usePagination(
+  "admin-commodities",
+  data as Ref<BaseList>,
+  refetch
+);
+
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("prices-update", refetch);
+  comlink.on("commodities-update", refetch);
+});
+
+onUnmounted(() => {
+  comlink.off("prices-update", refetch);
+  comlink.off("commodities-update", refetch);
+});
+
+const openEditModal = (shopCommodity: ShopCommodityMinimal) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/ShopCommodities/Modal/index.vue"),
+    props: {
+      shopId: route.params.shopId,
+      shopCommodity,
     },
-    {
-      name: "confirmed",
-      label: this.$t("labels.shopCommodity.confirmed"),
-      width: "10%",
+  });
+};
+
+const openSellPricesModal = (shopCommodity: ShopCommodityMinimal) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
+    props: {
+      path: "sell",
+      shopId: route.params.shopId,
+      shopCommodity,
     },
-    {
-      name: "actions",
-      label: this.$t("labels.actions"),
-      width: "10%",
-      class: "actions",
+  });
+};
+
+const openBuyPricesModal = (shopCommodity: ShopCommodityMinimal) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
+    props: {
+      path: "buy",
+      shopId: route.params.shopId,
+      shopCommodity,
     },
-  ];
+  });
+};
 
-  prices = [
-    "buyPrice",
-    "averageBuyPrice",
-    "sellPrice",
-    "averageSellPrice",
-    "rentalPrice1Day",
-    "averageRentalPrice1Day",
-    "rentalPrice3Days",
-    "averageRentalPrice3Days",
-    "rentalPrice7Days",
-    "averageRentalPrice7Days",
-    "rentalPrice30Days",
-    "averageRentalPrice30Days",
-  ];
+const openRentalPricesModal = (shopCommodity: ShopCommodityMinimal) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
+    props: {
+      path: "rental",
+      shopId: route.params.shopId,
+      shopCommodity,
+    },
+  });
+};
 
-  get routeParams() {
-    return {
-      shopId: this.$route.params.shopId,
-    };
+const openAddModal = (commodityItemType: ShopCommodityItemTypeEnum) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/ShopCommodities/NewModal/index.vue"),
+    props: {
+      shopId: route.params.shopId,
+      commodityItemType,
+    },
+  });
+};
+
+const openComponentModal = () => {
+  const filters = (route.query.filters || {}) as ShopCommodityQuery;
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/ShopCommodities/NewModal/index.vue"),
+    props: {
+      shopId: route.params.shopId,
+      commodityItemType: "Component",
+      itemTypeFilter: (filters.componentItemType || [])[0],
+    },
+  });
+};
+
+const { displayConfirm } = useNoty(t);
+
+const remove = (shopCommodity: ShopCommodityMinimal) => {
+  deleting.value = true;
+
+  displayConfirm({
+    text: t("messages.confirm.shopCommodity.destroy"),
+    onConfirm: () => {
+      destroy(shopCommodity);
+    },
+    onClose: () => {
+      deleting.value = false;
+    },
+  });
+};
+
+const destroy = async (shopCommodity: ShopCommodityMinimal) => {
+  try {
+    await shopCommodityService.destroyShopCommodity({ id: shopCommodity.id });
+
+    refetch();
+  } catch (e) {
+    console.error(e);
   }
 
-  mounted() {
-    this.$comlink.$on("prices-update", this.fetch);
-    this.$comlink.$on("commodities-update", this.fetch);
-  }
+  deleting.value = false;
+};
+</script>
 
-  beforeDestroy() {
-    this.$comlink.$off("prices-update");
-    this.$comlink.$off("commodities-update");
-  }
-
-  async fetch() {
-    await this.collection.refresh();
-  }
-
-  openEditModal(shopCommodity) {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/admin/components/ShopCommodities/Modal/index.vue"),
-      props: {
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    });
-  }
-
-  openSellPricesModal(shopCommodity) {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
-      props: {
-        path: "sell",
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    });
-  }
-
-  openBuyPricesModal(shopCommodity) {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
-      props: {
-        path: "buy",
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    });
-  }
-
-  openRentalPricesModal(shopCommodity) {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
-      props: {
-        path: "rental",
-        shopId: this.routeParams.shopId,
-        shopCommodity,
-      },
-    });
-  }
-
-  openAddModal(commodityItemType) {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/admin/components/ShopCommodities/NewModal/index.vue"),
-      props: {
-        shopId: this.routeParams.shopId,
-        commodityItemType,
-      },
-    });
-  }
-
-  openComponentModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/admin/components/ShopCommodities/NewModal/index.vue"),
-      props: {
-        shopId: this.routeParams.shopId,
-        commodityItemType: "Component",
-        itemTypeFilter: (this.$route.query.filters?.component_item_type ||
-          [])[0],
-      },
-    });
-  }
-
-  remove(shopCommodity) {
-    this.deleting = true;
-    displayConfirm({
-      text: this.$t("messages.confirm.shopCommodity.destroy"),
-      onConfirm: () => {
-        this.destroy(shopCommodity);
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
-    });
-  }
-
-  async destroy(shopCommodity) {
-    if (
-      await this.collection.destroy(this.routeParams.shopId, shopCommodity.id)
-    ) {
-      this.fetch();
-    }
-
-    this.deleting = false;
-  }
-}
+<script lang="ts">
+export default {
+  name: "AdminCommoditiesPage",
+};
 </script>

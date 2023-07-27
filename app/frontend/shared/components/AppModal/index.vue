@@ -16,7 +16,6 @@
 </template>
 
 <script lang="ts" setup>
-// import { displayConfirm } from "@/frontend/lib/Noty";
 import type { Component } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useOverlayStore } from "@/shared/stores/overlay";
@@ -24,12 +23,12 @@ import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import type { NotyPluginOptions } from "@/shared/plugins/Noty";
 
 export type AppModalOptions = {
-  component: Promise<Component>;
-  title: string;
-  wide: boolean;
-  fixed: boolean;
-  dirty: boolean;
-  props: any;
+  component: () => Promise<Component>;
+  title?: string;
+  wide?: boolean;
+  fixed?: boolean;
+  dirty?: boolean;
+  props?: any;
 };
 
 interface ModalComponent extends HTMLElement {
@@ -94,8 +93,9 @@ const open = (options: AppModalOptions) => {
   });
 };
 
-const noty = inject("noty") as NotyPluginOptions;
-const i18n = inject("i18n") as I18nPluginOptions;
+const noty = inject<NotyPluginOptions>("noty");
+
+const i18n = inject<I18nPluginOptions>("i18n");
 
 const close = (force = false) => {
   if (fixed.value && !force) {
@@ -103,8 +103,8 @@ const close = (force = false) => {
   }
 
   if (modelComponent.value?.dirty) {
-    noty.displayConfirm({
-      text: i18n?.t("messages.confirm.modal.dirty"),
+    noty?.displayConfirm({
+      text: i18n?.t("appModal.messages.confirm.dirty"),
       onConfirm: () => {
         internalClose();
       },
@@ -141,3 +141,7 @@ export default {
   name: "AppModal",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

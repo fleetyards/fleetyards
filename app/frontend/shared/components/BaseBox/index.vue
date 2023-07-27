@@ -18,7 +18,7 @@
 import Panel from "@/shared/components/Panel/index.vue";
 
 type Props = {
-  large: boolean;
+  large?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
@@ -31,3 +31,7 @@ export default {
   name: "BaseBox",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

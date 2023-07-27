@@ -22,10 +22,13 @@
   "include": [
     "@types/*",
     "app/frontend/**/*.ts",
-    "app/frontend/**/*.tsx",
-    "app/frontend/**/*.vue",
     "app/frontend/**/*.d.ts",
-    "test/javascript/**/*.ts",
+    "app/frontend/**/*.vue",
     "cypress/**/*.ts"
+  ],
+  "exclude": [
+    "app/frontend/services/fyAdminApi/*",
+    "app/frontend/services/fyApi/*",
+    "app/frontend/services/request.template.ts"
   ]
 }

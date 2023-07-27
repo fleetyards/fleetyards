@@ -1,7 +1,7 @@
 <template>
   <nav
     ref="navigation"
-    class="transition-nav ease-[ease] duration-500 absolute top-0 right-0 lg:top-auto lg:right-auto lg:relative z-[1000] w-full lg:w-[300px] min-w-[300px] lg:h-screen"
+    class="transition-nav ease-[ease] duration-500 absolute top-0 right-0 lg:top-auto lg:right-auto z-[1000] w-full lg:w-[300px] min-w-[300px] lg:h-screen"
     role="navigation"
   >
     <div

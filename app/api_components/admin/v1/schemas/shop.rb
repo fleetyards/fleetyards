@@ -19,7 +19,7 @@ module Admin
             media: {
               type: :object,
               properties: {
-                storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+                storeImage: {"$ref": "#/components/schemas/MediaImage"}
               }
             },
             refineryTerminal: {type: :boolean},
@@ -38,7 +38,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             id name slug type typeLabel stationLabel locationLabel rental buying selling
-            refineryTerminal media station
+            refineryTerminal station
           ]
         })
       end

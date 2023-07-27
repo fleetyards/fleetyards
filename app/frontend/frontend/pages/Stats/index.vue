@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t("headlines.stats") }}
+              {{ t("headlines.stats") }}
             </h1>
           </div>
         </div>
@@ -20,8 +20,8 @@
                   {{ quickStats.shipsCountYear }}
                   <div class="panel-box-text-info">
                     {{
-                      $t("labels.stats.quickStats.newShips", {
-                        year: new Date().getFullYear(),
+                      t("labels.stats.quickStats.newShips", {
+                        year: String(new Date().getFullYear()),
                       })
                     }}
                   </div>
@@ -38,7 +38,7 @@
                 <div class="panel-box-text">
                   {{ quickStats.shipsCountTotal }}
                   <div class="panel-box-text-info">
-                    {{ $t("labels.stats.quickStats.totalShips") }}
+                    {{ t("labels.stats.quickStats.totalShips") }}
                   </div>
                 </div>
               </div>
@@ -50,12 +50,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsByClassification") }}
+                  {{ t("labels.stats.modelsByClassification") }}
                 </h2>
               </div>
               <Chart
+                name="models-by-classification"
                 key="models-by-classification"
-                :load-data="loadModelsByClassification"
+                :load-data="statsService.modelsByClassification"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -65,12 +66,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsBySize") }}
+                  {{ t("labels.stats.modelsBySize") }}
                 </h2>
               </div>
               <Chart
+                name="models-by-size"
                 key="models-by-size"
-                :load-data="loadModelsBySize"
+                :load-data="statsService.modelsBySize"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -82,12 +84,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsByProductionStatus") }}
+                  {{ t("labels.stats.modelsByProductionStatus") }}
                 </h2>
               </div>
               <Chart
+                name="models-by-production-status"
                 key="models-by-production-status"
-                :load-data="loadModelsByProductionStatus"
+                :load-data="statsService.modelsByProductionStatus"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -97,12 +100,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsPerMonth") }}
+                  {{ t("labels.stats.modelsPerMonth") }}
                 </h2>
               </div>
               <Chart
+                name="models-per-month"
                 key="models-per-month"
-                :load-data="loadModelsPerMonth"
+                :load-data="statsService.modelsPerMonth"
                 tooltip-type="ship"
                 type="column"
               />
@@ -114,12 +118,13 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ $t("labels.stats.modelsByManufacturer") }}
+                  {{ t("labels.stats.modelsByManufacturer") }}
                 </h2>
               </div>
               <Chart
+                name="models-by-manufacturer"
                 key="models-by-manufacturer"
-                :load-data="loadModelsByManufacturer"
+                :load-data="statsService.modelsByManufacturer"
                 tooltip-type="ship-pie"
                 type="pie"
               />
@@ -131,74 +136,28 @@
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Chart from "@/shared/components/Chart/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 
+const { stats: statsService } = useApiClient();
+
+useMetaInfo();
+
+const { t } = useI18n();
+
+const { data: quickStats } = useQuery({
+  queryKey: ["quickstats"],
+  queryFn: () => statsService.stats(),
+});
+</script>
+
+<script lang="ts">
 export default {
-  name: "StatsIndex",
-
-  components: {
-    Chart,
-    Panel,
-  },
-
-  data() {
-    return {
-      quickStats: null,
-    };
-  },
-
-  mounted() {
-    this.loadQuickStats();
-  },
-
-  methods: {
-    async loadQuickStats() {
-      const response = await this.$api.get("stats/quick-stats");
-      if (!response.error) {
-        this.quickStats = response.data;
-      }
-    },
-    async loadModelsByClassification() {
-      const response = await this.$api.get("stats/models-by-classification");
-      if (!response.error) {
-        return response.data;
-      }
-      return [];
-    },
-
-    async loadModelsBySize() {
-      const response = await this.$api.get("stats/models-by-size");
-      if (!response.error) {
-        return response.data;
-      }
-      return [];
-    },
-
-    async loadModelsPerMonth() {
-      const response = await this.$api.get("stats/models-per-month");
-      if (!response.error) {
-        return response.data;
-      }
-      return [];
-    },
-
-    async loadModelsByManufacturer() {
-      const response = await this.$api.get("stats/models-by-manufacturer");
-      if (!response.error) {
-        return response.data;
-      }
-      return [];
-    },
-
-    async loadModelsByProductionStatus() {
-      const response = await this.$api.get("stats/models-by-production-status");
-      if (!response.error) {
-        return response.data;
-      }
-      return [];
-    },
-  },
+  name: "StatsPage",
 };
 </script>

@@ -3,7 +3,7 @@
     id="app"
     :key="locale"
     :class="{
-      [`page-${$route.name}`]: true,
+      [`page-${String(route.name)}`]: true,
     }"
     class="app-body"
   >
@@ -35,10 +35,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter, Mutation } from "vuex-class";
+<script lang="ts" setup>
 import userCollection from "@/frontend/api/collections/User";
 import versionCollection from "@/frontend/api/collections/Version";
 import AppNavigation from "@/frontend/core/components/AppNavigation/index.vue";
@@ -48,212 +45,197 @@ import AppFooter from "@/frontend/core/components/AppFooter/index.vue";
 import AppModal from "@/frontend/core/components/AppModal/index.vue";
 import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
-import { requestPermission } from "@/frontend/lib/Noty";
+import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useUpdates } from "@/frontend/composables/useUpdates";
+import { useAppStore } from "@/frontend/stores/app";
+import { useOverlayStore } from "@/shared/stores/overlay";
+import { useI18nStore } from "@/shared/stores/i18n";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useCookiesStore } from "@/frontend/stores/cookies";
+import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useAhoy } from "@/frontend/composables/useAhoy";
+
+const mobile = useMobile();
+
+useUpdates();
+
+useAhoy();
+
+const appStore = useAppStore();
+
+const { navCollapsed } = storeToRefs(appStore);
+
+const overlayStore = useOverlayStore();
+
+const { visible: overlayVisible } = storeToRefs(overlayStore);
+
+const i18nStore = useI18nStore();
+
+const { locale } = storeToRefs(i18nStore);
+
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
+
+const cookiesStore = useCookiesStore();
+
+const { infoVisible } = storeToRefs(cookiesStore);
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
-const { I18n, availableLocales } = useI18n();
+const { t, availableLocales } = useI18n();
 
-@Component<FrontendApp>({
-  components: {
-    BackgroundImage,
-    AppNavigation,
-    AppNavigationHeader,
-    AppNavigationMobile,
-    AppFooter,
-    AppModal,
-    AppShoppingCart,
-  },
-})
-export default class FrontendApp extends Vue {
-  sessionRenewInterval: boolean = null;
+useMetaInfo(t);
 
-  @Getter("mobile") mobile;
+const { requestBrowserPermission } = useNoty(t);
 
-  @Getter("locale") locale;
-
-  @Getter("navCollapsed", { namespace: "app" }) navCollapsed: boolean;
-
-  @Getter("overlayVisible", { namespace: "app" }) overlayVisible: boolean;
-
-  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated: boolean;
-
-  @Getter("currentUser", { namespace: "session" }) currentUser: User;
-
-  @Getter("cookies", { namespace: "cookies" }) cookies;
-
-  @Getter("infoVisible", { namespace: "cookies" })
-  cookiesInfoVisible: boolean;
-
-  @Mutation("setLocale") setLocale;
-
-  get ahoyAccepted() {
-    return this.cookies.ahoy;
+watch(
+  () => navCollapsed.value,
+  () => {
+    setNoScroll();
   }
+);
 
-  @Watch("navCollapsed")
-  onNavCollapsedChange() {
-    this.setNoScroll();
+watch(
+  () => overlayVisible.value,
+  () => {
+    setNoScroll();
   }
+);
 
-  @Watch("overlayVisible")
-  onOverlayVisibleChange() {
-    this.setNoScroll();
-  }
+watch(
+  () => isAuthenticated.value,
+  () => {
+    if (isAuthenticated) {
+      requestBrowserPermission();
 
-  @Watch("isAuthenticated")
-  onAuthenticationChange() {
-    if (this.isAuthenticated) {
-      requestPermission();
-      this.fetchCurrentUser();
-    } else {
-      if (this.sessionRenewInterval) {
-        clearInterval(this.sessionRenewInterval);
-      }
-
-      if (this.$route.meta.needsAuthentication) {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this.$router.push({ name: "login" }).catch(() => {});
-      }
+      fetchCurrentUser();
     }
   }
+);
 
-  @Watch("$route")
-  onRouteChange() {
-    this.checkSessionReload();
-    if (this.cookiesInfoVisible && this.$route.name !== "privacy-policy") {
-      this.openPrivacySettings();
-    } else if (
-      this.cookiesInfoVisible &&
-      this.$route.name === "privacy-policy"
-    ) {
-      this.$comlink.$emit("close-modal", true);
-    }
-    this.setupLocale();
-  }
+const route = useRoute();
 
-  @Watch("ahoyAccepted")
-  onAhoyAcceptedChange() {
-    if (this.ahoyAccepted) {
-      this.$ahoy.trackView();
-      // this.$ahoy.trackClicks()
-      this.$ahoy.trackSubmits("form");
-      this.$ahoy.trackChanges("input, textarea, select");
-    } else {
-      window.location.reload(true);
-    }
-  }
+const comlink = useComlink();
 
-  @Watch("locale")
-  onLocaleChange() {
-    if (this.locale) {
-      I18n.locale = this.locale;
-    }
-  }
+watch(
+  () => route.name,
+  () => {
+    checkSessionReload();
 
-  async created() {
-    this.checkSessionReload();
-    this.setNoScroll();
-    this.checkMobile();
-
-    useMetaInfo();
-    useUpdates();
-
-    if (this.isAuthenticated) {
-      requestPermission();
-      this.fetchCurrentUser();
+    if (infoVisible.value && route.name !== "privacy-policy") {
+      openPrivacySettings();
+    } else if (infoVisible.value && route.name === "privacy-policy") {
+      comlink.emit("close-modal", true);
     }
 
-    if (this.ahoyAccepted) {
-      this.$ahoy.trackView();
-      this.$ahoy.trackClicks("[data-click-tracking=true]");
-      this.$ahoy.trackSubmits("form");
-      this.$ahoy.trackChanges("input, textarea, select");
-    }
+    setupLocale();
+  }
+);
 
-    this.checkVersion();
+const checkStoreVersion = () => {
+  if (appStore.storeVersion !== window.STORE_VERSION) {
+    console.info("Updating Store Version and resetting Store");
 
-    setInterval(() => {
-      this.checkVersion();
-    }, CHECK_VERSION_INTERVAL);
+    appStore.$reset();
+    appStore.storeVersion = window.STORE_VERSION;
+  }
+};
 
-    this.$comlink.$on("open-privacy-settings", this.openPrivacySettings);
+onBeforeMount(() => {
+  checkStoreVersion();
+});
 
-    window.addEventListener("resize", this.checkMobile);
-    this.$comlink.$on("user-update", this.fetchCurrentUser);
-    this.$comlink.$on("fleet-create", this.fetchCurrentUser);
-    this.$comlink.$on("fleet-update", this.fetchCurrentUser);
+onMounted(async () => {
+  checkSessionReload();
+  setNoScroll();
 
-    this.setupLocale();
+  if (isAuthenticated.value) {
+    requestBrowserPermission();
+
+    fetchCurrentUser();
   }
 
-  beforeDestroy() {
-    window.removeEventListener("resize", this.checkMobile);
-    this.$comlink.$off("user-update");
-    this.$comlink.$off("fleet-create");
-    this.$comlink.$off("fleet-update");
+  checkVersion();
+
+  setInterval(() => {
+    checkVersion();
+  }, CHECK_VERSION_INTERVAL);
+
+  comlink.on("open-privacy-settings", openPrivacySettings);
+  comlink.on("user-update", fetchCurrentUser);
+  comlink.on("fleet-create", fetchCurrentUser);
+  comlink.on("fleet-update", fetchCurrentUser);
+
+  setupLocale();
+});
+
+onUnmounted(() => {
+  comlink.off("user-update");
+  comlink.off("fleet-create");
+  comlink.off("fleet-update");
+});
+
+const setupLocale = () => {
+  if (!locale.value && availableLocales().includes(navigator.language)) {
+    i18nStore.locale = navigator.language;
+  }
+};
+
+const openPrivacySettings = (settings = false) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/core/components/PrivacySettings/index.vue"),
+    fixed: true,
+    props: {
+      settings,
+    },
+  });
+};
+
+const setNoScroll = () => {
+  if (!navCollapsed.value) {
+    document.body.classList.add("nav-visible");
+  } else {
+    document.body.classList.remove("nav-visible");
   }
 
-  setupLocale() {
-    if (!this.locale && availableLocales.includes(navigator.language)) {
-      this.setLocale(navigator.language);
-    }
-
-    if (this.locale) {
-      I18n.locale = this.locale;
-    }
+  if (!navCollapsed.value || overlayVisible.value) {
+    document.body.classList.add("no-scroll");
+  } else {
+    document.body.classList.remove("no-scroll");
   }
+};
 
-  openPrivacySettings(settings = false) {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/core/components/PrivacySettings/index.vue"),
-      fixed: true,
-      props: {
-        settings,
-      },
-    });
+const checkSessionReload = async () => {
+  if (route.query.reload_session) {
+    sessionStore.login();
   }
+};
 
-  checkMobile() {
-    this.$store.commit("setMobile", document.documentElement.clientWidth < 992);
+const fetchCurrentUser = async () => {
+  const response = await userCollection.current();
+  if (response.data) {
+    sessionStore.currentUser = response.data;
   }
+};
 
-  setNoScroll() {
-    if (!this.navCollapsed) {
-      document.body.classList.add("nav-visible");
-    } else {
-      document.body.classList.remove("nav-visible");
-    }
+const checkVersion = async () => {
+  const response = await versionCollection.current();
 
-    if (!this.navCollapsed || this.overlayVisible) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
+  if (response) {
+    appStore.updateVersion(response);
   }
+};
+</script>
 
-  async checkSessionReload() {
-    if (this.$route.query.reload_session) {
-      await this.$store.dispatch("session/login");
-    }
-  }
-
-  async fetchCurrentUser() {
-    await this.$store.commit(
-      "session/setCurrentUser",
-      await userCollection.current()
-    );
-  }
-
-  async checkVersion() {
-    await this.$store.dispatch(
-      "app/updateVersion",
-      await versionCollection.current()
-    );
-  }
-}
+<script lang="ts">
+export default {
+  name: "FrontendApp",
+};
 </script>

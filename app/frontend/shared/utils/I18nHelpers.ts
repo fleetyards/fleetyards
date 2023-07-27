@@ -40,7 +40,7 @@ export const i18nHelpers = (i18n: I18n) => {
       unit: "$",
     });
 
-  const toAu = (value: number) => {
+  const toAu = (value: number | string) => {
     if (!value) {
       return "-";
     }
@@ -51,7 +51,7 @@ export const i18nHelpers = (i18n: I18n) => {
     });
   };
 
-  const toUEC = (value: number, unit?: string) => {
+  const toUEC = (value?: number, unit?: string) => {
     if (!unit) {
       /* tslint:disable:no-parameter-reassignment */
       // eslint-disable-next-line no-param-reassign

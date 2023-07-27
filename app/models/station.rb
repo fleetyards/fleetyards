@@ -120,7 +120,7 @@ class Station < ApplicationRecord
     Station.station_types.map do |(item, _index)|
       Filter.new(
         category: "station_type",
-        name: Station.human_enum_name(:station_type, item),
+        label: Station.human_enum_name(:station_type, item),
         value: item
       )
     end
@@ -130,7 +130,7 @@ class Station < ApplicationRecord
     Station.classifications.map do |(item, _index)|
       Filter.new(
         category: "classification",
-        name: Station.human_enum_name(:classification, item),
+        label: Station.human_enum_name(:classification, item),
         value: item
       )
     end

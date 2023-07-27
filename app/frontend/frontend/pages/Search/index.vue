@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import searchCollection from "@/frontend/api/collections/Search";
 import type { SearchCollection } from "@/frontend/api/collections/Search";
@@ -113,10 +113,12 @@ import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
 import CommodityPanel from "@/frontend/components/Commodities/Panel/index.vue";
 import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import SearchHistory from "@/frontend/components/Search/History/index.vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFilters } from "@/frontend/composables/useFilters";
-import Store from "@/frontend/lib/Store";
+import { useFilters } from "@/shared/composables/useFilters";
+import { useSearchStore } from "@/frontend/stores/search";
+
+const searchStore = useSearchStore();
 
 const collection: SearchCollection = searchCollection;
 
@@ -192,7 +194,7 @@ const fetch = async () => {
   await collection.findAll(filters.value);
 
   if (collection.records.length && firstPage.value && form.value?.search) {
-    Store.dispatch("search/save", {
+    searchStore.save({
       search: form.value.search,
       createdAt: new Date(),
     });

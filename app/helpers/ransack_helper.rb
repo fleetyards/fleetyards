@@ -2,12 +2,12 @@
 
 module RansackHelper
   def query_params(*filters)
-    ActionController::Parameters.new(parse_query_params).permit(filters)
+    ActionController::Parameters.new(parse_query_params).permit(filters + [sorts: []])
   end
 
   def sort_by_name(fallback = "name asc", minimum = "name asc")
-    if query_params["sorts"].present?
-      sorts = query_params["sorts"]
+    if query_params["sorts"].present? || params["s"].present?
+      sorts = query_params["sorts"] || params["s"]
       sorts = sorts.split(",") if sorts.is_a? String
       minimum_parts = minimum.split
       sorts.push(minimum) unless sorts.include?(minimum_parts.first) || sorts.include?("#{minimum_parts.first} desc") || sorts.include?("#{minimum_parts.first} asc")

@@ -10,7 +10,7 @@ export type ModelUpgradeMinimal = {
     name: string | null;
     description?: string | null;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     pledgePrice?: number | null;
     /**

@@ -17,7 +17,7 @@ export type Commodity = {
     type?: string | null;
     typeLabel?: string | null;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     /**
      * @deprecated

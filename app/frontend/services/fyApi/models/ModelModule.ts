@@ -15,7 +15,7 @@ export type ModelModule = {
     };
     description?: string | null;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     pledgePrice?: number | null;
     productionStatus?: string | null;

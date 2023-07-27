@@ -78,8 +78,8 @@ import Loader from "@/frontend/core/components/Loader/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
-import { useRoute } from "vue-router/composables";
-import { usePagination } from "@/frontend/composables/usePagination";
+import { useRoute } from "vue-router";
+import { usePagination } from "@/shared/composables/usePagination";
 import { BaseList } from "@/services/fyApi";
 
 const { t } = useI18n();

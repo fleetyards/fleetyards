@@ -49,106 +49,96 @@
   </section>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
-import Pagination from "@/frontend/mixins/Pagination";
+<script lang="ts" setup>
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
 import VideoEmbed from "@/frontend/core/components/Video/index.vue";
 
+// data() {
+//   return {
+//     videos: [],
+//     model: null,
+//     loading: false,
+//   };
+// },
+
+// computed: {
+//   ...mapGetters("cookies", ["cookies"]),
+
+//   metaTitle() {
+//     if (!this.model) {
+//       return null;
+//     }
+
+//     return this.$t("title.modelVideos", {
+//       name: this.model.name,
+//     });
+//   },
+
+//   crumbs() {
+//     if (!this.model) {
+//       return null;
+//     }
+
+//     return [
+//       {
+//         to: {
+//           name: "models",
+//           hash: `#${this.model.slug}`,
+//         },
+//         label: this.$t("nav.models.index"),
+//       },
+//       {
+//         to: { name: "model", param: { slug: this.$route.params.slug } },
+//         label: this.model.name,
+//       },
+//     ];
+//   },
+// },
+
+// watch: {
+//   $route() {
+//     this.fetch();
+//   },
+// },
+
+// created() {
+//   this.fetchModel();
+//   this.fetch();
+// }
+
+// async fetch() {
+//   this.loading = true;
+
+//   const response = await this.$api.get(
+//     `models/${this.$route.params.slug}/videos`,
+//     {
+//       page: this.$route.query.page,
+//     }
+//   );
+
+//   this.loading = false;
+
+//   if (!response.error) {
+//     this.videos = response.data;
+//   }
+
+//   this.setPages(response.meta);
+// },
+
+// async fetchModel() {
+//   const response = await this.$api.get(`models/${this.$route.params.slug}`);
+
+//   if (!response.error) {
+//     this.model = response.data;
+//   } else if (response.error.response.status === 404) {
+//     this.$router.replace({ name: "404" });
+//   }
+// }
+</script>
+
+<script lang="ts">
 export default {
   name: "ModelVideos",
-
-  components: {
-    Loader,
-    BreadCrumbs,
-    VideoEmbed,
-  },
-
-  mixins: [Pagination],
-
-  data() {
-    return {
-      videos: [],
-      model: null,
-      loading: false,
-    };
-  },
-
-  computed: {
-    ...mapGetters("cookies", ["cookies"]),
-
-    metaTitle() {
-      if (!this.model) {
-        return null;
-      }
-
-      return this.$t("title.modelVideos", {
-        name: this.model.name,
-      });
-    },
-
-    crumbs() {
-      if (!this.model) {
-        return null;
-      }
-
-      return [
-        {
-          to: {
-            name: "models",
-            hash: `#${this.model.slug}`,
-          },
-          label: this.$t("nav.models.index"),
-        },
-        {
-          to: { name: "model", param: { slug: this.$route.params.slug } },
-          label: this.model.name,
-        },
-      ];
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch();
-    },
-  },
-
-  created() {
-    this.fetchModel();
-    this.fetch();
-  },
-
-  methods: {
-    async fetch() {
-      this.loading = true;
-
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}/videos`,
-        {
-          page: this.$route.query.page,
-        }
-      );
-
-      this.loading = false;
-
-      if (!response.error) {
-        this.videos = response.data;
-      }
-
-      this.setPages(response.meta);
-    },
-
-    async fetchModel() {
-      const response = await this.$api.get(`models/${this.$route.params.slug}`);
-
-      if (!response.error) {
-        this.model = response.data;
-      } else if (response.error.response.status === 404) {
-        this.$router.replace({ name: "404" });
-      }
-    },
-  },
 };
 </script>

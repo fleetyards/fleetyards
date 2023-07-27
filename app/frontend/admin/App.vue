@@ -14,6 +14,9 @@ import AppModal from "@/shared/components/AppModal/index.vue";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useAppStore } from "@/admin/stores/app";
 import { storeToRefs } from "pinia";
+import { useNProgress } from "@/shared/composables/useNProgress";
+
+useNProgress();
 
 const i18nStore = useI18nStore();
 
@@ -33,10 +36,6 @@ onUnmounted(() => {
 const checkMobile = () => {
   appStore.mobile = document.documentElement.clientWidth < 992;
 };
-</script>
-
-<script lang="ts" setup>
-import AppModal from "@/frontend/core/components/AppModal/index.vue";
 </script>
 
 <script lang="ts">

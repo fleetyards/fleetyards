@@ -19,7 +19,7 @@ module V1
           media: {
             type: :object,
             properties: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              storeImage: {"$ref": "#/components/schemas/MediaImage"}
             }
           },
           population: {type: :string, nullable: true},

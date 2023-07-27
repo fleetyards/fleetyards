@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -38,7 +37,7 @@ defineProps<ModalProps>();
 const comlink = useComlink();
 
 const close = () => {
-  comlink.$emit("close-modal");
+  comlink.emit("close-modal");
 };
 </script>
 

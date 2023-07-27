@@ -105,7 +105,7 @@ class Vehicle < ApplicationRecord
     Vehicle.bought_via.map do |(item, _index)|
       Filter.new(
         category: "bought_via",
-        name: Vehicle.human_enum_name(:bought_via, item),
+        label: Vehicle.human_enum_name(:bought_via, item),
         value: item
       )
     end

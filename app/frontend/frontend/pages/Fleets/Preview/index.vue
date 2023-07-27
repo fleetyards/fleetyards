@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t("headlines.fleets.preview.h1") }}
+              {{ t("headlines.fleets.preview.h1") }}
             </h1>
           </div>
         </div>
@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col-12">
             <h2 class="text-center main-headline">
-              {{ $t("headlines.fleets.preview.h2") }}
+              {{ t("headlines.fleets.preview.h2") }}
             </h2>
           </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="row">
           <div class="col-12">
             <h3 class="text-center main-subheadline">
-              {{ $t("headlines.fleets.preview.h3") }}
+              {{ t("headlines.fleets.preview.h3") }}
             </h3>
           </div>
         </div>
@@ -35,11 +35,11 @@
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
-                  {{ $t("texts.fleetPreview.notified.headline") }}
+                  {{ t("texts.fleetPreview.notified.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
-                <p v-html="$t('texts.fleetPreview.notified.text')" />
+                <p v-html="t('texts.fleetPreview.notified.text')" />
               </div>
             </Panel>
           </div>
@@ -47,11 +47,11 @@
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
-                  {{ $t("texts.fleetPreview.overview.headline") }}
+                  {{ t("texts.fleetPreview.overview.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
-                <p v-html="$t('texts.fleetPreview.overview.text')" />
+                <p v-html="t('texts.fleetPreview.overview.text')" />
               </div>
             </Panel>
           </div>
@@ -59,11 +59,11 @@
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
-                  {{ $t("texts.fleetPreview.fleetchart.headline") }}
+                  {{ t("texts.fleetPreview.fleetchart.headline") }}
                 </h2>
               </div>
               <div class="panel-body text-center">
-                <p v-html="$t('texts.fleetPreview.fleetchart.text')" />
+                <p v-html="t('texts.fleetPreview.fleetchart.text')" />
               </div>
             </Panel>
           </div>
@@ -84,13 +84,13 @@
               size="large"
               :block="true"
             >
-              {{ $t("actions.signUp") }}
+              {{ t("actions.signUp") }}
             </Btn>
 
             <hr />
 
             <p class="text-center">
-              {{ $t("labels.alreadyRegistered") }}
+              {{ t("labels.alreadyRegistered") }}
             </p>
 
             <Btn
@@ -104,7 +104,7 @@
               :block="true"
               @click.native="hidePreview"
             >
-              {{ $t("actions.login") }}
+              {{ t("actions.login") }}
             </Btn>
           </div>
         </div>
@@ -113,23 +113,24 @@
   </section>
 </template>
 
-<script>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFleetStore } from "@/frontend/stores/fleet";
 
+const fleetStore = useFleetStore();
+
+const { t } = useI18n();
+
+const hidePreview = () => {
+  fleetStore.hidePreview();
+};
+</script>
+
+<script lang="ts">
 export default {
-  name: "FleetPreview",
-
-  components: {
-    Btn,
-    Panel,
-  },
-
-  methods: {
-    hidePreview() {
-      this.$store.dispatch("fleet/hidePreview");
-    },
-  },
+  name: "FleetPreviewPage",
 };
 </script>
 

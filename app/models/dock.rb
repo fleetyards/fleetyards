@@ -81,7 +81,7 @@ class Dock < ApplicationRecord
     Dock.ship_sizes.map do |(item, _index)|
       Filter.new(
         category: "ship_size",
-        name: Dock.human_enum_name(:ship_size, item),
+        label: Dock.human_enum_name(:ship_size, item),
         value: item
       )
     end
@@ -91,7 +91,7 @@ class Dock < ApplicationRecord
     Dock.dock_types.map do |(item, _index)|
       Filter.new(
         category: "dock_type",
-        name: Dock.human_enum_name(:dock_type, item),
+        label: Dock.human_enum_name(:dock_type, item),
         value: item
       )
     end

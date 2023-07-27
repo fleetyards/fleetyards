@@ -17,7 +17,7 @@ export type CommodityMinimal = {
     type?: string | null;
     typeLabel?: string | null;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     /**
      * @deprecated

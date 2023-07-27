@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="station.habitationCounts.length"
+    v-if="station.habitationCounts?.length"
     class="row"
     :class="{
       'metrics-padding': padding,
@@ -8,7 +8,7 @@
   >
     <div class="col-12 col-lg-3">
       <div class="metrics-title">
-        {{ $t("labels.station.habs") }}
+        {{ t("labels.station.habs") }}
       </div>
     </div>
     <div class="col-12 col-lg-9 metrics-block">
@@ -28,28 +28,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { useI18n } from "@/frontend/composables/useI18n";
 import { groupBy } from "@/frontend/lib/Helpers";
+import type { StationComplete } from "@/services/fyApi";
 
+type Props = {
+  station: StationComplete;
+  padding?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  padding: false,
+});
+
+const { t } = useI18n();
+
+const habitationsByName = computed(() => {
+  return groupBy(props.station.habitations || [], "habitationName");
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "StationsHabitations",
-
-  props: {
-    station: {
-      type: Object,
-      required: true,
-    },
-
-    padding: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  computed: {
-    habitationsByName() {
-      return groupBy(this.station.habitations, "habitationName");
-    },
-  },
 };
 </script>

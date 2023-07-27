@@ -82,7 +82,9 @@ export class HangarService {
     public hangarImport({
         formData,
     }: {
-        formData: string,
+        formData: {
+            import?: Blob;
+        },
     }): CancelablePromise<HangarImportResult> {
         return this.httpRequest.request({
             method: 'PUT',

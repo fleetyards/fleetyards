@@ -31,7 +31,7 @@ class CommodityRentalPrice < CommodityPrice
     CommodityRentalPrice.time_ranges.map do |(item, _index)|
       Filter.new(
         category: "time_range",
-        name: CommodityRentalPrice.human_enum_name(:time_range, item),
+        label: CommodityRentalPrice.human_enum_name(:time_range, item),
         value: item
       )
     end

@@ -60,7 +60,7 @@
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { sortBy } from "@/frontend/lib/Helpers";
 import Papa from "papaparse";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
@@ -250,5 +250,11 @@ export default {
       return "create";
     },
   },
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "HangarImportPage",
 };
 </script>

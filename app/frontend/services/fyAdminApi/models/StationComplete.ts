@@ -28,9 +28,9 @@ export type StationComplete = {
     hasImages: boolean;
     locationLabel?: string | null;
     location?: string | null;
-    media: {
+    media?: {
         backgroundImage?: string | null;
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     refinery: boolean;
     shopListLabel?: string | null;

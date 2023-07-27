@@ -3,8 +3,9 @@
     <div
       v-if="loading"
       :class="{
-        fixed: fixed,
-        inline: inline,
+        'loader--fixed': fixed,
+        'loader--relative': relative,
+        'loader--inline': inline,
       }"
       data-test="loader"
       class="loader"
@@ -37,6 +38,7 @@
 type Props = {
   loading?: boolean;
   fixed?: boolean;
+  relative?: boolean;
   inline?: boolean;
   progress?: number;
 };
@@ -54,3 +56,7 @@ export default {
   name: "LoaderComponent",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

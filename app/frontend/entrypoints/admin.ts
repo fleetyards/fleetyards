@@ -11,6 +11,7 @@ import "floating-vue/dist/style.css";
 import VueLazyload from "vue-lazyload";
 // import veeValidate from "@/shared/plugins/VeeValidate";
 import { useI18n } from "@/admin/composables/useI18n";
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -19,6 +20,7 @@ console.info(`API Endpoint: ${window.API_ENDPOINT}`);
 
 const app = createApp(App);
 
+app.use(VueQueryPlugin);
 app.use(router);
 app.use(pinia);
 app.use(sentry, router);

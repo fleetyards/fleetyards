@@ -4,7 +4,7 @@
       <form @submit.prevent="handleSubmit(submit)">
         <div class="row justify-content-lg-center">
           <div class="col-12 col-md-6 col-lg-4">
-            <h1>{{ $t("headlines.fleets.add") }}</h1>
+            <h1>{{ t("headlines.fleets.add") }}</h1>
           </div>
         </div>
 
@@ -19,7 +19,7 @@
                 min: 3,
                 regex: /^[a-zA-Z0-9\-_]{3,}$/,
               }"
-              :name="$t('labels.fleet.fid')"
+              :name="t('labels.fleet.fid')"
               slim
             >
               <FormInput
@@ -37,7 +37,7 @@
                 min: 3,
                 regex: /^[a-zA-Z0-9\-_\. ]{3,}$/,
               }"
-              :name="$t('labels.name')"
+              :name="t('labels.name')"
               slim
             >
               <FormInput
@@ -58,7 +58,7 @@
               size="large"
               data-test="fleet-save"
             >
-              {{ $t("actions.save") }}
+              {{ t("actions.save") }}
             </Btn>
           </div>
         </div>
@@ -67,59 +67,60 @@
   </section>
 </template>
 
-<script>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import fleetsCollection from "@/frontend/api/collections/Fleets";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
 
+const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useNoty(t);
+
+type FleetForm = {
+  fid?: string;
+  name?: string;
+};
+
+const form = ref<FleetForm>({
+  fid: undefined,
+  name: undefined,
+});
+
+const loading = ref(false);
+const submitting = ref(false);
+
+const submit = () => {
+  this.submitting = true;
+
+  const fleet = await fleetsCollection.create(this.form);
+
+  this.submitting = false;
+
+  if (fleet) {
+    this.$comlink.$emit("fleet-create");
+
+    displaySuccess({
+      text: this.$t("messages.fleet.create.success"),
+    });
+
+    this.$router
+      .push({
+        name: "fleet",
+        params: { slug: fleet.slug },
+      })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(() => {});
+  } else {
+    displayAlert({
+      text: this.$t("messages.fleet.create.failure"),
+    });
+  }
+};
+</script>
+
+<script lang="ts">
 export default {
-  name: "FleetAdd",
-
-  components: {
-    Btn,
-    FormInput,
-  },
-
-  data() {
-    return {
-      form: {
-        fid: null,
-        name: null,
-      },
-      loading: false,
-      submitting: false,
-    };
-  },
-
-  methods: {
-    async submit() {
-      this.submitting = true;
-
-      const fleet = await fleetsCollection.create(this.form);
-
-      this.submitting = false;
-
-      if (fleet) {
-        this.$comlink.$emit("fleet-create");
-
-        displaySuccess({
-          text: this.$t("messages.fleet.create.success"),
-        });
-
-        this.$router
-          .push({
-            name: "fleet",
-            params: { slug: fleet.slug },
-          })
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          .catch(() => {});
-      } else {
-        displayAlert({
-          text: this.$t("messages.fleet.create.failure"),
-        });
-      }
-    },
-  },
+  name: "FleetAddPage",
 };
 </script>

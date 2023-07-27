@@ -26,7 +26,7 @@ module V1
             type: :object,
             properties: {
               backgroundImage: {type: :string, nullable: true},
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              storeImage: {"$ref": "#/components/schemas/MediaImage"}
             }
           },
           refinery: {type: :boolean},

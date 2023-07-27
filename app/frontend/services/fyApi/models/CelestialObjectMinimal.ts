@@ -12,7 +12,7 @@ export type CelestialObjectMinimal = {
     slug: string;
     designation: string;
     media?: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     /**
      * @deprecated

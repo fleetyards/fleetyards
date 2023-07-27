@@ -15,7 +15,7 @@ export type Starsystem = {
     mapX?: string | null;
     mapY?: string | null;
     media?: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     population?: string | null;
     size?: string | null;

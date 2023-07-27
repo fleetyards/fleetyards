@@ -1,12 +1,13 @@
 import Noty from "noty";
 import { isBefore, addSeconds } from "date-fns";
-import { I18nPluginOptions } from "../plugins/I18n";
+import { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 export interface FleetyardsNotyOptions extends Noty.Options {
   icon?: string;
   catergory?: string;
   notifyInBackground?: boolean;
   onConfirm?: () => void;
+  onClose?: () => void;
 }
 
 export interface NotyButton extends Noty.Button {

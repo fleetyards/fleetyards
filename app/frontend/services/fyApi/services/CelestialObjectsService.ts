@@ -19,7 +19,7 @@ export class CelestialObjectsService {
      * @returns CelestialObjects successful
      * @throws ApiError
      */
-    public celestialObjects({
+    public list({
         page = '1',
         perPage = '30',
         q,
@@ -48,7 +48,7 @@ export class CelestialObjectsService {
      * @returns CelestialObjectMinimal successful
      * @throws ApiError
      */
-    public celestialObject({
+    public detail({
         slug,
     }: {
         /**

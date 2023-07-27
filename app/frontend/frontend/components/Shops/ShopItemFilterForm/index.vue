@@ -64,93 +64,87 @@
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
+<script lang="ts" setup>
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 
+//   data() {
+//     const query = this.$route.query.q || {};
+
+//     return {
+//       loading: false,
+//       form: {
+//         nameCont: query.nameCont,
+//         categoryIn: query.categoryIn || [],
+//         subCategoryIn: query.subCategoryIn || [],
+//         manufacturerIn: query.manufacturerIn || [],
+//         priceGteq: query.priceGteq,
+//         priceLteq: query.priceLteq,
+//       },
+//       categoryOptions: [
+//         {
+//           name: "Ship",
+//           value: "Model",
+//         },
+//         {
+//           name: "Component",
+//           value: "Component",
+//         },
+//         {
+//           name: "Equipment",
+//           value: "Equipment",
+//         },
+//         {
+//           name: "Commodity",
+//           value: "Commodity",
+//         },
+//         {
+//           name: "Module",
+//           value: "ModelModule",
+//         },
+//       ],
+//     };
+//   },
+
+//   watch: {
+//     $route() {
+//       const query = this.$route.query.q || {};
+//       this.form = {
+//         nameCont: query.nameCont,
+//         categoryIn: query.categoryIn || [],
+//         subCategoryIn: query.subCategoryIn || [],
+//         manufacturerIn: query.manufacturerIn || [],
+//         priceGteq: query.priceGteq,
+//         priceLteq: query.priceLteq,
+//       };
+//     },
+//   },
+
+//   methods: {
+//     fetchSubCategories() {
+//       return this.$api.get("filters/shop-commodities/sub-categories");
+//     },
+
+//     fetchCommodityManufacturers({ page, search, missingValue }) {
+//       const query = {
+//         q: {},
+//       };
+//       if (search) {
+//         query.q.nameCont = search;
+//       } else if (missingValue) {
+//         query.q.nameIn = missingValue;
+//       } else if (page) {
+//         query.page = page;
+//       }
+//       return this.$api.get("manufacturers", query);
+//     },
+//   },
+// };
+</script>
+
+<script lang="ts">
 export default {
-  name: "ShopsItemFilterForm",
-
-  components: {
-    FilterGroup,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-
-    return {
-      loading: false,
-      form: {
-        nameCont: query.nameCont,
-        categoryIn: query.categoryIn || [],
-        subCategoryIn: query.subCategoryIn || [],
-        manufacturerIn: query.manufacturerIn || [],
-        priceGteq: query.priceGteq,
-        priceLteq: query.priceLteq,
-      },
-      categoryOptions: [
-        {
-          name: "Ship",
-          value: "Model",
-        },
-        {
-          name: "Component",
-          value: "Component",
-        },
-        {
-          name: "Equipment",
-          value: "Equipment",
-        },
-        {
-          name: "Commodity",
-          value: "Commodity",
-        },
-        {
-          name: "Module",
-          value: "ModelModule",
-        },
-      ],
-    };
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        nameCont: query.nameCont,
-        categoryIn: query.categoryIn || [],
-        subCategoryIn: query.subCategoryIn || [],
-        manufacturerIn: query.manufacturerIn || [],
-        priceGteq: query.priceGteq,
-        priceLteq: query.priceLteq,
-      };
-    },
-  },
-
-  methods: {
-    fetchSubCategories() {
-      return this.$api.get("filters/shop-commodities/sub-categories");
-    },
-
-    fetchCommodityManufacturers({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      };
-      if (search) {
-        query.q.nameCont = search;
-      } else if (missingValue) {
-        query.q.nameIn = missingValue;
-      } else if (page) {
-        query.page = page;
-      }
-      return this.$api.get("manufacturers", query);
-    },
-  },
+  name: "ShopItemFilterForm",
 };
 </script>

@@ -170,90 +170,83 @@
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
-import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import RadioList from "@/shared/components/Form/RadioList/index.vue";
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import {
   booleanOptions,
   priceOptions,
   pledgePriceOptions,
-} from "@/frontend/utils/FilterOptions";
+} from "@/shared/utils/FilterOptions";
 
+// data() {
+//     const query = this.$route.query.q || {};
+//     return {
+//       form: {
+//         modelNameCont: query.modelNameCont,
+//         onSaleEq: query.onSaleEq,
+//         loanerEq: query.loanerEq,
+//         priceLteq: query.priceLteq,
+//         priceGteq: query.priceGteq,
+//         pledgePriceLteq: query.pledgePriceLteq,
+//         pledgePriceGteq: query.pledgePriceGteq,
+//         lengthLteq: query.lengthLteq,
+//         lengthGteq: query.lengthGteq,
+//         manufacturerIn: query.manufacturerIn || [],
+//         classificationIn: query.classificationIn || [],
+//         focusIn: query.focusIn || [],
+//         sizeIn: query.sizeIn || [],
+//         priceIn: query.priceIn || [],
+//         pledgePriceIn: query.pledgePriceIn || [],
+//         productionStatusIn: query.productionStatusIn || [],
+//       },
+//     };
+//   },
+
+//   computed: {
+//     booleanOptions() {
+//       return booleanOptions;
+//     },
+
+//     priceOptions() {
+//       return priceOptions;
+//     },
+
+//     pledgePriceOptions() {
+//       return pledgePriceOptions;
+//     },
+//   },
+
+//   watch: {
+//     $route() {
+//       const query = this.$route.query.q || {};
+//       this.form = {
+//         modelNameCont: query.modelNameCont,
+//         onSaleEq: query.onSaleEq,
+//         loanerEq: query.loanerEq,
+//         priceLteq: query.priceLteq,
+//         priceGteq: query.priceGteq,
+//         pledgePriceLteq: query.pledgePriceLteq,
+//         pledgePriceGteq: query.pledgePriceGteq,
+//         lengthLteq: query.lengthLteq,
+//         lengthGteq: query.lengthGteq,
+//         manufacturerIn: query.manufacturerIn || [],
+//         classificationIn: query.classificationIn || [],
+//         focusIn: query.focusIn || [],
+//         sizeIn: query.sizeIn || [],
+//         priceIn: query.priceIn || [],
+//         pledgePriceIn: query.pledgePriceIn || [],
+//         productionStatusIn: query.productionStatusIn || [],
+//       };
+//     },
+//   },
+// };
+</script>
+
+<script lang="ts">
 export default {
   name: "PublicFleetFilterForm",
-
-  components: {
-    RadioList,
-    FilterGroup,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-    return {
-      form: {
-        modelNameCont: query.modelNameCont,
-        onSaleEq: query.onSaleEq,
-        loanerEq: query.loanerEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
-        classificationIn: query.classificationIn || [],
-        focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-      },
-    };
-  },
-
-  computed: {
-    booleanOptions() {
-      return booleanOptions;
-    },
-
-    priceOptions() {
-      return priceOptions;
-    },
-
-    pledgePriceOptions() {
-      return pledgePriceOptions;
-    },
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        modelNameCont: query.modelNameCont,
-        onSaleEq: query.onSaleEq,
-        loanerEq: query.loanerEq,
-        priceLteq: query.priceLteq,
-        priceGteq: query.priceGteq,
-        pledgePriceLteq: query.pledgePriceLteq,
-        pledgePriceGteq: query.pledgePriceGteq,
-        lengthLteq: query.lengthLteq,
-        lengthGteq: query.lengthGteq,
-        manufacturerIn: query.manufacturerIn || [],
-        classificationIn: query.classificationIn || [],
-        focusIn: query.focusIn || [],
-        sizeIn: query.sizeIn || [],
-        priceIn: query.priceIn || [],
-        pledgePriceIn: query.pledgePriceIn || [],
-        productionStatusIn: query.productionStatusIn || [],
-      };
-    },
-  },
 };
 </script>

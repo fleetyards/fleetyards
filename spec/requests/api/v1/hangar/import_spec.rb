@@ -18,14 +18,24 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "multipart/form-data"
       produces "application/json"
 
-      parameter name: :import, in: :formData, type: :string, format: :binary, required: true
+      parameter name: :"",
+        in: :formData,
+        schema: {
+          type: :object,
+          properties: {
+            import: {type: :string, format: :binary}
+          }
+        },
+        required: true
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarImportResult"
 
         let(:user) { users :data }
-        let(:import) do
-          Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/hangar_import.json")))
+        let(:"") do
+          {
+            import: Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/hangar_import.json")))
+          }
         end
 
         run_test!
@@ -35,8 +45,10 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { users :data }
-        let(:import) do
-          Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/empty_hangar_import.json")))
+        let(:"") do
+          {
+            import: Rack::Test::UploadedFile.new(File.new(Rails.root.join("test/fixtures/files/empty_hangar_import.json")))
+          }
         end
 
         run_test!
@@ -46,7 +58,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         schema "$ref": "#/components/schemas/ValidationError"
 
         let(:user) { users :data }
-        let(:import) { nil }
+        let(:"") { nil }
 
         run_test!
       end
@@ -54,7 +66,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:import) { nil }
+        let(:"") { nil }
 
         run_test!
       end

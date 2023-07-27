@@ -166,7 +166,9 @@ export class VehiclesService {
     public deprecateDputVehiclesImport({
         formData,
     }: {
-        formData: string,
+        formData: {
+            import?: Blob;
+        },
     }): CancelablePromise<HangarImportResult> {
         return this.httpRequest.request({
             method: 'PUT',

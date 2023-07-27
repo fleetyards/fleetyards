@@ -4,8 +4,6 @@ module Admin
   module Api
     module V1
       class ShopCommoditiesController < ::Admin::Api::BaseController
-        after_action -> { pagination_header(:shop_commodities) }, only: [:index]
-
         def index
           authorize! :index, :admin_api_shop_commodities
 
@@ -74,13 +72,7 @@ module Admin
         end
 
         private def shop
-          @shop ||= Shop.find_by(id: params[:shop_id])
-        end
-
-        private def shop_commodities_query_params
-          @shop_commodities_query_params ||= query_params(
-            :commodity_item_id, :confirmed_eq, :name_cont, component_item_type_in: [], equipment_item_type_in: []
-          )
+          @shop ||= Shop.find(params[:shop_id])
         end
 
         private def shop_commodity_params
@@ -94,7 +86,7 @@ module Admin
         helper_method :shop_commodity
 
         private def search_params
-          @search_params ||= params.permit(:search)[:search]
+          @search_params ||= query_params.delete(:search)
         end
 
         private def order_params
@@ -134,7 +126,7 @@ module Admin
           @query_params ||= begin
             permitted_params = params.permit(
               filters: [
-                :confirmed,
+                :search, :confirmed,
                 {
                   name: [], manufacturer_slug: [], category: [], sub_category: [],
                   component_item_type: [], equipment_item_type: [], equipment_type: [],

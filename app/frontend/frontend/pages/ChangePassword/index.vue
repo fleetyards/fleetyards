@@ -6,14 +6,14 @@
           <form @submit.prevent="handleSubmit(changePassword)">
             <h1>
               <router-link :to="{ name: 'home' }" exact>
-                {{ $t("app") }}
+                {{ t("app") }}
               </router-link>
             </h1>
             <ValidationProvider
               v-slot="{ errors }"
               vid="password"
               rules="required|min:8"
-              :name="$t('labels.password')"
+              :name="t('labels.password')"
               :slim="true"
             >
               <FormInput
@@ -30,7 +30,7 @@
               v-slot="{ errors }"
               vid="passwordConfirmation"
               rules="required|confirmed:password"
-              :name="$t('labels.passwordConfirmation')"
+              :name="t('labels.passwordConfirmation')"
               :slim="true"
             >
               <FormInput
@@ -43,16 +43,16 @@
             </ValidationProvider>
 
             <Btn :loading="submitting" type="submit" size="large" :block="true">
-              {{ $t("actions.save") }}
+              {{ t("actions.save") }}
             </Btn>
 
             <footer>
               <p class="text-center">
-                {{ $t("labels.alreadyRegistered") }}
+                {{ t("labels.alreadyRegistered") }}
               </p>
 
               <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ $t("actions.login") }}
+                {{ t("actions.login") }}
               </Btn>
             </footer>
           </form>
@@ -62,67 +62,70 @@
   </section>
 </template>
 
-<script>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { mapGetters } from "vuex";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useRouter, useRoute } from "vue-router";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
 
+const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useNoty(t);
+
+type ChangePasswordForm = {
+  currentPassword: string;
+  password: string;
+  passwordConfirmation: string;
+};
+
+const form = ref<Partial<ChangePasswordForm>>({});
+
+const submitting = ref(false);
+
+const { isAuthenticated } = storeToRefs(useSessionStore());
+
+const router = useRouter();
+
+onMounted(() => {
+  if (isAuthenticated.value) {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    router.push({ name: "settings-change-password" }).catch(() => {});
+  }
+});
+
+const route = useRoute();
+
+const changePassword = async () => {
+  submitting.value = true;
+
+  const response = await this.$api.put(
+    `password/update/${route.params.token}`,
+    form.value
+  );
+
+  submitting.value = false;
+
+  if (!response.error) {
+    displaySuccess({
+      text: t("messages.changePassword.success"),
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    router.push("/").catch(() => {});
+  } else {
+    displayAlert({
+      text: t("messages.changePassword.failure"),
+    });
+  }
+};
+</script>
+
+<script lang="ts">
 export default {
-  name: "ChangePassword",
-
-  components: {
-    FormInput,
-    Btn,
-  },
-
-  data() {
-    return {
-      submitting: false,
-      form: {
-        currentPassword: null,
-        password: null,
-        passwordConfirmation: null,
-      },
-    };
-  },
-
-  computed: {
-    ...mapGetters("session", ["isAuthenticated"]),
-  },
-
-  mounted() {
-    if (this.isAuthenticated) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push({ name: "settings-change-password" }).catch(() => {});
-    }
-  },
-
-  methods: {
-    async changePassword() {
-      this.submitting = true;
-
-      const response = await this.$api.put(
-        `password/update/${this.$route.params.token}`,
-        this.form
-      );
-
-      this.submitting = false;
-
-      if (!response.error) {
-        displaySuccess({
-          text: this.$t("messages.changePassword.success"),
-        });
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this.$router.push("/").catch(() => {});
-      } else {
-        displayAlert({
-          text: this.$t("messages.changePassword.failure"),
-        });
-      }
-    },
-  },
+  name: "ChangePasswordPage",
 };
 </script>
 

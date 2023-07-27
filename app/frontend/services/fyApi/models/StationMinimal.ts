@@ -23,7 +23,7 @@ export type StationMinimal = {
     location?: string | null;
     media: {
         backgroundImage?: string | null;
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     refinery: boolean;
     shopListLabel?: string | null;
