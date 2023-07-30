@@ -6,6 +6,7 @@ class MetricsJob < ApplicationJob
     User.rollup("Registrations", interval: "year")
     User.rollup("Activity", interval: "year", column: :last_active_at)
     User.rollup("Activity", interval: "month", column: :last_active_at)
+    User.rollup("Activity", interval: "week", column: :last_active_at)
     Model.visible.active.rollup("Models", interval: "month")
     Model.visible.active.rollup("Models", interval: "year")
     Fleet.rollup("Fleet", interval: "month")
