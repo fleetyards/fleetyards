@@ -298,7 +298,7 @@ export const request = <T>(
   return new CancelablePromise(async (resolve, reject, onCancel) => {
     try {
       const internalOptions = {
-        ...options.body,
+        ...options,
         body: options.body ?? options.formData,
       };
       const url = getUrl(config, internalOptions);

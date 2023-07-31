@@ -196,7 +196,7 @@ import Btn from "@/shared/components/BaseBtn/index.vue";
 // import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
 import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import type { ShopCommodityMinimal} from "@/services/fyAdminApi"
+import type { ShopCommodityMinimal } from "@/services/fyAdminApi";
 
 // TODO: move to collection model or use openapi schema types when available
 type ShopCommoditiesFormData = {
@@ -209,127 +209,127 @@ type Props = {
   shopCommodity: ShopCommodityMinimal;
   commodityItemType?: string;
   itemTypeFilter?: string;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   commodityItemType: undefined,
   itemTypeFilter: undefined,
-})
+});
 
-  // modelsCollection: ModelsCollection = modelsCollection;
+// modelsCollection: ModelsCollection = modelsCollection;
 
-  // commoditiesCollection: CommoditiesCollection = commoditiesCollection;
+// commoditiesCollection: CommoditiesCollection = commoditiesCollection;
 
-  // componentsCollection: ComponentsCollection = componentsCollection;
+// componentsCollection: ComponentsCollection = componentsCollection;
 
-  // equipmentCollection: EquipmentCollection = equipmentCollection;
+// equipmentCollection: EquipmentCollection = equipmentCollection;
 
-  // modelModulesCollection: ModelModulesCollection = modelModulesCollection;
+// modelModulesCollection: ModelModulesCollection = modelModulesCollection;
 
-  // modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection;
+// modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection;
 
-  // componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
-  //   componentItemTypeFiltersCollection;
+// componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection =
+//   componentItemTypeFiltersCollection;
 
-  // equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
-  //   equipmentTypeFiltersCollection;
+// equipmentTypeFiltersCollection: EquipmentTypeFiltersCollection =
+//   equipmentTypeFiltersCollection;
 
-  // equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
-  //   equipmentSlotFiltersCollection;
+// equipmentSlotFiltersCollection: EquipmentSlotFiltersCollection =
+//   equipmentSlotFiltersCollection;
 
-  submitting = false;
+const submitting = ref(false);
 
-  componentItemTypeFilter: string | null = null;
+const componentItemTypeFilter: string | null = null;
 
-  equipmentTypeFilter: string | null = null;
+const equipmentTypeFilter: string | null = null;
 
-  equipmentSlotFilter: string | null = null;
+const equipmentSlotFilter: string | null = null;
 
-  form: ShopCommoditiesFormData | null = null;
+const form: ShopCommoditiesFormData | null = null;
 
-  commodityTypeOptions: FilterGroupItem[] = [
-    {
-      value: "Commodity",
-      name: "Commodity",
-    },
-    {
-      value: "Component",
-      name: "Component",
-    },
-    {
-      value: "Equipment",
-      name: "Equipment",
-    },
-    {
-      value: "Model",
-      name: "Model",
-    },
-    {
-      value: "ModelModule",
-      name: "Model Module",
-    },
-    {
-      value: "ModelPaint",
-      name: "Model Paint",
-    },
-  ];
+const commodityTypeOptions: FilterGroupItem[] = [
+  {
+    value: "Commodity",
+    name: "Commodity",
+  },
+  {
+    value: "Component",
+    name: "Component",
+  },
+  {
+    value: "Equipment",
+    name: "Equipment",
+  },
+  {
+    value: "Model",
+    name: "Model",
+  },
+  {
+    value: "ModelModule",
+    name: "Model Module",
+  },
+  {
+    value: "ModelPaint",
+    name: "Model Paint",
+  },
+];
 
-  get formId() {
-    return `shopCommodity-${this.shopCommodity.id}`;
-  }
+// get formId() {
+//   return `shopCommodity-${this.shopCommodity.id}`;
+// }
 
-  get title() {
-    return this.$t("headlines.modals.shopCommodity.update", {
-      shopCommodity: this.shopCommodity.item.name,
-    });
-  }
+// get title() {
+//   return this.$t("headlines.modals.shopCommodity.update", {
+//     shopCommodity: this.shopCommodity.item.name,
+//   });
+// }
 
-  mounted() {
-    this.componentItemTypeFilter = this.itemTypeFilter;
+// mounted() {
+//   this.componentItemTypeFilter = this.itemTypeFilter;
 
-    this.setupForm();
-  }
+//   this.setupForm();
+// }
 
-  @Watch("shopCommodity")
-  onShopCommodityChange() {
-    this.setupForm();
-  }
+// @Watch("shopCommodity")
+// onShopCommodityChange() {
+//   this.setupForm();
+// }
 
-  fetchSubCategories() {
-    return this.$api.get("filters/shop-commodities/sub-categories");
-  }
+// fetchSubCategories() {
+//   return this.$api.get("filters/shop-commodities/sub-categories");
+// }
 
-  setupForm() {
-    this.form = {
-      commodityItemId: this.shopCommodity?.commodityItemId,
-      commodityItemType:
-        this.shopCommodity?.commodityItemType || this.commodityItemType,
-    };
-  }
+// setupForm() {
+//   this.form = {
+//     commodityItemId: this.shopCommodity?.commodityItemId,
+//     commodityItemType:
+//       this.shopCommodity?.commodityItemType || this.commodityItemType,
+//   };
+// }
 
-  async submit() {
-    if (this.shopCommodity && this.shopCommodity.id) {
-      await this.update();
-    }
-  }
+// async submit() {
+//   if (this.shopCommodity && this.shopCommodity.id) {
+//     await this.update();
+//   }
+// }
 
-  async update() {
-    this.submitting = true;
+// async update() {
+//   this.submitting = true;
 
-    const success = await shopCommodityCollection.update(
-      this.shopCommodity.shop.id,
-      this.shopCommodity.id,
-      this.form
-    );
+//   const success = await shopCommodityCollection.update(
+//     this.shopCommodity.shop.id,
+//     this.shopCommodity.id,
+//     this.form
+//   );
 
-    if (success) {
-      this.$comlink.$emit("commodities-update");
+//   if (success) {
+//     this.$comlink.$emit("commodities-update");
 
-      this.$comlink.$emit("close-modal");
-    }
+//     this.$comlink.$emit("close-modal");
+//   }
 
-    this.submitting = false;
-  }
+//   this.submitting = false;
+// }
 </script>
 
 <script lang="ts">
