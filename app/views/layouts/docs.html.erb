@@ -31,8 +31,6 @@
     <link rel="preconnect" href="https://kit.fontawesome.com">
     <script src="https://kit.fontawesome.com/497179c6ff.js" crossorigin="anonymous"></script>
     <%= render "layouts/app_intro" %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload"  %>
-    <%= vite_stylesheet_tag 'docs.scss' %>
     <script>
       window.APP_VERSION = '<%= Fleetyards::VERSION %>'
       window.APP_CODENAME = '<%= Fleetyards::CODENAME %>'
@@ -57,6 +55,7 @@
       window.COPYRIGHT_OWNER = '<%= Rails.configuration.app.copyright_owner %>'
     </script>
     <%= vite_client_tag %>
+    <%= vite_stylesheet_tag 'docs.scss' %>
     <%= vite_typescript_tag 'docs' %>
   </head>
   <body>

@@ -1,7 +1,13 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
+import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
+import colors from "tailwindcss/colors";
+import formsPlugin from "@tailwindcss/forms";
+import aspectRatioPlugin from "@tailwindcss/aspect-ratio";
+import typographyPlugin from "@tailwindcss/typography";
+import containerQueriesPlugin from "@tailwindcss/container-queries";
+import safeAreaPlugin from "tailwindcss-safe-area";
 
-module.exports = {
+export default {
   content: [
     "./public/*.html",
     "./app/helpers/**/*.rb",
@@ -42,10 +48,10 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/aspect-ratio"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/container-queries"),
-    require("tailwindcss-safe-area"),
+    formsPlugin,
+    aspectRatioPlugin,
+    typographyPlugin,
+    containerQueriesPlugin,
+    safeAreaPlugin,
   ],
-};
+} satisfies Config;

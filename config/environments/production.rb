@@ -90,7 +90,6 @@ Rails.application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   config.assets.precompile += %w[error.css]
-  config.assets.precompile += Dir[Rails.root.join("vendor/assets/bower_components/**/img/*")]
 
   config.action_mailer.perform_caching = false
 
