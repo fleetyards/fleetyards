@@ -20,8 +20,7 @@ module RansackHelper
   private def parse_query_params
     orginal_params = params.to_unsafe_h.fetch(:q, "{}")
     orginal_params = orginal_params.to_json if orginal_params.is_a? Hash
-    q = JSON.parse(orginal_params)
-    q.transform_keys(&:underscore)
+    JSON.parse(orginal_params)
   rescue JSON::ParserError
     {}
   end

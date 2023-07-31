@@ -5,4 +5,3 @@
 //= link email.css
 //= link manifest.json
 //= link admin/manifest.json
-//= link_tree ../builds

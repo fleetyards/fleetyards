@@ -36,6 +36,7 @@ Rails.application.configure do
   # Compress JavaScripts and CSS using a preprocessor.
   config.assets.js_compressor = Uglifier.new(harmony: true)
   # Compress CSS using a preprocessor.
+  config.assets.css_compressor = Escompress::Compressor.new(loader: :css)
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -90,7 +91,6 @@ Rails.application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   config.assets.precompile += %w[error.css]
-  config.assets.precompile += Dir[Rails.root.join("vendor/assets/bower_components/**/img/*")]
 
   config.action_mailer.perform_caching = false
 
