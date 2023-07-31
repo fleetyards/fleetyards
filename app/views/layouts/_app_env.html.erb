@@ -11,6 +11,7 @@
   window.API_ENDPOINT = '<%= API_ENDPOINT %>'
   window.CABLE_ENDPOINT = '<%= CABLE_ENDPOINT %>'
   window.FRONTEND_ENDPOINT = '<%= FRONTEND_ENDPOINT %>'
+  window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
   window.RSI_ENDPOINT = '<%= Rails.configuration.rsi.endpoint %>'
   window.SENTRY_DSN = '<%= Rails.application.credentials.sentry_frontend_dsn %>'
   window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>
@@ -21,5 +22,4 @@
   window.MAINTAINER_ADDRESS_CITY = '<%= Rails.configuration.maintainer.address[:city] %>'
   window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.configuration.maintainer.address[:country] %>'
   window.COPYRIGHT_OWNER = '<%= Rails.configuration.app.copyright_owner %>'
-  window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
 </script>
