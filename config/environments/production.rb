@@ -36,6 +36,7 @@ Rails.application.configure do
   # Compress JavaScripts and CSS using a preprocessor.
   config.assets.js_compressor = Uglifier.new(harmony: true)
   # Compress CSS using a preprocessor.
+  config.assets.css_compressor = Escompress::Compressor.new(loader: :css)
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
