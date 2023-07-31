@@ -70,14 +70,14 @@ export class ImagesService {
      * @returns Image successful
      * @throws ApiError
      */
-    public putImages({
+    public updateImage({
         id,
         requestBody,
     }: {
         /**
          * id
          */
-        id: string,
+        id: any,
         requestBody?: {
             $ref?: any;
         },
@@ -102,13 +102,13 @@ export class ImagesService {
      * @returns any successful
      * @throws ApiError
      */
-    public destroy({
+    public destroyImage({
         id,
     }: {
         /**
          * id
          */
-        id: string,
+        id: any,
     }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',

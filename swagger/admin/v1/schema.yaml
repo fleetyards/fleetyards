@@ -89,13 +89,14 @@ paths:
     parameters:
     - name: id
       in: path
-      format: uuid
-      description: id
-      required: true
       schema:
         type: string
+        format: uuid
+      description: id
+      required: true
     put:
       summary: Image update
+      operationId: updateImage
       tags:
       - Images
       parameters: []
@@ -122,12 +123,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                "$ref": "#/components/schemas/ImageInput"
+              "$ref": "#/components/schemas/ImageInput"
     delete:
       summary: Image destroy
-      operationId: destroy
+      operationId: destroyImage
       tags:
       - Images
       responses:
@@ -341,9 +340,11 @@ components:
         designation:
           type: string
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         storeImage:
           type: string
           format: url
@@ -723,9 +724,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         population:
           type: string
           nullable: true
@@ -788,9 +791,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         population:
           type: string
           nullable: true

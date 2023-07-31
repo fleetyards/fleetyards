@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 import type { CelestialObject } from './CelestialObject';
+import type { MediaImage } from './MediaImage';
 
 export type StarsystemMinimal = {
     id?: string;
@@ -15,7 +16,9 @@ export type StarsystemMinimal = {
     locationLabel?: string | null;
     mapX?: string | null;
     mapY?: string | null;
-    media?: any;
+    media?: {
+        storeImage?: MediaImage | null;
+    };
     population?: string | null;
     size?: string | null;
     status?: string | null;

@@ -149,17 +149,15 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
   end
 
   path "/images/{id}" do
-    parameter name: "id", in: :path, type: :string, format: :uuid, description: "id"
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "id"
 
     put("Image update") do
+      operationId "updateImage"
       consumes "application/json"
       produces "application/json"
       tags "Images"
 
-      parameter name: :image, in: :body, schema: {
-        type: :object,
-        properties: {"$ref": "#/components/schemas/ImageInput"}
-      }
+      parameter name: :image, in: :body, schema: {"$ref": "#/components/schemas/ImageInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
@@ -208,7 +206,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
     end
 
     delete("Image destroy") do
-      operationId "destroy"
+      operationId "destroyImage"
       tags "Images"
 
       response(200, "successful") do
