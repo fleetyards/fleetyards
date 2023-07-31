@@ -195,5 +195,3 @@ group :development, :test do
 
   gem "knapsack"
 end
-
-gem "escompress", "~> 0.3.0"
