@@ -76,7 +76,6 @@ gem "dynamic_fields_for_rails"
 
 gem "bourbon"
 gem "coffee-rails"
-gem "sass-rails"
 gem "sprockets-rails"
 
 gem "jquery-rails"
@@ -197,5 +196,3 @@ group :development, :test do
 end
 
 gem "tailwindcss-rails", "~> 2.0"
-
-gem "escompress", "~> 0.3.0"
