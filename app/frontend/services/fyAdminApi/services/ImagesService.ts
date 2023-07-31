@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Image } from '../models/Image';
+import type { ImageInput } from '../models/ImageInput';
 import type { ImageInputCreate } from '../models/ImageInputCreate';
 import type { ImageQuery } from '../models/ImageQuery';
 import type { Images } from '../models/Images';
@@ -77,10 +78,8 @@ export class ImagesService {
         /**
          * id
          */
-        id: any,
-        requestBody?: {
-            $ref?: any;
-        },
+        id: string,
+        requestBody?: ImageInput,
     }): CancelablePromise<Image> {
         return this.httpRequest.request({
             method: 'PUT',
@@ -108,7 +107,7 @@ export class ImagesService {
         /**
          * id
          */
-        id: any,
+        id: string,
     }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',
