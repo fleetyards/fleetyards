@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
 bundle exec rake rswag:specs:swaggerize
+
+yarn generate-api-client && yarn generate-admin-api-client
