@@ -14,7 +14,10 @@ module Admin
             slug: {type: :string},
             designation: {type: :string},
             media: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              type: :object,
+              properties: {
+                storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              }
             },
             storeImage: {type: :string, format: :url, deprecated: true},
             storeImageLarge: {type: :string, deprecated: true},

@@ -75,23 +75,6 @@ body {
   }
 }
 
-.app-intro {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 100vh;
-  margin-top: -80px;
-  margin-bottom: -50px;
-  text-align: center;
-
-  .logo {
-    width: 200px;
-    margin-right: -30px;
-    margin-bottom: 28px;
-  }
-}
-
 a,
 input[type="button"],
 button {
@@ -156,14 +139,6 @@ hr {
 
     .main {
       transition: left ease 0.5s, right ease 0.5s;
-    }
-  }
-
-  .app-intro {
-    .logo {
-      width: 200px;
-      margin-right: 0;
-      margin-bottom: 20px;
     }
   }
 

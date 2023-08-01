@@ -3,8 +3,7 @@
 # logfiles and tempfiles.
 log/*
 tmp/*
-dumps
-data/*
+dumps/*
 
 pids/*
 
@@ -59,3 +58,6 @@ result-*
 
 # tmp disable spec todos
 swagger/todo
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

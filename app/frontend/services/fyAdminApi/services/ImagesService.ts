@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Image } from '../models/Image';
+import type { ImageInput } from '../models/ImageInput';
 import type { ImageInputCreate } from '../models/ImageInputCreate';
 import type { ImageQuery } from '../models/ImageQuery';
 import type { Images } from '../models/Images';
@@ -70,7 +71,7 @@ export class ImagesService {
      * @returns Image successful
      * @throws ApiError
      */
-    public putImages({
+    public updateImage({
         id,
         requestBody,
     }: {
@@ -78,9 +79,7 @@ export class ImagesService {
          * id
          */
         id: string,
-        requestBody?: {
-            $ref?: any;
-        },
+        requestBody?: ImageInput,
     }): CancelablePromise<Image> {
         return this.httpRequest.request({
             method: 'PUT',
@@ -102,7 +101,7 @@ export class ImagesService {
      * @returns any successful
      * @throws ApiError
      */
-    public destroy({
+    public destroyImage({
         id,
     }: {
         /**

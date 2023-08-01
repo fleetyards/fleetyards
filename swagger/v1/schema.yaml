@@ -1,8 +1,14 @@
 ---
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: FleetYards.net API
   version: v1
+  license:
+    name: GNU General Public License v3.0
+    url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
+  x-logo:
+    url: https://fleetyards.net/docs/logo.png
+    altText: FleetYards.net logo
 servers:
 - url: http://api.fleetyards.test/v1
   description: Dev Server
@@ -10,6 +16,7 @@ servers:
   description: Production Server
 - url: https://api.fleetyards.dev/v1
   description: Staging Server
+security: []
 paths:
   "/celestial-objects":
     get:
@@ -100,6 +107,8 @@ paths:
       operationId: hangar
       tags:
       - Hangar
+      security:
+      - SessionCookie: []
       parameters:
       - name: page
         in: query
@@ -511,6 +520,7 @@ paths:
       summary: HangarGroup list
       tags:
       - HangarGroups
+      operationId: DEPRECATEDgetHangarGroups
       deprecated: true
       responses:
         '200':
@@ -531,6 +541,7 @@ paths:
       summary: HangarGroup create
       tags:
       - HangarGroups
+      operationId: DEPRECATEDcreateHangarGroup
       deprecated: true
       parameters: []
       responses:
@@ -565,6 +576,7 @@ paths:
       summary: HangarGroup Destroy
       tags:
       - HangarGroups
+      operationId: DEPRECATEDdestroyHangarGroup
       deprecated: true
       responses:
         '200':
@@ -589,6 +601,7 @@ paths:
       summary: HangarGroup Update
       tags:
       - HangarGroups
+      operationId: DEPRECATEDupdateHangarGroup
       deprecated: true
       parameters: []
       responses:
@@ -621,6 +634,7 @@ paths:
       summary: HangarGroup sort
       tags:
       - HangarGroups
+      operationId: DEPRECATEDsortHangarGroups
       deprecated: true
       responses:
         '200':
@@ -638,28 +652,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/hangar-groups/{username}":
-    parameters:
-    - name: username
-      in: path
-      description: Username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: HangarGroup list
-      tags:
-      - PublicHangarGroups
-      deprecated: true
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/HangarGroupMinimalPublic"
   "/images":
     get:
       summary: Images list
@@ -731,6 +723,7 @@ paths:
       summary: with_models manufacturer
       tags:
       - Manufacturers
+      operationId: DEPRECATEDgetManufacturersWithModels
       deprecated: true
       responses:
         '200':
@@ -1284,6 +1277,12 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelModuleMinimal"
         '404':
           description: not found
           content:
@@ -1322,7 +1321,9 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/ModelModulePackages"
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelModulePackageMinimal"
         '404':
           description: not found
           content:
@@ -2112,6 +2113,7 @@ paths:
     get:
       summary: Vehicles List -> use GET /hangar
       deprecated: true
+      operationId: DEPRECATEDgetVehicles
       tags:
       - Vehicles
       parameters:
@@ -2148,6 +2150,7 @@ paths:
     get:
       summary: Vehicle Fleetchart List -> use GET /hangar
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesFleetchart
       tags:
       - Vehicles
       responses:
@@ -2163,6 +2166,7 @@ paths:
     get:
       summary: Vehicle Export -> use GET /hangar/export
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesExport
       tags:
       - Vehicles
       responses:
@@ -2178,6 +2182,7 @@ paths:
     put:
       summary: Vehicle import -> use PUT /hangar/import
       deprecated: true
+      operationId: DEPRECATEDputVehiclesImport
       tags:
       - Vehicles
       parameters: []
@@ -2198,6 +2203,7 @@ paths:
     delete:
       summary: Vehicle Destroy all -> use DELETE /hangar
       deprecated: true
+      operationId: DEPRECATEDdeleteVehiclesDestroyAll
       tags:
       - Vehicles
       responses:
@@ -2207,6 +2213,7 @@ paths:
     get:
       summary: Vehicle embed -> use GET /public/hangar/embed
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesEmbed
       tags:
       - Vehicles
       responses:
@@ -2222,6 +2229,7 @@ paths:
     get:
       summary: Vehicle Hangar items -> use GET /hangar/items
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesHangarItems
       tags:
       - Vehicles
       responses:
@@ -2237,6 +2245,7 @@ paths:
     get:
       summary: Vehicle hangar -> no replacement
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesHangar
       tags:
       - Vehicles
       responses:
@@ -2252,6 +2261,7 @@ paths:
     get:
       summary: Vehicle Quickstats -> use GET /hangar/stats
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesQuickStats
       tags:
       - Vehicles - Stats
       responses:
@@ -2261,6 +2271,7 @@ paths:
     get:
       summary: Vehicle Models by size -> use GET /hangar/stats/models-by-size
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesStatsModelsBySize
       tags:
       - Vehicles - Stats
       responses:
@@ -2270,6 +2281,7 @@ paths:
     get:
       summary: Vehicle Models by ProductionStatus -> use GET /hangar/stats/models-by-production-status
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesStatsModelsByProductionStatus
       tags:
       - Vehicles - Stats
       responses:
@@ -2279,6 +2291,7 @@ paths:
     get:
       summary: models_by_manufacturer vehicle
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesStatsModelsByManufacturer
       tags:
       - Vehicles - Stats
       responses:
@@ -2288,86 +2301,12 @@ paths:
     get:
       summary: models_by_classification vehicle
       deprecated: true
+      operationId: DEPRECATEDgetVehiclesStatsModelsByClassification
       tags:
       - Vehicles - Stats
       responses:
         '200':
           description: successful
-  "/vehicles/{username}":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public vehicle
-      deprecated: true
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
-  "/vehicles/{username}/fleetchart":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public_fleetchart vehicle
-      deprecated: true
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
-  "/vehicles/{username}/quick-stats":
-    parameters:
-    - name: username
-      in: path
-      description: username
-      required: true
-      schema:
-        type: string
-    get:
-      summary: public_quick_stats vehicle
-      deprecated: true
-      tags:
-      - Vehicles - Public
-      responses:
-        '200':
-          description: successful
-  "/vehicles/destroy-all-ingame":
-    delete:
-      summary: Delete all ingame bought Vehicles
-      operationId: destroyAllIngame
-      tags:
-      - Vehicles
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/vehicles/{id}":
     parameters:
     - name: id
@@ -2377,6 +2316,21 @@ paths:
         type: string
         format: uuid
       required: true
+    get:
+      summary: public vehicle
+      deprecated: true
+      operationId: DEPRECATEDgetPublicVehicles
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimalPublic"
     delete:
       summary: Delete Vehicle
       operationId: destroyVehicle
@@ -2432,6 +2386,61 @@ paths:
             schema:
               "$ref": "#/components/schemas/VehicleUpdateInput"
         required: true
+  "/vehicles/{id}/fleetchart":
+    parameters:
+    - name: id
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public_fleetchart vehicle
+      deprecated: true
+      operationId: DEPRECATEDgetPublicFleetchart
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+  "/vehicles/{id}/quick-stats":
+    parameters:
+    - name: id
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: public_quick_stats vehicle
+      deprecated: true
+      operationId: DEPRECATEDgetPublicQuickStats
+      tags:
+      - Vehicles - Public
+      responses:
+        '200':
+          description: successful
+  "/vehicles/destroy-all-ingame":
+    delete:
+      summary: Delete all ingame bought Vehicles
+      operationId: destroyAllIngame
+      tags:
+      - Vehicles
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/wishlist":
     delete:
       summary: Clear your Wishlist
@@ -3819,25 +3828,6 @@ components:
       - createdAt
       - updatedAt
       title: HangarGroupMinimalPublic
-    HangarGroupPublic:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        color:
-          type: string
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - color
-      title: HangarGroupPublic
     HangarImportResult:
       type: object
       properties:
@@ -8059,97 +8049,6 @@ components:
       required:
       - items
       title: Starsystems
-    Station:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        cargoHub:
-          type: boolean
-        classificationLabel:
-          type: string
-          nullable: true
-        classification:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        dockCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/DockCount"
-        habitable:
-          type: boolean
-        habitationCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/HabitationCount"
-        hasImages:
-          type: boolean
-        locationLabel:
-          type: string
-          nullable: true
-        location:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            backgroundImage:
-              type: string
-              nullable: true
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-        refinery:
-          type: boolean
-        shopListLabel:
-          type: string
-          nullable: true
-        typeLabel:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        backgroundImage:
-          type: string
-          format: uri
-          nullable: true
-          deprecated: true
-        storeImage:
-          type: string
-          format: uri
-          nullable: true
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          nullable: true
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          nullable: true
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          nullable: true
-          deprecated: true
-      required:
-      - name
-      - slug
-      - habitable
-      - hasImages
-      - refinery
-      - cargoHub
-      - celestialObject
-      - media
-      title: Station
     StationComplete:
       type: object
       properties:
@@ -8407,88 +8306,6 @@ components:
       - shipsCountYear
       - shipsCountTotal
       title: Stats
-    Vehicle:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          nullable: true
-        slug:
-          type: string
-          nullable: true
-        serial:
-          type: string
-          nullable: true
-        alternativeNames:
-          type: array
-          items:
-            type: string
-        boughtVia:
-          "$ref": "#/components/schemas/BoughtViaEnum"
-        boughtViaLabel:
-          type: string
-        flagship:
-          type: boolean
-        hangarGroupIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        hangarGroups:
-          type: array
-          items:
-            "$ref": "#/components/schemas/HangarGroup"
-        loaner:
-          type: boolean
-        model:
-          "$ref": "#/components/schemas/ModelMinimal"
-        modelModuleIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        modelUpgradeIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        modulePackage:
-          "$ref": "#/components/schemas/ModelModulePackage"
-          nullable: true
-        nameVisible:
-          type: boolean
-        paint:
-          "$ref": "#/components/schemas/ModelPaint"
-          nullable: true
-        public:
-          type: boolean
-        saleNotify:
-          type: boolean
-        upgrade:
-          "$ref": "#/components/schemas/ModelUpgrade"
-          nullable: true
-        wanted:
-          type: boolean
-      additionalProperties: false
-      required:
-      - id
-      - model
-      - wanted
-      - boughtVia
-      - loaner
-      - flagship
-      - public
-      - nameVisible
-      - saleNotify
-      - alternativeNames
-      - modelUpgradeIds
-      - hangarGroupIds
-      - hangarGroups
-      - modelModuleIds
-      title: Vehicle
     VehicleCheckSerialResponse:
       type: object
       properties:
@@ -8716,27 +8533,6 @@ components:
       - createdAt
       - updatedAt
       title: VehicleMinimalPublic
-    Video:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        type:
-          "$ref": "#/components/schemas/VideoTypeEnum"
-        url:
-          type: string
-          format: uri
-        videoId:
-          type: string
-          nullable: true
-      additionalProperties: false
-      required:
-      - id
-      - url
-      - videoId
-      - type
-      title: Video
     VideoMinimal:
       type: object
       properties:
@@ -8811,3 +8607,9 @@ components:
       - width
       - height
       title: ViewImage
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      description: Session Cookie
+      name: FLTYRD
+      in: cookie

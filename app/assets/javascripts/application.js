@@ -1,12 +1,6 @@
 //= require jquery
 //= require jquery_ujs
-//= require sifter
-//= require microplugin
-//= require spin.js/spin
-//= require ladda/js/ladda
-//= require noty
 //= require dynamic_fields_for
-//= require selectize
 //= require vendor/date_fns.min
 //= require vendor/highcharts
 //= require vendor/highcharts-theme
@@ -20,25 +14,29 @@
 Highcharts.setOptions({
   global: {
     allowDecimals: false,
-  }
-})
+  },
+});
 
-$(document).on('click', 'a.disabled', function() {
+$(document).on("click", "a.disabled", function () {
   return false;
 });
 
-$(document).on('show.bs.collapse', '.navbar-collapse', function() {
-  $('.navbar-collapse.in').not(this).collapse('hide');
+$(document).on("show.bs.collapse", ".navbar-collapse", function () {
+  $(".navbar-collapse.in").not(this).collapse("hide");
 });
 
-$(document).on('focus', '.modal input, .modal textarea, .modal select', function() {
-  $(this)[0].scrollIntoView(true);
-});
+$(document).on(
+  "focus",
+  ".modal input, .modal textarea, .modal select",
+  function () {
+    $(this)[0].scrollIntoView(true);
+  }
+);
 
-window.addEventListener('load', function() {
-  $('.btn.btn-primary[data-loading-text]').click(function() {
-    $(this).button('loading');
+window.addEventListener("load", function () {
+  $(".btn.btn-primary[data-loading-text]").click(function () {
+    $(this).button("loading");
   });
 
-  $('#blueimp-gallery').data('useBootstrapModal', false);
+  $("#blueimp-gallery").data("useBootstrapModal", false);
 });

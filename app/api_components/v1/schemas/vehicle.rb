@@ -5,6 +5,8 @@ module V1
     class Vehicle
       include SchemaConcern
 
+      schema_hidden true
+
       schema({
         type: :object,
         properties: {

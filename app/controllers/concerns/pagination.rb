@@ -58,6 +58,6 @@ module Pagination
   end
 
   private def per_page_params
-    @per_page_params ||= params[:perPage] || params[:per_page]
+    @per_page_params ||= params[:per_page]
   end
 end

@@ -1,8 +1,14 @@
 ---
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: FleetYards.net Command API
   version: v1
+  license:
+    name: GNU General Public License v3.0
+    url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
+  x-logo:
+    url: https://fleetyards.net/docs/logo.png
+    altText: FleetYards.net logo
 servers:
 - url: http://admin.fleetyards.test/api/v1
   description: Dev Server
@@ -10,6 +16,8 @@ servers:
   description: Production Server
 - url: https://admin.fleetyards.dev/api/v1
   description: Staging Server
+security:
+- SessionCookie: []
 paths:
   "/images":
     get:
@@ -81,13 +89,14 @@ paths:
     parameters:
     - name: id
       in: path
-      format: uuid
-      description: id
-      required: true
       schema:
         type: string
+        format: uuid
+      description: id
+      required: true
     put:
       summary: Image update
+      operationId: updateImage
       tags:
       - Images
       parameters: []
@@ -114,12 +123,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                "$ref": "#/components/schemas/ImageInput"
+              "$ref": "#/components/schemas/ImageInput"
     delete:
       summary: Image destroy
-      operationId: destroy
+      operationId: destroyImage
       tags:
       - Images
       responses:
@@ -333,9 +340,11 @@ components:
         designation:
           type: string
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         storeImage:
           type: string
           format: url
@@ -715,9 +724,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         population:
           type: string
           nullable: true
@@ -780,9 +791,11 @@ components:
           type: string
           nullable: true
         media:
-          storeImage:
-            "$ref": "#/components/schemas/MediaImage"
-            nullable: true
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
         population:
           type: string
           nullable: true
@@ -1107,3 +1120,9 @@ components:
       required:
       - items
       title: Stations
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      description: Session Cookie
+      name: FLTYRD
+      in: cookie
