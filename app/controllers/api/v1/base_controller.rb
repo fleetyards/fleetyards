@@ -6,7 +6,7 @@ module Api
       def root
         respond_to do |format|
           format.html do
-            redirect_to docs_root_url
+            redirect_to docs_root_url, allow_other_host: true
           end
           format.json do
             render json: {message: "FleetYards.net API v1 root"}
