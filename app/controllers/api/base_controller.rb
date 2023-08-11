@@ -37,8 +37,16 @@ module Api
       render json: {code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached")}, status: :bad_request
     end
 
+    def current_resource_owner
+      @current_user ||= if doorkeeper_token
+        User.find(doorkeeper_token.resource_owner_id)
+      else
+        warden.authenticate(scope: :user)
+      end
+    end
+
     def current_ability
-      @current_ability ||= Ability.new(current_user)
+      @current_ability ||= Ability.new(current_resource_owner)
     end
 
     def access_cookie_valid?

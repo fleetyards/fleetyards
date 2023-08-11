@@ -5,11 +5,19 @@ module Api
     class HangarsController < ::Api::BaseController
       include HangarFiltersConcern
 
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?,
+        only: %i[show export items]
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        except: %i[show export items]
+
       after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
       def show
         authorize! :show, :api_hangar
-        scope = current_user.vehicles.visible.purchased
+        scope = current_resource_owner.vehicles.visible.purchased
 
         if price_range.present?
           vehicle_query_params["sorts"] = "model_price asc"
