@@ -86,7 +86,7 @@ const prepareElement = (
   element.style.height = closed;
   element.style.overflow = "hidden";
 
-  return initialStyle.height && initialStyle.height != closed
+  return initialStyle.height && initialStyle.height !== closed
     ? initialStyle.height
     : height;
 };
