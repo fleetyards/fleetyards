@@ -83,6 +83,8 @@ const validateAndResolveNewRoute = (to: any) => {
       routeName: "login",
       routeParams: {
         redirectToRoute: to.name,
+        redirectToRouteParams: to.params,
+        redirectToRouteQuery: to.query,
       },
     };
   }
