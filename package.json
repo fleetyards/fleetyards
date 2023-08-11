@@ -51,7 +51,6 @@
     "qs": "6.11.2",
     "rapidoc": "^9.3.4",
     "swagger-ui": "^5.1.0",
-    "swagger-ui-dist": "^5.1.0",
     "three": "0.154.0",
     "ts-debounce": "4.0.0",
     "uuid": "^9.0.0",
