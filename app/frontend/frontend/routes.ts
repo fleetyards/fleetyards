@@ -260,6 +260,14 @@ export const routes = [
     component: () => import("@/frontend/pages/Confirm/index.vue"),
   },
   {
+    path: "/oauth/authorize/",
+    name: "oauth-authorize",
+    component: () => import("@/frontend/pages/OAuth/Authorize.vue"),
+    meta: {
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "/404/",
     name: "404",
     component: () => import("@/frontend/pages/NotFound/index.vue"),

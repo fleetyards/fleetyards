@@ -3,6 +3,14 @@
 module Api
   module V1
     class HangarGroupsController < ::Api::BaseController
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?,
+        only: %i[index]
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        except: %i[index]
+
       def index
         authorize! :index, :api_hangar_groups
 

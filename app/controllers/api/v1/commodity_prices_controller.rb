@@ -3,7 +3,8 @@
 module Api
   module V1
     class CommodityPricesController < ::Api::BaseController
-      before_action :authenticate_user!, only: [:create]
+      before_action :authenticate_user!, only: []
+      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[create]
 
       def create
         @commodity_price = CommodityPrice.find_or_initialize_by(

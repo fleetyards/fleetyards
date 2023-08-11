@@ -5,6 +5,14 @@ module Api
     class WishlistsController < ::Api::BaseController
       include HangarFiltersConcern
 
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?,
+        only: %i[show export items]
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        except: %i[show export items]
+
       after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
       def show
