@@ -91,13 +91,13 @@ json.metrics do
   json.fleetchart_length (model.fleetchart_offset_length || model.length).to_f
   json.height model.height.to_f
   json.height_label model.height_label
-  json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size
+  json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size&.to_f
   json.is_ground_vehicle model.ground
   json.length model.length.to_f
   json.length_label model.length_label
   json.mass model.mass.to_f
   json.mass_label model.mass.to_f.to_s
-  json.quantum_fuel_tank_size model.quantum_fuel_tank_size
+  json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.size model.size
   json.size_label model.size&.humanize
 end
@@ -112,19 +112,19 @@ json.rsi_id model.rsi_id
 json.rsi_name model.rsi_name
 json.rsi_slug model.rsi_slug
 json.speeds do
-  json.ground_acceleration model.ground_acceleration
-  json.ground_decceleration model.ground_decceleration
-  json.ground_max_speed model.ground_max_speed
-  json.ground_reverse_speed model.ground_reverse_speed
-  json.max_speed model.max_speed
-  json.max_speed_acceleration model.max_speed_acceleration
-  json.max_speed_decceleration model.max_speed_decceleration
-  json.pitch model.pitch
-  json.roll model.roll
-  json.scm_speed model.scm_speed
-  json.scm_speed_acceleration model.scm_speed_acceleration
-  json.scm_speed_decceleration model.scm_speed_decceleration
-  json.yaw model.yaw
+  json.ground_acceleration model.ground_acceleration&.to_f
+  json.ground_decceleration model.ground_decceleration&.to_f
+  json.ground_max_speed model.ground_max_speed&.to_f
+  json.ground_reverse_speed model.ground_reverse_speed&.to_f
+  json.max_speed model.max_speed&.to_f
+  json.max_speed_acceleration model.max_speed_acceleration&.to_f
+  json.max_speed_decceleration model.max_speed_decceleration&.to_f
+  json.pitch model.pitch&.to_f
+  json.roll model.roll&.to_f
+  json.scm_speed model.scm_speed&.to_f
+  json.scm_speed_acceleration model.scm_speed_acceleration&.to_f
+  json.scm_speed_decceleration model.scm_speed_decceleration&.to_f
+  json.yaw model.yaw&.to_f
 end
 
 # deprecated
@@ -146,20 +146,20 @@ json.fleetchart_length (model.fleetchart_offset_length || model.length).to_f
 json.ground_speed nil
 json.height model.height.to_f
 json.height_label model.height_label
-json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size
+json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size&.to_f
 json.length model.length.to_f
 json.length_label model.length_label
 json.mass model.mass.to_f
 json.mass_label model.mass.to_f
 json.max_crew model.max_crew
-json.max_crew_label model.max_crew
+json.max_crew_label model.max_crew.to_s
 json.min_crew model.min_crew
-json.min_crew_label model.min_crew
-json.pitch_max model.pitch
-json.quantum_fuel_tank_size model.quantum_fuel_tank_size
-json.roll_max model.roll
+json.min_crew_label model.min_crew.to_s
+json.pitch_max model.pitch&.to_f
+json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
+json.roll_max model.roll&.to_f
 json.sales_page_url model.rsi_sales_page_url
-json.scm_speed model.scm_speed
+json.scm_speed model.scm_speed&.to_f
 json.side_view model.side_view.url
 json.side_view_height model.side_view_height
 json.side_view_large model.side_view.large.url
@@ -182,6 +182,6 @@ json.top_view_small model.top_view.small.url
 json.top_view_width model.top_view_width
 json.top_view_xlarge model.top_view.xlarge.url
 json.xaxis_acceleration nil
-json.yaw_max model.yaw
+json.yaw_max model.yaw&.to_f
 json.yaxis_acceleration nil
 json.zaxis_acceleration nil

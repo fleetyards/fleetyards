@@ -43,9 +43,9 @@ module V1
           crew: {
             type: :object,
             properties: {
-              max: {type: :number, nullable: true},
+              max: {type: :integer, nullable: true},
               maxLabel: {type: :string, nullable: true},
-              min: {type: :number, nullable: true},
+              min: {type: :integer, nullable: true},
               minLabel: {type: :string, nullable: true}
             }
           },
@@ -173,10 +173,10 @@ module V1
           lengthLabel: {type: :string, nullable: true, deprecated: true},
           mass: {type: :number, nullable: true, deprecated: true},
           massLabel: {type: :number, nullable: true, deprecated: true},
-          maxCrew: {type: :number, nullable: true, deprecated: true},
-          maxCrewLabel: {type: :number, nullable: true, deprecated: true},
-          minCrew: {type: :number, nullable: true, deprecated: true},
-          minCrewLabel: {type: :number, nullable: true, deprecated: true},
+          maxCrew: {type: :integer, nullable: true, deprecated: true},
+          maxCrewLabel: {type: :string, nullable: true, deprecated: true},
+          minCrew: {type: :integer, nullable: true, deprecated: true},
+          minCrewLabel: {type: :string, nullable: true, deprecated: true},
           pitchMax: {type: :number, nullable: true, deprecated: true},
           quantumFuelTankSize: {type: :number, nullable: true, deprecated: true},
           rollMax: {type: :number, nullable: true, deprecated: true},
@@ -189,7 +189,7 @@ module V1
           sideViewSmall: {type: :string, nullable: true, deprecated: true},
           sideViewWidth: {type: :number, nullable: true, deprecated: true},
           sideViewXlarge: {type: :string, nullable: true, deprecated: true},
-          size: {type: :number, nullable: true, deprecated: true},
+          size: {type: :string, nullable: true, deprecated: true},
           sizeLabel: {type: :string, nullable: true, deprecated: true},
           storeImage: {type: :string, nullable: true, deprecated: true},
           storeImageLarge: {type: :string, nullable: true, deprecated: true},

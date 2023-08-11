@@ -34,6 +34,18 @@
 commodity_one:
   shop: dumpers
   commodity_item: explorer (Model)
+  sell_price: 1000000.32
+  average_sell_price: 1000000.32
+  buy_price: 1330500.0
+  average_buy_price: 1330500.0
+  rental_price_1_day: 70960.0
+  average_rental_price_1_day: 70960.0
+  rental_price_3_days: 186270.0
+  average_rental_price_3_days: 186270.0
+  rental_price_7_days: 372540.0
+  average_rental_price_7_days: 372540.0
+  rental_price_30_days: 1330500.0
+  average_rental_price_30_days: 1330500.0
   confirmed: true
 
 commodity_three:

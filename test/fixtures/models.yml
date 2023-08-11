@@ -126,17 +126,18 @@
 andromeda:
   name: "Andromeda"
   slug: "andromeda"
-  beam: 10.2
-  cargo: 90
+  beam: 27.75
+  cargo: 96
   classification: multi_role
-  height: 10.2
+  size: :large
+  height: 15.25
   hidden: false
   images_count: 0
   last_pledge_price: 225
-  length: 61.2
+  length: 63.5
   manufacturer: rsi
-  mass: 1000.02
-  max_crew: 5
+  mass: 430057.0
+  max_crew: 4
   min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
@@ -145,6 +146,18 @@ andromeda:
   upgrade_kits_count: 0
   videos_count: 0
   fleetchart_image: test.jpg
+  ground: false
+  hydrogen_fuel_tank_size: 660000.0
+  quantum_fuel_tank_size: 3000.0
+  scm_speed: 144.0
+  max_speed: 911.0
+  scm_speed_acceleration: 3.11
+  scm_speed_decceleration: 6.22
+  max_speed_acceleration: 19.66
+  max_speed_decceleration: 39.35
+  pitch: 25.0
+  yaw: 25.0
+  roll: 65.0
 
 aquila:
   name: "Aquila"
@@ -211,6 +224,10 @@ ptv:
   rsi_name: PTV
   upgrade_kits_count: 0
   videos_count: 0
+  ground_max_speed: 50.2
+  ground_reverse_speed: 20.2
+  ground_acceleration: 10.5
+  ground_decceleration: 6.5
 
 600i-executive:
   name: '600i Executive Edition'
