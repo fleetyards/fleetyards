@@ -209,7 +209,7 @@ export type ModelComplete = {
     /**
      * @deprecated
      */
-    maxCrewLabel?: number | null;
+    maxCrewLabel?: string | null;
     /**
      * @deprecated
      */
@@ -217,7 +217,7 @@ export type ModelComplete = {
     /**
      * @deprecated
      */
-    minCrewLabel?: number | null;
+    minCrewLabel?: string | null;
     /**
      * @deprecated
      */
@@ -269,7 +269,7 @@ export type ModelComplete = {
     /**
      * @deprecated
      */
-    size?: number | null;
+    size?: string | null;
     /**
      * @deprecated
      */

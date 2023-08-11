@@ -4518,13 +4518,13 @@ components:
           type: object
           properties:
             max:
-              type: number
+              type: integer
               nullable: true
             maxLabel:
               type: string
               nullable: true
             min:
-              type: number
+              type: integer
               nullable: true
             minLabel:
               type: string
@@ -4831,19 +4831,19 @@ components:
           nullable: true
           deprecated: true
         maxCrew:
-          type: number
+          type: integer
           nullable: true
           deprecated: true
         maxCrewLabel:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         minCrew:
-          type: number
+          type: integer
           nullable: true
           deprecated: true
         minCrewLabel:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         pitchMax:
@@ -4895,7 +4895,7 @@ components:
           nullable: true
           deprecated: true
         size:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         sizeLabel:
@@ -5035,13 +5035,13 @@ components:
           type: object
           properties:
             max:
-              type: number
+              type: integer
               nullable: true
             maxLabel:
               type: string
               nullable: true
             min:
-              type: number
+              type: integer
               nullable: true
             minLabel:
               type: string
@@ -5354,19 +5354,19 @@ components:
           nullable: true
           deprecated: true
         maxCrew:
-          type: number
+          type: integer
           nullable: true
           deprecated: true
         maxCrewLabel:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         minCrew:
-          type: number
+          type: integer
           nullable: true
           deprecated: true
         minCrewLabel:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         pitchMax:
@@ -5418,7 +5418,7 @@ components:
           nullable: true
           deprecated: true
         size:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         sizeLabel:
@@ -5661,13 +5661,13 @@ components:
           type: object
           properties:
             max:
-              type: number
+              type: integer
               nullable: true
             maxLabel:
               type: string
               nullable: true
             min:
-              type: number
+              type: integer
               nullable: true
             minLabel:
               type: string
@@ -5974,19 +5974,19 @@ components:
           nullable: true
           deprecated: true
         maxCrew:
-          type: number
+          type: integer
           nullable: true
           deprecated: true
         maxCrewLabel:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         minCrew:
-          type: number
+          type: integer
           nullable: true
           deprecated: true
         minCrewLabel:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         pitchMax:
@@ -6038,7 +6038,7 @@ components:
           nullable: true
           deprecated: true
         size:
-          type: number
+          type: string
           nullable: true
           deprecated: true
         sizeLabel:

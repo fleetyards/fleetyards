@@ -206,7 +206,7 @@ export type Model = {
     /**
      * @deprecated
      */
-    maxCrewLabel?: number | null;
+    maxCrewLabel?: string | null;
     /**
      * @deprecated
      */
@@ -214,7 +214,7 @@ export type Model = {
     /**
      * @deprecated
      */
-    minCrewLabel?: number | null;
+    minCrewLabel?: string | null;
     /**
      * @deprecated
      */
@@ -266,7 +266,7 @@ export type Model = {
     /**
      * @deprecated
      */
-    size?: number | null;
+    size?: string | null;
     /**
      * @deprecated
      */
