@@ -19,7 +19,7 @@
         class="col-12 compare-row-item"
       />
     </div>
-    <div id="base" v-show-slide:400:ease-in-out="visible" class="row">
+    <Collapsed id="base" :visible="visible" class="row">
       <div class="col-12">
         <div class="row compare-row">
           <div
@@ -210,11 +210,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </Collapsed>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Collapsed from "@/shared/components/Collapsed.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 type Props = {

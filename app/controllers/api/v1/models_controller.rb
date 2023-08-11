@@ -291,7 +291,7 @@ module Api
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
 
-        redirect_to model.store_image.url
+        redirect_to model.store_image.url, allow_other_host: true
       end
 
       def fleetchart_image
@@ -305,7 +305,7 @@ module Api
           .where.not(fleetchart_image: nil)
           .first!
 
-        redirect_to model.fleetchart_image.url
+        redirect_to model.fleetchart_image.url, allow_other_host: true
       end
 
       def snub_crafts

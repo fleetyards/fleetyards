@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
-namespace :frontend,
+frontend_options = {
   path: "",
   host: Rails.configuration.app.domain,
-  constraints: ->(req) { req.subdomain.blank? || %w[admin api].exclude?(req.subdomain) } do
+  constraints: ->(req) { req.subdomain.blank? || %w[admin api docs].exclude?(req.subdomain) }
+}.compact
+
+namespace :frontend, **frontend_options do
   get "ships/mercury", to: redirect("/ships/mercury-star-runner")
   get "ships/compare", to: redirect("/compare/ships")
 
