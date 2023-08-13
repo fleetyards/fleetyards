@@ -42,7 +42,7 @@ const toNumber = (value: number | string, units: string) => {
     count = value;
   }
   if (units === "speed" && value) {
-    count = (value as string)
+    count = String(value)
       .split(" - ")
       .map((item) => I18n.l("number", item))
       .join(" - ");
