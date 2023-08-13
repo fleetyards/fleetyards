@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.26.8](https://github.com/fleetyards/fleetyards/compare/v5.26.7...v5.26.8) (2023-08-13)
+
+
+### Bug Fixes
+
+* **compare:** update speed section to format speed values correctly ([f2a8d8d](https://github.com/fleetyards/fleetyards/commit/f2a8d8dc9b7b795f18c1ff4809fed7ee46d4ba4b))
+
 ### [5.26.7](https://github.com/fleetyards/fleetyards/compare/v5.26.6...v5.26.7) (2023-08-13)
 
 
