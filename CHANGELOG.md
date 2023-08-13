@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.26.6](https://github.com/fleetyards/fleetyards/compare/v5.26.5...v5.26.6) (2023-08-13)
+
+
+### Bug Fixes
+
+* **compare:** switch collapse component to resolve sticky issues ([3ec829d](https://github.com/fleetyards/fleetyards/commit/3ec829de48959800e4914f4a91ef55710f28593c))
+
 ### [5.26.5](https://github.com/fleetyards/fleetyards/compare/v5.26.4...v5.26.5) (2023-07-07)
 
 
