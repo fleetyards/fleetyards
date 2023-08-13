@@ -232,7 +232,7 @@ module Frontend
     private def check_short_domain
       return if Rails.configuration.app.short_domain.blank? || request.host != Rails.configuration.app.short_domain
 
-      redirect_to frontend_root_url
+      redirect_to frontend_root_url, allow_other_host: true
     end
   end
 end
