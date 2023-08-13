@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.26.7](https://github.com/fleetyards/fleetyards/compare/v5.26.6...v5.26.7) (2023-08-13)
+
+
+### Bug Fixes
+
+* preview pages redirect for fleet and hangar ([6c99390](https://github.com/fleetyards/fleetyards/commit/6c99390853d08be3fd036a4108bc1574490a0bbc))
+
 ### [5.26.6](https://github.com/fleetyards/fleetyards/compare/v5.26.5...v5.26.6) (2023-08-13)
 
 
