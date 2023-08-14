@@ -7,7 +7,8 @@ export default defineConfig({
   videoCompression: 0,
   viewportWidth: 2560,
   viewportHeight: 1440,
-  defaultCommandTimeout: 10000,
+  defaultCommandTimeout: 30000,
+  pageLoadTimeout: 120000,
   e2e: {
     baseUrl: "http://fleetyards.test",
   },
