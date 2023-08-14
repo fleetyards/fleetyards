@@ -4,7 +4,6 @@ require_relative "boot"
 
 require "rails/all"
 require "sprockets/railtie"
-require_relative "../lib/middleware/transform_parameters"
 
 # require 'rails'
 #
