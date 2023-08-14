@@ -4,19 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [5.26.12](https://github.com/fleetyards/fleetyards/compare/v5.26.11...v5.26.12) (2023-08-14)
 
-### [5.26.11](https://github.com/fleetyards/fleetyards/compare/v5.26.10...v5.26.11) (2023-08-14)
-
-### [5.26.10](https://github.com/fleetyards/fleetyards/compare/v5.26.9...v5.26.10) (2023-08-14)
-
-
 ### Bug Fixes
 
 * **login:** use correct params format to resolve issue with 2FA ([2bea396](https://github.com/fleetyards/fleetyards/commit/2bea3967d11af0851a0ef4f415bf35a190c07543))
 
 ### [5.26.9](https://github.com/fleetyards/fleetyards/compare/v5.26.8...v5.26.9) (2023-08-13)
-
-### [5.26.8](https://github.com/fleetyards/fleetyards/compare/v5.26.7...v5.26.8) (2023-08-13)
-
 
 ### Bug Fixes
 
