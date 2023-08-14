@@ -44,7 +44,7 @@ module Api
           return
         end
 
-        if current_user.validate_and_consume_otp!(params[:two_factor_code])
+        if current_user.validate_and_consume_otp!(two_factor_code)
           current_user.otp_required_for_login = true
           backup_codes = current_user.generate_otp_backup_codes!
           current_user.save!
@@ -68,7 +68,7 @@ module Api
           return
         end
 
-        if current_user.validate_and_consume_otp!(params[:two_factor_code]) || current_user.invalidate_otp_backup_code!(params[:two_factor_code])
+        if current_user.validate_and_consume_otp!(two_factor_code) || current_user.invalidate_otp_backup_code!(two_factor_code)
           current_user.otp_secret = User.generate_otp_secret
           current_user.otp_required_for_login = false
           current_user.save!
@@ -97,6 +97,10 @@ module Api
         current_user.save!
 
         render json: {codes: backup_codes}
+      end
+
+      def two_factor_code
+        @two_factor_code ||= params[:two_factor_code] || params[:twoFactorCode]
       end
     end
   end
