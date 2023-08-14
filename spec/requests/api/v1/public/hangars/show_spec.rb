@@ -29,7 +29,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:username) { user.username }
 
@@ -50,7 +50,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:perPage) { 1 }
         let(:username) { user.username }

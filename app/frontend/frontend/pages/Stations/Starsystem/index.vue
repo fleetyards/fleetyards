@@ -48,31 +48,7 @@
                   slug: celestialObject.slug,
                 },
               }"
-            >
-              <template v-if="celestialObject.moons.length">
-                <h3 class="sr-only">
-                  {{ $t("headlines.celestialObjects") }}
-                </h3>
-                <transition-group name="fade-list" class="row" tag="div" appear>
-                  <div
-                    v-for="moon in celestialObject.moons"
-                    :key="moon.slug"
-                    class="col-12 col-lg-3 fade-list-item"
-                  >
-                    <MoonPanel
-                      :item="moon"
-                      :route="{
-                        name: 'celestial-object',
-                        params: {
-                          starsystem: celestialObject.starsystem.slug,
-                          slug: moon.slug,
-                        },
-                      }"
-                    />
-                  </div>
-                </transition-group>
-              </template>
-            </PlanetList>
+            />
           </div>
         </transition-group>
         <Loader :loading="loading" :fixed="true" />
@@ -97,7 +73,6 @@ import Panel from "@/frontend/core/components/Panel/index.vue";
 import Pagination from "@/frontend/mixins/Pagination";
 import { scrollToAnchor } from "@/frontend/utils/scrolling";
 import PlanetList from "@/frontend/components/Planets/List/index.vue";
-import MoonPanel from "@/frontend/components/Planets/Panel/index.vue";
 import StarsystemBaseMetrics from "@/frontend/components/Starsystems/BaseMetrics/index.vue";
 import StarsystemLevelsMetrics from "@/frontend/components/Starsystems/LevelsMetrics/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
@@ -108,7 +83,6 @@ export default {
   components: {
     Loader,
     PlanetList,
-    MoonPanel,
     StarsystemBaseMetrics,
     StarsystemLevelsMetrics,
     Panel,

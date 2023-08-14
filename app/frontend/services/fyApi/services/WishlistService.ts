@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarQuery } from '../models/HangarQuery';
+import type { Vehicle } from '../models/Vehicle';
 import type { VehicleExport } from '../models/VehicleExport';
-import type { VehicleMinimal } from '../models/VehicleMinimal';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -30,7 +30,7 @@ export class WishlistService {
 
     /**
      * Your Wishlist
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
     public getWishlist({
@@ -41,7 +41,7 @@ export class WishlistService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehicleMinimal>> {
+    }): CancelablePromise<Array<Vehicle>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/wishlist',

@@ -6,8 +6,8 @@ import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { HangarSyncResult } from '../models/HangarSyncResult';
 import type { SyncRsiHangarInput } from '../models/SyncRsiHangarInput';
+import type { Vehicle } from '../models/Vehicle';
 import type { VehicleExport } from '../models/VehicleExport';
-import type { VehicleMinimal } from '../models/VehicleMinimal';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -33,7 +33,7 @@ export class HangarService {
 
     /**
      * Your personal Hangar
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
     public hangar({
@@ -44,7 +44,7 @@ export class HangarService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehicleMinimal>> {
+    }): CancelablePromise<Array<Vehicle>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar',

@@ -2,17 +2,16 @@
 
 module V1
   module Schemas
-    class ShopMinimal < Shop
+    class ShopMinimal < ShopBase
       include SchemaConcern
 
       schema({
         properties: {
-          celestialObject: {"$ref": "#/components/schemas/CelestialObject"},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[celestialObject createdAt updatedAt]
+        required: %w[createdAt updatedAt]
       })
     end
   end

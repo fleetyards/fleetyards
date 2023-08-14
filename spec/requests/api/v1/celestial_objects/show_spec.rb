@@ -15,7 +15,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/CelestialObjectMinimal"
+        schema "$ref": "#/components/schemas/CelestialObject"
 
         let(:crusader) { celestial_objects :crusader }
         let(:slug) { crusader.slug }

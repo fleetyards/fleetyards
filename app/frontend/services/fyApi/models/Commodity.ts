@@ -39,5 +39,7 @@ export type Commodity = {
      * @deprecated
      */
     storeImageSmall?: string;
+    createdAt: string;
+    updatedAt: string;
 };
 

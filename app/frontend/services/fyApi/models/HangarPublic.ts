@@ -4,10 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
-import type { VehicleMinimalPublic } from './VehicleMinimalPublic';
+import type { VehiclePublic } from './VehiclePublic';
 
 export type HangarPublic = {
     meta?: Meta;
-    items: Array<VehicleMinimalPublic>;
+    items: Array<VehiclePublic>;
 };
 

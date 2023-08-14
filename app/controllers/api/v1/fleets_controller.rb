@@ -30,9 +30,11 @@ module Api
         @fleet = Fleet.new(fleet_params.merge(created_by: current_user.id))
         authorize! :create, fleet
 
-        return if fleet.save
-
-        render json: ValidationError.new("fleet.create", errors: fleet.errors), status: :bad_request
+        if fleet.save
+          render :create, status: :created
+        else
+          render json: ValidationError.new("fleet.create", errors: fleet.errors), status: :bad_request
+        end
       end
 
       def update
@@ -53,6 +55,7 @@ module Api
 
       def check
         authorize! :check, :api_fleet
+
         render json: {taken: Fleet.exists?(fid: (fleet_params[:fid] || "").downcase)}
       end
 

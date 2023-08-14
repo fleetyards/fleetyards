@@ -33,7 +33,7 @@ module Admin
             economy: {type: :integer, nullable: true},
             population: {type: :integer, nullable: true},
             locationLabel: {type: :string, nullable: true},
-            starsystem: {"$ref": "#/components/schemas/Starsystem", nullable: true}
+            starsystem: {"$ref": "#/components/schemas/StarsystemMinimal", nullable: true}
           },
           additionalProperties: false,
           required: %w[id name slug designation]

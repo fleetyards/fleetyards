@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CelestialObject } from './CelestialObject';
 import type { MediaImage } from './MediaImage';
 import type { ShopTypeEnum } from './ShopTypeEnum';
 import type { StationShop } from './StationShop';
@@ -40,5 +41,8 @@ export type Shop = {
      * @deprecated
      */
     storeImageLarge?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    celestialObject: CelestialObject;
 };
 

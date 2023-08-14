@@ -3,11 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CelestialObjectMinimal } from './CelestialObjectMinimal';
+import type { CelestialObject } from './CelestialObject';
 import type { Meta } from './Meta';
 
 export type CelestialObjects = {
     meta?: Meta;
-    items: Array<CelestialObjectMinimal>;
+    items: Array<CelestialObject>;
 };
 

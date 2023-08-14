@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class ModelMinimal < Model
+    class ModelMinimal < ModelBase
       include SchemaConcern
 
       schema({

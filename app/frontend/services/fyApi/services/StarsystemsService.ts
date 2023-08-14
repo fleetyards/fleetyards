@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Starsystem } from '../models/Starsystem';
 import type { StarsystemMinimal } from '../models/StarsystemMinimal';
 import type { StarsystemQuery } from '../models/StarsystemQuery';
 
@@ -42,7 +43,7 @@ export class StarsystemsService {
 
     /**
      * Starsystem Detail
-     * @returns StarsystemMinimal successful
+     * @returns Starsystem successful
      * @throws ApiError
      */
     public starsystem({
@@ -52,7 +53,7 @@ export class StarsystemsService {
          * Starsystem slug
          */
         slug: string,
-    }): CancelablePromise<StarsystemMinimal> {
+    }): CancelablePromise<Starsystem> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/starsystems/{slug}',

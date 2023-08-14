@@ -80,9 +80,200 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/CelestialObjectMinimal"
+                "$ref": "#/components/schemas/CelestialObject"
         '404':
           description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/check":
+    post:
+      summary: Check Fleet FID Availability
+      operationId: checkFID
+      tags:
+      - Fleets
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetCheck"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetCheckInput"
+        required: true
+  "/fleets":
+    post:
+      summary: Create Fleet
+      operationId: createFleet
+      tags:
+      - Fleets
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetCreateInput"
+        required: true
+  "/fleets/current":
+    get:
+      summary: Fleets for current User
+      operationId: currentFleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetMinimal"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Destroy Fleet
+      operationId: removeFleet
+      tags:
+      - Fleets
+      description: You are not the owner of this Fleet
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Fleet Detail
+      operationId: fleet
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Fleet
+      operationId: updateFleet
+      tags:
+      - Fleets
+      parameters: []
+      description: You are not an Admin or Officer of this Fleet
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/FleetUpdateInput"
+        required: true
+  "/fleets/invites":
+    get:
+      summary: Fleet Invites current User
+      operationId: fleetInvites
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetMembership"
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -138,7 +329,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                  "$ref": "#/components/schemas/Vehicle"
         '401':
           description: unauthorized
           content:
@@ -692,7 +883,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ImageComplete"
+                  "$ref": "#/components/schemas/Image"
   "/images/random":
     get:
       summary: Images random list
@@ -717,7 +908,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ImageComplete"
+                  "$ref": "#/components/schemas/Image"
   "/manufacturers/with-models":
     get:
       summary: with_models manufacturer
@@ -733,7 +924,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ManufacturerMinimal"
+                  "$ref": "#/components/schemas/Manufacturer"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -774,7 +965,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ManufacturerMinimal"
+                  "$ref": "#/components/schemas/Manufacturer"
   "/models/with-docks":
     get:
       summary: Models with Docks
@@ -1015,7 +1206,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/ModelComplete"
+                "$ref": "#/components/schemas/Model"
         '404':
           description: not found
           content:
@@ -1131,7 +1322,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VideoMinimal"
+                  "$ref": "#/components/schemas/Video"
         '404':
           description: not found
           content:
@@ -1449,7 +1640,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                  "$ref": "#/components/schemas/VehiclePublic"
   "/public/hangars/{username}/groups":
     parameters:
     - name: username
@@ -1513,7 +1704,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                  "$ref": "#/components/schemas/VehiclePublic"
         '404':
           description: not found
           content:
@@ -1596,7 +1787,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                  "$ref": "#/components/schemas/VehiclePublic"
         '404':
           description: not found
           content:
@@ -1684,7 +1875,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/ShopMinimal"
+                "$ref": "#/components/schemas/Shop"
         '404':
           description: not found
           content:
@@ -1751,7 +1942,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/StarsystemMinimal"
+                "$ref": "#/components/schemas/Starsystem"
         '404':
           description: not_found
           content:
@@ -1863,7 +2054,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/StationComplete"
+                "$ref": "#/components/schemas/Station"
         '404':
           description: not_found
           content:
@@ -1904,7 +2095,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/ImageComplete"
+                  "$ref": "#/components/schemas/Image"
         '404':
           description: not_found
           content:
@@ -2097,7 +2288,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/VehicleMinimal"
+                "$ref": "#/components/schemas/Vehicle"
         '401':
           description: unauthorized
           content:
@@ -2145,7 +2336,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                  "$ref": "#/components/schemas/Vehicle"
   "/vehicles/fleetchart":
     get:
       summary: Vehicle Fleetchart List -> use GET /hangar
@@ -2161,7 +2352,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                  "$ref": "#/components/schemas/Vehicle"
   "/vehicles/export":
     get:
       summary: Vehicle Export -> use GET /hangar/export
@@ -2224,7 +2415,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                  "$ref": "#/components/schemas/Vehicle"
   "/vehicles/hangar-items":
     get:
       summary: Vehicle Hangar items -> use GET /hangar/items
@@ -2256,7 +2447,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                  "$ref": "#/components/schemas/Vehicle"
   "/vehicles/quick-stats":
     get:
       summary: Vehicle Quickstats -> use GET /hangar/stats
@@ -2330,7 +2521,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                  "$ref": "#/components/schemas/VehiclePublic"
     delete:
       summary: Delete Vehicle
       operationId: destroyVehicle
@@ -2342,7 +2533,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/VehicleMinimal"
+                "$ref": "#/components/schemas/Vehicle"
         '404':
           description: not found
           content:
@@ -2367,7 +2558,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/VehicleMinimal"
+                "$ref": "#/components/schemas/Vehicle"
         '404':
           description: not found
           content:
@@ -2408,7 +2599,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimalPublic"
+                  "$ref": "#/components/schemas/VehiclePublic"
   "/vehicles/{id}/quick-stats":
     parameters:
     - name: id
@@ -2490,7 +2681,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleMinimal"
+                  "$ref": "#/components/schemas/Vehicle"
         '401':
           description: unauthorized
           content:
@@ -2776,13 +2967,29 @@ components:
           type: string
           nullable: true
         starsystem:
-          "$ref": "#/components/schemas/Starsystem"
+          "$ref": "#/components/schemas/StarsystemMinimal"
           nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        parent:
+          "$ref": "#/components/schemas/CelestialObject"
+          nullable: true
+        moons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
       additionalProperties: false
       required:
       - name
       - slug
       - designation
+      - starsystem
+      - createdAt
+      - updatedAt
       title: CelestialObject
     CelestialObjectMinimal:
       type: object
@@ -2843,15 +3050,8 @@ components:
           type: string
           nullable: true
         starsystem:
-          "$ref": "#/components/schemas/Starsystem"
+          "$ref": "#/components/schemas/StarsystemMinimal"
           nullable: true
-        parent:
-          "$ref": "#/components/schemas/CelestialObject"
-          nullable: true
-        moons:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
         createdAt:
           type: string
           format: date-time
@@ -2875,7 +3075,7 @@ components:
         items:
           type: array
           items:
-            "$ref": "#/components/schemas/CelestialObjectMinimal"
+            "$ref": "#/components/schemas/CelestialObject"
       additionalProperties: false
       required:
       - items
@@ -2936,72 +3136,6 @@ components:
           type: string
           format: uri
           deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - availability
-      - media
-      - createdAt
-      - updatedAt
-      title: Commodity
-    CommodityMinimal:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-          required:
-          - boughtAt
-          - soldAt
-        type:
-          type: string
-          nullable: true
-        typeLabel:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageIsFallback:
-          type: boolean
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -3017,7 +3151,7 @@ components:
       - media
       - createdAt
       - updatedAt
-      title: CommodityMinimal
+      title: Commodity
     CommodityPrice:
       type: object
       properties:
@@ -3137,98 +3271,6 @@ components:
           type: string
           format: uri
           deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - availability
-      - media
-      title: Component
-    ComponentMinimal:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            listedAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-          required:
-          - boughtAt
-          - listedAt
-          - soldAt
-        class:
-          type: string
-          nullable: true
-        grade:
-          type: string
-          nullable: true
-        itemClass:
-          type: string
-          nullable: true
-        itemClassLabel:
-          type: string
-          nullable: true
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-          nullable: true
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-        size:
-          type: string
-          nullable: true
-        trackingSignal:
-          type: string
-          nullable: true
-        trackingSignalLabel:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        typeLabel:
-          type: string
-          nullable: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageIsFallback:
-          type: boolean
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -3244,7 +3286,7 @@ components:
       - media
       - createdAt
       - updatedAt
-      title: ComponentMinimal
+      title: Component
     Dock:
       type: object
       properties:
@@ -3293,6 +3335,29 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    FleetMembershipRoleEnum:
+      type: string
+      enum:
+      - admin
+      - officer
+      - member
+      title: FleetMembershipRoleEnum
+    FleetMembershipShipsFilterEnum:
+      type: string
+      enum:
+      - all
+      - hangar_group
+      - hide
+      title: FleetMembershipShipsFilterEnum
+    FleetMembershipStatusEnum:
+      type: string
+      enum:
+      - created
+      - invited
+      - requested
+      - accepted
+      - declined
+      title: FleetMembershipStatusEnum
     ModelHardpointCategoryEnum:
       type: string
       enum:
@@ -3507,130 +3572,6 @@ components:
           type: string
           format: uri
           deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - availability
-      - media
-      title: Equipment
-    EquipmentMinimal:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            listedAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-          required:
-          - boughtAt
-          - listedAt
-          - soldAt
-        backpackCompatibility:
-          type: string
-          nullable: true
-        coreCompatibility:
-          type: string
-          nullable: true
-        damageReduction:
-          type: string
-          nullable: true
-        description:
-          type: string
-        extras:
-          type: string
-          nullable: true
-        grade:
-          type: string
-          nullable: true
-        itemType:
-          type: string
-          nullable: true
-        itemTypeLabel:
-          type: string
-          nullable: true
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-          nullable: true
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-        range:
-          type: string
-          nullable: true
-        rateOfFire:
-          type: string
-          nullable: true
-        size:
-          type: string
-          nullable: true
-        slot:
-          type: string
-          nullable: true
-        slotLabel:
-          type: string
-          nullable: true
-        storage:
-          type: string
-          nullable: true
-        temperatureRating:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        typeLabel:
-          type: string
-          nullable: true
-        volume:
-          type: string
-          nullable: true
-        weaponClass:
-          type: string
-          nullable: true
-        weaponClassLabel:
-          type: string
-          nullable: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageIsFallback:
-          type: boolean
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -3646,7 +3587,238 @@ components:
       - media
       - createdAt
       - updatedAt
-      title: EquipmentMinimal
+      title: Equipment
+    Fleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        rsiSid:
+          type: string
+          nullable: true
+        ts:
+          type: string
+          nullable: true
+        discord:
+          type: string
+          nullable: true
+        youtube:
+          type: string
+          nullable: true
+        twitch:
+          type: string
+          nullable: true
+        guilded:
+          type: string
+          nullable: true
+        homepage:
+          type: string
+          nullable: true
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        publicFleet:
+          type: boolean
+        logo:
+          type: string
+          nullable: true
+        backgroundImage:
+          type: string
+          nullable: true
+        myFleet:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        myRole:
+          "$ref": "#/components/schemas/FleetMembershipRoleEnum"
+        primary:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
+      - publicFleet
+      - myFleet
+      - createdAt
+      - updatedAt
+      title: Fleet
+    FleetCheck:
+      type: object
+      properties:
+        taken:
+          type: boolean
+      additionalProperties: false
+      required:
+      - taken
+      title: FleetCheck
+    FleetMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      title: FleetMember
+    FleetMembership:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        role:
+          "$ref": "#/components/schemas/FleetMembershipRoleEnum"
+        roleLabel:
+          type: string
+        status:
+          "$ref": "#/components/schemas/FleetMembershipStatusEnum"
+        invitedAt:
+          type: string
+          format: date-time
+          nullable: true
+        requestedAt:
+          type: string
+          format: date-time
+          nullable: true
+        acceptedAt:
+          type: string
+          format: date-time
+          nullable: true
+        acceptedAtLabel:
+          type: string
+          nullable: true
+        declinedAt:
+          type: string
+          format: date-time
+          nullable: true
+        declinedAtLabel:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        rsiHandle:
+          type: string
+          nullable: true
+        homepage:
+          type: string
+          nullable: true
+        discord:
+          type: string
+          nullable: true
+        youtube:
+          type: string
+          nullable: true
+        twitch:
+          type: string
+          nullable: true
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
+        hangarGroupId:
+          type: string
+          format: uuid
+          nullable: true
+        fleetSlug:
+          type: string
+        fleetName:
+          type: string
+        fleet:
+          "$ref": "#/components/schemas/FleetMinimal"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - username
+      - role
+      - roleLabel
+      - shipsFilter
+      - fleetSlug
+      - fleetName
+      - fleet
+      - createdAt
+      - updatedAt
+      title: FleetMembership
+    FleetMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        rsiSid:
+          type: string
+          nullable: true
+        ts:
+          type: string
+          nullable: true
+        discord:
+          type: string
+          nullable: true
+        youtube:
+          type: string
+          nullable: true
+        twitch:
+          type: string
+          nullable: true
+        guilded:
+          type: string
+          nullable: true
+        homepage:
+          type: string
+          nullable: true
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        publicFleet:
+          type: boolean
+        logo:
+          type: string
+          nullable: true
+        backgroundImage:
+          type: string
+          nullable: true
+        myFleet:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
+      - publicFleet
+      - myFleet
+      - createdAt
+      - updatedAt
+      title: FleetMinimal
     Gallery:
       type: object
       properties:
@@ -3704,7 +3876,7 @@ components:
         items:
           type: array
           items:
-            "$ref": "#/components/schemas/VehicleMinimal"
+            "$ref": "#/components/schemas/Vehicle"
       additionalProperties: false
       required:
       - items
@@ -3876,7 +4048,7 @@ components:
         items:
           type: array
           items:
-            "$ref": "#/components/schemas/VehicleMinimalPublic"
+            "$ref": "#/components/schemas/VehiclePublic"
       additionalProperties: false
       required:
       - items
@@ -4028,6 +4200,18 @@ components:
         width:
           type: number
           nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        gallery:
+          "$ref": "#/components/schemas/Gallery"
+          nullable: true
+        model:
+          "$ref": "#/components/schemas/Gallery"
+          nullable: true
       additionalProperties: false
       required:
       - id
@@ -4039,8 +4223,10 @@ components:
       - background
       - smallUrl
       - bigUrl
+      - createdAt
+      - updatedAt
       title: Image
-    ImageComplete:
+    ImageBase:
       type: object
       properties:
         id:
@@ -4070,18 +4256,6 @@ components:
         width:
           type: number
           nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        gallery:
-          "$ref": "#/components/schemas/Gallery"
-          nullable: true
-        model:
-          "$ref": "#/components/schemas/Gallery"
-          nullable: true
       additionalProperties: false
       required:
       - id
@@ -4093,9 +4267,7 @@ components:
       - background
       - smallUrl
       - bigUrl
-      - createdAt
-      - updatedAt
-      title: ImageComplete
+      title: ImageBase
     ImageMinimal:
       type: object
       properties:
@@ -4186,6 +4358,81 @@ components:
       - path
       - shopId
       title: CommodityPriceInput
+    FleetCheckInput:
+      type: object
+      properties:
+        fid:
+          type: string
+      additionalProperties: false
+      title: FleetCheckInput
+    FleetCreateInput:
+      type: object
+      properties:
+        fid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        publicFleet:
+          type: boolean
+        homepage:
+          type: string
+        rsiSid:
+          type: string
+        discord:
+          type: string
+        ts:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+      additionalProperties: false
+      required:
+      - fid
+      - name
+      title: FleetCreateInput
+    FleetUpdateInput:
+      type: object
+      properties:
+        fid:
+          type: string
+        name:
+          type: string
+        logo:
+          type: string
+          format: binary
+        removeLogo:
+          type: boolean
+        backgroundImage:
+          type: string
+          format: binary
+        removeBackground:
+          type: boolean
+        description:
+          type: string
+        publicFleet:
+          type: boolean
+        homepage:
+          type: string
+        rsiSid:
+          type: string
+        discord:
+          type: string
+        ts:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+      additionalProperties: false
+      title: FleetUpdateInput
     HangarGroupCreateInput:
       type: object
       properties:
@@ -4422,12 +4669,20 @@ components:
           nullable: true
         longName:
           type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - name
       - slug
+      - createdAt
+      - updatedAt
       title: Manufacturer
-    ManufacturerMinimal:
+    ManufacturerBase:
       type: object
       properties:
         name:
@@ -4442,19 +4697,11 @@ components:
           nullable: true
         longName:
           type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       additionalProperties: false
       required:
       - name
       - slug
-      - createdAt
-      - updatedAt
-      title: ManufacturerMinimal
+      title: ManufacturerBase
     Manufacturers:
       type: object
       properties:
@@ -4463,7 +4710,7 @@ components:
         items:
           type: array
           items:
-            "$ref": "#/components/schemas/ManufacturerMinimal"
+            "$ref": "#/components/schemas/Manufacturer"
       additionalProperties: false
       required:
       - items
@@ -4487,536 +4734,19 @@ components:
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
             listedAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
             rentalAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
-          required:
-          - boughtAt
-          - listedAt
-          - rentalAt
-          - soldAt
-        brochure:
-          type: string
-          nullable: true
-        classification:
-          type: string
-          nullable: true
-        classificationLabel:
-          type: string
-          nullable: true
-        crew:
-          type: object
-          properties:
-            max:
-              type: integer
-              nullable: true
-            maxLabel:
-              type: string
-              nullable: true
-            min:
-              type: integer
-              nullable: true
-            minLabel:
-              type: string
-              nullable: true
-        description:
-          type: string
-          nullable: true
-        erkulIdentifier:
-          type: string
-          nullable: true
-        focus:
-          type: string
-          nullable: true
-        hasImages:
-          type: boolean
-        hasModules:
-          type: boolean
-        hasPaints:
-          type: boolean
-        hasUpgrades:
-          type: boolean
-        hasVideos:
-          type: boolean
-        holo:
-          type: string
-          nullable: true
-        holoColored:
-          type: boolean
-          nullable: true
-          deprecated: true
-        lastPledgePrice:
-          type: number
-          nullable: true
-        lastPledgePriceLabel:
-          type: string
-          nullable: true
-        lastUpdatedAt:
-          type: string
-          format: date-time
-          nullable: true
-        lastUpdatedAtLabel:
-          type: string
-          nullable: true
-        links:
-          type: object
-          properties:
-            salesPageUrl:
-              type: string
-              nullable: true
-            storeUrl:
-              type: string
-              nullable: true
-        loaners:
-          type: array
-          items:
-            "$ref": "#/components/schemas/ModelLoaner"
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-          nullable: true
-        media:
-          type: object
-          properties:
-            angledView:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-            angledViewColored:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-            fleetchartImage:
-              type: string
-              nullable: true
-            frontView:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-            frontViewColored:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-            sideView:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-            sideViewColored:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-            topView:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-            topViewColored:
-              "$ref": "#/components/schemas/ViewImage"
-              nullable: true
-        metrics:
-          type: object
-          properties:
-            beam:
-              type: number
-              nullable: true
-            beamLabel:
-              type: string
-              nullable: true
-            cargo:
-              type: number
-              nullable: true
-            cargoLabel:
-              type: string
-              nullable: true
-            fleetchartLength:
-              type: number
-              nullable: true
-            height:
-              type: number
-              nullable: true
-            heightLabel:
-              type: string
-              nullable: true
-            hydrogenFuelTankSize:
-              type: number
-              nullable: true
-            isGroundVehicle:
-              type: boolean
-            length:
-              type: number
-              nullable: true
-            lengthLabel:
-              type: string
-              nullable: true
-            mass:
-              type: number
-              nullable: true
-            massLabel:
-              type: string
-              nullable: true
-            quantumFuelTankSize:
-              type: number
-              nullable: true
-            size:
-              type: string
-              nullable: true
-            sizeLabel:
-              type: string
-              nullable: true
-        onSale:
-          type: boolean
-        pledgePrice:
-          type: number
-          nullable: true
-        pledgePriceLabel:
-          type: string
-          nullable: true
-        price:
-          type: number
-          nullable: true
-        priceLabel:
-          type: string
-          nullable: true
-        productionNote:
-          type: string
-          nullable: true
-        productionStatus:
-          type: string
-          nullable: true
-        rsiId:
-          type: integer
-          nullable: true
-        rsiName:
-          type: string
-          nullable: true
-        rsiSlug:
-          type: string
-          nullable: true
-        speeds:
-          type: object
-          properties:
-            groundAcceleration:
-              type: number
-              nullable: true
-            groundDecceleration:
-              type: number
-              nullable: true
-            groundMaxSpeed:
-              type: number
-              nullable: true
-            groundReverseSpeed:
-              type: number
-              nullable: true
-            maxSpeed:
-              type: number
-              nullable: true
-            maxSpeedAcceleration:
-              type: number
-              nullable: true
-            maxSpeedDecceleration:
-              type: number
-              nullable: true
-            pitch:
-              type: number
-              nullable: true
-            roll:
-              type: number
-              nullable: true
-            scmSpeed:
-              type: number
-              nullable: true
-            scmSpeedAcceleration:
-              type: number
-              nullable: true
-            scmSpeedDecceleration:
-              type: number
-              nullable: true
-            yaw:
-              type: number
-              nullable: true
-        afterburnerGroundSpeed:
-          type: number
-          nullable: true
-          deprecated: true
-        afterburnerSpeed:
-          type: number
-          nullable: true
-          deprecated: true
-        angledView:
-          type: string
-          nullable: true
-          deprecated: true
-        angledViewHeight:
-          type: number
-          nullable: true
-          deprecated: true
-        angledViewLarge:
-          type: string
-          nullable: true
-          deprecated: true
-        angledViewMedium:
-          type: string
-          nullable: true
-          deprecated: true
-        angledViewSmall:
-          type: string
-          nullable: true
-          deprecated: true
-        angledViewWidth:
-          type: number
-          nullable: true
-          deprecated: true
-        angledViewXlarge:
-          type: string
-          nullable: true
-          deprecated: true
-        beam:
-          type: number
-          nullable: true
-          deprecated: true
-        beamLabel:
-          type: string
-          nullable: true
-          deprecated: true
-        cargo:
-          type: number
-          nullable: true
-          deprecated: true
-        cargoLabel:
-          type: string
-          nullable: true
-          deprecated: true
-        fleetchartImage:
-          type: string
-          nullable: true
-          deprecated: true
-        fleetchartLength:
-          type: number
-          nullable: true
-          deprecated: true
-        groundSpeed:
-          type: number
-          nullable: true
-          deprecated: true
-        height:
-          type: number
-          nullable: true
-          deprecated: true
-        heightLabel:
-          type: string
-          nullable: true
-          deprecated: true
-        hydrogenFuelTankSize:
-          type: number
-          nullable: true
-          deprecated: true
-        length:
-          type: number
-          nullable: true
-          deprecated: true
-        lengthLabel:
-          type: string
-          nullable: true
-          deprecated: true
-        mass:
-          type: number
-          nullable: true
-          deprecated: true
-        massLabel:
-          type: number
-          nullable: true
-          deprecated: true
-        maxCrew:
-          type: integer
-          nullable: true
-          deprecated: true
-        maxCrewLabel:
-          type: string
-          nullable: true
-          deprecated: true
-        minCrew:
-          type: integer
-          nullable: true
-          deprecated: true
-        minCrewLabel:
-          type: string
-          nullable: true
-          deprecated: true
-        pitchMax:
-          type: number
-          nullable: true
-          deprecated: true
-        quantumFuelTankSize:
-          type: number
-          nullable: true
-          deprecated: true
-        rollMax:
-          type: number
-          nullable: true
-          deprecated: true
-        salesPageUrl:
-          type: string
-          nullable: true
-          deprecated: true
-        scmSpeed:
-          type: number
-          nullable: true
-          deprecated: true
-        sideView:
-          type: string
-          nullable: true
-          deprecated: true
-        sideViewHeight:
-          type: number
-          nullable: true
-          deprecated: true
-        sideViewLarge:
-          type: string
-          nullable: true
-          deprecated: true
-        sideViewMedium:
-          type: string
-          nullable: true
-          deprecated: true
-        sideViewSmall:
-          type: string
-          nullable: true
-          deprecated: true
-        sideViewWidth:
-          type: number
-          nullable: true
-          deprecated: true
-        sideViewXlarge:
-          type: string
-          nullable: true
-          deprecated: true
-        size:
-          type: string
-          nullable: true
-          deprecated: true
-        sizeLabel:
-          type: string
-          nullable: true
-          deprecated: true
-        storeImage:
-          type: string
-          nullable: true
-          deprecated: true
-        storeImageLarge:
-          type: string
-          nullable: true
-          deprecated: true
-        storeImageMedium:
-          type: string
-          nullable: true
-          deprecated: true
-        storeImageSmall:
-          type: string
-          nullable: true
-          deprecated: true
-        storeUrl:
-          type: string
-          nullable: true
-          deprecated: true
-        topView:
-          type: string
-          nullable: true
-          deprecated: true
-        topViewHeight:
-          type: number
-          nullable: true
-          deprecated: true
-        topViewLarge:
-          type: string
-          nullable: true
-          deprecated: true
-        topViewMedium:
-          type: string
-          nullable: true
-          deprecated: true
-        topViewSmall:
-          type: string
-          nullable: true
-          deprecated: true
-        topViewWidth:
-          type: number
-          nullable: true
-          deprecated: true
-        topViewXlarge:
-          type: string
-          nullable: true
-          deprecated: true
-        xaxisAcceleration:
-          type: number
-          nullable: true
-          deprecated: true
-        yawMax:
-          type: number
-          nullable: true
-          deprecated: true
-        yaxisAcceleration:
-          type: number
-          nullable: true
-          deprecated: true
-        zaxisAcceleration:
-          type: number
-          nullable: true
-          deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - availability
-      - crew
-      - hasImages
-      - hasModules
-      - hasPaints
-      - hasUpgrades
-      - hasVideos
-      - links
-      - loaners
-      - media
-      - metrics
-      - onSale
-      - speeds
-      title: Model
-    ModelComplete:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        scIdentifier:
-          type: string
-          nullable: true
-        name:
-          type: string
-        slug:
-          type: string
-        availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            listedAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            rentalAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
           required:
           - boughtAt
           - listedAt
@@ -5520,7 +5250,7 @@ components:
       - createdAt
       - updatedAt
       - dockCounts
-      title: ModelComplete
+      title: Model
     ModelHardpoint:
       type: object
       properties:
@@ -5630,19 +5360,19 @@ components:
             boughtAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
             listedAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
             rentalAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
             soldAt:
               type: array
               items:
-                "$ref": "#/components/schemas/ShopCommodity"
+                "$ref": "#/components/schemas/ShopCommodityMinimal"
           required:
           - boughtAt
           - listedAt
@@ -7149,6 +6879,8 @@ components:
             type: string
         searchCont:
           type: string
+        parentEq:
+          type: string
         parentIdNull:
           type: boolean
         main:
@@ -7537,6 +7269,14 @@ components:
           nullable: true
           format: uri
           deprecated: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
       additionalProperties: false
       required:
       - id
@@ -7552,7 +7292,83 @@ components:
       - refineryTerminal
       - media
       - station
+      - createdAt
+      - updatedAt
+      - celestialObject
       title: Shop
+    ShopBase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        buying:
+          type: boolean
+        location:
+          type: string
+          nullable: true
+        locationLabel:
+          type: string
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+        refineryTerminal:
+          type: boolean
+        rental:
+          type: boolean
+        selling:
+          type: boolean
+        station:
+          "$ref": "#/components/schemas/StationShop"
+        stationLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ShopTypeEnum"
+        typeLabel:
+          type: string
+        storeImage:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - type
+      - typeLabel
+      - stationLabel
+      - locationLabel
+      - rental
+      - buying
+      - selling
+      - refineryTerminal
+      - media
+      - station
+      title: ShopBase
     ShopCommodity:
       type: object
       properties:
@@ -7633,7 +7449,138 @@ components:
           type: string
           format: uuid
         shop:
-          "$ref": "#/components/schemas/Shop"
+          "$ref": "#/components/schemas/ShopMinimal"
+        storeImage:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        item:
+          oneOf:
+          - "$ref": "#/components/schemas/Model"
+          - "$ref": "#/components/schemas/Component"
+          - "$ref": "#/components/schemas/Commodity"
+          - "$ref": "#/components/schemas/Equipment"
+          - "$ref": "#/components/schemas/ModelModule"
+          - "$ref": "#/components/schemas/ModelPaint"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - media
+      - prices
+      - pricePerUnit
+      - confirmed
+      - commodityItemType
+      - commodityItemId
+      - shop
+      - createdAt
+      - updatedAt
+      - item
+      title: ShopCommodity
+    ShopCommodityBase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+              nullable: true
+        category:
+          type: string
+          nullable: true
+        subCategory:
+          type: string
+          nullable: true
+        subCategoryLabel:
+          type: string
+          nullable: true
+        prices:
+          type: object
+          properties:
+            averageBuyPrice:
+              type: number
+              nullable: true
+            averageRentalPrice1Day:
+              type: number
+              nullable: true
+            averageRentalPrice30Days:
+              type: number
+              nullable: true
+            averageRentalPrice3Days:
+              type: number
+              nullable: true
+            averageRentalPrice7Days:
+              type: number
+              nullable: true
+            averageSellPrice:
+              type: number
+              nullable: true
+            buyPrice:
+              type: number
+              nullable: true
+            rentalPrice1Day:
+              type: number
+              nullable: true
+            rentalPrice30Days:
+              type: number
+              nullable: true
+            rentalPrice3Days:
+              type: number
+              nullable: true
+            rentalPrice7Days:
+              type: number
+              nullable: true
+            sellPrice:
+              type: number
+              nullable: true
+        pricePerUnit:
+          type: boolean
+        locationLabel:
+          type: string
+          nullable: true
+        confirmed:
+          type: boolean
+        commodityItemType:
+          type: string
+        commodityItemId:
+          type: string
+          format: uuid
+        shop:
+          "$ref": "#/components/schemas/ShopMinimal"
         storeImage:
           type: string
           nullable: true
@@ -7666,7 +7613,7 @@ components:
       - commodityItemType
       - commodityItemId
       - shop
-      title: ShopCommodity
+      title: ShopCommodityBase
     ShopCommodityMinimal:
       type: object
       properties:
@@ -7747,7 +7694,7 @@ components:
           type: string
           format: uuid
         shop:
-          "$ref": "#/components/schemas/Shop"
+          "$ref": "#/components/schemas/ShopMinimal"
         storeImage:
           type: string
           nullable: true
@@ -7768,14 +7715,6 @@ components:
           nullable: true
           format: uri
           deprecated: true
-        item:
-          oneOf:
-          - "$ref": "#/components/schemas/Model"
-          - "$ref": "#/components/schemas/Component"
-          - "$ref": "#/components/schemas/Commodity"
-          - "$ref": "#/components/schemas/Equipment"
-          - "$ref": "#/components/schemas/ModelModule"
-          - "$ref": "#/components/schemas/ModelPaint"
         createdAt:
           type: string
           format: date-time
@@ -7794,7 +7733,6 @@ components:
       - commodityItemType
       - commodityItemId
       - shop
-      - item
       - createdAt
       - updatedAt
       title: ShopCommodityMinimal
@@ -7855,8 +7793,6 @@ components:
           nullable: true
           format: uri
           deprecated: true
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
         createdAt:
           type: string
           format: date-time
@@ -7878,7 +7814,6 @@ components:
       - refineryTerminal
       - media
       - station
-      - celestialObject
       - createdAt
       - updatedAt
       title: ShopMinimal
@@ -7954,10 +7889,23 @@ components:
           type: string
           format: uri
           deprecated: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        celestialObjects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
       additionalProperties: false
       required:
       - name
       - slug
+      - createdAt
+      - updatedAt
+      - celestialObjects
       title: Starsystem
     StarsystemMinimal:
       type: object
@@ -8018,10 +7966,6 @@ components:
           type: string
           format: uri
           deprecated: true
-        celestialObjects:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
         createdAt:
           type: string
           format: date-time
@@ -8032,7 +7976,6 @@ components:
       required:
       - name
       - slug
-      - celestialObjects
       - createdAt
       - updatedAt
       title: StarsystemMinimal
@@ -8049,7 +7992,7 @@ components:
       required:
       - items
       title: Starsystems
-    StationComplete:
+    Station:
       type: object
       properties:
         name:
@@ -8130,12 +8073,20 @@ components:
           format: uri
           nullable: true
           deprecated: true
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
         starsystem:
-          "$ref": "#/components/schemas/Starsystem"
+          "$ref": "#/components/schemas/StarsystemMinimal"
         shops:
           type: array
           items:
-            "$ref": "#/components/schemas/Shop"
+            "$ref": "#/components/schemas/ShopMinimal"
         docks:
           type: array
           items:
@@ -8147,15 +8098,7 @@ components:
         images:
           type: array
           items:
-            "$ref": "#/components/schemas/Image"
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObjectMinimal"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
+            "$ref": "#/components/schemas/ImageMinimal"
       required:
       - name
       - slug
@@ -8167,7 +8110,7 @@ components:
       - media
       - createdAt
       - updatedAt
-      title: StationComplete
+      title: Station
     StationMinimal:
       type: object
       properties:
@@ -8306,76 +8249,7 @@ components:
       - shipsCountYear
       - shipsCountTotal
       title: Stats
-    VehicleCheckSerialResponse:
-      type: object
-      properties:
-        serialTaken:
-          type: boolean
-      additionalProperties: false
-      required:
-      - serialTaken
-      title: VehicleCheckSerialResponse
-    VehicleExport:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        shipCode:
-          type: string
-          nullable: true
-        manufacturerName:
-          type: string
-        manufacturerCode:
-          type: string
-          nullable: true
-        paintSlug:
-          type: string
-          nullable: true
-        shipName:
-          type: string
-          nullable: true
-        shipSerial:
-          type: string
-          nullable: true
-        wanted:
-          type: boolean
-        flagship:
-          type: boolean
-        public:
-          type: boolean
-        saleNotify:
-          type: boolean
-        nameVisible:
-          type: boolean
-        groups:
-          type: array
-          items:
-            type: string
-        modules:
-          type: array
-          items:
-            type: string
-        upgrades:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      - manufacturerName
-      - wanted
-      - flagship
-      - public
-      - saleNotify
-      - nameVisible
-      - groups
-      - modules
-      - upgrades
-      title: VehicleExport
-    VehicleMinimal:
+    Vehicle:
       type: object
       properties:
         id:
@@ -8464,8 +8338,77 @@ components:
       - modelModuleIds
       - createdAt
       - updatedAt
-      title: VehicleMinimal
-    VehicleMinimalPublic:
+      title: Vehicle
+    VehicleCheckSerialResponse:
+      type: object
+      properties:
+        serialTaken:
+          type: boolean
+      additionalProperties: false
+      required:
+      - serialTaken
+      title: VehicleCheckSerialResponse
+    VehicleExport:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        shipCode:
+          type: string
+          nullable: true
+        manufacturerName:
+          type: string
+        manufacturerCode:
+          type: string
+          nullable: true
+        paintSlug:
+          type: string
+          nullable: true
+        shipName:
+          type: string
+          nullable: true
+        shipSerial:
+          type: string
+          nullable: true
+        wanted:
+          type: boolean
+        flagship:
+          type: boolean
+        public:
+          type: boolean
+        saleNotify:
+          type: boolean
+        nameVisible:
+          type: boolean
+        groups:
+          type: array
+          items:
+            type: string
+        modules:
+          type: array
+          items:
+            type: string
+        upgrades:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - manufacturerName
+      - wanted
+      - flagship
+      - public
+      - saleNotify
+      - nameVisible
+      - groups
+      - modules
+      - upgrades
+      title: VehicleExport
+    VehiclePublic:
       properties:
         id:
           type: string
@@ -8532,8 +8475,8 @@ components:
       - modelModuleIds
       - createdAt
       - updatedAt
-      title: VehicleMinimalPublic
-    VideoMinimal:
+      title: VehiclePublic
+    Video:
       type: object
       properties:
         id:
@@ -8561,7 +8504,7 @@ components:
       - type
       - createdAt
       - updatedAt
-      title: VideoMinimal
+      title: Video
     Videos:
       type: object
       properties:
@@ -8570,7 +8513,7 @@ components:
         items:
           type: array
           items:
-            "$ref": "#/components/schemas/VideoMinimal"
+            "$ref": "#/components/schemas/Video"
       additionalProperties: false
       required:
       - items

@@ -24,7 +24,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ManufacturerMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -44,7 +44,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ManufacturerMinimal"}
+          items: {"$ref": "#/components/schemas/Manufacturer"}
 
         let(:q) do
           {
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ManufacturerMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}
 
         let(:perPage) { 2 }
 
@@ -79,7 +79,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ManufacturerMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}
 
         after do |example|
           example.metadata[:response][:content] = {

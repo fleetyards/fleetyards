@@ -7,16 +7,16 @@ json.slug model.slug
 
 json.availability do
   json.bought_at do
-    json.array! model.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model.bought_at, partial: "api/v1/shop_commodities/minimal", as: :shop_commodity
   end
   json.listed_at do
-    json.array! model.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model.listed_at, partial: "api/v1/shop_commodities/minimal", as: :shop_commodity
   end
   json.rental_at do
-    json.array! model.rental_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model.rental_at, partial: "api/v1/shop_commodities/minimal", as: :shop_commodity
   end
   json.sold_at do
-    json.array! model.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model.sold_at, partial: "api/v1/shop_commodities/minimal", as: :shop_commodity
   end
 end
 json.brochure model.brochure.url
@@ -51,7 +51,7 @@ json.loaners do
 end
 json.manufacturer do
   json.null! if model.manufacturer.blank?
-  json.partial! "api/v1/manufacturers/base", manufacturer: model.manufacturer if model.manufacturer.present?
+  json.partial! "api/v1/manufacturers/minimal", manufacturer: model.manufacturer if model.manufacturer.present?
 end
 json.media do
   json.angled_view do

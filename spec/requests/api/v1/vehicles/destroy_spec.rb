@@ -21,7 +21,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/VehicleMinimal"
+        schema "$ref": "#/components/schemas/Vehicle"
 
         let(:user) { users :data }
         let(:id) { vehicles(:enterprise).id }

@@ -30,11 +30,11 @@
 starfleet:
   name: Starfleet
   slug: starfleet
-  fid: STF
+  fid: stf
   sid: STF
 
 klingon_empire:
   name: Klingon
   slug: klingon
-  fid: KLI
+  fid: kli
   sid: KLI

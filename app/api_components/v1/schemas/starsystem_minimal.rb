@@ -2,17 +2,16 @@
 
 module V1
   module Schemas
-    class StarsystemMinimal < Starsystem
+    class StarsystemMinimal < StarsystemBase
       include SchemaConcern
 
       schema({
         properties: {
-          celestialObjects: {type: :array, items: {"$ref": "#/components/schemas/CelestialObject"}},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[celestialObjects createdAt updatedAt]
+        required: %w[createdAt updatedAt]
       })
     end
   end

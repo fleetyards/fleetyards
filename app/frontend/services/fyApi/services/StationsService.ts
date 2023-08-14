@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
-import type { ImageComplete } from '../models/ImageComplete';
-import type { StationComplete } from '../models/StationComplete';
+import type { Image } from '../models/Image';
+import type { Station } from '../models/Station';
 import type { StationMinimal } from '../models/StationMinimal';
 import type { StationQuery } from '../models/StationQuery';
 
@@ -81,7 +81,7 @@ export class StationsService {
 
     /**
      * Station Detail
-     * @returns StationComplete successful
+     * @returns Station successful
      * @throws ApiError
      */
     public station({
@@ -91,7 +91,7 @@ export class StationsService {
          * Station slug
          */
         slug: string,
-    }): CancelablePromise<StationComplete> {
+    }): CancelablePromise<Station> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/{slug}',
@@ -106,7 +106,7 @@ export class StationsService {
 
     /**
      * Station Images
-     * @returns ImageComplete successful
+     * @returns Image successful
      * @throws ApiError
      */
     public stationImages({
@@ -120,7 +120,7 @@ export class StationsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<ImageComplete>> {
+    }): CancelablePromise<Array<Image>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/{slug}/images',

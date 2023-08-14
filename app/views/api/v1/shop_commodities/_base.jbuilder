@@ -31,7 +31,7 @@ json.prices do
 end
 json.price_per_unit shop_commodity.price_per_unit
 json.shop do
-  json.partial! "api/v1/shops/base", shop: shop_commodity.shop
+  json.partial! "api/v1/shops/minimal", shop: shop_commodity.shop
 end
 json.sub_category shop_commodity.sub_category
 json.sub_category_label shop_commodity.sub_category_label

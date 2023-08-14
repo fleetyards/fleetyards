@@ -18,7 +18,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
       response(200, "successful") do
         let(:slug) { model.slug }
 
-        schema "$ref": "#/components/schemas/ModelComplete"
+        schema "$ref": "#/components/schemas/Model"
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -139,7 +139,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VideoMinimal"}
+          items: {"$ref": "#/components/schemas/Video"}
         let(:slug) { model.slug }
 
         after do |example|

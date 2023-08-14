@@ -25,7 +25,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:usernames) do
           [user.username]
@@ -40,7 +40,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
       response(200, "empty response") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:usernames) do
           [user_without_public_hangar.username]
@@ -55,7 +55,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
 
       response(200, "empty response") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimalPublic"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:usernames) do
           ["not-a-user"]

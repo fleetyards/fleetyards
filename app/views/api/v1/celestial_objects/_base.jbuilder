@@ -19,7 +19,7 @@ json.population celestial_object.sensor_population
 json.size celestial_object.size
 json.starsystem do
   json.null! if celestial_object.starsystem.blank?
-  json.partial! "api/v1/starsystems/base", starsystem: celestial_object.starsystem if celestial_object.starsystem.present?
+  json.partial! "api/v1/starsystems/minimal", starsystem: celestial_object.starsystem if celestial_object.starsystem.present?
 end
 json.sub_type celestial_object.sub_type
 json.type celestial_object.object_type&.humanize

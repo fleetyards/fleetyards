@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { HangarEmbedQuery } from '../models/HangarEmbedQuery';
 import type { HangarQuery } from '../models/HangarQuery';
-import type { VehicleMinimalPublic } from '../models/VehicleMinimalPublic';
+import type { VehiclePublic } from '../models/VehiclePublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -15,14 +15,14 @@ export class PublicHangarService {
 
     /**
      * Public Hangar embed
-     * @returns VehicleMinimalPublic empty response
+     * @returns VehiclePublic empty response
      * @throws ApiError
      */
     public publicHangarEmbed({
         usernames,
     }: {
         usernames: HangarEmbedQuery,
-    }): CancelablePromise<Array<VehicleMinimalPublic>> {
+    }): CancelablePromise<Array<VehiclePublic>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/hangars/embed',
@@ -34,7 +34,7 @@ export class PublicHangarService {
 
     /**
      * Public Hangar
-     * @returns VehicleMinimalPublic successful
+     * @returns VehiclePublic successful
      * @throws ApiError
      */
     public publicHangar({
@@ -47,7 +47,7 @@ export class PublicHangarService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehicleMinimalPublic>> {
+    }): CancelablePromise<Array<VehiclePublic>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/hangars/{username}',

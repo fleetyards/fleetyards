@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarQuery } from '../models/HangarQuery';
-import type { VehicleMinimalPublic } from '../models/VehicleMinimalPublic';
+import type { VehiclePublic } from '../models/VehiclePublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -14,7 +14,7 @@ export class PublicWishlistService {
 
     /**
      * Your Wishlist
-     * @returns VehicleMinimalPublic successful
+     * @returns VehiclePublic successful
      * @throws ApiError
      */
     public get({
@@ -27,7 +27,7 @@ export class PublicWishlistService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehicleMinimalPublic>> {
+    }): CancelablePromise<Array<VehiclePublic>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/wishlists/{username}',

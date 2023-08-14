@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CelestialObject } from '../models/CelestialObject';
 import type { CelestialObjectMinimal } from '../models/CelestialObjectMinimal';
 import type { CelestialObjectQuery } from '../models/CelestialObjectQuery';
 
@@ -44,7 +45,7 @@ export class CelestialObjectsService {
     /**
      * Celestial Object Detail
      * Get Detail of a Celestial Object referenced by its Slug
-     * @returns CelestialObjectMinimal successful
+     * @returns CelestialObject successful
      * @throws ApiError
      */
     public celestialObject({
@@ -54,7 +55,7 @@ export class CelestialObjectsService {
          * slug
          */
         slug: string,
-    }): CancelablePromise<CelestialObjectMinimal> {
+    }): CancelablePromise<CelestialObject> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/celestial-objects/{slug}',

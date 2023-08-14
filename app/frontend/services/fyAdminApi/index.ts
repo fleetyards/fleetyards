@@ -34,7 +34,6 @@ export type { StandardError } from './models/StandardError';
 export type { Starsystem } from './models/Starsystem';
 export type { StarsystemMinimal } from './models/StarsystemMinimal';
 export type { Station } from './models/Station';
-export type { StationComplete } from './models/StationComplete';
 export type { StationMinimal } from './models/StationMinimal';
 export type { StationQuery } from './models/StationQuery';
 export type { Stations } from './models/Stations';

@@ -7,6 +7,7 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 
 import { CelestialObjectsService } from './services/CelestialObjectsService';
+import { FleetsService } from './services/FleetsService';
 import { HangarService } from './services/HangarService';
 import { HangarGroupsService } from './services/HangarGroupsService';
 import { HangarStatsService } from './services/HangarStatsService';
@@ -31,6 +32,7 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class FyApi {
 
     public readonly celestialObjects: CelestialObjectsService;
+    public readonly fleets: FleetsService;
     public readonly hangar: HangarService;
     public readonly hangarGroups: HangarGroupsService;
     public readonly hangarStats: HangarStatsService;
@@ -66,6 +68,7 @@ export class FyApi {
         });
 
         this.celestialObjects = new CelestialObjectsService(this.request);
+        this.fleets = new FleetsService(this.request);
         this.hangar = new HangarService(this.request);
         this.hangarGroups = new HangarGroupsService(this.request);
         this.hangarStats = new HangarStatsService(this.request);

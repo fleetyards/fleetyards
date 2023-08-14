@@ -3,10 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { DockCount } from './DockCount';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ModelLoaner } from './ModelLoaner';
-import type { ShopCommodity } from './ShopCommodity';
+import type { ShopCommodityMinimal } from './ShopCommodityMinimal';
 import type { ViewImage } from './ViewImage';
 
 export type Model = {
@@ -15,10 +16,10 @@ export type Model = {
     name: string;
     slug: string;
     availability: {
-        boughtAt: Array<ShopCommodity>;
-        listedAt: Array<ShopCommodity>;
-        rentalAt: Array<ShopCommodity>;
-        soldAt: Array<ShopCommodity>;
+        boughtAt: Array<ShopCommodityMinimal>;
+        listedAt: Array<ShopCommodityMinimal>;
+        rentalAt: Array<ShopCommodityMinimal>;
+        soldAt: Array<ShopCommodityMinimal>;
     };
     brochure?: string | null;
     classification?: string | null;
@@ -49,6 +50,8 @@ export type Model = {
     links: {
         salesPageUrl?: string | null;
         storeUrl?: string | null;
+        self?: string;
+        frontend?: string;
     };
     loaners: Array<ModelLoaner>;
     manufacturer?: Manufacturer | null;
@@ -335,5 +338,8 @@ export type Model = {
      * @deprecated
      */
     zaxisAcceleration?: number | null;
+    createdAt: string;
+    updatedAt: string;
+    dockCounts: Array<DockCount>;
 };
 

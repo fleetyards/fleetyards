@@ -3,14 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Commodity } from './Commodity';
-import type { Component } from './Component';
-import type { Equipment } from './Equipment';
 import type { MediaImage } from './MediaImage';
-import type { Model } from './Model';
-import type { ModelModule } from './ModelModule';
-import type { ModelPaint } from './ModelPaint';
-import type { Shop } from './Shop';
+import type { ShopMinimal } from './ShopMinimal';
 
 export type ShopCommodityMinimal = {
     id: string;
@@ -42,7 +36,7 @@ export type ShopCommodityMinimal = {
     confirmed: boolean;
     commodityItemType: string;
     commodityItemId: string;
-    shop: Shop;
+    shop: ShopMinimal;
     /**
      * @deprecated
      */
@@ -59,7 +53,6 @@ export type ShopCommodityMinimal = {
      * @deprecated
      */
     storeImageLarge?: string | null;
-    item: (Model | Component | Commodity | Equipment | ModelModule | ModelPaint);
     createdAt: string;
     updatedAt: string;
 };

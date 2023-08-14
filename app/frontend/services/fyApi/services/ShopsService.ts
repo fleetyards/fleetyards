@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
+import type { Shop } from '../models/Shop';
 import type { ShopMinimal } from '../models/ShopMinimal';
 import type { ShopQuery } from '../models/ShopQuery';
 
@@ -55,7 +56,7 @@ export class ShopsService {
 
     /**
      * Shop Detail
-     * @returns ShopMinimal successful
+     * @returns Shop successful
      * @throws ApiError
      */
     public shop({
@@ -70,7 +71,7 @@ export class ShopsService {
          * Shop slug
          */
         slug: string,
-    }): CancelablePromise<ShopMinimal> {
+    }): CancelablePromise<Shop> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/{stationSlug}/shops/{slug}',

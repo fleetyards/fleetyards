@@ -13,6 +13,7 @@ module V1
             nameCont: {type: :string},
             nameIn: {type: :array, items: {type: :string}},
             searchCont: {type: :string},
+            parentEq: {type: :string},
             parentIdNull: {type: :boolean},
             main: {type: :boolean, deprecated: true}
           },

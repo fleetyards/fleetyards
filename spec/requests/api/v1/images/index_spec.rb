@@ -27,7 +27,7 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ImageComplete"}
+          items: {"$ref": "#/components/schemas/Image"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -47,7 +47,7 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ImageComplete"}
+          items: {"$ref": "#/components/schemas/Image"}
 
         let(:q) do
           {
@@ -64,7 +64,7 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ImageComplete"}
+          items: {"$ref": "#/components/schemas/Image"}
 
         let(:perPage) { 1 }
 
@@ -93,7 +93,7 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref" => "#/components/schemas/ImageComplete"}
+          items: {"$ref" => "#/components/schemas/Image"}
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -104,7 +104,7 @@ RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ImageComplete"}
+          items: {"$ref": "#/components/schemas/Image"}
 
         let(:limit) { 1 }
 

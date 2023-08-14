@@ -49,5 +49,7 @@ export type Component = {
      * @deprecated
      */
     storeImageSmall?: string;
+    createdAt: string;
+    updatedAt: string;
 };
 

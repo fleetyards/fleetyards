@@ -57,31 +57,7 @@
                   slug: starsystem.slug,
                 },
               }"
-            >
-              <template v-if="starsystem.celestialObjects.length">
-                <h3 class="sr-only">
-                  {{ $t("headlines.celestialObjects") }}
-                </h3>
-                <transition-group name="fade-list" class="row" tag="div" appear>
-                  <div
-                    v-for="celestialObject in starsystem.celestialObjects"
-                    :key="celestialObject.slug"
-                    class="col-12 col-lg-3 fade-list-item"
-                  >
-                    <PlanetPanel
-                      :item="celestialObject"
-                      :route="{
-                        name: 'celestial-object',
-                        params: {
-                          starsystem: celestialObject.starsystem.slug,
-                          slug: celestialObject.slug,
-                        },
-                      }"
-                    />
-                  </div>
-                </transition-group>
-              </template>
-            </StarsystemList>
+            />
           </div>
         </transition-group>
         <Loader :loading="loading" :fixed="true" />
@@ -106,7 +82,6 @@ import Panel from "@/frontend/core/components/Panel/index.vue";
 import Pagination from "@/frontend/mixins/Pagination";
 import { scrollToAnchor } from "@/frontend/utils/scrolling";
 import StarsystemList from "@/frontend/components/Starsystems/List/index.vue";
-import PlanetPanel from "@/frontend/components/Planets/Panel/index.vue";
 import mapImageUrl from "@/images/map.png";
 
 export default {
@@ -116,7 +91,6 @@ export default {
     Loader,
     Panel,
     StarsystemList,
-    PlanetPanel,
   },
 
   mixins: [Pagination],

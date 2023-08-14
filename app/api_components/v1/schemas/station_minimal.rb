@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class StationMinimal < Station
+    class StationMinimal < StationBase
       include SchemaConcern
 
       schema({

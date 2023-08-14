@@ -7,7 +7,7 @@ module V1
 
       schema({
         properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/ManufacturerMinimal"}}
+          items: {type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}}
         },
         additionalProperties: false,
         required: %w[items]

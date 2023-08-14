@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
 import type { ImageMinimal } from '../models/ImageMinimal';
-import type { ModelComplete } from '../models/ModelComplete';
+import type { Model } from '../models/Model';
 import type { ModelHardpoint } from '../models/ModelHardpoint';
 import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
 import type { ModelMinimal } from '../models/ModelMinimal';
@@ -13,7 +13,7 @@ import type { ModelModulePackageMinimal } from '../models/ModelModulePackageMini
 import type { ModelPaintMinimal } from '../models/ModelPaintMinimal';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { ModelUpgradeMinimal } from '../models/ModelUpgradeMinimal';
-import type { VideoMinimal } from '../models/VideoMinimal';
+import type { Video } from '../models/Video';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -229,7 +229,7 @@ export class ModelsService {
 
     /**
      * Model Detail
-     * @returns ModelComplete successful
+     * @returns Model successful
      * @throws ApiError
      */
     public model({
@@ -239,7 +239,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-    }): CancelablePromise<ModelComplete> {
+    }): CancelablePromise<Model> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}',
@@ -317,7 +317,7 @@ export class ModelsService {
 
     /**
      * Model Videos
-     * @returns VideoMinimal successful
+     * @returns Video successful
      * @throws ApiError
      */
     public modelVideos({
@@ -331,7 +331,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<VideoMinimal>> {
+    }): CancelablePromise<Array<Video>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/videos',

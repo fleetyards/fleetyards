@@ -30,7 +30,7 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+          items: {"$ref": "#/components/schemas/Vehicle"}
 
         let(:user) { users :data }
 
@@ -51,7 +51,7 @@ RSpec.describe "api/v1/wishlist", type: :request, swagger_doc: "v1/schema.yaml" 
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehicleMinimal"}
+          items: {"$ref": "#/components/schemas/Vehicle"}
 
         let(:perPage) { 1 }
         let(:user) { users :data }

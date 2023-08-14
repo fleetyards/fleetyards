@@ -21,12 +21,3 @@ json.has_images station.images_count.positive?
 json.shop_list_label station.shop_list_label
 json.refinery station.refinery
 json.cargo_hub station.cargo_hub
-json.habitation_counts do
-  json.array! station.habitation_counts, partial: "api/v1/habitation_counts/base", as: :habitation_count
-end
-json.dock_counts do
-  json.array! station.dock_counts, partial: "api/v1/dock_counts/base", as: :dock_count
-end
-json.celestial_object do
-  json.partial! "admin/api/v1/celestial_objects/base", celestial_object: station.celestial_object
-end

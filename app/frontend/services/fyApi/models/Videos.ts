@@ -4,10 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
-import type { VideoMinimal } from './VideoMinimal';
+import type { Video } from './Video';
 
 export type Videos = {
     meta?: Meta;
-    items: Array<VideoMinimal>;
+    items: Array<Video>;
 };
 

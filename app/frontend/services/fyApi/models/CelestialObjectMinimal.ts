@@ -3,9 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CelestialObject } from './CelestialObject';
 import type { MediaImage } from './MediaImage';
-import type { Starsystem } from './Starsystem';
+import type { StarsystemMinimal } from './StarsystemMinimal';
 
 export type CelestialObjectMinimal = {
     name: string;
@@ -40,9 +39,7 @@ export type CelestialObjectMinimal = {
     economy?: number | null;
     population?: number | null;
     locationLabel?: string | null;
-    starsystem: Starsystem | null;
-    parent?: CelestialObject | null;
-    moons?: Array<CelestialObject>;
+    starsystem: StarsystemMinimal | null;
     createdAt: string;
     updatedAt: string;
 };

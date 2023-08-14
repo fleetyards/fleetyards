@@ -4,10 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
-import type { VehicleMinimal } from './VehicleMinimal';
+import type { Vehicle } from './Vehicle';
 
 export type Hangar = {
     meta?: Meta;
-    items: Array<VehicleMinimal>;
+    items: Array<Vehicle>;
 };
 

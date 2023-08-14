@@ -60,5 +60,7 @@ export type Equipment = {
      * @deprecated
      */
     storeImageSmall?: string;
+    createdAt: string;
+    updatedAt: string;
 };
 

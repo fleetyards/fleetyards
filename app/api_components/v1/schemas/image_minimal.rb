@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class ImageMinimal < Image
+    class ImageMinimal < ImageBase
       include SchemaConcern
       schema({
         properties: {

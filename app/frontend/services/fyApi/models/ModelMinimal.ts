@@ -6,7 +6,7 @@
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ModelLoaner } from './ModelLoaner';
-import type { ShopCommodity } from './ShopCommodity';
+import type { ShopCommodityMinimal } from './ShopCommodityMinimal';
 import type { ViewImage } from './ViewImage';
 
 export type ModelMinimal = {
@@ -15,10 +15,10 @@ export type ModelMinimal = {
     name: string;
     slug: string;
     availability: {
-        boughtAt: Array<ShopCommodity>;
-        listedAt: Array<ShopCommodity>;
-        rentalAt: Array<ShopCommodity>;
-        soldAt: Array<ShopCommodity>;
+        boughtAt: Array<ShopCommodityMinimal>;
+        listedAt: Array<ShopCommodityMinimal>;
+        rentalAt: Array<ShopCommodityMinimal>;
+        soldAt: Array<ShopCommodityMinimal>;
     };
     brochure?: string | null;
     classification?: string | null;
