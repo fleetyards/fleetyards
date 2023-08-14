@@ -40,7 +40,7 @@ module Api
           end
         end
 
-        resource.remember_me = login_params[:rememberMe]
+        resource.remember_me = login_params[:remember_me]
 
         sign_in(:user, resource)
 
