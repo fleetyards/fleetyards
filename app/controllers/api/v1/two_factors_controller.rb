@@ -44,7 +44,7 @@ module Api
           return
         end
 
-        if current_user.validate_and_consume_otp!(params[:twoFactorCode])
+        if current_user.validate_and_consume_otp!(params[:two_factor_code])
           current_user.otp_required_for_login = true
           backup_codes = current_user.generate_otp_backup_codes!
           current_user.save!
@@ -68,7 +68,7 @@ module Api
           return
         end
 
-        if current_user.validate_and_consume_otp!(params[:twoFactorCode]) || current_user.invalidate_otp_backup_code!(params[:twoFactorCode])
+        if current_user.validate_and_consume_otp!(params[:two_factor_code]) || current_user.invalidate_otp_backup_code!(params[:two_factor_code])
           current_user.otp_secret = User.generate_otp_secret
           current_user.otp_required_for_login = false
           current_user.save!

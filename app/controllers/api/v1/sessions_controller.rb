@@ -20,7 +20,7 @@ module Api
             return
           end
 
-          if resource.otp_required_for_login && login_params[:twoFactorCode].blank?
+          if resource.otp_required_for_login && login_params[:two_factor_code].blank?
             render json: {code: "session.create.two_factor_required", message: I18n.t("devise.failure.two_factor_required")}, status: :bad_request
             return
           end
@@ -30,8 +30,8 @@ module Api
             return
           end
 
-          if resource.otp_required_for_login && !resource.validate_and_consume_otp!(login_params[:twoFactorCode])
-            if resource.invalidate_otp_backup_code!(login_params[:twoFactorCode])
+          if resource.otp_required_for_login && !resource.validate_and_consume_otp!(login_params[:two_factor_code])
+            if resource.invalidate_otp_backup_code!(login_params[:two_factor_code])
               resource.save!
             else
               render json: {code: "session.create.invalid", message: I18n.t("devise.failure.two_factor_invalid")}, status: :bad_request
@@ -78,7 +78,7 @@ module Api
       end
 
       private def login_params
-        @login_params ||= params.permit(:login, :password, :rememberMe, :twoFactorCode)
+        @login_params ||= params.permit(:login, :password, :remember_me, :two_factor_code)
       end
 
       private def invalid_login_attempt
