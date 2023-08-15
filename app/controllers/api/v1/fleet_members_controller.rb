@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetMembersController < ::Api::BaseController
+      include FleetMemberFiltersConcern
+
       after_action -> { pagination_header(:members) }, only: %i[index]
 
       def index
@@ -21,30 +23,8 @@ module Api
           .per(per_page(FleetMembership))
       end
 
-      def quick_stats
-        authorize! :show, fleet
-        @q = fleet.fleet_memberships.ransack(member_query_params)
-
-        members = @q.result
-
-        @quick_stats = QuickStats.new(
-          total: members.size,
-          metrics: {
-            total_admins: members.where(role: :admin).size,
-            total_officers: members.where(role: :officer).size,
-            total_members: members.where(role: :member).size
-          }
-        )
-      end
-
       private def fleet
         @fleet ||= current_user.fleets.where(slug: params[:slug]).first!
-      end
-
-      private def member_query_params
-        @member_query_params ||= query_params(
-          :username_cont, :name_cont, sorts: [], role_in: []
-        )
       end
     end
   end

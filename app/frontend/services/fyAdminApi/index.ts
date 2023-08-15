@@ -10,6 +10,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { BarChartStats } from './models/BarChartStats';
 export type { BaseList } from './models/BaseList';
 export type { CelestialObject } from './models/CelestialObject';
 export type { Dock } from './models/Dock';
@@ -28,6 +29,7 @@ export type { Images } from './models/Images';
 export type { MediaImage } from './models/MediaImage';
 export type { Meta } from './models/Meta';
 export type { Pagination } from './models/Pagination';
+export type { PieChartStats } from './models/PieChartStats';
 export type { Shop } from './models/Shop';
 export { ShopTypeEnum } from './models/ShopTypeEnum';
 export type { StandardError } from './models/StandardError';

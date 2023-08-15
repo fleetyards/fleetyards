@@ -8,7 +8,7 @@ import type { ModelMinimal } from './ModelMinimal';
 import type { ModelModulePackage } from './ModelModulePackage';
 import type { ModelPaint } from './ModelPaint';
 
-export type VehiclePublic = {
+export type VehiclePublicMinimal = {
     id: string;
     name?: string | null;
     slug?: string | null;

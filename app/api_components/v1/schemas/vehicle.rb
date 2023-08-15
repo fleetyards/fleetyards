@@ -2,16 +2,11 @@
 
 module V1
   module Schemas
-    class Vehicle < VehicleBase
+    class Vehicle < VehicleMinimal
       include SchemaConcern
 
       schema({
-        properties: {
-          createdAt: {type: :string, format: "date-time"},
-          updatedAt: {type: :string, format: "date-time"}
-        },
-        additionalProperties: false,
-        required: %w[createdAt updatedAt]
+        properties: {}
       })
     end
   end

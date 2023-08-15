@@ -8,7 +8,7 @@ import type { ModelMinimal } from './ModelMinimal';
 import type { ModelModulePackage } from './ModelModulePackage';
 import type { ModelPaint } from './ModelPaint';
 
-export type VehiclePublic = {
+export type VehiclePublicBase = {
     id: string;
     name?: string | null;
     slug?: string | null;
@@ -23,7 +23,5 @@ export type VehiclePublic = {
     modelUpgradeIds: Array<string>;
     modulePackage?: ModelModulePackage | null;
     paint?: ModelPaint | null;
-    createdAt: string;
-    updatedAt: string;
 };
 

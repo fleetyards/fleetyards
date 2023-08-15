@@ -179,6 +179,21 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
 components:
   schemas:
+    BarChartStats:
+      type: object
+      properties:
+        label:
+          type: string
+        count:
+          type: integer
+        tooltip:
+          type: string
+      additionalProperties: false
+      required:
+      - label
+      - count
+      - tooltip
+      title: BarChartStats
     BaseList:
       type: object
       properties:
@@ -299,6 +314,24 @@ components:
       - defaultPerPage
       - maxPerPage
       title: Pagination
+    PieChartStats:
+      type: object
+      properties:
+        name:
+          type: string
+        "y":
+          type: integer
+        selected:
+          type: boolean
+        sliced:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - "y"
+      - selected
+      - sliced
+      title: PieChartStats
     StandardError:
       type: object
       properties:

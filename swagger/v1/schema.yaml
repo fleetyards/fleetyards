@@ -278,6 +278,497 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/stats/members":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Members Stats
+      operationId: fleetMembersStats
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMembersStats"
+  "/fleets/{slug}/stats/model-counts":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Stats Model Counts
+      operationId: fleetModelCounts
+      tags:
+      - FleetStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetModelCountsStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/stats/models-by-classification":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Stats - Models by Classification
+      operationId: fleetModelsByClassification
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/stats/models-by-manufacturer":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Stats - Models by Manufacturer
+      operationId: fleetModelsByManufacturer
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/stats/models-by-production-status":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Stats - Models by Production Status
+      operationId: fleetModelsByProductionStatus
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/stats/models-by-size":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Stats - Models by Size
+      operationId: fleetModelsBySize
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/stats/vehicles-by-model":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Stats - Vehicles by Model
+      operationId: fleetVehiclesByModel
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/BarChartStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/stats/vehicles":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Vehicles Stats
+      operationId: fleetVehiclesStats
+      tags:
+      - FleetStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetVehiclesStats"
+  "/fleets/{slug}/public-vehicles":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Public Vehicles -> use GET /fleets/{slug}/public/vehicles
+      deprecated: true
+      operationId: DEPRECATEDfleetPublicVehicles
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/fleetchart":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Fleetchart -> use GET /fleets/{slug}/vehicles
+      deprecated: true
+      operationId: DEPRECATEDfleetFleetchart
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/public-fleetchart":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Public Fleetchart -> use GET /fleets/{slug}/public/vehicles
+      deprecated: true
+      operationId: DEPRECATEDpublicFleetchart
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/quick-stats":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Vehicle QuickStats -> use GET /fleets/{slug}/stats/vehicles
+      deprecated: true
+      operationId: DEPRECATEDpublicFleetchart
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+  "/fleets/{slug}/model-counts":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Stats Model Counts -> use GET /fleets/{slug}/stats/model-counts
+      operationId: DEPRECATEDfleetStatsModelCounts
+      deprecated: true
+      tags:
+      - Fleets
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetModelCountsStats"
+  "/fleets/{slug}/public-model-counts":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Stats Model Counts -> use GET /public/fleets/{slug}/stats/model-counts
+      operationId: DEPRECATEDpublicFleetStatsModelCounts
+      deprecated: true
+      tags:
+      - Fleets
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetModelCountsStats"
+  "/fleets/{slug}/embed":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{slug}/vehicles/embed
+      deprecated: true
+      operationId: DEPRECATEDfleetVehiclesEmbed
+      tags:
+      - Fleets
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehiclePublicMinimal"
+  "/fleets/{slug}/vehicles/export":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Vehicles List
+      operationId: fleetVehiclesExport
+      tags:
+      - Fleets
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleExport"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{slug}/vehicles":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Vehicles List
+      operationId: fleetVehicles
+      tags:
+      - Fleets
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: grouped
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                  - "$ref": "#/components/schemas/ModelMinimal"
+                  - "$ref": "#/components/schemas/VehiclePublicMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar":
     delete:
       summary: Clear your personal Hangar
@@ -1617,6 +2108,139 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/public/fleets/{slug}/stats/model-counts":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Stats Model Counts
+      operationId: publicFleetStatsModelCounts
+      tags:
+      - Fleets
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetModelCountsStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/fleets/{slug}/vehicles/embed":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Vehicles Embed for the Fleetyards Widget
+      operationId: publicFleetVehiclesEmbed
+      tags:
+      - Fleets
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehiclePublicMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/fleets/{slug}/vehicles":
+    parameters:
+    - name: slug
+      in: path
+      description: slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Fleet Vehicles List
+      operationId: publicFleetVehicles
+      tags:
+      - Fleets
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: grouped
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                  - "$ref": "#/components/schemas/ModelMinimal"
+                  - "$ref": "#/components/schemas/VehiclePublicMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/public/hangars/embed":
     get:
       summary: Public Hangar embed
@@ -2732,6 +3356,21 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
 components:
   schemas:
+    BarChartStats:
+      type: object
+      properties:
+        label:
+          type: string
+        count:
+          type: integer
+        tooltip:
+          type: string
+      additionalProperties: false
+      required:
+      - label
+      - count
+      - tooltip
+      title: BarChartStats
     BaseList:
       type: object
       properties:
@@ -2852,6 +3491,24 @@ components:
       - defaultPerPage
       - maxPerPage
       title: Pagination
+    PieChartStats:
+      type: object
+      properties:
+        name:
+          type: string
+        "y":
+          type: integer
+        selected:
+          type: boolean
+        sliced:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - "y"
+      - selected
+      - sliced
+      title: PieChartStats
     StandardError:
       type: object
       properties:
@@ -3671,6 +4328,30 @@ components:
           type: string
           format: uuid
       title: FleetMember
+    FleetMembersStats:
+      type: object
+      properties:
+        total:
+          type: integer
+        metrics:
+          type: object
+          properties:
+            totalAdmins:
+              type: integer
+            totalOfficers:
+              type: integer
+            totalMembers:
+              type: integer
+          additionalProperties: false
+          required:
+          - totalAdmins
+          - totalOfficers
+          - totalMembers
+      additionalProperties: false
+      required:
+      - total
+      - metrics
+      title: FleetMembersStats
     FleetMembership:
       type: object
       properties:
@@ -3819,6 +4500,34 @@ components:
       - createdAt
       - updatedAt
       title: FleetMinimal
+    FleetModelCountsStats:
+      type: object
+      properties:
+        modelCounts:
+          type: object
+          additionalProperties:
+            type: integer
+      additionalProperties: false
+      required:
+      - modelCounts
+      title: FleetModelCountsStats
+    FleetVehiclesStats:
+      type: object
+      properties:
+        total:
+          type: integer
+        classifications:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarClassificationMetric"
+        metrics:
+          "$ref": "#/components/schemas/HangarMetrics"
+      additionalProperties: false
+      required:
+      - total
+      - classifications
+      - metrics
+      title: FleetVehiclesStats
     Gallery:
       type: object
       properties:
@@ -6848,24 +7557,6 @@ components:
       required:
       - items
       title: Models
-    PieChartStats:
-      type: object
-      properties:
-        name:
-          type: string
-        "y":
-          type: integer
-        selected:
-          type: boolean
-        sliced:
-          type: boolean
-      additionalProperties: false
-      required:
-      - name
-      - "y"
-      - selected
-      - sliced
-      title: PieChartStats
     CelestialObjectQuery:
       type: object
       properties:
@@ -6888,6 +7579,79 @@ components:
           deprecated: true
       additionalProperties: false
       title: CelestialObjectQuery
+    FleetVehicleQuery:
+      type: object
+      properties:
+        beamGteq:
+          type: number
+        beamLteq:
+          type: number
+        classificationIn:
+          type: array
+          items:
+            type: string
+        focusIn:
+          type: array
+          items:
+            type: string
+        heightGteq:
+          type: number
+        heightLteq:
+          type: number
+        lengthGteq:
+          type: number
+        lengthLteq:
+          type: number
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+        onSaleEq:
+          type: boolean
+        pledgePriceGteq:
+          type: number
+        pledgePriceLteq:
+          type: number
+        pledgePriceIn:
+          type: array
+          items:
+            type: number
+        priceGteq:
+          type: number
+        priceLteq:
+          type: number
+        priceIn:
+          type: array
+          items:
+            type: number
+        productionStatusIn:
+          type: array
+          items:
+            type: string
+        searchCont:
+          type: string
+        sizeIn:
+          type: array
+          items:
+            type: string
+        modelNameCont:
+          type: string
+        modelNameOrModelDescriptionCont:
+          type: string
+        loanerEq:
+          type: boolean
+        memberIn:
+          type: array
+          items:
+            type: string
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              type: string
+          - type: string
+      additionalProperties: false
+      title: FleetVehicleQuery
     HangarEmbedQuery:
       type: array
       items:
@@ -8408,7 +9172,98 @@ components:
       - modules
       - upgrades
       title: VehicleExport
+    VehicleMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        alternativeNames:
+          type: array
+          items:
+            type: string
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+        boughtViaLabel:
+          type: string
+        flagship:
+          type: boolean
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        hangarGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroup"
+        loaner:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/ModelMinimal"
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modulePackage:
+          "$ref": "#/components/schemas/ModelModulePackage"
+          nullable: true
+        nameVisible:
+          type: boolean
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+          nullable: true
+        public:
+          type: boolean
+        saleNotify:
+          type: boolean
+        upgrade:
+          "$ref": "#/components/schemas/ModelUpgrade"
+          nullable: true
+        wanted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - model
+      - wanted
+      - boughtVia
+      - loaner
+      - flagship
+      - public
+      - nameVisible
+      - saleNotify
+      - alternativeNames
+      - modelUpgradeIds
+      - hangarGroupIds
+      - hangarGroups
+      - modelModuleIds
+      - createdAt
+      - updatedAt
+      title: VehicleMinimal
     VehiclePublic:
+      type: object
       properties:
         id:
           type: string
@@ -8476,6 +9331,136 @@ components:
       - createdAt
       - updatedAt
       title: VehiclePublic
+    VehiclePublicBase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        hangarGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroup"
+        loaner:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/ModelMinimal"
+        username:
+          type: string
+          nullable: true
+        userAvatar:
+          type: string
+          format: uri
+          nullable: true
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modulePackage:
+          "$ref": "#/components/schemas/ModelModulePackage"
+          nullable: true
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+          nullable: true
+      additionalProperties: false
+      required:
+      - id
+      - model
+      - loaner
+      - modelUpgradeIds
+      - hangarGroupIds
+      - hangarGroups
+      - modelModuleIds
+      title: VehiclePublicBase
+    VehiclePublicMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          nullable: true
+        serial:
+          type: string
+          nullable: true
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        hangarGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroup"
+        loaner:
+          type: boolean
+        model:
+          "$ref": "#/components/schemas/ModelMinimal"
+        username:
+          type: string
+          nullable: true
+        userAvatar:
+          type: string
+          format: uri
+          nullable: true
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modulePackage:
+          "$ref": "#/components/schemas/ModelModulePackage"
+          nullable: true
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - model
+      - loaner
+      - modelUpgradeIds
+      - hangarGroupIds
+      - hangarGroups
+      - modelModuleIds
+      - createdAt
+      - updatedAt
+      title: VehiclePublicMinimal
     Video:
       type: object
       properties:

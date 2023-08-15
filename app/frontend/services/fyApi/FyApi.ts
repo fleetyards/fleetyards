@@ -8,6 +8,7 @@ import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 
 import { CelestialObjectsService } from './services/CelestialObjectsService';
 import { FleetsService } from './services/FleetsService';
+import { FleetStatsService } from './services/FleetStatsService';
 import { HangarService } from './services/HangarService';
 import { HangarGroupsService } from './services/HangarGroupsService';
 import { HangarStatsService } from './services/HangarStatsService';
@@ -33,6 +34,7 @@ export class FyApi {
 
     public readonly celestialObjects: CelestialObjectsService;
     public readonly fleets: FleetsService;
+    public readonly fleetStats: FleetStatsService;
     public readonly hangar: HangarService;
     public readonly hangarGroups: HangarGroupsService;
     public readonly hangarStats: HangarStatsService;
@@ -69,6 +71,7 @@ export class FyApi {
 
         this.celestialObjects = new CelestialObjectsService(this.request);
         this.fleets = new FleetsService(this.request);
+        this.fleetStats = new FleetStatsService(this.request);
         this.hangar = new HangarService(this.request);
         this.hangarGroups = new HangarGroupsService(this.request);
         this.hangarStats = new HangarStatsService(this.request);

@@ -32,9 +32,11 @@ starfleet:
   slug: starfleet
   fid: stf
   sid: STF
+  public_fleet: true
 
 klingon_empire:
   name: Klingon
   slug: klingon
   fid: kli
   sid: KLI
+  public_fleet: false

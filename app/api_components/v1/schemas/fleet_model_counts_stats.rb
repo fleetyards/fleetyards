@@ -2,19 +2,21 @@
 
 module V1
   module Schemas
-    class PieChartStats
+    class FleetModelCountsStats
       include SchemaConcern
 
       schema({
         type: :object,
         properties: {
-          name: {type: :string},
-          y: {type: :integer},
-          selected: {type: :boolean},
-          sliced: {type: :boolean}
+          modelCounts: {
+            type: :object,
+            additionalProperties: {
+              type: :integer
+            }
+          }
         },
         additionalProperties: false,
-        required: %w[name y selected sliced]
+        required: %w[modelCounts]
       })
     end
   end

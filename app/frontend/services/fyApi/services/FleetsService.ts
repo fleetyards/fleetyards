@@ -8,7 +8,12 @@ import type { FleetCheckInput } from '../models/FleetCheckInput';
 import type { FleetCreateInput } from '../models/FleetCreateInput';
 import type { FleetMembership } from '../models/FleetMembership';
 import type { FleetMinimal } from '../models/FleetMinimal';
+import type { FleetModelCountsStats } from '../models/FleetModelCountsStats';
 import type { FleetUpdateInput } from '../models/FleetUpdateInput';
+import type { FleetVehicleQuery } from '../models/FleetVehicleQuery';
+import type { ModelMinimal } from '../models/ModelMinimal';
+import type { VehicleExport } from '../models/VehicleExport';
+import type { VehiclePublicMinimal } from '../models/VehiclePublicMinimal';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -171,6 +176,358 @@ export class FleetsService {
             url: '/fleets/invites',
             errors: {
                 401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * Fleet Public Vehicles -> use GET /fleets/{slug}/public/vehicles
+     * @returns any successful
+     * @throws ApiError
+     */
+    public deprecateDfleetPublicVehicles({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/public-vehicles',
+            path: {
+                'slug': slug,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * Fleet Fleetchart -> use GET /fleets/{slug}/vehicles
+     * @returns any successful
+     * @throws ApiError
+     */
+    public deprecateDfleetFleetchart({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/fleetchart',
+            path: {
+                'slug': slug,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * Fleet Public Fleetchart -> use GET /fleets/{slug}/public/vehicles
+     * @returns any successful
+     * @throws ApiError
+     */
+    public deprecateDpublicFleetchart({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/public-fleetchart',
+            path: {
+                'slug': slug,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * Fleet Vehicle QuickStats -> use GET /fleets/{slug}/stats/vehicles
+     * @returns any successful
+     * @throws ApiError
+     */
+    public deprecateDpublicFleetchart1({
+        slug,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+    }): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/quick-stats',
+            path: {
+                'slug': slug,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * Fleet Stats Model Counts -> use GET /fleets/{slug}/stats/model-counts
+     * @returns FleetModelCountsStats successful
+     * @throws ApiError
+     */
+    public deprecateDfleetStatsModelCounts({
+        slug,
+        q,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        q?: FleetVehicleQuery,
+    }): CancelablePromise<FleetModelCountsStats> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/model-counts',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'q': q,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * Public Fleet Stats Model Counts -> use GET /public/fleets/{slug}/stats/model-counts
+     * @returns FleetModelCountsStats successful
+     * @throws ApiError
+     */
+    public deprecateDpublicFleetStatsModelCounts({
+        slug,
+        q,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        q?: FleetVehicleQuery,
+    }): CancelablePromise<FleetModelCountsStats> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/public-model-counts',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'q': q,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
+     * Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{slug}/vehicles/embed
+     * @returns VehiclePublicMinimal successful
+     * @throws ApiError
+     */
+    public deprecateDfleetVehiclesEmbed({
+        slug,
+        q,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        q?: FleetVehicleQuery,
+    }): CancelablePromise<Array<VehiclePublicMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/embed',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'q': q,
+            },
+        });
+    }
+
+    /**
+     * Fleet Vehicles List
+     * @returns VehicleExport successful
+     * @throws ApiError
+     */
+    public fleetVehiclesExport({
+        slug,
+        q,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        q?: FleetVehicleQuery,
+    }): CancelablePromise<Array<VehicleExport>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/vehicles/export',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'q': q,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * Fleet Vehicles List
+     * @returns any successful
+     * @throws ApiError
+     */
+    public fleetVehicles({
+        slug,
+        page = '1',
+        perPage = '30',
+        q,
+        grouped,
+        cacheId,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        page?: string,
+        perPage?: string,
+        q?: FleetVehicleQuery,
+        grouped?: boolean,
+        cacheId?: string,
+    }): CancelablePromise<Array<(ModelMinimal | VehiclePublicMinimal)>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/{slug}/vehicles',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+                'grouped': grouped,
+                'cacheId': cacheId,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * Public Fleet Stats Model Counts
+     * @returns FleetModelCountsStats successful
+     * @throws ApiError
+     */
+    public publicFleetStatsModelCounts({
+        slug,
+        q,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        q?: FleetVehicleQuery,
+    }): CancelablePromise<FleetModelCountsStats> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/public/fleets/{slug}/stats/model-counts',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'q': q,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * Public Fleet Vehicles Embed for the Fleetyards Widget
+     * @returns VehiclePublicMinimal successful
+     * @throws ApiError
+     */
+    public publicFleetVehiclesEmbed({
+        slug,
+        q,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        q?: FleetVehicleQuery,
+    }): CancelablePromise<Array<VehiclePublicMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/public/fleets/{slug}/vehicles/embed',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'q': q,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * Public Fleet Vehicles List
+     * @returns any successful
+     * @throws ApiError
+     */
+    public publicFleetVehicles({
+        slug,
+        page = '1',
+        perPage = '30',
+        q,
+        grouped,
+        cacheId,
+    }: {
+        /**
+         * slug
+         */
+        slug: string,
+        page?: string,
+        perPage?: string,
+        q?: FleetVehicleQuery,
+        grouped?: boolean,
+        cacheId?: string,
+    }): CancelablePromise<Array<(ModelMinimal | VehiclePublicMinimal)>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/public/fleets/{slug}/vehicles',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'q': q,
+                'grouped': grouped,
+                'cacheId': cacheId,
+            },
+            errors: {
+                404: `not found`,
             },
         });
     }
