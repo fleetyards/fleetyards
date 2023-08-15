@@ -52,7 +52,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
     get("Fleet Public Fleetchart -> use GET /fleets/{slug}/public/vehicles") do
       deprecated true
-      operationId "DEPRECATEDpublicFleetchart"
+      operationId "DEPRECATEDpublicFleetFleetchart"
       tags "Fleets"
       produces "application/json"
 
@@ -67,7 +67,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
     get("Fleet Vehicle QuickStats -> use GET /fleets/{slug}/stats/vehicles") do
       deprecated true
-      operationId "DEPRECATEDpublicFleetchart"
+      operationId "DEPRECATEDfleetVehicleQuickStats"
       tags "Fleets"
       produces "application/json"
 

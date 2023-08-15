@@ -232,7 +232,7 @@ export class FleetsService {
      * @returns any successful
      * @throws ApiError
      */
-    public deprecateDpublicFleetchart({
+    public deprecateDpublicFleetFleetchart({
         slug,
     }: {
         /**
@@ -255,7 +255,7 @@ export class FleetsService {
      * @returns any successful
      * @throws ApiError
      */
-    public deprecateDpublicFleetchart1({
+    public deprecateDfleetVehicleQuickStats({
         slug,
     }: {
         /**

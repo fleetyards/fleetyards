@@ -544,7 +544,7 @@ paths:
     get:
       summary: Fleet Public Fleetchart -> use GET /fleets/{slug}/public/vehicles
       deprecated: true
-      operationId: DEPRECATEDpublicFleetchart
+      operationId: DEPRECATEDpublicFleetFleetchart
       tags:
       - Fleets
       responses:
@@ -561,7 +561,7 @@ paths:
     get:
       summary: Fleet Vehicle QuickStats -> use GET /fleets/{slug}/stats/vehicles
       deprecated: true
-      operationId: DEPRECATEDpublicFleetchart
+      operationId: DEPRECATEDfleetVehicleQuickStats
       tags:
       - Fleets
       responses:
