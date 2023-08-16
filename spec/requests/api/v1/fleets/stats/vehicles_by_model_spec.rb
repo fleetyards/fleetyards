@@ -13,8 +13,8 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
     sign_in(user) if user.present?
   end
 
-  path "/fleets/{slug}/stats/vehicles-by-model" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/stats/vehicles-by-model" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     get("Fleet Stats - Vehicles by Model") do
       operationId "fleetVehiclesByModel"
@@ -24,7 +24,7 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/BarChartStats"}
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
 
         after do |example|
@@ -41,7 +41,7 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
 
         run_test!
       end

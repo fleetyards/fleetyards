@@ -43,6 +43,28 @@ module Api
         end
       end
 
+      def use
+        invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
+
+        @membership = invite_url.fleet.fleet_memberships.new(
+          user: current_user,
+          role: :member,
+          invited_by: invite_url.user_id,
+          used_invite_token: invite_url.token
+        )
+
+        authorize! :create_by_invite, @membership
+
+        if @membership.save
+          @membership.request!
+          invite_url.reduce_limit
+
+          render "api/v1/fleet_memberships/show", status: :created
+        else
+          render json: ValidationError.new("fleet_memberships.create", errors: @membership.errors), status: :bad_request
+        end
+      end
+
       private def fleet_invite_url
         @fleet_invite_url ||= fleet.fleet_invite_urls
           .where(token: params[:token])

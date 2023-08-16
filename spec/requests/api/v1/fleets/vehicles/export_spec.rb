@@ -13,8 +13,8 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
     sign_in(user) if user.present?
   end
 
-  path "/fleets/{slug}/vehicles/export" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/vehicles/export" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     get("Fleet Vehicles List") do
       operationId "fleetVehiclesExport"
@@ -33,7 +33,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/VehicleExport"}
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
 
         after do |example|
@@ -55,7 +55,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/VehicleExport"}
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
         let(:q) do
           {
@@ -74,7 +74,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { "unknown-fleet" }
+        let(:fleetSlug) { "unknown-fleet" }
         let(:user) { users :data }
 
         run_test!
@@ -83,7 +83,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
 
         run_test!
       end

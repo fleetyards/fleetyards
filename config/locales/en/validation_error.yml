@@ -11,10 +11,17 @@ en:
       create: Fleet could not be created.
       destroy: Fleet could not be destroyed.
       update: Fleet could not be updated.
+    fleet_members:
+      create: Fleet Member could not be invited
+      accept: Fleet Member could not be accepted.
+      decline: Fleet Member could not be declined.
+      destroy: Fleet Member could not be removed.
     fleet_memberships:
-      create: Fleet Membership could not be created
-      destroy: Fleet Membership could not be deleted.
-      destroy_as_admin: You can't leave a Fleet as an Admin.
+      create: Fleet Invitation could not be used
+      destroy: Fleet could not be leaved.
+      accept: Fleet Invitation could not be accepted.
+      decline: Fleet Invitation could not be declined.
+      leave_as_admin: You can't leave a Fleet as an Admin.
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed

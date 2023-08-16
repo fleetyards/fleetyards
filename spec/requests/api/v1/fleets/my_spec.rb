@@ -11,9 +11,9 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
     sign_in(user) if user.present?
   end
 
-  path "/fleets/current" do
+  path "/fleets/my" do
     get("Fleets for current User") do
-      operationId "currentFleet"
+      operationId "myFleets"
       tags "Fleets"
       produces "application/json"
 

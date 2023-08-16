@@ -7,8 +7,8 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
 
   let(:fleet) { fleets :starfleet }
 
-  path "/public/fleets/{slug}/stats/model-counts" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/public/fleets/{fleetSlug}/stats/model-counts" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     get("Public Fleet Stats Model Counts") do
       operationId "publicFleetStatsModelCounts"
@@ -27,7 +27,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetModelCountsStats"
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -51,7 +51,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetModelCountsStats"
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:q) do
           {
             "modelNameCont" => "600i"
@@ -71,7 +71,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
         schema "$ref": "#/components/schemas/FleetModelCountsStats"
 
         let(:fleet) { fleets :klingon_empire }
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -83,7 +83,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :request, swagger_doc: "v1/sc
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { "unknown-fleet" }
+        let(:fleetSlug) { "unknown-fleet" }
 
         run_test!
       end

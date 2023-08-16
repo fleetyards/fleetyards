@@ -13,8 +13,8 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
     sign_in(user) if user.present?
   end
 
-  path "/fleets/{slug}/vehicles" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/vehicles" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     get("Fleet Vehicles List") do
       operationId "fleetVehicles"
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
 
         after do |example|
@@ -71,7 +71,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
         let(:q) do
           {
@@ -96,7 +96,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
         let(:perPage) { 1 }
 
@@ -116,7 +116,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
         let(:grouped) { true }
 
@@ -130,7 +130,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { "unknown-fleet" }
+        let(:fleetSlug) { "unknown-fleet" }
         let(:user) { users :data }
 
         run_test!
@@ -139,7 +139,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
 
         run_test!
       end

@@ -13,8 +13,8 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
     sign_in(user) if user.present?
   end
 
-  path "/fleets/{slug}/stats/members" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/stats/members" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     get("Fleet Members Stats") do
       operationId "fleetMembersStats"
@@ -24,7 +24,7 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/FleetMembersStats"
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
 
         after do |example|

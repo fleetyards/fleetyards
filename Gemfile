@@ -195,3 +195,5 @@ group :development, :test do
 
   gem "knapsack"
 end
+
+gem "enum_attributes_validation", "~> 0.1.7"

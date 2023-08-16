@@ -7,8 +7,8 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
   let(:fleet) { fleets :starfleet }
 
-  path "/public/fleets/{slug}/vehicles" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/public/fleets/{fleetSlug}/vehicles" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
     get("Public Fleet Vehicles List") do
       operationId "publicFleetVehicles"
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -64,7 +64,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:q) do
           {
             "modelNameCont" => "600i"
@@ -88,7 +88,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:perPage) { 1 }
 
         run_test! do |response|
@@ -107,7 +107,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
             ]
           }
 
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
         let(:grouped) { true }
 
         run_test! do |response|
@@ -127,7 +127,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
           }
 
         let(:fleet) { fleets :klingon_empire }
-        let(:slug) { fleet.slug }
+        let(:fleetSlug) { fleet.slug }
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -139,7 +139,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { "unknown-fleet" }
+        let(:fleetSlug) { "unknown-fleet" }
 
         run_test!
       end

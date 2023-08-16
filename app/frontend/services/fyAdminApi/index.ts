@@ -33,6 +33,7 @@ export type { PieChartStats } from './models/PieChartStats';
 export type { Shop } from './models/Shop';
 export { ShopTypeEnum } from './models/ShopTypeEnum';
 export type { StandardError } from './models/StandardError';
+export type { StandardMessage } from './models/StandardMessage';
 export type { Starsystem } from './models/Starsystem';
 export type { StarsystemMinimal } from './models/StarsystemMinimal';
 export type { Station } from './models/Station';
