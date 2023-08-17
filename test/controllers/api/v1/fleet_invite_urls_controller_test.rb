@@ -6,7 +6,7 @@ module Api
   module V1
     class FleetInviteUrlsControllerTest < ActionDispatch::IntegrationTest
       let(:starfleet) { fleets :starfleet }
-      let(:fleet_invite_url) { fleet_invite_urls :one }
+      let(:fleet_invite_url) { fleet_invite_urls :starfleet_invite }
 
       describe "without session" do
         test "should render 401 for index" do

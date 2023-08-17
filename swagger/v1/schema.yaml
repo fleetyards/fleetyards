@@ -147,8 +147,9 @@ paths:
         required: true
   "/fleets/current":
     get:
-      summary: Fleets for current User
-      operationId: currentFleet
+      summary: Fleets for current User -> use GET /fleets/my
+      deprecated: true
+      operationId: DEPRECATEDcurrentFleets
       tags:
       - Fleets
       responses:
@@ -257,6 +258,45 @@ paths:
             schema:
               "$ref": "#/components/schemas/FleetUpdateInput"
         required: true
+  "/fleets/use-invite":
+    post:
+      summary: Create Membership by Invite
+      operationId: useInvite
+      tags:
+      - FleetInviteUrls
+      parameters: []
+      description: User is already a member of this fleet
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMembershipCreateInput"
+        required: true
   "/fleets/invites":
     get:
       summary: Fleet Invites current User
@@ -271,18 +311,699 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/FleetMembership"
+                  "$ref": "#/components/schemas/FleetMemberMinimal"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/stats/members":
+  "/fleets/{fleetSlug}/members/{username}/accept":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: Username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Accept Member
+      operationId: acceptMember
+      tags:
+      - FleetMembers
+      description: No Member found
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/members":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Create Member
+      operationId: createMember
+      tags:
+      - FleetMembers
+      parameters: []
+      description: You are not the owner of this Fleet
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMemberCreateInput"
+        required: true
+    put:
+      summary: Update Membership -> use PUT /fleets/{fleetSlug}/membership
+      deprecated: true
+      operationId: DEPRECATEDupdateMembership
+      tags:
+      - FleetMembers
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMembershipUpdateInput"
+        required: true
+    get:
+      summary: Fleet Member List
+      operationId: fleetMembers
+      tags:
+      - FleetMembers
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetMemberQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetMemberMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/members/{username}/decline":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: Username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Decline Member
+      operationId: declineMember
+      tags:
+      - FleetMembers
+      description: No Member found
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/members/{username}/demote":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: Username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Demote Member
+      operationId: demoteMember
+      tags:
+      - FleetMembers
+      description: No Member found
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/members/current":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: My Fleet Membership -> use GET /fleets/{fleetSlug}/membership
+      deprecated: true
+      operationId: DEPRECATEDfleetMembership
+      tags:
+      - FleetMembers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMemberMinimal"
+  "/fleets/{fleetSlug}/members/{username}/accept-request":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: Username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Accept Member -> use GET /fleets/{fleetSlug}/members/{username}/accept
+      deprecated: true
+      operationId: DEPRECATEDacceptMember
+      tags:
+      - FleetMembers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+  "/fleets/{fleetSlug}/members/{username}/decline-request":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: Username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Decline Member -> use GET /fleets/{fleetSlug}/members/{username}/decline
+      deprecated: true
+      operationId: DEPRECATEDdeclineMember
+      tags:
+      - FleetMembers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+  "/fleets/{fleetSlug}/members/accept-invite":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Accept Membership -> use GET /fleets/{fleetSlug}/membership/accept
+      deprecated: true
+      operationId: DEPRECATEDacceptMembership
+      tags:
+      - FleetMembers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+  "/fleets/{fleetSlug}/members/decline-invite":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Decline Membership -> use GET /fleets/{fleetSlug}/membership/decline
+      deprecated: true
+      operationId: DEPRECATEDdeclineMembership
+      tags:
+      - FleetMembers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+  "/fleets/{fleetSlug}/members/leave":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Leave Fleet -> use DELETE /fleets/{fleetSlug}/membership
+      deprecated: true
+      operationId: DEPRECATEDleaveFleet
+      tags:
+      - FleetMembers
+      responses:
+        '204':
+          description: successful
+  "/fleets/{fleetSlug}/members/{username}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Remove Fleet Member
+      operationId: removeMember
+      tags:
+      - FleetMembers
+      description: You are not the owner of this Fleet
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/members/{username}/promote":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: username
+      in: path
+      description: Username
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Promote Member
+      operationId: promoteMember
+      tags:
+      - FleetMembers
+      description: No Member found
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/membership/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Accept Membership
+      operationId: acceptMembership
+      tags:
+      - FleetMembership
+      description: No Membership found
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/membership/decline":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Decline Membership
+      operationId: declineMembership
+      tags:
+      - FleetMembership
+      description: No Membership found
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/membership":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Leave Fleet
+      operationId: leaveFleet
+      tags:
+      - FleetMembership
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Fleet Membership Detail
+      operationId: membership
+      tags:
+      - FleetMembership
+      description: Membership for this slug and user does not exist
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Membership
+      operationId: updateMembership
+      tags:
+      - FleetMembership
+      parameters: []
+      description: Fleet for this slug and user does not exist
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMembershipUpdateInput"
+        required: true
+  "/fleets/my":
+    get:
+      summary: Fleets for current User
+      operationId: myFleets
+      tags:
+      - Fleets
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetMinimal"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/stats/members":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -298,11 +1019,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetMembersStats"
-  "/fleets/{slug}/stats/model-counts":
+  "/fleets/{fleetSlug}/stats/model-counts":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -339,11 +1060,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/stats/models-by-classification":
+  "/fleets/{fleetSlug}/stats/models-by-classification":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -367,11 +1088,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/stats/models-by-manufacturer":
+  "/fleets/{fleetSlug}/stats/models-by-manufacturer":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -395,11 +1116,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/stats/models-by-production-status":
+  "/fleets/{fleetSlug}/stats/models-by-production-status":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -423,11 +1144,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/stats/models-by-size":
+  "/fleets/{fleetSlug}/stats/models-by-size":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -451,11 +1172,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/stats/vehicles-by-model":
+  "/fleets/{fleetSlug}/stats/vehicles-by-model":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -479,11 +1200,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/stats/vehicles":
+  "/fleets/{fleetSlug}/stats/vehicles":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -499,16 +1220,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetVehiclesStats"
-  "/fleets/{slug}/public-vehicles":
+  "/fleets/{fleetSlug}/public-vehicles":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
     get:
-      summary: Fleet Public Vehicles -> use GET /fleets/{slug}/public/vehicles
+      summary: Fleet Public Vehicles -> use GET /fleets/{fleetSlug}/public/vehicles
       deprecated: true
       operationId: DEPRECATEDfleetPublicVehicles
       tags:
@@ -516,16 +1237,24 @@ paths:
       responses:
         '200':
           description: successful
-  "/fleets/{slug}/fleetchart":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                  - "$ref": "#/components/schemas/ModelMinimal"
+                  - "$ref": "#/components/schemas/VehiclePublicMinimal"
+  "/fleets/{fleetSlug}/fleetchart":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
     get:
-      summary: Fleet Fleetchart -> use GET /fleets/{slug}/vehicles
+      summary: Fleet Fleetchart -> use GET /fleets/{fleetSlug}/vehicles
       deprecated: true
       operationId: DEPRECATEDfleetFleetchart
       tags:
@@ -533,16 +1262,16 @@ paths:
       responses:
         '200':
           description: successful
-  "/fleets/{slug}/public-fleetchart":
+  "/fleets/{fleetSlug}/public-fleetchart":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
     get:
-      summary: Fleet Public Fleetchart -> use GET /fleets/{slug}/public/vehicles
+      summary: Fleet Public Fleetchart -> use GET /fleets/{fleetSlug}/public/vehicles
       deprecated: true
       operationId: DEPRECATEDpublicFleetFleetchart
       tags:
@@ -550,16 +1279,16 @@ paths:
       responses:
         '200':
           description: successful
-  "/fleets/{slug}/quick-stats":
+  "/fleets/{fleetSlug}/quick-stats":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
     get:
-      summary: Fleet Vehicle QuickStats -> use GET /fleets/{slug}/stats/vehicles
+      summary: Fleet Vehicle QuickStats -> use GET /fleets/{fleetSlug}/stats/vehicles
       deprecated: true
       operationId: DEPRECATEDfleetVehicleQuickStats
       tags:
@@ -567,16 +1296,20 @@ paths:
       responses:
         '200':
           description: successful
-  "/fleets/{slug}/model-counts":
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetVehiclesStats"
+  "/fleets/{fleetSlug}/model-counts":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
     get:
-      summary: Fleet Stats Model Counts -> use GET /fleets/{slug}/stats/model-counts
+      summary: Fleet Stats Model Counts -> use GET /fleets/{fleetSlug}/stats/model-counts
       operationId: DEPRECATEDfleetStatsModelCounts
       deprecated: true
       tags:
@@ -597,16 +1330,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetModelCountsStats"
-  "/fleets/{slug}/public-model-counts":
+  "/fleets/{fleetSlug}/public-model-counts":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
     get:
-      summary: Public Fleet Stats Model Counts -> use GET /public/fleets/{slug}/stats/model-counts
+      summary: Public Fleet Stats Model Counts -> use GET /public/fleets/{fleetSlug}/stats/model-counts
       operationId: DEPRECATEDpublicFleetStatsModelCounts
       deprecated: true
       tags:
@@ -627,16 +1360,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetModelCountsStats"
-  "/fleets/{slug}/embed":
+  "/fleets/{fleetSlug}/embed":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
     get:
-      summary: Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{slug}/vehicles/embed
+      summary: Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{fleetSlug}/vehicles/embed
       deprecated: true
       operationId: DEPRECATEDfleetVehiclesEmbed
       tags:
@@ -659,11 +1392,11 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/VehiclePublicMinimal"
-  "/fleets/{slug}/vehicles/export":
+  "/fleets/{fleetSlug}/vehicles/export":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -702,11 +1435,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}/vehicles":
+  "/fleets/{fleetSlug}/vehicles":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -2108,11 +2841,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/public/fleets/{slug}/stats/model-counts":
+  "/public/fleets/{fleetSlug}/stats/model-counts":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -2143,11 +2876,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/public/fleets/{slug}/vehicles/embed":
+  "/public/fleets/{fleetSlug}/vehicles/embed":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -2180,11 +2913,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/public/fleets/{slug}/vehicles":
+  "/public/fleets/{fleetSlug}/vehicles":
     parameters:
-    - name: slug
+    - name: fleetSlug
       in: path
-      description: slug
+      description: Fleet slug
       required: true
       schema:
         type: string
@@ -3521,6 +4254,18 @@ components:
       - code
       - message
       title: StandardError
+    StandardMessage:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardMessage
     ValidationError:
       type: object
       properties:
@@ -4327,7 +5072,182 @@ components:
         id:
           type: string
           format: uuid
+        username:
+          type: string
+        role:
+          "$ref": "#/components/schemas/FleetMembershipRoleEnum"
+        roleLabel:
+          type: string
+        status:
+          "$ref": "#/components/schemas/FleetMembershipStatusEnum"
+        avatar:
+          type: string
+          nullable: true
+        rsiHandle:
+          type: string
+          nullable: true
+        homepage:
+          type: string
+          nullable: true
+        discord:
+          type: string
+          nullable: true
+        youtube:
+          type: string
+          nullable: true
+        twitch:
+          type: string
+          nullable: true
+        guilded:
+          type: string
+          nullable: true
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
+        hangarGroupId:
+          type: string
+          format: uuid
+          nullable: true
+        fleetSlug:
+          type: string
+        fleetName:
+          type: string
+        fleet:
+          "$ref": "#/components/schemas/FleetMinimal"
+        primary:
+          type: boolean
+        hangarUpdatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        invitedAt:
+          type: string
+          format: date-time
+        invitedAtLabel:
+          type: string
+        requestedAt:
+          type: string
+          format: date-time
+        requestedAtLabel:
+          type: string
+        acceptedAt:
+          type: string
+          format: date-time
+        acceptedAtLabel:
+          type: string
+        declinedAt:
+          type: string
+          format: date-time
+        declinedAtLabel:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - username
+      - role
+      - roleLabel
+      - shipsFilter
+      - fleetSlug
+      - fleetName
+      - createdAt
+      - updatedAt
       title: FleetMember
+    FleetMemberMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        role:
+          "$ref": "#/components/schemas/FleetMembershipRoleEnum"
+        roleLabel:
+          type: string
+        status:
+          "$ref": "#/components/schemas/FleetMembershipStatusEnum"
+        avatar:
+          type: string
+          nullable: true
+        rsiHandle:
+          type: string
+          nullable: true
+        homepage:
+          type: string
+          nullable: true
+        discord:
+          type: string
+          nullable: true
+        youtube:
+          type: string
+          nullable: true
+        twitch:
+          type: string
+          nullable: true
+        guilded:
+          type: string
+          nullable: true
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
+        hangarGroupId:
+          type: string
+          format: uuid
+          nullable: true
+        fleetSlug:
+          type: string
+        fleetName:
+          type: string
+        fleet:
+          "$ref": "#/components/schemas/FleetMinimal"
+        primary:
+          type: boolean
+        hangarUpdatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        invitedAt:
+          type: string
+          format: date-time
+        invitedAtLabel:
+          type: string
+        requestedAt:
+          type: string
+          format: date-time
+        requestedAtLabel:
+          type: string
+        acceptedAt:
+          type: string
+          format: date-time
+        acceptedAtLabel:
+          type: string
+        declinedAt:
+          type: string
+          format: date-time
+        declinedAtLabel:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - username
+      - role
+      - roleLabel
+      - shipsFilter
+      - fleetSlug
+      - fleetName
+      - createdAt
+      - updatedAt
+      title: FleetMemberMinimal
     FleetMembersStats:
       type: object
       properties:
@@ -4352,91 +5272,6 @@ components:
       - total
       - metrics
       title: FleetMembersStats
-    FleetMembership:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        username:
-          type: string
-        role:
-          "$ref": "#/components/schemas/FleetMembershipRoleEnum"
-        roleLabel:
-          type: string
-        status:
-          "$ref": "#/components/schemas/FleetMembershipStatusEnum"
-        invitedAt:
-          type: string
-          format: date-time
-          nullable: true
-        requestedAt:
-          type: string
-          format: date-time
-          nullable: true
-        acceptedAt:
-          type: string
-          format: date-time
-          nullable: true
-        acceptedAtLabel:
-          type: string
-          nullable: true
-        declinedAt:
-          type: string
-          format: date-time
-          nullable: true
-        declinedAtLabel:
-          type: string
-          nullable: true
-        avatar:
-          type: string
-          nullable: true
-        rsiHandle:
-          type: string
-          nullable: true
-        homepage:
-          type: string
-          nullable: true
-        discord:
-          type: string
-          nullable: true
-        youtube:
-          type: string
-          nullable: true
-        twitch:
-          type: string
-          nullable: true
-        shipsFilter:
-          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
-        hangarGroupId:
-          type: string
-          format: uuid
-          nullable: true
-        fleetSlug:
-          type: string
-        fleetName:
-          type: string
-        fleet:
-          "$ref": "#/components/schemas/FleetMinimal"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - username
-      - role
-      - roleLabel
-      - shipsFilter
-      - fleetSlug
-      - fleetName
-      - fleet
-      - createdAt
-      - updatedAt
-      title: FleetMembership
     FleetMinimal:
       type: object
       properties:
@@ -5105,6 +5940,29 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetMemberCreateInput:
+      type: object
+      properties:
+        username:
+          type: string
+      additionalProperties: false
+      title: FleetMemberCreateInput
+    FleetMembershipCreateInput:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      title: FleetMembershipCreateInput
+    FleetMembershipUpdateInput:
+      type: object
+      properties:
+        primary:
+          type: boolean
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
+      additionalProperties: false
+      title: FleetMembershipUpdateInput
     FleetUpdateInput:
       type: object
       properties:
@@ -7579,6 +8437,27 @@ components:
           deprecated: true
       additionalProperties: false
       title: CelestialObjectQuery
+    FleetMemberQuery:
+      type: object
+      properties:
+        usernameCont:
+          type: string
+        nameCont:
+          type: string
+          deprecated: true
+          description: Use usernameCont instead
+        roleIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMembershipRoleEnum"
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              type: string
+          - type: string
+      additionalProperties: false
+      title: FleetMemberQuery
     FleetVehicleQuery:
       type: object
       properties:

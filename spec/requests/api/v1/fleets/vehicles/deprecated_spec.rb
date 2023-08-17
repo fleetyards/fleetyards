@@ -9,31 +9,39 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
   let(:user) { nil }
 
-  let(:slug) { fleet.slug }
+  let(:fleetSlug) { fleet.slug }
 
   before do
     sign_in(user) if user.present?
   end
 
-  path "/fleets/{slug}/public-vehicles" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/public-vehicles" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    get("Fleet Public Vehicles -> use GET /fleets/{slug}/public/vehicles") do
+    get("Fleet Public Vehicles -> use GET /fleets/{fleetSlug}/public/vehicles") do
       deprecated true
       operationId "DEPRECATEDfleetPublicVehicles"
       tags "Fleets"
       produces "application/json"
 
       response(200, "successful") do
+        schema type: :array,
+          items: {
+            oneOf: [
+              {"$ref": "#/components/schemas/ModelMinimal"},
+              {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+            ]
+          }
+
         run_test!
       end
     end
   end
 
-  path "/fleets/{slug}/fleetchart" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/fleetchart" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    get("Fleet Fleetchart -> use GET /fleets/{slug}/vehicles") do
+    get("Fleet Fleetchart -> use GET /fleets/{fleetSlug}/vehicles") do
       deprecated true
       operationId "DEPRECATEDfleetFleetchart"
       tags "Fleets"
@@ -47,10 +55,10 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
     end
   end
 
-  path "/fleets/{slug}/public-fleetchart" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/public-fleetchart" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    get("Fleet Public Fleetchart -> use GET /fleets/{slug}/public/vehicles") do
+    get("Fleet Public Fleetchart -> use GET /fleets/{fleetSlug}/public/vehicles") do
       deprecated true
       operationId "DEPRECATEDpublicFleetFleetchart"
       tags "Fleets"
@@ -62,16 +70,18 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
     end
   end
 
-  path "/fleets/{slug}/quick-stats" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/quick-stats" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    get("Fleet Vehicle QuickStats -> use GET /fleets/{slug}/stats/vehicles") do
+    get("Fleet Vehicle QuickStats -> use GET /fleets/{fleetSlug}/stats/vehicles") do
       deprecated true
       operationId "DEPRECATEDfleetVehicleQuickStats"
       tags "Fleets"
       produces "application/json"
 
       response(200, "successful") do
+        schema "$ref" => "#/components/schemas/FleetVehiclesStats"
+
         let(:user) { users :data }
 
         run_test!
@@ -79,10 +89,10 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
     end
   end
 
-  path "/fleets/{slug}/model-counts" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/model-counts" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    get("Fleet Stats Model Counts -> use GET /fleets/{slug}/stats/model-counts") do
+    get("Fleet Stats Model Counts -> use GET /fleets/{fleetSlug}/stats/model-counts") do
       operationId "DEPRECATEDfleetStatsModelCounts"
       deprecated true
       tags "Fleets"
@@ -100,7 +110,6 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetModelCountsStats"
 
-        let(:slug) { fleet.slug }
         let(:user) { users :data }
 
         run_test!
@@ -108,10 +117,10 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
     end
   end
 
-  path "/fleets/{slug}/public-model-counts" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/public-model-counts" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    get("Public Fleet Stats Model Counts -> use GET /public/fleets/{slug}/stats/model-counts") do
+    get("Public Fleet Stats Model Counts -> use GET /public/fleets/{fleetSlug}/stats/model-counts") do
       operationId "DEPRECATEDpublicFleetStatsModelCounts"
       deprecated true
       tags "Fleets"
@@ -129,17 +138,16 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetModelCountsStats"
 
-        let(:slug) { fleet.slug }
         let(:user) { users :data }
 
         run_test!
       end
     end
   end
-  path "/fleets/{slug}/embed" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+  path "/fleets/{fleetSlug}/embed" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    get("Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{slug}/vehicles/embed") do
+    get("Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{fleetSlug}/vehicles/embed") do
       deprecated true
       operationId "DEPRECATEDfleetVehiclesEmbed"
       tags "Fleets"
@@ -157,8 +165,6 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(200, "successful") do
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
-
-        let(:slug) { fleet.slug }
 
         run_test!
       end

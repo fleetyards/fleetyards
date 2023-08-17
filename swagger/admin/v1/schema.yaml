@@ -344,6 +344,18 @@ components:
       - code
       - message
       title: StandardError
+    StandardMessage:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardMessage
     ValidationError:
       type: object
       properties:

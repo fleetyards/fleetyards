@@ -6,11 +6,12 @@ import type { Fleet } from '../models/Fleet';
 import type { FleetCheck } from '../models/FleetCheck';
 import type { FleetCheckInput } from '../models/FleetCheckInput';
 import type { FleetCreateInput } from '../models/FleetCreateInput';
-import type { FleetMembership } from '../models/FleetMembership';
+import type { FleetMemberMinimal } from '../models/FleetMemberMinimal';
 import type { FleetMinimal } from '../models/FleetMinimal';
 import type { FleetModelCountsStats } from '../models/FleetModelCountsStats';
 import type { FleetUpdateInput } from '../models/FleetUpdateInput';
 import type { FleetVehicleQuery } from '../models/FleetVehicleQuery';
+import type { FleetVehiclesStats } from '../models/FleetVehiclesStats';
 import type { ModelMinimal } from '../models/ModelMinimal';
 import type { VehicleExport } from '../models/VehicleExport';
 import type { VehiclePublicMinimal } from '../models/VehiclePublicMinimal';
@@ -66,11 +67,12 @@ export class FleetsService {
     }
 
     /**
-     * Fleets for current User
+     * @deprecated
+     * Fleets for current User -> use GET /fleets/my
      * @returns FleetMinimal successful
      * @throws ApiError
      */
-    public currentFleet(): CancelablePromise<Array<FleetMinimal>> {
+    public deprecateDcurrentFleets(): CancelablePromise<Array<FleetMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/fleets/current',
@@ -167,10 +169,10 @@ export class FleetsService {
 
     /**
      * Fleet Invites current User
-     * @returns FleetMembership successful
+     * @returns FleetMemberMinimal successful
      * @throws ApiError
      */
-    public fleetInvites(): CancelablePromise<Array<FleetMembership>> {
+    public fleetInvites(): CancelablePromise<Array<FleetMemberMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/fleets/invites',
@@ -181,118 +183,133 @@ export class FleetsService {
     }
 
     /**
+     * Fleets for current User
+     * @returns FleetMinimal successful
+     * @throws ApiError
+     */
+    public myFleets(): CancelablePromise<Array<FleetMinimal>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/fleets/my',
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
      * @deprecated
-     * Fleet Public Vehicles -> use GET /fleets/{slug}/public/vehicles
+     * Fleet Public Vehicles -> use GET /fleets/{fleetSlug}/public/vehicles
      * @returns any successful
      * @throws ApiError
      */
     public deprecateDfleetPublicVehicles({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
-    }): CancelablePromise<any> {
+        fleetSlug: string,
+    }): CancelablePromise<Array<(ModelMinimal | VehiclePublicMinimal)>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/public-vehicles',
+            url: '/fleets/{fleetSlug}/public-vehicles',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
         });
     }
 
     /**
      * @deprecated
-     * Fleet Fleetchart -> use GET /fleets/{slug}/vehicles
+     * Fleet Fleetchart -> use GET /fleets/{fleetSlug}/vehicles
      * @returns any successful
      * @throws ApiError
      */
     public deprecateDfleetFleetchart({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/fleetchart',
+            url: '/fleets/{fleetSlug}/fleetchart',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
         });
     }
 
     /**
      * @deprecated
-     * Fleet Public Fleetchart -> use GET /fleets/{slug}/public/vehicles
+     * Fleet Public Fleetchart -> use GET /fleets/{fleetSlug}/public/vehicles
      * @returns any successful
      * @throws ApiError
      */
     public deprecateDpublicFleetFleetchart({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/public-fleetchart',
+            url: '/fleets/{fleetSlug}/public-fleetchart',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
         });
     }
 
     /**
      * @deprecated
-     * Fleet Vehicle QuickStats -> use GET /fleets/{slug}/stats/vehicles
-     * @returns any successful
+     * Fleet Vehicle QuickStats -> use GET /fleets/{fleetSlug}/stats/vehicles
+     * @returns FleetVehiclesStats successful
      * @throws ApiError
      */
     public deprecateDfleetVehicleQuickStats({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
-    }): CancelablePromise<any> {
+        fleetSlug: string,
+    }): CancelablePromise<FleetVehiclesStats> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/quick-stats',
+            url: '/fleets/{fleetSlug}/quick-stats',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
         });
     }
 
     /**
      * @deprecated
-     * Fleet Stats Model Counts -> use GET /fleets/{slug}/stats/model-counts
+     * Fleet Stats Model Counts -> use GET /fleets/{fleetSlug}/stats/model-counts
      * @returns FleetModelCountsStats successful
      * @throws ApiError
      */
     public deprecateDfleetStatsModelCounts({
-        slug,
+        fleetSlug,
         q,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         q?: FleetVehicleQuery,
     }): CancelablePromise<FleetModelCountsStats> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/model-counts',
+            url: '/fleets/{fleetSlug}/model-counts',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'q': q,
@@ -302,25 +319,25 @@ export class FleetsService {
 
     /**
      * @deprecated
-     * Public Fleet Stats Model Counts -> use GET /public/fleets/{slug}/stats/model-counts
+     * Public Fleet Stats Model Counts -> use GET /public/fleets/{fleetSlug}/stats/model-counts
      * @returns FleetModelCountsStats successful
      * @throws ApiError
      */
     public deprecateDpublicFleetStatsModelCounts({
-        slug,
+        fleetSlug,
         q,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         q?: FleetVehicleQuery,
     }): CancelablePromise<FleetModelCountsStats> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/public-model-counts',
+            url: '/fleets/{fleetSlug}/public-model-counts',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'q': q,
@@ -330,25 +347,25 @@ export class FleetsService {
 
     /**
      * @deprecated
-     * Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{slug}/vehicles/embed
+     * Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{fleetSlug}/vehicles/embed
      * @returns VehiclePublicMinimal successful
      * @throws ApiError
      */
     public deprecateDfleetVehiclesEmbed({
-        slug,
+        fleetSlug,
         q,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         q?: FleetVehicleQuery,
     }): CancelablePromise<Array<VehiclePublicMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/embed',
+            url: '/fleets/{fleetSlug}/embed',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'q': q,
@@ -362,20 +379,20 @@ export class FleetsService {
      * @throws ApiError
      */
     public fleetVehiclesExport({
-        slug,
+        fleetSlug,
         q,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         q?: FleetVehicleQuery,
     }): CancelablePromise<Array<VehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/vehicles/export',
+            url: '/fleets/{fleetSlug}/vehicles/export',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'q': q,
@@ -393,7 +410,7 @@ export class FleetsService {
      * @throws ApiError
      */
     public fleetVehicles({
-        slug,
+        fleetSlug,
         page = '1',
         perPage = '30',
         q,
@@ -401,9 +418,9 @@ export class FleetsService {
         cacheId,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         page?: string,
         perPage?: string,
         q?: FleetVehicleQuery,
@@ -412,9 +429,9 @@ export class FleetsService {
     }): CancelablePromise<Array<(ModelMinimal | VehiclePublicMinimal)>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/vehicles',
+            url: '/fleets/{fleetSlug}/vehicles',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'page': page,
@@ -436,20 +453,20 @@ export class FleetsService {
      * @throws ApiError
      */
     public publicFleetStatsModelCounts({
-        slug,
+        fleetSlug,
         q,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         q?: FleetVehicleQuery,
     }): CancelablePromise<FleetModelCountsStats> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/public/fleets/{slug}/stats/model-counts',
+            url: '/public/fleets/{fleetSlug}/stats/model-counts',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'q': q,
@@ -466,20 +483,20 @@ export class FleetsService {
      * @throws ApiError
      */
     public publicFleetVehiclesEmbed({
-        slug,
+        fleetSlug,
         q,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         q?: FleetVehicleQuery,
     }): CancelablePromise<Array<VehiclePublicMinimal>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/public/fleets/{slug}/vehicles/embed',
+            url: '/public/fleets/{fleetSlug}/vehicles/embed',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'q': q,
@@ -496,7 +513,7 @@ export class FleetsService {
      * @throws ApiError
      */
     public publicFleetVehicles({
-        slug,
+        fleetSlug,
         page = '1',
         perPage = '30',
         q,
@@ -504,9 +521,9 @@ export class FleetsService {
         cacheId,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         page?: string,
         perPage?: string,
         q?: FleetVehicleQuery,
@@ -515,9 +532,9 @@ export class FleetsService {
     }): CancelablePromise<Array<(ModelMinimal | VehiclePublicMinimal)>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/public/fleets/{slug}/vehicles',
+            url: '/public/fleets/{fleetSlug}/vehicles',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'page': page,

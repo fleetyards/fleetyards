@@ -27,6 +27,9 @@ en:
     record_not_found:
       base: No Entry found
       fleet: No Fleet found
+      fleet_membership: No Fleet Member found
+      user: No User found
+      invite: No Invite found
       model: No Model found
     reload:
       startet: "%{resource} reload startet."

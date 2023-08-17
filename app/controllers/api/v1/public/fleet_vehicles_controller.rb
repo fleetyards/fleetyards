@@ -85,7 +85,7 @@ module Api
         end
 
         private def fleet
-          @fleet ||= Fleet.find_by!(slug: params[:slug])
+          @fleet ||= Fleet.find_by!(slug: params[:fleet_slug])
         end
       end
     end

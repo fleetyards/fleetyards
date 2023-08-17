@@ -16,7 +16,7 @@
 #  index_fleet_invite_urls_on_token  (token) UNIQUE
 #
 
-one:
+starfleet_invite:
   fleet: starfleet
   user: jeanluc
-  token: MyString
+  token: MyFleetInvite

@@ -153,7 +153,7 @@ module Api
       end
 
       private def fleet
-        @fleet ||= current_user.fleets.where(slug: params[:fleet_slug] || params[:slug]).first!
+        @fleet ||= current_user.fleets.where(slug: params[:fleet_slug]).first!
       end
     end
   end

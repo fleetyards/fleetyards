@@ -2,14 +2,11 @@
 
 module V1
   module Schemas
-    class FleetMember
+    class FleetMember < FleetMemberMinimal
       include SchemaConcern
 
       schema({
-        type: :object,
-        properties: {
-          id: {type: :string, format: :uuid}
-        }
+        properties: {}
       })
     end
   end

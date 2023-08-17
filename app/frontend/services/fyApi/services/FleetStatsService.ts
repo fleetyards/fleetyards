@@ -22,18 +22,18 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetMembersStats({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<FleetMembersStats> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/members',
+            url: '/fleets/{fleetSlug}/stats/members',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
         });
     }
@@ -44,20 +44,20 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetModelCounts({
-        slug,
+        fleetSlug,
         q,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
         q?: FleetVehicleQuery,
     }): CancelablePromise<FleetModelCountsStats> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/model-counts',
+            url: '/fleets/{fleetSlug}/stats/model-counts',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             query: {
                 'q': q,
@@ -75,18 +75,18 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetModelsByClassification({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/models-by-classification',
+            url: '/fleets/{fleetSlug}/stats/models-by-classification',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             errors: {
                 401: `unauthorized`,
@@ -100,18 +100,18 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetModelsByManufacturer({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/models-by-manufacturer',
+            url: '/fleets/{fleetSlug}/stats/models-by-manufacturer',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             errors: {
                 401: `unauthorized`,
@@ -125,18 +125,18 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetModelsByProductionStatus({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/models-by-production-status',
+            url: '/fleets/{fleetSlug}/stats/models-by-production-status',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             errors: {
                 401: `unauthorized`,
@@ -150,18 +150,18 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetModelsBySize({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<Array<PieChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/models-by-size',
+            url: '/fleets/{fleetSlug}/stats/models-by-size',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             errors: {
                 401: `unauthorized`,
@@ -175,18 +175,18 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetVehiclesByModel({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<Array<BarChartStats>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/vehicles-by-model',
+            url: '/fleets/{fleetSlug}/stats/vehicles-by-model',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
             errors: {
                 401: `unauthorized`,
@@ -200,18 +200,18 @@ export class FleetStatsService {
      * @throws ApiError
      */
     public fleetVehiclesStats({
-        slug,
+        fleetSlug,
     }: {
         /**
-         * slug
+         * Fleet slug
          */
-        slug: string,
+        fleetSlug: string,
     }): CancelablePromise<FleetVehiclesStats> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/fleets/{slug}/stats/vehicles',
+            url: '/fleets/{fleetSlug}/stats/vehicles',
             path: {
-                'slug': slug,
+                'fleetSlug': fleetSlug,
             },
         });
     }
