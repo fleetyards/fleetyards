@@ -22,7 +22,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
         hardpoints: 5901,
         components: 139,
         models: 179,
-        paints: 17,
+        paints: 18,
         manufacturers: 20
       }
 
