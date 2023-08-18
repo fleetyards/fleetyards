@@ -42,6 +42,7 @@ class FleetMembership < ApplicationRecord
   end
 
   validate_enum_attributes :ships_filter, :role
+
   validates :user_id, uniqueness: {scope: :fleet_id}
 
   ransack_alias :username, :user_username

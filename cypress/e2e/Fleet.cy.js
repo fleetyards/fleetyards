@@ -16,6 +16,8 @@ describe("Fleet", () => {
 
     cy.visitApp("/");
 
+    cy.wait(300);
+
     cy.clickNav("fleets-menu", "fleet-add");
 
     cy.url().should("include", "/login");
