@@ -56,15 +56,6 @@ v1_api_routes = lambda do
 
   resources :celestial_objects, path: "celestial-objects", param: :slug, only: %i[index show]
 
-  resources :commodity_prices, path: "commodity-prices", only: [:create] do
-    get "time-ranges", to: "commodity_prices#time_ranges", on: :collection
-  end
-
-  resources :shop_commodities, path: "shop-commodities", only: %i[index] do
-    get "commodity-type-options", to: "shop_commodities#commodity_item_types", on: :collection
-    get "sub-categories", to: "shop_commodities#sub_categories", on: :collection
-  end
-
   namespace :stats do
     get "quick-stats", to: "base#quick_stats"
     get "models-per-month", to: "base#models_per_month"

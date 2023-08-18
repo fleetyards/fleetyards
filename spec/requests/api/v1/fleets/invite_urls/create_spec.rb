@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
   let(:user) { nil }
@@ -14,29 +14,34 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
     sign_in(user) if user.present?
   end
 
-  path "/fleets/{fleetSlug}/members" do
+  path "/fleets/{fleetSlug}/invite-urls" do
     parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
 
-    post("Create Member") do
-      operationId "createMember"
-      tags "FleetMembers"
+    post("Create Invite Url") do
+      operationId "createInviteUrl"
+      tags "FleetInviteUrls"
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMemberCreateInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetInviteUrlCreateInput"}, required: true
 
       let(:input) do
         {
-          username: "troi"
+          expiresAfterMinutes: 60
         }
       end
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/FleetMember"
+        schema "$ref": "#/components/schemas/FleetInviteUrlMinimal"
 
         let(:user) { users :jeanluc }
 
+        before do
+          travel_to Time.utc(2305, 6, 13, 12, 0, 0)
+        end
+
         after do |example|
+          travel_back
           example.metadata[:response][:content] = {
             "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
@@ -47,8 +52,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data["username"]).to eq("troi")
-          expect(data["status"]).to eq("invited")
+          expect(data["expiresAfter"]).to eq("2305-06-13T13:00:00Z")
         end
       end
 
@@ -58,7 +62,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         let(:user) { users :jeanluc }
         let(:input) do
           {
-            username: "unknown"
+            limit: -100
           }
         end
 
@@ -75,7 +79,6 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       end
 
       response(403, "forbidden") do
-        description "You are not the owner of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { users :data }

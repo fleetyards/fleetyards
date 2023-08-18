@@ -27,6 +27,7 @@ class FleetInviteUrl < ApplicationRecord
   belongs_to :user
 
   validates :token, uniqueness: true, presence: true
+  validates :limit, numericality: {greater_than: 0}, allow_nil: true
 
   before_validation :generate_token
 

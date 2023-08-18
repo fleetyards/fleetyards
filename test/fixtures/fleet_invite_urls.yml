@@ -19,4 +19,16 @@
 starfleet_invite:
   fleet: starfleet
   user: jeanluc
-  token: MyFleetInvite
+  token: ee86f1f1dbb8799dcb6f5cb9efd73f
+
+starfleet_invite_expired:
+  fleet: starfleet
+  user: jeanluc
+  expires_after: 2018-01-01 00:00:00
+  token: 7b809b1a980bdb5532a2ca2fdb7b4f
+
+starfleet_invite_limited:
+  fleet: starfleet
+  user: jeanluc
+  limit: 10
+  token: 992299b76c497556f74212dd76611e

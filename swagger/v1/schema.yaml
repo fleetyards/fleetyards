@@ -258,6 +258,137 @@ paths:
             schema:
               "$ref": "#/components/schemas/FleetUpdateInput"
         required: true
+  "/fleets/{fleetSlug}/invite-urls":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Create Invite Url
+      operationId: createInviteUrl
+      tags:
+      - FleetInviteUrls
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInviteUrlMinimal"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInviteUrlCreateInput"
+        required: true
+    get:
+      summary: Fleet Invite Urls List
+      operationId: inviteUrls
+      tags:
+      - fleetInviteUrls
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetInviteUrlMinimal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/invite-urls/{token}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: token
+      in: path
+      description: Invite Url Token
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Remove Invite Url
+      operationId: removeInviteUrl
+      tags:
+      - FleetInviteUrls
+      description: You are not the owner of this Fleet
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/use-invite":
     post:
       summary: Create Membership by Invite
@@ -391,18 +522,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetMember"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
           content:
@@ -2190,6 +2321,42 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Manufacturer"
+  "/model-paints":
+    get:
+      summary: Model Paints List
+      operationId: paints
+      tags:
+      - ModelPaints
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelPaintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelPaintMinimal"
   "/models/with-docks":
     get:
       summary: Models with Docks
@@ -5066,6 +5233,70 @@ components:
       required:
       - taken
       title: FleetCheck
+    FleetInviteUrl:
+      type: object
+      properties:
+        token:
+          type: string
+        url:
+          type: string
+          format: uri
+        expiresAfter:
+          type: string
+          format: date-time
+        expiresAfterLabel:
+          type: string
+        expired:
+          type: boolean
+        limit:
+          type: integer
+        limitReached:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - token
+      - url
+      - createdAt
+      - updatedAt
+      title: FleetInviteUrl
+    FleetInviteUrlMinimal:
+      type: object
+      properties:
+        token:
+          type: string
+        url:
+          type: string
+          format: uri
+        expiresAfter:
+          type: string
+          format: date-time
+        expiresAfterLabel:
+          type: string
+        expired:
+          type: boolean
+        limit:
+          type: integer
+        limitReached:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - token
+      - url
+      - createdAt
+      - updatedAt
+      title: FleetInviteUrlMinimal
     FleetMember:
       type: object
       properties:
@@ -5940,6 +6171,15 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetInviteUrlCreateInput:
+      type: object
+      properties:
+        limit:
+          type: integer
+        expiresAfterMinutes:
+          type: integer
+      additionalProperties: false
+      title: FleetInviteUrlCreateInput
     FleetMemberCreateInput:
       type: object
       properties:
@@ -8656,6 +8896,38 @@ components:
             type: string
       additionalProperties: false
       title: ManufacturerQuery
+    ModelPaintQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idEq:
+          type: string
+          format: uuid
+        modelSlugEq:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        idNotIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              type: string
+          - type: string
+      additionalProperties: false
+      title: ModelPaintQuery
     ModelQuery:
       type: object
       properties:

@@ -26,9 +26,11 @@ module Api
 
         authorize! :create, fleet_invite_url
 
-        return if fleet_invite_url.save
-
-        render json: ValidationError.new("fleet_invite_urls.create", errors: fleet_invite_url.errors), status: :bad_request
+        if fleet_invite_url.save
+          render :create, status: :created
+        else
+          render json: ValidationError.new("fleet_invite_urls.create", errors: fleet_invite_url.errors), status: :bad_request
+        end
       end
 
       def destroy
@@ -36,9 +38,7 @@ module Api
 
         authorize! :destroy, fleet_invite_url
 
-        if fleet_invite_url.destroy
-          render json: nil, status: :ok
-        else
+        unless fleet_invite_url.destroy
           render json: ValidationError.new("fleet_invite_urls.destroy", errors: fleet_invite_url.errors), status: :bad_request
         end
       end
@@ -83,7 +83,7 @@ module Api
 
       private def fleet_invite_url_params
         @fleet_invite_url_params ||= params.transform_keys(&:underscore)
-          .permit(:fleet_slug, :limit, :expires_after_minutes)
+          .permit(:limit, :expires_after_minutes)
       end
     end
   end

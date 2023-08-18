@@ -17,6 +17,7 @@ import { HangarGroupsService } from './services/HangarGroupsService';
 import { HangarStatsService } from './services/HangarStatsService';
 import { ImagesService } from './services/ImagesService';
 import { ManufacturersService } from './services/ManufacturersService';
+import { ModelPaintsService } from './services/ModelPaintsService';
 import { ModelsService } from './services/ModelsService';
 import { PublicHangarService } from './services/PublicHangarService';
 import { PublicHangarGroupsService } from './services/PublicHangarGroupsService';
@@ -46,6 +47,7 @@ export class FyApi {
     public readonly hangarStats: HangarStatsService;
     public readonly images: ImagesService;
     public readonly manufacturers: ManufacturersService;
+    public readonly modelPaints: ModelPaintsService;
     public readonly models: ModelsService;
     public readonly publicHangar: PublicHangarService;
     public readonly publicHangarGroups: PublicHangarGroupsService;
@@ -86,6 +88,7 @@ export class FyApi {
         this.hangarStats = new HangarStatsService(this.request);
         this.images = new ImagesService(this.request);
         this.manufacturers = new ManufacturersService(this.request);
+        this.modelPaints = new ModelPaintsService(this.request);
         this.models = new ModelsService(this.request);
         this.publicHangar = new PublicHangarService(this.request);
         this.publicHangarGroups = new PublicHangarGroupsService(this.request);
