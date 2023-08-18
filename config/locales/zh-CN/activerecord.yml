@@ -4,206 +4,91 @@ zh-CN:
     attributes:
       vehicle:
         bought_via:
-          pledge_store: Pledge Store
-          ingame: Ingame Store
-      celestial_object:
-        hidden: hidden?
-        location_prefix:
-          default: in the %{starsystem} System
-      commodity:
-        commodity_types:
-          agricultural_supply: Agricultural Supply
-          consumer_goods: Consumer Goods
-          food: Food
-          gas: Gas
-          harvestable: Harvestable
-          medical_supply: Medical Supply
-          metal: Metal
-          mineral: Mineral
-          non_metals: Non-Metals
-          processed_goods: Processed Goods
-          scrap: Scrap
-          vice: Vice
-          waste: Waste
-      commodity_rental_price:
-        time_ranges:
-          1-day: 1 Day
-          3-days: 3 Days
-          30-days: 30 Days
-          7-days: 7 Days
+          pledge_store: 质押商店
+          ingame: 游戏内商店
       component:
-        component_classes:
-          RSIAvionic: Avionic
-          RSIModular: Modular
-          RSIPropulsion: Propulsion
-          RSIThruster: Thruster
-          RSIWeapon: Weapon
-        item_classes:
-          civilian: Civilian
-          competition: Competition
-          industrial: Industrial
-          military: Military
-          stealth: Stealth
         item_types:
-          cargo_grids: Cargogrids
-          coolers: Coolers
-          countermeasure_launcher: Countermeasure Launcher
-          fixed_thrusters: Fixed Thrusters
-          fuel_intakes: Fuel Intakes
-          fuel_tanks: Fuel Tanks
-          joint_thrusters: Joint Thrusters
-          manned_turrets: Manned Turrets
-          mid_range_radar: Midrange Radar
-          mining_lasers: Mining Lasers
-          missile_racks: Missle Racks
-          missile_turrets: Missile Turrets
-          missiles: Missiles
-          power_plants: Power Plants
-          quantum_drives: Quantum Drives
-          quantum_fuel_tanks: Quantum Fuel Tanks
-          remote_turrets: Remote Turrets
-          scanners: Scanners
-          shield_generators: Shield Generators
-          thrusters: Thrusters
-          turrets: Turrets
-          weapon_defensive: Weapon Defensive
-          weapons: Ship Weapons
+          weapon_defensive: 武器防御
+          weapons: 船舶武器
         tracking_signals:
-          cross_section: Cross Section
-          electromagnetic: Electromagnetic
-          infrared: infrared
+          cross_section: 横截面
+          electromagnetic: 电磁
+          infrared: 红外
       dock:
         dock_types:
-          dockingport: Dockingport
-          garage: Garage
-          hangar: Hangar
-          landingpad: Landingpad
-          vehiclepad: Vehiclepad
+          dockingport: 对接端口
+          garage: 车库
+          hangar: 机库
+          landingpad: 着陆平台
+          vehiclepad: 车辆停泊
         ship_sizes:
-          capital: Capital (C)
-          extra_extra_small: Snubcraft (XXS)
-          extra_large: Extra Large (XL)
-          extra_small: Extra Small (XS)
-          large: Large (L)
-          medium: Medium (M)
-          small: Small (S)
+          capital: 资本（C）
+          extra_extra_small: 斯努布克拉夫特 (XXS)
+          extra_large: 特大号 (XL)
+          extra_small: 特小号 (XS)
+          large: 大号（L）
+          medium: 中号 (M)
+          small: 小型(S)
       equipment:
         backpack_compatibilities:
-          all: All
-          light: Light
-          light_medium: Light & Medium
+          all: 全部
+          light: 亮
+          light_medium: 浅色 - 中等
         core_compatibilities:
-          all: All
-          heavy: Heavy
-          medium_heavy: Medium & Heavy
+          all: 全部
+          heavy: 重力
+          medium_heavy: 中型和重型的
         equipment_types:
-          armor: Armor
-          clothing: Clothing
-          hacking_tool: Hacking Tool
-          medical: Medical
-          tool: Tool
-          undersuit: Undersuit
-          weapon: Weapon
-          weapon_attachment: Weapon Attachment
-        hidden: hidden?
+          armor: 装甲
+          clothing: 衣服
+          hacking_tool: 黑客工具
+          medical: 医疗
+          tool: 工具
+          undersuit: 套装
+          weapon: 武器
+          weapon_attachment: 武器附件
+        hidden: 隐藏
         item_types:
-          assault_rifle: Assault Rifle
-          backpack: Backpack
-          battery: Battery
-          flightsuit: Flightsuit
-          grenade: Grenade
-          grenade_launcher: Grenade Launcher
-          heavy_armor: Heavy Armor
-          heavy_backpack: Heavy Backpack
-          knife: Knife
-          light_armor: Light Armor
-          light_backpack: Light Backpack
+          assault_rifle: 突击步枪
+          backpack: 背包
+          battery: 电池
+          flightsuit: 飞行套装
+          grenade: 手雷
+          grenade_launcher: 榴弹发射器
+          heavy_armor: 重型装甲
+          heavy_backpack: 越野背包
+          knife: 匕首
+          light_armor: 轻型装甲
+          light_backpack: 淡蓝色的背包
           lmg: LMG
-          magazine: Magazine
-          medium_armor: Medium Armor
-          medium_backpack: Medium Backpack
-          pistol: Pistol
-          rifle: Rifle
-          rocket_launcher: Rocket Launcher
-          shotgun: Shotgun
-          smg: SMG
-          sniper_rifle: Sniper Rifle
-          special_railgun: Special - Railgun
-          utility: Utility
-          weapon_scope: Scope
-        slots:
-          arms: Arms
-          backpack: Backpack
-          footwear: Footwear
-          gloves: Gloves
-          hat: Hat
-          helmet: Helmet
-          jacket: Jacket
-          legs: Legs
-          pants: Pants
-          shirt: Shirt
-          torso: Torso
-          undersuit: Undersuit
-        temperature_rating: Temp.
-        types:
-          additional: Additional Equipment
-          powerplant: Powerplant
-          primary_thrusters: Primary Thrusters
-          shield: Shields
-          thrusters: Maneuvering Thrusters
-        weapon_classes:
-          ballistic: Ballistic
-          energy: Energy
-          frag: Frag
-      fleet_membership:
-        roles:
-          admin: Admin
-          member: Member
-          officer: Officer
-        user_id: Member
-      habitation:
-        habitation_types:
-          container: Container
-          large_apartment: Large Apartment
-          medium_apartment: Medium Apartment
-          small_apartment: Small Apartment
-          suite: Suite
-      manufacturer:
-        code: CODE
-        known_for: Known for?
+          magazine: 弹匣
+          medium_armor: 中型装甲
+          medium_backpack: 中型背包
+          pistol: 枪械
+          rifle: 步枪
+          rocket_launcher: 火箭筒
       model:
-        active: active?
-        beam: Beam
-        cargo: Cargo
-        crew: Crew
-        equipment: Equipment
-        ground: Ground Vehicle?
-        hardpoints: Hardpoints
-        height: Height
-        hidden: hidden?
-        holo_colored: 3D File has colored Materials?
-        length: Length
-        manufacturer: Manufacturer
-        mass: Mass
-        max_upgrades: Upgrades
-        notified: Suppress "New Ship" Notification?
-        on_sale: On sale?
-        production_status: Production Status
-        variants: Variants
-        weapons: Weapons
+        mass: 质量
+        max_upgrades: 升级
+        notified: 禁止“新建船舶”通知？
+        on_sale: 特价
+        production_status: 产品状态
+        variants: 变体
+        weapons: 武器
+        fleetchart_image: Lagacy 舰队图图像
       model_hardpoint:
         categories:
-          fixed: Fixed Maneuvering Thruster
-          gimbal: Gimbal Maneuvering Thruster
-          joint: Joint Maneuvering Thruster
-          main: Main Thruster
-          manned_turret: Manned Turret
-          missile_turret: Missile Turret
-          remote_turret: Remote Turret
-          retro: Retro Thruster
-          vtol: VTOL Thruster
-          qed: QED
-          emp: EMP
+          fixed: 修复Maneuflu推进器
+          gimbal: 修复Maneuflu推进器
+          joint: 修复Maneuflu推进器
+          main: 推进器 S
+          manned_turret: 载人炮塔
+          missile_turret: 导弹炮塔
+          remote_turret: 遥控炮塔
+          retro: Retro 推进器
+          vtol: 垂直起降推进器
+          qed: 定时数
+          emp: 电磁脉冲弹
         sizes:
           capital: C (4)
           eight: 8
@@ -223,106 +108,52 @@ zh-CN:
           twelve: 12
           two: 2
           vehicle: V (0)
+          snub: Snub (0)
       progress_tracker_item:
         statuses:
-          done: Done
-          in_progress: In Progress
-          planned: Planned
+          done: 完成
+          in_progress: 处理中
+          planned: 已规划
       setting:
         base:
-          registration: Registration active?
+          registration: 注册激活
         mailer:
-          default_from: Default From
-          host: SMTP Host
-          password: SMPT Password or Token
-          port: SMTP Port
-          user: SMTP User
+          default_from: 默认发件人姓名
+          host: SMTP主机
+          password: SMPT 密码或令牌
+          port: SMTP 端口
+          user: SMTP 用户名
       shop:
-        buying: Does buy Items?
-        hidden: hidden?
+        buying: 是否购买物品？
+        hidden: 隐藏
         location_prefix:
-          default: at
-        refinery_terminal: Has a Refinery Terminal?
-        rental: Does offer Rentals?
-        selling: Does sell Items?
-        shop_types:
-          admin: Admin Office
-          armor: Armor Store
-          armor_and_weapons: Armor & Weapons Store
-          bar: Bar
-          blackmarket: Blackmarket
-          cargo: Cargo Center
-          clothing: Clothing Store
-          components: Components Store
-          computers: Computer Store
-          courier: Courier
-          equipment: Equipment
-          hospital: Hospital
-          kiosk: Kiosk
-          mining_equipment: Mining Equipment
-          pharmacy: pharmacy
-          refinery: Refinery
-          rental: Rental
-          resources: Resources Broker
-          salvage: Salvage Yard
-          ship_customizations: Ship & Vehicle Customizations
-          ships: Ship Store
-          souvenirs: Souvenirs
-          superstore: Superstore
-          weapons: Weapons Store
-      shop_commodity:
-        commodity_item_types:
-          Commodity: Commodities
-          Component: Components
-          Equipment: Equipment
-          Model: Ships
-          ModelModule: Ship Modules
-          ModelPaint: Ship Paints
-        location_prefix:
-          default: sold at
-        price_per_unit: Price per Unit?
+          default: 在
       station:
-        cargo_hub: Has Cargo Hub?
-        classifications:
-          city: City
-          drug_lab: Drug lab
-          farming: Farming
-          mining: Mining
-          poi: Point of Interest
-          rest_stop: Rest Stop
-          salvaging: Salvaging
-          science: Science
-          security: Security
-          settlement: Settlement
-          town: Town
-          trading: Trading
-        hidden: hidden?
         location_prefix:
-          asteriod: on asteroid near
           default: 'on'
-          near: near
-          orbit: in orbit around
-        refinery: Has Refinery Station?
+          near: 附近
+          orbit: 在环绕轨道上
+        refinery: 是否有炼油站？
         station_types:
-          aid_shelter: Aid Shelter
-          asteroid_station: Asteriod Station
-          district: District
-          landing_zone: Landing Zone
-          outpost: Outpost
-          station: Station
+          aid_shelter: 援助庇护所
+          asteroid_station: 小行星站
+          district: 区域
+          landing_zone: 降落点
+          outpost: 前哨站
+          station: 气象站
       trade_commodity:
-        buy: Buy?
-        sell: Sale?
-      updated_at: "%{time} ago"
+        buy: 购买
+        sell: 出售？
+      updated_at: "%{time}前"
       user:
-        admin: Admin?
-        confirmation_token: Token
-        current_password: Password
-        email: Email
-        enabled: Active?
-        gravatar: Gravatar email Address
-        login: Username or email
-        username: Username
+        admin: 管理员
+        confirmation_token: 令牌
+        current_password: 密码
+        email: 电子邮件地址
+        enabled: 激活？
+        gravatar: Gravatar头像邮件地址
+        login: 用户名或电子邮件
+        username: 用户名
       weapon:
         classes:
           class1: Class 1
@@ -335,26 +166,24 @@ zh-CN:
           class8: Class 8
     errors:
       messages:
-        blank: can't be blank
-        record_invalid: Bad Data
+        blank: 不能为空字符
+        record_invalid: 错误的数据信息
       models:
         fleet_membership:
           attributes:
             user_id:
-              taken: already present or has a pending invite
+              taken: 已经存在或有一个待处理的邀请
         user:
           attributes:
             confirmation_token:
-              invalid: is invalid
+              invalid: 无效
             current_password:
-              invalid: is invalid.
+              invalid: 无效
             email:
-              taken: is already taken.
-            password:
-              too_short:
+              taken: 电子邮箱已注册。
             password_confirmation:
-              confirmation: Passwords do not match
+              confirmation: 密码不匹配
             reset_password_token:
-              invalid: Token is invalid
+              invalid: 无效令牌
             username:
-              taken: is already taken.
+              taken: 电子邮箱已注册。
