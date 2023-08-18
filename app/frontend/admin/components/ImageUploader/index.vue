@@ -143,7 +143,7 @@ export default class ImageUploader extends Vue {
 
   newImages = [];
 
-  postAction = `${window.API_ENDPOINT}/images`;
+  postAction = `${window.ADMIN_API_ENDPOINT}/images`;
 
   uploadCount = 1;
 

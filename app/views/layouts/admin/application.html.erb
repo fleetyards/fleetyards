@@ -28,7 +28,7 @@
     <%= stylesheet_link_tag "application.css" %>
     <%= vite_stylesheet_tag 'admin.scss' %>
     <script>
-      window.API_ENDPOINT = '<%= ADMIN_API_ENDPOINT %>'
+      window.ADMIN_API_ENDPOINT = '<%= ADMIN_API_ENDPOINT %>'
       window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
     </script>
     <%= javascript_include_tag 'application.js' %>
