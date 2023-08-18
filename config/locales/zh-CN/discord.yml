@@ -2,16 +2,16 @@
 zh-CN:
   discord:
     new_ship:
-      message: 'Allow me to introduce: The %{manufacturer} %{model}'
-      title: New Ship/Vehicle added
+      message: '请允许我介绍一下： %{manufacturer} %{model}'
+      title: 添加新的货运/车辆
     progress_tracker_update:
-      message: There have been %{changes} changes on the Progress Tracker
-      title: New changes on the Progress Tracker
+      message: 进度跟踪器已发生 %{changes} 更改
+      title: 进度追踪器上的新更改
     roadmap_update:
-      message: There have been %{changes} changes to the Roadmap
-      title: New changes on the Roadmap
+      message: 进度跟踪器已发生 %{changes} 更改
+      title: 路线图上的新更改
     ship_on_sale:
-      message: Starting at %{price} excl. VAT
-      title: The %{model} is now on Sale!
+      message: 起价为 %{price}，不含税。 增值税
+      title: '%{model} 现已发售！'
     youtube_video:
-      title: New Video on Youtube!
+      title: 在Youtube上给视频点赞
