@@ -151,6 +151,7 @@ export { VideoTypeEnum } from './models/VideoTypeEnum';
 export type { ViewImage } from './models/ViewImage';
 
 export { CelestialObjectsService } from './services/CelestialObjectsService';
+export { FeaturesService } from './services/FeaturesService';
 export { FleetInviteUrlsService } from './services/FleetInviteUrlsService';
 export { FleetMembersService } from './services/FleetMembersService';
 export { FleetMembershipService } from './services/FleetMembershipService';
