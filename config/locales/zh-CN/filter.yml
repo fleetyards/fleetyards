@@ -1,20 +1,20 @@
 ---
 zh-CN:
   filter:
-    all: All
+    all: 全部
     component:
       class:
         items:
-          rsiavionic: Avionic
-          rsimodular: System
-          rsipropulsion: Propulsion
-          rsithruster: Thruster
-          rsiweapon: Weapon
+          rsiavionic: 航电
+          rsimodular: 系统
+          rsipropulsion: 推进器
+          rsithruster: 推进器
+          rsiweapon: 武器
     image:
       model:
-        title: Model
+        title: 型号
     shop_commodities:
       sub_categories:
-        class: Component
-        classification: Ship
-        equipment_type: Equipment
+        class: 项目组件
+        classification: 飞船
+        equipment_type: 装备
