@@ -14,9 +14,7 @@ resource :hangar, only: %i[show destroy] do
   end
 
   resources :hangar_groups, path: "groups", only: %i[index create update destroy] do
-    collection do
-      put :sort
-    end
+    put :sort, on: :collection
   end
 end
 

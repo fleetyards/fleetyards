@@ -24,7 +24,6 @@ v1_api_routes = lambda do
   draw "api/vehicles_routes"
   draw "api/fleets_routes"
   draw "api/stations_routes"
-  draw "api/shop_commodities_routes"
 
   resources :manufacturers, param: :slug, only: %i[index] do
     get "with-models", to: "manufacturers#with_models", on: :collection
@@ -59,6 +58,11 @@ v1_api_routes = lambda do
 
   resources :commodity_prices, path: "commodity-prices", only: [:create] do
     get "time-ranges", to: "commodity_prices#time_ranges", on: :collection
+  end
+
+  resources :shop_commodities, path: "shop-commodities", only: %i[index] do
+    get "commodity-type-options", to: "shop_commodities#commodity_item_types", on: :collection
+    get "sub-categories", to: "shop_commodities#sub_categories", on: :collection
   end
 
   namespace :stats do
