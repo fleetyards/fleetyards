@@ -30,6 +30,7 @@ import { StatsService } from './services/StatsService';
 import { VehiclesService } from './services/VehiclesService';
 import { VehiclesPublicService } from './services/VehiclesPublicService';
 import { VehiclesStatsService } from './services/VehiclesStatsService';
+import { VersionsService } from './services/VersionsService';
 import { WishlistService } from './services/WishlistService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
@@ -60,6 +61,7 @@ export class FyApi {
     public readonly vehicles: VehiclesService;
     public readonly vehiclesPublic: VehiclesPublicService;
     public readonly vehiclesStats: VehiclesStatsService;
+    public readonly versions: VersionsService;
     public readonly wishlist: WishlistService;
 
     public readonly request: BaseHttpRequest;
@@ -101,6 +103,7 @@ export class FyApi {
         this.vehicles = new VehiclesService(this.request);
         this.vehiclesPublic = new VehiclesPublicService(this.request);
         this.vehiclesStats = new VehiclesStatsService(this.request);
+        this.versions = new VersionsService(this.request);
         this.wishlist = new WishlistService(this.request);
     }
 }

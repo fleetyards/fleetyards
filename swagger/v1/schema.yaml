@@ -3318,6 +3318,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/sc-data/version":
+    get:
+      summary: SC Data Version
+      operationId: scDataVersion
+      tags:
+      - Versions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataVersion"
   "/shops/shop-types":
     get:
       summary: Shop types
@@ -4156,6 +4169,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/version":
+    get:
+      summary: Version of Fleetyards
+      operationId: version
+      tags:
+      - Versions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Version"
   "/wishlist":
     delete:
       summary: Clear your Wishlist
@@ -4409,6 +4435,15 @@ components:
       - selected
       - sliced
       title: PieChartStats
+    ScDataVersion:
+      type: object
+      properties:
+        version:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      title: ScDataVersion
     StandardError:
       type: object
       properties:
@@ -4449,6 +4484,18 @@ components:
       - code
       - message
       title: ValidationError
+    Version:
+      type: object
+      properties:
+        version:
+          type: string
+        codename:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      - codename
+      title: Version
     CargoOption:
       type: object
       properties:

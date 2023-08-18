@@ -332,6 +332,15 @@ components:
       - selected
       - sliced
       title: PieChartStats
+    ScDataVersion:
+      type: object
+      properties:
+        version:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      title: ScDataVersion
     StandardError:
       type: object
       properties:
@@ -372,6 +381,18 @@ components:
       - code
       - message
       title: ValidationError
+    Version:
+      type: object
+      properties:
+        version:
+          type: string
+        codename:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      - codename
+      title: Version
     CelestialObject:
       type: object
       properties:
