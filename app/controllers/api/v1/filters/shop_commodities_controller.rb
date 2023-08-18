@@ -4,8 +4,6 @@ module Api
   module V1
     module Filters
       class ShopCommoditiesController < ::Api::PublicBaseController
-        before_action :authenticate_user!, only: []
-
         def sub_categories
           authorize! :index, :api_shop_commodities
 

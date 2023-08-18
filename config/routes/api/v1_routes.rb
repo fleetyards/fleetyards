@@ -23,6 +23,8 @@ v1_api_routes = lambda do
   draw "api/hangar_routes"
   draw "api/vehicles_routes"
   draw "api/fleets_routes"
+  draw "api/stations_routes"
+  draw "api/shop_commodities_routes"
 
   resources :manufacturers, param: :slug, only: %i[index] do
     get "with-models", to: "manufacturers#with_models", on: :collection
@@ -55,35 +57,8 @@ v1_api_routes = lambda do
 
   resources :celestial_objects, path: "celestial-objects", param: :slug, only: %i[index show]
 
-  resources :stations, param: :slug, only: %i[index show] do
-    get "ship-sizes", to: "stations#ship_sizes", on: :collection
-    get "station-types", to: "stations#station_types", on: :collection
-    get "classifications", to: "stations#classifications", on: :collection
-
-    get :images, on: :member
-
-    resources :shops, param: :slug, only: %i[show] do
-      resources :shop_commodities, path: "commodities", only: %i[index]
-    end
-  end
-
   resources :commodity_prices, path: "commodity-prices", only: [:create] do
     get "time-ranges", to: "commodity_prices#time_ranges", on: :collection
-  end
-
-  resources :shop_commodities, path: "shop-commodities", only: [] do
-    get "commodity-type-options", to: "shop_commodities#commodity_item_types", on: :collection
-    get "sub-categories", to: "shop_commodities#sub_categories", on: :collection
-  end
-
-  resources :shops, param: :slug, only: %i[index] do
-    get "shop-types", to: "shops#shop_types", on: :collection
-  end
-
-  namespace :filters do
-    # ShopCommodities
-    get "shop-commodities/commodity-type-options", to: "shop_commodities#commodity_item_types"
-    get "shop-commodities/sub-categories", to: "shop_commodities#sub_categories"
   end
 
   namespace :stats do
