@@ -3,11 +3,8 @@ fr:
   actions:
     add: Ajouter
     add_commodity: Ajouter une marchandise
-    add_dock: Add Dock
-    add_module_hardpoint: Add Model
     add_module_package_item: Ajouter un module
     add_trade_commodity: Ajouter une marchandise
-    add_upgrade_kit: Add Model
     add_video: Ajouter une vidéo
     login_in_as: Connectez-vous en tant que
     admin:
@@ -21,17 +18,8 @@ fr:
         new: Créer un nouvel équipement
       manufacturer:
         new: Créer un nouveau constructeur
-      model:
-        new: Create new Model
-        new_loaner_upload: Loaner Upload
-      model_module:
-        new: Create new Module
-      model_module_package:
-        new: Create new Module Package
       model_paint:
         new: Créer une nouvelle peinture
-      model_upgrade:
-        new: Create new Upgrade
       shop:
         new: Créer un nouveau point de vente
       starsystem:
@@ -49,13 +37,8 @@ fr:
     loading: Veuillez patienter...
     model:
       images: Images
-      reload: Reload Models
-      reload_data: Reload Models Data
       use_rsi_image: Utiliser l'image RSI
-    more: More Entries
     ok: Ok
-    prefill_attachments: Add all Attachments
-    prefill_utilities: Add all Utilities
     prefill_weapons: Ajouter toutes les armes
     resend_confirmation: Renvoyer la confirmation
     reset_password: Mot de passe oublié ?

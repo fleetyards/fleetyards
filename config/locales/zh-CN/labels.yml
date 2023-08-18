@@ -1,74 +1,38 @@
 ---
 zh-CN:
   labels:
-    actions: Actions
-    charts:
-      component-pie:
-        other: "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
-      ship:
-        other: "%{label}:<br><b>%{count}</b> Ships"
-      ship-pie:
-        other: "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
-      user:
-        other: "%{label}:<br><b>%{count}</b> Users"
-      view:
-        other: "%{label}:<br><b>%{count}</b> Views"
-      visit:
-        other: "%{label}:<br><b>%{count}</b> Visits"
-    panels:
-      components_by_class: Components by Class
-      fleets_count_total: Total Fleets
-      latest_components: New Components
-      latest_manufacturers: New Manufacturers
-      latest_models: Reloaded Models
-      latest_users: New Users
-      models_by_classification: Models by Classification
-      models_by_manufacturer: Models by Manufacturer
-      models_by_production_status: Models by Production Status
-      models_by_size: Models by Size
-      models_per_month: Models per Month
-      most_viewed_pages: Most viewed Pages
-      online_count: Users Online
-      registrations: Registrations per Month
-      ships_count_total: Total Ships
-      ships_count_year: New Ships in %{year}
-      users_count_total: Total Users
-      visits_per_day: Visits per Day
-      visits_per_month: Visits per Month
-    success: Success
     table:
-      actions: Actions
       blank:
-        admin_user: No Admin could be found.
-        commodity: No Commodities could be found.
-        default: No Entries could be found.
-        equipment: No Equipment could be found.
-        image: No Image could be found.
-        model: No Models could be found.
-        model_module: No Module could be found.
-        model_module_package: No Module Package could be found.
-        model_upgrade: No Upgrade could be found.
-        planet: No Planets could be found.
-        shop: No Shops could be found.
-        starsystem: No Starsystems could be found.
-        station: No Stations could be found.
-        user: No User could be found.
-        rsi_api_status: No unresolved RSI API Insidents
+        default: 没有找到匹配结果
+        equipment: 没有找到匹配结果
+        image: 未找到任何玩家。
+        model: 项目无法找到。
+        model_module: 没有找到任何结果。
+        model_module_package: 没有找到任何结果。
+        model_upgrade: 未找到任何玩家。
+        model_paints: 未找到任何玩家。
+        planet: 项目无法找到。
+        shop: 项目无法找到。
+        starsystem: 项目无法找到。
+        station: 项目无法找到。
+        user: 未找到任何玩家。
+        rsi_api_status: 没有未解决的 RSI API内存信息
       component:
-        category: Category
+        category: 类别
       model:
-        manufacturer: Manufacturer
-      name: Name
+        manufacturer: 生产厂家
+      name: 名称
       page:
-        count: Count
-        path: Path
-      updated_at: last reload
+        count: 次数
+        path: 路径
+      updated_at: 上次重载
       user:
-        created_at: Created at
-        email: Email
-        last_sign_in_at: Last sign in
-        username: Username
-      created_at: Created at
-      url: URL
-    tax_excluded: excl. VAT
-    unknown: Unknown
+        created_at: 创建于
+        email: 电子邮件
+        last_sign_in_at: 最后登录于
+        last_active_at: '上次登录:'
+        username: 用户名
+      created_at: 创建于
+      url: 链接地址
+    tax_excluded: 不含增值税
+    unknown: 未知

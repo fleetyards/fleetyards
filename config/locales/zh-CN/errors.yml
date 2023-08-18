@@ -2,14 +2,20 @@
 zh-CN:
   errors:
     method_not_allowed:
-      message: Method not allowed
+      message: 不被允许的方法
     not_acceptable:
-      message: Not acceptable
+      message: 无法接受
     not_found:
-      message: Not found
+      message: 没有找到
     server_error:
-      message: Server Error
+      message: 伺服器錯誤
     unprocessable_entity:
-      message: Unprocessable Entity
+      message: 参数错误，请检查请求的参数是否正确
     pagination:
-      max_per_page_reached: Max per Page reached
+      max_per_page_reached: 达到每页最大值
+    messages:
+      extension_allowlist_error: "不允许延期。 您不允许上传 %{extension} 个文件，允许的类型：%{allowed_types}"
+      content_type_allowlist_error: "不允许的内容类型。 您不允许上传 %{content_type} 个文件，允许的类型：%{allowed_types}"
+      hangar:
+        import:
+          no_data: "导入文件中未找到数据"
