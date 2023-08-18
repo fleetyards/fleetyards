@@ -4,6 +4,7 @@ require_relative "boot"
 
 require "rails/all"
 require "sprockets/railtie"
+require_relative "../lib/middleware/transform_parameters"
 
 # require 'rails'
 #
@@ -63,6 +64,7 @@ module Fleetyards
 
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
+    config.middleware.use TransformParameters
 
     config.app = config_for("app/main")
     config.maintainer = config_for("app/maintainer")

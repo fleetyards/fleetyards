@@ -392,7 +392,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
-    oj (3.15.1)
+    oj (3.16.0)
     opensearch-api (2.2.0)
       multi_json
     opensearch-ruby (2.1.0)
@@ -513,7 +513,7 @@ GEM
       actionpack (>= 5, < 8)
       redis-rack (>= 2.1.0, < 3)
       redis-store (>= 1.1.0, < 2)
-    redis-client (0.15.0)
+    redis-client (0.16.0)
       connection_pool
     redis-rack (2.1.4)
       rack (>= 2.0.8, < 3)
