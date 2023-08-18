@@ -8,7 +8,7 @@ module V1
       schema({
         properties: {
           createdAt: {type: :string, format: "date-time"},
-          updatedAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"}
         },
         required: %w[createdAt updatedAt]
       })
