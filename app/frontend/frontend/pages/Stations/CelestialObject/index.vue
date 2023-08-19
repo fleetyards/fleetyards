@@ -23,7 +23,7 @@
     </div>
     <div class="row">
       <div
-        v-if="celestialObject && celestialObject.moons.length"
+        v-if="celestialObject && celestialObject.moons?.length"
         class="col-12"
       >
         <h2>{{ $t("headlines.moons") }}</h2>
@@ -188,6 +188,7 @@ export default {
       this.loading = false;
       if (!response.error) {
         this.celestialObject = response.data;
+        console.log(response.data);
         this.fetchStations();
       }
     },
