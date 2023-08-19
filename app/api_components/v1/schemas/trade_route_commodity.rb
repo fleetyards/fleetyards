@@ -2,19 +2,18 @@
 
 module V1
   module Schemas
-    class Habitation
+    class TradeRouteCommodity
       include SchemaConcern
 
       schema({
         type: :object,
         properties: {
           name: {type: :string},
-          habitationName: {type: :string, nullable: true},
-          type: {"$ref": "#/components/schemas/HabitationTypeEnum"},
-          typeLabel: {type: :string}
+          slug: {type: :string},
+          type: {"$ref": "#/components/schemas/CommodityTypeEnum"}
         },
         additionalProperties: false,
-        required: %w[name type typeLabel]
+        required: %w[name slug type]
       })
     end
   end

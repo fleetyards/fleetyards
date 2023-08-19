@@ -11,8 +11,8 @@ module V1
           id: {type: :string, format: :uuid},
           name: {type: :string},
           slug: {type: :string},
-          type: {type: :string, nullable: true},
-          typeLabel: {type: :string, nullable: true},
+          type: {"$ref": "#/components/schemas/CommodityTypeEnum"},
+          typeLabel: {type: :string},
 
           availability: {
             type: :object,

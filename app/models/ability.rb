@@ -34,7 +34,6 @@ class Ability
     can %i[show create], :api_commodity_prices
     can %i[index], :api_roadmap
     can %i[index], :api_search
-    can %i[index], :api_trade_routes
     can %i[read], :api_fleet
     can %i[read], :api_commodity_prices
 

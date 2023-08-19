@@ -10,9 +10,9 @@ module V1
         properties: {
           name: {type: :string},
           group: {type: :string, nullable: true},
-          size: {type: :string},
+          size: {"$ref": "#/components/schemas/DockShipSizeEnum"},
           sizeLabel: {type: :string},
-          type: {type: :string},
+          type: {"$ref": "#/components/schemas/DockTypeEnum"},
           typeLabel: {type: :string}
         },
         additionalProperties: false,

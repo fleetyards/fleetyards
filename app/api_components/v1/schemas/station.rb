@@ -33,7 +33,7 @@ module V1
           refinery: {type: :boolean},
           shopListLabel: {type: :string, nullable: true},
           typeLabel: {type: :string, nullable: true},
-          type: {type: :string, nullable: true},
+          type: {"$ref": "#/components/schemas/StationTypeEnum"},
 
           celestialObject: {"$ref": "#/components/schemas/CelestialObject"},
           starsystem: {"$ref": "#/components/schemas/Starsystem"},

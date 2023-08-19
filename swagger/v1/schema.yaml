@@ -4012,6 +4012,47 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Stats"
+  "/trade-routes":
+    get:
+      summary: Trade Routes
+      operationId: tradeRoutes
+      tags:
+      - TradeRoutes
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/TradeRouteQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/TradeRoute"
   "/users/current":
     get:
       summary: My Data
@@ -4952,11 +4993,9 @@ components:
         slug:
           type: string
         type:
-          type: string
-          nullable: true
+          "$ref": "#/components/schemas/CommodityTypeEnum"
         typeLabel:
           type: string
-          nullable: true
         availability:
           type: object
           properties:
@@ -5161,11 +5200,11 @@ components:
           type: string
           nullable: true
         size:
-          type: string
+          "$ref": "#/components/schemas/DockShipSizeEnum"
         sizeLabel:
           type: string
         type:
-          type: string
+          "$ref": "#/components/schemas/DockTypeEnum"
         typeLabel:
           type: string
       additionalProperties: false
@@ -5200,6 +5239,43 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    CommodityTypeEnum:
+      type: string
+      enum:
+      - gas
+      - metal
+      - mineral
+      - non_metals
+      - agricultural_supply
+      - food
+      - medical_supply
+      - processed_goods
+      - waste
+      - scrap
+      - vice
+      - harvestable
+      - consumer_goods
+      title: CommodityTypeEnum
+    DockShipSizeEnum:
+      type: string
+      enum:
+      - extra_extra_small
+      - extra_small
+      - small
+      - medium
+      - large
+      - extra_large
+      - capital
+      title: DockShipSizeEnum
+    DockTypeEnum:
+      type: string
+      enum:
+      - vehiclepad
+      - garage
+      - landingpad
+      - dockingport
+      - hangar
+      title: DockTypeEnum
     FleetMembershipRoleEnum:
       type: string
       enum:
@@ -5223,6 +5299,15 @@ components:
       - accepted
       - declined
       title: FleetMembershipStatusEnum
+    HabitationTypeEnum:
+      type: string
+      enum:
+      - container
+      - small_apartment
+      - medium_apartment
+      - large_apartment
+      - suite
+      title: HabitationTypeEnum
     ModelHardpointCategoryEnum:
       type: string
       enum:
@@ -5316,6 +5401,16 @@ components:
       - upgrade
       - skin
       title: RsiHangarItemKindEnum
+    StationTypeEnum:
+      type: string
+      enum:
+      - landing_zone
+      - station
+      - asteroid_station
+      - district
+      - outpost
+      - aid_shelter
+      title: StationTypeEnum
     VideoTypeEnum:
       type: string
       enum:
@@ -5714,7 +5809,7 @@ components:
           type: string
           nullable: true
         type:
-          type: string
+          "$ref": "#/components/schemas/HabitationTypeEnum"
         typeLabel:
           type: string
       additionalProperties: false
@@ -8750,6 +8845,53 @@ components:
             type: string
       additionalProperties: false
       title: StationQuery
+    TradeRouteQuery:
+      type: object
+      properties:
+        cargoShip:
+          type: string
+        originStationIn:
+          type: array
+          items:
+            type: string
+        destinationStationIn:
+          type: array
+          items:
+            type: string
+        originCelestialObjectIn:
+          type: array
+          items:
+            type: string
+        destinationCelestialObjectIn:
+          type: array
+          items:
+            type: string
+        originStarsystemIn:
+          type: array
+          items:
+            type: string
+        destinationStarsystemIn:
+          type: array
+          items:
+            type: string
+        commodityIn:
+          type: array
+          items:
+            type: string
+        commodityTypeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CommodityTypeEnum"
+        commodityTypeNotIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CommodityTypeEnum"
+        sorts:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: TradeRouteQuery
     RoadmapItem:
       type: object
       properties:
@@ -9227,8 +9369,7 @@ components:
           type: string
           nullable: true
         type:
-          type: string
-          nullable: true
+          "$ref": "#/components/schemas/StationTypeEnum"
         celestialObject:
           "$ref": "#/components/schemas/CelestialObject"
         starsystem:
@@ -9326,6 +9467,96 @@ components:
       - shipsCountYear
       - shipsCountTotal
       title: Stats
+    TradeRoute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        origin:
+          "$ref": "#/components/schemas/TradeRouteLeg"
+        destination:
+          "$ref": "#/components/schemas/TradeRouteLeg"
+        commodity:
+          "$ref": "#/components/schemas/TradeRouteCommodity"
+        buyPrice:
+          type: number
+        averageBuyPrice:
+          type: number
+        sellPrice:
+          type: number
+        averageSellPrice:
+          type: number
+        profitPerUnit:
+          type: number
+        averageProfitPerUnit:
+          type: number
+        profitPerUnitPercent:
+          type: number
+        averageProfitPerUnitPercent:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - createdAt
+      - updatedAt
+      title: TradeRoute
+    TradeRouteCommodity:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          "$ref": "#/components/schemas/CommodityTypeEnum"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - type
+      title: TradeRouteCommodity
+    TradeRouteLeg:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        type:
+          "$ref": "#/components/schemas/StationTypeEnum"
+        locationLabel:
+          type: string
+        shop:
+          type: string
+        shopSlug:
+          type: string
+        planet:
+          type: string
+        planetSlug:
+          type: string
+        starsystem:
+          type: string
+        starsystemSlug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - locationLabel
+      - shop
+      - shopSlug
+      - planet
+      - planetSlug
+      - starsystem
+      - starsystemSlug
+      title: TradeRouteLeg
     User:
       type: object
       properties:

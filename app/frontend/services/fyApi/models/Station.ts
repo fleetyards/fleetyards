@@ -11,6 +11,7 @@ import type { HabitationCount } from './HabitationCount';
 import type { MediaImage } from './MediaImage';
 import type { Shop } from './Shop';
 import type { Starsystem } from './Starsystem';
+import type { StationTypeEnum } from './StationTypeEnum';
 
 export type Station = {
     name: string;
@@ -32,7 +33,7 @@ export type Station = {
     refinery: boolean;
     shopListLabel?: string | null;
     typeLabel?: string | null;
-    type?: string | null;
+    type?: StationTypeEnum;
     celestialObject: CelestialObject;
     starsystem?: Starsystem;
     shops?: Array<Shop>;

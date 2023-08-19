@@ -19,7 +19,9 @@
 gold:
   name: Gold
   slug: gold
+  commodity_type: :mineral
 
 titan:
   name: Titan
   slug: titan
+  commodity_type: :mineral
