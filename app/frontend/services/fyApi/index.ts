@@ -136,6 +136,7 @@ export type { ViewImage } from './models/ViewImage';
 
 export { CelestialObjectsService } from './services/CelestialObjectsService';
 export { CommoditiesService } from './services/CommoditiesService';
+export { CommodityFiltersService } from './services/CommodityFiltersService';
 export { FeaturesService } from './services/FeaturesService';
 export { FleetInviteUrlsService } from './services/FleetInviteUrlsService';
 export { FleetMembersService } from './services/FleetMembersService';
