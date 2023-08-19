@@ -24,6 +24,7 @@ import { PublicHangarService } from './services/PublicHangarService';
 import { PublicHangarGroupsService } from './services/PublicHangarGroupsService';
 import { PublicHangarStatsService } from './services/PublicHangarStatsService';
 import { PublicWishlistService } from './services/PublicWishlistService';
+import { RoadmapService } from './services/RoadmapService';
 import { ShopsService } from './services/ShopsService';
 import { StarsystemsService } from './services/StarsystemsService';
 import { StationsService } from './services/StationsService';
@@ -57,6 +58,7 @@ export class FyApi {
     public readonly publicHangarGroups: PublicHangarGroupsService;
     public readonly publicHangarStats: PublicHangarStatsService;
     public readonly publicWishlist: PublicWishlistService;
+    public readonly roadmap: RoadmapService;
     public readonly shops: ShopsService;
     public readonly starsystems: StarsystemsService;
     public readonly stations: StationsService;
@@ -101,6 +103,7 @@ export class FyApi {
         this.publicHangarGroups = new PublicHangarGroupsService(this.request);
         this.publicHangarStats = new PublicHangarStatsService(this.request);
         this.publicWishlist = new PublicWishlistService(this.request);
+        this.roadmap = new RoadmapService(this.request);
         this.shops = new ShopsService(this.request);
         this.starsystems = new StarsystemsService(this.request);
         this.stations = new StationsService(this.request);
