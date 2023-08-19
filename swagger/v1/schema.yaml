@@ -144,6 +144,38 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Commodity"
+  "/commodity-prices":
+    post:
+      summary: Create Commodity Price
+      operationId: createPrice
+      tags:
+      - CommodityPrices
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CommodityPrice"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CommodityPriceInput"
+        required: true
   "/components/class_filters":
     get:
       summary: Commodity Types
@@ -279,6 +311,21 @@ paths:
       operationId: commodityTypes
       tags:
       - CommodityFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/commodity-prices/time-ranges":
+    get:
+      summary: Commodity Types
+      operationId: commodityPriceTimeRanges
+      tags:
+      - CommodityPriceFilters
       responses:
         '200':
           description: successful
@@ -6198,7 +6245,6 @@ components:
           format: uuid
         timeRange:
           type: string
-          nullable: true
       additionalProperties: false
       required:
       - commodityItemId

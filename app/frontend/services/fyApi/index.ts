@@ -148,6 +148,8 @@ export type { ViewImage } from './models/ViewImage';
 export { CelestialObjectsService } from './services/CelestialObjectsService';
 export { CommoditiesService } from './services/CommoditiesService';
 export { CommodityFiltersService } from './services/CommodityFiltersService';
+export { CommodityPriceFiltersService } from './services/CommodityPriceFiltersService';
+export { CommodityPricesService } from './services/CommodityPricesService';
 export { ComponentFiltersService } from './services/ComponentFiltersService';
 export { ComponentsService } from './services/ComponentsService';
 export { EquipmentService } from './services/EquipmentService';

@@ -9,6 +9,8 @@ import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { CelestialObjectsService } from './services/CelestialObjectsService';
 import { CommoditiesService } from './services/CommoditiesService';
 import { CommodityFiltersService } from './services/CommodityFiltersService';
+import { CommodityPriceFiltersService } from './services/CommodityPriceFiltersService';
+import { CommodityPricesService } from './services/CommodityPricesService';
 import { ComponentFiltersService } from './services/ComponentFiltersService';
 import { ComponentsService } from './services/ComponentsService';
 import { EquipmentService } from './services/EquipmentService';
@@ -49,6 +51,8 @@ export class FyApi {
     public readonly celestialObjects: CelestialObjectsService;
     public readonly commodities: CommoditiesService;
     public readonly commodityFilters: CommodityFiltersService;
+    public readonly commodityPriceFilters: CommodityPriceFiltersService;
+    public readonly commodityPrices: CommodityPricesService;
     public readonly componentFilters: ComponentFiltersService;
     public readonly components: ComponentsService;
     public readonly equipment: EquipmentService;
@@ -100,6 +104,8 @@ export class FyApi {
         this.celestialObjects = new CelestialObjectsService(this.request);
         this.commodities = new CommoditiesService(this.request);
         this.commodityFilters = new CommodityFiltersService(this.request);
+        this.commodityPriceFilters = new CommodityPriceFiltersService(this.request);
+        this.commodityPrices = new CommodityPricesService(this.request);
         this.componentFilters = new ComponentFiltersService(this.request);
         this.components = new ComponentsService(this.request);
         this.equipment = new EquipmentService(this.request);
