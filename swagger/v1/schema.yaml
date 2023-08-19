@@ -144,6 +144,47 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Commodity"
+  "/equipment":
+    get:
+      summary: Equipment list
+      operationId: equipment
+      tags:
+      - Equipment
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/EquipmentQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Equipment"
   "/features":
     get:
       summary: Feature Flags for User
@@ -8081,6 +8122,22 @@ components:
             type: string
       additionalProperties: false
       title: CommodityQuery
+    EquipmentQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: EquipmentQuery
     FleetMemberQuery:
       type: object
       properties:

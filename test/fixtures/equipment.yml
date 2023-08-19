@@ -32,16 +32,14 @@
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #
 
-one:
-  name: MyString
-  slug: MyString
-  store_image: MyString
+coda:
+  name: Coda Pistol
+  slug: coda-pistol
+  equipment_type: :weapon
   hidden: false
-  description: MyText
 
-two:
-  name: MyString
-  slug: MyString
-  store_image: MyString
+galant:
+  name: Galant Rifle
+  slug: galant-rifle
+  equipment_type: :weapon
   hidden: false
-  description: MyText

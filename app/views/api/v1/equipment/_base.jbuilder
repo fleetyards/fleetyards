@@ -20,7 +20,7 @@ end
 json.backpack_compatibility equipment.backpack_compatibility_label
 json.core_compatibility equipment.core_compatibility_label
 json.damage_reduction equipment.damage_reduction
-json.description equipment.description
+json.description equipment.description if equipment.description.present?
 json.extras equipment.extras
 json.grade equipment.grade
 json.item_type equipment.item_type
