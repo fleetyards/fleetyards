@@ -6,6 +6,9 @@
 import type { FleetMembershipRoleEnum } from './FleetMembershipRoleEnum';
 
 export type Fleet = {
+    myRole?: FleetMembershipRoleEnum;
+    primary?: boolean;
+    myFleet?: boolean;
     id: string;
     fid: string;
     rsiSid?: string | null;
@@ -21,10 +24,7 @@ export type Fleet = {
     publicFleet: boolean;
     logo?: string | null;
     backgroundImage?: string | null;
-    myFleet: boolean;
     createdAt: string;
     updatedAt: string;
-    myRole?: FleetMembershipRoleEnum;
-    primary?: boolean;
 };
 

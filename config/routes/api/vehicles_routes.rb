@@ -10,7 +10,7 @@ resources :vehicles, only: %i[create update destroy] do
     # DEPRECATED
     get "/", to: "hangars#show"
     get :fleetchart
-    get ":username/fleetchart", to: "vehicles#public_fleetchart", as: :public_fleetchart
+    get ":username/fleetchart", to: "/api/v1/public/vehicles#fleetchart", as: :public_fleetchart
 
     get "wishlist", to: "wishlists#show"
     get "quick-stats", to: "hangar_stats#show"

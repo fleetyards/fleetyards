@@ -26,7 +26,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:fleetSlug) { fleet.slug }
 
@@ -48,7 +48,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:fleetSlug) { fleet.slug }
         let(:q) do
@@ -67,7 +67,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+          items: {"$ref": "#/components/schemas/VehiclePublic"}
 
         let(:fleet) { fleets :klingon_empire }
         let(:fleetSlug) { fleet.slug }

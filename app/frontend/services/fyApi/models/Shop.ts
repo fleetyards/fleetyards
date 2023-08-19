@@ -25,6 +25,9 @@ export type Shop = {
     stationLabel: string;
     type: ShopTypeEnum;
     typeLabel: string;
+    celestialObject?: CelestialObject;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -41,8 +44,5 @@ export type Shop = {
      * @deprecated
      */
     storeImageLarge?: string | null;
-    createdAt: string;
-    updatedAt: string;
-    celestialObject: CelestialObject;
 };
 

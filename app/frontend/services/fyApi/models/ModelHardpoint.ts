@@ -31,5 +31,7 @@ export type ModelHardpoint = {
     subCategory?: ModelHardpointSubCategoryEnum | null;
     subCategoryLabel?: string | null;
     type: ModelHardpointTypeEnum;
+    createdAt: string;
+    updatedAt: string;
 };
 

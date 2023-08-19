@@ -32,8 +32,8 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema type: :array,
           items: {
             oneOf: [
-              {"$ref": "#/components/schemas/ModelMinimal"},
-              {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+              {"$ref": "#/components/schemas/Model"},
+              {"$ref": "#/components/schemas/VehiclePublic"}
             ]
           }
 
@@ -59,8 +59,8 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema type: :array,
           items: {
             oneOf: [
-              {"$ref": "#/components/schemas/ModelMinimal"},
-              {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+              {"$ref": "#/components/schemas/Model"},
+              {"$ref": "#/components/schemas/VehiclePublic"}
             ]
           }
 
@@ -83,8 +83,8 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema type: :array,
           items: {
             oneOf: [
-              {"$ref": "#/components/schemas/ModelMinimal"},
-              {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+              {"$ref": "#/components/schemas/Model"},
+              {"$ref": "#/components/schemas/VehiclePublic"}
             ]
           }
 
@@ -102,8 +102,8 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema type: :array,
           items: {
             oneOf: [
-              {"$ref": "#/components/schemas/ModelMinimal"},
-              {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+              {"$ref": "#/components/schemas/Model"},
+              {"$ref": "#/components/schemas/VehiclePublic"}
             ]
           }
 
@@ -121,8 +121,8 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         schema type: :array,
           items: {
             oneOf: [
-              {"$ref": "#/components/schemas/ModelMinimal"},
-              {"$ref": "#/components/schemas/VehiclePublicMinimal"}
+              {"$ref": "#/components/schemas/Model"},
+              {"$ref": "#/components/schemas/VehiclePublic"}
             ]
           }
 

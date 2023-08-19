@@ -32,3 +32,5 @@ json.hangar_updated_at member.user.hangar_updated_at&.utc&.iso8601
 json.fleet_slug member.fleet.slug
 json.fleet_name member.fleet.name
 json.primary member.primary
+
+json.partial! "api/shared/dates", record: member

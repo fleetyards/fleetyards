@@ -4,7 +4,6 @@
 /* eslint-disable */
 import type { FleetMember } from '../models/FleetMember';
 import type { FleetMemberCreateInput } from '../models/FleetMemberCreateInput';
-import type { FleetMemberMinimal } from '../models/FleetMemberMinimal';
 import type { FleetMemberQuery } from '../models/FleetMemberQuery';
 import type { FleetMembershipUpdateInput } from '../models/FleetMembershipUpdateInput';
 import type { StandardMessage } from '../models/StandardMessage';
@@ -113,7 +112,7 @@ export class FleetMembersService {
 
     /**
      * Fleet Member List
-     * @returns FleetMemberMinimal successful
+     * @returns FleetMember successful
      * @throws ApiError
      */
     public fleetMembers({
@@ -131,7 +130,7 @@ export class FleetMembersService {
         perPage?: string,
         q?: FleetMemberQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<FleetMemberMinimal>> {
+    }): CancelablePromise<Array<FleetMember>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/fleets/{fleetSlug}/members',
@@ -223,7 +222,7 @@ export class FleetMembersService {
     /**
      * @deprecated
      * My Fleet Membership -> use GET /fleets/{fleetSlug}/membership
-     * @returns FleetMemberMinimal successful
+     * @returns FleetMember successful
      * @throws ApiError
      */
     public deprecateDfleetMembership({
@@ -233,7 +232,7 @@ export class FleetMembersService {
          * Fleet slug
          */
         fleetSlug: string,
-    }): CancelablePromise<FleetMemberMinimal> {
+    }): CancelablePromise<FleetMember> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/fleets/{fleetSlug}/members/current',

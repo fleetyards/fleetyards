@@ -22,7 +22,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Station"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -41,7 +41,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Station"}
 
         let(:q) do
           {
@@ -58,7 +58,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Station"}
 
         let(:perPage) { 2 }
 

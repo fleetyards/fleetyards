@@ -10,7 +10,7 @@ import type { MediaImage } from './MediaImage';
 import type { Model } from './Model';
 import type { ModelModule } from './ModelModule';
 import type { ModelPaint } from './ModelPaint';
-import type { ShopMinimal } from './ShopMinimal';
+import type { Shop } from './Shop';
 
 export type ShopCommodity = {
     id: string;
@@ -42,7 +42,10 @@ export type ShopCommodity = {
     confirmed: boolean;
     commodityItemType: string;
     commodityItemId: string;
-    shop: ShopMinimal;
+    shop: Shop;
+    item?: (Model | Component | Commodity | Equipment | ModelModule | ModelPaint);
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -59,8 +62,5 @@ export type ShopCommodity = {
      * @deprecated
      */
     storeImageLarge?: string | null;
-    createdAt: string;
-    updatedAt: string;
-    item: (Model | Component | Commodity | Equipment | ModelModule | ModelPaint);
 };
 

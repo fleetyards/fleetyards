@@ -10,15 +10,17 @@ export type Commodity = {
     id: string;
     name: string;
     slug: string;
+    type?: string | null;
+    typeLabel?: string | null;
     availability: {
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    type?: string | null;
-    typeLabel?: string | null;
     media: {
         storeImage?: MediaImage | null;
     };
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -39,7 +41,5 @@ export type Commodity = {
      * @deprecated
      */
     storeImageSmall?: string;
-    createdAt: string;
-    updatedAt: string;
 };
 

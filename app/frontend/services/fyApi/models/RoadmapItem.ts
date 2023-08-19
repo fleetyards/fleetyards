@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 import type { MediaImage } from './MediaImage';
-import type { ModelMinimal } from './ModelMinimal';
+import type { Model } from './Model';
 
 export type RoadmapItem = {
     id: string;
@@ -22,6 +22,12 @@ export type RoadmapItem = {
     released: boolean;
     committed: boolean;
     active: boolean;
+    createdAt: string;
+    updatedAt: string;
+    model?: Model;
+    lastVersionChangedAt: string;
+    lastVersionChangedAtLabel: string;
+    lastVersion?: string;
     /**
      * @deprecated
      */
@@ -38,11 +44,5 @@ export type RoadmapItem = {
      * @deprecated
      */
     storeImageSmall?: string;
-    model?: ModelMinimal;
-    lastVersionChangedAt: string;
-    lastVersionChangedAtLabel: string;
-    lastVersion?: string;
-    createdAt: string;
-    updatedAt: string;
 };
 

@@ -17,7 +17,8 @@ module Admin
               type: :object,
               properties: {
                 storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
-              }
+              },
+              additionalProperties: false
             },
             storeImage: {type: :string, format: :url, deprecated: true},
             storeImageLarge: {type: :string, deprecated: true},
@@ -33,10 +34,12 @@ module Admin
             economy: {type: :integer, nullable: true},
             population: {type: :integer, nullable: true},
             locationLabel: {type: :string, nullable: true},
-            starsystem: {"$ref": "#/components/schemas/StarsystemMinimal", nullable: true}
+            starsystem: {"$ref": "#/components/schemas/Starsystem", nullable: true},
+            createdAt: {type: :string, format: "date-time"},
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name slug designation]
+          required: %w[id name slug designation media createdAt updatedAt]
         })
       end
     end

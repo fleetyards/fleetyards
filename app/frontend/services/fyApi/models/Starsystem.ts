@@ -15,13 +15,16 @@ export type Starsystem = {
     locationLabel?: string | null;
     mapX?: string | null;
     mapY?: string | null;
-    media?: {
-        storeImage?: MediaImage | null;
-    };
     population?: string | null;
     size?: string | null;
     status?: string | null;
     type?: string | null;
+    media: {
+        storeImage?: MediaImage | null;
+    };
+    celestialObjects?: Array<CelestialObject>;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -38,8 +41,5 @@ export type Starsystem = {
      * @deprecated
      */
     storeImageSmall?: string;
-    createdAt: string;
-    updatedAt: string;
-    celestialObjects: Array<CelestialObject>;
 };
 

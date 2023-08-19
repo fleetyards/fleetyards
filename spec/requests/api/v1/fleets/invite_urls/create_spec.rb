@@ -32,7 +32,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       end
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/FleetInviteUrlMinimal"
+        schema "$ref": "#/components/schemas/FleetInviteUrl"
 
         let(:user) { users :jeanluc }
 

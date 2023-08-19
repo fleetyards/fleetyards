@@ -26,7 +26,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetInviteUrlMinimal"}
+          items: {"$ref": "#/components/schemas/FleetInviteUrl"}
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -49,7 +49,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetInviteUrlMinimal"}
+          items: {"$ref": "#/components/schemas/FleetInviteUrl"}
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }

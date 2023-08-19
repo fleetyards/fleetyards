@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { HangarGroupMinimalPublic } from '../models/HangarGroupMinimalPublic';
+import type { HangarGroupPublic } from '../models/HangarGroupPublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -13,7 +13,7 @@ export class PublicHangarGroupsService {
 
     /**
      * HangarGroup list
-     * @returns HangarGroupMinimalPublic successful
+     * @returns HangarGroupPublic successful
      * @throws ApiError
      */
     public publicHangarGroups({
@@ -23,7 +23,7 @@ export class PublicHangarGroupsService {
          * Username
          */
         username: string,
-    }): CancelablePromise<Array<HangarGroupMinimalPublic>> {
+    }): CancelablePromise<Array<HangarGroupPublic>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/hangars/{username}/groups',

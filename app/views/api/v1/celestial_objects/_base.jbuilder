@@ -18,11 +18,24 @@ end
 json.population celestial_object.sensor_population
 json.size celestial_object.size
 json.starsystem do
-  json.null! if celestial_object.starsystem.blank?
-  json.partial! "api/v1/starsystems/minimal", starsystem: celestial_object.starsystem if celestial_object.starsystem.present?
+  json.partial! "api/v1/starsystems/base", starsystem: celestial_object.starsystem if celestial_object.starsystem.present?
 end
 json.sub_type celestial_object.sub_type
 json.type celestial_object.object_type&.humanize
+
+if local_assigns.fetch(:extended, false)
+  json.parent do
+    json.partial! "api/v1/celestial_objects/base", celestial_object: celestial_object.parent if celestial_object.parent.present?
+  end
+  json.moons do
+    moons = celestial_object.moons.visible.order(designation: :asc).visible.order(:name)
+    json.array! moons, partial: "api/v1/celestial_objects/base", as: :celestial_object if moons.present?
+  end
+end
+
+json.partial! "api/shared/dates", record: celestial_object
+
+# DEPRECATED
 
 json.store_image celestial_object.store_image.url
 json.store_image_large celestial_object.store_image.large.url

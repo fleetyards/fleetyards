@@ -16,9 +16,8 @@ export type Image = {
     type: string;
     url: string;
     width: number | null;
+    gallery?: Gallery;
     createdAt: string;
     updatedAt: string;
-    gallery?: Gallery | null;
-    model?: Gallery | null;
 };
 

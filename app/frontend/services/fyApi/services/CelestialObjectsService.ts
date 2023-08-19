@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CelestialObject } from '../models/CelestialObject';
-import type { CelestialObjectMinimal } from '../models/CelestialObjectMinimal';
 import type { CelestialObjectQuery } from '../models/CelestialObjectQuery';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -16,7 +15,7 @@ export class CelestialObjectsService {
     /**
      * Celestial Objects List
      * Get a List of Celestial Objects
-     * @returns CelestialObjectMinimal successful
+     * @returns CelestialObject successful
      * @throws ApiError
      */
     public celestialObjects({
@@ -29,7 +28,7 @@ export class CelestialObjectsService {
         perPage?: string,
         q?: CelestialObjectQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<CelestialObjectMinimal>> {
+    }): CancelablePromise<Array<CelestialObject>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/celestial-objects',

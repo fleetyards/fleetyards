@@ -29,6 +29,8 @@ export type Component = {
     trackingSignalLabel?: string | null;
     type?: string | null;
     typeLabel?: string | null;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -49,7 +51,5 @@ export type Component = {
      * @deprecated
      */
     storeImageSmall?: string;
-    createdAt: string;
-    updatedAt: string;
 };
 

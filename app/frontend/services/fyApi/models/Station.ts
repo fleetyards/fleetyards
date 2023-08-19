@@ -8,10 +8,9 @@ import type { Dock } from './Dock';
 import type { DockCount } from './DockCount';
 import type { Habitation } from './Habitation';
 import type { HabitationCount } from './HabitationCount';
-import type { ImageMinimal } from './ImageMinimal';
 import type { MediaImage } from './MediaImage';
-import type { ShopMinimal } from './ShopMinimal';
-import type { StarsystemMinimal } from './StarsystemMinimal';
+import type { Shop } from './Shop';
+import type { Starsystem } from './Starsystem';
 
 export type Station = {
     name: string;
@@ -34,6 +33,13 @@ export type Station = {
     shopListLabel?: string | null;
     typeLabel?: string | null;
     type?: string | null;
+    celestialObject: CelestialObject;
+    starsystem?: Starsystem;
+    shops?: Array<Shop>;
+    docks?: Array<Dock>;
+    habitations?: Array<Habitation>;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -54,13 +60,5 @@ export type Station = {
      * @deprecated
      */
     storeImageSmall?: string | null;
-    celestialObject: CelestialObject;
-    createdAt: string;
-    updatedAt: string;
-    starsystem?: StarsystemMinimal;
-    shops?: Array<ShopMinimal>;
-    docks?: Array<Dock>;
-    habitations?: Array<Habitation>;
-    images?: Array<ImageMinimal>;
 };
 

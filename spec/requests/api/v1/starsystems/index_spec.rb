@@ -24,7 +24,7 @@ RSpec.describe "api/v1/starsystems", type: :request, swagger_doc: "v1/schema.yam
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/StarsystemMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Starsystem"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/starsystems", type: :request, swagger_doc: "v1/schema.yam
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/StarsystemMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Starsystem"}
 
         let(:q) do
           {
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/starsystems", type: :request, swagger_doc: "v1/schema.yam
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/StarsystemMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Starsystem"}
 
         let(:perPage) { 1 }
 

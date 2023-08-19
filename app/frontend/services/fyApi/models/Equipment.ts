@@ -40,6 +40,8 @@ export type Equipment = {
     volume?: string | null;
     weaponClass?: string | null;
     weaponClassLabel?: string | null;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -60,7 +62,5 @@ export type Equipment = {
      * @deprecated
      */
     storeImageSmall?: string;
-    createdAt: string;
-    updatedAt: string;
 };
 

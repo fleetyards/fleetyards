@@ -9,7 +9,6 @@ module V1
         properties: {
           items: {type: :array, items: {"$ref": "#/components/schemas/CelestialObject"}}
         },
-        additionalProperties: false,
         required: %w[items]
       })
     end

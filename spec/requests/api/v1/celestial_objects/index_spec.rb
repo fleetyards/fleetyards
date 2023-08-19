@@ -26,7 +26,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/CelestialObjectMinimal"}
+          items: {"$ref": "#/components/schemas/CelestialObject"}
 
         after do |example|
           if response&.body.present?

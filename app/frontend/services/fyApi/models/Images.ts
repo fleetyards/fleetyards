@@ -3,11 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ImageMinimal } from './ImageMinimal';
+import type { Image } from './Image';
 import type { Meta } from './Meta';
 
 export type Images = {
     meta?: Meta;
-    items: Array<ImageMinimal>;
+    items: Array<Image>;
 };
 

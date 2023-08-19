@@ -8,10 +8,6 @@ json.media do
     json.partial! "api/v1/shared/media_image", media_image: starsystem.store_image
   end
 end
-json.store_image starsystem.store_image.url
-json.store_image_large starsystem.store_image.large.url
-json.store_image_medium starsystem.store_image.medium.url
-json.store_image_small starsystem.store_image.small.url
 json.map_x starsystem.map_x
 json.map_y starsystem.map_y
 json.description starsystem.description
@@ -22,3 +18,19 @@ json.economy starsystem.aggregated_economy
 json.danger starsystem.aggregated_danger
 json.status starsystem.status
 json.location_label starsystem.location_label
+
+if local_assigns.fetch(:extended, false)
+  json.celestialObjects do
+    celestial_objects = starsystem.celestial_objects.visible.order(designation: :asc).visible.main.order(:designation)
+    json.array! celestial_objects, partial: "admin/api/v1/celestial_objects/base", as: :celestial_object
+  end
+end
+
+json.partial! "api/shared/dates", record: starsystem
+
+# DEPRECATED
+
+json.store_image starsystem.store_image.url
+json.store_image_large starsystem.store_image.large.url
+json.store_image_medium starsystem.store_image.medium.url
+json.store_image_small starsystem.store_image.small.url

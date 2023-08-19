@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ModelPaintMinimal } from '../models/ModelPaintMinimal';
+import type { ModelPaint } from '../models/ModelPaint';
 import type { ModelPaintQuery } from '../models/ModelPaintQuery';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -14,7 +14,7 @@ export class ModelPaintsService {
 
     /**
      * Model Paints List
-     * @returns ModelPaintMinimal successful
+     * @returns ModelPaint successful
      * @throws ApiError
      */
     public paints({
@@ -25,7 +25,7 @@ export class ModelPaintsService {
         page?: string,
         perPage?: string,
         q?: ModelPaintQuery,
-    }): CancelablePromise<Array<ModelPaintMinimal>> {
+    }): CancelablePromise<Array<ModelPaint>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/model-paints',

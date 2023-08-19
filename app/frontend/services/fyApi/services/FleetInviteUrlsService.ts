@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FleetInviteUrl } from '../models/FleetInviteUrl';
 import type { FleetInviteUrlCreateInput } from '../models/FleetInviteUrlCreateInput';
-import type { FleetInviteUrlMinimal } from '../models/FleetInviteUrlMinimal';
 import type { FleetMember } from '../models/FleetMember';
 import type { FleetMembershipCreateInput } from '../models/FleetMembershipCreateInput';
 
@@ -16,7 +16,7 @@ export class FleetInviteUrlsService {
 
     /**
      * Create Invite Url
-     * @returns FleetInviteUrlMinimal successful
+     * @returns FleetInviteUrl successful
      * @throws ApiError
      */
     public createInviteUrl({
@@ -28,7 +28,7 @@ export class FleetInviteUrlsService {
          */
         fleetSlug: string,
         requestBody: FleetInviteUrlCreateInput,
-    }): CancelablePromise<FleetInviteUrlMinimal> {
+    }): CancelablePromise<FleetInviteUrl> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/fleets/{fleetSlug}/invite-urls',
@@ -48,7 +48,7 @@ export class FleetInviteUrlsService {
 
     /**
      * Fleet Invite Urls List
-     * @returns FleetInviteUrlMinimal successful
+     * @returns FleetInviteUrl successful
      * @throws ApiError
      */
     public inviteUrls({
@@ -62,7 +62,7 @@ export class FleetInviteUrlsService {
         fleetSlug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<FleetInviteUrlMinimal>> {
+    }): CancelablePromise<Array<FleetInviteUrl>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/fleets/{fleetSlug}/invite-urls',

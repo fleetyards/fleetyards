@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Starsystem } from '../models/Starsystem';
-import type { StarsystemMinimal } from '../models/StarsystemMinimal';
 import type { StarsystemQuery } from '../models/StarsystemQuery';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -15,7 +14,7 @@ export class StarsystemsService {
 
     /**
      * Starsystems list
-     * @returns StarsystemMinimal successful
+     * @returns Starsystem successful
      * @throws ApiError
      */
     public starsystems({
@@ -28,7 +27,7 @@ export class StarsystemsService {
         perPage?: string,
         q?: StarsystemQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<StarsystemMinimal>> {
+    }): CancelablePromise<Array<Starsystem>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/starsystems',

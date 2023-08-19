@@ -137,10 +137,7 @@
                     :src="image.smallUrl"
                     :alt="image.name"
                     :title="image.name"
-                    :to="{
-                      name: 'model-images',
-                      params: { slug: image.model?.slug },
-                    }"
+                    :to="routeForImage(image)"
                     class="home-image image"
                   />
                 </div>
@@ -168,6 +165,7 @@ import modelsCollection from "@/frontend/api/collections/Models";
 import imagesCollection from "@/frontend/api/collections/Images";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
+import type { Image } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -229,6 +227,17 @@ fetchImages();
 
 const scrollDown = () => {
   VueScrollTo.scrollTo(".home-ships");
+};
+
+const routeForImage = (image: Image) => {
+  if (!image.gallery) {
+    return undefined;
+  }
+
+  return {
+    name: "model-images",
+    params: { slug: image.gallery?.slug },
+  };
 };
 </script>
 

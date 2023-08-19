@@ -35,6 +35,15 @@ json.media do
   #   json.partial! "api/v1/shared/view_image", view_image: model_paint.top_view_colored, width: model_paint.top_view_colored_width, height: model_paint.top_view_colored_height
   # end
 end
+
+json.modules do
+  json.array! module_package.model_modules, partial: "api/v1/model_modules/base", as: :model_module
+end
+
+json.partial! "api/shared/dates", record: module_package
+
+# DEPRECATED
+
 json.store_image module_package.store_image.url
 json.store_image_large module_package.store_image.large.url
 json.store_image_medium module_package.store_image.medium.url
@@ -60,6 +69,3 @@ json.angled_view_large module_package.angled_view.large.url
 json.angled_view_xlarge module_package.angled_view.xlarge.url
 json.angled_view_width module_package.angled_view_width
 json.angled_view_height module_package.angled_view_height
-json.modules do
-  json.array! module_package.model_modules, partial: "api/v1/model_modules/base", as: :model_module
-end

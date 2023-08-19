@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMemberMinimal"}
+          items: {"$ref": "#/components/schemas/FleetMember"}
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -58,7 +58,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMemberMinimal"}
+          items: {"$ref": "#/components/schemas/FleetMember"}
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -78,7 +78,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMemberMinimal"}
+          items: {"$ref": "#/components/schemas/FleetMember"}
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }

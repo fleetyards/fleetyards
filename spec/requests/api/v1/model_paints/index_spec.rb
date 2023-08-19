@@ -24,7 +24,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelPaintMinimal"}
+          items: {"$ref": "#/components/schemas/ModelPaint"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -44,7 +44,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelPaintMinimal"}
+          items: {"$ref": "#/components/schemas/ModelPaint"}
 
         let(:q) do
           {
@@ -62,7 +62,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelPaintMinimal"}
+          items: {"$ref": "#/components/schemas/ModelPaint"}
 
         let(:perPage) { 2 }
 

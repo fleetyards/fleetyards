@@ -7,6 +7,7 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 
 import { CelestialObjectsService } from './services/CelestialObjectsService';
+import { CommoditiesService } from './services/CommoditiesService';
 import { FeaturesService } from './services/FeaturesService';
 import { FleetInviteUrlsService } from './services/FleetInviteUrlsService';
 import { FleetMembersService } from './services/FleetMembersService';
@@ -41,6 +42,7 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class FyApi {
 
     public readonly celestialObjects: CelestialObjectsService;
+    public readonly commodities: CommoditiesService;
     public readonly features: FeaturesService;
     public readonly fleetInviteUrls: FleetInviteUrlsService;
     public readonly fleetMembers: FleetMembersService;
@@ -86,6 +88,7 @@ export class FyApi {
         });
 
         this.celestialObjects = new CelestialObjectsService(this.request);
+        this.commodities = new CommoditiesService(this.request);
         this.features = new FeaturesService(this.request);
         this.fleetInviteUrls = new FleetInviteUrlsService(this.request);
         this.fleetMembers = new FleetMembersService(this.request);

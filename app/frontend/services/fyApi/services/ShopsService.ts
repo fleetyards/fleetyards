@@ -4,7 +4,6 @@
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
 import type { Shop } from '../models/Shop';
-import type { ShopMinimal } from '../models/ShopMinimal';
 import type { ShopQuery } from '../models/ShopQuery';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -28,7 +27,7 @@ export class ShopsService {
 
     /**
      * Shops list
-     * @returns ShopMinimal successful
+     * @returns Shop successful
      * @throws ApiError
      */
     public shops({
@@ -41,7 +40,7 @@ export class ShopsService {
         perPage?: string,
         q?: ShopQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<ShopMinimal>> {
+    }): CancelablePromise<Array<Shop>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/shops',

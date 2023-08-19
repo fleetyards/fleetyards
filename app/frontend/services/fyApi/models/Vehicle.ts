@@ -5,7 +5,7 @@
 
 import type { BoughtViaEnum } from './BoughtViaEnum';
 import type { HangarGroup } from './HangarGroup';
-import type { ModelMinimal } from './ModelMinimal';
+import type { Model } from './Model';
 import type { ModelModulePackage } from './ModelModulePackage';
 import type { ModelPaint } from './ModelPaint';
 import type { ModelUpgrade } from './ModelUpgrade';
@@ -22,7 +22,7 @@ export type Vehicle = {
     hangarGroupIds: Array<string>;
     hangarGroups: Array<HangarGroup>;
     loaner: boolean;
-    model: ModelMinimal;
+    model: Model;
     modelModuleIds: Array<string>;
     modelUpgradeIds: Array<string>;
     modulePackage?: ModelModulePackage | null;

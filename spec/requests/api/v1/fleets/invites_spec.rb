@@ -19,7 +19,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMemberMinimal"}
+          items: {"$ref": "#/components/schemas/FleetMember"}
 
         let(:user) { users :will }
 

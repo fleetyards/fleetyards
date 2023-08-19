@@ -23,7 +23,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def to_jbuilder_json(*_args)
     ApplicationController.new.view_context.render(
-      partial: "api/v1/#{self.class.model_name.element.pluralize}/minimal",
+      partial: "api/v1/#{self.class.model_name.element.pluralize}/#{self.class.model_name.element}",
       locals: {
         self.class.model_name.element.to_sym => self
       },

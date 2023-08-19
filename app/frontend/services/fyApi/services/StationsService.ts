@@ -5,7 +5,6 @@
 import type { FilterOption } from '../models/FilterOption';
 import type { Image } from '../models/Image';
 import type { Station } from '../models/Station';
-import type { StationMinimal } from '../models/StationMinimal';
 import type { StationQuery } from '../models/StationQuery';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -53,7 +52,7 @@ export class StationsService {
 
     /**
      * Stations list
-     * @returns StationMinimal successful
+     * @returns Station successful
      * @throws ApiError
      */
     public stations({
@@ -66,7 +65,7 @@ export class StationsService {
         perPage?: string,
         q?: StationQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<StationMinimal>> {
+    }): CancelablePromise<Array<Station>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations',

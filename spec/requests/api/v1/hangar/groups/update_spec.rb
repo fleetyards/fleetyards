@@ -24,7 +24,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"}, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroupMinimal"
+        schema "$ref": "#/components/schemas/HangarGroup"
 
         let(:id) { hangar_group.id }
         let(:user) { users :data }

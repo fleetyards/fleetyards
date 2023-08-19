@@ -20,6 +20,9 @@ end
 json.type commodity.commodity_type
 json.type_label commodity.commodity_type_label
 
+json.partial! "api/shared/dates", record: commodity
+
+# DEPRECATED
 json.store_image commodity.store_image.url
 json.store_image_is_fallback commodity.store_image.identifier.nil?
 json.store_image_large commodity.store_image.large.url

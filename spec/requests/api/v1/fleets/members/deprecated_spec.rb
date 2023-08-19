@@ -25,7 +25,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetMemberMinimal"
+        schema "$ref": "#/components/schemas/FleetMember"
 
         let(:user) { users :data }
 

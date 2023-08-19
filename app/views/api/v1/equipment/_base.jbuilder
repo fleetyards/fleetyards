@@ -47,6 +47,9 @@ json.volume equipment.volume
 json.weapon_class equipment.weapon_class
 json.weapon_class_label equipment.weapon_class_label
 
+json.partial! "api/shared/dates", record: equipment
+
+# DEPRECATED
 json.store_image equipment.store_image.url
 json.store_image_is_fallback equipment.store_image.identifier.nil?
 json.store_image_large equipment.store_image.large.url

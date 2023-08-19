@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { HangarGroup } from './HangarGroup';
-import type { ModelMinimal } from './ModelMinimal';
+import type { HangarGroupPublic } from './HangarGroupPublic';
+import type { Model } from './Model';
 import type { ModelModulePackage } from './ModelModulePackage';
 import type { ModelPaint } from './ModelPaint';
 
@@ -14,9 +14,9 @@ export type VehiclePublic = {
     slug?: string | null;
     serial?: string | null;
     hangarGroupIds: Array<string>;
-    hangarGroups: Array<HangarGroup>;
+    hangarGroups: Array<HangarGroupPublic>;
     loaner: boolean;
-    model: ModelMinimal;
+    model: Model;
     username?: string | null;
     userAvatar?: string | null;
     modelModuleIds: Array<string>;

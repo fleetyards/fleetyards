@@ -38,6 +38,10 @@ json.rsi_id model_paint.rsi_id
 json.rsi_name model_paint.rsi_name
 json.rsi_slug model_paint.rsi_slug
 
+json.partial! "api/shared/dates", record: model_paint
+
+# DEPRECATED
+
 json.angled_view model_paint.angled_view.url
 json.angled_view_height model_paint.angled_view_height
 json.angled_view_large model_paint.angled_view.large.url

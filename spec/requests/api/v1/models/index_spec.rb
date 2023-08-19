@@ -25,7 +25,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelMinimal"}
+          items: {"$ref": "#/components/schemas/Model"}
 
         after do |example|
           example.metadata[:response][:content] = {
@@ -45,7 +45,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelMinimal"}
+          items: {"$ref": "#/components/schemas/Model"}
 
         let(:q) do
           {
@@ -63,7 +63,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelMinimal"}
+          items: {"$ref": "#/components/schemas/Model"}
 
         let(:perPage) { 2 }
 

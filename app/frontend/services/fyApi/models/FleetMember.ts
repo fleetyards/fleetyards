@@ -3,10 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Fleet } from './Fleet';
 import type { FleetMembershipRoleEnum } from './FleetMembershipRoleEnum';
 import type { FleetMembershipShipsFilterEnum } from './FleetMembershipShipsFilterEnum';
 import type { FleetMembershipStatusEnum } from './FleetMembershipStatusEnum';
-import type { FleetMinimal } from './FleetMinimal';
 
 export type FleetMember = {
     id: string;
@@ -25,7 +25,7 @@ export type FleetMember = {
     hangarGroupId?: string | null;
     fleetSlug: string;
     fleetName: string;
-    fleet?: FleetMinimal;
+    fleet?: Fleet;
     primary?: boolean;
     hangarUpdatedAt?: string | null;
     invitedAt?: string;

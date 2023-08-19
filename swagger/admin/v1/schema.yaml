@@ -261,6 +261,25 @@ components:
       - value
       - category
       title: FilterOption
+    Gallery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name
+      - slug
+      title: Gallery
     MediaImage:
       type: object
       properties:
@@ -411,6 +430,7 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
               nullable: true
+          additionalProperties: false
         storeImage:
           type: string
           format: url
@@ -455,14 +475,23 @@ components:
           type: string
           nullable: true
         starsystem:
-          "$ref": "#/components/schemas/StarsystemMinimal"
+          "$ref": "#/components/schemas/Starsystem"
           nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - id
       - name
       - slug
       - designation
+      - media
+      - createdAt
+      - updatedAt
       title: CelestialObject
     Dock:
       type: object
@@ -513,22 +542,6 @@ components:
       - Station
       - Album
       title: GalleryTypeEnum
-    Gallery:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      title: Gallery
     Habitation:
       type: object
       properties:
@@ -795,6 +808,7 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
               nullable: true
+          additionalProperties: false
         population:
           type: string
           nullable: true
@@ -807,86 +821,16 @@ components:
         type:
           type: string
           nullable: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
         celestialObjects:
           type: array
           items:
             "$ref": "#/components/schemas/CelestialObject"
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      - createdAt
-      - updatedAt
-      - celestialObjects
-      title: Starsystem
-    StarsystemMinimal:
-      type: object
-      properties:
-        id:
+        createdAt:
           type: string
-          format: uuid
-        name:
+          format: date-time
+        updatedAt:
           type: string
-        slug:
-          type: string
-        danger:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        economy:
-          type: string
-          nullable: true
-        locationLabel:
-          type: string
-          nullable: true
-        mapX:
-          type: string
-          nullable: true
-        mapY:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-        population:
-          type: string
-          nullable: true
-        size:
-          type: string
-          nullable: true
-        status:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
+          format: date-time
         storeImage:
           type: string
           format: uri
@@ -903,19 +847,11 @@ components:
           type: string
           format: uri
           deprecated: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       additionalProperties: false
       required:
       - name
       - slug
-      - createdAt
-      - updatedAt
-      title: StarsystemMinimal
+      title: Starsystem
     Station:
       type: object
       properties:
@@ -966,6 +902,7 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
               nullable: true
+          additionalProperties: false
         refinery:
           type: boolean
         shopListLabel:
@@ -977,14 +914,8 @@ components:
         type:
           type: string
           nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
         starsystem:
-          "$ref": "#/components/schemas/StarsystemMinimal"
+          "$ref": "#/components/schemas/Starsystem"
         shops:
           type: array
           items:
@@ -997,10 +928,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Habitation"
-        images:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Image"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - id
@@ -1015,87 +948,6 @@ components:
       - createdAt
       - updatedAt
       title: Station
-    StationMinimal:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        cargoHub:
-          type: boolean
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
-        classificationLabel:
-          type: string
-          nullable: true
-        classification:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        dockCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/DockCount"
-        habitable:
-          type: boolean
-        habitationCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/HabitationCount"
-        hasImages:
-          type: boolean
-        locationLabel:
-          type: string
-          nullable: true
-        location:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            backgroundImage:
-              type: string
-              nullable: true
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-        refinery:
-          type: boolean
-        shopListLabel:
-          type: string
-          nullable: true
-        typeLabel:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - habitable
-      - hasImages
-      - refinery
-      - cargoHub
-      - celestialObject
-      - media
-      - createdAt
-      - updatedAt
-      title: StationMinimal
     StationShop:
       type: object
       properties:
@@ -1116,7 +968,7 @@ components:
         items:
           type: array
           items:
-            "$ref": "#/components/schemas/StationMinimal"
+            "$ref": "#/components/schemas/Station"
       additionalProperties: false
       required:
       - items

@@ -9,10 +9,12 @@ export type ModelUpgrade = {
     id: string;
     name: string | null;
     description?: string | null;
+    pledgePrice?: number | null;
     media: {
         storeImage?: MediaImage | null;
     };
-    pledgePrice?: number | null;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */

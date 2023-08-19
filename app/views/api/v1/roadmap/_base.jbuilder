@@ -17,6 +17,13 @@ json.media do
     json.partial! "api/v1/shared/media_image", media_image: item.store_image
   end
 end
+
+json.model do
+  json.partial! "api/v1/models/base", model: item.model if item.model.present?
+end
+
+json.partial! "api/shared/dates", record: item
+
 # DEPRECATED
 json.store_image item.store_image.url
 json.store_image_large item.store_image.large.url
