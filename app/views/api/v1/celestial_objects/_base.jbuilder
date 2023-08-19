@@ -17,11 +17,12 @@ json.media do
 end
 json.population celestial_object.sensor_population
 json.size celestial_object.size
-json.starsystem do
-  json.partial! "api/v1/starsystems/base", starsystem: celestial_object.starsystem if celestial_object.starsystem.present?
-end
 json.sub_type celestial_object.sub_type
 json.type celestial_object.object_type&.humanize
+
+json.starsystem do
+  json.partial! "api/v1/starsystems/base", starsystem: celestial_object.starsystem
+end
 
 if local_assigns.fetch(:extended, false)
   json.parent do
