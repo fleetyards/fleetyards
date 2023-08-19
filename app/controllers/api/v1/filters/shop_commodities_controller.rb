@@ -5,8 +5,6 @@ module Api
     module Filters
       class ShopCommoditiesController < ::Api::PublicBaseController
         def sub_categories
-          authorize! :index, :api_shop_commodities
-
           allowed_categories = nil
 
           if params[:shopSlug].present? && params[:stationSlug].present?
@@ -23,8 +21,6 @@ module Api
         end
 
         def commodity_item_types
-          authorize! :index, :api_shop_commodities
-
           @commodity_item_types = ShopCommodity.commodity_item_types.map do |item_type|
             {
               name: I18n.t("activerecord.attributes.shop_commodity.commodity_item_types.#{item_type}"),

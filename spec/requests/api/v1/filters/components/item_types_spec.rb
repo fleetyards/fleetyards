@@ -2,14 +2,13 @@
 
 require "swagger_helper"
 
-RSpec.describe "api/v1/filters/commodities", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/filters/components", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
-  path "/commodities/types" do
+  path "/filters/components/item-types" do
     get("Commodity Types") do
-      deprecated true
-      operationId "DEPRECATEDcommodityTypes"
-      tags "Commodities"
+      operationId "componentItemTypes"
+      tags "ComponentFilters"
       produces "application/json"
 
       response(200, "successful") do

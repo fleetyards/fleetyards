@@ -2,14 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Commodity } from '../models/Commodity';
-import type { CommodityQuery } from '../models/CommodityQuery';
+import type { Component } from '../models/Component';
+import type { ComponentQuery } from '../models/ComponentQuery';
 import type { FilterOption } from '../models/FilterOption';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
-export class CommoditiesService {
+export class ComponentsService {
 
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
@@ -19,19 +19,32 @@ export class CommoditiesService {
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public deprecateDcommodityTypes(): CancelablePromise<Array<FilterOption>> {
+    public deprecateDcomponentClasses(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/commodities/types',
+            url: '/components/class_filters',
         });
     }
 
     /**
-     * Commodities list
-     * @returns Commodity successful
+     * @deprecated
+     * Commodity Types
+     * @returns FilterOption successful
      * @throws ApiError
      */
-    public commodities({
+    public deprecateDcomponentItemTypes(): CancelablePromise<Array<FilterOption>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/components/item_type_filters',
+        });
+    }
+
+    /**
+     * Components list
+     * @returns Component successful
+     * @throws ApiError
+     */
+    public components({
         page = '1',
         perPage = '50',
         q,
@@ -39,12 +52,12 @@ export class CommoditiesService {
     }: {
         page?: string,
         perPage?: string,
-        q?: CommodityQuery,
+        q?: ComponentQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Commodity>> {
+    }): CancelablePromise<Array<Component>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/commodities',
+            url: '/components',
             query: {
                 'page': page,
                 'perPage': perPage,

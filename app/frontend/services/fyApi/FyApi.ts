@@ -9,6 +9,8 @@ import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { CelestialObjectsService } from './services/CelestialObjectsService';
 import { CommoditiesService } from './services/CommoditiesService';
 import { CommodityFiltersService } from './services/CommodityFiltersService';
+import { ComponentFiltersService } from './services/ComponentFiltersService';
+import { ComponentsService } from './services/ComponentsService';
 import { EquipmentService } from './services/EquipmentService';
 import { FeaturesService } from './services/FeaturesService';
 import { FleetInviteUrlsService } from './services/FleetInviteUrlsService';
@@ -46,6 +48,8 @@ export class FyApi {
     public readonly celestialObjects: CelestialObjectsService;
     public readonly commodities: CommoditiesService;
     public readonly commodityFilters: CommodityFiltersService;
+    public readonly componentFilters: ComponentFiltersService;
+    public readonly components: ComponentsService;
     public readonly equipment: EquipmentService;
     public readonly features: FeaturesService;
     public readonly fleetInviteUrls: FleetInviteUrlsService;
@@ -94,6 +98,8 @@ export class FyApi {
         this.celestialObjects = new CelestialObjectsService(this.request);
         this.commodities = new CommoditiesService(this.request);
         this.commodityFilters = new CommodityFiltersService(this.request);
+        this.componentFilters = new ComponentFiltersService(this.request);
+        this.components = new ComponentsService(this.request);
         this.equipment = new EquipmentService(this.request);
         this.features = new FeaturesService(this.request);
         this.fleetInviteUrls = new FleetInviteUrlsService(this.request);

@@ -25,6 +25,7 @@ v1_api_routes = lambda do
   draw "api/fleets_routes"
   draw "api/stations_routes"
   draw "api/commodities_routes"
+  draw "api/components_routes"
 
   resources :manufacturers, param: :slug, only: %i[index] do
     get "with-models", to: "manufacturers#with_models", on: :collection
@@ -43,11 +44,6 @@ v1_api_routes = lambda do
   resources :trade_routes, path: "trade-routes", only: [:index]
 
   resources :equipment, only: [:index]
-
-  resources :components, only: [:index] do
-    get :class_filters, on: :collection
-    get :item_type_filters, on: :collection
-  end
 
   resources :starsystems, param: :slug, only: %i[index show]
 

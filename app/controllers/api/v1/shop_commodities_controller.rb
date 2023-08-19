@@ -2,13 +2,10 @@
 
 module Api
   module V1
-    class ShopCommoditiesController < ::Api::BaseController
-      before_action :authenticate_user!, only: []
+    class ShopCommoditiesController < ::Api::PublicBaseController
       after_action -> { pagination_header(:shop_commodities) }, only: [:index]
 
       def index
-        authorize! :index, :api_shop_commodities
-
         @shop_commodities = ShopCommodity.search(
           search_params || deprecated_search_params || "*",
           fields: [{name: :word_start}],

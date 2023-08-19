@@ -93,7 +93,7 @@ paths:
       deprecated: true
       operationId: DEPRECATEDcommodityTypes
       tags:
-      - CommodityFilters
+      - Commodities
       responses:
         '200':
           description: successful
@@ -144,6 +144,79 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Commodity"
+  "/components/class_filters":
+    get:
+      summary: Commodity Types
+      deprecated: true
+      operationId: DEPRECATEDcomponentClasses
+      tags:
+      - Components
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/components/item_type_filters":
+    get:
+      summary: Commodity Types
+      deprecated: true
+      operationId: DEPRECATEDcomponentItemTypes
+      tags:
+      - Components
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/components":
+    get:
+      summary: Components list
+      operationId: components
+      tags:
+      - Components
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ComponentQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Component"
   "/equipment":
     get:
       summary: Equipment list
@@ -206,6 +279,36 @@ paths:
       operationId: commodityTypes
       tags:
       - CommodityFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/components/classes":
+    get:
+      summary: Commodity Types
+      operationId: componentClasses
+      tags:
+      - ComponentFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/components/item-types":
+    get:
+      summary: Commodity Types
+      operationId: componentItemTypes
+      tags:
+      - ComponentFilters
       responses:
         '200':
           description: successful
@@ -8122,6 +8225,22 @@ components:
             type: string
       additionalProperties: false
       title: CommodityQuery
+    ComponentQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ComponentQuery
     EquipmentQuery:
       type: object
       properties:

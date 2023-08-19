@@ -2,13 +2,10 @@
 
 module Api
   module V1
-    class EquipmentController < ::Api::BaseController
-      before_action :authenticate_user!, only: []
+    class EquipmentController < ::Api::PublicBaseController
       after_action -> { pagination_header(:equipment) }, only: [:index]
 
       def index
-        authorize! :index, :api_equipment
-
         equipment_query_params["sorts"] = sort_by_name
 
         @q = Equipment.includes(:manufacturer).ransack(equipment_query_params)
