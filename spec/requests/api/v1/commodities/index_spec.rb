@@ -3,6 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/commodities", type: :request, swagger_doc: "v1/schema.yaml" do
+  fixtures :all
+
   path "/commodities" do
     get("Commodities list") do
       operationId "commodities"
