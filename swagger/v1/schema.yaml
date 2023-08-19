@@ -3757,6 +3757,39 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Stats"
+  "/users/current":
+    get:
+      summary: My Data
+      deprecated: true
+      operationId: DEPRECATEDcurrent
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+  "/users/me":
+    get:
+      summary: My Data
+      operationId: me
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/vehicles/bulk":
     put:
       summary: Update multiple vehicles
@@ -10226,6 +10259,142 @@ components:
       - shipsCountYear
       - shipsCountTotal
       title: Stats
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        unconfirmedEmail:
+          type: string
+        avatar:
+          type: string
+        rsiHandle:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+        homepage:
+          type: string
+        saleNotify:
+          type: boolean
+        publicHangar:
+          type: boolean
+        publicHangarUrl:
+          type: string
+        publicHangarLoaners:
+          type: boolean
+        publicWishlist:
+          type: boolean
+        publicWishlistUrl:
+          type: string
+        hideOwner:
+          type: boolean
+        twoFactorRequired:
+          type: boolean
+        twoFactorQrCodeUrl:
+          type: string
+        twoFactorProvisioningUrl:
+          type: string
+        hangarUpdatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - username
+      - email
+      - saleNotify
+      - publicHangar
+      - publicHangarLoaners
+      - publicWishlist
+      - hideOwner
+      - twoFactorRequired
+      - createdAt
+      - updatedAt
+      title: User
+    UserMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        unconfirmedEmail:
+          type: string
+        avatar:
+          type: string
+        rsiHandle:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+        homepage:
+          type: string
+        saleNotify:
+          type: boolean
+        publicHangar:
+          type: boolean
+        publicHangarUrl:
+          type: string
+        publicHangarLoaners:
+          type: boolean
+        publicWishlist:
+          type: boolean
+        publicWishlistUrl:
+          type: string
+        hideOwner:
+          type: boolean
+        twoFactorRequired:
+          type: boolean
+        twoFactorQrCodeUrl:
+          type: string
+        twoFactorProvisioningUrl:
+          type: string
+        hangarUpdatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - username
+      - email
+      - saleNotify
+      - publicHangar
+      - publicHangarLoaners
+      - publicWishlist
+      - hideOwner
+      - twoFactorRequired
+      - createdAt
+      - updatedAt
+      title: UserMinimal
     Vehicle:
       type: object
       properties:

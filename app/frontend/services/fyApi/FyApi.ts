@@ -28,6 +28,7 @@ import { ShopsService } from './services/ShopsService';
 import { StarsystemsService } from './services/StarsystemsService';
 import { StationsService } from './services/StationsService';
 import { StatsService } from './services/StatsService';
+import { UsersService } from './services/UsersService';
 import { VehiclesService } from './services/VehiclesService';
 import { VehiclesPublicService } from './services/VehiclesPublicService';
 import { VehiclesStatsService } from './services/VehiclesStatsService';
@@ -60,6 +61,7 @@ export class FyApi {
     public readonly starsystems: StarsystemsService;
     public readonly stations: StationsService;
     public readonly stats: StatsService;
+    public readonly users: UsersService;
     public readonly vehicles: VehiclesService;
     public readonly vehiclesPublic: VehiclesPublicService;
     public readonly vehiclesStats: VehiclesStatsService;
@@ -103,6 +105,7 @@ export class FyApi {
         this.starsystems = new StarsystemsService(this.request);
         this.stations = new StationsService(this.request);
         this.stats = new StatsService(this.request);
+        this.users = new UsersService(this.request);
         this.vehicles = new VehiclesService(this.request);
         this.vehiclesPublic = new VehiclesPublicService(this.request);
         this.vehiclesStats = new VehiclesStatsService(this.request);
