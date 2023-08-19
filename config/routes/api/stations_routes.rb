@@ -14,10 +14,6 @@ resources :shops, param: :slug, only: %i[index] do
   get "shop-types", to: "shops#shop_types", on: :collection
 end
 
-resources :commodity_prices, path: "commodity-prices", only: [:create] do
-  get "time-ranges", to: "commodity_prices#time_ranges", on: :collection
-end
-
 resources :shop_commodities, path: "shop-commodities", only: %i[index] do
   get "commodity-type-options", to: "shop_commodities#commodity_item_types", on: :collection
   get "sub-categories", to: "shop_commodities#sub_categories", on: :collection

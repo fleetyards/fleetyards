@@ -13,7 +13,7 @@ module V1
             commodityItemType: {type: :string},
             path: {type: :string, enum: %w[buy sell rental]},
             shopId: {type: :string, format: :uuid},
-            timeRange: {type: :string, nullable: true}
+            timeRange: {type: :string}
           },
           additionalProperties: false,
           required: %w[commodityItemId commodityItemType path shopId]
