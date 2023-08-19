@@ -188,7 +188,6 @@ export default {
       this.loading = false;
       if (!response.error) {
         this.celestialObject = response.data;
-        console.log(response.data);
         this.fetchStations();
       }
     },
