@@ -7,6 +7,10 @@ RSpec.describe "api/v1/shops", type: :request, swagger_doc: "v1/schema.yaml" do
 
   let(:shop) { shops :new_deal }
 
+  before do
+    ShopCommodity.reindex
+  end
+
   path "/stations/{stationSlug}/shops/{slug}/commodities" do
     parameter name: "slug", in: :path, type: :string, required: true
     parameter name: "stationSlug", in: :path, type: :string, required: true
