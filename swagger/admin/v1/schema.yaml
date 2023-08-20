@@ -360,6 +360,13 @@ components:
       required:
       - version
       title: ScDataVersion
+    Session:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Session
     StandardError:
       type: object
       properties:

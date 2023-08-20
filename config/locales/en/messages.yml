@@ -45,6 +45,8 @@ en:
     update:
       failure: "%{resource} could not be edited."
       success: "%{resource} edited successfully."
+    confirmAccess:
+      failure: Access confirmation failed
     hangar_import:
       no_data: No Data found to import
     hangar_sync:

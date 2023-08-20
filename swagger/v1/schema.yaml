@@ -3714,6 +3714,75 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/SearchResult"
+  "/sessions/confirm-access":
+    post:
+      summary: confirm_access session
+      tags:
+      - Sessions
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ConfirmAccessInput"
+        required: true
+  "/sessions":
+    post:
+      summary: create session
+      tags:
+      - Sessions
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SessionInput"
+        required: true
+    delete:
+      summary: delete session
+      tags:
+      - Sessions
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/stations/{stationSlug}/shops/{slug}/commodities":
     parameters:
     - name: slug
@@ -4990,6 +5059,13 @@ components:
       required:
       - version
       title: ScDataVersion
+    Session:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Session
     StandardError:
       type: object
       properties:
@@ -6412,6 +6488,15 @@ components:
       - path
       - shopId
       title: CommodityPriceInput
+    ConfirmAccessInput:
+      type: object
+      properties:
+        password:
+          type: string
+      additionalProperties: false
+      required:
+      - password
+      title: ConfirmAccessInput
     FleetCheckInput:
       type: object
       properties:
@@ -6573,6 +6658,21 @@ components:
       - name
       - type
       title: RsiHangarItemInput
+    SessionInput:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Username or email
+        password:
+          type: string
+        rememberMe:
+          type: boolean
+      additionalProperties: false
+      required:
+      - login
+      - password
+      title: SessionInput
     SyncRsiHangarInput:
       type: array
       items:
