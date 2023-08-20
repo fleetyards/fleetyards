@@ -221,7 +221,7 @@ module V1
           additionalProperties: false,
           required: %w[
             id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos links loaners
-            media metrics onSale speeds createdAt updatedAt
+            metrics onSale createdAt updatedAt
           ]
         })
       end

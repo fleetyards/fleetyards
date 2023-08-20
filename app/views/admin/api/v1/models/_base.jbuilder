@@ -90,13 +90,13 @@ json.metrics do
   json.fleetchart_length (model.fleetchart_offset_length || model.length).to_f
   json.height model.height.to_f
   json.height_label model.height_label
-  json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size
+  json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size&.to_f
   json.is_ground_vehicle model.ground
   json.length model.length.to_f
   json.length_label model.length_label
   json.mass model.mass.to_f
   json.mass_label model.mass.to_f.to_s
-  json.quantum_fuel_tank_size model.quantum_fuel_tank_size
+  json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.size model.size
   json.size_label model.size&.humanize
 end
@@ -111,17 +111,17 @@ json.rsi_id model.rsi_id
 json.rsi_name model.rsi_name
 json.rsi_slug model.rsi_slug
 json.speeds do
-  json.ground_acceleration model.ground_acceleration
-  json.ground_decceleration model.ground_decceleration
-  json.ground_max_speed model.ground_max_speed
-  json.ground_reverse_speed model.ground_reverse_speed
-  json.max_speed model.max_speed
-  json.max_speed_acceleration model.max_speed_acceleration
-  json.max_speed_decceleration model.max_speed_decceleration
-  json.pitch model.pitch
-  json.roll model.roll
-  json.scm_speed model.scm_speed
-  json.scm_speed_acceleration model.scm_speed_acceleration
-  json.scm_speed_decceleration model.scm_speed_decceleration
-  json.yaw model.yaw
+  json.ground_acceleration model.ground_acceleration&.to_f
+  json.ground_decceleration model.ground_decceleration&.to_f
+  json.ground_max_speed model.ground_max_speed&.to_f
+  json.ground_reverse_speed model.ground_reverse_speed&.to_f
+  json.max_speed model.max_speed&.to_f
+  json.max_speed_acceleration model.max_speed_acceleration&.to_f
+  json.max_speed_decceleration model.max_speed_decceleration&.to_f
+  json.pitch model.pitch&.to_f
+  json.roll model.roll&.to_f
+  json.scm_speed model.scm_speed&.to_f
+  json.scm_speed_acceleration model.scm_speed_acceleration&.to_f
+  json.scm_speed_decceleration model.scm_speed_decceleration&.to_f
+  json.yaw model.yaw&.to_f
 end

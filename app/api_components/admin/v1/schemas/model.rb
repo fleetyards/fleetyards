@@ -152,7 +152,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos links loaners
-            metrics onSale speeds
+            metrics onSale
           ]
         })
       end

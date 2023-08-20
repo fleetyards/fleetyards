@@ -41,3 +41,11 @@ if shop_commodity.sub_category.present?
   json.sub_category shop_commodity.sub_category
   json.sub_category_label shop_commodity.sub_category_label
 end
+
+if local_assigns.fetch(:extended, false)
+  json.item do
+    json.partial! "admin/api/v1/#{shop_commodity.category.pluralize}/base", shop_commodity.category.to_sym => shop_commodity.commodity_item
+  end
+end
+
+json.partial! "api/shared/dates", record: shop_commodity

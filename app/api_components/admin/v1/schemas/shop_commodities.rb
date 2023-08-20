@@ -8,7 +8,7 @@ module Admin
 
         schema({
           properties: {
-            items: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodityMinimal"}}
+            items: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
           },
           additionalProperties: false,
           required: %w[items]

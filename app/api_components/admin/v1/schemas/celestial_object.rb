@@ -39,7 +39,7 @@ module Admin
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name slug designation media createdAt updatedAt]
+          required: %w[id name slug designation createdAt updatedAt]
         })
       end
     end

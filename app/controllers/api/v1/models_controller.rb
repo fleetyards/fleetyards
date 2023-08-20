@@ -97,7 +97,7 @@ module Api
           filters << Model.focus_filters
           filters << Model.size_filters
           filters.flatten
-            .sort_by { |filter| [filter.category, filter.name] }
+            .sort_by { |filter| [filter.category, filter.label] }
         end
       end
 

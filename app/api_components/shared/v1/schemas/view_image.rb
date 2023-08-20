@@ -18,7 +18,6 @@ module Shared
             height: {type: :integer}
           },
           additionalProperties: false,
-          nullable: true,
           required: %w[source small medium large xlarge width height]
         })
       end

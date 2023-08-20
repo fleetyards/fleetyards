@@ -21,7 +21,7 @@ RSpec.describe "admin/api/v1/shop_commodities", type: :request, swagger_doc: "ad
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ShopCommodityMinimal"
+        schema "$ref": "#/components/schemas/ShopCommodity"
 
         let(:id) { shop_commodity.id }
         let(:user) { admin_users :jeanluc }

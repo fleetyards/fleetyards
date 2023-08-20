@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Admin
+module Shared
   module V1
     module Schemas
       class Manufacturer
@@ -13,10 +13,12 @@ module Admin
             slug: {type: :string},
             code: {type: :string, nullable: true},
             logo: {type: :string, nullable: true},
-            longName: {type: :string}
+            longName: {type: :string},
+            createdAt: {type: :string, format: "date-time"},
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[name slug]
+          required: %w[name slug createdAt updatedAt]
         })
       end
     end
