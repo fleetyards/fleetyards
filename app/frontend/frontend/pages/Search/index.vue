@@ -59,37 +59,37 @@
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
               v-for="result in records"
-              :key="`${result.resultType}-${result.id}`"
+              :key="`${result.type}-${result.id}`"
               class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
             >
               <ModelPanel
-                v-if="result.resultType === 'model'"
-                :model="result"
+                v-if="result.type === 'model'"
+                :model="result.item"
                 :details="true"
               />
               <CelestialObjectsPanel
                 v-else-if="
-                  ['celestial_object', 'starsystem'].includes(result.resultType)
+                  ['celestial_object', 'starsystem'].includes(result.type)
                 "
-                :item="result"
+                :item="result.item"
               />
               <ShopCommodityPanel
-                v-else-if="result.resultType === 'shop_commodity'"
-                :item="result"
+                v-else-if="result.type === 'shop_commodity'"
+                :item="result.item"
               />
               <ComponentPanel
-                v-else-if="result.resultType === 'component'"
-                :component="result"
+                v-else-if="result.type === 'component'"
+                :component="result.item"
               />
               <CommodityPanel
-                v-else-if="result.resultType === 'commodity'"
-                :commodity="result"
+                v-else-if="result.type === 'commodity'"
+                :commodity="result.item"
               />
               <EquipmentPanel
-                v-else-if="result.resultType === 'equipment'"
-                :equipment="result"
+                v-else-if="result.type === 'equipment'"
+                :equipment="result.item"
               />
-              <SearchPanel v-else :item="result" />
+              <SearchPanel v-else :item="result.item" />
             </div>
           </transition-group>
         </template>

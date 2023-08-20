@@ -3691,6 +3691,29 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataVersion"
+  "/search":
+    get:
+      summary: list searches
+      tags:
+      - Search
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/SearchQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SearchResult"
   "/stations/{stationSlug}/shops/{slug}/commodities":
     parameters:
     - name: slug
@@ -5573,6 +5596,18 @@ components:
       - upgrade
       - skin
       title: RsiHangarItemKindEnum
+    SearchResultTypeEnum:
+      type: string
+      enum:
+      - Model
+      - Component
+      - Shop
+      - Station
+      - CelestialObject
+      - Starsystem
+      - Equipment
+      - Commodity
+      title: SearchResultTypeEnum
     StationTypeEnum:
       type: string
       enum:
@@ -8901,6 +8936,13 @@ components:
           - type: string
       additionalProperties: false
       title: RoadmapItemQuery
+    SearchQuery:
+      type: object
+      properties:
+        search:
+          type: string
+      additionalProperties: false
+      title: SearchQuery
     ShopCommodityOrderQuery:
       type: object
       properties:
@@ -9200,6 +9242,28 @@ components:
       - query
       - label
       title: RoadmapWeek
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/SearchResultTypeEnum"
+        item:
+          oneOf:
+          - "$ref": "#/components/schemas/Model"
+          - "$ref": "#/components/schemas/Component"
+          - "$ref": "#/components/schemas/Commodity"
+          - "$ref": "#/components/schemas/Equipment"
+          - "$ref": "#/components/schemas/ModelModule"
+          - "$ref": "#/components/schemas/ModelPaint"
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - item
+      title: SearchResult
     Shop:
       type: object
       properties:

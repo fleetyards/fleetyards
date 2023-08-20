@@ -108,6 +108,9 @@ export type { RoadmapWeek } from './models/RoadmapWeek';
 export type { RsiHangarItemInput } from './models/RsiHangarItemInput';
 export { RsiHangarItemKindEnum } from './models/RsiHangarItemKindEnum';
 export type { ScDataVersion } from './models/ScDataVersion';
+export type { SearchQuery } from './models/SearchQuery';
+export type { SearchResult } from './models/SearchResult';
+export { SearchResultTypeEnum } from './models/SearchResultTypeEnum';
 export type { Shop } from './models/Shop';
 export type { ShopCommodity } from './models/ShopCommodity';
 export { ShopCommodityOrderQuery } from './models/ShopCommodityOrderQuery';
@@ -174,6 +177,7 @@ export { PublicHangarGroupsService } from './services/PublicHangarGroupsService'
 export { PublicHangarStatsService } from './services/PublicHangarStatsService';
 export { PublicWishlistService } from './services/PublicWishlistService';
 export { RoadmapService } from './services/RoadmapService';
+export { SearchService } from './services/SearchService';
 export { ShopCommodityFiltersService } from './services/ShopCommodityFiltersService';
 export { ShopFiltersService } from './services/ShopFiltersService';
 export { ShopsService } from './services/ShopsService';

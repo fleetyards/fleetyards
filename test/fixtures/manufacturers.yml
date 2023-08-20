@@ -26,3 +26,19 @@ rsi:
 kastak:
   name: "Kastak Arms"
   slug: "kastak-arms"
+
+drake:
+  name: "Drake Interplanetary"
+  slug: "drake"
+
+anvil:
+  name: "Anvil Aerospace"
+  slug: "anvil"
+
+aegis:
+  name: "Aegis Dynamics"
+  slug: "aegis"
+
+kruger:
+  name: "Kruger Intergalactic"
+  slug: "kruger"
