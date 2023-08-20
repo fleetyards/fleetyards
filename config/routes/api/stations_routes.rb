@@ -9,12 +9,3 @@ resources :stations, param: :slug, only: %i[index show] do
     resources :shop_commodities, path: "commodities", only: %i[index]
   end
 end
-
-resources :shops, param: :slug, only: %i[index] do
-  get "shop-types", to: "shops#shop_types", on: :collection
-end
-
-resources :shop_commodities, path: "shop-commodities", only: %i[index] do
-  get "commodity-type-options", to: "shop_commodities#commodity_item_types", on: :collection
-  get "sub-categories", to: "shop_commodities#sub_categories", on: :collection
-end

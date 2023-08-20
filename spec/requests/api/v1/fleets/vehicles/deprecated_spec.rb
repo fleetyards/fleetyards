@@ -99,10 +99,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/FleetVehicleQuery"
-        },
+        schema: {"$ref": "#/components/schemas/FleetVehicleQuery"},
         style: :deepObject,
         explode: true,
         required: false
@@ -127,10 +124,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/FleetVehicleQuery"
-        },
+        schema: {"$ref": "#/components/schemas/FleetVehicleQuery"},
         style: :deepObject,
         explode: true,
         required: false
