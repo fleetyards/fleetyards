@@ -13,6 +13,7 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
 
   path "/sessions" do
     delete("delete session") do
+      operationId "deleteSession"
       tags "Sessions"
       produces "application/json"
 

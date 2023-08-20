@@ -5,7 +5,7 @@
         v-slot="{ errors }"
         vid="currentPassword"
         rules="required"
-        :name="$t('labels.currentPassword')"
+        :name="t('labels.currentPassword')"
         :slim="true"
       >
         <FormInput
@@ -20,7 +20,7 @@
         v-slot="{ errors }"
         vid="password"
         rules="required|min:8"
-        :name="$t('labels.password')"
+        :name="t('labels.password')"
         :slim="true"
       >
         <FormInput
@@ -35,7 +35,7 @@
         v-slot="{ errors }"
         vid="passwordConfirmation"
         rules="required|confirmed:password"
-        :name="$t('labels.passwordConfirmation')"
+        :name="t('labels.passwordConfirmation')"
         :slim="true"
       >
         <FormInput
@@ -47,65 +47,75 @@
       </ValidationProvider>
       <div class="d-flex">
         <Btn :loading="submitting" type="submit">
-          {{ $t("actions.updatePassword") }}
+          {{ t("actions.updatePassword") }}
         </Btn>
         <Btn :to="{ name: 'request-password' }" variant="link">
-          {{ $t("actions.reset-password") }}
+          {{ t("actions.reset-password") }}
         </Btn>
       </div>
     </form>
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import { useRouter } from "vue-router/composables";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type { PasswordInput } from "@/services/fyApi";
 
-@Component<ChangePasswordForm>({
-  components: {
-    FormInput,
-    Btn,
-  },
-})
-export default class ChangePasswordForm extends Vue {
-  submitting = false;
+const { t } = useI18n();
 
-  form: ChangePasswordForm | null = null;
+const submitting = ref(false);
 
-  mounted() {
-    this.setupForm();
+const form = ref<PasswordInput>({});
+
+onMounted(() => {
+  setupForm();
+});
+
+const setupForm = () => {
+  form.value = {
+    currentPassword: undefined,
+    password: undefined,
+    passwordConfirmation: undefined,
+  };
+};
+
+const router = useRouter();
+
+const { password: passwordService } = useApiClient();
+
+const changePassword = async () => {
+  submitting.value = true;
+
+  try {
+    await passwordService.updatePassword({
+      requestBody: form.value,
+    });
+
+    displaySuccess({
+      text: t("messages.changePassword.success"),
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    router.push("/").catch(() => {});
+  } catch (error) {
+    console.error(error);
+
+    displayAlert({
+      text: t("messages.changePassword.failure"),
+    });
   }
 
-  setupForm() {
-    this.form = {
-      currentPassword: null,
-      password: null,
-      passwordConfirmation: null,
-    };
-  }
+  submitting.value = false;
+};
+</script>
 
-  async changePassword() {
-    this.submitting = true;
-
-    const response = await this.$api.put("password/update", this.form);
-
-    this.submitting = false;
-
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t("messages.changePassword.success"),
-      });
-
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push("/").catch(() => {});
-    } else {
-      displayAlert({
-        text: this.$t("messages.changePassword.failure"),
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "ChangePasswordForm",
+};
 </script>

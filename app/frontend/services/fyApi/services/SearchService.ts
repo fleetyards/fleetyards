@@ -17,7 +17,7 @@ export class SearchService {
      * @returns SearchResult successful
      * @throws ApiError
      */
-    public getSearch({
+    public search({
         q,
     }: {
         q?: SearchQuery,

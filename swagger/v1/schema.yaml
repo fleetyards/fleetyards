@@ -3329,6 +3329,96 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/password/request":
+    post:
+      summary: Request Password reset
+      operationId: requestPasswordReset
+      tags:
+      - Password
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PasswordRequestInput"
+        required: true
+  "/password":
+    put:
+      summary: Update password
+      operationId: updatePassword
+      tags:
+      - Password
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PasswordInput"
+        required: true
+  "/password/{token}":
+    parameters:
+    - name: token
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Update Password with Token
+      operationId: updatePasswordWithToken
+      tags:
+      - Password
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PasswordInput"
+        required: true
   "/public/fleets/{fleetSlug}/stats/model-counts":
     parameters:
     - name: fleetSlug
@@ -3694,6 +3784,7 @@ paths:
   "/search":
     get:
       summary: list searches
+      operationId: search
       tags:
       - Search
       parameters:
@@ -3717,6 +3808,7 @@ paths:
   "/sessions/confirm-access":
     post:
       summary: confirm_access session
+      operationId: confirmAccess
       tags:
       - Sessions
       parameters: []
@@ -3748,6 +3840,7 @@ paths:
   "/sessions":
     post:
       summary: create session
+      operationId: createSession
       tags:
       - Sessions
       parameters: []
@@ -3772,6 +3865,7 @@ paths:
         required: true
     delete:
       summary: delete session
+      operationId: deleteSession
       tags:
       - Sessions
       responses:
@@ -6639,6 +6733,24 @@ components:
           nullable: true
       additionalProperties: false
       title: HangarGroupUpdateInput
+    PasswordInput:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        password:
+          type: string
+        passwordConfirmation:
+          type: string
+      additionalProperties: false
+      title: PasswordInput
+    PasswordRequestInput:
+      type: object
+      properties:
+        email:
+          type: string
+      additionalProperties: false
+      title: PasswordRequestInput
     RsiHangarItemInput:
       type: object
       properties:

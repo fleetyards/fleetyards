@@ -3,11 +3,12 @@
 module Api
   module V1
     class PasswordsController < ::Api::BaseController
-      skip_authorization_check except: [:update]
-      before_action :authenticate_user!, only: [:update]
+      skip_authorization_check only: [:request_email, :update_with_token]
+      before_action :authenticate_user!, except: [:request_email, :update_with_token]
 
       def request_email
         user = User.find_by(email: params[:email])
+
         if user.present?
           user.send_reset_password_instructions
           render json: {code: "request_pasword.success", message: I18n.t("devise.passwords.send_paranoid_instructions")}
@@ -18,16 +19,17 @@ module Api
 
       def update
         authorize! :update, current_user
-        user = User.find(current_user.id)
-        if user.update_with_password(change_password_params)
+
+        if current_user.update_with_password(change_password_params)
           render json: {code: "change_pasword.success", message: I18n.t("devise.passwords.updated_not_active")}
         else
-          render json: ValidationError.new("change_pasword", errors: user.errors), status: :bad_request
+          render json: ValidationError.new("change_pasword", errors: current_user.errors), status: :bad_request
         end
       end
 
       def update_with_token
         user = User.reset_password_by_token(change_password_params)
+
         if user.errors.blank?
           render json: {code: "change_pasword.success", message: I18n.t("devise.passwords.updated_not_active")}
         else

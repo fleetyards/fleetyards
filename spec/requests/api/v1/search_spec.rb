@@ -19,6 +19,7 @@ RSpec.describe "api/v1/search", type: :request, swagger_doc: "v1/schema.yaml" do
 
   path "/search" do
     get("list searches") do
+      operationId "search"
       tags "Search"
       produces "application/json"
 

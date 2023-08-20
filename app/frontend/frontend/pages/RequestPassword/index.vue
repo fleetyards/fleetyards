@@ -6,7 +6,7 @@
           <form @submit.prevent="handleSubmit(requestPassword)">
             <h1>
               <router-link to="/" exact>
-                {{ $t("app") }}
+                {{ t("app") }}
               </router-link>
             </h1>
 
@@ -14,7 +14,7 @@
               v-slot="{ errors }"
               vid="email"
               rules="required|email"
-              :name="$t('labels.email')"
+              :name="t('labels.email')"
               :slim="true"
             >
               <FormInput
@@ -28,16 +28,16 @@
             </ValidationProvider>
 
             <Btn :loading="submitting" type="submit" size="large" :block="true">
-              {{ $t("actions.requestPassword") }}
+              {{ t("actions.requestPassword") }}
             </Btn>
 
             <footer v-if="!isAuthenticated">
               <p class="text-center">
-                {{ $t("labels.alreadyRegistered") }}
+                {{ t("labels.alreadyRegistered") }}
               </p>
 
               <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ $t("actions.login") }}
+                {{ t("actions.login") }}
               </Btn>
             </footer>
           </form>
@@ -47,52 +47,71 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess } from "@/frontend/lib/Noty";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Store from "@/frontend/lib/Store";
 
-@Component<RequestPassword>({
-  components: {
-    FormInput,
-    Btn,
-  },
-})
-export default class RequestPassword extends Vue {
-  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated: boolean;
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type { PasswordRequestInput } from "@/services/fyApi";
+import { useRouter } from "vue-router/composables";
 
-  submitting = false;
+const { t } = useI18n();
 
-  form: RequestPasswordForm | null = null;
+const submitting = ref(false);
 
-  mounted() {
-    this.setupForm();
-  }
+const form = ref<PasswordRequestInput>({});
 
-  setupForm() {
-    this.form = {
-      email: null,
-    };
-  }
+const isAuthenticated = computed(
+  () => Store.getters["session/isAuthenticated"]
+);
 
-  async requestPassword() {
-    this.submitting = true;
+onMounted(() => {
+  setupForm();
+});
 
-    await this.$api.post("password/request", this.form);
+const setupForm = () => {
+  form.value = {
+    email: undefined,
+  };
+};
 
-    this.submitting = false;
+const { password: passwordService } = useApiClient();
+
+const router = useRouter();
+
+const requestPassword = async () => {
+  submitting.value = true;
+
+  try {
+    await passwordService.requestPasswordReset({
+      requestBody: form.value,
+    });
 
     displaySuccess({
-      text: this.$t("messages.requestPasswordChange.success"),
+      text: t("messages.requestPasswordChange.success"),
     });
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    this.$router.push("/").catch(() => {});
+    router.push("/").catch(() => {});
+  } catch (error) {
+    console.error(error);
+
+    displayAlert({
+      text: t("messages.requestPasswordChange.failure"),
+    });
   }
-}
+
+  submitting.value = false;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "RequestPasswordPage",
+};
 </script>
 
 <style lang="scss">
