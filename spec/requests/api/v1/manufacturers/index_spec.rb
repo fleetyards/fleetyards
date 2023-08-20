@@ -38,7 +38,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
           data = JSON.parse(response.body)
 
           expect(data.count).to be > 0
-          expect(data.count).to eq(3)
+          expect(data.count).to eq(7)
         end
       end
 
@@ -55,7 +55,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data.count).to eq(2)
+          expect(data.count).to eq(6)
         end
       end
 
