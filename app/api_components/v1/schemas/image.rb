@@ -17,10 +17,13 @@ module V1
           smallUrl: {type: :string, format: :uri},
           type: {type: :string},
           url: {type: :string, format: :uri},
-          width: {type: :number, nullable: true}
+          width: {type: :number, nullable: true},
+          gallery: {"$ref": "#/components/schemas/Gallery"},
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[id name url width height type background smallUrl bigUrl]
+        required: %w[id name url width height type background smallUrl bigUrl createdAt updatedAt]
       })
     end
   end

@@ -27,21 +27,13 @@ class Ability
     can %i[index], :api_manufacturers
     can %i[index show], :api_stations
     can %i[show index], :api_celestial_objects
-    can %i[index show], :api_shops
-    can %i[index], :api_shop_commodities
     can %i[show index], :api_starsystems
     can %i[index], :api_images
-    can %i[index], :api_commodities
-    can %i[index], :api_components
-    can %i[index], :api_equipment
     can %i[public], :api_hangar_groups
     can %i[show create], :api_commodity_prices
-    can %i[show], :api_components
     can %i[index], :api_roadmap
     can %i[index], :api_search
-    can %i[index], :api_trade_routes
     can %i[read], :api_fleet
-    can %i[read], :api_commodity_prices
 
     can %i[read_public], :api_user
   end

@@ -39,7 +39,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
           items = data["items"]
 
           expect(items.count).to be > 0
-          expect(items.count).to eq(3)
+          expect(items.count).to eq(7)
         end
       end
 
@@ -56,7 +56,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
           data = JSON.parse(response.body)
           items = data["items"]
 
-          expect(items.count).to eq(2)
+          expect(items.count).to eq(6)
         end
       end
 
@@ -71,6 +71,27 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
 
           expect(items.count).to eq(2)
         end
+      end
+    end
+  end
+
+  path "/manufacturers/with-models" do
+    get("with_models manufacturer") do
+      tags "Manufacturers"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Manufacturers"
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            "application/json" => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+
+        run_test!
       end
     end
   end

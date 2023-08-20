@@ -79,6 +79,10 @@
       margin-top: 0;
       padding-bottom: 10px;
 
+      &.metrics-label {
+        margin-right: 0px;
+      }
+
       &.sticky-left {
         background: linear-gradient(to right, transparent, $gray-darker);
       }

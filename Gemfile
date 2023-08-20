@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby File.read(".ruby-version").chomp
 
-gem "rails", "7.0.6"
+gem "rails", "7.0.7"
 
 gem "pg", "~> 1.0"
 
@@ -196,4 +196,4 @@ group :development, :test do
   gem "knapsack"
 end
 
-gem "escompress", "~> 0.3.0"
+gem "enum_attributes_validation", "~> 0.1.7"

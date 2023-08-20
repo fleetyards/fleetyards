@@ -3,7 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
-import type { ShopMinimal } from '../models/ShopMinimal';
+import type { Shop } from '../models/Shop';
+import type { ShopCommodity } from '../models/ShopCommodity';
+import type { ShopCommodityOrderQuery } from '../models/ShopCommodityOrderQuery';
+import type { ShopCommodityQuery } from '../models/ShopCommodityQuery';
 import type { ShopQuery } from '../models/ShopQuery';
 import type { Shops } from '../models/Shops';
 
@@ -15,11 +18,57 @@ export class ShopsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * Shop Commodity list
+     * @returns ShopCommodity successful
+     * @throws ApiError
+     */
+    public shopCommodities({
+        slug,
+        stationSlug,
+        page = '1',
+        perPage = '30',
+        search,
+        query,
+        order,
+        cacheId,
+    }: {
+        slug: string,
+        stationSlug: string,
+        page?: string,
+        perPage?: string,
+        search?: string,
+        query?: ShopCommodityQuery,
+        order?: ShopCommodityOrderQuery,
+        cacheId?: string,
+    }): CancelablePromise<Array<ShopCommodity>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/stations/{stationSlug}/shops/{slug}/commodities',
+            path: {
+                'slug': slug,
+                'stationSlug': stationSlug,
+            },
+            query: {
+                'page': page,
+                'perPage': perPage,
+                'search': search,
+                'query': query,
+                'order': order,
+                'cacheId': cacheId,
+            },
+            errors: {
+                404: `not found`,
+            },
+        });
+    }
+
+    /**
+     * @deprecated
      * Shop types
      * @returns FilterOption successful
      * @throws ApiError
      */
-    public shopsTypes(): CancelablePromise<Array<FilterOption>> {
+    public deprecateDshopsTypes(): CancelablePromise<Array<FilterOption>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/shops/shop-types',
@@ -56,7 +105,7 @@ export class ShopsService {
 
     /**
      * Shop Detail
-     * @returns ShopMinimal successful
+     * @returns Shop successful
      * @throws ApiError
      */
     public shop({
@@ -71,7 +120,7 @@ export class ShopsService {
          * Shop slug
          */
         slug: string,
-    }): CancelablePromise<ShopMinimal> {
+    }): CancelablePromise<Shop> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/{stationSlug}/shops/{slug}',

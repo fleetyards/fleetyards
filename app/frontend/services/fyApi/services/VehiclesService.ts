@@ -5,13 +5,13 @@
 import type { Hangar } from '../models/Hangar';
 import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarQuery } from '../models/HangarQuery';
+import type { Vehicle } from '../models/Vehicle';
 import type { VehicleBulkDestroyInput } from '../models/VehicleBulkDestroyInput';
 import type { VehicleBulkUpdateInput } from '../models/VehicleBulkUpdateInput';
 import type { VehicleCheckSerialInput } from '../models/VehicleCheckSerialInput';
 import type { VehicleCheckSerialResponse } from '../models/VehicleCheckSerialResponse';
 import type { VehicleCreateInput } from '../models/VehicleCreateInput';
 import type { VehicleExport } from '../models/VehicleExport';
-import type { VehicleMinimal } from '../models/VehicleMinimal';
 import type { VehicleUpdateInput } from '../models/VehicleUpdateInput';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -86,14 +86,14 @@ export class VehiclesService {
 
     /**
      * Create new Vehicle
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
     public vehicleCreate({
         requestBody,
     }: {
         requestBody: VehicleCreateInput,
-    }): CancelablePromise<VehicleMinimal> {
+    }): CancelablePromise<Vehicle> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/vehicles',
@@ -134,10 +134,10 @@ export class VehiclesService {
     /**
      * @deprecated
      * Vehicle Fleetchart List -> use GET /hangar
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
-    public deprecateDgetVehiclesFleetchart(): CancelablePromise<Array<VehicleMinimal>> {
+    public deprecateDgetVehiclesFleetchart(): CancelablePromise<Array<Vehicle>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/fleetchart',
@@ -194,10 +194,10 @@ export class VehiclesService {
     /**
      * @deprecated
      * Vehicle embed -> use GET /public/hangar/embed
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
-    public deprecateDgetVehiclesEmbed(): CancelablePromise<Array<VehicleMinimal>> {
+    public deprecateDgetVehiclesEmbed(): CancelablePromise<Array<Vehicle>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/embed',
@@ -220,10 +220,10 @@ export class VehiclesService {
     /**
      * @deprecated
      * Vehicle hangar -> no replacement
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
-    public deprecateDgetVehiclesHangar(): CancelablePromise<Array<VehicleMinimal>> {
+    public deprecateDgetVehiclesHangar(): CancelablePromise<Array<Vehicle>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/hangar',
@@ -232,7 +232,7 @@ export class VehiclesService {
 
     /**
      * Delete Vehicle
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
     public destroyVehicle({
@@ -242,7 +242,7 @@ export class VehiclesService {
          * id
          */
         id: string,
-    }): CancelablePromise<VehicleMinimal> {
+    }): CancelablePromise<Vehicle> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/vehicles/{id}',
@@ -258,7 +258,7 @@ export class VehiclesService {
 
     /**
      * Update Vehicle
-     * @returns VehicleMinimal successful
+     * @returns Vehicle successful
      * @throws ApiError
      */
     public updateVehicle({
@@ -270,7 +270,7 @@ export class VehiclesService {
          */
         id: string,
         requestBody: VehicleUpdateInput,
-    }): CancelablePromise<VehicleMinimal> {
+    }): CancelablePromise<Vehicle> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/vehicles/{id}',

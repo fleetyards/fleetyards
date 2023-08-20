@@ -12,7 +12,7 @@ const languageHeader = () => {
 
 export const useApiClient = () =>
   new FyAdminApi({
-    BASE: `${window.API_ENDPOINT}`,
+    BASE: `${window.ADMIN_API_ENDPOINT}`,
     WITH_CREDENTIALS: true,
     HEADERS: () => {
       return new Promise((resolve) => {

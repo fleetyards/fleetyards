@@ -6,7 +6,7 @@ module Api
       skip_authorization_check only: %i[signup confirm]
       before_action :authenticate_user!, except: %i[signup confirm check_email check_username public]
 
-      def current
+      def me
         authorize! :read, current_user
         @user = current_user
       end

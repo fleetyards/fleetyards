@@ -7,9 +7,8 @@ module V1
 
       schema({
         properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/ShopMinimal"}}
+          items: {type: :array, items: {"$ref": "#/components/schemas/Shop"}}
         },
-        additionalProperties: false,
         required: %w[items]
       })
     end

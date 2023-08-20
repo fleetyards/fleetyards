@@ -5,8 +5,6 @@ module Api
     class VehiclesController < ::Api::BaseController
       include HangarFiltersConcern
 
-      skip_authorization_check only: [:public_fleetchart]
-
       def create
         @vehicle = Vehicle.new(
           vehicle_params.merge(public: true)
@@ -123,30 +121,6 @@ module Api
         @vehicles = @q.result(distinct: true)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
-      end
-
-      # DEPRECATED
-      def public_fleetchart
-        user = User.find_by!("lower(username) = ?", params.fetch(:username, "").downcase)
-
-        unless user.public_hangar?
-          not_found
-          return
-        end
-
-        @q = user.vehicles
-          .visible
-          .purchased
-          .public
-          .ransack(vehicle_query_params)
-
-        @vehicles = []
-        return unless user.public_hangar?
-
-        @vehicles = @q.result(distinct: true)
-          .includes(:model)
-          .joins(:model)
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 

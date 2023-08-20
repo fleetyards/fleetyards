@@ -160,6 +160,8 @@ export default class Login extends Vue {
       if (this.$route.params.redirectToRoute) {
         await this.$router.replace({
           name: this.$route.params.redirectToRoute,
+          params: this.$route.params.redirectToRouteParams,
+          query: this.$route.params.redirectToRouteQuery,
         });
       } else {
         // eslint-disable-next-line @typescript-eslint/no-empty-function

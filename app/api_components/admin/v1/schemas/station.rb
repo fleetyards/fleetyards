@@ -23,20 +23,34 @@ module Admin
             hasImages: {type: :boolean},
             locationLabel: {type: :string, nullable: true},
             location: {type: :string, nullable: true},
+
             media: {
               type: :object,
               properties: {
                 backgroundImage: {type: :string, nullable: true},
                 storeImage: {"$ref": "#/components/schemas/MediaImage"}
-              }
+              },
+              additionalProperties: false
             },
+
             refinery: {type: :boolean},
             shopListLabel: {type: :string, nullable: true},
             typeLabel: {type: :string, nullable: true},
-            type: {type: :string, nullable: true}
+            type: {type: :string, nullable: true},
+
+            starsystem: {"$ref": "#/components/schemas/Starsystem"},
+            shops: {type: :array, items: {"$ref": "#/components/schemas/Shop"}},
+            docks: {type: :array, items: {"$ref": "#/components/schemas/Dock"}},
+            habitations: {type: :array, items: {"$ref": "#/components/schemas/Habitation"}},
+
+            createdAt: {type: :string, format: "date-time"},
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name slug habitable hasImages refinery cargoHub celestialObject]
+          required: %w[
+            id name slug habitable hasImages refinery cargoHub celestialObject media createdAt
+            updatedAt
+          ]
         })
       end
     end

@@ -72,6 +72,7 @@ class CelestialObject < ApplicationRecord
   mount_uploader :store_image, StoreImageUploader
 
   ransack_alias :starsystem, :starsystem_slug
+  ransack_alias :parent, :parent_slug
   ransack_alias :name, :name_or_slug
   ransack_alias :search, :name_or_slug_or_starsystem_slug
 

@@ -24,12 +24,13 @@
 #  rsi_release_id      :integer
 #
 
-one:
+galaxy:
   rsi_id: 1
   rsi_category_id: 1
   rsi_release_id: 1
   release: 4.1
-  name: MyString
+  model: galaxy
+  name: Galaxy
   body: MyText
   description: MyText
   released: false
@@ -38,12 +39,12 @@ one:
   completed: 1
   active: true
 
-two:
+pyrp:
   rsi_id: 1
   rsi_category_id: 1
   rsi_release_id: 1
   release: 4.0
-  name: MyString
+  name: Pyro
   body: MyText
   description: MyText
   released: false

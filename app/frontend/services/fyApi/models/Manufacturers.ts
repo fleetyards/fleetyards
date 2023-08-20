@@ -3,11 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ManufacturerMinimal } from './ManufacturerMinimal';
+import type { Manufacturer } from './Manufacturer';
 import type { Meta } from './Meta';
 
 export type Manufacturers = {
-    items: Array<ManufacturerMinimal>;
+    items: Array<Manufacturer>;
     meta?: Meta;
 };
 

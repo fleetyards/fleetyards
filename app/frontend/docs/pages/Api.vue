@@ -42,12 +42,14 @@
 </template>
 
 <script lang="ts" setup>
-import { SwaggerUIBundle } from "swagger-ui-dist";
+import SwaggerUI from "swagger-ui";
 
 const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
 
 const apiVersion = computed(() => window.API_VERSION);
 const oasVersion = computed(() => window.API_OAS_VERSION);
+
+const swagger = ref<SwaggerUI>();
 
 const validatorIconUrl = computed(
   () => `https://validator.swagger.io/validator?url=${schemaUrl.value}`
@@ -58,15 +60,17 @@ const validatorUrl = computed(
 );
 
 onMounted(() => {
-  SwaggerUIBundle({
+  swagger.value = SwaggerUI({
     dom_id: "#swagger-ui",
     url: schemaUrl.value,
-    presets: [
-      SwaggerUIBundle.presets.apis,
-      SwaggerUIBundle.SwaggerUIStandalonePreset,
-    ],
     showCommonExtensions: true,
     filter: true,
+  });
+
+  swagger.value.initOAuth({
+    clientId: "your-client-id",
+    clientSecret: "",
+    usePkceWithAuthorizationCodeGrant: true,
   });
 });
 </script>

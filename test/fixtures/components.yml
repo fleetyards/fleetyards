@@ -28,14 +28,10 @@
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #
 
-one:
-  name: MyString
-  slug: MyString
-  store_image: MyString
-  description: MyText
+xl1:
+  name: XL1
+  slug: xl1
 
-two:
-  name: MyString
-  slug: MyString
-  store_image: MyString
-  description: MyText
+badger:
+  name: CF-227 Badger
+  slug: cf-227-badger

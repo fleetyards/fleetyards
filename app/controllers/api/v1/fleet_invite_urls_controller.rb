@@ -26,9 +26,11 @@ module Api
 
         authorize! :create, fleet_invite_url
 
-        return if fleet_invite_url.save
-
-        render json: ValidationError.new("fleet_invite_urls.create", errors: fleet_invite_url.errors), status: :bad_request
+        if fleet_invite_url.save
+          render :create, status: :created
+        else
+          render json: ValidationError.new("fleet_invite_urls.create", errors: fleet_invite_url.errors), status: :bad_request
+        end
       end
 
       def destroy
@@ -36,10 +38,30 @@ module Api
 
         authorize! :destroy, fleet_invite_url
 
-        if fleet_invite_url.destroy
-          render json: nil, status: :ok
-        else
+        unless fleet_invite_url.destroy
           render json: ValidationError.new("fleet_invite_urls.destroy", errors: fleet_invite_url.errors), status: :bad_request
+        end
+      end
+
+      def use
+        invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
+
+        @membership = invite_url.fleet.fleet_memberships.new(
+          user: current_user,
+          role: :member,
+          invited_by: invite_url.user_id,
+          used_invite_token: invite_url.token
+        )
+
+        authorize! :create_by_invite, @membership
+
+        if @membership.save
+          @membership.request!
+          invite_url.reduce_limit
+
+          render "api/v1/fleet_memberships/show", status: :created
+        else
+          render json: ValidationError.new("fleet_memberships.create", errors: @membership.errors), status: :bad_request
         end
       end
 
@@ -61,7 +83,7 @@ module Api
 
       private def fleet_invite_url_params
         @fleet_invite_url_params ||= params.transform_keys(&:underscore)
-          .permit(:fleet_slug, :limit, :expires_after_minutes)
+          .permit(:limit, :expires_after_minutes)
       end
     end
   end

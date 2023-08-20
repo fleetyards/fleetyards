@@ -5,16 +5,16 @@
 import type { CargoOptions } from '../models/CargoOptions';
 import type { FilterOption } from '../models/FilterOption';
 import type { Images } from '../models/Images';
-import type { ModelComplete } from '../models/ModelComplete';
+import type { Model } from '../models/Model';
+import type { ModelExtended } from '../models/ModelExtended';
 import type { ModelHardpoint } from '../models/ModelHardpoint';
 import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
-import type { ModelMinimal } from '../models/ModelMinimal';
 import type { ModelModulePackages } from '../models/ModelModulePackages';
 import type { ModelModules } from '../models/ModelModules';
-import type { ModelPaintMinimal } from '../models/ModelPaintMinimal';
+import type { ModelPaint } from '../models/ModelPaint';
 import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
-import type { ModelUpgradeMinimal } from '../models/ModelUpgradeMinimal';
+import type { ModelUpgrade } from '../models/ModelUpgrade';
 import type { Videos } from '../models/Videos';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -109,14 +109,14 @@ export class ModelsService {
 
     /**
      * Embed Models
-     * @returns ModelMinimal successful
+     * @returns Model successful
      * @throws ApiError
      */
     public embed({
         models,
     }: {
         models: Array<string>,
-    }): CancelablePromise<Array<ModelMinimal>> {
+    }): CancelablePromise<Array<Model>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/embed',
@@ -238,7 +238,7 @@ export class ModelsService {
 
     /**
      * Model Detail
-     * @returns ModelComplete successful
+     * @returns ModelExtended successful
      * @throws ApiError
      */
     public model({
@@ -248,7 +248,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-    }): CancelablePromise<ModelComplete> {
+    }): CancelablePromise<ModelExtended> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}',
@@ -425,7 +425,7 @@ export class ModelsService {
 
     /**
      * Model Snubcrafts
-     * @returns ModelMinimal successful
+     * @returns Model successful
      * @throws ApiError
      */
     public modelSnubCrafts({
@@ -435,7 +435,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-    }): CancelablePromise<Array<ModelMinimal>> {
+    }): CancelablePromise<Array<Model>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/snub-crafts',
@@ -516,7 +516,7 @@ export class ModelsService {
 
     /**
      * Model Upgrades
-     * @returns ModelUpgradeMinimal successful
+     * @returns ModelUpgrade successful
      * @throws ApiError
      */
     public modelUpgrades({
@@ -526,7 +526,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-    }): CancelablePromise<Array<ModelUpgradeMinimal>> {
+    }): CancelablePromise<Array<ModelUpgrade>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/upgrades',
@@ -541,7 +541,7 @@ export class ModelsService {
 
     /**
      * Model Paints
-     * @returns ModelPaintMinimal successful
+     * @returns ModelPaint successful
      * @throws ApiError
      */
     public modelPaints({
@@ -551,7 +551,7 @@ export class ModelsService {
          * Model slug
          */
         slug: string,
-    }): CancelablePromise<Array<ModelPaintMinimal>> {
+    }): CancelablePromise<Array<ModelPaint>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/paints',

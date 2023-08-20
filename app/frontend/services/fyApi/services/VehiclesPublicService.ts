@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { HangarPublic } from '../models/HangarPublic';
-import type { VehicleMinimalPublic } from '../models/VehicleMinimalPublic';
+import type { VehiclePublic } from '../models/VehiclePublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -38,7 +38,7 @@ export class VehiclesPublicService {
     /**
      * @deprecated
      * public_fleetchart vehicle
-     * @returns VehicleMinimalPublic successful
+     * @returns VehiclePublic successful
      * @throws ApiError
      */
     public deprecateDgetPublicFleetchart({
@@ -48,7 +48,7 @@ export class VehiclesPublicService {
          * username
          */
         id: string,
-    }): CancelablePromise<Array<VehicleMinimalPublic>> {
+    }): CancelablePromise<Array<VehiclePublic>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/{id}/fleetchart',

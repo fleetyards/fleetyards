@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Gallery } from './Gallery';
+
 export type Image = {
     id: string;
     background: boolean;
@@ -14,5 +16,8 @@ export type Image = {
     type: string;
     url: string;
     width: number | null;
+    gallery?: Gallery;
+    createdAt: string;
+    updatedAt: string;
 };
 

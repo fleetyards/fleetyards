@@ -12,11 +12,13 @@ module V1
           name: {type: :string},
           slug: {type: :string},
           description: {type: :string, nullable: true},
+
           media: {
             type: :object,
             properties: {
               storeImage: {"$ref": "#/components/schemas/MediaImage"}
-            }
+            },
+            additionalProperties: false
           },
           category: {"$ref": "#/components/schemas/ShopCommodityCategoryEnum"},
           subCategory: {
@@ -49,6 +51,7 @@ module V1
               sellPrice: {type: :number},
               pricePerUnit: {type: :boolean}
             },
+            additionalProperties: false,
             required: %w[pricePerUnit]
           },
 
@@ -60,13 +63,37 @@ module V1
 
           shop: {"$ref": "#/components/schemas/Shop"},
 
+          item: {
+            oneOf: [{
+              "$ref": "#/components/schemas/Model"
+            }, {
+              "$ref": "#/components/schemas/Component"
+            }, {
+              "$ref": "#/components/schemas/Commodity"
+            }, {
+              "$ref": "#/components/schemas/Equipment"
+            }, {
+              "$ref": "#/components/schemas/ModelModule"
+            }, {
+              "$ref": "#/components/schemas/ModelPaint"
+            }]
+          },
+
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"},
+
+          # DEPRECATED
+
           storeImage: {type: :string, nullable: true, format: :uri, deprecated: true},
           storeImageSmall: {type: :string, nullable: true, format: :uri, deprecated: true},
           storeImageMedium: {type: :string, nullable: true, format: :uri, deprecated: true},
           storeImageLarge: {type: :string, nullable: true, format: :uri, deprecated: true}
         },
         additionalProperties: false,
-        required: %w[id name slug media prices confirmed commodityItemType commodityItemId shop]
+        required: %w[
+          id name slug media prices confirmed commodityItemType commodityItemId shop
+          createdAt updatedAt
+        ]
       })
     end
   end

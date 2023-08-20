@@ -2,13 +2,10 @@
 
 module Api
   module V1
-    class TradeRoutesController < ::Api::BaseController
-      before_action :authenticate_user!, only: %i[]
+    class TradeRoutesController < ::Api::PublicBaseController
       after_action -> { pagination_header(:trade_routes) }, only: [:index]
 
       def index
-        authorize! :index, :api_trade_routes
-
         trade_routes_query_params["sorts"] = sort_by_name(["profit_per_unit desc", "created_at desc"])
 
         scope = TradeRoute.with_profit

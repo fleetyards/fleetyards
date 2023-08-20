@@ -31,3 +31,5 @@ json.component nil if hardpoint.component.blank?
 json.loadouts do
   json.array! hardpoint.model_hardpoint_loadouts, partial: "api/v1/model_hardpoint_loadouts/base", as: :loadout
 end
+
+json.partial! "api/shared/dates", record: hardpoint

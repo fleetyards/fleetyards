@@ -40,9 +40,9 @@
 #  rsi_id                  :integer
 #
 
-one:
-  name: MyString
-  slug: MyString
+andromeda_white_heron:
+  name: White Heron
+  slug: white-heron
   description: MyString
   model: andromeda
   rsi_id: 15000
@@ -53,14 +53,28 @@ one:
   store_images_updated_at: 2020-03-04 20:20:35
   store_url: MyString
 
-two:
-  name: MyString
-  slug: MyString
+andromeda-invictus:
+  name: "Invictus Blue and Gold"
+  slug: "invictus-blue-and-gold"
   description: MyString
+  model: andromeda
   rsi_id: 15000
   pledge_price: 9.99
   store_image: MyString
-  active: false
+  active: true
+  hidden: false
+  store_images_updated_at: 2020-03-04 20:20:35
+  store_url: MyString
+
+galaxy:
+  name: Protector
+  slug: protector
+  description: MyString
+  model: galaxy
+  rsi_id: 15000
+  pledge_price: 9.99
+  store_image: MyString
+  active: true
   hidden: false
   store_images_updated_at: 2020-03-04 20:20:35
   store_url: MyString

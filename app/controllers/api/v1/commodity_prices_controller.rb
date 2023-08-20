@@ -30,14 +30,6 @@ module Api
         end
       end
 
-      def time_ranges
-        authorize! :read, :api_commodity_prices
-
-        @filters = CommodityRentalPrice.time_range_filters
-
-        render "api/v1/shared/filters"
-      end
-
       private def commodity_price_params
         @commodity_price_params ||= params.transform_keys(&:underscore).permit(
           :price, :time_range

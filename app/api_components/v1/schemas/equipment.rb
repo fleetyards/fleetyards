@@ -19,8 +19,10 @@ module V1
               listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
               soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
             },
+            additionalProperties: false,
             required: %w[boughtAt listedAt soldAt]
           },
+
           backpackCompatibility: {type: :string, nullable: true},
           coreCompatibility: {type: :string, nullable: true},
           damageReduction: {type: :string, nullable: true},
@@ -30,12 +32,15 @@ module V1
           itemType: {type: :string, nullable: true},
           itemTypeLabel: {type: :string, nullable: true},
           manufacturer: {"$ref": "#/components/schemas/Manufacturer", nullable: true},
+
           media: {
             type: :object,
             properties: {
               storeImage: {"$ref": "#/components/schemas/MediaImage"}
-            }
+            },
+            additionalProperties: false
           },
+
           range: {type: :string, nullable: true},
           rateOfFire: {type: :string, nullable: true},
           size: {type: :string, nullable: true},
@@ -49,6 +54,11 @@ module V1
           weaponClass: {type: :string, nullable: true},
           weaponClassLabel: {type: :string, nullable: true},
 
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"},
+
+          # DEPRECATED
+
           storeImage: {type: :string, format: :uri, deprecated: true},
           storeImageIsFallback: {type: :boolean, deprecated: true},
           storeImageLarge: {type: :string, format: :uri, deprecated: true},
@@ -56,7 +66,7 @@ module V1
           storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
         additionalProperties: false,
-        required: %w[id name slug availability media]
+        required: %w[id name slug availability media createdAt updatedAt]
       })
     end
   end

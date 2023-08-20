@@ -3,6 +3,12 @@
 module Api
   module V1
     class FleetMembersController < ::Api::BaseController
+      include FleetMemberFiltersConcern
+
+      rescue_from ActiveRecord::RecordNotFound do |_exception|
+        not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
+      end
+
       after_action -> { pagination_header(:members) }, only: %i[index]
 
       def index
@@ -21,30 +27,66 @@ module Api
           .per(per_page(FleetMembership))
       end
 
-      def quick_stats
-        authorize! :show, fleet
-        @q = fleet.fleet_memberships.ransack(member_query_params)
+      def create
+        user = User.find_by(normalized_username: params[:username]&.downcase)
 
-        members = @q.result
+        @member = fleet.fleet_memberships.new(user: user, role: :member, invited_by: current_user.id)
 
-        @quick_stats = QuickStats.new(
-          total: members.size,
-          metrics: {
-            total_admins: members.where(role: :admin).size,
-            total_officers: members.where(role: :officer).size,
-            total_members: members.where(role: :member).size
-          }
-        )
+        authorize! :create, member
+
+        if member.save
+          member.invite!
+          render :create, status: :created
+        else
+          render json: ValidationError.new("fleet_members.create", errors: member.errors), status: :bad_request
+        end
+      end
+
+      def accept
+        authorize! :accept_request, member
+
+        unless member.accept_request
+          render json: ValidationError.new("fleet_members.accept", errors: member.errors), status: :bad_request
+        end
+      end
+
+      def decline
+        authorize! :decline_request, member
+
+        unless member.decline
+          render json: ValidationError.new("fleet_members.decline", errors: member.errors), status: :bad_request
+        end
+      end
+
+      def promote
+        authorize! :promote, member
+
+        member.promote
+      end
+
+      def demote
+        authorize! :demote, member
+
+        member.demote
+      end
+
+      def destroy
+        authorize! :destroy, member
+
+        return if member.destroy
+
+        render json: ValidationError.new("fleet_members.destroy", errors: member.errors), status: :bad_request
       end
 
       private def fleet
-        @fleet ||= current_user.fleets.where(slug: params[:slug]).first!
+        @fleet ||= current_user.fleets.where(slug: params[:fleet_slug]).first!
       end
 
-      private def member_query_params
-        @member_query_params ||= query_params(
-          :username_cont, :name_cont, sorts: [], role_in: []
-        )
+      private def member
+        @member ||= fleet.fleet_memberships
+          .includes(:user)
+          .joins(:user)
+          .find_by!(users: {normalized_username: params[:username].downcase})
       end
     end
   end

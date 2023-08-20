@@ -21,9 +21,9 @@
         />
       </div>
 
-      <div
+      <Collapsed
         :id="group"
-        v-show-slide:400:ease-in-out="isVisible(group.toLowerCase())"
+        :visible="isVisible(group.toLowerCase())"
         class="row"
       >
         <div class="col-12">
@@ -47,12 +47,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </Collapsed>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Collapsed from "@/shared/components/Collapsed.vue";
 import HardpointGroup from "@/frontend/components/Models/Hardpoints/Group/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 

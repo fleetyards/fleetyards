@@ -7,9 +7,8 @@ module V1
 
       schema({
         properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/CelestialObjectMinimal"}}
+          items: {type: :array, items: {"$ref": "#/components/schemas/CelestialObject"}}
         },
-        additionalProperties: false,
         required: %w[items]
       })
     end

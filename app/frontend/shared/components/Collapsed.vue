@@ -1,10 +1,10 @@
 <template>
   <transition
     :css="false"
-    :onBeforeEnter="onBeforeEnter"
-    :onEnter="enterTransition"
-    :onBeforeLeave="onBeforeLeave"
-    :onLeave="leaveTransition"
+    :on-before-enter="onBeforeEnter"
+    :on-enter="enterTransition"
+    :on-before-leave="onBeforeLeave"
+    :on-leave="leaveTransition"
   >
     <component :is="as" v-if="visible" v-bind="$attrs">
       <slot />
@@ -52,21 +52,19 @@ const emit = defineEmits([
   "close-end",
 ]);
 
-const getElementStyle = (element: HTMLElement) => {
-  return {
-    height: element.style.height,
-    width: element.style.width,
-    position: element.style.position,
-    visibility: element.style.visibility,
-    overflow: element.style.overflow,
-    paddingTop: element.style.paddingTop,
-    paddingBottom: element.style.paddingBottom,
-    borderTopWidth: element.style.borderTopWidth,
-    borderBottomWidth: element.style.borderBottomWidth,
-    marginTop: element.style.marginTop,
-    marginBottom: element.style.marginBottom,
-  };
-};
+const getElementStyle = (element: HTMLElement) => ({
+  height: element.style.height,
+  width: element.style.width,
+  position: element.style.position,
+  visibility: element.style.visibility,
+  overflow: element.style.overflow,
+  paddingTop: element.style.paddingTop,
+  paddingBottom: element.style.paddingBottom,
+  borderTopWidth: element.style.borderTopWidth,
+  borderBottomWidth: element.style.borderBottomWidth,
+  marginTop: element.style.marginTop,
+  marginBottom: element.style.marginBottom,
+});
 
 const prepareElement = (
   closedRef: Ref<string>,
@@ -88,7 +86,7 @@ const prepareElement = (
   element.style.height = closed;
   element.style.overflow = "hidden";
 
-  return initialStyle.height && initialStyle.height != closed
+  return initialStyle.height && initialStyle.height !== closed
     ? initialStyle.height
     : height;
 };
@@ -206,6 +204,6 @@ const leaveTransition = (element: Element, done: () => void) => {
 
 <script lang="ts">
 export default {
-  name: "Collapsed",
+  name: "CollapsedComponent",
 };
 </script>

@@ -40,6 +40,8 @@ export type Equipment = {
     volume?: string | null;
     weaponClass?: string | null;
     weaponClassLabel?: string | null;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */

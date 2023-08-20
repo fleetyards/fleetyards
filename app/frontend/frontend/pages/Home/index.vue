@@ -137,10 +137,7 @@
                     :src="image.smallUrl"
                     :alt="image.name"
                     :title="image.name"
-                    :to="{
-                      name: 'model-images',
-                      params: { slug: image.model?.slug },
-                    }"
+                    :to="routeForImage(image)"
                     class="home-image image"
                   />
                 </div>
@@ -229,6 +226,17 @@ fetchImages();
 
 const scrollDown = () => {
   VueScrollTo.scrollTo(".home-ships");
+};
+
+const routeForImage = (image: Image) => {
+  if (!image.gallery) {
+    return undefined;
+  }
+
+  return {
+    name: "model-images",
+    params: { slug: image.gallery?.slug },
+  };
 };
 </script>
 

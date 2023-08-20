@@ -370,6 +370,21 @@ components:
       description: Sorting
       required: false
   schemas:
+    BarChartStats:
+      type: object
+      properties:
+        label:
+          type: string
+        count:
+          type: integer
+        tooltip:
+          type: string
+      additionalProperties: false
+      required:
+      - label
+      - count
+      - tooltip
+      title: BarChartStats
     BaseList:
       type: object
       properties:
@@ -512,6 +527,25 @@ components:
       - value
       - category
       title: FilterOption
+    Gallery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name
+      - slug
+      title: Gallery
     MediaImage:
       type: object
       properties:
@@ -564,6 +598,40 @@ components:
       - currentPage
       - totalPages
       title: Pagination
+    PieChartStats:
+      type: object
+      properties:
+        name:
+          type: string
+        "y":
+          type: integer
+        selected:
+          type: boolean
+        sliced:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - "y"
+      - selected
+      - sliced
+      title: PieChartStats
+    ScDataVersion:
+      type: object
+      properties:
+        version:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      title: ScDataVersion
+    Session:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Session
     StandardError:
       type: object
       properties:
@@ -576,6 +644,18 @@ components:
       - code
       - message
       title: StandardError
+    StandardMessage:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardMessage
     ValidationError:
       type: object
       properties:
@@ -592,6 +672,18 @@ components:
       - code
       - message
       title: ValidationError
+    Version:
+      type: object
+      properties:
+        version:
+          type: string
+        codename:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      - codename
+      title: Version
     ViewImage:
       type: object
       properties:
@@ -642,6 +734,7 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
         storeImage:
           type: string
           format: url
@@ -687,12 +780,21 @@ components:
           nullable: true
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - id
       - name
       - slug
       - designation
+      - media
+      - createdAt
+      - updatedAt
       title: CelestialObject
     Commodities:
       type: object
@@ -1215,22 +1317,6 @@ components:
       - createdAt
       - updatedAt
       title: EquipmentMinimal
-    Gallery:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      title: Gallery
     Habitation:
       type: object
       properties:
@@ -2629,6 +2715,7 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
         population:
           type: string
           nullable: true
@@ -2641,6 +2728,16 @@ components:
         type:
           type: string
           nullable: true
+        celestialObjects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
         storeImage:
           type: string
           format: uri
@@ -2662,85 +2759,6 @@ components:
       - name
       - slug
       title: Starsystem
-    StarsystemMinimal:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        danger:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        economy:
-          type: string
-          nullable: true
-        locationLabel:
-          type: string
-          nullable: true
-        mapX:
-          type: string
-          nullable: true
-        mapY:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-        population:
-          type: string
-          nullable: true
-        size:
-          type: string
-          nullable: true
-        status:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
-        celestialObjects:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      - celestialObjects
-      - createdAt
-      - updatedAt
-      title: StarsystemMinimal
     Station:
       type: object
       properties:
@@ -2790,6 +2808,7 @@ components:
               nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
         refinery:
           type: boolean
         shopListLabel:
@@ -2801,83 +2820,6 @@ components:
         type:
           type: string
           nullable: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - habitable
-      - hasImages
-      - refinery
-      - cargoHub
-      - celestialObject
-      title: Station
-    StationComplete:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        cargoHub:
-          type: boolean
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
-        classificationLabel:
-          type: string
-          nullable: true
-        classification:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        dockCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/DockCount"
-        habitable:
-          type: boolean
-        habitationCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/HabitationCount"
-        hasImages:
-          type: boolean
-        locationLabel:
-          type: string
-          nullable: true
-        location:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            backgroundImage:
-              type: string
-              nullable: true
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-        refinery:
-          type: boolean
-        shopListLabel:
-          type: string
-          nullable: true
-        typeLabel:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
         starsystem:
           "$ref": "#/components/schemas/Starsystem"
         shops:
@@ -2892,83 +2834,6 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Habitation"
-        images:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Image"
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - habitable
-      - hasImages
-      - refinery
-      - cargoHub
-      - celestialObject
-      - createdAt
-      - updatedAt
-      title: StationComplete
-    StationMinimal:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        cargoHub:
-          type: boolean
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
-        classificationLabel:
-          type: string
-          nullable: true
-        classification:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        dockCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/DockCount"
-        habitable:
-          type: boolean
-        habitationCounts:
-          type: array
-          items:
-            "$ref": "#/components/schemas/HabitationCount"
-        hasImages:
-          type: boolean
-        locationLabel:
-          type: string
-          nullable: true
-        location:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            backgroundImage:
-              type: string
-              nullable: true
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-        refinery:
-          type: boolean
-        shopListLabel:
-          type: string
-          nullable: true
-        typeLabel:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -2985,9 +2850,10 @@ components:
       - refinery
       - cargoHub
       - celestialObject
+      - media
       - createdAt
       - updatedAt
-      title: StationMinimal
+      title: Station
     StationShop:
       type: object
       properties:
@@ -3007,7 +2873,7 @@ components:
           type: array
           items:
             type: object
-            "$ref": "#/components/schemas/StationMinimal"
+            "$ref": "#/components/schemas/Station"
         meta:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false

@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
 
@@ -15,10 +16,13 @@ export type ModelModule = {
     };
     description?: string | null;
     media: {
-        storeImage?: MediaImage;
+        storeImage?: MediaImage | null;
     };
     pledgePrice?: number | null;
     productionStatus?: string | null;
+    manufacturer?: Manufacturer | null;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */

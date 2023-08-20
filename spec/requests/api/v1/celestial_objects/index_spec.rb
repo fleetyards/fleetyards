@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :celestial_objects
+  fixtures :all
 
   path "/celestial-objects" do
     get("Celestial Objects List") do

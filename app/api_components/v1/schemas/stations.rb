@@ -7,9 +7,8 @@ module V1
 
       schema({
         properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/StationMinimal"}}
+          items: {type: :array, items: {"$ref": "#/components/schemas/Station"}}
         },
-        additionalProperties: false,
         required: %w[items]
       })
     end

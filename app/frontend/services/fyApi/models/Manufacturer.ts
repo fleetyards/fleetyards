@@ -9,5 +9,7 @@ export type Manufacturer = {
     code?: string | null;
     logo?: string | null;
     longName?: string;
+    createdAt: string;
+    updatedAt: string;
 };
 

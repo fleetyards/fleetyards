@@ -7,9 +7,8 @@ module V1
 
       schema({
         properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/StarsystemMinimal"}}
+          items: {type: :array, items: {"$ref": "#/components/schemas/Starsystem"}}
         },
-        additionalProperties: false,
         required: %w[items]
       })
     end

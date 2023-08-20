@@ -57,31 +57,7 @@
                   slug: starsystem.slug,
                 },
               }"
-            >
-              <template v-if="starsystem.celestialObjects.length">
-                <h3 class="sr-only">
-                  {{ t("headlines.celestialObjects") }}
-                </h3>
-                <transition-group name="fade-list" class="row" tag="div" appear>
-                  <div
-                    v-for="celestialObject in starsystem.celestialObjects"
-                    :key="celestialObject.slug"
-                    class="col-12 col-lg-3 fade-list-item"
-                  >
-                    <PlanetPanel
-                      :item="celestialObject"
-                      :route="{
-                        name: 'celestial-object',
-                        params: {
-                          starsystem: starsystem?.slug,
-                          slug: celestialObject.slug,
-                        },
-                      }"
-                    />
-                  </div>
-                </transition-group>
-              </template>
-            </StarsystemList>
+            />
           </div>
         </transition-group>
         <Loader :loading="isLoading" :fixed="true" />
@@ -105,21 +81,20 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import Pagination from "@/frontend/core/components/Pagination/index.vue";
 import StarsystemList from "@/frontend/components/Starsystems/List/index.vue";
-import PlanetPanel from "@/frontend/components/Planets/Panel/index.vue";
 import mapImageUrl from "@/images/map.png";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { usePagination } from "@/frontend/composables/usePagination";
+import { usePagination } from "@/shared/composables/usePagination";
 import { useQuery } from "@tanstack/vue-query";
 import { useRoute } from "vue-router/composables";
 import { StarsystemQuery, BaseList } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-useMetaInfo();
+useMetaInfo(t);
 
-const { starsystems: starsystemsClient } = useApiClient();
+const { starsystems: starsystemsService } = useApiClient();
 
 const route = useRoute();
 
@@ -132,7 +107,7 @@ const {
 } = useQuery({
   queryKey: ["starsystems"],
   queryFn: () =>
-    starsystemsClient.list({
+    starsystemsService.starsystems({
       page: page.value,
       perPage: perPage.value,
       q: route.query.q as StarsystemQuery,

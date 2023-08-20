@@ -10,7 +10,7 @@ module V1
         properties: {
           name: {type: :string},
           habitationName: {type: :string, nullable: true},
-          type: {type: :string},
+          type: {"$ref": "#/components/schemas/HabitationTypeEnum"},
           typeLabel: {type: :string}
         },
         additionalProperties: false,

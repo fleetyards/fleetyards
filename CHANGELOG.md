@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.26.12](https://github.com/fleetyards/fleetyards/compare/v5.26.11...v5.26.12) (2023-08-14)
+
+### Bug Fixes
+
+* **login:** use correct params format to resolve issue with 2FA ([2bea396](https://github.com/fleetyards/fleetyards/commit/2bea3967d11af0851a0ef4f415bf35a190c07543))
+
+### [5.26.9](https://github.com/fleetyards/fleetyards/compare/v5.26.8...v5.26.9) (2023-08-13)
+
+### Bug Fixes
+
+* **compare:** update speed section to format speed values correctly ([f2a8d8d](https://github.com/fleetyards/fleetyards/commit/f2a8d8dc9b7b795f18c1ff4809fed7ee46d4ba4b))
+
+### [5.26.7](https://github.com/fleetyards/fleetyards/compare/v5.26.6...v5.26.7) (2023-08-13)
+
+
+### Bug Fixes
+
+* preview pages redirect for fleet and hangar ([6c99390](https://github.com/fleetyards/fleetyards/commit/6c99390853d08be3fd036a4108bc1574490a0bbc))
+
+### [5.26.6](https://github.com/fleetyards/fleetyards/compare/v5.26.5...v5.26.6) (2023-08-13)
+
+
+### Bug Fixes
+
+* **compare:** switch collapse component to resolve sticky issues ([3ec829d](https://github.com/fleetyards/fleetyards/commit/3ec829de48959800e4914f4a91ef55710f28593c))
+
 ### [5.26.5](https://github.com/fleetyards/fleetyards/compare/v5.26.4...v5.26.5) (2023-07-07)
 
 

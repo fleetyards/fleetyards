@@ -15,3 +15,5 @@ json.slug fleet.slug
 json.public_fleet fleet.public_fleet
 json.logo((fleet.logo.small.url if fleet.logo.present?))
 json.background_image((fleet.background_image.url if fleet.background_image.present?))
+
+json.partial! "api/shared/dates", record: fleet

@@ -11,16 +11,6 @@ module V1
           name: {type: :string},
           slug: {type: :string},
           designation: {type: :string},
-          media: {
-            type: :object,
-            properties: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage"}
-            }
-          },
-          storeImage: {type: :string, format: :url, deprecated: true},
-          storeImageLarge: {type: :string, deprecated: true},
-          storeImageMedium: {type: :string, deprecated: true},
-          storeImageSmall: {type: :string, deprecated: true},
           description: {type: :string, nullable: true},
           type: {type: :string, nullable: true},
           habitable: {type: :boolean, nullable: true},
@@ -31,10 +21,31 @@ module V1
           economy: {type: :integer, nullable: true},
           population: {type: :integer, nullable: true},
           locationLabel: {type: :string, nullable: true},
-          starsystem: {"$ref": "#/components/schemas/Starsystem", nullable: true}
+
+          media: {
+            type: :object,
+            properties: {
+              storeImage: {"$ref": "#/components/schemas/MediaImage"}
+            },
+            additionalProperties: false
+          },
+
+          starsystem: {"$ref": "#/components/schemas/Starsystem"},
+          parent: {"$ref": "#/components/schemas/CelestialObject"},
+          moons: {type: :array, items: {"$ref" => "#/components/schemas/CelestialObject"}},
+
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"},
+
+          # DEPRECATED
+
+          storeImage: {type: :string, format: :url, deprecated: true},
+          storeImageLarge: {type: :string, deprecated: true},
+          storeImageMedium: {type: :string, deprecated: true},
+          storeImageSmall: {type: :string, deprecated: true}
         },
         additionalProperties: false,
-        required: %w[name slug designation]
+        required: %w[name slug designation starsystem createdAt updatedAt]
       })
     end
   end

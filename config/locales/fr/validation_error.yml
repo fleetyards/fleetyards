@@ -11,10 +11,6 @@ fr:
       create: La flotte n’a pas pu être créée.
       destroy: La flotte n’a pas pu être détruite.
       update: La flotte n'a pas pu être mise à jour.
-    fleet_memberships:
-      create: L'adhésion à la flotte n'a pas pu être créée
-      destroy: L’adhésion à la flotte n’a pas pu être supprimée.
-      destroy_as_admin: Vous ne pouvez pas quitter une flotte en tant qu'Administrateur.
     hangar_group:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit

@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ImageComplete } from '../models/ImageComplete';
+import type { Image } from '../models/Image';
 import type { ImageQuery } from '../models/ImageQuery';
 import type { Images } from '../models/Images';
 
@@ -44,14 +44,14 @@ export class ImagesService {
     /**
      * Images random list
      * Get a randomized List of 14 Images
-     * @returns ImageComplete successful
+     * @returns Image successful
      * @throws ApiError
      */
     public imagesRandom({
         limit = 14,
     }: {
         limit?: number,
-    }): CancelablePromise<Array<ImageComplete>> {
+    }): CancelablePromise<Array<Image>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/images/random',

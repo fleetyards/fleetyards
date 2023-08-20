@@ -11,6 +11,8 @@ module V1
           id: {type: :string, format: :uuid},
           name: {type: :string},
           slug: {type: :string},
+          type: {"$ref": "#/components/schemas/CommodityTypeEnum"},
+          typeLabel: {type: :string},
 
           availability: {
             type: :object,
@@ -18,16 +20,22 @@ module V1
               boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
               soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
             },
+            additionalProperties: false,
             required: %w[boughtAt soldAt]
           },
-          type: {type: :string, nullable: true},
-          typeLabel: {type: :string, nullable: true},
+
           media: {
             type: :object,
             properties: {
               storeImage: {"$ref": "#/components/schemas/MediaImage"}
-            }
+            },
+            additionalProperties: false
           },
+
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"},
+
+          # DEPRECATED
 
           storeImage: {type: :string, format: :uri, deprecated: true},
           storeImageIsFallback: {type: :boolean, format: :uri, deprecated: true},

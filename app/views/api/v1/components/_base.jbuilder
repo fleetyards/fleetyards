@@ -34,6 +34,10 @@ json.tracking_signal_label component.tracking_signal_label
 json.type component.item_type
 json.type_label component.item_type_label
 
+json.partial! "api/shared/dates", record: component
+
+# DEPRECATED
+
 json.store_image component.store_image.url
 json.store_image_is_fallback component.store_image.identifier.nil?
 json.store_image_large component.store_image.large.url

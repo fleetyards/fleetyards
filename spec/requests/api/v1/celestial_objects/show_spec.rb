@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :celestial_objects
+  fixtures :all
 
   path "/celestial-objects/{slug}" do
     parameter name: "slug", in: :path, description: "slug", schema: {type: :string}
@@ -15,7 +15,7 @@ RSpec.describe "api/v1/celestial_objects", type: :request, swagger_doc: "v1/sche
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/CelestialObjectMinimal"
+        schema "$ref": "#/components/schemas/CelestialObject"
 
         let(:crusader) { celestial_objects :crusader }
         let(:slug) { crusader.slug }

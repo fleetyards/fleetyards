@@ -16,7 +16,7 @@ RSpec.describe "api/v1/starsystems", type: :request, swagger_doc: "v1/schema.yam
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref" => "#/components/schemas/StarsystemMinimal"
+        schema "$ref" => "#/components/schemas/Starsystem"
 
         let(:slug) { starsystem.slug }
 

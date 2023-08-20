@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
 import type { Images } from '../models/Images';
-import type { StationComplete } from '../models/StationComplete';
+import type { Station } from '../models/Station';
 import type { StationQuery } from '../models/StationQuery';
 import type { Stations } from '../models/Stations';
 
@@ -81,7 +81,7 @@ export class StationsService {
 
     /**
      * Station Detail
-     * @returns StationComplete successful
+     * @returns Station successful
      * @throws ApiError
      */
     public station({
@@ -91,7 +91,7 @@ export class StationsService {
          * Station slug
          */
         slug: string,
-    }): CancelablePromise<StationComplete> {
+    }): CancelablePromise<Station> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stations/{slug}',

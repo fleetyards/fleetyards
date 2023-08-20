@@ -19,24 +19,34 @@ module V1
               listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
               soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
             },
+            additionalProperties: false,
             required: %w[boughtAt listedAt soldAt]
           },
+
           class: {type: :string, nullable: true},
           grade: {type: :string, nullable: true},
           itemClass: {type: :string, nullable: true},
           itemClassLabel: {type: :string, nullable: true},
           manufacturer: {"$ref": "#/components/schemas/Manufacturer", nullable: true},
+
           media: {
             type: :object,
             properties: {
               storeImage: {"$ref": "#/components/schemas/MediaImage"}
-            }
+            },
+            additionalProperties: false
           },
+
           size: {type: :string, nullable: true},
           trackingSignal: {type: :string, nullable: true},
           trackingSignalLabel: {type: :string, nullable: true},
           type: {type: :string, nullable: true},
           typeLabel: {type: :string, nullable: true},
+
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"},
+
+          # DEPRECATED
 
           storeImage: {type: :string, format: :uri, deprecated: true},
           storeImageIsFallback: {type: :boolean, deprecated: true},
@@ -45,7 +55,7 @@ module V1
           storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
         additionalProperties: false,
-        required: %w[id name slug availability media]
+        required: %w[id name slug availability media createdAt updatedAt]
       })
     end
   end

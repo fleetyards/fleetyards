@@ -11,24 +11,26 @@ export type ModelPaint = {
     id: string;
     name: string | null;
     slug: string | null;
+    description?: string | null;
+    lastUpdatedAt?: string | null;
+    lastUpdatedAtLabel?: string | null;
     availability: {
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    description?: string | null;
-    lastUpdatedAt?: string | null;
-    lastUpdatedAtLabel?: string | null;
     media: {
-        angledView?: ViewImage;
+        angledView?: ViewImage | null;
         fleetchartImage?: string | null;
-        sideView?: ViewImage;
-        storeImage?: MediaImage;
-        topView?: ViewImage;
+        sideView?: ViewImage | null;
+        storeImage?: MediaImage | null;
+        topView?: ViewImage | null;
     };
     nameWithModel?: string | null;
     rsiId?: number | null;
     rsiName?: string | null;
     rsiSlug?: string | null;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */

@@ -25,3 +25,10 @@ json.store_image model_module.store_image.url
 json.store_image_large model_module.store_image.large.url
 json.store_image_medium model_module.store_image.medium.url
 json.store_image_small model_module.store_image.small.url
+
+json.manufacturer do
+  json.null! if model_module.manufacturer.blank?
+  json.partial! "api/v1/manufacturers/base", manufacturer: model_module.manufacturer if model_module.manufacturer.present?
+end
+
+json.partial! "api/shared/dates", record: model_module

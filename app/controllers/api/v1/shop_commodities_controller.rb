@@ -2,13 +2,10 @@
 
 module Api
   module V1
-    class ShopCommoditiesController < ::Api::BaseController
-      before_action :authenticate_user!, only: []
+    class ShopCommoditiesController < ::Api::PublicBaseController
       after_action -> { pagination_header(:shop_commodities) }, only: [:index]
 
       def index
-        authorize! :index, :api_shop_commodities
-
         @shop_commodities = ShopCommodity.search(
           search_params || deprecated_search_params || "*",
           fields: [{name: :word_start}],
@@ -20,37 +17,6 @@ module Api
           per_page: per_page(ShopCommodity),
           includes: %i[shop commodity_item]
         )
-      end
-
-      # rubocop:disable Metrics/CyclomaticComplexity
-      def sub_categories
-        authorize! :index, :api_shop_commodities
-
-        allowed_categories = nil
-
-        if params[:shopSlug].present? && params[:stationSlug].present?
-          station = Station.find_by(slug: params[:stationSlug])
-          shop = Shop.find_by(slug: params[:shopSlug], station_id: station.id)
-          allowed_categories = shop.shop_commodities.includes(:commodity_item).map(&:sub_category)
-        end
-
-        @filters = [
-          Model.classification_filters.select { |item| !allowed_categories || allowed_categories.include?(item.value) },
-          Equipment.type_filters.select { |item| !allowed_categories || allowed_categories.include?(item.value) },
-          Component.class_filters.select { |item| !allowed_categories || allowed_categories.include?(item.value) }
-        ].flatten.sort_by { |category| [category.category, category.name] }
-      end
-      # rubocop:enable Metrics/CyclomaticComplexity
-
-      def commodity_item_types
-        authorize! :index, :api_shop_commodities
-
-        @commodity_item_types = ShopCommodity.commodity_item_types.map do |item_type|
-          {
-            name: I18n.t("activerecord.attributes.shop_commodity.commodity_item_types.#{item_type}"),
-            value: item_type
-          }
-        end.sort_by { |item| item[:name] }
       end
 
       private def shop

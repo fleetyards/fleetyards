@@ -1,68 +1,68 @@
 ---
 zh-CN:
   actions:
-    add: Add
-    add_commodity: Add Commodity
-    add_dock: Add Dock
-    add_module_hardpoint: Add Model
-    add_module_package_item: Add Module
-    add_trade_commodity: Add Commodity
-    add_upgrade_kit: Add Model
-    add_video: Add Video
-    login_in_as: Login as
+    add: 新增
+    add_commodity: 添加商品
+    add_dock: 新增船坞
+    add_module_hardpoint: 新增型号
+    add_module_package_item: 新增模块
+    add_trade_commodity: 新增商品
+    add_upgrade_kit: 新增型号
+    add_video: 新增影片
+    login_in_as: 登陆身份
     admin:
       celestial_object:
-        new: Create new Celestial Object
+        new: 创建新的天体
       commodity:
-        new: Create new Commodity
+        new: 创建新商品
       component:
-        new: Create new Component
+        new: 创建新组件
       equipment:
-        new: Create new Equipment
+        new: 创建新设备
       manufacturer:
-        new: Create new Manufacturer
+        new: 创建新制造商
       model:
-        new: Create new Model
-        new_loaner_upload: Loaner Upload
+        new: 创建新模型
+        new_loaner_upload: 出借人上传
       model_module:
-        new: Create new Module
+        new: 创建新模块
       model_module_package:
-        new: Create new Module Package
+        new: 创建新的模块包
       model_paint:
-        new: Create new Paint
+        new: 创建新画图
       model_upgrade:
-        new: Create new Upgrade
+        new: 创建新升级
       shop:
-        new: Create new Shop
+        new: 创建新商店
       starsystem:
-        new: Create new Starsystem
+        new: 创建新的恒星系统
       station:
-        new: Create new Station
+        new: 创建新站
       user:
-        new: Create new User
-    back: Back
-    cancel: Cancel
-    confirm: Confirm Account
-    copy: Copy
-    delete: Delete
-    edit: Edit
-    loading: Please wait...
+        new: 创建新用户
+    back: 返回
+    cancel: 取消
+    confirm: 确认账户
+    copy: 复制
+    delete: 删除
+    edit: 编辑
+    loading: 请稍候片刻 ……
     model:
-      images: Images
-      reload: Reload Models
-      reload_data: Reload Models Data
-      use_rsi_image: Use RSI Image
-    more: More Entries
-    ok: OK
-    prefill_attachments: Add all Attachments
-    prefill_utilities: Add all Utilities
-    prefill_weapons: Add all Weapons
-    resend_confirmation: Resend Confirmation
-    reset_password: Forgot password?
-    save: Save
-    save_password: Save password
-    sign_in: Login
-    sign_out: Logout
+      images: 图像
+      reload: 重新加载模型
+      reload_data: 重新加载模型数据
+      use_rsi_image: 使用 RSI 图像
+    more: 更多条目
+    ok: 好
+    prefill_attachments: 添加所有附件
+    prefill_utilities: 添加所有实用程序
+    prefill_weapons: 添加所有武器
+    resend_confirmation: 重发确认
+    reset_password: 忘记密码？
+    save: 储存
+    save_password: 保存密码
+    sign_in: 登陆
+    sign_out: 登出
     station:
-      images: Images
-    unlock: Unlock Account
+      images: 图像
+    unlock: 解锁账户

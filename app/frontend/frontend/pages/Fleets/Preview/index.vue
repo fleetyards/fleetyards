@@ -94,6 +94,15 @@
             </p>
 
             <Btn
+              v-if="fleetPreview"
+              data-test="login"
+              :block="true"
+              @click.native="hidePreview"
+            >
+              {{ t("actions.login") }}
+            </Btn>
+            <Btn
+              v-else
               :to="{
                 name: 'login',
                 params: {
@@ -114,17 +123,26 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/Btn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { useRouter } from "vue-router";
+import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFleetStore } from "@/frontend/stores/fleet";
-
-const fleetStore = useFleetStore();
 
 const { t } = useI18n();
 
+const router = useRouter();
+
+const fleetPreview = computed(() => Store.getters["fleet/preview"]);
+
 const hidePreview = () => {
-  fleetStore.hidePreview();
+  Store.dispatch("fleet/hidePreview");
+  router.push({
+    name: "login",
+    params: {
+      redirectToRoute: "fleet-add",
+    },
+  });
 };
 </script>
 

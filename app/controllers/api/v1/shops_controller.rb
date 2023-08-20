@@ -2,13 +2,10 @@
 
 module Api
   module V1
-    class ShopsController < ::Api::BaseController
-      before_action :authenticate_user!, only: []
+    class ShopsController < ::Api::PublicBaseController
       after_action -> { pagination_header(:shops) }, only: [:index]
 
       def index
-        authorize! :index, :api_shops
-
         shop_query_params["sorts"] = sort_by_name
 
         @q = Shop.includes(station: {celestial_object: %i[starsystem parent]})
@@ -21,16 +18,7 @@ module Api
       end
 
       def show
-        authorize! :show, :api_shops
         @shop = station.shops.visible.find_by!(slug: params[:slug])
-      end
-
-      def shop_types
-        authorize! :show, :api_shops
-
-        @filters = Shop.type_filters
-
-        render "api/v1/shared/filters"
       end
 
       private def station

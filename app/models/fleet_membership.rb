@@ -41,11 +41,14 @@ class FleetMembership < ApplicationRecord
     parent.table[:role]
   end
 
+  validate_enum_attributes :ships_filter, :role
+
   validates :user_id, uniqueness: {scope: :fleet_id}
 
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username
 
+  before_validation :set_default_ships_filter
   after_create :broadcast_create
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
@@ -53,7 +56,7 @@ class FleetMembership < ApplicationRecord
   after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
 
-  aasm timestamps: true do
+  aasm timestamps: true, whiny_transitions: false do
     state :created, initial: true
     state :invited
     state :requested
@@ -79,6 +82,12 @@ class FleetMembership < ApplicationRecord
     event :decline do
       transitions from: %i[invited requested], to: :declined
     end
+  end
+
+  def set_default_ships_filter
+    return if ships_filter.present?
+
+    self.ships_filter = "all"
   end
 
   def schedule_setup_fleet_vehicles

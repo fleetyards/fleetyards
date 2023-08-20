@@ -18,7 +18,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/HangarGroupMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/HangarGroup"}
 
         let(:user) { users :data }
 

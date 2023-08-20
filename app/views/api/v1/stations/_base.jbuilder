@@ -31,3 +31,22 @@ end
 json.dock_counts do
   json.array! station.dock_counts, partial: "api/v1/dock_counts/base", as: :dock_count
 end
+json.celestial_object do
+  json.partial! "api/v1/celestial_objects/base", celestial_object: station.celestial_object
+end
+
+if local_assigns.fetch(:extended, false)
+  json.starsystem do
+    json.partial! "api/v1/starsystems/base", starsystem: station.starsystem
+  end
+  json.shops do
+    json.array! station.shops.visible.order(:name), partial: "api/v1/shops/base", as: :shop
+  end
+  json.docks do
+    json.array! station.docks, partial: "api/v1/docks/base", as: :dock
+  end
+  json.habitations do
+    json.array! station.habitations, partial: "api/v1/habitations/base", as: :habitation
+  end
+end
+json.partial! "api/shared/dates", record: station

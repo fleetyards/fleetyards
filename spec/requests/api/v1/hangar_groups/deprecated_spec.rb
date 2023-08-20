@@ -20,7 +20,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
       deprecated true
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/HangarGroupMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/HangarGroup"}
 
         let(:user) { users :data }
 
@@ -56,7 +56,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupCreateInput"}, required: true
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroupMinimal"
+        schema "$ref": "#/components/schemas/HangarGroup"
 
         let(:user) { users :data }
         let(:input) do
@@ -101,7 +101,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
       deprecated true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroupMinimal"
+        schema "$ref": "#/components/schemas/HangarGroup"
 
         let(:id) { hangar_group.id }
         let(:user) { users :data }
@@ -145,7 +145,7 @@ RSpec.describe "api/v1/hangar_groups", type: :request, swagger_doc: "v1/schema.y
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"}, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroupMinimal"
+        schema "$ref": "#/components/schemas/HangarGroup"
 
         let(:id) { hangar_group.id }
         let(:user) { users :data }

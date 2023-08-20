@@ -8,7 +8,7 @@ export type CommodityPriceInput = {
     commodityItemType: string;
     path: CommodityPriceInput.path;
     shopId: string;
-    timeRange?: string | null;
+    timeRange?: string;
 };
 
 export namespace CommodityPriceInput {

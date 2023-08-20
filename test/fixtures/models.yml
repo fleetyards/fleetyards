@@ -126,17 +126,18 @@
 andromeda:
   name: "Andromeda"
   slug: "andromeda"
-  beam: 10.2
-  cargo: 90
+  beam: 27.75
+  cargo: 96
   classification: multi_role
-  height: 10.2
+  size: :large
+  height: 15.25
   hidden: false
   images_count: 0
   last_pledge_price: 225
-  length: 61.2
+  length: 63.5
   manufacturer: rsi
-  mass: 1000.02
-  max_crew: 5
+  mass: 430057.0
+  max_crew: 4
   min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
@@ -145,6 +146,18 @@ andromeda:
   upgrade_kits_count: 0
   videos_count: 0
   fleetchart_image: test.jpg
+  ground: false
+  hydrogen_fuel_tank_size: 660000.0
+  quantum_fuel_tank_size: 3000.0
+  scm_speed: 144.0
+  max_speed: 911.0
+  scm_speed_acceleration: 3.11
+  scm_speed_decceleration: 6.22
+  max_speed_acceleration: 19.66
+  max_speed_decceleration: 39.35
+  pitch: 25.0
+  yaw: 25.0
+  roll: 65.0
 
 aquila:
   name: "Aquila"
@@ -209,14 +222,20 @@ ptv:
   module_hardpoints_count: 0
   rsi_id: null
   rsi_name: PTV
+  manufacturer: graycat
   upgrade_kits_count: 0
   videos_count: 0
+  ground_max_speed: 50.2
+  ground_reverse_speed: 20.2
+  ground_acceleration: 10.5
+  ground_decceleration: 6.5
 
 600i-executive:
   name: '600i Executive Edition'
   slug: '600i-executive-edition'
   images_count: 0
   model_paints_count: 0
+  manufacturer: origin
   module_hardpoints_count: 0
   rsi_id: null
   rsi_name: '600i Executive Edition'
@@ -228,6 +247,7 @@ f8c:
   slug: 'f8c-lightning'
   images_count: 0
   model_paints_count: 0
+  manufacturer: anvil
   module_hardpoints_count: 0
   rsi_id: null
   rsi_name: 'F8C'
@@ -240,6 +260,7 @@ f8c-executive:
   images_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  manufacturer: anvil
   rsi_id: null
   rsi_name: 'F8C Executive'
   upgrade_kits_count: 0
@@ -251,6 +272,7 @@ starkitten:
   images_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  manufacturer: drake
   rsi_id: null
   rsi_name: 'Dragonfly Star Kitten Edition'
   upgrade_kits_count: 0
@@ -262,6 +284,7 @@ javelin:
   images_count: 0
   model_paints_count: 0
   module_hardpoints_count: 0
+  manufacturer: aegis
   rsi_id: 63
   rsi_name: Javelin
   upgrade_kits_count: 0
@@ -272,6 +295,7 @@ corsair:
   slug: corsair
   images_count: 0
   model_paints_count: 0
+  manufacturer: drake
   module_hardpoints_count: 0
   rsi_id: 178
   rsi_name: Corsair
@@ -297,6 +321,7 @@ merlin:
   images_count: 0
   hidden: false
   model_paints_count: 0
+  manufacturer: kruger
   module_hardpoints_count: 0
   rsi_id: 92
   rsi_name: P-52 Merlin

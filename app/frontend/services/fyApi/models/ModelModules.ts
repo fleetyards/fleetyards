@@ -4,10 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
-import type { ModelModuleMinimal } from './ModelModuleMinimal';
+import type { ModelModule } from './ModelModule';
 
 export type ModelModules = {
-    items: Array<ModelModuleMinimal>;
+    items: Array<ModelModule>;
     meta?: Meta;
 };
 

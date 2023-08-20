@@ -7,9 +7,8 @@ module V1
 
       schema({
         properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/VideoMinimal"}}
+          items: {type: :array, items: {"$ref": "#/components/schemas/Video"}}
         },
-        additionalProperties: false,
         required: %w[items]
       })
     end

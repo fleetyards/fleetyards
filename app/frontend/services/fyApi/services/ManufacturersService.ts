@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ManufacturerMinimal } from '../models/ManufacturerMinimal';
 import type { ManufacturerQuery } from '../models/ManufacturerQuery';
 import type { Manufacturers } from '../models/Manufacturers';
 
@@ -15,11 +14,11 @@ export class ManufacturersService {
 
     /**
      * @deprecated
-     * Manufacturers list only with models.
-     * @returns ManufacturerMinimal successful
+     * with_models manufacturer
+     * @returns Manufacturers successful
      * @throws ApiError
      */
-    public deprecateDgetManufacturersWithModels(): CancelablePromise<Array<ManufacturerMinimal>> {
+    public deprecateDgetManufacturersWithModels(): CancelablePromise<Manufacturers> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/manufacturers/with-models',

@@ -11,7 +11,7 @@ RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.y
       deprecated true
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ManufacturerMinimal"}
+        schema type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}
 
         after do |example|
           example.metadata[:response][:content] = {

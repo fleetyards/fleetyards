@@ -1,19 +1,1 @@
----
 it:
-  resources:
-    celestial_object: Celestial Object
-    commodity: Commodity
-    component: Component
-    equipment: Equipment
-    image: Image
-    locale: Locales
-    manufacturer: Manufacturer
-    messages:
-      password: Password
-    model: Model
-    model_module: Module
-    model_paint: Paint
-    models: Models
-    shop: Shop
-    station: Station
-    user: User

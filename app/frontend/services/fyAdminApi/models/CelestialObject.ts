@@ -11,7 +11,7 @@ export type CelestialObject = {
     name: string;
     slug: string;
     designation: string;
-    media?: {
+    media: {
         storeImage?: MediaImage;
     };
     /**
@@ -41,5 +41,7 @@ export type CelestialObject = {
     population?: number | null;
     locationLabel?: string | null;
     starsystem?: Starsystem;
+    createdAt: string;
+    updatedAt: string;
 };
 

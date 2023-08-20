@@ -30,6 +30,7 @@ starfleet_picard:
   user: jeanluc
   role: :admin
   aasm_state: :accepted
+  ships_filter: :all
   accepted_at: <%= Time.now %>
 
 starfleet_data:
@@ -40,14 +41,32 @@ starfleet_data:
   aasm_state: :accepted
   accepted_at: <%= Time.now %>
 
+starfleet_geordi:
+  fleet: starfleet
+  user: geordi
+  role: :officer
+  ships_filter: :all
+  aasm_state: :accepted
+  accepted_at: <%= Time.now %>
+
 starfleet_riker:
   fleet: starfleet
   user: will
   role: :member
+  ships_filter: :all
   aasm_state: :invited
+  accepted_at: nil
+
+starfleet_crusher:
+  fleet: starfleet
+  user: crusher
+  role: :member
+  ships_filter: :all
+  aasm_state: :requested
   accepted_at: nil
 
 klingon_empire_worf:
   fleet: klingon_empire
   user: worf
+  ships_filter: :all
   aasm_state: :accepted

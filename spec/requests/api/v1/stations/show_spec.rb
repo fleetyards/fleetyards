@@ -16,7 +16,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref" => "#/components/schemas/StationComplete"
+        schema "$ref" => "#/components/schemas/Station"
 
         let(:slug) { station.slug }
 

@@ -8,6 +8,7 @@ export type CelestialObjectQuery = {
     nameCont?: string;
     nameIn?: Array<string>;
     searchCont?: string;
+    parentEq?: string;
     parentIdNull?: boolean;
     /**
      * @deprecated

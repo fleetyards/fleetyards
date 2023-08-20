@@ -63,29 +63,22 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import Btn from "@/frontend/core/components/Btn/index.vue";
+import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { useRouter, useRoute } from "vue-router/composables";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useNoty } from "@/shared/composables/useNoty";
-import { useRouter, useRoute } from "vue-router";
-import { useSessionStore } from "@/frontend/stores/session";
-import { storeToRefs } from "pinia";
+import Store from "@/frontend/lib/Store";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type { PasswordInput } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
-
-type ChangePasswordForm = {
-  currentPassword: string;
-  password: string;
-  passwordConfirmation: string;
-};
-
-const form = ref<Partial<ChangePasswordForm>>({});
-
 const submitting = ref(false);
 
-const { isAuthenticated } = storeToRefs(useSessionStore());
+const form = ref<PasswordInput>({});
+
+const isAuthenticated = computed(() => Store.getters.isAuthenticated);
 
 const router = useRouter();
 
@@ -98,28 +91,37 @@ onMounted(() => {
 
 const route = useRoute();
 
+const { password: passwordService } = useApiClient();
+
 const changePassword = async () => {
+  if (!route.params.token) {
+    displayAlert({
+      text: t("messages.changePassword.failure"),
+    });
+  }
+
   submitting.value = true;
 
-  const response = await this.$api.put(
-    `password/update/${route.params.token}`,
-    form.value
-  );
+  try {
+    await passwordService.updatePasswordWithToken({
+      token: route.params.token,
+      requestBody: form.value,
+    });
 
-  submitting.value = false;
-
-  if (!response.error) {
     displaySuccess({
       text: t("messages.changePassword.success"),
     });
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     router.push("/").catch(() => {});
-  } else {
+  } catch (error) {
+    console.error(error);
     displayAlert({
       text: t("messages.changePassword.failure"),
     });
   }
+
+  submitting.value = false;
 };
 </script>
 

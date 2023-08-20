@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CommodityTypeEnum } from './CommodityTypeEnum';
 import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
 
@@ -10,15 +11,17 @@ export type Commodity = {
     id: string;
     name: string;
     slug: string;
+    type?: CommodityTypeEnum;
+    typeLabel?: string;
     availability: {
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    type?: string | null;
-    typeLabel?: string | null;
     media: {
         storeImage?: MediaImage;
     };
+    createdAt?: string;
+    updatedAt?: string;
     /**
      * @deprecated
      */

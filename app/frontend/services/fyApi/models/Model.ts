@@ -53,16 +53,16 @@ export type Model = {
     loaners: Array<ModelLoaner>;
     manufacturer?: Manufacturer | null;
     media: {
-        angledView?: ViewImage;
-        angledViewColored?: ViewImage;
+        angledView?: ViewImage | null;
+        angledViewColored?: ViewImage | null;
         fleetchartImage?: string | null;
-        frontView?: ViewImage;
-        frontViewColored?: ViewImage;
-        sideView?: ViewImage;
-        sideViewColored?: ViewImage;
-        storeImage?: MediaImage;
-        topView?: ViewImage;
-        topViewColored?: ViewImage;
+        frontView?: ViewImage | null;
+        frontViewColored?: ViewImage | null;
+        sideView?: ViewImage | null;
+        sideViewColored?: ViewImage | null;
+        storeImage?: MediaImage | null;
+        topView?: ViewImage | null;
+        topViewColored?: ViewImage | null;
     };
     metrics: {
         beam?: number | null;
@@ -107,6 +107,8 @@ export type Model = {
         scmSpeedDecceleration?: number | null;
         yaw?: number | null;
     };
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -206,7 +208,7 @@ export type Model = {
     /**
      * @deprecated
      */
-    maxCrewLabel?: number | null;
+    maxCrewLabel?: string | null;
     /**
      * @deprecated
      */
@@ -214,7 +216,7 @@ export type Model = {
     /**
      * @deprecated
      */
-    minCrewLabel?: number | null;
+    minCrewLabel?: string | null;
     /**
      * @deprecated
      */
@@ -266,7 +268,7 @@ export type Model = {
     /**
      * @deprecated
      */
-    size?: number | null;
+    size?: string | null;
     /**
      * @deprecated
      */

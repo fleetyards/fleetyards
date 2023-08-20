@@ -20,8 +20,15 @@ module RansackHelper
   private def parse_query_params
     orginal_params = params.to_unsafe_h.fetch(:q, "{}")
     orginal_params = orginal_params.to_json if orginal_params.is_a? Hash
-    JSON.parse(orginal_params)
+    q = JSON.parse(orginal_params)
+    q.transform_keys do |key|
+      decamelize(key)
+    end
   rescue JSON::ParserError
     {}
+  end
+
+  private def decamelize(camel_cased_word)
+    camel_cased_word.split(/(?=[A-Z])/).join("_").downcase
   end
 end

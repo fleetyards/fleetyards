@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-json.cache! ["v1", result] do
-  json.id result.id
-  json.result_type result.class.name.underscore
+json.id result.id
+json.type result.class.name
+json.item do
   case result.class.name
   when "Model"
     json.partial! "api/v1/models/base", model: result
@@ -23,5 +23,4 @@ json.cache! ["v1", result] do
   when "Starsystem"
     json.partial! "api/v1/starsystems/base", starsystem: result
   end
-  json.partial! "api/shared/dates", record: result
 end

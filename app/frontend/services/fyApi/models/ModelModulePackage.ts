@@ -11,14 +11,16 @@ export type ModelModulePackage = {
     id: string;
     name: string | null;
     description?: string | null;
-    modules?: Array<ModelModule>;
     pledgePrice?: number | null;
-    media?: {
-        angledView?: ViewImage;
-        sideView?: ViewImage;
-        storeImage?: MediaImage;
-        topView?: ViewImage;
+    modules: Array<ModelModule>;
+    media: {
+        angledView?: ViewImage | null;
+        sideView?: ViewImage | null;
+        storeImage?: MediaImage | null;
+        topView?: ViewImage | null;
     };
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */

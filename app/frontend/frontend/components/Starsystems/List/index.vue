@@ -19,24 +19,36 @@
     <div class="row">
       <div class="col-12 col-md-6 col-xl-4" />
       <div class="col-12 col-md-6 col-xl-8 items">
-        <slot />
+        <template v-if="celestialObjects.length">
+          <h3 class="sr-only">
+            {{ t("headlines.celestialObjects") }}
+          </h3>
+          <transition-group name="fade-list" class="row" tag="div" appear>
+            <div
+              v-for="celestialObject in celestialObjects"
+              :key="celestialObject.slug"
+              class="col-12 col-lg-3 fade-list-item"
+            >
+              <PlanetPanel
+                :item="celestialObject"
+                :route="{
+                  name: 'celestial-object',
+                  params: {
+                    starsystem: item.slug,
+                    slug: celestialObject.slug,
+                  },
+                }"
+              />
+            </div>
+          </transition-group>
+        </template>
       </div>
     </div>
   </Panel>
 </template>
 
-<script lang="ts" setup>
-import Panel from "@/shared/components/Panel/index.vue";
-import type { RouteLocationRaw } from "vue-router";
-import type { StarsystemMinimal } from "@/services/fyApi";
-
-type Props = {
-  item: StarsystemMinimal;
-  route: RouteLocationRaw;
-};
-
-defineProps<Props>();
-</script>
+<script>
+import Panel from "@/frontend/core/components/Panel/index.vue";
 
 <script lang="ts">
 export default {

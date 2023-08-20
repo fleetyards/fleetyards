@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { HangarGroup } from '../models/HangarGroup';
 import type { HangarGroupCreateInput } from '../models/HangarGroupCreateInput';
-import type { HangarGroupMinimal } from '../models/HangarGroupMinimal';
 import type { HangarGroupUpdateInput } from '../models/HangarGroupUpdateInput';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -15,14 +15,14 @@ export class HangarGroupsService {
 
     /**
      * HangarGroup create
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
     public create({
         requestBody,
     }: {
         requestBody: HangarGroupCreateInput,
-    }): CancelablePromise<HangarGroupMinimal> {
+    }): CancelablePromise<HangarGroup> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/hangar/groups',
@@ -36,10 +36,10 @@ export class HangarGroupsService {
 
     /**
      * HangarGroup list
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
-    public hangarGroups(): CancelablePromise<Array<HangarGroupMinimal>> {
+    public hangarGroups(): CancelablePromise<Array<HangarGroup>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar/groups',
@@ -51,7 +51,7 @@ export class HangarGroupsService {
 
     /**
      * HangarGroup Destroy
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
     public destroy({
@@ -61,7 +61,7 @@ export class HangarGroupsService {
          * HangarGroup ID
          */
         id: string,
-    }): CancelablePromise<HangarGroupMinimal> {
+    }): CancelablePromise<HangarGroup> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/hangar/groups/{id}',
@@ -77,7 +77,7 @@ export class HangarGroupsService {
 
     /**
      * HangarGroup Update
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
     public hangarGroupUpdate({
@@ -89,7 +89,7 @@ export class HangarGroupsService {
          */
         id: string,
         requestBody: HangarGroupUpdateInput,
-    }): CancelablePromise<HangarGroupMinimal> {
+    }): CancelablePromise<HangarGroup> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/hangar/groups/{id}',
@@ -125,10 +125,10 @@ export class HangarGroupsService {
     /**
      * @deprecated
      * HangarGroup list
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
-    public deprecateDgetHangarGroups(): CancelablePromise<Array<HangarGroupMinimal>> {
+    public deprecateDgetHangarGroups(): CancelablePromise<Array<HangarGroup>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/hangar-groups',
@@ -141,14 +141,14 @@ export class HangarGroupsService {
     /**
      * @deprecated
      * HangarGroup create
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
     public deprecateDcreateHangarGroup({
         requestBody,
     }: {
         requestBody: HangarGroupCreateInput,
-    }): CancelablePromise<HangarGroupMinimal> {
+    }): CancelablePromise<HangarGroup> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/hangar-groups',
@@ -163,7 +163,7 @@ export class HangarGroupsService {
     /**
      * @deprecated
      * HangarGroup Destroy
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
     public deprecateDdestroyHangarGroup({
@@ -173,7 +173,7 @@ export class HangarGroupsService {
          * HangarGroup ID
          */
         id: string,
-    }): CancelablePromise<HangarGroupMinimal> {
+    }): CancelablePromise<HangarGroup> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/hangar-groups/{id}',
@@ -190,7 +190,7 @@ export class HangarGroupsService {
     /**
      * @deprecated
      * HangarGroup Update
-     * @returns HangarGroupMinimal successful
+     * @returns HangarGroup successful
      * @throws ApiError
      */
     public deprecateDupdateHangarGroup({
@@ -202,7 +202,7 @@ export class HangarGroupsService {
          */
         id: string,
         requestBody: HangarGroupUpdateInput,
-    }): CancelablePromise<HangarGroupMinimal> {
+    }): CancelablePromise<HangarGroup> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/hangar-groups/{id}',

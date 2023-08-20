@@ -86,6 +86,8 @@ class Vehicle < ApplicationRecord
   ransack_alias :search, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
   ransack_alias :length, :model_length
+  ransack_alias :beam, :model_beam
+  ransack_alias :height, :model_height
   ransack_alias :price, :model_price
   ransack_alias :pledge_price, :model_pledge_price
   ransack_alias :manufacturer, :model_manufacturer_slug
