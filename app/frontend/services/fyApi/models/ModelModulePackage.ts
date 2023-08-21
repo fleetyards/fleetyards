@@ -13,7 +13,7 @@ export type ModelModulePackage = {
     description?: string | null;
     pledgePrice?: number | null;
     modules: Array<ModelModule>;
-    media?: {
+    media: {
         angledView?: ViewImage | null;
         sideView?: ViewImage | null;
         storeImage?: MediaImage | null;

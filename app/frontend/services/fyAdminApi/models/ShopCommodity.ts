@@ -11,7 +11,6 @@ import type { Equipment } from './Equipment';
 import type { EquipmentTypeEnum } from './EquipmentTypeEnum';
 import type { MediaImage } from './MediaImage';
 import type { Model } from './Model';
-import type { ModelClassificationEnum } from './ModelClassificationEnum';
 import type { ModelModule } from './ModelModule';
 import type { ModelPaint } from './ModelPaint';
 import type { Shop } from './Shop';
@@ -23,11 +22,11 @@ export type ShopCommodity = {
     name: string;
     slug: string;
     description?: string | null;
-    media?: {
+    media: {
         storeImage?: MediaImage;
     };
     category?: ShopCommodityCategoryEnum;
-    subCategory?: (ModelClassificationEnum | ComponentClassEnum | EquipmentTypeEnum | CommodityTypeEnum);
+    subCategory?: (string | ComponentClassEnum | EquipmentTypeEnum | CommodityTypeEnum);
     subCategoryLabel?: string;
     prices: {
         averageBuyPrice?: number;
@@ -68,5 +67,9 @@ export type ShopCommodity = {
      * @deprecated
      */
     storeImageLarge?: string | null;
+    submitter?: {
+        id: string;
+        username: string;
+    };
 };
 

@@ -17,7 +17,7 @@ export type Commodity = {
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    media?: {
+    media: {
         storeImage?: MediaImage;
     };
     createdAt: string;

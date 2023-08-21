@@ -19,7 +19,7 @@ export type Starsystem = {
     size?: string | null;
     status?: string | null;
     type?: string | null;
-    media?: {
+    media: {
         storeImage?: MediaImage;
     };
     celestialObjects?: Array<CelestialObject>;

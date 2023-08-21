@@ -26,7 +26,7 @@ export type Station = {
     hasImages: boolean;
     locationLabel?: string | null;
     location?: string | null;
-    media?: {
+    media: {
         backgroundImage?: string | null;
         storeImage?: MediaImage;
     };

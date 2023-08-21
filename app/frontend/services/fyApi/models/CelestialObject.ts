@@ -20,7 +20,7 @@ export type CelestialObject = {
     economy?: number | null;
     population?: number | null;
     locationLabel?: string | null;
-    media?: {
+    media: {
         storeImage?: MediaImage;
     };
     starsystem: Starsystem;

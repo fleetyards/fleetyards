@@ -18,7 +18,7 @@ export type ModelPaint = {
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    media?: {
+    media: {
         angledView?: ViewImage | null;
         fleetchartImage?: string | null;
         sideView?: ViewImage | null;

@@ -52,7 +52,7 @@ export type Model = {
     };
     loaners: Array<ModelLoaner>;
     manufacturer?: Manufacturer | null;
-    media?: {
+    media: {
         angledView?: ViewImage | null;
         angledViewColored?: ViewImage | null;
         fleetchartImage?: string | null;
@@ -92,7 +92,7 @@ export type Model = {
     rsiId?: number | null;
     rsiName?: string | null;
     rsiSlug?: string | null;
-    speeds?: {
+    speeds: {
         groundAcceleration?: number | null;
         groundDecceleration?: number | null;
         groundMaxSpeed?: number | null;

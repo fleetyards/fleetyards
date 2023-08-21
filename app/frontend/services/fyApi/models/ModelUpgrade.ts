@@ -10,7 +10,7 @@ export type ModelUpgrade = {
     name: string | null;
     description?: string | null;
     pledgePrice?: number | null;
-    media?: {
+    media: {
         storeImage?: MediaImage | null;
     };
     createdAt: string;
