@@ -46,16 +46,19 @@ commodity_one:
   average_rental_price_7_days: 372540.0
   rental_price_30_days: 1330500.0
   average_rental_price_30_days: 1330500.0
+  submitter: data
   confirmed: true
 
 commodity_three:
   shop: new_deal
   commodity_item: explorer (Model)
+  submitter: data
   confirmed: true
 
 commodity_four:
   shop: new_deal
   commodity_item: andromeda (Model)
+  submitter: data
   confirmed: true
 
 commodity_gold_daymar:
@@ -63,6 +66,7 @@ commodity_gold_daymar:
   commodity_item: gold (Commodity)
   buy_price: 10
   average_buy_price: 10
+  submitter: data
   confirmed: true
 
 commodity_gold_yela:
@@ -70,6 +74,7 @@ commodity_gold_yela:
   commodity_item: gold (Commodity)
   sell_price: 5
   average_sell_price: 5
+  submitter: data
   confirmed: true
 
 commodity_titan_daymar:
@@ -77,6 +82,7 @@ commodity_titan_daymar:
   commodity_item: titan (Commodity)
   sell_price: 10
   average_sell_price: 10
+  submitter: data
   confirmed: true
 
 commodity_titan_yela:
@@ -84,6 +90,7 @@ commodity_titan_yela:
   commodity_item: titan (Commodity)
   buy_price: 20
   average_buy_price: 20
+  submitter: data
   confirmed: true
 
 commodity_titan_olisar:
@@ -91,4 +98,5 @@ commodity_titan_olisar:
   commodity_item: titan (Commodity)
   buy_price: 17
   average_buy_price: 17
+  submitter: data
   confirmed: true
