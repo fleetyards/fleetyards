@@ -2,14 +2,13 @@
 
 module V1
   module Schemas
-    class Manufacturers < Shared::V1::Schemas::BaseList
+    class Manufacturers < ::Shared::V1::Schemas::BaseList
       include SchemaConcern
 
       schema({
         properties: {
           items: {type: :array, items: {"$ref": "#/components/schemas/Manufacturer"}}
         },
-        additionalProperties: false,
         required: %w[items]
       })
     end

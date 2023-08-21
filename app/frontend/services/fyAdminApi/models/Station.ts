@@ -11,13 +11,12 @@ import type { HabitationCount } from './HabitationCount';
 import type { MediaImage } from './MediaImage';
 import type { Shop } from './Shop';
 import type { Starsystem } from './Starsystem';
+import type { StationTypeEnum } from './StationTypeEnum';
 
 export type Station = {
-    id: string;
     name: string;
     slug: string;
     cargoHub: boolean;
-    celestialObject: CelestialObject;
     classificationLabel?: string | null;
     classification?: string | null;
     description?: string | null;
@@ -27,19 +26,41 @@ export type Station = {
     hasImages: boolean;
     locationLabel?: string | null;
     location?: string | null;
-    media: {
+    media?: {
         backgroundImage?: string | null;
         storeImage?: MediaImage;
     };
     refinery: boolean;
     shopListLabel?: string | null;
     typeLabel?: string | null;
-    type?: string | null;
+    type?: StationTypeEnum;
+    celestialObject: CelestialObject;
     starsystem?: Starsystem;
     shops?: Array<Shop>;
     docks?: Array<Dock>;
     habitations?: Array<Habitation>;
     createdAt: string;
     updatedAt: string;
+    /**
+     * @deprecated
+     */
+    backgroundImage?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImage?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageLarge?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageMedium?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageSmall?: string | null;
+    id: string;
 };
 

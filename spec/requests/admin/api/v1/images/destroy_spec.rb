@@ -20,7 +20,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       operationId "destroy"
       tags "Images"
 
-      response(200, "successful") do
+      response(204, "successful") do
         let(:user) { admin_users :jeanluc }
         let(:id) { model_image.id }
 

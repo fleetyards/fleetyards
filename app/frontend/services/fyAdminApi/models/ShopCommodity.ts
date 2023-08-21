@@ -3,11 +3,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Commodity } from './Commodity';
 import type { CommodityTypeEnum } from './CommodityTypeEnum';
+import type { Component } from './Component';
 import type { ComponentClassEnum } from './ComponentClassEnum';
+import type { Equipment } from './Equipment';
 import type { EquipmentTypeEnum } from './EquipmentTypeEnum';
 import type { MediaImage } from './MediaImage';
+import type { Model } from './Model';
 import type { ModelClassificationEnum } from './ModelClassificationEnum';
+import type { ModelModule } from './ModelModule';
+import type { ModelPaint } from './ModelPaint';
 import type { Shop } from './Shop';
 import type { ShopCommodityCategoryEnum } from './ShopCommodityCategoryEnum';
 import type { ShopCommodityItemTypeEnum } from './ShopCommodityItemTypeEnum';
@@ -38,10 +44,29 @@ export type ShopCommodity = {
         sellPrice?: number;
         pricePerUnit: boolean;
     };
-    locationLabel?: string | null;
+    locationLabel?: string;
     confirmed: boolean;
     commodityItemType: ShopCommodityItemTypeEnum;
     commodityItemId: string;
     shop: Shop;
+    item?: (Model | Component | Commodity | Equipment | ModelModule | ModelPaint);
+    createdAt: string;
+    updatedAt: string;
+    /**
+     * @deprecated
+     */
+    storeImage?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageSmall?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageMedium?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageLarge?: string | null;
 };
 

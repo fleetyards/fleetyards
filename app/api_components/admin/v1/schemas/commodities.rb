@@ -3,14 +3,13 @@
 module Admin
   module V1
     module Schemas
-      class Commodities < Shared::V1::Schemas::BaseList
+      class Commodities < ::Shared::V1::Schemas::BaseList
         include SchemaConcern
 
         schema({
           properties: {
-            items: {type: :array, items: {"$ref": "#/components/schemas/CommodityMinimal"}}
+            items: {type: :array, items: {"$ref": "#/components/schemas/Commodity"}}
           },
-          additionalProperties: false,
           required: %w[items]
         })
       end

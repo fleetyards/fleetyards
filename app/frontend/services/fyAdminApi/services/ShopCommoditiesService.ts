@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ShopCommodityMinimal } from '../models/ShopCommodityMinimal';
+import type { ShopCommodity } from '../models/ShopCommodity';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -13,7 +13,7 @@ export class ShopCommoditiesService {
 
     /**
      * Shop Commodity Destroy
-     * @returns ShopCommodityMinimal successful
+     * @returns ShopCommodity successful
      * @throws ApiError
      */
     public destroyShopCommodity({
@@ -23,7 +23,7 @@ export class ShopCommoditiesService {
          * Shop Commodity ID
          */
         id: string,
-    }): CancelablePromise<ShopCommodityMinimal> {
+    }): CancelablePromise<ShopCommodity> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/shop-commodities/{id}',

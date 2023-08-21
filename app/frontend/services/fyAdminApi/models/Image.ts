@@ -7,20 +7,20 @@ import type { Gallery } from './Gallery';
 
 export type Image = {
     id: string;
-    name: string;
+    background: boolean;
+    bigUrl: string;
     caption?: string | null;
-    size?: number;
-    width?: number | null;
-    height?: number | null;
-    type?: string;
-    enabled?: boolean;
-    global?: boolean;
-    background?: boolean;
-    url?: string;
-    smallUrl?: string;
-    bigUrl?: string;
-    gallery?: Gallery | null;
+    name: string;
+    smallUrl: string;
+    type: string;
+    url: string;
+    width?: number;
+    height?: number;
+    gallery?: Gallery;
     createdAt: string;
     updatedAt: string;
+    size?: number;
+    enabled: boolean;
+    global: boolean;
 };
 

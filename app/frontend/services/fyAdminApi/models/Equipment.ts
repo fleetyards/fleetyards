@@ -9,7 +9,6 @@ import type { ShopCommodity } from './ShopCommodity';
 
 export type Equipment = {
     id: string;
-    gid?: string;
     name: string;
     slug: string;
     availability: {
@@ -25,7 +24,7 @@ export type Equipment = {
     grade?: string | null;
     itemType?: string | null;
     itemTypeLabel?: string | null;
-    manufacturer?: Manufacturer;
+    manufacturer?: Manufacturer | null;
     media?: {
         storeImage?: MediaImage;
     };
@@ -41,5 +40,27 @@ export type Equipment = {
     volume?: string | null;
     weaponClass?: string | null;
     weaponClassLabel?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    /**
+     * @deprecated
+     */
+    storeImage?: string;
+    /**
+     * @deprecated
+     */
+    storeImageIsFallback?: boolean;
+    /**
+     * @deprecated
+     */
+    storeImageLarge?: string;
+    /**
+     * @deprecated
+     */
+    storeImageMedium?: string;
+    /**
+     * @deprecated
+     */
+    storeImageSmall?: string;
 };
 

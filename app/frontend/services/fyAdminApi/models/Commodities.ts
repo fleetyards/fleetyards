@@ -3,11 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CommodityMinimal } from './CommodityMinimal';
+import type { Commodity } from './Commodity';
 import type { Meta } from './Meta';
 
 export type Commodities = {
-    items: Array<CommodityMinimal>;
+    items: Array<Commodity>;
     meta?: Meta;
 };
 

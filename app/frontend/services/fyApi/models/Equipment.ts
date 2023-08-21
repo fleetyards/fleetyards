@@ -25,7 +25,7 @@ export type Equipment = {
     itemType?: string | null;
     itemTypeLabel?: string | null;
     manufacturer?: Manufacturer | null;
-    media: {
+    media?: {
         storeImage?: MediaImage;
     };
     range?: string | null;

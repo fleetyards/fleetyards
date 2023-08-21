@@ -20,7 +20,7 @@ export type Component = {
     grade?: string | null;
     itemClass?: string | null;
     itemClassLabel?: string | null;
-    manufacturer?: Manufacturer;
+    manufacturer?: Manufacturer | null;
     media?: {
         storeImage?: MediaImage;
     };
@@ -29,5 +29,27 @@ export type Component = {
     trackingSignalLabel?: string | null;
     type?: string | null;
     typeLabel?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    /**
+     * @deprecated
+     */
+    storeImage?: string;
+    /**
+     * @deprecated
+     */
+    storeImageIsFallback?: boolean;
+    /**
+     * @deprecated
+     */
+    storeImageLarge?: string;
+    /**
+     * @deprecated
+     */
+    storeImageMedium?: string;
+    /**
+     * @deprecated
+     */
+    storeImageSmall?: string;
 };
 

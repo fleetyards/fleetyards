@@ -4,10 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
-import type { ShopCommodityMinimal } from './ShopCommodityMinimal';
+import type { ShopCommodity } from './ShopCommodity';
 
 export type ShopCommodities = {
-    items: Array<ShopCommodityMinimal>;
+    items: Array<ShopCommodity>;
     meta?: Meta;
 };
 

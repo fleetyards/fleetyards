@@ -40,9 +40,11 @@ module Admin
         def destroy
           authorize! :destroy, image
 
-          return if image.destroy
-
-          render json: ValidationError.new("image.destroy", errors: image.errors), status: :bad_request
+          if image.destroy
+            render status: :no_content
+          else
+            render json: ValidationError.new("image.destroy", errors: image.errors), status: :bad_request
+          end
         end
 
         private def image_query_params

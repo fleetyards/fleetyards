@@ -3,4 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ModelClassificationEnum = string;
+export enum ModelClassificationEnum {
+    EXPLORER = 'explorer',
+    MULTI = 'multi',
+    MULTI_ROLE = 'multi_role',
+}

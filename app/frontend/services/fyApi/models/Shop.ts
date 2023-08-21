@@ -15,7 +15,7 @@ export type Shop = {
     buying: boolean;
     location?: string | null;
     locationLabel: string;
-    media: {
+    media?: {
         storeImage?: MediaImage;
     };
     refineryTerminal: boolean;

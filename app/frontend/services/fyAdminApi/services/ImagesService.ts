@@ -74,7 +74,7 @@ export class ImagesService {
 
     /**
      * Image destroy
-     * @returns any successful
+     * @returns void
      * @throws ApiError
      */
     public destroy({
@@ -84,7 +84,7 @@ export class ImagesService {
          * id
          */
         id: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/images/{id}',

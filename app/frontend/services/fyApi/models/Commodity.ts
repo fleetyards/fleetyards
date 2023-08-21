@@ -17,11 +17,11 @@ export type Commodity = {
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    media: {
+    media?: {
         storeImage?: MediaImage;
     };
-    createdAt?: string;
-    updatedAt?: string;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */

@@ -15,7 +15,7 @@ export type ModelModule = {
         soldAt: Array<ShopCommodity>;
     };
     description?: string | null;
-    media: {
+    media?: {
         storeImage?: MediaImage | null;
     };
     pledgePrice?: number | null;

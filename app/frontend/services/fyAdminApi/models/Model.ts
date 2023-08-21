@@ -51,18 +51,18 @@ export type Model = {
         storeUrl?: string | null;
     };
     loaners: Array<ModelLoaner>;
-    manufacturer?: Manufacturer;
+    manufacturer?: Manufacturer | null;
     media?: {
-        angledView?: ViewImage;
-        angledViewColored?: ViewImage;
+        angledView?: ViewImage | null;
+        angledViewColored?: ViewImage | null;
         fleetchartImage?: string | null;
-        frontView?: ViewImage;
-        frontViewColored?: ViewImage;
-        sideView?: ViewImage;
-        sideViewColored?: ViewImage;
-        storeImage?: MediaImage;
-        topView?: ViewImage;
-        topViewColored?: ViewImage;
+        frontView?: ViewImage | null;
+        frontViewColored?: ViewImage | null;
+        sideView?: ViewImage | null;
+        sideViewColored?: ViewImage | null;
+        storeImage?: MediaImage | null;
+        topView?: ViewImage | null;
+        topViewColored?: ViewImage | null;
     };
     metrics: {
         beam?: number | null;
@@ -92,7 +92,7 @@ export type Model = {
     rsiId?: number | null;
     rsiName?: string | null;
     rsiSlug?: string | null;
-    speeds: {
+    speeds?: {
         groundAcceleration?: number | null;
         groundDecceleration?: number | null;
         groundMaxSpeed?: number | null;
@@ -107,5 +107,235 @@ export type Model = {
         scmSpeedDecceleration?: number | null;
         yaw?: number | null;
     };
+    createdAt: string;
+    updatedAt: string;
+    /**
+     * @deprecated
+     */
+    afterburnerGroundSpeed?: number | null;
+    /**
+     * @deprecated
+     */
+    afterburnerSpeed?: number | null;
+    /**
+     * @deprecated
+     */
+    angledView?: string | null;
+    /**
+     * @deprecated
+     */
+    angledViewHeight?: number | null;
+    /**
+     * @deprecated
+     */
+    angledViewLarge?: string | null;
+    /**
+     * @deprecated
+     */
+    angledViewMedium?: string | null;
+    /**
+     * @deprecated
+     */
+    angledViewSmall?: string | null;
+    /**
+     * @deprecated
+     */
+    angledViewWidth?: number | null;
+    /**
+     * @deprecated
+     */
+    angledViewXlarge?: string | null;
+    /**
+     * @deprecated
+     */
+    beam?: number | null;
+    /**
+     * @deprecated
+     */
+    beamLabel?: string | null;
+    /**
+     * @deprecated
+     */
+    cargo?: number | null;
+    /**
+     * @deprecated
+     */
+    cargoLabel?: string | null;
+    /**
+     * @deprecated
+     */
+    fleetchartImage?: string | null;
+    /**
+     * @deprecated
+     */
+    fleetchartLength?: number | null;
+    /**
+     * @deprecated
+     */
+    groundSpeed?: number | null;
+    /**
+     * @deprecated
+     */
+    height?: number | null;
+    /**
+     * @deprecated
+     */
+    heightLabel?: string | null;
+    /**
+     * @deprecated
+     */
+    hydrogenFuelTankSize?: number | null;
+    /**
+     * @deprecated
+     */
+    length?: number | null;
+    /**
+     * @deprecated
+     */
+    lengthLabel?: string | null;
+    /**
+     * @deprecated
+     */
+    mass?: number | null;
+    /**
+     * @deprecated
+     */
+    massLabel?: number | null;
+    /**
+     * @deprecated
+     */
+    maxCrew?: number | null;
+    /**
+     * @deprecated
+     */
+    maxCrewLabel?: string | null;
+    /**
+     * @deprecated
+     */
+    minCrew?: number | null;
+    /**
+     * @deprecated
+     */
+    minCrewLabel?: string | null;
+    /**
+     * @deprecated
+     */
+    pitchMax?: number | null;
+    /**
+     * @deprecated
+     */
+    quantumFuelTankSize?: number | null;
+    /**
+     * @deprecated
+     */
+    rollMax?: number | null;
+    /**
+     * @deprecated
+     */
+    salesPageUrl?: string | null;
+    /**
+     * @deprecated
+     */
+    scmSpeed?: number | null;
+    /**
+     * @deprecated
+     */
+    sideView?: string | null;
+    /**
+     * @deprecated
+     */
+    sideViewHeight?: number | null;
+    /**
+     * @deprecated
+     */
+    sideViewLarge?: string | null;
+    /**
+     * @deprecated
+     */
+    sideViewMedium?: string | null;
+    /**
+     * @deprecated
+     */
+    sideViewSmall?: string | null;
+    /**
+     * @deprecated
+     */
+    sideViewWidth?: number | null;
+    /**
+     * @deprecated
+     */
+    sideViewXlarge?: string | null;
+    /**
+     * @deprecated
+     */
+    size?: string | null;
+    /**
+     * @deprecated
+     */
+    sizeLabel?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImage?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageLarge?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageMedium?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageSmall?: string | null;
+    /**
+     * @deprecated
+     */
+    storeUrl?: string | null;
+    /**
+     * @deprecated
+     */
+    topView?: string | null;
+    /**
+     * @deprecated
+     */
+    topViewHeight?: number | null;
+    /**
+     * @deprecated
+     */
+    topViewLarge?: string | null;
+    /**
+     * @deprecated
+     */
+    topViewMedium?: string | null;
+    /**
+     * @deprecated
+     */
+    topViewSmall?: string | null;
+    /**
+     * @deprecated
+     */
+    topViewWidth?: number | null;
+    /**
+     * @deprecated
+     */
+    topViewXlarge?: string | null;
+    /**
+     * @deprecated
+     */
+    xaxisAcceleration?: number | null;
+    /**
+     * @deprecated
+     */
+    yawMax?: number | null;
+    /**
+     * @deprecated
+     */
+    yaxisAcceleration?: number | null;
+    /**
+     * @deprecated
+     */
+    zaxisAcceleration?: number | null;
 };
 
