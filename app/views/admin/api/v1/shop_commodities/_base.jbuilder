@@ -52,4 +52,9 @@ if local_assigns.fetch(:extended, false)
   end
 end
 
+json.submitter do
+  json.id shop_commodity.submitted_by
+  json.username shop_commodity.submitter&.username
+end
+
 json.partial! "api/shared/dates", record: shop_commodity
