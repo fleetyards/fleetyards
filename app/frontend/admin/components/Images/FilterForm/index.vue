@@ -46,7 +46,7 @@ import type {
   ImageQuery,
   ModelMinimal,
   ModelQuery,
-  StationMinimal,
+  Station,
   StationQuery,
 } from "@/services/fyAdminApi";
 import { useApiClient } from "@/admin/composables/useApiClient";
@@ -163,7 +163,7 @@ const fetchModels = async (params: FilterGroupParams) => {
   });
 };
 
-const stationsFormatter = (stations: StationMinimal[]) => {
+const stationsFormatter = (stations: Station[]) => {
   return stations.map((station) => {
     return {
       label: station.name,

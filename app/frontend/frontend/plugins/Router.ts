@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import type { RouteLocation } from "vue-router";
+import type { RouteLocation, LocationQuery } from "vue-router";
 import qs from "qs";
 import Store from "@/frontend/lib/Store";
 import { routes as initialRoutes } from "@/frontend/routes";
@@ -24,7 +24,7 @@ const router = createRouter({
     }),
 
   parseQuery(query) {
-    return qs.parse(query);
+    return qs.parse(query) as LocationQuery;
   },
 
   stringifyQuery(query) {
@@ -43,7 +43,7 @@ const validateAndResolveNewRoute = (to: RouteLocation) => {
     return {
       routeName: "login",
       routeParams: {
-        redirectToRoute: to.name,
+        redirectToRoute: String(to.name),
       },
     };
   }

@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { sortByToggle } from "@/frontend/utils/Sorting";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import type { FleetYardsLocation } from "@/frontend/utils/Sorting";
 

@@ -1,13 +1,15 @@
 import publicUserCollection from "@/frontend/api/collections/PublicUser";
 
-import { Route, NavigationGuardNext } from "vue-router";
+import { RouteLocation, NavigationGuardNext } from "vue-router";
 
 export const publicHangarRouteGuard = async function publicHangarRouteGuard(
-  to: Route,
-  _from: Route,
+  to: RouteLocation,
+  _from: RouteLocation,
   next: NavigationGuardNext
 ) {
-  const user = await publicUserCollection.findByUsername(to.params.username);
+  const user = await publicUserCollection.findByUsername(
+    String(to.params.username)
+  );
 
   if (!user) {
     next({ name: "404" });

@@ -32,14 +32,14 @@
 <script lang="ts" setup>
 import FleetchartSlider from "@/embed/components/Fleetchart/Slider/index.vue";
 import FleetchartItem from "@/embed/components/Fleetchart/Item/index.vue";
-import type { ModelMinimal } from "@/services/fyApi";
+import type { Model } from "@/services/fyApi";
 import { useEmbedStore } from "@/embed/stores/embed";
 import { storeToRefs } from "pinia";
 
 const embedStore = useEmbedStore();
 
 type Props = {
-  models: ModelMinimal[];
+  models: Model[];
   slider?: boolean;
 };
 
@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { fleetchartScale } = storeToRefs(embedStore);
 
-const internalModels = ref<ModelMinimal[]>([]);
+const internalModels = ref<Model[]>([]);
 
 watch(
   () => props.models,
@@ -59,7 +59,7 @@ watch(
   }
 );
 
-const getLength = (model: ModelMinimal) => {
+const getLength = (model: Model) => {
   if (model.metrics.fleetchartLength) {
     return model.metrics.fleetchartLength;
   }
@@ -67,7 +67,7 @@ const getLength = (model: ModelMinimal) => {
   return model.metrics.length || 0;
 };
 
-const sortByFleetchartLength = (a: ModelMinimal, b: ModelMinimal) => {
+const sortByFleetchartLength = (a: Model, b: Model) => {
   if (getLength(a) > getLength(b)) {
     return -1;
   }

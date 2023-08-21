@@ -87,7 +87,7 @@ import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useQuery } from "@tanstack/vue-query";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { StarsystemQuery, BaseList } from "@/services/fyApi";
 
 const { t } = useI18n();

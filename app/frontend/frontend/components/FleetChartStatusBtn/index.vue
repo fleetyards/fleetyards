@@ -34,7 +34,7 @@ import type {
 } from "@/frontend/core/components/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 interface Props extends BtnProps {
   withLabel?: boolean;

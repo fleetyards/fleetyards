@@ -1,7 +1,7 @@
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
-
 import { useHangarStore } from "./hangar";
+import type { User } from "@/services/fyApi";
 
 interface SessionState {
   authenticated: boolean;

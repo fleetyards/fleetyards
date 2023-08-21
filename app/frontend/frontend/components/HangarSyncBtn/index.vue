@@ -24,7 +24,7 @@ import type {
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import Store from "@/frontend/lib/Store";
-import { useRouter, useRoute } from "vue-router/composables";
+import { useRouter, useRoute } from "vue-router";
 
 interface Props extends BtnProps {
   variant?: BtnVariants;

@@ -65,10 +65,10 @@ import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useEmbedStore } from "@/embed/stores/embed";
 import { storeToRefs } from "pinia";
 import { useApiClient } from "@/embed/composables/useApiClient";
-import type { ModelMinimal } from "@/services/fyApi";
+import type { Model } from "@/services/fyApi";
 import { useI18n } from "@/embed/composables/useI18n";
 
-export interface EnhancedModelMinimal extends ModelMinimal {
+export interface EnhancedModelMinimal extends Model {
   count: number;
 }
 
@@ -94,7 +94,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const loading = ref<boolean>(false);
 const groupedModels = ref<EnhancedModelMinimal[]>([]);
-const ungroupedModels = ref<ModelMinimal[]>([]);
+const ungroupedModels = ref<Model[]>([]);
 
 const embedStore = useEmbedStore();
 const { details, fleetchart, grouping } = storeToRefs(embedStore);
@@ -138,7 +138,7 @@ onMounted(() => {
   }
 });
 
-const sortByName = (a?: ModelMinimal, b?: ModelMinimal) => {
+const sortByName = (a?: Model, b?: Model) => {
   if (!a || !b) {
     return 0;
   }
@@ -154,11 +154,7 @@ const sortByName = (a?: ModelMinimal, b?: ModelMinimal) => {
   return 0;
 };
 
-const groupModels = (
-  models: ModelMinimal[],
-  item: ModelMinimal,
-  pos: number
-) => {
+const groupModels = (models: Model[], item: Model, pos: number) => {
   const firstModel = models.find((model) => model.slug === item.slug);
 
   if (!firstModel) {
@@ -170,7 +166,7 @@ const groupModels = (
 
 const enhanceGroupedModel = (
   modelSlugs: string[],
-  model: ModelMinimal
+  model: Model
 ): EnhancedModelMinimal => ({
   ...model,
   count: modelSlugs.filter((slug) => slug === model.slug).length,
@@ -201,9 +197,9 @@ const fetchModels = async () => {
     );
 
     ungroupedModels.value = props.ships
-      ?.map((slug) => models.find((model: ModelMinimal) => model.slug === slug))
+      ?.map((slug) => models.find((model: Model) => model.slug === slug))
       .filter((item) => item)
-      .sort(sortByName) as ModelMinimal[];
+      .sort(sortByName) as Model[];
   } catch (error) {
     console.error(error);
   }
@@ -246,7 +242,7 @@ const fetchHangarVehicles = async () => {
       .filter((item, pos) => groupModels(models, item, pos))
       .map((model) =>
         enhanceGroupedModel(
-          models.map((item: ModelMinimal) => item.slug),
+          models.map((item: Model) => item.slug),
           model
         )
       );

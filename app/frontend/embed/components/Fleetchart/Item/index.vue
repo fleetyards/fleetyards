@@ -18,10 +18,10 @@
 
 <script lang="ts" setup>
 import FleetchartItemImage from "@/embed/components/Fleetchart/Image/index.vue";
-import type { ModelMinimal } from "@/services/fyApi";
+import type { Model } from "@/services/fyApi";
 
 type Props = {
-  model: ModelMinimal;
+  model: Model;
   scale: number;
 };
 

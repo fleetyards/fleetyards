@@ -1,13 +1,13 @@
 import modelsCollection from "@/frontend/api/collections/Models";
 
-import { Route, NavigationGuardNext } from "vue-router";
+import { RouteLocation, NavigationGuardNext } from "vue-router";
 
 export const modelRouteGuard = async function modelRouteGuard(
-  to: Route,
-  _from: Route,
+  to: RouteLocation,
+  _from: RouteLocation,
   next: NavigationGuardNext
 ) {
-  const model = await modelsCollection.findBySlug(to.params.slug);
+  const model = await modelsCollection.findBySlug(String(to.params.slug));
 
   if (!model) {
     next({ name: "404" });

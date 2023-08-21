@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    API_ENDPOINT: string;
+    ADMIN_API_ENDPOINT: string;
     ON_SUBDOMAIN: boolean;
     NODE_ENV: string;
     GIT_REVISION: string;

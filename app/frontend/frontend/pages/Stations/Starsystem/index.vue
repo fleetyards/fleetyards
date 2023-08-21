@@ -37,17 +37,17 @@ import StarsystemLevelsMetrics from "@/frontend/components/Starsystems/LevelsMet
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/frontend/core/components/BreadCrumbs/index.vue";
 import AsyncData from "@/frontend/core/components/AsyncData.vue";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n();
 
-const { updateMetaInfo } = useMetaInfo();
+const { updateMetaInfo } = useMetaInfo(t);
 
-const { starsystems } = useApiClient();
+const { starsystems: starsystemsService } = useApiClient();
 
 const route = useRoute();
 
@@ -75,8 +75,8 @@ const {
 } = useQuery({
   queryKey: ["starsystem", route.params.slug],
   queryFn: () =>
-    starsystems.get({
-      slug: route.params.slug,
+    starsystemsService.starsystem({
+      slug: String(route.params.slug),
     }),
 });
 

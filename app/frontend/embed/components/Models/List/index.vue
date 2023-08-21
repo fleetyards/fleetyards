@@ -13,17 +13,17 @@
 <script lang="ts" setup>
 import ModelPanel from "@/embed/components/Models/Panel/index.vue";
 import type { EnhancedModelMinimal } from "@/embed/pages/Home.vue";
-import { ModelMinimal } from "@/services/fyApi";
+import { Model } from "@/services/fyApi";
 import { useEmbedStore } from "@/embed/stores/embed";
 import { storeToRefs } from "pinia";
 
 type Props = {
-  models: (EnhancedModelMinimal | ModelMinimal)[];
+  models: (EnhancedModelMinimal | Model)[];
 };
 
 const props = defineProps<Props>();
 
-const internalModels = ref<(EnhancedModelMinimal | ModelMinimal)[]>([]);
+const internalModels = ref<(EnhancedModelMinimal | Model)[]>([]);
 
 const embedStore = useEmbedStore();
 
@@ -40,7 +40,7 @@ onMounted(() => {
   internalModels.value = props.models;
 });
 
-const count = (model: EnhancedModelMinimal | ModelMinimal) => {
+const count = (model: EnhancedModelMinimal | Model) => {
   if (!grouping.value) {
     return undefined;
   }

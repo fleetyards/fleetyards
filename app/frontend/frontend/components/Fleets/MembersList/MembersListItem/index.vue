@@ -188,7 +188,7 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n();
 

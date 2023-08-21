@@ -185,7 +185,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
@@ -196,7 +196,7 @@ import {
   pledgePriceOptions as pledgePriceFilterOptions,
 } from "@/frontend/utils/FilterOptions";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFilters } from "@/frontend/composables/useFilters";
+import { useFilters } from "@/shared/composables/useFilters";
 
 type FleetsFilterForm = {
   modelNameCont?: string;

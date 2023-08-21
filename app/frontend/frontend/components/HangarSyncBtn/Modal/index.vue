@@ -348,7 +348,7 @@ import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import type { VehiclesCollection } from "@/frontend/api/collections/Vehicles";
 import Store from "@/frontend/lib/Store";
-import { useRouter, useRoute } from "vue-router/composables";
+import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 

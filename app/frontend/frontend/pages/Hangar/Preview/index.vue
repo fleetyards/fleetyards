@@ -125,7 +125,7 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/Btn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
 

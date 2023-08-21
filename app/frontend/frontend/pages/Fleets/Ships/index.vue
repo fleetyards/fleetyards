@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { publicFleetShipsRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";

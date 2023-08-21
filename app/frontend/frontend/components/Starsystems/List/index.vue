@@ -47,8 +47,9 @@
   </Panel>
 </template>
 
-<script>
-import Panel from "@/frontend/core/components/Panel/index.vue";
+<script lang="ts" setup>
+import Panel from "@/shared/components/Panel/index.vue";
+</script>
 
 <script lang="ts">
 export default {

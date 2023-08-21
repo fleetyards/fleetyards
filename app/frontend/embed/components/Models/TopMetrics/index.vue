@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ModelMinimal } from "@/services/fyApi";
+import type { Model } from "@/services/fyApi";
 import { useI18n } from "@/embed/composables/useI18n";
 
 type Props = {
-  model: ModelMinimal;
+  model: Model;
   padding?: boolean;
 };
 

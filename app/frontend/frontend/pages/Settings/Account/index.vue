@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import {
   displaySuccess,
   displayAlert,

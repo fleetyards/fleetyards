@@ -56,7 +56,7 @@ import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { PasswordRequestInput } from "@/services/fyApi";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 
 const { t } = useI18n();
 

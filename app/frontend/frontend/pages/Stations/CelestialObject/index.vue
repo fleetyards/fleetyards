@@ -72,7 +72,7 @@ import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n();
 

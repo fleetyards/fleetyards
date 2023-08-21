@@ -8,7 +8,7 @@ const validate = (value: string): boolean => regex.test(value);
 export { validate };
 
 export default {
-  message(field) {
+  message(field: string) {
     return I18n.t("messages.error.textInvalid", { field });
   },
   validate,

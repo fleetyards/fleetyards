@@ -61,7 +61,7 @@
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { PasswordInput } from "@/services/fyApi";

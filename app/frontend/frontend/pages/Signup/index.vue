@@ -6,14 +6,14 @@
           <form @submit.prevent="handleSubmit(signup)">
             <h1>
               <router-link to="/" :exact="true">
-                {{ $t("app") }}
+                {{ t("app") }}
               </router-link>
             </h1>
             <ValidationProvider
               v-slot="{ errors }"
               vid="username"
               rules="required|alpha_dash|usernameTaken"
-              :name="$t('labels.username')"
+              :name="t('labels.username')"
               :slim="true"
             >
               <FormInput
@@ -28,7 +28,7 @@
               v-slot="{ errors }"
               vid="email"
               rules="required|email"
-              :name="$t('labels.email')"
+              :name="t('labels.email')"
               :slim="true"
             >
               <FormInput
@@ -42,7 +42,7 @@
               v-slot="{ errors }"
               vid="password"
               rules="required|min:8"
-              :name="$t('labels.password')"
+              :name="t('labels.password')"
               :slim="true"
             >
               <FormInput
@@ -57,7 +57,7 @@
               v-slot="{ errors }"
               vid="passwordConfirmation"
               rules="required|confirmed:password"
-              :name="$t('labels.passwordConfirmation')"
+              :name="t('labels.passwordConfirmation')"
               :slim="true"
             >
               <FormInput
@@ -80,9 +80,10 @@
             />
 
             <Checkbox
+              name="saleNotify"
               id="saleNotify"
               v-model="form.saleNotify"
-              :label="$t('labels.user.saleNotify')"
+              :label="t('labels.user.saleNotify')"
             />
 
             <Btn
@@ -92,23 +93,23 @@
               size="large"
               :block="true"
             >
-              {{ $t("actions.signUp") }}
+              {{ t("actions.signUp") }}
             </Btn>
 
             <p class="privacy-info">
-              {{ $t("labels.signup.privacyPolicy") }}
+              {{ t("labels.signup.privacyPolicy") }}
               <router-link :to="{ name: 'privacy-policy' }">
-                {{ $t("labels.privacyPolicy") }}
+                {{ t("labels.privacyPolicy") }}
               </router-link>
             </p>
 
             <footer>
               <p class="text-center">
-                {{ $t("labels.alreadyRegistered") }}
+                {{ t("labels.alreadyRegistered") }}
               </p>
 
               <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ $t("actions.login") }}
+                {{ t("actions.login") }}
               </Btn>
             </footer>
           </form>
@@ -118,90 +119,94 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+<script lang="ts" setup>
+import Btn from "@/shared/components/Btn/index.vue";
 import { transformErrors } from "@/frontend/api/helpers";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import Checkbox from "@/shared/components/Form/Checkbox/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { storeToRefs } from "pinia";
 
-@Component<Signup>({
-  components: {
-    FormInput,
-    Btn,
-    Checkbox,
-  },
-})
-export default class Signup extends Vue {
-  @Getter("inviteToken", { namespace: "fleet" }) fleetInviteToken;
+const { t } = useI18n();
 
-  @Action("resetInviteToken", { namespace: "fleet" })
-  resetFleetInviteToken: any;
+const { displaySuccess, displayAlert } = useNoty(t);
 
-  form: SignupForm | null = null;
+const fleetStore = useFleetStore();
 
-  submitting = false;
+const { inviteToken: fleetInviteToken } = storeToRefs(fleetStore);
 
-  mounted() {
-    this.setupForm();
-  }
+const form = ref<SignupForm>({});
 
-  setupForm() {
-    this.form = {
-      username: null,
-      email: null,
-      saleNotify: false,
-      password: null,
-      passwordConfirmation: null,
-      fleetInviteToken: this.fleetInviteToken,
-    };
-  }
+const submitting = ref(false);
 
-  async signup() {
-    this.submitting = true;
+onMounted(() => {
+  setupForm();
+});
 
-    const response = await this.$api.post("users/signup", this.form);
+const setupForm = () => {
+  form.value = {
+    username: null,
+    email: null,
+    saleNotify: false,
+    password: null,
+    passwordConfirmation: null,
+    fleetInviteToken: fleetStore.inviteToken,
+  };
+};
 
-    this.submitting = false;
+const resetFleetInviteToken = () => {};
 
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t("messages.signup.success"),
-      });
+const router = useRouter();
 
-      this.resetFleetInviteToken();
+const signup = async () => {
+  submitting.value = true;
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push("/").catch(() => {});
-    } else if (
-      response.error.response &&
-      response.error.response.data &&
-      response.error.response.data.code === "blocked"
-    ) {
+  const response = await this.$api.post("users/signup", this.form);
+
+  submitting.value = false;
+
+  if (!response.error) {
+    displaySuccess({
+      text: t("messages.signup.success"),
+    });
+
+    fleetStore.resetInviteToken();
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    router.push("/").catch(() => {});
+  } else if (
+    response.error.response &&
+    response.error.response.data &&
+    response.error.response.data.code === "blocked"
+  ) {
+    displayAlert({
+      text: t("texts.signup.blocked"),
+    });
+  } else {
+    const { error } = response;
+    if (error.response && error.response.data) {
+      const { data: errorData } = error.response;
+
+      this.$refs.form.setErrors(transformErrors(errorData.errors));
+
       displayAlert({
-        text: this.$t("texts.signup.blocked"),
+        text: errorData.message,
       });
     } else {
-      const { error } = response;
-      if (error.response && error.response.data) {
-        const { data: errorData } = error.response;
-
-        this.$refs.form.setErrors(transformErrors(errorData.errors));
-
-        displayAlert({
-          text: errorData.message,
-        });
-      } else {
-        displayAlert({
-          text: this.$t("messages.signup.failure"),
-        });
-      }
+      displayAlert({
+        text: t("messages.signup.failure"),
+      });
     }
   }
-}
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "SignupPage",
+};
 </script>
 
 <style lang="scss">

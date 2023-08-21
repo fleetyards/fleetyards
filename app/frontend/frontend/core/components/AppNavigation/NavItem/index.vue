@@ -134,7 +134,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import type { RawLocation } from "vue-router";
 import Store from "@/frontend/lib/Store";
 import NavItemInner from "./NavItemInner/index.vue";

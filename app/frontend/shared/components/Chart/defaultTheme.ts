@@ -132,11 +132,11 @@ const defaultTheme: Highcharts.Options = {
   credits: {
     enabled: false,
   },
-  labels: {
-    style: {
-      color: "#707073",
-    },
-  },
+  // labels: {
+  //   style: {
+  //     color: "#707073",
+  //   },
+  // },
   drilldown: {
     activeAxisLabelStyle: {
       color: "#F0F0F3",
@@ -216,12 +216,12 @@ const defaultTheme: Highcharts.Options = {
   },
 
   // special colors for some of the
-  legendBackgroundColor: "rgba(0, 0, 0, 0.5)",
-  background2: "#505053",
-  dataLabelsColor: "#B0B0B3",
-  textColor: "#C0C0C0",
-  contrastTextColor: "#F0F0F3",
-  maskColor: "rgba(255,255,255,0.3)",
+  // legendBackgroundColor: "rgba(0, 0, 0, 0.5)",
+  // background2: "#505053",
+  // dataLabelsColor: "#B0B0B3",
+  // textColor: "#C0C0C0",
+  // contrastTextColor: "#F0F0F3",
+  // maskColor: "rgba(255,255,255,0.3)",
 };
 
 export default defaultTheme;

@@ -10,7 +10,7 @@ export const useCheckStoreVersion = (store: Store) => {
     }
   };
 
-  unBeforeMounted(() => {
+  onBeforeMount(() => {
     check();
   });
 };

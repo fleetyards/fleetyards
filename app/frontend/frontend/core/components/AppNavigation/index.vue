@@ -94,7 +94,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { isFleetRoute as fleetRouteCheck } from "@/frontend/utils/Routes/Fleets";
 import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";

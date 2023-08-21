@@ -312,7 +312,7 @@ import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useCable } from "@/frontend/composables/useCable";
 import { Subscription } from "@rails/actioncable";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Store from "@/frontend/lib/Store";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();

@@ -5,7 +5,7 @@ export default {
   message() {
     return I18n.t("messages.error.emailTaken");
   },
-  validate(value) {
+  validate(value: string) {
     return post("users/check-email", { email: value })
       .then(({ data }) => ({
         valid: !data.emailTaken,

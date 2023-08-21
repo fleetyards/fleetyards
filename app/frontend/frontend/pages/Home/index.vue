@@ -153,7 +153,7 @@
 
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";

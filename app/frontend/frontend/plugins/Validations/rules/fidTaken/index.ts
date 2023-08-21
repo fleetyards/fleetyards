@@ -5,7 +5,7 @@ export default {
   message() {
     return I18n.t("messages.error.fleetTaken");
   },
-  validate(value) {
+  validate(value: string) {
     return post("fleets/check", { fid: value }, true)
       .then(({ data }) => ({
         valid: !data.taken,

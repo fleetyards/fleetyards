@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";

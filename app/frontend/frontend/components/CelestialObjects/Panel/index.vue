@@ -1,7 +1,7 @@
 <template>
   <Panel
     v-if="location"
-    :id="`${item.resultType}-${location.id}`"
+    :id="`${item.type}-${location.slug}`"
     class="celestial-object-panel"
   >
     <div class="panel-image text-center">
@@ -35,6 +35,12 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import type {
+  SearchResult,
+  CelestialObject,
+  Starsystem,
+} from "@/services/fyApi";
+import { SearchResultTypeEnum } from "@/services/fyApi";
 
 type Props = {
   item: SearchResult;
@@ -42,13 +48,17 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const location = computed(() => props.item as CelestialObject | Starsystem);
+const resultItem = computed(() => props.item.item);
+
+const location = computed(
+  () => resultItem.value as CelestialObject | Starsystem
+);
 
 const { supported: webpSupported } = useWebpCheck();
 
 const storeImage = computed(() => {
-  if (props.item.media.storeImage) {
-    return props.item.media.storeImage?.medium;
+  if (resultItem.value.media?.storeImage) {
+    return resultItem.value.media?.storeImage?.medium;
   }
 
   if (webpSupported) {
@@ -59,17 +69,20 @@ const storeImage = computed(() => {
 });
 
 const route = computed(() => {
-  switch (props.item.resultType) {
-    case "celestial_object":
+  switch (props.item.type) {
+    case SearchResultTypeEnum.CELESTIAL_OBJECT:
       return {
         name: "celestial-object",
         params: {
-          starsystem: (props.item as CelestialObject).starsystem.slug,
-          slug: props.item.slug,
+          starsystem: (resultItem.value as CelestialObject).starsystem.slug,
+          slug: (resultItem.value as CelestialObject).slug,
         },
       };
-    case "starsystem":
-      return { name: "starsystem", params: { slug: props.item.slug } };
+    case SearchResultTypeEnum.STARSYSTEM:
+      return {
+        name: "starsystem",
+        params: { slug: (resultItem.value as Starsystem).slug },
+      };
     default:
       return "";
   }

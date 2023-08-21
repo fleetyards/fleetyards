@@ -5,7 +5,7 @@ export default {
   message() {
     return I18n.t("messages.error.serialTaken");
   },
-  validate(value) {
+  validate(value: string) {
     return post("vehicles/check-serial", { serial: value })
       .then(({ data }) => ({
         valid: !data.serialTaken,

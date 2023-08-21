@@ -142,13 +142,13 @@ import Panel from "@/shared/components/Panel/index.vue";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 const { stats: statsService } = useApiClient();
 
-useMetaInfo();
-
 const { t } = useI18n();
+
+useMetaInfo(t);
 
 const { data: quickStats } = useQuery({
   queryKey: ["quickstats"],

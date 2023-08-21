@@ -45,7 +45,7 @@ import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
 import stationsCollection from "@/frontend/api/collections/Stations";
 import type { StationsCollection } from "@/frontend/api/collections/Stations";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 

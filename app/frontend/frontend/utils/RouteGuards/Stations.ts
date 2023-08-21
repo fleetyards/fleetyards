@@ -1,13 +1,13 @@
 import stationsCollection from "@/frontend/api/collections/Stations";
 
-import { Route, NavigationGuardNext } from "vue-router";
+import { RouteLocation, NavigationGuardNext } from "vue-router";
 
 export const stationRouteGuard = async function stationRouteGuard(
-  to: Route,
-  _from: Route,
+  to: RouteLocation,
+  _from: RouteLocation,
   next: NavigationGuardNext
 ) {
-  const station = await stationsCollection.findBySlug(to.params.slug);
+  const station = await stationsCollection.findBySlug(String(to.params.slug));
 
   if (!station) {
     next({ name: "404" });

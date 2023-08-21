@@ -1,9 +1,9 @@
 import userCollection from "@/frontend/api/collections/User";
-import { Route, NavigationGuardNext } from "vue-router";
+import { RouteLocation, NavigationGuardNext } from "vue-router";
 
 export const enabledRouteGuard = async function fleetRouteGuard(
-  _to: Route,
-  _from: Route,
+  _to: RouteLocation,
+  _from: RouteLocation,
   next: NavigationGuardNext
 ) {
   const response = await userCollection.current();
@@ -16,8 +16,8 @@ export const enabledRouteGuard = async function fleetRouteGuard(
 };
 
 export const disabledRouteGuard = async function publicFleetRouteGuard(
-  _to: Route,
-  _from: Route,
+  _to: RouteLocation,
+  _from: RouteLocation,
   next: NavigationGuardNext
 ) {
   const response = await userCollection.current();

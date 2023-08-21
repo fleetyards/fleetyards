@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import modelsCollection from "@/frontend/api/collections/Models";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
@@ -91,6 +91,7 @@ import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
+import type { ModelQuery } from "@/services/fyApi";
 
 useHangarItems();
 useWishlistItems();
@@ -124,7 +125,7 @@ const toggleDetailsTooltip = computed(() => {
 const route = useRoute();
 
 const filters = computed(() => ({
-  filters: route.query.q as unknown as ModelsFilter,
+  filters: route.query.q as unknown as ModelQuery,
   page: Number(route.query.page),
 }));
 
