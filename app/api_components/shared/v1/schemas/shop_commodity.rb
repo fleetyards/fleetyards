@@ -23,7 +23,7 @@ module Shared
             },
             category: {"$ref": "#/components/schemas/ShopCommodityCategoryEnum"},
             subCategory: {
-              oneOf: [{
+              anyOf: [{
                 type: :string
               }, {
                 "$ref": "#/components/schemas/ComponentClassEnum"
