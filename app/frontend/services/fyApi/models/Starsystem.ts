@@ -20,7 +20,7 @@ export type Starsystem = {
     status?: string | null;
     type?: string | null;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     celestialObjects?: Array<CelestialObject>;
     createdAt: string;

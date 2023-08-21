@@ -10,12 +10,12 @@ export type Image = {
     background: boolean;
     bigUrl: string;
     caption?: string | null;
-    height: number | null;
     name: string;
     smallUrl: string;
     type: string;
     url: string;
-    width: number | null;
+    width?: number;
+    height?: number;
     gallery?: Gallery;
     createdAt: string;
     updatedAt: string;

@@ -46,7 +46,7 @@ module Shared
           },
           additionalProperties: false,
           required: %w[
-            id name slug type typeLabel stationLabel locationLabel rental buying selling
+            id name slug type typeLabel stationLabel locationLabel rental buying selling media
             refineryTerminal station createdAt updatedAt
           ]
         })
