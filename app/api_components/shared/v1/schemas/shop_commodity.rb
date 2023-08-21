@@ -24,7 +24,7 @@ module Shared
             category: {"$ref": "#/components/schemas/ShopCommodityCategoryEnum"},
             subCategory: {
               oneOf: [{
-                "$ref": "#/components/schemas/ModelClassificationEnum"
+                type: :string
               }, {
                 "$ref": "#/components/schemas/ComponentClassEnum"
               }, {
