@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.ignore_nil!
 json.id image.id
 json.name image.name.file.filename
 json.caption image.caption
