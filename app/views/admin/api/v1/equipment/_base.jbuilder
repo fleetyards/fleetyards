@@ -26,15 +26,20 @@ json.extras equipment.extras
 json.grade equipment.grade
 json.item_type equipment.item_type
 json.item_type_label equipment.item_type_label
+
 json.manufacturer do
   json.null! if equipment.manufacturer.blank?
   json.partial! "api/v1/manufacturers/base", manufacturer: equipment.manufacturer if equipment.manufacturer.present?
 end
+
+json.media({})
 json.media do
+  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: equipment.store_image
   end
 end
+
 json.range equipment.range
 json.rate_of_fire equipment.rate_of_fire
 json.size equipment.size

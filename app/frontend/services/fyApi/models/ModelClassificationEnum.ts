@@ -3,10 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Meta } from './Meta';
-
-export type BaseList = {
-    items?: Array<Record<string, any>>;
-    meta?: Meta;
-};
-
+export enum ModelClassificationEnum {
+    EXPLORER = 'explorer',
+    MULTI = 'multi',
+    MULTI_ROLE = 'multi_role',
+}

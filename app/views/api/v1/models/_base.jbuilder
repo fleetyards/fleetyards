@@ -19,15 +19,20 @@ json.availability do
     json.array! model.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
 end
+
 json.brochure model.brochure.url
 json.classification model.classification
 json.classification_label model.classification&.humanize
+
+json.crew({})
 json.crew do
+  json.ignore_nil!
   json.max model.max_crew
   json.max_label model.max_crew.to_s
   json.min model.min_crew
   json.min_label model.min_crew.to_s
 end
+
 json.description model.description
 json.erkul_identifier(model.erkul_identifier.presence || model.sc_identifier)
 json.focus model.focus
@@ -42,18 +47,26 @@ json.last_pledge_price((model.last_pledge_price.to_f if model.last_pledge_price.
 json.last_pledge_price_label model.last_pledge_price_label
 json.last_updated_at model.last_updated_at&.utc&.iso8601
 json.last_updated_at_label((I18n.l(model.last_updated_at.utc, format: :label) if model.last_updated_at.present?))
+
+json.links({})
 json.links do
+  json.ignore_nil!
   json.store_url model.rsi_store_url
   json.sales_page_url model.rsi_sales_page_url
 end
+
 json.loaners do
   json.array! model.loaners, partial: "api/v1/models/loaner", as: :loaner
 end
+
 json.manufacturer do
   json.null! if model.manufacturer.blank?
   json.partial! "api/v1/manufacturers/base", manufacturer: model.manufacturer if model.manufacturer.present?
 end
+
+json.media({})
 json.media do
+  json.ignore_nil!
   json.angled_view do
     json.partial! "api/v1/shared/view_image", view_image: model.angled_view, width: model.angled_view_width, height: model.angled_view_height
   end
@@ -83,7 +96,10 @@ json.media do
     json.partial! "api/v1/shared/view_image", view_image: model.top_view_colored, width: model.top_view_colored_width, height: model.top_view_colored_height
   end
 end
+
+json.metrics({})
 json.metrics do
+  json.ignore_nil!
   json.beam model.beam.to_f
   json.beam_label model.beam_label
   json.cargo model.cargo.to_f
@@ -101,6 +117,7 @@ json.metrics do
   json.size model.size
   json.size_label model.size&.humanize
 end
+
 json.on_sale model.on_sale
 json.pledge_price((model.pledge_price.to_f if model.pledge_price.present?))
 json.pledge_price_label model.pledge_price_label
@@ -111,7 +128,10 @@ json.production_status model.production_status
 json.rsi_id model.rsi_id
 json.rsi_name model.rsi_name
 json.rsi_slug model.rsi_slug
+
+json.speeds({})
 json.speeds do
+  json.ignore_nil!
   json.ground_acceleration model.ground_acceleration&.to_f
   json.ground_decceleration model.ground_decceleration&.to_f
   json.ground_max_speed model.ground_max_speed&.to_f

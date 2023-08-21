@@ -11,11 +11,15 @@ json.economy celestial_object.sensor_economy
 json.fairchanceact celestial_object.fairchanceact
 json.habitable celestial_object.habitable
 json.location_label celestial_object.location_label
+
+json.media({})
 json.media do
+  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: celestial_object.store_image
   end
 end
+
 json.population celestial_object.sensor_population
 json.size celestial_object.size
 json.sub_type celestial_object.sub_type

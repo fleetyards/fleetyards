@@ -15,7 +15,7 @@ module Admin
 
           @commodities = @q.result
             .page(params.fetch(:page, nil))
-            .per(40)
+            .per(params.fetch(:per_page, Commodity.default_per_page))
         end
 
         private def commodities_query_params

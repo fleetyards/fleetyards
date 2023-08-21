@@ -3,10 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Meta } from './Meta';
-
-export type BaseList = {
-    items?: Array<Record<string, any>>;
-    meta?: Meta;
-};
-
+export enum OrderDirectionEnum {
+    ASC = 'asc',
+    DESC = 'desc',
+}

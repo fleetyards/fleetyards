@@ -74,7 +74,7 @@ module Admin
         end
 
         private def shop
-          @shop ||= Shop.find_by(id: params[:shop_id])
+          @shop ||= Shop.find_by!(id: params[:shop_id])
         end
 
         private def shop_commodities_query_params
