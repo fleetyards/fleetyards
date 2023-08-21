@@ -45,7 +45,7 @@ module V1
           storeImageSmall: {type: :string, deprecated: true}
         },
         additionalProperties: false,
-        required: %w[name slug designation starsystem createdAt updatedAt]
+        required: %w[name slug designation media starsystem createdAt updatedAt]
       })
     end
   end

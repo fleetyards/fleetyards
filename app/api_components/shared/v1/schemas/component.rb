@@ -56,7 +56,7 @@ module Shared
             storeImageSmall: {type: :string, format: :uri, deprecated: true}
           },
           additionalProperties: false,
-          required: %w[id name slug availability createdAt updatedAt]
+          required: %w[id name slug availability media createdAt updatedAt]
         })
       end
     end

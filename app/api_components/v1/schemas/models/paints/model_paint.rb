@@ -84,7 +84,7 @@ module V1
               topViewXlarge: {type: :string, format: :uri, nullable: true, deprecated: true}
             },
             additionalProperties: false,
-            required: %w[id name slug availability createdAt updatedAt]
+            required: %w[id name slug availability media createdAt updatedAt]
           })
         end
       end

@@ -20,6 +20,7 @@ module V1
             },
             additionalProperties: false
           },
+
           category: {"$ref": "#/components/schemas/ShopCommodityCategoryEnum"},
           subCategory: {
             anyOf: [{
@@ -91,7 +92,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          id name slug prices confirmed commodityItemType commodityItemId shop
+          id name slug prices confirmed commodityItemType commodityItemId media prices shop
           createdAt updatedAt
         ]
       })

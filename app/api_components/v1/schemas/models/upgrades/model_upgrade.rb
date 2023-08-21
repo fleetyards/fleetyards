@@ -34,7 +34,7 @@ module V1
               storeImageSmall: {type: :string, format: :uri, nullable: true, deprecated: true}
             },
             additionalProperties: false,
-            required: %w[id name createdAt updatedAt]
+            required: %w[id name media createdAt updatedAt]
           })
         end
       end

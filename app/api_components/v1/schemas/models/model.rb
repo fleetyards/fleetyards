@@ -220,8 +220,8 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos links loaners
-            metrics onSale createdAt updatedAt
+            id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos
+            links loaners metrics media speeds onSale createdAt updatedAt
           ]
         })
       end

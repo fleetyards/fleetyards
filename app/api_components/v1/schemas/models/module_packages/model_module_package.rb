@@ -61,7 +61,7 @@ module V1
               topViewXlarge: {type: :string, nullable: true, deprecated: true}
             },
             additionalProperties: false,
-            required: %w[id name modules createdAt updatedAt]
+            required: %w[id name modules media createdAt updatedAt]
           })
         end
       end
