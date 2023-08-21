@@ -92,7 +92,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          id name slug prices confirmed commodityItemType commodityItemId media prices shop
+          id name slug prices confirmed commodityItemType commodityItemId shop
           createdAt updatedAt
         ]
       })

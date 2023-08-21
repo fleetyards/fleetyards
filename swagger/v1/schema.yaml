@@ -6119,8 +6119,8 @@ components:
       - name
       - slug
       - designation
-      - media
       - starsystem
+      - media
       - createdAt
       - updatedAt
       title: CelestialObject
@@ -7812,10 +7812,10 @@ components:
       - hasVideos
       - links
       - loaners
-      - metrics
       - media
-      - speeds
+      - metrics
       - onSale
+      - speeds
       - createdAt
       - updatedAt
       title: Model
@@ -8353,10 +8353,10 @@ components:
       - hasVideos
       - links
       - loaners
-      - metrics
       - media
-      - speeds
+      - metrics
       - onSale
+      - speeds
       - createdAt
       - updatedAt
       - dockCounts
@@ -9796,8 +9796,6 @@ components:
       - confirmed
       - commodityItemType
       - commodityItemId
-      - media
-      - prices
       - shop
       - createdAt
       - updatedAt
