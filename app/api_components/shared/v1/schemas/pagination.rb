@@ -24,7 +24,7 @@ module Shared
             }
           },
           additionalProperties: false,
-          required: %w[currentPage totalPages defaultPerPage maxPerPage]
+          required: %w[currentPage totalPages]
         })
       end
     end

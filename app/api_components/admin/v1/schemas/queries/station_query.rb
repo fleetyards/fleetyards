@@ -12,7 +12,9 @@ module Admin
             properties: {
               searchCont: {type: :string},
               nameCont: {type: :string},
-              nameIn: {type: :array, items: {type: :string}}
+              idEq: {type: :string},
+              nameIn: {type: :array, items: {type: :string}},
+              idIn: {type: :array, items: {type: :string}}
             },
             additionalProperties: false
           })

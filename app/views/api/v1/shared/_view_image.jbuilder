@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-if view_image.blank?
-  json.null!
-else
+if view_image.present?
   json.source view_image.url
   json.small view_image.small.url
   json.medium view_image.medium.url
