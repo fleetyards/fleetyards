@@ -1,5 +1,4 @@
-import { messages as validationMessages } from "vee-validate/dist/locale/de.json";
-import main from "./index";
+import main from "./main";
 import actions from "./actions";
 import headlines from "./headlines";
 import labels from "./labels";
@@ -11,11 +10,6 @@ import texts from "./texts";
 import title from "./title";
 import privacySettings from "./privacySettings";
 import validationError from "./validationError";
-
-const validations = {};
-Object.keys(validationMessages).forEach((key) => {
-  validations[key] = validationMessages[key].replace(/\{/g, "%{");
-});
 
 export default {
   ...main,
@@ -29,6 +23,5 @@ export default {
   actions,
   texts,
   messages,
-  validations,
   validation_error: validationError,
 };

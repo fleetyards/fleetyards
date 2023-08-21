@@ -5,3 +5,15 @@ declare module "*.vue" {
 }
 
 declare module "vue3-highlightjs";
+
+interface FieldValidationMetaInfo {
+  field: string;
+  name: string;
+  label?: string;
+  value: unknown;
+  form: Record<string, unknown>;
+  rule?: {
+    name: string;
+    params?: Record<string, unknown> | unknown[];
+  };
+}
