@@ -45,7 +45,7 @@ export type { Manufacturer } from './models/Manufacturer';
 export type { MediaImage } from './models/MediaImage';
 export type { Meta } from './models/Meta';
 export type { Model } from './models/Model';
-export { ModelClassificationEnum } from './models/ModelClassificationEnum';
+export type { ModelClassificationEnum } from './models/ModelClassificationEnum';
 export { ModelHardpointCategoryEnum } from './models/ModelHardpointCategoryEnum';
 export { ModelHardpointGroupEnum } from './models/ModelHardpointGroupEnum';
 export { ModelHardpointSizeEnum } from './models/ModelHardpointSizeEnum';

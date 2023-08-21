@@ -5320,10 +5320,7 @@ components:
       title: HabitationTypeEnum
     ModelClassificationEnum:
       type: string
-      enum:
-      - explorer
-      - multi
-      - multi_role
+      enum: []
       title: ModelClassificationEnum
     ModelHardpointCategoryEnum:
       type: string

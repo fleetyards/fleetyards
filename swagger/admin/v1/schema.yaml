@@ -262,6 +262,13 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/shops/{shopId}/commodities":
+    parameters:
+    - name: shopId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
     get:
       summary: Shop Commodities list
       operationId: shopCommodities
@@ -269,12 +276,6 @@ paths:
       tags:
       - Shops
       parameters:
-      - name: shopId
-        in: path
-        schema:
-          type: string
-          format: uuid
-        required: true
       - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
@@ -713,10 +714,7 @@ components:
       title: HabitationTypeEnum
     ModelClassificationEnum:
       type: string
-      enum:
-      - explorer
-      - multi
-      - multi_role
+      enum: []
       title: ModelClassificationEnum
     ModelHardpointCategoryEnum:
       type: string
