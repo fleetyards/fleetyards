@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class Stations < Shared::V1::Schemas::BaseList
+    class Stations < ::Shared::V1::Schemas::BaseList
       include SchemaConcern
 
       schema({
