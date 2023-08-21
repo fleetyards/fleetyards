@@ -5,6 +5,7 @@
 
 export type Gallery = {
     id: string;
+    type: string;
     name: string;
     slug: string;
 };

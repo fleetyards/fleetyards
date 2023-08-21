@@ -3,25 +3,30 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
+import type { ShopCommodity } from './ShopCommodity';
 
-export type StarsystemMinimal = {
-    id?: string;
-    name: string;
-    slug: string;
-    danger?: string | null;
+export type ModelModule = {
+    id: string;
+    name: string | null;
+    availability: {
+        boughtAt: Array<ShopCommodity>;
+        soldAt: Array<ShopCommodity>;
+    };
     description?: string | null;
-    economy?: string | null;
-    locationLabel?: string | null;
-    mapX?: string | null;
-    mapY?: string | null;
-    media?: {
+    media: {
         storeImage?: MediaImage | null;
     };
-    population?: string | null;
-    size?: string | null;
-    status?: string | null;
-    type?: string | null;
+    pledgePrice?: number | null;
+    productionStatus?: string | null;
+    manufacturer?: Manufacturer | null;
+    createdAt: string;
+    updatedAt: string;
+    /**
+     * @deprecated
+     */
+    hasStoreImage?: boolean;
     /**
      * @deprecated
      */
@@ -38,7 +43,5 @@ export type StarsystemMinimal = {
      * @deprecated
      */
     storeImageSmall?: string;
-    createdAt: string;
-    updatedAt: string;
 };
 

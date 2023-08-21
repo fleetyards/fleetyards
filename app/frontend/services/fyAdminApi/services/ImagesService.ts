@@ -16,41 +16,12 @@ export class ImagesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * Images list
-     * Get a List of Images
-     * @returns Images successful
-     * @throws ApiError
-     */
-    public images({
-        page = '1',
-        perPage = '30',
-        q,
-    }: {
-        page?: string,
-        perPage?: string,
-        q?: ImageQuery,
-    }): CancelablePromise<Images> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/images',
-            query: {
-                'page': page,
-                'perPage': perPage,
-                'q': q,
-            },
-            errors: {
-                401: `unauthorized`,
-            },
-        });
-    }
-
-    /**
      * Image create
      * Create a new Image
      * @returns Image successful
      * @throws ApiError
      */
-    public create({
+    public createImage({
         formData,
     }: {
         formData?: ImageInputCreate,
@@ -62,6 +33,67 @@ export class ImagesService {
             mediaType: 'multipart/form-data',
             errors: {
                 401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * Images list
+     * Get a List of Images
+     * @returns Images successful
+     * @throws ApiError
+     */
+    public images({
+        page = '1',
+        perPage = '30',
+        s,
+        q,
+    }: {
+        page?: string,
+        perPage?: string,
+        /**
+         * Sorting
+         */
+        s?: Array<string>,
+        q?: ImageQuery,
+    }): CancelablePromise<Images> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/images',
+            query: {
+                'page': page,
+                'perPage': perPage,
+                's': s,
+                'q': q,
+            },
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
+     * Image destroy
+     * @returns void
+     * @throws ApiError
+     */
+    public destroy({
+        id,
+    }: {
+        /**
+         * id
+         */
+        id: string,
+    }): CancelablePromise<void> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/images/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                401: `unauthorized`,
+                404: `not_found`,
             },
         });
     }
@@ -89,32 +121,6 @@ export class ImagesService {
             },
             body: requestBody,
             mediaType: 'application/json',
-            errors: {
-                401: `unauthorized`,
-                404: `not_found`,
-            },
-        });
-    }
-
-    /**
-     * Image destroy
-     * @returns any successful
-     * @throws ApiError
-     */
-    public destroyImage({
-        id,
-    }: {
-        /**
-         * id
-         */
-        id: string,
-    }): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/images/{id}',
-            path: {
-                'id': id,
-            },
             errors: {
                 401: `unauthorized`,
                 404: `not_found`,

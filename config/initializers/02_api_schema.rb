@@ -52,6 +52,7 @@ Rails.application.reloader.to_prepare do
         security: [],
         paths: {},
         components: {
+          parameters: shared_v1_components_loader.parameters.merge(v1_components_loader.parameters),
           schemas: shared_v1_components_loader.schemas.merge(v1_components_loader.schemas),
           securitySchemes: shared_v1_components_loader.security_schemes.merge(v1_components_loader.security_schemes)
         }.compact
@@ -76,6 +77,7 @@ Rails.application.reloader.to_prepare do
         ],
         paths: {},
         components: {
+          parameters: shared_v1_components_loader.parameters.merge(admin_v1_components_loader.parameters),
           schemas: shared_v1_components_loader.schemas.merge(admin_v1_components_loader.schemas),
           securitySchemes: shared_v1_components_loader.security_schemes.merge(admin_v1_components_loader.security_schemes)
         }.compact

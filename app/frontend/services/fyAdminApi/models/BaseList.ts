@@ -6,6 +6,7 @@
 import type { Meta } from './Meta';
 
 export type BaseList = {
+    items?: Array<Record<string, any>>;
     meta?: Meta;
 };
 

@@ -353,6 +353,23 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
 components:
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   schemas:
     BarChartStats:
       type: object
@@ -697,10 +714,7 @@ components:
       title: HabitationTypeEnum
     ModelClassificationEnum:
       type: string
-      enum:
-      - explorer
-      - multi
-      - multi_role
+      enum: []
       title: ModelClassificationEnum
     ModelHardpointCategoryEnum:
       type: string
