@@ -11,7 +11,7 @@ module Admin
             search_params || "*",
             fields: [{name: :word_start}],
             where: query_params.merge(price_params)
-                               .merge(shop.present? ? {shop_id: shop.id} : {}),
+                               .merge(params[:shop_id].present? ? {shop_id: shop.id} : {}),
             order: order_params,
             page: params[:page],
             per_page: per_page(ShopCommodity),

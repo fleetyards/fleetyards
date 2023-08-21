@@ -21,25 +21,7 @@ end
 json.backpack_compatibility equipment.backpack_compatibility_label
 json.core_compatibility equipment.core_compatibility_label
 json.damage_reduction equipment.damage_reduction
-
-json.availability do
-  json.bought_at do
-    json.array! equipment.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
-  json.listed_at do
-    json.array! equipment.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
-  json.sold_at do
-    json.array! equipment.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
-end
-
-# json.damage equipment.damage
-json.backpack_compatibility equipment.backpack_compatibility_label
-json.core_compatibility equipment.core_compatibility_label
-json.damage_reduction equipment.damage_reduction
 json.description equipment.description
-json.extras equipment.extras
 json.extras equipment.extras
 json.grade equipment.grade
 json.item_type equipment.item_type

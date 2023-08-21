@@ -22,7 +22,7 @@ export type ShopCommodity = {
     name: string;
     slug: string;
     description?: string | null;
-    media?: {
+    media: {
         storeImage?: MediaImage;
     };
     category?: ShopCommodityCategoryEnum;

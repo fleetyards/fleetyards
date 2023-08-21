@@ -39,5 +39,3 @@ json.tracking_signal component.tracking_signal
 json.tracking_signal_label component.tracking_signal_label
 json.type component.item_type
 json.type_label component.item_type_label
-json.type component.item_type
-json.type_label component.item_type_label

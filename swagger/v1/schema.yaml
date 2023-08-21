@@ -9797,6 +9797,8 @@ components:
       - commodityItemType
       - commodityItemId
       - shop
+      - media
+      - prices
       - createdAt
       - updatedAt
       title: ShopCommodity
