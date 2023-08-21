@@ -5,6 +5,7 @@ class TransformParameters
 
   def call(env)
     request = ActionDispatch::Request.new(env)
+
     request.request_parameters.deep_transform_keys! do |key|
       decamelize(key)
     end

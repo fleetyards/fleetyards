@@ -11,13 +11,17 @@ json.confirmed shop_commodity.confirmed
 json.description shop_commodity.commodity_item.description
 json.location_label shop_commodity.location_label
 
+json.media({})
 json.media do
+  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: shop_commodity.commodity_item.store_image
   end
 end
 
+json.prices({})
 json.prices do
+  json.ignore_nil!
   json.average_buy_price shop_commodity.average_buy_price&.to_f
   json.average_rental_price_1_day shop_commodity.average_rental_price_1_day&.to_f
   json.average_rental_price_30_days shop_commodity.average_rental_price_30_days&.to_f

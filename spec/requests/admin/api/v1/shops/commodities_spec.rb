@@ -9,17 +9,20 @@ RSpec.describe "admin/api/v1/shops/commodities", type: :request, swagger_doc: "a
   let(:user) { nil }
 
   before do
+    ShopCommodity.reindex
+
     sign_in user if user.present?
   end
 
   path "/shops/{shopId}/commodities" do
+    parameter name: "shopId", in: :path, schema: {type: :string, format: :uuid}, required: true
+
     get("Shop Commodities list") do
       operationId "shopCommodities"
       description "Get a List of Shop Commodities"
       produces "application/json"
       tags "Shops"
 
-      parameter name: "shopId", in: :path, schema: {type: :string, format: :uuid}, required: true
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: ShopCommodity.default_per_page}, required: false
       parameter name: "order", in: :query, schema: {"$ref": "#/components/schemas/ShopCommodityOrder"}, required: false

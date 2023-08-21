@@ -41,7 +41,7 @@ module Admin
           authorize! :destroy, image
 
           if image.destroy
-            render status: :no_content
+            head :no_content
           else
             render json: ValidationError.new("image.destroy", errors: image.errors), status: :bad_request
           end

@@ -12,10 +12,14 @@ json.availability do
     json.array! model_paint.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
 end
+
 json.description model_paint.description
 json.last_updated_at model_paint.last_updated_at&.utc&.iso8601
 json.last_updated_at_label((I18n.l(model_paint.last_updated_at.utc, format: :label) if model_paint.last_updated_at.present?))
+
+json.media({})
 json.media do
+  json.ignore_nil!
   json.angled_view do
     json.partial! "api/v1/shared/view_image", view_image: model_paint.angled_view, width: model_paint.angled_view_width, height: model_paint.angled_view_height
   end
@@ -33,6 +37,7 @@ json.media do
     json.partial! "api/v1/shared/view_image", view_image: model_paint.top_view, width: model_paint.top_view_width, height: model_paint.top_view_height
   end
 end
+
 json.name_with_model model_paint.name_with_model
 json.rsi_id model_paint.rsi_id
 json.rsi_name model_paint.rsi_name
