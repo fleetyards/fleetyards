@@ -4971,6 +4971,23 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
 components:
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   schemas:
     BarChartStats:
       type: object
@@ -4990,351 +5007,14 @@ components:
     BaseList:
       type: object
       properties:
+        items:
+          type: array
+          items:
+            type: object
         meta:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       title: BaseList
-    ShopTypeEnum:
-      type: string
-      enum:
-      - clothing
-      - armor
-      - weapons
-      - components
-      - armor_and_weapons
-      - superstore
-      - ships
-      - admin
-      - bar
-      - hospital
-      - salvage
-      - resources
-      - rental
-      - computers
-      - blackmarket
-      - mining_equipment
-      - equipment
-      - courier
-      - refinery
-      - pharmacy
-      - cargo
-      - souvenirs
-      - kiosk
-      - ship_customizations
-      title: ShopTypeEnum
-    FieldError:
-      type: object
-      properties:
-        attribute:
-          type: string
-        messages:
-          type: array
-          items:
-            "$ref": "#/components/schemas/StandardError"
-      additionalProperties: false
-      required:
-      - attribute
-      - messages
-      title: FieldError
-    FilterOption:
-      type: object
-      properties:
-        category:
-          type: string
-        icon:
-          type: string
-          nullable: true
-        name:
-          type: string
-        value:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - value
-      - category
-      title: FilterOption
-    Gallery:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        type:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-      additionalProperties: false
-      required:
-      - id
-      - type
-      - name
-      - slug
-      title: Gallery
-    MediaImage:
-      type: object
-      properties:
-        large:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-        small:
-          type: string
-          format: uri
-        source:
-          type: string
-          format: uri
-      additionalProperties: false
-      required:
-      - source
-      - small
-      - medium
-      - large
-      title: MediaImage
-    Meta:
-      type: object
-      properties:
-        pagination:
-          "$ref": "#/components/schemas/Pagination"
-      additionalProperties: false
-      title: Meta
-    Pagination:
-      type: object
-      properties:
-        currentPage:
-          type: integer
-        totalPages:
-          type: integer
-        defaultPerPage:
-          type: integer
-        maxPerPage:
-          type: integer
-        perPageSteps:
-          type: array
-          items:
-            oneOf:
-            - type: string
-            - type: integer
-      additionalProperties: false
-      required:
-      - currentPage
-      - totalPages
-      - defaultPerPage
-      - maxPerPage
-      title: Pagination
-    PieChartStats:
-      type: object
-      properties:
-        name:
-          type: string
-        "y":
-          type: integer
-        selected:
-          type: boolean
-        sliced:
-          type: boolean
-      additionalProperties: false
-      required:
-      - name
-      - "y"
-      - selected
-      - sliced
-      title: PieChartStats
-    ScDataVersion:
-      type: object
-      properties:
-        version:
-          type: string
-      additionalProperties: false
-      required:
-      - version
-      title: ScDataVersion
-    Session:
-      type: object
-      properties:
-        pagination:
-          "$ref": "#/components/schemas/Pagination"
-      additionalProperties: false
-      title: Session
-    StandardError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      additionalProperties: false
-      required:
-      - code
-      - message
-      title: StandardError
-    StandardMessage:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      additionalProperties: false
-      required:
-      - code
-      - message
-      title: StandardMessage
-    ValidationError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        errors:
-          type: array
-          items:
-            "$ref": "#/components/schemas/FieldError"
-      additionalProperties: false
-      required:
-      - code
-      - message
-      title: ValidationError
-    Version:
-      type: object
-      properties:
-        version:
-          type: string
-        codename:
-          type: string
-      additionalProperties: false
-      required:
-      - version
-      - codename
-      title: Version
-    CargoOption:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-        cargo:
-          type: number
-      additionalProperties: false
-      required:
-      - name
-      - value
-      - cargo
-      title: CargoOption
-    CargoOptions:
-      type: object
-      properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CargoOption"
-      additionalProperties: false
-      required:
-      - items
-      title: CargoOptions
-    CelestialObject:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        designation:
-          type: string
-        description:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        habitable:
-          type: boolean
-          nullable: true
-        fairchanceact:
-          type: boolean
-          nullable: true
-        subType:
-          type: string
-          nullable: true
-        size:
-          type: string
-          nullable: true
-        danger:
-          type: integer
-          nullable: true
-        economy:
-          type: integer
-          nullable: true
-        population:
-          type: integer
-          nullable: true
-        locationLabel:
-          type: string
-          nullable: true
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-          additionalProperties: false
-        starsystem:
-          "$ref": "#/components/schemas/Starsystem"
-        parent:
-          "$ref": "#/components/schemas/CelestialObject"
-        moons:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        storeImage:
-          type: string
-          format: url
-          deprecated: true
-        storeImageLarge:
-          type: string
-          deprecated: true
-        storeImageMedium:
-          type: string
-          deprecated: true
-        storeImageSmall:
-          type: string
-          deprecated: true
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      - designation
-      - starsystem
-      - createdAt
-      - updatedAt
-      title: CelestialObject
-    CelestialObjects:
-      type: object
-      properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CelestialObject"
-      additionalProperties: false
-      required:
-      - items
-      title: CelestialObjects
     Commodity:
       type: object
       properties:
@@ -5369,7 +5049,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
           additionalProperties: false
         createdAt:
           type: string
@@ -5407,53 +5086,6 @@ components:
       - createdAt
       - updatedAt
       title: Commodity
-    CommodityItemType:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - value
-      title: CommodityItemType
-    CommodityPrice:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        price:
-          type: number
-          format: float
-        timeRange:
-          type: string
-          nullable: true
-        type:
-          type: string
-        shopCommodityId:
-          type: string
-          format: uuid
-        confirmed:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - id
-      - price
-      - type
-      - shopCommodityId
-      - confirmed
-      - createdAt
-      - updatedAt
-      title: CommodityPrice
     Component:
       type: object
       properties:
@@ -5504,7 +5136,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
           additionalProperties: false
         size:
           type: string
@@ -5621,6 +5252,15 @@ components:
       - harvestable
       - consumer_goods
       title: CommodityTypeEnum
+    ComponentClassEnum:
+      type: string
+      enum:
+      - RSIModular
+      - RSIWeapon
+      - RSIAvionic
+      - RSIPropulsion
+      - RSIThruster
+      title: ComponentClassEnum
     DockShipSizeEnum:
       type: string
       enum:
@@ -5641,6 +5281,18 @@ components:
       - dockingport
       - hangar
       title: DockTypeEnum
+    EquipmentTypeEnum:
+      type: string
+      enum:
+      - undersuit
+      - armor
+      - weapon
+      - tool
+      - clothing
+      - medical
+      - weapon_attachment
+      - hacking_tool
+      title: EquipmentTypeEnum
     FleetMembershipRoleEnum:
       type: string
       enum:
@@ -5664,6 +5316,13 @@ components:
       - accepted
       - declined
       title: FleetMembershipStatusEnum
+    GalleryTypeEnum:
+      type: string
+      enum:
+      - Model
+      - Station
+      - Album
+      title: GalleryTypeEnum
     HabitationTypeEnum:
       type: string
       enum:
@@ -5758,6 +5417,12 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    OrderDirectionEnum:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: OrderDirectionEnum
     RsiHangarItemKindEnum:
       type: string
       enum:
@@ -5778,6 +5443,54 @@ components:
       - Equipment
       - Commodity
       title: SearchResultTypeEnum
+    ShopCommodityCategoryEnum:
+      type: string
+      enum:
+      - model
+      - equipment
+      - commodity
+      - component
+      - modelmodule
+      - modelpaint
+      title: ShopCommodityCategoryEnum
+    ShopCommodityItemTypeEnum:
+      type: string
+      enum:
+      - Model
+      - Equipment
+      - Commodity
+      - Component
+      - ModelModule
+      - ModelPaint
+      title: ShopCommodityItemTypeEnum
+    ShopTypeEnum:
+      type: string
+      enum:
+      - clothing
+      - armor
+      - weapons
+      - components
+      - armor_and_weapons
+      - superstore
+      - ships
+      - admin
+      - bar
+      - hospital
+      - salvage
+      - resources
+      - rental
+      - computers
+      - blackmarket
+      - mining_equipment
+      - equipment
+      - courier
+      - refinery
+      - pharmacy
+      - cargo
+      - souvenirs
+      - kiosk
+      - ship_customizations
+      title: ShopTypeEnum
     StationTypeEnum:
       type: string
       enum:
@@ -5854,7 +5567,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
           additionalProperties: false
         range:
           type: string
@@ -5927,6 +5639,564 @@ components:
       - createdAt
       - updatedAt
       title: Equipment
+    FieldError:
+      type: object
+      properties:
+        attribute:
+          type: string
+        messages:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StandardError"
+      additionalProperties: false
+      required:
+      - attribute
+      - messages
+      title: FieldError
+    FilterOption:
+      type: object
+      properties:
+        category:
+          type: string
+        icon:
+          type: string
+          nullable: true
+        name:
+          type: string
+          deprecated: true
+        label:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - value
+      - category
+      title: FilterOption
+    Gallery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name
+      - slug
+      title: Gallery
+    Habitation:
+      type: object
+      properties:
+        name:
+          type: string
+        habitationName:
+          type: string
+          nullable: true
+        type:
+          "$ref": "#/components/schemas/HabitationTypeEnum"
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - type
+      - typeLabel
+      title: Habitation
+    HabitationCount:
+      type: object
+      properties:
+        count:
+          type: integer
+        type:
+          type: string
+        typeLabel:
+          type: string
+      additionalProperties: false
+      required:
+      - count
+      - type
+      - typeLabel
+      title: HabitationCount
+    Manufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type: string
+          nullable: true
+        logo:
+          type: string
+          nullable: true
+        longName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      title: Manufacturer
+    MediaImage:
+      type: object
+      properties:
+        large:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+        small:
+          type: string
+          format: uri
+        source:
+          type: string
+          format: uri
+      additionalProperties: false
+      required:
+      - source
+      - small
+      - medium
+      - large
+      title: MediaImage
+    Meta:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Meta
+    ShopCommodityOrder:
+      type: object
+      properties:
+        name:
+          "$ref": "#/components/schemas/OrderDirectionEnum"
+      additionalProperties: false
+      title: ShopCommodityOrder
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+        defaultPerPage:
+          type: integer
+        maxPerPage:
+          type: integer
+        perPageSteps:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: integer
+      additionalProperties: false
+      required:
+      - currentPage
+      - totalPages
+      title: Pagination
+    PieChartStats:
+      type: object
+      properties:
+        name:
+          type: string
+        "y":
+          type: integer
+        selected:
+          type: boolean
+        sliced:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - "y"
+      - selected
+      - sliced
+      title: PieChartStats
+    ScDataVersion:
+      type: object
+      properties:
+        version:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      title: ScDataVersion
+    Session:
+      type: object
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/Pagination"
+      additionalProperties: false
+      title: Session
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        buying:
+          type: boolean
+        location:
+          type: string
+          nullable: true
+        locationLabel:
+          type: string
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        refineryTerminal:
+          type: boolean
+        rental:
+          type: boolean
+        selling:
+          type: boolean
+        station:
+          "$ref": "#/components/schemas/StationShop"
+        stationLabel:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ShopTypeEnum"
+        typeLabel:
+          type: string
+        celestialObject:
+          "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          nullable: true
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - type
+      - typeLabel
+      - stationLabel
+      - locationLabel
+      - rental
+      - buying
+      - selling
+      - media
+      - refineryTerminal
+      - station
+      - createdAt
+      - updatedAt
+      title: Shop
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardError
+    StandardMessage:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: StandardMessage
+    StationShop:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: StationShop
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FieldError"
+      additionalProperties: false
+      required:
+      - code
+      - message
+      title: ValidationError
+    Version:
+      type: object
+      properties:
+        version:
+          type: string
+        codename:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      - codename
+      title: Version
+    ViewImage:
+      type: object
+      properties:
+        source:
+          type: string
+          format: uri
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+        large:
+          type: string
+          format: uri
+        xlarge:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+      additionalProperties: false
+      required:
+      - source
+      - small
+      - medium
+      - large
+      - xlarge
+      - width
+      - height
+      title: ViewImage
+    CargoOption:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        cargo:
+          type: number
+      additionalProperties: false
+      required:
+      - name
+      - value
+      - cargo
+      title: CargoOption
+    CargoOptions:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/CargoOption"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      title: CargoOptions
+    CelestialObject:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        designation:
+          type: string
+        description:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        habitable:
+          type: boolean
+          nullable: true
+        fairchanceact:
+          type: boolean
+          nullable: true
+        subType:
+          type: string
+          nullable: true
+        size:
+          type: string
+          nullable: true
+        danger:
+          type: integer
+          nullable: true
+        economy:
+          type: integer
+          nullable: true
+        population:
+          type: integer
+          nullable: true
+        locationLabel:
+          type: string
+          nullable: true
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaImage"
+          additionalProperties: false
+        starsystem:
+          "$ref": "#/components/schemas/Starsystem"
+        parent:
+          "$ref": "#/components/schemas/CelestialObject"
+        moons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CelestialObject"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: url
+          deprecated: true
+        storeImageLarge:
+          type: string
+          deprecated: true
+        storeImageMedium:
+          type: string
+          deprecated: true
+        storeImageSmall:
+          type: string
+          deprecated: true
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - designation
+      - starsystem
+      - media
+      - createdAt
+      - updatedAt
+      title: CelestialObject
+    CelestialObjects:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/CelestialObject"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      title: CelestialObjects
+    CommodityItemType:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - value
+      title: CommodityItemType
+    CommodityPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+          format: float
+        timeRange:
+          type: string
+          nullable: true
+        type:
+          type: string
+        shopCommodityId:
+          type: string
+          format: uuid
+        confirmed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - price
+      - type
+      - shopCommodityId
+      - confirmed
+      - createdAt
+      - updatedAt
+      title: CommodityPrice
     Fleet:
       type: object
       properties:
@@ -6177,39 +6447,6 @@ components:
       - classifications
       - metrics
       title: FleetVehiclesStats
-    Habitation:
-      type: object
-      properties:
-        name:
-          type: string
-        habitationName:
-          type: string
-          nullable: true
-        type:
-          "$ref": "#/components/schemas/HabitationTypeEnum"
-        typeLabel:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - type
-      - typeLabel
-      title: Habitation
-    HabitationCount:
-      type: object
-      properties:
-        count:
-          type: integer
-        type:
-          type: string
-        typeLabel:
-          type: string
-      additionalProperties: false
-      required:
-      - count
-      - type
-      - typeLabel
-      title: HabitationCount
     HangarGroup:
       type: object
       properties:
@@ -6296,12 +6533,13 @@ components:
     Hangar:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Vehicle"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -6364,12 +6602,13 @@ components:
     HangarPublic:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/VehiclePublic"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -6505,9 +6744,6 @@ components:
         caption:
           type: string
           nullable: true
-        height:
-          type: number
-          nullable: true
         name:
           type: string
         smallUrl:
@@ -6520,7 +6756,8 @@ components:
           format: uri
         width:
           type: number
-          nullable: true
+        height:
+          type: number
         gallery:
           "$ref": "#/components/schemas/Gallery"
         createdAt:
@@ -6534,8 +6771,6 @@ components:
       - id
       - name
       - url
-      - width
-      - height
       - type
       - background
       - smallUrl
@@ -6546,12 +6781,13 @@ components:
     Images:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Image"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -6952,43 +7188,16 @@ components:
           nullable: true
       additionalProperties: false
       title: VehicleUpdateInput
-    Manufacturer:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        code:
-          type: string
-          nullable: true
-        logo:
-          type: string
-          nullable: true
-        longName:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      - createdAt
-      - updatedAt
-      title: Manufacturer
     Manufacturers:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Manufacturer"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -8167,12 +8376,13 @@ components:
     Models:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Model"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -8333,12 +8543,13 @@ components:
     ModelModulePackages:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ModelModulePackage"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -8423,12 +8634,13 @@ components:
     ModelModules:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/ModelModule"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -9424,6 +9636,7 @@ components:
       - body
       - rsiCategoryId
       - image
+      - media
       - released
       - committed
       - active
@@ -9470,96 +9683,16 @@ components:
           - "$ref": "#/components/schemas/Equipment"
           - "$ref": "#/components/schemas/ModelModule"
           - "$ref": "#/components/schemas/ModelPaint"
+          - "$ref": "#/components/schemas/Shop"
+          - "$ref": "#/components/schemas/Station"
+          - "$ref": "#/components/schemas/CelestialObject"
+          - "$ref": "#/components/schemas/Starsystem"
       additionalProperties: false
       required:
       - id
       - type
       - item
       title: SearchResult
-    Shop:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        buying:
-          type: boolean
-        location:
-          type: string
-          nullable: true
-        locationLabel:
-          type: string
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaImage"
-              nullable: true
-          additionalProperties: false
-        refineryTerminal:
-          type: boolean
-        rental:
-          type: boolean
-        selling:
-          type: boolean
-        station:
-          "$ref": "#/components/schemas/StationShop"
-        stationLabel:
-          type: string
-        type:
-          "$ref": "#/components/schemas/ShopTypeEnum"
-        typeLabel:
-          type: string
-        celestialObject:
-          "$ref": "#/components/schemas/CelestialObject"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        storeImage:
-          type: string
-          nullable: true
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          nullable: true
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          nullable: true
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          nullable: true
-          format: uri
-          deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - type
-      - typeLabel
-      - stationLabel
-      - locationLabel
-      - rental
-      - buying
-      - selling
-      - refineryTerminal
-      - media
-      - station
-      - createdAt
-      - updatedAt
-      title: Shop
     ShopCommodity:
       type: object
       properties:
@@ -9578,66 +9711,55 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
           additionalProperties: false
         category:
-          type: string
-          nullable: true
+          "$ref": "#/components/schemas/ShopCommodityCategoryEnum"
         subCategory:
-          type: string
-          nullable: true
+          anyOf:
+          - type: string
+          - "$ref": "#/components/schemas/ComponentClassEnum"
+          - "$ref": "#/components/schemas/EquipmentTypeEnum"
+          - "$ref": "#/components/schemas/CommodityTypeEnum"
         subCategoryLabel:
           type: string
-          nullable: true
         prices:
           type: object
           properties:
             averageBuyPrice:
               type: number
-              nullable: true
             averageRentalPrice1Day:
               type: number
-              nullable: true
             averageRentalPrice30Days:
               type: number
-              nullable: true
             averageRentalPrice3Days:
               type: number
-              nullable: true
             averageRentalPrice7Days:
               type: number
-              nullable: true
             averageSellPrice:
               type: number
-              nullable: true
             buyPrice:
               type: number
-              nullable: true
             rentalPrice1Day:
               type: number
-              nullable: true
             rentalPrice30Days:
               type: number
-              nullable: true
             rentalPrice3Days:
               type: number
-              nullable: true
             rentalPrice7Days:
               type: number
-              nullable: true
             sellPrice:
               type: number
-              nullable: true
+            pricePerUnit:
+              type: boolean
           additionalProperties: false
-        pricePerUnit:
-          type: boolean
+          required:
+          - pricePerUnit
         locationLabel:
           type: string
-          nullable: true
         confirmed:
           type: boolean
         commodityItemType:
-          type: string
+          "$ref": "#/components/schemas/ShopCommodityItemTypeEnum"
         commodityItemId:
           type: string
           format: uuid
@@ -9682,25 +9804,26 @@ components:
       - id
       - name
       - slug
-      - media
       - prices
-      - pricePerUnit
       - confirmed
       - commodityItemType
       - commodityItemId
       - shop
+      - media
+      - prices
       - createdAt
       - updatedAt
       title: ShopCommodity
     Shops:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Shop"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -9747,7 +9870,6 @@ components:
           properties:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
           additionalProperties: false
         celestialObjects:
           type: array
@@ -9786,12 +9908,13 @@ components:
     Starsystems:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Starsystem"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -9840,7 +9963,6 @@ components:
               nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
           additionalProperties: false
         refinery:
           type: boolean
@@ -9912,27 +10034,16 @@ components:
       - createdAt
       - updatedAt
       title: Station
-    StationShop:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - slug
-      title: StationShop
     Stations:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Station"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
@@ -10367,48 +10478,17 @@ components:
     Videos:
       type: object
       properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
         items:
           type: array
           items:
+            type: object
             "$ref": "#/components/schemas/Video"
+        meta:
+          "$ref": "#/components/schemas/Meta"
       additionalProperties: false
       required:
       - items
       title: Videos
-    ViewImage:
-      type: object
-      properties:
-        source:
-          type: string
-          format: uri
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-        large:
-          type: string
-          format: uri
-        xlarge:
-          type: string
-          format: uri
-        width:
-          type: integer
-        height:
-          type: integer
-      additionalProperties: false
-      required:
-      - source
-      - small
-      - medium
-      - large
-      - xlarge
-      - width
-      - height
-      title: ViewImage
   securitySchemes:
     SessionCookie:
       type: apiKey

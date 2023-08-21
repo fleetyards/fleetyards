@@ -12,11 +12,15 @@ json.availability do
     json.array! commodity.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
 end
+
+json.media({})
 json.media do
+  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: commodity.store_image
   end
 end
+
 json.type commodity.commodity_type
 json.type_label commodity.commodity_type_label
 

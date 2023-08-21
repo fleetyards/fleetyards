@@ -1,4 +1,4 @@
-import { get, post, destroy } from "@/frontend/api/client";
+import { get, post, destroy } from "@/admin/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 
 export class AdminCommodityPricesCollection extends BaseCollection {
@@ -21,8 +21,8 @@ export class AdminCommodityPricesCollection extends BaseCollection {
     );
 
     if (!response.error) {
-      this.records = response.data;
-      this.setPages(response.meta);
+      this.records = response.data.items;
+      this.setPages(response.data.meta.pagination);
     }
 
     return this.records;

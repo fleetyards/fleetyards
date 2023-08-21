@@ -7,12 +7,3 @@ type AdminShopCommodityForm = {
   commodtyItemId: string;
   commodtyItemType: string;
 };
-
-type AdminShopCommodityFilter = {
-  componentItemTypeIn: string[];
-};
-
-interface AdminShopCommodityParams extends CollectionParams {
-  filters?: AdminShopCommodityFilter;
-  shopId: string;
-}

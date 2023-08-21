@@ -1,4 +1,4 @@
-import { get } from "@/frontend/api/client";
+import { get } from "@/admin/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 import { useApiClient } from "@/admin/composables/useApiClient";
 import type { Image } from "@/services/fyAdminApi/models/Image";
@@ -28,7 +28,7 @@ export class AdminImagesCollection extends BaseCollection {
     try {
       const response = await images.images({
         q: params?.filters,
-        page: String(params?.page),
+        page: params?.page ? String(params?.page) : undefined,
       });
 
       this.records = response.items;

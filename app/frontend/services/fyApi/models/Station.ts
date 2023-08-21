@@ -28,7 +28,7 @@ export type Station = {
     location?: string | null;
     media: {
         backgroundImage?: string | null;
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     refinery: boolean;
     shopListLabel?: string | null;

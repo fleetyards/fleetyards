@@ -47,7 +47,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          id name release rsiReleaseId description body rsiCategoryId image released committed
+          id name release rsiReleaseId description body rsiCategoryId image media released committed
           active createdAt updatedAt lastVersionChangedAt lastVersionChangedAtLabel
         ]
       })

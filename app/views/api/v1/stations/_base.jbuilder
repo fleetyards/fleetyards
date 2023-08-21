@@ -9,12 +9,16 @@ json.type_label station.station_type_label
 json.classification station.classification
 json.classification_label station.classification_label
 json.habitable station.habitable
+
+json.media({})
 json.media do
+  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: station.store_image
   end
   json.background_image station.random_image&.name&.url
 end
+
 json.store_image station.store_image.url
 json.store_image_large station.store_image.large.url
 json.store_image_medium station.store_image.medium.url
@@ -25,12 +29,15 @@ json.has_images station.images_count.positive?
 json.shop_list_label station.shop_list_label
 json.refinery station.refinery
 json.cargo_hub station.cargo_hub
+
 json.habitation_counts do
   json.array! station.habitation_counts, partial: "api/v1/habitation_counts/base", as: :habitation_count
 end
+
 json.dock_counts do
   json.array! station.dock_counts, partial: "api/v1/dock_counts/base", as: :dock_count
 end
+
 json.celestial_object do
   json.partial! "api/v1/celestial_objects/base", celestial_object: station.celestial_object
 end
@@ -49,4 +56,5 @@ if local_assigns.fetch(:extended, false)
     json.array! station.habitations, partial: "api/v1/habitations/base", as: :habitation
   end
 end
+
 json.partial! "api/shared/dates", record: station

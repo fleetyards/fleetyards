@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class CelestialObjects < Shared::V1::Schemas::BaseList
+    class CelestialObjects < ::Shared::V1::Schemas::BaseList
       include SchemaConcern
 
       schema({

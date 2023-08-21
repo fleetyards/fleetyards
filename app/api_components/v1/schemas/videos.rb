@@ -2,7 +2,7 @@
 
 module V1
   module Schemas
-    class Videos < Shared::V1::Schemas::BaseList
+    class Videos < ::Shared::V1::Schemas::BaseList
       include SchemaConcern
 
       schema({

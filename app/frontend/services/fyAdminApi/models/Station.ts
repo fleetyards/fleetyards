@@ -8,17 +8,15 @@ import type { Dock } from './Dock';
 import type { DockCount } from './DockCount';
 import type { Habitation } from './Habitation';
 import type { HabitationCount } from './HabitationCount';
-import type { Image } from './Image';
 import type { MediaImage } from './MediaImage';
 import type { Shop } from './Shop';
-import type { StarsystemMinimal } from './StarsystemMinimal';
+import type { Starsystem } from './Starsystem';
+import type { StationTypeEnum } from './StationTypeEnum';
 
 export type Station = {
-    id: string;
     name: string;
     slug: string;
     cargoHub: boolean;
-    celestialObject: CelestialObject;
     classificationLabel?: string | null;
     classification?: string | null;
     description?: string | null;
@@ -35,13 +33,34 @@ export type Station = {
     refinery: boolean;
     shopListLabel?: string | null;
     typeLabel?: string | null;
-    type?: string | null;
-    createdAt: string;
-    updatedAt: string;
-    starsystem?: StarsystemMinimal;
+    type?: StationTypeEnum;
+    celestialObject: CelestialObject;
+    starsystem?: Starsystem;
     shops?: Array<Shop>;
     docks?: Array<Dock>;
     habitations?: Array<Habitation>;
-    images?: Array<Image>;
+    createdAt: string;
+    updatedAt: string;
+    /**
+     * @deprecated
+     */
+    backgroundImage?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImage?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageLarge?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageMedium?: string | null;
+    /**
+     * @deprecated
+     */
+    storeImageSmall?: string | null;
+    id: string;
 };
 
