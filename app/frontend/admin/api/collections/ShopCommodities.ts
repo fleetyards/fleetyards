@@ -1,5 +1,14 @@
-import { get, post, put, destroy } from "@/frontend/api/client";
+import { post, put, destroy } from "@/admin/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
+import { useApiClient } from "@/admin/composables/useApiClient";
+import type { ShopCommodityQuery } from "@/services/fyAdminApi";
+
+interface AdminShopCommodityParams extends CollectionParams {
+  filters?: ShopCommodityQuery;
+  shopId: string;
+}
+
+const { shops } = useApiClient();
 
 export class AdminShopCommoditiesCollection extends BaseCollection {
   primaryKey = "id";
@@ -13,11 +22,17 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   ): Promise<AdminShopCommodity[]> {
     this.params = params;
 
-    const response = await get(`shops/${params.shopId}/commodities`, params);
+    try {
+      const response = await shops.shopCommodities({
+        shopId: params.shopId,
+        filters: params.filters,
+        page: params?.page ? String(params?.page) : undefined,
+      });
 
-    if (!response.error) {
-      this.records = response.data;
-      this.setPages(response.meta);
+      this.records = response.items;
+      this.setPages(response.meta?.pagination);
+    } catch (error) {
+      console.error(error);
     }
 
     return this.records;
