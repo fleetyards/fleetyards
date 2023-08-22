@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { RoadmapItemSortEnum } from './RoadmapItemSortEnum';
+
 export type RoadmapItemQuery = {
     nameCont?: string;
     releasedEq?: boolean;
@@ -15,6 +17,6 @@ export type RoadmapItemQuery = {
     rsiReleaseIdGteq?: string;
     rsiCategoryIdIn?: Array<string>;
     activeIn?: Array<boolean>;
-    sorts?: (Array<string> | string);
+    sorts?: (Array<RoadmapItemSortEnum> | RoadmapItemSortEnum);
 };
 

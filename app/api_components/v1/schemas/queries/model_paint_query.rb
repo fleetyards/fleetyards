@@ -14,12 +14,7 @@ module V1
             modelSlugEq: {type: :string},
             idIn: {type: :array, items: {type: :string, format: :uuid}},
             idNotIn: {type: :array, items: {type: :string, format: :uuid}},
-            nameIn: {type: :array, items: {type: :string}},
-            sorts: {oneOf: [{
-              type: :array, items: {type: :string}
-            }, {
-              type: :string
-            }]}
+            nameIn: {type: :array, items: {type: :string}}
           },
           additionalProperties: false
         })

@@ -40,9 +40,9 @@ portolisar-dock-one:
   name: Dockingport 01
   ship_size: medium
 
-corvolex-dock-one:
+covalex-dock-one:
   dock_type: dockingport
-  station: corvolex
+  station: covalex
   name: Dockingport 01
   ship_size: small
 

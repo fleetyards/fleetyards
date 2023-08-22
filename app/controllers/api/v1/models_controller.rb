@@ -105,7 +105,7 @@ module Api
       def cargo_options
         authorize! :index, :api_models
 
-        model_query_params["sorts"] = sort_by_name
+        model_query_params["sorts"] = sorting_params(Model)
 
         @q = Model.visible
           .active
@@ -201,7 +201,7 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        model_query_params["sorts"] = sort_by_name
+        model_query_params["sorts"] = sorting_params(Model)
 
         @q = scope.ransack(model_query_params)
 
@@ -227,7 +227,7 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        model_query_params["sorts"] = sort_by_name
+        model_query_params["sorts"] = sorting_params(Model)
 
         @q = scope.ransack(model_query_params)
 
@@ -369,7 +369,7 @@ module Api
         scope = scope.with_dock if params[:withDock]
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
-        model_query_params["sorts"] = sort_by_name
+        model_query_params["sorts"] = sorting_params(Model)
 
         scope.ransack(model_query_params)
       end

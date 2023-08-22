@@ -9,7 +9,7 @@ module Api
       def index
         authorize! :index, :api_starsystems
 
-        starsystem_query_params["sorts"] = sort_by_name
+        starsystem_query_params["sorts"] = "name asc"
 
         @q = Starsystem.includes(celestial_objects: [:parent])
           .visible

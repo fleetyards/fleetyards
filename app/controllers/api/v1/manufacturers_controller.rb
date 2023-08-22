@@ -17,7 +17,7 @@ module Api
 
         scope = scope.with_model if manufacturer_query_params.delete(:with_models)
 
-        manufacturer_query_params["sorts"] = sort_by_name
+        manufacturer_query_params["sorts"] = "name asc"
 
         q = scope.ransack(manufacturer_query_params)
 
@@ -34,7 +34,7 @@ module Api
 
         scope = scope.with_model
 
-        manufacturer_query_params["sorts"] = sort_by_name
+        manufacturer_query_params["sorts"] = "name asc"
 
         q = scope.ransack(manufacturer_query_params)
 

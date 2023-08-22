@@ -11,7 +11,7 @@ module Api
 
         scope = ModelPaint.visible.active
 
-        model_paint_query_params["sorts"] = sort_by_name
+        model_paint_query_params["sorts"] = "name asc"
 
         @q = scope.ransack(model_paint_query_params)
 

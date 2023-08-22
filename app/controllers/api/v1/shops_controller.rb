@@ -6,7 +6,7 @@ module Api
       after_action -> { pagination_header(:shops) }, only: [:index]
 
       def index
-        shop_query_params["sorts"] = sort_by_name
+        shop_query_params["sorts"] = "name asc"
 
         @q = Shop.includes(station: {celestial_object: %i[starsystem parent]})
           .visible

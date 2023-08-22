@@ -83,6 +83,12 @@ class Vehicle < ApplicationRecord
   after_save :set_flagship, :update_loaners, :reset_hangar_groups
   after_commit :broadcast_update, :schedule_fleet_vehicle_update
 
+  DEFAULT_SORTING_PARAMS = ["flagship desc", "name asc", "model_name asc"]
+  ALLOWED_SORTING_PARAMS = [
+    "flagship desc", "flagship asc", "name asc", "name desc", "model_name asc", "model_name desc",
+    "created_at asc", "created_at desc", "updated_at asc", "updated_at desc"
+  ]
+
   ransack_alias :search, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
   ransack_alias :length, :model_length

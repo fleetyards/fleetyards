@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { FleetVehicleSortEnum } from './FleetVehicleSortEnum';
+
 export type FleetVehicleQuery = {
     beamGteq?: number;
     beamLteq?: number;
@@ -27,6 +29,6 @@ export type FleetVehicleQuery = {
     modelNameOrModelDescriptionCont?: string;
     loanerEq?: boolean;
     memberIn?: Array<string>;
-    sorts?: (Array<string> | string);
+    sorts?: (Array<FleetVehicleSortEnum> | FleetVehicleSortEnum);
 };
 

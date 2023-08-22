@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 import type { BoughtViaEnum } from './BoughtViaEnum';
+import type { VehicleSortEnum } from './VehicleSortEnum';
 
 export type HangarQuery = {
     beamGteq?: number;
@@ -38,5 +39,6 @@ export type HangarQuery = {
     hangarGroupsIn?: Array<string>;
     hangarGroupsNotIn?: Array<string>;
     willItFit?: string;
+    sorts?: (Array<VehicleSortEnum> | VehicleSortEnum);
 };
 

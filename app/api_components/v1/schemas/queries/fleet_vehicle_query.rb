@@ -33,9 +33,9 @@ module V1
             loanerEq: {type: :boolean},
             memberIn: {type: :array, items: {type: :string}},
             sorts: {oneOf: [{
-              type: :array, items: {type: :string}
+              type: :array, items: {"$ref": "#/components/schemas/FleetVehicleSortEnum"}
             }, {
-              type: :string
+              "$ref": "#/components/schemas/FleetVehicleSortEnum"
             }]}
           },
           additionalProperties: false

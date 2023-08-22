@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CelestialObjectSortEnum } from './CelestialObjectSortEnum';
+
 export type CelestialObjectQuery = {
     starsystemEq?: string;
     nameCont?: string;
@@ -14,5 +16,6 @@ export type CelestialObjectQuery = {
      * @deprecated
      */
     main?: boolean;
+    sorts?: (Array<CelestialObjectSortEnum> | CelestialObjectSortEnum);
 };
 

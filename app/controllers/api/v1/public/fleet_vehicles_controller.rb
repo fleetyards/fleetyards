@@ -20,7 +20,7 @@ module Api
 
           scope = scope.where(loaner: loaner_included?)
 
-          vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
+          vehicle_query_params["sorts"] = sorting_params(FleetVehicle)
 
           @q = scope.ransack(vehicle_query_params)
 
@@ -52,9 +52,13 @@ module Api
             return
           end
 
+          if !(request.referrer || "").include?(FRONTEND_DOMAIN) && !request.referrer.blank?
+            ahoy.track "fleet_embedding", request.path_parameters
+          end
+
           scope = fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
-          vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
+          vehicle_query_params["sorts"] = sorting_params(FleetVehicle)
 
           @q = scope.ransack(vehicle_query_params)
 

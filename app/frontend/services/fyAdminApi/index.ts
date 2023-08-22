@@ -80,6 +80,7 @@ export type { Station } from './models/Station';
 export type { StationQuery } from './models/StationQuery';
 export type { Stations } from './models/Stations';
 export type { StationShop } from './models/StationShop';
+export { StationSortEnum } from './models/StationSortEnum';
 export { StationTypeEnum } from './models/StationTypeEnum';
 export type { ValidationError } from './models/ValidationError';
 export type { Version } from './models/Version';

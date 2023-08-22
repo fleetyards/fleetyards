@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 import type { CommodityTypeEnum } from './CommodityTypeEnum';
+import type { TradeRouteSortEnum } from './TradeRouteSortEnum';
 
 export type TradeRouteQuery = {
     cargoShip?: string;
@@ -16,6 +17,6 @@ export type TradeRouteQuery = {
     commodityIn?: Array<string>;
     commodityTypeIn?: Array<CommodityTypeEnum>;
     commodityTypeNotIn?: Array<CommodityTypeEnum>;
-    sorts?: Array<string>;
+    sorts?: (Array<TradeRouteSortEnum> | TradeRouteSortEnum);
 };
 

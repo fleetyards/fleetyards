@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { StationSortEnum } from './StationSortEnum';
+
 export type StationQuery = {
     searchCont?: string;
     nameCont?: string;
@@ -19,6 +21,6 @@ export type StationQuery = {
     stationTypeIn?: Array<string>;
     shopsShopTypeIn?: Array<string>;
     docksShipSizeIn?: Array<string>;
-    sorts?: Array<string>;
+    sorts?: (Array<StationSortEnum> | StationSortEnum);
 };
 

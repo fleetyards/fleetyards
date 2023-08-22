@@ -5,8 +5,8 @@
 daymar = CelestialObject.find_or_create_by!(name: "Daymar")
 daymar.update!(remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/daymar.jpg", hidden: false)
 
-corvolex_shipping = Station.find_or_initialize_by(name: "Covalex Hub Gundo")
-corvolex_shipping.update!(
+covalex_shipping = Station.find_or_initialize_by(name: "Covalex Hub Gundo")
+covalex_shipping.update!(
   celestial_object: daymar,
   station_type: :station,
   habitable: false,

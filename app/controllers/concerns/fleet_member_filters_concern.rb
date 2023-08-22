@@ -3,7 +3,7 @@
 module FleetMemberFiltersConcern
   private def member_query_params
     @member_query_params ||= query_params(
-      :username_cont, :name_cont, sorts: [], role_in: []
+      :username_cont, :name_cont, role_in: []
     )
   end
 end
