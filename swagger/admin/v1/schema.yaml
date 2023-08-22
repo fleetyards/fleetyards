@@ -578,11 +578,11 @@ components:
           type: string
           nullable: true
         size:
-          type: string
+          "$ref": "#/components/schemas/DockShipSizeEnum"
         sizeLabel:
           type: string
         type:
-          type: string
+          "$ref": "#/components/schemas/DockTypeEnum"
         typeLabel:
           type: string
       additionalProperties: false
@@ -1084,7 +1084,7 @@ components:
           type: string
           nullable: true
         type:
-          type: string
+          "$ref": "#/components/schemas/HabitationTypeEnum"
         typeLabel:
           type: string
       additionalProperties: false
@@ -2898,10 +2898,10 @@ components:
       - slug
       - habitable
       - hasImages
+      - media
       - refinery
       - cargoHub
       - celestialObject
-      - media
       - createdAt
       - updatedAt
       - id

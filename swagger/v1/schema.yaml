@@ -10027,10 +10027,10 @@ components:
       - slug
       - habitable
       - hasImages
+      - media
       - refinery
       - cargoHub
       - celestialObject
-      - media
       - createdAt
       - updatedAt
       title: Station

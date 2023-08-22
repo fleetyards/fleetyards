@@ -21,7 +21,7 @@ export type Component = {
     itemClass?: string | null;
     itemClassLabel?: string | null;
     manufacturer?: Manufacturer | null;
-    media?: {
+    media: {
         storeImage?: MediaImage;
     };
     size?: string | null;

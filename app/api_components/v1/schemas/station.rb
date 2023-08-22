@@ -54,7 +54,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          name slug habitable hasImages refinery cargoHub celestialObject media createdAt
+          name slug habitable hasImages media refinery cargoHub celestialObject createdAt
           updatedAt
         ]
       })

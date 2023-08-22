@@ -24,7 +24,11 @@ module V1
             stationTypeIn: {type: :array, items: {type: :string}},
             shopsShopTypeIn: {type: :array, items: {type: :string}},
             docksShipSizeIn: {type: :array, items: {type: :string}},
-            sorts: {type: :array, items: {type: :string}}
+            sorts: {oneOf: [{
+              type: :array, items: {"$ref": "#/components/schemas/StationSortEnum"}
+            }, {
+              "$ref": "#/components/schemas/StationSortEnum"
+            }]}
           },
           additionalProperties: false
         })

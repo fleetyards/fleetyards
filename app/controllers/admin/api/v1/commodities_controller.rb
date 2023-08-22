@@ -4,12 +4,10 @@ module Admin
   module Api
     module V1
       class CommoditiesController < ::Admin::Api::BaseController
-        after_action -> { pagination_header(:commodities) }, only: [:index]
-
         def index
           authorize! :index, :admin_api_shop_commodities
 
-          commodities_query_params["sorts"] = "created_at desc"
+          commodities_query_params["sorts"] ||= "created_at desc"
 
           @q = Commodity.ransack(commodities_query_params)
 
