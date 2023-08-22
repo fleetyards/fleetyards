@@ -5,7 +5,7 @@ import { usePaginationStore } from "@/shared/stores/pagination";
 export const usePagination = (
   key: string,
   queryResultRef: Ref<BaseList>,
-  changeCallback: () => void
+  changeCallback: () => void,
 ) => {
   const paginationStore = usePaginationStore();
 
@@ -25,14 +25,14 @@ export const usePagination = (
     () => page.value,
     () => {
       changeCallback();
-    }
+    },
   );
 
   watch(
     () => perPage.value,
     () => {
       changeCallback();
-    }
+    },
   );
 
   return {

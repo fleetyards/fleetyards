@@ -429,7 +429,7 @@ export default class FleetSettings extends Vue {
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}`,
-      this.form
+      this.form,
     );
 
     this.submitting = false;
@@ -462,7 +462,7 @@ export default class FleetSettings extends Vue {
 
     const response = await this.$api.upload(
       `fleets/${this.$route.params.slug}`,
-      uploadData
+      uploadData,
     );
 
     if (!response.error) {
@@ -502,7 +502,7 @@ export default class FleetSettings extends Vue {
       text: this.$t("messages.confirm.fleet.destroy"),
       onConfirm: async () => {
         const response = await this.$api.destroy(
-          `fleets/${this.$route.params.slug}`
+          `fleets/${this.$route.params.slug}`,
         );
 
         if (!response.error) {
@@ -541,7 +541,6 @@ export default class FleetSettings extends Vue {
     if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
       // eslint-disable-next-line no-param-reassign
       newFile.url = "";
-      // eslint-disable-next-line compat/compat
       const URL = window.URL || window.webkitURL;
       if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign

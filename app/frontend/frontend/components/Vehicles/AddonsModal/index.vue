@@ -146,7 +146,7 @@ export default class AddonsModal extends Vue {
 
     if (this.form.modelUpgradeIds.includes(upgrade.id)) {
       const index = this.form.modelUpgradeIds.findIndex(
-        (upgradeId) => upgradeId === upgrade.id
+        (upgradeId) => upgradeId === upgrade.id,
       );
       if (index > -1) {
         this.form.modelUpgradeIds.splice(index, 1);
@@ -164,7 +164,7 @@ export default class AddonsModal extends Vue {
     this.submitting = true;
     const response = await this.$api.put(
       `vehicles/${this.vehicle.id}`,
-      this.form
+      this.form,
     );
     this.submitting = false;
     if (!response.error) {
@@ -186,10 +186,10 @@ export default class AddonsModal extends Vue {
 
     addonPackage.modules.forEach((module) => {
       const additionalPackageModules = addonPackage.modules.filter(
-        (packageModule) => packageModule.id === module.id
+        (packageModule) => packageModule.id === module.id,
       );
       const foundModules = this.form.modelModuleIds.filter(
-        (id) => id === module.id
+        (id) => id === module.id,
       );
 
       if (

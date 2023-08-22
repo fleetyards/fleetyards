@@ -124,7 +124,7 @@ export default class FleetInvites extends Vue {
     this.submitting = true;
 
     const response = await this.$api.put(
-      `fleets/${invite.fleet.slug}/members/accept-invite`
+      `fleets/${invite.fleet.slug}/members/accept-invite`,
     );
 
     this.submitting = false;
@@ -157,7 +157,7 @@ export default class FleetInvites extends Vue {
       text: this.$t("messages.confirm.fleet.invites.decline"),
       onConfirm: async () => {
         const response = await this.$api.put(
-          `fleets/${invite.fleet.slug}/members/decline-invite`
+          `fleets/${invite.fleet.slug}/members/decline-invite`,
         );
 
         if (!response.error) {

@@ -27,9 +27,9 @@
       <i class="fa fa-chevron-right" />
     </div>
     <Collapsed
-      :visible="selectedOptions.length > 0 && !visible"
       v-if="multiple"
       :id="`${name}-selected-${id}`"
+      :visible="selectedOptions.length > 0 && !visible"
       class="filter-group-items"
     >
       <Option
@@ -44,8 +44,8 @@
       />
     </Collapsed>
     <Collapsed
-      :visible="visible"
       :id="`${name}-options-${id}`"
+      :visible="visible"
       class="filter-group-items-wrapper"
     >
       <FormInput
@@ -76,10 +76,10 @@
         <Btn
           v-if="fetchMoreVisible && paginated"
           :disabled="loading"
-          @click="fetchMore"
           variant="link"
           inline
           class="fade-list-item filter-group-fetch-more"
+          @click="fetchMore"
           >{{ i18n?.t("filterGroup.actions.fetchMore") }}</Btn
         >
       </div>
@@ -168,7 +168,7 @@ const prompt = computed(() => {
   if (props.translationKey) {
     if (props.nullable) {
       return i18n?.t(
-        `.labels.filterGroup.${props.translationKey}.nullablePrompt`
+        `.labels.filterGroup.${props.translationKey}.nullablePrompt`,
       );
     }
 
@@ -234,18 +234,18 @@ watch(
       addOptions(data.value);
       fetchMissingOption();
     }
-  }
+  },
 );
 
 watch(
   () => props.options,
   () => {
     internalOptions.value = props.options || [];
-  }
+  },
 );
 
 const labelVisible = computed(
-  () => !props.hideLabelOnEmpty || selectedOptions.value.length > 0
+  () => !props.hideLabelOnEmpty || selectedOptions.value.length > 0,
 );
 
 const innerLabel = computed(() => {
@@ -277,19 +277,19 @@ const searchLabelFallback = computed(() => {
 });
 
 const availableOptions = computed<FilterGroupOption[]>(() =>
-  sort(internalOptions.value)
+  sort(internalOptions.value),
 );
 
 const selectedOptions = computed(() => {
   if (props.multiple) {
     return availableOptions.value.filter(
       (item) =>
-        props.modelValue && (props.modelValue as string[]).includes(item.value)
+        props.modelValue && (props.modelValue as string[]).includes(item.value),
     );
   }
 
   const selectedOption = availableOptions.value.find(
-    (item) => item.value === props.modelValue
+    (item) => item.value === props.modelValue,
   );
 
   return selectedOption ? [selectedOption] : [];
@@ -298,7 +298,7 @@ const selectedOptions = computed(() => {
 const filteredOptions = computed(() => {
   if (search.value) {
     return internalOptions.value.filter((item) =>
-      item.label.toLowerCase().includes(String(search.value?.toLowerCase()))
+      item.label.toLowerCase().includes(String(search.value?.toLowerCase())),
     );
   }
 
@@ -411,7 +411,9 @@ const select = (option: string) => {
     if (props.multiple) {
       emit(
         "update:modelValue",
-        (props.modelValue as string[]).filter((item: string) => item !== option)
+        (props.modelValue as string[]).filter(
+          (item: string) => item !== option,
+        ),
       );
     } else if (props.nullable) {
       emit("update:modelValue", undefined);

@@ -88,11 +88,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const perPageSelectable = computed(
-  () => !!props.pagination?.perPageSteps && !!props.updatePerPage
+  () => !!props.pagination?.perPageSteps && !!props.updatePerPage,
 );
 
 const internalPerPage = computed(
-  () => props.perPage || props.pagination?.defaultPerPage
+  () => props.perPage || props.pagination?.defaultPerPage,
 );
 
 const i18n = inject<I18nPluginOptions>("i18n");

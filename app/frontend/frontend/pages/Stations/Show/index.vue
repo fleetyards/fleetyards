@@ -191,7 +191,7 @@ watch(
       image: station.value.media.storeImage?.medium || undefined,
       type: "article",
     });
-  }
+  },
 );
 </script>
 

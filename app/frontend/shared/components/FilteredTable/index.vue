@@ -29,7 +29,7 @@
             </Btn>
           </div>
           <slot
-            :selectedCount="internalSelected.length"
+            :selected-count="internalSelected.length"
             name="selected-actions"
           />
         </div>
@@ -39,7 +39,7 @@
           <div v-if="selectable && !mobile" class="col-selectable">
             <Checkbox
               name="all"
-              :modelValue="allSelected"
+              :model-value="allSelected"
               @update:model-value="onAllSelectedChange"
             />
           </div>
@@ -67,8 +67,8 @@
             <div class="filtered-table-row">
               <div v-if="selectable && !mobile" class="col-selectable">
                 <Checkbox
-                  name="item"
                   v-model="internalSelected"
+                  name="item"
                   :checkbox-value="record.id"
                 />
               </div>
@@ -114,7 +114,7 @@
         </div>
       </div>
     </transition-group>
-    <slot name="loader" :loading="loading" v-if="!inlineLoader">
+    <slot v-if="!inlineLoader" name="loader" :loading="loading">
       <Loader :loading="loading" relative />
     </slot>
   </Panel>
@@ -181,7 +181,7 @@ watch(
   () => props.selected,
   () => {
     internalSelected.value = props.selected;
-  }
+  },
 );
 
 const emit = defineEmits(["selected-change"]);
@@ -190,7 +190,7 @@ watch(
   () => internalSelected.value,
   () => {
     emit("selected-change", internalSelected.value);
-  }
+  },
 );
 
 onMounted(() => {
@@ -205,7 +205,8 @@ const onAllSelectedChange = (value: string[]) => {
     ].filter(uniqArray);
   } else {
     internalSelected.value = [...internalSelected.value].filter(
-      (selected) => !props.records.map((record) => record.id).includes(selected)
+      (selected) =>
+        !props.records.map((record) => record.id).includes(selected),
     );
   }
 };

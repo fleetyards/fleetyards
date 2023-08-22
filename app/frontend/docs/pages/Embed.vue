@@ -176,7 +176,7 @@ const copyExample = () => {
       displayAlert({
         text: t("messages.copyWidgetExample.failure"),
       });
-    }
+    },
   );
 };
 </script>

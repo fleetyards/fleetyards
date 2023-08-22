@@ -9,7 +9,7 @@ export const useWishlistItems = () => {
   // const wishlistStore = useWishlistStore();
 
   const isAuthenticated = computed(
-    () => Store.getters["session/isAuthenticated"]
+    () => Store.getters["session/isAuthenticated"],
   );
 
   const fetchHangarItems = async () => {
@@ -21,7 +21,7 @@ export const useWishlistItems = () => {
     // wishlistStore.save(await WishlistItemsCollection.findAll());
     await Store.dispatch(
       "wishlist/saveHangar",
-      await WishlistItemsCollection.findAll()
+      await WishlistItemsCollection.findAll(),
     );
   };
 
@@ -33,7 +33,7 @@ export const useWishlistItems = () => {
     () => route.path,
     () => {
       fetchHangarItems();
-    }
+    },
   );
 
   watch(
@@ -41,6 +41,6 @@ export const useWishlistItems = () => {
     () => isAuthenticated.value,
     () => {
       fetchHangarItems();
-    }
+    },
   );
 };

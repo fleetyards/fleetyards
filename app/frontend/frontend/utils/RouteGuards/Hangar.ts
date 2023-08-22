@@ -5,10 +5,10 @@ import { RouteLocation, NavigationGuardNext } from "vue-router";
 export const publicHangarRouteGuard = async function publicHangarRouteGuard(
   to: RouteLocation,
   _from: RouteLocation,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) {
   const user = await publicUserCollection.findByUsername(
-    String(to.params.username)
+    String(to.params.username),
   );
 
   if (!user) {

@@ -110,7 +110,7 @@ const {
 const { perPage, page, pagination, updatePerPage } = usePagination(
   "celestialObjects",
   celestialObjects as Ref<BaseList>,
-  refetch
+  refetch,
 );
 </script>
 

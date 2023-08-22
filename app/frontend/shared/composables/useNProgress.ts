@@ -23,6 +23,6 @@ export const useNProgress = () => {
       } else {
         updateStatus();
       }
-    }
+    },
   );
 };

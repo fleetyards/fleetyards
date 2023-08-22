@@ -112,7 +112,7 @@ const copyUrl = (_event: Event) => {
       displayAlert({
         text: t("messages.copyImageUrl.failure"),
       });
-    }
+    },
   );
 };
 
@@ -145,7 +145,7 @@ const setup = () => {
     pswpElement,
     PhotoSwipeUIDefault,
     unref(galleryItems),
-    unref(options)
+    unref(options),
   );
 
   gallery.value.listen("close", onClose);

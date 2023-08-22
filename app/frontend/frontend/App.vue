@@ -98,14 +98,14 @@ watch(
   () => navCollapsed.value,
   () => {
     setNoScroll();
-  }
+  },
 );
 
 watch(
   () => overlayVisible.value,
   () => {
     setNoScroll();
-  }
+  },
 );
 
 watch(
@@ -116,7 +116,7 @@ watch(
 
       fetchCurrentUser();
     }
-  }
+  },
 );
 
 const route = useRoute();
@@ -135,7 +135,7 @@ watch(
     }
 
     setupLocale();
-  }
+  },
 );
 
 const checkStoreVersion = () => {

@@ -186,14 +186,14 @@ watch(
   () => {
     checkRoutes();
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
   () => props.submenuActive,
   () => {
     checkRoutes();
-  }
+  },
 );
 
 onMounted(() => {

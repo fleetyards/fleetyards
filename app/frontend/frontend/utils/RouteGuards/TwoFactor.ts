@@ -4,7 +4,7 @@ import { RouteLocation, NavigationGuardNext } from "vue-router";
 export const enabledRouteGuard = async function fleetRouteGuard(
   _to: RouteLocation,
   _from: RouteLocation,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) {
   const response = await userCollection.current();
 
@@ -18,7 +18,7 @@ export const enabledRouteGuard = async function fleetRouteGuard(
 export const disabledRouteGuard = async function publicFleetRouteGuard(
   _to: RouteLocation,
   _from: RouteLocation,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) {
   const response = await userCollection.current();
 

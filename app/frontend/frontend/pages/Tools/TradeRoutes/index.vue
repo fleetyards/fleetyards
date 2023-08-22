@@ -20,7 +20,7 @@
       :hash="$route.hash"
       :paginated="true"
     >
-      <template slot="actions">
+      <template #actions>
         <template v-if="!mobile">
           <BtnGroup>
             <Btn

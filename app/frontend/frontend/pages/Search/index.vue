@@ -138,7 +138,7 @@ const filters = computed<SearchParams>(() => ({
 }));
 
 const firstPage = computed(
-  () => !route.query.page || Number(route.query.page) === 1
+  () => !route.query.page || Number(route.query.page) === 1,
 );
 
 const shareUrl = computed(() => window.location.href);
@@ -146,7 +146,7 @@ const shareUrl = computed(() => window.location.href);
 const { t } = useI18n();
 
 const shareTitle = computed(() =>
-  t("labels.search.shareTitle", { query: String(form.value?.search) })
+  t("labels.search.shareTitle", { query: String(form.value?.search) }),
 );
 
 watch(
@@ -154,7 +154,7 @@ watch(
   () => {
     setupForm();
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -162,7 +162,7 @@ watch(
   () => {
     filter(form.value);
   },
-  { deep: true }
+  { deep: true },
 );
 
 onMounted(() => {

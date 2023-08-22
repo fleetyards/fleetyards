@@ -52,7 +52,7 @@ export default class HangarImportBtn extends Vue {
     validator(value) {
       return (
         ["default", "transparent", "link", "danger", "dropdown"].indexOf(
-          value
+          value,
         ) !== -1
       );
     },
@@ -89,7 +89,7 @@ export default class HangarImportBtn extends Vue {
     if (newFile && !oldFile) {
       if (
         !this.fileExtensionsList.some((extension) =>
-          newFile.name.endsWith(extension)
+          newFile.name.endsWith(extension),
         )
       ) {
         displayAlert({
@@ -103,7 +103,6 @@ export default class HangarImportBtn extends Vue {
     if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
       // eslint-disable-next-line no-param-reassign
       newFile.url = "";
-      // eslint-disable-next-line compat/compat
       const URL = window.URL || window.webkitURL;
       if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign

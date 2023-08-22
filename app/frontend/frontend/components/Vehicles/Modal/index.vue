@@ -149,7 +149,7 @@ watch(
   () => {
     setupForm();
   },
-  { deep: true }
+  { deep: true },
 );
 
 const setupForm = () => {
@@ -173,7 +173,7 @@ const save = async () => {
 
   const response = await vehiclesCollection.update(
     props.vehicle.id,
-    form.value
+    form.value,
   );
 
   submitting.value = false;

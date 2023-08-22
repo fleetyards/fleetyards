@@ -54,8 +54,8 @@
                 </h2>
               </div>
               <Chart
-                name="models-by-classification"
                 key="models-by-classification"
+                name="models-by-classification"
                 :load-data="statsService.modelsByClassification"
                 tooltip-type="ship-pie"
                 type="pie"
@@ -70,8 +70,8 @@
                 </h2>
               </div>
               <Chart
-                name="models-by-size"
                 key="models-by-size"
+                name="models-by-size"
                 :load-data="statsService.modelsBySize"
                 tooltip-type="ship-pie"
                 type="pie"
@@ -88,8 +88,8 @@
                 </h2>
               </div>
               <Chart
-                name="models-by-production-status"
                 key="models-by-production-status"
+                name="models-by-production-status"
                 :load-data="statsService.modelsByProductionStatus"
                 tooltip-type="ship-pie"
                 type="pie"
@@ -104,8 +104,8 @@
                 </h2>
               </div>
               <Chart
-                name="models-per-month"
                 key="models-per-month"
+                name="models-per-month"
                 :load-data="statsService.modelsPerMonth"
                 tooltip-type="ship"
                 type="column"
@@ -122,8 +122,8 @@
                 </h2>
               </div>
               <Chart
-                name="models-by-manufacturer"
                 key="models-by-manufacturer"
+                name="models-by-manufacturer"
                 :load-data="statsService.modelsByManufacturer"
                 tooltip-type="ship-pie"
                 type="pie"

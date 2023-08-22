@@ -63,7 +63,7 @@
                   <h3 class="text-uppercase">
                     {{
                       t(
-                        `labels.model.productionStatus.${model.productionStatus}`
+                        `labels.model.productionStatus.${model.productionStatus}`,
                       )
                     }}
                   </h3>
@@ -351,7 +351,7 @@ const model = ref<Model | null>(null);
 const mobile = computed(() => Store.getters.mobile);
 
 const holoviewerVisible = computed(
-  () => Store.getters["models/holoviewerVisible"]
+  () => Store.getters["models/holoviewerVisible"],
 );
 
 const route = useRoute();
@@ -431,12 +431,12 @@ const fleetchartImageSide = computed(() => {
 });
 
 const starship42Url = computed(
-  () => `https://starship42.com/inverse/?ship=${model.value?.name}&mode=color`
+  () => `https://starship42.com/inverse/?ship=${model.value?.name}&mode=color`,
 );
 
 const starship42IframeUrl = computed(
   () =>
-    `https://starship42.com/fleetview/fleetyards/?s=${model.value?.rsiName}&type=matrix`
+    `https://starship42.com/fleetview/fleetyards/?s=${model.value?.rsiName}&type=matrix`,
 );
 
 const { t, toDollar } = useI18n();

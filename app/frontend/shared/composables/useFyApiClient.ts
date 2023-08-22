@@ -2,7 +2,7 @@ import { FyApi } from "@/services/fyApi";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 export const useFyApiClient = (
-  currentLocale: I18nPluginOptions["currentLocale"]
+  currentLocale: I18nPluginOptions["currentLocale"],
 ) =>
   new FyApi({
     BASE: `${window.API_ENDPOINT}`,

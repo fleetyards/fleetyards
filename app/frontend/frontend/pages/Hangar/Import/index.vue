@@ -140,14 +140,14 @@ export default {
           Papa.parse(event.target.result, {
             header: true,
             skipEmptyLines: true,
-          }).data
-        )
+          }).data,
+        ),
       );
     },
 
     async parseJSON(event) {
       this.data = await this.matchWithHangar(
-        this.transformData(JSON.parse(event.target.result))
+        this.transformData(JSON.parse(event.target.result)),
       );
     },
 
@@ -179,14 +179,14 @@ export default {
 
       const matchedItems = await items.map((item) => {
         const found = currentHangar.find(
-          (vehicle) => vehicle.modelSlug === item.modelSlug
+          (vehicle) => vehicle.modelSlug === item.modelSlug,
         );
 
         let state = "new";
 
         if (found) {
           const index = currentHangar.findIndex(
-            (vehicle) => vehicle.modelSlug === found.modelSlug
+            (vehicle) => vehicle.modelSlug === found.modelSlug,
           );
           currentHangar.splice(index, 1);
           state = "replace";

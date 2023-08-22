@@ -22,7 +22,7 @@ export const useI18n = () => {
     () => i18nStore.locale,
     (locale) => {
       i18n.locale = locale;
-    }
+    },
   );
 
   return {

@@ -20,19 +20,19 @@ export const useMetaInfo = (t: I18nPluginOptions["t"]) => {
   });
 
   const titleElement = computed<HTMLTitleElement | null>(() =>
-    document.querySelector("title")
+    document.querySelector("title"),
   );
 
   const descriptionElement = computed<HTMLMetaElement | null>(() =>
-    document.querySelector('meta[name="description"]')
+    document.querySelector('meta[name="description"]'),
   );
 
   const ogDescriptionElement = computed<HTMLMetaElement | null>(() =>
-    document.querySelector('meta[property="og:description"]')
+    document.querySelector('meta[property="og:description"]'),
   );
 
   const ogTitleElement = computed<HTMLMetaElement | null>(() =>
-    document.querySelector('meta[property="og:title"]')
+    document.querySelector('meta[property="og:title"]'),
   );
 
   const ogTypeElement = (): HTMLMetaElement | null =>
@@ -148,7 +148,7 @@ export const useMetaInfo = (t: I18nPluginOptions["t"]) => {
     () => route.meta?.title,
     () => {
       updateMetaInfo();
-    }
+    },
   );
 
   onMounted(() => {

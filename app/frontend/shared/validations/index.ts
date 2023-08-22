@@ -22,7 +22,7 @@ import {
 
 export const setupRules = (
   t: I18nPluginOptions["t"],
-  currentLocale: I18nPluginOptions["currentLocale"]
+  currentLocale: I18nPluginOptions["currentLocale"],
 ) => {
   defineRule("required", required);
   defineRule("alpha_dash", alpha_dash);

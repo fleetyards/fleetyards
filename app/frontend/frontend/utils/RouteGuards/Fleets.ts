@@ -4,7 +4,7 @@ import { RouteLocation, NavigationGuardNext } from "vue-router";
 export const fleetRouteGuard = async function fleetRouteGuard(
   to: RouteLocation,
   _from: RouteLocation,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) {
   const fleet = await fleetsCollection.findBySlug(String(to.params.slug));
 
@@ -18,7 +18,7 @@ export const fleetRouteGuard = async function fleetRouteGuard(
 export const publicFleetRouteGuard = async function publicFleetRouteGuard(
   to: RouteLocation,
   _from: RouteLocation,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) {
   const fleet = await fleetsCollection.findBySlug(String(to.params.slug));
 
@@ -33,7 +33,7 @@ export const publicFleetShipsRouteGuard =
   async function publicFleetShipsRouteGuard(
     to: RouteLocation,
     _from: RouteLocation,
-    next: NavigationGuardNext
+    next: NavigationGuardNext,
   ) {
     const fleet = await fleetsCollection.findBySlug(String(to.params.slug));
 

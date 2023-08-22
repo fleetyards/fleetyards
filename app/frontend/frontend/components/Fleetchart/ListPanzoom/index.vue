@@ -11,7 +11,7 @@
             </template>
             {{
               $t(
-                `labels.fleetchartApp.screenHeightOptions.${selectedScreenHeight}`
+                `labels.fleetchartApp.screenHeightOptions.${selectedScreenHeight}`,
               )
             }}
           </template>
@@ -351,7 +351,7 @@ export default class FleetchartListPanzoom extends Vue {
       setTimeout(() => {
         this.panzoomInstance.moveTo(
           this.initialZoomData.x,
-          this.initialZoomData.y
+          this.initialZoomData.y,
         );
       }, 300);
     }
@@ -437,7 +437,7 @@ export default class FleetchartListPanzoom extends Vue {
   toggleColored() {
     this.$store.commit(
       `${this.namespace}/setFleetchartColored`,
-      !this.coloredEnabled
+      !this.coloredEnabled,
     );
   }
 
@@ -448,7 +448,7 @@ export default class FleetchartListPanzoom extends Vue {
   setScreenHeight(screenHeight) {
     this.$store.commit(
       `${this.namespace}/setFleetchartScreenHeight`,
-      screenHeight
+      screenHeight,
     );
 
     this.setupColumns();
@@ -461,7 +461,7 @@ export default class FleetchartListPanzoom extends Vue {
   toggleLabels() {
     this.$store.commit(
       `${this.namespace}/setFleetchartLabels`,
-      !this.showLabels
+      !this.showLabels,
     );
   }
 
@@ -574,7 +574,7 @@ export default class FleetchartListPanzoom extends Vue {
     return Math.max(
       model.topViewWidth,
       model.sideViewWidth,
-      model.angledViewWidth
+      model.angledViewWidth,
     );
   }
 
@@ -582,7 +582,7 @@ export default class FleetchartListPanzoom extends Vue {
     return Math.max(
       model.topViewHeight,
       model.sideViewHeight,
-      model.angledViewHeight
+      model.angledViewHeight,
     );
   }
 

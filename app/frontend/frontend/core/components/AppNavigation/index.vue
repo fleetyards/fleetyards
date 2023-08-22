@@ -112,7 +112,7 @@ const mobile = computed(() => Store.getters.mobile);
 const navSlim = computed(() => Store.getters["app/navSlim"]);
 
 const isAuthenticated = computed(
-  () => Store.getters["session/isAuthenticated"]
+  () => Store.getters["session/isAuthenticated"],
 );
 
 const slim = computed(() => navSlim.value && !mobile.value);
@@ -141,7 +141,7 @@ const isModelRoute = computed(() => {
   }
 
   return ["models", "model", "model-images", "model-videos"].includes(
-    route.name || ""
+    route.name || "",
   );
 });
 
@@ -157,7 +157,7 @@ watch(
   () => route.path,
   () => {
     close();
-  }
+  },
 );
 
 onMounted(() => {

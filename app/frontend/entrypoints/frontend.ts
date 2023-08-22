@@ -17,7 +17,6 @@ import { VueQueryPlugin } from "@tanstack/vue-query";
 
 document.addEventListener("DOMContentLoaded", () => {
   if ("serviceWorker" in navigator) {
-    // eslint-disable-next-line compat/compat
     navigator.serviceWorker
       .register("/sw.js", {
         scope: "/",
@@ -27,13 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
           // Registration was successful
           console.info(
             "ServiceWorker registration successful with scope: ",
-            registration.scope
+            registration.scope,
           );
         },
         (err) => {
           // registration failed :(
           console.error("ServiceWorker registration failed: ", err);
-        }
+        },
       );
   }
 });

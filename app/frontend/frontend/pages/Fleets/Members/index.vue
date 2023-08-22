@@ -43,7 +43,7 @@
       :hash="$route.hash"
       :paginated="true"
     >
-      <template v-if="mobile && canInvite" slot="actions">
+      <template v-if="mobile && canInvite" #actions>
         <BtnDropdown size="small">
           <Btn
             size="small"
@@ -198,7 +198,7 @@ export default class FleetMemmbers extends Vue {
       },
       {
         received: debounce(this.fetch, 500),
-      }
+      },
     );
   }
 

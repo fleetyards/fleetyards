@@ -98,7 +98,7 @@ export default class FleetSettingsIndex extends Vue {
       text: this.$t("messages.confirm.fleet.leave"),
       onConfirm: async () => {
         const response = await this.$api.destroy(
-          `fleets/${this.fleet.slug}/members/leave`
+          `fleets/${this.fleet.slug}/members/leave`,
         );
 
         this.leaving = false;

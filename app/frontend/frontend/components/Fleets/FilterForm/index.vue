@@ -237,7 +237,7 @@ watch(
   () => {
     setupForm();
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -245,7 +245,7 @@ watch(
   () => {
     filter(form.value);
   },
-  { deep: true }
+  { deep: true },
 );
 
 onMounted(() => {

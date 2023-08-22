@@ -93,7 +93,7 @@ watch(
       image: starsystem.value.media?.storeImage?.medium || undefined,
       type: "article",
     });
-  }
+  },
 );
 </script>
 

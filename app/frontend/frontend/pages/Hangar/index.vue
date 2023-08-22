@@ -342,7 +342,7 @@ const gridView = computed(() => Store.getters["hangar/gridView"]);
 const perPage = computed(() => Store.getters["hangar/perPage"]);
 const money = computed(() => Store.getters["hangar/money"]);
 const fleetchartVisible = computed(
-  () => Store.getters["hangar/fleetchartVisible"]
+  () => Store.getters["hangar/fleetchartVisible"],
 );
 
 const shareTitle = computed(() => t("title.hangar.index"));
@@ -388,14 +388,14 @@ watch(
   () => route.query.q,
   () => {
     fetch();
-  }
+  },
 );
 
 watch(
   () => perPage.value,
   () => {
     fetch();
-  }
+  },
 );
 
 onMounted(() => {
@@ -470,7 +470,7 @@ const setupUpdates = () => {
     },
     {
       received: () => debounce(fetch, 500),
-    }
+    },
   );
 };
 
@@ -484,17 +484,16 @@ const exportJson = async () => {
 
   const link = document.createElement("a");
 
-  // eslint-disable-next-line compat/compat
   link.href = window.URL.createObjectURL(
-    new Blob([exportedData as unknown as BlobPart])
+    new Blob([exportedData as unknown as BlobPart]),
   );
 
   link.setAttribute(
     "download",
     `fleetyards-${currentUser.value.username}-hangar-${format(
       new Date(),
-      "yyyy-MM-dd"
-    )}.json`
+      "yyyy-MM-dd",
+    )}.json`,
   );
 
   document.body.appendChild(link);

@@ -174,7 +174,7 @@ watch(
   () => props.modelValue,
   () => {
     inputValue.value = props.modelValue;
-  }
+  },
 );
 
 onMounted(() => {

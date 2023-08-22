@@ -117,7 +117,7 @@ const {
 const { perPage, page, pagination, updatePerPage } = usePagination(
   "starsystems",
   starsystems as Ref<BaseList>,
-  refetch
+  refetch,
 );
 </script>
 

@@ -35,7 +35,7 @@
       :hide-empty-box="!gridView"
       :paginated="true"
     >
-      <template slot="actions">
+      <template #actions>
         <BtnDropdown size="small">
           <template v-if="mobile">
             <ShareBtn
@@ -277,14 +277,13 @@ export default class Hangar extends Vue {
       },
       {
         received: debounce(this.fetch, 500),
-      }
+      },
     );
   }
 
   async exportJson() {
     const exportedData = await this.collection.export(this.filters);
 
-    // eslint-disable-next-line compat/compat
     if (!exportedData || !window.URL) {
       displayAlert({ text: this.$t("messages.wishlistExport.failure") });
       return;
@@ -292,15 +291,14 @@ export default class Hangar extends Vue {
 
     const link = document.createElement("a");
 
-    // eslint-disable-next-line compat/compat
     link.href = window.URL.createObjectURL(new Blob([exportedData]));
 
     link.setAttribute(
       "download",
       `fleetyards-${this.currentUser.username}-wishlist-${format(
         new Date(),
-        "yyyy-MM-dd"
-      )}.json`
+        "yyyy-MM-dd",
+      )}.json`,
     );
 
     document.body.appendChild(link);

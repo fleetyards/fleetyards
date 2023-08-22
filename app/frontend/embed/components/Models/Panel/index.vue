@@ -79,7 +79,7 @@ const { t } = useI18n();
 const uuid = ref<string>(uuidv4());
 
 const url = computed(
-  () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`
+  () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`,
 );
 
 const countLabel = computed(() => {

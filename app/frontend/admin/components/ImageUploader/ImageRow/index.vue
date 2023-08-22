@@ -162,7 +162,7 @@ watch(
   () => props.image,
   () => {
     internalImage.value = props.image;
-  }
+  },
 );
 
 onMounted(() => {

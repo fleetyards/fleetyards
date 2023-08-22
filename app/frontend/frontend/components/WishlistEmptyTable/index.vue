@@ -39,11 +39,11 @@ const { t } = useI18n();
 const route = useRoute();
 
 const isPagePresent = computed(
-  () => !!route.query.page && Number(route.query.page) > 1
+  () => !!route.query.page && Number(route.query.page) > 1,
 );
 
 const isQueryPresent = computed(
-  () => Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value
+  () => Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value,
 );
 
 const router = useRouter();

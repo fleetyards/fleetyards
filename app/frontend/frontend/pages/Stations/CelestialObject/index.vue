@@ -149,7 +149,7 @@ watch(
       image: celestialObject.value.media.storeImage?.medium || undefined,
       type: "article",
     });
-  }
+  },
 );
 </script>
 

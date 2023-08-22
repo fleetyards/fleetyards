@@ -65,11 +65,9 @@ Noty.overrideDefaults({
 });
 
 const notifyPermissionGranted = () =>
-  // eslint-disable-next-line compat/compat
   "Notification" in window && window.Notification.permission === "granted";
 
 const displayDesktopNotification = (message: string) => {
-  // eslint-disable-next-line compat/compat
   const notification = new window.Notification(message, {
     // eslint-disable-next-line global-require
     icon: `${window.FRONTEND_ENDPOINT}${require("@/images/favicon.png")}`,
@@ -80,7 +78,6 @@ const displayDesktopNotification = (message: string) => {
 
 const displayNativeNotification = (message: string) => {
   if ("serviceWorker" in navigator) {
-    // eslint-disable-next-line compat/compat
     navigator.serviceWorker.ready.then(
       (registration) => {
         if (!registration.showNotification) {
@@ -94,7 +91,7 @@ const displayNativeNotification = (message: string) => {
       },
       () => {
         displayDesktopNotification(message);
-      }
+      },
     );
   } else {
     displayDesktopNotification(message);
@@ -200,7 +197,7 @@ export const useNoty = (t: I18nPluginOptions["t"]) => {
   };
 
   const displayConfirm = function displayConfirm(
-    options: FleetyardsNotyOptions
+    options: FleetyardsNotyOptions,
   ) {
     const defaults = {
       text: null,
@@ -243,7 +240,7 @@ export const useNoty = (t: I18nPluginOptions["t"]) => {
             n.close();
             defaults.onConfirm();
           },
-          { "data-status": "ok" }
+          { "data-status": "ok" },
         ),
       ],
       callbacks: {
@@ -261,7 +258,6 @@ export const useNoty = (t: I18nPluginOptions["t"]) => {
       return;
     }
 
-    // eslint-disable-next-line compat/compat
     window.Notification.requestPermission((permission) => {
       if (permission === "granted") {
         displayNativeNotification(t("messages.notification.granted"));

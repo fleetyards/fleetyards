@@ -303,7 +303,7 @@ watch(
   () => {
     setupForm();
   },
-  { deep: true }
+  { deep: true },
 );
 </script>
 

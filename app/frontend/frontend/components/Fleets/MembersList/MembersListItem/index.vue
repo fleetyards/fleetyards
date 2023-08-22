@@ -250,7 +250,7 @@ const removeMember = async (member: FleetMember) => {
     onConfirm: async () => {
       const success = await collection.destroy(
         route.params.slug,
-        member.username
+        member.username,
       );
 
       if (success) {
@@ -318,7 +318,7 @@ const acceptRequest = async (member: FleetMember) => {
 
   const success = await collection.acceptRequest(
     route.params.slug,
-    member.username
+    member.username,
   );
 
   updating.value = false;
@@ -341,7 +341,7 @@ const declineRequest = async (member: FleetMember) => {
 
   const success = await collection.declineRequest(
     route.params.slug,
-    member.username
+    member.username,
   );
 
   updating.value = false;

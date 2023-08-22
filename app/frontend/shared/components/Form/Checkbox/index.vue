@@ -7,8 +7,8 @@
   >
     <input
       :id="uuid"
-      :name="name"
       v-model="internalValue"
+      :name="name"
       :checked="checked"
       :disabled="disabled"
       class="form-checkbox"
@@ -57,7 +57,7 @@ watch(
   () => props.modelValue,
   () => {
     internalValue.value = props.modelValue;
-  }
+  },
 );
 
 onMounted(() => {

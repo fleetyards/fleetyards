@@ -7,7 +7,7 @@
     primary-key="id"
     class="images"
   >
-    <template #filter v-if="filterable">
+    <template v-if="filterable" #filter>
       <FilterForm />
     </template>
 
@@ -94,13 +94,13 @@ watch(
   () => {
     refetch();
   },
-  { deep: true }
+  { deep: true },
 );
 
 const { perPage, page, pagination, updatePerPage } = usePagination(
   props.name,
   data as Ref<BaseList>,
-  refetch
+  refetch,
 );
 </script>
 

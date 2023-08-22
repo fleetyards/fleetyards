@@ -80,9 +80,9 @@
             />
 
             <Checkbox
-              name="saleNotify"
               id="saleNotify"
               v-model="form.saleNotify"
+              name="saleNotify"
               :label="t('labels.user.saleNotify')"
             />
 

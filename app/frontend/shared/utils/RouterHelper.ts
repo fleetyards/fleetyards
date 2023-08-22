@@ -1,7 +1,7 @@
 import type { RouteRecordRaw, RouteLocation } from "vue-router";
 
 export const addTrailingSlashToAllRoutes = (
-  routes: RouteRecordRaw[]
+  routes: RouteRecordRaw[],
 ): RouteRecordRaw[] =>
   ([] as RouteRecordRaw[]).concat(
     ...routes.map((route: RouteRecordRaw): RouteRecordRaw[] => {
@@ -32,5 +32,5 @@ export const addTrailingSlashToAllRoutes = (
           }),
         },
       ];
-    })
+    }),
   );

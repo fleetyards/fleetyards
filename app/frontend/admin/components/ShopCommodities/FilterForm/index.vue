@@ -9,8 +9,8 @@
     />
 
     <FilterGroup
-      name="component-item-type-filter"
       v-model="form.componentItemType"
+      name="component-item-type-filter"
       :query-fn="fetchComponentItemTypeFilters"
       :label="t('labels.filters.shopCommodities.componentItemTypeFilter')"
       searchable
@@ -118,7 +118,7 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 );
 
 const submit = () => {
@@ -133,7 +133,7 @@ watch(
   () => route.query,
   () => {
     setupForm();
-  }
+  },
 );
 
 const { componentsFilters: componentFiltersService } = useApiClient();

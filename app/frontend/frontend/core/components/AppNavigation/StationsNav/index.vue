@@ -5,7 +5,7 @@
     menu-key="stations-menu"
     icon="fad fa-planet-ringed"
   >
-    <template slot="submenu">
+    <template #submenu>
       <NavItem
         :to="{ name: 'stations' }"
         :label="t('nav.stations.overview')"
@@ -45,7 +45,7 @@ const active = computed(() =>
     "starsystem",
     "celestial-object",
     "station-images",
-  ].includes(route.name || "")
+  ].includes(route.name || ""),
 );
 </script>
 

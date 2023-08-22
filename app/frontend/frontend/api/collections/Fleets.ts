@@ -56,7 +56,7 @@ export class FleetsCollection extends BaseCollection {
 
   async findVehiclesByModelBySlug(
     slug: string,
-    limit?: number
+    limit?: number,
   ): Promise<ChartData[]> {
     const response = await get(`fleets/${slug}/stats/vehicles-by-model`, {
       limit,
@@ -91,7 +91,7 @@ export class FleetsCollection extends BaseCollection {
 
   async findModelsByProductionStatusBySlug(slug: string): Promise<ChartData[]> {
     const response = await get(
-      `fleets/${slug}/stats/models-by-production-status`
+      `fleets/${slug}/stats/models-by-production-status`,
     );
 
     if (!response.error) {

@@ -4,7 +4,7 @@ import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 export const useRule = (
   t: I18nPluginOptions["t"],
-  currentLocale: I18nPluginOptions["currentLocale"]
+  currentLocale: I18nPluginOptions["currentLocale"],
 ) => {
   const { users: usersService } = useFyApiClient(currentLocale);
 

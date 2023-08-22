@@ -77,7 +77,7 @@ export const useUpdates = () => {
         disconnected: () => {
           disconnected("appVersion");
         },
-      }
+      },
     );
   };
 
@@ -111,7 +111,7 @@ export const useUpdates = () => {
         disconnected: () => {
           disconnected("hangarCreate");
         },
-      }
+      },
     );
   };
 
@@ -143,7 +143,7 @@ export const useUpdates = () => {
         disconnected: () => {
           disconnected("hangarDestroy");
         },
-      }
+      },
     );
   };
 
@@ -177,7 +177,7 @@ export const useUpdates = () => {
         disconnected: () => {
           disconnected("wishlistCreate");
         },
-      }
+      },
     );
   };
 
@@ -209,7 +209,7 @@ export const useUpdates = () => {
         disconnected: () => {
           disconnected("wishlistDestroy");
         },
-      }
+      },
     );
   };
 
@@ -243,7 +243,7 @@ export const useUpdates = () => {
         disconnected: () => {
           disconnected("onSaleHangar");
         },
-      }
+      },
     );
   };
 
@@ -273,7 +273,7 @@ export const useUpdates = () => {
         disconnected: () => {
           disconnected("onSale");
         },
-      }
+      },
     );
   };
 
@@ -306,6 +306,6 @@ export const useUpdates = () => {
     () => {
       disconnectUpdates();
       setupUpdates();
-    }
+    },
   );
 };

@@ -81,7 +81,7 @@ watch(
   () => props.models,
   () => {
     setupVisibles();
-  }
+  },
 );
 
 onMounted(() => {

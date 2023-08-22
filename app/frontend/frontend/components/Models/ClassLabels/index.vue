@@ -5,8 +5,8 @@
     size="small"
     class="labels-dropdown"
   >
-    <template slot="label">Classifications</template>
-    <template slot="default">
+    <template #label>Classifications</template>
+    <template #default>
       <Btn
         v-for="classification in countData"
         :key="`dropdown-${classification.name}`"
@@ -84,7 +84,7 @@ const filter = (filter: string) => {
 
   if ((query[props.filterKey] || []).includes(filter)) {
     const index = query[props.filterKey].findIndex(
-      (item: string) => item === filter
+      (item: string) => item === filter,
     );
     if (index > -1) {
       query[props.filterKey].splice(index, 1);

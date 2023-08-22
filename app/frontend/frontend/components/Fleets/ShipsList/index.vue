@@ -75,7 +75,7 @@
         :paginated="true"
         :hide-loading="fleetchartVisible"
       >
-        <template slot="actions">
+        <template #actions>
           <BtnDropdown size="small">
             <template v-if="mobile">
               <Btn
@@ -296,7 +296,7 @@ export default class FleetShipsList extends Vue {
       },
       {
         received: debounce(this.fetch, 500),
-      }
+      },
     );
   }
 
@@ -316,7 +316,6 @@ export default class FleetShipsList extends Vue {
   async exportJson() {
     const exportedData = await this.collection.export(this.filters);
 
-    // eslint-disable-next-line compat/compat
     if (!exportedData || !window.URL) {
       displayAlert({ text: this.$t("messages.hangarExport.failure") });
       return;
@@ -324,15 +323,14 @@ export default class FleetShipsList extends Vue {
 
     const link = document.createElement("a");
 
-    // eslint-disable-next-line compat/compat
     link.href = window.URL.createObjectURL(new Blob([exportedData]));
 
     link.setAttribute(
       "download",
       `fleetyards-${this.fleet.slug}-vehicles-${format(
         new Date(),
-        "yyyy-MM-dd"
-      )}.json`
+        "yyyy-MM-dd",
+      )}.json`,
     );
 
     document.body.appendChild(link);

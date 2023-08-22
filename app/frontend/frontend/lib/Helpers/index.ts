@@ -12,7 +12,7 @@ export const groupBy = function groupBy(list: any[], key: any) {
 export const sortBy = function sortBy(
   list: any[],
   key: any,
-  decending = false
+  decending = false,
 ) {
   return JSON.parse(JSON.stringify(list)).sort((a: any, b: any) => {
     if (decending) {

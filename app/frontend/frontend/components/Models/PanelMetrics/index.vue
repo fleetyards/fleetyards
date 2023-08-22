@@ -107,7 +107,7 @@ export default class PanelMetrics extends Vue {
 
     return this.$toNumber(
       [min, max].filter((item) => item).join(" - "),
-      "people"
+      "people",
     );
   }
 

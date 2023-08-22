@@ -13,7 +13,7 @@
       }"
     >
       <div class="teaser-panel-image teaser-panel-item">
-        <LazyImage :src="image" v-if="image" />
+        <LazyImage v-if="image" :src="image" />
       </div>
       <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
         <router-link v-if="to" :to="to">

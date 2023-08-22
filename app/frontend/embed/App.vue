@@ -19,7 +19,7 @@ const config = computed(() => window.FleetYardsFleetchartConfig || {});
 const ships = ref<string[]>(config.value.ships || []);
 const users = ref<string[]>(config.value.users || []);
 const fleetId = ref<string | undefined>(
-  config.value.fleetId || config.value.fleetID
+  config.value.fleetId || config.value.fleetID,
 );
 const groupedButton = ref<boolean>(config.value.groupedButton || false);
 const fleetchartSlider = ref<boolean>(config.value.fleetchartSlider || false);

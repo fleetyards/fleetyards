@@ -55,7 +55,7 @@ function parseLink(link: string): LinkHeader | undefined {
 }
 
 const parseHeader = function parseHeader(
-  linkHeader: string
+  linkHeader: string,
 ): ParsedLinks | undefined {
   if (!linkHeader) {
     return undefined;

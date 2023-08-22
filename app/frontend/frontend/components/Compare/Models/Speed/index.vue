@@ -257,7 +257,7 @@ watch(
   () => props.models,
   () => {
     visible.value = props.models.length > 0;
-  }
+  },
 );
 
 const toggle = () => {

@@ -52,11 +52,11 @@ const oasVersion = computed(() => window.API_OAS_VERSION);
 const swagger = ref<SwaggerUI>();
 
 const validatorIconUrl = computed(
-  () => `https://validator.swagger.io/validator?url=${schemaUrl.value}`
+  () => `https://validator.swagger.io/validator?url=${schemaUrl.value}`,
 );
 
 const validatorUrl = computed(
-  () => `https://validator.swagger.io/validator/debug?url=${schemaUrl.value}`
+  () => `https://validator.swagger.io/validator/debug?url=${schemaUrl.value}`,
 );
 
 onMounted(() => {

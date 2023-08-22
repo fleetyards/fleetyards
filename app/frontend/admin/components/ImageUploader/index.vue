@@ -188,7 +188,7 @@ const progress = computed(() => {
   const completedUploads = uploadCount.value - newImages.value.length;
 
   return Math.ceil(
-    (pendingProgress + completedUploads * 100) / uploadCount.value
+    (pendingProgress + completedUploads * 100) / uploadCount.value,
   );
 });
 
@@ -288,7 +288,7 @@ const inputImage = async (newImage: VueUploadItem, oldImage: VueUploadItem) => {
 const inputFilter = (
   newImage: VueUploadItem,
   oldImage: VueUploadItem,
-  prevent: (prevent?: boolean) => boolean
+  prevent: (prevent?: boolean) => boolean,
 ) => {
   if (newImage && !oldImage) {
     if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(String(newImage.name))) {
@@ -302,7 +302,6 @@ const inputFilter = (
 
   /* eslint-disable no-param-reassign */
   newImage.blob = "";
-  // eslint-disable-next-line compat/compat
   const URL = window.URL || window.webkitURL;
   if (URL && URL.createObjectURL) {
     newImage.blob = URL.createObjectURL(newImage.file as Blob);

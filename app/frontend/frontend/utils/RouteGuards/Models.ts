@@ -5,7 +5,7 @@ import { RouteLocation, NavigationGuardNext } from "vue-router";
 export const modelRouteGuard = async function modelRouteGuard(
   to: RouteLocation,
   _from: RouteLocation,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) {
   const model = await modelsCollection.findBySlug(String(to.params.slug));
 

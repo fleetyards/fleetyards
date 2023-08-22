@@ -52,7 +52,7 @@ watch(
   () => route.path,
   () => {
     close();
-  }
+  },
 );
 
 onMounted(() => {
@@ -89,7 +89,10 @@ export default {
 
 <style lang="scss">
 .app-navigation {
-  transition: left ease 0.5s, right ease 0.5s, width ease 0.5s;
+  transition:
+    left ease 0.5s,
+    right ease 0.5s,
+    width ease 0.5s;
 }
 
 nav {

@@ -18,7 +18,7 @@ export interface FleetYardsLocation extends RouteLocation {
 export const sortByToggle = function sortByToggle(
   currentRoute: FleetYardsLocation,
   field: string,
-  direction = "asc"
+  direction = "asc",
 ) {
   const currentSort = (currentRoute.query?.q || {}).sorts;
 
@@ -26,7 +26,7 @@ export const sortByToggle = function sortByToggle(
 
   if (!oppositeDirection) {
     throw Error(
-      "Invalid Direction provided! Direction can only be one of asc|desc"
+      "Invalid Direction provided! Direction can only be one of asc|desc",
     );
   }
 
@@ -61,7 +61,7 @@ export const sortByToggle = function sortByToggle(
 export const sortBy = function sortBy(
   currentRoute: FleetYardsLocation,
   field: string,
-  direction = "asc"
+  direction = "asc",
 ) {
   return {
     name: currentRoute.name,

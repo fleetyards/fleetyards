@@ -65,7 +65,7 @@ const submitting = ref(false);
 const form = ref<PasswordRequestInput>({});
 
 const isAuthenticated = computed(
-  () => Store.getters["session/isAuthenticated"]
+  () => Store.getters["session/isAuthenticated"],
 );
 
 onMounted(() => {

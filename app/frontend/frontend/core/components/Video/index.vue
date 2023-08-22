@@ -48,7 +48,7 @@ const copyVideoUrl = (video: TVideo) => {
       displayAlert({
         text: t("messages.copyVideoUrl.failure"),
       });
-    }
+    },
   );
 };
 

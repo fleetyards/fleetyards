@@ -36,11 +36,11 @@ const length = computed(() => {
 });
 
 const url = computed(
-  () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`
+  () => `${window.FRONTEND_ENDPOINT}/ships/${props.model.slug}`,
 );
 
 const label = computed(
-  () => `${props.model.manufacturer?.code} ${props.model.name}`
+  () => `${props.model.manufacturer?.code} ${props.model.name}`,
 );
 </script>
 

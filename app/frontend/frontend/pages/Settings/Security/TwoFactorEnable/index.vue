@@ -179,7 +179,7 @@ export default class TwoFactorEnable extends Vue {
         displayAlert({
           text: this.$t("messages.copyTwoFactorProvisioningUrl.failure"),
         });
-      }
+      },
     );
   }
 }

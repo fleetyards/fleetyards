@@ -136,7 +136,7 @@ watch(
     } else {
       setupChart();
     }
-  }
+  },
 );
 
 const reloadChart = async () => {
@@ -152,11 +152,11 @@ const reloadChart = async () => {
 
   if (chartWithCategory.value) {
     series.setData(
-      (data.value as BarChartStats[]).map((item) => [item.tooltip, item.count])
+      (data.value as BarChartStats[]).map((item) => [item.tooltip, item.count]),
     );
 
     instance.value?.xAxis[0].setCategories(
-      (data.value as BarChartStats[]).map((item) => item.label || "")
+      (data.value as BarChartStats[]).map((item) => item.label || ""),
     );
   } else {
     series.setData(data.value);

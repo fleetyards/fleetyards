@@ -2,7 +2,7 @@ import type { App } from "vue";
 import { useNoty } from "@/shared/composables/useNoty";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
-export interface NotyPluginOptions extends ReturnType<typeof useNoty> {}
+export type NotyPluginOptions = ReturnType<typeof useNoty>;
 
 export default {
   install: (app: App<Element>, i18nComposable: () => I18nPluginOptions) => {

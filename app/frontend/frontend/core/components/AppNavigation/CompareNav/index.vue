@@ -5,7 +5,7 @@
     menu-key="compare-menu"
     icon="fad fa-code-compare"
   >
-    <template slot="submenu">
+    <template #submenu>
       <NavItem
         :to="{ name: 'models-compare' }"
         :label="t('nav.compare.models')"

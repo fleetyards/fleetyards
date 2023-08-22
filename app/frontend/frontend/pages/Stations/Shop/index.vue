@@ -44,7 +44,7 @@
     >
       <FilterForm slot="filter" />
 
-      <template v-if="!mobile" slot="actions">
+      <template v-if="!mobile" #actions>
         <Btn
           v-for="item in subCategories"
           :key="item.value"
@@ -446,7 +446,7 @@ export default class Shop extends Vue {
       {
         stationSlug: this.shop.station.slug,
         shopSlug: this.shop.slug,
-      }
+      },
     );
 
     if (!response.error) {

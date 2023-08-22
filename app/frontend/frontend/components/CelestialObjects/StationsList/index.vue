@@ -78,7 +78,7 @@ const {
 const { perPage, page, pagination, updatePerPage } = usePagination(
   "celestialObjectStations",
   stations as Ref<BaseList>,
-  refetch
+  refetch,
 );
 </script>
 

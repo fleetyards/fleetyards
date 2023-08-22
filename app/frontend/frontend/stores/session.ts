@@ -26,7 +26,7 @@ export const useSessionStore = defineStore("session", {
 
       const diff = differenceInMinutes(
         new Date(),
-        parseISO(state.accessConfirmed)
+        parseISO(state.accessConfirmed),
       );
 
       return diff < 10;

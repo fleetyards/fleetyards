@@ -5,7 +5,7 @@
     size="small"
     class="labels-dropdown"
   >
-    <template slot="label">
+    <template #label>
       {{ $t("labels.groups") }}
     </template>
     <Btn
@@ -157,7 +157,7 @@ export default class GroupLabels extends Vue {
       }
     } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
       const index = query.hangarGroupsNotIn.findIndex(
-        (item) => item === filter
+        (item) => item === filter,
       );
       if (index > -1) {
         query.hangarGroupsNotIn.splice(index, 1);

@@ -185,7 +185,7 @@ export default class HoloViewer extends Vue {
       35,
       this.elementWidth / this.elementHeight,
       0.1,
-      1000
+      1000,
     );
 
     return camera;
@@ -311,7 +311,7 @@ export default class HoloViewer extends Vue {
         },
         (error) => {
           this.handleError(error);
-        }
+        },
       );
     } catch (error) {
       this.handleError(error);

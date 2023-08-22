@@ -109,7 +109,7 @@ watch(
   () => props.modelValue,
   () => {
     inputValue.value = props.modelValue;
-  }
+  },
 );
 
 const inputElement = ref<HTMLInputElement | null>(null);

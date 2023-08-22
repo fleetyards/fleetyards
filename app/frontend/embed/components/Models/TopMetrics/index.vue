@@ -50,7 +50,7 @@ const crew = computed(() => {
 
   return toNumber(
     [minCrew, maxCrew].filter((item) => item).join(" - "),
-    "people"
+    "people",
   );
 });
 
@@ -75,7 +75,7 @@ const airSpeeds = computed(() => {
 });
 
 const groundSpeeds = computed(
-  () => props.model.speeds.groundMaxSpeed || undefined
+  () => props.model.speeds.groundMaxSpeed || undefined,
 );
 </script>
 

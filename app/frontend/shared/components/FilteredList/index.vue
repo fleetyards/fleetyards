@@ -157,7 +157,7 @@ watch(
   () => {
     saveFilters();
   },
-  { deep: true }
+  { deep: true },
 );
 
 onMounted(() => {

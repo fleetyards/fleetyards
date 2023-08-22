@@ -107,7 +107,7 @@ export class HangarCollection extends BaseCollection {
   }
 
   async syncRsiHangar(
-    items: TRSIHangarItem[]
+    items: TRSIHangarItem[],
   ): Promise<THangarSyncResult | null> {
     const response = await put("hangar/sync-rsi-hangar", {
       items,

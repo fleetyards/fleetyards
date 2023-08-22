@@ -27,6 +27,6 @@ export const useAhoy = () => {
       } else {
         window.location.reload();
       }
-    }
+    },
   );
 };

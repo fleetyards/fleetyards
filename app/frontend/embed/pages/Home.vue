@@ -111,21 +111,21 @@ watch(
   () => props.ships,
   () => {
     fetchModels();
-  }
+  },
 );
 
 watch(
   () => props.users,
   () => {
     fetchHangarVehicles();
-  }
+  },
 );
 
 watch(
   () => props.fleetId,
   () => {
     fetchFleetVehicles();
-  }
+  },
 );
 
 onMounted(() => {
@@ -166,7 +166,7 @@ const groupModels = (models: Model[], item: Model, pos: number) => {
 
 const enhanceGroupedModel = (
   modelSlugs: string[],
-  model: Model
+  model: Model,
 ): EnhancedModelMinimal => ({
   ...model,
   count: modelSlugs.filter((slug) => slug === model.slug).length,
@@ -193,7 +193,7 @@ const fetchModels = async () => {
     });
 
     groupedModels.value = [...models].map((model) =>
-      enhanceGroupedModel(props.ships || [], model)
+      enhanceGroupedModel(props.ships || [], model),
     );
 
     ungroupedModels.value = props.ships
@@ -243,8 +243,8 @@ const fetchHangarVehicles = async () => {
       .map((model) =>
         enhanceGroupedModel(
           models.map((item: Model) => item.slug),
-          model
-        )
+          model,
+        ),
       );
     ungroupedModels.value = [...models].sort(sortByName);
   } catch (error) {

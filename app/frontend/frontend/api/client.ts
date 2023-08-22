@@ -40,7 +40,7 @@ const client = axios.create({
 
 const extractMetaInfo = function extractMetaInfo(
   headers: any,
-  params: any
+  params: any,
 ): ApiResponseMeta | null {
   const links = linkHeaderParser(headers.link);
 
@@ -51,7 +51,7 @@ const extractMetaInfo = function extractMetaInfo(
       currentPage: parseInt(params.page || 1, 10),
       totalPages: parseInt(
         (links.last && links.last.page) || params.page || 1,
-        10
+        10,
       ),
     };
   }
@@ -62,7 +62,7 @@ const extractMetaInfo = function extractMetaInfo(
 const handleError = async function handleError(
   error: any,
   params: any,
-  silent: boolean
+  silent: boolean,
 ): Promise<ApiErrorResponse> {
   if (!silent) {
     nprogress.done();
@@ -87,7 +87,7 @@ const handleError = async function handleError(
 const handleResponse = function handleResponse(
   response: AxiosResponse,
   params: any,
-  silent: boolean
+  silent: boolean,
 ): ApiResponse {
   if (!silent) {
     nprogress.done();
@@ -134,7 +134,7 @@ export async function post(path: string, body = {}, silent = false) {
         },
       }),
       body,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, body, silent);
@@ -154,7 +154,7 @@ export async function put(path: string, body = {}, silent = false) {
         },
       }),
       body,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, body, silent);
@@ -176,7 +176,7 @@ export async function destroy(path: string, data = {}, silent = false) {
         },
       }),
       data,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, data, silent);
@@ -197,7 +197,7 @@ export async function upload(path: string, body = {}, silent = false) {
     return handleResponse(
       await client.put(path, body, { headers }),
       body,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, body, silent);
@@ -219,7 +219,7 @@ export async function download(path: string, params = {}, silent = false) {
         },
       }),
       {},
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, params, silent);

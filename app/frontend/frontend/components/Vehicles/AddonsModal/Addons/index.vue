@@ -86,14 +86,14 @@ watch(
     if (internalAddons.value !== props.value) {
       internalAddons.value = [...props.value];
     }
-  }
+  },
 );
 
 watch(
   () => props.addons,
   () => {
     internalAddons.value = [...props.value];
-  }
+  },
 );
 
 const emit = defineEmits(["update:modelValue"]);
@@ -102,7 +102,7 @@ watch(
   () => internalAddons.value,
   () => {
     emit("update:modelValue", internalAddons.value);
-  }
+  },
 );
 
 const selectTooltip = (addonId: string) => {
@@ -136,7 +136,7 @@ const changeAddon = (addonId: string) => {
 
   if (internalAddons.value.includes(addonId)) {
     const index = internalAddons.value.findIndex(
-      (itemId) => itemId === addonId
+      (itemId) => itemId === addonId,
     );
     if (index > -1) {
       internalAddons.value.splice(index, 1);

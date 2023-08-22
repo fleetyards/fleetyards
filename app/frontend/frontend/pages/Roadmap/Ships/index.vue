@@ -151,7 +151,7 @@ const toggleCompactTooltip = computed(() => {
 });
 
 const emptyBoxVisible = computed(
-  () => !loading.value && roadmapItems.value.length === 0
+  () => !loading.value && roadmapItems.value.length === 0,
 );
 
 const filteredItems = computed<RoadmapItem[]>(() => {
@@ -172,7 +172,7 @@ const groupedByRelease = computed<RoadmapItemsByRelease>(() =>
     value[x.release].push(x);
 
     return value;
-  }, {})
+  }, {}),
 );
 
 const crumbs = computed(() => [
@@ -208,7 +208,7 @@ const setupUpdates = () => {
     },
     {
       received: fetch,
-    }
+    },
   );
 };
 

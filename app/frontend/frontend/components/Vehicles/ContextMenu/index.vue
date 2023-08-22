@@ -136,7 +136,7 @@ export default class ContextMenu extends Vue {
     validator(value: string) {
       return (
         ["default", "transparent", "link", "danger", "dropdown"].indexOf(
-          value
+          value,
         ) !== -1
       );
     },

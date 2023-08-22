@@ -74,13 +74,13 @@ const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
 const route = useRoute();
 
 const isPagePresent = computed(
-  () => !!route.query.page && Number(route.query.page) > 1
+  () => !!route.query.page && Number(route.query.page) > 1,
 );
 
 const isQueryPresent = computed(
   () =>
     !props.ignoreFilter &&
-    (Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value)
+    (Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value),
 );
 
 const router = useRouter();

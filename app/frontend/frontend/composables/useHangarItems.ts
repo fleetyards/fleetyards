@@ -23,13 +23,13 @@ export const useHangarItems = () => {
     () => route.path,
     () => {
       fetchHangarItems();
-    }
+    },
   );
 
   watch(
     () => sessionStore.isAuthenticated,
     () => {
       fetchHangarItems();
-    }
+    },
   );
 };

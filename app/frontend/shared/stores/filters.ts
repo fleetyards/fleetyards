@@ -37,7 +37,7 @@ export const useFiltersStore = defineStore("filters", {
     },
     hide(filterName: string) {
       this.visibleFilters = this.visibleFilters.filter(
-        (name) => name !== filterName
+        (name) => name !== filterName,
       );
     },
     setFilter(filterName: string, filterValue: FilterValue) {

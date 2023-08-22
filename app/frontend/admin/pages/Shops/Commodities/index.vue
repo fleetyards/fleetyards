@@ -214,7 +214,7 @@ const { isLoading, isFetching, data, refetch } = useQuery({
 const { perPage, page, pagination, updatePerPage } = usePagination(
   "admin-commodities",
   data as Ref<BaseList>,
-  refetch
+  refetch,
 );
 
 const comlink = useComlink();

@@ -68,7 +68,7 @@ watch(
   () => {
     setupForm();
   },
-  { deep: true }
+  { deep: true },
 );
 
 const queryParams = () => {

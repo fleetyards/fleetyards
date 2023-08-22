@@ -4,19 +4,14 @@
     "browser": true,
     "es2021": true,
     "node": true,
-    // defineProps, defineEmits and defineExpose are global variables
-    // no need to import them in every file
     "vue/setup-compiler-macros": true
   },
   "extends": [
     "plugin:vue/vue3-recommended",
     "eslint:recommended",
     "@vue/typescript/recommended",
-    // Add under other rules
     "@vue/prettier",
-    // "@vue/prettier/@typescript-eslint"
     "@vue/eslint-config-prettier",
-    // unplugin-auto-import npm package
     "./.eslintrc-auto-import.json"
   ],
   "parserOptions": {
