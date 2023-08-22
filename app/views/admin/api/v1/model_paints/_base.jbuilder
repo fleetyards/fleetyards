@@ -42,3 +42,5 @@ json.name_with_model model_paint.name_with_model
 json.rsi_id model_paint.rsi_id
 json.rsi_name model_paint.rsi_name
 json.rsi_slug model_paint.rsi_slug
+
+json.partial! "api/shared/dates", record: model_paint
