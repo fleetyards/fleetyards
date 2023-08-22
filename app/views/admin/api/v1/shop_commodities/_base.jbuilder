@@ -52,9 +52,9 @@ if local_assigns.fetch(:extended, false)
   end
 end
 
-json.shop do
-  json.partial! "api/v1/shops/base", shop: shop_commodity.shop
+json.submitter do
+  json.id shop_commodity.submitted_by
+  json.username shop_commodity.submitter&.username
 end
-json.item do
-  json.partial! "admin/api/v1/#{shop_commodity.category.pluralize}/minimal", shop_commodity.category.to_sym => shop_commodity.commodity_item
-end
+
+json.partial! "api/shared/dates", record: shop_commodity

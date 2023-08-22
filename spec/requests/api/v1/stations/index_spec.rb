@@ -85,8 +85,9 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
 
         run_test! do |response|
           data = JSON.parse(response.body)
+          items = data["items"]
 
-          expect(data.first["name"]).to eq("Covalex Shipping Hub")
+          expect(items.first["name"]).to eq("Covalex Shipping Hub")
         end
       end
     end
