@@ -89,6 +89,9 @@ class Station < ApplicationRecord
     rest_stop: 7, settlement: 8, town: 9, drug_lab: 10
   }
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "station_type asc", "station_type desc"]
+
   ransacker :station_type, formatter: proc { |v| Station.station_types[v] } do |parent|
     parent.table[:station_type]
   end

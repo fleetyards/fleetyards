@@ -7,7 +7,7 @@ module Admin
         def index
           authorize! :index, :admin_api_model_modules
 
-          model_module_query_params["sorts"] = sort_by_name
+          model_module_query_params["sorts"] = "name asc"
 
           @q = ModelModule.ransack(model_module_query_params)
 

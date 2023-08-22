@@ -71,6 +71,12 @@ class CelestialObject < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
+  DEFAULT_SORTING_PARAMS = ["parent_id desc", "designation asc"]
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "parent_id asc", "parent_id desc", "designation asc",
+    "designation desc"
+  ]
+
   ransack_alias :starsystem, :starsystem_slug
   ransack_alias :parent, :parent_slug
   ransack_alias :name, :name_or_slug

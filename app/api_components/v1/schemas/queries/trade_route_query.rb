@@ -19,7 +19,11 @@ module V1
             commodityIn: {type: :array, items: {type: :string}},
             commodityTypeIn: {type: :array, items: {"$ref": "#/components/schemas/CommodityTypeEnum"}},
             commodityTypeNotIn: {type: :array, items: {"$ref": "#/components/schemas/CommodityTypeEnum"}},
-            sorts: {type: :array, items: {type: :string}}
+            sorts: {oneOf: [{
+              type: :array, items: {"$ref": "#/components/schemas/TradeRouteSortEnum"}
+            }, {
+              "$ref": "#/components/schemas/TradeRouteSortEnum"
+            }]}
           },
           additionalProperties: false
         })

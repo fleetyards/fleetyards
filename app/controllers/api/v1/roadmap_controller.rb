@@ -8,7 +8,7 @@ module Api
       def index
         authorize! :index, :api_roadmap
 
-        roadmap_query_params["sorts"] = ["rsi_category_id asc", "name asc"]
+        roadmap_query_params["sorts"] = sorting_params(RoadmapItem)
 
         @q = RoadmapItem.ransack(roadmap_query_params)
 
@@ -38,7 +38,7 @@ module Api
         @roadmap_query_params ||= query_params(
           :name_cont, :released_eq, :updated_at_gteq, :updated_at_lteq, :last_updated_at_lteq,
           :last_updated_at_gteq, :active_eq, :last_updated_at_lt, :rsi_release_id_gteq,
-          rsi_category_id_in: [], active_in: [], sorts: []
+          rsi_category_id_in: [], active_in: []
         )
       end
       helper_method :roadmap_query_params

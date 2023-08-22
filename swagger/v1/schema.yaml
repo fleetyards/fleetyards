@@ -5917,6 +5917,92 @@ components:
       - createdAt
       - updatedAt
       title: Shop
+    CelestialObjectSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - parent_id asc
+      - parent_id desc
+      - designation asc
+      - designation desc
+      title: CelestialObjectSortEnum
+    FleetMembershipSortEnum:
+      type: string
+      enum:
+      - user_rsi_handle asc
+      - user_rsi_handle desc
+      - user_username asc
+      - user_username desc
+      - created_at asc
+      - created_at desc
+      - accepted_at asc
+      - accepted_at desc
+      title: FleetMembershipSortEnum
+    FleetVehicleSortEnum:
+      type: string
+      enum:
+      - model_name asc
+      - model_name desc
+      - created_at asc
+      - created_at desc
+      - updated_at asc
+      - updated_at desc
+      title: FleetVehicleSortEnum
+    ModelSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - created_at asc
+      - created_at desc
+      title: ModelSortEnum
+    RoadmapItemSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - rsi_category_id asc
+      - rsi_category_id desc
+      title: RoadmapItemSortEnum
+    StationSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - station_type asc
+      - station_type desc
+      title: StationSortEnum
+    TradeRouteSortEnum:
+      type: string
+      enum:
+      - average_profit_per_unit_percent asc
+      - average_profit_per_unit_percent desc
+      - profit_per_unit_percent asc
+      - profit_per_unit_percent desc
+      - average_profit_per_unit asc
+      - average_profit_per_unit desc
+      - profit_per_unit asc
+      - profit_per_unit desc
+      - origin_shop_station_name asc
+      - origin_shop_station_name desc
+      - created_at asc
+      - created_at desc
+      title: TradeRouteSortEnum
+    VehicleSortEnum:
+      type: string
+      enum:
+      - flagship desc
+      - flagship asc
+      - name asc
+      - name desc
+      - model_name asc
+      - model_name desc
+      - created_at asc
+      - created_at desc
+      - updated_at asc
+      - updated_at desc
+      title: VehicleSortEnum
     StandardError:
       type: object
       properties:
@@ -8920,6 +9006,12 @@ components:
         main:
           type: boolean
           deprecated: true
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/CelestialObjectSortEnum"
+          - "$ref": "#/components/schemas/CelestialObjectSortEnum"
       additionalProperties: false
       title: CelestialObjectQuery
     CommodityQuery:
@@ -8987,8 +9079,8 @@ components:
           oneOf:
           - type: array
             items:
-              type: string
-          - type: string
+              "$ref": "#/components/schemas/FleetMembershipSortEnum"
+          - "$ref": "#/components/schemas/FleetMembershipSortEnum"
       additionalProperties: false
       title: FleetMemberQuery
     FleetVehicleQuery:
@@ -9060,8 +9152,8 @@ components:
           oneOf:
           - type: array
             items:
-              type: string
-          - type: string
+              "$ref": "#/components/schemas/FleetVehicleSortEnum"
+          - "$ref": "#/components/schemas/FleetVehicleSortEnum"
       additionalProperties: false
       title: FleetVehicleQuery
     HangarEmbedQuery:
@@ -9161,6 +9253,12 @@ components:
         willItFit:
           type: string
           format: uuid
+        sorts:
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/VehicleSortEnum"
+          - "$ref": "#/components/schemas/VehicleSortEnum"
       additionalProperties: false
       title: HangarQuery
     ImageQuery:
@@ -9213,12 +9311,6 @@ components:
           type: array
           items:
             type: string
-        sorts:
-          oneOf:
-          - type: array
-            items:
-              type: string
-          - type: string
       additionalProperties: false
       title: ModelPaintQuery
     ModelQuery:
@@ -9294,15 +9386,15 @@ components:
           type: array
           items:
             type: string
+        willItFit:
+          type: string
+          format: uuid
         sorts:
           oneOf:
           - type: array
             items:
-              type: string
-          - type: string
-        willItFit:
-          type: string
-          format: uuid
+              "$ref": "#/components/schemas/ModelSortEnum"
+          - "$ref": "#/components/schemas/ModelSortEnum"
       additionalProperties: false
       title: ModelQuery
     RoadmapItemQuery:
@@ -9344,8 +9436,8 @@ components:
           oneOf:
           - type: array
             items:
-              type: string
-          - type: string
+              "$ref": "#/components/schemas/RoadmapItemSortEnum"
+          - "$ref": "#/components/schemas/RoadmapItemSortEnum"
       additionalProperties: false
       title: RoadmapItemQuery
     SearchQuery:
@@ -9500,9 +9592,11 @@ components:
           items:
             type: string
         sorts:
-          type: array
-          items:
-            type: string
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/StationSortEnum"
+          - "$ref": "#/components/schemas/StationSortEnum"
       additionalProperties: false
       title: StationQuery
     TradeRouteQuery:
@@ -9547,9 +9641,11 @@ components:
           items:
             "$ref": "#/components/schemas/CommodityTypeEnum"
         sorts:
-          type: array
-          items:
-            type: string
+          oneOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/TradeRouteSortEnum"
+          - "$ref": "#/components/schemas/TradeRouteSortEnum"
       additionalProperties: false
       title: TradeRouteQuery
     RoadmapItem:

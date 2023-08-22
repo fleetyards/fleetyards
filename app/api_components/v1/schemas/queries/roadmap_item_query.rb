@@ -21,9 +21,9 @@ module V1
             rsiCategoryIdIn: {type: :array, items: {type: :string}},
             activeIn: {type: :array, items: {type: :boolean}},
             sorts: {oneOf: [{
-              type: :array, items: {type: :string}
+              type: :array, items: {"$ref": "#/components/schemas/RoadmapItemSortEnum"}
             }, {
-              type: :string
+              "$ref": "#/components/schemas/RoadmapItemSortEnum"
             }]}
           },
           additionalProperties: false

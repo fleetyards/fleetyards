@@ -37,9 +37,9 @@ portolisar:
   hidden: false
   images_count: 0
 
-corvolex:
-  name: Corvolex Shipping Hub
-  slug: corvolex
+covalex:
+  name: Covalex Shipping Hub
+  slug: covalex-shipping-hub
   celestial_object: daymar
   station_type: station
   hidden: false

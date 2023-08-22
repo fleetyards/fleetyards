@@ -6,7 +6,7 @@ module Api
       after_action -> { pagination_header(:trade_routes) }, only: [:index]
 
       def index
-        trade_routes_query_params["sorts"] = sort_by_name(["profit_per_unit desc", "created_at desc"])
+        trade_routes_query_params["sorts"] = sorting_params(TradeRoute)
 
         scope = TradeRoute.with_profit
 
@@ -38,7 +38,7 @@ module Api
           origin_station_in: [], destination_station_in: [], origin_celestial_object_in: [],
           destination_celestial_object_in: [], origin_starsystem_in: [],
           destination_starsystem_in: [], commodity_in: [], commodity_type_in: [],
-          commodity_type_not_in: [], sorts: []
+          commodity_type_not_in: []
         )
       end
     end

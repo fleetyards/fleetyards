@@ -8,7 +8,7 @@ module Admin
     def index
       authorize! :index, :admin_starsystems
 
-      query_params["sorts"] = sort_by_name
+      query_params["sorts"] = "name asc"
 
       @q = Starsystem.ransack(query_params)
 

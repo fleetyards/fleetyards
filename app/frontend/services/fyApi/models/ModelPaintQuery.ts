@@ -10,6 +10,5 @@ export type ModelPaintQuery = {
     idIn?: Array<string>;
     idNotIn?: Array<string>;
     nameIn?: Array<string>;
-    sorts?: (Array<string> | string);
 };
 

@@ -3,6 +3,8 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" do
+  fixtures :all
+
   path "/stations" do
     get("Stations list") do
       operationId "stations"
@@ -69,6 +71,22 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
           items = data["items"]
 
           expect(items.count).to eq(2)
+        end
+      end
+
+      response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/Station"}
+
+        let(:q) do
+          {
+            sorts: ["station_type asc", "name asc"]
+          }
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.first["name"]).to eq("Covalex Shipping Hub")
         end
       end
     end

@@ -46,6 +46,15 @@ class TradeRoute < ApplicationRecord
 
   validates :origin, uniqueness: {scope: :destination}
 
+  DEFAULT_SORTING_PARAMS = ["profit_per_unit desc", "created_at desc"]
+  ALLOWED_SORTING_PARAMS = [
+    "average_profit_per_unit_percent asc", "average_profit_per_unit_percent desc",
+    "profit_per_unit_percent asc", "profit_per_unit_percent desc", "average_profit_per_unit asc",
+    "average_profit_per_unit desc", "profit_per_unit asc", "profit_per_unit desc",
+    "origin_shop_station_name asc", "origin_shop_station_name desc", "created_at asc",
+    "created_at desc"
+  ]
+
   ransack_alias :commodity, :origin_commodity_item_of_Commodity_type_slug
   ransack_alias :commodity_type, :origin_commodity_item_of_Commodity_type_commodity_type
 

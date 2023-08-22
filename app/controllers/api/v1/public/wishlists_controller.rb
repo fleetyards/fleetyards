@@ -16,7 +16,7 @@ module Api
             return
           end
 
-          vehicle_query_params["sorts"] = sort_by_name(["name asc", "model_name asc"], "model_name asc")
+          vehicle_query_params["sorts"] = sorting_params(Vehicle, ["name asc", "model_name asc"])
 
           scope = user.vehicles
             .wanted

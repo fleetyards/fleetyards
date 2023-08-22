@@ -45,6 +45,12 @@ class FleetMembership < ApplicationRecord
 
   validates :user_id, uniqueness: {scope: :fleet_id}
 
+  DEFAULT_SORTING_PARAMS = ["created_at desc", "accepted_at desc"]
+  ALLOWED_SORTING_PARAMS = [
+    "user_rsi_handle asc", "user_rsi_handle desc", "user_username asc", "user_username desc",
+    "created_at asc", "created_at desc", "accepted_at asc", "accepted_at desc"
+  ]
+
   ransack_alias :username, :user_username
   ransack_alias :name, :user_username
 

@@ -8,7 +8,7 @@ module Admin
     def index
       authorize! :index, :admin_celestial_objects
 
-      query_params["sorts"] = sort_by_name
+      query_params["sorts"] = "name asc"
 
       @q = CelestialObject.ransack(query_params)
 

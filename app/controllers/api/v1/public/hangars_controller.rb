@@ -16,7 +16,7 @@ module Api
             return
           end
 
-          vehicle_query_params["sorts"] = sort_by_name(["flagship desc", "name asc", "model_name asc"], "model_name asc")
+          vehicle_query_params["sorts"] = sorting_params(Vehicle)
 
           scope = user.vehicles
             .purchased
@@ -34,12 +34,16 @@ module Api
         end
 
         def embed
+          if !(request.referrer || "").include?(FRONTEND_DOMAIN) && !request.referrer.blank?
+            ahoy.track "hangar_embedding", request.path_parameters
+          end
+
           usernames = params.fetch(:usernames, []).map(&:downcase)
           user_ids = User.where("lower(username) IN (?)", usernames)
             .where(public_hangar: true)
             .pluck(:id)
 
-          vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
+          vehicle_query_params["sorts"] = sorting_params(Vehicle, ["model_name asc"])
 
           @q = Vehicle.where(user_id: user_ids)
             .public

@@ -6,7 +6,7 @@ module Api
       after_action -> { pagination_header(:equipment) }, only: [:index]
 
       def index
-        equipment_query_params["sorts"] = sort_by_name
+        equipment_query_params["sorts"] = "name asc"
 
         @q = Equipment.includes(:manufacturer).ransack(equipment_query_params)
 

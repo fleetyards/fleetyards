@@ -11,7 +11,7 @@ module Admin
         def index
           authorize! :index, :admin_api_stations
 
-          station_query_params["sorts"] = sort_by_name(["station_type asc", "name asc"])
+          station_query_params["sorts"] = sorting_params(Station)
 
           q = Station.visible
             .ransack(station_query_params)
@@ -23,7 +23,7 @@ module Admin
 
         def options
           authorize! :options, :admin_api_stations
-          station_query_params["sorts"] ||= sort_by_name(["station_type asc", "name asc"])
+          station_query_params["sorts"] = sorting_params(Station)
 
           @q = Station.visible
             .ransack(station_query_params)
