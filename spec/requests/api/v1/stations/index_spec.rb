@@ -75,7 +75,7 @@ RSpec.describe "api/v1/stations", type: :request, swagger_doc: "v1/schema.yaml" 
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/Station"}
+        schema "$ref": "#/components/schemas/Stations"
 
         let(:q) do
           {

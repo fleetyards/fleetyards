@@ -2,7 +2,7 @@
 
 module RansackHelper
   def query_params(*filters)
-    ActionController::Parameters.new(parse_query_params).permit(filters + [sorts: []])
+    ActionController::Parameters.new(parse_query_params).permit(filters)
   end
 
   def sorting_params(model, fallback = nil)
