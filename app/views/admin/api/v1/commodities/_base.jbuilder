@@ -23,3 +23,5 @@ end
 
 json.type commodity.commodity_type
 json.type_label commodity.commodity_type_label
+
+json.partial! "api/shared/dates", record: commodity

@@ -52,3 +52,5 @@ json.type_label equipment.equipment_type_label
 json.volume equipment.volume
 json.weapon_class equipment.weapon_class
 json.weapon_class_label equipment.weapon_class_label
+
+json.partial! "api/shared/dates", record: equipment

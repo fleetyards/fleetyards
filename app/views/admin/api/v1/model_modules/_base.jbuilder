@@ -24,3 +24,5 @@ end
 
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status
+
+json.partial! "api/shared/dates", record: model_module
