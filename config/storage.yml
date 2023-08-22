@@ -8,10 +8,10 @@ local:
 
 digitalocean:
   service: S3
-  endpoint: <%= Rails.application.credentials.s3_endpoint) %>
-  access_key_id: <%= Rails.application.credentials.s3_key %>
-  secret_access_key: <%= Rails.application.credentials.s3_secret %>
-  bucket: <%= Rails.application.credentials.s3_bucket %>
+  endpoint: "<%= Rails.application.credentials.s3_endpoint) %>"
+  access_key_id: "<%= Rails.application.credentials.s3_key %>"
+  secret_access_key: "<%= Rails.application.credentials.s3_secret %>"
+  bucket: "<%= Rails.application.credentials.s3_bucket %>"
   region: unused
 
 # Remember not to checkin your GCS keyfile to a repository
