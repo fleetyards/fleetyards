@@ -7,7 +7,6 @@ json.description model_upgrade.description
 
 json.media({})
 json.media do
-  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: model_upgrade.store_image
   end

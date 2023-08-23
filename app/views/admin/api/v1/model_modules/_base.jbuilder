@@ -16,7 +16,6 @@ json.has_store_image model_module.store_image.present?
 
 json.media({})
 json.media do
-  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: model_module.store_image
   end

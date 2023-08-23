@@ -7,29 +7,29 @@ import type { MediaImage } from './MediaImage';
 
 export type ModelUpgrade = {
     id: string;
-    name: string | null;
-    description?: string | null;
-    pledgePrice?: number | null;
+    name: string;
+    description?: string;
+    pledgePrice?: number;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     createdAt: string;
     updatedAt: string;
     /**
      * @deprecated
      */
-    storeImage?: string | null;
+    storeImage?: string;
     /**
      * @deprecated
      */
-    storeImageLarge?: string | null;
+    storeImageLarge?: string;
     /**
      * @deprecated
      */
-    storeImageMedium?: string | null;
+    storeImageMedium?: string;
     /**
      * @deprecated
      */
-    storeImageSmall?: string | null;
+    storeImageSmall?: string;
 };
 

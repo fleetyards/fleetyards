@@ -11,14 +11,14 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              name: {type: :string, nullable: true},
-              description: {type: :string, nullable: true},
-              pledgePrice: {type: :number, nullable: true},
+              name: {type: :string},
+              description: {type: :string},
+              pledgePrice: {type: :number},
 
               media: {
                 type: :object,
                 properties: {
-                  storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+                  storeImage: {"$ref": "#/components/schemas/MediaImage"}
                 },
                 additionalProperties: false
               },
@@ -28,10 +28,10 @@ module V1
 
               # DEPRECATED
 
-              storeImage: {type: :string, format: :uri, nullable: true, deprecated: true},
-              storeImageLarge: {type: :string, format: :uri, nullable: true, deprecated: true},
-              storeImageMedium: {type: :string, format: :uri, nullable: true, deprecated: true},
-              storeImageSmall: {type: :string, format: :uri, nullable: true, deprecated: true}
+              storeImage: {type: :string, format: :uri, deprecated: true},
+              storeImageLarge: {type: :string, format: :uri, deprecated: true},
+              storeImageMedium: {type: :string, format: :uri, deprecated: true},
+              storeImageSmall: {type: :string, format: :uri, deprecated: true}
             },
             additionalProperties: false,
             required: %w[id name media createdAt updatedAt]

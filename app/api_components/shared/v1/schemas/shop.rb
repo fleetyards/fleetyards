@@ -13,7 +13,7 @@ module Shared
             name: {type: :string},
             slug: {type: :string},
             buying: {type: :boolean},
-            location: {type: :string, nullable: true},
+            location: {type: :string},
             locationLabel: {type: :string},
 
             media: {
@@ -39,10 +39,10 @@ module Shared
 
             # DEPRECATED
 
-            storeImage: {type: :string, nullable: true, format: :uri, deprecated: true},
-            storeImageSmall: {type: :string, nullable: true, format: :uri, deprecated: true},
-            storeImageMedium: {type: :string, nullable: true, format: :uri, deprecated: true},
-            storeImageLarge: {type: :string, nullable: true, format: :uri, deprecated: true}
+            storeImage: {type: :string, format: :uri, deprecated: true},
+            storeImageSmall: {type: :string, format: :uri, deprecated: true},
+            storeImageMedium: {type: :string, format: :uri, deprecated: true},
+            storeImageLarge: {type: :string, format: :uri, deprecated: true}
           },
           additionalProperties: false,
           required: %w[

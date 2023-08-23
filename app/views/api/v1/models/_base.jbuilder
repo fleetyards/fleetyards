@@ -26,7 +26,6 @@ json.classification_label model.classification&.humanize
 
 json.crew({})
 json.crew do
-  json.ignore_nil!
   json.max model.max_crew
   json.max_label model.max_crew.to_s
   json.min model.min_crew
@@ -50,7 +49,6 @@ json.last_updated_at_label((I18n.l(model.last_updated_at.utc, format: :label) if
 
 json.links({})
 json.links do
-  json.ignore_nil!
   json.store_url model.rsi_store_url
   json.sales_page_url model.rsi_sales_page_url
 end
@@ -66,7 +64,6 @@ end
 
 json.media({})
 json.media do
-  json.ignore_nil!
   json.angled_view do
     json.partial! "api/v1/shared/view_image", view_image: model.angled_view, width: model.angled_view_width, height: model.angled_view_height
   end
@@ -99,7 +96,6 @@ end
 
 json.metrics({})
 json.metrics do
-  json.ignore_nil!
   json.beam model.beam.to_f
   json.beam_label model.beam_label
   json.cargo model.cargo.to_f
@@ -131,7 +127,6 @@ json.rsi_slug model.rsi_slug
 
 json.speeds({})
 json.speeds do
-  json.ignore_nil!
   json.ground_acceleration model.ground_acceleration&.to_f
   json.ground_decceleration model.ground_decceleration&.to_f
   json.ground_max_speed model.ground_max_speed&.to_f

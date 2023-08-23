@@ -6,8 +6,8 @@
 export type Manufacturer = {
     name: string;
     slug: string;
-    code?: string | null;
-    logo?: string | null;
+    code?: string;
+    logo?: string;
     longName?: string;
     createdAt: string;
     updatedAt: string;

@@ -9,15 +9,15 @@ import type { ViewImage } from './ViewImage';
 
 export type ModelModulePackage = {
     id: string;
-    name: string | null;
-    description?: string | null;
-    pledgePrice?: number | null;
+    name: string;
+    description?: string;
+    pledgePrice?: number;
     modules: Array<ModelModule>;
     media: {
-        angledView?: ViewImage | null;
-        sideView?: ViewImage | null;
-        storeImage?: MediaImage | null;
-        topView?: ViewImage | null;
+        angledView?: ViewImage;
+        sideView?: ViewImage;
+        storeImage?: MediaImage;
+        topView?: ViewImage;
     };
     createdAt: string;
     updatedAt: string;
@@ -44,86 +44,86 @@ export type ModelModulePackage = {
     /**
      * @deprecated
      */
-    angledView?: string | null;
+    angledView?: string;
     /**
      * @deprecated
      */
-    angledViewHeight?: number | null;
+    angledViewHeight?: number;
     /**
      * @deprecated
      */
-    angledViewLarge?: string | null;
+    angledViewLarge?: string;
     /**
      * @deprecated
      */
-    angledViewMedium?: string | null;
+    angledViewMedium?: string;
     /**
      * @deprecated
      */
-    angledViewSmall?: string | null;
+    angledViewSmall?: string;
     /**
      * @deprecated
      */
-    angledViewWidth?: number | null;
+    angledViewWidth?: number;
     /**
      * @deprecated
      */
-    angledViewXlarge?: string | null;
+    angledViewXlarge?: string;
     /**
      * @deprecated
      */
-    sideView?: string | null;
+    sideView?: string;
     /**
      * @deprecated
      */
-    sideViewHeight?: number | null;
+    sideViewHeight?: number;
     /**
      * @deprecated
      */
-    sideViewLarge?: string | null;
+    sideViewLarge?: string;
     /**
      * @deprecated
      */
-    sideViewMedium?: string | null;
+    sideViewMedium?: string;
     /**
      * @deprecated
      */
-    sideViewSmall?: string | null;
+    sideViewSmall?: string;
     /**
      * @deprecated
      */
-    sideViewWidth?: number | null;
+    sideViewWidth?: number;
     /**
      * @deprecated
      */
-    sideViewXlarge?: string | null;
+    sideViewXlarge?: string;
     /**
      * @deprecated
      */
-    topView?: string | null;
+    topView?: string;
     /**
      * @deprecated
      */
-    topViewHeight?: number | null;
+    topViewHeight?: number;
     /**
      * @deprecated
      */
-    topViewLarge?: string | null;
+    topViewLarge?: string;
     /**
      * @deprecated
      */
-    topViewMedium?: string | null;
+    topViewMedium?: string;
     /**
      * @deprecated
      */
-    topViewSmall?: string | null;
+    topViewSmall?: string;
     /**
      * @deprecated
      */
-    topViewWidth?: number | null;
+    topViewWidth?: number;
     /**
      * @deprecated
      */
-    topViewXlarge?: string | null;
+    topViewXlarge?: string;
 };
 

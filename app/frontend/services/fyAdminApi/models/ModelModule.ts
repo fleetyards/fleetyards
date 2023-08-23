@@ -9,18 +9,18 @@ import type { ShopCommodity } from './ShopCommodity';
 
 export type ModelModule = {
     id: string;
-    name: string | null;
+    name: string;
     availability: {
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    description?: string | null;
+    description?: string;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
-    pledgePrice?: number | null;
-    productionStatus?: string | null;
-    manufacturer?: Manufacturer | null;
+    pledgePrice?: number;
+    productionStatus?: string;
+    manufacturer?: Manufacturer;
     createdAt: string;
     updatedAt: string;
     /**

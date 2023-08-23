@@ -13,7 +13,7 @@ export type Shop = {
     name: string;
     slug: string;
     buying: boolean;
-    location?: string | null;
+    location?: string;
     locationLabel: string;
     media: {
         storeImage?: MediaImage;
@@ -31,18 +31,18 @@ export type Shop = {
     /**
      * @deprecated
      */
-    storeImage?: string | null;
+    storeImage?: string;
     /**
      * @deprecated
      */
-    storeImageSmall?: string | null;
+    storeImageSmall?: string;
     /**
      * @deprecated
      */
-    storeImageMedium?: string | null;
+    storeImageMedium?: string;
     /**
      * @deprecated
      */
-    storeImageLarge?: string | null;
+    storeImageLarge?: string;
 };
 

@@ -28,7 +28,6 @@ end
 
 json.media({})
 json.media do
-  json.ignore_nil!
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: component.store_image
   end

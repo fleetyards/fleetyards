@@ -11,7 +11,7 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              name: {type: :string, nullable: true},
+              name: {type: :string},
 
               availability: {
                 type: :object,
@@ -22,18 +22,18 @@ module V1
                 additionalProperties: false,
                 required: %w[boughtAt soldAt]
               },
-              description: {type: :string, nullable: true},
+              description: {type: :string},
               media: {
                 type: :object,
                 properties: {
-                  storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+                  storeImage: {"$ref": "#/components/schemas/MediaImage"}
                 },
                 additionalProperties: false
               },
-              pledgePrice: {type: :number, nullable: true},
-              productionStatus: {type: :string, nullable: true},
+              pledgePrice: {type: :number},
+              productionStatus: {type: :string},
 
-              manufacturer: {"$ref": "#/components/schemas/Manufacturer", nullable: true},
+              manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"},

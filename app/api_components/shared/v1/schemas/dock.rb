@@ -10,7 +10,7 @@ module Shared
           type: :object,
           properties: {
             name: {type: :string},
-            group: {type: :string, nullable: true},
+            group: {type: :string},
             size: {"$ref": "#/components/schemas/DockShipSizeEnum"},
             sizeLabel: {type: :string},
             type: {"$ref": "#/components/schemas/DockTypeEnum"},

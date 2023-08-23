@@ -7,7 +7,7 @@ import type { HabitationTypeEnum } from './HabitationTypeEnum';
 
 export type Habitation = {
     name: string;
-    habitationName?: string | null;
+    habitationName?: string;
     type: HabitationTypeEnum;
     typeLabel: string;
 };
