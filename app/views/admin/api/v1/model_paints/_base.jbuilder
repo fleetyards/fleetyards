@@ -19,7 +19,6 @@ json.last_updated_at_label((I18n.l(model_paint.last_updated_at.utc, format: :lab
 
 json.media({})
 json.media do
-  json.ignore_nil!
   json.angled_view do
     json.partial! "api/v1/shared/view_image", view_image: model_paint.angled_view, width: model_paint.angled_view_width, height: model_paint.angled_view_height
   end

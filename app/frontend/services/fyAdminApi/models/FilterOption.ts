@@ -5,7 +5,7 @@
 
 export type FilterOption = {
     category: string;
-    icon?: string | null;
+    icon?: string;
     /**
      * @deprecated
      */

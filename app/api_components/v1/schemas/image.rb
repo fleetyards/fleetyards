@@ -11,7 +11,7 @@ module V1
           id: {type: :string, format: :uuid},
           background: {type: :boolean},
           bigUrl: {type: :string, format: :uri},
-          caption: {type: :string, nullable: true},
+          caption: {type: :string},
           name: {type: :string},
           smallUrl: {type: :string, format: :uri},
           type: {type: :string},

@@ -10,7 +10,7 @@ module Shared
           type: :object,
           properties: {
             category: {type: :string},
-            icon: {type: :string, nullable: true},
+            icon: {type: :string},
             name: {type: :string, deprecated: true},
             label: {type: :string},
             value: {type: :string}

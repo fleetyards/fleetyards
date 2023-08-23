@@ -9,7 +9,7 @@ export type Image = {
     id: string;
     background: boolean;
     bigUrl: string;
-    caption?: string | null;
+    caption?: string;
     name: string;
     smallUrl: string;
     type: string;

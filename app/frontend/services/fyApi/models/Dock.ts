@@ -8,7 +8,7 @@ import type { DockTypeEnum } from './DockTypeEnum';
 
 export type Dock = {
     name: string;
-    group?: string | null;
+    group?: string;
     size: DockShipSizeEnum;
     sizeLabel: string;
     type: DockTypeEnum;

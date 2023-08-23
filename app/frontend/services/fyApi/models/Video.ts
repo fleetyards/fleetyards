@@ -9,7 +9,7 @@ export type Video = {
     id: string;
     type: VideoTypeEnum;
     url: string;
-    videoId: string | null;
+    videoId: string;
     createdAt: string;
     updatedAt: string;
 };

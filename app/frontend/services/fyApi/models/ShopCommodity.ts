@@ -21,7 +21,7 @@ export type ShopCommodity = {
     id: string;
     name: string;
     slug: string;
-    description?: string | null;
+    description?: string;
     media: {
         storeImage?: MediaImage;
     };
@@ -54,18 +54,18 @@ export type ShopCommodity = {
     /**
      * @deprecated
      */
-    storeImage?: string | null;
+    storeImage?: string;
     /**
      * @deprecated
      */
-    storeImageSmall?: string | null;
+    storeImageSmall?: string;
     /**
      * @deprecated
      */
-    storeImageMedium?: string | null;
+    storeImageMedium?: string;
     /**
      * @deprecated
      */
-    storeImageLarge?: string | null;
+    storeImageLarge?: string;
 };
 
