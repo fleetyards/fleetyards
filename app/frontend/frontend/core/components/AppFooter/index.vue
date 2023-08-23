@@ -19,15 +19,15 @@
         </a>
         |
         <router-link :to="{ name: 'privacy-policy' }">
-          {{ $t("nav.privacyPolicy") }}
+          {{ t("nav.privacyPolicy") }}
         </router-link>
         |
         <router-link :to="{ name: 'impressum' }">
-          {{ $t("nav.impressum") }}
+          {{ t("nav.impressum") }}
         </router-link>
         |
         <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
-          {{ $t("nav.api") }}
+          {{ t("nav.api") }}
         </a>
         |
         <BtnDropdown
@@ -46,7 +46,7 @@
             size="small"
             variant="dropdown"
             :active="activeLocale(locale)"
-            @click.native="setLocale(locale)"
+            @click="setLocale(locale)"
           >
             {{ localeMapping[locale] }} - {{ locale }}
           </Btn>
@@ -100,8 +100,8 @@
         </a>
       </div>
       <div class="app-footer-support">
-        <Btn :inline="true" variant="link" @click.native="openSupportModal">
-          {{ $t("labels.supportUs") }}
+        <Btn :inline="true" variant="link" @click="openSupportModal">
+          {{ t("labels.supportUs") }}
           <i class="fa fa-heart" />
         </Btn>
       </div>
@@ -140,78 +140,76 @@
         </span>
       </div>
       <div class="sc-data-version">
-        {{ $t("labels.scDataVersion") }}: {{ scDataVersion }}
+        {{ t("labels.scDataVersion") }}: {{ scDataVersion }}
       </div>
     </div>
   </footer>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Mutation } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/Btn/index.vue";
+import BtnDropdown from "@/shared/components/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useAppStore } from "@/frontend/stores/app";
+import { useI18nStore } from "@/shared/stores/i18n";
+import { storeToRefs } from "pinia";
 
-const { availableLocales } = useI18n();
+const { t, availableLocales, currentLocale } = useI18n();
 
-@Component<AppFooter>({
-  components: {
-    Btn,
-    BtnDropdown,
-    CommunityLogo,
-  },
-})
-export default class AppFooter extends Vue {
-  @Getter("online") online: boolean;
+const i18nStore = useI18nStore();
 
-  @Getter("version", { namespace: "app" }) version: string;
+const appStore = useAppStore();
 
-  @Getter("codename", { namespace: "app" }) codename: string;
+const { online, version, codename, gitRevision } = storeToRefs(appStore);
 
-  @Getter("gitRevision", { namespace: "app" }) gitRevision: string;
+const localeMapping = {
+  de: "Deutsch",
+  en: "English",
+  es: "Español",
+  fr: "Français",
+  it: "Italiano",
+  zh: "中文",
+  "zh-CN": "中文 (简体)",
+  "zh-TW": "中文 (繁體)",
+};
 
-  @Getter("locale") currentLocale;
+const copyrightOwner = computed(() => {
+  return window.COPYRIGHT_OWNER;
+});
 
-  @Mutation("setLocale") setLocale;
+const scDataVersion = computed(() => {
+  return window.SC_DATA_VERSION;
+});
 
-  localeMapping = {
-    de: "Deutsch",
-    en: "English",
-    es: "Español",
-    fr: "Français",
-    it: "Italiano",
-    zh: "中文",
-    "zh-CN": "中文 (简体)",
-    "zh-TW": "中文 (繁體)",
-  };
+const locales = computed(() => {
+  return availableLocales;
+});
 
-  get copyrightOwner() {
-    return window.COPYRIGHT_OWNER;
-  }
+const activeLocale = (locale: string) => {
+  return (
+    locale === currentLocale() ||
+    (!locale.includes("zh") && locale === currentLocale().split("-")[0])
+  );
+};
 
-  get scDataVersion() {
-    return window.SC_DATA_VERSION;
-  }
+const comlink = useComlink();
 
-  get locales() {
-    return availableLocales;
-  }
+const openSupportModal = () => {
+  comlink.emit("open-modal", {
+    component: () => import("@/frontend/components/Support/Modal/index.vue"),
+    wide: true,
+  });
+};
 
-  activeLocale(locale: string) {
-    return (
-      locale === this.currentLocale ||
-      (!locale.includes("zh") && locale === this.currentLocale.split("-")[0])
-    );
-  }
+const setLocale = (locale: string) => {
+  i18nStore.locale = locale;
+};
+</script>
 
-  openSupportModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () => import("@/frontend/components/Support/Modal/index.vue"),
-      wide: true,
-    });
-  }
-}
+<script lang="ts">
+export default {
+  name: "AppFooter",
+};
 </script>

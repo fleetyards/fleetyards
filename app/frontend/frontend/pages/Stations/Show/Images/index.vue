@@ -46,9 +46,7 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
@@ -56,16 +54,6 @@ import Gallery from "@/frontend/core/components/Gallery/index.vue";
 import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
 import imagesCollection from "@/frontend/api/collections/Images";
 
-@Component<ModelImages>({
-  components: {
-    FilteredList,
-    FilteredGrid,
-    BreadCrumbs,
-    Gallery,
-    GalleryImage,
-  },
-})
-export default class ModelImages extends Vue {
   collection: ImagesCollection = imagesCollection;
 
   station: Station | null = null;
@@ -168,5 +156,10 @@ export default class ModelImages extends Vue {
       this.$router.replace({ name: "404" });
     }
   }
-}
+</script>
+
+<script lang="ts">
+export default {
+  name: "StationImagesPage",
+};
 </script>

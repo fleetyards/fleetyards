@@ -14,22 +14,20 @@
     </template>
 
     <template #actions>
-      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.COMMODITY)">
+      <Btn @click="openAddModal(ShopCommodityItemTypeEnum.COMMODITY)">
         {{ t("actions.add") }} Commodity
       </Btn>
-      <Btn @click.native="openComponentModal">
-        {{ t("actions.add") }} Component
-      </Btn>
-      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.EQUIPMENT)">
+      <Btn @click="openComponentModal">{{ t("actions.add") }} Component</Btn>
+      <Btn @click="openAddModal(ShopCommodityItemTypeEnum.EQUIPMENT)">
         {{ t("actions.add") }} Equipment
       </Btn>
-      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.MODEL)">
+      <Btn @click="openAddModal(ShopCommodityItemTypeEnum.MODEL)">
         {{ t("actions.add") }} Model
       </Btn>
-      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.MODEL_PAINT)">
+      <Btn @click="openAddModal(ShopCommodityItemTypeEnum.MODEL_PAINT)">
         {{ t("actions.add") }} ModelPaint
       </Btn>
-      <Btn @click.native="openAddModal(ShopCommodityItemTypeEnum.MODEL_MODULE)">
+      <Btn @click="openAddModal(ShopCommodityItemTypeEnum.MODEL_MODULE)">
         {{ t("actions.add") }} ModelModule
       </Btn>
     </template>
@@ -76,7 +74,7 @@
               size="small"
               variant="link"
               :inline="true"
-              @click.native="openEditModal(record)"
+              @click="openEditModal(record)"
             >
               {{ t("actions.edit") }}
             </Btn>
@@ -84,7 +82,7 @@
               <Btn
                 size="small"
                 variant="dropdown"
-                @click.native="openSellPricesModal(record)"
+                @click="openSellPricesModal(record)"
               >
                 <i class="fal fa-list" />
                 <span>{{ t("models.shopCommodity.sellPrices") }}</span>
@@ -92,7 +90,7 @@
               <Btn
                 size="small"
                 variant="dropdown"
-                @click.native="openBuyPricesModal(record)"
+                @click="openBuyPricesModal(record)"
               >
                 <i class="fal fa-list" />
                 <span>{{ t("models.shopCommodity.buyPrices") }}</span>
@@ -100,7 +98,7 @@
               <Btn
                 size="small"
                 variant="dropdown"
-                @click.native="openRentalPricesModal(record)"
+                @click="openRentalPricesModal(record)"
               >
                 <i class="fal fa-list" />
                 <span>{{ t("models.shopCommodity.rentalPrices") }}</span>
@@ -110,7 +108,7 @@
                 variant="dropdown"
                 :disabled="deleting"
                 data-test="shopCommodity-delete"
-                @click.native="remove(record)"
+                @click="remove(record)"
               >
                 <i class="fal fa-trash" />
                 <span>{{ t("actions.remove") }}</span>
@@ -146,7 +144,7 @@ import { useQuery } from "@tanstack/vue-query";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useApiClient } from "@/admin/composables/useApiClient";
 import type {
-  ShopCommodityMinimal,
+  ShopCommodity,
   ShopCommodityQuery,
   BaseList,
 } from "@/services/fyAdminApi";
@@ -229,7 +227,7 @@ onUnmounted(() => {
   comlink.off("commodities-update", refetch);
 });
 
-const openEditModal = (shopCommodity: ShopCommodityMinimal) => {
+const openEditModal = (shopCommodity: ShopCommodity) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/admin/components/ShopCommodities/Modal/index.vue"),
@@ -240,7 +238,7 @@ const openEditModal = (shopCommodity: ShopCommodityMinimal) => {
   });
 };
 
-const openSellPricesModal = (shopCommodity: ShopCommodityMinimal) => {
+const openSellPricesModal = (shopCommodity: ShopCommodity) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
@@ -252,7 +250,7 @@ const openSellPricesModal = (shopCommodity: ShopCommodityMinimal) => {
   });
 };
 
-const openBuyPricesModal = (shopCommodity: ShopCommodityMinimal) => {
+const openBuyPricesModal = (shopCommodity: ShopCommodity) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
@@ -264,7 +262,7 @@ const openBuyPricesModal = (shopCommodity: ShopCommodityMinimal) => {
   });
 };
 
-const openRentalPricesModal = (shopCommodity: ShopCommodityMinimal) => {
+const openRentalPricesModal = (shopCommodity: ShopCommodity) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/admin/components/ShopCommodities/PricesModal/index.vue"),
@@ -302,7 +300,7 @@ const openComponentModal = () => {
 
 const { displayConfirm } = useNoty(t);
 
-const remove = (shopCommodity: ShopCommodityMinimal) => {
+const remove = (shopCommodity: ShopCommodity) => {
   deleting.value = true;
 
   displayConfirm({
@@ -316,7 +314,7 @@ const remove = (shopCommodity: ShopCommodityMinimal) => {
   });
 };
 
-const destroy = async (shopCommodity: ShopCommodityMinimal) => {
+const destroy = async (shopCommodity: ShopCommodity) => {
   try {
     await shopCommodityService.destroyShopCommodity({ id: shopCommodity.id });
 

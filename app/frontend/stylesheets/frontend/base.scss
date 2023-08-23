@@ -138,7 +138,9 @@ hr {
     }
 
     .main {
-      transition: left ease 0.5s, right ease 0.5s;
+      transition:
+        left ease 0.5s,
+        right ease 0.5s;
     }
   }
 

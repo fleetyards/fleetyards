@@ -137,7 +137,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";

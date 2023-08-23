@@ -2,6 +2,8 @@
   "compilerOptions": {
     "target": "esnext",
     "useDefineForClassFields": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "module": "esnext",
     "moduleResolution": "node",
     "isolatedModules": true,

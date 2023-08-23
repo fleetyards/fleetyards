@@ -95,8 +95,7 @@
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-import { isFleetRoute as fleetRouteCheck } from "@/frontend/utils/Routes/Fleets";
-import Store from "@/frontend/lib/Store";
+import { isFleetRoute as fleetRouteCheck } from "./utils";
 import { useI18n } from "@/frontend/composables/useI18n";
 import NavItem from "./NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
@@ -104,26 +103,31 @@ import FleetsNav from "./FleetsNav/index.vue";
 import StationsNav from "./StationsNav/index.vue";
 import NavFooter from "./NavFooter/index.vue";
 import CompareNav from "./CompareNav/index.vue";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useNavStore } from "@/frontend/stores/nav";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { useFiltersStore } from "@/shared/stores/filters";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 
-const mobile = computed(() => Store.getters.mobile);
+const navStore = useNavStore();
 
-const navSlim = computed(() => Store.getters["app/navSlim"]);
+const { slimNavigation: slim, collapsed: navCollapsed } = storeToRefs(navStore);
 
-const isAuthenticated = computed(
-  () => Store.getters["session/isAuthenticated"],
-);
+const sessionStore = useSessionStore();
 
-const slim = computed(() => navSlim.value && !mobile.value);
+const { isAuthenticated } = storeToRefs(sessionStore);
 
-const isFleetRoute = computed(() => fleetRouteCheck(route.name || ""));
+const hangarStore = useHangarStore();
 
-const filters = computed(() => Store.getters.filters);
+const { preview: hangarPreview } = storeToRefs(hangarStore);
 
-const navCollapsed = computed(() => Store.getters["app/navCollapsed"]);
+const isFleetRoute = computed(() => fleetRouteCheck(String(route.name)));
 
-const hangarPreview = computed(() => Store.getters["hangar/preview"]);
+const filtersStore = useFiltersStore();
+
+const { filters } = storeToRefs(filtersStore);
 
 const route = useRoute();
 
@@ -132,7 +136,7 @@ const isRoadmapRoute = computed(() => {
     return false;
   }
 
-  return route.name.includes("roadmap");
+  return String(route.name).includes("roadmap");
 });
 
 const isModelRoute = computed(() => {
@@ -141,7 +145,7 @@ const isModelRoute = computed(() => {
   }
 
   return ["models", "model", "model-images", "model-videos"].includes(
-    route.name || "",
+    String(route.name),
   );
 });
 
@@ -150,7 +154,7 @@ const isHangarRoute = computed(() => {
     return false;
   }
 
-  return route.name.includes("hangar");
+  return String(route.name).includes("hangar");
 });
 
 watch(
@@ -170,13 +174,13 @@ onBeforeUnmount(() => {
   close();
 });
 
-const filterFor = (route: string) => {
-  if (!filters[route]) {
+const filterFor = (routeName: string) => {
+  if (!filters.value[routeName]) {
     return null;
   }
 
   return {
-    q: filters[route],
+    q: filters.value[routeName],
   };
 };
 
@@ -192,7 +196,7 @@ const documentClick = (event: Event) => {
 };
 
 const close = () => {
-  Store.commit("app/closeNav");
+  navStore.close();
 };
 </script>
 

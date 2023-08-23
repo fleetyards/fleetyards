@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
 import VideoEmbed from "@/frontend/core/components/Video/index.vue";

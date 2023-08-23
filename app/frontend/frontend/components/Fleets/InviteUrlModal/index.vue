@@ -67,7 +67,7 @@ import { Component, Prop } from "vue-property-decorator";
 import copyText from "@/frontend/utils/CopyText";
 import inviteUrlCollection from "@/frontend/api/collections/FleetInviteUrls";
 import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";

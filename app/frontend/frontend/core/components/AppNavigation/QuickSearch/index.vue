@@ -1,10 +1,10 @@
 <template>
-  <div class="quick-search-bar">
+  <div v-if="quickSearchKey" class="quick-search-bar">
     <form @submit.prevent="filter">
       <FormInput
-        :id="$route.meta.quickSearch || 'quicksearch'"
-        v-model="form[$route.meta.quickSearch]"
-        :translation-key="`quicksearch.${$route.name}`"
+        :id="id"
+        v-model="form[quickSearchKey]"
+        :translation-key="`quicksearch.${String(route.name)}`"
         :no-label="true"
         :autofocus="!mobile"
         :clearable="true"
@@ -13,49 +13,68 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import Filters from "@/frontend/mixins/Filters";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+<script lang="ts" setup>
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useFilters } from "@/shared/composables/useFilters";
+
+const { filter } = useFilters();
 
 type QuickSearchFormData = {
-  [key: string]: any;
+  [key: string]: string;
 };
 
-@Component<Navigation>({
-  components: {
-    FormInput,
+const form = ref<QuickSearchFormData>({});
+
+const mobile = useMobile();
+
+const route = useRoute();
+
+const id = computed<string>(() => {
+  return String(route.meta.quickSearch || "quicksearch");
+});
+
+const quickSearchKey = computed(() => {
+  if (!route.meta.quickSearch) {
+    return undefined;
+  }
+
+  return String(route.meta.quickSearch);
+});
+
+const setupForm = () => {
+  if (!quickSearchKey.value) {
+    return;
+  }
+
+  const query = queryParams();
+
+  query[quickSearchKey.value] = query[quickSearchKey.value] || undefined;
+
+  form.value = query;
+};
+
+onMounted(() => {
+  setupForm();
+});
+
+watch(
+  () => route,
+  () => {
+    setupForm();
   },
-  mixins: [Filters],
-})
-export default class QuickSearch extends Vue {
-  form: QuickSearchFormData = {};
+  {
+    deep: true,
+  },
+);
 
-  @Getter("mobile") mobile;
+const queryParams = () => {
+  return JSON.parse(JSON.stringify(route.query.q || {}));
+};
+</script>
 
-  mounted() {
-    const query = this.queryParams();
-
-    query[this.$route.meta.quickSearch] =
-      query[this.$route.meta.quickSearch] || null;
-
-    this.form = query;
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    const query = this.queryParams();
-
-    query[this.$route.meta.quickSearch] =
-      query[this.$route.meta.quickSearch] || null;
-
-    this.form = query;
-  }
-
-  queryParams() {
-    return JSON.parse(JSON.stringify(this.$route.query.q || {}));
-  }
-}
+<script lang="ts">
+export default {
+  name: "AppNavigationQuickSearch",
+};
 </script>

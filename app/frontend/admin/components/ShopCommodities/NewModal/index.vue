@@ -204,7 +204,7 @@ import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTyp
 import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
 import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 
 // TODO: move to collection model or use openapi schema types when available

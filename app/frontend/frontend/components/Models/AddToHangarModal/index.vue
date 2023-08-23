@@ -26,7 +26,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { Action } from "vuex-class";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import { displaySuccess } from "@/frontend/lib/Noty";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";

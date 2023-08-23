@@ -11,8 +11,8 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              name: {type: :string, nullable: true},
-              slug: {type: :string, nullable: true},
+              name: {type: :string},
+              slug: {type: :string},
               description: {type: :string, nullable: true},
               lastUpdatedAt: {type: :string, format: "date-time", nullable: true},
               lastUpdatedAtLabel: {type: :string, nullable: true},
@@ -20,6 +20,10 @@ module V1
               availability: {
                 type: :object,
                 properties: {
+                  listedAt: {
+                    type: :array,
+                    items: {"$ref": "#/components/schemas/ShopCommodity"}
+                  },
                   boughtAt: {
                     type: :array,
                     items: {"$ref": "#/components/schemas/ShopCommodity"}
@@ -30,7 +34,7 @@ module V1
                   }
                 },
                 additionalProperties: false,
-                required: %w[boughtAt soldAt]
+                required: %w[listedAt boughtAt soldAt]
               },
 
               media: {

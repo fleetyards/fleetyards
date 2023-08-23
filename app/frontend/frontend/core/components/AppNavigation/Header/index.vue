@@ -21,53 +21,42 @@
   </header>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
 import QuickSearch from "../QuickSearch/index.vue";
 import Search from "../Search/index.vue";
+import { useAppStore } from "@/frontend/stores/app";
+import { storeToRefs } from "pinia";
+import { useMobile } from "@/shared/composables/useMobile";
 
-@Component<NavigationHeader>({
-  components: {
-    QuickSearch,
-    Search,
-  },
-})
-export default class NavigationHeader extends Vue {
-  get mobile() {
-    return this.$store.getters["app/mobile"];
+const appStore = useAppStore();
+
+const { gitRevision } = storeToRefs(appStore);
+
+const mobile = useMobile();
+
+const environmentLabelClasses = computed(() => {
+  const cssClasses = ["pill"];
+
+  if (window.NODE_ENV === "staging") {
+    cssClasses.push("pill-warning");
+  } else if (window.NODE_ENV === "production") {
+    cssClasses.push("pill-danger");
   }
 
-  get navCollapsed() {
-    return this.$store.getters["app/navCollapsed"];
+  return cssClasses;
+});
+
+const nodeEnv = computed(() => {
+  if (window.NODE_ENV === "production") {
+    return null;
   }
 
-  get gitRevision() {
-    return this.$store.getters["app/gitRevision"];
-  }
+  return (window.NODE_ENV || "").toUpperCase();
+});
+</script>
 
-  get environmentLabelClasses() {
-    const cssClasses = ["pill"];
-
-    if (window.NODE_ENV === "staging") {
-      cssClasses.push("pill-warning");
-    } else if (window.NODE_ENV === "production") {
-      cssClasses.push("pill-danger");
-    }
-
-    return cssClasses;
-  }
-
-  get nodeEnv() {
-    if (window.NODE_ENV === "production") {
-      return null;
-    }
-
-    return (window.NODE_ENV || "").toUpperCase();
-  }
-
-  toggle() {
-    this.$store.dispatch("app/toggleNav");
-  }
-}
+<script lang="ts">
+export default {
+  name: "AppNavigationHeader",
+};
 </script>

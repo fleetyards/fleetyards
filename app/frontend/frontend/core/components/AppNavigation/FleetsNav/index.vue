@@ -1,6 +1,6 @@
 <template>
   <NavItem
-    :label="$t('nav.fleets.index')"
+    :label="t('nav.fleets.index')"
     :submenu-active="active"
     menu-key="fleets-menu"
     icon="fad fa-users"
@@ -8,83 +8,81 @@
   >
     <template #submenu>
       <NavItem
-        v-for="fleet in collection.records"
+        v-for="fleet in fleets"
         :key="fleet.slug"
         :menu-key="fleet.slug"
         :to="{ name: 'fleet', params: { slug: fleet.slug } }"
         :label="fleet.name"
-        :image="fleet.logo"
+        :image="fleet.logo || undefined"
       />
       <NavItem
-        v-if="isAuthenticated && invitesCollection.records.length"
+        v-if="isAuthenticated && fleetInvites && fleetInvites.length"
         :to="{ name: 'fleet-invites' }"
-        :label="$t('nav.fleets.invites')"
+        :label="t('nav.fleets.invites')"
         icon="fad fa-envelope-open-text"
       />
       <NavItem
         v-if="isAuthenticated || !fleetPreview"
         :to="{ name: 'fleet-add' }"
-        :label="$t('nav.fleets.add')"
+        :label="t('nav.fleets.add')"
         icon="fal fa-plus"
       />
       <NavItem
         v-else
         :to="{ name: 'fleet-preview' }"
-        :label="$t('nav.fleets.add')"
+        :label="t('nav.fleets.add')"
         icon="fal fa-plus"
       />
     </template>
   </NavItem>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import NavigationMixin from "@/frontend/mixins/Navigation";
-import fleetsCollection from "@/frontend/api/collections/Fleets";
-import fleetInvitesCollection from "@/frontend/api/collections/FleetInvites";
+<script lang="ts" setup>
 import NavItem from "../NavItem/index.vue";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { storeToRefs } from "pinia";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
 
-@Component<FleetsNav>({
-  components: {
-    NavItem,
-  },
-  mixins: [NavigationMixin],
-})
-export default class FleetsNav extends Vue {
-  collection: FleetsCollection = fleetsCollection;
+const { t } = useI18n();
 
-  invitesCollection: FleetInvitesCollection = fleetInvitesCollection;
+const fleetStore = useFleetStore();
 
-  @Getter("preview", { namespace: "fleet" }) fleetPreview;
+const { preview: fleetPreview } = storeToRefs(fleetStore);
 
-  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated;
+const sessionStore = useSessionStore();
 
-  get active() {
-    return ["fleets", "fleet-add", "fleet-preview", "fleet-invites"].includes(
-      this.$route.name,
-    );
-  }
+const { isAuthenticated } = storeToRefs(sessionStore);
 
-  @Watch("$route")
-  onRouteChange() {
-    this.fetch();
-  }
+const route = useRoute();
 
-  mounted() {
-    this.fetch();
-  }
+const active = computed(() => {
+  return ["fleets", "fleet-add", "fleet-preview", "fleet-invites"].includes(
+    String(route.name),
+  );
+});
 
-  async fetch() {
-    if (!this.isAuthenticated) {
-      return;
-    }
+const { fleets: fleetsService } = useApiClient();
 
-    await this.collection.findAllForCurrent("nav");
-    await this.invitesCollection.findAllForCurrent("nav");
-  }
-}
+const { data: fleets } = useQuery({
+  queryKey: ["myFleets"],
+  queryFn: () => fleetsService.myFleets(),
+  enabled: isAuthenticated.value,
+});
+
+const { data: fleetInvites } = useQuery({
+  queryKey: ["myFleetInvites"],
+  queryFn: () => fleetsService.fleetInvites(),
+  enabled: isAuthenticated.value,
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "AppNavigationFleetsNav",
+};
 </script>
 
 <style lang="scss" scoped>

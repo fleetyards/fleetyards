@@ -5020,6 +5020,10 @@ components:
         availability:
           type: object
           properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
@@ -5030,6 +5034,7 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
+          - listedAt
           - boughtAt
           - soldAt
         media:
@@ -8636,10 +8641,13 @@ components:
           format: uuid
         name:
           type: string
-          nullable: true
         availability:
           type: object
           properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
@@ -8650,6 +8658,7 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
+          - listedAt
           - boughtAt
           - soldAt
         description:
@@ -8727,10 +8736,8 @@ components:
           format: uuid
         name:
           type: string
-          nullable: true
         slug:
           type: string
-          nullable: true
         description:
           type: string
           nullable: true
@@ -8744,6 +8751,10 @@ components:
         availability:
           type: object
           properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
@@ -8754,6 +8765,7 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
+          - listedAt
           - boughtAt
           - soldAt
         media:

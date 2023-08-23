@@ -4,8 +4,10 @@
   bottom: 0;
   z-index: 1000;
   width: 100%;
-  transition: left ease $transition-base-speed,
-    right ease $transition-base-speed, width ease $transition-base-speed;
+  transition:
+    left ease $transition-base-speed,
+    right ease $transition-base-speed,
+    width ease $transition-base-speed;
 
   .navigation-items {
     display: flex;
@@ -264,8 +266,10 @@ nav {
       width: 300px;
       padding-top: env(safe-area-inset-top);
       padding-left: env(safe-area-inset-left);
-      transition: left ease $transition-base-speed,
-        right ease $transition-base-speed, width ease $transition-base-speed;
+      transition:
+        left ease $transition-base-speed,
+        right ease $transition-base-speed,
+        width ease $transition-base-speed;
 
       .nav-container-inner {
         > :first-child {

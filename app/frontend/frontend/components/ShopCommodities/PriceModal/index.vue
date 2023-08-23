@@ -241,7 +241,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";

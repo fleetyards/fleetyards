@@ -42,7 +42,7 @@ import AppNavigation from "@/frontend/core/components/AppNavigation/index.vue";
 import AppNavigationHeader from "@/frontend/core/components/AppNavigation/Header/index.vue";
 import AppNavigationMobile from "@/frontend/core/components/AppNavigation/Mobile/index.vue";
 import AppFooter from "@/frontend/core/components/AppFooter/index.vue";
-import AppModal from "@/frontend/core/components/AppModal/index.vue";
+import AppModal from "@/shared/components/AppModal/index.vue";
 import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";

@@ -5,6 +5,9 @@ json.name commodity.name
 json.slug commodity.slug
 
 json.availability do
+  json.listed_at do
+    json.array! commodity.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+  end
   json.bought_at do
     json.array! commodity.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end

@@ -11,8 +11,9 @@ import { useHangarStore } from "./hangar";
 // import { usePublicWishlistStore } from "./PublicWishlist";
 // import { useSearchStore } from "./Search";
 import { useSessionStore } from "./session";
+import { useNavStore } from "./nav";
+import { useShoppingCartStore } from "./shoppingCart";
 // import { useShopStore } from "./Shop";
-// import { useShoppingCartStore } from "./ShoppingCart";
 // import { useShopsStore } from "./Shops";
 // import { useStationsStore } from "./Stations";
 // import { useWishlistStore } from "./Wishlist";
@@ -21,9 +22,6 @@ interface AppState {
   version: string;
   codename: string;
   gitRevision: string;
-  navCollapsed: boolean;
-  navSlim: boolean;
-  mobile: boolean;
   storeVersion: string | null;
   online: boolean;
 }
@@ -33,16 +31,10 @@ export const useAppStore = defineStore("app", {
     version: window.APP_VERSION,
     codename: window.APP_CODENAME,
     gitRevision: window.GIT_REVISION,
-    navCollapsed: true,
-    navSlim: false,
-    mobile: false,
     storeVersion: null,
     online: true,
   }),
   getters: {
-    slimNavigation(state) {
-      return state.navSlim && !state.mobile;
-    },
     isUpdateAvailable(state) {
       return state.version !== window.APP_VERSION;
     },
@@ -52,13 +44,14 @@ export const useAppStore = defineStore("app", {
       const sessionStore = useSessionStore();
       const cookiesStore = useCookiesStore();
       const fleetStore = useFleetStore();
+      const navStore = useNavStore();
+      const shoppingCartStore = useShoppingCartStore();
       // const publicFleetStore = usePublicFleetStore();
       const hangarStore = useHangarStore();
       // const publicHangarStore = usePublicHangarStore();
       // const modelsStore = useModelsStore();
       // const searchStore = useSearchStore();
       // const shopStore = useShopStore();
-      // const shoppingCartStore = useShoppingCartStore();
       // const shopsStore = useShopsStore();
       // const stationsStore = useStationsStore();
       // const wishlistStore = useWishlistStore();
@@ -71,6 +64,7 @@ export const useAppStore = defineStore("app", {
       if (hard) {
         sessionStore.$reset();
         cookiesStore.$reset();
+        navStore.$reset();
       }
 
       fleetStore.$reset();
@@ -80,7 +74,7 @@ export const useAppStore = defineStore("app", {
       // modelsStore.$reset();
       // searchStore.$reset();
       // shopStore.$reset();
-      // shoppingCartStore.$reset();
+      shoppingCartStore.$reset();
       // shopsStore.$reset();
       // stationsStore.$reset();
       // wishlistStore.$reset();
@@ -90,9 +84,6 @@ export const useAppStore = defineStore("app", {
     },
     setStoreVersion(newVersion: string) {
       this.storeVersion = newVersion;
-    },
-    setMobile(payload: boolean) {
-      this.mobile = payload;
     },
     setOnlineStatus(payload: boolean) {
       this.online = payload;
@@ -105,20 +96,8 @@ export const useAppStore = defineStore("app", {
         }
       }
     },
-    toggleNav() {
-      this.navCollapsed = !this.navCollapsed;
-    },
-    toggleSlimNav() {
-      this.navSlim = !this.navSlim;
-    },
-    openNav() {
-      this.navCollapsed = false;
-    },
-    closeNav() {
-      this.navCollapsed = true;
-    },
   },
   persist: {
-    paths: ["navSlim", "storeVersion"],
+    paths: ["storeVersion"],
   },
 });

@@ -1,34 +1,37 @@
 <template>
   <Btn
-    v-tooltip="$t('actions.shoppingCart.add')"
+    v-tooltip="t('actions.shoppingCart.add')"
     class="add-to-cart"
     variant="link"
-    @click.native="addToCart({ item, type })"
+    @click="shoppingCartStore.add(item, type)"
   >
     <i class="fal fa-cart-plus" />
   </Btn>
 </template>
 
+<script lang="ts" setup>
+import Btn from "@/shared/components/Btn/index.vue";
+import type { ShoppingCartItemType } from "@/frontend/stores/shoppingCart";
+import { SearchResultTypeEnum } from "@/services/fyAdminApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useShoppingCartStore } from "@/frontend/stores/shoppingCart";
+
+type Props = {
+  item: ShoppingCartItemType;
+  type: SearchResultTypeEnum;
+};
+
+defineProps<Props>();
+
+const { t } = useI18n();
+
+const shoppingCartStore = useShoppingCartStore();
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-
-@Component<AddToCartBtn>({
-  components: {
-    Btn,
-  },
-})
-export default class AddToCartBtn extends Vue {
-  @Prop({ required: true }) item!: any;
-
-  @Prop({ required: true }) type!: any;
-
-  @Getter("mobile") mobile: boolean;
-
-  @Action("add", { namespace: "shoppingCart" }) addToCart: any;
-}
+export default {
+  name: "AddToCartBtn",
+};
 </script>
 
 <style lang="scss" scoped>

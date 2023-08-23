@@ -9,8 +9,9 @@ import type { ShopCommodity } from './ShopCommodity';
 
 export type ModelModule = {
     id: string;
-    name: string | null;
+    name: string;
     availability: {
+        listedAt: Array<ShopCommodity>;
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };

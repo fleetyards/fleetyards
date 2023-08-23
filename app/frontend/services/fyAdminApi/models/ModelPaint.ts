@@ -9,12 +9,13 @@ import type { ViewImage } from './ViewImage';
 
 export type ModelPaint = {
     id: string;
-    name: string | null;
-    slug: string | null;
+    name: string;
+    slug: string;
     description?: string | null;
     lastUpdatedAt?: string | null;
     lastUpdatedAtLabel?: string | null;
     availability: {
+        listedAt: Array<ShopCommodity>;
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };

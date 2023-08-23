@@ -148,7 +148,7 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 

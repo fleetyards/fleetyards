@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts" setup>
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";

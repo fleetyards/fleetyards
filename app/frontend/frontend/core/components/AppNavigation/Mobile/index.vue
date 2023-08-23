@@ -1,6 +1,6 @@
 <template>
   <div class="navigation-mobile noselect">
-    <div v-if="$route.name" class="navigation-items">
+    <div v-if="route.name" class="navigation-items">
       <template v-if="isFleetRoute && currentFleet">
         <Btn
           variant="link"
@@ -115,10 +115,10 @@
         class="nav-toggle"
         type="button"
         aria-label="Toggle Navigation"
-        @click.stop.prevent="toggle"
+        @click.stop.prevent="navStore.toggle"
       >
         <span class="sr-only">
-          {{ $t("labels.toggleNavigation") }}
+          {{ t("labels.toggleNavigation") }}
         </span>
         <span class="icon-bar top-bar" />
         <span class="icon-bar middle-bar" />
@@ -128,78 +128,87 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+import Btn from "@/shared/components/Btn/index.vue";
+import { isFleetRoute as fleetRouteCheck } from "../utils";
+import { useFiltersStore } from "@/shared/stores/filters";
+import { useNavStore } from "@/frontend/stores/nav";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { storeToRefs } from "pinia";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import { useComlink } from "@/shared/composables/useComlink";
+
+const { t, currentLocale } = useI18n();
+
+const navStore = useNavStore();
+
+const { collapsed: navCollapsed } = storeToRefs(navStore);
+
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
+
+const hangarStore = useHangarStore();
+
+const { preview: hangarPreview } = storeToRefs(hangarStore);
+
+const filtersStore = useFiltersStore();
+
+const { filters } = storeToRefs(filtersStore);
+
+const route = useRoute();
+
+const isFleetRoute = computed(() => {
+  return fleetRouteCheck(String(route.name));
+});
+
+const shipsNavActive = computed(() => {
+  return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
+});
+
+const firstLetter = computed(() => {
+  return currentFleet.value?.name?.charAt(0);
+});
+
+const filterFor = (routeName: string) => {
+  // // TODO: disabled until vue-router supports navigation to same route
+  // return null
+  if (!filters.value[routeName]) {
+    return null;
+  }
+
+  return {
+    q: filters.value[routeName],
+  };
+};
+
+const routeActive = (routeName: string) => {
+  return routeName === route.name;
+};
+
+const { fleets: fleetsService } = useFyApiClient(currentLocale);
+
+const { refetch, data: currentFleet } = useQuery({
+  queryKey: ["fleet", route.params.slug],
+  queryFn: () =>
+    fleetsService.fleet({
+      slug: String(route.params.slug),
+    }),
+  enabled: route.params.slug !== undefined && isFleetRoute.value,
+});
+
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("fleet-update", refetch);
+});
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { isFleetRoute } from "@/frontend/utils/Routes/Fleets";
-import fleetsApiCollection from "@/frontend/api/collections/Fleets";
-
-@Component<NavigationHeader>({
-  components: {
-    Btn,
-  },
-})
-export default class NavigationHeader extends Vue {
-  @Getter("mobile") mobile;
-
-  @Getter("filters") filters;
-
-  @Getter("navCollapsed", { namespace: "app" }) navCollapsed!: boolean;
-
-  @Getter("isAuthenticated", { namespace: "session" })
-  isAuthenticated!: boolean;
-
-  @Getter("preview", { namespace: "hangar" }) hangarPreview;
-
-  @Action("toggleNav", { namespace: "app" }) toggle;
-
-  fleetsCollection: FleetsCollection = fleetsApiCollection;
-
-  get isFleetRoute() {
-    return isFleetRoute(this.$route.name);
-  }
-
-  get currentFleet(): Fleet | null {
-    return this.fleetsCollection.record;
-  }
-
-  get shipsNavActive() {
-    return ["fleet-ships", "fleet-fleetchart"].includes(this.$route.name);
-  }
-
-  get firstLetter() {
-    return this.currentFleet?.name?.charAt(0);
-  }
-
-  filterFor(route) {
-    // // TODO: disabled until vue-router supports navigation to same route
-    // return null
-    if (!this.filters[route]) {
-      return null;
-    }
-
-    return {
-      q: this.filters[route],
-    };
-  }
-
-  routeActive(route) {
-    return route === this.$route.name;
-  }
-
-  mounted() {
-    this.fetchFleet();
-    this.$comlink.$on("fleet-update", this.fetchFleet);
-  }
-
-  async fetchFleet() {
-    if (!this.isFleetRoute) {
-      return;
-    }
-
-    await this.fleetsCollection.findBySlug(this.$route.params.slug);
-  }
-}
+export default {
+  name: "AppNavigationMobile",
+};
 </script>

@@ -14,6 +14,7 @@ export type Commodity = {
     type?: CommodityTypeEnum;
     typeLabel?: string;
     availability: {
+        listedAt: Array<ShopCommodity>;
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };

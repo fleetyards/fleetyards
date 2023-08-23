@@ -11,16 +11,17 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              name: {type: :string, nullable: true},
+              name: {type: :string},
 
               availability: {
                 type: :object,
                 properties: {
+                  listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
                   boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
                   soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
                 },
                 additionalProperties: false,
-                required: %w[boughtAt soldAt]
+                required: %w[listedAt boughtAt soldAt]
               },
               description: {type: :string, nullable: true},
               media: {
