@@ -10,7 +10,7 @@
 
     <FilterGroup
       v-model="form.manufacturerIn"
-      :label="$t('labels.filters.models.manufacturer')"
+      :label="t('labels.filters.models.manufacturer')"
       fetch-path="manufacturers/with-models"
       name="manufacturer"
       value-attr="slug"
@@ -23,7 +23,7 @@
 
     <FilterGroup
       v-model="form.productionStatusIn"
-      :label="$t('labels.filters.models.productionStatus')"
+      :label="t('labels.filters.models.productionStatus')"
       fetch-path="models/production-states"
       name="production-status"
       :multiple="true"
@@ -32,7 +32,7 @@
 
     <FilterGroup
       v-model="form.classificationIn"
-      :label="$t('labels.filters.models.classification')"
+      :label="t('labels.filters.models.classification')"
       fetch-path="models/classifications"
       name="classification"
       :searchable="true"
@@ -42,7 +42,7 @@
 
     <FilterGroup
       v-model="form.focusIn"
-      :label="$t('labels.filters.models.focus')"
+      :label="t('labels.filters.models.focus')"
       fetch-path="models/focus"
       name="focus"
       :searchable="true"
@@ -52,7 +52,7 @@
 
     <FilterGroup
       v-model="form.sizeIn"
-      :label="$t('labels.filters.models.size')"
+      :label="t('labels.filters.models.size')"
       fetch-path="models/sizes"
       name="size"
       :multiple="true"
@@ -62,7 +62,7 @@
     <FilterGroup
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
-      :label="$t('labels.filters.models.pledgePrice')"
+      :label="t('labels.filters.models.pledgePrice')"
       name="pledge-price"
       :multiple="true"
       :no-label="true"
@@ -71,7 +71,7 @@
     <FilterGroup
       v-model="form.priceIn"
       :options="priceOptions"
-      :label="$t('labels.filters.models.price')"
+      :label="t('labels.filters.models.price')"
       name="price"
       :multiple="true"
       :no-label="true"
@@ -136,16 +136,16 @@
 
     <RadioList
       v-model="form.onSaleEq"
-      :label="$t('labels.filters.models.onSale')"
-      :reset-label="$t('labels.all')"
+      :label="t('labels.filters.models.onSale')"
+      :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="sale"
     />
 
     <RadioList
       v-model="form.loanerEq"
-      :label="$t('labels.filters.vehicles.loaner')"
-      :reset-label="$t('labels.hide')"
+      :label="t('labels.filters.vehicles.loaner')"
+      :reset-label="t('labels.hide')"
       :options="[
         {
           name: 'Show',
@@ -165,7 +165,7 @@
       @click.native="resetFilter"
     >
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
@@ -175,12 +175,12 @@ import RadioList from "@/shared/components/Form/RadioList/index.vue";
 import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Btn from "@/shared/components/BaseBtn/index.vue";
-import {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-} from "@/shared/utils/FilterOptions";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
+const { t } = useI18n();
+const { booleanOptions, priceOptions, pledgePriceOptions } =
+  useFilterOptions(t);
 // data() {
 //     const query = this.$route.query.q || {};
 //     return {

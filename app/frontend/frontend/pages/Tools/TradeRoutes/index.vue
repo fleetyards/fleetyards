@@ -24,27 +24,27 @@
         <template v-if="!mobile">
           <BtnGroup>
             <Btn
-              v-tooltip="$t('labels.tradeRoutes.showLatestPrices')"
+              v-tooltip="t('labels.tradeRoutes.showLatestPrices')"
               :active="!averagePrices"
               size="small"
               variant="dropdown"
-              @click.native="showLatestPrices"
+              @click="showLatestPrices"
             >
               <i class="far fa-sort-amount-down" />
             </Btn>
             <Btn
-              v-tooltip="$t('labels.tradeRoutes.showAveragePrices')"
+              v-tooltip="t('labels.tradeRoutes.showAveragePrices')"
               :active="averagePrices"
               size="small"
               variant="dropdown"
-              @click.native="showAveragePrices"
+              @click="showAveragePrices"
             >
               <i class="far fa-empty-set" />
             </Btn>
           </BtnGroup>
           <BtnGroup>
             <Btn
-              v-tooltip="$t('labels.tradeRoutes.sortByProfit')"
+              v-tooltip="t('labels.tradeRoutes.sortByProfit')"
               :active="sortByProfit || sortByAverageProfit"
               size="small"
               variant="dropdown"
@@ -58,7 +58,7 @@
               <i class="far fa-dollar-sign" />
             </Btn>
             <Btn
-              v-tooltip="$t('labels.tradeRoutes.sortByPercent')"
+              v-tooltip="t('labels.tradeRoutes.sortByPercent')"
               :active="sortByPercent || sortByAveragePercent"
               size="small"
               variant="dropdown"
@@ -78,7 +78,7 @@
               :to="sortBy('origin_shop_station_name', 'asc')"
               :exact="true"
             >
-              {{ $t("labels.tradeRoutes.sortByStation") }}
+              {{ t("labels.tradeRoutes.sortByStation") }}
             </Btn>
           </BtnGroup>
         </template>
@@ -95,7 +95,7 @@
             :exact="true"
           >
             <i class="far fa-dollar-sign" />
-            <span>{{ $t("labels.tradeRoutes.sortByProfit") }}</span>
+            <span>{{ t("labels.tradeRoutes.sortByProfit") }}</span>
           </Btn>
           <Btn
             :active="sortByPercent || sortByAveragePercent"
@@ -109,7 +109,7 @@
             :exact="true"
           >
             <i class="far fa-percent" />
-            <span>{{ $t("labels.tradeRoutes.sortByPercent") }}</span>
+            <span>{{ t("labels.tradeRoutes.sortByPercent") }}</span>
           </Btn>
           <Btn
             :active="sortByStation"
@@ -119,19 +119,21 @@
             :exact="true"
           >
             <i class="fad fa-map-marker-alt" />
-            <span>{{ $t("labels.tradeRoutes.sortByStation") }}</span>
+            <span>{{ t("labels.tradeRoutes.sortByStation") }}</span>
           </Btn>
         </BtnDropdown>
       </template>
 
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
       <template #default="{ records }">
         <transition-group name="fade-list" class="row" tag="div" :appear="true">
           <QuickFilter v-if="!mobile" key="quickfilter" />
           <div
-            v-for="route in records"
-            :key="route.id"
+            v-for="tradeRoute in records as TradeRoute[]"
+            :key="tradeRoute.id"
             class="col-12 fade-list-item cargo-route"
           >
             <div class="row">
@@ -143,19 +145,19 @@
                         :to="{
                           name: 'station',
                           params: {
-                            slug: route.origin.slug,
+                            slug: tradeRoute.origin.slug,
                           },
                         }"
                       >
-                        {{ route.origin.name }}
+                        {{ tradeRoute.origin.name }}
                       </router-link>
                       <br />
                       <small class="text-muted">
-                        {{ route.origin.locationLabel }}
+                        {{ tradeRoute.origin.locationLabel }}
                       </small>
                     </h3>
                     <TradeRoutePrice
-                      :trade-route="route"
+                      :trade-route="tradeRoute"
                       :average="averagePrices"
                       :available-cargo="availableCargo"
                     />
@@ -168,7 +170,7 @@
                 </h2>
                 <i class="fa fa-angle-double-right" />
                 <TradeRouteProfit
-                  :trade-route="route"
+                  :trade-route="tradeRoute"
                   :average="averagePrices"
                   :available-cargo="availableCargo"
                 />
@@ -181,20 +183,20 @@
                         :to="{
                           name: 'station',
                           params: {
-                            slug: route.destination.slug,
+                            slug: tradeRoute.destination.slug,
                           },
                         }"
                       >
-                        {{ route.destination.name }}
+                        {{ tradeRoute.destination.name }}
                       </router-link>
                       <br />
                       <small class="text-muted">
-                        {{ route.destination.locationLabel }}
+                        {{ tradeRoute.destination.locationLabel }}
                       </small>
                     </h3>
                     <TradeRoutePrice
                       price-type="sell"
-                      :trade-route="route"
+                      :trade-route="tradeRoute"
                       :average="averagePrices"
                       :available-cargo="availableCargo"
                     />
@@ -209,159 +211,156 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
-import { sortBy } from "@/frontend/utils/Sorting";
-import tradeRoutesCollection from "@/frontend/api/collections/TradeRoutes";
-import modelsCollection from "@/frontend/api/collections/Models";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import { sortBy as sortByRoute } from "@/frontend/utils/Sorting";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import BtnGroup from "@/shared/components/BaseBtnGroup/index.vue";
+import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/TradeRoutes/FilterForm/index.vue";
 import QuickFilter from "@/frontend/components/TradeRoutes/QuickFilter/index.vue";
 import TradeRoutePrice from "@/frontend/components/TradeRoutes/Price/index.vue";
 import TradeRouteProfit from "@/frontend/components/TradeRoutes/Profit/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import type { Model, TradeRoute } from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
 
-@Component<TradeRoutes>({
-  components: {
-    FilteredList,
-    Btn,
-    BtnGroup,
-    PriceModalBtn,
-    BtnDropdown,
-    Panel,
-    FilterForm,
-    QuickFilter,
-    TradeRoutePrice,
-    TradeRouteProfit,
+const mobile = useMobile();
+
+const { t, toNumber } = useI18n();
+
+// collection: TradeRoutesCollection = tradeRoutesCollection;
+
+// modelsCollection: ModelsCollection = modelsCollection;
+
+const averagePrices = ref(false);
+
+const cargoShip = ref<Model | undefined>();
+
+const title = computed(() => {
+  if (cargoShip.value) {
+    return t("headlines.tools.tradeRoutes.withShip", {
+      name: `${cargoShip.value.manufacturer?.code} ${cargoShip.value.name}`,
+      cargo: toNumber(cargoShip.value.cargo, "cargo"),
+    });
+  }
+
+  return t("headlines.tools.tradeRoutes.index");
+});
+
+const availableCargo = computed(() => {
+  return cargoShip.value ? cargoShip.value.metrics.cargo || 0 * 100 : null;
+});
+
+const route = useRoute();
+
+const sorts = computed(() => {
+  return route.query.q?.sorts || [];
+});
+
+const sortByAveragePercent = computed(() => {
+  return (
+    sorts.value.includes("average_profit_per_unit_percent asc") ||
+    sorts.value.includes("average_profit_per_unit_percent desc")
+  );
+});
+
+const sortByPercent = computed(() => {
+  return (
+    sorts.value.includes("profit_per_unit_percent asc") ||
+    sorts.value.includes("profit_per_unit_percent desc")
+  );
+});
+
+const sortByAverageProfit = computed(() => {
+  return (
+    sorts.value.includes("average_profit_per_unit asc") ||
+    sorts.value.includes("average_profit_per_unit desc")
+  );
+});
+
+const sortByProfit = computed(() => {
+  return (
+    sorts.value.includes("profit_per_unit asc") ||
+    sorts.value.includes("profit_per_unit desc") ||
+    !sorts.value.length
+  );
+});
+
+const sortByStation = computed(() => {
+  return (
+    sorts.value.includes("origin_shop_station_name asc") ||
+    sorts.value.includes("origin_shop_station_name desc")
+  );
+});
+
+watch(
+  () => route,
+  () => {
+    // fetchCargoShip()
   },
-})
-export default class TradeRoutes extends Vue {
-  collection: TradeRoutesCollection = tradeRoutesCollection;
+  { deep: true },
+);
 
-  modelsCollection: ModelsCollection = modelsCollection;
+onMounted(() => {
+  averagePrices.value = sortByAverageProfit.value || sortByAveragePercent.value;
+  // fetchCargoShip();
+});
 
-  averagePrices = false;
+const sortBy = (field: string, direction: string) => {
+  return sortByRoute(route, field, direction);
+};
 
-  cargoShip: Model | null = null;
+const showLatestPrices = () => {
+  averagePrices.value = false;
 
-  @Getter("mobile") mobile;
-
-  get title(): string {
-    if (this.cargoShip) {
-      return this.$t("headlines.tools.tradeRoutes.withShip", {
-        name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
-        cargo: this.$toNumber(this.cargoShip.cargo, "cargo"),
-      });
-    }
-
-    return this.$t("headlines.tools.tradeRoutes.index");
-  }
-
-  get availableCargo(): number {
-    return this.cargoShip ? this.cargoShip.cargo * 100 : null;
-  }
-
-  get sorts(): string[] {
-    return this.$route.query.q?.sorts || [];
-  }
-
-  get sortByAveragePercent(): boolean {
-    return (
-      this.sorts.includes("average_profit_per_unit_percent asc") ||
-      this.sorts.includes("average_profit_per_unit_percent desc")
-    );
-  }
-
-  get sortByPercent(): boolean {
-    return (
-      this.sorts.includes("profit_per_unit_percent asc") ||
-      this.sorts.includes("profit_per_unit_percent desc")
-    );
-  }
-
-  get sortByAverageProfit(): boolean {
-    return (
-      this.sorts.includes("average_profit_per_unit asc") ||
-      this.sorts.includes("average_profit_per_unit desc")
-    );
-  }
-
-  get sortByProfit(): boolean {
-    return (
-      this.sorts.includes("profit_per_unit asc") ||
-      this.sorts.includes("profit_per_unit desc") ||
-      !this.sorts.length
-    );
-  }
-
-  get sortByStation(): boolean {
-    return (
-      this.sorts.includes("origin_shop_station_name asc") ||
-      this.sorts.includes("origin_shop_station_name desc")
-    );
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    this.fetchCargoShip();
-  }
-
-  mounted() {
-    this.averagePrices = this.sortByAverageProfit || this.sortByAveragePercent;
-    this.fetchCargoShip();
-  }
-
-  sortBy(field, direction) {
-    return sortBy(this.$route, field, direction);
-  }
-
-  showLatestPrices() {
-    this.averagePrices = false;
-
-    if (this.sortByProfit || this.sortByAverageProfit) {
+  if (sortByProfit.value || sortByAverageProfit.value) {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    router.push(sortBy("profit_per_unit", "desc")).catch(() => {});
+  } else if (sortByPercent.value || sortByAveragePercent.value) {
+    router
+      .push(sortBy("profit_per_unit_percent", "desc"))
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push(this.sortBy("profit_per_unit", "desc")).catch(() => {});
-    } else if (this.sortByPercent || this.sortByAveragePercent) {
-      this.$router
-        .push(this.sortBy("profit_per_unit_percent", "desc"))
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {});
-    }
+      .catch(() => {});
   }
+};
 
-  showAveragePrices() {
-    this.averagePrices = true;
+const router = useRouter();
 
-    if (this.sortByProfit || this.sortByAverageProfit) {
-      this.$router
-        .push(this.sortBy("average_profit_per_unit", "desc"))
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {});
-    } else if (this.sortByPercent || this.sortByAveragePercent) {
-      this.$router
-        .push(this.sortBy("average_profit_per_unit_percent", "desc"))
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {});
-    }
+const showAveragePrices = () => {
+  averagePrices.value = true;
+
+  if (sortByProfit.value || sortByAverageProfit.value) {
+    router
+      .push(sortBy("average_profit_per_unit", "desc"))
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(() => {});
+  } else if (sortByPercent.value || sortByAveragePercent.value) {
+    router
+      .push(sortBy("average_profit_per_unit_percent", "desc"))
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(() => {});
   }
+};
 
-  async fetchCargoShip() {
-    const query = this.$route.query.q || {};
+// async fetchCargoShip() {
+//   const query = this.$route.query.q || {};
 
-    if (!query.cargoShip) {
-      this.cargoShip = null;
-      return;
-    }
+//   if (!query.cargoShip) {
+//     this.cargoShip = null;
+//     return;
+//   }
 
-    this.cargoShip = await modelsCollection.findBySlug(query.cargoShip);
-  }
-}
+//   this.cargoShip = await modelsCollection.findBySlug(query.cargoShip);
+// }
+</script>
+
+<script lang="ts">
+export default {
+  name: "TradeRoutesPage",
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section class="container main">
     <slot v-if="isError" name="error">
       <NotFound />
     </slot>
@@ -7,7 +7,7 @@
       <Loader v-if="showSpinner" :loading="true" />
     </slot>
     <slot v-else name="resolved"></slot>
-  </div>
+  </section>
 </template>
 
 <script lang="ts" setup>

@@ -16,8 +16,8 @@
         {{ gitRevision }}
       </span>
     </div>
-    <QuickSearch v-if="$route.meta.quickSearch" />
-    <Search v-if="$route.meta.search" />
+    <QuickSearch v-if="route.meta.quickSearch" />
+    <Search v-if="route.meta.search" />
   </header>
 </template>
 
@@ -33,6 +33,8 @@ const appStore = useAppStore();
 const { gitRevision } = storeToRefs(appStore);
 
 const mobile = useMobile();
+
+const route = useRoute();
 
 const environmentLabelClasses = computed(() => {
   const cssClasses = ["pill"];

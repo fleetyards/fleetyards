@@ -36,18 +36,18 @@
 
 <script lang="ts" setup>
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useRoute } from "vue-router";
-import Pagination from "@/frontend/core/components/Pagination/index.vue";
-import { usePagination } from "@/frontend/composables/usePagination";
+import Pagination from "@/shared/components/Paginator/index.vue";
+import { usePagination } from "@/shared/composables/usePagination";
 import { BaseList } from "@/services/fyApi";
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
-const { stations: stationsClient } = useApiClient();
+const { stations: stationsService } = useFyApiClient(currentLocale);
 
 const route = useRoute();
 
@@ -66,9 +66,9 @@ const {
 } = useQuery({
   queryKey: ["celestialObjectStations"],
   queryFn: () =>
-    stationsClient.list({
+    stationsService.stations({
       q: {
-        celestialObjectEq: route.params.slug,
+        celestialObjectEq: route.params.slug?.toString(),
       },
       page: page.value,
       perPage: perPage.value,

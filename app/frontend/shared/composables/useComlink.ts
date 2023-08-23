@@ -6,7 +6,7 @@ type Events = {
   "close-modal"?: boolean;
   "prices-update": undefined;
   "commodities-update": undefined;
-  "open-privacy-settings": undefined;
+  "open-privacy-settings"?: boolean;
   "user-update": undefined;
   "fleet-create": undefined;
   "fleet-update": undefined;

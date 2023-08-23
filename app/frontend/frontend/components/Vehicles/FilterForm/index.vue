@@ -197,11 +197,7 @@
       name="public"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
@@ -213,16 +209,14 @@ import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-} from "@/frontend/utils/FilterOptions";
-
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();
+
+const { booleanOptions, priceOptions, pledgePriceOptions } =
+  useFilterOptions(t);
 
 const { filter, isFilterSelected, resetFilter } = useFilters();
 
@@ -231,7 +225,7 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), {
-  hangarGroupsOptions: [],
+  hangarGroupsOptions: () => [],
 });
 
 type VehiclesForm = {

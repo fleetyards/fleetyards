@@ -13,7 +13,7 @@
         </small>
       </h2>
     </div>
-    <div class="panel-image text-center">
+    <PanelImage class="text-center">
       <LazyImage
         v-if="item.media.storeImage?.medium"
         :to="route"
@@ -22,28 +22,25 @@
         :alt="item.name"
         class="image"
       />
-    </div>
+    </PanelImage>
   </Panel>
 </template>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import type {
-  ModelMinimal,
-  CommodityMinimal,
-  EquipmentMinimal,
-  ShopMinimal,
-  StationMinimal,
+  Model,
+  Commodity,
+  Equipment,
+  Shop,
+  Station,
 } from "@/services/fyApi";
 
-type SearchResult = (
-  | ModelMinimal
-  | CommodityMinimal
-  | EquipmentMinimal
-  | ShopMinimal
-  | StationMinimal
-) & { resultType: "shop" | "station" };
+type SearchResult = (Model | Commodity | Equipment | Shop | Station) & {
+  resultType: "shop" | "station";
+};
 
 type Props = {
   item: SearchResult;
@@ -57,7 +54,7 @@ const route = computed(() => {
       return {
         name: "shop",
         params: {
-          stationSlug: (props.item as ShopMinimal).station.slug,
+          stationSlug: (props.item as Shop).station.slug,
           slug: props.item.slug,
         },
       };

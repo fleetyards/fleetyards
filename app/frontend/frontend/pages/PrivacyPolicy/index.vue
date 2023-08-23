@@ -3,13 +3,13 @@
     <div class="row justify-content-lg-center">
       <div class="col-12 col-lg-8">
         <Panel inset>
-          <h1>{{ $t("headlines.privacy") }}</h1>
+          <h1>{{ t("headlines.privacy") }}</h1>
           <Btn
             class="privacy-settings-link"
             :mobile-block="true"
-            @click.native="openPrivacySettings"
+            @click="openPrivacySettings"
           >
-            {{ $t("nav.privacySettings") }}
+            {{ t("nav.privacySettings") }}
           </Btn>
           <p>
             Below you can read about what Information we are using to provide
@@ -202,29 +202,30 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import AppContact from "@/frontend/core/components/AppContact/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<PrivacyPolicy>({
-  components: {
-    Panel,
-    Btn,
-    AppContact,
-  },
-})
-export default class PrivacyPolicy extends Vue {
-  get appName() {
-    return window.APP_NAME;
-  }
+const { t } = useI18n();
 
-  openPrivacySettings() {
-    this.$comlink.$emit("open-privacy-settings", true);
-  }
-}
+const appName = computed(() => {
+  return window.APP_NAME;
+});
+
+const comlink = useComlink();
+
+const openPrivacySettings = () => {
+  comlink.emit("open-privacy-settings", true);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "PrivacyPolicyPage",
+};
 </script>
 
 <style lang="scss" scoped>

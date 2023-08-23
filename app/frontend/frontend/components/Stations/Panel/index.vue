@@ -40,10 +40,10 @@
 <script lang="ts" setup>
 import Stats from "@/frontend/components/Stations/ListStats/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import type { StationMinimal } from "@/services/fyApi";
+import type { Station } from "@/services/fyApi";
 
 type Props = {
-  station: StationMinimal;
+  station: Station;
 };
 
 defineProps<Props>();

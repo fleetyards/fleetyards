@@ -57,6 +57,7 @@ import PhotoSwipeUIDefault from "photoswipe/dist/photoswipe-ui-default";
 import copyText from "@/shared/utils/CopyText";
 import { useNoty } from "@/shared/composables/useNoty";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import { useAppStore } from "@/frontend/stores/app";
 
 const i18n = inject<I18nPluginOptions>("i18n");
 
@@ -137,12 +138,16 @@ const getThumbBounds = (index: number) => {
   return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
 };
 
-// const open = (index = "0") => {
-//   internalIndex.value = parseInt(index, 10);
-//   this.$store.dispatch("app/showOverlay");
-//   setup();
-//   gallery.value.init();
-// };
+const appStore = useAppStore();
+
+const open = (index = "0") => {
+  internalIndex.value = parseInt(index, 10);
+
+  appStore.showOverlay();
+
+  setup();
+  gallery.value.init();
+};
 
 // const onClose = () => {
 //   this.$store.dispatch("app/hideOverlay");
@@ -160,6 +165,10 @@ const setup = () => {
 
   // gallery.value.listen("close", onClose);
 };
+
+defineExpose({
+  open,
+});
 </script>
 
 <script lang="ts">

@@ -13,6 +13,7 @@
       />
       <NavItem
         :to="{ name: 'starsystems' }"
+        :active="starsystemActive"
         :label="t('nav.stations.starsystems')"
         icon="fad fa-solar-system"
       />
@@ -46,6 +47,12 @@ const active = computed(() =>
     "celestial-object",
     "station-images",
   ].includes(String(route.name || "")),
+);
+
+const starsystemActive = computed(() =>
+  ["starsystems", "starsystem", "celestial-object"].includes(
+    String(route.name || ""),
+  ),
 );
 </script>
 

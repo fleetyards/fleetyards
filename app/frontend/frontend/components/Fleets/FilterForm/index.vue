@@ -173,11 +173,7 @@
       name="loaner"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
@@ -190,13 +186,13 @@ import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import {
-  booleanOptions as booleanFilterOptions,
-  priceOptions as priceFilterOptions,
-  pledgePriceOptions as pledgePriceFilterOptions,
-} from "@/frontend/utils/FilterOptions";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+
+const { t } = useI18n();
+const { booleanOptions, priceOptions, pledgePriceOptions } =
+  useFilterOptions(t);
 
 type FleetsFilterForm = {
   modelNameCont?: string;
@@ -221,12 +217,6 @@ type FleetsFilterForm = {
 const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
 
 const form = ref<FleetsFilterForm>({});
-
-const booleanOptions = booleanFilterOptions;
-const priceOptions = priceFilterOptions;
-const pledgePriceOptions = pledgePriceFilterOptions;
-
-const { t } = useI18n();
 
 const route = useRoute();
 

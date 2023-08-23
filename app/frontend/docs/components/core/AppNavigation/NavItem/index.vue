@@ -159,7 +159,7 @@ const routeActive = computed(() => {
 
 const tooltip = computed(() => ({
   content: props.label,
-  classes: "nav-item-tooltip",
+  popperClass: "nav-item-tooltip",
   placement: "right",
 }));
 

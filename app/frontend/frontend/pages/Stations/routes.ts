@@ -2,6 +2,16 @@ import type { RouteRecordRaw } from "vue-router";
 
 export const routes: RouteRecordRaw[] = [
   {
+    path: "",
+    name: "stations",
+    component: () => import("@/frontend/pages/Stations/index.vue"),
+    meta: {
+      title: "stations",
+      quickSearch: "searchCont",
+      backgroundImage: "bg-0",
+    },
+  },
+  {
     path: "/starsystems/",
     name: "starsystems",
     component: () => import("@/frontend/pages/Stations/Starsystems/index.vue"),

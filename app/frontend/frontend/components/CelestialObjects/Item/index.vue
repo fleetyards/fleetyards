@@ -1,5 +1,5 @@
 <template>
-  <Panel :id="id || item.slug" class="station-item">
+  <Panel :id="id || item.slug" class="celestial-object-item">
     <PanelImage class="text-center">
       <router-link
         :key="item.media.storeImage?.medium"
@@ -21,10 +21,10 @@
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import type { RouteLocationRaw } from "vue-router";
-import type { Station } from "@/services/fyApi";
+import type { CelestialObject } from "@/services/fyApi";
 
 type Props = {
-  item: Station;
+  item: CelestialObject;
   route: RouteLocationRaw;
   id?: string;
 };

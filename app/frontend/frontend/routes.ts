@@ -182,25 +182,14 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/stations/",
-    name: "stations",
-    component: () => import("@/frontend/pages/Stations/index.vue"),
+    component: () => import("@/frontend/pages/Stations/routerView.vue"),
     children: StationsRoutes,
-    meta: {
-      title: "stations",
-      quickSearch: "searchCont",
-      backgroundImage: "bg-0",
-    },
   },
   {
     path: "/tools/",
-    name: "tools",
-    component: () => import("@/frontend/pages/ToolsPage.vue"),
+    component: () => import("@/frontend/pages/Tools/routerView.vue"),
     children: ToolsRoutes,
     redirect: { name: ToolsRoutes[0].name },
-    meta: {
-      title: "tools",
-      backgroundImage: "bg-7",
-    },
   },
   {
     path: "/roadmap/",

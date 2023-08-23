@@ -1,6 +1,5 @@
 <template>
-  <router-view v-if="isSubRoute" />
-  <section v-else class="container">
+  <section class="container">
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
@@ -12,9 +11,9 @@
     <FilteredList
       key="stations"
       :collection="collection"
-      :name="$route.name"
+      :name="route.name"
       :route-query="$route.query"
-      :hash="$route.hash"
+      :hash="route.hash"
       :paginated="true"
     >
       <template #filter>
@@ -40,24 +39,19 @@
 </template>
 
 <script lang="ts" setup>
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
-import stationsCollection from "@/frontend/api/collections/Stations";
-import type { StationsCollection } from "@/frontend/api/collections/Stations";
-import { useRoute } from "vue-router";
+// import stationsCollection from "@/frontend/api/collections/Stations";
+// import type { StationsCollection } from "@/frontend/api/collections/Stations";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
-
-useMetaInfo();
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 const { t } = useI18n();
 
-const collection: StationsCollection = stationsCollection;
+useMetaInfo(t);
 
-const route = useRoute();
-
-const isSubRoute = computed(() => route.name !== "stations");
+// const collection: StationsCollection = stationsCollection;
 </script>
 
 <script lang="ts">

@@ -7,6 +7,25 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { routes as initialRoutes } from "@/frontend/routes";
 import { addTrailingSlashToAllRoutes } from "@/shared/utils/RouterHelper";
 
+import "vue-router";
+
+// To ensure it is treated as a module, add at least one `export` statement
+export {};
+
+declare module "vue-router" {
+  interface RouteLocationQuery {
+    q: Record<string, string | number | boolean | null | undefined>;
+  }
+
+  interface RouteMeta {
+    title?: string;
+    needsAuthentication?: boolean;
+    quickSearch?: string;
+    primaryAction?: boolean;
+    backgroundImage?: string;
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(),
   linkActiveClass: "active",

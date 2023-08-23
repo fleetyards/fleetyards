@@ -1,61 +1,57 @@
 <template>
   <AsyncData :is-error="isError" :is-loading="isLoading || isFetching">
-    <template #resolved>
-      <section v-if="celestialObject" class="container">
-        <div class="row">
-          <div class="col-12">
-            <BreadCrumbs :crumbs="crumbs" />
-            <h1 v-if="celestialObject">
-              {{ celestialObject.name }}
-              <small class="text-muted">{{
-                celestialObject.designation
-              }}</small>
-            </h1>
-          </div>
+    <template v-if="celestialObject" #resolved>
+      <div class="row">
+        <div class="col-12">
+          <BreadCrumbs :crumbs="crumbs" />
+          <h1 v-if="celestialObject">
+            {{ celestialObject.name }}
+            <small class="text-muted">{{ celestialObject.designation }}</small>
+          </h1>
         </div>
-        <div v-if="celestialObject" class="row">
-          <div class="col-12 col-lg-8">
-            <blockquote v-if="celestialObject.description" class="description">
-              <p v-html="celestialObject.description" />
-            </blockquote>
-          </div>
-          <div class="col-12 col-lg-4">
-            <Panel>
-              <CelestialObjectMetrics
-                :celestial-object="celestialObject"
-                padding
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-8">
+          <blockquote v-if="celestialObject.description" class="description">
+            <p v-html="celestialObject.description" />
+          </blockquote>
+        </div>
+        <div class="col-12 col-lg-4">
+          <Panel>
+            <CelestialObjectMetrics
+              :celestial-object="celestialObject"
+              padding
+            />
+          </Panel>
+        </div>
+      </div>
+      <div class="row">
+        <div
+          v-if="celestialObject && celestialObject.moons?.length"
+          class="col-12"
+        >
+          <h2>{{ t("headlines.moons") }}</h2>
+          <transition-group name="fade-list" class="row" tag="div" appear>
+            <div
+              v-for="moon in celestialObject.moons"
+              :key="moon.slug"
+              class="col-12 col-md-6 col-lg-3 fade-list-item"
+            >
+              <ItemPanel
+                :item="moon"
+                :route="{
+                  name: 'celestial-object',
+                  params: {
+                    starsystem: celestialObject.starsystem?.slug,
+                    slug: moon.slug,
+                  },
+                }"
               />
-            </Panel>
-          </div>
+            </div>
+          </transition-group>
         </div>
-        <div class="row">
-          <div
-            v-if="celestialObject && celestialObject.moons?.length"
-            class="col-12"
-          >
-            <h2>{{ t("headlines.moons") }}</h2>
-            <transition-group name="fade-list" class="row" tag="div" appear>
-              <div
-                v-for="moon in celestialObject.moons"
-                :key="moon.slug"
-                class="col-12 col-md-6 col-lg-3 fade-list-item"
-              >
-                <ItemPanel
-                  :item="moon"
-                  :route="{
-                    name: 'celestial-object',
-                    params: {
-                      starsystem: celestialObject.starsystem?.slug,
-                      slug: moon.slug,
-                    },
-                  }"
-                />
-              </div>
-            </transition-group>
-          </div>
-        </div>
-        <StationsList :celestial-object-slug="celestialObject.slug" />
-      </section>
+      </div>
+      <StationsList :celestial-object-slug="celestialObject.slug" />
     </template>
   </AsyncData>
 </template>
@@ -63,20 +59,20 @@
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
 import StationsList from "@/frontend/components/CelestialObjects/StationsList/index.vue";
-import ItemPanel from "@/frontend/components/Stations/Item/index.vue";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import type { Crumb } from "@/frontend/core/components/BreadCrumbs/index.vue";
-import AsyncData from "@/frontend/core/components/AsyncData.vue";
+import ItemPanel from "@/frontend/components/CelestialObjects/Item/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import type { Crumb } from "@/shared/components/BreadCrumbs/index.vue";
+import AsyncData from "@/shared/components/AsyncData.vue";
 import CelestialObjectMetrics from "@/frontend/components/CelestialObjects/Metrics/index.vue";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useRoute } from "vue-router";
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
-const { updateMetaInfo } = useMetaInfo();
+const { updateMetaInfo } = useMetaInfo(t);
 
 const crumbs = computed(() => {
   if (!celestialObject.value) {
@@ -119,7 +115,8 @@ const crumbs = computed(() => {
   return crumbs;
 });
 
-const { celestialObjects } = useApiClient();
+const { celestialObjects: celestialObjectsService } =
+  useFyApiClient(currentLocale);
 
 const route = useRoute();
 
@@ -130,7 +127,10 @@ const {
   data: celestialObject,
 } = useQuery({
   queryKey: ["celestialObject", route.params.slug],
-  queryFn: () => celestialObjects.get({ slug: route.params.slug }),
+  queryFn: () =>
+    celestialObjectsService.detail({
+      slug: route.params.slug?.toString(),
+    }),
 });
 
 watch(

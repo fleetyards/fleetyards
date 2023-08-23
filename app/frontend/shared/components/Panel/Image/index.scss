@@ -1,0 +1,56 @@
+.panel-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  transition: border-radius $transition-base-speed ease;
+
+  & > :first-child {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    -webkit-animation-name: fadein;
+    animation-name: fadeIn;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+
+  &:last-child {
+    border-bottom: none;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    img {
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+
+  &.panel-image-details {
+    overflow: hidden;
+    border-bottom: none;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+}

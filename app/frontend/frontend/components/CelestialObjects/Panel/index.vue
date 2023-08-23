@@ -4,7 +4,7 @@
     :id="`${item.type}-${location.slug}`"
     class="celestial-object-panel"
   >
-    <div class="panel-image text-center">
+    <PanelImage class="text-center">
       <LazyImage
         :to="route"
         :aria-label="location.name"
@@ -12,7 +12,7 @@
         :alt="location.name"
         class="image"
       />
-    </div>
+    </PanelImage>
     <div class="panel-heading">
       <h2 class="panel-title">
         <router-link :to="route">
@@ -31,6 +31,7 @@
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";

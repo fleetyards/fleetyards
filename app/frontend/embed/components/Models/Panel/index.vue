@@ -14,12 +14,7 @@
           />
         </h2>
       </div>
-      <div
-        :class="{
-          'no-details': !details,
-        }"
-        class="panel-image text-center"
-      >
+      <PanelImage class="text-center" :details="details">
         <LazyImage
           v-if="model.media.storeImage?.medium"
           :href="url"
@@ -30,7 +25,7 @@
           :alt="model.name"
           class="image"
         />
-      </div>
+      </PanelImage>
       <Collapsed
         :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
@@ -55,6 +50,7 @@
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import ModelTopMetrics from "@/embed/components/Models/TopMetrics/index.vue";
 import ModelBaseMetrics from "@/embed/components/Models/BaseMetrics/index.vue";

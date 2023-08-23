@@ -206,7 +206,7 @@ const tooltip = computed(() => {
 
   return {
     content: props.label,
-    classes: "nav-item-tooltip",
+    popperClass: "nav-item-tooltip",
     placement: "right",
   };
 });

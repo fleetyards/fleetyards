@@ -213,11 +213,12 @@ import RadioList from "@/shared/components/Form/RadioList/index.vue";
 import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
-import {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-} from "@/shared/utils/FilterOptions";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+
+const { t } = useI18n();
+const { booleanOptions, priceOptions, pledgePriceOptions } =
+  useFilterOptions(t);
 
 //   data() {
 //     const query = this.$route.query.q || {};

@@ -95,12 +95,14 @@ import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 import RadioList from "@/shared/components/Form/RadioList/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Btn from "@/shared/components/BaseBtn/index.vue";
-import { booleanOptions } from "@/shared/utils/FilterOptions";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import type { StationQuery } from "@/services/fyApi";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { t } = useI18n();
+
+const { booleanOptions } = useFilterOptions(t);
 
 const { filter, isFilterSelected, resetFilter } = useFilters();
 
