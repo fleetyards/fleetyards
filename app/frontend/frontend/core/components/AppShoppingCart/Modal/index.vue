@@ -118,9 +118,8 @@
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/Btn/index.vue";
-import { sum as sumArray } from "@/frontend/utils/Array";
-import { sortBy } from "@/frontend/lib/Helpers";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import { sum as sumArray, sortBy } from "@/shared/utils/Array";
 import ItemAmount from "@/frontend/core/components/AppShoppingCart/ItemAmount/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useShoppingCartStore } from "@/frontend/stores/shoppingCart";

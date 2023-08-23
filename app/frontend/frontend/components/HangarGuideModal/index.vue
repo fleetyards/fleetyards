@@ -2,7 +2,7 @@
   <Modal>
     <template #title>
       <h1>
-        <template v-if="empty">
+        <template v-if="hangarStore.empty">
           {{ t("headlines.hangarGuideEmpty") }}
           <small class="text-muted">
             {{ t("sublines.hangarGuide.headline") }}
@@ -92,12 +92,12 @@
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
 import VideoEmbed from "@/frontend/core/components/Video/index.vue";
+import { useHangarStore } from "@/frontend/stores/hangar";
+
+const hangarStore = useHangarStore();
 
 const { t } = useI18n();
-
-const empty = computed(() => Store.getters["hangar/empty"]);
 
 type VideoList = {
   [key: string]: TVideo;

@@ -19,7 +19,7 @@
           <Btn
             :inline="true"
             data-test="fleetchart-link"
-            @click.native="toggleFleetchart"
+            @click="toggleFleetchart"
           >
             <i class="fad fa-starship" />
             {{ t("labels.fleetchart") }}
@@ -54,19 +54,20 @@ import { useRoute } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { publicFleetShipsRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
-import fleetsCollection from "@/frontend/api/collections/Fleets";
 import PublicShipsList from "@/frontend/components/Fleets/PublicShipsList/index.vue";
 import ShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import Store from "@/frontend/lib/Store";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
-
-const { updateMetaInfo } = useMetaInfo();
+import { useMobile } from "@/shared/composables/useMobile";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
 
 const { t } = useI18n();
 
-const mobile = computed(() => Store.getters.mobile);
+const { updateMetaInfo } = useMetaInfo(t);
+
+const mobile = useMobile();
 
 const fleet = computed(() => fleetsCollection.record);
 
@@ -107,11 +108,15 @@ onMounted(() => {
   fetch();
 });
 
+const fleetStore = useFleetStore();
+
+const publicFleetStore = usePublicFleetStore();
+
 const toggleFleetchart = () => {
   if (fleet.value?.myFleet) {
-    Store.dispatch("fleet/toggleFleetchart");
+    fleetStore.toggleFleetchart();
   } else {
-    Store.dispatch("publicFleet/toggleFleetchart");
+    publicFleetStore.toggleFleetchart();
   }
 };
 

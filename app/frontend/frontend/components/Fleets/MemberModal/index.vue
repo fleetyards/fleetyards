@@ -1,6 +1,6 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit }" slim>
-    <Modal v-if="fleet && form" :title="$t('headlines.fleets.inviteMember')">
+    <Modal v-if="fleet && form" :title="t('headlines.fleets.inviteMember')">
       <form
         :id="`fleet-member-${fleet.id}`"
         @submit.prevent="handleSubmit(save)"
@@ -11,7 +11,7 @@
               v-slot="{ errors }"
               vid="username"
               rules="required|alpha_dash|user"
-              :name="$t('labels.username')"
+              :name="t('labels.username')"
               :slim="true"
             >
               <FormInput
@@ -34,7 +34,7 @@
             size="large"
             :inline="true"
           >
-            {{ $t("actions.fleet.members.invite") }}
+            {{ t("actions.fleet.members.invite") }}
           </Btn>
         </div>
       </template>
@@ -42,54 +42,67 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import memberCollection from "@/frontend/api/collections/FleetMembers";
-import { displayAlert } from "@/frontend/lib/Noty";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { Fleet, FleetMemberCreateInput } from "@/services/fyApi";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useComlink } from "@/shared/composables/useComlink";
 
-@Component<MemberModal>({
-  components: {
-    Modal,
-    FormInput,
-    Btn,
-  },
-})
-export default class MemberModal extends Vue {
-  @Prop({ required: true }) fleet: Fleet;
+const { t, currentLocale } = useI18n();
 
-  submitting = false;
+const { displayAlert } = useNoty(t);
 
-  form: FleetMemberForm | null = null;
+type Props = {
+  fleet: Fleet;
+};
 
-  mounted() {
-    this.setupForm();
+const props = defineProps<Props>();
+
+const submitting = ref(false);
+
+const form = ref<FleetMemberCreateInput>({});
+
+onMounted(() => {
+  setupForm();
+});
+
+const setupForm = () => {
+  form.value = {
+    username: undefined,
+  };
+};
+
+const { fleetMembers: fleetMembersService } = useFyApiClient(currentLocale);
+
+const comlink = useComlink();
+
+const save = async () => {
+  submitting.value = true;
+
+  try {
+    const member = await fleetMembersService.createMember({
+      fleetSlug: props.fleet.slug,
+      requestBody: form.value,
+    });
+
+    comlink.emit("fleet-member-invited", member);
+    comlink.emit("close-modal");
+  } catch (error) {
+    console.error(error);
+    // displayAlert({
+    //   text: t(response.error),
+    // });
   }
+  submitting.value = false;
+};
+</script>
 
-  setupForm() {
-    this.form = {
-      username: null,
-    };
-  }
-
-  async save() {
-    this.submitting = true;
-
-    const response = await memberCollection.create(this.fleet.slug, this.form);
-
-    this.submitting = false;
-
-    if (!response.error) {
-      this.$comlink.$emit("fleet-member-invited", response.data);
-      this.$comlink.$emit("close-modal");
-    } else {
-      displayAlert({
-        text: this.$t(response.error),
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "MemberModal",
+};
 </script>

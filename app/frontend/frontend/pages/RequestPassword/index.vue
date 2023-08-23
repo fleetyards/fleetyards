@@ -49,24 +49,25 @@
 
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Store from "@/frontend/lib/Store";
-
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { PasswordRequestInput } from "@/services/fyApi";
-import { useRouter } from "vue-router";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useNoty(t);
 
 const submitting = ref(false);
 
 const form = ref<PasswordRequestInput>({});
 
-const isAuthenticated = computed(
-  () => Store.getters["session/isAuthenticated"],
-);
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
 
 onMounted(() => {
   setupForm();

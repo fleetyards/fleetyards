@@ -7,6 +7,7 @@ interface HangarState extends ShipListState {
   starterGuideVisible: boolean;
   gridView: boolean;
   money: boolean;
+  extensionReady: boolean;
 }
 
 export const useHangarStore = defineStore("hangar", {
@@ -20,12 +21,14 @@ export const useHangarStore = defineStore("hangar", {
     fleetchartScreenHeight: "1x",
     fleetchartMode: "panzoom",
     fleetchartScale: 1,
+    fleetchartColor: false,
     perPage: 30,
     money: true,
     ships: [],
     preview: true,
     starterGuideVisible: false,
     gridView: true,
+    extensionReady: false,
   }),
   getters: {
     empty(state) {
@@ -44,6 +47,9 @@ export const useHangarStore = defineStore("hangar", {
     },
     toggleFleetchart() {
       this.fleetchartVisible = !this.fleetchartVisible;
+    },
+    toggleColored() {
+      this.fleetchartColor = !this.fleetchartColor;
     },
     updatePerPage(payload: number) {
       this.perPage = payload;
@@ -87,6 +93,7 @@ export const useHangarStore = defineStore("hangar", {
       "fleetchartScreenHeight",
       "fleetchartMode",
       "fleetchartScale",
+      "fleetchartColor",
       "preview",
       "money",
       "starterGuideVisible",

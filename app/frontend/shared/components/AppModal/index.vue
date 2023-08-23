@@ -11,12 +11,15 @@
     class="app-modal fade"
     @click.self="() => close()"
   >
-    <Component :is="component" ref="modelComponent" v-bind="componentProps" />
+    <div class="modal-dialog">
+      <Component :is="component" ref="modalComponent" v-bind="componentProps" />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Component } from "vue";
+import { defineAsyncComponent } from "vue";
+import type { Component, Raw } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
@@ -28,7 +31,7 @@ export type AppModalOptions = {
   wide?: boolean;
   fixed?: boolean;
   dirty?: boolean;
-  props?: any;
+  props?: unknown;
 };
 
 interface ModalComponent extends HTMLElement {
@@ -37,11 +40,11 @@ interface ModalComponent extends HTMLElement {
 
 const modal = ref<HTMLElement | undefined>();
 
-const modelComponent = ref<ModalComponent | undefined>();
+const modalComponent = ref<ModalComponent | undefined>();
 
-const component = ref<Component | undefined>();
+const component = ref<Raw<Component> | undefined>();
 
-const componentProps = ref<any>();
+const componentProps = ref<unknown>();
 
 const wide = ref(false);
 
@@ -74,7 +77,7 @@ const open = (options: AppModalOptions) => {
   wide.value = !!options.wide;
   fixed.value = !!options.fixed;
   dirty.value = !!options.dirty;
-  component.value = options.component;
+  component.value = markRaw(defineAsyncComponent(options.component));
 
   isShow.value = true;
 
@@ -102,7 +105,7 @@ const close = (force = false) => {
     return;
   }
 
-  if (modelComponent.value?.dirty) {
+  if (modalComponent.value?.dirty) {
     noty?.displayConfirm({
       text: i18n?.t("appModal.messages.confirm.dirty"),
       onConfirm: () => {

@@ -270,7 +270,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "*",
+    path: "/:pathMatch(.*)*",
     component: () => import("@/frontend/pages/NotFound/index.vue"),
     meta: {
       title: "notFound",

@@ -34,11 +34,16 @@ export const i18nHelpers = (i18n: I18n) => {
     return i18n.t(`number.${units}`, { count } as { count: number });
   };
 
-  const toDollar = (value: number) =>
+  const toDollar = (value?: number) => {
+    if (!value) {
+      return;
+    }
+
     i18n.numberToCurrency(value, {
       precision: 2,
       unit: "$",
     });
+  };
 
   const toAu = (value: number | string) => {
     if (!value) {

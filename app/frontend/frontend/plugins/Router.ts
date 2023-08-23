@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteLocation, LocationQuery } from "vue-router";
 import qs from "qs";
-import Store from "@/frontend/lib/Store";
+import { useAppStore } from "@/frontend/stores/app";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useSessionStore } from "@/frontend/stores/session";
 import { routes as initialRoutes } from "@/frontend/routes";
 import { addTrailingSlashToAllRoutes } from "@/shared/utils/RouterHelper";
 
@@ -36,10 +38,8 @@ const router = createRouter({
 });
 
 const validateAndResolveNewRoute = (to: RouteLocation) => {
-  if (
-    to.meta.needsAuthentication &&
-    !Store.getters["session/isAuthenticated"]
-  ) {
+  const sessionStore = useSessionStore();
+  if (to.meta.needsAuthentication && !sessionStore.isAuthenticated) {
     return {
       routeName: "login",
       routeParams: {
@@ -63,14 +63,16 @@ router.beforeResolve((to, _from, next) => {
   }
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.name === "fleet-invite") {
-    Store.dispatch("fleet/saveInviteToken", to.params.token);
+router.beforeEach((to, _from, next) => {
+  const fleetStore = useFleetStore();
+  if (to.name === "fleet-invite" && to.params.token) {
+    fleetStore.inviteToken = String(to.params.token);
   }
 
+  const appStore = useAppStore();
   // check if update is available
   if (
-    Store.getters["app/isUpdateAvailable"] &&
+    appStore.isUpdateAvailable &&
     Object.keys(to.query).length === 0 &&
     to.query.constructor === Object &&
     Object.keys(to.params).length === 0 &&

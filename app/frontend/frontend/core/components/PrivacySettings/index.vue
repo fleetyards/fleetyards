@@ -1,54 +1,52 @@
 <template>
-  <Modal :title="title">
+  <Modal :title="title" fixed>
     <div v-if="info" class="cookies-banner">
       <p>
-        {{ $t(`privacySettings.info.${info}.text`) }}
+        {{ t(`privacySettings.info.${info}.text`) }}
       </p>
       <dl>
         <dt>
-          {{ $t("privacySettings.info.why") }}
+          {{ t("privacySettings.info.why") }}
         </dt>
         <dd>
-          {{ $t(`privacySettings.info.${info}.why`) }}
+          {{ t(`privacySettings.info.${info}.why`) }}
         </dd>
         <dt>
-          {{ $t("privacySettings.info.dataCollected") }}
+          {{ t("privacySettings.info.dataCollected") }}
         </dt>
         <dd>
           <ul>
-            <li
-              v-for="(item, index) in $t(`privacySettings.info.${info}.data`)"
-              :key="index"
-            >
+            <li v-for="(item, index) in infoLabels" :key="index">
               {{ item }}
             </li>
           </ul>
         </dd>
         <dt>
-          {{ $t("privacySettings.info.company") }}
+          {{ t("privacySettings.info.company") }}
         </dt>
         <dd>
-          {{ $t(`privacySettings.info.${info}.company`) }}
+          {{ t(`privacySettings.info.${info}.company`) }}
         </dd>
         <dt>
-          {{ $t("privacySettings.info.location") }}
+          {{ t("privacySettings.info.location") }}
         </dt>
         <dd>
-          {{ $t(`privacySettings.info.${info}.location`) }}
+          {{ t(`privacySettings.info.${info}.location`) }}
         </dd>
       </dl>
     </div>
     <div v-else-if="internalSettings" class="cookies-banner">
-      <p>{{ $t(`privacySettings.text`) }}</p>
+      <p>{{ t(`privacySettings.text`) }}</p>
       <form @submit.prevent="submit">
         <div class="row">
           <div class="col-12">
             <fieldset>
-              <legend>{{ $t("privacySettings.essential") }}</legend>
+              <legend>{{ t("privacySettings.essential") }}</legend>
               <div class="form-item">
                 <Checkbox
+                  name="fontawesome"
                   :value="true"
-                  :label="$t('privacySettings.fontawesome')"
+                  :label="t('privacySettings.fontawesome')"
                   :disabled="true"
                 />
                 <i
@@ -58,8 +56,9 @@
               </div>
               <div class="form-item">
                 <Checkbox
+                  name="googleFonts"
                   :value="true"
-                  :label="$t('privacySettings.googleFonts')"
+                  :label="t('privacySettings.googleFonts')"
                   :disabled="true"
                 />
                 <i
@@ -69,11 +68,12 @@
               </div>
             </fieldset>
             <fieldset>
-              <legend>{{ $t("privacySettings.functional") }}</legend>
+              <legend>{{ t("privacySettings.functional") }}</legend>
               <div class="form-item">
                 <Checkbox
                   v-model="form.ahoy"
-                  :label="$t('privacySettings.ahoy')"
+                  name="ahoy"
+                  :label="t('privacySettings.ahoy')"
                 />
                 <i
                   class="info-link fal fa-info-circle"
@@ -83,7 +83,8 @@
               <div class="form-item">
                 <Checkbox
                   v-model="form.youtube"
-                  :label="$t('privacySettings.youtube')"
+                  name="youtube"
+                  :label="t('privacySettings.youtube')"
                 />
                 <i
                   class="info-link fal fa-info-circle"
@@ -97,46 +98,46 @@
       </form>
     </div>
     <div v-else class="cookies-banner">
-      <p>{{ $t("privacySettings.introduction.paragraph1") }}</p>
-      <p>{{ $t("privacySettings.introduction.paragraph2") }}</p>
+      <p>{{ t("privacySettings.introduction.paragraph1") }}</p>
+      <p>{{ t("privacySettings.introduction.paragraph2") }}</p>
       <p>
-        {{ $t("privacySettings.introduction.paragraph3") }}
+        {{ t("privacySettings.introduction.paragraph3") }}
         <Btn
           variant="link"
           :text-inline="true"
           :to="{ name: 'privacy-policy' }"
         >
-          {{ $t("nav.privacyPolicy") }}
+          {{ t("nav.privacyPolicy") }}
         </Btn>
         .
       </p>
     </div>
     <template #footer>
       <div class="cookies-banner-actions">
-        <Btn v-if="info" :inline="true" :block="true" @click.native="hideInfo">
+        <Btn v-if="info" :inline="true" :block="true" @click="hideInfo">
           <i class="fal fa-chevron-left" />
-          {{ $t("actions.back") }}
+          {{ t("actions.back") }}
         </Btn>
         <Btn
           v-else-if="internalSettings"
           data-test="save-privacy-settings"
           :block="true"
           :inline="true"
-          @click.native="submit"
+          @click="submit"
         >
-          {{ $t("privacySettings.save") }}
+          {{ t("privacySettings.save") }}
         </Btn>
         <template v-else>
           <Btn
             data-test="show-settings"
             :inline="true"
             variant="link"
-            @click.native="showSettings"
+            @click="showSettings"
           >
-            {{ $t("privacySettings.editSettings") }}
+            {{ t("privacySettings.editSettings") }}
           </Btn>
-          <Btn data-test="accept-cookies" :inline="true" @click.native="accept">
-            {{ $t("privacySettings.accept") }}
+          <Btn data-test="accept-cookies" :inline="true" @click="accept">
+            {{ t("privacySettings.accept") }}
           </Btn>
         </template>
       </div>
@@ -144,102 +145,115 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Checkbox from "@/shared/components/Form/Checkbox/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import type { Cookies } from "@/frontend/stores/cookies";
+import { useCookiesStore } from "@/frontend/stores/cookies";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 
-@Component<PrivacySettings>({
-  components: {
-    Modal,
-    Checkbox,
-    Btn,
+type Props = {
+  settings?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  settings: false,
+});
+
+const { t } = useI18n();
+
+const info = ref<string | undefined>();
+
+const internalSettings = ref(false);
+
+const form = ref<Cookies>({
+  ahoy: false,
+  youtube: false,
+});
+
+const cookiesStore = useCookiesStore();
+
+const title = computed(() => {
+  if (info.value) {
+    return t(`privacySettings.info.${info.value}.title`);
+  }
+  if (internalSettings.value) {
+    return t("privacySettings.title");
+  }
+
+  return t("privacySettings.introduction.title");
+});
+
+const infoLabels = computed(() => {
+  return t(`privacySettings.info.${info.value}.data`);
+});
+
+watch(
+  () => cookiesStore.cookies,
+  () => {
+    setupForm();
   },
-})
-export default class PrivacySettings extends Vue {
-  @Prop({ default: false }) settings: boolean;
+  { deep: true },
+);
 
-  info: any = null;
+onMounted(() => {
+  internalSettings.value = props.settings;
+  setupForm();
+});
 
-  internalSettings = false;
+const showSettings = () => {
+  internalSettings.value = true;
+};
 
-  form: PrivacySettingForm = {
-    ahoy: false,
-    youtube: false,
+const comlink = useComlink();
+
+const close = () => {
+  comlink.emit("close-modal", true);
+};
+
+const setupForm = () => {
+  form.value = {
+    ahoy: cookiesStore.cookies.ahoy,
+    youtube: cookiesStore.cookies.youtube,
   };
+};
 
-  @Getter("cookies", { namespace: "cookies" }) cookies: any;
+const submit = () => {
+  cookiesStore.updateAcceptedCookies({
+    ...form.value,
+  });
 
-  @Getter("infoVisible", { namespace: "cookies" }) infoVisible: boolean;
+  cookiesStore.hideInfo();
 
-  get title() {
-    if (this.info) {
-      return this.$t(`privacySettings.info.${this.info}.title`);
-    }
-    if (this.internalSettings) {
-      return this.$t("privacySettings.title");
-    }
+  close();
+};
 
-    return this.$t("privacySettings.introduction.title");
-  }
+const accept = () => {
+  cookiesStore.updateAcceptedCookies({
+    ahoy: true,
+    youtube: true,
+  });
 
-  @Watch("cookies", { deep: true })
-  onCookiesChange() {
-    this.setupForm();
-  }
+  cookiesStore.hideInfo();
 
-  mounted() {
-    this.internalSettings = this.settings;
-    this.setupForm();
-  }
+  close();
+};
 
-  showSettings() {
-    this.internalSettings = true;
-  }
+const openInfo = (key: string) => {
+  info.value = key;
+};
 
-  close() {
-    this.$comlink.$emit("close-modal", "privacySetting", true);
-  }
+const hideInfo = () => {
+  info.value = undefined;
+};
+</script>
 
-  setupForm() {
-    this.form = {
-      ahoy: this.cookies.ahoy,
-      youtube: this.cookies.youtube,
-    };
-  }
-
-  submit() {
-    this.$store.dispatch("cookies/updateAcceptedCookies", {
-      ...this.form,
-    });
-
-    this.$store.dispatch("cookies/hideInfo");
-
-    this.close();
-  }
-
-  accept() {
-    this.$store.dispatch("cookies/updateAcceptedCookies", {
-      ahoy: true,
-      youtube: true,
-    });
-
-    this.$store.dispatch("cookies/hideInfo");
-
-    this.close();
-  }
-
-  openInfo(key) {
-    this.info = key;
-  }
-
-  hideInfo() {
-    this.info = null;
-  }
-}
+<script lang="ts">
+export default {
+  name: "PrivacySettings",
+};
 </script>
 
 <style lang="scss" scoped>

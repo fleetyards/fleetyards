@@ -20,9 +20,11 @@
         <div class="main-inner">
           <AppNavigationHeader />
 
-          <transition name="fade" mode="out-in">
-            <router-view :key="$route.path" class="main" />
-          </transition>
+          <router-view v-slot="{ Component, route: viewRoute }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" :key="`${locale}-${viewRoute.path}`" />
+            </transition>
+          </router-view>
         </div>
 
         <AppFooter />
@@ -36,8 +38,6 @@
 </template>
 
 <script lang="ts" setup>
-import userCollection from "@/frontend/api/collections/User";
-import versionCollection from "@/frontend/api/collections/Version";
 import AppNavigation from "@/frontend/core/components/AppNavigation/index.vue";
 import AppNavigationHeader from "@/frontend/core/components/AppNavigation/Header/index.vue";
 import AppNavigationMobile from "@/frontend/core/components/AppNavigation/Mobile/index.vue";
@@ -50,6 +50,7 @@ import { useI18n } from "@/frontend/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useUpdates } from "@/frontend/composables/useUpdates";
 import { useAppStore } from "@/frontend/stores/app";
+import { useNavStore } from "@/frontend/stores/nav";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -59,6 +60,7 @@ import { useRoute } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
 
 const mobile = useMobile();
 
@@ -68,7 +70,9 @@ useAhoy();
 
 const appStore = useAppStore();
 
-const { navCollapsed } = storeToRefs(appStore);
+const navStore = useNavStore();
+
+const { collapsed: navCollapsed } = storeToRefs(navStore);
 
 const overlayStore = useOverlayStore();
 
@@ -88,7 +92,7 @@ const { infoVisible } = storeToRefs(cookiesStore);
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
-const { t, availableLocales } = useI18n();
+const { t, availableLocales, currentLocale } = useI18n();
 
 useMetaInfo(t);
 
@@ -218,18 +222,24 @@ const checkSessionReload = async () => {
   }
 };
 
+const { users: usersService, versions: versionsService } =
+  useFyApiClient(currentLocale);
+
 const fetchCurrentUser = async () => {
-  const response = await userCollection.current();
-  if (response.data) {
-    sessionStore.currentUser = response.data;
+  try {
+    const user = await usersService.me();
+    sessionStore.currentUser = user;
+  } catch (error) {
+    console.error(error);
   }
 };
 
 const checkVersion = async () => {
-  const response = await versionCollection.current();
-
-  if (response) {
-    appStore.updateVersion(response);
+  try {
+    const version = await versionsService.version();
+    appStore.updateVersion(version);
+  } catch (error) {
+    console.error(error);
   }
 };
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <Modal :title="$t('headlines.vehicle.bulkGroupEdit')">
+  <Modal :title="t('headlines.vehicle.bulkGroupEdit')">
     <p class="hint">
       <i class="fal fa-info-circle" />
-      {{ $t("labels.vehicle.bulkGroupEdit.hint") }}
+      {{ t("labels.vehicle.bulkGroupEdit.hint") }}
     </p>
 
     <form id="vehicle-bulk" @submit.prevent="save">
@@ -16,6 +16,7 @@
               class="col-12 col-md-6"
             >
               <Checkbox
+                :name="group.name"
                 :label="group.name"
                 :value="selected(group.id)"
                 @input="changeGroup(group)"
@@ -36,72 +37,80 @@
           data-test="vehicle-save"
           :inline="true"
         >
-          {{ $t("actions.save") }}
+          {{ t("actions.save") }}
         </Btn>
       </div>
     </template>
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
+import Checkbox from "@/shared/components/Form/Checkbox/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+// import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+// import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
+import type { HangarGroup } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<VehicleModal>({
-  components: {
-    Modal,
-    Checkbox,
-    FormInput,
-    Btn,
-  },
-})
-export default class VehicleModal extends Vue {
-  @Prop({ required: true }) vehicleIds: string[];
+type Props = {
+  vehicleIds: string[];
+};
 
-  submitting = false;
+defineProps<Props>();
 
-  hangarGroupIds: string[] = [];
+const { t } = useI18n();
 
-  get hangarGroups() {
-    return hangarGroupsCollection.records;
-  }
+const submitting = ref(false);
 
-  selected(groupId) {
-    return this.hangarGroupIds.includes(groupId);
-  }
+const hangarGroupIds = ref<string[]>([]);
 
-  changeGroup(group) {
-    if (this.hangarGroupIds.includes(group.id)) {
-      const index = this.hangarGroupIds.findIndex(
-        (groupId) => groupId === group.id,
-      );
-      if (index > -1) {
-        this.hangarGroupIds.splice(index, 1);
-      }
-    } else {
-      this.hangarGroupIds.push(group.id);
+const hangarGroups = computed(() => {
+  return hangarGroupsCollection.records;
+});
+
+const selected = (groupId: string) => {
+  return hangarGroupIds.value.includes(groupId);
+};
+
+const changeGroup = (group: HangarGroup) => {
+  if (hangarGroupIds.value.includes(group.id)) {
+    const index = hangarGroupIds.value.findIndex(
+      (groupId) => groupId === group.id,
+    );
+    if (index > -1) {
+      hangarGroupIds.value.splice(index, 1);
     }
+  } else {
+    hangarGroupIds.value.push(group.id);
+  }
+};
+
+const comlink = useComlink();
+
+const save = async () => {
+  submitting.value = true;
+
+  if (
+    await vehiclesCollection.updateHangarGroupsBulk(
+      this.vehicleIds,
+      this.hangarGroupIds,
+    )
+  ) {
+    comlink.emit("close-modal");
   }
 
-  async save() {
-    this.submitting = true;
-
-    if (
-      await vehiclesCollection.updateHangarGroupsBulk(
-        this.vehicleIds,
-        this.hangarGroupIds,
-      )
-    ) {
-      this.$comlink.$emit("close-modal");
-    }
-
-    this.submitting = false;
-  }
-}
+  submitting.value = false;
+};
 </script>
+
+<script lang="ts">
+export default {
+  name: "VehiclesBulkGroupModal",
+};
+</script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

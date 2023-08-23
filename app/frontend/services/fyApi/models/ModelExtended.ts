@@ -21,32 +21,28 @@ export type ModelExtended = {
         rentalAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    brochure?: string | null;
-    classification?: string | null;
-    classificationLabel?: string | null;
+    brochure?: string;
+    classification?: string;
+    classificationLabel?: string;
     crew: {
-        max?: number | null;
-        maxLabel?: string | null;
-        min?: number | null;
-        minLabel?: string | null;
+        max?: number;
+        maxLabel?: string;
+        min?: number;
+        minLabel?: string;
     };
-    description?: string | null;
-    erkulIdentifier?: string | null;
-    focus?: string | null;
+    description?: string;
+    erkulIdentifier?: string;
+    focus?: string;
     hasImages: boolean;
     hasModules: boolean;
     hasPaints: boolean;
     hasUpgrades: boolean;
     hasVideos: boolean;
-    holo?: string | null;
-    /**
-     * @deprecated
-     */
-    holoColored?: boolean | null;
-    lastPledgePrice?: number | null;
-    lastPledgePriceLabel?: string | null;
-    lastUpdatedAt?: string | null;
-    lastUpdatedAtLabel?: string | null;
+    holo?: string;
+    lastPledgePrice?: number;
+    lastPledgePriceLabel?: string;
+    lastUpdatedAt?: string;
+    lastUpdatedAtLabel?: string;
     links: {
         salesPageUrl?: string | null;
         storeUrl?: string | null;
@@ -54,292 +50,296 @@ export type ModelExtended = {
         frontend?: string;
     };
     loaners: Array<ModelLoaner>;
-    manufacturer?: Manufacturer | null;
+    manufacturer?: Manufacturer;
     media: {
-        angledView?: ViewImage | null;
-        angledViewColored?: ViewImage | null;
-        fleetchartImage?: string | null;
-        frontView?: ViewImage | null;
-        frontViewColored?: ViewImage | null;
-        sideView?: ViewImage | null;
-        sideViewColored?: ViewImage | null;
-        storeImage?: MediaImage | null;
-        topView?: ViewImage | null;
-        topViewColored?: ViewImage | null;
+        angledView?: ViewImage;
+        angledViewColored?: ViewImage;
+        fleetchartImage?: string;
+        frontView?: ViewImage;
+        frontViewColored?: ViewImage;
+        sideView?: ViewImage;
+        sideViewColored?: ViewImage;
+        storeImage?: MediaImage;
+        topView?: ViewImage;
+        topViewColored?: ViewImage;
     };
     metrics: {
-        beam?: number | null;
-        beamLabel?: string | null;
-        cargo?: number | null;
-        cargoLabel?: string | null;
-        fleetchartLength?: number | null;
-        height?: number | null;
-        heightLabel?: string | null;
-        hydrogenFuelTankSize?: number | null;
+        beam?: number;
+        beamLabel?: string;
+        cargo?: number;
+        cargoLabel?: string;
+        fleetchartLength?: number;
+        height?: number;
+        heightLabel?: string;
+        hydrogenFuelTankSize?: number;
         isGroundVehicle?: boolean;
-        length?: number | null;
-        lengthLabel?: string | null;
-        mass?: number | null;
-        massLabel?: string | null;
-        quantumFuelTankSize?: number | null;
-        size?: string | null;
-        sizeLabel?: string | null;
+        length?: number;
+        lengthLabel?: string;
+        mass?: number;
+        massLabel?: string;
+        quantumFuelTankSize?: number;
+        size?: string;
+        sizeLabel?: string;
     };
     onSale: boolean;
-    pledgePrice?: number | null;
-    pledgePriceLabel?: string | null;
-    price?: number | null;
-    priceLabel?: string | null;
-    productionNote?: string | null;
-    productionStatus?: string | null;
-    rsiId?: number | null;
-    rsiName?: string | null;
-    rsiSlug?: string | null;
+    pledgePrice?: number;
+    pledgePriceLabel?: string;
+    price?: number;
+    priceLabel?: string;
+    productionNote?: string;
+    productionStatus?: string;
+    rsiId?: number;
+    rsiName?: string;
+    rsiSlug?: string;
     speeds: {
-        groundAcceleration?: number | null;
-        groundDecceleration?: number | null;
-        groundMaxSpeed?: number | null;
-        groundReverseSpeed?: number | null;
-        maxSpeed?: number | null;
-        maxSpeedAcceleration?: number | null;
-        maxSpeedDecceleration?: number | null;
-        pitch?: number | null;
-        roll?: number | null;
-        scmSpeed?: number | null;
-        scmSpeedAcceleration?: number | null;
-        scmSpeedDecceleration?: number | null;
-        yaw?: number | null;
+        groundAcceleration?: number;
+        groundDecceleration?: number;
+        groundMaxSpeed?: number;
+        groundReverseSpeed?: number;
+        maxSpeed?: number;
+        maxSpeedAcceleration?: number;
+        maxSpeedDecceleration?: number;
+        pitch?: number;
+        roll?: number;
+        scmSpeed?: number;
+        scmSpeedAcceleration?: number;
+        scmSpeedDecceleration?: number;
+        yaw?: number;
     };
     createdAt: string;
     updatedAt: string;
     /**
      * @deprecated
      */
-    afterburnerGroundSpeed?: number | null;
+    holoColored?: boolean;
     /**
      * @deprecated
      */
-    afterburnerSpeed?: number | null;
+    afterburnerGroundSpeed?: number;
     /**
      * @deprecated
      */
-    angledView?: string | null;
+    afterburnerSpeed?: number;
     /**
      * @deprecated
      */
-    angledViewHeight?: number | null;
+    angledView?: string;
     /**
      * @deprecated
      */
-    angledViewLarge?: string | null;
+    angledViewHeight?: number;
     /**
      * @deprecated
      */
-    angledViewMedium?: string | null;
+    angledViewLarge?: string;
     /**
      * @deprecated
      */
-    angledViewSmall?: string | null;
+    angledViewMedium?: string;
     /**
      * @deprecated
      */
-    angledViewWidth?: number | null;
+    angledViewSmall?: string;
     /**
      * @deprecated
      */
-    angledViewXlarge?: string | null;
+    angledViewWidth?: number;
     /**
      * @deprecated
      */
-    beam?: number | null;
+    angledViewXlarge?: string;
     /**
      * @deprecated
      */
-    beamLabel?: string | null;
+    beam?: number;
     /**
      * @deprecated
      */
-    cargo?: number | null;
+    beamLabel?: string;
     /**
      * @deprecated
      */
-    cargoLabel?: string | null;
+    cargo?: number;
     /**
      * @deprecated
      */
-    fleetchartImage?: string | null;
+    cargoLabel?: string;
     /**
      * @deprecated
      */
-    fleetchartLength?: number | null;
+    fleetchartImage?: string;
     /**
      * @deprecated
      */
-    groundSpeed?: number | null;
+    fleetchartLength?: number;
     /**
      * @deprecated
      */
-    height?: number | null;
+    groundSpeed?: number;
     /**
      * @deprecated
      */
-    heightLabel?: string | null;
+    height?: number;
     /**
      * @deprecated
      */
-    hydrogenFuelTankSize?: number | null;
+    heightLabel?: string;
     /**
      * @deprecated
      */
-    length?: number | null;
+    hydrogenFuelTankSize?: number;
     /**
      * @deprecated
      */
-    lengthLabel?: string | null;
+    length?: number;
     /**
      * @deprecated
      */
-    mass?: number | null;
+    lengthLabel?: string;
     /**
      * @deprecated
      */
-    massLabel?: number | null;
+    mass?: number;
     /**
      * @deprecated
      */
-    maxCrew?: number | null;
+    massLabel?: number;
     /**
      * @deprecated
      */
-    maxCrewLabel?: string | null;
+    maxCrew?: number;
     /**
      * @deprecated
      */
-    minCrew?: number | null;
+    maxCrewLabel?: string;
     /**
      * @deprecated
      */
-    minCrewLabel?: string | null;
+    minCrew?: number;
     /**
      * @deprecated
      */
-    pitchMax?: number | null;
+    minCrewLabel?: string;
     /**
      * @deprecated
      */
-    quantumFuelTankSize?: number | null;
+    pitchMax?: number;
     /**
      * @deprecated
      */
-    rollMax?: number | null;
+    quantumFuelTankSize?: number;
     /**
      * @deprecated
      */
-    salesPageUrl?: string | null;
+    rollMax?: number;
     /**
      * @deprecated
      */
-    scmSpeed?: number | null;
+    salesPageUrl?: string;
     /**
      * @deprecated
      */
-    sideView?: string | null;
+    scmSpeed?: number;
     /**
      * @deprecated
      */
-    sideViewHeight?: number | null;
+    sideView?: string;
     /**
      * @deprecated
      */
-    sideViewLarge?: string | null;
+    sideViewHeight?: number;
     /**
      * @deprecated
      */
-    sideViewMedium?: string | null;
+    sideViewLarge?: string;
     /**
      * @deprecated
      */
-    sideViewSmall?: string | null;
+    sideViewMedium?: string;
     /**
      * @deprecated
      */
-    sideViewWidth?: number | null;
+    sideViewSmall?: string;
     /**
      * @deprecated
      */
-    sideViewXlarge?: string | null;
+    sideViewWidth?: number;
     /**
      * @deprecated
      */
-    size?: string | null;
+    sideViewXlarge?: string;
     /**
      * @deprecated
      */
-    sizeLabel?: string | null;
+    size?: string;
     /**
      * @deprecated
      */
-    storeImage?: string | null;
+    sizeLabel?: string;
     /**
      * @deprecated
      */
-    storeImageLarge?: string | null;
+    storeImage?: string;
     /**
      * @deprecated
      */
-    storeImageMedium?: string | null;
+    storeImageLarge?: string;
     /**
      * @deprecated
      */
-    storeImageSmall?: string | null;
+    storeImageMedium?: string;
     /**
      * @deprecated
      */
-    storeUrl?: string | null;
+    storeImageSmall?: string;
     /**
      * @deprecated
      */
-    topView?: string | null;
+    storeUrl?: string;
     /**
      * @deprecated
      */
-    topViewHeight?: number | null;
+    topView?: string;
     /**
      * @deprecated
      */
-    topViewLarge?: string | null;
+    topViewHeight?: number;
     /**
      * @deprecated
      */
-    topViewMedium?: string | null;
+    topViewLarge?: string;
     /**
      * @deprecated
      */
-    topViewSmall?: string | null;
+    topViewMedium?: string;
     /**
      * @deprecated
      */
-    topViewWidth?: number | null;
+    topViewSmall?: string;
     /**
      * @deprecated
      */
-    topViewXlarge?: string | null;
+    topViewWidth?: number;
     /**
      * @deprecated
      */
-    xaxisAcceleration?: number | null;
+    topViewXlarge?: string;
     /**
      * @deprecated
      */
-    yawMax?: number | null;
+    xaxisAcceleration?: number;
     /**
      * @deprecated
      */
-    yaxisAcceleration?: number | null;
+    yawMax?: number;
     /**
      * @deprecated
      */
-    zaxisAcceleration?: number | null;
+    yaxisAcceleration?: number;
+    /**
+     * @deprecated
+     */
+    zaxisAcceleration?: number;
     dockCounts: Array<DockCount>;
 };
 

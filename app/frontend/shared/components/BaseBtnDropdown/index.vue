@@ -7,7 +7,7 @@
       :inline="true"
       :text-inline="textInline"
       :mobile-block="mobileBlock"
-      @click.native="toggle"
+      @click="toggle"
     >
       <slot name="label">
         <i class="fas fa-ellipsis-v" />

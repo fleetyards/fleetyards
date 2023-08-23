@@ -19,6 +19,7 @@ export const useFleetStore = defineStore("fleet", {
     fleetchartScreenHeight: "1x",
     fleetchartMode: "panzoom",
     fleetchartScale: 1,
+    fleetchartColor: false,
     perPage: 30,
     money: true,
     grouped: true,
@@ -37,6 +38,9 @@ export const useFleetStore = defineStore("fleet", {
     },
     toggleFleetchart() {
       this.fleetchartVisible = !this.fleetchartVisible;
+    },
+    toggleColored() {
+      this.fleetchartColor = !this.fleetchartColor;
     },
     updatePerPage(payload: number) {
       this.perPage = payload;
@@ -65,6 +69,7 @@ export const useFleetStore = defineStore("fleet", {
       "fleetchartScreenHeight",
       "fleetchartMode",
       "fleetchartScale",
+      "fleetchartColor",
       "grouped",
       "money",
       "preview",

@@ -1,5 +1,4 @@
 import { debounce } from "ts-debounce";
-import { useRouter, useRoute } from "vue-router";
 
 export const useFilters = <T>(routeQueryKey = "q") => {
   const route = useRoute();

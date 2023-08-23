@@ -36,18 +36,18 @@
 </template>
 
 <script lang="ts" setup>
-import sessionCollection from "@/frontend/api/collections/Session";
 import NavItem from "../NavItem/index.vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
 
 const sessionStore = useSessionStore();
 
 const { currentUser } = storeToRefs(sessionStore);
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
 const route = useRoute();
 
@@ -65,8 +65,10 @@ const active = computed(() => {
   ].includes(String(route.name));
 });
 
+const { sessions: sessionsService } = useFyApiClient(currentLocale);
+
 const logout = async () => {
-  await sessionCollection.destroy();
+  await sessionsService.deleteSession();
 
   sessionStore.logout();
 };

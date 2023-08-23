@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { useMobile } from "@/shared/composables/useMobile";
+import { useMobileStore } from "@/shared/stores/mobile";
 
 interface NavStoreState {
   collapsed: boolean;
@@ -13,9 +13,9 @@ export const useNavStore = defineStore("nav", {
   }),
   getters: {
     slimNavigation(state) {
-      const mobile = useMobile();
+      const mobileStore = useMobileStore();
 
-      return state.slim && !mobile.value;
+      return state.slim && !mobileStore.mobile;
     },
   },
   actions: {

@@ -26,38 +26,38 @@
   </address>
 </template>
 
+<script lang="ts" setup>
+const appName = computed(() => {
+  return window.APP_NAME;
+});
+
+const maintainerName = computed(() => {
+  return window.MAINTAINER_NAME;
+});
+
+const maintainerMail = computed(() => {
+  return window.MAINTAINER_MAIL;
+});
+
+const maintainerAddressStreet = computed(() => {
+  return window.MAINTAINER_ADDRESS_STREET;
+});
+
+const maintainerAddressPostalcode = computed(() => {
+  return window.MAINTAINER_ADDRESS_POSTALCODE;
+});
+
+const maintainerAddressCity = computed(() => {
+  return window.MAINTAINER_ADDRESS_CITY;
+});
+
+const maintainerAddressCountry = computed(() => {
+  return window.MAINTAINER_ADDRESS_COUNTRY;
+});
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-
-@Component<AppContact>({})
-export default class AppContact extends Vue {
-  get appName() {
-    return window.APP_NAME;
-  }
-
-  get maintainerName() {
-    return window.MAINTAINER_NAME;
-  }
-
-  get maintainerMail() {
-    return window.MAINTAINER_MAIL;
-  }
-
-  get maintainerAddressStreet() {
-    return window.MAINTAINER_ADDRESS_STREET;
-  }
-
-  get maintainerAddressPostalcode() {
-    return window.MAINTAINER_ADDRESS_POSTALCODE;
-  }
-
-  get maintainerAddressCity() {
-    return window.MAINTAINER_ADDRESS_CITY;
-  }
-
-  get maintainerAddressCountry() {
-    return window.MAINTAINER_ADDRESS_COUNTRY;
-  }
-}
+export default {
+  name: "AppContact",
+};
 </script>

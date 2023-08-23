@@ -178,7 +178,7 @@
 
 <script lang="ts" setup>
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import Btn from "@/shared/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";

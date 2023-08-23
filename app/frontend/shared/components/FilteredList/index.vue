@@ -10,7 +10,7 @@
               :active="filterVisible"
               :aria-label="filterTooltip"
               size="small"
-              @click.native="toggleFilter"
+              @click="toggleFilter"
             >
               <span v-show="isFilterSelected">
                 <i class="fas fa-filter" />
@@ -88,7 +88,7 @@ import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 type Props = {
   name: string;
-  records: any[];
+  records: Record<string, unknown>[];
   loading: boolean;
   primaryKey: string;
   staticFilters?: boolean;
@@ -112,7 +112,7 @@ const filterVisible = computed(() => {
   return filtersStore.isVisible(props.name);
 });
 
-const { isFilterSelected, filter } = useFilters();
+const { isFilterSelected } = useFilters();
 
 const route = useRoute();
 

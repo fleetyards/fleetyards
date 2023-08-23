@@ -5,23 +5,25 @@
         <h2>{{ t("headlines.empty") }}</h2>
         <template v-if="isQueryPresent">
           <p>{{ t("texts.empty.query") }}</p>
-          <div slot="footer" class="empty-box-actions">
-            <Btn @click.native="openGuide">
-              {{ t("actions.empty.hangarGuide") }}
-            </Btn>
-            <Btn v-if="isPagePresent" @click.native="resetPage">
-              {{ t("actions.empty.resetPage") }}
-            </Btn>
-            <Btn :to="{ name: String(route.name) }" :exact="true">
-              {{ t("actions.empty.reset") }}
-            </Btn>
-          </div>
+          <slot name="footer">
+            <div class="empty-box-actions">
+              <Btn @click="openGuide">
+                {{ t("actions.empty.hangarGuide") }}
+              </Btn>
+              <Btn v-if="isPagePresent" @click="resetPage">
+                {{ t("actions.empty.resetPage") }}
+              </Btn>
+              <Btn :to="{ name: String(route.name) }" :exact="true">
+                {{ t("actions.empty.reset") }}
+              </Btn>
+            </div>
+          </slot>
         </template>
         <template v-else>
           <p>
             {{ t("texts.empty.hangar.info") }}
           </p>
-          <div v-if="!extensionReady">
+          <div v-if="!hangarStore.extensionReady">
             <p>{{ t("texts.empty.hangar.extension") }}</p>
             <div class="sync-extension-platforms">
               <a
@@ -35,12 +37,14 @@
               </a>
             </div>
           </div>
-          <div slot="footer" class="empty-box-actions">
-            <HangarSyncBtn />
-            <Btn @click.native="openGuide">
-              {{ t("actions.empty.hangarGuide") }}
-            </Btn>
-          </div>
+          <slot name="footer">
+            <div class="empty-box-actions">
+              <HangarSyncBtn />
+              <Btn @click="openGuide">
+                {{ t("actions.empty.hangarGuide") }}
+              </Btn>
+            </div>
+          </slot>
         </template>
       </Box>
     </div>
@@ -54,8 +58,8 @@ import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
 import { extensionUrls } from "@/types/extension";
+import { useHangarStore } from "@/frontend/stores/hangar";
 
 const { t } = useI18n();
 
@@ -69,7 +73,7 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreFilter: false,
 });
 
-const extensionReady = computed(() => Store.getters["hangar/extensionReady"]);
+const hangarStore = useHangarStore();
 
 const route = useRoute();
 
@@ -109,7 +113,7 @@ const resetPage = () => {
 const comlink = useComlink();
 
 const openGuide = () => {
-  comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     wide: true,
     component: () => import("@/frontend/components/HangarGuideModal/index.vue"),
   });

@@ -1,15 +1,13 @@
 <template>
   <div class="video embed-responsive embed-responsive-16by9">
-    <template v-if="video.type === 'youtube' && youtubeEnabled">
+    <template v-if="video.type === 'youtube' && youtubeAccepted">
       <iframe :src="video.url" class="embed-responsive-item" />
     </template>
     <div v-else-if="video.type === 'youtube'" class="youtube-placeholder">
       <i class="fab fa-youtube" />
       <div class="youtube-placeholder-buttons">
-        <Btn :inline="true" @click.native="enableYoutube">
-          Allow video embeds
-        </Btn>
-        <Btn :inline="true" @click.native="copyVideoUrl(video)">
+        <Btn :inline="true" @click="acceptYoutube"> Allow video embeds </Btn>
+        <Btn :inline="true" @click="copyVideoUrl(video)">
           Copy Youtube URL
         </Btn>
       </div>
@@ -19,25 +17,29 @@
 
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import Store from "@/frontend/lib/Store";
 import copyText from "@/frontend/utils/CopyText";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
 import { useComlink } from "@/shared/composables/useComlink";
+import { Video } from "@/services/fyApi";
+import { useCookiesStore } from "@/frontend/stores/cookies";
+import { storeToRefs } from "pinia";
 
 type Props = {
-  video: TVideo;
+  video: Video;
 };
 
 defineProps<Props>();
 
-const cookies = computed(() => Store.getters["cookies/cookies"]);
+const cookiesStore = useCookiesStore();
 
-const youtubeEnabled = computed(() => cookies.value.youtube);
+const { youtubeAccepted } = storeToRefs(cookiesStore);
 
 const { t } = useI18n();
 
-const copyVideoUrl = (video: TVideo) => {
+const { displaySuccess, displayAlert } = useNoty(t);
+
+const copyVideoUrl = (video: Video) => {
   copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(
     () => {
       displaySuccess({
@@ -54,7 +56,7 @@ const copyVideoUrl = (video: TVideo) => {
 
 const comlink = useComlink();
 
-const enableYoutube = () => {
-  comlink.$emit("open-privacy-settings");
+const acceptYoutube = () => {
+  comlink.emit("open-privacy-settings");
 };
 </script>

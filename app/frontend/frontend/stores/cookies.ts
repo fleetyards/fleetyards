@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-interface Cookies {
+export interface Cookies {
   ahoy: boolean;
   youtube: boolean;
 }
@@ -21,6 +21,9 @@ export const useCookiesStore = defineStore("cookies", {
   getters: {
     ahoyAccepted(): boolean {
       return this.cookies.ahoy;
+    },
+    youtubeAccepted(): boolean {
+      return this.cookies.youtube;
     },
   },
   actions: {

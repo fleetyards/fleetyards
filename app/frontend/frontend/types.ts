@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     APP_VERSION: string;
+    APP_NAME: string;
     STORE_VERSION: string;
     SC_DATA_VERSION: string;
     APP_CODENAME: string;
@@ -14,6 +15,12 @@ declare global {
     NODE_ENV: string;
     GIT_REVISION: string;
     SENTRY_DSN?: string;
+    MAINTAINER_NAME: string;
+    MAINTAINER_MAIL: string;
+    MAINTAINER_ADDRESS_STREET: string;
+    MAINTAINER_ADDRESS_POSTALCODE: string;
+    MAINTAINER_ADDRESS_CITY: string;
+    MAINTAINER_ADDRESS_COUNTRY: string;
   }
 }
 
@@ -33,5 +40,6 @@ export interface ShipListState {
   fleetchartScreenHeight: "1x" | "1_5x" | "2x" | "3x" | "4x";
   fleetchartMode: "panzoom" | "classic";
   fleetchartScale: number;
+  fleetchartColor: boolean;
   perPage: number;
 }

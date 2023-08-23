@@ -46,7 +46,7 @@
                   </ValidationProvider>
 
                   <FormInput
-                    v-if="currentUser.unconfirmedEmail"
+                    v-if="currentUser?.unconfirmedEmail"
                     id="unconfirmedEmail"
                     v-model="currentUser.unconfirmedEmail"
                     type="email"
@@ -77,7 +77,7 @@
             variant="danger"
             size="large"
             data-test="destroy-account"
-            @click.native="destroy"
+            @click="destroy"
           >
             {{ t("actions.destroyAccount") }}
           </Btn>
@@ -89,20 +89,19 @@
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
-import {
-  displaySuccess,
-  displayAlert,
-  displayConfirm,
-} from "@/frontend/lib/Noty";
+import { useNoty } from "@/shared/composables/useNoty";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import userCollection from "@/frontend/api/collections/User";
+// import userCollection from "@/frontend/api/collections/User";
 import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
 
-const currentUser = computed(() => Store.getters["session/currentUser"]);
+const sessionStore = useSessionStore();
+
+const { currentUser } = storeToRefs(sessionStore);
 
 const form = ref<UserAccountForm | null>(null);
 
@@ -111,13 +110,13 @@ const deleting = ref(false);
 const submitting = ref(false);
 
 onMounted(() => {
-  if (currentUser.value) {
+  if (sessionStore.currentUser) {
     setupForm();
   }
 });
 
 watch(
-  () => currentUser.value,
+  () => sessionStore.currentUser,
   () => {
     setupForm();
   },
@@ -125,14 +124,16 @@ watch(
 
 const setupForm = () => {
   form.value = {
-    username: currentUser.value.username,
-    email: currentUser.value.email,
+    username: sessionStore.currentUser?.username,
+    email: sessionStore.currentUser?.email,
   };
 };
 
 const comlink = useComlink();
 
 const { t } = useI18n();
+
+const { displaySuccess, displayAlert, displayConfirm } = useNoty(t);
 
 const updateAccount = async () => {
   if (!form.value) {
@@ -146,7 +147,7 @@ const updateAccount = async () => {
   submitting.value = false;
 
   if (!response.error) {
-    comlink.$emit("user-update");
+    comlink.emit("user-update");
 
     displaySuccess({
       text: t("messages.updateAccount.success"),
@@ -171,7 +172,7 @@ const destroy = async () => {
           text: t("messages.account.destroy.success"),
         });
 
-        await Store.dispatch("session/logout");
+        sessionStore.logout();
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         router.push({ name: "home" }).catch(() => {});

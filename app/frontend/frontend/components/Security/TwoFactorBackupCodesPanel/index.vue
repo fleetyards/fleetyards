@@ -1,24 +1,22 @@
 <template>
-  <Panel class="codes-panel">
-    <div class="panel-body">
-      <p>
-        {{ $t("texts.twoFactor.backupCodes") }}
-      </p>
-      <div class="row d-flex justify-content-center codes-panel-inner">
-        <div
-          v-for="backupCode in codes"
-          :key="backupCode"
-          class="col-6 text-center"
-        >
-          {{ backupCode }}
-        </div>
+  <Panel class="codes-panel" inset>
+    <p>
+      {{ $t("texts.twoFactor.backupCodes") }}
+    </p>
+    <div class="row d-flex justify-content-center codes-panel-inner">
+      <div
+        v-for="backupCode in codes"
+        :key="backupCode"
+        class="col-6 text-center"
+      >
+        {{ backupCode }}
       </div>
-      <hr />
-      <div class="d-flex justify-content-center">
-        <Btn variant="link" @click.native="copyCodes">
-          {{ $t("actions.copyBackupCodes") }}
-        </Btn>
-      </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-center">
+      <Btn variant="link" @click.native="copyCodes">
+        {{ $t("actions.copyBackupCodes") }}
+      </Btn>
     </div>
   </Panel>
 </template>

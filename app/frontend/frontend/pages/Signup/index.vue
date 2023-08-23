@@ -120,7 +120,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { transformErrors } from "@/frontend/api/helpers";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Checkbox from "@/shared/components/Form/Checkbox/index.vue";

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import type { ShoppingCartItemType } from "@/frontend/stores/shoppingCart";
 import { SearchResultTypeEnum } from "@/services/fyAdminApi";
 import { useI18n } from "@/frontend/composables/useI18n";

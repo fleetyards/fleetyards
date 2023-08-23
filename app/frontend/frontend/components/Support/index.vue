@@ -1,11 +1,11 @@
 <template>
-  <Btn size="small" class="support-button" @click.native="open">
+  <Btn size="small" class="support-button" @click="open">
     {{ t("actions.supportUs") }}
   </Btn>
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 
@@ -14,7 +14,7 @@ const { t } = useI18n();
 const comlink = useComlink();
 
 const open = () => {
-  comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     component: () => import("@/frontend/components/Support/Modal/index.vue"),
     wide: true,
   });
@@ -26,3 +26,7 @@ export default {
   name: "SupportBtn",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

@@ -6,7 +6,7 @@
     :size="size"
     :inline="inline"
     :block="block"
-    @click.native="openStarship42"
+    @click="openStarship42"
   >
     <template v-if="withIcon">
       <i class="fad fa-cube" /> {{ t("labels.exportStarship42") }}
@@ -18,14 +18,15 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import type {
   Props as BtnProps,
   BtnVariants,
   BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
+} from "@/shared/components/BaseBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
+import type { Vehicle, Model } from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
 
 interface Props extends BtnProps {
   items: Vehicle[] | Model[];
@@ -44,11 +45,11 @@ const props = withDefaults(defineProps<Props>(), {
   size: "default",
 });
 
-const mobile = computed(() => Store.getters.mobile);
-
 const basePath = "https://starship42.com/fleetview/";
 
 const { t } = useI18n();
+
+const mobile = useMobile();
 
 const tooltip = computed(() => {
   if (mobile.value) {
@@ -75,7 +76,7 @@ const openStarship42 = () => {
     const shipField = document.createElement("input");
     shipField.type = "hidden";
     shipField.name = "s[]";
-    shipField.value = model.rsiName;
+    shipField.value = model.rsiName || model.name;
 
     form.appendChild(shipField);
   });

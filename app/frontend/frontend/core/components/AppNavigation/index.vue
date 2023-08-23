@@ -16,11 +16,7 @@
       <div class="nav-container-inner">
         <ul>
           <NavItem class="logo-menu">
-            <img
-              v-lazy="require('@/images/favicon-small.png')"
-              class="logo-menu-image"
-              alt="logo"
-            />
+            <img v-lazy="favicon" class="logo-menu-image" alt="logo" />
             <span v-if="!slim" class="logo-menu-label">
               {{ t("app") }}
             </span>
@@ -108,6 +104,7 @@ import { useNavStore } from "@/frontend/stores/nav";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { storeToRefs } from "pinia";
+import favicon from "@/images/favicon-small.png";
 
 const { t } = useI18n();
 

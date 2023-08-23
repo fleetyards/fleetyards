@@ -3,7 +3,7 @@
     :is="btnType"
     class="panel-btn"
     :class="cssClasses"
-    :disabled="disabled || loading"
+    :disabled="disabled || loading || undefined"
     v-bind="btnProps"
   >
     <BtnInner :loading="loading" :spinner="spinner">

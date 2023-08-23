@@ -19,7 +19,7 @@
             <i class="fad fa-code-compare" />
             {{ t("actions.compare.models") }}
           </Btn>
-          <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
+          <Btn data-test="fleetchart-link" @click="toggleFleetchart">
             <i class="fad fa-starship" />
             {{ t("labels.fleetchart") }}
           </Btn>
@@ -43,7 +43,7 @@
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="dropdown"
-            @click.native="toggleDetails"
+            @click="toggleDetails"
           >
             <i class="fad fa-info-square" />
             <span>{{ toggleDetailsTooltip }}</span>
@@ -80,7 +80,6 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import modelsCollection from "@/frontend/api/collections/Models";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
@@ -90,28 +89,25 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
 import type { ModelQuery } from "@/services/fyApi";
+import { useModelsStore } from "@/frontend/stores/models";
+import { storeToRefs } from "pinia";
 
 useHangarItems();
 useWishlistItems();
 
 const { t } = useI18n();
 
-const detailsVisible = computed(() => Store.getters["models/detailsVisible"]);
+const modelsStore = useModelsStore();
 
-const fleetchartVisible = computed(
-  () => Store.getters["models/fleetchartVisible"],
-);
-
-const perPage = computed(() => Store.getters["models/perPage"]);
+const { detailsVisible, fleetchartVisible, perPage } = storeToRefs(modelsStore);
 
 const toggleDetails = () => {
-  Store.dispatch("models/toggleDetails");
+  modelsStore.toggleDetails();
 };
 
 const toggleFleetchart = () => {
-  Store.dispatch("models/toggleFleetchart");
+  modelsStore.toggleFleetchart();
 };
 
 const toggleDetailsTooltip = computed(() => {

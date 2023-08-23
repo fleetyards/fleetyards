@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 const { t } = useI18n();
@@ -64,8 +64,6 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.support-referral-link {
-  font-size: 130%;
-}
+<style lang="scss" scoped>
+@import "./index.scss";
 </style>

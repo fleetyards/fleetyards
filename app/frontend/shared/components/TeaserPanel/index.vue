@@ -37,6 +37,7 @@
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import type { MediaImage } from "@/services/fyApi";
+import type { RouteLocationNamedRaw } from "vue-router";
 
 type TeaserItem = {
   name: string;
@@ -50,7 +51,7 @@ type TeaserItem = {
 
 type Props = {
   item: TeaserItem;
-  to?: any;
+  to?: RouteLocationNamedRaw;
   withDescription?: boolean;
   fullscreen?: boolean;
   variant?: "default" | "text";

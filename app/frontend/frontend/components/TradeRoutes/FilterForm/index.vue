@@ -3,7 +3,7 @@
     <template v-if="mobile">
       <FilterGroup
         v-model="form.originStationIn"
-        :label="$t('labels.filters.tradeRoutes.origin')"
+        :label="t('labels.filters.tradeRoutes.origin')"
         fetch-path="stations?origin"
         name="origin"
         value-attr="slug"
@@ -15,7 +15,7 @@
 
       <FilterGroup
         v-model="form.destinationStationIn"
-        :label="$t('labels.filters.tradeRoutes.destination')"
+        :label="t('labels.filters.tradeRoutes.destination')"
         fetch-path="stations?destination"
         name="destination"
         value-attr="slug"
@@ -27,7 +27,7 @@
 
       <FilterGroup
         v-model="form.commodityIn"
-        :label="$t('labels.filters.shops.commodity')"
+        :label="t('labels.filters.shops.commodity')"
         fetch-path="commodities"
         name="commodity"
         value-attr="slug"
@@ -43,7 +43,7 @@
     <FilterGroup
       v-model="form.cargoShip"
       fetch-path="models/cargo-options"
-      :label="$t('labels.filters.tradeRoutes.cargoShip')"
+      :label="t('labels.filters.tradeRoutes.cargoShip')"
       name="models"
       :paginated="true"
       :searchable="true"
@@ -51,7 +51,7 @@
 
     <FilterGroup
       v-model="form.commodityTypeNotIn"
-      :label="$t('labels.filters.tradeRoutes.excludeCommodityType')"
+      :label="t('labels.filters.tradeRoutes.excludeCommodityType')"
       fetch-path="commodities/types"
       name="exclude-commodity-types"
       :searchable="true"
@@ -61,7 +61,7 @@
 
     <CollectionFilterGroup
       v-model="form.originCelestialObjectIn"
-      :label="$t('labels.filters.tradeRoutes.originCelestialObject')"
+      :label="t('labels.filters.tradeRoutes.originCelestialObject')"
       :collection="celestialObjectCollection"
       name="origin-celestial-objects"
       value-attr="slug"
@@ -73,7 +73,7 @@
 
     <CollectionFilterGroup
       v-model="form.destinationCelestialObjectIn"
-      :label="$t('labels.filters.tradeRoutes.destinationCelestialObject')"
+      :label="t('labels.filters.tradeRoutes.destinationCelestialObject')"
       :collection="celestialObjectCollection"
       name="destination-celestial-objects"
       value-attr="slug"
@@ -86,7 +86,7 @@
     <CollectionFilterGroup
       v-model="form.originStarsystemIn"
       :collection="starsystemCollection"
-      :label="$t('labels.filters.tradeRoutes.originStarsystem')"
+      :label="t('labels.filters.tradeRoutes.originStarsystem')"
       name="origin-starsystems"
       value-attr="slug"
       :paginated="true"
@@ -98,7 +98,7 @@
     <CollectionFilterGroup
       v-model="form.destinationStarsystemIn"
       :collection="starsystemCollection"
-      :label="$t('labels.filters.tradeRoutes.destinationStarsystem')"
+      :label="t('labels.filters.tradeRoutes.destinationStarsystem')"
       name="destination-starsystems"
       value-attr="slug"
       :paginated="true"
@@ -107,85 +107,73 @@
       :no-label="true"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import Filters from "@/frontend/mixins/Filters";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { Getter } from "vuex-class";
-import celestialObjectCollection from "@/frontend/api/collections/CelestialObjects";
-import starsystemCollection from "@/frontend/api/collections/Starsystems";
+<script lang="ts" setup>
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import { TradeRouteQuery } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
+// import celestialObjectCollection from "@/frontend/api/collections/CelestialObjects";
+// import starsystemCollection from "@/frontend/api/collections/Starsystems";
 
-@Component<TradeRoutesFilterForm>({
-  components: {
-    FilterGroup,
-    CollectionFilterGroup,
-    Btn,
+// celestialObjectCollection: CelestialObjectCollection =
+//   celestialObjectCollection;
+
+// starsystemCollection: StarsystemCollection = starsystemCollection;
+
+const { t } = useI18n();
+
+const { filter, isFilterSelected, resetFilter } = useFilters();
+
+const form = ref<TradeRouteQuery>({});
+
+const mobile = useMobile();
+
+const route = useRoute();
+
+const query = computed(() => {
+  return (route.query.q || {}) as TradeRouteQuery;
+});
+
+const setupForm = () => {
+  form.value = {
+    cargoShip: query.value.cargoShip,
+    commodityIn: query.value.commodityIn || [],
+    commodityTypeNotIn: query.value.commodityTypeNotIn || [],
+    originStationIn: query.value.originStationIn || [],
+    destinationStationIn: query.value.destinationStationIn || [],
+    originCelestialObjectIn: query.value.originCelestialObjectIn || [],
+    destinationCelestialObjectIn:
+      query.value.destinationCelestialObjectIn || [],
+    originStarsystemIn: query.value.originStarsystemIn || [],
+    destinationStarsystemIn: query.value.destinationStarsystemIn || [],
+    sorts: query.value.sorts || [],
+  };
+};
+
+onMounted(() => {
+  setupForm();
+});
+
+watch(
+  () => route.query,
+  () => {
+    setupForm();
   },
-  mixins: [Filters],
-})
-export default class TradeRoutesFilterForm extends Vue {
-  celestialObjectCollection: CelestialObjectCollection =
-    celestialObjectCollection;
+  { deep: true },
+);
+</script>
 
-  starsystemCollection: StarsystemCollection = starsystemCollection;
-
-  form: TradeRoutesFilters;
-
-  @Getter("mobile") mobile;
-
-  mounted() {
-    const query = this.$route.query.q || {};
-
-    this.form = {
-      cargoShip: query.cargoShip || null,
-      commodityIn: query.commodityIn || [],
-      commodityTypeNotIn: query.commodityTypeNotIn || [],
-      originStationIn: query.originStationIn || [],
-      destinationStationIn: query.destinationStationIn || [],
-      originCelestialObjectIn: query.originCelestialObjectIn || [],
-      destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
-      originStarsystemIn: query.originStarsystemIn || [],
-      destinationStarsystemIn: query.destinationStarsystemIn || [],
-      sorts: query.sorts || [],
-    };
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    const query = this.$route.query.q || {};
-
-    this.form = {
-      cargoShip: query.cargoShip || null,
-      commodityIn: query.commodityIn || [],
-      commodityTypeNotIn: query.commodityTypeNotIn || [],
-      originStationIn: query.originStationIn || [],
-      destinationStationIn: query.destinationStationIn || [],
-      originCelestialObjectIn: query.originCelestialObjectIn || [],
-      destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
-      originStarsystemIn: query.originStarsystemIn || [],
-      destinationStarsystemIn: query.destinationStarsystemIn || [],
-      sorts: query.sorts || [],
-    };
-
-    const storedFilters = JSON.parse(JSON.stringify(this.form));
-
-    if (!storedFilters.cargoShip) {
-      delete storedFilters.cargoShip;
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "TradeRoutesFilterForm",
+};
 </script>

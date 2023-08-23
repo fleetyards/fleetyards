@@ -5,7 +5,7 @@
     :variant="variant"
     :aria-label="t('actions.import')"
     :loading="loading"
-    @click.native="openModal"
+    @click="openModal"
   >
     <i class="fal fa-sync" />
     <span>
@@ -15,16 +15,17 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import type {
   Props as BtnProps,
   BtnVariants,
   BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
+} from "@/shared/components/BaseBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import Store from "@/frontend/lib/Store";
 import { useRouter, useRoute } from "vue-router";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useHangarStore } from "@/frontend/stores/hangar";
 
 interface Props extends BtnProps {
   variant?: BtnVariants;
@@ -40,7 +41,7 @@ const { t } = useI18n();
 
 const loading = ref(false);
 
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
 const router = useRouter();
 const route = useRoute();
@@ -64,6 +65,8 @@ onBeforeUnmount(() => {
   window.removeEventListener("message", handleExtensionMessage);
 });
 
+const hangarStore = useHangarStore();
+
 const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
     const message = JSON.parse(event.data.message);
@@ -71,10 +74,10 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
     if (message.action === "health") {
       if (message.code === 200) {
         console.info("FY Extension: Ready");
-        Store.dispatch("hangar/updateExtensionReady", true);
+        hangarStore.extensionReady = true;
       } else {
         console.info("FY Extension: Unavailable");
-        Store.dispatch("hangar/updateExtensionReady", false);
+        hangarStore.extensionReady = false;
       }
     }
   }
@@ -87,7 +90,7 @@ const checkExtension = () => {
 const comlink = useComlink();
 
 const openModal = () => {
-  comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/HangarSyncBtn/Modal/index.vue"),
     fixed: true,

@@ -11,131 +11,131 @@ export type ModelPaint = {
     id: string;
     name: string;
     slug: string;
-    description?: string | null;
-    lastUpdatedAt?: string | null;
-    lastUpdatedAtLabel?: string | null;
+    description?: string;
+    lastUpdatedAt?: string;
+    lastUpdatedAtLabel?: string;
     availability: {
         listedAt: Array<ShopCommodity>;
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
     media: {
-        angledView?: ViewImage | null;
-        fleetchartImage?: string | null;
-        sideView?: ViewImage | null;
-        storeImage?: MediaImage | null;
-        topView?: ViewImage | null;
+        angledView?: ViewImage;
+        fleetchartImage?: string;
+        sideView?: ViewImage;
+        storeImage?: MediaImage;
+        topView?: ViewImage;
     };
-    nameWithModel?: string | null;
-    rsiId?: number | null;
-    rsiName?: string | null;
-    rsiSlug?: string | null;
+    nameWithModel?: string;
+    rsiId?: number;
+    rsiName?: string;
+    rsiSlug?: string;
     createdAt: string;
     updatedAt: string;
     /**
      * @deprecated
      */
-    angledView?: string | null;
+    angledView?: string;
     /**
      * @deprecated
      */
-    angledViewHeight?: number | null;
+    angledViewHeight?: number;
     /**
      * @deprecated
      */
-    angledViewLarge?: string | null;
+    angledViewLarge?: string;
     /**
      * @deprecated
      */
-    angledViewMedium?: string | null;
+    angledViewMedium?: string;
     /**
      * @deprecated
      */
-    angledViewSmall?: string | null;
+    angledViewSmall?: string;
     /**
      * @deprecated
      */
-    angledViewWidth?: number | null;
+    angledViewWidth?: number;
     /**
      * @deprecated
      */
-    angledViewXlarge?: string | null;
+    angledViewXlarge?: string;
     /**
      * @deprecated
      */
-    fleetchartImage?: string | null;
-    hasStoreImage?: boolean | null;
+    fleetchartImage?: string;
+    hasStoreImage?: boolean;
     /**
      * @deprecated
      */
-    sideView?: string | null;
+    sideView?: string;
     /**
      * @deprecated
      */
-    sideViewHeight?: number | null;
+    sideViewHeight?: number;
     /**
      * @deprecated
      */
-    sideViewLarge?: string | null;
+    sideViewLarge?: string;
     /**
      * @deprecated
      */
-    sideViewMedium?: string | null;
+    sideViewMedium?: string;
     /**
      * @deprecated
      */
-    sideViewSmall?: string | null;
+    sideViewSmall?: string;
     /**
      * @deprecated
      */
-    sideViewWidth?: number | null;
+    sideViewWidth?: number;
     /**
      * @deprecated
      */
-    sideViewXlarge?: string | null;
+    sideViewXlarge?: string;
     /**
      * @deprecated
      */
-    storeImage?: string | null;
+    storeImage?: string;
     /**
      * @deprecated
      */
-    storeImageLarge?: string | null;
+    storeImageLarge?: string;
     /**
      * @deprecated
      */
-    storeImageMedium?: string | null;
+    storeImageMedium?: string;
     /**
      * @deprecated
      */
-    storeImageSmall?: string | null;
+    storeImageSmall?: string;
     /**
      * @deprecated
      */
-    topView?: string | null;
+    topView?: string;
     /**
      * @deprecated
      */
-    topViewHeight?: number | null;
+    topViewHeight?: number;
     /**
      * @deprecated
      */
-    topViewLarge?: string | null;
+    topViewLarge?: string;
     /**
      * @deprecated
      */
-    topViewMedium?: string | null;
+    topViewMedium?: string;
     /**
      * @deprecated
      */
-    topViewSmall?: string | null;
+    topViewSmall?: string;
     /**
      * @deprecated
      */
-    topViewWidth?: number | null;
+    topViewWidth?: number;
     /**
      * @deprecated
      */
-    topViewXlarge?: string | null;
+    topViewXlarge?: string;
 };
 

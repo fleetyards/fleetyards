@@ -10,18 +10,18 @@
                 <small class="text-muted">{{ t("headlines.welcome") }}</small>
                 <img
                   v-if="pride"
-                  :src="require('@/images/pride/logo-home.png')"
+                  :src="logoHomePride"
                   class="logo"
-                  width="150px"
-                  height="101px"
+                  width="150"
+                  height="101"
                   alt="logo"
                 />
                 <img
                   v-else
-                  :src="require('@/images/logo-home.png')"
+                  :src="logoHome"
                   class="logo"
-                  width="150px"
-                  height="101px"
+                  width="150"
+                  height="101"
                   alt="logo"
                 />
                 {{ t("app") }}
@@ -45,7 +45,7 @@
                           :aria-label="t('labels.search')"
                           size="large"
                           :inline="true"
-                          @click.native="search"
+                          @click="search"
                         >
                           <i class="fal fa-search" />
                         </Btn>
@@ -100,7 +100,7 @@
             :appear="true"
           >
             <div
-              v-for="model in modelsCollection.records"
+              v-for="model in latestModels"
               :key="model.id"
               class="col-12 fade-list-item"
             >
@@ -117,11 +117,11 @@
           <Loader :loading="modelsLoading" :fixed="true" />
         </div>
         <div class="col-12 col-lg-6 relative home-images">
-          <Panel>
+          <Panel inset>
             <h2 class="sr-only">
               {{ t("headlines.welcomeImages") }}
             </h2>
-            <div class="panel-body images">
+            <div class="images">
               <transition-group
                 name="fade"
                 class="row flex-center"
@@ -129,7 +129,7 @@
                 :appear="true"
               >
                 <div
-                  v-for="image in imagesCollection.records"
+                  v-for="image in randomImages"
                   :key="image.id"
                   class="col-12 col-md-6 col-lg-6"
                 >
@@ -154,29 +154,28 @@
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
 import { useRouter } from "vue-router";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
-import modelsCollection from "@/frontend/api/collections/Models";
-import imagesCollection from "@/frontend/api/collections/Images";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import type { Image } from "@/services/fyApi";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import logoHomePride from "@/images/pride/logo-home.png";
+import logoHome from "@/images/logo-home.png";
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
-const modelsLoading = ref(false);
-
-const imagesLoading = ref(false);
-
-const searchQuery = ref<string | null>(null);
+const searchQuery = ref<string | undefined>();
 
 const showScrollDown = ref(false);
 
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
 setTimeout(() => {
   showScrollDown.value = true;
@@ -195,34 +194,26 @@ const search = () => {
     .push({
       name: "search",
       query: {
-        q: {
-          search: searchQuery.value,
-        },
+        q: { search: searchQuery.value },
       },
     })
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     .catch(() => {});
 };
 
-const fetchModels = async () => {
-  modelsLoading.value = true;
+const { models: modelsService } = useFyApiClient(currentLocale);
 
-  await modelsCollection.latest();
+const { isLoading: modelsLoading, data: latestModels } = useQuery({
+  queryKey: ["latestModels"],
+  queryFn: () => modelsService.modelsLatest(),
+});
 
-  modelsLoading.value = false;
-};
+const { images: imagesService } = useFyApiClient(currentLocale);
 
-fetchModels();
-
-const fetchImages = async () => {
-  imagesLoading.value = true;
-
-  await imagesCollection.random();
-
-  imagesLoading.value = false;
-};
-
-fetchImages();
+const { isLoading: imagesLoading, data: randomImages } = useQuery({
+  queryKey: ["randomImages"],
+  queryFn: () => imagesService.imagesRandom({}),
+});
 
 const scrollDown = () => {
   VueScrollTo.scrollTo(".home-ships");

@@ -38,7 +38,7 @@
           :expand-top="true"
         >
           <template #label>
-            <i class="fad fa-language" /> {{ currentLocale }}
+            <i class="fad fa-language" /> {{ currentLocale() }}
           </template>
           <Btn
             v-for="locale in locales"
@@ -147,8 +147,8 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/Btn/index.vue";
-import BtnDropdown from "@/shared/components/BtnDropdown/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -184,7 +184,7 @@ const scDataVersion = computed(() => {
 });
 
 const locales = computed(() => {
-  return availableLocales;
+  return availableLocales();
 });
 
 const activeLocale = (locale: string) => {

@@ -37,7 +37,7 @@
               </transition>
             </Btn>
 
-            <Btn data-test="fleetchart-link" @click.native="toggleFleetchart">
+            <Btn data-test="fleetchart-link" @click="toggleFleetchart">
               <i class="fad fa-starship" />
               {{ t("labels.fleetchart") }}
             </Btn>
@@ -48,7 +48,7 @@
             </Btn>
 
             <ShareBtn
-              v-if="currentUser && currentUser.publicHangar"
+              v-if="currentUser && currentUser.publicHangar && shareUrl"
               :url="shareUrl"
               :title="shareTitle"
             />
@@ -136,7 +136,7 @@
               data-test="fleetchart-link"
               size="small"
               variant="dropdown"
-              @click.native="toggleFleetchart"
+              @click="toggleFleetchart"
             >
               <i class="fad fa-starship" />
               <span>{{ t("labels.fleetchart") }}</span>
@@ -148,7 +148,7 @@
             </Btn>
 
             <ShareBtn
-              v-if="currentUser && currentUser.publicHangar"
+              v-if="currentUser && currentUser.publicHangar && shareUrl"
               :url="shareUrl"
               :title="shareTitle"
               size="small"
@@ -162,7 +162,7 @@
             :aria-label="toggleGridView"
             size="small"
             variant="dropdown"
-            @click.native="toggleGridView"
+            @click="toggleGridView"
           >
             <i v-if="gridView" class="fad fa-list" />
             <i v-else class="fas fa-th" />
@@ -174,7 +174,7 @@
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="dropdown"
-            @click.native="toggleDetails"
+            @click="toggleDetails"
           >
             <i class="fad fa-info-square" />
             <span>{{ toggleDetailsTooltip }}</span>
@@ -184,7 +184,7 @@
             :aria-label="t('actions.showGuide')"
             size="small"
             variant="dropdown"
-            @click.native="openGuide"
+            @click="openGuide"
           >
             <i class="fad fa-question" />
             <span>{{ t("actions.showGuide") }}</span>
@@ -196,7 +196,7 @@
             size="small"
             variant="dropdown"
             :aria-label="t('actions.export')"
-            @click.native="exportJson"
+            @click="exportJson"
           >
             <i class="fal fa-download" />
             <span>{{ t("actions.export") }}</span>
@@ -208,7 +208,7 @@
             size="small"
             variant="dropdown"
             :aria-label="t('actions.hangar.resetIngame.openModal')"
-            @click.native="showResetIngameModal"
+            @click="showResetIngameModal"
           >
             <i class="fal fa-arrow-rotate-left" />
             <span>{{ t("actions.hangar.resetIngame.openModal") }}</span>
@@ -221,7 +221,7 @@
             variant="dropdown"
             :disabled="deleting"
             :aria-label="t('actions.hangar.destroyAll')"
-            @click.native="destroyAll"
+            @click="destroyAll"
           >
             <i class="fal fa-trash" />
             <span>{{ t("actions.hangar.destroyAll") }}</span>
@@ -294,29 +294,32 @@ import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
-import hangarCollection from "@/frontend/api/collections/Hangar";
-import type {
-  HangarCollection,
-  HangarParams,
-} from "@/frontend/api/collections/Hangar";
-import hangarStatsCollection from "@/frontend/api/collections/HangarStats";
-import type { HangarStatsCollection } from "@/frontend/api/collections/HangarStats";
-import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
-import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGroups";
-import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
+// import hangarCollection from "@/frontend/api/collections/Hangar";
+// import type {
+//   HangarCollection,
+//   HangarParams,
+// } from "@/frontend/api/collections/Hangar";
+// import hangarStatsCollection from "@/frontend/api/collections/HangarStats";
+// import type { HangarStatsCollection } from "@/frontend/api/collections/HangarStats";
+// import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
+// import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGroups";
 import debounce from "lodash.debounce";
 import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
 import Paginator from "@/frontend/core/components/Paginator/index.vue";
 import type { HangarQuery, HangarStats } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
-import { useCable } from "@/frontend/composables/useCable";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useCable } from "@/shared/composables/useCable";
+import { useNoty } from "@/shared/composables/useNoty";
 import { Subscription } from "@rails/actioncable";
-import { useRoute } from "vue-router";
-import Store from "@/frontend/lib/Store";
+import { useMobile } from "@/shared/composables/useMobile";
+import { storeToRefs } from "pinia";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useHangarStore } from "@/frontend/stores/hangar";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
+const { displayAlert, displayConfirm } = useNoty(t);
 const comlink = useComlink();
 
 const deleting = ref(false);
@@ -325,25 +328,24 @@ const vehiclesChannel = ref<Subscription | null>(null);
 
 const highlightedGroup = ref<string | undefined>();
 
-const collection: HangarCollection = hangarCollection;
+// const collection: HangarCollection = hangarCollection;
 
-const statsCollection: HangarStatsCollection = hangarStatsCollection;
+// const statsCollection: HangarStatsCollection = hangarStatsCollection;
 
-const hangarStats = ref<HangarStats | undefined>();
+// const hangarStats = ref<HangarStats | undefined>();
 
-const groupsCollection: HangarGroupsCollection = hangarGroupsCollection;
+// const groupsCollection: HangarGroupsCollection = hangarGroupsCollection;
 
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
-const currentUser = computed(() => Store.getters["session/currentUser"]);
+const sessionStore = useSessionStore();
 
-const detailsVisible = computed(() => Store.getters["hangar/detailsVisible"]);
-const gridView = computed(() => Store.getters["hangar/gridView"]);
-const perPage = computed(() => Store.getters["hangar/perPage"]);
-const money = computed(() => Store.getters["hangar/money"]);
-const fleetchartVisible = computed(
-  () => Store.getters["hangar/fleetchartVisible"],
-);
+const { currentUser } = storeToRefs(sessionStore);
+
+const hangarStore = useHangarStore();
+
+const { detailsVisible, gridView, perPage, money, fleetchartVisible } =
+  storeToRefs(hangarStore);
 
 const shareTitle = computed(() => t("title.hangar.index"));
 
@@ -402,10 +404,10 @@ onMounted(() => {
   fetch();
   setupUpdates();
 
-  comlink.$on("vehicles-delete-all", fetch);
-  comlink.$on("hangar-group-delete", fetch);
-  comlink.$on("hangar-group-save", groupsCollection.findAll);
-  comlink.$on("hangar-sync-finished", fetch);
+  comlink.on("vehicles-delete-all", fetch);
+  comlink.on("hangar-group-delete", fetch);
+  comlink.on("hangar-group-save", groupsCollection.findAll);
+  comlink.on("hangar-sync-finished", fetch);
 });
 
 onUnmounted(() => {
@@ -413,30 +415,30 @@ onUnmounted(() => {
     vehiclesChannel.value.unsubscribe();
   }
 
-  comlink.$off("vehicles-delete-all");
-  comlink.$off("hangar-group-delete");
-  comlink.$off("hangar-group-save");
-  comlink.$off("hangar-sync-finished");
+  comlink.off("vehicles-delete-all");
+  comlink.off("hangar-group-delete");
+  comlink.off("hangar-group-save");
+  comlink.off("hangar-sync-finished");
 });
 
 const toggleDetails = () => {
-  Store.dispatch("hangar/toggleDetails");
+  hangarStore.toggleDetails();
 };
 
 const toggleMoney = () => {
-  Store.dispatch("hangar/toggleMoney");
+  hangarStore.toggleMoney();
 };
 
 const toggleGridView = () => {
-  Store.dispatch("hangar/toggleGridView");
+  hangarStore.toggleGridView();
 };
 
 const toggleFleetchart = () => {
-  Store.dispatch("hangar/toggleFleetchart");
+  hangarStore.toggleFleetchart();
 };
 
 const showNewModal = () => {
-  comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/NewVehiclesModal/index.vue"),
   });
@@ -490,7 +492,7 @@ const exportJson = async () => {
 
   link.setAttribute(
     "download",
-    `fleetyards-${currentUser.value.username}-hangar-${format(
+    `fleetyards-${currentUser.value?.username}-hangar-${format(
       new Date(),
       "yyyy-MM-dd",
     )}.json`,
@@ -504,7 +506,7 @@ const exportJson = async () => {
 };
 
 const showResetIngameModal = () => {
-  comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/ResetIngameModal/index.vue"),
   });
@@ -518,7 +520,7 @@ const destroyAll = async () => {
     onConfirm: async () => {
       await collection.destroyAll();
 
-      comlink.$emit("vehicles-delete-all");
+      comlink.emit("vehicles-delete-all");
 
       deleting.value = false;
     },
@@ -529,7 +531,7 @@ const destroyAll = async () => {
 };
 
 const openGuide = () => {
-  comlink.$emit("open-modal", {
+  comlink.emit("open-modal", {
     wide: true,
     component: () => import("@/frontend/components/HangarGuideModal/index.vue"),
   });

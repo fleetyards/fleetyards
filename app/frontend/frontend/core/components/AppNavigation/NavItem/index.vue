@@ -10,39 +10,40 @@
     :data-test="`nav-${navKey}`"
     class="nav-item sub-menu"
   >
-    <ul
+    <Collapsed
       v-if="submenuDirection === 'up'"
       :id="`${menuKey}-sub-menu`"
-      v-show-slide:400:ease-in-out="open"
-    >
-      <slot name="submenu" />
-    </ul>
-    <button v-tooltip="tooltip" @click="toggleMenu">
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
-      <span
-        v-if="!slim"
-        class="submenu-icon"
-        :class="{ 'submenu-icon-up': submenuDirection === 'up' }"
-      >
-        <i class="fal fa-chevron-right" />
-      </span>
-    </button>
-    <ul
-      v-if="submenuDirection === 'down'"
-      :id="`${menuKey}-sub-menu`"
-      v-show-slide:400:ease-in-out="open"
+      as="ul"
       :visible="open"
     >
       <slot name="submenu" />
-    </ul>
+    </Collapsed>
+    <button v-tooltip="tooltip" @click="toggleMenu">
+      <slot>
+        <NavItemInner
+          :label="label"
+          :icon="icon"
+          :image="image"
+          :avatar="avatar"
+          :slim="slim"
+        />
+        <span
+          v-if="!slim"
+          class="submenu-icon"
+          :class="{ 'submenu-icon-up': submenuDirection === 'up' }"
+        >
+          <i class="fal fa-chevron-right" />
+        </span>
+      </slot>
+    </button>
+    <Collapsed
+      v-if="submenuDirection === 'down'"
+      :id="`${menuKey}-sub-menu`"
+      :visible="open"
+      as="ul"
+    >
+      <slot name="submenu" />
+    </Collapsed>
   </li>
   <li
     v-else-if="action"
@@ -54,41 +55,44 @@
     @click="action"
   >
     <a v-tooltip="tooltip">
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
-    </a>
-  </li>
-  <router-link
-    v-else-if="to"
-    v-slot="{ href: linkHref, navigate }"
-    :to="to"
-    :class="{
-      active: active || routeActive,
-      'nav-item-slim': slim,
-    }"
-    :data-test="`nav-${navKey}`"
-    class="nav-item"
-    :exact="exact"
-    :custom="true"
-  >
-    <li role="link" @click="navigate" @keypress.enter="navigate">
-      <a v-tooltip="tooltip" :href="linkHref">
-        <slot v-if="hasDefaultSlot" />
+      <slot>
         <NavItemInner
-          v-else
           :label="label"
           :icon="icon"
           :image="image"
           :avatar="avatar"
           :slim="slim"
         />
+      </slot>
+    </a>
+  </li>
+  <router-link
+    v-else-if="to"
+    v-slot="{ href: linkHref, navigate }"
+    :to="to"
+    :custom="true"
+  >
+    <li
+      role="link"
+      :class="{
+        active: active || routeActive,
+        'nav-item-slim': slim,
+      }"
+      :data-test="`nav-${navKey}`"
+      class="nav-item"
+      @click="navigate"
+      @keypress.enter="() => navigate"
+    >
+      <a v-tooltip="tooltip" :href="linkHref">
+        <slot>
+          <NavItemInner
+            :label="label"
+            :icon="icon"
+            :image="image"
+            :avatar="avatar"
+            :slim="slim"
+          />
+        </slot>
       </a>
     </li>
   </router-link>
@@ -101,15 +105,15 @@
     :data-test="`nav-${navKey}`"
   >
     <a v-tooltip="tooltip" :href="href" target="_blank" rel="noopener">
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
+      <slot>
+        <NavItemInner
+          :label="label"
+          :icon="icon"
+          :image="image"
+          :avatar="avatar"
+          :slim="slim"
+        />
+      </slot>
     </a>
   </li>
   <li
@@ -120,27 +124,30 @@
     class="nav-item"
   >
     <span>
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :avatar="avatar"
-        :slim="slim"
-      />
+      <slot>
+        <NavItemInner
+          :label="label"
+          :icon="icon"
+          :image="image"
+          :avatar="avatar"
+          :slim="slim"
+        />
+      </slot>
     </span>
   </li>
 </template>
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-import type { RawLocation } from "vue-router";
-import Store from "@/frontend/lib/Store";
+import type { RouteLocationNamedRaw } from "vue-router";
 import NavItemInner from "./NavItemInner/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { storeToRefs } from "pinia";
+import { useNavStore } from "@/frontend/stores/nav";
 
 type Props = {
-  to?: RawLocation;
+  to?: RouteLocationNamedRaw;
   action?: () => void;
   href?: string;
   label?: string;
@@ -151,6 +158,7 @@ type Props = {
   exact?: boolean;
   divider?: boolean;
   active?: boolean;
+  prefix?: string;
   submenuActive?: boolean;
   submenuDirection?: string;
 };
@@ -167,6 +175,7 @@ const props = withDefaults(defineProps<Props>(), {
   exact: false,
   divider: false,
   active: false,
+  prefix: undefined,
   submenuActive: false,
   submenuDirection: "down",
 });
@@ -175,9 +184,11 @@ const open = ref(false);
 
 const route = useRoute();
 
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
-const navSlim = computed(() => Store.getters["app/navSlim"]);
+const navStore = useNavStore();
+
+const { slim: navSlim } = storeToRefs(navStore);
 
 const slim = computed(() => navSlim.value && !mobile.value);
 
@@ -202,8 +213,6 @@ const tooltip = computed(() => {
 
 const slots = useSlots();
 
-const hasDefaultSlot = computed(() => !!slots.default);
-
 const hasSubmenuSlot = computed(() => !!slots.submenu);
 
 const navKey = computed(() => {
@@ -211,8 +220,8 @@ const navKey = computed(() => {
     return props.menuKey;
   }
 
-  if (props.to) {
-    return props.to.name;
+  if (props.to && props.to.name) {
+    return String(props.to.name);
   }
 
   return "nav-item";

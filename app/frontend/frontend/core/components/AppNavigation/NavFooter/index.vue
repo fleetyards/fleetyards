@@ -24,7 +24,7 @@ import NavItem from "../NavItem/index.vue";
 import UserNav from "../UserNav/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useAppStore } from "@/frontend/stores/app";
+import { useNavStore } from "@/frontend/stores/nav";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 
@@ -32,14 +32,14 @@ const { t } = useI18n();
 
 const mobile = useMobile();
 
-const appStore = useAppStore();
+const navStore = useNavStore();
 
 const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
 
 const slim = computed(() => {
-  return appStore.navSlim && !mobile.value;
+  return navStore.slim && !mobile.value;
 });
 
 const toggleSlimLabel = computed(() => {
@@ -51,7 +51,7 @@ const toggleSlimLabel = computed(() => {
 });
 
 const toggleSlim = () => {
-  appStore.toggleSlimNav();
+  navStore.toggleSlim();
 };
 </script>
 

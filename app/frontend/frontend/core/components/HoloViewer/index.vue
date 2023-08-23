@@ -7,7 +7,7 @@
         variant="dropdown"
         :inline="true"
         :active="autoRotate"
-        @click.native="toggleAutoRotate"
+        @click="toggleAutoRotate"
       >
         <i class="fal fa-planet-ringed" />
       </Btn>
@@ -17,7 +17,7 @@
         variant="dropdown"
         :inline="true"
         :active="zoom"
-        @click.native="toggleZoom"
+        @click="toggleZoom"
       >
         <i class="fal fa-search-plus" />
       </Btn>
@@ -28,7 +28,7 @@
         variant="dropdown"
         :inline="true"
         :active="color"
-        @click.native="toggleColor"
+        @click="toggleColor"
       >
         <i class="fad fa-fill-drip" />
       </Btn>
@@ -39,307 +39,330 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import Loader from "@/shared/components/Loader/index.vue";
+import BtnGroup from "@/shared/components/BaseBtnGroup/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import * as THREE from "three";
+import type { Mesh } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { displayAlert } from "@/frontend/lib/Noty";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<HoloViewer>({
-  components: {
-    Loader,
-    BtnGroup,
-    Btn,
+type Props = {
+  holo: string;
+  colored?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  colored: false,
+});
+
+const { t } = useI18n();
+
+const { displayAlert } = useNoty(t);
+
+const modelColor = ref(0x428bca);
+
+const windowColor = 0x1d3d59;
+
+const autoRotateSpeed = 1.5;
+
+const loading = ref(false);
+
+const debug = ref(false);
+
+const scene = ref<THREE.Scene | undefined>();
+
+const camera = ref<THREE.Camera | undefined>();
+
+const renderer = ref<THREE.Renderer | undefined>();
+
+const model = ref<THREE.Group | undefined>();
+
+const controls = ref<OrbitControls | undefined>();
+
+const autoRotate = ref(true);
+
+const zoom = ref(false);
+
+const progress = ref(0);
+
+const color = ref(false);
+
+const modelViewer = ref<HTMLElement | undefined>();
+
+const elementWidth = computed(() => {
+  return modelViewer.value?.clientWidth;
+});
+
+const elementHeight = computed(() => {
+  return modelViewer.value?.clientHeight;
+});
+
+const autoRotateTooltip = computed(() => {
+  if (autoRotate.value) {
+    return t("actions.holoViewer.autoRotate.disable");
+  }
+
+  return t("actions.holoViewer.autoRotate.enable");
+});
+
+const zoomTooltip = computed(() => {
+  if (zoom.value) {
+    return t("actions.holoViewer.zoom.disable");
+  }
+
+  return t("actions.holoViewer.zoom.enable");
+});
+
+const colorTooltip = computed(() => {
+  if (color.value) {
+    return t("actions.holoViewer.color.disable");
+  }
+
+  return t("actions.holoViewer.color.enable");
+});
+
+watch(
+  () => modelColor.value,
+  () => {
+    updateModelMaterial();
   },
-})
-export default class HoloViewer extends Vue {
-  loading = false;
+);
 
-  debug = false;
-
-  scene = null;
-
-  camera = null;
-
-  renderer = null;
-
-  model = null;
-
-  controls = null;
-
-  modelColor = 0x428bca;
-
-  windowColor = 0x1d3d59;
-
-  autoRotate = true;
-
-  autoRotateSpeed = 1.5;
-
-  zoom = false;
-
-  progress = 0;
-
-  color = false;
-
-  @Prop({ required: true }) holo: string;
-
-  @Prop({ default: false }) colored: boolean;
-
-  get element() {
-    return this.$refs.modelViewer;
-  }
-
-  get elementWidth() {
-    return this.element.clientWidth;
-  }
-
-  get elementHeight() {
-    return this.element.clientHeight;
-  }
-
-  get autoRotateTooltip() {
-    if (this.autoRotate) {
-      return this.$t("actions.holoViewer.autoRotate.disable");
+watch(
+  () => zoom.value,
+  () => {
+    if (controls.value) {
+      controls.value.enableZoom = zoom.value;
+      controls.value.update();
     }
+  },
+);
 
-    return this.$t("actions.holoViewer.autoRotate.enable");
-  }
-
-  get zoomTooltip() {
-    if (this.zoom) {
-      return this.$t("actions.holoViewer.zoom.disable");
+watch(
+  () => color.value,
+  () => {
+    if (model.value) {
+      updateModelMaterial();
     }
+  },
+);
 
-    return this.$t("actions.holoViewer.zoom.enable");
-  }
-
-  get colorTooltip() {
-    if (this.color) {
-      return this.$t("actions.holoViewer.color.disable");
+watch(
+  () => autoRotate.value,
+  () => {
+    if (controls.value) {
+      controls.value.autoRotate = autoRotate.value;
+      controls.value.update();
     }
+  },
+);
 
-    return this.$t("actions.holoViewer.color.enable");
+onMounted(() => {
+  loading.value = true;
+  progress.value = 0;
+
+  scene.value = setupScene();
+  camera.value = setupCamera();
+  if (camera.value) {
+    scene.value.add(camera.value);
+  }
+  renderer.value = setupRenderer();
+  controls.value = setupControls(renderer.value.domElement, camera.value);
+
+  loadModel();
+});
+
+const animate = () => {
+  if (!scene.value || !camera.value) {
+    return;
   }
 
-  @Watch("modelColor")
-  onModelColorChange() {
-    this.updateModelMaterial();
+  controls.value?.update();
+
+  requestAnimationFrame(animate);
+
+  renderer.value?.render(scene.value, camera.value);
+};
+
+const setupScene = () => {
+  const scene = new THREE.Scene();
+
+  scene.background = null;
+
+  return scene;
+};
+
+const setupCamera = () => {
+  if (!elementWidth.value || !elementHeight.value) {
+    return;
   }
 
-  @Watch("zoom")
-  onZoomChange() {
-    this.controls.enableZoom = this.zoom;
-    this.controls.update();
+  const camera = new THREE.PerspectiveCamera(
+    35,
+    elementWidth.value / elementHeight.value,
+    0.1,
+    1000,
+  );
+
+  return camera;
+};
+
+const setupControls = (domElement: HTMLElement, camera?: THREE.Camera) => {
+  if (!camera) {
+    return;
   }
 
-  @Watch("color")
-  onColorChange() {
-    if (this.model) {
-      this.updateModelMaterial();
+  const controls = new OrbitControls(camera, domElement);
+
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
+
+  controls.enablePan = false;
+
+  controls.enableZoom = zoom.value;
+  controls.minDistance = 50;
+  controls.maxDistance = 250;
+
+  controls.autoRotate = autoRotate.value;
+  controls.autoRotateSpeed = autoRotateSpeed;
+
+  controls.listenToKeyEvents(window);
+
+  controls.update();
+
+  return controls;
+};
+
+const setupRenderer = () => {
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true,
+  });
+
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.toneMappingExposure = 1;
+  if (elementWidth.value && elementHeight.value) {
+    renderer.setSize(elementWidth.value, elementHeight.value);
+  }
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  modelViewer.value?.appendChild(renderer.domElement);
+
+  return renderer;
+};
+
+const setupDirectionalLight = (objectModel: THREE.Object3D<THREE.Event>) => {
+  const directionalLight = new THREE.DirectionalLight(0x404040, 60);
+
+  directionalLight.target = objectModel;
+  directionalLight.castShadow = true;
+
+  return directionalLight;
+};
+
+const updateModelMaterial = () => {
+  const material = new THREE.MeshPhongMaterial({
+    color: modelColor.value,
+    side: THREE.DoubleSide,
+  });
+
+  const windowMaterial = new THREE.MeshPhongMaterial({
+    color: windowColor,
+    opacity: 0.8,
+    transparent: true,
+  });
+
+  const windowRefs = ["window", "glass"];
+
+  model.value?.traverse((node) => {
+    if (!(node as Mesh).isMesh) return;
+
+    if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
+      (node as Mesh).material = windowMaterial;
+    } else {
+      (node as Mesh).material = material;
     }
-  }
+  });
+};
 
-  @Watch("autoRotate")
-  onAutoRotateChange() {
-    this.controls.autoRotate = this.autoRotate;
-    this.controls.update();
-  }
+const loadModel = () => {
+  const loader = new GLTFLoader();
 
-  async mounted() {
-    this.loading = true;
-    this.progress = 0;
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath("/vendor/js/draco/");
+  loader.setDRACOLoader(dracoLoader);
 
-    this.scene = this.setupScene();
-    this.camera = this.setupCamera();
-    this.scene.add(this.camera);
-    this.renderer = this.setupRenderer();
-    this.controls = this.setupControls(this.camera, this.renderer.domElement);
+  try {
+    loader.load(
+      props.holo,
+      (gltf) => {
+        loading.value = false;
 
-    this.loadModel();
-  }
+        model.value = gltf.scene;
 
-  animate() {
-    this.controls.update();
+        model.value.rotation.set(0, 45, 0);
 
-    requestAnimationFrame(this.animate);
+        updateModelMaterial();
 
-    this.renderer.render(this.scene, this.camera);
-  }
+        scene.value?.add(model.value);
 
-  setupScene() {
-    const scene = new THREE.Scene();
+        const box = new THREE.Box3().setFromObject(model.value);
+        const size = box.getSize(new THREE.Vector3());
 
-    scene.background = null;
+        const maxValue = Math.max(size.x, size.y);
 
-    return scene;
-  }
+        camera.value?.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2));
 
-  setupCamera() {
-    const camera = new THREE.PerspectiveCamera(
-      35,
-      this.elementWidth / this.elementHeight,
-      0.1,
-      1000,
+        camera.value?.add(setupDirectionalLight(model.value));
+
+        animate();
+      },
+      (xhr) => {
+        progress.value = (xhr.loaded / xhr.total) * 100;
+      },
+      (error) => {
+        handleError(error);
+      },
     );
-
-    return camera;
+  } catch (error) {
+    handleError(error);
   }
+};
 
-  setupControls(camera, domElement) {
-    const controls = new OrbitControls(camera, domElement);
+const handleError = (error: unknown) => {
+  loading.value = false;
 
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
+  console.error(error);
 
-    controls.enablePan = false;
+  displayAlert({
+    text: t("messages.holoViewer.modelLoader.failure"),
+  });
+};
 
-    controls.enableZoom = this.zoom;
-    controls.minDistance = 50;
-    controls.maxDistance = 250;
+const toggleZoom = () => {
+  zoom.value = !zoom.value;
+};
 
-    controls.autoRotate = this.autoRotate;
-    controls.autoRotateSpeed = this.autoRotateSpeed;
+const toggleColor = () => {
+  color.value = !color.value;
+};
 
-    controls.listenToKeyEvents(window);
+const toggleAutoRotate = () => {
+  autoRotate.value = !autoRotate.value;
+};
+</script>
 
-    controls.update();
-
-    return controls;
-  }
-
-  setupRenderer() {
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    });
-
-    renderer.physicallyCorrectLights = true;
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.toneMappingExposure = 1;
-    renderer.setSize(this.elementWidth, this.elementHeight);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-    this.element.appendChild(renderer.domElement);
-
-    return renderer;
-  }
-
-  setupDirectionalLight(model) {
-    const directionalLight = new THREE.DirectionalLight(0x404040, 60);
-
-    directionalLight.target = model;
-    directionalLight.castShadow = true;
-
-    return directionalLight;
-  }
-
-  updateModelMaterial() {
-    const material = new THREE.MeshPhongMaterial({
-      color: this.modelColor,
-      side: THREE.DoubleSide,
-    });
-
-    const windowMaterial = new THREE.MeshPhongMaterial({
-      color: this.windowColor,
-      opacity: 0.8,
-      transparent: true,
-    });
-
-    const windowRefs = ["window", "glass"];
-
-    this.model.traverse((node) => {
-      if (!node.isMesh) return;
-
-      if (this.color) {
-        if (node.backupMaterial) {
-          node.material = node.backupMaterial;
-        }
-      } else if (
-        windowRefs.some((item) => node.name.toLowerCase().includes(item))
-      ) {
-        node.backupMaterial = node.material;
-        node.material = windowMaterial;
-      } else {
-        node.backupMaterial = node.material;
-        node.material = material;
-      }
-    });
-  }
-
-  loadModel() {
-    const loader = new GLTFLoader();
-
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("/vendor/js/draco/");
-    loader.setDRACOLoader(dracoLoader);
-
-    try {
-      loader.load(
-        this.holo,
-        (geometry) => {
-          this.loading = false;
-
-          this.model = geometry.scene;
-
-          this.model.rotation.set(0, 45, 0);
-
-          this.updateModelMaterial();
-
-          this.scene.add(this.model);
-
-          const box = new THREE.Box3().setFromObject(this.model);
-          const size = box.getSize(new THREE.Vector3());
-
-          const maxValue = Math.max(size.x, size.y);
-
-          this.camera.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2));
-
-          this.camera.add(this.setupDirectionalLight(this.model));
-
-          this.animate();
-        },
-        (xhr) => {
-          this.progress = (xhr.loaded / xhr.total) * 100;
-        },
-        (error) => {
-          this.handleError(error);
-        },
-      );
-    } catch (error) {
-      this.handleError(error);
-    }
-  }
-
-  handleError(error) {
-    this.loading = false;
-
-    console.error(error);
-
-    displayAlert({
-      text: this.$t("messages.holoViewer.modelLoader.failure"),
-    });
-  }
-
-  toggleZoom() {
-    this.zoom = !this.zoom;
-  }
-
-  toggleColor() {
-    this.color = !this.color;
-  }
-
-  toggleAutoRotate() {
-    this.autoRotate = !this.autoRotate;
-  }
-}
+<script lang="ts">
+export default {
+  name: "HoloViewer",
+};
 </script>
 
 <style lang="scss" scoped>

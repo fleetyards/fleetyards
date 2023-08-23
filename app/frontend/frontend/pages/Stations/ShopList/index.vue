@@ -3,19 +3,21 @@
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t("headlines.shops") }}
+          {{ t("headlines.shops") }}
         </h1>
       </div>
     </div>
     <FilteredList
       key="shops"
       :collection="collection"
-      :name="$route.name"
+      :name="String(route.name)"
       :route-query="$route.query"
-      :hash="$route.hash"
+      :hash="route.hash"
       :paginated="true"
     >
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
@@ -33,26 +35,21 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
 import FilterForm from "@/frontend/components/Shops/FilterForm/index.vue";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
-import shopsCollection from "@/frontend/api/collections/Shops";
+import { useI18n } from "@/frontend/composables/useI18n";
+// import shopsCollection from "@/frontend/api/collections/Shops";
 
-@Component<ShopList>({
-  components: {
-    FilterForm,
-    FilteredList,
-    FilteredGrid,
-    ShopPanel,
-  },
-})
-export default class ShopList extends Vue {
-  collection: ShopsCollection = shopsCollection;
-}
+const { t } = useI18n();
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShopsPage",
+};
 </script>
 
 <style lang="scss">

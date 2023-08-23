@@ -9,7 +9,7 @@
               {{ model.name }}
               <small class="text-muted manufacturer">
                 <span class="manufacturer-prefix">from</span>
-                <span v-html="model.manufacturer.name" />
+                <span v-html="model.manufacturer?.name" />
                 <img
                   v-if="model.manufacturer && model.manufacturer.logo"
                   v-lazy="model.manufacturer.logo"
@@ -32,7 +32,7 @@
                 :active="holoviewerVisible"
                 class="toggle-3d"
                 size="small"
-                @click.native="toggleHoloviewer"
+                @click="toggleHoloviewer"
               >
                 {{ t("labels.3dView") }}
               </Btn>
@@ -55,7 +55,11 @@
                 :src="starship42IframeUrl"
                 frameborder="0"
               />
-              <LazyImage v-else :src="storeImage" class="image" />
+              <LazyImage
+                v-else-if="storeImage"
+                :src="storeImage"
+                class="image"
+              />
             </div>
             <div class="row production-status">
               <div class="col-6">
@@ -309,21 +313,29 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import HoloViewer from "@/frontend/core/components/HoloViewer/index.vue";
 import { modelRouteGuard } from "@/frontend/utils/RouteGuards/Models";
-import modelsCollection from "@/frontend/api/collections/Models";
-import modelModulesCollection from "@/frontend/api/collections/ModelModules";
-import modelUpgradesCollection from "@/frontend/api/collections/ModelUpgrades";
-import modelVariantsCollection from "@/frontend/api/collections/ModelVariants";
-import modelLoanersCollection from "@/frontend/api/collections/ModelLoaners";
+// import modelsCollection from "@/frontend/api/collections/Models";
+// import modelModulesCollection from "@/frontend/api/collections/ModelModules";
+// import modelUpgradesCollection from "@/frontend/api/collections/ModelUpgrades";
+// import modelVariantsCollection from "@/frontend/api/collections/ModelVariants";
+// import modelLoanersCollection from "@/frontend/api/collections/ModelLoaners";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
-import Store from "@/frontend/lib/Store";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import Panel from "@/shared/components/Panel/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import type {
+  Model,
+  ModelLoaner,
+  ModelModule,
+  ModelUpgrade,
+} from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useModelsStore } from "@/frontend/stores/models";
+import { storeToRefs } from "pinia";
 
 useHangarItems();
 useWishlistItems();
@@ -348,11 +360,11 @@ const upgrades = ref<ModelUpgrade[]>([]);
 
 const model = ref<Model | null>(null);
 
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
-const holoviewerVisible = computed(
-  () => Store.getters["models/holoviewerVisible"],
-);
+const modelsStore = useModelsStore();
+
+const { holoviewerVisible } = storeToRefs(modelsStore);
 
 const route = useRoute();
 
@@ -448,12 +460,12 @@ const metaTitle = computed(() => {
 
   return t("title.model", {
     name: model.value.name,
-    manufacturer: model.value.manufacturer.name,
+    manufacturer: model.value.manufacturer?.name,
   });
 });
 
 const metaDescription = computed(() => {
-  if (!model.value) {
+  if (!model.value || !model.value.description) {
     return undefined;
   }
 
@@ -468,7 +480,7 @@ const metaImage = computed(() => {
   return model.value.media.storeImage?.large;
 });
 
-const { updateMetaInfo } = useMetaInfo();
+const { updateMetaInfo } = useMetaInfo(t);
 
 const crumbs = computed(() => {
   if (!model.value) {
@@ -493,12 +505,12 @@ onMounted(() => {
   fetchExtras();
 
   if (route.query.holoviewer) {
-    Store.dispatch("models/enableHoloviewer");
+    modelsStore.holoviewerVisible = true;
   }
 });
 
 const toggleHoloviewer = () => {
-  Store.dispatch("models/toggleHoloviewer");
+  modelsStore.toggleHoloviewer();
 };
 
 const fetchExtras = () => {

@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { sum as sumArray } from "@/frontend/utils/Array";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useAppStore } from "@/frontend/stores/app";

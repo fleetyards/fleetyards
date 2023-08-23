@@ -15,7 +15,7 @@
     >
       <div
         :class="{
-          'panel-inner-text': forText,
+          'panel-inner-text': inset,
         }"
         class="panel-inner"
       >
@@ -30,15 +30,15 @@ type Props = {
   outerSpacing?: boolean;
   transparency?: "default" | "more" | "complete";
   highlight?: boolean;
-  forText?: boolean;
   variant?: "default" | "primary" | "success";
+  inset?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   outerSpacing: true,
   transparency: "default",
   highlight: false,
-  forText: false,
+  inset: false,
   variant: "default",
 });
 

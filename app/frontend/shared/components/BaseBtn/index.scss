@@ -89,6 +89,34 @@
     background: transparent;
   }
 
+  &.panel-btn-dropdown-link {
+    display: block;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+
+    i {
+      width: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    > .panel-btn-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+
+      > :first-child {
+        margin-right: 10px;
+      }
+
+      > :not(:first-child) {
+        flex: 1 1;
+      }
+    }
+  }
+
   &.panel-btn-dropdown-link,
   &.panel-btn-link {
     background: transparent;

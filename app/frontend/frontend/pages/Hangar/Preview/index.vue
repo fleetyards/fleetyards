@@ -97,7 +97,7 @@
               v-if="hangarPreview"
               data-test="login"
               :block="true"
-              @click.native="hidePreview"
+              @click="hidePreview"
             >
               {{ t("actions.login") }}
             </Btn>
@@ -111,7 +111,7 @@
               }"
               data-test="login"
               :block="true"
-              @click.native="hidePreview"
+              @click="hidePreview"
             >
               {{ t("actions.login") }}
             </Btn>
@@ -123,20 +123,23 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import { useRouter } from "vue-router";
-import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 
 const router = useRouter();
 
-const hangarPreview = computed(() => Store.getters["hangar/preview"]);
+const hangarStore = useHangarStore();
+
+const { preview: hangarPreview } = storeToRefs(hangarStore);
 
 const hidePreview = () => {
-  Store.dispatch("hangar/hidePreview");
+  hangarStore.hidePreview();
+
   router.push({
     name: "login",
     params: {

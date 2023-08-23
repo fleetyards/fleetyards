@@ -129,7 +129,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/Btn/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { isFleetRoute as fleetRouteCheck } from "../utils";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useNavStore } from "@/frontend/stores/nav";
