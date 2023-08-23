@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             id: {type: :string, format: :uuid},
-            scIdentifier: {type: :string, nullable: true},
+            scIdentifier: {type: :string},
             name: {type: :string},
             slug: {type: :string},
 
@@ -70,8 +70,8 @@ module V1
             links: {
               type: :object,
               properties: {
-                salesPageUrl: {type: :string, nullable: true},
-                storeUrl: {type: :string, nullable: true}
+                salesPageUrl: {type: :string},
+                storeUrl: {type: :string}
               },
               additionalProperties: false
             },

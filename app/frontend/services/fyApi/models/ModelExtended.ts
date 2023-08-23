@@ -12,7 +12,7 @@ import type { ViewImage } from './ViewImage';
 
 export type ModelExtended = {
     id: string;
-    scIdentifier?: string | null;
+    scIdentifier?: string;
     name: string;
     slug: string;
     availability: {
@@ -44,8 +44,8 @@ export type ModelExtended = {
     lastUpdatedAt?: string;
     lastUpdatedAtLabel?: string;
     links: {
-        salesPageUrl?: string | null;
-        storeUrl?: string | null;
+        salesPageUrl?: string;
+        storeUrl?: string;
         self?: string;
         frontend?: string;
     };

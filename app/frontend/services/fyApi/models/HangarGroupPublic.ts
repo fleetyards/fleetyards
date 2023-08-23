@@ -8,7 +8,7 @@ export type HangarGroupPublic = {
     name: string;
     slug: string;
     color: string;
-    sort?: number | null;
+    sort?: number;
     vehiclesCount?: number;
     createdAt: string;
     updatedAt: string;

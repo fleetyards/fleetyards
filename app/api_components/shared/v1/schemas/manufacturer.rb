@@ -11,8 +11,8 @@ module Shared
           properties: {
             name: {type: :string},
             slug: {type: :string},
-            code: {type: :string, nullable: true},
-            logo: {type: :string, nullable: true},
+            code: {type: :string},
+            logo: {type: :string},
             longName: {type: :string},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

@@ -5111,19 +5111,14 @@ components:
           - soldAt
         class:
           type: string
-          nullable: true
         grade:
           type: string
-          nullable: true
         itemClass:
           type: string
-          nullable: true
         itemClassLabel:
           type: string
-          nullable: true
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
-          nullable: true
         media:
           type: object
           properties:
@@ -5132,19 +5127,14 @@ components:
           additionalProperties: false
         size:
           type: string
-          nullable: true
         trackingSignal:
           type: string
-          nullable: true
         trackingSignalLabel:
           type: string
-          nullable: true
         type:
           type: string
-          nullable: true
         typeLabel:
           type: string
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -5187,7 +5177,6 @@ components:
           type: string
         group:
           type: string
-          nullable: true
         size:
           "$ref": "#/components/schemas/DockShipSizeEnum"
         sizeLabel:
@@ -5531,30 +5520,22 @@ components:
           - soldAt
         backpackCompatibility:
           type: string
-          nullable: true
         coreCompatibility:
           type: string
-          nullable: true
         damageReduction:
           type: string
-          nullable: true
         description:
           type: string
         extras:
           type: string
-          nullable: true
         grade:
           type: string
-          nullable: true
         itemType:
           type: string
-          nullable: true
         itemTypeLabel:
           type: string
-          nullable: true
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
-          nullable: true
         media:
           type: object
           properties:
@@ -5563,40 +5544,28 @@ components:
           additionalProperties: false
         range:
           type: string
-          nullable: true
         rateOfFire:
           type: string
-          nullable: true
         size:
           type: string
-          nullable: true
         slot:
           type: string
-          nullable: true
         slotLabel:
           type: string
-          nullable: true
         storage:
           type: string
-          nullable: true
         temperatureRating:
           type: string
-          nullable: true
         type:
           type: string
-          nullable: true
         typeLabel:
           type: string
-          nullable: true
         volume:
           type: string
-          nullable: true
         weaponClass:
           type: string
-          nullable: true
         weaponClassLabel:
           type: string
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -5653,7 +5622,6 @@ components:
           type: string
         icon:
           type: string
-          nullable: true
         name:
           type: string
           deprecated: true
@@ -5693,7 +5661,6 @@ components:
           type: string
         habitationName:
           type: string
-          nullable: true
         type:
           "$ref": "#/components/schemas/HabitationTypeEnum"
         typeLabel:
@@ -5728,10 +5695,8 @@ components:
           type: string
         code:
           type: string
-          nullable: true
         logo:
           type: string
-          nullable: true
         longName:
           type: string
         createdAt:
@@ -5853,7 +5818,6 @@ components:
           type: boolean
         location:
           type: string
-          nullable: true
         locationLabel:
           type: string
         media:
@@ -5886,22 +5850,18 @@ components:
           format: date-time
         storeImage:
           type: string
-          nullable: true
           format: uri
           deprecated: true
         storeImageSmall:
           type: string
-          nullable: true
           format: uri
           deprecated: true
         storeImageMedium:
           type: string
-          nullable: true
           format: uri
           deprecated: true
         storeImageLarge:
           type: string
-          nullable: true
           format: uri
           deprecated: true
       additionalProperties: false
@@ -6292,40 +6252,30 @@ components:
           type: string
         rsiSid:
           type: string
-          nullable: true
         ts:
           type: string
-          nullable: true
         discord:
           type: string
-          nullable: true
         youtube:
           type: string
-          nullable: true
         twitch:
           type: string
-          nullable: true
         guilded:
           type: string
-          nullable: true
         homepage:
           type: string
-          nullable: true
         name:
           type: string
         slug:
           type: string
         description:
           type: string
-          nullable: true
         publicFleet:
           type: boolean
         logo:
           type: string
-          nullable: true
         backgroundImage:
           type: string
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -6399,31 +6349,23 @@ components:
           "$ref": "#/components/schemas/FleetMembershipStatusEnum"
         avatar:
           type: string
-          nullable: true
         rsiHandle:
           type: string
-          nullable: true
         homepage:
           type: string
-          nullable: true
         discord:
           type: string
-          nullable: true
         youtube:
           type: string
-          nullable: true
         twitch:
           type: string
-          nullable: true
         guilded:
           type: string
-          nullable: true
         shipsFilter:
           "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
         hangarGroupId:
           type: string
           format: uuid
-          nullable: true
         fleetSlug:
           type: string
         fleetName:
@@ -6435,7 +6377,6 @@ components:
         hangarUpdatedAt:
           type: string
           format: date-time
-          nullable: true
         invitedAt:
           type: string
           format: date-time
@@ -6542,7 +6483,6 @@ components:
           type: boolean
         sort:
           type: integer
-          nullable: true
         vehiclesCount:
           type: integer
         createdAt:
@@ -6591,7 +6531,6 @@ components:
           type: string
         sort:
           type: integer
-          nullable: true
         vehiclesCount:
           type: integer
         createdAt:
@@ -6822,7 +6761,6 @@ components:
           format: uri
         caption:
           type: string
-          nullable: true
         name:
           type: string
         smallUrl:
@@ -7289,51 +7227,39 @@ components:
           format: uuid
         category:
           "$ref": "#/components/schemas/ModelHardpointCategoryEnum"
-          nullable: true
         categoryLabel:
           type: string
-          nullable: true
         component:
           "$ref": "#/components/schemas/Component"
-          nullable: true
         details:
           type: string
-          nullable: true
         group:
           "$ref": "#/components/schemas/ModelHardpointGroupEnum"
         itemSlots:
           type: string
-          nullable: true
         key:
           type: string
         loadoutIdentifier:
           type: string
           format: uuid
-          nullable: true
         loadouts:
           type: array
           items:
             "$ref": "#/components/schemas/ModelHardpointLoadout"
         mount:
           type: string
-          nullable: true
         name:
           type: string
-          nullable: true
         size:
           "$ref": "#/components/schemas/ModelHardpointSizeEnum"
-          nullable: true
         sizeLabel:
           type: string
-          nullable: true
         source:
           "$ref": "#/components/schemas/ModelHardpointSourceEnum"
         subCategory:
           "$ref": "#/components/schemas/ModelHardpointSubCategoryEnum"
-          nullable: true
         subCategoryLabel:
           type: string
-          nullable: true
         type:
           "$ref": "#/components/schemas/ModelHardpointTypeEnum"
         createdAt:
@@ -7387,7 +7313,6 @@ components:
           format: uuid
         scIdentifier:
           type: string
-          nullable: true
         name:
           type: string
         slug:
@@ -7467,10 +7392,8 @@ components:
           properties:
             salesPageUrl:
               type: string
-              nullable: true
             storeUrl:
               type: string
-              nullable: true
           additionalProperties: false
         loaners:
           type: array
@@ -7797,7 +7720,6 @@ components:
           format: uuid
         scIdentifier:
           type: string
-          nullable: true
         name:
           type: string
         slug:
@@ -7877,10 +7799,8 @@ components:
           properties:
             salesPageUrl:
               type: string
-              nullable: true
             storeUrl:
               type: string
-              nullable: true
             self:
               type: string
               format: uri
@@ -8232,13 +8152,10 @@ components:
           format: uuid
         name:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         pledgePrice:
           type: number
-          nullable: true
         modules:
           type: array
           items:
@@ -8248,16 +8165,12 @@ components:
           properties:
             angledView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             sideView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
-              nullable: true
             topView:
               "$ref": "#/components/schemas/ViewImage"
-              nullable: true
           additionalProperties: false
         createdAt:
           type: string
@@ -8286,87 +8199,66 @@ components:
           deprecated: true
         angledView:
           type: string
-          nullable: true
           deprecated: true
         angledViewHeight:
           type: number
-          nullable: true
           deprecated: true
         angledViewLarge:
           type: string
-          nullable: true
           deprecated: true
         angledViewMedium:
           type: string
-          nullable: true
           deprecated: true
         angledViewSmall:
           type: string
-          nullable: true
           deprecated: true
         angledViewWidth:
           type: number
-          nullable: true
           deprecated: true
         angledViewXlarge:
           type: string
-          nullable: true
           deprecated: true
         sideView:
           type: string
-          nullable: true
           deprecated: true
         sideViewHeight:
           type: number
-          nullable: true
           deprecated: true
         sideViewLarge:
           type: string
-          nullable: true
           deprecated: true
         sideViewMedium:
           type: string
-          nullable: true
           deprecated: true
         sideViewSmall:
           type: string
-          nullable: true
           deprecated: true
         sideViewWidth:
           type: number
-          nullable: true
           deprecated: true
         sideViewXlarge:
           type: string
-          nullable: true
           deprecated: true
         topView:
           type: string
-          nullable: true
           deprecated: true
         topViewHeight:
           type: number
-          nullable: true
           deprecated: true
         topViewLarge:
           type: string
-          nullable: true
           deprecated: true
         topViewMedium:
           type: string
-          nullable: true
           deprecated: true
         topViewSmall:
           type: string
-          nullable: true
           deprecated: true
         topViewWidth:
           type: number
-          nullable: true
           deprecated: true
         topViewXlarge:
           type: string
-          nullable: true
           deprecated: true
       additionalProperties: false
       required:
@@ -9507,7 +9399,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         media:
           type: object
           properties:
@@ -9583,22 +9474,18 @@ components:
           format: date-time
         storeImage:
           type: string
-          nullable: true
           format: uri
           deprecated: true
         storeImageSmall:
           type: string
-          nullable: true
           format: uri
           deprecated: true
         storeImageMedium:
           type: string
-          nullable: true
           format: uri
           deprecated: true
         storeImageLarge:
           type: string
-          nullable: true
           format: uri
           deprecated: true
       additionalProperties: false
@@ -9639,34 +9526,24 @@ components:
           type: string
         danger:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         economy:
           type: string
-          nullable: true
         locationLabel:
           type: string
-          nullable: true
         mapX:
           type: string
-          nullable: true
         mapY:
           type: string
-          nullable: true
         population:
           type: string
-          nullable: true
         size:
           type: string
-          nullable: true
         status:
           type: string
-          nullable: true
         type:
           type: string
-          nullable: true
         media:
           type: object
           properties:
@@ -9732,13 +9609,10 @@ components:
           type: boolean
         classificationLabel:
           type: string
-          nullable: true
         classification:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         dockCounts:
           type: array
           items:
@@ -9753,16 +9627,13 @@ components:
           type: boolean
         locationLabel:
           type: string
-          nullable: true
         location:
           type: string
-          nullable: true
         media:
           type: object
           properties:
             backgroundImage:
               type: string
-              nullable: true
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
           additionalProperties: false
@@ -9770,10 +9641,8 @@ components:
           type: boolean
         shopListLabel:
           type: string
-          nullable: true
         typeLabel:
           type: string
-          nullable: true
         type:
           "$ref": "#/components/schemas/StationTypeEnum"
         celestialObject:
@@ -9801,27 +9670,22 @@ components:
         backgroundImage:
           type: string
           format: uri
-          nullable: true
           deprecated: true
         storeImage:
           type: string
           format: uri
-          nullable: true
           deprecated: true
         storeImageLarge:
           type: string
           format: uri
-          nullable: true
           deprecated: true
         storeImageMedium:
           type: string
           format: uri
-          nullable: true
           deprecated: true
         storeImageSmall:
           type: string
           format: uri
-          nullable: true
           deprecated: true
       additionalProperties: false
       required:
@@ -10028,13 +9892,10 @@ components:
           format: uuid
         name:
           type: string
-          nullable: true
         slug:
           type: string
-          nullable: true
         serial:
           type: string
-          nullable: true
         alternativeNames:
           type: array
           items:
@@ -10070,19 +9931,16 @@ components:
             format: uuid
         modulePackage:
           "$ref": "#/components/schemas/ModelModulePackage"
-          nullable: true
         nameVisible:
           type: boolean
         paint:
           "$ref": "#/components/schemas/ModelPaint"
-          nullable: true
         public:
           type: boolean
         saleNotify:
           type: boolean
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
-          nullable: true
         wanted:
           type: boolean
         createdAt:
@@ -10128,21 +9986,16 @@ components:
           type: string
         shipCode:
           type: string
-          nullable: true
         manufacturerName:
           type: string
         manufacturerCode:
           type: string
-          nullable: true
         paintSlug:
           type: string
-          nullable: true
         shipName:
           type: string
-          nullable: true
         shipSerial:
           type: string
-          nullable: true
         wanted:
           type: boolean
         flagship:
@@ -10187,13 +10040,10 @@ components:
           format: uuid
         name:
           type: string
-          nullable: true
         slug:
           type: string
-          nullable: true
         serial:
           type: string
-          nullable: true
         hangarGroupIds:
           type: array
           items:
@@ -10209,11 +10059,9 @@ components:
           "$ref": "#/components/schemas/Model"
         username:
           type: string
-          nullable: true
         userAvatar:
           type: string
           format: uri
-          nullable: true
         modelModuleIds:
           type: array
           items:
@@ -10226,10 +10074,8 @@ components:
             format: uuid
         modulePackage:
           "$ref": "#/components/schemas/ModelModulePackage"
-          nullable: true
         paint:
           "$ref": "#/components/schemas/ModelPaint"
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -10261,7 +10107,6 @@ components:
           format: uri
         videoId:
           type: string
-          nullable: true
         createdAt:
           type: string
           format: date-time

@@ -27,7 +27,7 @@ RSpec.describe "api/v1/roadmap", type: :request, swagger_doc: "v1/schema.yaml" d
           data = JSON.parse(response.body)
 
           expect(data.count).to be > 0
-          expect(data.count).to eq(1)
+          expect(data.count).to eq(2)
         end
       end
     end

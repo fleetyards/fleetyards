@@ -11,7 +11,7 @@ module V1
           id: {type: :string, format: :uuid},
           name: {type: :string},
           slug: {type: :string},
-          description: {type: :string, nullable: true},
+          description: {type: :string},
 
           media: {
             type: :object,
@@ -84,10 +84,10 @@ module V1
 
           # DEPRECATED
 
-          storeImage: {type: :string, nullable: true, format: :uri, deprecated: true},
-          storeImageSmall: {type: :string, nullable: true, format: :uri, deprecated: true},
-          storeImageMedium: {type: :string, nullable: true, format: :uri, deprecated: true},
-          storeImageLarge: {type: :string, nullable: true, format: :uri, deprecated: true}
+          storeImage: {type: :string, format: :uri, deprecated: true},
+          storeImageSmall: {type: :string, format: :uri, deprecated: true},
+          storeImageMedium: {type: :string, format: :uri, deprecated: true},
+          storeImageLarge: {type: :string, format: :uri, deprecated: true}
         },
         additionalProperties: false,
         required: %w[

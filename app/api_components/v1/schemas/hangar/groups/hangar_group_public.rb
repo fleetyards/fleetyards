@@ -14,7 +14,7 @@ module V1
               name: {type: :string},
               slug: {type: :string},
               color: {type: :string},
-              sort: {type: :integer, nullable: true},
+              sort: {type: :integer},
               vehiclesCount: {type: :integer},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

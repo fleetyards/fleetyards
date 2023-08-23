@@ -10,19 +10,19 @@ import type { ModelPaint } from './ModelPaint';
 
 export type VehiclePublic = {
     id: string;
-    name?: string | null;
-    slug?: string | null;
-    serial?: string | null;
+    name?: string;
+    slug?: string;
+    serial?: string;
     hangarGroupIds: Array<string>;
     hangarGroups: Array<HangarGroupPublic>;
     loaner: boolean;
     model: Model;
-    username?: string | null;
-    userAvatar?: string | null;
+    username?: string;
+    userAvatar?: string;
     modelModuleIds: Array<string>;
     modelUpgradeIds: Array<string>;
-    modulePackage?: ModelModulePackage | null;
-    paint?: ModelPaint | null;
+    modulePackage?: ModelModulePackage;
+    paint?: ModelPaint;
     createdAt: string;
     updatedAt: string;
 };

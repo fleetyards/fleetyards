@@ -10,7 +10,7 @@ module Shared
           type: :object,
           properties: {
             name: {type: :string},
-            habitationName: {type: :string, nullable: true},
+            habitationName: {type: :string},
             type: {"$ref": "#/components/schemas/HabitationTypeEnum"},
             typeLabel: {type: :string}
           },

@@ -11,28 +11,28 @@ module V1
           name: {type: :string},
           slug: {type: :string},
           cargoHub: {type: :boolean},
-          classificationLabel: {type: :string, nullable: true},
-          classification: {type: :string, nullable: true},
-          description: {type: :string, nullable: true},
+          classificationLabel: {type: :string},
+          classification: {type: :string},
+          description: {type: :string},
           dockCounts: {type: :array, items: {"$ref": "#/components/schemas/DockCount"}},
           habitable: {type: :boolean},
           habitationCounts: {type: :array, items: {"$ref": "#/components/schemas/HabitationCount"}},
           hasImages: {type: :boolean},
-          locationLabel: {type: :string, nullable: true},
-          location: {type: :string, nullable: true},
+          locationLabel: {type: :string},
+          location: {type: :string},
 
           media: {
             type: :object,
             properties: {
-              backgroundImage: {type: :string, nullable: true},
+              backgroundImage: {type: :string},
               storeImage: {"$ref": "#/components/schemas/MediaImage"}
             },
             additionalProperties: false
           },
 
           refinery: {type: :boolean},
-          shopListLabel: {type: :string, nullable: true},
-          typeLabel: {type: :string, nullable: true},
+          shopListLabel: {type: :string},
+          typeLabel: {type: :string},
           type: {"$ref": "#/components/schemas/StationTypeEnum"},
 
           celestialObject: {"$ref": "#/components/schemas/CelestialObject"},
@@ -46,11 +46,11 @@ module V1
 
           # DEPRECATED
 
-          backgroundImage: {type: :string, format: :uri, nullable: true, deprecated: true},
-          storeImage: {type: :string, format: :uri, nullable: true, deprecated: true},
-          storeImageLarge: {type: :string, format: :uri, nullable: true, deprecated: true},
-          storeImageMedium: {type: :string, format: :uri, nullable: true, deprecated: true},
-          storeImageSmall: {type: :string, format: :uri, nullable: true, deprecated: true}
+          backgroundImage: {type: :string, format: :uri, deprecated: true},
+          storeImage: {type: :string, format: :uri, deprecated: true},
+          storeImageLarge: {type: :string, format: :uri, deprecated: true},
+          storeImageMedium: {type: :string, format: :uri, deprecated: true},
+          storeImageSmall: {type: :string, format: :uri, deprecated: true}
         },
         additionalProperties: false,
         required: %w[

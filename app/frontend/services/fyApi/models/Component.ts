@@ -16,19 +16,19 @@ export type Component = {
         listedAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
-    class?: string | null;
-    grade?: string | null;
-    itemClass?: string | null;
-    itemClassLabel?: string | null;
-    manufacturer?: Manufacturer | null;
+    class?: string;
+    grade?: string;
+    itemClass?: string;
+    itemClassLabel?: string;
+    manufacturer?: Manufacturer;
     media: {
         storeImage?: MediaImage;
     };
-    size?: string | null;
-    trackingSignal?: string | null;
-    trackingSignalLabel?: string | null;
-    type?: string | null;
-    typeLabel?: string | null;
+    size?: string;
+    trackingSignal?: string;
+    trackingSignalLabel?: string;
+    type?: string;
+    typeLabel?: string;
     createdAt: string;
     updatedAt: string;
     /**

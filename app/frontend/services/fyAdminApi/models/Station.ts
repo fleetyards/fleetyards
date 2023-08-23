@@ -17,22 +17,22 @@ export type Station = {
     name: string;
     slug: string;
     cargoHub: boolean;
-    classificationLabel?: string | null;
-    classification?: string | null;
-    description?: string | null;
+    classificationLabel?: string;
+    classification?: string;
+    description?: string;
     dockCounts?: Array<DockCount>;
     habitable: boolean;
     habitationCounts?: Array<HabitationCount>;
     hasImages: boolean;
-    locationLabel?: string | null;
-    location?: string | null;
+    locationLabel?: string;
+    location?: string;
     media: {
-        backgroundImage?: string | null;
+        backgroundImage?: string;
         storeImage?: MediaImage;
     };
     refinery: boolean;
-    shopListLabel?: string | null;
-    typeLabel?: string | null;
+    shopListLabel?: string;
+    typeLabel?: string;
     type?: StationTypeEnum;
     celestialObject: CelestialObject;
     starsystem?: Starsystem;
@@ -44,23 +44,23 @@ export type Station = {
     /**
      * @deprecated
      */
-    backgroundImage?: string | null;
+    backgroundImage?: string;
     /**
      * @deprecated
      */
-    storeImage?: string | null;
+    storeImage?: string;
     /**
      * @deprecated
      */
-    storeImageLarge?: string | null;
+    storeImageLarge?: string;
     /**
      * @deprecated
      */
-    storeImageMedium?: string | null;
+    storeImageMedium?: string;
     /**
      * @deprecated
      */
-    storeImageSmall?: string | null;
+    storeImageSmall?: string;
     id: string;
 };
 
