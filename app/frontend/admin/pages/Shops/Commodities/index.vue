@@ -74,11 +74,12 @@
               size="small"
               variant="link"
               :inline="true"
+              in-group
               @click="openEditModal(record)"
             >
               {{ t("actions.edit") }}
             </Btn>
-            <BtnDropdown :inline="true" size="small" variant="link">
+            <BtnDropdown :inline="true" size="small" variant="link" in-group>
               <Btn
                 size="small"
                 variant="dropdown"

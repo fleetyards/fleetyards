@@ -129,8 +129,6 @@ const displayNotification = (options: FleetyardsNotyOptions) => {
     ...options,
   };
 
-  console.log(defaults);
-
   if (defaults.text && !notyBackoff(defaults.text)) {
     lastNotyAt = new Date();
     lastNotyText = defaults.text;
@@ -165,7 +163,7 @@ const displayNotification = (options: FleetyardsNotyOptions) => {
   }
 };
 
-export const useNoty = (t: I18nPluginOptions["t"]) => {
+export const useNoty = (t?: I18nPluginOptions["t"]) => {
   const displaySuccess = function success(options: FleetyardsNotyOptions) {
     displayNotification({
       ...options,

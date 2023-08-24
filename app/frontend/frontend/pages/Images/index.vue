@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <h1 class="sr-only">
-              {{ $t("headlines.images") }}
+              {{ t("headlines.images") }}
             </h1>
           </div>
         </div>
@@ -34,7 +34,7 @@
               :href="record.url"
               :alt="record.name"
               :title="record.caption || record.name"
-              @click.native.prevent.exact="openGallery(index)"
+              @click.prevent.exact="openGallery(index)"
             />
           </template>
         </FilteredGrid>
@@ -51,10 +51,13 @@ import GalleryImage from "@/frontend/core/components/Gallery/Image/index.vue";
 // import imagesCollection from "@/frontend/api/collections/Images";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+
+const { t } = useI18n();
 
 const gallery = ref<InstanceType<typeof Gallery> | undefined>();
 
-const openGallery = (index) => {
+const openGallery = (index: string) => {
   gallery.value?.open(index);
 };
 </script>

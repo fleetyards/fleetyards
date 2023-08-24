@@ -41,6 +41,7 @@ export type Props = {
   active?: boolean;
   disabled?: boolean;
   routeActiveClass?: string;
+  inGroup?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,6 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
   active: false,
   disabled: false,
   routeActiveClass: undefined,
+  inGroup: false,
 });
 
 const btnType = computed(() => {
@@ -73,7 +75,6 @@ const btnProps = computed(() => {
   if (props.to) {
     return {
       to: props.to,
-      exact: props.exact,
       // event: props.disabled ? '' : 'click',
       activeClass: props.routeActiveClass,
       exactActiveClass: props.routeActiveClass,
@@ -106,6 +107,7 @@ const cssClasses = computed(() => ({
   "panel-btn-dropdown-link": props.variant === "dropdown",
   "panel-btn-text-inline": props.textInline,
   "panel-btn-mobile-block": props.mobileBlock,
+  "panel-btn-in-group": props.inGroup,
   active: props.active,
   disabled: props.disabled,
 }));

@@ -28,7 +28,7 @@ export const groupBy = (
   );
 };
 
-export const sortBy = <T>(list: T[], key: string, decending = false) => {
+export const sortBy = <T>(list: T[], key: string, decending = false): T[] => {
   return JSON.parse(JSON.stringify(list)).sort(
     (a: Record<string, T>, b: Record<string, T>) => {
       if (decending) {

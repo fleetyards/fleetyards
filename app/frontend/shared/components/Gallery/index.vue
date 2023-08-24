@@ -57,11 +57,11 @@ import PhotoSwipeUIDefault from "photoswipe/dist/photoswipe-ui-default";
 import copyText from "@/shared/utils/CopyText";
 import { useNoty } from "@/shared/composables/useNoty";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
-import { useAppStore } from "@/frontend/stores/app";
+import { useOverlayStore } from "@/shared/stores/overlay";
 
 const i18n = inject<I18nPluginOptions>("i18n");
 
-const { displayAlert, displaySuccess } = useNoty(t);
+const { displayAlert, displaySuccess } = useNoty(i18n?.t);
 
 type GalleryItem = {
   url: string;
@@ -78,7 +78,7 @@ const props = withDefaults(defineProps<Props>(), {
   items: () => [],
 });
 
-const gallery = ref<PhotoSwipe>();
+const gallery = ref<PhotoSwipe<PhotoSwipe.Options>>();
 
 const internalIndex = ref(0);
 
@@ -109,7 +109,7 @@ const options = computed(() => {
 });
 
 const copyUrl = (_event: Event) => {
-  copyText(gallery.value.currItem.src).then(
+  copyText(gallery.value?.currItem.src || "").then(
     () => {
       displaySuccess({
         text: i18n?.t("messages.copyImageUrl.success"),
@@ -138,23 +138,23 @@ const getThumbBounds = (index: number) => {
   return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
 };
 
-const appStore = useAppStore();
+const overlayStore = useOverlayStore();
 
 const open = (index = "0") => {
   internalIndex.value = parseInt(index, 10);
 
-  appStore.showOverlay();
+  overlayStore.show();
 
   setup();
-  gallery.value.init();
+  gallery.value?.init();
 };
 
-// const onClose = () => {
-//   this.$store.dispatch("app/hideOverlay");
-// };
+const onClose = () => {
+  overlayStore.hide();
+};
 
 const setup = () => {
-  const pswpElement = document.querySelectorAll(".pswp")[0];
+  const pswpElement = document.querySelectorAll(".pswp")[0] as HTMLElement;
 
   gallery.value = new PhotoSwipe(
     pswpElement,
@@ -163,7 +163,7 @@ const setup = () => {
     unref(options),
   );
 
-  // gallery.value.listen("close", onClose);
+  gallery.value.listen("close", onClose);
 };
 
 defineExpose({

@@ -7,6 +7,7 @@
         variant="dropdown"
         :inline="true"
         :active="autoRotate"
+        in-group
         @click="toggleAutoRotate"
       >
         <i class="fal fa-planet-ringed" />
@@ -17,6 +18,7 @@
         variant="dropdown"
         :inline="true"
         :active="zoom"
+        in-group
         @click="toggleZoom"
       >
         <i class="fal fa-search-plus" />
@@ -28,6 +30,7 @@
         variant="dropdown"
         :inline="true"
         :active="color"
+        in-group
         @click="toggleColor"
       >
         <i class="fad fa-fill-drip" />

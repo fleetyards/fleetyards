@@ -7,6 +7,7 @@
         size="small"
         :per-page="internalPerPage"
         :steps="pagination.perPageSteps"
+        in-group
         @change="updatePerPage"
       />
       <Btn
@@ -15,6 +16,7 @@
         :to="pageRoute(1)"
         :disabled="pagination.currentPage <= 1"
         route-active-class=""
+        in-group
       >
         <i class="fa fa-chevron-double-left" />
       </Btn>
@@ -24,6 +26,7 @@
         :to="pageRoute(pagination.currentPage - 1)"
         :disabled="pagination.currentPage <= 1"
         route-active-class=""
+        in-group
       >
         <i class="fa fa-chevron-left" />
       </Btn>
@@ -41,6 +44,7 @@
         :to="pageRoute(pagination.currentPage + 1)"
         :disabled="pagination.currentPage >= pagination.totalPages"
         route-active-class=""
+        in-group
       >
         <i class="fa fa-chevron-right" />
       </Btn>
@@ -50,6 +54,7 @@
         :to="pageRoute(pagination.totalPages)"
         :disabled="pagination.currentPage >= pagination.totalPages"
         route-active-class=""
+        in-group
       >
         <i class="fa fa-chevron-double-right" />
       </Btn>

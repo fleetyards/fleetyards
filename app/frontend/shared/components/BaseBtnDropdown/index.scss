@@ -70,6 +70,10 @@
   &.panel-btn-dropdown-inline {
     margin-bottom: 0px;
   }
+
+  &.panel-btn-dropdown-in-group {
+    height: 34px;
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {

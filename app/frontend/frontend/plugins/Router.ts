@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-import type { RouteLocation, LocationQuery } from "vue-router";
+import type {
+  RouteLocation,
+  LocationQuery,
+  LocationQueryValueRaw,
+} from "vue-router";
 import qs from "qs";
 import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
@@ -12,11 +16,17 @@ import "vue-router";
 // To ensure it is treated as a module, add at least one `export` statement
 export {};
 
-declare module "vue-router" {
-  interface RouteLocationQuery {
-    q: Record<string, string | number | boolean | null | undefined>;
-  }
+export type FyLocartionQueryValue = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
 
+export type FyLocationQuery = Record<
+  string | number,
+  LocationQueryValueRaw | LocationQueryValueRaw[] | FyLocartionQueryValue
+>;
+
+declare module "vue-router" {
   interface RouteMeta {
     title?: string;
     needsAuthentication?: boolean;
@@ -50,7 +60,7 @@ const router = createRouter({
 
   stringifyQuery(query) {
     const result = qs.stringify(query, { arrayFormat: "brackets" });
-    return result ? `?${result}` : "";
+    return result ? `${result}` : "";
   },
 
   routes: addTrailingSlashToAllRoutes(initialRoutes),

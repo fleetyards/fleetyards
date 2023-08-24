@@ -4,13 +4,13 @@
       <router-link
         :key="item.media?.storeImage?.medium"
         v-lazy:background-image="item.media?.storeImage?.medium"
-        :to="route"
+        :to="detailRoute"
         :aria-label="item.name"
         class="lazy"
       />
     </PanelImage>
     <h2 class="panel-title">
-      <router-link :to="route" :aria-label="item.name">
+      <router-link :to="detailRoute" :aria-label="item.name">
         {{ item.name }}
       </router-link>
     </h2>
@@ -19,24 +19,32 @@
 
 <script lang="ts" setup>
 import type { CelestialObject } from "@/services/fyApi";
-import type { RouteLocationRaw } from "vue-router";
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelImage from "@/shared/components/Panel/Image/index.vue";
 
 type Props = {
   item: CelestialObject;
-  route: RouteLocationRaw;
   id?: string;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   id: undefined,
+});
+
+const detailRoute = computed(() => {
+  return {
+    name: "celestial-object",
+    params: {
+      starsystem: props.item.starsystem.slug,
+      slug: props.item.slug,
+    },
+  };
 });
 </script>
 
 <script lang="ts">
 export default {
-  name: "PlanetsPanel",
+  name: "CelestialObjectItem",
 };
 </script>
 

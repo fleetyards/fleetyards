@@ -37,10 +37,11 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
-import type { StationMinimal } from "@/services/fyApi";
+import type { Station } from "@/services/fyApi";
+import { StationTypeEnum } from "@/services/fyApi";
 
 type Props = {
-  station: StationMinimal;
+  station: Station;
 };
 
 const props = defineProps<Props>();
@@ -73,12 +74,9 @@ const tooltip = computed(() => {
 
 const prefix = computed(() => {
   switch (props.station.type) {
-    case "asteroid-station":
+    case StationTypeEnum.ASTEROID_STATION:
       return t("labels.station.locationPrefix.asteriod");
-    case "hub":
-    case "station":
-    case "cargo-station":
-    case "mining-station":
+    case StationTypeEnum.STATION:
       return t("labels.station.locationPrefix.orbit");
     default:
       return t("labels.station.locationPrefix.default");

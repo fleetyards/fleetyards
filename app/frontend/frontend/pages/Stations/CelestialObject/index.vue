@@ -1,5 +1,5 @@
 <template>
-  <AsyncData :is-error="isError" :is-loading="isLoading || isFetching">
+  <AsyncData :async-status="asyncStatus">
     <template v-if="celestialObject" #resolved>
       <div class="row">
         <div class="col-12">
@@ -37,7 +37,7 @@
               :key="moon.slug"
               class="col-12 col-md-6 col-lg-3 fade-list-item"
             >
-              <ItemPanel
+              <CelestialObjectItem
                 :item="moon"
                 :route="{
                   name: 'celestial-object',
@@ -59,7 +59,7 @@
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
 import StationsList from "@/frontend/components/CelestialObjects/StationsList/index.vue";
-import ItemPanel from "@/frontend/components/CelestialObjects/Item/index.vue";
+import CelestialObjectItem from "@/frontend/components/CelestialObjects/Item/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
@@ -120,12 +120,7 @@ const { celestialObjects: celestialObjectsService } =
 
 const route = useRoute();
 
-const {
-  isLoading,
-  isFetching,
-  isError,
-  data: celestialObject,
-} = useQuery({
+const { data: celestialObject, ...asyncStatus } = useQuery({
   queryKey: ["celestialObject", route.params.slug],
   queryFn: () =>
     celestialObjectsService.detail({

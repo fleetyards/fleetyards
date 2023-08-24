@@ -28,6 +28,7 @@
               :active="!averagePrices"
               size="small"
               variant="dropdown"
+              in-group
               @click="showLatestPrices"
             >
               <i class="far fa-sort-amount-down" />
@@ -37,6 +38,7 @@
               :active="averagePrices"
               size="small"
               variant="dropdown"
+              in-group
               @click="showAveragePrices"
             >
               <i class="far fa-empty-set" />
@@ -53,6 +55,7 @@
                   ? sortBy('average_profit_per_unit', 'desc')
                   : sortBy('profit_per_unit', 'desc')
               "
+              in-group
               :exact="true"
             >
               <i class="far fa-dollar-sign" />
@@ -68,6 +71,7 @@
                   : sortBy('profit_per_unit_percent', 'desc')
               "
               :exact="true"
+              in-group
             >
               <i class="far fa-percent" />
             </Btn>
@@ -77,6 +81,7 @@
               variant="dropdown"
               :to="sortBy('origin_shop_station_name', 'asc')"
               :exact="true"
+              in-group
             >
               {{ t("labels.tradeRoutes.sortByStation") }}
             </Btn>

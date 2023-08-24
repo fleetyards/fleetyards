@@ -6,17 +6,18 @@
     data-test="vehicle-menu"
     :expand-left="true"
     :inline="true"
+    :in-group="inGroup"
   >
     <Btn
       v-if="editable && !hideEdit"
-      :aria-label="$t('actions.edit')"
+      :aria-label="t('actions.edit')"
       size="small"
       variant="dropdown"
       data-test="vehicle-edit"
-      @click.native="openEditModal"
+      @click="openEditModal"
     >
       <i class="fa fa-pencil" />
-      <span>{{ $t("actions.edit") }}</span>
+      <span>{{ t("actions.edit") }}</span>
     </Btn>
     <Btn
       v-if="vehicle.model"
@@ -30,234 +31,260 @@
       variant="dropdown"
     >
       <i class="fad fa-starship" />
-      <span>{{ $t("actions.showDetailPage") }}</span>
+      <span>{{ t("actions.showDetailPage") }}</span>
     </Btn>
     <Btn
       v-if="editable && !wishlist"
-      :aria-label="$t('actions.addToWishlist')"
+      :aria-label="t('actions.addToWishlist')"
       size="small"
       variant="dropdown"
       :disabled="updating"
       data-test="vehicle-add-to-wishlist"
-      @click.native="addToWishlist"
+      @click="addToWishlist"
     >
       <i class="fad fa-wand-sparkles" />
-      <span>{{ $t("actions.addToWishlist") }}</span>
+      <span>{{ t("actions.addToWishlist") }}</span>
     </Btn>
     <Btn
       v-if="editable && wishlist"
-      :aria-label="$t('actions.addToHangar')"
+      :aria-label="t('actions.addToHangar')"
       size="small"
       variant="dropdown"
       :disabled="updating"
       data-test="vehicle-add-to-hangar"
-      @click.native="addToHangar"
+      @click="addToHangar"
     >
       <i class="fad fa-garage" />
-      <span>{{ $t("actions.addToHangar") }}</span>
+      <span>{{ t("actions.addToHangar") }}</span>
     </Btn>
     <Btn
       v-if="editable"
-      :aria-label="$t('actions.hangar.editName')"
+      :aria-label="t('actions.hangar.editName')"
       size="small"
       variant="dropdown"
       data-test="vehicle-edit-name"
-      @click.native="openNamingModal"
+      @click="openNamingModal"
     >
       <i class="fa fa-signature" />
-      <span>{{ $t("actions.hangar.editName") }}</span>
+      <span>{{ t("actions.hangar.editName") }}</span>
     </Btn>
     <Btn
       v-if="editable && !wishlist"
-      :aria-label="$t('actions.hangar.editGroups')"
+      :aria-label="t('actions.hangar.editGroups')"
       size="small"
       variant="dropdown"
       data-test="vehicle-edit-groups"
-      @click.native="openEditGroupsModal"
+      @click="openEditGroupsModal"
     >
       <i class="fad fa-object-group" />
-      <span>{{ $t("actions.hangar.editGroups") }}</span>
+      <span>{{ t("actions.hangar.editGroups") }}</span>
     </Btn>
     <Btn
       v-if="upgradable"
-      :aria-label="$t('labels.model.addons')"
+      :aria-label="t('labels.model.addons')"
       size="small"
       variant="dropdown"
-      @click.native="openAddonsModal"
+      @click="openAddonsModal"
     >
       <i class="fa fa-plus-octagon" />
-      <span>{{ $t("labels.model.addons") }}</span>
+      <span>{{ t("labels.model.addons") }}</span>
     </Btn>
     <Btn
       v-if="editable"
-      :aria-label="$t('actions.remove')"
+      :aria-label="t('actions.remove')"
       size="small"
       variant="dropdown"
       :disabled="deleting"
       data-test="vehicle-remove"
-      @click.native="remove"
+      @click="remove"
     >
       <i class="fal fa-trash" />
-      <span>{{ $t("actions.remove") }}</span>
+      <span>{{ t("actions.remove") }}</span>
     </Btn>
   </BtnDropdown>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
-import { displayConfirm } from "@/frontend/lib/Noty";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import wishlistCollection from "@/frontend/api/collections/Wishlist";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import type { Vehicle } from "@/services/fyApi";
+import type {
+  BtnVariants,
+  BtnSizes,
+} from "@/shared/components/BaseBtn/index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
 
-@Component<ContextMenu>({
-  components: {
-    Btn,
-    BtnDropdown,
-  },
-})
-export default class ContextMenu extends Vue {
-  deleting = false;
+type Props = {
+  vehicle: Vehicle;
+  editable?: boolean;
+  hideEdit?: boolean;
+  wishlist?: boolean;
+  variant?: BtnVariants;
+  size?: BtnSizes;
+  inGroup?: boolean;
+};
 
-  updating = false;
+const props = withDefaults(defineProps<Props>(), {
+  editable: false,
+  hideEdit: false,
+  wishlist: false,
+  variant: "link",
+  size: "small",
+  inGroup: false,
+});
 
-  @Prop({ default: null }) vehicle!: Vehicle | null;
+const { t, currentLocale } = useI18n();
 
-  @Prop({ default: false }) editable!: boolean;
+const { displayConfirm } = useNoty(t);
 
-  @Prop({ default: false }) hideEdit!: boolean;
+const deleting = ref(false);
 
-  @Prop({ default: false }) wishlist!: boolean;
+const updating = ref(false);
 
-  @Prop({
-    default: "link",
-    validator(value: string) {
-      return (
-        ["default", "transparent", "link", "danger", "dropdown"].indexOf(
-          value,
-        ) !== -1
-      );
+const hasAddons = computed(() => {
+  if (!props.vehicle) {
+    return false;
+  }
+
+  return (
+    props.vehicle.modelModuleIds.length || props.vehicle.modelUpgradeIds.length
+  );
+});
+
+const upgradable = computed(() => {
+  if (!props.vehicle) {
+    return false;
+  }
+
+  return (
+    (props.editable || hasAddons) &&
+    (props.vehicle.model.hasModules || props.vehicle.model.hasUpgrades)
+  );
+});
+
+const { vehicles: vehiclesService } = useFyApiClient(currentLocale);
+
+const addToWishlist = async () => {
+  if (!props.vehicle) {
+    return;
+  }
+
+  updating.value = true;
+
+  try {
+    await vehiclesService.updateVehicle({
+      id: props.vehicle.id,
+      requestBody: {
+        wanted: true,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  updating.value = false;
+};
+
+const addToHangar = async () => {
+  if (!props.vehicle) {
+    return;
+  }
+
+  updating.value = true;
+
+  try {
+    await vehiclesService.updateVehicle({
+      id: props.vehicle.id,
+      requestBody: {
+        wanted: false,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  updating.value = false;
+};
+
+const remove = () => {
+  deleting.value = true;
+
+  displayConfirm({
+    text: t("messages.confirm.vehicle.destroy"),
+    onConfirm: () => {
+      destroy();
     },
-  })
-  variant!: string;
-
-  @Prop({
-    default: "small",
-    validator(value: string) {
-      return ["default", "small", "large"].indexOf(value) !== -1;
+    onClose: () => {
+      deleting.value = false;
     },
-  })
-  size!: string;
+  });
+};
 
-  get hasAddons() {
-    if (!this.vehicle) {
-      return false;
-    }
-
-    return (
-      this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length
-    );
+const destroy = async () => {
+  if (!props.vehicle) {
+    return;
   }
 
-  get upgradable() {
-    if (!this.vehicle) {
-      return false;
-    }
-
-    return (
-      (this.editable || this.hasAddons) &&
-      (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
-    );
-  }
-
-  async addToWishlist() {
-    if (!this.vehicle) {
-      return;
-    }
-
-    this.updating = true;
-
-    await vehiclesCollection.addToWishlist(this.vehicle.id);
-
-    this.updating = false;
-  }
-
-  async addToHangar() {
-    if (!this.vehicle) {
-      return;
-    }
-
-    this.updating = true;
-
-    await wishlistCollection.addToHangar(this.vehicle.id);
-
-    this.updating = false;
-  }
-
-  remove() {
-    this.deleting = true;
-    displayConfirm({
-      text: this.$t("messages.confirm.vehicle.destroy"),
-      onConfirm: () => {
-        this.destroy();
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
+  try {
+    await vehiclesService.destroyVehicle({
+      id: props.vehicle.id,
     });
+  } catch (error) {
+    console.error(error);
   }
 
-  async destroy() {
-    if (!this.vehicle) {
-      return;
-    }
+  deleting.value = false;
+};
 
-    await vehiclesCollection.destroy(this.vehicle.id);
+const comlink = useComlink();
 
-    this.deleting = false;
-  }
+const openEditModal = () => {
+  comlink.emit("open-modal", {
+    component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+      wishlist: props.wishlist,
+    },
+  });
+};
 
-  openEditModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
-      props: {
-        vehicle: this.vehicle,
-        wishlist: this.wishlist,
-      },
-    });
-  }
+const openNamingModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/NamingModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+    },
+  });
+};
 
-  openNamingModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/NamingModal/index.vue"),
-      props: {
-        vehicle: this.vehicle,
-      },
-    });
-  }
+const openEditGroupsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/GroupsModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+    },
+  });
+};
 
-  openEditGroupsModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/GroupsModal/index.vue"),
-      props: {
-        vehicle: this.vehicle,
-      },
-    });
-  }
+const openAddonsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/AddonsModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+      editable: props.editable,
+    },
+  });
+};
+</script>
 
-  openAddonsModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/AddonsModal/index.vue"),
-      props: {
-        vehicle: this.vehicle,
-        editable: this.editable,
-      },
-    });
-  }
-}
+<script lang="ts">
+export default {
+  name: "VehicleContextMenu",
+};
 </script>

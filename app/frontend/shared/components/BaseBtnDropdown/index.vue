@@ -7,6 +7,7 @@
       :inline="true"
       :text-inline="textInline"
       :mobile-block="mobileBlock"
+      :in-group="inGroup"
       @click="toggle"
     >
       <slot name="label">
@@ -42,6 +43,7 @@ type Props = {
   mobileBlock?: boolean;
   inline?: boolean;
   textInline?: boolean;
+  inGroup?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -52,6 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
   mobileBlock: false,
   inline: false,
   textInline: false,
+  inGroup: false,
 });
 
 const visible = ref(false);
@@ -63,6 +66,7 @@ const innerExpandTop = ref(false);
 const cssClasses = computed(() => {
   return {
     "panel-btn-dropdown-inline": props.inline,
+    "panel-btn-dropdown-in-group": props.inGroup,
   };
 });
 

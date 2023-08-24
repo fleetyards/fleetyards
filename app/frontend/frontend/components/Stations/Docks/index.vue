@@ -69,13 +69,13 @@
 </template>
 
 <script lang="ts" setup>
-import { groupBy, sortBy } from "@/frontend/lib/Helpers";
+import { groupBy, sortBy } from "@/shared/utils/Array";
 import DockItem from "./Item/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import type { StationComplete, Dock } from "@/services/fyApi";
+import type { Station, Dock } from "@/services/fyApi";
 
 type Props = {
-  station: StationComplete;
+  station: Station;
   padding?: boolean;
 };
 
@@ -89,16 +89,20 @@ const hasGroup = computed(() => {
   return props.station.docks?.some((dock) => !!dock.group);
 });
 
+const sortedDocks = computed(() => {
+  return sortBy<Dock>(props.station.docks || [], "name");
+});
+
 const docksByGroup = computed(() => {
-  return groupBy(sortBy(props.station.docks || [], "name"), "group");
+  return groupBy(sortedDocks.value, "group") as Record<string, Dock[]>;
 });
 
 const docksBySize = (docks: Dock[]) => {
-  return groupBy(docks, "sizeLabel");
+  return groupBy(docks, "sizeLabel") as Record<string, Dock[]>;
 };
 
 const docksByType = (docks: Dock[]) => {
-  return groupBy(docks, "typeLabel");
+  return groupBy(docks, "typeLabel") as Record<string, Dock[]>;
 };
 </script>
 

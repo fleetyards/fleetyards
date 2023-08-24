@@ -55,11 +55,11 @@
 
 <script lang="ts" setup>
 import LocationLabel from "@/frontend/components/Stations/LocationLabel/index.vue";
-import type { StationComplete } from "@/services/fyApi";
+import type { Station } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 type Props = {
-  station: StationComplete;
+  station: Station;
   padding?: boolean;
 };
 

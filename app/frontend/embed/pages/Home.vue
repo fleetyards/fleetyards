@@ -8,7 +8,7 @@
               v-show="groupedButton"
               data-test="fleetview-grouped-button"
               size="small"
-              @click.native="toggleGrouping"
+              @click="toggleGrouping"
             >
               <template v-if="grouping">
                 {{ t("actions.disableGrouping") }}
@@ -22,7 +22,7 @@
               :active="details"
               data-test="fleetview-details-button"
               size="small"
-              @click.native="toggleDetails"
+              @click="toggleDetails"
             >
               <template v-if="details">
                 {{ t("actions.hideDetails") }}
@@ -34,7 +34,7 @@
             <Btn
               size="small"
               data-test="fleetview-fleetchart-button"
-              @click.native="toggleFleetchart"
+              @click="toggleFleetchart"
             >
               <template v-if="fleetchart">
                 {{ t("actions.hideFleetchart") }}

@@ -5,7 +5,7 @@ export const addTrailingSlashToAllRoutes = (
 ): RouteRecordRaw[] =>
   ([] as RouteRecordRaw[]).concat(
     ...routes.map((route: RouteRecordRaw): RouteRecordRaw[] => {
-      if (["*", "/"].includes(route.path)) {
+      if (["*", "/", ""].includes(route.path)) {
         return [route];
       }
 

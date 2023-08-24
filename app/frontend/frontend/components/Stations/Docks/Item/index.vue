@@ -8,12 +8,12 @@
 </template>
 
 <script lang="ts" setup>
-import { sortBy } from "@/frontend/lib/Helpers";
+import { sortBy } from "@/shared/utils/Array";
 import type { Dock } from "@/services/fyApi";
 
 type Props = {
   docks: Dock[];
-  size: number;
+  size: number | string;
 };
 
 const props = defineProps<Props>();

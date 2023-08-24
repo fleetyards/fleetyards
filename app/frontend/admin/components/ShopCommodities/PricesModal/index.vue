@@ -19,10 +19,10 @@
             {{ record.timeRange }}
           </span>
           <span class="date-label">
-            {{ $l(record.createdAt) }}
+            {{ l(record.createdAt) }}
           </span>
           <span
-            v-tooltip="$t('labels.shopCommodity.confirmed')"
+            v-tooltip="t('labels.shopCommodity.confirmed')"
             class="confirmed-label"
           >
             <i v-if="record.confirmed" class="fal fa-check" />
@@ -37,7 +37,7 @@
             v-slot="{ errors }"
             vid="price"
             rules="required"
-            :name="$t('labels.price')"
+            :name="t('labels.price')"
             :slim="true"
           >
             <FormInput
@@ -56,20 +56,20 @@
             v-slot="{ errors }"
             vid="timeRange"
             rules="required"
-            :name="$t('labels.commodityPrice.timeRange')"
+            :name="t('labels.commodityPrice.timeRange')"
             :slim="true"
           >
-            <CollectionFilterGroup
+            <FilterGroup
               v-model="form.timeRange"
               name="time-range"
               :error="errors[0]"
-              :label="$t('labels.filters.commodityPrice.timeRange')"
+              :label="t('labels.filters.commodityPrice.timeRange')"
               :collection="collection"
               collection-method="timeRanges"
               :no-label="true"
             />
           </ValidationProvider>
-          <Btn size="small" @click.native="handleSubmit(create)">
+          <Btn size="small" @click="handleSubmit(create)">
             <i class="fa fa-check" />
           </Btn>
         </div>
@@ -78,83 +78,83 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import commodityPricesCollection from "@/admin/api/collections/CommodityPrices";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+<script lang="ts" setup>
+// import commodityPricesCollection from "@/admin/api/collections/CommodityPrices";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import type { ShopCommodity } from "@/services/fyAdminApi";
+import { useI18n} from "@/frontend/composables/useI18n"
 
-@Component<BuyPricesModal>({
-  components: {
-    Modal,
-    FormInput,
-    Btn,
-    CollectionFilterGroup,
-  },
-})
-export default class BuyPricesModal extends Vue {
-  @Prop({ required: true }) shopId: string;
+const { t, l } = useI18n();
 
-  @Prop({ required: true }) path: string;
+type Props = {
+  shopId: string;
+  path: string;
+  shopCommodity: ShopCommodity;
+}
 
-  @Prop({ required: true }) shopCommodity: ShopCommodity;
+const props = defineProps<Props>();
 
-  collection: CommodityPricesCollection = commodityPricesCollection;
+  // collection: CommodityPricesCollection = commodityPricesCollection;
 
-  prices: ShopCommodityPrice[] = [];
+  // prices: ShopCommodityPrice[] = [];
 
-  form: AdminCommodityPriceForm = null;
+  const form = ref<ShopCommodityPriceForm>({]});
 
-  get title() {
-    return this.$t(`headlines.modals.shopCommodity.${this.path}Prices`, {
-      shopCommodity: this.shopCommodity.item.name,
+  const title = computed(() => {
+    return t(`headlines.modals.shopCommodity.${props.path}Prices`, {
+      shopCommodity: props.shopCommodity.item?.name,
     });
-  }
+  })
 
-  get params() {
+  const params = computed(() => {
     return {
-      shopId: this.shopId,
-      shopCommodityId: this.shopCommodity.id,
-      path: this.path,
+      shopId: props.shopId,
+      shopCommodityId: props.shopCommodity.id,
+      path: props.path
     };
-  }
+  })
 
-  mounted() {
-    this.fetch();
-    this.setupForm();
-  }
+  onMounted(() => {
+    // fetch();
+    setupForm();
+  })
 
-  setupForm() {
-    this.form = {
-      shopCommodityId: this.shopCommodity.id,
-      path: this.path,
+  const setupForm = () => {
+    form.value = {
+      shopCommodityId: props.shopCommodity.id,
+      path: props.path,
       price: null,
     };
   }
 
-  async fetch() {
-    await this.collection.findAll(this.params);
-  }
+  // const fetch =  async () => {
+  //   await this.collection.findAll(this.params);
+  // }
 
-  async create() {
-    await this.collection.create(this.form);
+  // const create = async () => {
+  //   await this.collection.create(this.form);
 
-    this.$comlink.$emit("prices-update");
+  //   this.$comlink.$emit("prices-update");
 
-    this.newPrice = null;
+  //   this.newPrice = null;
 
-    this.$comlink.$emit("close-modal");
-  }
+  //   this.$comlink.$emit("close-modal");
+  // }
 
-  async destroy(record) {
-    await this.collection.destroy(record.id);
+  // const destroy =  async (record) => {
+  //   await this.collection.destroy(record.id);
 
-    this.$comlink.$emit("prices-update");
+  //   this.$comlink.$emit("prices-update");
 
-    this.fetch();
-  }
-}
+  //   this.fetch();
+  // }
+</script>
+
+<script lang="ts">
+export default {
+  name: "BuyPricesModal",
+};
 </script>

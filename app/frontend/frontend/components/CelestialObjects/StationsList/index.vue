@@ -8,7 +8,7 @@
         :pagination="pagination"
         :per-page="perPage"
         :update-per-page="updatePerPage"
-        hash="stations"
+        hash="#stations"
       />
     </div>
     <div class="col-12">
@@ -28,7 +28,7 @@
         :pagination="pagination"
         :per-page="perPage"
         :update-per-page="updatePerPage"
-        hash="stations"
+        hash="#stations"
       />
     </div>
   </div>

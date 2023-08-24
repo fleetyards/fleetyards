@@ -4,6 +4,7 @@
     :variant="variant"
     :mobile-block="true"
     :inline="true"
+    :in-group="inGroup"
   >
     <template #label>
       <template v-if="!mobile"
@@ -16,7 +17,7 @@
       :key="`per-page-drowndown-${uuid}-${index}-${step}`"
       size="small"
       variant="link"
-      @click.native="update(step)"
+      @click="update(step)"
     >
       {{ step }}
     </Btn>
@@ -39,10 +40,15 @@ type Props = {
   steps?: (number | string)[];
   size?: BtnSizes;
   variant?: BtnVariants;
+  inGroup?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
+  perPage: undefined,
   steps: () => [10, 20, 50, 100],
+  size: "default",
+  variant: "default",
+  inGroup: false,
 });
 
 const mobile = useMobile();

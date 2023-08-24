@@ -37,10 +37,10 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
-import type { StarsystemMinimal } from "@/services/fyApi";
+import type { Starsystem } from "@/services/fyApi";
 
 type Props = {
-  starsystem: StarsystemMinimal;
+  starsystem: Starsystem;
   padding?: boolean;
 };
 

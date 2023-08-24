@@ -101,8 +101,8 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-import searchCollection from "@/frontend/api/collections/Search";
-import type { SearchCollection } from "@/frontend/api/collections/Search";
+// import searchCollection from "@/frontend/api/collections/Search";
+// import type { SearchCollection } from "@/frontend/api/collections/Search";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";

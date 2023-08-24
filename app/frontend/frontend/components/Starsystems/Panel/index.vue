@@ -19,17 +19,17 @@
     <div class="row">
       <div class="col-12 col-md-6 col-xl-4" />
       <div class="col-12 col-md-6 col-xl-8 items">
-        <template v-if="moons.length">
+        <template v-if="celestialObjects && celestialObjects.items.length">
           <h3 class="sr-only">
             {{ t("headlines.celestialObjects") }}
           </h3>
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
-              v-for="moon in moons"
-              :key="moon.slug"
+              v-for="celestialObject in celestialObjects.items"
+              :key="celestialObject.slug"
               class="col-12 col-lg-3 fade-list-item"
             >
-              <CelestialObjectSubItem :item="moon" />
+              <CelestialObjectSubItem :item="celestialObject" />
             </div>
           </transition-group>
         </template>
@@ -41,51 +41,41 @@
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
 import CelestialObjectSubItem from "@/frontend/components/CelestialObjects/SubItem/index.vue";
-import type { CelestialObject } from "@/services/fyApi";
-import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import type { Starsystem } from "@/services/fyApi";
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
 type Props = {
-  item: CelestialObject;
+  item: Starsystem;
 };
 
 const props = defineProps<Props>();
 
-const { celestialObjects: celestialObjectsService } = useApiClient();
-
-onMounted(() => {
-  fetchCelestialObjects();
+const detailRoute = computed(() => {
+  return { name: "starsystem", params: { slug: props.item.slug } };
 });
 
-const moons = ref<CelestialObject[]>([]);
+const { celestialObjects: celestialObjectsService } =
+  useFyApiClient(currentLocale);
 
-const fetchCelestialObjects = async () => {
-  try {
-    const response = await celestialObjectsService.list({
+const { data: celestialObjects } = useQuery({
+  queryKey: ["celestialObjects", props.item.slug],
+  queryFn: () =>
+    celestialObjectsService.list({
       q: {
-        parentEq: props.item.slug,
+        parentIdNull: true,
+        starsystemEq: props.item.slug,
       },
-    });
-
-    moons.value = response.items;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const detailRoute = computed(() => {
-  return {
-    name: "celestial-object",
-    params: { starsystem: props.item.starsystem.slug, slug: props.item.slug },
-  };
+    }),
 });
 </script>
 
 <script lang="ts">
 export default {
-  name: "PanelsList",
+  name: "StarsystemPanel",
 };
 </script>
 

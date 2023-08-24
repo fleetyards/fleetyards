@@ -153,7 +153,7 @@
 
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
-import { useRouter } from "vue-router";
+import { LocationQueryValue, useRouter } from "vue-router";
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
@@ -194,7 +194,8 @@ const search = () => {
     .push({
       name: "search",
       query: {
-        q: { search: searchQuery.value },
+        // HACK to make insuffient types for vue-router work
+        q: { search: searchQuery.value } as unknown as LocationQueryValue,
       },
     })
     // eslint-disable-next-line @typescript-eslint/no-empty-function

@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container main">
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
@@ -49,15 +49,7 @@
             :key="starsystem.slug"
             class="col-12 fade-list-item"
           >
-            <StarsystemList
-              :item="starsystem"
-              :route="{
-                name: 'starsystem',
-                params: {
-                  slug: starsystem.slug,
-                },
-              }"
-            />
+            <StarsystemPanel :item="starsystem" />
           </div>
         </transition-group>
         <Loader :loading="isLoading" :fixed="true" />
@@ -79,22 +71,21 @@
 <script lang="ts" setup>
 import Loader from "@/shared/components/Loader/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import Pagination from "@/frontend/core/components/Pagination/index.vue";
-import StarsystemList from "@/frontend/components/Starsystems/List/index.vue";
+import Pagination from "@/shared/components/Paginator/index.vue";
+import StarsystemPanel from "@/frontend/components/Starsystems/Panel/index.vue";
 import mapImageUrl from "@/images/map.png";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useFyApiClient } from "@/shared/composables/useFyApiClient";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useQuery } from "@tanstack/vue-query";
-import { useRoute } from "vue-router";
-import { StarsystemQuery, BaseList } from "@/services/fyApi";
+import type { StarsystemQuery, BaseList } from "@/services/fyApi";
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
 useMetaInfo(t);
 
-const { starsystems: starsystemsService } = useApiClient();
+const { starsystems: starsystemsService } = useFyApiClient(currentLocale);
 
 const route = useRoute();
 

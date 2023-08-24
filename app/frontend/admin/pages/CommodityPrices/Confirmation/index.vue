@@ -47,6 +47,7 @@
               size="small"
               variant="dropdown"
               :inline="true"
+              in-group
               @click.native="confirm(record)"
             >
               {{ t("actions.confirm") }}
@@ -57,6 +58,7 @@
               variant="dropdown"
               :disabled="deleting"
               data-test="shopCommodity-delete"
+              in-group
               @click.native="remove(record)"
             >
               <i class="fal fa-trash" />

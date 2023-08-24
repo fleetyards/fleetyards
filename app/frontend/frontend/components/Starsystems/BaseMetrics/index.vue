@@ -18,7 +18,7 @@
             {{ starsystem.type }}
           </div>
         </div>
-        <div class="col-6">
+        <div v-if="starsystem.size" class="col-6">
           <div class="metrics-label">{{ t("starsystem.size") }}:</div>
           <div v-tooltip="starsystem.size" class="metrics-value">
             {{ toAu(starsystem.size) }}
@@ -31,10 +31,10 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
-import type { StarsystemMinimal } from "@/services/fyApi";
+import type { Starsystem } from "@/services/fyApi";
 
 type Props = {
-  starsystem: StarsystemMinimal;
+  starsystem: Starsystem;
   padding?: boolean;
 };
 

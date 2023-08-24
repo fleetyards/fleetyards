@@ -30,11 +30,11 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
-import { groupBy } from "@/frontend/lib/Helpers";
-import type { StationComplete } from "@/services/fyApi";
+import { groupBy } from "@/shared/utils/Array";
+import type { Station } from "@/services/fyApi";
 
 type Props = {
-  station: StationComplete;
+  station: Station;
   padding?: boolean;
 };
 
