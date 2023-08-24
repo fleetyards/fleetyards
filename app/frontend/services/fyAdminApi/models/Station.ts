@@ -11,14 +11,20 @@ import type { HabitationCount } from './HabitationCount';
 import type { MediaImage } from './MediaImage';
 import type { Shop } from './Shop';
 import type { Starsystem } from './Starsystem';
+import type { StationClassificationEnum } from './StationClassificationEnum';
+import type { StationSizeEnum } from './StationSizeEnum';
 import type { StationTypeEnum } from './StationTypeEnum';
 
 export type Station = {
     name: string;
     slug: string;
     cargoHub: boolean;
-    classificationLabel?: string;
-    classification?: string;
+    type: StationTypeEnum;
+    typeLabel: string;
+    size: StationSizeEnum;
+    sizeLabel: string;
+    classification: StationClassificationEnum;
+    classificationLabel: string;
     description?: string;
     dockCounts?: Array<DockCount>;
     habitable: boolean;
@@ -32,8 +38,6 @@ export type Station = {
     };
     refinery: boolean;
     shopListLabel?: string;
-    typeLabel?: string;
-    type?: StationTypeEnum;
     celestialObject: CelestialObject;
     starsystem?: Starsystem;
     shops?: Array<Shop>;

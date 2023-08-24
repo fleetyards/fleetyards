@@ -15,6 +15,7 @@
 #  map                 :string
 #  name                :string
 #  refinery            :boolean          default(FALSE)
+#  size                :integer
 #  slug                :string
 #  station_type        :integer
 #  status              :integer
@@ -81,12 +82,18 @@ class Station < ApplicationRecord
     inverse_of: :gallery
 
   enum station_type: {
-    landing_zone: 0, station: 1, asteroid_station: 2, district: 3, outpost: 4, aid_shelter: 5
+    landing_zone: 0, station: 1, asteroid_station: 2, district: 3, outpost: 4, aid_shelter: 5,
+    ugf: 6
   }
 
   enum classification: {
     city: 0, trading: 1, mining: 2, salvaging: 3, farming: 4, science: 5, security: 6,
-    rest_stop: 7, settlement: 8, town: 9, drug_lab: 10
+    rest_stop: 7, settlement: 8, town: 9, drug_lab: 10, cargo: 11, derelict: 12, prison: 13,
+    spaceport: 14
+  }
+
+  enum size: {
+    small: 0, medium: 1, large: 2
   }
 
   DEFAULT_SORTING_PARAMS = "name asc"
@@ -103,8 +110,10 @@ class Station < ApplicationRecord
   ransack_alias :celestial_object, :celestial_object_slug
   ransack_alias :search, :name_or_slug_or_celestial_object_starsystem_slug_or_celestial_object_slug
 
-  validates :name, :station_type, presence: true
+  validates :name, :station_type, :size, presence: true
   validates :name, uniqueness: true
+
+  validate_enum_attributes :station_type, :size, :classification
 
   before_save :update_slugs
 
@@ -203,6 +212,10 @@ class Station < ApplicationRecord
 
   def classification_label
     Station.human_enum_name(:classification, classification)
+  end
+
+  def size_label
+    Station.human_enum_name(:size, size)
   end
 
   private def update_slugs

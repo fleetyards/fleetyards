@@ -862,6 +862,32 @@ components:
       - kiosk
       - ship_customizations
       title: ShopTypeEnum
+    StationClassificationEnum:
+      type: string
+      enum:
+      - city
+      - trading
+      - mining
+      - salvaging
+      - farming
+      - science
+      - security
+      - rest_stop
+      - settlement
+      - town
+      - drug_lab
+      - cargo
+      - derelict
+      - prison
+      - spaceport
+      title: StationClassificationEnum
+    StationSizeEnum:
+      type: string
+      enum:
+      - small
+      - medium
+      - large
+      title: StationSizeEnum
     StationTypeEnum:
       type: string
       enum:
@@ -871,6 +897,7 @@ components:
       - district
       - outpost
       - aid_shelter
+      - ugf
       title: StationTypeEnum
     VideoTypeEnum:
       type: string
@@ -2655,9 +2682,17 @@ components:
           type: string
         cargoHub:
           type: boolean
-        classificationLabel:
+        type:
+          "$ref": "#/components/schemas/StationTypeEnum"
+        typeLabel:
+          type: string
+        size:
+          "$ref": "#/components/schemas/StationSizeEnum"
+        sizeLabel:
           type: string
         classification:
+          "$ref": "#/components/schemas/StationClassificationEnum"
+        classificationLabel:
           type: string
         description:
           type: string
@@ -2689,10 +2724,6 @@ components:
           type: boolean
         shopListLabel:
           type: string
-        typeLabel:
-          type: string
-        type:
-          "$ref": "#/components/schemas/StationTypeEnum"
         celestialObject:
           "$ref": "#/components/schemas/CelestialObject"
         starsystem:
@@ -2742,6 +2773,12 @@ components:
       required:
       - name
       - slug
+      - type
+      - typeLabel
+      - size
+      - sizeLabel
+      - classification
+      - classificationLabel
       - habitable
       - hasImages
       - media

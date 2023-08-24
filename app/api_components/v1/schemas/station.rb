@@ -11,8 +11,12 @@ module V1
           name: {type: :string},
           slug: {type: :string},
           cargoHub: {type: :boolean},
+          type: {"$ref": "#/components/schemas/StationTypeEnum"},
+          typeLabel: {type: :string},
+          size: {"$ref": "#/components/schemas/StationSizeEnum"},
+          sizeLabel: {type: :string},
+          classification: {"$ref": "#/components/schemas/StationClassificationEnum"},
           classificationLabel: {type: :string},
-          classification: {type: :string},
           description: {type: :string},
           dockCounts: {type: :array, items: {"$ref": "#/components/schemas/DockCount"}},
           habitable: {type: :boolean},
@@ -32,8 +36,6 @@ module V1
 
           refinery: {type: :boolean},
           shopListLabel: {type: :string},
-          typeLabel: {type: :string},
-          type: {"$ref": "#/components/schemas/StationTypeEnum"},
 
           celestialObject: {"$ref": "#/components/schemas/CelestialObject"},
           starsystem: {"$ref": "#/components/schemas/Starsystem"},
@@ -54,7 +56,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          name slug habitable hasImages media refinery cargoHub celestialObject createdAt
+          name slug type typeLabel size sizeLabel classification classificationLabel habitable hasImages media refinery cargoHub celestialObject createdAt
           updatedAt
         ]
       })

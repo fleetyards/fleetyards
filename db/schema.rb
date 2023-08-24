@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_24_130255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -827,6 +827,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_195813) do
     t.boolean "refinery", default: false
     t.integer "classification"
     t.boolean "habitable", default: true
+    t.integer "size"
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
     t.index ["name"], name: "index_stations_on_name", unique: true
     t.index ["planet_id"], name: "index_stations_on_planet_id"
