@@ -7,6 +7,8 @@ json.location station.location
 json.location_label station.location_label
 json.type station.station_type
 json.type_label station.station_type_label
+json.size station.size
+json.size_label station.size_label
 json.classification station.classification
 json.classification_label station.classification_label
 json.habitable station.habitable

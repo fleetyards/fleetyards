@@ -481,11 +481,11 @@ components:
         availability:
           type: object
           properties:
-            boughtAt:
+            listedAt:
               type: array
               items:
                 "$ref": "#/components/schemas/ShopCommodity"
-            listedAt:
+            boughtAt:
               type: array
               items:
                 "$ref": "#/components/schemas/ShopCommodity"
@@ -495,8 +495,8 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
-          - boughtAt
           - listedAt
+          - boughtAt
           - soldAt
         class:
           type: string
@@ -917,11 +917,11 @@ components:
         availability:
           type: object
           properties:
-            boughtAt:
+            listedAt:
               type: array
               items:
                 "$ref": "#/components/schemas/ShopCommodity"
-            listedAt:
+            boughtAt:
               type: array
               items:
                 "$ref": "#/components/schemas/ShopCommodity"
@@ -931,8 +931,8 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
-          - boughtAt
           - listedAt
+          - boughtAt
           - soldAt
         backpackCompatibility:
           type: string
@@ -1713,15 +1713,11 @@ components:
         availability:
           type: object
           properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ShopCommodity"
             listedAt:
               type: array
               items:
                 "$ref": "#/components/schemas/ShopCommodity"
-            rentalAt:
+            boughtAt:
               type: array
               items:
                 "$ref": "#/components/schemas/ShopCommodity"
@@ -1729,12 +1725,16 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/ShopCommodity"
+            rentalAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
-          - boughtAt
           - listedAt
-          - rentalAt
+          - boughtAt
           - soldAt
+          - rentalAt
         brochure:
           type: string
         classification:

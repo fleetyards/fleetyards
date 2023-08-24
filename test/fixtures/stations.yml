@@ -35,8 +35,8 @@ portolisar:
   slug: port-olisar
   celestial_object: crusader
   station_type: station
-  size: :large
-  classification: :cargo
+  size: large
+  classification: cargo
   hidden: false
   images_count: 0
 
@@ -45,8 +45,8 @@ covalex:
   slug: covalex-shipping-hub
   celestial_object: daymar
   station_type: station
-  size: :small
-  classification: :cargo_hub
+  size: small
+  classification: cargo
   hidden: false
   images_count: 0
 
@@ -55,8 +55,8 @@ arccorp_daymar:
   slug: arccorp_daymar
   celestial_object: daymar
   station_type: outpost
-  size: :small
-  classification: :outpost
+  size: small
+  classification: trading
   hidden: false
   images_count: 0
 
@@ -65,8 +65,8 @@ arccorp_yela:
   slug: arccorp_yela
   celestial_object: yela
   station_type: outpost
-  classification: :outpost
-  size: :small
+  classification: trading
+  size: small
   hidden: false
   images_count: 0
 

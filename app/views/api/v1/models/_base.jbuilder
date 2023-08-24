@@ -6,17 +6,17 @@ json.name model.name
 json.slug model.slug
 
 json.availability do
-  json.bought_at do
-    json.array! model.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
   json.listed_at do
     json.array! model.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
-  json.rental_at do
-    json.array! model.rental_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+  json.bought_at do
+    json.array! model.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
   json.sold_at do
     json.array! model.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+  end
+  json.rental_at do
+    json.array! model.rental_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
 end
 
