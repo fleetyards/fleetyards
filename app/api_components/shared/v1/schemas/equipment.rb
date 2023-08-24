@@ -16,12 +16,12 @@ module Shared
             availability: {
               type: :object,
               properties: {
-                boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
                 listedAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
+                boughtAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}},
                 soldAt: {type: :array, items: {"$ref": "#/components/schemas/ShopCommodity"}}
               },
               additionalProperties: false,
-              required: %w[boughtAt listedAt soldAt]
+              required: %w[listedAt boughtAt soldAt]
             },
 
             backpackCompatibility: {type: :string},

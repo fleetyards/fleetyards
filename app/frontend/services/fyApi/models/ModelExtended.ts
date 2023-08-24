@@ -16,10 +16,10 @@ export type ModelExtended = {
     name: string;
     slug: string;
     availability: {
-        boughtAt: Array<ShopCommodity>;
         listedAt: Array<ShopCommodity>;
-        rentalAt: Array<ShopCommodity>;
+        boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
+        rentalAt: Array<ShopCommodity>;
     };
     brochure?: string;
     classification?: string;

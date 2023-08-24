@@ -12,8 +12,8 @@ export type Equipment = {
     name: string;
     slug: string;
     availability: {
-        boughtAt: Array<ShopCommodity>;
         listedAt: Array<ShopCommodity>;
+        boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };
     backpackCompatibility?: string;

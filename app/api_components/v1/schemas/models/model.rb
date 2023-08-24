@@ -17,25 +17,25 @@ module V1
             availability: {
               type: :object,
               properties: {
-                boughtAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ShopCommodity"}
-                },
                 listedAt: {
                   type: :array,
                   items: {"$ref": "#/components/schemas/ShopCommodity"}
                 },
-                rentalAt: {
+                boughtAt: {
                   type: :array,
                   items: {"$ref": "#/components/schemas/ShopCommodity"}
                 },
                 soldAt: {
                   type: :array,
                   items: {"$ref": "#/components/schemas/ShopCommodity"}
+                },
+                rentalAt: {
+                  type: :array,
+                  items: {"$ref": "#/components/schemas/ShopCommodity"}
                 }
               },
               additionalProperties: false,
-              required: %w[boughtAt listedAt rentalAt soldAt]
+              required: %w[listedAt boughtAt soldAt rentalAt]
             },
 
             brochure: {type: :string},
