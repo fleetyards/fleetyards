@@ -10,4 +10,5 @@ export enum StationTypeEnum {
     DISTRICT = 'district',
     OUTPOST = 'outpost',
     AID_SHELTER = 'aid_shelter',
+    UGF = 'ugf',
 }
