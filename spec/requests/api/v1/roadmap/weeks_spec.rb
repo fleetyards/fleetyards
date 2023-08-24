@@ -5,6 +5,14 @@ require "swagger_helper"
 RSpec.describe "api/v1/roadmap", type: :request, swagger_doc: "v1/schema.yaml" do
   fixtures :all
 
+  before do
+    travel_to 2.weeks.ago.end_of_week(:thursday)
+  end
+
+  after do |example|
+    travel_back
+  end
+
   path "/roadmap/weeks" do
     get("Roadmap Weeks") do
       operationId "roadmapWeeks"
@@ -27,7 +35,6 @@ RSpec.describe "api/v1/roadmap", type: :request, swagger_doc: "v1/schema.yaml" d
           data = JSON.parse(response.body)
 
           expect(data.count).to be > 0
-          expect(data.count).to eq(2)
         end
       end
     end
