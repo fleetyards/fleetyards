@@ -12,7 +12,7 @@ export type ShopQuery = {
     equipmentIn?: Array<string>;
     componentIn?: Array<string>;
     commodityIn?: Array<string>;
-    shop_typeIn?: Array<string>;
+    shopTypeIn?: Array<string>;
     commodityCategoryIn?: Array<string>;
     stationIn?: Array<string>;
     celestialObjectIn?: Array<string>;

@@ -7,6 +7,7 @@ import type { HangarGroupPublic } from './HangarGroupPublic';
 import type { Model } from './Model';
 import type { ModelModulePackage } from './ModelModulePackage';
 import type { ModelPaint } from './ModelPaint';
+import type { ModelUpgrade } from './ModelUpgrade';
 
 export type VehiclePublic = {
     id: string;
@@ -22,6 +23,7 @@ export type VehiclePublic = {
     modelModuleIds: Array<string>;
     modelUpgradeIds: Array<string>;
     modulePackage?: ModelModulePackage;
+    upgrade?: ModelUpgrade;
     paint?: ModelPaint;
     createdAt: string;
     updatedAt: string;

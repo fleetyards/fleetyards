@@ -10,6 +10,7 @@ kareah.update!(
   celestial_object: cellin,
   station_type: :station,
   classification: :security,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/kareah.jpg",
   hidden: false
@@ -31,6 +32,7 @@ gallete.update!(
   celestial_object: cellin,
   station_type: :outpost,
   classification: :farming,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/gallete.jpg",
   hidden: false
@@ -49,6 +51,7 @@ hickes.update!(
   celestial_object: cellin,
   station_type: :outpost,
   classification: :science,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/hickes.jpg",
   hidden: false
@@ -87,6 +90,7 @@ terra_mills.update!(
   celestial_object: cellin,
   station_type: :outpost,
   classification: :farming,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/terra_mills.jpg",
   hidden: false
@@ -125,6 +129,7 @@ tram_n_myers.update!(
   celestial_object: cellin,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/tram_n_myers.jpg",
   hidden: false
@@ -142,6 +147,7 @@ ashburn = Station.find_or_initialize_by(name: "Ashburn Channel Aid Shelter")
 ashburn.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/ashburn.jpg",
   hidden: false
@@ -151,6 +157,7 @@ flanagan = Station.find_or_initialize_by(name: "Flanagan's Ravine Aid Shelter")
 flanagan.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/flanagan.jpg",
   hidden: false
@@ -160,6 +167,7 @@ julep = Station.find_or_initialize_by(name: "Julep Ravine Aid Shelter")
 julep.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/julep.jpg",
   hidden: false
@@ -169,6 +177,7 @@ mogote = Station.find_or_initialize_by(name: "Mogote Shelter")
 mogote.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/mogote.jpg",
   hidden: false
@@ -179,6 +188,7 @@ private_property.update!(
   celestial_object: cellin,
   station_type: :aid_shelter,
   classification: :drug_lab,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cellin/private_property.jpg',
   hidden: true

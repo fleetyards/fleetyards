@@ -9,6 +9,7 @@ cru_l4.update!(
   celestial_object: crusader,
   station_type: :station,
   classification: :rest_stop,
+  size: :medium,
   location: "CRU-L4",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/cru-l4/cru-l4-a.jpg",
   hidden: hidden

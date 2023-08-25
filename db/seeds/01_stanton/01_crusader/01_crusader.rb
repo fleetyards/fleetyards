@@ -7,6 +7,7 @@ orison = Station.find_or_initialize_by(name: "Orison")
 orison.update!(
   celestial_object: crusader,
   station_type: :landing_zone,
+  size: :large,
   location: nil,
   classification: :city,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/orison/main.jpg",

@@ -10,6 +10,7 @@ levski.update!(
   celestial_object: delamar,
   station_type: :landing_zone,
   classification: :settlement,
+  size: :medium,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/nyx/delamar/levski.jpg",
   hidden: false

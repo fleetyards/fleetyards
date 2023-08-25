@@ -9,6 +9,7 @@ arc_l3.update!(
   celestial_object: arccorp,
   station_type: :station,
   classification: :rest_stop,
+  size: :medium,
   location: "ARC-L3",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/arc-l3/arc-l3.jpg',
   hidden: hidden

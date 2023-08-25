@@ -15,7 +15,8 @@ module Shared
             },
             meta: {"$ref": "#/components/schemas/Meta"}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          required: %w[items meta]
         })
       end
     end

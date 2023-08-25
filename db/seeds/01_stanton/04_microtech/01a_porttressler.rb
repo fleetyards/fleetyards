@@ -9,6 +9,7 @@ porttressler.update!(
   celestial_object: microtech,
   station_type: :station,
   classification: :trading,
+  size: :large,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/porttressler/porttressler.jpg',
   cargo_hub: true,

@@ -7,6 +7,7 @@ buds = Station.find_or_initialize_by(name: "Bud's Growery")
 buds.update!(
   celestial_object: euterpe,
   station_type: :outpost,
+  size: :small,
   location: "Euterpe",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false

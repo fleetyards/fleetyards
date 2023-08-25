@@ -8,6 +8,6 @@ import type { ModelModule } from './ModelModule';
 
 export type ModelModules = {
     items: Array<ModelModule>;
-    meta?: Meta;
+    meta: Meta;
 };
 

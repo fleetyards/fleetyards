@@ -5,6 +5,7 @@ shubin_sm0_13.update!(
   celestial_object: microtech,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: "Microtech",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
@@ -91,6 +92,7 @@ shubin_sm0_18.update!(
   celestial_object: microtech,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: "Microtech",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
@@ -134,6 +136,7 @@ shubin_sm0_22.update!(
   celestial_object: microtech,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: "Microtech",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
@@ -177,6 +180,7 @@ rayari_deltana.update!(
   celestial_object: microtech,
   station_type: :outpost,
   classification: :science,
+  size: :small,
   location: "Microtech",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
@@ -219,6 +223,7 @@ point_wain = Station.find_or_initialize_by(name: "Point Wain Emergency Shelter")
 point_wain.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false
@@ -228,6 +233,7 @@ clear_view = Station.find_or_initialize_by(name: "Clear View Emergency Shelter")
 clear_view.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false
@@ -237,6 +243,7 @@ nuiqsut = Station.find_or_initialize_by(name: "Nuiqsut Emergency Shelter")
 nuiqsut.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false
@@ -246,6 +253,7 @@ calhoun = Station.find_or_initialize_by(name: "Calhoun Pass Emergency Shelter")
 calhoun.update!(
   celestial_object: microtech,
   station_type: :aid_shelter,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg',
   hidden: false

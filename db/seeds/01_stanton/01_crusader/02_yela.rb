@@ -8,6 +8,7 @@ grimhex.update!(
   celestial_object: yela,
   station_type: :asteroid_station,
   classification: :trading,
+  size: :large,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/grimhex.jpg",
   hidden: false
@@ -86,6 +87,7 @@ deakins_research_outpost = Station.find_or_initialize_by(name: "Deakins Research
 deakins_research_outpost.update!(
   celestial_object: yela,
   station_type: :outpost,
+  size: :small,
   classification: :science,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/deakins_research_outpost.jpg",
@@ -125,6 +127,7 @@ benson_mining_outpost.update!(
   celestial_object: yela,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/benson_mining.jpg",
   hidden: false
@@ -143,6 +146,7 @@ arc_corp_mining_area_157.update!(
   celestial_object: yela,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/arccorp.jpg",
   hidden: false
@@ -177,22 +181,51 @@ end
 end
 
 nakamura_valley_aid_shelter = Station.find_or_initialize_by(name: "Nakamura Valley Aid Shelter")
-nakamura_valley_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/nakamura_valley.jpg", hidden: false)
+nakamura_valley_aid_shelter.update!(
+  celestial_object: yela,
+  size: :small,
+  station_type: :aid_shelter,
+  location: nil,
+  remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/nakamura_valley.jpg",
+  hidden: false
+)
 
 kosso_basin_aid_shelter = Station.find_or_initialize_by(name: "Kosso Basin Aid Shelter")
-kosso_basin_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/kosso_basin.jpg", hidden: false)
+kosso_basin_aid_shelter.update!(
+  celestial_object: yela,
+  station_type: :aid_shelter,
+  location: nil,
+  remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/kosso_basin.jpg",
+  size: :small,
+  hidden: false
+)
 
 aston_ridge_aid_shelter = Station.find_or_initialize_by(name: "Aston Ridge Aid Shelter")
-aston_ridge_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/aston_ridge.jpg", hidden: false)
+aston_ridge_aid_shelter.update!(
+  celestial_object: yela,
+  station_type: :aid_shelter,
+  location: nil,
+  remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/aston_ridge.jpg",
+  hidden: false,
+  size: :small
+)
 
 talarine_divide_aid_shelter = Station.find_or_initialize_by(name: "Talarine Divide Aid Shelter")
-talarine_divide_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/talarine_divide.jpg", hidden: false)
+talarine_divide_aid_shelter.update!(
+  celestial_object: yela,
+  size: :small,
+  station_type: :aid_shelter,
+  location: nil,
+  remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/talarine_divide.jpg",
+  hidden: false
+)
 
 jump_town = Station.find_or_initialize_by(name: "Jump Town")
 jump_town.update!(
   celestial_object: yela,
   station_type: :aid_shelter,
   classification: :drug_lab,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/jump_town.jpg',
   hidden: true
@@ -210,6 +243,7 @@ nt_999.update!(
   celestial_object: yela,
   station_type: :aid_shelter,
   classification: :drug_lab,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/yela/nt_999.jpg',
   hidden: true

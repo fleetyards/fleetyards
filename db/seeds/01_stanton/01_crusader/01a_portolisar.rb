@@ -9,6 +9,7 @@ portolisar.update!(
   celestial_object: crusader,
   station_type: :station,
   classification: :trading,
+  size: :large,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/portolisar/portolisar.jpg",
   hidden: false,

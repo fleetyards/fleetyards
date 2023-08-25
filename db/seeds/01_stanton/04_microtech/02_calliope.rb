@@ -7,6 +7,7 @@ rayari_anvik = Station.find_or_initialize_by(name: "Rayari Anvik Research Outpos
 rayari_anvik.update!(
   celestial_object: calliope,
   station_type: :outpost,
+  size: :small,
   classification: :science,
   location: "Calliope",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
@@ -137,6 +138,7 @@ shubin_smca_8.update!(
   celestial_object: calliope,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: "Calliope",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
@@ -180,6 +182,7 @@ ravens.update!(
   celestial_object: calliope,
   station_type: :outpost,
   classification: :drug_lab,
+  size: :small,
   location: nil,
   hidden: false
 )

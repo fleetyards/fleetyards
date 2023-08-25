@@ -9,6 +9,7 @@ hur_l4.update!(
   celestial_object: hurston,
   station_type: :station,
   classification: :rest_stop,
+  size: :medium,
   location: "HUR-L4",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hur-l4/hur-l4-a.jpg",
   hidden: hidden

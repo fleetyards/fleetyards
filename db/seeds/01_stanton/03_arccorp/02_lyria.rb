@@ -8,6 +8,7 @@ humboldt_mines.update!(
   celestial_object: lyria,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/lyria/humboldt.jpg",
   hidden: false
@@ -29,6 +30,7 @@ shubin_sal_5.update!(
   celestial_object: lyria,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/lyria/shubin_sal_5.jpg",
   hidden: false
@@ -68,6 +70,7 @@ shubin_sal_2.update!(
   celestial_object: lyria,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/lyria/shubin_sal_2.jpg",
   hidden: false
@@ -107,6 +110,7 @@ loveridge.update!(
   celestial_object: lyria,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/lyria/loveridge.jpg",
   hidden: false
@@ -144,6 +148,7 @@ orphanage.update!(
   celestial_object: lyria,
   station_type: :aid_shelter,
   classification: :drug_lab,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/lyria/orphanage.jpg',
   hidden: true
