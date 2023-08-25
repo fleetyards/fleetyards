@@ -133,16 +133,26 @@ admin_office.update!(
 )
 
 eager_flats = Station.find_or_initialize_by(name: "Eager Flats Aid Shelter")
-eager_flats.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/eager.jpg", hidden: false)
+eager_flats.update!(
+  celestial_object: daymar,
+  station_type: :aid_shelter,
+  size: :small,
+  location: nil,
+  remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/eager.jpg",
+  hidden: false
+)
 
 wolf_point = Station.find_or_initialize_by(name: "Wolf Point Aid Shelter")
-wolf_point.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/wolfpoint.jpg", hidden: false)
+wolf_point.update!(celestial_object: daymar,
+  size: :small, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/wolfpoint.jpg", hidden: false)
 
 tamdon_plains = Station.find_or_initialize_by(name: "Tamdon Plains Aid Shelter")
-tamdon_plains.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg", hidden: false)
+tamdon_plains.update!(celestial_object: daymar,
+  size: :small, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg", hidden: false)
 
 dunlow_ridge = Station.find_or_initialize_by(name: "Dunlow Ridge Aid Shelter")
-dunlow_ridge.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/dunlow_ridge.jpg", hidden: false)
+dunlow_ridge.update!(celestial_object: daymar,
+  size: :small, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/dunlow_ridge.jpg", hidden: false)
 
 nuen = Station.find_or_initialize_by(name: "Nuen Waste Management")
 nuen.update!(
