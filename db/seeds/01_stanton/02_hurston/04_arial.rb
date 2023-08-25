@@ -9,6 +9,7 @@ lathan = Station.find_or_initialize_by(name: "HDMS Lathan")
 lathan.update!(
   celestial_object: arial,
   station_type: :outpost,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/arial/lathan.jpg",
   hidden: false
@@ -47,6 +48,7 @@ bezdek.update!(
   celestial_object: arial,
   station_type: :outpost,
   location: nil,
+  size: :small,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/arial/bezdek.jpg",
   hidden: false
 )

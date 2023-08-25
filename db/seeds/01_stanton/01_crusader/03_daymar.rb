@@ -9,6 +9,7 @@ covalex_shipping = Station.find_or_initialize_by(name: "Covalex Hub Gundo")
 covalex_shipping.update!(
   celestial_object: daymar,
   station_type: :station,
+  size: :small,
   habitable: false,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/covalex.jpg",
@@ -20,6 +21,7 @@ shubin.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/shubin.jpg",
   hidden: false
@@ -58,6 +60,7 @@ arccorp.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/arccorp.jpg",
   hidden: false
@@ -96,6 +99,7 @@ kudre_ore.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/kudre.jpg",
   hidden: false
@@ -114,6 +118,7 @@ bountiful_harvest.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :farming,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/bountiful.jpg",
   hidden: false
@@ -144,6 +149,7 @@ nuen.update!(
   celestial_object: daymar,
   station_type: :aid_shelter,
   classification: :drug_lab,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/nuen.jpg',
   hidden: true
@@ -161,6 +167,7 @@ brios.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :salvaging,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/brios.jpg',
   hidden: false

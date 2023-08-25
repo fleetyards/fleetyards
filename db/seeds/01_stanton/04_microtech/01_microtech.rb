@@ -8,6 +8,7 @@ new_babbage.update!(
   celestial_object: microtech,
   station_type: :landing_zone,
   classification: :city,
+  size: :large,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/new-babbage-a.jpg",
   hidden: false

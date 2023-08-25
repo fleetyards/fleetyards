@@ -6,6 +6,7 @@ stanhope = Station.find_or_initialize_by(name: "HDMS Stanhope")
 stanhope.update!(
   celestial_object: hurston,
   station_type: :outpost,
+  size: :small,
   location: "Hurston",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg",
   hidden: false
@@ -48,6 +49,7 @@ edmond = Station.find_or_initialize_by(name: "HDMS Edmond")
 edmond.update!(
   celestial_object: hurston,
   station_type: :outpost,
+  size: :small,
   location: "Hurston",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/edmond.jpg",
   hidden: false
@@ -90,6 +92,7 @@ hadley = Station.find_or_initialize_by(name: "HDMS Hadley")
 hadley.update!(
   celestial_object: hurston,
   station_type: :outpost,
+  size: :small,
   location: "Hurston",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/hadley.jpg",
   hidden: false
@@ -131,6 +134,7 @@ oparei = Station.find_or_initialize_by(name: "HDMS Oparei")
 oparei.update!(
   celestial_object: hurston,
   station_type: :outpost,
+  size: :small,
   location: "Hurston",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/oparei.jpg",
   hidden: false
@@ -172,6 +176,7 @@ pinewood = Station.find_or_initialize_by(name: "HDMS Pinewood")
 pinewood.update!(
   celestial_object: hurston,
   station_type: :outpost,
+  size: :small,
   location: "Hurston",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/pinewood.jpg",
   hidden: false
@@ -254,6 +259,7 @@ reclamation = Station.find_or_initialize_by(name: "Reclamation & Disposal Orinth
 reclamation.update!(
   celestial_object: hurston,
   station_type: :outpost,
+  size: :small,
   classification: :salvaging,
   location: "Hurston",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/reclamation.jpg',

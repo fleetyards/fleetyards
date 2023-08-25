@@ -8,6 +8,7 @@ area_061.update!(
   celestial_object: wala,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_061.jpg",
   hidden: false
@@ -86,6 +87,7 @@ area_045.update!(
   celestial_object: wala,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_045.jpg",
   hidden: false
@@ -124,6 +126,7 @@ area_056 = Station.find_or_initialize_by(name: "ArcCorp Mining Area 056")
 area_056.update!(
   celestial_object: wala,
   station_type: :outpost,
+  size: :small,
   classification: :mining,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/area_056.jpg",
@@ -164,6 +167,7 @@ samson.update!(
   celestial_object: wala,
   station_type: :outpost,
   classification: :salvaging,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/wala/samson.jpg',
   hidden: false

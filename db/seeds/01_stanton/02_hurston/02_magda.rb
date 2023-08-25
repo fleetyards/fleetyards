@@ -7,6 +7,7 @@ hahn = Station.find_or_initialize_by(name: "HDMS Hahn")
 hahn.update!(
   celestial_object: magda,
   station_type: :outpost,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/magda/hahn.jpg",
   hidden: false
@@ -44,6 +45,7 @@ perlman = Station.find_or_initialize_by(name: "HDMS Perlman")
 perlman.update!(
   celestial_object: magda,
   station_type: :outpost,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/magda/perlman.jpg",
   hidden: false
