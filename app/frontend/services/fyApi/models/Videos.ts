@@ -8,6 +8,6 @@ import type { Video } from './Video';
 
 export type Videos = {
     items: Array<Video>;
-    meta?: Meta;
+    meta: Meta;
 };
 

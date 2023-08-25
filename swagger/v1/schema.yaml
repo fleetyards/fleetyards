@@ -5014,6 +5014,9 @@ components:
         meta:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
+      required:
+      - items
+      - meta
       title: BaseList
     Commodity:
       type: object
@@ -5128,6 +5131,10 @@ components:
         itemClass:
           type: string
         itemClassLabel:
+          type: string
+        itemType:
+          type: string
+        itemTypeLabel:
           type: string
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
@@ -6131,6 +6138,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: CargoOptions
     CelestialObject:
       type: object
@@ -6227,6 +6235,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: CelestialObjects
     CommodityItemType:
       type: object
@@ -6600,6 +6609,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Hangar
     HangarClassificationMetric:
       type: object
@@ -6669,6 +6679,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: HangarPublic
     HangarStats:
       type: object
@@ -6847,6 +6858,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Images
     CommodityPriceInput:
       type: object
@@ -7257,6 +7269,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Manufacturers
     ModelHardpoint:
       type: object
@@ -8182,6 +8195,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Models
     ModelModulePackage:
       type: object
@@ -8321,6 +8335,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: ModelModulePackages
     ModelModule:
       type: object
@@ -8406,6 +8421,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: ModelModules
     ModelPaint:
       type: object
@@ -9150,7 +9166,7 @@ components:
           type: array
           items:
             type: string
-        shop_typeIn:
+        shopTypeIn:
           type: array
           items:
             type: string
@@ -9545,6 +9561,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Shops
     Starsystem:
       type: object
@@ -9626,6 +9643,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Starsystems
     Station:
       type: object
@@ -9752,6 +9770,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Stations
     Stats:
       type: object
@@ -10113,6 +10132,8 @@ components:
             format: uuid
         modulePackage:
           "$ref": "#/components/schemas/ModelModulePackage"
+        upgrade:
+          "$ref": "#/components/schemas/ModelUpgrade"
         paint:
           "$ref": "#/components/schemas/ModelPaint"
         createdAt:
@@ -10174,6 +10195,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Videos
   securitySchemes:
     SessionCookie:

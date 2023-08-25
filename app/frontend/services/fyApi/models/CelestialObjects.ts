@@ -8,6 +8,6 @@ import type { Meta } from './Meta';
 
 export type CelestialObjects = {
     items: Array<CelestialObject>;
-    meta?: Meta;
+    meta: Meta;
 };
 

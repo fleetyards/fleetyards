@@ -22,6 +22,7 @@ module V1
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
+            upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             paint: {"$ref": "#/components/schemas/ModelPaint"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

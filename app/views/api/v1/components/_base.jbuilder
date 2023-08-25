@@ -20,6 +20,8 @@ json.class component.component_class
 json.grade component.grade
 json.item_class component.item_class
 json.item_class_label component.item_class_label
+json.item_type component.item_type
+json.item_type_label component.item_type_label
 
 json.manufacturer do
   json.null! if component.manufacturer.blank?

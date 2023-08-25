@@ -28,6 +28,9 @@ module Shared
             grade: {type: :string},
             itemClass: {type: :string},
             itemClassLabel: {type: :string},
+            itemType: {type: :string},
+            itemTypeLabel: {type: :string},
+
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
             media: {

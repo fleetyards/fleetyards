@@ -8,6 +8,6 @@ import type { Station } from './Station';
 
 export type Stations = {
     items: Array<Station>;
-    meta?: Meta;
+    meta: Meta;
 };
 

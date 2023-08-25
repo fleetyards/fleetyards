@@ -8,6 +8,6 @@ import type { ShopCommodity } from './ShopCommodity';
 
 export type ShopCommodities = {
     items: Array<ShopCommodity>;
-    meta?: Meta;
+    meta: Meta;
 };
 
