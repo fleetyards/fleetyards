@@ -15,22 +15,22 @@
           @input-filter="inputFilter"
         />
 
-        <Btn @click.native="selectImages">
+        <Btn @click="selectImages">
           <i class="fa fa-plus" />
           {{ t("models.image.selectImages") }}
         </Btn>
 
-        <Btn @click.native="selectFolder">
+        <Btn @click="selectFolder">
           <i class="fa fa-plus" />
           {{ t("models.image.selectFolder") }}
         </Btn>
 
-        <Btn v-if="newImages.length" @click.native="startUpload">
+        <Btn v-if="newImages.length" @click="startUpload">
           <i class="fa fa-upload" />
           {{ t("models.image.startUpload") }}
         </Btn>
 
-        <Btn v-if="newImages.length" @click.native="cancelUpload">
+        <Btn v-if="newImages.length" @click="cancelUpload">
           <i class="fa fa-ban" />
           {{ t("models.image.cancelUpload") }}
         </Btn>
@@ -61,7 +61,7 @@
     <Panel
       v-if="isUploadActive"
       :variant="uploadElement?.dropActive ? 'success' : undefined"
-      @click.native="selectImages"
+      @click="selectImages"
     >
       <div class="dropzone">
         <i class="fal fa-file-plus fa-2x" />
@@ -117,7 +117,7 @@ import { useNoty } from "@/shared/composables/useNoty";
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
-import type { Image } from "@/admin/components/ImageUploader/ImageRow/index.vue";
+import type { Image } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/admin/composables/useI18n";

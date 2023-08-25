@@ -51,6 +51,8 @@ const { t } = useI18n();
 
 useMetaInfo(t);
 
+const route = useRoute();
+
 // const collection: StationsCollection = stationsCollection;
 </script>
 

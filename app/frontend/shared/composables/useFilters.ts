@@ -1,7 +1,26 @@
 import { debounce } from "ts-debounce";
 
-export const useFilters = <T>(routeQueryKey = "q") => {
+export const useFilters = <T>(
+  updateCallback?: () => void,
+  routeQueryKey = "q",
+) => {
   const route = useRoute();
+
+  onMounted(() => {
+    if (!updateCallback) return;
+
+    updateCallback();
+  });
+
+  watch(
+    () => route.query,
+    () => {
+      if (!updateCallback) return;
+
+      updateCallback();
+    },
+    { deep: true },
+  );
 
   const getQuery = (formData: T) => {
     const query = JSON.parse(JSON.stringify(formData));
@@ -23,13 +42,13 @@ export const useFilters = <T>(routeQueryKey = "q") => {
 
   const router = useRouter();
 
-  const debouncedFilter = (filter: T) => {
+  const debouncedFilter = (filter: Event) => {
     router
       .replace({
         name: route.name || undefined,
         query: {
           ...route.query,
-          [routeQueryKey]: getQuery(filter),
+          [routeQueryKey]: getQuery(filter as T),
         },
       })
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -52,5 +71,6 @@ export const useFilters = <T>(routeQueryKey = "q") => {
     isFilterSelected,
     resetFilter,
     filter,
+    routeQuery,
   };
 };

@@ -8,9 +8,10 @@
       :clearable="true"
     />
 
+    // TODO: migrate to new FilterGroup props
     <FilterGroup
       v-model="form.manufacturerIn"
-      :label="$t('labels.filters.models.manufacturer')"
+      :label="t('labels.filters.models.manufacturer')"
       fetch-path="manufacturers/with-models"
       name="manufacturer"
       value-attr="slug"
@@ -23,7 +24,7 @@
 
     <FilterGroup
       v-model="form.productionStatusIn"
-      :label="$t('labels.filters.models.productionStatus')"
+      :label="t('labels.filters.models.productionStatus')"
       fetch-path="models/production-states"
       name="production-status"
       :multiple="true"
@@ -32,7 +33,7 @@
 
     <FilterGroup
       v-model="form.classificationIn"
-      :label="$t('labels.filters.models.classification')"
+      :label="t('labels.filters.models.classification')"
       fetch-path="models/classifications"
       name="classification"
       :searchable="true"
@@ -42,7 +43,7 @@
 
     <FilterGroup
       v-model="form.focusIn"
-      :label="$t('labels.filters.models.focus')"
+      :label="t('labels.filters.models.focus')"
       fetch-path="models/focus"
       name="focus"
       :searchable="true"
@@ -52,7 +53,7 @@
 
     <FilterGroup
       v-model="form.sizeIn"
-      :label="$t('labels.filters.models.size')"
+      :label="t('labels.filters.models.size')"
       fetch-path="models/sizes"
       name="size"
       :multiple="true"
@@ -62,7 +63,7 @@
     <FilterGroup
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
-      :label="$t('labels.filters.models.pledgePrice')"
+      :label="t('labels.filters.models.pledgePrice')"
       name="pldege-price"
       :multiple="true"
       :no-label="true"
@@ -71,7 +72,7 @@
     <FilterGroup
       v-model="form.priceIn"
       :options="priceOptions"
-      :label="$t('labels.filters.models.price')"
+      :label="t('labels.filters.models.price')"
       name="price"
       :multiple="true"
       :no-label="true"
@@ -79,7 +80,7 @@
 
     <FilterGroup
       v-model="form.willItFit"
-      :label="$t('labels.filters.models.willItFit')"
+      :label="t('labels.filters.models.willItFit')"
       fetch-path="models/with-docks"
       value-attr="slug"
       name="will-it-fit"
@@ -191,19 +192,15 @@
 
     <RadioList
       v-model="form.onSaleEq"
-      :label="$t('labels.filters.models.onSale')"
-      :reset-label="$t('labels.all')"
+      :label="t('labels.filters.models.onSale')"
+      :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="sale"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
@@ -211,89 +208,48 @@
 <script lang="ts" setup>
 import RadioList from "@/shared/components/Form/RadioList/index.vue";
 import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { ModelQuery } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();
+
+const setupForm = () => {
+  form.value = {
+    searchCont: routeQuery.value.searchCont,
+    nameCont: routeQuery.value.nameCont,
+    onSaleEq: routeQuery.value.onSaleEq,
+    priceLteq: routeQuery.value.priceLteq,
+    priceGteq: routeQuery.value.priceGteq,
+    pledgePriceLteq: routeQuery.value.pledgePriceLteq,
+    pledgePriceGteq: routeQuery.value.pledgePriceGteq,
+    lengthLteq: routeQuery.value.lengthLteq,
+    lengthGteq: routeQuery.value.lengthGteq,
+    beamLteq: routeQuery.value.beamLteq,
+    beamGteq: routeQuery.value.beamGteq,
+    heightLteq: routeQuery.value.heightLteq,
+    heightGteq: routeQuery.value.heightGteq,
+    willItFit: routeQuery.value.willItFit,
+    manufacturerIn: routeQuery.value.manufacturerIn || [],
+    classificationIn: routeQuery.value.classificationIn || [],
+    focusIn: routeQuery.value.focusIn || [],
+    productionStatusIn: routeQuery.value.productionStatusIn || [],
+    priceIn: routeQuery.value.priceIn || [],
+    pledgePriceIn: routeQuery.value.pledgePriceIn || [],
+    sizeIn: routeQuery.value.sizeIn || [],
+  };
+};
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<ModelQuery>(setupForm);
+
+const form = ref<ModelQuery>({});
+
 const { booleanOptions, priceOptions, pledgePriceOptions } =
   useFilterOptions(t);
-
-//   data() {
-//     const query = this.$route.query.q || {};
-//     return {
-//       loading: false,
-//       form: {
-//         searchCont: query.searchCont,
-//         nameCont: query.nameCont,
-//         onSaleEq: query.onSaleEq,
-//         priceLteq: query.priceLteq,
-//         priceGteq: query.priceGteq,
-//         pledgePriceLteq: query.pledgePriceLteq,
-//         pledgePriceGteq: query.pledgePriceGteq,
-//         lengthLteq: query.lengthLteq,
-//         lengthGteq: query.lengthGteq,
-//         beamLteq: query.beamLteq,
-//         beamGteq: query.beamGteq,
-//         heightLteq: query.heightLteq,
-//         heightGteq: query.heightGteq,
-//         willItFit: query.willItFit,
-//         manufacturerIn: query.manufacturerIn || [],
-//         classificationIn: query.classificationIn || [],
-//         focusIn: query.focusIn || [],
-//         productionStatusIn: query.productionStatusIn || [],
-//         priceIn: query.priceIn || [],
-//         pledgePriceIn: query.pledgePriceIn || [],
-//         sizeIn: query.sizeIn || [],
-//       },
-//     };
-//   },
-
-//   computed: {
-//     booleanOptions() {
-//       return booleanOptions;
-//     },
-
-//     priceOptions() {
-//       return priceOptions;
-//     },
-
-//     pledgePriceOptions() {
-//       return pledgePriceOptions;
-//     },
-//   },
-
-//   watch: {
-//     $route() {
-//       const query = this.$route.query.q || {};
-
-//       this.form = {
-//         searchCont: query.searchCont,
-//         nameCont: query.nameCont,
-//         onSaleEq: query.onSaleEq,
-//         priceLteq: query.priceLteq,
-//         priceGteq: query.priceGteq,
-//         pledgePriceLteq: query.pledgePriceLteq,
-//         pledgePriceGteq: query.pledgePriceGteq,
-//         lengthLteq: query.lengthLteq,
-//         lengthGteq: query.lengthGteq,
-//         beamLteq: query.beamLteq,
-//         beamGteq: query.beamGteq,
-//         heightLteq: query.heightLteq,
-//         heightGteq: query.heightGteq,
-//         willItFit: query.willItFit,
-//         manufacturerIn: query.manufacturerIn || [],
-//         classificationIn: query.classificationIn || [],
-//         focusIn: query.focusIn || [],
-//         productionStatusIn: query.productionStatusIn || [],
-//         priceIn: query.priceIn || [],
-//         pledgePriceIn: query.pledgePriceIn || [],
-//         sizeIn: query.sizeIn || [],
-//       };
-//     },
-//   },
-// };
 </script>
 
 <script lang="ts">

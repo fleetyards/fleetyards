@@ -24,11 +24,7 @@
       :no-label="true"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
@@ -44,9 +40,9 @@ import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/admin/composables/useI18n";
 import type {
   ImageQuery,
-  ModelMinimal,
+  Models,
   ModelQuery,
-  Station,
+  Stations,
   StationQuery,
 } from "@/services/fyAdminApi";
 import { useApiClient } from "@/admin/composables/useApiClient";
@@ -132,8 +128,8 @@ const submit = () => {
 
 const { models: modelsService, stations: stationsService } = useApiClient();
 
-const modelsFormatter = (models: ModelMinimal[]) => {
-  return models.map((model) => {
+const modelsFormatter = (response: Models) => {
+  return response.items.map((model) => {
     return {
       label: model.name,
       value: model.id,
@@ -163,8 +159,8 @@ const fetchModels = async (params: FilterGroupParams) => {
   });
 };
 
-const stationsFormatter = (stations: Station[]) => {
-  return stations.map((station) => {
+const stationsFormatter = (response: Stations) => {
+  return response.items.map((station) => {
     return {
       label: station.name,
       value: station.id,

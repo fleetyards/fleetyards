@@ -11,64 +11,57 @@
     <FilterGroup
       v-model="form.roleIn"
       :options="roleOptions"
-      :label="$t('labels.filters.fleets.members.role')"
+      :label="t('labels.filters.fleets.members.role')"
       name="role"
       :multiple="true"
       :no-label="true"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import type { FilterGroupOption } from "@/shared/components/Form/FilterGroup/Option/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Btn from "@/shared/components/BaseBtn/index.vue";
+import { FleetMemberQuery } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
 
-//   data() {
-//     const query = this.$route.query.q || {};
-//     return {
-//       form: {
-//         usernameCont: query.usernameCont,
-//         roleIn: query.roleIn || [],
-//       },
+const { t } = useI18n();
 
-//       roleOptions: [
-//         {
-//           name: this.$t("labels.fleet.members.roles.admin"),
-//           value: "admin",
-//         },
-//         {
-//           name: this.$t("labels.fleet.members.roles.officer"),
-//           value: "officer",
-//         },
-//         {
-//           name: this.$t("labels.fleet.members.roles.member"),
-//           value: "member",
-//         },
-//       ],
-//     };
-//   },
+const setupForm = () => {
+  form.value = {
+    usernameCont: routeQuery.value.usernameCont,
+    roleIn: routeQuery.value.roleIn || [],
+    sorts: routeQuery.value.sorts,
+  };
+};
 
-//   watch: {
-//     $route() {
-//       const query = this.$route.query.q || {};
-//       this.form = {
-//         usernameCont: query.usernameCont,
-//         roleIn: query.roleIn || [],
-//         sorts: query.sorts,
-//       };
-//     },
-//   },
-// };
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<FleetMemberQuery>(setupForm);
+
+const form = ref<FleetMemberQuery>({});
+
+const roleOptions: FilterGroupOption[] = [
+  {
+    label: t("labels.fleet.members.roles.admin"),
+    value: "admin",
+  },
+  {
+    label: t("labels.fleet.members.roles.officer"),
+    value: "officer",
+  },
+  {
+    label: t("labels.fleet.members.roles.member"),
+    value: "member",
+  },
+];
 </script>
 
 <script lang="ts">

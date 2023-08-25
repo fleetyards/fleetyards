@@ -29,6 +29,7 @@
       }"
     >
       <FleetchartItemImage
+        v-if="image"
         :label="name || modelName"
         :src="image"
         :width="imageWidth"
@@ -41,12 +42,18 @@
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
 import FleetchartItemImage from "./Image/index.vue";
-
-type ViewType = "top" | "side" | "angled" | "front";
+import type {
+  Model,
+  Vehicle,
+  ModelModulePackage,
+  ViewImage,
+  ModelPaint,
+} from "@/services/fyApi";
+import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 
 type Props = {
   item: Model | Vehicle;
-  viewpoint?: ViewType;
+  viewpoint?: FleetchartViewpoints;
   showLabel?: boolean;
   showStatus?: boolean;
   sizeMultiplicator?: number;
@@ -55,7 +62,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  viewpoint: "side",
+  viewpoint: FleetchartViewpoints.SIDE,
   showLabel: false,
   showStatus: false,
   sizeMultiplicator: 1,
@@ -65,20 +72,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const imageByViewpoint = computed<FyMediaViewImage>(() => {
+const imageByViewpoint = computed<ViewImage | undefined>(() => {
   if (props.viewpoint === "angled") {
-    return angledView.value as FyMediaViewImage;
+    return angledView.value;
   }
 
   if (props.viewpoint === "front") {
-    return frontView.value as FyMediaViewImage;
+    return frontView.value;
   }
 
   if (props.viewpoint === "side") {
-    return sideView.value as FyMediaViewImage;
+    return sideView.value;
   }
 
-  return topView.value as FyMediaViewImage;
+  return topView.value;
 });
 
 const model = computed<Model>(() => {
@@ -119,9 +126,9 @@ const angledView = computed(() => {
   }
 
   if (modulePackage.value && modulePackage.value.media.angledView) {
-    if (props.colored && modulePackage.value.media.angledViewColored) {
-      return modulePackage.value.media.angledViewColored;
-    }
+    // if (props.colored && modulePackage.value.media.angledViewColored) {
+    //   return modulePackage.value.media.angledViewColored;
+    // }
 
     return modulePackage.value.media.angledView;
   }
@@ -134,17 +141,17 @@ const angledView = computed(() => {
 });
 
 const frontView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.frontView) {
-    return paint.value.media.frontView;
-  }
+  // if (props.colored && paint.value && paint.value.media.frontView) {
+  //   return paint.value.media.frontView;
+  // }
 
-  if (modulePackage.value && modulePackage.value.media.frontView) {
-    if (props.colored && modulePackage.value.media.frontViewColored) {
-      return modulePackage.value.media.frontViewColored;
-    }
+  // if (modulePackage.value && modulePackage.value.media.frontView) {
+  //   if (props.colored && modulePackage.value.media.frontViewColored) {
+  //     return modulePackage.value.media.frontViewColored;
+  //   }
 
-    return modulePackage.value.media.frontView;
-  }
+  //   return modulePackage.value.media.frontView;
+  // }
 
   if (props.colored && model.value.media.frontViewColored) {
     return model.value.media.frontViewColored;
@@ -159,9 +166,9 @@ const sideView = computed(() => {
   }
 
   if (modulePackage.value && modulePackage.value.media.sideView) {
-    if (props.colored && modulePackage.value.media.sideViewColored) {
-      return modulePackage.value.media.sideViewColored;
-    }
+    // if (props.colored && modulePackage.value.media.sideViewColored) {
+    //   return modulePackage.value.media.sideViewColored;
+    // }
 
     return modulePackage.value.media.sideView;
   }
@@ -179,9 +186,9 @@ const topView = computed(() => {
   }
 
   if (modulePackage.value && modulePackage.value.media.topView) {
-    if (props.colored && modulePackage.value.media.topViewColored) {
-      return modulePackage.value.media.topViewColored;
-    }
+    // if (props.colored && modulePackage.value.media.topViewColored) {
+    //   return modulePackage.value.media.topViewColored;
+    // }
 
     return modulePackage.value.media.topView;
   }
@@ -221,26 +228,30 @@ const name = computed(() => {
 
 const modelName = computed(() => {
   if (paint.value && paint.value.rsiId) {
-    return `${model.value.manufacturer.code} ${paint.value.name}`;
+    return `${model.value.manufacturer?.code} ${paint.value.name}`;
   }
 
-  return `${model.value.manufacturer.code} ${model.value.name}`;
+  return `${model.value.manufacturer?.code} ${model.value.name}`;
 });
 
 const length = computed(
-  () => model.value.fleetchartLength * props.sizeMultiplicator,
+  () => (model.value.metrics.fleetchartLength || 0) * props.sizeMultiplicator,
 );
 
 const height = computed(
   () => (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value,
 );
 
-const imageWidth = computed(() =>
-  Math.min(
+const imageWidth = computed(() => {
+  if (!sourceImageWidth.value || !sourceImageHeight.value) {
+    return 0;
+  }
+
+  return Math.min(
     (height.value * sourceImageWidth.value) / sourceImageHeight.value,
     length.value,
-  ),
-);
+  );
+});
 
 const sourceImageHeight = computed(() => imageByViewpoint.value?.height);
 

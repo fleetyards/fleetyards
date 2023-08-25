@@ -7,6 +7,8 @@
       :no-label="true"
       :clearable="true"
     />
+
+    // TODO: migrate to new FilterGroup props
     <FilterGroup
       v-model="form.celestialObjectIn"
       :label="t('labels.filters.stations.celestialObject')"
@@ -79,11 +81,7 @@
       :options="booleanOptions"
       name="cargoHub"
     />
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
@@ -91,65 +89,38 @@
 </template>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 import RadioList from "@/shared/components/Form/RadioList/index.vue";
+import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFilters } from "@/shared/composables/useFilters";
-import type { StationQuery } from "@/services/fyApi";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { StationQuery } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();
 
-const { booleanOptions } = useFilterOptions(t);
+const setupForm = () => {
+  form.value = {
+    searchCont: routeQuery.value.searchCont,
+    nameCont: routeQuery.value.nameCont,
+    habsNotNull: routeQuery.value.habsNotNull,
+    cargoHubEq: routeQuery.value.cargoHubEq,
+    refineryEq: routeQuery.value.refineryEq,
+    celestialObjectIn: routeQuery.value.celestialObjectIn || [],
+    starsystemIn: routeQuery.value.starsystemIn || [],
+    stationTypeIn: routeQuery.value.stationTypeIn || [],
+    shopsShopTypeIn: routeQuery.value.shopsShopTypeIn || [],
+    docksShipSizeIn: routeQuery.value.docksShipSizeIn || [],
+  };
+};
 
-const { filter, isFilterSelected, resetFilter } = useFilters();
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<StationQuery>(setupForm);
 
 const form = ref<StationQuery>({});
 
-//   data() {
-//     const query = this.$route.query.q || {};
-//     return {
-//       loading: false,
-//       form: {
-//         searchCont: query.searchCont,
-//         nameCont: query.nameCont,
-//         habsNotNull: query.habsNotNull,
-//         cargoHubEq: query.cargoHubEq,
-//         refineryEq: query.refineryEq,
-//         celestialObjectIn: query.celestialObjectIn || [],
-//         starsystemIn: query.starsystemIn || [],
-//         stationTypeIn: query.stationTypeIn || [],
-//         shopsShopTypeIn: query.shopsShopTypeIn || [],
-//         docksShipSizeIn: query.docksShipSizeIn || [],
-//       },
-//     };
-//   },
-
-//   computed: {
-//     booleanOptions() {
-//       return booleanOptions;
-//     },
-//   },
-
-//   watch: {
-//     $route() {
-//       const query = this.$route.query.q || {};
-//       this.form = {
-//         searchCont: query.searchCont,
-//         nameCont: query.nameCont,
-//         habsNotNull: query.habsNotNull,
-//         cargoHubEq: query.cargoHubEq,
-//         refineryEq: query.refineryEq,
-//         celestialObjectIn: query.celestialObjectIn || [],
-//         starsystemIn: query.starsystemIn || [],
-//         stationTypeIn: query.stationTypeIn || [],
-//         shopsShopTypeIn: query.shopsShopTypeIn || [],
-//         docksShipSizeIn: query.docksShipSizeIn || [],
-//       };
-//     },
-//   },
+const { booleanOptions } = useFilterOptions(t);
 
 //   methods: {
 //     fetchCelestialObjects({ page, search, missingValue }) {

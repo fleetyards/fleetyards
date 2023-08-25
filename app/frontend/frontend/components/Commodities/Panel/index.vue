@@ -2,7 +2,8 @@
   <Panel>
     <div class="teaser-panel">
       <LazyImage
-        :src="commodity.storeImageMedium"
+        v-if="commodity.media.storeImage"
+        :src="commodity.media.storeImage?.medium"
         :to="tradeRouteRoute"
         class="teaser-panel-image"
       />
@@ -22,36 +23,38 @@
   </Panel>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
+import type { Commodity } from "@/services/fyApi";
+import { RouteLocationRaw } from "vue-router";
 
-@Component<ComponentPanel>({
-  components: {
-    Panel,
-    LazyImage,
-    ShopCommodityLocations,
-  },
-})
-export default class ComponentPanel extends Vue {
-  @Prop({ required: true }) commodity!: Component;
+type Props = {
+  commodity: Commodity;
+  showStats?: boolean;
+};
 
-  @Prop({ default: true }) showStats!: boolean;
+const props = withDefaults(defineProps<Props>(), {
+  showStats: true,
+});
 
-  get tradeRouteRoute() {
-    return {
-      name: "trade-routes",
-      query: {
-        q: {
-          commodityIn: [this.commodity.slug],
-        },
+const tradeRouteRoute = computed(() => {
+  return {
+    name: "trade-routes",
+    query: {
+      q: {
+        commodityIn: [props.commodity.slug],
       },
-    };
-  }
-}
+    },
+  } as unknown as RouteLocationRaw; // HACK to make insuffient types for vue-router work
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "ComponentPanel",
+};
 </script>
 
 <style lang="scss" scoped>

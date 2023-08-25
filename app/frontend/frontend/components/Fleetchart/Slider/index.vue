@@ -7,7 +7,7 @@
       :max="maxScale"
       :interval="interval"
       :marks="marks"
-      dot-size="20"
+      :dot-size="20"
       :tooltip-formatter="label"
       :process="false"
       :lazy="true"
@@ -16,61 +16,68 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
 import VueSlider from "vue-slider-component";
-import { Getter } from "vuex-class";
+import { useMobile } from "@/shared/composables/useMobile";
 
-@Component({
-  components: {
-    VueSlider,
+type Props = {
+  modelValue?: number;
+  maxScale?: number;
+  minScale?: number;
+  interval?: number;
+  mark?: number;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: 1,
+  maxScale: 20,
+  minScale: 0.2,
+  interval: 0.5,
+  mark: 2,
+});
+
+const innerValue = ref(1);
+
+const mobile = useMobile();
+
+const innerMark = computed(() => {
+  return mobile.value ? 5 : props.mark;
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    innerValue.value = props.modelValue;
   },
-})
-export default class FleetchartSlider extends Vue {
-  innerValue = 1;
+);
 
-  @Prop({ required: true }) value!: number;
+onMounted(() => {
+  innerValue.value = props.modelValue;
+});
 
-  @Prop({ default: 20 }) maxScale!: number;
+const emit = defineEmits(["update:modelValue"]);
 
-  @Prop({ default: 0.2 }) minScale!: number;
+const update = (value: number) => {
+  emit("update:modelValue", value);
+};
 
-  @Prop({ default: 0.5 }) interval!: number;
-
-  @Prop({ default: 2 }) mark!: number;
-
-  @Getter("mobile") mobile;
-
-  get innerMark() {
-    return this.mobile ? 5 : this.mark;
+const marks = (value: number) => {
+  if (value % innerMark.value === 0) {
+    return {
+      label: label(value),
+    };
   }
 
-  @Watch("value")
-  onValueChange() {
-    this.innerValue = this.value;
-  }
+  return false;
+};
 
-  mounted() {
-    this.innerValue = this.value;
-  }
+const label = (value: number) => {
+  return `${value}x`;
+};
+</script>
 
-  update(value) {
-    this.$emit("input", value);
-  }
-
-  marks(value) {
-    if (value % this.innerMark === 0) {
-      return {
-        label: this.label(value),
-      };
-    }
-
-    return false;
-  }
-
-  label(value) {
-    return `${value}x`;
-  }
-}
+<script lang="ts">
+export default {
+  name: "FleetchartSlider",
+};
 </script>

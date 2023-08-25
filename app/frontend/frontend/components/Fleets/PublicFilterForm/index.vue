@@ -148,22 +148,18 @@
       :reset-label="t('labels.hide')"
       :options="[
         {
-          name: 'Show',
+          label: 'Show',
           value: 'true',
         },
         {
-          name: 'Only',
+          label: 'Only',
           value: 'only',
         },
       ]"
       name="loaner"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
@@ -177,72 +173,39 @@ import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { FleetVehicleQuery } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();
+
+const setupForm = () => {
+  form.value = {
+    modelNameCont: routeQuery.value.modelNameCont,
+    onSaleEq: routeQuery.value.onSaleEq,
+    loanerEq: routeQuery.value.loanerEq,
+    priceLteq: routeQuery.value.priceLteq,
+    priceGteq: routeQuery.value.priceGteq,
+    pledgePriceLteq: routeQuery.value.pledgePriceLteq,
+    pledgePriceGteq: routeQuery.value.pledgePriceGteq,
+    lengthLteq: routeQuery.value.lengthLteq,
+    lengthGteq: routeQuery.value.lengthGteq,
+    manufacturerIn: routeQuery.value.manufacturerIn || [],
+    classificationIn: routeQuery.value.classificationIn || [],
+    focusIn: routeQuery.value.focusIn || [],
+    sizeIn: routeQuery.value.sizeIn || [],
+    priceIn: routeQuery.value.priceIn || [],
+    pledgePriceIn: routeQuery.value.pledgePriceIn || [],
+    productionStatusIn: routeQuery.value.productionStatusIn || [],
+  };
+};
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<FleetVehicleQuery>(setupForm);
+
+const form = ref<FleetVehicleQuery>({});
+
 const { booleanOptions, priceOptions, pledgePriceOptions } =
   useFilterOptions(t);
-// data() {
-//     const query = this.$route.query.q || {};
-//     return {
-//       form: {
-//         modelNameCont: query.modelNameCont,
-//         onSaleEq: query.onSaleEq,
-//         loanerEq: query.loanerEq,
-//         priceLteq: query.priceLteq,
-//         priceGteq: query.priceGteq,
-//         pledgePriceLteq: query.pledgePriceLteq,
-//         pledgePriceGteq: query.pledgePriceGteq,
-//         lengthLteq: query.lengthLteq,
-//         lengthGteq: query.lengthGteq,
-//         manufacturerIn: query.manufacturerIn || [],
-//         classificationIn: query.classificationIn || [],
-//         focusIn: query.focusIn || [],
-//         sizeIn: query.sizeIn || [],
-//         priceIn: query.priceIn || [],
-//         pledgePriceIn: query.pledgePriceIn || [],
-//         productionStatusIn: query.productionStatusIn || [],
-//       },
-//     };
-//   },
-
-//   computed: {
-//     booleanOptions() {
-//       return booleanOptions;
-//     },
-
-//     priceOptions() {
-//       return priceOptions;
-//     },
-
-//     pledgePriceOptions() {
-//       return pledgePriceOptions;
-//     },
-//   },
-
-//   watch: {
-//     $route() {
-//       const query = this.$route.query.q || {};
-//       this.form = {
-//         modelNameCont: query.modelNameCont,
-//         onSaleEq: query.onSaleEq,
-//         loanerEq: query.loanerEq,
-//         priceLteq: query.priceLteq,
-//         priceGteq: query.priceGteq,
-//         pledgePriceLteq: query.pledgePriceLteq,
-//         pledgePriceGteq: query.pledgePriceGteq,
-//         lengthLteq: query.lengthLteq,
-//         lengthGteq: query.lengthGteq,
-//         manufacturerIn: query.manufacturerIn || [],
-//         classificationIn: query.classificationIn || [],
-//         focusIn: query.focusIn || [],
-//         sizeIn: query.sizeIn || [],
-//         priceIn: query.priceIn || [],
-//         pledgePriceIn: query.pledgePriceIn || [],
-//         productionStatusIn: query.productionStatusIn || [],
-//       };
-//     },
-//   },
-// };
 </script>
 
 <script lang="ts">

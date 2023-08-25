@@ -98,18 +98,23 @@ import Option from "./Option/index.vue";
 import type { FilterGroupOption } from "./Option/index.vue";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import { useQuery } from "@tanstack/vue-query";
+import type { BaseList } from "@/services/fyApi";
+
+export type ValueType = string[] | string | number[] | number | boolean;
 
 export type FilterGroupParams = {
   search?: string;
-  missing?: string | string[];
+  missing?: ValueType;
   page?: number;
 };
 
 type Props = {
   name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   queryFn?: (params: FilterGroupParams) => Promise<any>;
-  queryResponseFormatter?: (items: any[]) => FilterGroupOption[];
-  modelValue?: string[] | string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  queryResponseFormatter?: (response: any) => FilterGroupOption[];
+  modelValue?: ValueType;
   options?: FilterGroupOption[];
   error?: string;
   label?: string;
@@ -127,6 +132,8 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  queryFn: undefined,
+  queryResponseFormatter: (items: FilterGroupOption[]) => items,
   modelValue: undefined,
   options: undefined,
   error: undefined,
@@ -154,7 +161,7 @@ const fetchMoreVisible = ref(props.paginated);
 
 const search = ref<string | undefined>();
 
-const missing = ref<string | string[] | undefined>();
+const missing = ref<ValueType | undefined>();
 
 const page = ref(1);
 
@@ -206,19 +213,16 @@ const { isLoading, isFetching, data, refetch } = useQuery({
       missing: missing.value,
     });
 
-    let data = response;
-    if (props.paginated) {
-      data = response.items;
-    }
+    const data = props.queryResponseFormatter(response);
 
-    if (props.queryResponseFormatter) {
-      data = props.queryResponseFormatter(data);
-    }
-
-    if (props.paginated) {
+    if (
+      props.paginated &&
+      (response as BaseList).meta &&
+      (response as BaseList).meta.pagination
+    ) {
       fetchMoreVisible.value =
-        response.meta?.pagination?.currentPage <
-        response.meta?.pagination?.totalPages;
+        (response as BaseList).meta.pagination!.currentPage <
+        (response as BaseList).meta.pagination!.totalPages;
     }
 
     return data;
@@ -396,7 +400,7 @@ const clearSearch = () => {
 
 const selected = (option: string) => {
   if (props.multiple) {
-    return (props.modelValue || []).includes(option);
+    return ((props.modelValue as string[]) || []).includes(option);
   }
 
   return props.modelValue === option;

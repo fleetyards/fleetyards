@@ -10,28 +10,23 @@
     <BtnDropdown size="small" class="fleetchart-app-mode">
       <template #label>
         <template v-if="!mobile">
-          {{ $t("labels.fleetchartApp.mode") }}:
+          {{ t("labels.fleetchartApp.mode") }}:
         </template>
-        {{ $t(`labels.fleetchartApp.modeOptions.${mode}`) }}
+        {{ t(`labels.fleetchartApp.modeOptions.${mode}`) }}
       </template>
       <Btn
-        v-for="(option, index) in modeOptions"
+        v-for="(option, index) in FleetchartModes"
         :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
         size="small"
         variant="link"
         :active="mode === option"
-        @click.native="setMode(option)"
+        @click="setMode(option)"
       >
-        {{ $t(`labels.fleetchartApp.modeOptions.${option}`) }}
+        {{ t(`labels.fleetchartApp.modeOptions.${option}`) }}
       </Btn>
     </BtnDropdown>
 
-    <Btn
-      size="large"
-      variant="link"
-      class="fleetchart-app-close"
-      @click.native="hide"
-    >
+    <Btn size="large" variant="link" class="fleetchart-app-close" @click="hide">
       <i class="fal fa-times" />
     </Btn>
 
@@ -42,7 +37,7 @@
         :active="filterVisible"
         :aria-label="filterTooltip"
         size="small"
-        @click.native="toggleFilter"
+        @click="toggleFilter"
       >
         <span v-show="isFilterSelected">
           <i class="fas fa-filter" />
@@ -92,182 +87,197 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Action, Getter } from "vuex-class";
+<script lang="ts" setup>
 import FleetchartListPanzoom from "@/frontend/components/Fleetchart/ListPanzoom/index.vue";
 import FleetchartList from "@/frontend/components/Fleetchart/List/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import { isFilterSelected } from "@/frontend/utils/Filters";
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import type { Vehicle, Model } from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { useOverlayStore } from "@/shared/stores/overlay";
+import { FleetchartModes } from "@/shared/stores/fleetchart";
+import { useFiltersStore } from "@/shared/stores/filters";
+import { useFilters } from "@/shared/composables/useFilters";
 
-@Component({
-  components: {
-    FleetchartListPanzoom,
-    FleetchartList,
-    Btn,
-    BtnDropdown,
-    Loader,
+type Props = {
+  namespace: string;
+  items: Vehicle[] | Model[];
+  myShip?: boolean;
+  downloadName?: string;
+  loading?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  myShip: false,
+  downloadName: undefined,
+  loading: false,
+});
+
+const { t } = useI18n();
+
+const fleetchartStore = useFleetchartStore();
+
+const innerItems = ref<Vehicle[] | Model[]>([]);
+
+const isOpen = ref(false);
+
+const isShow = ref(false);
+
+const mobile = useMobile();
+
+const filtersStore = useFiltersStore();
+
+const filterVisible = computed(() => {
+  return filtersStore.isVisible(props.namespace);
+});
+
+const visible = computed(() => {
+  return fleetchartStore.isVisible(props.namespace);
+});
+
+const mode = computed(() => {
+  return fleetchartStore.fleetchartMode(props.namespace);
+});
+
+const { isFilterSelected } = useFilters();
+
+const slots = useSlots();
+
+const hasFilterSlot = computed(() => {
+  return !!slots.filter;
+});
+
+const filterTooltip = computed(() => {
+  if (filterVisible.value) {
+    return t("actions.hideFilter");
+  }
+
+  return t("actions.showFilter");
+});
+
+watch(
+  () => props.items,
+  () => {
+    updateItems();
   },
-})
-export default class FleetchartApp extends Vue {
-  @Action("showOverlay", { namespace: "app" }) showOverlay: any;
+);
 
-  @Action("hideOverlay", { namespace: "app" }) hideOverlay: any;
-
-  modeOptions: string[] = ["panzoom", "classic"];
-
-  innerItems: Vehiclep[] | Model[] = [];
-
-  isOpen = false;
-
-  isShow = false;
-
-  @Prop({ required: true }) namespace!: string;
-
-  @Prop({
-    default() {
-      return [];
-    },
-  })
-  items!: Vehicle[] | Model[];
-
-  @Prop({ default: false }) myShip!: boolean;
-
-  @Prop({ default: null }) downloadName!: string;
-
-  @Prop({ default: true }) loading!: boolean;
-
-  @Getter("mobile") mobile;
-
-  @Getter("filtersVisible") filtersVisible;
-
-  @Action("toggleFilterVisible") toggleFilterVisible;
-
-  get visible() {
-    return this.$store.getters[`${this.namespace}/fleetchartVisible`];
-  }
-
-  get mode() {
-    return this.$store.getters[`${this.namespace}/fleetchartMode`];
-  }
-
-  get hasFilterSlot() {
-    return !!this.$slots.filter;
-  }
-
-  get filterVisible() {
-    return !!this.filtersVisible[this.namespace] && this.hasFilterSlot;
-  }
-
-  get filterTooltip() {
-    if (this.filterVisible) {
-      return this.$t("actions.hideFilter");
-    }
-
-    return this.$t("actions.showFilter");
-  }
-
-  get filters() {
-    return this.$route.query.q || {};
-  }
-
-  get isFilterSelected() {
-    return isFilterSelected(this.filters);
-  }
-
-  @Watch("items")
-  onItemsChange() {
-    this.updateItems();
-  }
-
-  @Watch("visible")
-  onVisibleChange() {
-    if (this.visible) {
-      this.open();
+watch(
+  () => visible.value,
+  () => {
+    if (visible.value) {
+      open();
     } else {
-      this.close();
+      close();
     }
+  },
+);
+
+const route = useRoute();
+
+onMounted(() => {
+  updateItems();
+
+  if (route.query.fleetchart) {
+    fleetchartStore.show(props.namespace);
   }
 
-  mounted() {
-    this.updateItems();
-
-    if (this.$route.query.fleetchart) {
-      this.$store.commit(`${this.namespace}/setFleetchartVisible`, true);
-    }
-
-    if (this.visible) {
-      this.open();
-    }
+  if (visible.value) {
+    open();
   }
+});
 
-  toggleFilter() {
-    this.toggleFilterVisible(this.namespace);
-  }
+const toggleFilter = () => {
+  filtersStore.toggle(props.namespace);
+};
 
-  updateItems() {
-    this.innerItems = JSON.parse(JSON.stringify(this.items)).sort((a, b) => {
-      if (a.model) {
-        if (a.model.length < b.model.length) {
+const updateItems = () => {
+  innerItems.value = JSON.parse(JSON.stringify(props.items)).sort(
+    (a: Vehicle | Model, b: Vehicle | Model) => {
+      if (
+        (a as Vehicle).model?.metrics?.length &&
+        (b as Vehicle).model?.metrics?.length
+      ) {
+        if (
+          (a as Vehicle).model!.metrics!.length! <
+          (b as Vehicle).model!.metrics!.length!
+        ) {
           return -1;
         }
 
-        if (a.model.length > b.model.length) {
+        if (
+          (a as Vehicle).model!.metrics!.length! >
+          (b as Vehicle).model!.metrics!.length!
+        ) {
+          return 1;
+        }
+
+        return 0;
+      } else if ((a as Model).metrics?.length && (b as Model).metrics?.length) {
+        if ((a as Model).metrics.length! < (b as Model).metrics.length!) {
+          return -1;
+        }
+
+        if ((a as Model).metrics.length! > (b as Model).metrics.length!) {
           return 1;
         }
 
         return 0;
       }
 
-      if (a.length < b.length) {
-        return -1;
-      }
-
-      if (a.length > b.length) {
-        return 1;
-      }
-
       return 0;
-    });
-  }
+    },
+  );
+};
 
-  open() {
-    this.isShow = true;
-    this.showOverlay();
+const emit = defineEmits(["fleetchart-opened", "fleetchart-closed"]);
 
-    this.$nextTick(() => {
-      // make sure the component is present
-      setTimeout(() => {
-        // make sure initial animations have enough time
-        this.isOpen = true;
+const overlayStore = useOverlayStore();
 
-        this.$emit("fleetchart-opened");
-      }, 100);
-    });
-  }
+const open = () => {
+  isShow.value = true;
 
-  hide() {
-    this.$store.commit(`${this.namespace}/setFleetchartVisible`, false);
-  }
+  overlayStore.show();
 
-  setMode(mode) {
-    this.$store.commit(`${this.namespace}/setFleetchartMode`, mode);
-  }
+  nextTick(() => {
+    // make sure the component is present
+    setTimeout(() => {
+      // make sure initial animations have enough time
+      isOpen.value = true;
 
-  close() {
-    this.isOpen = false;
-    this.hideOverlay();
+      emit("fleetchart-opened");
+    }, 100);
+  });
+};
 
-    this.$nextTick(function onClose() {
-      setTimeout(() => {
-        this.isShow = false;
+const hide = () => {
+  fleetchartStore.hide(props.namespace);
+};
 
-        this.$emit("fleetchart-closed");
-      }, 300);
-    });
-  }
-}
+const setMode = (mode: FleetchartModes) => {
+  fleetchartStore.updateMode({ namespace: props.namespace, mode });
+};
+
+const close = () => {
+  isOpen.value = false;
+
+  overlayStore.hide();
+
+  nextTick(() => {
+    setTimeout(() => {
+      isShow.value = false;
+
+      emit("fleetchart-closed");
+    }, 300);
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "FleetchartApp",
+};
 </script>

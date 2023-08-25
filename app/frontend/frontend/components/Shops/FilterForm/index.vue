@@ -8,6 +8,7 @@
       :clearable="true"
     />
 
+    // TODO: migrate to new FilterGroup props
     <FilterGroup
       v-model="form.modelIn"
       :label="t('labels.filters.shops.model')"
@@ -101,11 +102,7 @@
       :no-label="true"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
@@ -117,53 +114,28 @@ import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import type { ShopQuery } from "@/services/fyApi";
 import { useFilters } from "@/shared/composables/useFilters";
-import { ShopQuery } from "@/services/fyApi";
-
 const { t } = useI18n();
 
-const form = ref<ShopQuery>({});
-
-const { filter, isFilterSelected, resetFilter } = useFilters();
-
-// data() {
-//   const query = this.$route.query.q || {};
-//   return {
-//     loading: false,
-//     form: {
-//       nameCont: query.nameCont,
-//       modelIn: query.modelIn || [],
-//       commodityIn: query.commodityIn || [],
-//       equipmentIn: query.equipmentIn || [],
-//       componentIn: query.componentIn || [],
-//       stationIn: query.stationIn || [],
-//       celestialObjectIn: query.celestialObjectIn || [],
-//       starsystemIn: query.starsystemIn || [],
-//       shopTypeIn: query.shopTypeIn || [],
-//     },
-//   };
-// },
-
-// watch: {
-//   $route() {
-//     const query = this.$route.query.q || {};
-//     this.form = {
-//       nameCont: query.nameCont,
-//       modelIn: query.modelIn || [],
-//       commodityIn: query.commodityIn || [],
-//       equipmentIn: query.equipmentIn || [],
-//       componentIn: query.componentIn || [],
-//       stationIn: query.stationIn || [],
-//       celestialObjectIn: query.celestialObjectIn || [],
-//       starsystemIn: query.starsystemIn || [],
-//       shopTypeIn: query.shopTypeIn || [],
-//     };
-//   },
-// },
-
-const fetchShopTypes = () => {
-  return this.$api.get("shops/shop-types");
+const setupForm = () => {
+  form.value = {
+    nameCont: routeQuery.value.nameCont,
+    modelIn: routeQuery.value.modelIn || [],
+    commodityIn: routeQuery.value.commodityIn || [],
+    equipmentIn: routeQuery.value.equipmentIn || [],
+    componentIn: routeQuery.value.componentIn || [],
+    stationIn: routeQuery.value.stationIn || [],
+    celestialObjectIn: routeQuery.value.celestialObjectIn || [],
+    starsystemIn: routeQuery.value.starsystemIn || [],
+    shopTypeIn: routeQuery.value.shopTypeIn || [],
+  };
 };
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<ShopQuery>(setupForm);
+
+const form = ref<ShopQuery>({});
 </script>
 
 <script lang="ts">

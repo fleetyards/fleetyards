@@ -153,7 +153,7 @@
 
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
-import { LocationQueryValue, useRouter } from "vue-router";
+import { RouteLocationRaw } from "vue-router";
 import Btn from "@/shared/components/BaseBtn/index.vue";
 import FormInput from "@/shared/components/Form/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
@@ -191,13 +191,14 @@ const search = () => {
   }
 
   router
-    .push({
-      name: "search",
-      query: {
-        // HACK to make insuffient types for vue-router work
-        q: { search: searchQuery.value } as unknown as LocationQueryValue,
-      },
-    })
+    .push(
+      {
+        name: "search",
+        query: {
+          q: { search: searchQuery.value },
+        },
+      } as unknown as RouteLocationRaw, // HACK to make insuffient types for vue-router work
+    )
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     .catch(() => {});
 };

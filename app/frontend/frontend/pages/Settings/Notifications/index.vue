@@ -3,7 +3,7 @@
     <form @submit.prevent="handleSubmit(submit)">
       <div class="row">
         <div class="col-lg-12">
-          <h1>{{ $t("headlines.settings.notifications") }}</h1>
+          <h1>{{ t("headlines.settings.notifications") }}</h1>
         </div>
       </div>
       <div class="row">
@@ -11,13 +11,14 @@
           <ValidationProvider
             v-slot="{ errors }"
             vid="saleNotify"
-            :name="$t('labels.user.saleNotify')"
+            :name="t('labels.user.saleNotify')"
             :slim="true"
           >
             <Checkbox
               id="saleNotify"
               v-model="form.saleNotify"
-              :label="$t('labels.user.saleNotify')"
+              name="saleNotify"
+              :label="t('labels.user.saleNotify')"
               :class="{ 'has-error has-feedback': errors[0] }"
             />
           </ValidationProvider>
@@ -25,65 +26,69 @@
       </div>
       <br />
       <Btn :loading="submitting" type="submit" size="large">
-        {{ $t("actions.save") }}
+        {{ t("actions.save") }}
       </Btn>
     </form>
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import { displaySuccess } from "@/frontend/lib/Noty";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import userCollection from "@/frontend/api/collections/User";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
+import Checkbox from "@/shared/components/Form/Checkbox/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useComlink } from "@/shared/composables/useComlink";
 
-@Component<SettingsNotifications>({
-  components: {
-    Btn,
-    Checkbox,
+const { t } = useI18n();
+const { displaySuccess } = useNoty();
+
+const sessionStore = useSessionStore();
+
+const form = ref<NotificationSettingsForm>({});
+
+const submitting = ref(false);
+
+onMounted(() => {
+  if (sessionStore.currentUser) {
+    setupForm();
+  }
+});
+
+watch(
+  () => sessionStore.currentUser,
+  () => {
+    setupForm();
   },
-})
-export default class SettingsNotifications extends Vue {
-  @Getter("currentUser", { namespace: "session" }) currentUser;
+);
 
-  form: NotificationSettingsForm = null;
+const setupForm = () => {
+  form.value = {
+    saleNotify: sessionStore.currentUser?.saleNotify,
+  };
+};
 
-  submitting = false;
+const comlink = useComlink();
 
-  created() {
-    if (this.currentUser) {
-      this.setupForm();
-    }
+const submit = async () => {
+  submitting.value = true;
+
+  const response = await userCollection.updateAccount(form.value);
+
+  submitting.value = false;
+
+  if (!response.error) {
+    comlink.emit("user-update");
+
+    displaySuccess({
+      text: t("messages.updateNotifications.success"),
+    });
   }
+};
+</script>
 
-  @Watch("currentUser")
-  onCurrentUserChange() {
-    this.setupForm();
-  }
-
-  setupForm() {
-    this.form = {
-      saleNotify: this.currentUser.saleNotify,
-    };
-  }
-
-  async submit() {
-    this.submitting = true;
-
-    const response = await userCollection.updateAccount(this.form);
-
-    this.submitting = false;
-
-    if (!response.error) {
-      this.$comlink.$emit("user-update");
-
-      displaySuccess({
-        text: this.$t("messages.updateNotifications.success"),
-      });
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "SettingsNotificationsPage",
+};
 </script>

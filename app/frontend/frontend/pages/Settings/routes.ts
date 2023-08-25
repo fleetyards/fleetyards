@@ -1,7 +1,7 @@
-import type { RouteConfig } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
 import SecurityRoutes from "./Security/routes";
 
-export const routes: RouteConfig[] = [
+export const routes: RouteRecordRaw[] = [
   {
     path: "profile/",
     name: "settings-profile",
@@ -42,7 +42,8 @@ export const routes: RouteConfig[] = [
   {
     path: "security/",
     name: "settings-security",
-    component: () => import("@/frontend/pages/Settings/Security/index.vue"),
+    component: () =>
+      import("@/frontend/pages/Settings/Security/routerView.vue"),
     meta: {
       needsAuthentication: true,
     },

@@ -33,7 +33,7 @@
           @change="change"
         />
         <label :for="`${uuid}-${option.value}`" class="radio-label">
-          {{ option.name }}
+          {{ option.label }}
         </label>
       </div>
     </div>
@@ -44,7 +44,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 type FormRadioListOption = {
-  name: string;
+  label: string;
   value: string;
 };
 
@@ -53,7 +53,7 @@ type Props = {
   label: string;
   options: FormRadioListOption[];
   resetLabel?: string;
-  modelValue?: string;
+  modelValue?: string | number | boolean;
   inline?: boolean;
   disabled?: boolean;
 };

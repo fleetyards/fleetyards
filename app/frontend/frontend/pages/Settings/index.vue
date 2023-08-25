@@ -12,9 +12,9 @@
               role="link"
               :class="{ active: isActive }"
               @click="navigate"
-              @keypress.enter="navigate"
+              @keypress.enter="() => navigate"
             >
-              <a :href="linkHref">{{ $t("nav.settings.profile") }}</a>
+              <a :href="linkHref">{{ t("nav.settings.profile") }}</a>
             </li>
           </router-link>
           <router-link
@@ -26,9 +26,9 @@
               role="link"
               :class="{ active: isActive }"
               @click="navigate"
-              @keypress.enter="navigate"
+              @keypress.enter="() => navigate"
             >
-              <a :href="linkHref">{{ $t("nav.settings.account") }}</a>
+              <a :href="linkHref">{{ t("nav.settings.account") }}</a>
             </li>
           </router-link>
           <router-link
@@ -40,9 +40,9 @@
               role="link"
               :class="{ active: isActive }"
               @click="navigate"
-              @keypress.enter="navigate"
+              @keypress.enter="() => navigate"
             >
-              <a :href="linkHref">{{ $t("nav.settings.security") }}</a>
+              <a :href="linkHref">{{ t("nav.settings.security") }}</a>
             </li>
           </router-link>
           <router-link
@@ -54,9 +54,9 @@
               role="link"
               :class="{ active: isActive }"
               @click="navigate"
-              @keypress.enter="navigate"
+              @keypress.enter="() => navigate"
             >
-              <a :href="linkHref">{{ $t("nav.settings.notifications") }}</a>
+              <a :href="linkHref">{{ t("nav.settings.notifications") }}</a>
             </li>
           </router-link>
           <router-link
@@ -68,9 +68,9 @@
               role="link"
               :class="{ active: isActive }"
               @click="navigate"
-              @keypress.enter="navigate"
+              @keypress.enter="() => navigate"
             >
-              <a :href="linkHref">{{ $t("nav.settings.hangar") }}</a>
+              <a :href="linkHref">{{ t("nav.settings.hangar") }}</a>
             </li>
           </router-link>
         </ul>
@@ -82,10 +82,8 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<Settings>()
-export default class Settings extends Vue {}
+const { t } = useI18n();
 </script>

@@ -1,14 +1,22 @@
 <template>
   <FilteredList
+    id="shopCommodities"
+    name="shopCommodities"
+    :records="data?.items || []"
+    :loading="isLoading || isFetching"
+    primary-key="id"
+    class="shop-commodities"
+  >
+    <!-- <FilteredList
     :collection="collection"
-    :name="$route.name"
-    :route-query="$route.query"
-    :hash="$route.hash"
-    :params="$route.params"
+    :name="route.name"
+    :route-query="route.query"
+    :hash="route.hash"
+    :params="route.params"
     :paginated="true"
     :hide-empty-box="true"
     :hide-loading="true"
-  >
+  > -->
     <template #default="{ records, loading, emptyBoxVisible, primaryKey }">
       <FilteredTable
         :records="records"
@@ -39,18 +47,18 @@
               variant="dropdown"
               :inline="true"
               in-group
-              @click.native="confirm(record)"
+              @click="confirm(record)"
             >
-              {{ $t("actions.confirm") }}
+              {{ t("actions.confirm") }}
             </Btn>
             <Btn
-              v-tooltip="$t('actions.remove')"
+              v-tooltip="t('actions.remove')"
               size="small"
               variant="dropdown"
               :disabled="deleting"
               data-test="shopCommodity-delete"
               in-group
-              @click.native="remove(record)"
+              @click="remove(record)"
             >
               <i class="fal fa-trash" />
             </Btn>
@@ -61,72 +69,100 @@
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import shopCommodityConfirmationsCollection from "@/admin/api/collections/ShopCommodityConfirmations";
-import { displayConfirm } from "@/frontend/lib/Noty";
 import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
 import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useQuery } from "@tanstack/vue-query";
+import { usePagination } from "@/shared/composables/usePagination";
+import { useApiClient } from "@/admin/composables/useApiClient";
 
-@Component<AdminShopCommodities>({
-  components: {
-    FilteredList,
-    FilteredTable,
-    BtnGroup,
-    Btn,
+const { t } = useI18n();
+
+const { displayConfirm } = useNoty(t);
+
+// collection: ShopCommodityConfirmationsCollection =
+//   shopCommodityConfirmationsCollection;
+
+const route = useRoute();
+
+const deleting = ref(false);
+
+const tableColumns = [
+  { name: "item", label: t("labels.shopCommodity.item"), width: "20%" },
+  { name: "shop", label: t("labels.shopCommodity.shop"), width: "20%" },
+  {
+    name: "submitter",
+    label: t("labels.shopCommodity.submittedBy"),
+    width: "20%",
   },
-})
-export default class AdminShopCommodities extends Vue {
-  collection: ShopCommodityConfirmationsCollection =
-    shopCommodityConfirmationsCollection;
+  { name: "actions", label: t("labels.actions"), width: "12%" },
+];
 
-  deleting = false;
+const { shopCommodities: shopCommoditiesService } = useApiClient();
 
-  tableColumns = [
-    { name: "item", label: this.$t("labels.shopCommodity.item"), width: "20%" },
-    { name: "shop", label: this.$t("labels.shopCommodity.shop"), width: "20%" },
-    {
-      name: "submitter",
-      label: this.$t("labels.shopCommodity.submittedBy"),
-      width: "20%",
+const { isLoading, isFetching, data, refetch } = useQuery({
+  queryKey: ["shopCommodities"],
+  queryFn: () =>
+    shopCommoditiesService.list({
+      page: page.value,
+      perPage: perPage.value,
+    }),
+});
+
+watch(
+  () => route.query,
+  () => {
+    refetch();
+  },
+  { deep: true },
+);
+
+const { perPage, page, pagination, updatePerPage } = usePagination(
+  "shopCommodities",
+  data as Ref<BaseList>,
+  refetch,
+);
+
+const fetch = async () => {
+  await this.collection.refresh();
+};
+
+const confirm = async (shopCommodity) => {
+  if (await this.collection.confirm(shopCommodity.id)) {
+    this.fetch();
+  }
+
+  this.deleting = false;
+};
+
+const remove = (shopCommodity) => {
+  this.deleting = true;
+  displayConfirm({
+    text: this.$t("messages.confirm.shopCommodity.destroy"),
+    onConfirm: () => {
+      this.destroy(shopCommodity);
     },
-    { name: "actions", label: this.$t("labels.actions"), width: "12%" },
-  ];
+    onClose: () => {
+      this.deleting = false;
+    },
+  });
+};
 
-  async fetch() {
-    await this.collection.refresh();
+const destroy = async (shopCommodity) => {
+  if (await collection.destroy(shopCommodity.id)) {
+    this.fetch();
   }
 
-  async confirm(shopCommodity) {
-    if (await this.collection.confirm(shopCommodity.id)) {
-      this.fetch();
-    }
+  deleting.value = false;
+};
+</script>
 
-    this.deleting = false;
-  }
-
-  remove(shopCommodity) {
-    this.deleting = true;
-    displayConfirm({
-      text: this.$t("messages.confirm.shopCommodity.destroy"),
-      onConfirm: () => {
-        this.destroy(shopCommodity);
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
-    });
-  }
-
-  async destroy(shopCommodity) {
-    if (await this.collection.destroy(shopCommodity.id)) {
-      this.fetch();
-    }
-
-    this.deleting = false;
-  }
-}
+<script lang="ts">
+export default {
+  name: "AdminShopCommodities",
+};
 </script>

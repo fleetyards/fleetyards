@@ -6,7 +6,7 @@
           <form @submit.prevent="handleSubmit(login)">
             <h1>
               <router-link to="/" exact>
-                {{ $t("app") }}
+                {{ t("app") }}
               </router-link>
             </h1>
             <template v-if="twoFactorRequired">
@@ -14,7 +14,7 @@
                 v-slot="{ errors }"
                 vid="twoFactorCode"
                 rules="required"
-                :name="$t('labels.twoFactorCode')"
+                :name="t('labels.twoFactorCode')"
                 :slim="true"
               >
                 <FormInput
@@ -32,7 +32,7 @@
                 v-slot="{ errors }"
                 vid="login"
                 rules="required"
-                :name="$t('labels.login')"
+                :name="t('labels.login')"
                 :slim="true"
               >
                 <FormInput
@@ -49,7 +49,7 @@
                 v-slot="{ errors }"
                 vid="password"
                 rules="required"
-                :name="$t('labels.password')"
+                :name="t('labels.password')"
                 :slim="true"
               >
                 <FormInput
@@ -64,7 +64,7 @@
               <Checkbox
                 id="rememberMe"
                 v-model="form.rememberMe"
-                :label="$t('labels.rememberMe')"
+                :label="t('labels.rememberMe')"
               />
             </div>
             <Btn
@@ -74,7 +74,7 @@
               size="large"
               :block="true"
             >
-              {{ $t("actions.login") }}
+              {{ t("actions.login") }}
             </Btn>
             <Btn
               :to="{
@@ -84,11 +84,11 @@
               size="small"
               :block="true"
             >
-              {{ $t("actions.reset-password") }}
+              {{ t("actions.reset-password") }}
             </Btn>
             <footer>
               <p class="text-center">
-                {{ $t("labels.signup.link") }}
+                {{ t("labels.signup.link") }}
               </p>
               <Btn
                 data-test="signup-link"
@@ -96,7 +96,7 @@
                 size="small"
                 :block="true"
               >
-                {{ $t("actions.signUp") }}
+                {{ t("actions.signUp") }}
               </Btn>
             </footer>
           </form>
@@ -106,74 +106,80 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displayAlert } from "@/frontend/lib/Noty";
-import sessionCollection from "@/frontend/api/collections/Session";
+<script lang="ts" setup>
+import Btn from "@/shared/components/BaseBtn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useSessionStore } from "@/frontend/stores/session";
+import type { RouteParamsRaw, LocationQueryRaw } from "vue-router";
 
-@Component<Login>({
-  components: {
-    Btn,
-    FormInput,
-    Checkbox,
-  },
-})
-export default class Login extends Vue {
-  submitting = false;
+const { t } = useI18n();
 
-  twoFactorRequired = false;
+const { displayAlert } = useNoty(t);
 
-  form: LoginForm = null;
+const submitting = ref(false);
 
-  mounted() {
-    this.setupForm();
-  }
+const twoFactorRequired = ref(false);
 
-  setupForm() {
-    this.form = {
-      rememberMe: false,
-      password: null,
-      login: null,
-      twoFactorCode: null,
-    };
-  }
+const form = ref<LoginForm>({});
 
-  async login() {
-    this.submitting = true;
+onMounted(() => {
+  setupForm();
+});
 
-    const response = await sessionCollection.create(this.form);
+const setupForm = () => {
+  form.value = {
+    rememberMe: false,
+    password: null,
+    login: null,
+    twoFactorCode: null,
+  };
+};
 
-    this.submitting = false;
+const sessionStore = useSessionStore();
 
-    if (
-      response.error &&
-      response.error.response?.data?.code ===
-        "session.create.two_factor_required"
-    ) {
-      this.twoFactorRequired = true;
-    } else if (!response.error) {
-      await this.$store.dispatch("session/login");
-      if (this.$route.params.redirectToRoute) {
-        await this.$router.replace({
-          name: this.$route.params.redirectToRoute,
-          params: this.$route.params.redirectToRouteParams,
-          query: this.$route.params.redirectToRouteQuery,
-        });
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        await this.$router.push("/").catch(() => {});
-      }
-    } else {
-      displayAlert({
-        text: response.error.response.data.message,
+const route = useRoute();
+const router = useRouter();
+
+const login = async () => {
+  submitting.value = true;
+
+  const response = await sessionCollection.create(form.value);
+
+  submitting.value = false;
+
+  if (
+    response.error &&
+    response.error.response?.data?.code === "session.create.two_factor_required"
+  ) {
+    twoFactorRequired.value = true;
+  } else if (!response.error) {
+    sessionStore.login();
+
+    if (route.params.redirectToRoute) {
+      await router.replace({
+        name: route.params.redirectToRoute as string,
+        params: route.params.redirectToRouteParams as unknown as RouteParamsRaw,
+        query: route.params.redirectToRouteQuery as unknown as LocationQueryRaw,
       });
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      await router.push("/").catch(() => {});
     }
+  } else {
+    displayAlert({
+      text: response.error.response.data.message,
+    });
   }
-}
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "LoginPage",
+};
 </script>
 
 <style lang="scss">

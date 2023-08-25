@@ -10,6 +10,7 @@ type Events = {
   "user-update": undefined;
   "fleet-create": undefined;
   "fleet-update": undefined;
+  "fleetchart-toggle-status": undefined;
 };
 
 const AppComlink = mitt<Events>();

@@ -21,9 +21,9 @@
           </router-link>
 
           <transition name="fade" appear>
-            <small v-if="fleetVehicle.serial">
-              <span v-if="fleetVehicle.serial" class="serial">
-                {{ fleetVehicle.serial }}
+            <small v-if="serial">
+              <span class="serial">
+                {{ serial }}
               </span>
             </small>
           </transition>
@@ -32,13 +32,17 @@
 
           <small>
             <router-link
-              :to="{
-                query: {
-                  q: filterManufacturerQuery(model.manufacturer.slug),
-                },
-              }"
-              v-html="model.manufacturer.name"
-            />
+              v-if="model.manufacturer"
+              :to="
+                {
+                  query: {
+                    q: filterManufacturerQuery(model.manufacturer.slug),
+                  },
+                } as any
+              "
+            >
+              {{ model.manufacturer.name }}
+            </router-link>
             <template v-if="customName">
               {{ modelName }}
             </template>
@@ -59,15 +63,15 @@
           class="image"
         >
           <div
-            v-if="fleetVehicle.loaner"
-            v-tooltip="$t('labels.vehicle.loaner')"
+            v-if="loaner"
+            v-tooltip="t('labels.vehicle.loaner')"
             class="loaner-label"
           >
             <i class="fal fa-exchange" />
           </div>
           <div
             v-show="model.onSale"
-            v-tooltip="$t('labels.model.onSale')"
+            v-tooltip="t('labels.model.onSale')"
             class="on-sale"
           >
             <i class="fal fa-dollar-sign" />
@@ -75,7 +79,7 @@
         </LazyImage>
         <VehicleOwner
           v-if="showOwner"
-          :owner="fleetVehicle.username"
+          :owner="username"
           :model-slug="fleetVehicle.slug"
           :fleet-slug="fleetSlug"
         />
@@ -87,12 +91,10 @@
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
-              {{
-                $t(`labels.model.productionStatus.${model.productionStatus}`)
-              }}
+              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
             </template>
             <template v-else>
-              {{ $t(`labels.not-available`) }}
+              {{ t(`labels.not-available`) }}
             </template>
           </strong>
         </div>
@@ -102,112 +104,137 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
+<script lang="ts" setup>
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import PanelDetails from "@/shared/components/Panel/PanelDetails/index.vue";
+import type {
+  VehiclePublic,
+  Model,
+  FleetModelCountsStats,
+} from "@/services/fyApi";
+import { v4 as uuidv4 } from "uuid";
+import { useI18n } from "@/frontend/composables/useI18n";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
-@Component<FleetVehiclePanel>({
+const { t } = useI18n();
+
+type Props = {
+  fleetSlug: string;
+  fleetVehicle: VehiclePublic | Model;
+  details?: boolean;
+  showOwner?: boolean;
+  modelCounts?: FleetModelCountsStats;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  details: true,
+  showOwner: true,
+  modelCounts: undefined,
+});
+
+const uuid = ref(uuidv4());
+
+onMounted(() => {
+  uuid.value = uuidv4();
+});
+
+const { supported: webpSupported } = useWebpCheck();
+
+const storeImage = computed(() => {
+  if (paint.value?.media.storeImage) {
+    return paint.value.media.storeImage.medium;
+  }
+
+  if (upgrade.value?.media.storeImage) {
+    return upgrade.value.media.storeImage.medium;
+  }
+
+  if (model.value.media.storeImage) {
+    return model.value.media.storeImage.medium;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
+});
+
+const modelName = computed(() => {
+  return model.value.name;
+});
+
+const loaner = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).loaner;
+});
+const upgrade = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).upgrade;
+});
+
+const paint = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).paint;
+});
+
+const username = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).username;
+});
+
+const serial = computed(() => {
+  return (props.fleetVehicle as VehiclePublic).serial;
+});
+
+const model = computed(() => {
+  if ((props.fleetVehicle as VehiclePublic).model) {
+    return (props.fleetVehicle as VehiclePublic).model;
+  }
+
+  return props.fleetVehicle as Model;
+});
+
+const id = computed(() => {
+  if (props.fleetVehicle) {
+    return props.fleetVehicle.id;
+  }
+
+  return model.value.slug;
+});
+
+const customName = computed(() => {
+  if ((props.fleetVehicle as VehiclePublic).model && props.fleetVehicle.name) {
+    return props.fleetVehicle.name;
+  }
+
+  return null;
+});
+
+const countLabel = computed(() => {
+  if (!props.fleetVehicle.slug) {
+    return "";
+  }
+
+  const modelCount = props.modelCounts?.modelCounts[props.fleetVehicle.slug];
+
+  if (!modelCount) {
+    return "";
+  }
+
+  return `${modelCount}x `;
+});
+
+const filterManufacturerQuery = (manufacturer: string) => {
+  return { manufacturerIn: [manufacturer] };
+};
+</script>
+
+<script lang="ts">
+export default {
   name: "FleetVehiclePanel",
-  components: {
-    Panel,
-    PanelDetails,
-    LazyImage,
-    AddToHangar,
-    VehicleOwner,
-    ModelPanelMetrics,
-  },
-})
-export default class FleetVehiclePanel extends Vue {
-  @Prop({ required: true }) fleetSlug: string;
-
-  @Prop({ required: true }) fleetVehicle: Vehicle | Model | null;
-
-  @Prop({ default: false }) details: boolean;
-
-  @Prop({ default: true }) showOwner: boolean;
-
-  @Prop({ default: null }) modelCounts: FleetModelCounts | null;
-
-  get uuid() {
-    return this._uid;
-  }
-
-  get storeImage() {
-    if (this.fleetVehicle.paint) {
-      return this.fleetVehicle.paint.storeImageMedium;
-    }
-
-    if (this.fleetVehicle.upgrade) {
-      return this.fleetVehicle.upgrade.storeImageMedium;
-    }
-
-    return this.model.storeImageMedium;
-  }
-
-  get modelName() {
-    if (!this.fleetVehicle.model) {
-      return this.fleetVehicle.name;
-    }
-
-    return this.fleetVehicle.model.name;
-  }
-
-  get model() {
-    if (this.fleetVehicle.model) {
-      return this.fleetVehicle.model;
-    }
-
-    return this.fleetVehicle;
-  }
-
-  get id() {
-    if (this.fleetVehicle) {
-      return this.fleetVehicle.id;
-    }
-
-    return this.model.slug;
-  }
-
-  get customName() {
-    if (this.fleetVehicle.model && this.fleetVehicle.name) {
-      return this.fleetVehicle.name;
-    }
-
-    return null;
-  }
-
-  get vehicles() {
-    if (!this.fleetVehicle.vehicles) {
-      return [];
-    }
-
-    return this.fleetVehicle.vehicles;
-  }
-
-  get countLabel() {
-    if (!this.fleetVehicle.slug) {
-      return "";
-    }
-
-    const modelCount = this.modelCounts?.modelCounts[this.fleetVehicle.slug];
-
-    if (!modelCount) {
-      return "";
-    }
-
-    return `${modelCount}x `;
-  }
-
-  filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] };
-  }
-}
+};
 </script>
 
 <style lang="scss" scoped>

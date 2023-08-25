@@ -32,7 +32,7 @@
 
         <div class="row">
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel class="info-box" transparency="more" inset>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.hangarPreview.notified.headline") }}
@@ -44,7 +44,7 @@
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel class="info-box" transparency="more" inset>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.hangarPreview.manage.headline") }}
@@ -56,7 +56,7 @@
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel class="info-box" transparency="more" inset>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.hangarPreview.fleetchart.headline") }}

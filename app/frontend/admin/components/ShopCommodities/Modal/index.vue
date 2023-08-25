@@ -195,8 +195,9 @@ import Btn from "@/shared/components/BaseBtn/index.vue";
 // import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
 // import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
 import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import type { FilterGroupOption } from "@/shared/components/Form/FilterGroup/Option/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import type { ShopCommodityMinimal } from "@/services/fyAdminApi";
+import type { ShopCommodity, ShopCommodityInput } from "@/services/fyAdminApi";
 
 // TODO: move to collection model or use openapi schema types when available
 type ShopCommoditiesFormData = {
@@ -206,7 +207,7 @@ type ShopCommoditiesFormData = {
 
 type Props = {
   shopId: string;
-  shopCommodity: ShopCommodityMinimal;
+  shopCommodity: ShopCommodity;
   commodityItemType?: string;
   itemTypeFilter?: string;
 };
@@ -245,9 +246,12 @@ const equipmentTypeFilter: string | null = null;
 
 const equipmentSlotFilter: string | null = null;
 
-const form: ShopCommoditiesFormData | null = null;
+const form = ref<ShopCommodityInput>({
+  commodityItemType: props.commodityItemType,
+  commodityItemId: props.shopCommodity?.commodityItemId,
+});
 
-const commodityTypeOptions: FilterGroupItem[] = [
+const commodityTypeOptions: FilterGroupOption[] = [
   {
     value: "Commodity",
     name: "Commodity",

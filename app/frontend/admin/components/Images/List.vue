@@ -11,10 +11,10 @@
       <FilterForm />
     </template>
 
-    <template #default="{ records, loading }">
+    <template #default="{ loading }">
       <ImageUploader
         :loading="loading"
-        :images="records"
+        :images="data?.items || []"
         :gallery-id="internalGalleryId"
         :gallery-type="internalGalleryType"
         @image-deleted="refetch"
@@ -36,7 +36,6 @@ import ImageUploader from "@/admin/components/ImageUploader/index.vue";
 import FilterForm from "@/admin/components/Images/FilterForm/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { useRoute } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
 import { useApiClient } from "@/admin/composables/useApiClient";
 import type { ImageQuery, BaseList } from "@/services/fyAdminApi";
