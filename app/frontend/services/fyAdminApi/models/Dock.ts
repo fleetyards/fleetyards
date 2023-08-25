@@ -3,12 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { DockShipSizeEnum } from './DockShipSizeEnum';
+import type { DockTypeEnum } from './DockTypeEnum';
+
 export type Dock = {
     name: string;
-    group?: string | null;
-    size: string;
+    group?: string;
+    size: DockShipSizeEnum;
     sizeLabel: string;
-    type: string;
+    type: DockTypeEnum;
     typeLabel: string;
 };
 

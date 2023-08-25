@@ -10,21 +10,21 @@ module V1
         properties: {
           name: {type: :string},
           slug: {type: :string},
-          danger: {type: :string, nullable: true},
-          description: {type: :string, nullable: true},
-          economy: {type: :string, nullable: true},
-          locationLabel: {type: :string, nullable: true},
-          mapX: {type: :string, nullable: true},
-          mapY: {type: :string, nullable: true},
-          population: {type: :string, nullable: true},
-          size: {type: :string, nullable: true},
-          status: {type: :string, nullable: true},
-          type: {type: :string, nullable: true},
+          danger: {type: :string},
+          description: {type: :string},
+          economy: {type: :string},
+          locationLabel: {type: :string},
+          mapX: {type: :string},
+          mapY: {type: :string},
+          population: {type: :string},
+          size: {type: :string},
+          status: {type: :string},
+          type: {type: :string},
 
           media: {
             type: :object,
             properties: {
-              storeImage: {"$ref": "#/components/schemas/MediaImage", nullable: true}
+              storeImage: {"$ref": "#/components/schemas/MediaImage"}
             },
             additionalProperties: false
           },

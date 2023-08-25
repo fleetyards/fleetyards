@@ -4,10 +4,10 @@
 /* eslint-disable */
 
 import type { Meta } from './Meta';
-import type { StationMinimal } from './StationMinimal';
+import type { Station } from './Station';
 
 export type Stations = {
+    items: Array<Station>;
     meta?: Meta;
-    items: Array<StationMinimal>;
 };
 

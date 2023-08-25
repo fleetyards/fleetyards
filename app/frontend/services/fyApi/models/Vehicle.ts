@@ -12,9 +12,9 @@ import type { ModelUpgrade } from './ModelUpgrade';
 
 export type Vehicle = {
     id: string;
-    name?: string | null;
-    slug?: string | null;
-    serial?: string | null;
+    name?: string;
+    slug?: string;
+    serial?: string;
     alternativeNames: Array<string>;
     boughtVia: BoughtViaEnum;
     boughtViaLabel?: string;
@@ -25,12 +25,12 @@ export type Vehicle = {
     model: Model;
     modelModuleIds: Array<string>;
     modelUpgradeIds: Array<string>;
-    modulePackage?: ModelModulePackage | null;
+    modulePackage?: ModelModulePackage;
     nameVisible: boolean;
-    paint?: ModelPaint | null;
+    paint?: ModelPaint;
     public: boolean;
     saleNotify: boolean;
-    upgrade?: ModelUpgrade | null;
+    upgrade?: ModelUpgrade;
     wanted: boolean;
     createdAt: string;
     updatedAt: string;

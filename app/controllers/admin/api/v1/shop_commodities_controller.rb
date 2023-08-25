@@ -13,7 +13,7 @@ module Admin
             search_params || "*",
             fields: [{name: :word_start}],
             where: query_params.merge(price_params)
-                               .merge(shop.present? ? {shop_id: shop.id} : {}),
+                               .merge(params[:shop_id].present? ? {shop_id: shop.id} : {}),
             order: order_params,
             page: params[:page],
             per_page: per_page(ShopCommodity),
@@ -74,13 +74,7 @@ module Admin
         end
 
         private def shop
-          @shop ||= Shop.find_by(id: params[:shop_id])
-        end
-
-        private def shop_commodities_query_params
-          @shop_commodities_query_params ||= query_params(
-            :commodity_item_id, :confirmed_eq, :name_cont, component_item_type_in: [], equipment_item_type_in: []
-          )
+          @shop ||= Shop.find_by!(id: params[:shop_id])
         end
 
         private def shop_commodity_params

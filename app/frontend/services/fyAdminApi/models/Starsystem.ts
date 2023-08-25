@@ -7,22 +7,24 @@ import type { CelestialObject } from './CelestialObject';
 import type { MediaImage } from './MediaImage';
 
 export type Starsystem = {
-    id?: string;
     name: string;
     slug: string;
-    danger?: string | null;
-    description?: string | null;
-    economy?: string | null;
-    locationLabel?: string | null;
-    mapX?: string | null;
-    mapY?: string | null;
-    media?: {
-        storeImage?: MediaImage | null;
+    danger?: string;
+    description?: string;
+    economy?: string;
+    locationLabel?: string;
+    mapX?: string;
+    mapY?: string;
+    population?: string;
+    size?: string;
+    status?: string;
+    type?: string;
+    media: {
+        storeImage?: MediaImage;
     };
-    population?: string | null;
-    size?: string | null;
-    status?: string | null;
-    type?: string | null;
+    celestialObjects?: Array<CelestialObject>;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
@@ -39,8 +41,6 @@ export type Starsystem = {
      * @deprecated
      */
     storeImageSmall?: string;
-    createdAt: string;
-    updatedAt: string;
-    celestialObjects: Array<CelestialObject>;
+    id: string;
 };
 

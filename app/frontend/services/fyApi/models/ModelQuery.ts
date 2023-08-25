@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ModelSortEnum } from './ModelSortEnum';
+
 export type ModelQuery = {
     beamGteq?: number;
     beamLteq?: number;
@@ -29,7 +31,7 @@ export type ModelQuery = {
     productionStatusIn?: Array<string>;
     searchCont?: string;
     sizeIn?: Array<string>;
-    sorts?: (Array<string> | string);
     willItFit?: string;
+    sorts?: (Array<ModelSortEnum> | ModelSortEnum);
 };
 

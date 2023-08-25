@@ -7,7 +7,7 @@ module Admin
         def index
           authorize! :index, :admin_api_equipment
 
-          equipment_query_params["sorts"] = sort_by_name
+          equipment_query_params["sorts"] = "name asc"
 
           @q = Equipment.includes(:manufacturer).ransack(equipment_query_params)
 

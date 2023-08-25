@@ -87,6 +87,8 @@ en:
       stations:
         celestial_object: Please select a Celestial Object
         station_type: Please select a Station Type
+        classification: Please select a Classification
+        size: Please select a Size
       trade_commodity:
         commodity: Commodity
       video:

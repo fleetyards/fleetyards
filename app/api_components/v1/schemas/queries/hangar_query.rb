@@ -40,7 +40,12 @@ module V1
             boughtViaEq: {"$ref": "#/components/schemas/BoughtViaEnum"},
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},
-            willItFit: {type: :string, format: :uuid}
+            willItFit: {type: :string, format: :uuid},
+            sorts: {oneOf: [{
+              type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}
+            }, {
+              "$ref": "#/components/schemas/VehicleSortEnum"
+            }]}
           },
           additionalProperties: false
         })

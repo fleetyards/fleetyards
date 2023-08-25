@@ -6,7 +6,7 @@ module Api
       after_action -> { pagination_header(:components) }, only: [:index]
 
       def index
-        components_query_params["sorts"] = sort_by_name
+        components_query_params["sorts"] = "name asc"
 
         @q = Component.includes(:manufacturer).ransack(components_query_params)
 

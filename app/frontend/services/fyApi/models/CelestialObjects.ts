@@ -7,7 +7,7 @@ import type { CelestialObject } from './CelestialObject';
 import type { Meta } from './Meta';
 
 export type CelestialObjects = {
-    meta?: Meta;
     items: Array<CelestialObject>;
+    meta?: Meta;
 };
 

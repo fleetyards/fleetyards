@@ -34,12 +34,12 @@ module V1
             productionStatusIn: {type: :array, items: {type: :string}},
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
+            willItFit: {type: :string, format: :uuid},
             sorts: {oneOf: [{
-              type: :array, items: {type: :string}
+              type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
             }, {
-              type: :string
-            }]},
-            willItFit: {type: :string, format: :uuid}
+              "$ref": "#/components/schemas/ModelSortEnum"
+            }]}
           },
           additionalProperties: false
         })

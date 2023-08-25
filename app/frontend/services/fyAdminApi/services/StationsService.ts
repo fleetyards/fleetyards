@@ -14,17 +14,22 @@ export class StationsService {
 
     /**
      * Stations list
-     * Get a List of Images
+     * Get a List of Stations
      * @returns Stations successful
      * @throws ApiError
      */
     public stations({
         page = '1',
-        perPage = '30',
+        perPage = '10',
+        s,
         q,
     }: {
         page?: string,
         perPage?: string,
+        /**
+         * Sorting
+         */
+        s?: Array<string>,
         q?: StationQuery,
     }): CancelablePromise<Stations> {
         return this.httpRequest.request({
@@ -33,6 +38,7 @@ export class StationsService {
             query: {
                 'page': page,
                 'perPage': perPage,
+                's': s,
                 'q': q,
             },
             errors: {

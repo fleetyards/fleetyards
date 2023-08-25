@@ -13,6 +13,7 @@
 #  map                 :string
 #  name                :string
 #  refinery            :boolean          default(FALSE)
+#  size                :integer
 #  slug                :string
 #  station_type        :integer
 #  status              :integer
@@ -34,14 +35,18 @@ portolisar:
   slug: port-olisar
   celestial_object: crusader
   station_type: station
+  size: large
+  classification: cargo
   hidden: false
   images_count: 0
 
-corvolex:
-  name: Corvolex Shipping Hub
-  slug: corvolex
+covalex:
+  name: Covalex Shipping Hub
+  slug: covalex-shipping-hub
   celestial_object: daymar
   station_type: station
+  size: small
+  classification: cargo
   hidden: false
   images_count: 0
 
@@ -50,6 +55,8 @@ arccorp_daymar:
   slug: arccorp_daymar
   celestial_object: daymar
   station_type: outpost
+  size: small
+  classification: trading
   hidden: false
   images_count: 0
 
@@ -58,6 +65,8 @@ arccorp_yela:
   slug: arccorp_yela
   celestial_object: yela
   station_type: outpost
+  classification: trading
+  size: small
   hidden: false
   images_count: 0
 

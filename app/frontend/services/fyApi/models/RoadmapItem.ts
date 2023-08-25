@@ -16,7 +16,7 @@ export type RoadmapItem = {
     body: string;
     rsiCategoryId: number;
     image: string;
-    media?: {
+    media: {
         storeImage?: MediaImage | null;
     };
     released: boolean;

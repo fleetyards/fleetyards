@@ -3,10 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { HabitationTypeEnum } from './HabitationTypeEnum';
+
 export type Habitation = {
     name: string;
-    habitationName?: string | null;
-    type: string;
+    habitationName?: string;
+    type: HabitationTypeEnum;
     typeLabel: string;
 };
 

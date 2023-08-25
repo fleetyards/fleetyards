@@ -39,7 +39,7 @@ galaxy:
   completed: 1
   active: true
 
-pyrp:
+pyro:
   rsi_id: 1
   rsi_category_id: 1
   rsi_release_id: 1

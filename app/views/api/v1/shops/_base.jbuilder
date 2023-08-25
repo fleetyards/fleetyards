@@ -11,11 +11,14 @@ json.location_label shop.location_label
 json.rental shop.rental
 json.buying shop.buying
 json.selling shop.selling
+
+json.media({})
 json.media do
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: shop.store_image
   end
 end
+
 json.refinery_terminal shop.refinery_terminal
 
 json.station do

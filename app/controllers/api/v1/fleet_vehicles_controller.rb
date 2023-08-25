@@ -29,7 +29,7 @@ module Api
           scope = scope.includes(:model).where(models: {last_pledge_price: pledge_price_range})
         end
 
-        vehicle_query_params["sorts"] = sort_by_name(["model_name asc"], "model_name asc")
+        vehicle_query_params["sorts"] = sorting_params(FleetVehicle)
 
         @q = scope.ransack(vehicle_query_params)
 

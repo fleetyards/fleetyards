@@ -11,13 +11,17 @@ json.availability do
     json.array! model_module.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
 end
+
 json.description model_module.description
 json.has_store_image model_module.store_image.present?
+
+json.media({})
 json.media do
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: model_module.store_image
   end
 end
+
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status
 

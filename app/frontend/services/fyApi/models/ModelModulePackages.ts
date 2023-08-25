@@ -7,7 +7,7 @@ import type { Meta } from './Meta';
 import type { ModelModulePackage } from './ModelModulePackage';
 
 export type ModelModulePackages = {
-    meta?: Meta;
     items: Array<ModelModulePackage>;
+    meta?: Meta;
 };
 

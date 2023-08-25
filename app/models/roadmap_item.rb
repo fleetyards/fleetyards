@@ -34,6 +34,9 @@ class RoadmapItem < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
+  DEFAULT_SORTING_PARAMS = ["rsi_category_id asc", "name asc"]
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "rsi_category_id asc", "rsi_category_id desc"]
+
   ransack_alias :last_updated_at, :versions_created_at
 
   def self.active

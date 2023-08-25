@@ -2,4 +2,4 @@
 
 bundle exec rake rswag:specs:swaggerize
 
-yarn run generate-api-client
+yarn generate-api-client && yarn generate-admin-api-client

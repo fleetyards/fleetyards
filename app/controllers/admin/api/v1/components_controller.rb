@@ -7,7 +7,7 @@ module Admin
         def index
           authorize! :index, :admin_api_components
 
-          component_query_params["sorts"] = sort_by_name
+          component_query_params["sorts"] = "name asc"
 
           @q = Component.includes(:manufacturer).ransack(component_query_params)
 

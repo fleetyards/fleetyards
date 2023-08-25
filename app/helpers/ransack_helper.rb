@@ -5,16 +5,12 @@ module RansackHelper
     ActionController::Parameters.new(parse_query_params).permit(filters)
   end
 
-  def sort_by_name(fallback = "name asc", minimum = "name asc")
-    if query_params["sorts"].present?
-      sorts = query_params["sorts"]
-      sorts = sorts.split(",") if sorts.is_a? String
-      minimum_parts = minimum.split
-      sorts.push(minimum) unless sorts.include?(minimum_parts.first) || sorts.include?("#{minimum_parts.first} desc") || sorts.include?("#{minimum_parts.first} asc")
-      sorts
-    else
-      fallback
-    end
+  def sorting_params(model, fallback = nil)
+    sorting_params = query_params(:sorts, sorts: [])
+
+    (sorting_params[:sorts].is_a?(Array) ? sorting_params[:sorts] : [sorting_params[:sorts]]).filter do |sort|
+      model::ALLOWED_SORTING_PARAMS.include?(sort)
+    end.presence || fallback || model::DEFAULT_SORTING_PARAMS
   end
 
   private def parse_query_params

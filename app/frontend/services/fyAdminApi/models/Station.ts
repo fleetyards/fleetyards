@@ -8,40 +8,63 @@ import type { Dock } from './Dock';
 import type { DockCount } from './DockCount';
 import type { Habitation } from './Habitation';
 import type { HabitationCount } from './HabitationCount';
-import type { Image } from './Image';
 import type { MediaImage } from './MediaImage';
 import type { Shop } from './Shop';
-import type { StarsystemMinimal } from './StarsystemMinimal';
+import type { Starsystem } from './Starsystem';
+import type { StationClassificationEnum } from './StationClassificationEnum';
+import type { StationSizeEnum } from './StationSizeEnum';
+import type { StationTypeEnum } from './StationTypeEnum';
 
 export type Station = {
-    id: string;
     name: string;
     slug: string;
     cargoHub: boolean;
-    celestialObject: CelestialObject;
-    classificationLabel?: string | null;
-    classification?: string | null;
-    description?: string | null;
+    type: StationTypeEnum;
+    typeLabel: string;
+    size: StationSizeEnum;
+    sizeLabel: string;
+    classification: StationClassificationEnum;
+    classificationLabel: string;
+    description?: string;
     dockCounts?: Array<DockCount>;
     habitable: boolean;
     habitationCounts?: Array<HabitationCount>;
     hasImages: boolean;
-    locationLabel?: string | null;
-    location?: string | null;
+    locationLabel?: string;
+    location?: string;
     media: {
-        backgroundImage?: string | null;
-        storeImage?: MediaImage | null;
+        backgroundImage?: string;
+        storeImage?: MediaImage;
     };
     refinery: boolean;
-    shopListLabel?: string | null;
-    typeLabel?: string | null;
-    type?: string | null;
-    createdAt: string;
-    updatedAt: string;
-    starsystem?: StarsystemMinimal;
+    shopListLabel?: string;
+    celestialObject: CelestialObject;
+    starsystem?: Starsystem;
     shops?: Array<Shop>;
     docks?: Array<Dock>;
     habitations?: Array<Habitation>;
-    images?: Array<Image>;
+    createdAt: string;
+    updatedAt: string;
+    /**
+     * @deprecated
+     */
+    backgroundImage?: string;
+    /**
+     * @deprecated
+     */
+    storeImage?: string;
+    /**
+     * @deprecated
+     */
+    storeImageLarge?: string;
+    /**
+     * @deprecated
+     */
+    storeImageMedium?: string;
+    /**
+     * @deprecated
+     */
+    storeImageSmall?: string;
+    id: string;
 };
 

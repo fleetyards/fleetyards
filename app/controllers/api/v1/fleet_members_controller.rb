@@ -16,7 +16,7 @@ module Api
 
         scope = fleet.fleet_memberships
 
-        member_query_params["sorts"] = sort_by_name(["created_at desc", "accepted_at desc"], "user_username asc")
+        member_query_params["sorts"] = sorting_params(FleetMembership)
 
         @q = scope.ransack(member_query_params)
 

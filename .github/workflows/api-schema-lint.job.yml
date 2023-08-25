@@ -9,5 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/js-setup-action
-      - run: yarn run validate-api-schema
-      - run: yarn run validate-admin-api-schema
+      - run: yarn run validate-schema
+      - run: yarn run validate-admin-schema

@@ -6,8 +6,8 @@
 export type Pagination = {
     currentPage: number;
     totalPages: number;
-    defaultPerPage: number;
-    maxPerPage: number;
+    defaultPerPage?: number;
+    maxPerPage?: number;
     perPageSteps?: Array<(string | number)>;
 };
 

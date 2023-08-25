@@ -2,11 +2,14 @@
 
 json.name starsystem.name
 json.slug starsystem.slug
+
+json.media({})
 json.media do
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: starsystem.store_image
   end
 end
+
 json.map_x starsystem.map_x
 json.map_y starsystem.map_y
 json.description starsystem.description

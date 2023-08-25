@@ -1,5 +1,5 @@
-import { get } from "@/frontend/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
+import { get } from "@/admin/api/client";
 
 export class AdminCommoditiesCollection extends BaseCollection {
   primaryKey = "id";

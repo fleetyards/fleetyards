@@ -5,6 +5,8 @@ json.name module_package.name
 json.description module_package.description
 json.pledge_price module_package.pledge_price
 json.has_store_image module_package.store_image.present?
+
+json.media({})
 json.media do
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: module_package.store_image

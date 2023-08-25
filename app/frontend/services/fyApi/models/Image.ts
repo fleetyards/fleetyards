@@ -9,13 +9,13 @@ export type Image = {
     id: string;
     background: boolean;
     bigUrl: string;
-    caption?: string | null;
-    height: number | null;
+    caption?: string;
     name: string;
     smallUrl: string;
     type: string;
     url: string;
-    width: number | null;
+    width?: number;
+    height?: number;
     gallery?: Gallery;
     createdAt: string;
     updatedAt: string;

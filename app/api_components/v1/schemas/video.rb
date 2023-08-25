@@ -11,7 +11,7 @@ module V1
           id: {type: :string, format: :uuid},
           type: {"$ref": "#/components/schemas/VideoTypeEnum"},
           url: {type: :string, format: :uri},
-          videoId: {type: :string, nullable: true},
+          videoId: {type: :string},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },

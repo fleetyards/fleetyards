@@ -15,7 +15,12 @@ module V1
             searchCont: {type: :string},
             parentEq: {type: :string},
             parentIdNull: {type: :boolean},
-            main: {type: :boolean, deprecated: true}
+            main: {type: :boolean, deprecated: true},
+            sorts: {oneOf: [{
+              type: :array, items: {"$ref": "#/components/schemas/CelestialObjectSortEnum"}
+            }, {
+              "$ref": "#/components/schemas/CelestialObjectSortEnum"
+            }]}
           },
           additionalProperties: false
         })

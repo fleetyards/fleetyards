@@ -17,8 +17,8 @@
     "postinstall": "yarn generate-api-client && yarn generate-admin-api-client",
     "generate-api-client": "openapi --input ./swagger/v1/schema.yaml --output ./app/frontend/services/fyApi --useOptions --client axios --request app/frontend/services/request.template.ts --name FyApi",
     "generate-admin-api-client": "openapi --input ./swagger/admin/v1/schema.yaml --output ./app/frontend/services/fyAdminApi --useOptions --client axios --request app/frontend/services/request.template.ts --name FyAdminApi",
-    "validate-api-schema": "npx @redocly/cli@latest lint ./swagger/v1/schema.yaml",
-    "validate-admin-api-schema": "npx @redocly/cli@latest lint ./swagger/admin/v1/schema.yaml"
+    "validate-schema": "npx @redocly/cli@latest lint ./swagger/v1/schema.yaml",
+    "validate-admin-schema": "npx @redocly/cli@latest lint ./swagger/admin/v1/schema.yaml"
   },
   "dependencies": {
     "@rails/actioncable": "7.0.5",

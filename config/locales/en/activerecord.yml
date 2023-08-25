@@ -298,6 +298,10 @@ en:
           settlement: Settlement
           town: Town
           trading: Trading
+          cargo: Cargo
+          derelict: Derelict
+          prison: Prison
+          spaceport: Spaceport
         hidden: hidden?
         location_prefix:
           asteriod: on asteroid near
@@ -305,6 +309,10 @@ en:
           near: near
           orbit: in orbit around
         refinery: Has Refinery Station?
+        sizes:
+          large: Large
+          medium: Medium
+          small: Small
         station_types:
           aid_shelter: Aid Shelter
           asteroid_station: Asteriod Station
@@ -312,6 +320,7 @@ en:
           landing_zone: Landing Zone
           outpost: Outpost
           station: Station
+          ugf: Underground Facility
       trade_commodity:
         buy: Buy?
         sell: Sale?

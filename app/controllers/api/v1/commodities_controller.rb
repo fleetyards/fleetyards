@@ -6,7 +6,7 @@ module Api
       after_action -> { pagination_header(:commodities) }, only: [:index]
 
       def index
-        commodity_query_params["sorts"] = sort_by_name
+        commodity_query_params["sorts"] = "name asc"
 
         @q = Commodity.ransack(commodity_query_params)
 

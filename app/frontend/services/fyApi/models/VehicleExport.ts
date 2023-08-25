@@ -6,12 +6,12 @@
 export type VehicleExport = {
     name: string;
     slug: string;
-    shipCode?: string | null;
+    shipCode?: string;
     manufacturerName: string;
-    manufacturerCode?: string | null;
-    paintSlug?: string | null;
-    shipName?: string | null;
-    shipSerial?: string | null;
+    manufacturerCode?: string;
+    paintSlug?: string;
+    shipName?: string;
+    shipSerial?: string;
     wanted: boolean;
     flagship: boolean;
     public: boolean;

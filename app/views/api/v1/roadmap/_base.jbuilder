@@ -12,6 +12,8 @@ json.image item.image
 json.released item.released
 json.committed item.committed
 json.active item.active
+
+json.media({})
 json.media do
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: item.store_image

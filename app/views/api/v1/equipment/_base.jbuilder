@@ -5,11 +5,11 @@ json.name equipment.name
 json.slug equipment.slug
 
 json.availability do
-  json.bought_at do
-    json.array! equipment.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
-  end
   json.listed_at do
     json.array! equipment.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+  end
+  json.bought_at do
+    json.array! equipment.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end
   json.sold_at do
     json.array! equipment.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
@@ -25,15 +25,19 @@ json.extras equipment.extras
 json.grade equipment.grade
 json.item_type equipment.item_type
 json.item_type_label equipment.item_type_label
+
 json.manufacturer do
   json.null! if equipment.manufacturer.blank?
   json.partial! "api/v1/manufacturers/base", manufacturer: equipment.manufacturer if equipment.manufacturer.present?
 end
+
+json.media({})
 json.media do
   json.store_image do
     json.partial! "api/v1/shared/media_image", media_image: equipment.store_image
   end
 end
+
 json.range equipment.range
 json.rate_of_fire equipment.rate_of_fire
 json.size equipment.size

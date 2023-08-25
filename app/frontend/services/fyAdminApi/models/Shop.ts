@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CelestialObject } from './CelestialObject';
 import type { MediaImage } from './MediaImage';
 import type { ShopTypeEnum } from './ShopTypeEnum';
 import type { StationShop } from './StationShop';
@@ -12,10 +13,10 @@ export type Shop = {
     name: string;
     slug: string;
     buying: boolean;
-    location?: string | null;
+    location?: string;
     locationLabel: string;
     media: {
-        storeImage?: MediaImage | null;
+        storeImage?: MediaImage;
     };
     refineryTerminal: boolean;
     rental: boolean;
@@ -24,21 +25,24 @@ export type Shop = {
     stationLabel: string;
     type: ShopTypeEnum;
     typeLabel: string;
+    celestialObject?: CelestialObject;
+    createdAt: string;
+    updatedAt: string;
     /**
      * @deprecated
      */
-    storeImage?: string | null;
+    storeImage?: string;
     /**
      * @deprecated
      */
-    storeImageSmall?: string | null;
+    storeImageSmall?: string;
     /**
      * @deprecated
      */
-    storeImageMedium?: string | null;
+    storeImageMedium?: string;
     /**
      * @deprecated
      */
-    storeImageLarge?: string | null;
+    storeImageLarge?: string;
 };
 
