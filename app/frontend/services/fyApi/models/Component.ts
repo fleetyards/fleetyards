@@ -20,6 +20,8 @@ export type Component = {
     grade?: string;
     itemClass?: string;
     itemClassLabel?: string;
+    itemType?: string;
+    itemTypeLabel?: string;
     manufacturer?: Manufacturer;
     media: {
         storeImage?: MediaImage;

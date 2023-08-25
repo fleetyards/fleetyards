@@ -17,7 +17,7 @@ module V1
             equipmentIn: {type: :array, items: {type: :string}},
             componentIn: {type: :array, items: {type: :string}},
             commodityIn: {type: :array, items: {type: :string}},
-            shop_typeIn: {type: :array, items: {type: :string}},
+            shopTypeIn: {type: :array, items: {type: :string}},
             commodityCategoryIn: {type: :array, items: {type: :string}},
             stationIn: {type: :array, items: {type: :string}},
             celestialObjectIn: {type: :array, items: {type: :string}},

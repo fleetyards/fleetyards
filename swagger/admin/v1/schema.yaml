@@ -396,6 +396,9 @@ components:
         meta:
           "$ref": "#/components/schemas/Meta"
       additionalProperties: false
+      required:
+      - items
+      - meta
       title: BaseList
     Commodity:
       type: object
@@ -510,6 +513,10 @@ components:
         itemClass:
           type: string
         itemClassLabel:
+          type: string
+        itemType:
+          type: string
+        itemTypeLabel:
           type: string
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
@@ -1583,6 +1590,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Commodities
     Image:
       type: object
@@ -1652,6 +1660,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Images
     ImageInput:
       type: object
@@ -2123,6 +2132,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Models
     ModelModule:
       type: object
@@ -2488,6 +2498,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: ShopCommodities
     ShopCommodity:
       type: object
@@ -2817,6 +2828,7 @@ components:
       additionalProperties: false
       required:
       - items
+      - meta
       title: Stations
   securitySchemes:
     SessionCookie:

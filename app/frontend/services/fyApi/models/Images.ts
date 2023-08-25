@@ -8,6 +8,6 @@ import type { Meta } from './Meta';
 
 export type Images = {
     items: Array<Image>;
-    meta?: Meta;
+    meta: Meta;
 };
 

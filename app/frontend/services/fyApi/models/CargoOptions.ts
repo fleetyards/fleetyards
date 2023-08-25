@@ -8,6 +8,6 @@ import type { Meta } from './Meta';
 
 export type CargoOptions = {
     items: Array<CargoOption>;
-    meta?: Meta;
+    meta: Meta;
 };
 

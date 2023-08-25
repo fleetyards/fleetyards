@@ -8,6 +8,6 @@ import type { Vehicle } from './Vehicle';
 
 export type Hangar = {
     items: Array<Vehicle>;
-    meta?: Meta;
+    meta: Meta;
 };
 
