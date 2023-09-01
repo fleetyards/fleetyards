@@ -32,6 +32,7 @@
             class="col-6 text-center compare-row-item compare-row-item-top-view"
           >
             <FleetchartItemImage
+              v-if="model.media.sideView"
               :label="model.name"
               :src="model.media.sideView?.small"
               :width="length(model)"
@@ -49,6 +50,7 @@
             class="col-6 text-center compare-row-item compare-row-item-top-view"
           >
             <FleetchartItemImage
+              v-if="model.media.topView"
               :label="model.name"
               :src="model.media.topView?.small"
               :width="length(model)"
@@ -65,6 +67,7 @@
 import Collapsed from "@/shared/components/Collapsed.vue";
 import FleetchartItemImage from "@/frontend/components/Fleetchart/List/Item/Image/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
@@ -91,14 +94,15 @@ const scale = computed(() => {
   }
 
   const maxLength = Math.max(
-    ...props.models.map((model) => model.fleetchartLength),
+    ...props.models.map((model) => model.metrics.fleetchartLength || 1),
     0,
   );
 
   return maxWidth.value / (maxLength * 3);
 });
 
-const length = (model: Model) => model.fleetchartLength * 3 * scale.value;
+const length = (model: Model) =>
+  (model.metrics.fleetchartLength || 1) * 3 * scale.value;
 
 onMounted(() => {
   visible.value = props.models.length > 0;

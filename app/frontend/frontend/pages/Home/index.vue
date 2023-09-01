@@ -154,8 +154,8 @@
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
 import { RouteLocationRaw } from "vue-router";
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Panel from "@/shared/components/Panel/index.vue";
@@ -164,7 +164,7 @@ import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { Image } from "@/services/fyApi";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import logoHomePride from "@/images/pride/logo-home.png";
 import logoHome from "@/images/logo-home.png";
@@ -203,14 +203,14 @@ const search = () => {
     .catch(() => {});
 };
 
-const { models: modelsService } = useFyApiClient(currentLocale);
+const { models: modelsService } = useApiClient();
 
 const { isLoading: modelsLoading, data: latestModels } = useQuery({
   queryKey: ["latestModels"],
   queryFn: () => modelsService.modelsLatest(),
 });
 
-const { images: imagesService } = useFyApiClient(currentLocale);
+const { images: imagesService } = useApiClient();
 
 const { isLoading: imagesLoading, data: randomImages } = useQuery({
   queryKey: ["randomImages"],

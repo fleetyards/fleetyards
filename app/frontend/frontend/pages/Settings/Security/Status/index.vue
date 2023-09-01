@@ -56,7 +56,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
 import { Getter } from "vuex-class";
 import { displayConfirm } from "@/frontend/lib/Noty";

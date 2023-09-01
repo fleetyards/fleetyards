@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import AddToCartBtn from "@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue";
+import AddToCartBtn from "@/frontend/components/core/AppShoppingCart/AddToCartBtn/index.vue";
 import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";

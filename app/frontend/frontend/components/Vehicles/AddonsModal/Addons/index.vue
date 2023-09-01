@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 

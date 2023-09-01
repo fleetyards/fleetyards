@@ -45,6 +45,7 @@ import FleetchartItemImage from "./Image/index.vue";
 import type {
   Model,
   Vehicle,
+  VehiclePublic,
   ModelModulePackage,
   ViewImage,
   ModelPaint,
@@ -52,7 +53,7 @@ import type {
 import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 
 type Props = {
-  item: Model | Vehicle;
+  item: Vehicle | Model | VehiclePublic;
   viewpoint?: FleetchartViewpoints;
   showLabel?: boolean;
   showStatus?: boolean;

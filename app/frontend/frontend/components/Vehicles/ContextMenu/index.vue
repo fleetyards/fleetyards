@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
@@ -113,9 +113,9 @@ import type { Vehicle } from "@/services/fyApi";
 import type {
   BtnVariants,
   BtnSizes,
-} from "@/shared/components/BaseBtn/index.vue";
+} from "@/shared/components/base/Btn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
 type Props = {
   vehicle: Vehicle;
@@ -165,7 +165,7 @@ const upgradable = computed(() => {
   );
 });
 
-const { vehicles: vehiclesService } = useFyApiClient(currentLocale);
+const { vehicles: vehiclesService } = useApiClient();
 
 const addToWishlist = async () => {
   if (!props.vehicle) {

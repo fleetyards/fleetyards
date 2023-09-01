@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
 import Gallery from "@/frontend/core/components/Gallery/index.vue";

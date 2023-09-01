@@ -82,7 +82,7 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";

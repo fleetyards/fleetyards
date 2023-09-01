@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Box from "@/frontend/core/components/Box/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Box from "@/shared/components/Box/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 const { t } = useI18n();

@@ -63,8 +63,8 @@
 </template>
 
 <script lang="ts" setup>
-import BtnGroup from "@/shared/components/BaseBtnGroup/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import PerPageDropdown from "./PerPageDropdown/index.vue";
 import type { Pagination } from "@/services/fyApi";
 import { useRoute } from "vue-router";

@@ -279,10 +279,10 @@
 </template>
 
 <script lang="ts" setup>
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";

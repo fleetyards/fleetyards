@@ -25,11 +25,10 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
 import { enabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
-import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
 import { displayAlert } from "@/frontend/lib/Noty";
 
 @Component<TwoFactorBackupCodes>({

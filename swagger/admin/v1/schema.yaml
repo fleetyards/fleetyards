@@ -400,6 +400,15 @@ components:
       - items
       - meta
       title: BaseList
+    Check:
+      type: object
+      properties:
+        taken:
+          type: boolean
+      additionalProperties: false
+      required:
+      - taken
+      title: Check
     Commodity:
       type: object
       properties:
@@ -618,6 +627,13 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    CommodityPricePathEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      title: CommodityPricePathEnum
     CommodityTypeEnum:
       type: string
       enum:
@@ -1114,6 +1130,13 @@ components:
       - type
       - typeLabel
       title: HabitationCount
+    CheckInput:
+      type: object
+      properties:
+        value:
+          type: string
+      additionalProperties: false
+      title: CheckInput
     Manufacturer:
       type: object
       properties:

@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";

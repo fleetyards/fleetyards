@@ -99,14 +99,14 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 // import searchCollection from "@/frontend/api/collections/Search";
 // import type { SearchCollection } from "@/frontend/api/collections/Search";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import CelestialObjectsPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import ShopCommodityPanel from "@/frontend/components/ShopCommodities/Panel/index.vue";
 import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";

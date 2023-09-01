@@ -42,7 +42,7 @@
 import Panel from "@/shared/components/Panel/index.vue";
 import CelestialObjectSubItem from "@/frontend/components/CelestialObjects/SubItem/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import type { Starsystem } from "@/services/fyApi";
 
@@ -58,8 +58,7 @@ const detailRoute = computed(() => {
   return { name: "starsystem", params: { slug: props.item.slug } };
 });
 
-const { celestialObjects: celestialObjectsService } =
-  useFyApiClient(currentLocale);
+const { celestialObjects: celestialObjectsService } = useApiClient();
 
 const { data: celestialObjects } = useQuery({
   queryKey: ["celestialObjects", props.item.slug],

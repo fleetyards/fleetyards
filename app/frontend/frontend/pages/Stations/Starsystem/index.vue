@@ -37,14 +37,14 @@ import type { Crumb } from "@/shared/components/BreadCrumbs/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 
 const { t, currentLocale } = useI18n();
 
 const { updateMetaInfo } = useMetaInfo(t);
 
-const { starsystems: starsystemsService } = useFyApiClient(currentLocale);
+const { starsystems: starsystemsService } = useApiClient();
 
 const route = useRoute();
 

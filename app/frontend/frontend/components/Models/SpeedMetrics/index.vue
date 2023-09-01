@@ -117,6 +117,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
+import type { Model } from "@/services/fyApi";
 
 type Props = {
   model: Model;

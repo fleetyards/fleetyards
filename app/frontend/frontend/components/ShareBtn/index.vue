@@ -4,7 +4,7 @@
     :variant="variant"
     :size="size"
     :inline="inline"
-    @click.native="share"
+    @click="share"
   >
     <i class="fad fa-share-square" />
     <span v-if="variant === 'dropdown'">{{ t("actions.share") }}</span>
@@ -12,31 +12,60 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import type {
-  Props as BtnProps,
   BtnVariants,
   BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
+} from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
-import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
+import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/frontend/composables/useI18n";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import type { RouteLocationRaw } from "vue-router";
 
-interface Props extends BtnProps {
+type Props = {
   url: string;
   title: string;
+  to?: RouteLocationRaw;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
   variant?: BtnVariants;
   size?: BtnSizes;
+  exact?: boolean;
+  block?: boolean;
+  mobileBlock?: boolean;
   inline?: boolean;
-}
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+  inGroup?: boolean;
+};
 
 const props = withDefaults(defineProps<Props>(), {
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
   variant: "default",
   size: "default",
+  exact: false,
+  block: false,
+  mobileBlock: false,
   inline: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+  inGroup: false,
 });
 
 const { t } = useI18n();
+
+const { displayAlert, displaySuccess } = useNoty(t);
 
 const share = () => {
   if (navigator.canShare && navigator.canShare({ url: props.url })) {

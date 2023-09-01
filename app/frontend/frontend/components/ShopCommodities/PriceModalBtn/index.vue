@@ -8,7 +8,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { displayWarning } from "@/frontend/lib/Noty";
 
 @Component<PriceModalBtn>({

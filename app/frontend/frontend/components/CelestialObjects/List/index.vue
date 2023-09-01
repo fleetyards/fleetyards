@@ -42,7 +42,7 @@ import Pagination from "@/shared/components/Paginator/index.vue";
 import CelestialObjectItem from "@/frontend/components/CelestialObjects/Item/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import { BaseList } from "@/services/fyApi";
@@ -55,8 +55,7 @@ const props = defineProps<Props>();
 
 const { currentLocale } = useI18n();
 
-const { celestialObjects: celestialObjectsService } =
-  useFyApiClient(currentLocale);
+const { celestialObjects: celestialObjectsService } = useApiClient();
 
 const {
   isLoading,

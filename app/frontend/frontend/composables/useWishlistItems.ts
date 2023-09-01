@@ -1,7 +1,7 @@
 import { useRoute } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 export const useWishlistItems = () => {
@@ -9,7 +9,7 @@ export const useWishlistItems = () => {
   const wishlistStore = useWishlistStore();
 
   const { currentLocale } = useI18n();
-  const { wishlist: wishlistService } = useFyApiClient(currentLocale);
+  const { wishlist: wishlistService } = useApiClient();
 
   const fetchWishlistItems = async () => {
     if (!sessionStore.isAuthenticated) {

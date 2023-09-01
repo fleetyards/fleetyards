@@ -153,8 +153,8 @@
 <script lang="ts" setup>
 import panzoom from "panzoom";
 import type { PanZoom } from "panzoom";
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import debounce from "lodash.debounce";
@@ -166,6 +166,7 @@ import { useI18n } from "@/frontend/composables/useI18n";
 import type {
   Vehicle,
   Model,
+  VehiclePublic,
   ModelPaint,
   ModelModulePackage,
 } from "@/services/fyApi";
@@ -180,7 +181,7 @@ const { t } = useI18n();
 
 type Props = {
   namespace: string;
-  items?: Vehicle[] | Model[];
+  items?: (Vehicle | Model | VehiclePublic)[];
   myShip?: boolean;
   downloadName?: string;
 };
@@ -217,7 +218,9 @@ const gridSize = 80.0;
 
 const panzoomInstance = ref<PanZoom>();
 
-const fleetchartColumns = ref<Record<number, (Vehicle | Model)[]>>({});
+const fleetchartColumns = ref<
+  Record<number, (Vehicle | Model | VehiclePublic)[]>
+>({});
 
 const markedForReset = ref(false);
 
@@ -542,7 +545,7 @@ const extractMaxHeightFromModel = (
   );
 };
 
-const imageMaxHeight = (item: Model | Vehicle) => {
+const imageMaxHeight = (item: Vehicle | Model | VehiclePublic) => {
   const model = (item as Vehicle).model || item;
   const vehicle = item as Vehicle;
 
@@ -573,7 +576,7 @@ const imageMaxHeight = (item: Model | Vehicle) => {
   return extractMaxHeightFromModel(model);
 };
 
-const imageMaxWidth = (item: Model | Vehicle) => {
+const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
   const model = (item as Vehicle).model || item;
   const vehicle = item as Vehicle;
 

@@ -47,6 +47,9 @@ import { useI18nStore } from "@/shared/stores/i18n";
 import { storeToRefs } from "pinia";
 import { useNavStore } from "@/docs/stores/nav";
 import AppFooter from "@/docs/components/core/AppFooter/index.vue";
+import { useNProgress } from "@/shared/composables/useNProgress";
+
+useNProgress();
 
 const navStore = useNavStore();
 

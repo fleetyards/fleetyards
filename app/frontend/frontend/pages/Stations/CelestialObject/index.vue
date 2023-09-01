@@ -66,7 +66,7 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import CelestialObjectMetrics from "@/frontend/components/CelestialObjects/Metrics/index.vue";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useRoute } from "vue-router";
 
@@ -115,8 +115,7 @@ const crumbs = computed(() => {
   return crumbs;
 });
 
-const { celestialObjects: celestialObjectsService } =
-  useFyApiClient(currentLocale);
+const { celestialObjects: celestialObjectsService } = useApiClient();
 
 const route = useRoute();
 

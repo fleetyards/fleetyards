@@ -130,7 +130,7 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import { publicHangarRouteGuard } from "@/frontend/utils/RouteGuards/Hangar";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import publicVehiclesCollection from "@/frontend/api/collections/PublicVehicles";
 import publicUserCollection from "@/frontend/api/collections/PublicUser";
 import publicHangarGroupsCollection from "@/frontend/api/collections/PublicHangarGroups";
@@ -139,7 +139,7 @@ import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 

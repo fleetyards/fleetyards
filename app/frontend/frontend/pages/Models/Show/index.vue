@@ -302,7 +302,7 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import Paints from "@/frontend/components/Models/PaintsList/index.vue";

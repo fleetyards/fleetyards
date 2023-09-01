@@ -1,86 +1,105 @@
 <template>
   <Modal
     v-if="model"
-    :title="$t('headlines.addToHangar', { model: model.name })"
+    :title="t('headlines.addToHangar', { model: model.name })"
   >
     <div class="page-actions page-actions-block">
       <Btn
         :inline="true"
         data-test="add-to-hangar-as-normal"
-        @click.native="addToHangar"
+        @click="addToHangar"
       >
-        {{ $t("actions.addToHangar") }}
+        {{ t("actions.addToHangar") }}
       </Btn>
       <Btn
         :inline="true"
         data-test="add-to-hangar-as-wanted"
-        @click.native="addToWishlist"
+        @click="addToWishlist"
       >
-        {{ $t("actions.addToWishlist") }}
+        {{ t("actions.addToWishlist") }}
       </Btn>
     </div>
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Action } from "vuex-class";
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess } from "@/frontend/lib/Noty";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import type { Model } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { useWishlistStore } from "@/frontend/stores/wishlist";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
-@Component<AddToHangarModal>({
-  components: {
-    Modal,
-    Btn,
-  },
-})
-export default class AddToHangarModal extends Vue {
-  @Prop({ required: true }) model: Model;
+type Props = {
+  model: Model;
+};
 
-  @Action("add", { namespace: "hangar" }) saveToHangar;
+const props = defineProps<Props>();
 
-  @Action("add", { namespace: "wishlist" }) saveToWishlist;
+const { t } = useI18n();
 
-  async addToWishlist() {
-    const success = await vehiclesCollection.create({
-      wanted: true,
-      modelId: this.model.id,
+const { displaySuccess } = useNoty(t);
+
+const hangarStore = useHangarStore();
+const wishlistStore = useWishlistStore();
+
+const comlink = useComlink();
+
+const { vehicles: vehiclesService } = useApiClient();
+
+const addToWishlist = async () => {
+  try {
+    await vehiclesService.vehicleCreate({
+      requestBody: {
+        modelId: props.model.id,
+        wanted: true,
+      },
     });
 
-    if (success) {
-      await this.saveToWishlist(this.model.slug);
+    wishlistStore.add(props.model.slug);
 
-      displaySuccess({
-        text: this.$t("messages.vehicle.addToWishlist.success", {
-          model: this.model.name,
-        }),
-        icon: this.model.storeImageSmall,
-      });
-
-      this.$comlink.$emit("close-modal");
-    }
-  }
-
-  async addToHangar() {
-    const success = await vehiclesCollection.create({
-      modelId: this.model.id,
+    displaySuccess({
+      text: t("messages.vehicle.addToWishlist.success", {
+        model: props.model.name,
+      }),
+      icon: props.model.storeImageSmall,
     });
 
-    if (success) {
-      await this.saveToHangar(this.model.slug);
-
-      displaySuccess({
-        text: this.$t("messages.vehicle.add.success", {
-          model: this.model.name,
-        }),
-        icon: this.model.storeImageSmall,
-      });
-
-      this.$comlink.$emit("close-modal");
-    }
+    comlink.emit("close-modal");
+  } catch (error) {
+    console.error(error);
   }
-}
+};
+
+const addToHangar = async () => {
+  try {
+    await vehiclesService.vehicleCreate({
+      requestBody: {
+        modelId: props.model.id,
+      },
+    });
+
+    hangarStore.add(props.model.slug);
+
+    displaySuccess({
+      text: t("messages.vehicle.add.success", {
+        model: props.model.name,
+      }),
+      icon: props.model.storeImageSmall,
+    });
+
+    comlink.emit("close-modal");
+  } catch (error) {
+    console.error(error);
+  }
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AddToHangarModal",
+};
 </script>

@@ -164,13 +164,9 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/fleets/",
     name: "fleets",
-    component: () => import("@/frontend/pages/Fleets/index.vue"),
+    component: () => import("@/frontend/pages/Fleets/routerView.vue"),
     children: FleetsRoutes,
     redirect: { name: FleetsRoutes[0].name },
-    meta: {
-      title: "fleets",
-      backgroundImage: "bg-8",
-    },
   },
   {
     path: "/images/",
@@ -184,6 +180,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/stations/",
     component: () => import("@/frontend/pages/Stations/routerView.vue"),
     children: StationsRoutes,
+    redirect: { name: StationsRoutes[0].name },
   },
   {
     path: "/tools/",
@@ -193,12 +190,9 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/roadmap/",
-    name: "roadmap",
+    component: () => import("@/frontend/pages/Roadmap/routerView.vue"),
     children: RoadmapRoutes,
-    component: () => import("@/frontend/pages/Roadmap/index.vue"),
-    meta: {
-      title: "roadmap.index",
-    },
+    redirect: { name: RoadmapRoutes[0].name },
   },
   {
     path: "/settings/",

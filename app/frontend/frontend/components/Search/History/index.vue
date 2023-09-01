@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useSearchStore } from "@/frontend/stores/search";

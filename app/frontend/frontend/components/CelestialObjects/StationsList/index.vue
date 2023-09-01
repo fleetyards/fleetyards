@@ -38,7 +38,7 @@
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useRoute } from "vue-router";
 import Pagination from "@/shared/components/Paginator/index.vue";
@@ -47,7 +47,7 @@ import { BaseList } from "@/services/fyApi";
 
 const { t, currentLocale } = useI18n();
 
-const { stations: stationsService } = useFyApiClient(currentLocale);
+const { stations: stationsService } = useApiClient();
 
 const route = useRoute();
 

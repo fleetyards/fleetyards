@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts" setup>
-import Box from "@/shared/components/BaseBox/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Box from "@/shared/components/base/Box/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useRoute, useRouter } from "vue-router";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 

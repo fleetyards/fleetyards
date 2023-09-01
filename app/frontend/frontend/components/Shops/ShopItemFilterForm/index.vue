@@ -11,7 +11,7 @@
     <FilterGroup
       v-model="form.categoryIn"
       :options="categoryOptions"
-      :label="$t('labels.filters.shopItems.category')"
+      :label="t('labels.filters.shopItems.category')"
       name="category"
       :multiple="true"
       :no-label="true"
@@ -19,7 +19,7 @@
 
     <FilterGroup
       v-model="form.subCategoryIn"
-      :label="$t('labels.filters.shopItems.subCategory')"
+      :label="t('labels.filters.shopItems.subCategory')"
       :fetch="fetchSubCategories"
       name="sub-category"
       :multiple="true"
@@ -28,7 +28,7 @@
 
     <FilterGroup
       v-model="form.manufacturerIn"
-      :label="$t('labels.filters.shopItems.manufacturer')"
+      :label="t('labels.filters.shopItems.manufacturer')"
       :fetch="fetchCommodityManufacturers"
       name="manufacturer"
       value-attr="slug"
@@ -53,11 +53,7 @@
       type="number"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ $t("actions.resetFilter") }}
     </Btn>
@@ -65,9 +61,9 @@
 </template>
 
 <script lang="ts" setup>
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 
 //   data() {
 //     const query = this.$route.query.q || {};

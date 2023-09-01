@@ -1,6 +1,5 @@
 <template>
-  <router-view v-if="isSubRoute" />
-  <section v-else class="container roadmap">
+  <section class="container roadmap">
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
@@ -45,7 +44,7 @@
               variant="dropdown"
               :active="showRemoved"
               :aria-label="toggleRemovedTooltip"
-              @click.native="togglerShowRemoved"
+              @click="togglerShowRemoved"
             >
               <span v-if="showRemoved">
                 <i class="fad fa-eye-slash"></i>
@@ -79,16 +78,14 @@
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
-                {{
-                  t("labels.roadmap.stories", { count: String(items.length) })
-                }}
+                {{ t("labels.roadmap.stories", { count: items.length }) }}
               </small>
               <i class="fa fa-chevron-right" />
             </h2>
 
-            <div
+            <Collapsed
               :id="`${release}-cards`"
-              v-show-slide:400:ease-in-out="visible.includes(String(release))"
+              :visible="visible.includes(String(release))"
             >
               <div class="row">
                 <div
@@ -99,47 +96,46 @@
                   <RoadmapItem :item="item" />
                 </div>
               </div>
-            </div>
+            </Collapsed>
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="loading" :fixed="true" />
+        <Loader :loading="isLoading || isFetching" :fixed="true" />
       </div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
-import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import EmptyBox from "@/shared/components/EmptyBox/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { Subscription } from "@rails/actioncable";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useCable } from "@/shared/composables/useCable";
-import roadmapItemsCollection from "@/frontend/api/collections/RoadmapItems";
+import type { RoadmapItem as TRoadmapItem } from "@/services/fyApi";
+import { useQuery } from "@tanstack/vue-query";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
-const { t } = useI18n();
-const loading = ref(true);
+const { t, currentLocale } = useI18n();
 
-const onlyReleased = ref(true);
+const released = ref(false);
 
 const showRemoved = ref(false);
-
-const roadmapItems = ref<RoadmapItem[]>([]);
 
 const visible = ref<string[]>([]);
 
 const roadmapChannel = ref<Subscription | null>(null);
 
 const releasedToggleLabel = computed(() => {
-  if (onlyReleased.value) {
-    return t("actions.showReleased");
+  if (released.value) {
+    return t("actions.hideReleased");
   }
 
-  return t("actions.hideReleased");
+  return t("actions.showReleased");
 });
 
 const toggleRemovedTooltip = computed(() => {
@@ -150,35 +146,26 @@ const toggleRemovedTooltip = computed(() => {
   return t("actions.roadmap.showRemoved");
 });
 
-const route = useRoute();
-
-const isSubRoute = computed(() => route.name !== "roadmap");
-
 const emptyBoxVisible = computed(
-  () => !loading.value && roadmapItems.value.length === 0,
+  () => !isLoading.value && data.value?.length === 0,
 );
 
-const filteredItems = computed(() => {
-  if (onlyReleased.value) {
-    return roadmapItems.value.filter((item) => !item.released);
-  }
+const groupedByRelease = computed(
+  () =>
+    data.value?.reduce(
+      (rv, x) => {
+        const value = JSON.parse(JSON.stringify(rv));
 
-  return roadmapItems.value;
-});
+        value[x.release] = rv[x.release] || [];
+        value[x.release].push(x);
 
-const groupedByRelease = computed<RoadmapItemsByRelease>(() =>
-  filteredItems.value.reduce((rv, x) => {
-    const value = JSON.parse(JSON.stringify(rv));
-
-    value[x.release] = (rv as RoadmapItemsByRelease)[x.release] || [];
-    value[x.release].push(x);
-
-    return value;
-  }, {}),
+        return value;
+      },
+      {} as Record<string, TRoadmapItem[]>,
+    ),
 );
 
 onMounted(() => {
-  fetch();
   setupUpdates();
 });
 
@@ -189,9 +176,9 @@ onUnmounted(() => {
 });
 
 watch(
-  () => onlyReleased.value,
+  () => released.value,
   () => {
-    fetch();
+    refetch();
   },
 );
 
@@ -213,13 +200,13 @@ const setupUpdates = () => {
 };
 
 const toggleReleased = () => {
-  onlyReleased.value = !onlyReleased.value;
+  released.value = !released.value;
 };
 
 const togglerShowRemoved = () => {
   showRemoved.value = !showRemoved.value;
 
-  fetch();
+  refetch();
 };
 
 const toggle = (release: string) => {
@@ -235,8 +222,14 @@ const toggle = (release: string) => {
 };
 
 const openReleased = () => {
-  Object.keys(groupedByRelease.value).forEach((release) => {
-    const items = groupedByRelease.value[release];
+  if (!groupedByRelease.value) {
+    return undefined;
+  }
+
+  const releases = Object.keys(groupedByRelease.value);
+
+  releases.forEach((release) => {
+    const items = groupedByRelease.value![release];
 
     if (items.length && !items[0].released) {
       visible.value.push(release);
@@ -244,15 +237,27 @@ const openReleased = () => {
   });
 };
 
-const fetch = async () => {
-  loading.value = true;
+const { roadmap: roadmapService } = useApiClient();
 
-  roadmapItems.value = await roadmapItemsCollection.overview();
+const { isLoading, isFetching, data, refetch, status } = useQuery({
+  queryKey: ["roadmap-items"],
+  queryFn: () =>
+    roadmapService.roadmapItems({
+      q: {
+        releasedEq: released.value,
+        activeIn: [true, !showRemoved.value],
+      },
+    }),
+});
 
-  loading.value = false;
-
-  openReleased();
-};
+watch(
+  () => status.value,
+  () => {
+    if (status.value === "success") {
+      openReleased();
+    }
+  },
+);
 </script>
 
 <script lang="ts">

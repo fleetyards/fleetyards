@@ -191,7 +191,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import shopCommodityCollection from "@/admin/api/collections/ShopCommodities";
 import modelsCollection from "@/admin/api/collections/Models";
 import commoditiesCollection from "@/admin/api/collections/Commodities";

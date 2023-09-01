@@ -41,14 +41,9 @@
           <br />
 
           <small>
-            <router-link
-              :to="{
-                query: {
-                  q: filterManufacturerQuery(model.manufacturer.slug),
-                },
-              }"
-              v-html="model.manufacturer.name"
-            />
+            <router-link :to="manufacturerRoute">
+              {{ model.manufacturer?.name }}
+            </router-link>
             <template v-if="customName">
               {{ modelName }}
             </template>
@@ -75,6 +70,7 @@
         class="panel-image text-center"
       >
         <LazyImage
+          v-if="storeImage"
           :to="{ name: 'model', params: { slug: model.slug } }"
           :aria-label="model.name"
           :src="storeImage"
@@ -83,7 +79,7 @@
         >
           <div
             v-if="vehicle.loaner"
-            v-tooltip="$t('labels.vehicle.loaner')"
+            v-tooltip="t('labels.vehicle.loaner')"
             class="loaner-label"
           >
             <i class="fal fa-exchange" />
@@ -97,7 +93,7 @@
           </div>
           <div
             v-show="model.onSale"
-            v-tooltip="$t('labels.model.onSale')"
+            v-tooltip="t('labels.model.onSale')"
             class="on-sale"
           >
             <i class="fal fa-dollar-sign" />
@@ -109,7 +105,7 @@
         </LazyImage>
         <div
           v-if="upgradable && vehicle"
-          v-tooltip="$t('labels.model.addons')"
+          v-tooltip="t('labels.model.addons')"
           class="addons"
           :class="{
             selected: hasAddons,
@@ -124,159 +120,173 @@
           </span>
         </div>
       </div>
-      <PanelDetails
+      <Collapsed
         :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
-              {{
-                $t(`labels.model.productionStatus.${model.productionStatus}`)
-              }}
+              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
             </template>
             <template v-else>
-              {{ $t(`labels.not-available`) }}
+              {{ t(`labels.not-available`) }}
             </template>
           </strong>
         </div>
         <ModelPanelMetrics :model="model" />
-      </PanelDetails>
+      </Collapsed>
     </Panel>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import PanelDetails from "@/shared/components/Panel/PanelDetails/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import type { Vehicle } from "@/services/fyApi";
+import { v4 as uuidv4 } from "uuid";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 
-@Component<VehiclePanel>({
-  components: {
-    Panel,
-    PanelDetails,
-    VehicleContextMenu,
-    LazyImage,
-    AddToHangar,
-    ModelPanelMetrics,
-    HangarGroups,
-  },
-})
-export default class VehiclePanel extends Vue {
-  @Prop({ required: true }) vehicle: Vehicle | null;
+type Props = {
+  vehicle: Vehicle | null;
+  details?: boolean;
+  editable?: boolean;
+  wishlist?: boolean;
+  highlight?: boolean;
+  loanersHintVisible?: boolean;
+};
 
-  @Prop({ default: false }) details: boolean;
+const props = withDefaults(defineProps<Props>(), {
+  details: false,
+  editable: false,
+  wishlist: false,
+  highlight: false,
+  loanersHintVisible: false,
+});
 
-  @Prop({ default: false }) editable: boolean;
+const { t } = useI18n();
 
-  @Prop({ default: false }) wishlist: boolean;
+const mobile = useMobile();
 
-  @Prop({ default: false }) highlight: boolean;
+const uuid = ref(uuidv4());
 
-  @Prop({ default: false }) loanersHintVisible: boolean;
+onMounted(() => {
+  uuid.value = uuidv4();
+});
 
-  @Getter("mobile") mobile;
-
-  get uuid() {
-    return this._uid;
+const storeImage = computed(() => {
+  if (props.vehicle && props.vehicle.paint) {
+    return props.vehicle.paint.storeImageMedium;
   }
 
-  get storeImage() {
-    if (this.vehicle && this.vehicle.paint) {
-      return this.vehicle.paint.storeImageMedium;
-    }
-
-    if (this.vehicle && this.vehicle.upgrade) {
-      return this.vehicle.upgrade.storeImageMedium;
-    }
-
-    return this.model.storeImageMedium;
+  if (props.vehicle && props.vehicle.upgrade) {
+    return props.vehicle.upgrade.storeImageMedium;
   }
 
-  get modelName() {
-    return this.model.name;
+  return model.value?.storeImageMedium;
+});
+
+const modelName = computed(() => {
+  return model.value?.name;
+});
+
+const model = computed(() => {
+  if (!props.vehicle) {
+    return undefined;
   }
 
-  get model() {
-    if (!this.vehicle) {
-      return null;
-    }
+  return props.vehicle.model;
+});
 
-    return this.vehicle.model;
+const id = computed(() => {
+  if (props.vehicle) {
+    return props.vehicle.id;
   }
 
-  get id() {
-    if (this.vehicle) {
-      return this.vehicle.id;
-    }
+  return model.value?.slug;
+});
 
-    return this.model.slug;
+const customName = computed(() => {
+  if (props.vehicle && props.vehicle.name) {
+    return props.vehicle.name;
   }
 
-  get customName() {
-    if (this.vehicle && this.vehicle.name) {
-      return this.vehicle.name;
-    }
+  return undefined;
+});
 
-    return null;
+const route = useRoute();
+
+const flagshipTooltip = computed(() => {
+  if (!props.vehicle) {
+    return "";
   }
 
-  get flagshipTooltip() {
-    if (!this.vehicle) {
-      return "";
-    }
-    if (this.$route.name === "hangar") {
-      return this.$t("labels.yourFlagship");
-    }
-    return this.$t("labels.flagship");
+  if (route.name === "hangar") {
+    return t("labels.yourFlagship");
   }
 
-  get hasAddons() {
-    return (
-      this.vehicle &&
-      (this.vehicle.modelModuleIds.length ||
-        this.vehicle.modelUpgradeIds.length)
-    );
-  }
+  return t("labels.flagship");
+});
 
-  get upgradable() {
-    return (
-      (this.editable || this.hasAddons) &&
-      (this.model.hasModules || this.model.hasUpgrades)
-    );
-  }
+const hasAddons = computed(() => {
+  return (
+    props.vehicle &&
+    (props.vehicle.modelModuleIds.length ||
+      props.vehicle.modelUpgradeIds.length)
+  );
+});
 
-  get loanersTooltip() {
-    return [
-      this.$t("labels.vehicle.hasLoaners"),
-      this.model.loaners.map((loaner) => loaner.name).join(", "),
-    ].join(": ");
-  }
+const upgradable = computed(() => {
+  return (
+    (props.editable || hasAddons.value) &&
+    (model.value?.hasModules || model.value?.hasUpgrades)
+  );
+});
 
-  get hasLoaners() {
-    return this.model?.loaners?.length;
-  }
+const loanersTooltip = computed(() => {
+  return [
+    t("labels.vehicle.hasLoaners"),
+    model.value?.loaners.map((loaner) => loaner.name).join(", "),
+  ].join(": ");
+});
 
-  filterManufacturerQuery(manufacturer) {
-    return { manufacturerIn: [manufacturer] };
-  }
+const hasLoaners = computed(() => {
+  return model.value?.loaners?.length;
+});
 
-  openAddonsModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/AddonsModal/index.vue"),
-      props: {
-        vehicle: this.vehicle,
-        editable: this.editable,
-      },
-    });
-  }
-}
+const manufacturerRoute = computed(() => {
+  return {
+    query: {
+      q: {
+        manufacturerIn: [model.value?.manufacturer?.slug],
+      } as unknown as string,
+    },
+  };
+});
+
+const comlink = useComlink();
+
+const openAddonsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/AddonsModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+      editable: props.editable,
+    },
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "VehiclePanel",
+};
 </script>

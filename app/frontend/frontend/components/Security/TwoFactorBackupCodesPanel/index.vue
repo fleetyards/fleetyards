@@ -24,7 +24,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import Panel from "@/shared/components/Panel/index.vue";

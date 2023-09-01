@@ -118,9 +118,9 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import debounce from "lodash.debounce";
-import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import { formatSize } from "@/shared/utils/Format";
 import { useI18n } from "@/admin/composables/useI18n";

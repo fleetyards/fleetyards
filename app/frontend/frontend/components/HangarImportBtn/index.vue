@@ -2,13 +2,13 @@
   <Btn
     :size="size"
     :variant="variant"
-    :aria-label="$t('actions.import')"
+    :aria-label="t('actions.import')"
     :disabled="disabled"
-    @click.native="selectFile"
+    @click="selectFile"
   >
     <i class="fal fa-upload" />
     <span>
-      {{ $t("actions.import") }}
+      {{ t("actions.import") }}
       <VueUploadComponent
         ref="upload"
         name="uploadAvatar"
@@ -22,134 +22,135 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import VueUploadComponent from "vue-upload-component";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import {
-  displayWarning,
-  displayAlert,
-  displaySuccess,
-  displayConfirm,
-} from "@/frontend/lib/Noty";
+import type { VueUploadItem } from "vue-upload-component";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import type {
+  BtnVariants,
+  BtnSizes,
+} from "@/shared/components/base/Btn/index.vue";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
-@Component({
-  components: {
-    VueUploadComponent,
-    Btn,
-  },
-})
-export default class HangarImportBtn extends Vue {
-  fileExtensions = "json";
+type Props = {
+  variant?: BtnVariants;
+  size?: BtnSizes;
+};
 
-  disabled = false;
+withDefaults(defineProps<Props>(), {
+  variant: "default",
+  size: "default",
+});
 
-  acceptedMimeTypes = "application/json";
+const { t } = useI18n();
 
-  @Prop({
-    default: "default",
-    validator(value) {
-      return (
-        ["default", "transparent", "link", "danger", "dropdown"].indexOf(
-          value,
-        ) !== -1
-      );
+const { displayWarning, displayAlert, displaySuccess, displayConfirm } =
+  useNoty(t);
+
+const fileExtensions = "json";
+const acceptedMimeTypes = "application/json";
+
+const disabled = ref(false);
+
+const fileExtensionsList = computed(() => {
+  return fileExtensions.split(",");
+});
+
+const upload = ref<InstanceType<typeof VueUploadComponent> | undefined>();
+
+const selectFile = () => {
+  disabled.value = true;
+
+  displayConfirm({
+    text: t("messages.confirm.hangar.import"),
+    onConfirm: async () => {
+      upload.value?.$el.querySelector("input").click();
     },
-  })
-  variant!: string;
-
-  @Prop({
-    default: "default",
-    validator(value) {
-      return ["default", "small", "large"].indexOf(value) !== -1;
+    onCancel: () => {
+      disabled.value = false;
     },
-  })
-  size!: string;
+  });
+};
 
-  get fileExtensionsList() {
-    return this.fileExtensions.split(",");
+const inputFilter = (
+  newFile: VueUploadItem,
+  oldFile: VueUploadItem,
+  prevent: () => void,
+) => {
+  if (newFile && !oldFile) {
+    if (
+      !fileExtensionsList.value.some(
+        (extension) => newFile.name?.endsWith(extension),
+      )
+    ) {
+      displayAlert({
+        text: t("messages.hangarImport.invalidExtension", {
+          extensions: fileExtensions,
+        }),
+      });
+      return prevent();
+    }
+  }
+  if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+    // eslint-disable-next-line no-param-reassign
+    newFile.url = "";
+    const URL = window.URL || window.webkitURL;
+    if (URL && URL.createObjectURL && newFile.file) {
+      // eslint-disable-next-line no-param-reassign
+      newFile.url = URL.createObjectURL(newFile.file);
+    }
   }
 
-  selectFile() {
-    this.disabled = true;
+  return null;
+};
 
-    displayConfirm({
-      text: this.$t("messages.confirm.hangar.import"),
-      onConfirm: async () => {
-        this.$refs.upload.$el.querySelector("input").click();
-      },
-      onCancel: () => {
-        this.disabled = false;
+const emit = defineEmits(["finished"]);
+
+const { hangar: hangarService } = useApiClient();
+
+const importJson = async (value: VueUploadItem) => {
+  const importFile = (value && value[0]) || {};
+
+  if (!importFile || !importFile.file) {
+    return;
+  }
+
+  try {
+    const result = await hangarService.hangarImport({
+      formData: {
+        import: importFile.file,
       },
     });
-  }
 
-  inputFilter(newFile, oldFile, prevent) {
-    if (newFile && !oldFile) {
-      if (
-        !this.fileExtensionsList.some((extension) =>
-          newFile.name.endsWith(extension),
-        )
-      ) {
-        displayAlert({
-          text: this.$t("messages.hangarImport.invalidExtension", {
-            extensions: this.fileExtensions,
-          }),
-        });
-        return prevent();
-      }
-    }
-    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-      // eslint-disable-next-line no-param-reassign
-      newFile.url = "";
-      const URL = window.URL || window.webkitURL;
-      if (URL && URL.createObjectURL) {
-        // eslint-disable-next-line no-param-reassign
-        newFile.url = URL.createObjectURL(newFile.file);
-      }
-    }
-
-    return null;
-  }
-
-  async importJson(value) {
-    const importFile = (value && value[0]) || {};
-
-    if (!importFile || !importFile.file) {
-      return;
-    }
-
-    const uploadData = new FormData();
-    uploadData.append("import", importFile.file);
-
-    const response = await this.$api.upload("vehicles/import", uploadData);
-
-    this.disabled = false;
-
-    if (response.error || !response.data.success) {
-      displayAlert({
-        text: this.$t("messages.hangarImport.failure"),
-      });
-      return;
-    }
-
-    const { data } = response;
-
-    if (data.missing.length) {
+    if (result.missing.length) {
       displayWarning({
-        text: this.$t("messages.hangarImport.partialSuccess", {
-          missing: `- ${data.missing.join("<br>- ")}`,
+        text: t("messages.hangarImport.partialSuccess", {
+          missing: `- ${result.missing.join("<br>- ")}`,
         }),
-        timeout: null,
+        timeout: false,
       });
     } else {
       displaySuccess({
-        text: this.$t("messages.hangarImport.success"),
+        text: t("messages.hangarImport.success"),
       });
+      emit("finished");
     }
+  } catch (error) {
+    console.error(error);
 
-    this.$emit("finished");
+    displayAlert({
+      text: t("messages.hangarImport.failure"),
+    });
   }
-}
+
+  disabled.value = false;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "HangarImportBtn",
+};
 </script>

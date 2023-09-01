@@ -133,9 +133,9 @@
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilteredTable from "@/shared/components/FilteredTable/index.vue";
 import FilterForm from "@/admin/components/ShopCommodities/FilterForm/index.vue";
-import BtnGroup from "@/shared/components/BaseBtnGroup/index.vue";
-import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/admin/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useRoute } from "vue-router";

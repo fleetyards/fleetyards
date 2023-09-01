@@ -29,13 +29,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
         let(:fleetSlug) { fleet.slug }
 
@@ -56,13 +50,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
         let(:fleetSlug) { fleet.slug }
         let(:q) do
@@ -80,13 +68,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
         let(:fleetSlug) { fleet.slug }
         let(:perPage) { 1 }
@@ -99,13 +81,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
         let(:fleetSlug) { fleet.slug }
         let(:grouped) { true }
@@ -118,13 +94,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
       end
 
       response(200, "successful") do
-        schema type: :array,
-          items: {
-            oneOf: [
-              {"$ref": "#/components/schemas/Model"},
-              {"$ref": "#/components/schemas/VehiclePublic"}
-            ]
-          }
+        schema "$ref": "#/components/schemas/FleetPublicVehicles"
 
         let(:fleet) { fleets :klingon_empire }
         let(:fleetSlug) { fleet.slug }

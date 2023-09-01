@@ -68,10 +68,10 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
-import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 
 const { t } = useI18n();
 

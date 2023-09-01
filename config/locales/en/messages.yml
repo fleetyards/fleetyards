@@ -41,7 +41,10 @@ en:
       failure: Account could not be verified.
       success: Account successfully verified.
     signup:
+      already_signed_in: "You are already signed in."
+      username_invalid: Username is invalid.
       reserved_username: The Username is reserved/forbidden on FleetYards.net. Please choose something else!
+      blocked: "You have been blocked from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info@fleetyards.net"
     update:
       failure: "%{resource} could not be edited."
       success: "%{resource} edited successfully."

@@ -117,8 +117,8 @@
 
 <script lang="ts" setup>
 import FleetchartSlider from "@/frontend/components/Fleetchart/Slider/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
@@ -131,11 +131,11 @@ import {
   FleetchartViewpoints,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
-import { Vehicle, Model } from "@/services/fyApi";
+import { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 
 type Props = {
   namespace: string;
-  items?: Vehicle[] | Model[];
+  items?: (Vehicle | Model | VehiclePublic)[];
   myShip?: boolean;
   downloadName?: string;
 };

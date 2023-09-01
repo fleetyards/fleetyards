@@ -22,6 +22,7 @@
 import Panel from "@/shared/components/Panel/index.vue";
 import MembersListHead from "./MembersListHead/index.vue";
 import MembersListItem from "./MembersListItem/index.vue";
+import type { FleetMember } from "@/services/fyApi";
 
 type Props = {
   members: FleetMember[];

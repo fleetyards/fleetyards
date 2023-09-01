@@ -171,9 +171,9 @@
 // import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 // import wishlistCollection from "@/frontend/api/collections/Wishlist";
 import { displayConfirm } from "@/frontend/lib/Noty";
-import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
+import FilteredTable from "@/shared/components/FilteredTable/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import HangarEmptyTable from "@/frontend/components/HangarEmptyTable/index.vue";

@@ -1,11 +1,11 @@
 <template>
   <Btn
-    v-tooltip="!withLabel && t('actions.showStatusColor')"
+    v-tooltip="tooltip"
     :aria-label="t('actions.showStatusColor')"
     :variant="variant"
     :size="size"
     :inline="inline"
-    @click.native="toggleStatus"
+    @click="toggleStatus"
   >
     <i
       class="fad"
@@ -26,29 +26,57 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import type {
-  Props as BtnProps,
   BtnVariants,
   BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
+} from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useRoute } from "vue-router";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import type { RouteLocationRaw } from "vue-router";
 
-interface Props extends BtnProps {
+type Props = {
   withLabel?: boolean;
   variant?: BtnVariants;
   size?: BtnSizes;
   inline?: boolean;
-}
+  url: string;
+  title: string;
+  to?: RouteLocationRaw;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
+  exact?: boolean;
+  block?: boolean;
+  mobileBlock?: boolean;
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+  inGroup?: boolean;
+};
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
   filename: "fleetyards-screenshot",
   variant: "default",
   size: "default",
   inline: false,
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
+  exact: false,
+  block: false,
+  mobileBlock: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+  inGroup: false,
 });
 
 const { t } = useI18n();
@@ -59,14 +87,22 @@ const route = useRoute();
 
 const comlink = useComlink();
 
+const tooltip = computed(() => {
+  if (props.withLabel) {
+    return undefined;
+  }
+
+  return t("actions.showStatusColor");
+});
+
 onMounted(() => {
   showStatus.value = !!route.query?.showStatus;
 
-  comlink.$on("fleetchart-toggle-status", setShowStatus);
+  comlink.on("fleetchart-toggle-status", setShowStatus);
 });
 
 onBeforeUnmount(() => {
-  comlink.$off("fleetchart-toggle-status");
+  comlink.off("fleetchart-toggle-status");
 });
 
 const setShowStatus = () => {
@@ -74,7 +110,7 @@ const setShowStatus = () => {
 };
 
 const toggleStatus = () => {
-  comlink.$emit("fleetchart-toggle-status");
+  comlink.emit("fleetchart-toggle-status");
 };
 </script>
 

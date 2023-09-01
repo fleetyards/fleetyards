@@ -22,14 +22,9 @@
           <br />
 
           <small>
-            <router-link
-              :to="{
-                query: {
-                  q: filterManufacturerQuery(model.manufacturer.slug),
-                },
-              }"
-              v-html="model.manufacturer.name"
-            />
+            <router-link :to="manufacturerRoute">
+              {{ manufacturerName }}
+            </router-link>
           </small>
 
           <AddToHangar
@@ -46,6 +41,7 @@
         class="panel-image text-center"
       >
         <LazyImage
+          v-if="storeImage"
           :to="{ name: 'model', params: { slug: model.slug } }"
           :aria-label="model.name"
           :src="storeImage"
@@ -61,7 +57,7 @@
           </div>
         </LazyImage>
       </div>
-      <PanelDetails
+      <Collapsed
         :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
@@ -76,7 +72,7 @@
           </strong>
         </div>
         <ModelPanelMetrics :model="model" />
-      </PanelDetails>
+      </Collapsed>
     </Panel>
   </div>
 </template>
@@ -88,7 +84,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import PanelDetails from "@/shared/components/Panel/PanelDetails/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { Model } from "@/services/fyApi";
 
 type Props = {
   model: Model;
@@ -109,8 +106,18 @@ onMounted(() => {
   uuid.value = uuidv4();
 });
 
-const filterManufacturerQuery = (manufacturer: string) => ({
-  manufacturerIn: [manufacturer],
+const manufacturerName = computed(() => {
+  return props.model.manufacturer?.name;
+});
+
+const manufacturerRoute = computed(() => {
+  return {
+    query: {
+      q: {
+        manufacturerIn: [props.model.manufacturer?.slug],
+      } as unknown as string,
+    },
+  };
 });
 </script>
 

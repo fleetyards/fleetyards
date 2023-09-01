@@ -44,15 +44,15 @@
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { Fleet, FleetMemberCreateInput } from "@/services/fyApi";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useComlink } from "@/shared/composables/useComlink";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const { displayAlert } = useNoty(t);
 
@@ -76,7 +76,7 @@ const setupForm = () => {
   };
 };
 
-const { fleetMembers: fleetMembersService } = useFyApiClient(currentLocale);
+const { fleetMembers: fleetMembersService } = useApiClient();
 
 const comlink = useComlink();
 

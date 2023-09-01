@@ -68,12 +68,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
-import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import EmptyBox from "@/shared/components/EmptyBox/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 
 @Component<RoadmapChanges>({
   components: {

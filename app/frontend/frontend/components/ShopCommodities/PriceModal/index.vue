@@ -1,23 +1,20 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit }" :small="true" :slim="true">
-    <Modal v-if="form" :title="$t('headlines.modals.commodityPrice.create')">
-      <form
-        :id="`price-submission-${id}`"
-        @submit.prevent="handleSubmit(create)"
-      >
-        <p v-html="$t('texts.commodityPrice.info')"></p>
+    <Modal v-if="form" :title="t('headlines.modals.commodityPrice.create')">
+      <form id="price-submission-new" @submit.prevent="handleSubmit(create)">
+        <p v-html="t('texts.commodityPrice.info')"></p>
         <div class="row">
           <div class="col">
             <ValidationProvider
               v-slot="{ errors }"
               vid="stationSlug"
               rules="required"
-              :name="$t('labels.commodityPrice.station')"
+              :name="t('labels.commodityPrice.station')"
               :slim="true"
             >
               <CollectionFilterGroup
                 v-model="internalStationSlug"
-                :label="$t('labels.filters.shopCommodities.station')"
+                :label="t('labels.filters.shopCommodities.station')"
                 :collection="stationsCollection"
                 :error="errors[0]"
                 value-attr="slug"
@@ -33,13 +30,13 @@
               v-slot="{ errors }"
               vid="shopId"
               rules="required"
-              :name="$t('labels.commodityPrice.shopId')"
+              :name="t('labels.commodityPrice.shopId')"
               :slim="true"
             >
               <CollectionFilterGroup
                 :key="`shop-select-${internalStationSlug}`"
                 v-model="form.shopId"
-                :label="$t('labels.filters.shopCommodities.shopId')"
+                :label="t('labels.filters.shopCommodities.shopId')"
                 :collection="shopsCollection"
                 value-attr="id"
                 :collection-filter="shopsCollectionFilter"
@@ -58,12 +55,12 @@
               v-slot="{ errors }"
               vid="commodityItemType"
               rules="required"
-              :name="$t('labels.commodityPrice.commodityItemType')"
+              :name="t('labels.commodityPrice.commodityItemType')"
               :slim="true"
             >
               <CollectionFilterGroup
                 v-model="form.commodityItemType"
-                :label="$t('labels.filters.shopCommodities.commodityType')"
+                :label="t('labels.filters.shopCommodities.commodityType')"
                 :collection="shopCommodityTypesCollection"
                 :error="errors[0]"
                 name="commodityItemType"
@@ -75,7 +72,7 @@
               v-slot="{ errors }"
               vid="commodityItemId"
               rules="required"
-              :name="$t('labels.commodityPrice.commodityItemId')"
+              :name="t('labels.commodityPrice.commodityItemId')"
               :slim="true"
             >
               <CollectionFilterGroup
@@ -85,7 +82,7 @@
                 "
                 key="commodity-filter-group"
                 v-model="form.commodityItemId"
-                :label="$t('labels.filters.shopCommodities.commodity')"
+                :label="t('labels.filters.shopCommodities.commodity')"
                 :collection="commoditiesCollection"
                 name="equipment-commodityItemId"
                 value-attr="id"
@@ -98,7 +95,7 @@
                 v-if="form.commodityItemType === 'Component'"
                 key="component-filter-group"
                 v-model="form.commodityItemId"
-                :label="$t('labels.filters.shopCommodities.component')"
+                :label="t('labels.filters.shopCommodities.component')"
                 :collection="componentsCollection"
                 name="components-commodityItemId"
                 value-attr="id"
@@ -110,7 +107,7 @@
                 v-if="form.commodityItemType === 'Equipment'"
                 key="equipment-filter-group"
                 v-model="form.commodityItemId"
-                :label="$t('labels.filters.shopCommodities.equipment')"
+                :label="t('labels.filters.shopCommodities.equipment')"
                 :collection="equipmentCollection"
                 name="equipment-commodityItemId"
                 value-attr="id"
@@ -122,7 +119,7 @@
                 v-if="form.commodityItemType === 'Model'"
                 key="model-filter-group"
                 v-model="form.commodityItemId"
-                :label="$t('labels.filters.shopCommodities.model')"
+                :label="t('labels.filters.shopCommodities.model')"
                 :collection="modelsCollection"
                 name="models-commodityItemId"
                 value-attr="id"
@@ -134,7 +131,7 @@
                 v-if="form.commodityItemType === 'ModelModule'"
                 key="model-module-filter-group"
                 v-model="form.commodityItemId"
-                :label="$t('labels.filters.shopCommodities.modelModule')"
+                :label="t('labels.filters.shopCommodities.modelModule')"
                 :collection="modelModulesCollection"
                 name="modelModules-commodityItemId"
                 value-attr="id"
@@ -146,7 +143,7 @@
                 v-if="form.commodityItemType === 'ModelPaint'"
                 key="model-paint-filter-group"
                 v-model="form.commodityItemId"
-                :label="$t('labels.filters.shopCommodities.modelPaint')"
+                :label="t('labels.filters.shopCommodities.modelPaint')"
                 :collection="modelPaintsCollection"
                 name="modelPaints-commodityItemId"
                 value-attr="id"
@@ -165,14 +162,14 @@
               v-slot="{ errors }"
               vid="path"
               rules="required"
-              :name="$t('labels.commodityPrice.type')"
+              :name="t('labels.commodityPrice.type')"
               :slim="true"
             >
               <FilterGroup
                 v-model="form.path"
                 name="path"
                 :error="errors[0]"
-                :label="$t('labels.commodityPrice.type')"
+                :label="t('labels.commodityPrice.type')"
                 :options="pathOptions"
               />
             </ValidationProvider>
@@ -182,7 +179,7 @@
               v-slot="{ errors }"
               vid="price"
               rules="required|min_value:0.01"
-              :name="$t('labels.commodityPrice.price')"
+              :name="t('labels.commodityPrice.price')"
               :slim="true"
             >
               <FormInput
@@ -190,11 +187,11 @@
                 v-model="form.price"
                 translation-key="commodityPrice.price"
                 :error="errors[0]"
-                :label="$t('labels.commodityPrice.price')"
-                step="0.01"
-                min="0.01"
+                :label="t('labels.commodityPrice.price')"
+                :step="0.01"
+                :min="0.01"
                 type="number"
-                :suffix="$t('labels.uec')"
+                :suffix="t('labels.uec')"
               />
             </ValidationProvider>
           </div>
@@ -205,14 +202,14 @@
                 v-slot="{ errors }"
                 vid="timeRange"
                 rules="required"
-                :name="$t('labels.commodityPrice.timeRange')"
+                :name="t('labels.commodityPrice.timeRange')"
                 :slim="true"
               >
                 <CollectionFilterGroup
                   v-model="form.timeRange"
                   name="time-range"
                   :error="errors[0]"
-                  :label="$t('labels.filters.commodityPrice.timeRange')"
+                  :label="t('labels.filters.commodityPrice.timeRange')"
                   :collection="commodityPricesCollction"
                   collection-method="timeRanges"
                 />
@@ -224,13 +221,13 @@
       <template #footer>
         <div class="float-sm-right">
           <Btn
-            :form="`price-submission-${id}`"
+            form="price-submission-new"
             :loading="submitting"
             type="submit"
             size="large"
             :inline="true"
           >
-            {{ $t("actions.save") }}
+            {{ t("actions.save") }}
           </Btn>
         </div>
       </template>
@@ -238,151 +235,127 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import { displayAlert, displaySuccess } from "@/frontend/lib/Noty";
-import stationsCollection from "@/frontend/api/collections/Stations";
-import shopsCollection from "@/frontend/api/collections/Shops";
-import shopCommodityTypesCollection from "@/frontend/api/collections/ShopCommodityTypes";
-import modelsCollection from "@/frontend/api/collections/Models";
-import modelModulesCollection from "@/frontend/api/collections/ModelModules";
-import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
-import commoditiesCollection from "@/frontend/api/collections/Commodities";
-import componentsCollection from "@/frontend/api/collections/Components";
-import equipmentCollection from "@/frontend/api/collections/Equipment";
-import commodityPricesCollction from "@/frontend/api/collections/CommodityPrices";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import type { CommodityPriceInput, Shop } from "@/services/fyApi";
+import { CommodityPricePathEnum } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import type { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
 
-@Component<GroupModal>({
-  components: {
-    Modal,
-    Btn,
-    FormInput,
-    CollectionFilterGroup,
-    FilterGroup,
-  },
-})
-export default class PricesModal extends Vue {
-  @Prop({ default: null }) shopId!: string | null;
+type Props = {
+  shopId?: string;
+  stationSlug?: string;
+  shopTypes?: string[];
+  commodityItemType?: string;
+  pathOptions?: FilterGroupOption[];
+};
 
-  @Prop({ default: null }) stationSlug!: string | null;
+const props = withDefaults(defineProps<Props>(), {
+  shopId: undefined,
+  stationSlug: undefined,
+  shopTypes: undefined,
+  commodityItemType: undefined,
+  pathOptions: () => [],
+});
 
-  @Prop({ default: null }) shopTypes!: string[] | null;
+const { t } = useI18n();
 
-  @Prop({ default: null }) commodityItemType!: string | null;
+const { displayAlert, displaySuccess } = useNoty(t);
 
-  @Prop({ default: [] }) pathOptions!: FilterGroupItem[];
+const submitting = ref(false);
 
-  submitting = false;
+const form = ref<CommodityPriceInput>({});
 
-  form: CommodityPriceForm | null = null;
+const internalStationSlug = ref<string | undefined>();
 
-  stationsCollection: StationsCollection = stationsCollection;
+const stationsCollectionFilter = computed(() => {
+  return {
+    withShops: true,
+    commodityItemType: props.commodityItemType,
+  };
+});
 
-  shopsCollection: shopsCollection = shopsCollection;
+const shopsCollectionFilter = computed(() => {
+  return {
+    stationIn: [internalStationSlug.value],
+    commodityItemType: props.commodityItemType,
+  };
+});
 
-  shopCommodityTypesCollection: ShopCommodityTypesCollection =
-    shopCommodityTypesCollection;
-
-  modelsCollection: ModelsCollection = modelsCollection;
-
-  modelModulesCollection: ModelModulesCollection = modelModulesCollection;
-
-  modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection;
-
-  commoditiesCollection: CommoditiesCollection = commoditiesCollection;
-
-  componentsCollection: ComponentsCollection = componentsCollection;
-
-  equipmentCollection: EquipmentCollection = equipmentCollection;
-
-  commodityPricesCollction: CommodityPricesCollction = commodityPricesCollction;
-
-  internalStationSlug: string = null;
-
-  get stationsCollectionFilter() {
-    return {
-      withShops: true,
-      commodityItemType: this.commodityItemType,
-    };
-  }
-
-  get shopsCollectionFilter() {
-    return {
-      stationIn: [this.internalStationSlug],
-      commodityItemType: this.commodityItemType,
-    };
-  }
-
-  get id() {
-    return (this.hangarGroup && this.hangarGroup.id) || "new";
-  }
-
-  @Watch("internalStationSlug")
-  onInternalStationSlugChange(value) {
+watch(
+  () => internalStationSlug.value,
+  (value) => {
     if (!value) {
-      this.internalStationSlug = this.stationSlug;
+      internalStationSlug.value = props.stationSlug;
     }
 
-    this.form.shopId = this.shopId || null;
+    form.value.shopId = props.shopId || undefined;
+  },
+);
+
+watch(
+  () => props.commodityItemType,
+  () => {
+    form.value.commodityItemType = props.commodityItemType;
+    form.value.commodityItemId = undefined;
+  },
+);
+
+watch(
+  () => props.stationSlug,
+  () => {
+    internalStationSlug.value = props.stationSlug;
+  },
+);
+
+onMounted(() => {
+  internalStationSlug.value = props.stationSlug;
+
+  form.value = {
+    shopId: props.shopId,
+    commodityItemId: undefined,
+    path: CommodityPricePathEnum.SELL,
+    timeRange: undefined,
+    commodityItemType: props.commodityItemType,
+    price: undefined,
+  };
+});
+
+const comlink = useComlink();
+
+const create = async () => {
+  submitting.value = true;
+
+  const newCommodityPrice = await commodityPricesCollction.create(this.form);
+
+  submitting.value = false;
+
+  if (!newCommodityPrice.error) {
+    displaySuccess({
+      text: t("messages.commodityPrice.create.success"),
+    });
+    comlink.emit("close-modal");
+  } else {
+    displayAlert({ text: newCommodityPrice.error.message });
   }
+};
 
-  @Watch("form.commodityItemType")
-  onFormCommodityTypeChange() {
-    this.form.commodityItemId = null;
+const setDefaultShopId = (shops: Shop[]) => {
+  if (shops.length === 1) {
+    form.value.shopId = shops[0].id;
+  } else {
+    form.value.shopId = undefined;
   }
+};
+</script>
 
-  @Watch("commodityItemType")
-  onCommodityTypeChange() {
-    this.form.commodityItemType = this.commodityItemType;
-  }
-
-  @Watch("staationSlug")
-  onStationSlugChange() {
-    this.internalStationSlug = this.stationSlug;
-  }
-
-  mounted() {
-    this.internalStationSlug = this.stationSlug;
-
-    this.form = {
-      shopId: this.shopId,
-      commodityItemId: null,
-      path: "sell",
-      timeRange: null,
-      commodityItemType: this.commodityItemType,
-      price: null,
-    };
-  }
-
-  async create() {
-    this.submitting = true;
-
-    const newCommodityPrice = await commodityPricesCollction.create(this.form);
-
-    this.submitting = false;
-
-    if (!newCommodityPrice.error) {
-      displaySuccess({
-        text: this.$t("messages.commodityPrice.create.success"),
-      });
-      this.$comlink.$emit("close-modal");
-    } else {
-      displayAlert({ text: newCommodityPrice.error.message });
-    }
-  }
-
-  setDefaultShopId(shops) {
-    if (shops.length === 1) {
-      this.form.shopId = shops[0].id;
-    } else {
-      this.form.shopId = null;
-    }
-  }
-}
+<script lang="ts">
+export default {
+  name: "PricesModal",
+};
 </script>

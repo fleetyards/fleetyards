@@ -25,13 +25,13 @@
 </template>
 
 <script lang="ts" setup>
-import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import type {
   BtnSizes,
   BtnVariants,
-} from "@/shared/components/BaseBtn/index.vue";
+} from "@/shared/components/base/Btn/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 

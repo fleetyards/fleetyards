@@ -80,10 +80,10 @@
 
 <script lang="ts" setup>
 // import commodityPricesCollection from "@/admin/api/collections/CommodityPrices";
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import FormInput from "@/shared/components/Form/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import type { ShopCommodity } from "@/services/fyAdminApi";
 import { useI18n} from "@/frontend/composables/useI18n"
 

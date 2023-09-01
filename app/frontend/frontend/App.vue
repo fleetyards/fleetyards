@@ -38,12 +38,12 @@
 </template>
 
 <script lang="ts" setup>
-import AppNavigation from "@/frontend/core/components/AppNavigation/index.vue";
-import AppNavigationHeader from "@/frontend/core/components/AppNavigation/Header/index.vue";
-import AppNavigationMobile from "@/frontend/core/components/AppNavigation/Mobile/index.vue";
-import AppFooter from "@/frontend/core/components/AppFooter/index.vue";
+import AppNavigation from "@/frontend/components/core/AppNavigation/index.vue";
+import AppNavigationHeader from "@/frontend/components/core/AppNavigation/Header/index.vue";
+import AppNavigationMobile from "@/frontend/components/core/AppNavigation/Mobile/index.vue";
+import AppFooter from "@/frontend/components/core/AppFooter/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
-import AppShoppingCart from "@/frontend/core/components/AppShoppingCart/index.vue";
+import AppShoppingCart from "@/frontend/components/core/AppShoppingCart/index.vue";
 import BackgroundImage from "@/shared/components/BackgroundImage/index.vue";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useI18n } from "@/frontend/composables/useI18n";
@@ -60,7 +60,10 @@ import { useRoute } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useNProgress } from "@/shared/composables/useNProgress";
+
+useNProgress();
 
 const mobile = useMobile();
 
@@ -194,7 +197,7 @@ const setupLocale = () => {
 const openPrivacySettings = (settings = false) => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/core/components/PrivacySettings/index.vue"),
+      import("@/frontend/components/core/PrivacySettings/index.vue"),
     fixed: true,
     props: {
       settings,
@@ -222,8 +225,7 @@ const checkSessionReload = async () => {
   }
 };
 
-const { users: usersService, versions: versionsService } =
-  useFyApiClient(currentLocale);
+const { users: usersService, versions: versionsService } = useApiClient();
 
 const fetchCurrentUser = async () => {
   try {

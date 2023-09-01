@@ -5,7 +5,7 @@
         <div class="fleet-labels">
           <ModelClassLabels
             v-if="fleetStats"
-            :label="$t('labels.fleet.classes')"
+            :label="t('labels.fleet.classes')"
             :count-data="fleetStats.classifications"
             filter-key="classificationIn"
           />
@@ -13,66 +13,66 @@
       </div>
 
       <div v-if="fleetStats && fleetStats.metrics && !mobile" class="row">
-        <div class="col-12 fleet-metrics metrics-block" @click="toggleMoney">
+        <div
+          class="col-12 fleet-metrics metrics-block"
+          @click="fleetStore.toggleMoney"
+        >
           <div v-if="money" class="metrics-item">
             <div class="metrics-label">
-              {{ $t("labels.hangarMetrics.totalMoney") }}:
+              {{ t("labels.hangarMetrics.totalMoney") }}:
             </div>
             <div class="metrics-value">
-              {{ $toDollar(fleetStats.metrics.totalMoney) }}
+              {{ toDollar(fleetStats.metrics.totalMoney) }}
             </div>
           </div>
           <div v-if="money" class="metrics-item">
             <div class="metrics-label">
-              {{ $t("labels.hangarMetrics.totalCredits") }}:
+              {{ t("labels.hangarMetrics.totalCredits") }}:
             </div>
             <div class="metrics-value">
-              <span v-html="$toUEC(fleetStats.metrics.totalCredits)" />
+              <span v-html="toUEC(fleetStats.metrics.totalCredits)" />
             </div>
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t("labels.hangarMetrics.total") }}:
+              {{ t("labels.hangarMetrics.total") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.total, "ships") }}
+              {{ toNumber(fleetStats.total, "ships") }}
             </div>
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t("labels.hangarMetrics.totalMinCrew") }}:
+              {{ t("labels.hangarMetrics.totalMinCrew") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.metrics.totalMinCrew, "people") }}
+              {{ toNumber(fleetStats.metrics.totalMinCrew, "people") }}
             </div>
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t("labels.hangarMetrics.totalMaxCrew") }}:
+              {{ t("labels.hangarMetrics.totalMaxCrew") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.metrics.totalMaxCrew, "people") }}
+              {{ toNumber(fleetStats.metrics.totalMaxCrew, "people") }}
             </div>
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ $t("labels.hangarMetrics.totalCargo") }}:
+              {{ t("labels.hangarMetrics.totalCargo") }}:
             </div>
             <div class="metrics-value">
-              {{ $toNumber(fleetStats.metrics.totalCargo, "cargo") }}
+              {{ toNumber(fleetStats.metrics.totalCargo, "cargo") }}
             </div>
           </div>
         </div>
       </div>
 
       <FilteredList
-        key="fleet-ships"
-        :collection="collection"
-        :name="$route.name"
-        :route-query="$route.query"
-        :params="routeParams"
-        :hash="$route.hash"
-        :paginated="true"
+        name="fleet-ships"
+        :records="fleetVehicles?.items || []"
+        :loading="isLoading || isFetching"
+        primary-key="id"
         :hide-loading="fleetchartVisible"
       >
         <template #actions>
@@ -82,16 +82,16 @@
                 size="small"
                 variant="dropdown"
                 data-test="fleetchart-link"
-                @click.native="toggleFleetchart"
+                @click="toggleFleetchart"
               >
                 <i class="fad fa-starship" />
-                <span>{{ $t("labels.fleetchart") }}</span>
+                <span>{{ t("labels.fleetchart") }}</span>
               </Btn>
 
               <ShareBtn
                 v-if="fleet.publicFleet"
                 :url="shareUrl"
-                :title="metaTitle"
+                :title="shareTitle"
                 size="small"
                 variant="dropdown"
               />
@@ -103,37 +103,42 @@
               :aria-label="toggleDetailsTooltip"
               size="small"
               variant="dropdown"
-              @click.native="toggleDetails"
+              @click="fleetStore.toggleDetails"
             >
               <i class="fad fa-info-square" />
               <span>{{ toggleDetailsTooltip }}</span>
             </Btn>
 
-            <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
+            <Btn
+              size="small"
+              variant="dropdown"
+              @click="fleetStore.toggleGrouped"
+            >
               <template v-if="grouped">
                 <i class="fas fa-object-intersect" />
-                <span>{{ $t("actions.ungrouped") }}</span>
+                <span>{{ t("actions.ungrouped") }}</span>
               </template>
               <template v-else>
                 <i class="fas fa-object-union" />
-                <span>{{ $t("actions.groupedByModel") }}</span>
+                <span>{{ t("actions.groupedByModel") }}</span>
               </template>
             </Btn>
 
             <Btn
               size="small"
               variant="dropdown"
-              :aria-label="$t('actions.export')"
-              @click.native="exportJson"
+              :aria-label="t('actions.export')"
+              @click="exportJson"
             >
               <i class="fal fa-download" />
-              <span>{{ $t("actions.export") }}</span>
+              <span>{{ t("actions.export") }}</span>
             </Btn>
           </BtnDropdown>
         </template>
 
-        <FleetVehiclesFilterForm slot="filter" />
-
+        <template #filter>
+          <FleetVehiclesFilterForm />
+        </template>
         <template #default="{ records, loading, filterVisible, primaryKey }">
           <FilteredGrid
             :records="records"
@@ -151,10 +156,17 @@
           </FilteredGrid>
 
           <FleetchartApp
-            :items="records"
+            :items="fleetVehicles?.items || []"
             namespace="fleet"
             :loading="loading"
             :download-name="`${fleet.slug}-fleetchart`"
+          />
+        </template>
+        <template #pagination-bottom>
+          <Paginator
+            :pagination="pagination"
+            :per-page="perPage"
+            :update-per-page="updatePerPage"
           />
         </template>
       </FilteredList>
@@ -162,182 +174,201 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+<script lang="ts" setup>
+import type { Subscription } from "@rails/actioncable";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
 import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
-import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
-import fleetVehiclesCollection from "@/frontend/api/collections/FleetVehicles";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import type {
+  BaseList,
+  FleetVehicleQuery,
+  Fleet,
+  VehicleExport,
+} from "@/services/fyApi";
+import { usePagination } from "@/shared/composables/usePagination";
 import debounce from "lodash.debounce";
 import { format } from "date-fns";
-import { displayAlert } from "@/frontend/lib/Noty";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useFilters } from "@/shared/composables/useFilters";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useCable } from "@/shared/composables/useCable";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { storeToRefs } from "pinia";
 
-@Component<FleetShipsList>({
-  components: {
-    Btn,
-    BtnDropdown,
-    FilteredList,
-    FilteredGrid,
-    FleetVehiclePanel,
-    ModelClassLabels,
-    AddonsModal,
-    FleetchartApp,
-    FleetVehiclesFilterForm,
-    ShareBtn,
-  },
-})
-export default class FleetShipsList extends Vue {
-  collection: FleetVehiclesCollection = fleetVehiclesCollection;
+type Props = {
+  fleet: Fleet;
+  shareUrl: string;
+  shareTitle: string;
+};
 
-  fleetVehiclesChannel = null;
+const props = defineProps<Props>();
 
-  @Prop({ required: true }) fleet: Fleet;
+const { t, toDollar, toUEC, toNumber } = useI18n();
 
-  @Prop({ required: true }) shareUrl: string;
+const { displayAlert } = useNoty(t);
 
-  @Prop({ required: true }) metaTitle: string;
+const fleetVehiclesChannel = ref<Subscription>();
 
-  @Getter("mobile") mobile;
+const mobile = useMobile();
 
-  @Getter("grouped", { namespace: "fleet" }) grouped;
+const fleetStore = useFleetStore();
 
-  @Getter("money", { namespace: "fleet" }) money;
+const { grouped, money, detailsVisible } = storeToRefs(fleetStore);
 
-  @Getter("detailsVisible", { namespace: "fleet" }) detailsVisible;
+const fleetchartStore = useFleetchartStore();
 
-  @Getter("perPage", { namespace: "fleet" }) perPage;
+const fleetchartVisible = computed(() => {
+  return fleetchartStore.isVisible("fleet");
+});
 
-  @Getter("fleetchartVisible", { namespace: "fleet" }) fleetchartVisible;
+const toggleFleetchart = () => {
+  fleetchartStore.toggleFleetchart("fleet");
+};
 
-  @Action("toggleFleetchart", { namespace: "fleet" }) toggleFleetchart: any;
+const toggleDetailsTooltip = computed(() => {
+  if (detailsVisible.value) {
+    return t("actions.hideDetails");
+  }
+  return t("actions.showDetails");
+});
 
-  @Action("toggleDetails", { namespace: "fleet" }) toggleDetails: any;
+watch(
+  () => grouped.value,
+  () => refetch,
+);
 
-  @Action("toggleGrouped", { namespace: "fleet" }) toggleGrouped: any;
+watch(
+  () => props.fleet,
+  () => refetch,
+);
 
-  @Action("toggleMoney", { namespace: "fleet" }) toggleMoney: any;
+onMounted(() => {
+  setupUpdates();
+});
 
-  get fleetStats() {
-    return this.collection.stats;
+const { consumer } = useCable();
+
+const setupUpdates = () => {
+  if (fleetVehiclesChannel.value) {
+    fleetVehiclesChannel.value.unsubscribe();
   }
 
-  get modelCounts() {
-    return this.collection.modelCounts;
+  fleetVehiclesChannel.value = consumer.subscriptions.create(
+    {
+      channel: "FleetVehiclesChannel",
+    },
+    {
+      received: () => debounce(refetch, 500),
+    },
+  );
+};
+
+const { fleets: fleetService, fleetStats: fleetStatsService } = useApiClient();
+
+const exportJson = async () => {
+  try {
+    const exportedData = await fleetService.fleetVehiclesExport({
+      fleetSlug: String(route.params.slug),
+      q: routeQuery.value,
+    });
+
+    downloadExport(exportedData);
+  } catch (error) {
+    displayAlert({ text: t("messages.hangarExport.failure") });
+    console.error(error);
+  }
+};
+
+const downloadExport = (data?: VehicleExport[]) => {
+  if (!data || !window.URL) {
+    displayAlert({ text: t("messages.hangarExport.failure") });
+    return;
   }
 
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t("actions.hideDetails");
-    }
-    return this.$t("actions.showDetails");
-  }
+  const link = document.createElement("a");
 
-  get routeParams() {
-    return {
-      ...this.$route.params,
-      grouped: this.grouped,
-    };
-  }
+  link.href = window.URL.createObjectURL(
+    new Blob([data as unknown as BlobPart]),
+  );
 
-  get filters() {
-    return {
-      slug: this.fleet.slug,
-      filters: this.$route.query.q,
-      grouped: this.grouped,
-      page: this.$route.query.page,
-    };
-  }
+  link.setAttribute(
+    "download",
+    `fleetyards-${props.fleet.slug}-vehicles-${format(
+      new Date(),
+      "yyyy-MM-dd",
+    )}.json`,
+  );
 
-  @Watch("perPage")
-  onPerPageChange() {
-    this.fetch();
-  }
+  document.body.appendChild(link);
 
-  @Watch("grouped")
-  onGroupedChange() {
-    this.fetch();
-  }
+  link.click();
 
-  @Watch("$route")
-  onRouteChange() {
-    this.fetchStats();
-    this.fetchModelCounts();
-  }
+  document.body.removeChild(link);
+};
 
-  @Watch("fleet")
-  onFleetChange() {
-    this.fetchStats();
-    this.fetchModelCounts();
-  }
+const route = useRoute();
 
-  mounted() {
-    this.fetchStats();
-    this.fetchModelCounts();
-    this.setupUpdates();
-  }
+const { data: fleetStats, refetch: refetchFleetStats } = useQuery({
+  queryKey: ["fleet-ships-stats", props.fleet.slug],
+  queryFn: () =>
+    fleetStatsService.fleetVehiclesStats({
+      fleetSlug: String(route.params.slug),
+    }),
+});
 
-  setupUpdates() {
-    if (this.fleetVehiclesChannel) {
-      this.fleetVehiclesChannel.unsubscribe();
-    }
+const { data: modelCounts, refetch: refetchModelCounts } = useQuery({
+  queryKey: ["fleet-ships-counts", props.fleet.slug],
+  queryFn: () =>
+    fleetStatsService.fleetModelCounts({
+      fleetSlug: String(route.params.slug),
+      q: routeQuery.value,
+    }),
+});
 
-    this.fleetVehiclesChannel = this.$cable.consumer.subscriptions.create(
-      {
-        channel: "FleetVehiclesChannel",
-      },
-      {
-        received: debounce(this.fetch, 500),
-      },
-    );
-  }
+const refetch = () => {
+  refetchVehicles();
+  refetchModelCounts();
+  refetchFleetStats();
+};
 
-  async fetch() {
-    await this.collection.findAll(this.filters);
-    await this.fetchStats();
-  }
+const {
+  isLoading,
+  isFetching,
+  data: fleetVehicles,
+  refetch: refetchVehicles,
+} = useQuery({
+  queryKey: ["fleet-ships", props.fleet.slug],
+  queryFn: () =>
+    fleetService.fleetVehicles({
+      fleetSlug: String(route.params.slug),
+      page: page.value,
+      perPage: perPage.value,
+      q: routeQuery.value,
+    }),
+});
 
-  async fetchStats() {
-    await this.collection.findStats(this.filters);
-  }
+const { routeQuery } = useFilters<FleetVehicleQuery>(refetch);
 
-  async fetchModelCounts() {
-    await this.collection.findModelCounts(this.filters);
-  }
+const { perPage, page, pagination, updatePerPage } = usePagination(
+  "fleet-ships",
+  fleetVehicles as Ref<BaseList>,
+  refetch,
+);
+</script>
 
-  async exportJson() {
-    const exportedData = await this.collection.export(this.filters);
-
-    if (!exportedData || !window.URL) {
-      displayAlert({ text: this.$t("messages.hangarExport.failure") });
-      return;
-    }
-
-    const link = document.createElement("a");
-
-    link.href = window.URL.createObjectURL(new Blob([exportedData]));
-
-    link.setAttribute(
-      "download",
-      `fleetyards-${this.fleet.slug}-vehicles-${format(
-        new Date(),
-        "yyyy-MM-dd",
-      )}.json`,
-    );
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-  }
-}
+<script lang="ts">
+export default {
+  name: "FleetShipsList",
+};
 </script>

@@ -103,7 +103,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
 import FilterGroup2 from "@/frontend/core/components/Form/FilterGroup2/index.vue";
 import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
 import { useComlink } from "@/shared/composables/useComlink";

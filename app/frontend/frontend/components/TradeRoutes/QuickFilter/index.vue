@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 
 const form = ref({});
 

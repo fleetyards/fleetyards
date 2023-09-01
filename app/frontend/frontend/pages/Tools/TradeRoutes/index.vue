@@ -217,12 +217,12 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import { sortBy as sortByRoute } from "@/frontend/utils/Sorting";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import BtnGroup from "@/shared/components/BaseBtnGroup/index.vue";
-import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/TradeRoutes/FilterForm/index.vue";
 import QuickFilter from "@/frontend/components/TradeRoutes/QuickFilter/index.vue";
 import TradeRoutePrice from "@/frontend/components/TradeRoutes/Price/index.vue";

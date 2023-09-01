@@ -157,7 +157,7 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import VueUploadComponent from "vue-upload-component";
 import userCollection from "@/frontend/api/collections/User";

@@ -90,10 +90,10 @@
 <script lang="ts" setup>
 import FleetchartListPanzoom from "@/frontend/components/Fleetchart/ListPanzoom/index.vue";
 import FleetchartList from "@/frontend/components/Fleetchart/List/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import type { Vehicle, Model } from "@/services/fyApi";
+import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
@@ -104,7 +104,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 type Props = {
   namespace: string;
-  items: Vehicle[] | Model[];
+  items: (Vehicle | Model | VehiclePublic)[];
   myShip?: boolean;
   downloadName?: string;
   loading?: boolean;
@@ -120,7 +120,7 @@ const { t } = useI18n();
 
 const fleetchartStore = useFleetchartStore();
 
-const innerItems = ref<Vehicle[] | Model[]>([]);
+const innerItems = ref<(Vehicle | Model | VehiclePublic)[]>([]);
 
 const isOpen = ref(false);
 

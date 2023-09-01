@@ -167,10 +167,10 @@
 </template>
 
 <script lang="ts" setup>
-import RadioList from "@/shared/components/Form/RadioList/index.vue";
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
-import FormInput from "@/shared/components/Form/FormInput/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { FleetVehicleQuery } from "@/services/fyApi";

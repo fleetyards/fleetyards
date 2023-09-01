@@ -115,8 +115,8 @@
 </template>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { TradeRouteQuery } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";

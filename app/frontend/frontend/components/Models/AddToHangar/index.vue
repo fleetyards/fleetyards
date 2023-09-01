@@ -1,12 +1,12 @@
 <template>
   <Btn
     :key="`add-to-hangar-${model.slug}`"
-    v-tooltip.bottom="$t('actions.addToHangar')"
+    v-tooltip.bottom="t('actions.addToHangar')"
     :variant="btnVariant"
     :size="btnSize"
     :inline="variant === 'menu'"
     data-test="add-to-hangar"
-    @click.native="add"
+    @click="add"
   >
     <span v-show="inHangar || onWishlist">
       <i class="fa fa-bookmark" />
@@ -17,76 +17,84 @@
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displayWarning } from "@/frontend/lib/Noty";
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import type { Model } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { useWishlistStore } from "@/frontend/stores/wishlist";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useNoty } from "@/shared/composables/useNoty";
 
-@Component<AddToHangar>({
-  components: {
-    Btn,
-  },
-})
-export default class AddToHangar extends Vue {
-  @Prop({ required: true }) model: Model;
+type Props = {
+  model: Model;
+  variant?: "default" | "panel" | "menu";
+};
 
-  @Prop({
-    default: "default",
-    validator(value) {
-      return ["default", "panel", "menu"].includes(value);
-    },
-  })
-  variant: string;
+const props = withDefaults(defineProps<Props>(), {
+  variant: "default",
+});
 
-  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated;
+const { t } = useI18n();
 
-  @Getter("ships", { namespace: "hangar" }) ships;
+const { displayWarning } = useNoty(t);
 
-  @Getter("ships", { namespace: "wishlist" }) wishlistShips;
+const sessionStore = useSessionStore();
 
-  get inHangar() {
-    return !!(this.ships || []).find((item) => item === this.model.slug);
+const hangarStore = useHangarStore();
+
+const wishlistStore = useWishlistStore();
+
+const inHangar = computed(() => {
+  return !!(hangarStore.ships || []).find((item) => item === props.model.slug);
+});
+
+const onWishlist = computed(() => {
+  return !!(wishlistStore.ships || []).find(
+    (item) => item === props.model.slug,
+  );
+});
+
+const btnVariant = computed(() => {
+  if (["panel", "menu"].includes(props.variant)) {
+    return "link";
   }
 
-  get onWishlist() {
-    return !!(this.wishlistShips || []).find(
-      (item) => item === this.model.slug,
-    );
+  return "default";
+});
+
+const btnSize = computed(() => {
+  if (["panel", "menu"].includes(props.variant)) {
+    return "small";
   }
 
-  get btnVariant() {
-    if (["panel", "menu"].includes(this.variant)) {
-      return "link";
-    }
+  return "default";
+});
 
-    return "default";
-  }
+const comlink = useComlink();
 
-  get btnSize() {
-    if (["panel", "menu"].includes(this.variant)) {
-      return "small";
-    }
-
-    return "default";
-  }
-
-  async add() {
-    if (!this.isAuthenticated) {
-      displayWarning({
-        text: this.$t("messages.error.hangar.accountRequired"),
-      });
-      return;
-    }
-
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Models/AddToHangarModal/index.vue"),
-      props: {
-        model: this.model,
-      },
+const add = async () => {
+  if (!sessionStore.isAuthenticated) {
+    displayWarning({
+      text: t("messages.error.hangar.accountRequired"),
     });
+
+    return;
   }
-}
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/AddToHangarModal/index.vue"),
+    props: {
+      model: props.model,
+    },
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "AddToHangar",
+};
 </script>

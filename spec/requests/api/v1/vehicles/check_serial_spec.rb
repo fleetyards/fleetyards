@@ -18,15 +18,15 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/VehicleCheckSerialInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/VehicleCheckSerialResponse"
+        schema "$ref": "#/components/schemas/Check"
 
         let(:user) { users :data }
-        let(:data) do
+        let(:input) do
           {
-            serial: "1234567890"
+            value: "1234567890"
           }
         end
 
@@ -44,7 +44,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:data) { nil }
+        let(:input) { nil }
 
         run_test!
       end

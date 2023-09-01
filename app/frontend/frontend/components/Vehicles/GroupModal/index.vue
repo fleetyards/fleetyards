@@ -80,7 +80,7 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
 import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";

@@ -116,16 +116,14 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import RoadmapItem from "@/frontend/components/Roadmap/RoadmapItem/index.vue";
-import EmptyBox from "@/frontend/core/components/EmptyBox/index.vue";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import EmptyBox from "@/shared/components/EmptyBox/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { useCable } from "@/shared/composables/useCable";
 import type { Subscription } from "@rails/actioncable";
 import { useI18n } from "@/frontend/composables/useI18n";
-import modelsCollection from "@/frontend/api/collections/Models";
-import roadmapItemsCollection from "@/frontend/api/collections/RoadmapItems";
 
 const { t } = useI18n();
 const loading = ref(true);

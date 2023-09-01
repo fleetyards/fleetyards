@@ -138,7 +138,7 @@
 //     <Loader v-if="!loaded" :loading="!loaded" :fixed="true" />
 //   </div>
 // import FleetchartItem from "@/frontend/components/Fleetchart/ListPanzoom/Item/index.vue";
-// import Btn from "@/frontend/core/components/Btn/index.vue";
+// import Btn from "@/shared/components/base/Btn/index.vue";
 // import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 // import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 // import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";

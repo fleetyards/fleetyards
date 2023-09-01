@@ -13,14 +13,15 @@ import validationError from "./validationError";
 import datetime from "./datetime";
 import number from "./number";
 import paginator from "@/shared/components/Paginator/translations/en";
-import baseBtn from "@/shared/components/BaseBtn/translations/en";
+import baseBtn from "@/shared/components/base/Btn/translations/en";
 import appModal from "@/shared/components/AppModal/translations/en";
 import chart from "@/shared/components/Chart/translations/en";
 import filteredList from "@/shared/components/FilteredList/translations/en";
 import filteredTable from "@/shared/components/FilteredTable/translations/en";
 import emptyBox from "@/shared/components/EmptyBox/translations/en";
-import filterGroup from "@/shared/components/Form/FilterGroup/translations/en";
+import filterGroup from "@/shared/components/base/FilterGroup/translations/en";
 import models from "@/shared/translations/en/models";
+import validations from "@/shared/translations/en/validations";
 
 export default {
   ...main,
@@ -37,6 +38,7 @@ export default {
   validation_error: validationError,
   datetime,
   number,
+  validations: validations,
   ...paginator,
   ...baseBtn,
   ...appModal,

@@ -335,7 +335,7 @@
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
@@ -344,10 +344,10 @@ import { useNoty } from "@/shared/composables/useNoty";
 import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
-import { useFyApiClient } from "@/shared/composables/useFyApiClient";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const { displayInfo, displaySuccess, displayWarning, displayAlert } =
   useNoty(t);
@@ -540,7 +540,7 @@ const fetchRSIHangar = (htmlPage: string) => {
   }
 };
 
-const { hangar: hangarService } = useFyApiClient(currentLocale);
+const { hangar: hangarService } = useApiClient();
 
 const finishSync = async () => {
   updateStep("submitData", "processing");

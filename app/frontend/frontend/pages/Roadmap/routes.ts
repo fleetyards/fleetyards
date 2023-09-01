@@ -2,6 +2,14 @@ import type { RouteRecordRaw } from "vue-router";
 
 export const routes: RouteRecordRaw[] = [
   {
+    path: "",
+    name: "roadmap",
+    component: () => import("@/frontend/pages/Roadmap/index.vue"),
+    meta: {
+      title: "roadmap.index",
+    },
+  },
+  {
     path: "changes/",
     name: "roadmap-changes",
     component: () => import("@/frontend/pages/Roadmap/Changes/index.vue"),

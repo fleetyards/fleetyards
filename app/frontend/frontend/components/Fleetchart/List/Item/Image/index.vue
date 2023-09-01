@@ -22,7 +22,7 @@ type Props = {
   label: string;
   width: number;
   height?: number;
-  maxWidth?: number;
+  maxWidth?: string;
 };
 
 withDefaults(defineProps<Props>(), {

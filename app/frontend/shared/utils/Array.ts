@@ -13,18 +13,15 @@ export const uniqByField =
 export const sum = (list: number[]) =>
   list.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-export const groupBy = (
-  list: Record<string, string | number>[],
-  key: string,
-) => {
+export const groupBy = <T>(list: T[], key: keyof T) => {
   return list.reduce(
     (result, item) => {
-      const group = item[key];
+      const group = item[key] as string;
       result[group] = [...result[group]];
       result[group].push(item);
       return result;
     },
-    {} as Record<string, Record<string, string | number>[]>,
+    {} as Record<string, T[]>,
   );
 };
 

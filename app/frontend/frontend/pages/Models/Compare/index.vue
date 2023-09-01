@@ -107,12 +107,12 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import modelsCollection from "@/frontend/api/collections/Models";
 import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
-import Box from "@/frontend/core/components/Box/index.vue";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import CollectionFilterGroup from "@/shared/components/base/CollectionFilterGroup/index.vue";
+import Box from "@/shared/components/Box/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TopViewRows from "@/frontend/components/Compare/Models/TopView/index.vue";
 import BaseRows from "@/frontend/components/Compare/Models/Base/index.vue";
 import CrewRows from "@/frontend/components/Compare/Models/Crew/index.vue";

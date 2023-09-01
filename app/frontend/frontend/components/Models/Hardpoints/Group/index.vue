@@ -1,7 +1,7 @@
 <template>
   <div v-if="hardpoints.length" class="hardpoint-group">
     <h2 v-if="!withoutTitle" class="hardpoint-group-label">
-      {{ $t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
+      {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
     </h2>
     <Panel>
       <div class="hardpoint-group-inner">
@@ -12,11 +12,11 @@
         >
           <div class="hardpoint-type-label">
             <img
-              :src="icons[type]"
+              :src="icons[type as keyof typeof icons]"
               class="hardpoint-type-icon"
               :alt="`icon-${type}`"
             />
-            {{ $t(`labels.hardpoint.types.${type}`) }}
+            {{ t(`labels.hardpoint.types.${type}`) }}
           </div>
           <div class="hardpoint-items">
             <HardpointItems
@@ -31,10 +31,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { groupBy, sortBy } from "@/frontend/lib/Helpers";
+<script lang="ts" setup>
+import { groupBy, sortBy } from "@/shared/utils/Array";
 import radarIconUrl from "@/images/hardpoints/radar.svg";
 import computersIconUrl from "@/images/hardpoints/computers.svg";
 import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
@@ -55,67 +53,56 @@ import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import Panel from "@/shared/components/Panel/index.vue";
 import HardpointItems from "../Items/index.vue";
+import type { ModelHardpoint, ModelHardpointGroupEnum } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<HardpointGroup>({
-  components: {
-    HardpointItems,
-    Panel,
-  },
-})
-export default class HardpointGroup extends Vue {
-  @Prop({ required: true }) group: HardpointGroup;
+type Props = {
+  group: ModelHardpointGroupEnum;
+  hardpoints: ModelHardpoint[];
+  withoutTitle: boolean;
+};
 
-  @Prop({ required: true }) hardpoints: ModelHardpoint[];
+withDefaults(defineProps<Props>(), {
+  withoutTitle: false,
+});
 
-  @Prop({ default: false }) withoutTitle: boolean;
+const { t } = useI18n();
 
-  icons = {
-    radar: radarIconUrl,
-    computers: computersIconUrl,
-    power_plants: powerPlantsIconUrl,
-    coolers: coolersIconUrl,
-    shield_generators: shieldGeneratorsIconUrl,
-    fuel_intakes: fuelIntakesIconUrl,
-    fuel_tanks: fuelTanksIconUrl,
-    quantum_drives: quantumDrivesIconUrl,
-    jump_modules: jumpModulesIconUrl,
-    quantum_fuel_tanks: quantumFuelTanksIconUrl,
-    main_thrusters: mainThrustersIconUrl,
-    maneuvering_thrusters: maneuveringThrustersIconUrl,
-    weapons: weaponsIconUrl,
-    turrets: turretsIconUrl,
-    missiles: missilesIconUrl,
-    utility_items: utilityItemsIconUrl,
-    qed: qedIconUrl,
-    emp: empIconUrl,
-  };
+const icons = {
+  radar: radarIconUrl,
+  computers: computersIconUrl,
+  power_plants: powerPlantsIconUrl,
+  coolers: coolersIconUrl,
+  shield_generators: shieldGeneratorsIconUrl,
+  fuel_intakes: fuelIntakesIconUrl,
+  fuel_tanks: fuelTanksIconUrl,
+  quantum_drives: quantumDrivesIconUrl,
+  jump_modules: jumpModulesIconUrl,
+  quantum_fuel_tanks: quantumFuelTanksIconUrl,
+  main_thrusters: mainThrustersIconUrl,
+  maneuvering_thrusters: maneuveringThrustersIconUrl,
+  weapons: weaponsIconUrl,
+  turrets: turretsIconUrl,
+  missiles: missilesIconUrl,
+  utility_items: utilityItemsIconUrl,
+  qed: qedIconUrl,
+  emp: empIconUrl,
+};
 
-  grouped(type) {
-    return ["main_thrusters", "maneuvering_thrusters"].includes(type);
-  }
+const groupByType = (hardpoints: ModelHardpoint[]) => {
+  return groupBy<ModelHardpoint>(
+    sortBy<ModelHardpoint>(hardpoints, "type"),
+    "type",
+  );
+};
 
-  groupByType(hardpoints) {
-    return groupBy(sortBy(hardpoints, "type"), "type");
-  }
+const groupByKey = (hardpoints: ModelHardpoint[]) => {
+  return groupBy(sortBy(hardpoints, "category"), "key");
+};
+</script>
 
-  groupByKey(hardpoints) {
-    return groupBy(sortBy(hardpoints, "category"), "key");
-  }
-
-  openComponentModal(hardpoint) {
-    if (!hardpoint.component) {
-      return;
-    }
-
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import(
-          "@/frontend/components/Models/Hardpoints/ComponentModal/index.vue"
-        ),
-      props: {
-        hardpoint,
-      },
-    });
-  }
-}
+<script lang="ts">
+export default {
+  name: "HardpointGroup",
+};
 </script>

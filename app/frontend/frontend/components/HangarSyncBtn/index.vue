@@ -15,31 +15,57 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import type {
-  Props as BtnProps,
   BtnVariants,
   BtnSizes,
-} from "@/shared/components/BaseBtn/index.vue";
+} from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useRouter, useRoute } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import type { RouteLocationRaw } from "vue-router";
 
-interface Props extends BtnProps {
+type Props = {
   variant?: BtnVariants;
   size?: BtnSizes;
-}
+  inline?: boolean;
+  to?: RouteLocationRaw;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
+  exact?: boolean;
+  block?: boolean;
+  mobileBlock?: boolean;
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+  inGroup?: boolean;
+};
 
 withDefaults(defineProps<Props>(), {
   variant: "default",
   size: "default",
+  inline: false,
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
+  exact: false,
+  block: false,
+  mobileBlock: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+  inGroup: false,
 });
 
 const { t } = useI18n();
-
-const loading = ref(false);
 
 const mobile = useMobile();
 

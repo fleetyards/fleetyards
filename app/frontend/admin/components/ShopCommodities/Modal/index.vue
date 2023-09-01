@@ -183,7 +183,7 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 // import shopCommodityCollection from "@/admin/api/collections/ShopCommodities";
 // import modelsCollection from "@/admin/api/collections/Models";
 // import commoditiesCollection from "@/admin/api/collections/Commodities";
@@ -194,8 +194,8 @@ import Btn from "@/shared/components/BaseBtn/index.vue";
 // import componentItemTypeFiltersCollection from "@/admin/api/collections/ComponentItemTypeFilters";
 // import equipmentTypeFiltersCollection from "@/admin/api/collections/EquipmentTypeFilters";
 // import equipmentSlotFiltersCollection from "@/admin/api/collections/EquipmentSlotFilters";
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
-import type { FilterGroupOption } from "@/shared/components/Form/FilterGroup/Option/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import type { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import type { ShopCommodity, ShopCommodityInput } from "@/services/fyAdminApi";
 

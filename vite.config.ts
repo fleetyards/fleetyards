@@ -3,7 +3,7 @@ import { defineConfig, splitVendorChunkPlugin } from "vite";
 import ViteRails from "vite-plugin-rails";
 import Vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
-// import Components from "unplugin-vue-components/vite";
+import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import browserslistToEsbuild from "browserslist-to-esbuild";
 
@@ -12,7 +12,7 @@ const cache: { [key: string]: string } = {};
 export const accessEnv = (key: string, defaultValue?: string): string => {
   if (cache[key]) return cache[key];
 
-  if (!(key in process.env) || typeof process.env[key] === undefined) {
+  if (!(key in process.env) || process.env[key] === undefined) {
     if (defaultValue) return defaultValue;
     throw new Error(`${key} not found in process.env!`);
   }
@@ -43,20 +43,20 @@ export default defineConfig({
         navigateFallback: null,
       },
     }),
-    // Components({
-    //   // generate `components.d.ts` global declarations
-    //   // https://github.com/antfu/unplugin-vue-components#typescript
-    //   dts: true,
-    //   directoryAsNamespace: true,
-    //   types: [
-    //     {
-    //       from: "vue-router",
-    //       names: ["RouterLink", "RouterView"],
-    //     },
-    //   ],
-    //   // relative paths to the directory to search for components.
-    //   dirs: ["frontend/components", "frontend/core/components"],
-    // }),
+    Components({
+      // generate `components.d.ts` global declarations
+      // https://github.com/antfu/unplugin-vue-components#typescript
+      dts: true,
+      directoryAsNamespace: true,
+      types: [
+        {
+          from: "vue-router",
+          names: ["RouterLink", "RouterView"],
+        },
+      ],
+      // relative paths to the directory to search for components.
+      dirs: ["shared/components/base"],
+    }),
     AutoImport({
       dts: true,
       // fix eslint complaining about missing imports

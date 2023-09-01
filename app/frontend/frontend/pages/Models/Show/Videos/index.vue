@@ -50,9 +50,9 @@
 </template>
 
 <script lang="ts" setup>
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import VideoEmbed from "@/frontend/core/components/Video/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import VideoEmbed from "@/shared/components/Video/index.vue";
 
 // data() {
 //   return {

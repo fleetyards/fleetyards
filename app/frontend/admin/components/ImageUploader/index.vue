@@ -114,7 +114,7 @@
 import VueUploadComponent from "vue-upload-component";
 import type { VueUploadItem } from "vue-upload-component";
 import { useNoty } from "@/shared/composables/useNoty";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 import type { Image } from "@/services/fyAdminApi";

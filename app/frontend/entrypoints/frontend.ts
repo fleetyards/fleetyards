@@ -9,7 +9,7 @@ import sentry from "@/shared/plugins/Sentry";
 import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
 import VueLazyload from "vue-lazyload";
-import veeValidate from "@/shared/plugins/VeeValidate";
+import veeValidate from "@/frontend/plugins/VeeValidate";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 

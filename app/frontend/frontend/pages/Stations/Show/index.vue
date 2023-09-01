@@ -84,7 +84,7 @@
 
 <script lang="ts" setup>
 import Loader from "@/shared/components/Loader/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import { stationRouteGuard } from "@/frontend/utils/RouteGuards/Stations";

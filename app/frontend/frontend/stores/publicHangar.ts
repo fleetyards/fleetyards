@@ -9,15 +9,6 @@ export const usePublicHangarStore = defineStore("publicHangar", {
   state: (): PublicHangarState => ({
     detailsVisible: false,
     filterVisible: true,
-    fleetchartVisible: false,
-    fleetchartZoomData: undefined,
-    fleetchartViewpoint: "side",
-    fleetchartLabels: false,
-    fleetchartScreenHeight: "1x",
-    fleetchartMode: "panzoom",
-    fleetchartScale: 1,
-    fleetchartColor: false,
-    perPage: 30,
     ships: [],
   }),
   getters: {
@@ -32,15 +23,6 @@ export const usePublicHangarStore = defineStore("publicHangar", {
     toggleFilter() {
       this.filterVisible = !this.filterVisible;
     },
-    toggleFleetchart() {
-      this.fleetchartVisible = !this.fleetchartVisible;
-    },
-    toggleColored() {
-      this.fleetchartColor = !this.fleetchartColor;
-    },
-    updatePerPage(payload: number) {
-      this.perPage = payload;
-    },
     save(payload: string[]) {
       this.ships = payload;
     },
@@ -52,19 +34,6 @@ export const usePublicHangarStore = defineStore("publicHangar", {
     },
   },
   persist: {
-    paths: [
-      "ships",
-      "detailsVisible",
-      "fleetchartVisible",
-      "fleetchartScale",
-      "fleetchartZoomData",
-      "fleetchartViewpoint",
-      "fleetchartLabels",
-      "fleetchartScreenHeight",
-      "fleetchartMode",
-      "fleetchartScale",
-      "fleetchartColor",
-      "perPage",
-    ],
+    paths: ["ships", "detailsVisible"],
   },
 });

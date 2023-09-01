@@ -14,15 +14,6 @@ export const useHangarStore = defineStore("hangar", {
   state: (): HangarState => ({
     detailsVisible: false,
     filterVisible: true,
-    fleetchartVisible: false,
-    fleetchartZoomData: undefined,
-    fleetchartViewpoint: "side",
-    fleetchartLabels: false,
-    fleetchartScreenHeight: "1x",
-    fleetchartMode: "panzoom",
-    fleetchartScale: 1,
-    fleetchartColor: false,
-    perPage: 30,
     money: true,
     ships: [],
     preview: true,
@@ -44,15 +35,6 @@ export const useHangarStore = defineStore("hangar", {
     },
     toggleMoney() {
       this.money = !this.money;
-    },
-    toggleFleetchart() {
-      this.fleetchartVisible = !this.fleetchartVisible;
-    },
-    toggleColored() {
-      this.fleetchartColor = !this.fleetchartColor;
-    },
-    updatePerPage(payload: number) {
-      this.perPage = payload;
     },
     hidePreview() {
       this.preview = false;
@@ -85,19 +67,9 @@ export const useHangarStore = defineStore("hangar", {
     paths: [
       "ships",
       "detailsVisible",
-      "fleetchartVisible",
-      "fleetchartScale",
-      "fleetchartZoomData",
-      "fleetchartViewpoint",
-      "fleetchartLabels",
-      "fleetchartScreenHeight",
-      "fleetchartMode",
-      "fleetchartScale",
-      "fleetchartColor",
       "preview",
       "money",
       "starterGuideVisible",
-      "perPage",
       "gridView",
     ],
   },

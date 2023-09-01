@@ -15,7 +15,7 @@
         :class="{
           active: isActive(classification.name),
         }"
-        @click.native="filter(classification.name)"
+        @click="filter(classification.name)"
       >
         {{ classification.label }}
         <span class="label-count">{{ classification.count }}</span>
@@ -43,11 +43,10 @@
 </template>
 
 <script lang="ts" setup>
-import BtnDropdown from "@/shared/components/BaseBtnDropdown/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useRoute, useRouter } from "vue-router";
-import { useI18n } from "@/frontend/composables/useI18n";
 
 type Props = {
   countData: {
@@ -66,15 +65,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const mobile = useMobile();
 
-const { t } = useI18n();
-
 const route = useRoute();
 
 const router = useRouter();
-
-const allLabel = computed(() => {
-  return props.label || t("labels.fleet.size");
-});
 
 const filter = (filter: string) => {
   if (!props.filterKey) {
@@ -109,6 +102,7 @@ const isActive = (classification: string) => {
     return false;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const classFilter = (route.query.q as Record<string, any>)[props.filterKey];
   if (!classFilter) {
     return false;

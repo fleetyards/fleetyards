@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import Box from "@/shared/components/BaseBox/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Box from "@/shared/components/base/Box/index.vue";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 const i18n = inject<I18nPluginOptions>("i18n");

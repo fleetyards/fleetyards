@@ -121,9 +121,9 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { uniq as uniqArray } from "@/shared/utils/Array";
-import Checkbox from "@/shared/components/Form/Checkbox/index.vue";
+import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import Panel from "@/shared/components/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";

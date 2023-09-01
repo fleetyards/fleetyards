@@ -45,13 +45,14 @@ import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 import {
   Model,
   Vehicle,
+  VehiclePublic,
   ModelPaint,
   ModelModulePackage,
 } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 type Props = {
-  item: Model | Vehicle;
+  item: Vehicle | Model | VehiclePublic;
   viewpoint: FleetchartViewpoints;
   showLabel: boolean;
   showStatus: boolean;

@@ -1,25 +1,23 @@
 <template>
-  <Modal :title="(component && component.name) || ''">
+  <Modal :title="title">
     <div v-if="component" class="col-12 metrics-block">
       <div class="row">
         <div class="col-6">
-          <div class="metrics-label">{{ $t("component.size") }}:</div>
+          <div class="metrics-label">{{ t("component.size") }}:</div>
           <div class="metrics-value">
             {{ component.size }}
           </div>
-          <div class="metrics-label">{{ $t("component.manufacturer") }}:</div>
-          <div class="metrics-value" v-html="component.manufacturer.name" />
+          <div class="metrics-label">{{ t("component.manufacturer") }}:</div>
+          <div class="metrics-value" v-html="component.manufacturer?.name" />
         </div>
         <div v-if="hardpoint.type === 'missiles'" class="col-6">
-          <div class="metrics-label">
-            {{ $t("labels.hardpoint.rackSize") }}:
-          </div>
+          <div class="metrics-label">{{ t("labels.hardpoint.rackSize") }}:</div>
           <div class="metrics-value">
             {{ hardpoint.size }}
           </div>
         </div>
         <div v-if="hardpoint.details" class="col-6">
-          <div class="metrics-label">{{ $t("labels.hardpoint.details") }}:</div>
+          <div class="metrics-label">{{ t("labels.hardpoint.details") }}:</div>
           <div class="metrics-value">
             {{ hardpoint.details }}
           </div>
@@ -30,21 +28,30 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import type { ModelHardpoint } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
 
-@Component<Support>({
-  components: {
-    Modal,
-  },
-})
-export default class Support extends Vue {
-  @Prop({ required: true }) hardpoint: Hardpoint;
+const { t } = useI18n();
 
-  get component() {
-    return this.hardpoint.component;
-  }
-}
+type Props = {
+  hardpoint: ModelHardpoint;
+};
+
+const props = defineProps<Props>();
+
+const component = computed(() => {
+  return props.hardpoint.component;
+});
+
+const title = computed(() => {
+  return component.value?.name || "";
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelHardpointsComponentModal",
+};
 </script>

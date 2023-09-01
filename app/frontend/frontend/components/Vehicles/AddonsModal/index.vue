@@ -76,7 +76,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import modelModulesCollection from "@/frontend/api/collections/ModelModules";
 import modelModulePackagesCollection from "@/frontend/api/collections/ModelModulePackages";

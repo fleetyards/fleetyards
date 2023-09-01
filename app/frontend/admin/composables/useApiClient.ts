@@ -10,18 +10,19 @@ const languageHeader = () => {
   };
 };
 
-export const useApiClient = () =>
-  new FyAdminApi({
-    BASE: `${window.ADMIN_API_ENDPOINT}`,
-    WITH_CREDENTIALS: true,
-    HEADERS: () => {
-      return new Promise((resolve) => {
-        resolve({
-          ...languageHeader(),
-          "X-CSRF-Token": csrfToken(),
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        });
+const apiClient = new FyAdminApi({
+  BASE: `${window.ADMIN_API_ENDPOINT}`,
+  WITH_CREDENTIALS: true,
+  HEADERS: () => {
+    return new Promise((resolve) => {
+      resolve({
+        ...languageHeader(),
+        "X-CSRF-Token": csrfToken(),
+        Accept: "application/json",
+        "Content-Type": "application/json",
       });
-    },
-  });
+    });
+  },
+});
+
+export const useApiClient = () => apiClient;

@@ -128,14 +128,14 @@
 </template>
 
 <script lang="ts" setup>
-import AddToCartBtn from "@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue";
-import type { ShopCommodityMinimal } from "@/services/fyApi";
+import AddToCartBtn from "@/frontend/components/core/AppShoppingCart/AddToCartBtn/index.vue";
+import type { ShopCommodity } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 const { t, toUEC, toNumber } = useI18n();
 
 type Props = {
-  commodity: ShopCommodityMinimal;
+  commodity: ShopCommodity;
   rental?: boolean;
   selling?: boolean;
   buying?: boolean;

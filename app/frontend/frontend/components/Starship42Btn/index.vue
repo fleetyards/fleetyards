@@ -18,24 +18,39 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import type {
-  Props as BtnProps,
   BtnVariants,
   BtnSizes,
-} from "@/shared/components/BaseBtn/index.vue";
+} from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import type { Vehicle, Model } from "@/services/fyApi";
+import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import type { RouteLocationRaw } from "vue-router";
 
-interface Props extends BtnProps {
-  items: Vehicle[] | Model[];
+type Props = {
+  items: (Vehicle | Model | VehiclePublic)[];
   withIcon?: boolean;
   block?: boolean;
   inline?: boolean;
   variant?: BtnVariants;
   size?: BtnSizes;
-}
+  url: string;
+  title: string;
+  to?: RouteLocationRaw;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
+  exact?: boolean;
+  mobileBlock?: boolean;
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+  inGroup?: boolean;
+};
 
 const props = withDefaults(defineProps<Props>(), {
   withIcon: false,
@@ -43,6 +58,18 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   variant: "default",
   size: "default",
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
+  exact: false,
+  mobileBlock: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+  inGroup: false,
 });
 
 const basePath = "https://starship42.com/fleetview/";

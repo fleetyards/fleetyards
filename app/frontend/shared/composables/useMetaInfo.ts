@@ -157,5 +157,7 @@ export const useMetaInfo = (t: I18nPluginOptions["t"]) => {
 
   return {
     updateMetaInfo,
+    getCurrentMetaInfo,
+    getTitle,
   };
 };

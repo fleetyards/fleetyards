@@ -70,10 +70,10 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
-import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FilteredTable from "@/shared/components/FilteredTable/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useQuery } from "@tanstack/vue-query";

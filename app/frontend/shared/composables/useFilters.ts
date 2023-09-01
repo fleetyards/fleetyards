@@ -32,7 +32,7 @@ export const useFilters = <T>(
     return query;
   };
 
-  const routeQuery = computed(() => (route.query[routeQueryKey] || {}) as T);
+  const routeQuery = computed<T>(() => (route.query[routeQueryKey] || {}) as T);
 
   const isFilterSelected = computed(() => {
     const query = getQuery(routeQuery.value);
@@ -42,7 +42,8 @@ export const useFilters = <T>(
 
   const router = useRouter();
 
-  const debouncedFilter = (filter: Event) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const debouncedFilter = (filter: any) => {
     router
       .replace({
         name: route.name || undefined,

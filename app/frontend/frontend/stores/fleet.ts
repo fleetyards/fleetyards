@@ -12,15 +12,6 @@ export const useFleetStore = defineStore("fleet", {
   state: (): FleetState => ({
     detailsVisible: false,
     filterVisible: true,
-    fleetchartVisible: false,
-    fleetchartZoomData: undefined,
-    fleetchartViewpoint: "side",
-    fleetchartLabels: false,
-    fleetchartScreenHeight: "1x",
-    fleetchartMode: "panzoom",
-    fleetchartScale: 1,
-    fleetchartColor: false,
-    perPage: 30,
     money: true,
     grouped: true,
     preview: true,
@@ -36,15 +27,6 @@ export const useFleetStore = defineStore("fleet", {
     toggleMoney() {
       this.money = !this.money;
     },
-    toggleFleetchart() {
-      this.fleetchartVisible = !this.fleetchartVisible;
-    },
-    toggleColored() {
-      this.fleetchartColor = !this.fleetchartColor;
-    },
-    updatePerPage(payload: number) {
-      this.perPage = payload;
-    },
     toggleGrouped() {
       this.grouped = !this.grouped;
     },
@@ -59,22 +41,6 @@ export const useFleetStore = defineStore("fleet", {
     },
   },
   persist: {
-    paths: [
-      "detailsVisible",
-      "fleetchartVisible",
-      "fleetchartScale",
-      "fleetchartZoomData",
-      "fleetchartViewpoint",
-      "fleetchartLabels",
-      "fleetchartScreenHeight",
-      "fleetchartMode",
-      "fleetchartScale",
-      "fleetchartColor",
-      "grouped",
-      "money",
-      "preview",
-      "inviteToken",
-      "perPage",
-    ],
+    paths: ["detailsVisible", "grouped", "money", "preview", "inviteToken"],
   },
 });

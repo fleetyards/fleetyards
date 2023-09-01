@@ -74,11 +74,11 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useRoute } from "vue-router";
-import FormInput from "@/shared/components/Form/FormInput/index.vue";
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
-import type { FilterGroupParams } from "@/shared/components/Form/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 import { useI18n } from "@/admin/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import type { ShopCommodityQuery } from "@/services/fyAdminApi";

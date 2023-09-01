@@ -84,7 +84,8 @@
           :fleet-slug="fleetSlug"
         />
       </div>
-      <PanelDetails
+
+      <Collapsed
         :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
@@ -99,7 +100,7 @@
           </strong>
         </div>
         <ModelPanelMetrics :model="model" />
-      </PanelDetails>
+      </Collapsed>
     </Panel>
   </div>
 </template>
@@ -109,7 +110,7 @@ import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import PanelDetails from "@/shared/components/Panel/PanelDetails/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import type {
   VehiclePublic,
   Model,

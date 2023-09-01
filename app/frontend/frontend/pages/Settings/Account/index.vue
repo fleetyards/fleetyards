@@ -90,7 +90,7 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 import { useNoty } from "@/shared/composables/useNoty";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 // import userCollection from "@/frontend/api/collections/User";
 import SecurePage from "@/frontend/core/components/SecurePage/index.vue";

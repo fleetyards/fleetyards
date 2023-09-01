@@ -6,7 +6,9 @@ export interface FleetyardsNotyOptions extends Noty.Options {
   icon?: string;
   catergory?: string;
   notifyInBackground?: boolean;
+  timeout?: number | false;
   onConfirm?: () => void;
+  onCancel?: () => void;
   onClose?: () => void;
 }
 
@@ -163,7 +165,7 @@ const displayNotification = (options: FleetyardsNotyOptions) => {
   }
 };
 
-export const useNoty = (t?: I18nPluginOptions["t"]) => {
+export const useNoty = (t: I18nPluginOptions["t"]) => {
   const displaySuccess = function success(options: FleetyardsNotyOptions) {
     displayNotification({
       ...options,

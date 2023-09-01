@@ -58,15 +58,17 @@
 </template>
 
 <script lang="ts" setup>
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { PasswordInput } from "@/services/fyApi";
+import { useNoty } from "@/shared/composables/useNoty";
 
 const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useNoty(t);
 
 const submitting = ref(false);
 

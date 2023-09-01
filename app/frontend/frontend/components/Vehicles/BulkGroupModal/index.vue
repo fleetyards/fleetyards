@@ -46,8 +46,8 @@
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Checkbox from "@/shared/components/Form/Checkbox/index.vue";
-import Btn from "@/shared/components/BaseBtn/index.vue";
+import Checkbox from "@/shared/components/base/Checkbox/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 // import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 // import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 import type { HangarGroup } from "@/services/fyApi";

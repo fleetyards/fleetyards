@@ -61,7 +61,7 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 
 const i18n = inject<I18nPluginOptions>("i18n");
 
-const { displayAlert, displaySuccess } = useNoty(i18n?.t);
+const { displayAlert, displaySuccess } = useNoty(i18n!.t);
 
 type GalleryItem = {
   url: string;

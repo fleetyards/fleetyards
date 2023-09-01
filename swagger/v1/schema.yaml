@@ -421,7 +421,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/FleetCheck"
+                "$ref": "#/components/schemas/Check"
         '401':
           description: unauthorized
           content:
@@ -432,7 +432,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/FleetCheckInput"
+              "$ref": "#/components/schemas/CheckInput"
         required: true
   "/fleets":
     post:
@@ -1935,11 +1935,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  oneOf:
-                  - "$ref": "#/components/schemas/Model"
-                  - "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/FleetVehicles"
         '404':
           description: not found
           content:
@@ -3543,11 +3539,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  oneOf:
-                  - "$ref": "#/components/schemas/Model"
-                  - "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/FleetPublicVehicles"
         '404':
           description: not found
           content:
@@ -4389,6 +4381,78 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/TradeRoute"
+  "/users/check-email":
+    post:
+      summary: Check E-Mail Availability
+      operationId: checkEmail
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Check"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
+        required: true
+  "/users/check-username":
+    post:
+      summary: Check Username Availability
+      operationId: checkUsername
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Check"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
+        required: true
+  "/users/signup":
+    post:
+      summary: Create new User
+      operationId: signup
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserCreateInput"
+        required: true
   "/users/current":
     get:
       summary: My Data
@@ -4479,7 +4543,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/VehicleCheckSerialResponse"
+                "$ref": "#/components/schemas/Check"
         '401':
           description: unauthorized
           content:
@@ -4490,7 +4554,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/VehicleCheckSerialInput"
+              "$ref": "#/components/schemas/CheckInput"
         required: true
   "/vehicles":
     post:
@@ -5006,6 +5070,15 @@ components:
       - items
       - meta
       title: BaseList
+    Check:
+      type: object
+      properties:
+        taken:
+          type: boolean
+      additionalProperties: false
+      required:
+      - taken
+      title: Check
     Commodity:
       type: object
       properties:
@@ -5224,6 +5297,13 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    CommodityPricePathEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      title: CommodityPricePathEnum
     CommodityTypeEnum:
       type: string
       enum:
@@ -5720,6 +5800,13 @@ components:
       - type
       - typeLabel
       title: HabitationCount
+    CheckInput:
+      type: object
+      properties:
+        value:
+          type: string
+      additionalProperties: false
+      title: CheckInput
     Manufacturer:
       type: object
       properties:
@@ -6328,15 +6415,6 @@ components:
       - createdAt
       - updatedAt
       title: Fleet
-    FleetCheck:
-      type: object
-      properties:
-        taken:
-          type: boolean
-      additionalProperties: false
-      required:
-      - taken
-      title: FleetCheck
     FleetInviteUrl:
       type: object
       properties:
@@ -6486,6 +6564,40 @@ components:
       required:
       - modelCounts
       title: FleetModelCountsStats
+    FleetPublicVehicles:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            oneOf:
+            - "$ref": "#/components/schemas/Model"
+            - "$ref": "#/components/schemas/VehiclePublic"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: FleetPublicVehicles
+    FleetVehicles:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            oneOf:
+            - "$ref": "#/components/schemas/Model"
+            - "$ref": "#/components/schemas/VehiclePublic"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: FleetVehicles
     FleetVehiclesStats:
       type: object
       properties:
@@ -6851,28 +6963,21 @@ components:
     CommodityPriceInput:
       type: object
       properties:
+        price:
+          type: number
         commodityItemId:
           type: string
           format: uuid
         commodityItemType:
           type: string
         path:
-          type: string
-          enum:
-          - buy
-          - sell
-          - rental
+          "$ref": "#/components/schemas/CommodityPricePathEnum"
         shopId:
           type: string
           format: uuid
         timeRange:
           type: string
       additionalProperties: false
-      required:
-      - commodityItemId
-      - commodityItemType
-      - path
-      - shopId
       title: CommodityPriceInput
     ConfirmAccessInput:
       type: object
@@ -7072,16 +7177,34 @@ components:
           type: string
         rememberMe:
           type: boolean
+        twoFactorCode:
+          type: string
       additionalProperties: false
-      required:
-      - login
-      - password
       title: SessionInput
     SyncRsiHangarInput:
       type: array
       items:
         "$ref": "#/components/schemas/RsiHangarItemInput"
       title: SyncRsiHangarInput
+    UserCreateInput:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          min: 8
+        passwordConfirmation:
+          type: string
+        saleNotify:
+          type: boolean
+        fleetInviteToken:
+          type: string
+      additionalProperties: false
+      title: UserCreateInput
     VehicleBulkDestroyInput:
       type: object
       properties:
@@ -7276,7 +7399,7 @@ components:
         group:
           "$ref": "#/components/schemas/ModelHardpointGroupEnum"
         itemSlots:
-          type: string
+          type: integer
         key:
           type: string
         loadoutIdentifier:
@@ -9350,7 +9473,7 @@ components:
         lastVersionChangedAtLabel:
           type: string
         lastVersion:
-          type: string
+          "$ref": "#/components/schemas/RoadmapItemChangeset"
         storeImage:
           type: string
           deprecated: true
@@ -9382,6 +9505,24 @@ components:
       - lastVersionChangedAt
       - lastVersionChangedAtLabel
       title: RoadmapItem
+    RoadmapItemChangeset:
+      type: object
+      properties:
+        release:
+          type: array
+          items:
+            type: string
+            nullable: true
+        committed:
+          type: array
+          items:
+            type: boolean
+        active:
+          type: array
+          items:
+            type: boolean
+      additionalProperties: false
+      title: RoadmapItemChangeset
     RoadmapWeek:
       type: object
       properties:

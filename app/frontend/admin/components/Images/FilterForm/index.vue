@@ -32,9 +32,9 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/BaseBtn/index.vue";
-import FilterGroup from "@/shared/components/Form/FilterGroup/index.vue";
-import type { FilterGroupParams } from "@/shared/components/Form/FilterGroup/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 import { useRoute } from "vue-router";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/admin/composables/useI18n";
