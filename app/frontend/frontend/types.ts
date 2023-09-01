@@ -33,13 +33,4 @@ export type ZoomData = {
 export interface ShipListState {
   detailsVisible: boolean;
   filterVisible: boolean;
-  fleetchartVisible: boolean;
-  fleetchartZoomData?: ZoomData;
-  fleetchartViewpoint: "side" | "top" | "angled";
-  fleetchartLabels: boolean;
-  fleetchartScreenHeight: "1x" | "1_5x" | "2x" | "3x" | "4x";
-  fleetchartMode: "panzoom" | "classic";
-  fleetchartScale: number;
-  fleetchartColor: boolean;
-  perPage: number;
 }

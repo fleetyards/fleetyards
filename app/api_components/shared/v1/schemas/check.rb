@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module V1
-  module Schemas
-    module Fleets
-      class FleetCheck
+module Shared
+  module V1
+    module Schemas
+      class Check
         include SchemaConcern
 
         schema({

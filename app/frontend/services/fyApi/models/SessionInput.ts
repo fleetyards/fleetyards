@@ -7,8 +7,9 @@ export type SessionInput = {
     /**
      * Username or email
      */
-    login: string;
-    password: string;
+    login?: string;
+    password?: string;
     rememberMe?: boolean;
+    twoFactorCode?: string;
 };
 

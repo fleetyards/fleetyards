@@ -9,14 +9,14 @@ module V1
         schema({
           type: :object,
           properties: {
+            price: {type: :number},
             commodityItemId: {type: :string, format: :uuid},
             commodityItemType: {type: :string},
-            path: {type: :string, enum: %w[buy sell rental]},
+            path: {"$ref": "#/components/schemas/CommodityPricePathEnum"},
             shopId: {type: :string, format: :uuid},
             timeRange: {type: :string}
           },
-          additionalProperties: false,
-          required: %w[commodityItemId commodityItemType path shopId]
+          additionalProperties: false
         })
       end
     end

@@ -36,7 +36,7 @@ module V1
           model: {"$ref": "#/components/schemas/Model"},
           lastVersionChangedAt: {type: :string, format: "date-time"},
           lastVersionChangedAtLabel: {type: :string},
-          lastVersion: {type: :string},
+          lastVersion: {"$ref": "#/components/schemas/RoadmapItemChangeset"},
 
           # DEPRECATED
 

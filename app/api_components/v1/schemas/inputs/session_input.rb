@@ -11,10 +11,10 @@ module V1
           properties: {
             login: {type: :string, description: "Username or email"},
             password: {type: :string},
-            rememberMe: {type: :boolean}
+            rememberMe: {type: :boolean},
+            twoFactorCode: {type: :string}
           },
-          additionalProperties: false,
-          required: %w[login password]
+          additionalProperties: false
         })
       end
     end

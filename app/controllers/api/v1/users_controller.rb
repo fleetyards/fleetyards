@@ -40,13 +40,29 @@ module Api
       end
 
       def signup
+        if current_user.present?
+          render json: {code: "already_signed_in", message: I18n.t("messages.signup.already_signed_in")}, status: :unprocessable_entity
+          return
+        end
+
         if blocked(user_create_params[:email])
-          render json: {code: "blocked"}, status: :bad_request
+          render json: {code: "blocked", message: I18n.t("messages.signup.blocked")}, status: :unprocessable_entity
           return
         end
 
         if reserved_name(user_create_params[:username])
-          render json: {code: "reserved_username", message: I18n.t("messages.signup.reserved_username")}, status: :bad_request
+          render json: {
+            code: "reserved_username",
+            message: I18n.t("messages.signup.reserved_username"),
+            errors: [
+              {
+                attribute: "username",
+                messages: [{
+                  message: I18n.t("messages.signup.username_invalid")
+                }]
+              }
+            ]
+          }, status: :bad_request
           return
         end
 
@@ -58,10 +74,11 @@ module Api
 
         if @user.save
           handle_fleet_invite(@user.id, fleet_invite_token) if fleet_invite_token.present?
-          return
-        end
 
-        render json: ValidationError.new("signup", errors: @user.errors), status: :bad_request
+          render "api/v1/users/signup", status: :created
+        else
+          render json: ValidationError.new("signup", errors: @user.errors), status: :bad_request
+        end
       end
 
       def confirm
@@ -75,12 +92,12 @@ module Api
 
       def check_email
         authorize! :check, :api_users
-        render json: {emailTaken: User.exists?(normalized_email: (user_create_params[:email] || "").downcase)}
+        render json: {taken: User.exists?(normalized_email: (params[:value] || "").downcase)}
       end
 
       def check_username
         authorize! :check, :api_users
-        render json: {usernameTaken: User.exists?(normalized_username: (user_create_params[:username] || "").downcase)}
+        render json: {taken: User.exists?(normalized_username: (params[:value] || "").downcase)}
       end
 
       def destroy
@@ -118,7 +135,7 @@ module Api
 
         blocklist = JSON.parse(Rails.root.join("blocklist.json").read)
 
-        blocklist.include?(email.downcase.strip)
+        blocklist.include?(email&.downcase&.strip)
       end
 
       private def reserved_name(username)
@@ -126,7 +143,7 @@ module Api
 
         reserved_usernames = JSON.parse(Rails.root.join("reserved_usernames.json").read)
 
-        reserved_usernames.include?(username.downcase.strip)
+        reserved_usernames.include?(username&.downcase&.strip)
       end
 
       private def handle_fleet_invite(user_id, fleet_invite_token)

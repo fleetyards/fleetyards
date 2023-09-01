@@ -2,14 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Check } from '../models/Check';
+import type { CheckInput } from '../models/CheckInput';
 import type { Hangar } from '../models/Hangar';
 import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { Vehicle } from '../models/Vehicle';
 import type { VehicleBulkDestroyInput } from '../models/VehicleBulkDestroyInput';
 import type { VehicleBulkUpdateInput } from '../models/VehicleBulkUpdateInput';
-import type { VehicleCheckSerialInput } from '../models/VehicleCheckSerialInput';
-import type { VehicleCheckSerialResponse } from '../models/VehicleCheckSerialResponse';
 import type { VehicleCreateInput } from '../models/VehicleCreateInput';
 import type { VehicleExport } from '../models/VehicleExport';
 import type { VehicleUpdateInput } from '../models/VehicleUpdateInput';
@@ -65,14 +65,14 @@ export class VehiclesService {
 
     /**
      * Check Vehicle Serial
-     * @returns VehicleCheckSerialResponse successful
+     * @returns Check successful
      * @throws ApiError
      */
     public vehicleCheckSerial({
         requestBody,
     }: {
-        requestBody: VehicleCheckSerialInput,
-    }): CancelablePromise<VehicleCheckSerialResponse> {
+        requestBody: CheckInput,
+    }): CancelablePromise<Check> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/vehicles/check-serial',

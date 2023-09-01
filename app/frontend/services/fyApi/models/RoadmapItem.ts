@@ -5,6 +5,7 @@
 
 import type { MediaImage } from './MediaImage';
 import type { Model } from './Model';
+import type { RoadmapItemChangeset } from './RoadmapItemChangeset';
 
 export type RoadmapItem = {
     id: string;
@@ -27,7 +28,7 @@ export type RoadmapItem = {
     model?: Model;
     lastVersionChangedAt: string;
     lastVersionChangedAtLabel: string;
-    lastVersion?: string;
+    lastVersion?: RoadmapItemChangeset;
     /**
      * @deprecated
      */

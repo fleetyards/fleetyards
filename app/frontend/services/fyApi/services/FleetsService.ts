@@ -2,14 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Check } from '../models/Check';
+import type { CheckInput } from '../models/CheckInput';
 import type { Fleet } from '../models/Fleet';
-import type { FleetCheck } from '../models/FleetCheck';
-import type { FleetCheckInput } from '../models/FleetCheckInput';
 import type { FleetCreateInput } from '../models/FleetCreateInput';
 import type { FleetMember } from '../models/FleetMember';
 import type { FleetModelCountsStats } from '../models/FleetModelCountsStats';
+import type { FleetPublicVehicles } from '../models/FleetPublicVehicles';
 import type { FleetUpdateInput } from '../models/FleetUpdateInput';
 import type { FleetVehicleQuery } from '../models/FleetVehicleQuery';
+import type { FleetVehicles } from '../models/FleetVehicles';
 import type { FleetVehiclesStats } from '../models/FleetVehiclesStats';
 import type { Model } from '../models/Model';
 import type { VehicleExport } from '../models/VehicleExport';
@@ -24,14 +26,14 @@ export class FleetsService {
 
     /**
      * Check Fleet FID Availability
-     * @returns FleetCheck successful
+     * @returns Check successful
      * @throws ApiError
      */
     public checkFid({
         requestBody,
     }: {
-        requestBody: FleetCheckInput,
-    }): CancelablePromise<FleetCheck> {
+        requestBody: CheckInput,
+    }): CancelablePromise<Check> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/fleets/check',
@@ -405,7 +407,7 @@ export class FleetsService {
 
     /**
      * Fleet Vehicles List
-     * @returns any successful
+     * @returns FleetVehicles successful
      * @throws ApiError
      */
     public fleetVehicles({
@@ -425,7 +427,7 @@ export class FleetsService {
         q?: FleetVehicleQuery,
         grouped?: boolean,
         cacheId?: string,
-    }): CancelablePromise<Array<(Model | VehiclePublic)>> {
+    }): CancelablePromise<FleetVehicles> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/fleets/{fleetSlug}/vehicles',
@@ -508,7 +510,7 @@ export class FleetsService {
 
     /**
      * Public Fleet Vehicles List
-     * @returns any successful
+     * @returns FleetPublicVehicles successful
      * @throws ApiError
      */
     public publicFleetVehicles({
@@ -528,7 +530,7 @@ export class FleetsService {
         q?: FleetVehicleQuery,
         grouped?: boolean,
         cacheId?: string,
-    }): CancelablePromise<Array<(Model | VehiclePublic)>> {
+    }): CancelablePromise<FleetPublicVehicles> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/fleets/{fleetSlug}/vehicles',

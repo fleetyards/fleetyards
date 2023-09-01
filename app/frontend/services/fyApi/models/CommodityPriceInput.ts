@@ -3,22 +3,14 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CommodityPricePathEnum } from './CommodityPricePathEnum';
+
 export type CommodityPriceInput = {
-    commodityItemId: string;
-    commodityItemType: string;
-    path: CommodityPriceInput.path;
-    shopId: string;
+    price?: number;
+    commodityItemId?: string;
+    commodityItemType?: string;
+    path?: CommodityPricePathEnum;
+    shopId?: string;
     timeRange?: string;
 };
-
-export namespace CommodityPriceInput {
-
-    export enum path {
-        BUY = 'buy',
-        SELL = 'sell',
-        RENTAL = 'rental',
-    }
-
-
-}
 

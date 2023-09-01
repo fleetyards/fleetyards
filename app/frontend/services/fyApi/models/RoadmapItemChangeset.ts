@@ -3,7 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type FleetCheck = {
-    taken: boolean;
+export type RoadmapItemChangeset = {
+    release?: Array<string | null>;
+    committed?: Array<boolean>;
+    active?: Array<boolean>;
 };
 
