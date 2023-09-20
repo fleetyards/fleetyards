@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/PikachuEXE/redis-store.git
-  revision: c395440c3a846657697999ef0c9345037991e7aa
-  branch: fix/redis-client-compatibility
-  specs:
-    redis-store (1.9.2)
-      redis (>= 4, < 6)
-
-GIT
   remote: https://github.com/r38y/griddler-postmark.git
   revision: 55904355a44066d94c24b49613a22e1face387a5
   specs:
@@ -518,6 +510,8 @@ GEM
     redis-rack (2.1.4)
       rack (>= 2.0.8, < 3)
       redis-store (>= 1.2, < 2)
+    redis-store (1.9.2)
+      redis (>= 4, < 6)
     regexp_parser (2.8.1)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -811,7 +805,7 @@ DEPENDENCIES
   rdoc
   redcarpet
   redis-actionpack
-  redis-store!
+  redis-store
   responders
   rollups
   rqrcode

@@ -57,7 +57,7 @@ gem "rqrcode"
 gem "useragent"
 
 gem "redis-actionpack"
-gem "redis-store", github: "PikachuEXE/redis-store", branch: "fix/redis-client-compatibility"
+gem "redis-store"
 
 gem "ransack", "~> 2.4"
 
