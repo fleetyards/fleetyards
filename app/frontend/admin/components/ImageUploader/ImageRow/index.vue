@@ -120,10 +120,13 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import debounce from "lodash.debounce";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { useApiClient } from "@/admin/composables/useApiClient";
 
 type Image = {
   id: string;
 };
+
+const { images: imagesService } = useApiClient();
 
 @Component<ImageRow>({
   components: {
@@ -170,47 +173,70 @@ export default class ImageRow extends Vue {
   async toggleEnabled() {
     this.updating = true;
     this.internalImage.enabled = !this.internalImage.enabled;
-    const response = await this.$api.put(`images/${this.internalImage.id}`, {
-      enabled: this.internalImage.enabled,
-    });
 
-    this.updating = false;
-
-    if (response.error) {
+    try {
+      await imagesService.updateImage({
+        id: this.internalImage.id,
+        requestBody: {
+          enabled: this.internalImage.enabled,
+        },
+      });
+    } catch (error) {
+      console.error(error);
       this.internalImage.enabled = !this.internalImage.enabled;
     }
+
+    this.updating = false;
   }
 
   async toggleGlobal() {
     this.updating = true;
     this.internalImage.global = !this.internalImage.global;
-    const response = await this.$api.put(`images/${this.internalImage.id}`, {
-      global: this.internalImage.global,
-    });
 
-    this.updating = false;
-
-    if (response.error) {
+    try {
+      await imagesService.updateImage({
+        id: this.internalImage.id,
+        requestBody: {
+          enabled: this.internalImage.global,
+        },
+      });
+    } catch (error) {
+      console.error(error);
       this.internalImage.global = !this.internalImage.global;
     }
+
+    this.updating = false;
   }
 
   async deleteImage() {
     this.deleting = true;
-    const response = await this.$api.destroy(`images/${this.internalImage.id}`);
 
-    if (!response.error) {
+    try {
+      await imagesService.destroy({
+        id: this.internalImage.id,
+      });
+
       this.$emit("image-deleted", this.internalImage);
-      this.deleting = false;
+    } catch (error) {
+      console.error(error);
     }
+
+    this.deleting = false;
   }
 
   async debouncedUpdateCaption() {
     this.updating = true;
 
-    await this.$api.put(`images/${this.internalImage.id}`, {
-      caption: this.internalImage.caption,
-    });
+    try {
+      await imagesService.updateImage({
+        id: this.internalImage.id,
+        requestBody: {
+          caption: this.internalImage.caption,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
 
     this.updating = false;
   }

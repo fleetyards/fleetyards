@@ -46,7 +46,7 @@ export default class AdminModelImages extends Vue {
 
   get routeParams() {
     return {
-      galleryType: "models",
+      galleryType: "Model",
       galleryId: this.galleryId,
     };
   }
