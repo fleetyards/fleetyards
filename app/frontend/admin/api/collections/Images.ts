@@ -1,4 +1,3 @@
-import { get } from "@/admin/api/client";
 import BaseCollection from "@/frontend/api/collections/Base";
 import { useApiClient } from "@/admin/composables/useApiClient";
 import type { Image } from "@/services/fyAdminApi/models/Image";
@@ -45,16 +44,19 @@ export class AdminImagesCollection extends BaseCollection {
   }
 
   async findAllForGallery(params: AdminGalleryParams): Promise<Image[]> {
-    const response = await get(
-      `${params.galleryType}/${params.galleryId}/images`,
-      {
-        page: params.page,
-      }
-    );
+    try {
+      const response = await images.images({
+        q: {
+          galleryTypeEq: params.galleryType,
+          galleryIdEq: params.galleryId,
+        },
+        page: params?.page ? String(params?.page) : undefined,
+      });
 
-    if (!response.error) {
-      this.records = response.data;
-      this.setPages(response.meta || undefined);
+      this.records = response.items;
+      this.setPages(response.meta?.pagination);
+    } catch (error) {
+      console.error(error);
     }
 
     return this.records;

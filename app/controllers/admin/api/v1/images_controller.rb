@@ -15,7 +15,7 @@ module Admin
 
           @images = @q.result
             .page(params.fetch(:page, nil))
-            .per(40)
+            .per(params.fetch(:per_page, nil))
         end
 
         def create

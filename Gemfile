@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby File.read(".ruby-version").chomp
 
-gem "rails", "7.0.7.2"
+gem "rails", "7.0.8"
 
 gem "pg", "~> 1.0"
 
@@ -57,7 +57,7 @@ gem "rqrcode"
 gem "useragent"
 
 gem "redis-actionpack"
-gem "redis-store", github: "PikachuEXE/redis-store", branch: "fix/redis-client-compatibility"
+gem "redis-store"
 
 gem "ransack", "~> 2.4"
 
