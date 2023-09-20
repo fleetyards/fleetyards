@@ -510,7 +510,7 @@ GEM
     redis-rack (2.1.4)
       rack (>= 2.0.8, < 3)
       redis-store (>= 1.2, < 2)
-    redis-store (1.9.2)
+    redis-store (1.10.0)
       redis (>= 4, < 6)
     regexp_parser (2.8.1)
     request_store (1.5.1)
