@@ -1,6 +1,5 @@
 import Vue from "vue";
 import * as Sentry from "@sentry/vue";
-import { BrowserTracing } from "@sentry/tracing";
 import router from "@/frontend/lib/Router";
 
 if (window.SENTRY_DSN) {
@@ -10,18 +9,20 @@ if (window.SENTRY_DSN) {
     release: window.GIT_REVISION,
     dsn: window.SENTRY_DSN,
     integrations: [
-      new BrowserTracing({
+      new Sentry.BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-        tracingOrigins: [
-          "localhost",
-          "fleetyards.test",
-          "stage.fleetyards.net",
-          "fleetyards.dev",
-          "fleetyards.net",
-          /^\//,
-        ],
       }),
+      new Sentry.Replay(),
     ],
+    tracePropagationTargets: [
+      "localhost",
+      /^https:\/\/fleetyards\.dev/,
+      /^https:\/\/fleetyards\.net/,
+    ],
+    tracesSampleRate: 0.2,
+    trackComponents: true,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
   });
 
   Sentry.configureScope((scope) => {
