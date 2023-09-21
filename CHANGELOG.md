@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.1](https://github.com/fleetyards/fleetyards/compare/v5.27.0...v5.27.1) (2023-09-21)
+
+
+### Bug Fixes
+
+* **fleet-invites:** update endpoint to check fleet invite urls ([18281f1](https://github.com/fleetyards/fleetyards/commit/18281f152396bfbac8ea29f343a1789e7197a535))
+
 ## [5.27.0](https://github.com/fleetyards/fleetyards/compare/v5.26.12...v5.27.0) (2023-09-21)
 
 
