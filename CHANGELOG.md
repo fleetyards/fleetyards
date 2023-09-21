@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.27.0](https://github.com/fleetyards/fleetyards/compare/v5.26.12...v5.27.0) (2023-09-21)
+
+
+### Features
+
+* **api-schema:** add commodities filters endpoints ([89aff10](https://github.com/fleetyards/fleetyards/commit/89aff107ff4a3f485c66914dd04794ea40633d8a))
+* **api-schema:** add commodity-prices endpoints ([8627836](https://github.com/fleetyards/fleetyards/commit/86278368e98b3915fc20374fd994009729dd9beb))
+* **api-schema:** add components endpoints ([0fffdc5](https://github.com/fleetyards/fleetyards/commit/0fffdc57aaa8669338b1407d3a2a573ee2766bc3))
+* **api-schema:** add current user endpoint ([e0600f8](https://github.com/fleetyards/fleetyards/commit/e0600f8191820ae07eaa97efd33178e73d880b30))
+* **api-schema:** add equipment endpoints ([26f638f](https://github.com/fleetyards/fleetyards/commit/26f638f6b96bb3f88813e51d414ab962f5d4c3e5))
+* **api-schema:** add feature endpoints ([93745fc](https://github.com/fleetyards/fleetyards/commit/93745fc90dcd0bf2e7300e12f0780a2786235c55))
+* **api-schema:** add fleet invite-urls endpoints ([e292fba](https://github.com/fleetyards/fleetyards/commit/e292fbaa0986c2b277c88e969ed06a1e9c2074b3))
+* **api-schema:** add fleet members/membership endpoints ([c840e91](https://github.com/fleetyards/fleetyards/commit/c840e916f47afa2ae9bc783fed7aa4f281ee906d))
+* **api-schema:** add fleet vehicle and stats endpoints ([aa931ed](https://github.com/fleetyards/fleetyards/commit/aa931ed4b91b614c6e01aa62efc314a05d446555))
+* **api-schema:** add fleets endpoints to schema ([08a3be0](https://github.com/fleetyards/fleetyards/commit/08a3be04809a9a4b16b47709895f4df4324eee8f))
+* **api-schema:** add password endpoints ([86f1982](https://github.com/fleetyards/fleetyards/commit/86f1982f2619864b2cd61898bc71aa5066a36ec7))
+* **api-schema:** add roadmap endpoints ([b652741](https://github.com/fleetyards/fleetyards/commit/b652741cb3c43be24130ffbfb73ad6c36ae815a0))
+* **api-schema:** add search endpoints ([6a90977](https://github.com/fleetyards/fleetyards/commit/6a9097785183d96444302082790257f467a46242))
+* **api-schema:** add session endpoints ([392ac3d](https://github.com/fleetyards/fleetyards/commit/392ac3da345cdaa194a1c1c479df206a9489d297))
+* **api-schema:** add shop commodity endpoints ([74606a9](https://github.com/fleetyards/fleetyards/commit/74606a97d3244921548211860a834cff9877ade2))
+* **api-schema:** add trade-routes endpoints ([25591e6](https://github.com/fleetyards/fleetyards/commit/25591e666b357de442998d20b9314982eca3afaf))
+* **api-schema:** add version endpoints ([629774c](https://github.com/fleetyards/fleetyards/commit/629774c6d6d4877e4ea79cc858c379f430225b25))
+
 ### [5.26.12](https://github.com/fleetyards/fleetyards/compare/v5.26.11...v5.26.12) (2023-08-14)
 
 ### Bug Fixes
