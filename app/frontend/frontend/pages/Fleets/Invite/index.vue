@@ -12,6 +12,9 @@ import {
   displayAlert,
   displaySuccess,
 } from "@/frontend/lib/Noty";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+
+const { fleets: fleetService } = useApiClient();
 
 @Component<FleetInvite>()
 export default class FleetInvite extends Vue {
@@ -34,33 +37,37 @@ export default class FleetInvite extends Vue {
       return;
     }
 
-    const fleet = await this.checkInvite();
-
-    if (!fleet) {
-      displayAlert({
-        text: this.$t("messages.fleetInvite.notFound"),
+    try {
+      const fleet = await fleetService.findByInvite({
+        token: this.$route.params.token,
       });
 
-      this.$router.push({
-        name: "home",
-      });
+      if (!fleet) {
+        displayAlert({
+          text: this.$t("messages.fleetInvite.notFound"),
+        });
 
-      return;
-    }
-
-    displayConfirm({
-      text: this.$t("messages.fleetInvite.confirm", {
-        fleet: fleet.name,
-      }),
-      onConfirm: () => {
-        this.handleFleetInvite();
-      },
-      onClose: () => {
         this.$router.push({
           name: "home",
         });
-      },
-    });
+      } else {
+        displayConfirm({
+          text: this.$t("messages.fleetInvite.confirm", {
+            fleet: fleet.name,
+          }),
+          onConfirm: () => {
+            this.handleFleetInvite();
+          },
+          onClose: () => {
+            this.$router.push({
+              name: "home",
+            });
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async handleFleetInvite() {
@@ -88,10 +95,6 @@ export default class FleetInvite extends Vue {
       name: "fleet",
       params: { slug: member.fleetSlug },
     });
-  }
-
-  checkInvite(): Promise<Fleet | null> {
-    return fleetsCollection.checkInvite(this.$route.params.token);
   }
 
   createMember(): Promise<FleetMember | null> {

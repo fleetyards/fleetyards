@@ -167,6 +167,31 @@ export class FleetsService {
     }
 
     /**
+     * Find Fleet by Invite
+     * @returns Fleet successful
+     * @throws ApiError
+     */
+    public findByInvite({
+        token,
+    }: {
+        /**
+         * Fleet Invite Token
+         */
+        token: string,
+    }): CancelablePromise<Fleet> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/fleets/find-by-invite/{token}',
+            path: {
+                'token': token,
+            },
+            errors: {
+                401: `unauthorized`,
+            },
+        });
+    }
+
+    /**
      * Fleet Invites current User
      * @returns FleetMember successful
      * @throws ApiError

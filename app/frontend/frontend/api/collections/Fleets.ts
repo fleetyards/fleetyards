@@ -101,16 +101,6 @@ export class FleetsCollection extends BaseCollection {
     return [];
   }
 
-  async checkInvite(token: string) {
-    const response = await get(`fleets/check-invite/${token}`);
-
-    if (!response.error) {
-      return response.data;
-    }
-
-    return null;
-  }
-
   async useInvite(form: FleetMemberInviteForm) {
     const response = await post(`fleets/use-invite`, form);
 

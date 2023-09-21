@@ -3,8 +3,8 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     post :check
     get :invites
     get :my
-    get "check-invite/:token", to: "fleet_invite_urls#check"
     post "use-invite", to: "fleet_invite_urls#use"
+    post "find-by-invite/:token", to: "fleets#find_by_invite"
   end
 
   resources :fleet_vehicles, path: "vehicles", only: %i[index] do
