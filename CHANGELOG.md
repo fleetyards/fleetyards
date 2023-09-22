@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.2](https://github.com/fleetyards/fleetyards/compare/v5.27.1...v5.27.2) (2023-09-22)
+
+
+### Bug Fixes
+
+* **model:** update pledge price on detail page ([8e20f94](https://github.com/fleetyards/fleetyards/commit/8e20f94b501f8eac82d875b4a026f3bf85c6e8b1))
+
 ### [5.27.1](https://github.com/fleetyards/fleetyards/compare/v5.27.0...v5.27.1) (2023-09-21)
 
 
