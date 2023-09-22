@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.3](https://github.com/fleetyards/fleetyards/compare/v5.27.2...v5.27.3) (2023-09-22)
+
+
+### Bug Fixes
+
+* **fleets:** resolve issue preventing members from accepting membership requests and invites ([578ab5d](https://github.com/fleetyards/fleetyards/commit/578ab5d5940ce22183b8bfa6ae93aff9863e4636))
+
 ### [5.27.2](https://github.com/fleetyards/fleetyards/compare/v5.27.1...v5.27.2) (2023-09-22)
 
 
