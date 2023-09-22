@@ -45,7 +45,7 @@ module Api
       def accept
         authorize! :accept_request, member
 
-        unless member.accept_request
+        unless member.accept_request!
           render json: ValidationError.new("fleet_members.accept", errors: member.errors), status: :bad_request
         end
       end
@@ -53,7 +53,7 @@ module Api
       def decline
         authorize! :decline_request, member
 
-        unless member.decline
+        unless member.decline!
           render json: ValidationError.new("fleet_members.decline", errors: member.errors), status: :bad_request
         end
       end

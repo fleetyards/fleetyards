@@ -22,7 +22,7 @@ module Api
       def accept
         authorize! :accept_invitation, membership
 
-        unless membership.accept_invitation
+        unless membership.accept_invitation!
           render json: ValidationError.new("fleet_memberships.accept", errors: membership.errors), status: :bad_request
         end
       end
@@ -30,7 +30,7 @@ module Api
       def decline
         authorize! :decline_invitation, membership
 
-        unless membership.decline
+        unless membership.decline!
           render json: ValidationError.new("fleet_memberships.decline", errors: membership.errors), status: :bad_request
         end
       end

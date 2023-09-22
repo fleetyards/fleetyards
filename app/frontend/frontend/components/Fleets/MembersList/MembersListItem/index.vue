@@ -182,13 +182,13 @@ import {
   displayAlert,
   displayConfirm,
 } from "@/frontend/lib/Noty";
-import fleetMembersCollection from "@/frontend/api/collections/FleetMembers";
 import Avatar from "@/frontend/core/components/Avatar/index.vue";
 import Btn from "@/frontend/core/components/Btn/index.vue";
 import Store from "@/frontend/lib/Store";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/frontend/composables/useComlink";
 import { useRoute } from "vue-router/composables";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
 const { t } = useI18n();
 
@@ -202,8 +202,6 @@ const props = withDefaults(defineProps<Props>(), {
   actionsVisible: false,
   role: "member",
 });
-
-const collection = fleetMembersCollection;
 
 const deleting = ref(false);
 
@@ -242,30 +240,34 @@ const canEditAdminActions = (member: FleetMember) => {
   return false;
 };
 
+const { fleetMembers: memberService } = useApiClient();
+
 const removeMember = async (member: FleetMember) => {
   deleting.value = true;
 
   displayConfirm({
     text: t("messages.confirm.fleet.members.destroy"),
     onConfirm: async () => {
-      const success = await collection.destroy(
-        route.params.slug,
-        member.username
-      );
+      try {
+        await memberService.removeMember({
+          fleetSlug: route.params.slug,
+          username: member.username,
+        });
 
-      if (success) {
         comlink.$emit("fleet-member-update");
 
         displaySuccess({
           text: t("messages.fleet.members.destroy.success"),
         });
-      } else {
+      } catch (error) {
+        console.error(error);
+
         displayAlert({
           text: t("messages.fleet.members.destroy.failure"),
         });
-
-        deleting.value = false;
       }
+
+      deleting.value = false;
     },
     onClose: () => {
       deleting.value = false;
@@ -276,87 +278,101 @@ const removeMember = async (member: FleetMember) => {
 const demoteMember = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.demote(route.params.slug, member.username);
+  try {
+    await memberService.demoteMember({
+      fleetSlug: route.params.slug,
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.$emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.demote.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.demote.failure"),
     });
   }
+
+  updating.value = false;
 };
 
 const promoteMember = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.promote(route.params.slug, member.username);
+  try {
+    await memberService.promoteMember({
+      fleetSlug: route.params.slug,
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.$emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.promote.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.promote.failure"),
     });
   }
+
+  updating.value = false;
 };
 
 const acceptRequest = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.acceptRequest(
-    route.params.slug,
-    member.username
-  );
+  try {
+    await memberService.acceptMember({
+      fleetSlug: route.params.slug,
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.$emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.accept.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.accept.failure"),
     });
   }
+
+  updating.value = false;
 };
 
 const declineRequest = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.declineRequest(
-    route.params.slug,
-    member.username
-  );
+  try {
+    await memberService.declineMember({
+      fleetSlug: route.params.slug,
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.$emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.decline.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.decline.failure"),
     });
   }
+
+  updating.value = false;
 };
 </script>
 

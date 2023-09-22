@@ -76,6 +76,10 @@ export default class FleetNav extends Vue {
   }
 
   async fetch() {
+    if (!this.$route.params.slug) {
+      return;
+    }
+
     await this.collection.findBySlug(this.$route.params.slug);
   }
 }

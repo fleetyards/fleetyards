@@ -134,6 +134,10 @@ export default class FleetDetail extends Vue {
   }
 
   async fetch() {
+    if (!this.$route.params.slug) {
+      return;
+    }
+
     await fleetsCollection.findBySlug(this.$route.params.slug);
   }
 }

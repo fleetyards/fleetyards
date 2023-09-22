@@ -28,7 +28,9 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
 
         let(:user) { users :will }
 
-        run_test!
+        run_test! do
+          expect(user.fleets.reload.include?(fleet)).to be_truthy
+        end
       end
 
       response(400, "bad request") do

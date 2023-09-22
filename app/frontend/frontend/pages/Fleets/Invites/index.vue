@@ -93,6 +93,9 @@ import {
 } from "@/frontend/lib/Noty";
 import Panel from "@/frontend/core/components/Panel/index.vue";
 import Loader from "@/frontend/core/components/Loader/index.vue";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+
+const { fleetMembership: membershipService } = useApiClient();
 
 @Component<FleetInvites>({
   components: {
@@ -123,13 +126,11 @@ export default class FleetInvites extends Vue {
   async accept(invite) {
     this.submitting = true;
 
-    const response = await this.$api.put(
-      `fleets/${invite.fleet.slug}/members/accept-invite`
-    );
+    try {
+      await membershipService.acceptMembership({
+        fleetSlug: invite.fleet.slug,
+      });
 
-    this.submitting = false;
-
-    if (!response.error) {
       this.$comlink.$emit("fleet-update");
 
       displaySuccess({
@@ -143,11 +144,14 @@ export default class FleetInvites extends Vue {
         })
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         .catch(() => {});
-    } else {
+    } catch (error) {
+      console.error(error);
       displayAlert({
         text: this.$t("messages.fleet.invites.accept.failure"),
       });
     }
+
+    this.submitting = false;
   }
 
   async decline(invite) {
@@ -156,22 +160,24 @@ export default class FleetInvites extends Vue {
     displayConfirm({
       text: this.$t("messages.confirm.fleet.invites.decline"),
       onConfirm: async () => {
-        const response = await this.$api.put(
-          `fleets/${invite.fleet.slug}/members/decline-invite`
-        );
+        try {
+          await membershipService.declineMembership({
+            fleetSlug: invite.fleet.slug,
+          });
 
-        if (!response.error) {
           this.$comlink.$emit("fleet-update");
 
           displaySuccess({
             text: this.$t("messages.fleet.invites.decline.success"),
           });
-        } else {
+        } catch (error) {
+          console.error(error);
           displayAlert({
             text: this.$t("messages.fleet.invites.decline.failure"),
           });
-          this.submitting = false;
         }
+
+        this.submitting = false;
       },
       onClose: () => {
         this.submitting = false;
