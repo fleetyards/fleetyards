@@ -10,6 +10,7 @@ area18 = Station.find_or_initialize_by(name: "Area 18")
 area18.update!(
   celestial_object: arccorp,
   station_type: :landing_zone,
+  size: :large,
   location: nil,
   classification: :city,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area18-1.jpg",
@@ -120,6 +121,7 @@ area04 = Station.find_or_initialize_by(name: "Area 04")
 area04.update!(
   celestial_object: arccorp,
   station_type: :district,
+  size: :medium,
   location: "ArcCorp",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area04.jpg',
   hidden: true
@@ -129,6 +131,7 @@ area06 = Station.find_or_initialize_by(name: "Area 06")
 area06.update!(
   celestial_object: arccorp,
   station_type: :district,
+  size: :medium,
   location: "ArcCorp",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area06.jpg',
   hidden: true
@@ -138,6 +141,7 @@ area11 = Station.find_or_initialize_by(name: "Area 11")
 area11.update!(
   celestial_object: arccorp,
   station_type: :district,
+  size: :medium,
   location: "ArcCorp",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area11.jpg',
   hidden: true
@@ -147,6 +151,7 @@ area17 = Station.find_or_initialize_by(name: "Area 17")
 area17.update!(
   celestial_object: arccorp,
   station_type: :district,
+  size: :medium,
   location: "ArcCorp",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area17.jpg',
   hidden: true
@@ -156,6 +161,7 @@ area20 = Station.find_or_initialize_by(name: "Area 20")
 area20.update!(
   celestial_object: arccorp,
   station_type: :district,
+  size: :medium,
   location: "ArcCorp",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/arccorp/area20.jpg',
   hidden: true

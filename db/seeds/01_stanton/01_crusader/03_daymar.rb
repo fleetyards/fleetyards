@@ -9,6 +9,7 @@ covalex_shipping = Station.find_or_initialize_by(name: "Covalex Hub Gundo")
 covalex_shipping.update!(
   celestial_object: daymar,
   station_type: :station,
+  size: :small,
   habitable: false,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/covalex.jpg",
@@ -20,6 +21,7 @@ shubin.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/shubin.jpg",
   hidden: false
@@ -58,6 +60,7 @@ arccorp.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/arccorp.jpg",
   hidden: false
@@ -96,6 +99,7 @@ kudre_ore.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :mining,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/kudre.jpg",
   hidden: false
@@ -114,6 +118,7 @@ bountiful_harvest.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :farming,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/bountiful.jpg",
   hidden: false
@@ -128,22 +133,33 @@ admin_office.update!(
 )
 
 eager_flats = Station.find_or_initialize_by(name: "Eager Flats Aid Shelter")
-eager_flats.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/eager.jpg", hidden: false)
+eager_flats.update!(
+  celestial_object: daymar,
+  station_type: :aid_shelter,
+  size: :small,
+  location: nil,
+  remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/eager.jpg",
+  hidden: false
+)
 
 wolf_point = Station.find_or_initialize_by(name: "Wolf Point Aid Shelter")
-wolf_point.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/wolfpoint.jpg", hidden: false)
+wolf_point.update!(celestial_object: daymar,
+  size: :small, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/wolfpoint.jpg", hidden: false)
 
 tamdon_plains = Station.find_or_initialize_by(name: "Tamdon Plains Aid Shelter")
-tamdon_plains.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg", hidden: false)
+tamdon_plains.update!(celestial_object: daymar,
+  size: :small, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/tamdon.jpg", hidden: false)
 
 dunlow_ridge = Station.find_or_initialize_by(name: "Dunlow Ridge Aid Shelter")
-dunlow_ridge.update!(celestial_object: daymar, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/dunlow_ridge.jpg", hidden: false)
+dunlow_ridge.update!(celestial_object: daymar,
+  size: :small, station_type: :aid_shelter, location: nil, remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/dunlow_ridge.jpg", hidden: false)
 
 nuen = Station.find_or_initialize_by(name: "Nuen Waste Management")
 nuen.update!(
   celestial_object: daymar,
   station_type: :aid_shelter,
   classification: :drug_lab,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/nuen.jpg',
   hidden: true
@@ -161,6 +177,7 @@ brios.update!(
   celestial_object: daymar,
   station_type: :outpost,
   classification: :salvaging,
+  size: :small,
   location: nil,
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/crusader/daymar/brios.jpg',
   hidden: false

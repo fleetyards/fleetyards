@@ -9,6 +9,7 @@ everus.update!(
   celestial_object: hurston,
   station_type: :station,
   classification: :trading,
+  size: :large,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/everus/everus.jpg",
   hidden: hidden,

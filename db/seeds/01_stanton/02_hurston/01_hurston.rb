@@ -8,6 +8,7 @@ lorville.update!(
   celestial_object: hurston,
   station_type: :landing_zone,
   location: nil,
+  size: :large,
   classification: :city,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/teasa_spaceport.jpg",
   hidden: false

@@ -39,8 +39,8 @@
         </span>
         <FormInput
           v-if="uploaded"
-          :id="`image-caption-${uuid}`"
           v-model="internalImage.caption"
+          :name="`image-caption-${uuid}`"
           :no-label="true"
           placeholder="Caption"
           @input="updateCaption"
@@ -126,6 +126,7 @@ import { formatSize } from "@/shared/utils/Format";
 import { useI18n } from "@/admin/composables/useI18n";
 import type { Image } from "@/services/fyAdminApi";
 import type { VueUploadItem } from "vue-upload-component";
+import { useApiClient } from "@/admin/composables/useApiClient";
 
 export interface UploadImage extends Image {
   progress?: string;
@@ -185,6 +186,8 @@ const cancel = () => {
   emit("cancel", internalImage.value);
 };
 
+const { images: imagesService } = useApiClient();
+
 const toggleEnabled = async () => {
   if (!internalImage.value) {
     return;
@@ -194,15 +197,19 @@ const toggleEnabled = async () => {
 
   internalImage.value.enabled = !internalImage.value.enabled;
 
-  const response = await this.$api.put(`images/${internalImage.value.id}`, {
-    enabled: internalImage.value.enabled,
-  });
-
-  updating.value = false;
-
-  if (response.error) {
+  try {
+    await imagesService.updateImage({
+      id: internalImage.value.id,
+      requestBody: {
+        enabled: internalImage.value.enabled,
+      },
+    });
+  } catch (error) {
+    console.error(error);
     internalImage.value.enabled = !internalImage.value.enabled;
   }
+
+  updating.value = false;
 };
 
 const toggleGlobal = async () => {
@@ -214,15 +221,19 @@ const toggleGlobal = async () => {
 
   internalImage.value.global = !internalImage.value.global;
 
-  const response = await this.$api.put(`images/${internalImage.value.id}`, {
-    global: internalImage.value.global,
-  });
-
-  updating.value = false;
-
-  if (response.error) {
+  try {
+    await imagesService.updateImage({
+      id: internalImage.value.id,
+      requestBody: {
+        global: internalImage.value.global,
+      },
+    });
+  } catch (error) {
+    console.error(error);
     internalImage.value.global = !internalImage.value.global;
   }
+
+  updating.value = false;
 };
 
 const deleteImage = async () => {
@@ -232,10 +243,14 @@ const deleteImage = async () => {
 
   deleting.value = true;
 
-  const response = await this.$api.destroy(`images/${internalImage.value.id}`);
+  try {
+    await imagesService.destroy({
+      id: internalImage.value.id,
+    });
 
-  if (!response.error) {
     emit("image-deleted", internalImage.value);
+  } catch (error) {
+    console.error(error);
   }
 
   deleting.value = false;
@@ -248,9 +263,16 @@ const debouncedUpdateCaption = async () => {
 
   updating.value = true;
 
-  await this.$api.put(`images/${internalImage.value.id}`, {
-    caption: internalImage.value.caption,
-  });
+  try {
+    await imagesService.updateImage({
+      id: internalImage.value.id,
+      requestBody: {
+        caption: internalImage.value.caption,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 
   updating.value = false;
 };

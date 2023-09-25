@@ -8,6 +8,7 @@ rayari_mc_grath.update!(
   celestial_object: clio,
   station_type: :outpost,
   classification: :science,
+  size: :small,
   location: "Clio",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false
@@ -51,6 +52,7 @@ rayari_cantwell.update!(
   celestial_object: clio,
   station_type: :outpost,
   classification: :science,
+  size: :small,
   location: "Clio",
   # remote_store_image_url: 'https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/stanhope.jpg',
   hidden: false

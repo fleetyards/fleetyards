@@ -9,6 +9,7 @@ norgaard = Station.find_or_initialize_by(name: "HDMS-Norgaard")
 norgaard.update!(
   celestial_object: aberdeen,
   station_type: :outpost,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/aberdeen/norgaard.jpg",
   hidden: false
@@ -46,6 +47,7 @@ anderson = Station.find_or_initialize_by(name: "HDMS-Anderson")
 anderson.update!(
   celestial_object: aberdeen,
   station_type: :outpost,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/aberdeen/anderson.jpg",
   hidden: false

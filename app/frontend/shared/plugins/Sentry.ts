@@ -13,16 +13,18 @@ export default {
         integrations: [
           new Sentry.BrowserTracing({
             routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-            tracePropagationTargets: [
-              "localhost",
-              "fleetyards.test",
-              /^https:\/\/fleetyards\.dev/,
-              /^https:\/\/fleetyards\.net/,
-            ],
           }),
+          new Sentry.Replay(),
+        ],
+        tracePropagationTargets: [
+          "localhost",
+          /^https:\/\/fleetyards\.dev/,
+          /^https:\/\/fleetyards\.net/,
         ],
         tracesSampleRate: 0.2,
         trackComponents: true,
+        replaysSessionSampleRate: 0.1,
+        replaysOnErrorSampleRate: 1.0,
       });
 
       Sentry.configureScope((scope) => {

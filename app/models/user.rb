@@ -149,8 +149,8 @@ class User < ApplicationRecord
     self.otp_secret = User.generate_otp_secret
   end
 
-  def send_devise_notification(notification, *args)
-    devise_mailer.send(notification, self, *args).deliver_later
+  def send_devise_notification(notification, *)
+    devise_mailer.send(notification, self, *).deliver_later
   end
 
   def public_hangar_url

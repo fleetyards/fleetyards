@@ -186,6 +186,7 @@ import { useNoty } from "@/shared/composables/useNoty";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { FleetMember } from "@/services/fyApi";
 import { storeToRefs } from "pinia";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
 const { t } = useI18n();
 
@@ -241,30 +242,34 @@ const canEditAdminActions = (member: FleetMember) => {
   return false;
 };
 
+const { fleetMembers: memberService } = useApiClient();
+
 const removeMember = async (member: FleetMember) => {
   deleting.value = true;
 
   displayConfirm({
     text: t("messages.confirm.fleet.members.destroy"),
     onConfirm: async () => {
-      const success = await collection.destroy(
-        route.params.slug,
-        member.username,
-      );
+      try {
+        await memberService.removeMember({
+          fleetSlug: String(route.params.slug),
+          username: member.username,
+        });
 
-      if (success) {
         comlink.emit("fleet-member-update");
 
         displaySuccess({
           text: t("messages.fleet.members.destroy.success"),
         });
-      } else {
+      } catch (error) {
+        console.error(error);
+
         displayAlert({
           text: t("messages.fleet.members.destroy.failure"),
         });
-
-        deleting.value = false;
       }
+
+      deleting.value = false;
     },
     onClose: () => {
       deleting.value = false;
@@ -275,87 +280,101 @@ const removeMember = async (member: FleetMember) => {
 const demoteMember = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.demote(route.params.slug, member.username);
+  try {
+    await memberService.demoteMember({
+      fleetSlug: String(route.params.slug),
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.demote.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.demote.failure"),
     });
   }
+
+  updating.value = false;
 };
 
 const promoteMember = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.promote(route.params.slug, member.username);
+  try {
+    await memberService.promoteMember({
+      fleetSlug: String(route.params.slug),
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.promote.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.promote.failure"),
     });
   }
+
+  updating.value = false;
 };
 
 const acceptRequest = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.acceptRequest(
-    route.params.slug,
-    member.username,
-  );
+  try {
+    await memberService.acceptMember({
+      fleetSlug: String(route.params.slug),
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.accept.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.accept.failure"),
     });
   }
+
+  updating.value = false;
 };
 
 const declineRequest = async (member: FleetMember) => {
   updating.value = true;
 
-  const success = await collection.declineRequest(
-    route.params.slug,
-    member.username,
-  );
+  try {
+    await memberService.declineMember({
+      fleetSlug: String(route.params.slug),
+      username: member.username,
+    });
 
-  updating.value = false;
-
-  if (success) {
     comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.decline.success"),
     });
-  } else {
+  } catch (error) {
+    console.error(error);
+
     displayAlert({
       text: t("messages.fleet.members.decline.failure"),
     });
   }
+
+  updating.value = false;
 };
 </script>
 

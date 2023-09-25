@@ -99,13 +99,15 @@
             </Panel>
             <div class="page-actions page-actions-block">
               <Btn
-                v-if="model.onSale"
+                v-if="
+                  model.onSale && (model.pledgePrice || model.lastPledgePrice)
+                "
                 :href="`${model.storeUrl}#buying-options`"
                 style="flex-grow: 3"
               >
                 {{
                   t("actions.model.onSale", {
-                    price: toDollar(model.pledgePrice),
+                    price: toDollar(model.pledgePrice || model.lastPledgePrice),
                   })
                 }}
                 <small class="price-info">

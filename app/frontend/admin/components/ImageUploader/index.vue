@@ -5,7 +5,7 @@
         <VueUploadComponent
           ref="uploadElement"
           v-model="newImages"
-          :custom-actions="upload"
+          :post-action="postAction"
           drop="body"
           :headers="headers()"
           :data="metaData"

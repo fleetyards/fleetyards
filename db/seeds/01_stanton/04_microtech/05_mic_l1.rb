@@ -9,6 +9,7 @@ mic_l1.update!(
   celestial_object: microtech,
   station_type: :station,
   classification: :rest_stop,
+  size: :large,
   location: "MIC-L1",
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/microtech/mic-l1/mic-l1.jpg",
   refinery: true,

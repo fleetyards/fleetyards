@@ -1,0 +1,39 @@
+.panel-heading {
+  padding: 10px 15px;
+
+  .panel-title {
+    margin-bottom: 0;
+    padding-top: 5px;
+    padding-right: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    small {
+      color: darken($text-color, 20%);
+
+      a {
+        color: darken($text-color, 20%);
+
+        &:hover {
+          color: $text-color;
+        }
+      }
+    }
+  }
+
+  &.panel-heading-with-actions {
+    display: flex;
+    justify-content: space-between;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-bottom: 10.5px;
+      padding-right: 40px;
+    }
+  }
+}

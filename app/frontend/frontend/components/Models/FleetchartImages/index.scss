@@ -1,0 +1,30 @@
+.fleetchart-views {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+    }
+
+    &.small {
+      img {
+        max-width: 50%;
+      }
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-views {
+    grid-template-columns: 1fr;
+  }
+}

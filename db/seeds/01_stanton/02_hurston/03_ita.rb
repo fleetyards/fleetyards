@@ -7,6 +7,7 @@ ryder = Station.find_or_initialize_by(name: "HDMS Ryder")
 ryder.update!(
   celestial_object: ita,
   station_type: :outpost,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/ita/ryder.jpg",
   hidden: false
@@ -44,6 +45,7 @@ woodruff = Station.find_or_initialize_by(name: "HDMS Woodruff")
 woodruff.update!(
   celestial_object: ita,
   station_type: :outpost,
+  size: :small,
   location: nil,
   remote_store_image_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/stanton/hurston/ita/woodruff.jpg",
   hidden: false
