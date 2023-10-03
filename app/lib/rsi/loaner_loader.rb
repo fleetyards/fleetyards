@@ -69,6 +69,7 @@ module Rsi
       models_map = {
         "Carrack / Carrack Expedition" => ["Carrack"],
         "Carrack w/ C8X / Carrack Expedition w/C8X" => ["Carrack"],
+        "Fury Variants" => ["Fury", "Fury MX", "Fury LX"],
         "100 Series" => %w[100i 125a 135c],
         "600i Series" => ["600i Touring", "600i Explorer", "600i Executive-Edition"],
         "Apollo" => ["Apollo Medivac", "Apollo Triage"],
