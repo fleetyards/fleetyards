@@ -107,6 +107,34 @@ namespace :server do
     end
   end
 
+  desc "Stop App & Worker"
+  task :stop do
+    on roles(:all) do
+      info "Stop App"
+      execute(:sudo, :service, "#{fetch(:application)}-app", :stop)
+      info "App Stopped"
+
+      info "Stop Worker"
+      execute(:sudo, :service, "#{fetch(:application)}-worker", :stop)
+      info "Worker Stopped"
+    end
+  end
+
+  desc "Start App & Worker"
+  task :start do
+    on roles(:all) do
+      info "Start Worker"
+      execute(:sudo, :service, "#{fetch(:application)}-worker", :start)
+      execute(:sudo, :systemctl, "is-active", "--quiet", "#{fetch(:application)}-worker.service")
+      info "Worker Stared"
+
+      info "Start App"
+      execute(:sudo, :service, "#{fetch(:application)}-app", :start)
+      execute(:sudo, :systemctl, "is-active", "--quiet", "#{fetch(:application)}-app.service")
+      info "App Started"
+    end
+  end
+
   desc "Broadcast version"
   task :broadcast_version do
     on roles(:app) do
