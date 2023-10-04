@@ -10,7 +10,7 @@ end
 # rubocop:enable Style/ClassAndModuleChildren
 
 Ahoy.mask_ips = true
-Ahoy.cookies = false
+Ahoy.cookies = :none
 Ahoy.api = true
 Ahoy.geocode = false
 Ahoy.user_agent_parser = :device_detector
