@@ -33,6 +33,7 @@ declare global {
     DATA_PREFILL: KeyValuePair;
     FRONTEND_ENDPOINT: string;
     CABLE_ENDPOINT: string;
+    RSI_ENDPOINT: string;
   }
 }
 

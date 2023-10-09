@@ -77,14 +77,32 @@ export class RSIHangarParser {
       return undefined;
     }
 
+    const image = this.extractImage(item);
+
     return {
       id,
       name,
+      image,
       customName:
         item.getElementsByClassName("custom-name-text")[0]?.textContent ||
         undefined,
       type: kindOverride || (kind.toLowerCase() as TRSIHangarItemKind),
     };
+  }
+
+  extractImage(item: Element): string | undefined {
+    const imageElement = item.getElementsByClassName(
+      "image"
+    )[0] as HTMLDivElement;
+    let imageUrl = imageElement.style.backgroundImage
+      .slice(4, -1)
+      .replace(/['"]+/g, "");
+
+    if (!imageUrl.startsWith("https")) {
+      imageUrl = `${window.RSI_ENDPOINT}${imageUrl}`;
+    }
+
+    return imageUrl.replace("subscribers_vault_thumbnail", "source");
   }
 
   checkForLastPage(htmlDoc: Document): boolean {
