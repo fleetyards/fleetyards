@@ -9,7 +9,7 @@
 <% if @results[:new][:items].present? %>
 <% @results[:new][:items].each do |paint| %>
 <p>
-  <b><%= paint[:name] %></b><br>
+  <b><%= paint[:model_name] %> <%= paint[:name] %></b><br>
 </p>
 <% if paint != @results[:new][:items].last %>
 <hr>
@@ -28,7 +28,7 @@
 
 <% @results[:model_not_found][:items].each do |paint| %>
 <p>
-  <b><%= paint[:loaner] %></b><br>
+  <b><%= paint[:model_name] %> <%= paint[:name] %></b><br>
 </p>
 <% if paint != @results[:model_not_found][:items].last %>
 <hr>
