@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-require "rsi/paints_loader"
+require "paints_importer"
 
 module Loaders
   class PaintsImportJob < ::Loaders::BaseJob
-    def perform(paints_data)
-      ::Rsi::PaintsLoader.new.import(paints_data)
+    def perform
+      results = ::PaintsImporter.new.run
+
+      AdminMailer.paints_import_results(results).deliver_later
     end
   end
 end

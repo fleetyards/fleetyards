@@ -7,6 +7,9 @@ en:
       missing_loaners:
         headline: FleetYards.net Missing Loaners
         subject: FleetYards.net Missing Loaners
+      paints_import_results:
+        headline: FleetYards.net Paints Import Results
+        subject: FleetYards.net Paints Import Results
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
         subject: Connection to RSI blocked
