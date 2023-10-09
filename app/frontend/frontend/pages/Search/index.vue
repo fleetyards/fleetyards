@@ -67,6 +67,14 @@
                 :model="result.item"
                 :details="true"
               />
+              <StationPanel
+                v-else-if="result.type === 'Station'"
+                :station="result.item"
+              />
+              <ShopPanel
+                v-else-if="result.type === 'Shop'"
+                :shop="result.item"
+              />
               <CelestialObjectsPanel
                 v-else-if="
                   ['CelestialObject', 'Starsystem'].includes(result.type)
@@ -110,6 +118,8 @@ import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
 import CelestialObjectsPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import ShopCommodityPanel from "@/frontend/components/ShopCommodities/Panel/index.vue";
 import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
+import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
+import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
 import CommodityPanel from "@/frontend/components/Commodities/Panel/index.vue";
 import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import SearchHistory from "@/frontend/components/Search/History/index.vue";

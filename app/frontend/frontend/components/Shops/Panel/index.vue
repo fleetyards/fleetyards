@@ -1,5 +1,5 @@
 <template>
-  <Panel :id="`${shop.stationSlug}-${shop.slug}`" class="shop-list">
+  <Panel :id="`${shop.stationSlug}-${shop.slug}`" class="shop-panel">
     <div
       :key="storeImage"
       v-lazy:background-image="storeImage"
@@ -64,3 +64,7 @@ export default {
   name: "ShopPanel",
 };
 </script>
+
+<style lang="scss">
+@import "index";
+</style>
