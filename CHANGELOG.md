@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.7](https://github.com/fleetyards/fleetyards/compare/v5.27.6...v5.27.7) (2023-10-09)
+
+
+### Bug Fixes
+
+* **search:** add panels for Station and Shop Result Type ([9e9fc57](https://github.com/fleetyards/fleetyards/commit/9e9fc574236de2a341a3b458dc2aaaa20e1bcebb))
+
 ### [5.27.6](https://github.com/fleetyards/fleetyards/compare/v5.27.5...v5.27.6) (2023-10-09)
 
 
