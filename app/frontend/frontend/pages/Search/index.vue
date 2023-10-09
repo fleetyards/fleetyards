@@ -63,30 +63,30 @@
               class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
             >
               <ModelPanel
-                v-if="result.type === 'model'"
+                v-if="result.type === 'Model'"
                 :model="result.item"
                 :details="true"
               />
               <CelestialObjectsPanel
                 v-else-if="
-                  ['celestial_object', 'starsystem'].includes(result.type)
+                  ['CelestialObject', 'Starsystem'].includes(result.type)
                 "
                 :item="result.item"
               />
               <ShopCommodityPanel
-                v-else-if="result.type === 'shop_commodity'"
+                v-else-if="result.type === 'ShopCommodity'"
                 :item="result.item"
               />
               <ComponentPanel
-                v-else-if="result.type === 'component'"
+                v-else-if="result.type === 'Component'"
                 :component="result.item"
               />
               <CommodityPanel
-                v-else-if="result.type === 'commodity'"
+                v-else-if="result.type === 'Commodity'"
                 :commodity="result.item"
               />
               <EquipmentPanel
-                v-else-if="result.type === 'equipment'"
+                v-else-if="result.type === 'Equipment'"
                 :equipment="result.item"
               />
               <SearchPanel v-else :item="result.item" />
