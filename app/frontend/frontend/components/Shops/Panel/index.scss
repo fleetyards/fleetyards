@@ -7,6 +7,12 @@
       margin-top: 10px;
       font-size: 30px;
       text-shadow: 0 0 2px black;
+
+      a {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
     }
 
     > .panel-inner {

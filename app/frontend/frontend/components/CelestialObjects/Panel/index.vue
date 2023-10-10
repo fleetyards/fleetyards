@@ -1,54 +1,56 @@
 <template>
   <Panel
-    v-if="location"
-    :id="`${item.resultType}-${location.id}`"
+    v-if="celestialObject"
+    :id="celestialObject.id"
     class="celestial-object-panel"
   >
-    <div class="panel-image text-center">
-      <LazyImage
-        :to="route"
-        :aria-label="location.name"
-        :src="storeImage"
-        :alt="location.name"
-        class="image"
-      />
-    </div>
-    <div class="panel-heading">
-      <h2 class="panel-title">
-        <router-link :to="route">
-          {{ location.name }}
-        </router-link>
-
-        <br />
-
-        <small class="text-muted">
-          {{ location.locationLabel }}
-        </small>
-      </h2>
+    <div
+      :key="storeImage"
+      v-lazy:background-image="storeImage"
+      class="panel-bg lazy"
+    />
+    <div class="row">
+      <div class="col-12">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            <router-link
+              :to="{
+                name: 'celestial-object',
+                params: {
+                  slug: celestialObject.slug,
+                },
+              }"
+              :aria-label="celestialObject.name"
+            >
+              {{ celestialObject.name }}
+              <small class="text-muted">
+                {{ celestialObject.locationLabel }}
+              </small>
+            </router-link>
+          </h2>
+        </div>
+      </div>
     </div>
   </Panel>
 </template>
 
 <script lang="ts" setup>
 import Panel from "@/frontend/core/components/Panel/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/frontend/composables/useWebpCheck";
 
 type Props = {
-  item: SearchResult;
+  celestialObject: CelestialObject;
 };
 
 const props = defineProps<Props>();
 
-const location = computed(() => props.item as CelestialObject | Starsystem);
-
 const { supported: webpSupported } = useWebpCheck();
 
 const storeImage = computed(() => {
-  if (props.item.media.storeImage) {
-    return props.item.media.storeImage?.medium;
+  if (props.celestialObject.media.storeImage) {
+    return props.celestialObject.media.storeImage?.medium;
   }
 
   if (webpSupported) {
@@ -56,23 +58,6 @@ const storeImage = computed(() => {
   }
 
   return fallbackImageJpg;
-});
-
-const route = computed(() => {
-  switch (props.item.resultType) {
-    case "celestial_object":
-      return {
-        name: "celestial-object",
-        params: {
-          starsystem: (props.item as CelestialObject).starsystem.slug,
-          slug: props.item.slug,
-        },
-      };
-    case "starsystem":
-      return { name: "starsystem", params: { slug: props.item.slug } };
-    default:
-      return "";
-  }
 });
 </script>
 

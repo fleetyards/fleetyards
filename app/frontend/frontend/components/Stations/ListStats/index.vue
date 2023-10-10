@@ -3,11 +3,6 @@
     <dt class="col-sm-4 text-sm-right">{{ $t("labels.station.type") }}:</dt>
     <dd class="col-sm-8">{{ station.typeLabel }}</dd>
 
-    <dt class="col-sm-4 text-sm-right">{{ $t("labels.station.location") }}:</dt>
-    <dd class="col-sm-8">
-      <LocationLabel :station="station" />
-    </dd>
-
     <dt v-if="station.shopsListLabel" class="col-sm-4 text-right">
       {{ $t("labels.station.shops") }}:
     </dt>
@@ -45,14 +40,8 @@
 </template>
 
 <script>
-import LocationLabel from "@/frontend/components/Stations/LocationLabel/index.vue";
-
 export default {
   name: "StationsListStats",
-
-  components: {
-    LocationLabel,
-  },
 
   props: {
     station: {

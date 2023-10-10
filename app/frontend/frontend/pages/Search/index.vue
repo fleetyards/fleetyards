@@ -79,7 +79,7 @@
                 v-else-if="
                   ['CelestialObject', 'Starsystem'].includes(result.type)
                 "
-                :item="result.item"
+                :celestial-object="result.item"
               />
               <ShopCommodityPanel
                 v-else-if="result.type === 'ShopCommodity'"
