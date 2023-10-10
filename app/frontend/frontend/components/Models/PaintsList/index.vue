@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-12 paints">
+    <div id="paints" class="col-12 paints">
       <hr v-if="paints.length" />
       <h2 v-if="paints.length" class="text-uppercase">
         {{ $t("labels.model.paints") }}

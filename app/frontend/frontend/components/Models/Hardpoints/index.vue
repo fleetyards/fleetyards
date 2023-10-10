@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="hardpoints">
     <div v-if="erkulUrl" class="d-flex justify-content-center">
       <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
         <small>{{ $t("labels.erkul.prefix") }}</small>

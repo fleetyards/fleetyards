@@ -208,11 +208,12 @@
       </div>
       <Loader :loading="loading" />
     </div>
+
     <Paints :model="model" />
 
     <hr v-if="modules.length" />
     <div class="row">
-      <div class="col-12 modules">
+      <div id="modules" class="col-12 modules">
         <h2 v-if="modules.length" class="text-uppercase">
           {{ t("labels.model.modules") }}
         </h2>
@@ -230,7 +231,7 @@
     </div>
     <hr v-if="upgrades.length" />
     <div class="row">
-      <div class="col-12 upgrades">
+      <div id="upgrades" class="col-12 upgrades">
         <h2 v-if="upgrades.length" class="text-uppercase">
           {{ t("labels.model.upgrades") }}
         </h2>
@@ -248,7 +249,7 @@
     </div>
     <hr v-if="variants.length" />
     <div class="row">
-      <div class="col-12 variants">
+      <div id="variants" class="col-12 variants">
         <h2 v-if="variants.length" class="text-uppercase">
           {{ t("labels.model.variants") }}
         </h2>
@@ -272,7 +273,7 @@
     </div>
     <hr v-if="loaners.length" />
     <div class="row">
-      <div class="col-12 loaners">
+      <div id="loaners" class="col-12 loaners">
         <h2 v-if="loaners.length" class="text-uppercase">
           {{ t("labels.model.loaners") }}
         </h2>
