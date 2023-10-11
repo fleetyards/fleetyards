@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.9](https://github.com/fleetyards/fleetyards/compare/v5.27.8...v5.27.9) (2023-10-11)
+
+
+### Bug Fixes
+
+* **model:** use base model if present instead of rsi_chassis_id for variants lookup ([638b948](https://github.com/fleetyards/fleetyards/commit/638b94848f2252885e5f241143c72af4704d471a))
+
 ### [5.27.8](https://github.com/fleetyards/fleetyards/compare/v5.27.7...v5.27.8) (2023-10-10)
 
 ### [5.27.7](https://github.com/fleetyards/fleetyards/compare/v5.27.6...v5.27.7) (2023-10-09)
