@@ -78,7 +78,7 @@
           rel="noopener"
           aria-label="Bluesky"
         >
-          <i class="fa fa-at" />
+          <i class="fa fa-square" />
         </a>
         <a
           v-tooltip="'Mastodon'"
