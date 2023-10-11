@@ -401,7 +401,7 @@ class Model < ApplicationRecord
 
   def variants
     if base_model_id.present?
-      Model.where(id: base_model_id)
+      Model.where(id: base_model_id).where.not(id:).where.not(base_model_id: nil)
     else
       Model.where(rsi_chassis_id:).where.not(id:).where.not(rsi_chassis_id: nil)
     end
