@@ -16,6 +16,8 @@
       <div
         :class="{
           'panel-inner-text': inset,
+          'panel-inner-left': align === 'left',
+          'panel-inner-right': align === 'right',
         }"
         class="panel-inner"
       >
@@ -31,6 +33,7 @@ type Props = {
   transparency?: "default" | "more" | "complete";
   highlight?: boolean;
   variant?: "default" | "primary" | "success";
+  align?: "left" | "right";
   inset?: boolean;
 };
 
@@ -39,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   transparency: "default",
   highlight: false,
   inset: false,
+  align: undefined,
   variant: "default",
 });
 

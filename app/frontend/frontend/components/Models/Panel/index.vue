@@ -6,7 +6,7 @@
       class="model-panel"
       :class="`model-panel-${model.slug}`"
     >
-      <div class="panel-heading">
+      <PanelHeading>
         <h2 class="panel-title">
           <router-link
             :to="{
@@ -33,30 +33,21 @@
             variant="panel"
           />
         </h2>
-      </div>
-      <div
-        :class="{
-          'no-details': !details,
-        }"
-        class="panel-image text-center"
+      </PanelHeading>
+      <PanelImage
+        :rounded="details ? undefined : 'bottom'"
+        :image="storeImage"
+        :alt="model.name"
+        :to="{ name: 'model', params: { slug: model.slug } }"
       >
-        <LazyImage
-          v-if="storeImage"
-          :to="{ name: 'model', params: { slug: model.slug } }"
-          :aria-label="model.name"
-          :src="storeImage"
-          :alt="model.name"
-          class="image"
+        <div
+          v-show="model.onSale"
+          v-tooltip="t('labels.model.onSale')"
+          class="on-sale"
         >
-          <div
-            v-show="model.onSale"
-            v-tooltip="t('labels.model.onSale')"
-            class="on-sale"
-          >
-            <i class="fal fa-dollar-sign" />
-          </div>
-        </LazyImage>
-      </div>
+          <i class="fal fa-dollar-sign" />
+        </div>
+      </PanelImage>
       <Collapsed
         :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
@@ -83,7 +74,8 @@ import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.v
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Panel from "@/shared/components/Panel/index.vue";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { Model } from "@/services/fyApi";
 

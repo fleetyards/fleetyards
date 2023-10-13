@@ -107,6 +107,7 @@ export default {
   rsiRoadmap: "RSI Roadmap",
   unknown: "Unknown",
   none: "-",
+  notAvailable: "N/A",
   search: {
     default: "Search",
     shareTitle: "Search for: %{query}",

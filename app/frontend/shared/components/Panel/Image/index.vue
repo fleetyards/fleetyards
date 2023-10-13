@@ -2,20 +2,47 @@
   <div
     class="panel-image"
     :class="{
-      'panel-image-details': details,
+      'panel-image-size-auto': imageSize === 'auto',
+      'panel-image-rounded': rounded === 'all',
+      'panel-image-rounded-top': rounded === 'top',
+      'panel-image-rounded-right': rounded === 'right',
+      'panel-image-rounded-bottom': rounded === 'bottom',
+      'panel-image-rounded-left': rounded === 'left',
     }"
   >
-    <slot />
+    <LazyImage
+      v-if="image"
+      :to="to"
+      :aria-label="alt"
+      :src="image"
+      :alt="alt"
+      class="image"
+    >
+      <slot />
+    </LazyImage>
   </div>
 </template>
 
 <script lang="ts" setup>
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { RouteLocationRaw } from "vue-router";
+
+type PanelImageRounded = "all" | "top" | "right" | "bottom" | "left";
+
 type Props = {
-  details?: boolean;
+  image?: string;
+  alt?: string;
+  to?: RouteLocationRaw;
+  rounded?: PanelImageRounded;
+  imageSize?: "default" | "auto";
 };
 
 withDefaults(defineProps<Props>(), {
-  details: false,
+  image: undefined,
+  alt: "image",
+  to: undefined,
+  rounded: undefined,
+  imageSize: "default",
 });
 </script>
 

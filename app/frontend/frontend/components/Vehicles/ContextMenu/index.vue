@@ -106,7 +106,7 @@
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 import type { Vehicle } from "@/services/fyApi";
@@ -136,7 +136,7 @@ const props = withDefaults(defineProps<Props>(), {
   inGroup: false,
 });
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const { displayConfirm } = useNoty(t);
 

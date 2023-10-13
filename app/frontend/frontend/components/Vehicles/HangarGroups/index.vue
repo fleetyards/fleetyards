@@ -18,51 +18,59 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
+import type { HangarGroup } from "@/services/fyApi";
 
-@Component<PanelGroups>({})
-export default class PanelGroups extends Vue {
-  @Prop({ required: true }) groups: HangarGroup[];
+type HangarGroupBubbleSizes = "default" | "large";
 
-  @Prop({
-    default: "default",
-    validator(value) {
-      return ["default", "large"].indexOf(value) !== -1;
-    },
-  })
-  size!: string;
+type Props = {
+  groups: HangarGroup[];
+  size?: HangarGroupBubbleSizes;
+};
 
-  filter(event, filter) {
-    event.preventDefault();
+withDefaults(defineProps<Props>(), {
+  size: "default",
+});
 
-    if (!filter) {
-      return;
-    }
+const router = useRouter();
+const route = useRoute();
 
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}));
+const filter = (event: Event, filter: string) => {
+  event.preventDefault();
 
-    if ((query.hangarGroupsIn || []).includes(filter)) {
-      const index = query.hangarGroupsIn.findIndex((item) => item === filter);
-      if (index > -1) {
-        query.hangarGroupsIn.splice(index, 1);
-      }
-    } else {
-      if (!query.hangarGroupsIn) {
-        query.hangarGroupsIn = [];
-      }
-      query.hangarGroupsIn.push(filter);
-    }
-
-    this.$router.replace({
-      name: this.$route.name,
-      query: {
-        q: query,
-      },
-    });
+  if (!filter || !route.name) {
+    return;
   }
-}
+
+  const query = JSON.parse(JSON.stringify(route.query.q || {}));
+
+  if ((query.hangarGroupsIn || []).includes(filter)) {
+    const index = (query.hangarGroupsIn as string[]).findIndex(
+      (item) => item === filter,
+    );
+    if (index > -1) {
+      query.hangarGroupsIn.splice(index, 1);
+    }
+  } else {
+    if (!query.hangarGroupsIn) {
+      query.hangarGroupsIn = [];
+    }
+    query.hangarGroupsIn.push(filter);
+  }
+
+  router.replace({
+    name: route.name,
+    query: {
+      q: query,
+    },
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "HangarGroups",
+};
 </script>
 
 <style lang="scss" scoped>

@@ -7,14 +7,12 @@
             {{ countLabel }}{{ model.name }}
           </a>
           <br />
-          <small
-            v-if="model.manufacturer"
-            class="text-muted"
-            v-html="model.manufacturer.name"
-          />
+          <small v-if="model.manufacturer" class="text-muted">
+            {{ model.manufacturer.name }}
+          </small>
         </h2>
       </div>
-      <PanelImage class="text-center" :details="details">
+      <PanelImage class="text-center" :rounded="details ? undefined : 'bottom'">
         <LazyImage
           v-if="model.media.storeImage?.medium"
           :href="url"

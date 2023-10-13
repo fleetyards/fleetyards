@@ -4,6 +4,19 @@ import { routes as RoadmapRoutes } from "@/frontend/pages/Roadmap/routes";
 import { routes as SettingsRoutes } from "@/frontend/pages/Settings/routes";
 import { routes as FleetsRoutes } from "@/frontend/pages/Fleets/routes";
 import { routes as ToolsRoutes } from "@/frontend/pages/Tools/routes";
+import { routes as VisualTestsSubRoutes } from "@/frontend/pages/VisualTests/routes";
+
+const VisualTestsRoutes =
+  process.env.NODE_ENV !== "production"
+    ? [
+        {
+          path: "/visual-tests/",
+          name: "visual-tests",
+          component: () => import("@/frontend/pages/VisualTests/index.vue"),
+          children: VisualTestsSubRoutes,
+        },
+      ]
+    : [];
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -243,6 +256,7 @@ export const routes: RouteRecordRaw[] = [
     name: "confirm",
     component: () => import("@/frontend/pages/Confirm/index.vue"),
   },
+  ...VisualTestsRoutes,
   {
     path: "/404/",
     name: "404",

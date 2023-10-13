@@ -94,15 +94,24 @@
     width: 100%;
     margin: 0;
     text-align: left;
+    line-height: 1.5;
 
-    i {
-      width: 16px;
+    > * {
       display: flex;
-      justify-content: center;
-    }
-
-    > .panel-btn-inner {
+      align-items: center;
+      justify-content: space-between;
       text-align: left;
+      gap: 10px;
+
+      > :first-c {
+        width: 16px;
+        display: flex;
+        justify-content: center;
+      }
+
+      > :not(:first-child) {
+        flex: 1 1;
+      }
     }
   }
 

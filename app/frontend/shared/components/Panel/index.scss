@@ -91,97 +91,6 @@ $contentBorderRadius: $panelContentBorderRadius;
     background-color: transparent;
   }
 
-  .text-huge {
-    font-size: 40px;
-  }
-
-  .panel-box {
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-
-    .panel-box-icon {
-      display: flex;
-      flex-flow: column;
-      justify-content: center;
-
-      div {
-        margin-bottom: 2px;
-      }
-    }
-
-    .panel-box-text {
-      font-size: 40px;
-      text-align: right;
-
-      .panel-box-text-info {
-        font-size: 15px;
-      }
-    }
-  }
-
-  .production-status {
-    padding: 4px 6px;
-    color: $gray-light;
-    font-size: 75%;
-    line-height: 1;
-    text-align: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
-  }
-
-  .panel-heading {
-    padding: 10px 15px;
-
-    .panel-title {
-      margin-bottom: 0;
-      padding-top: 5px;
-      padding-right: 30px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-
-      small {
-        color: darken($text-color, 20%);
-
-        a {
-          color: darken($text-color, 20%);
-
-          &:hover {
-            color: $text-color;
-          }
-        }
-      }
-    }
-
-    &.panel-heading-with-actions {
-      display: flex;
-      justify-content: space-between;
-
-      h2 {
-        margin-bottom: 10.5px;
-        padding-right: 40px;
-      }
-    }
-  }
-
-  .panel-footer {
-    -webkit-border-bottom-right-radius: $contentBorderRadius;
-    border-bottom-right-radius: $contentBorderRadius;
-    -webkit-border-bottom-left-radius: $contentBorderRadius;
-    border-bottom-left-radius: $contentBorderRadius;
-  }
-
-  .panel-body {
-    padding: 15px;
-    padding-bottom: 0;
-  }
-
-  .panel-details {
-    overflow: hidden;
-    transition: height $transition-base-speed ease;
-  }
-
   .panel-inner {
     border-radius: $contentBorderRadius;
 
@@ -189,34 +98,21 @@ $contentBorderRadius: $panelContentBorderRadius;
       padding: 20px;
       padding-bottom: 0;
     }
-  }
 
-  .owner {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    max-width: 100%;
-    padding: 2px 12px;
-    padding-left: 1.5rem;
-    font-style: italic;
-    white-space: nowrap;
-    background-color: rgba($gray-dark, 0.9);
-    border-top-left-radius: $panelOuterBorderRadius;
+    &-left {
+      display: flex;
 
-    a {
-      max-width: 50%;
-      margin-left: 5px;
-
-      .panel-btn-inner {
-        padding-right: 4px;
+      > :first-child {
+        flex: 30% 0 0;
       }
     }
 
-    .owner-more-action {
-      font-style: italic;
+    &-right {
+      display: flex;
+
+      > :last-child {
+        flex: 30% 0 0;
+      }
     }
   }
 

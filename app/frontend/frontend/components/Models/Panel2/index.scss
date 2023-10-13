@@ -1,0 +1,79 @@
+.model-panel {
+  &-inner {
+    position: relative;
+  }
+
+  &-heading {
+    position: relative;
+    height: 96px;
+    background: linear-gradient(to bottom, rgba(black, 0.5) 50%, transparent);
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
+  }
+
+  &-add-to-hangar-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px 6px;
+    font-size: 18px;
+
+    > :first-child {
+      font-size: 18px;
+    }
+  }
+
+  &-body {
+    margin-top: -10px;
+  }
+
+  &-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
+    opacity: 0.7;
+    transition: border-radius $transition-base-speed ease;
+
+    &-rounded {
+      border-radius: $panelContentBorderRadius;
+    }
+  }
+
+  &-on-sale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 20px solid $primary;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid $primary;
+
+    i,
+    svg {
+      position: absolute;
+      top: -15px;
+      left: -10px;
+      color: #fff;
+    }
+  }
+
+  &-production-status {
+    padding: 4px 6px;
+    color: $gray-light;
+    font-size: 75%;
+    line-height: 1;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  }
+}

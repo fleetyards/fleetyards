@@ -7,7 +7,7 @@
       :class="`model-panel-${model.slug}`"
       :highlight="vehicle.flagship || highlight"
     >
-      <div class="panel-heading">
+      <PanelHeading>
         <h2 class="panel-title">
           <router-link
             :to="{
@@ -62,47 +62,38 @@
           class="panel-add-to-hangar-button"
           variant="panel"
         />
-      </div>
-      <div
-        :class="{
-          'no-details': !details,
-        }"
-        class="panel-image text-center"
+      </PanelHeading>
+      <PanelImage
+        :rounded="details ? undefined : 'bottom'"
+        :image="storeImage"
+        :alt="model.name"
+        :to="{ name: 'model', params: { slug: model.slug } }"
       >
-        <LazyImage
-          v-if="storeImage"
-          :to="{ name: 'model', params: { slug: model.slug } }"
-          :aria-label="model.name"
-          :src="storeImage"
-          :alt="model.name"
-          class="image"
+        <div
+          v-if="vehicle.loaner"
+          v-tooltip="t('labels.vehicle.loaner')"
+          class="loaner-label"
         >
-          <div
-            v-if="vehicle.loaner"
-            v-tooltip="t('labels.vehicle.loaner')"
-            class="loaner-label"
-          >
-            <i class="fal fa-exchange" />
-          </div>
-          <div
-            v-else-if="!mobile && hasLoaners && loanersHintVisible"
-            v-tooltip="loanersTooltip"
-            class="loaner-label"
-          >
-            <i class="fal fa-exchange" />
-          </div>
-          <div
-            v-show="model.onSale"
-            v-tooltip="t('labels.model.onSale')"
-            class="on-sale"
-          >
-            <i class="fal fa-dollar-sign" />
-          </div>
-          <HangarGroups
-            :groups="vehicle.hangarGroups"
-            class="panel-hangar-groups"
-          />
-        </LazyImage>
+          <i class="fal fa-exchange" />
+        </div>
+        <div
+          v-else-if="!mobile && hasLoaners && loanersHintVisible"
+          v-tooltip="loanersTooltip"
+          class="loaner-label"
+        >
+          <i class="fal fa-exchange" />
+        </div>
+        <div
+          v-show="model.onSale"
+          v-tooltip="t('labels.model.onSale')"
+          class="on-sale"
+        >
+          <i class="fal fa-dollar-sign" />
+        </div>
+        <HangarGroups
+          :groups="vehicle.hangarGroups"
+          class="panel-hangar-groups"
+        />
         <div
           v-if="upgradable && vehicle"
           v-tooltip="t('labels.model.addons')"
@@ -119,7 +110,7 @@
             <i class="far fa-plus-octagon" />
           </span>
         </div>
-      </div>
+      </PanelImage>
       <Collapsed
         :key="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
@@ -146,6 +137,8 @@ import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.v
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -290,3 +283,7 @@ export default {
   name: "VehiclePanel",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index";
+</style>
