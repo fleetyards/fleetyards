@@ -2,9 +2,11 @@
   <div class="row">
     <div class="col-12 paints">
       <hr v-if="paints?.length" />
-      <h2 v-if="paints?.length" class="text-uppercase">
-        {{ t("labels.model.paints") }}
-      </h2>
+      <a href="#paints">
+        <h2 v-if="paints?.length" id="paints" class="text-uppercase">
+          {{ t("labels.model.paints") }}
+        </h2>
+      </a>
       <transition-group
         v-if="paints?.length"
         name="fade-list"
@@ -45,7 +47,7 @@ watch(
   () => props.model,
   () => {
     refetch();
-  },
+  }
 );
 
 const { models: modelsService } = useApiClient();

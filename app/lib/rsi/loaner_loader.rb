@@ -27,14 +27,14 @@ module Rsi
         name = loaner_data_row.css("td:first-child").text.squish
         loaners = loaner_data_row.css("td:last-child").text.split(",").map(&:squish)
 
-        found_models = Model.where(name: models_map(name)).all
+        found_models = Model.where(name: models_mapping(name)).all
 
         missing_models << {name:, loaners:} if found_models.blank?
 
         found_models.each do |model|
           loaners.each do |loaner|
             loaner_name = loaner.squish
-            loaner_model = Model.where(name: model_map(loaner_name)).first
+            loaner_model = Model.where(name: model_mapping(loaner_name)).first
 
             if loaner_model.present?
               model_loaner = ModelLoaner.find_or_create_by(model_id: model.id, loaner_model_id: loaner_model.id)
@@ -65,10 +65,11 @@ module Rsi
       ""
     end
 
-    private def models_map(name)
+    private def models_mapping(name)
       models_map = {
         "Carrack / Carrack Expedition" => ["Carrack"],
         "Carrack w/ C8X / Carrack Expedition w/C8X" => ["Carrack"],
+        "Fury Variants" => ["Fury", "Fury MX", "Fury LX"],
         "100 Series" => %w[100i 125a 135c],
         "600i Series" => ["600i Touring", "600i Explorer", "600i Executive-Edition"],
         "Apollo" => ["Apollo Medivac", "Apollo Triage"],
@@ -91,7 +92,7 @@ module Rsi
         "G12R" => ["G12r"],
         "G12 Variants" => ["G12", "G12a", "G12r"],
         "ROC (+ ROC DS)" => %w[ROC ROC-DS],
-        "Retaliator" => ["Retaliator Bomber", "Retaliator Base"],
+        "Retaliator" => ["Retaliator Bomber", "Retaliator"],
         "San'Tok.yai" => ["San'tok.yāi"],
         "Nox" => ["Nox", "Nox Kue"],
         "X1 & Variants" => ["X1 Base", "X1 Velocity", "X1 Force"],
@@ -104,7 +105,7 @@ module Rsi
       strip_name(name)
     end
 
-    private def model_map(name)
+    private def model_mapping(name)
       model_map = {
         "85x" => "85X",
         "F7C - Hornet" => "F7C Hornet",

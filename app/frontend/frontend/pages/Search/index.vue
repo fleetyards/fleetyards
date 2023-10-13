@@ -63,30 +63,38 @@
               class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
             >
               <ModelPanel
-                v-if="result.type === 'model'"
+                v-if="result.type === 'Model'"
                 :model="result.item"
                 :details="true"
               />
+              <StationPanel
+                v-else-if="result.type === 'Station'"
+                :station="result.item"
+              />
+              <ShopPanel
+                v-else-if="result.type === 'Shop'"
+                :shop="result.item"
+              />
               <CelestialObjectsPanel
                 v-else-if="
-                  ['celestial_object', 'starsystem'].includes(result.type)
+                  ['CelestialObject', 'Starsystem'].includes(result.type)
                 "
-                :item="result.item"
+                :celestial-object="result.item"
               />
               <ShopCommodityPanel
-                v-else-if="result.type === 'shop_commodity'"
+                v-else-if="result.type === 'ShopCommodity'"
                 :item="result.item"
               />
               <ComponentPanel
-                v-else-if="result.type === 'component'"
+                v-else-if="result.type === 'Component'"
                 :component="result.item"
               />
               <CommodityPanel
-                v-else-if="result.type === 'commodity'"
+                v-else-if="result.type === 'Commodity'"
                 :commodity="result.item"
               />
               <EquipmentPanel
-                v-else-if="result.type === 'equipment'"
+                v-else-if="result.type === 'Equipment'"
                 :equipment="result.item"
               />
               <SearchPanel v-else :item="result.item" />
@@ -110,6 +118,8 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import CelestialObjectsPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import ShopCommodityPanel from "@/frontend/components/ShopCommodities/Panel/index.vue";
 import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
+import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
+import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
 import CommodityPanel from "@/frontend/components/Commodities/Panel/index.vue";
 import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import SearchHistory from "@/frontend/components/Search/History/index.vue";

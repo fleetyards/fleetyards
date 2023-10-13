@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_24_130255) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_11_124838) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -83,6 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_24_130255) do
     t.string "accept_language"
     t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
+    t.index ["visitor_token", "started_at"], name: "index_ahoy_visits_on_visitor_token_and_started_at"
   end
 
   create_table "albums", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -921,6 +922,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_24_130255) do
     t.boolean "hide_owner", default: false, null: false
     t.datetime "last_active_at"
     t.boolean "tester", default: false
+    t.integer "purchased_vehicles_count", default: 0, null: false
+    t.integer "wanted_vehicles_count", default: 0, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["normalized_username"], name: "index_users_on_normalized_username"

@@ -72,6 +72,15 @@
           <i class="fab fa-github" />
         </a>
         <a
+          v-tooltip="'Bluesky'"
+          href="https://bsky.app/profile/fleetyards.net"
+          target="_blank"
+          rel="noopener"
+          aria-label="Bluesky"
+        >
+          <i class="fa fa-square" />
+        </a>
+        <a
           v-tooltip="'Mastodon'"
           href="https://starcitizen.social/@fleetyards"
           target="_blank"
@@ -88,15 +97,6 @@
           aria-label="Instagram"
         >
           <i class="fab fa-instagram" />
-        </a>
-        <a
-          v-tooltip="'Twitter'"
-          href="https://twitter.com/FleetYardsNet"
-          target="_blank"
-          rel="noopener"
-          aria-label="Twitter"
-        >
-          <i class="fab fa-twitter" />
         </a>
       </div>
       <div class="app-footer-support">

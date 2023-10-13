@@ -20,6 +20,14 @@ class AdminMailer < ApplicationMailer
     )
   end
 
+  def paints_import_results(results)
+    @results = results
+
+    mail(
+      subject: I18n.t(:"mailer.admin.paints_import_results.subject")
+    )
+  end
+
   def notify_block(url)
     @url = url
 

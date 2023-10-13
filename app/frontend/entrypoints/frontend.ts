@@ -24,13 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
           // Registration was successful
           console.info(
             "ServiceWorker registration successful with scope: ",
-            registration.scope,
+            registration.scope
           );
         },
         (err) => {
           // registration failed :(
           console.error("ServiceWorker registration failed: ", err);
-        },
+        }
       );
   }
 });

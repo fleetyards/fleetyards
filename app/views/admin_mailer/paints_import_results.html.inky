@@ -1,0 +1,37 @@
+<h4>
+  <%= I18n.t("mailer.admin.paints_import_results.headline") %>
+</h4>
+
+<br>
+<h5>New Paints (<%= @results[:new][:count] || 0 %>)</h5>
+<br>
+
+<% if @results[:new][:items].present? %>
+<% @results[:new][:items].each do |paint| %>
+<p>
+  <b><%= paint[:model_name] %> <%= paint[:name] %></b><br>
+</p>
+<% if paint != @results[:new][:items].last %>
+<hr>
+<% end %>
+<% end %>
+
+<% else %>
+<p>No new Paints found</p>
+<% end %>
+<br>
+<br>
+
+<% if @results[:model_not_found][:items].present? %>
+<h5>Missing Models (<%= @results[:model_not_found][:count] %>)</h5>
+<br>
+
+<% @results[:model_not_found][:items].each do |paint| %>
+<p>
+  <b><%= paint[:model_name] %> <%= paint[:name] %></b><br>
+</p>
+<% if paint != @results[:model_not_found][:items].last %>
+<hr>
+<% end %>
+<% end %>
+<% end %>

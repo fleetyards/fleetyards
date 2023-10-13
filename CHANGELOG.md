@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.11](https://github.com/fleetyards/fleetyards/compare/v5.27.10...v5.27.11) (2023-10-11)
+
+
+### Bug Fixes
+
+* **models:** make sure to include the base model in variants ([e585fc3](https://github.com/fleetyards/fleetyards/commit/e585fc377fc7adaacdfc471153ae61bcf738c741))
+
+### [5.27.10](https://github.com/fleetyards/fleetyards/compare/v5.27.9...v5.27.10) (2023-10-11)
+
+### [5.27.9](https://github.com/fleetyards/fleetyards/compare/v5.27.8...v5.27.9) (2023-10-11)
+
+
+### Bug Fixes
+
+* **model:** use base model if present instead of rsi_chassis_id for variants lookup ([638b948](https://github.com/fleetyards/fleetyards/commit/638b94848f2252885e5f241143c72af4704d471a))
+
+### [5.27.8](https://github.com/fleetyards/fleetyards/compare/v5.27.7...v5.27.8) (2023-10-10)
+
+### [5.27.7](https://github.com/fleetyards/fleetyards/compare/v5.27.6...v5.27.7) (2023-10-09)
+
+
+### Bug Fixes
+
+* **search:** add panels for Station and Shop Result Type ([9e9fc57](https://github.com/fleetyards/fleetyards/commit/9e9fc574236de2a341a3b458dc2aaaa20e1bcebb))
+
+### [5.27.6](https://github.com/fleetyards/fleetyards/compare/v5.27.5...v5.27.6) (2023-10-09)
+
+
+### Bug Fixes
+
+* **search:** update result panels to display correct information ([025ea46](https://github.com/fleetyards/fleetyards/commit/025ea461857e0c4243907854fe2d263a8983d768))
+
+### [5.27.5](https://github.com/fleetyards/fleetyards/compare/v5.27.4...v5.27.5) (2023-10-09)
+
+### [5.27.4](https://github.com/fleetyards/fleetyards/compare/v5.27.3...v5.27.4) (2023-10-04)
+
 ### [5.27.3](https://github.com/fleetyards/fleetyards/compare/v5.27.2...v5.27.3) (2023-09-22)
 
 

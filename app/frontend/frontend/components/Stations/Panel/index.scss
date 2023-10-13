@@ -1,12 +1,15 @@
 .station-panel {
   > .panel {
-    min-height: 400px;
+    min-height: 300px;
     background-color: black;
 
     .panel-heading .panel-title {
       margin-top: 10px;
       font-size: 30px;
       text-shadow: 0 0 2px black;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
 
     > .panel-inner {

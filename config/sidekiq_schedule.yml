@@ -34,6 +34,10 @@ production: &production
     cron: '0 3 * * 0' # Weekly on Sunday 3:00
     class: 'Loaders::LocationsJob'
     queue: 'loaders'
+  loaders_paints_import_job:
+    cron: '0 19 * * 0' # Weekly on Sunday 19:00
+    class: 'Loaders::PaintsImportJob'
+    queue: 'loaders'
   admin_notifier_job:
     cron: '0 20 * * 0' # Weekly on Sunday 20:00
     class: 'Notifications::AdminJob'

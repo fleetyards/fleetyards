@@ -132,7 +132,7 @@ module Api
       end
 
       private def sync_params
-        @sync_params ||= params.permit(items: [:id, :name, :type, :customName])
+        @sync_params ||= params.permit(items: [:id, :name, :image, :type, :customName])
       end
     end
   end

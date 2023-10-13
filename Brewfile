@@ -1,3 +1,3 @@
 brew "imagemagick"
-brew "postgresql"
-brew "redis"
+brew "postgresql@16"
+brew "libyaml"

@@ -400,7 +400,11 @@ class Model < ApplicationRecord
   end
 
   def variants
-    Model.where(rsi_chassis_id:).where.not(id:).where.not(rsi_chassis_id: nil)
+    if base_model_id.present?
+      Model.where(base_model_id:).where.not(id:).where.not(base_model_id: nil)
+    else
+      Model.where(rsi_chassis_id:).where.not(id:).where.not(rsi_chassis_id: nil)
+    end
   end
 
   def in_hangar(user)

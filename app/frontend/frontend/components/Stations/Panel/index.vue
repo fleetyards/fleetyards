@@ -20,6 +20,9 @@
             >
               {{ station.name }}
             </router-link>
+            <small class="text-muted">
+              <LocationLabel :station="station" />
+            </small>
           </h2>
         </div>
       </div>
@@ -38,6 +41,7 @@
 </template>
 
 <script lang="ts" setup>
+import LocationLabel from "@/frontend/components/Stations/LocationLabel/index.vue";
 import Stats from "@/frontend/components/Stations/ListStats/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import type { Station } from "@/services/fyApi";

@@ -10,11 +10,7 @@
     <span v-if="option.icon" class="filter-group-item-icon">
       <img :src="option.icon" :alt="`option-icon`" />
     </span>
-    <span
-      :class="{
-        'filter-group-item-label': !multiple && !selected,
-      }"
-    >
+    <span class="filter-group-item-label">
       {{ option.label }}
     </span>
     <span

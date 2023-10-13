@@ -212,14 +212,17 @@
       </div>
       <Loader :loading="loading" />
     </div>
+
     <Paints :model="model" />
 
     <hr v-if="modules.length" />
     <div class="row">
       <div class="col-12 modules">
-        <h2 v-if="modules.length" class="text-uppercase">
-          {{ t("labels.model.modules") }}
-        </h2>
+        <a href="#modules">
+          <h2 v-if="modules.length" id="modules" class="text-uppercase">
+            {{ t("labels.model.modules") }}
+          </h2>
+        </a>
         <div v-if="modules.length" class="row">
           <div
             v-for="module in modules"
@@ -235,9 +238,11 @@
     <hr v-if="upgrades.length" />
     <div class="row">
       <div class="col-12 upgrades">
-        <h2 v-if="upgrades.length" class="text-uppercase">
-          {{ t("labels.model.upgrades") }}
-        </h2>
+        <a href="#upgrades">
+          <h2 v-if="upgrades.length" id="upgrades" class="text-uppercase">
+            {{ t("labels.model.upgrades") }}
+          </h2>
+        </a>
         <div v-if="upgrades.length" class="row">
           <div
             v-for="upgrade in upgrades"
@@ -253,9 +258,11 @@
     <hr v-if="variants.length" />
     <div class="row">
       <div class="col-12 variants">
-        <h2 v-if="variants.length" class="text-uppercase">
-          {{ t("labels.model.variants") }}
-        </h2>
+        <a href="#variants">
+          <h2 v-if="variants.length" id="variants" class="text-uppercase">
+            {{ t("labels.model.variants") }}
+          </h2>
+        </a>
         <transition-group
           v-if="variants.length"
           name="fade-list"
@@ -277,9 +284,11 @@
     <hr v-if="loaners.length" />
     <div class="row">
       <div class="col-12 loaners">
-        <h2 v-if="loaners.length" class="text-uppercase">
-          {{ t("labels.model.loaners") }}
-        </h2>
+        <a href="#loaners">
+          <h2 v-if="loaners.length" id="loaners" class="text-uppercase">
+            {{ t("labels.model.loaners") }}
+          </h2>
+        </a>
         <transition-group
           v-if="loaners.length"
           name="fade-list"
