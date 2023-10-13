@@ -32,7 +32,19 @@ class PaintsImporter
     }
   end
 
-  def extract_paints(import)
+  def list_paints(filter = nil)
+    Imports::HangarSync.find_each do |import|
+      paints << extract_paints(import)
+    end
+
+    paints.flatten.uniq.compact.select do |paint|
+      return true if filter.blank?
+
+      paint[:model_name].include?(filter) || paint[:name].include?(filter)
+    end
+  end
+
+  private def extract_paints(import)
     return if import.input.blank? || import.input.starts_with?("{")
 
     imported_data = JSON.parse(import.input)
@@ -53,7 +65,7 @@ class PaintsImporter
     nil
   end
 
-  def import_paint(paint)
+  private def import_paint(paint)
     model_names = models_mapping(paint[:model_name])
 
     models = Model.where(name: model_names).all
@@ -189,7 +201,7 @@ class PaintsImporter
     name
   end
 
-  def cleanup_name(text)
+  private def cleanup_name(text)
     text.gsub(/paint|Paint|livery|Livery|skin|Skin/, "").strip
   end
 end
