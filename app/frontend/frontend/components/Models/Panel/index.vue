@@ -6,8 +6,8 @@
       class="model-panel"
       :class="`model-panel-${model.slug}`"
     >
-      <PanelHeading>
-        <h2 class="panel-title">
+      <PanelHeading level="h2">
+        <template #default>
           <router-link
             :to="{
               name: 'model',
@@ -18,21 +18,19 @@
           >
             <span>{{ model.name }}</span>
           </router-link>
-
-          <br />
-
-          <small>
-            <router-link :to="manufacturerRoute">
-              {{ manufacturerName }}
-            </router-link>
-          </small>
-
+        </template>
+        <template #subtitle>
+          <router-link :to="manufacturerRoute">
+            {{ manufacturerName }}
+          </router-link>
+        </template>
+        <template #actions>
           <AddToHangar
             :model="model"
             class="panel-add-to-hangar-button"
             variant="panel"
           />
-        </h2>
+        </template>
       </PanelHeading>
       <PanelImage
         :rounded="details ? undefined : 'bottom'"

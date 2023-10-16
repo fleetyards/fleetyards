@@ -1,36 +1,42 @@
 <template>
-  <Panel :id="id || item.slug" class="station-item">
-    <PanelImage class="text-center">
-      <router-link
-        :key="item.media.storeImage?.medium"
-        v-lazy:background-image="item.media.storeImage?.medium"
-        :to="route"
-        :aria-label="item.name"
-        class="lazy"
-      />
-    </PanelImage>
-    <h2 class="panel-title">
-      <router-link :to="route" :aria-label="item.name">
-        {{ item.name }}
+  <Panel
+    :id="id || shop.slug"
+    class="shop-item"
+    :bg-image="shop.media.storeImage?.medium"
+    :to="detailRoute"
+    :link-label="shop.name"
+  >
+    <div></div>
+    <PanelHeading level="h3" size="large" shadow="bottom">
+      <router-link :to="detailRoute" :aria-label="shop.name">
+        {{ shop.name }}
       </router-link>
-    </h2>
+    </PanelHeading>
   </Panel>
 </template>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
-import type { RouteLocationRaw } from "vue-router";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import type { Shop } from "@/services/fyApi";
 
 type Props = {
-  item: Shop;
-  route: RouteLocationRaw;
+  shop: Shop;
   id?: string;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   id: undefined,
+});
+
+const detailRoute = computed(() => {
+  return {
+    name: "shop",
+    params: {
+      stationSlug: props.shop.station.slug,
+      slug: props.shop.slug,
+    },
+  };
 });
 </script>
 
@@ -39,7 +45,3 @@ export default {
   name: "ShopsItem",
 };
 </script>
-
-<style lang="scss">
-@import "index";
-</style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="station.habitationCounts?.length"
+    v-if="habitationCounts?.length"
     class="row"
     :class="{
       'metrics-padding': padding,
@@ -31,21 +31,28 @@
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
 import { groupBy } from "@/shared/utils/Array";
-import type { Station } from "@/services/fyApi";
+import type { Habitation, HabitationCount } from "@/services/fyApi";
 
 type Props = {
-  station: Station;
+  habitations?: Habitation[];
+  habitationCounts?: Array<HabitationCount>;
   padding?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  habitations: () => {
+    return [];
+  },
+  habitationCounts: () => {
+    return [];
+  },
   padding: false,
 });
 
 const { t } = useI18n();
 
 const habitationsByName = computed(() => {
-  return groupBy(props.station.habitations || [], "habitationName");
+  return groupBy(props.habitations, "habitationName");
 });
 </script>
 

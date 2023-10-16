@@ -2,7 +2,6 @@
   <div
     class="panel-body"
     :class="{
-      'panel-body-no-min-height': noMinHeight,
       'panel-body-no-padding': noPadding,
       'panel-body-no-padding-top': noPaddingTop,
       'panel-body-rounded': rounded === 'all',

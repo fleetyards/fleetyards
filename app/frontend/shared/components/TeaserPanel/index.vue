@@ -1,41 +1,36 @@
 <template>
-  <Panel>
-    <div v-if="fullscreen" class="panel-heading">
-      <h2 class="panel-title">
-        {{ title }}
-      </h2>
-    </div>
-    <div
-      class="teaser-panel"
-      :class="{
-        'teaser-panel-text': variant === 'text',
-        'teaser-panel-fullscreen': fullscreen,
-      }"
-    >
-      <div class="teaser-panel-image teaser-panel-item">
-        <LazyImage v-if="image" :src="image" />
-      </div>
-      <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
+  <Panel alignment="left" :slim="slim">
+    <PanelImage
+      :image="image"
+      image-size="auto"
+      rounded="left"
+      :alt="item.name"
+    />
+    <div>
+      <PanelHeading level="h2">
         <router-link v-if="to" :to="to">
-          <h3>{{ title }}</h3>
-          <p v-if="withDescription">
-            {{ item.description }}
-          </p>
+          {{ title }}
         </router-link>
         <template v-else>
-          <h3>{{ title }}</h3>
+          {{ title }}
+        </template>
+      </PanelHeading>
+      <PanelBody no-min-height>
+        <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
           <p v-if="withDescription">
             {{ item.description }}
           </p>
-        </template>
-      </div>
+        </div>
+      </PanelBody>
     </div>
   </Panel>
 </template>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import type { MediaImage } from "@/services/fyApi";
 import type { RouteLocationNamedRaw } from "vue-router";
 
@@ -55,6 +50,7 @@ type Props = {
   withDescription?: boolean;
   fullscreen?: boolean;
   variant?: "default" | "text";
+  slim?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -62,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   withDescription: true,
   fullscreen: false,
   variant: "default",
+  slim: false,
 });
 
 const image = computed(() => {

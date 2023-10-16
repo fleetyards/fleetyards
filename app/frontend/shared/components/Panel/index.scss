@@ -73,46 +73,57 @@ $contentBorderRadius: $panelContentBorderRadius;
     content: "";
   }
 
-  &.panel-primary {
+  &-primary {
     color: white;
     background-color: $primary;
   }
 
-  &.panel-success {
+  &-success {
     color: white;
     background-color: $success;
   }
 
-  &.panel-transparency-more {
+  &-transparency-more {
     background-color: rgba($panel-bg, 0.6);
   }
 
-  &.panel-transparency-complete {
+  &-transparency-complete {
     background-color: transparent;
   }
 
-  .panel-inner {
+  &-inner {
     border-radius: $contentBorderRadius;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 286px;
 
-    &.panel-inner-text {
+    &-text {
       padding: 20px;
       padding-bottom: 0;
     }
 
-    &-left {
+    &-left,
+    &-right {
       display: flex;
+      flex-direction: row;
+    }
 
+    &-left {
       > :first-child {
         flex: 30% 0 0;
       }
     }
 
     &-right {
-      display: flex;
-
       > :last-child {
         flex: 30% 0 0;
       }
+    }
+
+    &-slim {
+      min-height: 0;
     }
   }
 

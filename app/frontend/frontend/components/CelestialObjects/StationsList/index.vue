@@ -18,7 +18,7 @@
           :key="station.slug"
           class="col-12 fade-list-item"
         >
-          <StationPanel :station="station" />
+          <StationPanel :station="station" show-stats />
         </div>
       </transition-group>
       <Loader :loading="isLoading" :fixed="true" />
@@ -45,7 +45,7 @@ import Pagination from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { BaseList } from "@/services/fyApi";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const { stations: stationsService } = useApiClient();
 

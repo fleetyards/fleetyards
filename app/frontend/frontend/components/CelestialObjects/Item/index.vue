@@ -1,16 +1,30 @@
 <template>
-  <Panel :id="item.slug" class="station-list">
+  <Panel
+    :id="id || celestialObject.slug"
+    class="celestial-object-item"
+    :bg-image="celestialObject.media.storeImage?.medium"
+    :to="detailRoute"
+    :link-label="celestialObject.name"
+  >
+    <PanelHeading level="h3" size="large" shadow="top">
+      <router-link :to="detailRoute" :aria-label="celestialObject.name">
+        {{ celestialObject.name }}
+      </router-link>
+    </PanelHeading>
+  </Panel>
+
+  <!-- <Panel :id="celestialObject.slug" class="celestial-object-item">
     <div
-      :key="item.media?.storeImage?.large"
-      v-lazy:background-image="item.media?.storeImage?.large"
+      :key="celestialObject.media?.storeImage?.large"
+      v-lazy:background-image="celestialObject.media?.storeImage?.large"
       class="panel-bg lazy"
     />
     <div class="row">
       <div class="col-12">
         <div class="panel-heading">
           <h2 class="panel-title">
-            <router-link :to="detailRoute" :aria-label="item.name">
-              {{ item.name }}
+            <router-link :to="detailRoute" :aria-label="celestialObject.name">
+              {{ celestialObject.name }}
             </router-link>
           </h2>
         </div>
@@ -29,26 +43,25 @@
               :key="moon.slug"
               class="col-12 col-lg-3 fade-list-item"
             >
-              <CelestialObjectSubItem :item="moon" />
+              <CelestialObjectMoonItem :moon="moon" />
             </div>
           </transition-group>
         </template>
       </div>
     </div>
-  </Panel>
+  </Panel> -->
 </template>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
-import CelestialObjectSubItem from "@/frontend/components/CelestialObjects/SubItem/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import CelestialObjectMoonItem from "@/frontend/components/CelestialObjects/MoonItem/index.vue";
 import type { CelestialObject } from "@/services/fyApi";
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useI18n } from "@/frontend/composables/useI18n";
-
-const { t } = useI18n();
 
 type Props = {
-  item: CelestialObject;
+  celestialObject: CelestialObject;
+  id?: string;
 };
 
 const props = defineProps<Props>();
@@ -65,7 +78,7 @@ const fetchCelestialObjects = async () => {
   try {
     const response = await celestialObjectsService.list({
       q: {
-        parentEq: props.item.slug,
+        parentEq: props.celestialObject.slug,
       },
     });
 
@@ -78,7 +91,10 @@ const fetchCelestialObjects = async () => {
 const detailRoute = computed(() => {
   return {
     name: "celestial-object",
-    params: { starsystem: props.item.starsystem.slug, slug: props.item.slug },
+    params: {
+      starsystem: props.celestialObject.starsystem.slug,
+      slug: props.celestialObject.slug,
+    },
   };
 });
 </script>
@@ -88,7 +104,3 @@ export default {
   name: "PanelsList",
 };
 </script>
-
-<style lang="scss">
-@import "index";
-</style>

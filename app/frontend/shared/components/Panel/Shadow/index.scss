@@ -1,0 +1,20 @@
+.panel-shadow {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+
+  &-right {
+    border-top-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    background: linear-gradient(to left, rgba(black, 0.8), transparent 60%);
+  }
+
+  &-left {
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+    background: linear-gradient(to right, rgba(black, 0.8), transparent 60%);
+  }
+}

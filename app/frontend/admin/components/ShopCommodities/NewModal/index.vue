@@ -9,7 +9,7 @@
                 v-slot="{ errors }"
                 vid="commodityItemType"
                 rules="required"
-                :name="$t('labels.shopCommodity.commodityItemType')"
+                :name="t('labels.shopCommodity.commodityItemType')"
                 :slim="true"
               >
                 <FilterGroup
@@ -29,7 +29,7 @@
                 key="component-item-type-filters-filter-group"
                 v-model="componentItemTypeFilter"
                 :label="
-                  $t('labels.filters.shopCommodities.componentItemTypeFilter')
+                  t('labels.filters.shopCommodities.componentItemTypeFilter')
                 "
                 :collection="componentItemTypeFiltersCollection"
                 name="component-item-type-filter"
@@ -41,7 +41,7 @@
                   key="equipment-type-filters-filter-group"
                   v-model="equipmentTypeFilter"
                   :label="
-                    $t('labels.filters.shopCommodities.equipmentTypeFilter')
+                    t('labels.filters.shopCommodities.equipmentTypeFilter')
                   "
                   :collection="equipmentTypeFiltersCollection"
                   name="equipment-type-filter"
@@ -53,7 +53,7 @@
                   key="equipment-slot-filters-filter-group"
                   v-model="equipmentSlotFilter"
                   :label="
-                    $t('labels.filters.shopCommodities.equipmentSlotFilter')
+                    t('labels.filters.shopCommodities.equipmentSlotFilter')
                   "
                   :collection="equipmentSlotFiltersCollection"
                   name="equipment-slot-filter"
@@ -68,7 +68,7 @@
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'Commodity'"
                 key="commodity-filter-group"
-                :label="$t('labels.filters.shopCommodities.commodity')"
+                :label="t('labels.filters.shopCommodities.commodity')"
                 :collection="commoditiesCollection"
                 name="commodity-commodityItemId"
                 value-attr="id"
@@ -81,7 +81,7 @@
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'Component'"
                 key="component-filter-group"
-                :label="$t('labels.filters.shopCommodities.component')"
+                :label="t('labels.filters.shopCommodities.component')"
                 :collection="componentsCollection"
                 :collection-filter="{
                   itemTypeEq: componentItemTypeFilter,
@@ -97,7 +97,7 @@
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'Equipment'"
                 key="equipment-filter-group"
-                :label="$t('labels.filters.shopCommodities.equipment')"
+                :label="t('labels.filters.shopCommodities.equipment')"
                 :collection="equipmentCollection"
                 :collection-filter="{
                   equipmentTypeEq: equipmentTypeFilter,
@@ -114,7 +114,7 @@
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'Model'"
                 key="model-filter-group"
-                :label="$t('labels.filters.shopCommodities.model')"
+                :label="t('labels.filters.shopCommodities.model')"
                 :collection="modelsCollection"
                 name="models-commodityItemId"
                 value-attr="id"
@@ -127,7 +127,7 @@
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'ModelModule'"
                 key="model-module-filter-group"
-                :label="$t('labels.filters.shopCommodities.modelModule')"
+                :label="t('labels.filters.shopCommodities.modelModule')"
                 :collection="modelModulesCollection"
                 name="modelModules-commodityItemId"
                 value-attr="id"
@@ -140,7 +140,7 @@
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'ModelPaint'"
                 key="model-paint-filter-group"
-                :label="$t('labels.filters.shopCommodities.modelPaint')"
+                :label="t('labels.filters.shopCommodities.modelPaint')"
                 :collection="modelPaintsCollection"
                 name="modelPaints-commodityItemId"
                 value-attr="id"
@@ -161,9 +161,9 @@
         </div>
         <div class="col-4 col-md-2">
           <Btn
-            v-tooltip="$t('actions.remove')"
-            :aria-label="$t('actions.remove')"
-            @click.native="removeItem(index)"
+            v-tooltip="t('actions.remove')"
+            :aria-label="t('actions.remove')"
+            @click="removeItem(index)"
           >
             <i class="fa fa-trash" />
           </Btn>
@@ -180,7 +180,7 @@
             data-test="shopCommodity-save"
             :inline="true"
           >
-            {{ $t("actions.save") }}
+            {{ t("actions.save") }}
           </Btn>
         </div>
       </template>
@@ -188,9 +188,7 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import shopCommodityCollection from "@/admin/api/collections/ShopCommodities";
 import modelsCollection from "@/admin/api/collections/Models";
@@ -213,21 +211,16 @@ type ShopCommoditiesFormData = {
   commodityItemId?: string;
 };
 
-@Component<VehicleModal>({
-  components: {
-    Modal,
-    FilterGroup,
-    CollectionFilterGroup,
-    Btn,
-    TeaserPanel,
-  },
+type Props = {
+  shopId: string;
+  commodityItemType?: string;
+  itemTypeFilter?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  commodityItemType: undefined,
+  itemTypeFilter: undefined,
 })
-export default class VehicleModal extends Vue {
-  @Prop({ required: true }) shopId: string;
-
-  @Prop({ default: null }) commodityItemType: string | null;
-
-  @Prop({ default: null }) itemTypeFilter: string | null;
 
   modelsCollection: ModelsCollection = modelsCollection;
 
@@ -339,5 +332,10 @@ export default class VehicleModal extends Vue {
   removeItem(index) {
     this.items.splice(index, 1);
   }
-}
+</script>
+
+<script lang="ts">
+export default {
+  name: "ShopCommoditiesNewModal",
+};
 </script>

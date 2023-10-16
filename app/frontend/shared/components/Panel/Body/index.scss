@@ -1,13 +1,8 @@
 .panel-body {
   padding: 10px 15px;
-  min-height: 200px;
   overflow: hidden;
   position: relative;
   transition: border-radius $transition-base-speed ease;
-
-  &-no-min-height {
-    min-height: 0;
-  }
 
   &-no-padding {
     padding: 0;

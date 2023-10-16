@@ -111,6 +111,7 @@
                   params: { slug: model.slug },
                 }"
                 variant="text"
+                slim
               />
             </div>
           </transition-group>
@@ -169,7 +170,7 @@ import { useQuery } from "@tanstack/vue-query";
 import logoHomePride from "@/images/pride/logo-home.png";
 import logoHome from "@/images/logo-home.png";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const searchQuery = ref<string | undefined>();
 

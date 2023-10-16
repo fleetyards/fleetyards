@@ -1,70 +1,80 @@
 <template>
-  <Btn @click.native="openPriceModal">
-    {{ $t("actions.openPriceModal") }}
+  <Btn @click="openPriceModal">
+    {{ t("actions.openPriceModal") }}
   </Btn>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { displayWarning } from "@/frontend/lib/Noty";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useSessionStore } from "@/frontend/stores/session";
 
-@Component<PriceModalBtn>({
-  components: {
-    Btn,
+const { t } = useI18n();
+const { displayWarning } = useNoty(t);
+
+type Props = {
+  stationSlug?: string;
+  shopId?: string;
+  shopTypes?: string[];
+  commodityItemType?: string;
+  withoutRental?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  stationSlug: undefined,
+  shopId: undefined,
+  shopTypes: undefined,
+  commodityItemType: undefined,
+  withoutRental: false,
+});
+
+const pathOptions: FilterGroupItem[] = [
+  {
+    value: "sell",
+    name: t("labels.shop.sellPrice"),
   },
-})
-export default class PriceModalBtn extends Vue {
-  @Prop({ default: null }) stationSlug!: string;
+  {
+    value: "buy",
+    name: t("labels.shop.buyPrice"),
+  },
+  {
+    value: "rental",
+    name: t("labels.shop.rentalPrice"),
+  },
+];
 
-  @Prop({ default: null }) shopId!: string;
+const sessionStore = useSessionStore();
 
-  @Prop({ default: null }) shopTypes!: string[] | null;
+const comlink = useComlink();
 
-  @Prop({ default: null }) commodityItemType!: string;
-
-  @Prop({ default: false }) withoutRental!: boolean;
-
-  pathOptions: FilterGroupItem[] = [
-    {
-      value: "sell",
-      name: this.$t("labels.shop.sellPrice"),
-    },
-    {
-      value: "buy",
-      name: this.$t("labels.shop.buyPrice"),
-    },
-    {
-      value: "rental",
-      name: this.$t("labels.shop.rentalPrice"),
-    },
-  ];
-
-  @Getter("isAuthenticated", { namespace: "session" }) isAuthenticated;
-
-  openPriceModal() {
-    if (!this.isAuthenticated) {
-      displayWarning({
-        text: this.$t("messages.error.commodityPrice.accountRequired"),
-      });
-      return;
-    }
-
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/ShopCommodities/PriceModal/index.vue"),
-      props: {
-        stationSlug: this.stationSlug,
-        shopId: this.shopId,
-        commodityItemType: this.commodityItemType,
-        shopTypes: this.shopTypes,
-        pathOptions: this.pathOptions.filter(
-          (item) => item.value !== "rental" || this.withoutRental,
-        ),
-      },
+const openPriceModal = () => {
+  if (!sessionStore.isAuthenticated) {
+    displayWarning({
+      text: t("messages.error.commodityPrice.accountRequired"),
     });
+    return;
   }
-}
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/ShopCommodities/PriceModal/index.vue"),
+    props: {
+      stationSlug: props.stationSlug,
+      shopId: props.shopId,
+      commodityItemType: props.commodityItemType,
+      shopTypes: props.shopTypes,
+      pathOptions: pathOptions.filter(
+        (item) => item.value !== "rental" || props.withoutRental,
+      ),
+    },
+  });
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "PriceModalBtn",
+};
 </script>

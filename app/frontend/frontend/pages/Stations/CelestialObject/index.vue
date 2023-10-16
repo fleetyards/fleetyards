@@ -37,16 +37,7 @@
               :key="moon.slug"
               class="col-12 col-md-6 col-lg-3 fade-list-item"
             >
-              <CelestialObjectItem
-                :item="moon"
-                :route="{
-                  name: 'celestial-object',
-                  params: {
-                    starsystem: celestialObject.starsystem?.slug,
-                    slug: moon.slug,
-                  },
-                }"
-              />
+              <CelestialObjectItem :celestial-object="moon" />
             </div>
           </transition-group>
         </div>

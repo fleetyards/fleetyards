@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="station.docks?.length"
+    v-if="docks?.length"
     class="row"
     :class="{
       'metrics-padding': padding,
@@ -33,11 +33,11 @@
                 </div>
                 <div class="row">
                   <div
-                    v-for="(docks, size) in docksBySize(typedDocks)"
+                    v-for="(items, size) in docksBySize(typedDocks)"
                     :key="`dock-${size}`"
                     class="col-6"
                   >
-                    <DockItem :docks="docks" :size="size" />
+                    <DockItem :docks="items" :size="size" />
                   </div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
           </div>
         </template>
         <div
-          v-for="(groupDocks, group) in docksByType(station.docks)"
+          v-for="(groupDocks, group) in docksByType(docks)"
           v-else
           :key="`docks-${group}`"
           class="col-12"
@@ -55,11 +55,11 @@
           </div>
           <div class="row">
             <div
-              v-for="(docks, size) in docksBySize(groupDocks)"
+              v-for="(items, size) in docksBySize(groupDocks)"
               :key="`dock-${size}`"
               class="col-6"
             >
-              <DockItem :docks="docks" :size="size" />
+              <DockItem :docks="items" :size="size" />
             </div>
           </div>
         </div>
@@ -72,25 +72,32 @@
 import { groupBy, sortBy } from "@/shared/utils/Array";
 import DockItem from "./Item/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import type { Station, Dock } from "@/services/fyApi";
+import type { Dock, DockCount } from "@/services/fyApi";
 
 type Props = {
-  station: Station;
+  docks?: Dock[];
+  dockCounts?: DockCount[];
   padding?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  docks: () => {
+    return [];
+  },
+  dockCounts: () => {
+    return [];
+  },
   padding: false,
 });
 
 const { t } = useI18n();
 
 const hasGroup = computed(() => {
-  return props.station.docks?.some((dock) => !!dock.group);
+  return props.docks?.some((dock) => !!dock.group);
 });
 
 const sortedDocks = computed(() => {
-  return sortBy<Dock>(props.station.docks || [], "name");
+  return sortBy<Dock>(props.docks || [], "name");
 });
 
 const docksByGroup = computed(() => {

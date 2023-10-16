@@ -29,7 +29,7 @@
               :key="celestialObject.slug"
               class="col-12 col-lg-3 fade-list-item"
             >
-              <CelestialObjectSubItem :item="celestialObject" />
+              <CelestialObjectSubItem :moon="celestialObject" />
             </div>
           </transition-group>
         </template>
@@ -40,13 +40,13 @@
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
-import CelestialObjectSubItem from "@/frontend/components/CelestialObjects/SubItem/index.vue";
+import CelestialObjectSubItem from "@/frontend/components/CelestialObjects/MoonItem/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import type { Starsystem } from "@/services/fyApi";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 type Props = {
   item: Starsystem;

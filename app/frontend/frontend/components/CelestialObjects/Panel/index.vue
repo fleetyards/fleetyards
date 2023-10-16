@@ -52,7 +52,7 @@ const props = defineProps<Props>();
 const resultItem = computed(() => props.item.item);
 
 const location = computed(
-  () => resultItem.value as CelestialObject | Starsystem
+  () => resultItem.value as CelestialObject | Starsystem,
 );
 
 const { supported: webpSupported } = useWebpCheck();

@@ -81,7 +81,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useQuery } from "@tanstack/vue-query";
 import type { StarsystemQuery, BaseList } from "@/services/fyApi";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 useMetaInfo(t);
 

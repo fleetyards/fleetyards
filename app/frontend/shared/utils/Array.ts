@@ -17,7 +17,7 @@ export const groupBy = <T>(list: T[], key: keyof T) => {
   return list.reduce(
     (result, item) => {
       const group = item[key] as string;
-      result[group] = [...result[group]];
+      result[group] = [...(result[group] || [])];
       result[group].push(item);
       return result;
     },

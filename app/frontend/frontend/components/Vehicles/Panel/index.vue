@@ -7,8 +7,8 @@
       :class="`model-panel-${model.slug}`"
       :highlight="vehicle.flagship || highlight"
     >
-      <PanelHeading>
-        <h2 class="panel-title">
+      <PanelHeading level="h2">
+        <template #default>
           <router-link
             :to="{
               name: 'model',
@@ -37,31 +37,30 @@
               <i class="fa fa-certificate flagship-icon" />
             </small>
           </transition>
+        </template>
+        <template #subtitle>
+          <router-link :to="manufacturerRoute">
+            {{ model.manufacturer?.name }}
+          </router-link>
+          <template v-if="customName">
+            {{ modelName }}
+          </template>
+        </template>
+        <template #actions>
+          <VehicleContextMenu
+            v-if="editable && !vehicle.loaner"
+            :vehicle="vehicle"
+            :editable="editable"
+            :wishlist="wishlist"
+          />
 
-          <br />
-
-          <small>
-            <router-link :to="manufacturerRoute">
-              {{ model.manufacturer?.name }}
-            </router-link>
-            <template v-if="customName">
-              {{ modelName }}
-            </template>
-          </small>
-        </h2>
-        <VehicleContextMenu
-          v-if="editable && !vehicle.loaner"
-          :vehicle="vehicle"
-          :editable="editable"
-          :wishlist="wishlist"
-        />
-
-        <AddToHangar
-          v-else-if="!editable"
-          :model="model"
-          class="panel-add-to-hangar-button"
-          variant="panel"
-        />
+          <AddToHangar
+            v-else-if="!editable"
+            :model="model"
+            class="panel-add-to-hangar-button"
+            variant="panel"
+          />
+        </template>
       </PanelHeading>
       <PanelImage
         :rounded="details ? undefined : 'bottom'"
@@ -139,7 +138,6 @@ import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue"
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import PanelImage from "@/shared/components/Panel/Image/index.vue";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { Vehicle } from "@/services/fyApi";

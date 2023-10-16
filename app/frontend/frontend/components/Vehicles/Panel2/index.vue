@@ -19,43 +19,32 @@
         <span v-if="customName">{{ customName }}</span>
         <span v-else>{{ modelName }}</span>
       </router-link>
-
       <transition name="fade" appear>
         <small v-if="vehicle && vehicle.serial">
-          <span v-if="vehicle.serial" class="serial">
-            {{ vehicle.serial }}
-          </span>
+          {{ vehicle.serial }}
         </small>
       </transition>
 
       <transition name="fade" appear>
-        <small
-          v-if="vehicle && vehicle.flagship"
-          v-tooltip.right="flagshipTooltip"
-        >
-          <i class="fa fa-certificate flagship-icon" />
+        <small v-if="vehicle.flagship" v-tooltip.right="flagshipTooltip">
+          <i class="fa fa-certificate vehicle-panel-flagship-icon" />
         </small>
       </transition>
-
-      <br />
-
-      <small>
-        <router-link
-          v-if="model.manufacturer"
-          :to="{
-            query: {
-              q: filterManufacturerQuery(
-                model.manufacturer,
-              ) as unknown as string,
-            },
-          }"
-        >
-          {{ model.manufacturer.name }}
-        </router-link>
-        <template v-if="customName">
-          {{ modelName }}
-        </template>
-      </small>
+    </template>
+    <template #heading-subtitle>
+      <router-link
+        v-if="model.manufacturer"
+        :to="{
+          query: {
+            q: filterManufacturerQuery(model.manufacturer) as unknown as string,
+          },
+        }"
+      >
+        {{ model.manufacturer.name }}
+      </router-link>
+      <template v-if="customName">
+        {{ modelName }}
+      </template>
     </template>
     <template #heading-actions>
       <VehicleContextMenu

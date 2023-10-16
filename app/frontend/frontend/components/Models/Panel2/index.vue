@@ -4,18 +4,12 @@
     class="model-panel"
     :class="`model-panel-${model.slug}`"
     :highlight="highlight"
+    :bg-image="internalStoreImage"
+    :bg-rounded="details ? 'bottom' : 'all'"
   >
-    <div class="model-panel-inner">
-      <div
-        :key="internalStoreImage"
-        v-lazy:background-image="internalStoreImage"
-        class="model-panel-bg lazy"
-        :class="{
-          'model-panel-bg-rounded': !details,
-        }"
-      />
-      <PanelHeading class="model-panel-heading">
-        <h2 class="panel-title">
+    <template #default>
+      <PanelHeading level="h2" class="model-panel-heading" shadow="top">
+        <template #default>
           <slot name="heading-title">
             <router-link
               :to="{
@@ -27,32 +21,32 @@
             >
               <span>{{ model.name }}</span>
             </router-link>
-
-            <br />
-
-            <small v-if="model.manufacturer">
-              <router-link
-                :to="{
-                  query: {
-                    q: filterManufacturerQuery(
-                      model.manufacturer,
-                    ) as unknown as string,
-                  },
-                }"
-              >
-                {{ model.manufacturer.name }}
-              </router-link>
-            </small>
           </slot>
-        </h2>
-
-        <slot name="heading-actions">
-          <AddToHangar
-            :model="model"
-            class="model-panel-add-to-hangar-button"
-            variant="panel"
-          />
-        </slot>
+        </template>
+        <template #subtitle>
+          <slot v-if="model.manufacturer" name="heading-subtitle">
+            <router-link
+              :to="{
+                query: {
+                  q: filterManufacturerQuery(
+                    model.manufacturer,
+                  ) as unknown as string,
+                },
+              }"
+            >
+              {{ model.manufacturer.name }}
+            </router-link>
+          </slot>
+        </template>
+        <template #actions>
+          <slot name="heading-actions">
+            <AddToHangar
+              :model="model"
+              class="model-panel-add-to-hangar-button"
+              variant="panel"
+            />
+          </slot>
+        </template>
       </PanelHeading>
       <PanelBody
         class="model-panel-body"
@@ -67,24 +61,26 @@
         </div>
         <slot name="default" />
       </PanelBody>
-    </div>
+    </template>
 
-    <Collapsed
-      :key="`details-${model.slug}-${internalId}-wrapper`"
-      :visible="details"
-    >
-      <div class="model-panel-production-status">
-        <strong class="text-uppercase">
-          <template v-if="model.productionStatus">
-            {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
-          </template>
-          <template v-else>
-            {{ t(`labels.not-available`) }}
-          </template>
-        </strong>
-      </div>
-      <ModelPanelMetrics :model="model" />
-    </Collapsed>
+    <template #footer>
+      <Collapsed
+        :key="`details-${model.slug}-${internalId}-wrapper`"
+        :visible="details"
+      >
+        <div class="model-panel-production-status">
+          <strong class="text-uppercase">
+            <template v-if="model.productionStatus">
+              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
+            </template>
+            <template v-else>
+              {{ t(`labels.not-available`) }}
+            </template>
+          </strong>
+        </div>
+        <ModelPanelMetrics :model="model" />
+      </Collapsed>
+    </template>
   </Panel>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <AsyncData :is-error="isError" :is-loading="isLoading || isFetching">
+  <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <section class="container">
         <div class="row">
@@ -33,8 +33,16 @@
           <div v-if="station" class="col-12 col-lg-4">
             <Panel>
               <StationBaseMetrics :station="station" :padding="true" />
-              <StationDocks :station="station" :padding="true" />
-              <StationHabitations :station="station" :padding="true" />
+              <StationDocks
+                :docks="station.docks"
+                :dock-counts="station.dockCounts"
+                :padding="true"
+              />
+              <StationHabitations
+                :habitations="station.habitations"
+                :habitation-counts="station.habitationCounts"
+                :padding="true"
+              />
             </Panel>
             <div class="text-right">
               <div class="page-actions page-actions-right">
@@ -52,7 +60,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 shops">
             <template v-if="station && station.shops?.length">
               <h2>{{ t("headlines.shops") }}</h2>
               <transition-group name="fade-list" class="row" tag="div" appear>
@@ -61,16 +69,7 @@
                   :key="shop.slug"
                   class="col-12 col-lg-3 fade-list-item"
                 >
-                  <ShopPanel
-                    :item="shop"
-                    :route="{
-                      name: 'shop',
-                      params: {
-                        stationSlug: station.slug,
-                        slug: shop.slug,
-                      },
-                    }"
-                  />
+                  <ShopPanel :shop="shop" />
                 </div>
               </transition-group>
               <Loader :loading="loading" :fixed="true" />
@@ -87,24 +86,21 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import { stationRouteGuard } from "@/frontend/utils/RouteGuards/Stations";
-import stationsCollection from "@/frontend/api/collections/Stations";
-import ShopPanel from "@/frontend/components/Stations/Item/index.vue";
+import ShopPanel from "@/frontend/components/Shops/Item/index.vue";
 import StationBaseMetrics from "@/frontend/components/Stations/BaseMetrics/index.vue";
 import StationDocks from "@/frontend/components/Stations/Docks/index.vue";
 import StationHabitations from "@/frontend/components/Stations/Habitations/index.vue";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import AsyncData from "@/frontend/core/components/AsyncData.vue";
-import type { Crumb } from "@/frontend/core/components/BreadCrumbs/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import AsyncData from "@/shared/components/AsyncData.vue";
+import type { Crumb } from "@/shared/components/BreadCrumbs/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useRoute } from "vue-router";
-import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 
-const { updateMetaInfo } = useMetaInfo();
-
 const { t } = useI18n();
+
+const { updateMetaInfo } = useMetaInfo(t);
 
 const loading = ref(false);
 
@@ -165,14 +161,9 @@ const { stations } = useApiClient();
 
 const route = useRoute();
 
-const {
-  isLoading,
-  isFetching,
-  isError,
-  data: station,
-} = useQuery({
+const { data: station, ...asyncStatus } = useQuery({
   queryKey: ["station", route.params.slug],
-  queryFn: () => stations.get({ slug: route.params.slug }),
+  queryFn: () => stations.station({ slug: String(route.params.slug) }),
 });
 
 watch(

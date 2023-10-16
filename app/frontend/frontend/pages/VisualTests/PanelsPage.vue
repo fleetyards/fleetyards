@@ -4,9 +4,7 @@
       <div class="col-12 col-md-4">
         <h2>Panel</h2>
         <Panel>
-          <PanelHeading>
-            <h2>Panel Heading</h2>
-          </PanelHeading>
+          <PanelHeading level="h2">Panel Heading</PanelHeading>
           <PanelImage :image="model.media.storeImage?.small" alt="Odyssey" />
           <PanelBody no-min-height>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
@@ -25,9 +23,7 @@
             alt="Odyssey"
           />
           <div>
-            <PanelHeading>
-              <h2>Panel Heading</h2>
-            </PanelHeading>
+            <PanelHeading level="h2">Panel Heading</PanelHeading>
             <PanelBody no-min-height>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -41,9 +37,7 @@
         <h2>Panel Image Bottom</h2>
         <Panel>
           <div>
-            <PanelHeading>
-              <h2>Panel Heading</h2>
-            </PanelHeading>
+            <PanelHeading level="h2">Panel Heading</PanelHeading>
             <PanelBody no-min-height>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -59,10 +53,11 @@
         </Panel>
       </div>
     </div>
+    <hr />
     <div class="row">
       <div class="col-12 col-md-4">
         <h2>Panel Image Left</h2>
-        <Panel align="left">
+        <Panel alignment="left" slim>
           <PanelImage
             :image="model.media.storeImage?.small"
             image-size="auto"
@@ -70,9 +65,7 @@
             alt="Odyssey"
           />
           <div>
-            <PanelHeading>
-              <h2>Panel Heading</h2>
-            </PanelHeading>
+            <PanelHeading level="h2">Panel Heading</PanelHeading>
             <PanelBody no-min-height>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -84,11 +77,9 @@
       </div>
       <div class="col-12 col-md-4">
         <h2>Panel Image Right</h2>
-        <Panel align="right">
+        <Panel alignment="right" slim>
           <div>
-            <PanelHeading>
-              <h2>Panel Heading</h2>
-            </PanelHeading>
+            <PanelHeading level="h2">Panel Heading</PanelHeading>
             <PanelBody no-min-height>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
@@ -105,6 +96,7 @@
         </Panel>
       </div>
     </div>
+    <hr />
     <div class="row">
       <div class="col-12">
         <div class="row">
@@ -123,6 +115,7 @@
         <Btn size="small" @click="toggleModelOnSale"> Toggle on Sale </Btn>
       </div>
     </div>
+    <hr />
     <div class="row">
       <div class="col-12">
         <div class="row">
@@ -165,6 +158,42 @@
         </Btn>
       </div>
     </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <h2>Station Panel</h2>
+            <StationPanel v-if="station" :station="station" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <h2>Shop Item Panel</h2>
+            <ShopItemPanel v-if="shop" :shop="shop" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <h2>Celestial Object Item Panel</h2>
+            <CelestialObjectItemPanel
+              v-if="celestialObject"
+              :celestial-object="celestialObject"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -178,7 +207,17 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelPanel2 from "@/frontend/components/Models/Panel2/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import VehiclePanel2 from "@/frontend/components/Vehicles/Panel2/index.vue";
-import { BoughtViaEnum, type Model, type Vehicle } from "@/services/fyApi";
+import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
+import ShopItemPanel from "@/frontend/components/Shops/Item/index.vue";
+import CelestialObjectItemPanel from "@/frontend/components/CelestialObjects/Item/index.vue";
+import {
+  BoughtViaEnum,
+  type Model,
+  type Vehicle,
+  type Shop,
+  type CelestialObject,
+  type Station,
+} from "@/services/fyApi";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 
 const modelPanelDetails = ref(false);
@@ -233,7 +272,12 @@ const internalModel = computed(() => {
   };
 });
 
-const { models: modelsService } = useApiClient();
+const {
+  models: modelsService,
+  shops: shopsService,
+  celestialObjects: celestialObjectsService,
+  stations: stationsService,
+} = useApiClient();
 
 const fetchModel = async () => {
   try {
@@ -247,8 +291,54 @@ const fetchModel = async () => {
   }
 };
 
+const shop = ref<Shop>();
+
+const fetchShop = async () => {
+  try {
+    const response = await shopsService.shop({
+      stationSlug: "port-olisar",
+      slug: "casaba-outlet",
+    });
+
+    shop.value = response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const station = ref<Station>();
+
+const fetchStation = async () => {
+  try {
+    const response = await stationsService.station({
+      slug: "port-olisar",
+    });
+
+    station.value = response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const celestialObject = ref<CelestialObject>();
+
+const fetchCelestialObject = async () => {
+  try {
+    const response = await celestialObjectsService.detail({
+      slug: "crusader",
+    });
+
+    celestialObject.value = response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(() => {
   fetchModel();
+  fetchStation();
+  fetchShop();
+  fetchCelestialObject();
 });
 
 const vehiclePanelDetails = ref(false);
@@ -293,6 +383,7 @@ const vehicle = computed<Vehicle>(() => ({
   wanted: false,
   flagship: vehiclePanelFlagship.value,
   name: "My Awesome Ship",
+  serial: "L8-4261-HA",
   alternativeNames: [],
   hangarGroupIds: [],
   hangarGroups: [
