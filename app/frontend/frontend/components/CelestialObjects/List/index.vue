@@ -18,7 +18,10 @@
             :key="celestialObject.slug"
             class="col-12 fade-list-item"
           >
-            <CelestialObjectItem :item="celestialObject" />
+            <CelestialObjectPanel
+              :celestial-object="celestialObject"
+              with-moons
+            />
           </div>
         </transition-group>
         <Loader :loading="isLoading" :fixed="true" />
@@ -39,9 +42,8 @@
 
 <script lang="ts" setup>
 import Pagination from "@/shared/components/Paginator/index.vue";
-import CelestialObjectItem from "@/frontend/components/CelestialObjects/Item/index.vue";
+import CelestialObjectPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -52,8 +54,6 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-
-const { currentLocale } = useI18n();
 
 const { celestialObjects: celestialObjectsService } = useApiClient();
 

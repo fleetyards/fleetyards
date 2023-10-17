@@ -4,7 +4,7 @@
     class="model-panel"
     :class="`model-panel-${model.slug}`"
     :highlight="highlight"
-    :bg-image="internalStoreImage"
+    :bg-image="image"
     :bg-rounded="details ? 'bottom' : 'all'"
   >
     <template #default>
@@ -93,6 +93,9 @@ import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import type { Model, Manufacturer } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 type Props = {
   model: Model;
@@ -111,14 +114,28 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const internalStoreImage = computed(
-  () => props.storeImage || props.model.media.storeImage?.medium,
-);
-
 const internalId = computed(() => props.id || props.model.id);
 
 const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
   manufacturerIn: [manufacturer],
+});
+
+const { supported: webpSupported } = useWebpCheck();
+
+const image = computed(() => {
+  if (props.storeImage) {
+    return props.storeImage;
+  }
+
+  if (props.model.media.storeImage) {
+    return props.model.media.storeImage.medium;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
 });
 </script>
 

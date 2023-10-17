@@ -4,6 +4,7 @@ import translations from "@/frontend/translations";
 import { i18nHelpers } from "@/shared/utils/I18nHelpers";
 import { useI18nStore } from "@/shared/stores/i18n";
 
+console.log("translations", translations);
 const i18n = new I18n(translations);
 
 // const availableLocales = ["de", "en", "es", "fr", "it", "zh", "zh-CN", "zh-TW"];

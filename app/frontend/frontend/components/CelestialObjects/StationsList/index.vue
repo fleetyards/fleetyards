@@ -18,7 +18,7 @@
           :key="station.slug"
           class="col-12 fade-list-item"
         >
-          <StationPanel :station="station" show-stats />
+          <StationPanel :station="station" with-stats />
         </div>
       </transition-group>
       <Loader :loading="isLoading" :fixed="true" />
@@ -64,7 +64,7 @@ const {
   data: stations,
   refetch,
 } = useQuery({
-  queryKey: ["celestialObjectStations"],
+  queryKey: ["celestialObjectStations", route.params.slug?.toString()],
   queryFn: () =>
     stationsService.stations({
       q: {

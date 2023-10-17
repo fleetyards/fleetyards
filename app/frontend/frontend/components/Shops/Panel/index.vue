@@ -1,61 +1,61 @@
 <template>
-  <Panel :id="`${shop.stationSlug}-${shop.slug}`" class="shop-list">
-    <div
-      :key="storeImage"
-      v-lazy:background-image="storeImage"
-      class="panel-bg lazy"
-    />
-    <div class="row">
-      <div class="col-12">
-        <div class="panel-heading">
-          <h2 class="panel-title">
-            <router-link
-              :to="{
-                name: 'shop',
-                params: {
-                  stationSlug: shop.station.slug,
-                  slug: shop.slug,
-                },
-              }"
-              :aria-label="shop.name"
-            >
-              {{ shop.name }}
-              <small class="text-muted">
-                {{ shop.station.name }} {{ shop.location }}
-              </small>
-            </router-link>
-          </h2>
-        </div>
-      </div>
-    </div>
+  <Panel
+    :id="`${shop.station.slug}-${shop.slug}`"
+    class="shop-list"
+    :to="detailRoute"
+    :link-label="shop.name"
+    :bg-image="image"
+  >
+    <PanelHeading level="h2" size="large" shadow="top">
+      <router-link :to="detailRoute" :aria-label="shop.name">
+        {{ shop.name }}
+      </router-link>
+      <template v-if="withLocation" #subtitle>
+        {{ shop.station.name }} {{ shop.location }}
+      </template>
+    </PanelHeading>
   </Panel>
 </template>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import type { ShopMinimal } from "@/services/fyApi";
+import type { Shop } from "@/services/fyApi";
 
 type Props = {
-  shop: ShopMinimal;
+  shop: Shop;
+  withLocation?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  withLocation: false,
+});
 
 const { supported: webpSupported } = useWebpCheck();
 
-const storeImage = computed(() => {
-  if (!props.shop.media.storeImage) {
-    if (webpSupported) {
-      return fallbackImage;
-    }
-
-    return fallbackImageJpg;
+const image = computed(() => {
+  if (props.shop.media.storeImage) {
+    return props.shop.media.storeImage.medium;
   }
 
-  return props.shop.media.storeImage.medium;
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
+});
+
+const detailRoute = computed(() => {
+  return {
+    name: "shop",
+    params: {
+      stationSlug: props.shop.station.slug,
+      slug: props.shop.slug,
+    },
+  };
 });
 </script>
 

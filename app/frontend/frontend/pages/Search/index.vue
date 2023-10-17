@@ -64,22 +64,24 @@
             >
               <ModelPanel
                 v-if="result.type === 'Model'"
-                :model="result.item"
-                :details="true"
+                :model="result.item as Model"
+                details
               />
               <StationPanel
                 v-else-if="result.type === 'Station'"
-                :station="result.item"
+                :station="result.item as Station"
               />
               <ShopPanel
                 v-else-if="result.type === 'Shop'"
                 :shop="result.item"
               />
               <CelestialObjectsPanel
-                v-else-if="
-                  ['CelestialObject', 'Starsystem'].includes(result.type)
-                "
-                :celestial-object="result.item"
+                v-else-if="result.type === 'CelestialObject'"
+                :celestial-object="result.item as CelestialObject"
+              />
+              <StarsystemPanel
+                v-else-if="result.type === 'Starsystem'"
+                :starsystem="result.item as Starsystem"
               />
               <ShopCommodityPanel
                 v-else-if="result.type === 'ShopCommodity'"
@@ -116,6 +118,7 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import CelestialObjectsPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
+import StarsystemPanel from "@/frontend/components/Starsystems/Panel/index.vue";
 import ShopCommodityPanel from "@/frontend/components/ShopCommodities/Panel/index.vue";
 import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
@@ -127,6 +130,12 @@ import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useSearchStore } from "@/frontend/stores/search";
+import {
+  type Station,
+  type Model,
+  type CelestialObject,
+  type Starsystem,
+} from "@/services/fyApi";
 
 const searchStore = useSearchStore();
 

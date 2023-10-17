@@ -17,13 +17,13 @@
   }
 
   &-rounded-bottom {
-    border-top-left-radius: $panelContentBorderRadius;
-    border-top-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
   }
 
   &-rounded-top {
-    border-bottom-left-radius: $panelContentBorderRadius;
-    border-bottom-right-radius: $panelContentBorderRadius;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
   }
 
   &-rounded-left {

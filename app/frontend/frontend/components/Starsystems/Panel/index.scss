@@ -1,72 +1,44 @@
-$borderRadius: 16px;
-
-.station-list {
-  > .panel {
-    min-height: 400px;
-    background-color: black;
-
-    .panel-heading .panel-title {
-      margin-top: 10px;
-      font-size: 30px;
-      text-shadow: 0 0 2px black;
-    }
-
-    > .panel-inner {
-      padding-right: 15px;
-      padding-left: 15px;
-    }
+.starsystem-panel {
+  &-body {
+    display: flex;
+    justify-content: flex-end;
   }
 
-  .panel-bg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-radius: $borderRadius;
-    opacity: 0.7;
-  }
+  &-celestial-objects {
+    margin-top: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    max-width: 80%;
+    flex-wrap: wrap-reverse;
 
-  .panel-stats {
-    dd,
-    dt {
-      text-shadow: 0 0 2px black;
-    }
-  }
-
-  .items {
-    margin-top: 140px;
-
-    h3 {
-      margin: 10px;
-      font-family: "Orbitron", sans-serif;
-      text-align: right;
-      text-shadow: 0 0 2px black;
-    }
-
-    .row {
-      flex-wrap: wrap-reverse;
-      justify-content: flex-end;
-    }
-
-    .station-item {
-      > .panel {
-        .panel-image {
-          height: 160px;
-        }
-      }
+    :deep(.panel-inner) {
+      min-height: 200px;
+      width: 200px;
     }
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .station-list {
-    .items {
-      position: relative;
+  .starsystem-panel {
+    &-body {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    &-celestial-objects {
+      max-width: 100%;
+      width: 90%;
+      flex-direction: column;
+
+      &-item {
+        width: 100%;
+      }
+
+      :deep(.panel-inner) {
+        min-width: 100%;
+      }
     }
   }
 }

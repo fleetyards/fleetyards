@@ -67,7 +67,7 @@
                 <div
                   v-for="shop in station.shops"
                   :key="shop.slug"
-                  class="col-12 col-lg-3 fade-list-item"
+                  class="col-12 col-lg-4 fade-list-item"
                 >
                   <ShopPanel :shop="shop" />
                 </div>
@@ -86,7 +86,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import ShopPanel from "@/frontend/components/Shops/Item/index.vue";
+import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
 import StationBaseMetrics from "@/frontend/components/Stations/BaseMetrics/index.vue";
 import StationDocks from "@/frontend/components/Stations/Docks/index.vue";
 import StationHabitations from "@/frontend/components/Stations/Habitations/index.vue";

@@ -49,7 +49,7 @@
             :key="starsystem.slug"
             class="col-12 fade-list-item"
           >
-            <StarsystemPanel :item="starsystem" />
+            <StarsystemPanel :starsystem="starsystem" with-celestial-objects />
           </div>
         </transition-group>
         <Loader :loading="isLoading" :fixed="true" />

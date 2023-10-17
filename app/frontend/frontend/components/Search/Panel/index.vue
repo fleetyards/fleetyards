@@ -1,46 +1,18 @@
 <template>
-  <Panel v-if="item" :id="`${item.resultType}-${item.id}`">
-    <div class="panel-heading">
-      <h2 class="panel-title">
-        <router-link :to="route">
-          {{ item.name }}
-        </router-link>
-
-        <br />
-
-        <small class="text-muted">
-          {{ item.locationLabel }}
-        </small>
-      </h2>
-    </div>
-    <PanelImage class="text-center">
-      <LazyImage
-        v-if="item.media.storeImage?.medium"
-        :to="route"
-        :aria-label="item.name"
-        :src="item.media.storeImage?.medium"
-        :alt="item.name"
-        class="image"
-      />
-    </PanelImage>
+  <Panel v-if="item" :id="`${item.type}-${item.id}`" :bg-image="image">
+    <PanelHeading level="h2" size="large">
+      {{ name }}
+    </PanelHeading>
   </Panel>
 </template>
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
-import type {
-  Model,
-  Commodity,
-  Equipment,
-  Shop,
-  Station,
-} from "@/services/fyApi";
-
-type SearchResult = (Model | Commodity | Equipment | Shop | Station) & {
-  resultType: "shop" | "station";
-};
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import { type SearchResult } from "@/services/fyApi";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 type Props = {
   item: SearchResult;
@@ -48,21 +20,22 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const route = computed(() => {
-  switch (props.item.resultType) {
-    case "shop":
-      return {
-        name: "shop",
-        params: {
-          stationSlug: (props.item as Shop).station.slug,
-          slug: props.item.slug,
-        },
-      };
-    case "station":
-      return { name: "station", params: { slug: props.item.slug } };
-    default:
-      return "";
+const name = computed(() => {
+  return props.item.item.name;
+});
+
+const { supported: webpSupported } = useWebpCheck();
+
+const image = computed(() => {
+  if (props.item.item.media.storeImage) {
+    return props.item.item.media.storeImage.medium;
   }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
 });
 </script>
 

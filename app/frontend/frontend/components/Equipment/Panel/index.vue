@@ -1,88 +1,36 @@
 <template>
-  <Panel>
-    <div class="teaser-panel item-panel">
-      <LazyImage v-if="image" :src="image" class="teaser-panel-image" />
-      <div class="teaser-panel-body">
-        <h2 v-tooltip="equipment.name">
-          {{ equipment.name }}
-          <small v-if="equipment.typeLabel">
-            <br />
-            {{ equipment.itemTypeLabel }}
-            <template v-if="equipment.slot">
-              {{ equipment.slotLabel }}
-            </template>
-          </small>
-        </h2>
+  <Panel :bg-image="image" bg-rounded="top">
+    <PanelHeading level="h2" shadow="top">
+      {{ equipment.name }}
+      <template v-if="equipment.itemTypeLabel" #subtitle>
+        {{ equipment.itemTypeLabel }}
+        <template v-if="equipment.slot">
+          {{ equipment.slotLabel }}
+        </template>
+      </template>
+      <template #actions>
         <AddToCartBtn
           :item="equipment"
           :type="SearchResultTypeEnum.EQUIPMENT"
+          class="equipment-panel-add-to-cart-button"
         />
-        <div class="metrics-list">
-          <div v-if="equipment.manufacturer" class="metrics-item">
-            <div class="metrics-label">
-              {{ t("commodityItem.manufacturer") }}:
-            </div>
-            <div class="metrics-value" v-html="equipment.manufacturer.name" />
-          </div>
-          <div v-if="equipment.size" class="metrics-item">
-            <div class="metrics-label">{{ t("commodityItem.size") }}:</div>
-            <div class="metrics-value">
-              {{ equipment.size }}
-            </div>
-          </div>
-          <div v-if="equipment.grade" class="metrics-item">
-            <div class="metrics-label">{{ t("commodityItem.grade") }}:</div>
-            <div class="metrics-value">
-              {{ equipment.grade }}
-            </div>
-          </div>
-          <div v-if="equipment.range" class="metrics-item">
-            <div class="metrics-label">{{ t("commodityItem.range") }}:</div>
-            <div class="metrics-value">
-              {{ equipment.range }}
-            </div>
-          </div>
-          <div v-if="equipment.rateOfFire" class="metrics-item">
-            <div class="metrics-label">
-              {{ t("commodityItem.rateOfFire") }}:
-            </div>
-            <div class="metrics-value">
-              {{ equipment.rateOfFire }}
-            </div>
-          </div>
-          <div v-if="equipment.weaponClassLabel" class="metrics-item">
-            <div class="metrics-label">
-              {{ t("commodityItem.weaponClass") }}:
-            </div>
-            <div class="metrics-value">
-              {{ equipment.weaponClassLabel }}
-            </div>
-          </div>
-          <div v-if="equipment.damageReduction" class="metrics-item">
-            <div class="metrics-label">
-              {{ t("commodityItem.damageReduction") }}:
-            </div>
-            <div class="metrics-value">
-              {{ equipment.damageReduction }}
-            </div>
-          </div>
-          <div v-if="equipment.storage" class="metrics-item">
-            <div class="metrics-label">{{ t("commodityItem.storage") }}:</div>
-            <div class="metrics-value">
-              {{ equipment.storage }}
-            </div>
-          </div>
-          <div v-if="equipment.extras" class="metrics-item">
-            <div class="metrics-label">{{ t("commodityItem.extras") }}:</div>
-            <div class="metrics-value">
-              {{ equipment.extras }}
-            </div>
-          </div>
-        </div>
-        <hr class="slim" />
-        <ShopCommodityLocations :item="equipment" />
+      </template>
+    </PanelHeading>
+    <template v-if="withStats" #footer>
+      <div class="equipment-panel-footer">
+        <MetricsList
+          :metrics="metrics"
+          class="equipment-panel-footer-metrics"
+        />
+        <template v-if="hasAvailability">
+          <hr class="slim" />
+          <ShopCommodityLocations
+            :item="equipment"
+            class="equipment-panel-footer-availability"
+          />
+        </template>
       </div>
-    </div>
+    </template>
   </Panel>
 </template>
 
@@ -90,28 +38,118 @@
 import ShopCommodityLocations from "@/frontend/components/ShopCommodities/Locations/index.vue";
 import AddToCartBtn from "@/frontend/components/core/AppShoppingCart/AddToCartBtn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
+import MetricsList from "@/shared/components/MetricsList/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import { SearchResultTypeEnum } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
 import type { Equipment } from "@/services/fyApi";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 const { t } = useI18n();
 
 type Props = {
   equipment: Equipment;
-  showStats?: boolean;
+  withStats?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  showStats: true,
+  withStats: true,
+});
+const hasAvailability = computed(() => {
+  return (
+    props.equipment.availability &&
+    (props.equipment.availability.soldAt?.length ||
+      props.equipment.availability.boughtAt?.length)
+  );
 });
 
+const metrics = computed(() => {
+  const data = [];
+
+  if (props.equipment.manufacturer) {
+    data.push({
+      id: "manufacturer",
+      label: t("commodityItem.manufacturer"),
+      value: props.equipment.manufacturer?.name,
+    });
+  }
+
+  if (props.equipment.grade) {
+    data.push({
+      id: "grade",
+      label: t("commodityItem.grade"),
+      value: props.equipment.grade,
+    });
+  }
+
+  if (props.equipment.range) {
+    data.push({
+      id: "range",
+      label: t("commodityItem.range"),
+      value: props.equipment.range,
+    });
+  }
+
+  if (props.equipment.rateOfFire) {
+    data.push({
+      id: "rateOfFire",
+      label: t("commodityItem.rateOfFire"),
+      value: props.equipment.rateOfFire,
+    });
+  }
+
+  if (props.equipment.weaponClassLabel) {
+    data.push({
+      id: "weaponClassLabel",
+      label: t("commodityItem.weaponClass"),
+      value: props.equipment.weaponClassLabel,
+    });
+  }
+
+  if (props.equipment.damageReduction) {
+    data.push({
+      id: "damageReduction",
+      label: t("commodityItem.damageReduction"),
+      value: props.equipment.damageReduction,
+    });
+  }
+
+  if (props.equipment.storage) {
+    data.push({
+      id: "storage",
+      label: t("commodityItem.storage"),
+      value: props.equipment.storage,
+    });
+  }
+
+  if (props.equipment.extras) {
+    data.push({
+      id: "extras",
+      label: t("commodityItem.extras"),
+      value: props.equipment.extras,
+    });
+  }
+
+  return data;
+});
+
+const { supported: webpSupported } = useWebpCheck();
+
 const image = computed(() => {
-  if (!props.equipment.media.storeImage) {
+  if (props.equipment.media.storeImage) {
+    return props.equipment.media.storeImage.medium;
+  }
+  if (props.equipment.manufacturer?.logo) {
     return props.equipment.manufacturer?.logo;
   }
 
-  return props.equipment.storeImage;
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
 });
 </script>
 
@@ -120,3 +158,7 @@ export default {
   name: "EquipmentPanel",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

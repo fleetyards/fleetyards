@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-if="item.listedAt && item.listedAt.length">
-      <span class="metrics-label">{{ $t("shopCommodity.listedAt") }}:</span>
+    <div v-if="item.availability.listedAt && item.availability.listedAt.length">
+      <span class="metrics-label">{{ t("availability.listedAt") }}:</span>
       <ul class="list-unstyled">
         <li
-          v-for="location in item.listedAt"
+          v-for="location in item.availability.listedAt"
           :key="`${item.id}-sell-${location.id}-${location.shop.slug}`"
           class="prices-item"
         >
@@ -17,11 +17,11 @@
         </li>
       </ul>
     </div>
-    <div v-if="item.soldAt && item.soldAt.length">
-      <span class="metrics-label">{{ $t("shopCommodity.soldAt") }}:</span>
+    <div v-if="item.availability.soldAt && item.availability.soldAt.length">
+      <span class="metrics-label">{{ t("availability.soldAt") }}:</span>
       <ul class="list-unstyled">
         <li
-          v-for="location in item.soldAt"
+          v-for="location in item.availability.soldAt"
           :key="`${item.id}-sell-${location.id}-${location.shop.slug}`"
           class="prices-item"
         >
@@ -32,15 +32,15 @@
             {{ location.shop.locationLabel }}
           </span>
 
-          <b v-html="$toUEC(location.sellPrice)" />
+          <b v-html="toUEC(location.prices.sellPrice)" />
         </li>
       </ul>
     </div>
-    <div v-if="item.boughtAt && item.boughtAt.length">
-      <span class="metrics-label">{{ $t("shopCommodity.boughtAt") }}:</span>
+    <div v-if="item.availability.boughtAt && item.availability.boughtAt.length">
+      <span class="metrics-label">{{ t("availability.boughtAt") }}:</span>
       <ul class="list-unstyled">
         <li
-          v-for="location in item.boughtAt"
+          v-for="location in item.availability.boughtAt"
           :key="`${item.id}-buy-${location.id}-${location.shop.slug}`"
           class="prices-item"
         >
@@ -50,31 +50,45 @@
             </router-link>
             {{ location.shop.locationLabel }}
           </span>
-          <b v-html="$toUEC(location.buyPrice)" />
+          <b v-html="toUEC(location.prices.buyPrice)" />
         </li>
       </ul>
     </div>
   </div>
 </template>
 
+<script lang="ts" setup>
+import {
+  type Model,
+  type Equipment,
+  type Commodity,
+  type Shop,
+} from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+
+type Props = {
+  item: Model | Equipment | Commodity;
+};
+
+defineProps<Props>();
+
+const { t, toUEC } = useI18n();
+
+const shopRoute = (shop: Shop) => {
+  return {
+    name: "shop",
+    params: {
+      stationSlug: shop.station.slug,
+      slug: shop.slug,
+    },
+  };
+};
+</script>
+
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-
-@Component<ShopCommodityLocations>({})
-export default class ShopCommodityLocations extends Vue {
-  @Prop({ required: true }) item!: any;
-
-  shopRoute(shop) {
-    return {
-      name: "shop",
-      params: {
-        stationSlug: shop.station.slug,
-        slug: shop.slug,
-      },
-    };
-  }
-}
+export default {
+  name: "ShopCommodityLocations",
+};
 </script>
 
 <style lang="scss" scoped>

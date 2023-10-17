@@ -22,7 +22,7 @@ type Props = {
   rounded?: "all" | "left" | "right" | "top" | "bottom";
 };
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   alignment: undefined,
   rounded: "all",
 });

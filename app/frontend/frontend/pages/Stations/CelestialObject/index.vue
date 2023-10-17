@@ -37,7 +37,7 @@
               :key="moon.slug"
               class="col-12 col-md-6 col-lg-3 fade-list-item"
             >
-              <CelestialObjectItem :celestial-object="moon" />
+              <CelestialObjectPanel :celestial-object="moon" />
             </div>
           </transition-group>
         </div>
@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import Panel from "@/shared/components/Panel/index.vue";
 import StationsList from "@/frontend/components/CelestialObjects/StationsList/index.vue";
-import CelestialObjectItem from "@/frontend/components/CelestialObjects/Item/index.vue";
+import CelestialObjectPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
@@ -61,7 +61,7 @@ import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import { useRoute } from "vue-router";
 
-const { t, currentLocale } = useI18n();
+const { t } = useI18n();
 
 const { updateMetaInfo } = useMetaInfo(t);
 

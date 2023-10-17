@@ -5,7 +5,7 @@
     class="vehicle-panel"
     :details="details"
     :highlight="vehicle.flagship || highlight"
-    :store-image="storeImage"
+    :store-image="image"
   >
     <template #heading-title>
       <router-link
@@ -108,6 +108,9 @@ import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue"
 import type { Vehicle, Manufacturer } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 type Props = {
   vehicle: Vehicle;
@@ -128,16 +131,26 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const storeImage = computed(() => {
-  if (props.vehicle.paint) {
-    return props.vehicle.paint.media.storeImage?.medium;
+const { supported: webpSupported } = useWebpCheck();
+
+const image = computed(() => {
+  if (props.vehicle.paint && props.vehicle.paint.media.storeImage) {
+    return props.vehicle.paint.media.storeImage.medium;
   }
 
-  if (props.vehicle.upgrade) {
-    return props.vehicle.upgrade.media.storeImage?.medium;
+  if (props.vehicle.upgrade && props.vehicle.upgrade.media.storeImage) {
+    return props.vehicle.upgrade.media.storeImage.medium;
   }
 
-  return model.value?.media.storeImage?.medium;
+  if (model.value?.media.storeImage) {
+    return model.value?.media.storeImage.medium;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
 });
 
 const modelName = computed(() => model.value?.name);

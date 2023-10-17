@@ -112,7 +112,7 @@ export default {
     unconfirmed: "Item is unconfirmed",
     manufacturer: "Manufacturer",
   },
-  shopCommodity: {
+  availability: {
     listedAt: "Listed at",
     soldAt: "Sold at",
     boughtAt: "Bought at",

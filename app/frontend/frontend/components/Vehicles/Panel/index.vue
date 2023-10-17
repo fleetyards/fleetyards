@@ -6,6 +6,7 @@
       class="model-panel vehicle-panel"
       :class="`model-panel-${model.slug}`"
       :highlight="vehicle.flagship || highlight"
+      slim
     >
       <PanelHeading level="h2">
         <template #default>

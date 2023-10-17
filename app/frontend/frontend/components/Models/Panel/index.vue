@@ -5,6 +5,7 @@
       :id="model.slug"
       class="model-panel"
       :class="`model-panel-${model.slug}`"
+      slim
     >
       <PanelHeading level="h2">
         <template #default>

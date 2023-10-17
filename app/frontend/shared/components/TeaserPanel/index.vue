@@ -15,7 +15,7 @@
           {{ title }}
         </template>
       </PanelHeading>
-      <PanelBody no-min-height>
+      <PanelBody no-min-height no-padding-top>
         <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
           <p v-if="withDescription">
             {{ item.description }}
