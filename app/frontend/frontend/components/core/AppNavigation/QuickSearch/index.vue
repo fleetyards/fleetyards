@@ -2,8 +2,8 @@
   <div v-if="quickSearchKey" class="quick-search-bar">
     <form @submit.prevent="filter">
       <FormInput
-        :id="id"
         v-model="form[quickSearchKey]"
+        :name="name"
         :translation-key="`quicksearch.${String(route.name)}`"
         :no-label="true"
         :autofocus="!mobile"
@@ -30,7 +30,7 @@ const mobile = useMobile();
 
 const route = useRoute();
 
-const id = computed<string>(() => {
+const name = computed<string>(() => {
   return String(route.meta.quickSearch || "quicksearch");
 });
 

@@ -20,9 +20,9 @@ export const useSearchStore = defineStore("search", {
         (item) => item.search !== payload.search,
       );
 
-      // if (this.history.length >= 20) {
-      //   this.history.pop();
-      // }
+      if (this.history.length > 30) {
+        this.history.pop();
+      }
 
       this.history.unshift(payload);
     },

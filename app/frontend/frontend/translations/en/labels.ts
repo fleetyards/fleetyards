@@ -520,6 +520,7 @@ export default {
         limit: "Max number of uses",
       },
     },
+    manufacturer: "Manufacturer",
   },
   station: {
     docks: "Docks",

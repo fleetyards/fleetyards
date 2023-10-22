@@ -50,9 +50,9 @@
     >
       <FormInput
         v-if="searchable"
-        :id="`${name}-searchInput-${id}`"
         ref="searchInput"
         v-model="search"
+        :name="`${name}-searchInput-${id}`"
         :placeholder="searchPlaceholder"
         :label="searchLabelFallback"
         class="filter-group-search"
@@ -180,6 +180,10 @@ const prompt = computed(() => {
     }
 
     return i18n?.t(`labels.filterGroup.${props.translationKey}.prompt`);
+  }
+
+  if (props.noLabel) {
+    return props.label;
   }
 
   if (props.nullable) {

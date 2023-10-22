@@ -1,7 +1,7 @@
 .panel-btn-group {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   min-width: 50px;
   margin-right: 10px;
@@ -39,5 +39,49 @@
 
   &.panel-btn-group-inline {
     margin-bottom: 0;
+  }
+
+  > :deep(.panel-btn-dropdown) {
+    margin-right: 0;
+
+    > .panel-btn {
+      margin-right: 0 !important;
+      border-radius: 0 !important;
+
+      .panel-btn-inner {
+        border-radius: $border-radius-base - 1px;
+        border-top-left-radius: $panel-content-border-radius;
+        border-bottom-left-radius: $panel-content-border-radius;
+      }
+    }
+  }
+
+  > :deep(.panel-btn) {
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+
+    .panel-btn-inner {
+      border-radius: $border-radius-base - 1px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    &:first-child {
+      flex-grow: 1;
+
+      .panel-btn-inner {
+        border-top-left-radius: $panel-content-border-radius;
+        border-bottom-left-radius: $panel-content-border-radius;
+      }
+    }
+
+    &:last-child {
+      .panel-btn-inner {
+        border-top-right-radius: $panel-content-border-radius;
+        border-bottom-right-radius: $panel-content-border-radius;
+      }
+    }
   }
 }

@@ -6,6 +6,7 @@
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ModelLoaner } from './ModelLoaner';
+import type { ModelProductionStatusEnum } from './ModelProductionStatusEnum';
 import type { ShopCommodity } from './ShopCommodity';
 import type { ViewImage } from './ViewImage';
 
@@ -84,7 +85,7 @@ export type Model = {
     price?: number;
     priceLabel?: string;
     productionNote?: string;
-    productionStatus?: string;
+    productionStatus?: ModelProductionStatusEnum;
     rsiId?: number;
     rsiName?: string;
     rsiSlug?: string;

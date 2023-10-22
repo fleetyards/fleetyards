@@ -11,31 +11,31 @@
       <div class="col-12">
         <div class="row justify-content-center">
           <div class="col-12 col-lg-6">
-            <form class="search-form" @submit.prevent="search">
+            <Form class="search-form" @submit="search">
               <div class="form-group">
                 <div class="input-group-flex">
                   <FormInput
-                    id="search"
-                    v-model="form.search"
+                    v-model="searchTerm"
+                    name="search"
                     size="large"
                     :autofocus="true"
                     :clearable="true"
                     translation-key="search.default"
                     :no-label="true"
-                    @clear="search"
                   />
+
                   <Btn
                     id="search-submit"
                     :aria-label="t('labels.search')"
                     size="large"
                     :inline="true"
-                    @click.native="search"
+                    type="submit"
                   >
                     <i class="fal fa-search" />
                   </Btn>
                 </div>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>
@@ -44,21 +44,20 @@
       <SearchHistory v-if="historyVisible" @restore="restoreSearch" />
 
       <FilteredList
-        v-else
+        v-else-if="searchResults"
+        id="search"
         key="search"
-        :collection="collection"
-        :name="route.name"
-        :route-query="route.query"
-        :hash="route.hash"
-        :paginated="true"
+        :records="searchResults"
+        :name="route.name?.toString() || ''"
+        :async-status="asyncStatus"
       >
         <template #actions>
           <ShareBtn :url="shareUrl" :title="shareTitle" />
         </template>
-        <template #default="{ records }">
+        <template #default>
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
-              v-for="result in records"
+              v-for="result in searchResults"
               :key="`${result.type}-${result.id}`"
               class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
             >
@@ -73,7 +72,7 @@
               />
               <ShopPanel
                 v-else-if="result.type === 'Shop'"
-                :shop="result.item"
+                :shop="result.item as Shop"
               />
               <CelestialObjectsPanel
                 v-else-if="result.type === 'CelestialObject'"
@@ -83,23 +82,19 @@
                 v-else-if="result.type === 'Starsystem'"
                 :starsystem="result.item as Starsystem"
               />
-              <ShopCommodityPanel
-                v-else-if="result.type === 'ShopCommodity'"
-                :item="result.item"
-              />
               <ComponentPanel
                 v-else-if="result.type === 'Component'"
-                :component="result.item"
+                :component="result.item as Component"
               />
               <CommodityPanel
                 v-else-if="result.type === 'Commodity'"
-                :commodity="result.item"
+                :commodity="result.item as Commodity"
               />
               <EquipmentPanel
                 v-else-if="result.type === 'Equipment'"
-                :equipment="result.item"
+                :equipment="result.item as Equipment"
               />
-              <SearchPanel v-else :item="result.item" />
+              <SearchPanel v-else :item="result" />
             </div>
           </transition-group>
         </template>
@@ -111,54 +106,46 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
-// import searchCollection from "@/frontend/api/collections/Search";
-// import type { SearchCollection } from "@/frontend/api/collections/Search";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import CelestialObjectsPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import StarsystemPanel from "@/frontend/components/Starsystems/Panel/index.vue";
-import ShopCommodityPanel from "@/frontend/components/ShopCommodities/Panel/index.vue";
 import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
 import CommodityPanel from "@/frontend/components/Commodities/Panel/index.vue";
 import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import SearchHistory from "@/frontend/components/Search/History/index.vue";
+import { Form } from "vee-validate";
 import { useRoute } from "vue-router";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
-import { useSearchStore } from "@/frontend/stores/search";
 import {
   type Station,
   type Model,
   type CelestialObject,
   type Starsystem,
+  type SearchQuery,
+  type Shop,
+  type Component,
+  type Commodity,
+  type Equipment,
 } from "@/services/fyApi";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import { useSearchStore } from "@/frontend/stores/search";
 
-const searchStore = useSearchStore();
-
-const collection: SearchCollection = searchCollection;
-
-const form = ref<SearchFilter>({
+const form = ref<SearchQuery>({
   search: undefined,
 });
 
-const historyVisible = ref(false);
-
 const route = useRoute();
 
-const { filter } = useFilters();
+const { filter, routeQuery } = useFilters<SearchQuery>();
 
-const filters = computed<SearchParams>(() => ({
-  filters: route.query.q as SearchFilter,
-  page: Number(route.query.page) || 1,
-}));
-
-const firstPage = computed(
-  () => !route.query.page || Number(route.query.page) === 1,
-);
+const { search: searchService } = useApiClient();
 
 const shareUrl = computed(() => window.location.href);
 
@@ -169,57 +156,74 @@ const shareTitle = computed(() =>
 );
 
 watch(
-  () => route,
+  () => routeQuery.value?.search,
   () => {
-    setupForm();
+    setupSearch();
   },
-  { deep: true },
 );
+
+const searchTerm = ref<string | undefined>();
 
 watch(
-  () => form.value,
+  () => searchTerm.value,
   () => {
-    filter(form.value);
+    filter({ search: searchTerm.value });
+  },
+);
+
+const setupSearch = () => {
+  searchTerm.value = routeQuery.value?.search;
+  refetch();
+};
+
+const historyVisible = computed(() => {
+  return !searchResults.value?.length && !searchTerm.value;
+});
+
+onMounted(() => {
+  setupSearch();
+
+  enabled.value = true;
+});
+
+const searchStore = useSearchStore();
+
+const enabled = ref(false);
+
+const {
+  data: searchResults,
+  refetch,
+  ...asyncStatus
+} = useQuery({
+  queryKey: ["search", searchTerm.value],
+  queryFn: () =>
+    searchService.search({
+      q: {
+        search: searchTerm.value,
+      },
+    }),
+  enabled: !!searchTerm.value,
+});
+
+watch(
+  () => searchResults.value,
+  () => {
+    if (searchTerm.value) {
+      searchStore.save({
+        search: searchTerm.value,
+        createdAt: new Date(),
+      });
+    }
   },
   { deep: true },
 );
 
-onMounted(() => {
-  setupForm();
-
-  historyVisible.value = !collection.records.length && !form.value?.search;
-});
-
-const setupForm = () => {
-  const query = (route.query.q || {}) as SearchFilter;
-  form.value = {
-    search: query.search,
-  };
-  fetch();
-};
-
-const search = () => {
-  filter(form.value);
+const search = (values: SearchQuery) => {
+  filter(values);
 };
 
 const restoreSearch = (search: string) => {
-  form.value = {
-    search,
-  };
-  filter(form.value);
-};
-
-const fetch = async () => {
-  await collection.findAll(filters.value);
-
-  if (collection.records.length && firstPage.value && form.value?.search) {
-    searchStore.save({
-      search: form.value.search,
-      createdAt: new Date(),
-    });
-  }
-
-  historyVisible.value = !collection.records.length && !form.value?.search;
+  filter({ search });
 };
 </script>
 

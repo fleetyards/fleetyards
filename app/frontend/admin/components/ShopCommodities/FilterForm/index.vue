@@ -1,8 +1,8 @@
 <template>
   <form @submit.prevent="submit">
     <FormInput
-      id="commodity-item-name"
       v-model="form.search"
+      name="commodity-item-name"
       translation-key="filters.shopCommodities.name"
       :no-label="true"
       :clearable="true"
@@ -62,11 +62,7 @@
       :no-label="true"
     /> -->
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>

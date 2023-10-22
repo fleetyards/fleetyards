@@ -14,7 +14,8 @@
 import NotFound from "@/shared/components/NotFound/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 
-type AsyncStatus = {
+export type AsyncStatus = {
+  fetchStatus: Ref<string>;
   isError: Ref<boolean>;
   isLoading: Ref<boolean>;
   isFetching: Ref<boolean>;

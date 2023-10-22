@@ -16,7 +16,7 @@
       v-for="(step, index) in steps"
       :key="`per-page-drowndown-${uuid}-${index}-${step}`"
       size="small"
-      variant="link"
+      variant="dropdown"
       @click="update(step)"
     >
       {{ step }}

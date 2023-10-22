@@ -5,7 +5,11 @@
 
 export type ManufacturerQuery = {
     withModels?: boolean;
+    nameEq?: string;
     nameCont?: string;
     nameIn?: Array<string>;
+    slugEq?: string;
+    slugCont?: string;
+    slugIn?: Array<string>;
 };
 

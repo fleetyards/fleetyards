@@ -194,35 +194,35 @@
     width: 100%;
   }
 
-  &.panel-btn-in-group {
-    padding: 0;
-    margin-right: 0 !important;
-    border-right: 1px solid #444 !important;
-    border-radius: 0 !important;
+  // &.panel-btn-in-group {
+  //   padding: 0;
+  //   margin-right: 0 !important;
+  //   border-right: 1px solid #444 !important;
+  //   border-radius: 0 !important;
 
-    .panel-btn-inner {
-      border-radius: $border-radius-base - 1px;
-      text-align: center !important;
-    }
+  //   .panel-btn-inner {
+  //     border-radius: $border-radius-base - 1px;
+  //     text-align: center !important;
+  //   }
 
-    &:first-child {
-      flex-grow: 1;
+  //   &:first-child {
+  //     flex-grow: 1;
 
-      .panel-btn-inner {
-        border-top-left-radius: $panel-content-border-radius;
-        border-bottom-left-radius: $panel-content-border-radius;
-      }
-    }
+  //     .panel-btn-inner {
+  //       border-top-left-radius: $panel-content-border-radius;
+  //       border-bottom-left-radius: $panel-content-border-radius;
+  //     }
+  //   }
 
-    &:last-child {
-      border-right: none !important;
+  //   &:last-child {
+  //     border-right: none !important;
 
-      .panel-btn-inner {
-        border-top-right-radius: $panel-content-border-radius;
-        border-bottom-right-radius: $panel-content-border-radius;
-      }
-    }
-  }
+  //     .panel-btn-inner {
+  //       border-top-right-radius: $panel-content-border-radius;
+  //       border-bottom-right-radius: $panel-content-border-radius;
+  //     }
+  //   }
+  // }
 }
 
 @keyframes flash {

@@ -60,6 +60,7 @@ export { ModelHardpointTypeEnum } from './models/ModelHardpointTypeEnum';
 export type { ModelLoaner } from './models/ModelLoaner';
 export type { ModelModule } from './models/ModelModule';
 export type { ModelPaint } from './models/ModelPaint';
+export { ModelProductionStatusEnum } from './models/ModelProductionStatusEnum';
 export type { ModelQuery } from './models/ModelQuery';
 export type { Models } from './models/Models';
 export { ModelSortEnum } from './models/ModelSortEnum';

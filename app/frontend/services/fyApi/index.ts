@@ -108,6 +108,7 @@ export type { ModelModulePackages } from './models/ModelModulePackages';
 export type { ModelModules } from './models/ModelModules';
 export type { ModelPaint } from './models/ModelPaint';
 export type { ModelPaintQuery } from './models/ModelPaintQuery';
+export { ModelProductionStatusEnum } from './models/ModelProductionStatusEnum';
 export type { ModelQuery } from './models/ModelQuery';
 export type { Models } from './models/Models';
 export { ModelSortEnum } from './models/ModelSortEnum';

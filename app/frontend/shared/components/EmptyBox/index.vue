@@ -3,21 +3,19 @@
     <div v-if="visible" class="empty-box">
       <Box class="info" :large="true">
         <h1>{{ i18n?.t("emptyBox.headline") }}</h1>
-        <template v-if="isQueryPresent">
-          <p>{{ i18n?.t("emptyBox.texts.query") }}</p>
-          <div slot="footer" class="empty-box-actions">
-            <Btn v-if="isPagePresent" @click.native="resetPage">
+        <p v-if="isQueryPresent">{{ i18n?.t("emptyBox.texts.query") }}</p>
+        <p v-else>
+          {{ i18n?.t("emptyBox.texts.info") }}
+        </p>
+        <template v-if="isQueryPresent" #footer>
+          <div class="empty-box-actions">
+            <Btn v-if="isPagePresent" @click="resetPage">
               {{ i18n?.t("emptyBox.actions.resetPage") }}
             </Btn>
-            <Btn :to="{ name: String(route.name) }" :exact="true">
+            <Btn :to="{ name: String(route.name) }" route-active-class="">
               {{ i18n?.t("emptyBox.actions.reset") }}
             </Btn>
           </div>
-        </template>
-        <template v-else>
-          <p>
-            {{ i18n?.t("emptyBox.texts.info") }}
-          </p>
         </template>
       </Box>
     </div>

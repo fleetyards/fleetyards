@@ -129,7 +129,7 @@ module V1
             price: {type: :number},
             priceLabel: {type: :string},
             productionNote: {type: :string},
-            productionStatus: {type: :string},
+            productionStatus: {"$ref": "#/components/schemas/ModelProductionStatusEnum"},
             rsiId: {type: :integer},
             rsiName: {type: :string},
             rsiSlug: {type: :string},

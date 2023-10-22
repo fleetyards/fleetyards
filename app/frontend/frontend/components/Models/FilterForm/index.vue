@@ -1,36 +1,27 @@
 <template>
-  <form @submit.prevent="filter">
+  <form @submit.prevent="handleSubmit">
     <FormInput
-      id="model-name"
       v-model="form.nameCont"
+      name="model-name"
       translation-key="filters.models.name"
       :no-label="true"
       :clearable="true"
     />
 
-    // TODO: migrate to new FilterGroup props
-    <FilterGroup
+    <ManufacturerFilterGroup
       v-model="form.manufacturerIn"
-      :label="t('labels.filters.models.manufacturer')"
-      fetch-path="manufacturers/with-models"
       name="manufacturer"
-      value-attr="slug"
-      icon-attr="logo"
-      :paginated="true"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <!-- <FilterGroup
       v-model="form.productionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
-      fetch-path="models/production-states"
       name="production-status"
+      :options="ModelProductionStatusEnum"
       :multiple="true"
       :no-label="true"
-    />
-
+    /> -->
+    <!--
     <FilterGroup
       v-model="form.classificationIn"
       :label="t('labels.filters.models.classification')"
@@ -85,13 +76,13 @@
       value-attr="slug"
       name="will-it-fit"
       :searchable="true"
-    />
+    /> -->
 
     <div class="row">
       <div class="col-6">
         <FormInput
-          id="model-length-gteq"
           v-model="form.lengthGteq"
+          name="model-length-gteq"
           type="number"
           translation-key="filters.models.lengthGt"
           :no-placeholder="true"
@@ -100,8 +91,8 @@
 
       <div class="col-6">
         <FormInput
-          id="model-length-lteq"
           v-model="form.lengthLteq"
+          name="model-length-lteq"
           type="number"
           translation-key="filters.models.lengthLt"
           :no-placeholder="true"
@@ -112,8 +103,8 @@
     <div class="row">
       <div class="col-6">
         <FormInput
-          id="model-beam-gteq"
           v-model="form.beamGteq"
+          name="model-beam-gteq"
           type="number"
           translation-key="filters.models.beamGt"
           :no-placeholder="true"
@@ -122,8 +113,8 @@
 
       <div class="col-6">
         <FormInput
-          id="model-beam-lteq"
           v-model="form.beamLteq"
+          name="model-beam-lteq"
           type="number"
           translation-key="filters.models.beamLt"
           :no-placeholder="true"
@@ -134,8 +125,8 @@
     <div class="row">
       <div class="col-6">
         <FormInput
-          id="model-height-gteq"
           v-model="form.heightGteq"
+          name="model-height-gteq"
           type="number"
           translation-key="filters.models.heightGt"
           :no-placeholder="true"
@@ -144,8 +135,8 @@
 
       <div class="col-6">
         <FormInput
-          id="model-height-lteq"
           v-model="form.heightLteq"
+          name="model-height-lteq"
           type="number"
           translation-key="filters.models.heightLt"
           :no-placeholder="true"
@@ -156,8 +147,8 @@
     <div class="row">
       <div class="col-6">
         <FormInput
-          id="model-pledge-price-gteq"
           v-model="form.pledgePriceGteq"
+          name="model-pledge-price-gteq"
           type="number"
           translation-key="filters.models.pledgePriceGt"
           :no-placeholder="true"
@@ -165,8 +156,8 @@
       </div>
       <div class="col-6">
         <FormInput
-          id="model-pledge-price-lteq"
           v-model="form.pledgePriceLteq"
+          name="model-pledge-price-lteq"
           type="number"
           translation-key="filters.models.pledgePriceLt"
           :no-placeholder="true"
@@ -175,16 +166,16 @@
     </div>
 
     <FormInput
-      id="model-price-gteq"
       v-model="form.priceGteq"
+      name="model-price-gteq"
       type="number"
       translation-key="filters.models.priceGt"
       :no-placeholder="true"
     />
 
     <FormInput
-      id="model-price-lteq"
       v-model="form.priceLteq"
+      name="model-price-lteq"
       type="number"
       translation-key="filters.models.priceLt"
       :no-placeholder="true"
@@ -208,11 +199,13 @@
 <script lang="ts" setup>
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
-import { ModelQuery } from "@/services/fyApi";
+import { type ModelQuery, ModelProductionStatusEnum } from "@/services/fyApi";
+import { Form } from "vee-validate";
 import { useFilters } from "@/shared/composables/useFilters";
 
 const { t } = useI18n();
@@ -246,8 +239,19 @@ const setupForm = () => {
 const { filter, resetFilter, isFilterSelected, routeQuery } =
   useFilters<ModelQuery>(setupForm);
 
+const handleSubmit = () => {
+  filter(form.value);
+};
+
 const form = ref<ModelQuery>({});
 
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true },
+);
 const { booleanOptions, priceOptions, pledgePriceOptions } =
   useFilterOptions(t);
 </script>

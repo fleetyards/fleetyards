@@ -2,7 +2,7 @@
   <div :key="id" class="form-input" :class="cssClasses">
     <transition name="fade">
       <label
-        v-show="!hideLabelOnEmpty || value"
+        v-show="!hideLabelOnEmpty || inputValue"
         v-if="innerLabel && !noLabel"
         :for="id"
       >
@@ -25,8 +25,8 @@
       <input
         :id="id"
         ref="inputElement"
-        v-model="value"
         v-tooltip.right="hasErrors && errorMessage"
+        :value="inputValue"
         :placeholder="innerPlaceholder"
         :type="type"
         :data-test="`input-${name}`"
@@ -40,15 +40,15 @@
         :class="{
           clearable,
         }"
-        @input="handleChange"
-        @blur="handleChange"
+        @input="onChange"
+        @blur="handleBlur"
       />
       <slot name="suffix">
         <div v-if="suffix" class="form-input-suffix">
           {{ suffix }}
         </div>
       </slot>
-      <div v-if="value && clearable" class="clear">
+      <div v-if="inputValue && clearable" class="clear">
         <i
           class="fal fa-times"
           :class="{
@@ -113,6 +113,15 @@ const props = withDefaults(defineProps<Props>(), {
   size: "default",
 });
 
+watch(
+  () => props.modelValue,
+  () => {
+    resetField({
+      value: props.modelValue,
+    });
+  },
+);
+
 const i18n = inject<I18nPluginOptions>("i18n");
 
 const inputElement = ref<HTMLInputElement | undefined>();
@@ -139,11 +148,18 @@ const innerLabel = computed(() => {
   return i18n?.t(`labels.${props.name}`);
 });
 
-const { value, errorMessage, errors, meta, handleChange, handleReset } =
-  useField(props.name, undefined, {
-    initialValue: props.modelValue,
-    label: innerLabel.value,
-  });
+const {
+  value: inputValue,
+  errorMessage,
+  errors,
+  handleChange,
+  handleBlur,
+  handleReset,
+  resetField,
+} = useField(props.name, undefined, {
+  initialValue: props.modelValue,
+  label: innerLabel.value,
+});
 
 const hasErrors = computed(() => {
   return errors.value.length;
@@ -185,8 +201,16 @@ onMounted(() => {
   }
 });
 
+const emit = defineEmits(["update:modelValue"]);
+
 const clear = () => {
   handleReset();
+  emit("update:modelValue", undefined);
+};
+
+const onChange = (event: Event) => {
+  handleChange(event);
+  emit("update:modelValue", inputValue.value);
 };
 
 const setFocus = () => {

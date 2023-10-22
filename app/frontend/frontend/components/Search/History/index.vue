@@ -1,42 +1,37 @@
 <template>
-  <div class="row justify-content-center">
+  <div v-if="history.length" class="row justify-content-center">
     <div class="col-12 col-lg-6">
-      <Panel>
-        <div class="panel-heading panel-heading-with-actions">
-          <h2 class="panel-title">
-            {{ t("headlines.searchHistory") }}
-          </h2>
-          <div class="panel-heading-actions">
+      <Panel slim>
+        <PanelHeading level="h2">
+          {{ t("headlines.searchHistory") }}
+          <template #actions>
             <Btn
               v-if="history.length"
               size="small"
               :inline="true"
               :aria-label="t('actions.clearHistory')"
-              @click.native="resetHistory"
+              @click="resetHistory"
             >
               <i v-if="mobile" class="fa fa-times" />
               <template v-else>
                 {{ t("actions.clearHistory") }}
               </template>
             </Btn>
-          </div>
-        </div>
-        <div class="search-history">
-          <template v-if="history.length">
-            <div
-              v-for="(entry, index) in filteredHistory"
-              :key="index"
-              class="search-history-item"
-              @click="restore(entry.search)"
-            >
-              {{ entry.search }}
-            </div>
           </template>
-          <div v-else class="search-history-empty">...</div>
+        </PanelHeading>
+        <div class="search-history">
+          <div
+            v-for="(entry, index) in filteredHistory"
+            :key="index"
+            class="search-history-item"
+            @click="restore(entry.search)"
+          >
+            {{ entry.search }}
+          </div>
         </div>
       </Panel>
       <div class="text-center">
-        <Btn v-if="history.length > page * perPage" @click.native="showMore">
+        <Btn v-if="history.length > page * perPage" @click="showMore">
           {{ t("actions.showMore") }}
         </Btn>
       </div>
@@ -47,6 +42,7 @@
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useSearchStore } from "@/frontend/stores/search";
 import { storeToRefs } from "pinia";

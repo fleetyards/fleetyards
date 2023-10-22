@@ -85,21 +85,30 @@ import EmptyBox from "@/shared/components/EmptyBox/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
+import type { AsyncStatus } from "@/shared/components/AsyncData.vue";
 
 type Props = {
   name: string;
   records: Record<string, unknown>[];
-  loading: boolean;
-  primaryKey: string;
+  asyncStatus: AsyncStatus;
+  primaryKey?: string;
   staticFilters?: boolean;
   hideEmptyBox?: boolean;
   hideLoading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  primaryKey: "id",
   staticFilters: false,
   hideEmptyBox: false,
   hideLoading: false,
+});
+
+const loading = computed(() => {
+  return (
+    (props.asyncStatus.isFetching.value || props.asyncStatus.isLoading.value) &&
+    !props.asyncStatus.isRefetching.value
+  );
 });
 
 const fullscreen = ref(false);
@@ -146,7 +155,7 @@ const filterTooltip = computed(() => {
 
 const emptyBoxVisible = computed(() => {
   return !!(
-    !props.loading &&
+    props.asyncStatus?.fetchStatus.value === "idle" &&
     !props.records.length &&
     (isFilterSelected.value || (hasPagintion && page.value > 1))
   );
@@ -208,3 +217,7 @@ export default {
   name: "FilteredList",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

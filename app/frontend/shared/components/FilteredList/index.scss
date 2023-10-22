@@ -1,0 +1,24 @@
+.slide-enter-active,
+.slide-leave-active {
+  overflow: hidden;
+  transition:
+    width 0.5s ease,
+    max-width 0.5s ease,
+    padding 0.5s ease;
+
+  label,
+  .filter-group-title {
+    white-space: nowrap;
+  }
+
+  .radio-list {
+    min-width: 300px;
+  }
+}
+
+.slide-enter-from,
+.slide-leave-active {
+  width: 0;
+  max-width: 0;
+  padding: 0;
+}

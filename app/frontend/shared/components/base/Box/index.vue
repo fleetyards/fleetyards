@@ -5,7 +5,7 @@
     }"
     class="box"
   >
-    <Panel>
+    <Panel slim>
       <div class="box-inner">
         <slot />
       </div>

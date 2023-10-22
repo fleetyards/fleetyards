@@ -32,8 +32,8 @@
                     <div class="form-group">
                       <div class="input-group-flex">
                         <FormInput
-                          id="search"
                           v-model="searchQuery"
+                          name="search"
                           size="large"
                           :autofocus="!mobile"
                           translation-key="search.default"

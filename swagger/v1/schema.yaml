@@ -5512,6 +5512,13 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    ModelProductionStatusEnum:
+      type: string
+      enum:
+      - in-concept
+      - in-production
+      - flight-ready
+      title: ModelProductionStatusEnum
     OrderDirectionEnum:
       type: string
       enum:
@@ -7663,7 +7670,7 @@ components:
         productionNote:
           type: string
         productionStatus:
-          type: string
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
         rsiId:
           type: integer
         rsiName:
@@ -8076,7 +8083,7 @@ components:
         productionNote:
           type: string
         productionStatus:
-          type: string
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
         rsiId:
           type: integer
         rsiName:
@@ -9081,9 +9088,19 @@ components:
       properties:
         withModels:
           type: boolean
+        nameEq:
+          type: string
         nameCont:
           type: string
         nameIn:
+          type: array
+          items:
+            type: string
+        slugEq:
+          type: string
+        slugCont:
+          type: string
+        slugIn:
           type: array
           items:
             type: string

@@ -31,8 +31,6 @@ class Manufacturer < ApplicationRecord
 
   before_save :update_slugs
 
-  ransack_alias :name, :name_or_slug
-
   def self.with_name
     where.not(name: nil)
   end

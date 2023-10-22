@@ -123,7 +123,9 @@ module Rsi
       }
 
       if model_updated(model, data) || model.production_status.blank?
-        updates[:production_status] = data["production_status"]
+        if PRODUCTION_STATUSES.include?(data["production_status"])
+          updates[:production_status] = PRODUCTION_STATUSES.include?(data["production_status"]) ? data["production_status"] : "in-concept"
+        end
         updates[:production_note] = data["production_note"]
       end
 

@@ -48,7 +48,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   size: "default",
-  variant: "dropdown",
+  variant: "default",
   expandLeft: false,
   expandTop: false,
   mobileBlock: false,

@@ -816,6 +816,13 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    ModelProductionStatusEnum:
+      type: string
+      enum:
+      - in-concept
+      - in-production
+      - flight-ready
+      title: ModelProductionStatusEnum
     OrderDirectionEnum:
       type: string
       enum:
@@ -1904,7 +1911,7 @@ components:
         productionNote:
           type: string
         productionStatus:
-          type: string
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
         rsiId:
           type: integer
         rsiName:

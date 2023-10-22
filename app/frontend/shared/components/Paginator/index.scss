@@ -1,11 +1,13 @@
 $innerBorderWidth: 2px;
 
 .pagination-pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-width: 100px;
-  text-align: center;
+  white-space: nowrap;
   padding: 5px 10px;
   margin-right: 0 !important;
-  border-right: 1px solid #444 !important;
   border-radius: 0 !important;
 }
 

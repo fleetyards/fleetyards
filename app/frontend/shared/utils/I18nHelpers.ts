@@ -18,7 +18,7 @@ export const i18nHelpers = (i18n: I18n) => {
     }
 
     if (units === "speed" && value) {
-      count = (value as string)
+      count = String(value || "")
         .split(" - ")
         .map((item) => i18n.l("number", item))
         .join(" - ");

@@ -45,7 +45,7 @@ module Api
 
       private def manufacturer_query_params
         @manufacturer_query_params ||= query_params(
-          :with_models, :name_cont, name_in: []
+          :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, name_in: [], slug_in: []
         )
       end
     end

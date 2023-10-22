@@ -29,12 +29,11 @@
 
     <FilteredList
       key="models"
-      :collection="modelsCollection"
-      :name="route.name"
-      :route-query="route.query"
-      :hash="route.hash"
       :paginated="true"
       :hide-loading="fleetchartVisible"
+      :records="models?.items || []"
+      :name="route.name?.toString() || ''"
+      :async-status="asyncStatus"
     >
       <template #actions>
         <BtnDropdown size="small">
@@ -50,7 +49,6 @@
           </Btn>
         </BtnDropdown>
       </template>
-
       <template #filter>
         <ModelsFilterForm />
       </template>
@@ -67,10 +65,17 @@
         </FilteredGrid>
 
         <FleetchartApp
-          :items="records"
+          :items="models?.items || []"
           namespace="models"
           :loading="loading"
           download-name="ships-fleetchart"
+        />
+      </template>
+      <template #pagination-bottom>
+        <Paginator
+          :pagination="pagination"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
         />
       </template>
     </FilteredList>
@@ -80,18 +85,23 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsFilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useI18n } from "@/frontend/composables/useI18n";
-import type { ModelQuery } from "@/services/fyApi";
+import { type ModelQuery, type BaseList } from "@/services/fyApi";
 import { useModelsStore } from "@/frontend/stores/models";
 import { storeToRefs } from "pinia";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { usePagination } from "@/shared/composables/usePagination";
+import Paginator from "@/shared/components/Paginator/index.vue";
 
 useHangarItems();
 useWishlistItems();
@@ -99,16 +109,37 @@ useWishlistItems();
 const { t } = useI18n();
 
 const modelsStore = useModelsStore();
+const fleetchartsStore = useFleetchartStore();
 
-const { detailsVisible, fleetchartVisible, perPage } = storeToRefs(modelsStore);
+const { detailsVisible } = storeToRefs(modelsStore);
+
+const fleetchartVisible = computed(() => {
+  return fleetchartsStore.isVisible("models");
+});
 
 const toggleDetails = () => {
   modelsStore.toggleDetails();
 };
 
 const toggleFleetchart = () => {
-  modelsStore.toggleFleetchart();
+  fleetchartsStore.toggleFleetchart("models");
 };
+
+const { models: modelsService } = useApiClient();
+
+const {
+  data: models,
+  refetch,
+  ...asyncStatus
+} = useQuery({
+  queryKey: ["models"],
+  queryFn: () =>
+    modelsService.models({
+      q: filters.value.filters,
+      page: page.value,
+      perPage: perPage.value,
+    }),
+});
 
 const toggleDetailsTooltip = computed(() => {
   if (detailsVisible.value) {
@@ -125,11 +156,25 @@ const filters = computed(() => ({
   page: Number(route.query.page),
 }));
 
+const { perPage, page, pagination, updatePerPage } = usePagination(
+  "models",
+  models as Ref<BaseList>,
+  refetch,
+);
+
 watch(
   () => perPage.value,
   () => {
-    modelsCollection.findAll(filters.value);
+    refetch();
   },
+);
+
+watch(
+  () => filters.value,
+  () => {
+    refetch();
+  },
+  { deep: true },
 );
 </script>
 
