@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.14](https://github.com/fleetyards/fleetyards/compare/v5.27.13...v5.27.14) (2023-10-23)
+
+
+### Bug Fixes
+
+* always show pride logo on start page ([bc4502f](https://github.com/fleetyards/fleetyards/commit/bc4502ff5aee0cfc4014c12a57406c82598c8a40))
+
 ### [5.27.13](https://github.com/fleetyards/fleetyards/compare/v5.27.12...v5.27.13) (2023-10-14)
 
 ### [5.27.12](https://github.com/fleetyards/fleetyards/compare/v5.27.11...v5.27.12) (2023-10-14)
