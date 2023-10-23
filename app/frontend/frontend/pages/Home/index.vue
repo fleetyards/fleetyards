@@ -167,7 +167,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import type { Image } from "@/services/fyApi";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
-import logoHomePride from "@/images/pride/logo-home.png";
+import logoHomePride from "@/images/pride/logo-planet.png";
 import logoHome from "@/images/logo-home.png";
 
 const { t } = useI18n();
