@@ -138,6 +138,7 @@ export default {
     shareTitle: "Search for: %{query}",
   },
   unknownModel: "%{slug} Unknown",
+  undefined: "N/A",
   "not-available": "N/A",
   receiveSaleNotifications: "",
   publicUrl: "Public URL",

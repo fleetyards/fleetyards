@@ -182,7 +182,7 @@ setTimeout(() => {
   showScrollDown.value = true;
 }, 2000);
 
-const pride = computed(() => new Date().getMonth() === 5);
+const pride = true;
 
 const router = useRouter();
 
