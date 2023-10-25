@@ -3,13 +3,13 @@
   width: 100%;
   margin-bottom: 1rem;
 
+  label {
+    white-space: nowrap;
+  }
+
   .form-input-wrapper {
     position: relative;
     display: flex;
-
-    label {
-      white-space: nowrap;
-    }
 
     input,
     textarea {

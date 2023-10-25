@@ -217,7 +217,3 @@ export default {
   name: "FilteredList",
 };
 </script>
-
-<style lang="scss" scoped>
-@import "index";
-</style>
