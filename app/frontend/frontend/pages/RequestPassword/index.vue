@@ -18,8 +18,8 @@
               :slim="true"
             >
               <FormInput
-                id="email"
                 v-model="form.email"
+                name="email"
                 :error="errors[0]"
                 type="email"
                 :hide-label-on-empty="true"
@@ -59,7 +59,7 @@ import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 
-const { displaySuccess, displayAlert } = useNoty(t);
+const { displaySuccess } = useNoty(t);
 
 const submitting = ref(false);
 
@@ -90,22 +90,18 @@ const requestPassword = async () => {
     await passwordService.requestPasswordReset({
       requestBody: form.value,
     });
-
-    displaySuccess({
-      text: t("messages.requestPasswordChange.success"),
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    router.push("/").catch(() => {});
   } catch (error) {
     console.error(error);
-
-    displayAlert({
-      text: t("messages.requestPasswordChange.failure"),
-    });
   }
 
+  displaySuccess({
+    text: t("messages.requestPasswordChange.success"),
+  });
+
   submitting.value = false;
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  router.push("/").catch(() => {});
 };
 </script>
 

@@ -11,8 +11,8 @@
                 <img
                   :src="logo"
                   class="logo"
-                  width="150px"
-                  height="101px"
+                  width="150"
+                  height="101"
                   alt="logo"
                 />
                 {{ t("app") }}
