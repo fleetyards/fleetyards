@@ -9,16 +9,7 @@
               <h1 id="home-welcome">
                 <small class="text-muted">{{ t("headlines.welcome") }}</small>
                 <img
-                  v-if="pride"
-                  :src="require('@/images/pride/logo-home.png')"
-                  class="logo"
-                  width="150px"
-                  height="101px"
-                  alt="logo"
-                />
-                <img
-                  v-else
-                  :src="require('@/images/logo-home.png')"
+                  :src="logo"
                   class="logo"
                   width="150px"
                   height="101px"
@@ -166,6 +157,7 @@ import imagesCollection from "@/frontend/api/collections/Images";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Store from "@/frontend/lib/Store";
 import type { Image } from "@/services/fyApi";
+import logo from "@/images/pride/logo-planet.png";
 
 const { t } = useI18n();
 
@@ -182,8 +174,6 @@ const mobile = computed(() => Store.getters.mobile);
 setTimeout(() => {
   showScrollDown.value = true;
 }, 2000);
-
-const pride = true;
 
 const router = useRouter();
 
