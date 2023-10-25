@@ -11,8 +11,8 @@
                 <img
                   :src="logo"
                   class="logo"
-                  width="150"
-                  height="101"
+                  width="150px"
+                  height="101px"
                   alt="logo"
                 />
                 {{ t("app") }}
@@ -156,10 +156,7 @@ import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { Image } from "@/services/fyApi";
-import { useApiClient } from "@/frontend/composables/useApiClient";
-import { useQuery } from "@tanstack/vue-query";
-import logoHomePride from "@/images/pride/logo-planet.png";
-import logoHome from "@/images/logo-home.png";
+import logo from "@/images/pride/logo-planet.png";
 
 const { t } = useI18n();
 
@@ -169,15 +166,9 @@ const showScrollDown = ref(false);
 
 const mobile = useMobile();
 
-const logo = computed(() => {
-  return pride ? logoHomePride : logoHome;
-});
-
 setTimeout(() => {
   showScrollDown.value = true;
 }, 2000);
-
-const pride = true;
 
 const router = useRouter();
 
