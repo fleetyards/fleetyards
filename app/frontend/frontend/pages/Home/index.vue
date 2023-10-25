@@ -9,16 +9,7 @@
               <h1 id="home-welcome">
                 <small class="text-muted">{{ t("headlines.welcome") }}</small>
                 <img
-                  v-if="pride"
-                  :src="logoHomePride"
-                  class="logo"
-                  width="150"
-                  height="101"
-                  alt="logo"
-                />
-                <img
-                  v-else
-                  :src="logoHome"
+                  :src="logo"
                   class="logo"
                   width="150"
                   height="101"
@@ -177,6 +168,10 @@ const searchQuery = ref<string | undefined>();
 const showScrollDown = ref(false);
 
 const mobile = useMobile();
+
+const logo = computed(() => {
+  return pride ? logoHomePride : logoHome;
+});
 
 setTimeout(() => {
   showScrollDown.value = true;
