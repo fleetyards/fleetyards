@@ -25,7 +25,7 @@ module Imports
     validates :version, presence: true
 
     def self.current_version
-      finished.last&.version
+      finished.order(created_at: :asc).last&.version
     end
   end
 end
