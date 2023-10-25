@@ -157,6 +157,8 @@ import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { Image } from "@/services/fyApi";
 import logo from "@/images/pride/logo-planet.png";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 
