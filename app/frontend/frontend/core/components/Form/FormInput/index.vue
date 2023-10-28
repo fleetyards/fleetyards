@@ -32,7 +32,8 @@
         :data-test="`input-${id}`"
         :aria-label="innerLabel"
         :autofocus="autofocus"
-        :disabled="disabled ? 'disabled' : null"
+        :autocomplete="autocomplete"
+        :disabled="disabled"
         :name="id"
         :min="min"
         :max="max"
@@ -89,6 +90,8 @@ export default class FormInput extends Vue {
 
   @Prop({ default: false }) autofocus!: boolean;
 
+  @Prop({ default: undefined }) autocomplete!: string;
+
   @Prop({ default: false }) hideLabelOnEmpty!: boolean;
 
   @Prop({ default: null }) label!: string;
@@ -142,7 +145,7 @@ export default class FormInput extends Vue {
       return this.step;
     }
 
-    return null;
+    return undefined;
   }
 
   get innerLabel() {
