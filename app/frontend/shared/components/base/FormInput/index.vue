@@ -32,6 +32,7 @@
         :data-test="`input-${name}`"
         :aria-label="innerLabel"
         :autofocus="autofocus"
+        :autocomplete="autocomplete"
         :disabled="disabled"
         :name="name"
         :min="min"
@@ -73,6 +74,7 @@ type Props = {
   type?: "text" | "number" | "password" | "email" | "url" | "color";
   translationKey?: string;
   autofocus?: boolean;
+  autocomplete?: string;
   hideLabelOnEmpty?: boolean;
   label?: string;
   min?: number;
@@ -96,6 +98,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: "text",
   translationKey: undefined,
   autofocus: false,
+  autocomplete: undefined,
   hideLabelOnEmpty: false,
   label: undefined,
   min: undefined,

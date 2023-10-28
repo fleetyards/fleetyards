@@ -23,6 +23,7 @@
                 :error="errors[0]"
                 type="email"
                 :hide-label-on-empty="true"
+                autocomplete="off"
                 :autofocus="true"
               />
             </ValidationProvider>
@@ -91,7 +92,7 @@ const requestPassword = async () => {
       requestBody: form.value,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 
   displaySuccess({
