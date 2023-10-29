@@ -9,7 +9,7 @@
               {{ model.name }}
               <small class="text-muted manufacturer">
                 <span class="manufacturer-prefix">from</span>
-                <span v-html="model.manufacturer?.name" />
+                <span>{{ model.manufacturer?.name }}</span>
                 <img
                   v-if="model.manufacturer && model.manufacturer.logo"
                   v-lazy="model.manufacturer.logo"
