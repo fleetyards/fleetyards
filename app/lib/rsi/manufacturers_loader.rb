@@ -11,9 +11,14 @@ module Rsi
         name: manufacturer_data["name"],
         code: manufacturer_data["code"].presence,
         known_for: manufacturer_data["known_for"].presence,
-        description: manufacturer_data["description"].presence,
-        remote_logo_url: ("#{base_url}#{manufacturer_data["media"][0]["source_url"]}" if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data["media"].present?)
+        description: manufacturer_data["description"].presence
       )
+
+      if !Rails.env.test? && (manufacturer.logo.blank? && manufacturer_data["media"].present? && manufacturer_data["media"][0]["source_url"].present?)
+        manufacturer.update(
+          remote_logo_url: "#{base_url}#{manufacturer_data["media"][0]["source_url"]}"
+        )
+      end
 
       model.update(manufacturer:) if model.present?
 
