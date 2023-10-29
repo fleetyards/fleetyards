@@ -2,6 +2,8 @@
   <div
     class="panel-shadow"
     :class="{
+      'panel-shadow-top': alignment === 'top',
+      'panel-shadow-bottom': alignment === 'bottom',
       'panel-shadow-left': alignment === 'left',
       'panel-shadow-right': alignment === 'right',
     }"
@@ -10,7 +12,7 @@
 
 <script lang="ts" setup>
 type Props = {
-  alignment: "left" | "right";
+  alignment: "top" | "bottom" | "left" | "right";
 };
 
 defineProps<Props>();

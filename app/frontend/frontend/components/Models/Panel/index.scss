@@ -1,5 +1,21 @@
-.panel-image {
-  .on-sale {
+.model-panel {
+  &-add-to-hangar-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px 6px;
+    font-size: 18px;
+
+    > :first-child {
+      font-size: 18px;
+    }
+  }
+
+  .model-panel-body {
+    flex: 1;
+  }
+
+  &-on-sale {
     position: absolute;
     top: 0;
     left: 0;
@@ -18,27 +34,13 @@
       color: #fff;
     }
   }
-}
 
-.production-status {
-  padding: 4px 6px;
-  color: $gray-light;
-  font-size: 75%;
-  line-height: 1;
-  text-align: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
-}
-
-.panel-heading {
-  .panel-add-to-hangar-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 12px 6px;
-    font-size: 18px;
-
-    > :first-child {
-      font-size: 18px;
-    }
+  &-production-status {
+    padding: 4px 6px;
+    color: $gray-light;
+    font-size: 75%;
+    line-height: 1;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
   }
 }

@@ -1,5 +1,4 @@
 .panel-heading {
-  padding: 10px 15px;
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -20,7 +19,7 @@
 
   &-title {
     margin-bottom: 0;
-    padding-top: 5px;
+    padding: 15px 15px 10px;
     font-size: 22px;
     overflow: hidden;
     white-space: nowrap;
@@ -51,12 +50,12 @@
     &-sub {
       font-size: 15px;
       font-family: "Open Sans", sans-serif;
-      color: darken($text-color, 20%);
+      color: darken($text-color, 15%);
       gap: 5px;
       display: flex;
 
       :deep(a) {
-        color: darken($text-color, 20%);
+        color: darken($text-color, 15%);
 
         &:hover {
           color: $text-color;

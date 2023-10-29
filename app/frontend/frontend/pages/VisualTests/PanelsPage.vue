@@ -100,14 +100,6 @@
               :details="modelPanelDetails"
             />
           </div>
-          <div class="col-12 col-md-4">
-            <h2>Model Panel v2</h2>
-            <ModelPanel2
-              v-if="internalModel"
-              :model="internalModel"
-              :details="modelPanelDetails"
-            />
-          </div>
         </div>
       </div>
       <div class="col-12">
@@ -122,16 +114,6 @@
           <div class="col-12 col-md-4">
             <h2>Vehicle Panel</h2>
             <VehiclePanel
-              v-if="vehicle"
-              :vehicle="vehicle"
-              :details="vehiclePanelDetails"
-              :editable="vehiclePanelEditable"
-              :loaners-hint-visible="vehiclePanelLoanerHint"
-            />
-          </div>
-          <div class="col-12 col-md-4">
-            <h2>Vehicle Panel v2</h2>
-            <VehiclePanel2
               v-if="vehicle"
               :vehicle="vehicle"
               :details="vehiclePanelDetails"
@@ -286,26 +268,6 @@
         </div>
       </div>
     </div>
-    <hr />
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <h2>Teaser Panel</h2>
-            <TeaserPanel
-              v-if="model"
-              :item="model"
-              :to="{
-                name: 'model',
-                params: { slug: model.slug },
-              }"
-              variant="text"
-              slim
-            />
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -316,14 +278,11 @@ import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
 import PanelImage from "@/shared/components/Panel/Image/index.vue";
 import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
-import ModelPanel2 from "@/frontend/components/Models/Panel2/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
-import VehiclePanel2 from "@/frontend/components/Vehicles/Panel2/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import ShopPanel from "@/frontend/components/Shops/Panel/index.vue";
 import CelestialObjectPanel from "@/frontend/components/CelestialObjects/Panel/index.vue";
 import StarsystemPanel from "@/frontend/components/Starsystems/Panel/index.vue";
-import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import SearchPanel from "@/frontend/components/Search/Panel/index.vue";
 import EquipmentPanel from "@/frontend/components/Equipment/Panel/index.vue";
 import ComponentPanel from "@/frontend/components/Components/Panel/index.vue";

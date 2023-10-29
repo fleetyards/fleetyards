@@ -50,7 +50,7 @@ type Props = {
   variant?: "default" | "primary" | "success";
   alignment?: "left" | "right";
   inset?: boolean;
-  shadow?: "left" | "right";
+  shadow?: "left" | "right" | "top" | "bottom";
   bgImage?: string;
   bgAlign?: "left" | "right";
   bgRounded?: "all" | "left" | "right" | "top" | "bottom";

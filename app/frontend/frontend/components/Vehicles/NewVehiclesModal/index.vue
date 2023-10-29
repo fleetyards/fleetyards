@@ -1,9 +1,10 @@
 <template>
-  <Modal :title="$t('headlines.newVehicles')">
+  <Modal :title="t('headlines.newVehicles')">
     <form id="new-vehicles" class="new-vehicles" @submit.prevent="save">
       <div v-for="(item, index) in form.vehicles" :key="index" class="row">
         <div class="col-8 col-md-10">
           <TeaserPanel
+            v-if="item.model"
             :item="item.model"
             variant="text"
             :with-description="false"
@@ -11,9 +12,9 @@
         </div>
         <div class="col-4 col-md-2">
           <Btn
-            v-tooltip="$t('actions.remove')"
-            :aria-label="$t('actions.remove')"
-            @click.native="removeItem(index)"
+            v-tooltip="t('actions.remove')"
+            :aria-label="t('actions.remove')"
+            @click="removeItem(index)"
           >
             <i class="fa fa-trash" />
           </Btn>
@@ -22,7 +23,7 @@
 
       <CollectionFilterGroup
         name="model"
-        :search-label="$t('actions.findModel')"
+        :search-label="t('actions.findModel')"
         :collection="modelsCollection"
         value-attr="id"
         translation-key="newVehicle"
@@ -42,82 +43,103 @@
           size="large"
           :inline="true"
         >
-          {{ $t("actions.add") }}
+          {{ t("actions.add") }}
         </Btn>
       </div>
     </template>
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import CollectionFilterGroup from "@/frontend/core/components/Form/CollectionFilterGroup/index.vue";
+<script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import modelsCollection from "@/frontend/api/collections/Models";
-import type { ModelsCollection } from "@/frontend/api/collections/Models";
+import { type Vehicle, type Model } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useQueryClient } from "@tanstack/vue-query";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
 type VehicleFormData = {
   vehicles: Partial<Vehicle>[];
 };
 
-@Component<NewVehiclesModal>({
-  components: {
-    Modal,
-    CollectionFilterGroup,
-    Btn,
-    TeaserPanel,
-  },
-})
-export default class NewVehiclesModal extends Vue {
-  @Prop({ default: false }) wanted: boolean;
+type Props = {
+  wanted?: boolean;
+};
 
-  submitting = false;
+const props = withDefaults(defineProps<Props>(), {
+  wanted: false,
+});
 
-  modelsCollection: ModelsCollection = modelsCollection;
+const { t } = useI18n();
 
-  form: VehicleFormData = {
+const submitting = ref(false);
+
+const form = ref<VehicleFormData>({
+  vehicles: [],
+});
+
+const add = (value: Model) => {
+  form.value.vehicles.push({
+    model: value,
+  });
+};
+
+const removeItem = (index: number) => {
+  form.value.vehicles.splice(index, 1);
+};
+
+onMounted(() => {
+  form.value = {
     vehicles: [],
   };
+});
 
-  add(value) {
-    this.form.vehicles.push({
-      model: value,
-    });
-  }
+const comlink = useComlink();
 
-  removeItem(index) {
-    this.form.vehicles.splice(index, 1);
-  }
+const { vehicles: vehiclesService } = useApiClient();
 
-  mounted() {
-    this.form = {
-      vehicles: [],
-    };
-  }
+const queryClient = useQueryClient();
 
-  async save() {
-    this.submitting = true;
+const save = async () => {
+  submitting.value = true;
 
-    await this.form.vehicles.forEach(async (item) => {
-      if (!item.model) {
-        return;
-      }
+  form.value.vehicles.forEach(async (item) => {
+    if (!item.model) {
+      return;
+    }
 
-      await vehiclesCollection.create({
-        wanted: this.wanted,
-        modelId: item.model.id,
+    try {
+      await vehiclesService.vehicleCreate({
+        requestBody: {
+          wanted: props.wanted,
+          modelId: item.model.id,
+        },
       });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  if (props.wanted) {
+    queryClient.invalidateQueries({
+      queryKey: ["wishlist"],
     });
-
-    vehiclesCollection.refresh();
-
-    this.submitting = false;
-
-    this.$comlink.$emit("close-modal");
+  } else {
+    queryClient.invalidateQueries({
+      queryKey: ["hangar"],
+    });
   }
-}
+
+  submitting.value = false;
+
+  comlink.emit("close-modal");
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "NewVehiclesModal",
+};
 </script>

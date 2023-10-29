@@ -36,10 +36,10 @@ export const i18nHelpers = (i18n: I18n) => {
 
   const toDollar = (value?: number) => {
     if (!value) {
-      return;
+      return "-";
     }
 
-    i18n.numberToCurrency(value, {
+    return i18n.numberToCurrency(value, {
       precision: 2,
       unit: "$",
     });

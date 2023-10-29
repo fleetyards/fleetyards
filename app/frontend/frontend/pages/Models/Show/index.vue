@@ -1,375 +1,303 @@
 <template>
-  <section class="container">
-    <div class="row">
-      <div v-if="!loading && model" class="col-12">
-        <div class="row">
-          <div class="col-12">
-            <BreadCrumbs :crumbs="crumbs" />
-            <h1>
-              {{ model.name }}
-              <small class="text-muted manufacturer">
-                <span class="manufacturer-prefix">from</span>
-                <span>{{ model.manufacturer?.name }}</span>
-                <img
-                  v-if="model.manufacturer && model.manufacturer.logo"
-                  v-lazy="model.manufacturer.logo"
-                  class="manufacturer-logo"
-                  alt="manufacturer-logo"
-                />
-              </small>
-            </h1>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 col-lg-8 ship-detail-left-col">
-            <div
-              :class="{
-                'image-wrapper-holoviewer': holoviewerVisible,
-              }"
-              class="image-wrapper"
-            >
-              <Btn
-                :active="holoviewerVisible"
-                class="toggle-3d"
-                size="small"
-                @click="toggleHoloviewer"
-              >
-                {{ t("labels.3dView") }}
-              </Btn>
-              <a
-                v-show="holoviewerVisible"
-                :href="starship42Url"
-                class="starship42-link"
-                target="_blank"
-                rel="noopener"
-              >
-                {{ t("labels.poweredByStarship42") }}
-              </a>
-              <HoloViewer
-                v-if="holoviewerVisible && model.holo"
-                :holo="model.holo"
-              />
-              <iframe
-                v-else-if="holoviewerVisible"
-                class="holoviewer"
-                :src="starship42IframeUrl"
-                frameborder="0"
-              />
-              <LazyImage
-                v-else-if="storeImage"
-                :src="storeImage"
-                class="image"
-              />
-            </div>
-            <div class="row production-status">
-              <div class="col-6">
-                <template v-if="model.productionStatus">
-                  <h3 class="text-uppercase">
-                    {{
-                      t(
-                        `labels.model.productionStatus.${model.productionStatus}`,
-                      )
-                    }}
-                  </h3>
-                  <p>{{ model.productionNote }}</p>
-                </template>
-              </div>
-              <div class="col-6">
-                <template v-if="model.focus">
-                  <h3 class="text-uppercase text-right">
-                    <small class="text-muted">{{ t("model.focus") }}:</small>
-                    {{ model.focus }}
-                  </h3>
-                </template>
-              </div>
-            </div>
-            <blockquote class="description">
-              <p v-html="model.description" />
-            </blockquote>
-          </div>
-          <div class="col-12 col-lg-4">
-            <Panel>
-              <ModelBaseMetrics :model="model" />
-            </Panel>
-            <Panel>
-              <ModelCrewMetrics :model="model" />
-            </Panel>
-            <Panel>
-              <ModelSpeedMetrics :model="model" />
-            </Panel>
-            <div class="page-actions page-actions-block">
-              <Btn
-                v-if="
-                  model.onSale && (model.pledgePrice || model.lastPledgePrice)
-                "
-                :href="`${model.storeUrl}#buying-options`"
-                style="flex-grow: 3"
-              >
-                {{
-                  t("actions.model.onSale", {
-                    price: toDollar(model.pledgePrice || model.lastPledgePrice),
-                  })
-                }}
-                <small class="price-info">
-                  {{ t("labels.taxExcluded") }}
+  <AsyncData :async-status="asyncStatus">
+    <template #resolved>
+      <div v-if="model" class="row">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-12">
+              <BreadCrumbs :crumbs="crumbs" />
+              <h1>
+                {{ model.name }}
+                <small class="text-muted manufacturer">
+                  <span class="manufacturer-prefix">from</span>
+                  <span>{{ model.manufacturer?.name }}</span>
+                  <img
+                    v-if="model.manufacturer && model.manufacturer.logo"
+                    v-lazy="model.manufacturer.logo"
+                    class="manufacturer-logo"
+                    alt="manufacturer-logo"
+                  />
                 </small>
-              </Btn>
-              <Btn v-else :href="model.storeUrl" style="flex-grow: 3">
-                {{ t("actions.model.store") }}
-              </Btn>
+              </h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-lg-8 ship-detail-left-col">
+              <div
+                :class="{
+                  'image-wrapper-holoviewer': holoviewerVisible,
+                }"
+                class="image-wrapper"
+              >
+                <Btn
+                  :active="holoviewerVisible"
+                  class="toggle-3d"
+                  size="small"
+                  @click="toggleHoloviewer"
+                >
+                  {{ t("labels.3dView") }}
+                </Btn>
+                <a
+                  v-show="holoviewerVisible"
+                  :href="starship42Url"
+                  class="starship42-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {{ t("labels.poweredByStarship42") }}
+                </a>
+                <HoloViewer
+                  v-if="holoviewerVisible && model.holo"
+                  :holo="model.holo"
+                />
+                <iframe
+                  v-else-if="holoviewerVisible"
+                  class="holoviewer"
+                  :src="starship42IframeUrl"
+                  frameborder="0"
+                />
+                <LazyImage
+                  v-else-if="storeImage"
+                  :src="storeImage"
+                  class="image"
+                />
+              </div>
+              <div class="row production-status">
+                <div class="col-6">
+                  <template v-if="model.productionStatus">
+                    <h3 class="text-uppercase">
+                      {{
+                        t(
+                          `labels.model.productionStatus.${model.productionStatus}`,
+                        )
+                      }}
+                    </h3>
+                    <p>{{ model.productionNote }}</p>
+                  </template>
+                </div>
+                <div class="col-6">
+                  <template v-if="model.focus">
+                    <h3 class="text-uppercase text-right">
+                      <small class="text-muted">{{ t("model.focus") }}:</small>
+                      {{ model.focus }}
+                    </h3>
+                  </template>
+                </div>
+              </div>
+              <blockquote class="description">
+                <p v-html="model.description" />
+              </blockquote>
+            </div>
+            <div class="col-12 col-lg-4">
+              <Panel slim>
+                <ModelBaseMetrics :model="model" />
+              </Panel>
+              <Panel slim>
+                <ModelCrewMetrics :model="model" />
+              </Panel>
+              <Panel slim>
+                <ModelSpeedMetrics :model="model" />
+              </Panel>
+              <div class="page-actions page-actions-block">
+                <Btn
+                  v-if="
+                    model.onSale && (model.pledgePrice || model.lastPledgePrice)
+                  "
+                  :href="`${model.storeUrl}#buying-options`"
+                  style="flex-grow: 3"
+                >
+                  {{
+                    t("actions.model.onSale", {
+                      price: toDollar(
+                        model.pledgePrice || model.lastPledgePrice,
+                      ),
+                    })
+                  }}
+                  <small class="price-info">
+                    {{ t("labels.taxExcluded") }}
+                  </small>
+                </Btn>
+                <Btn v-else :href="model.storeUrl" style="flex-grow: 3">
+                  {{ t("actions.model.store") }}
+                </Btn>
 
-              <AddToHangar :model="model" />
+                <AddToHangar :model="model" />
 
-              <ShareBtn
-                v-if="!mobile"
-                data-test="share"
-                :url="shareUrl"
-                :title="metaTitle || ''"
-              />
-
-              <BtnDropdown data-test="model-dropdown">
-                <Btn
-                  v-if="model.hasImages"
-                  :to="{ name: 'model-images', params: { slug: model.slug } }"
-                  variant="dropdown"
-                >
-                  <i class="fa fa-images" />
-                  <span>{{ t("nav.images") }}</span>
-                </Btn>
-                <Btn
-                  v-if="model.hasVideos"
-                  :to="{ name: 'model-videos', params: { slug: model.slug } }"
-                  variant="dropdown"
-                >
-                  <i class="fal fa-video" />
-                  <span>{{ t("nav.videos") }}</span>
-                </Btn>
-                <Btn
-                  v-if="model.brochure"
-                  :href="model.brochure"
-                  variant="dropdown"
-                >
-                  <i class="fal fa-download" />
-                  <span>{{ t("labels.model.brochure") }}</span>
-                </Btn>
-                <Btn
-                  :to="{
-                    name: 'models-compare',
-                    query: { models: [model.slug] },
-                  }"
-                  data-test="compare"
-                  variant="dropdown"
-                >
-                  <i class="fal fa-code-compare" />
-                  <span>{{ t("actions.compare.models") }}</span>
-                </Btn>
                 <ShareBtn
-                  v-if="mobile"
+                  v-if="!mobile"
                   data-test="share"
-                  variant="dropdown"
                   :url="shareUrl"
                   :title="metaTitle || ''"
                 />
-                <Btn
-                  v-if="model.salesPageUrl"
-                  :href="model.salesPageUrl"
-                  variant="dropdown"
-                >
-                  <i class="fad fa-megaphone" />
-                  <span>{{ t("labels.model.salesPage") }}</span>
-                </Btn>
-              </BtnDropdown>
+
+                <BtnDropdown data-test="model-dropdown">
+                  <Btn
+                    v-if="model.hasImages"
+                    :to="{
+                      name: 'model-images',
+                      params: { slug: model.slug },
+                    }"
+                    variant="dropdown"
+                  >
+                    <i class="fa fa-images" />
+                    <span>{{ t("nav.images") }}</span>
+                  </Btn>
+                  <Btn
+                    v-if="model.hasVideos"
+                    :to="{
+                      name: 'model-videos',
+                      params: { slug: model.slug },
+                    }"
+                    variant="dropdown"
+                  >
+                    <i class="fal fa-video" />
+                    <span>{{ t("nav.videos") }}</span>
+                  </Btn>
+                  <Btn
+                    v-if="model.brochure"
+                    :href="model.brochure"
+                    variant="dropdown"
+                  >
+                    <i class="fal fa-download" />
+                    <span>{{ t("labels.model.brochure") }}</span>
+                  </Btn>
+                  <Btn
+                    :to="{
+                      name: 'models-compare',
+                      query: { models: [model.slug] },
+                    }"
+                    data-test="compare"
+                    variant="dropdown"
+                  >
+                    <i class="fal fa-code-compare" />
+                    <span>{{ t("actions.compare.models") }}</span>
+                  </Btn>
+                  <ShareBtn
+                    v-if="mobile"
+                    data-test="share"
+                    variant="dropdown"
+                    :url="shareUrl"
+                    :title="metaTitle || ''"
+                  />
+                  <Btn
+                    v-if="model.salesPageUrl"
+                    :href="model.salesPageUrl"
+                    variant="dropdown"
+                  >
+                    <i class="fad fa-megaphone" />
+                    <span>{{ t("labels.model.salesPage") }}</span>
+                  </Btn>
+                </BtnDropdown>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="fleetchart-views">
+                <div>
+                  <img
+                    v-if="fleetchartImageAngled"
+                    :src="fleetchartImageAngled"
+                  />
+                </div>
+                <div>
+                  <img v-if="fleetchartImageTop" :src="fleetchartImageTop" />
+                </div>
+                <div class="small">
+                  <img
+                    v-if="fleetchartImageFront"
+                    :src="fleetchartImageFront"
+                  />
+                </div>
+                <div>
+                  <img v-if="fleetchartImageSide" :src="fleetchartImageSide" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="row components">
+            <div class="col-12">
+              <Hardpoints :model="model" />
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="fleetchart-views">
-              <div>
-                <img
-                  v-if="fleetchartImageAngled"
-                  :src="fleetchartImageAngled"
-                />
-              </div>
-              <div>
-                <img v-if="fleetchartImageTop" :src="fleetchartImageTop" />
-              </div>
-              <div class="small">
-                <img v-if="fleetchartImageFront" :src="fleetchartImageFront" />
-              </div>
-              <div>
-                <img v-if="fleetchartImageSide" :src="fleetchartImageSide" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr />
-        <div class="row components">
-          <div class="col-12">
-            <Hardpoints :model="model" />
-          </div>
-        </div>
       </div>
-      <Loader :loading="loading" />
-    </div>
 
-    <Paints :model="model" />
-
-    <hr v-if="modules.length" />
-    <div class="row">
-      <div class="col-12 modules">
-        <a href="#modules">
-          <h2 v-if="modules.length" id="modules" class="text-uppercase">
-            {{ t("labels.model.modules") }}
-          </h2>
-        </a>
-        <div v-if="modules.length" class="row">
-          <div
-            v-for="module in modules"
-            :key="module.id"
-            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4"
-          >
-            <TeaserPanel :item="module" />
-          </div>
-        </div>
-        <Loader :loading="loadingModules" :fixed="true" />
-      </div>
-    </div>
-    <hr v-if="upgrades.length" />
-    <div class="row">
-      <div class="col-12 upgrades">
-        <a href="#upgrades">
-          <h2 v-if="upgrades.length" id="upgrades" class="text-uppercase">
-            {{ t("labels.model.upgrades") }}
-          </h2>
-        </a>
-        <div v-if="upgrades.length" class="row">
-          <div
-            v-for="upgrade in upgrades"
-            :key="upgrade.id"
-            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4"
-          >
-            <TeaserPanel :item="upgrade" />
-          </div>
-        </div>
-        <Loader :loading="loadingUpgrades" :fixed="true" />
-      </div>
-    </div>
-    <hr v-if="variants.length" />
-    <div class="row">
-      <div class="col-12 variants">
-        <a href="#variants">
-          <h2 v-if="variants.length" id="variants" class="text-uppercase">
-            {{ t("labels.model.variants") }}
-          </h2>
-        </a>
-        <transition-group
-          v-if="variants.length"
-          name="fade-list"
-          class="row"
-          tag="div"
-          appear
-        >
-          <div
-            v-for="variant in variants"
-            :key="`variant-${variant.slug}`"
-            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-          >
-            <ModelPanel :model="variant" :details="true" />
-          </div>
-        </transition-group>
-        <Loader :loading="loadingVariants" :fixed="true" />
-      </div>
-    </div>
-    <hr v-if="loaners.length" />
-    <div class="row">
-      <div class="col-12 loaners">
-        <a href="#loaners">
-          <h2 v-if="loaners.length" id="loaners" class="text-uppercase">
-            {{ t("labels.model.loaners") }}
-          </h2>
-        </a>
-        <transition-group
-          v-if="loaners.length"
-          name="fade-list"
-          class="row"
-          tag="div"
-          appear
-        >
-          <div
-            v-for="loaner in loaners"
-            :key="`loaner-${loaner.slug}`"
-            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-          >
-            <ModelPanel :model="loaner" />
-          </div>
-        </transition-group>
-        <Loader :loading="loadingLoaners" :fixed="true" />
-      </div>
-    </div>
-  </section>
+      <PaintsList v-if="model" :model-slug="model.slug" />
+      <ModulesList v-if="model" :model-slug="model.slug" />
+      <UpgradesList v-if="model" :model-slug="model.slug" />
+      <VariantsList v-if="model" :model-slug="model.slug" />
+      <LoanersList v-if="model" :model-slug="model.slug" />
+    </template>
+  </AsyncData>
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
+import AsyncData from "@/shared/components/AsyncData.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
-import Paints from "@/frontend/components/Models/PaintsList/index.vue";
+import PaintsList from "@/frontend/components/Models/PaintsList/index.vue";
+import LoanersList from "@/frontend/components/Models/LoanersList/index.vue";
+import VariantsList from "@/frontend/components/Models/VariantsList/index.vue";
+import UpgradesList from "@/frontend/components/Models/UpgradesList/index.vue";
+import ModulesList from "@/frontend/components/Models/ModulesList/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
-import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
-import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import HoloViewer from "@/frontend/core/components/HoloViewer/index.vue";
-import { modelRouteGuard } from "@/frontend/utils/RouteGuards/Models";
-// import modelsCollection from "@/frontend/api/collections/Models";
-// import modelModulesCollection from "@/frontend/api/collections/ModelModules";
-// import modelUpgradesCollection from "@/frontend/api/collections/ModelUpgrades";
-// import modelVariantsCollection from "@/frontend/api/collections/ModelVariants";
-// import modelLoanersCollection from "@/frontend/api/collections/ModelLoaners";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import HoloViewer from "@/frontend/components/core/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import Panel from "@/shared/components/Panel/index.vue";
-import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
-import type {
-  Model,
-  ModelLoaner,
-  ModelModule,
-  ModelUpgrade,
-} from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
 import { storeToRefs } from "pinia";
+import { useQuery } from "@tanstack/vue-query";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 useHangarItems();
 useWishlistItems();
 
-const loading = ref(false);
+const { models: modelsService } = useApiClient();
 
-const loadingVariants = ref(false);
+const route = useRoute();
 
-const loadingLoaners = ref(false);
+const slug = computed(() => route.params.slug as string);
 
-const loadingModules = ref(false);
+const { data: model, ...asyncStatus } = useQuery({
+  queryKey: ["models", slug.value],
+  queryFn: () =>
+    modelsService.model({
+      slug: slug.value,
+    }),
+  retry: false,
+});
 
-const loadingUpgrades = ref(false);
+watch(
+  () => model.value,
+  () => {
+    if (!model.value) {
+      return;
+    }
 
-const variants = ref<Model[]>([]);
-
-const loaners = ref<ModelLoaner[]>([]);
-
-const modules = ref<ModelModule[]>([]);
-
-const upgrades = ref<ModelUpgrade[]>([]);
-
-const model = ref<Model | null>(null);
+    updateMetaInfo({
+      title: metaTitle.value,
+      description: metaDescription.value,
+      image: metaImage.value,
+      type: "article",
+    });
+  },
+);
 
 const mobile = useMobile();
 
@@ -377,16 +305,22 @@ const modelsStore = useModelsStore();
 
 const { holoviewerVisible } = storeToRefs(modelsStore);
 
-const route = useRoute();
-
-const modelSlug = computed(() => route.params.slug);
+const { supported: webpSupported } = useWebpCheck();
 
 const storeImage = computed(() => {
-  if (mobile.value) {
+  if (mobile.value && model.value?.media.storeImage?.medium) {
     return model.value?.media.storeImage?.medium;
   }
 
-  return model.value?.media.storeImage?.large;
+  if (model.value?.media.storeImage?.large) {
+    return model.value?.media.storeImage?.large;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
 });
 
 const fleetchartImageAngled = computed(() => {
@@ -495,7 +429,7 @@ const { updateMetaInfo } = useMetaInfo(t);
 
 const crumbs = computed(() => {
   if (!model.value) {
-    return null;
+    return undefined;
   }
 
   return [
@@ -512,77 +446,40 @@ const crumbs = computed(() => {
 const shareUrl = computed(() => window.location.href);
 
 onMounted(() => {
-  fetch();
-  fetchExtras();
-
   if (route.query.holoviewer) {
     modelsStore.holoviewerVisible = true;
   }
+
+  setTimeout(() => {
+    scrollToHash();
+  }, 500);
 });
+
+const scrollToHash = () => {
+  if (!route.hash) {
+    return;
+  }
+
+  const el = document.querySelector(route.hash);
+
+  if (!el) {
+    return;
+  }
+
+  el.scrollIntoView({
+    behavior: "instant",
+    block: "start",
+  });
+};
 
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
-};
-
-const fetchExtras = () => {
-  fetchModules();
-  fetchUpgrades();
-  fetchVariants();
-  fetchLoaners();
-};
-
-const fetchModules = async () => {
-  loadingModules.value = true;
-
-  modules.value = await modelModulesCollection.findAll(modelSlug.value);
-
-  loadingModules.value = false;
-};
-
-const fetchUpgrades = async () => {
-  loadingUpgrades.value = true;
-
-  upgrades.value = await modelUpgradesCollection.findAll(modelSlug.value);
-
-  loadingUpgrades.value = false;
-};
-
-const fetchVariants = async () => {
-  loadingVariants.value = true;
-
-  variants.value = await modelVariantsCollection.findAll(modelSlug.value);
-
-  loadingVariants.value = false;
-};
-
-const fetchLoaners = async () => {
-  loadingLoaners.value = true;
-
-  loaners.value = await modelLoanersCollection.findAll(modelSlug.value);
-
-  loadingLoaners.value = false;
-};
-
-const fetch = async () => {
-  loading.value = true;
-
-  model.value = await modelsCollection.findBySlug(route.params.slug);
-
-  updateMetaInfo({
-    title: metaTitle.value,
-    description: metaDescription.value,
-    image: metaImage.value,
-    type: "article",
-  });
-
-  loading.value = false;
 };
 </script>
 
 <script lang="ts">
 export default {
   name: "ModelDetail",
-  beforeRouteEnter: modelRouteGuard,
 };
 </script>
 

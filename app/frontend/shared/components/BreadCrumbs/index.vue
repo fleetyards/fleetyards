@@ -14,14 +14,11 @@
 </template>
 
 <script lang="ts" setup>
+import { type RouteLocationRaw } from "vue-router";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 export type Crumb = {
-  to: {
-    name: string;
-    params?: Record<string, string | undefined>;
-    hash?: string;
-  };
+  to: RouteLocationRaw;
   label?: string;
 };
 

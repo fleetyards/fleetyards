@@ -101,7 +101,7 @@
                   name: 'model',
                   params: { slug: model.slug },
                 }"
-                variant="text"
+                level="h3"
                 slim
               />
             </div>
@@ -151,11 +151,11 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import Panel from "@/shared/components/Panel/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
-import type { Image } from "@/services/fyApi";
+import { type Image } from "@/services/fyApi";
 import logo from "@/images/pride/logo-planet.png";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
@@ -186,7 +186,7 @@ const search = () => {
         query: {
           q: { search: searchQuery.value },
         },
-      } as unknown as RouteLocationRaw, // HACK to make insuffient types for vue-router work
+      } as unknown as RouteLocationRaw, // HACK to make insufficient types for vue-router work
     )
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     .catch(() => {});

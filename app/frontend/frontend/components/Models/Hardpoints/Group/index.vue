@@ -3,7 +3,7 @@
     <h2 v-if="!withoutTitle" class="hardpoint-group-label">
       {{ t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
     </h2>
-    <Panel>
+    <Panel slim>
       <div class="hardpoint-group-inner">
         <div
           v-for="(items, type) in groupByType(hardpoints)"
@@ -59,7 +59,7 @@ import { useI18n } from "@/frontend/composables/useI18n";
 type Props = {
   group: ModelHardpointGroupEnum;
   hardpoints: ModelHardpoint[];
-  withoutTitle: boolean;
+  withoutTitle?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {

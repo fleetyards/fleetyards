@@ -1,57 +1,75 @@
 <template>
-  <div>
-    <Panel
-      v-if="model"
-      :id="model.slug"
-      class="model-panel"
-      :class="`model-panel-${model.slug}`"
-      slim
-    >
-      <PanelHeading level="h2">
+  <Panel
+    :id="internalId"
+    class="model-panel"
+    :class="`model-panel-${model.slug}`"
+    :highlight="highlight"
+    :bg-image="image"
+    :bg-rounded="details ? 'top' : 'all'"
+    shadow="top"
+  >
+    <template #default>
+      <PanelHeading :level="level" class="model-panel-heading">
         <template #default>
-          <router-link
-            :to="{
-              name: 'model',
-              params: {
-                slug: model.slug,
-              },
-            }"
-          >
-            <span>{{ model.name }}</span>
-          </router-link>
+          <slot name="heading-title">
+            <router-link
+              :to="{
+                name: 'model',
+                params: {
+                  slug: model.slug,
+                },
+              }"
+            >
+              <span>{{ model.name }}</span>
+            </router-link>
+          </slot>
         </template>
         <template #subtitle>
-          <router-link :to="manufacturerRoute">
-            {{ manufacturerName }}
-          </router-link>
+          <slot v-if="model.manufacturer" name="heading-subtitle">
+            <router-link
+              :to="{
+                query: {
+                  q: filterManufacturerQuery(
+                    model.manufacturer,
+                  ) as unknown as string,
+                },
+              }"
+            >
+              {{ model.manufacturer.name }}
+            </router-link>
+          </slot>
         </template>
         <template #actions>
-          <AddToHangar
-            :model="model"
-            class="panel-add-to-hangar-button"
-            variant="panel"
-          />
+          <slot name="heading-actions">
+            <AddToHangar
+              :model="model"
+              class="model-panel-add-to-hangar-button"
+              variant="panel"
+            />
+          </slot>
         </template>
       </PanelHeading>
-      <PanelImage
+      <PanelBody
+        class="model-panel-body"
         :rounded="details ? undefined : 'bottom'"
-        :image="storeImage"
-        :alt="model.name"
-        :to="{ name: 'model', params: { slug: model.slug } }"
       >
         <div
           v-show="model.onSale"
           v-tooltip="t('labels.model.onSale')"
-          class="on-sale"
+          class="model-panel-on-sale"
         >
           <i class="fal fa-dollar-sign" />
         </div>
-      </PanelImage>
+        <slot name="default" />
+      </PanelBody>
+    </template>
+
+    <template #footer>
       <Collapsed
-        :key="`details-${model.slug}-${uuid}-wrapper`"
+        :key="`details-${model.slug}-${internalId}-wrapper`"
         :visible="details"
       >
-        <div class="production-status">
+        <div class="model-panel-production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
               {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
@@ -63,59 +81,65 @@
         </div>
         <ModelPanelMetrics :model="model" />
       </Collapsed>
-    </Panel>
-  </div>
+    </template>
+  </Panel>
 </template>
 
 <script lang="ts" setup>
-import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
-import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
-import { v4 as uuidv4 } from "uuid";
-import { useI18n } from "@/frontend/composables/useI18n";
 import Panel from "@/shared/components/Panel/index.vue";
 import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
+import PanelBody from "@/shared/components/Panel/Body/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
-import { Model } from "@/services/fyApi";
+import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
+import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
+import type { Model, Manufacturer } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 type Props = {
   model: Model;
   details?: boolean;
+  highlight?: boolean;
+  id?: string;
+  storeImage?: string;
+  level?: "h2" | "h3" | "h4";
 };
 
 const props = withDefaults(defineProps<Props>(), {
   details: false,
+  highlight: false,
+  id: undefined,
+  storeImage: undefined,
+  level: "h2",
 });
 
 const { t } = useI18n();
 
-const uuid = ref<string>(uuidv4());
+const internalId = computed(() => props.id || props.model.id);
 
-const storeImage = computed(() => props.model.media.storeImage?.medium);
-
-onMounted(() => {
-  uuid.value = uuidv4();
+const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
+  manufacturerIn: [manufacturer],
 });
 
-const manufacturerName = computed(() => {
-  return props.model.manufacturer?.name;
-});
+const { supported: webpSupported } = useWebpCheck();
 
-const manufacturerRoute = computed(() => {
-  return {
-    query: {
-      q: {
-        manufacturerIn: [props.model.manufacturer?.slug],
-      } as unknown as string,
-    },
-  };
-});
-</script>
+const image = computed(() => {
+  if (props.storeImage) {
+    return props.storeImage;
+  }
 
-<script lang="ts">
-export default {
-  name: "ModelPanel",
-};
+  if (props.model.media.storeImage) {
+    return props.model.media.storeImage.medium;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
+});
 </script>
 
 <style lang="scss" scoped>

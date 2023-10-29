@@ -1,153 +1,119 @@
 <template>
-  <div>
-    <Panel
-      v-if="vehicle && model"
-      :id="id"
-      class="model-panel vehicle-panel"
-      :class="`model-panel-${model.slug}`"
-      :highlight="vehicle.flagship || highlight"
-      slim
-    >
-      <PanelHeading level="h2">
-        <template #default>
-          <router-link
-            :to="{
-              name: 'model',
-              params: {
-                slug: model.slug,
-              },
-            }"
-          >
-            <span v-if="customName">{{ customName }}</span>
-            <span v-else>{{ modelName }}</span>
-          </router-link>
-
-          <transition name="fade" appear>
-            <small v-if="vehicle && vehicle.serial">
-              <span v-if="vehicle.serial" class="serial">
-                {{ vehicle.serial }}
-              </span>
-            </small>
-          </transition>
-
-          <transition name="fade" appear>
-            <small
-              v-if="vehicle && vehicle.flagship"
-              v-tooltip.right="flagshipTooltip"
-            >
-              <i class="fa fa-certificate flagship-icon" />
-            </small>
-          </transition>
-        </template>
-        <template #subtitle>
-          <router-link :to="manufacturerRoute">
-            {{ model.manufacturer?.name }}
-          </router-link>
-          <template v-if="customName">
-            {{ modelName }}
-          </template>
-        </template>
-        <template #actions>
-          <VehicleContextMenu
-            v-if="editable && !vehicle.loaner"
-            :vehicle="vehicle"
-            :editable="editable"
-            :wishlist="wishlist"
-          />
-
-          <AddToHangar
-            v-else-if="!editable"
-            :model="model"
-            class="panel-add-to-hangar-button"
-            variant="panel"
-          />
-        </template>
-      </PanelHeading>
-      <PanelImage
-        :rounded="details ? undefined : 'bottom'"
-        :image="storeImage"
-        :alt="model.name"
-        :to="{ name: 'model', params: { slug: model.slug } }"
+  <ModelPanel
+    :id="id"
+    :model="model"
+    class="vehicle-panel"
+    :details="details"
+    :highlight="vehicle.flagship || highlight"
+    :store-image="image"
+  >
+    <template #heading-title>
+      <router-link
+        :to="{
+          name: 'model',
+          params: {
+            slug: model.slug,
+          },
+        }"
       >
-        <div
-          v-if="vehicle.loaner"
-          v-tooltip="t('labels.vehicle.loaner')"
-          class="loaner-label"
-        >
-          <i class="fal fa-exchange" />
-        </div>
-        <div
-          v-else-if="!mobile && hasLoaners && loanersHintVisible"
-          v-tooltip="loanersTooltip"
-          class="loaner-label"
-        >
-          <i class="fal fa-exchange" />
-        </div>
-        <div
-          v-show="model.onSale"
-          v-tooltip="t('labels.model.onSale')"
-          class="on-sale"
-        >
-          <i class="fal fa-dollar-sign" />
-        </div>
-        <HangarGroups
-          :groups="vehicle.hangarGroups"
-          class="panel-hangar-groups"
-        />
-        <div
-          v-if="upgradable && vehicle"
-          v-tooltip="t('labels.model.addons')"
-          class="addons"
-          :class="{
-            selected: hasAddons,
-          }"
-          @click="openAddonsModal"
-        >
-          <span v-show="hasAddons">
-            <i class="fa fa-plus-octagon" />
-          </span>
-          <span v-show="!hasAddons">
-            <i class="far fa-plus-octagon" />
-          </span>
-        </div>
-      </PanelImage>
-      <Collapsed
-        :key="`details-${model.slug}-${uuid}-wrapper`"
-        :visible="details"
+        <span v-if="customName">{{ customName }}</span>
+        <span v-else>{{ modelName }}</span>
+      </router-link>
+      <transition name="fade" appear>
+        <small v-if="vehicle && vehicle.serial">
+          {{ vehicle.serial }}
+        </small>
+      </transition>
+
+      <transition name="fade" appear>
+        <small v-if="vehicle.flagship" v-tooltip.right="flagshipTooltip">
+          <i class="fa fa-certificate vehicle-panel-flagship-icon" />
+        </small>
+      </transition>
+    </template>
+    <template #heading-subtitle>
+      <router-link
+        v-if="model.manufacturer"
+        :to="{
+          query: {
+            q: filterManufacturerQuery(model.manufacturer) as unknown as string,
+          },
+        }"
       >
-        <div class="production-status">
-          <strong class="text-uppercase">
-            <template v-if="model.productionStatus">
-              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
-            </template>
-            <template v-else>
-              {{ t(`labels.not-available`) }}
-            </template>
-          </strong>
-        </div>
-        <ModelPanelMetrics :model="model" />
-      </Collapsed>
-    </Panel>
-  </div>
+        {{ model.manufacturer.name }}
+      </router-link>
+      <template v-if="customName">
+        {{ modelName }}
+      </template>
+    </template>
+    <template #heading-actions>
+      <VehicleContextMenu
+        v-if="editable && !vehicle.loaner"
+        :vehicle="vehicle"
+        :editable="editable"
+        :wishlist="wishlist"
+      />
+
+      <AddToHangar
+        v-else-if="!editable"
+        :model="model"
+        class="vehicle-panel-add-to-hangar-button"
+        variant="panel"
+      />
+    </template>
+    <template #default>
+      <div
+        v-if="vehicle.loaner"
+        v-tooltip="t('labels.vehicle.loaner')"
+        class="vehicle-panel-loaner-label"
+      >
+        <i class="fal fa-exchange" />
+      </div>
+      <div
+        v-else-if="hasLoaners && loanersHintVisible"
+        v-tooltip="loanersTooltip"
+        class="vehicle-panel-loaner-label"
+      >
+        <i class="fal fa-exchange" />
+      </div>
+      <HangarGroups
+        :groups="vehicle.hangarGroups"
+        class="vehicle-panel-hangar-groups"
+      />
+      <div
+        v-if="upgradable && vehicle"
+        v-tooltip="t('labels.model.addons')"
+        class="vehicle-panel-addons"
+        :class="{
+          'vehicle-panel-selected': hasAddons,
+        }"
+        @click="openAddonsModal"
+      >
+        <span v-show="hasAddons">
+          <i class="fa fa-plus-octagon" />
+        </span>
+        <span v-show="!hasAddons">
+          <i class="far fa-plus-octagon" />
+        </span>
+      </div>
+    </template>
+  </ModelPanel>
 </template>
 
 <script lang="ts" setup>
+import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
-import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
-import Panel from "@/shared/components/Panel/index.vue";
-import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
-import PanelImage from "@/shared/components/Panel/Image/index.vue";
-import Collapsed from "@/shared/components/Collapsed.vue";
-import { useMobile } from "@/shared/composables/useMobile";
-import type { Vehicle } from "@/services/fyApi";
-import { v4 as uuidv4 } from "uuid";
+import type { Vehicle, Manufacturer } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 type Props = {
-  vehicle: Vehicle | null;
+  vehicle: Vehicle;
   details?: boolean;
   editable?: boolean;
   wishlist?: boolean;
@@ -165,48 +131,36 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const mobile = useMobile();
+const { supported: webpSupported } = useWebpCheck();
 
-const uuid = ref(uuidv4());
-
-onMounted(() => {
-  uuid.value = uuidv4();
-});
-
-const storeImage = computed(() => {
-  if (props.vehicle && props.vehicle.paint) {
-    return props.vehicle.paint.storeImageMedium;
+const image = computed(() => {
+  if (props.vehicle.paint && props.vehicle.paint.media.storeImage) {
+    return props.vehicle.paint.media.storeImage.medium;
   }
 
-  if (props.vehicle && props.vehicle.upgrade) {
-    return props.vehicle.upgrade.storeImageMedium;
+  if (props.vehicle.upgrade && props.vehicle.upgrade.media.storeImage) {
+    return props.vehicle.upgrade.media.storeImage.medium;
   }
 
-  return model.value?.storeImageMedium;
-});
-
-const modelName = computed(() => {
-  return model.value?.name;
-});
-
-const model = computed(() => {
-  if (!props.vehicle) {
-    return undefined;
+  if (model.value?.media.storeImage) {
+    return model.value?.media.storeImage.medium;
   }
 
-  return props.vehicle.model;
-});
-
-const id = computed(() => {
-  if (props.vehicle) {
-    return props.vehicle.id;
+  if (webpSupported) {
+    return fallbackImage;
   }
 
-  return model.value?.slug;
+  return fallbackImageJpg;
 });
+
+const modelName = computed(() => model.value?.name);
+
+const model = computed(() => props.vehicle.model);
+
+const id = computed(() => props.vehicle.id);
 
 const customName = computed(() => {
-  if (props.vehicle && props.vehicle.name) {
+  if (props.vehicle.name) {
     return props.vehicle.name;
   }
 
@@ -216,10 +170,6 @@ const customName = computed(() => {
 const route = useRoute();
 
 const flagshipTooltip = computed(() => {
-  if (!props.vehicle) {
-    return "";
-  }
-
   if (route.name === "hangar") {
     return t("labels.yourFlagship");
   }
@@ -227,40 +177,28 @@ const flagshipTooltip = computed(() => {
   return t("labels.flagship");
 });
 
-const hasAddons = computed(() => {
-  return (
-    props.vehicle &&
-    (props.vehicle.modelModuleIds.length ||
-      props.vehicle.modelUpgradeIds.length)
-  );
-});
+const hasAddons = computed(
+  () =>
+    props.vehicle.modelModuleIds.length || props.vehicle.modelUpgradeIds.length,
+);
 
-const upgradable = computed(() => {
-  return (
+const upgradable = computed(
+  () =>
     (props.editable || hasAddons.value) &&
-    (model.value?.hasModules || model.value?.hasUpgrades)
-  );
-});
+    (model.value?.hasModules || model.value?.hasUpgrades),
+);
 
-const loanersTooltip = computed(() => {
-  return [
+const loanersTooltip = computed(() =>
+  [
     t("labels.vehicle.hasLoaners"),
-    model.value?.loaners.map((loaner) => loaner.name).join(", "),
-  ].join(": ");
-});
+    (model.value?.loaners || []).map((loaner) => loaner.name).join(", "),
+  ].join(": "),
+);
 
-const hasLoaners = computed(() => {
-  return model.value?.loaners?.length;
-});
+const hasLoaners = computed(() => model.value?.loaners?.length);
 
-const manufacturerRoute = computed(() => {
-  return {
-    query: {
-      q: {
-        manufacturerIn: [model.value?.manufacturer?.slug],
-      } as unknown as string,
-    },
-  };
+const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
+  manufacturerIn: [manufacturer],
 });
 
 const comlink = useComlink();
@@ -274,12 +212,6 @@ const openAddonsModal = () => {
       editable: props.editable,
     },
   });
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "VehiclePanel",
 };
 </script>
 

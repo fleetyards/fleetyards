@@ -6,10 +6,22 @@
   right: 0;
   z-index: 0;
 
+  &-top {
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
+    background: linear-gradient(to bottom, rgba(black, 0.8), transparent 40%);
+  }
+
   &-right {
     border-top-right-radius: $panelContentBorderRadius;
     border-bottom-right-radius: $panelContentBorderRadius;
     background: linear-gradient(to left, rgba(black, 0.8), transparent 60%);
+  }
+
+  &-bottom {
+    border-bottom-left-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    background: linear-gradient(to top, rgba(black, 0.8), transparent 40%);
   }
 
   &-left {

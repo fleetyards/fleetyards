@@ -1,12 +1,23 @@
 <template>
   <AsyncData :async-status="asyncStatus" hide-error inline>
-    <template #resolved>
-      <hr v-if="data?.items.length" />
-      <ItemsTeaserList
-        v-if="data?.items.length"
-        :items="data.items"
-        name="upgrades"
-      />
+    <template v-if="modules?.items.length" #resolved>
+      <hr />
+      <div id="modules" class="row">
+        <div class="col-12">
+          <h2 class="text-uppercase">
+            {{ t(`labels.model.modules`) }}
+          </h2>
+          <transition-group name="fade-list" class="row" tag="div" appear>
+            <div
+              v-for="item in modules.items"
+              :key="`modules-${item.id}`"
+              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+            >
+              <TeaserPanel :item="item" level="h3" />
+            </div>
+          </transition-group>
+        </div>
+      </div>
     </template>
   </AsyncData>
 </template>
@@ -15,24 +26,26 @@
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useQuery } from "@tanstack/vue-query";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import ItemsTeaserList from "@/frontend/components/Models/ItemsTeaserList/index.vue";
-import type { Model } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
 
 type Props = {
-  model: Model;
+  modelSlug: string;
 };
 
 const props = defineProps<Props>();
 
 const { models: modelsService } = useApiClient();
 
-const { data, ...asyncStatus } = useQuery({
-  queryKey: ["model-modules", props.model.slug],
+const { data: modules, ...asyncStatus } = useQuery({
+  queryKey: ["model-modules", props.modelSlug],
   queryFn: () =>
     modelsService.modelModules({
-      slug: props.model.slug,
+      slug: props.modelSlug,
     }),
 });
+
+const { t } = useI18n();
 </script>
 
 <script lang="ts">
