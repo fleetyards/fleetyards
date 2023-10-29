@@ -23,6 +23,7 @@
                 :error="errors[0]"
                 type="email"
                 :hide-label-on-empty="true"
+                autocomplete="off"
                 :autofocus="true"
               />
             </ValidationProvider>
@@ -49,7 +50,7 @@
 
 <script lang="ts" setup>
 import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import { displaySuccess } from "@/frontend/lib/Noty";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import Store from "@/frontend/lib/Store";
 
@@ -89,22 +90,18 @@ const requestPassword = async () => {
     await passwordService.requestPasswordReset({
       requestBody: form.value,
     });
-
-    displaySuccess({
-      text: t("messages.requestPasswordChange.success"),
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    router.push("/").catch(() => {});
-  } catch (error) {
-    console.error(error);
-
-    displayAlert({
-      text: t("messages.requestPasswordChange.failure"),
-    });
+  } catch (_error) {
+    // console.error(error);
   }
 
+  displaySuccess({
+    text: t("messages.requestPasswordChange.success"),
+  });
+
   submitting.value = false;
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  router.push("/").catch(() => {});
 };
 </script>
 
