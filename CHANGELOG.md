@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.17](https://github.com/fleetyards/fleetyards/compare/v5.27.16...v5.27.17) (2023-10-29)
+
+
+### Bug Fixes
+
+* **password-reset:** dont display error message when mail was not found ([a446856](https://github.com/fleetyards/fleetyards/commit/a446856203b028f273147a6e305dac0742f1d5e0))
+
 ### [5.27.16](https://github.com/fleetyards/fleetyards/compare/v5.27.15...v5.27.16) (2023-10-25)
 
 
