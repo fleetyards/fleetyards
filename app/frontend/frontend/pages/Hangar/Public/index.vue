@@ -174,6 +174,7 @@ export default class PublicHangar extends Vue {
 
   @Getter("perPage", { namespace: "publicHangar" }) perPage;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleFleetchart", { namespace: "publicHangar" })
   toggleFleetchart: any;
 

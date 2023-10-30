@@ -30,7 +30,7 @@ watch(
   () => props.models,
   () => {
     internalModels.value = props.models;
-  }
+  },
 );
 
 onMounted(() => {

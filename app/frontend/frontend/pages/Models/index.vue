@@ -100,7 +100,7 @@ const { t } = useI18n();
 const detailsVisible = computed(() => Store.getters["models/detailsVisible"]);
 
 const fleetchartVisible = computed(
-  () => Store.getters["models/fleetchartVisible"]
+  () => Store.getters["models/fleetchartVisible"],
 );
 
 const perPage = computed(() => Store.getters["models/perPage"]);
@@ -132,7 +132,7 @@ watch(
   () => perPage.value,
   () => {
     modelsCollection.findAll(filters.value);
-  }
+  },
 );
 </script>
 

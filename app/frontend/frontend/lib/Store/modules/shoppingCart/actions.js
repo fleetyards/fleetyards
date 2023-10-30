@@ -10,7 +10,7 @@ const createShoppingCartItem = (newItem, type) => {
       stationName: item.shop.station.name,
       stationSlug: item.shop.station.slug,
     })),
-    "price"
+    "price",
   );
 
   return {
@@ -53,7 +53,7 @@ export default {
           ...foundItem,
           amount: foundItem.amount - 1,
         };
-      })
+      }),
     );
   },
 
@@ -75,7 +75,7 @@ export default {
           ...foundItem,
           amount: foundItem.amount + 1,
         };
-      })
+      }),
     );
   },
 
@@ -94,7 +94,7 @@ export default {
             ...newItem,
             amount: foundItem.amount + 1,
           };
-        })
+        }),
       );
     } else {
       commit("add", newItem);
@@ -115,14 +115,14 @@ export default {
           ...newItem,
           amount: cartItem.amount,
         };
-      })
+      }),
     );
   },
 
   remove({ commit, state }, cartItemId) {
     commit(
       "setItems",
-      state.items.filter((cartItem) => cartItem.id !== cartItemId)
+      state.items.filter((cartItem) => cartItem.id !== cartItemId),
     );
   },
 

@@ -92,7 +92,7 @@ export class RSIHangarParser {
 
   extractImage(item: Element): string | undefined {
     const imageElement = item.getElementsByClassName(
-      "image"
+      "image",
     )[0] as HTMLDivElement;
     let imageUrl = imageElement.style.backgroundImage
       .slice(4, -1)

@@ -31,7 +31,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const actionsVisible = computed(() =>
-  ["admin", "officer"].includes(props.role)
+  ["admin", "officer"].includes(props.role),
 );
 </script>
 

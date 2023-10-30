@@ -74,6 +74,7 @@ import PerPageDropdown from "@/frontend/core/components/Paginator/PerPageDropdow
 export default class Paginator extends Vue {
   @Prop({ default: false }) inline!: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Prop({ default: null }) collection: any;
 
   @Prop({ default: 1 }) page: number;

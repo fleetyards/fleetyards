@@ -120,7 +120,7 @@ watch(
   () => currentUser.value,
   () => {
     setupForm();
-  }
+  },
 );
 
 const setupForm = () => {

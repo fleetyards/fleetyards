@@ -66,6 +66,7 @@ export default class FormTextarea extends Vue {
 
   @Prop({ default: false }) disabled!: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputValue: any = null;
 
   get innerId() {

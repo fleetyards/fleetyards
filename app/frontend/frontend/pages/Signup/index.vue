@@ -138,6 +138,7 @@ import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
 export default class Signup extends Vue {
   @Getter("inviteToken", { namespace: "fleet" }) fleetInviteToken;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("resetInviteToken", { namespace: "fleet" })
   resetFleetInviteToken: any;
 

@@ -63,6 +63,7 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component<ShopCommodityLocations>({})
 export default class ShopCommodityLocations extends Vue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Prop({ required: true }) item!: any;
 
   shopRoute(shop) {

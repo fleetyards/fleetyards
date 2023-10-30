@@ -69,7 +69,7 @@ const getElementStyle = (element: HTMLElement) => ({
 const prepareElement = (
   closedRef: Ref<string>,
   element: HTMLElement,
-  initialStyle: InitialElementStyle
+  initialStyle: InitialElementStyle,
 ) => {
   const closed = unref(closedRef);
 
@@ -96,7 +96,7 @@ const animateTransition = (
   initialStyle: InitialElementStyle,
   done: () => void,
   keyframes: Keyframe[] | PropertyIndexedKeyframes | null,
-  options?: number | KeyframeAnimationOptions
+  options?: number | KeyframeAnimationOptions,
 ) => {
   const animation = element.animate(keyframes, options);
 
@@ -112,7 +112,7 @@ const animateTransition = (
 const getEnterKeyframes = (
   closedRef: Ref<string>,
   height: string,
-  initialStyle: InitialElementStyle
+  initialStyle: InitialElementStyle,
 ) => {
   const closed = unref(closedRef);
 
@@ -141,11 +141,11 @@ const getEnterKeyframes = (
 const closed = ref("0px");
 
 const easingEnter = computed(
-  () => props.timingFunctionEnter || props.timingFunction
+  () => props.timingFunctionEnter || props.timingFunction,
 );
 
 const easingLeave = computed(
-  () => props.timingFunctionLeave || props.timingFunction
+  () => props.timingFunctionLeave || props.timingFunction,
 );
 
 const onBeforeEnter = () => {
@@ -169,7 +169,7 @@ const enterTransition = (element: Element, done: () => void) => {
     initialStyle,
     doneCallback,
     keyframes,
-    options
+    options,
   );
 };
 
@@ -197,7 +197,7 @@ const leaveTransition = (element: Element, done: () => void) => {
     initialStyle,
     doneCallback,
     keyframes,
-    options
+    options,
   );
 };
 </script>

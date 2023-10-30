@@ -186,7 +186,7 @@ export default class ImageUploader extends Vue {
     const completedUploads = this.uploadCount - this.newImages.length;
 
     return Math.ceil(
-      (pendingProgress + completedUploads * 100) / this.uploadCount
+      (pendingProgress + completedUploads * 100) / this.uploadCount,
     );
   }
 

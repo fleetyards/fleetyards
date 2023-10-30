@@ -45,7 +45,7 @@ const active = computed(() =>
     "starsystem",
     "celestial-object",
     "station-images",
-  ].includes(route.name || "")
+  ].includes(route.name || ""),
 );
 </script>
 

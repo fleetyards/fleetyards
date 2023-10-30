@@ -35,11 +35,12 @@ import { sum as sumArray } from "@/frontend/utils/Array";
 export default class ShoppingCart extends Vue {
   @Getter("navSlim", { namespace: "app" }) navSlim: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Getter("items", { namespace: "shoppingCart" }) cartItems: any[];
 
   get total() {
     return sumArray(
-      this.cartItems.map((item) => this.sum(item)).filter((item) => item)
+      this.cartItems.map((item) => this.sum(item)).filter((item) => item),
     );
   }
 

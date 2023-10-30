@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
 const variantClass = computed(() => `panel-${props.variant}`);
 
 const transparencyClass = computed(
-  () => `panel-transparency-${props.transparency}`
+  () => `panel-transparency-${props.transparency}`,
 );
 </script>
 

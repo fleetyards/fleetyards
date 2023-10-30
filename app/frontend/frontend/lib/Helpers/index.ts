@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const groupBy = function groupBy(list: any[], key: any) {
   return list.reduce((rv, x) => {
     const value = JSON.parse(JSON.stringify(rv));
@@ -10,10 +11,13 @@ export const groupBy = function groupBy(list: any[], key: any) {
 };
 
 export const sortBy = function sortBy(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   list: any[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   key: any,
-  decending = false
+  decending = false,
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return JSON.parse(JSON.stringify(list)).sort((a: any, b: any) => {
     if (decending) {
       if (a[key] < b[key]) {

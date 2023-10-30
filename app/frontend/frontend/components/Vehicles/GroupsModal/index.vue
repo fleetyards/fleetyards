@@ -97,7 +97,7 @@ export default class VehicleGroupsModal extends Vue {
   changeGroup(group) {
     if (this.form.hangarGroupIds.includes(group.id)) {
       const index = this.form.hangarGroupIds.findIndex(
-        (groupId) => groupId === group.id
+        (groupId) => groupId === group.id,
       );
       if (index > -1) {
         this.form.hangarGroupIds.splice(index, 1);
@@ -112,7 +112,7 @@ export default class VehicleGroupsModal extends Vue {
 
     const response = await vehiclesCollection.update(
       this.vehicle.id,
-      this.form
+      this.form,
     );
 
     this.submitting = false;

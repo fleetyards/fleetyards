@@ -6,7 +6,9 @@ $footerOuterBorderWidth: 2px;
   left: 0;
   padding-top: ($footerOuterBorderWidth * 2);
   text-align: center;
-  transition: left ease 0.5s, right ease 0.5s;
+  transition:
+    left ease 0.5s,
+    right ease 0.5s;
 
   .app-footer-border {
     position: absolute;

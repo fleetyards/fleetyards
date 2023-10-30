@@ -6,7 +6,7 @@ const { I18n, t, l, toNumber, toDollar, toAu, toUEC, availableLocales } =
 export { I18n };
 
 export default {
-  // tslint:disable-next-line variable-name
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   install(Vue: any) {
     Vue.prototype.$availableLocales = availableLocales;
     Vue.prototype.$t = t;

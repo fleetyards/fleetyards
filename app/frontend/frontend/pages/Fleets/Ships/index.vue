@@ -93,14 +93,14 @@ watch(
   () => fleet.value,
   () => {
     updateMetaInfo(metaTitle.value);
-  }
+  },
 );
 
 watch(
   () => route.path,
   () => {
     fetch();
-  }
+  },
 );
 
 onMounted(() => {

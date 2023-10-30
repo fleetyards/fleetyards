@@ -322,7 +322,7 @@ export default class VehicleModal extends Vue {
           commodityItemId: item.id,
           ...this.form,
         });
-      })
+      }),
     );
 
     this.$comlink.$emit("commodities-update");

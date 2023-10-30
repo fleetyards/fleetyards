@@ -273,7 +273,7 @@ export default class SettingsAccount extends Vue {
     if (newFile && !oldFile) {
       if (
         !this.fileExtensionsList.some((extension) =>
-          newFile.name.endsWith(extension)
+          newFile.name.endsWith(extension),
         )
       ) {
         displayAlert({

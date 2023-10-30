@@ -113,8 +113,10 @@ import { isFilterSelected } from "@/frontend/utils/Filters";
   },
 })
 export default class FleetchartApp extends Vue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("showOverlay", { namespace: "app" }) showOverlay: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("hideOverlay", { namespace: "app" }) hideOverlay: any;
 
   modeOptions: string[] = ["panzoom", "classic"];

@@ -92,7 +92,7 @@ const scale = computed(() => {
 
   const maxLength = Math.max(
     ...props.models.map((model) => model.fleetchartLength),
-    0
+    0,
   );
 
   return maxWidth.value / (maxLength * 3);
@@ -108,7 +108,7 @@ watch(
   () => props.models,
   () => {
     visible.value = props.models.length > 0;
-  }
+  },
 );
 
 const toggle = () => {

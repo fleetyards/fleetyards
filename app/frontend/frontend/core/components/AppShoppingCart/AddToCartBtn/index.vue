@@ -21,12 +21,15 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
   },
 })
 export default class AddToCartBtn extends Vue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Prop({ required: true }) item!: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Prop({ required: true }) type!: any;
 
   @Getter("mobile") mobile: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("add", { namespace: "shoppingCart" }) addToCart: any;
 }
 </script>

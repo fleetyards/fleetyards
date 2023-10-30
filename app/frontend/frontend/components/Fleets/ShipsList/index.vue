@@ -218,12 +218,16 @@ export default class FleetShipsList extends Vue {
 
   @Getter("fleetchartVisible", { namespace: "fleet" }) fleetchartVisible;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleFleetchart", { namespace: "fleet" }) toggleFleetchart: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleDetails", { namespace: "fleet" }) toggleDetails: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleGrouped", { namespace: "fleet" }) toggleGrouped: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleMoney", { namespace: "fleet" }) toggleMoney: any;
 
   get fleetStats() {
@@ -296,7 +300,7 @@ export default class FleetShipsList extends Vue {
       },
       {
         received: debounce(this.fetch, 500),
-      }
+      },
     );
   }
 
@@ -331,8 +335,8 @@ export default class FleetShipsList extends Vue {
       "download",
       `fleetyards-${this.fleet.slug}-vehicles-${format(
         new Date(),
-        "yyyy-MM-dd"
-      )}.json`
+        "yyyy-MM-dd",
+      )}.json`,
     );
 
     document.body.appendChild(link);

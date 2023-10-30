@@ -343,7 +343,7 @@ export default {
       if (this.chartWithCategory) {
         series.setData(this.data.map((item) => [item.tooltip, item.count]));
         this.instance.xAxis[0].setCategories(
-          this.data.map((item) => item.label)
+          this.data.map((item) => item.label),
         );
       } else {
         series.setData(this.data);

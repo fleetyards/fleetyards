@@ -29,7 +29,7 @@ export class FleetMembersCollection extends BaseCollection {
   }
 
   async findStats(
-    params: FleetMembersParams | null
+    params: FleetMembersParams | null,
   ): Promise<FleetMemberStats | null> {
     const response = await get(`fleets/${params?.slug}/member-quick-stats`, {
       q: params?.filters,
@@ -55,7 +55,7 @@ export class FleetMembersCollection extends BaseCollection {
   async create(
     slug: string,
     form: FleetMemberForm,
-    refetch = false
+    refetch = false,
   ): Promise<RecordResponse<FleetMember>> {
     const response = await post(`fleets/${slug}/members`, form);
 
@@ -92,7 +92,7 @@ export class FleetMembersCollection extends BaseCollection {
 
   async acceptRequest(slug: string, username: string, refetch = false) {
     const response = await put(
-      `fleets/${slug}/members/${username}/accept-request`
+      `fleets/${slug}/members/${username}/accept-request`,
     );
 
     if (!response.error) {
@@ -108,7 +108,7 @@ export class FleetMembersCollection extends BaseCollection {
 
   async declineRequest(slug: string, username: string, refetch = false) {
     const response = await put(
-      `fleets/${slug}/members/${username}/decline-request`
+      `fleets/${slug}/members/${username}/decline-request`,
     );
 
     if (!response.error) {

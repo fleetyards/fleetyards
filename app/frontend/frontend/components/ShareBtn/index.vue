@@ -71,7 +71,7 @@ const copyShareUrl = () => {
       displayAlert({
         text: t("messages.copyShareUrl.failure"),
       });
-    }
+    },
   );
 };
 </script>

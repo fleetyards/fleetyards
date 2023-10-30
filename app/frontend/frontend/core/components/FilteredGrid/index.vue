@@ -20,6 +20,7 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component<FilteredGrid>({})
 export default class FilteredGrid extends Vue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Prop({ required: true }) records!: any[];
 
   @Prop({ required: true }) primaryKey!: string;

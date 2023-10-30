@@ -21,6 +21,7 @@ import Filters from "@/frontend/mixins/Filters";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 
 type QuickSearchFormData = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 };
 

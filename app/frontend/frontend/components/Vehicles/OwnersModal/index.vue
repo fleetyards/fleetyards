@@ -73,7 +73,7 @@ const collection: FleetVehiclesCollection = new FleetVehiclesCollection();
 const loading = ref(true);
 
 const sortedVehicles = computed(() =>
-  sortBy(collection.records, "username").filter(uniqByFieldArray("username"))
+  sortBy(collection.records, "username").filter(uniqByFieldArray("username")),
 );
 
 const route = useRoute();

@@ -20,6 +20,7 @@ const { fleets: fleetService } = useApiClient();
 export default class FleetInvite extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser: User;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("resetInviteToken", { namespace: "fleet" })
   resetFleetInviteToken: any;
 

@@ -78,7 +78,7 @@ export default class FormInput extends Vue {
     default: "text",
     validator(value) {
       return ["text", "number", "password", "email", "url", "color"].includes(
-        value
+        value,
       );
     },
   })
@@ -134,6 +134,7 @@ export default class FormInput extends Vue {
   })
   size!: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputValue: any = null;
 
   get innerId() {

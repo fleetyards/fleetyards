@@ -122,11 +122,14 @@ export default class FleetPublicShipsList extends Vue {
 
   @Getter("perPage", { namespace: "publicFleet" }) perPage;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleFleetchart", { namespace: "publicFleet" })
   toggleFleetchart: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleDetails", { namespace: "publicFleet" }) toggleDetails: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("toggleGrouped", { namespace: "publicFleet" }) toggleGrouped: any;
 
   get toggleDetailsTooltip() {

@@ -171,7 +171,7 @@ const prompt = computed(() => {
 });
 
 const labelVisible = computed(
-  () => !props.hideLabelOnEmpty || selectedOptions.value.length > 0
+  () => !props.hideLabelOnEmpty || selectedOptions.value.length > 0,
 );
 
 const innerLabel = computed(() => {
@@ -195,18 +195,18 @@ const labelFor = computed(() => {
 });
 
 const availableOptions = computed<TFilterGroupOption[]>(() =>
-  sort(internalOptions.value)
+  sort(internalOptions.value),
 );
 
 const selectedOptions = computed(() => {
   if (props.multiple) {
     return availableOptions.value.filter(
-      (item) => props.value && (props.value as string[]).includes(item.value)
+      (item) => props.value && (props.value as string[]).includes(item.value),
     );
   }
 
   const selectedOption = availableOptions.value.find(
-    (item) => item.value === props.value
+    (item) => item.value === props.value,
   );
 
   return selectedOption ? [selectedOption] : [];
@@ -215,7 +215,7 @@ const selectedOptions = computed(() => {
 const filteredOptions = computed(() => {
   if (search.value) {
     return availableOptions.value.filter((item) =>
-      item.label.toLowerCase().includes(String(search.value?.toLowerCase()))
+      item.label.toLowerCase().includes(String(search.value?.toLowerCase())),
     );
   }
 
@@ -382,7 +382,7 @@ const select = (option: string) => {
     if (props.multiple) {
       emit(
         "input",
-        (props.value as string[]).filter((item: string) => item !== option)
+        (props.value as string[]).filter((item: string) => item !== option),
       );
     } else if (props.nullable) {
       emit("input", null);

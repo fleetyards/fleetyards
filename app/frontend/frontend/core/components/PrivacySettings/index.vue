@@ -162,6 +162,7 @@ import Btn from "@/frontend/core/components/Btn/index.vue";
 export default class PrivacySettings extends Vue {
   @Prop({ default: false }) settings: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   info: any = null;
 
   internalSettings = false;
@@ -171,6 +172,7 @@ export default class PrivacySettings extends Vue {
     youtube: false,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Getter("cookies", { namespace: "cookies" }) cookies: any;
 
   @Getter("infoVisible", { namespace: "cookies" }) infoVisible: boolean;

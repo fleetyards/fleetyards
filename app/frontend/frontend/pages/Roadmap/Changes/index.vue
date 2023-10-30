@@ -163,7 +163,7 @@ export default class RoadmapChanges extends Vue {
       },
       {
         received: this.fetch,
-      }
+      },
     );
   }
 

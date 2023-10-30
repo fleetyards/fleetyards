@@ -18,7 +18,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   params: AdminShopCommodityParams | null = null;
 
   async findAll(
-    params: AdminShopCommodityParams
+    params: AdminShopCommodityParams,
   ): Promise<AdminShopCommodity[]> {
     this.params = params;
 
@@ -49,7 +49,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   async create(
     shopId: string,
     form: AdminShopCommodityForm,
-    refetch = false
+    refetch = false,
   ): Promise<AdminShopCommodity | null> {
     const response = await post(`shops/${shopId}/commodities`, form);
 
@@ -67,7 +67,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   async update(
     shopId: string,
     id: string,
-    form: AdminShopCommodityForm
+    form: AdminShopCommodityForm,
   ): Promise<boolean> {
     const response = await put(`shops/${shopId}/commodities/${id}`, form);
     if (!response.error) {

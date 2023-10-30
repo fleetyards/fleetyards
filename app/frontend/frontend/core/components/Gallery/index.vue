@@ -112,7 +112,7 @@ export default {
           displayAlert({
             text: this.$t("messages.copyImageUrl.failure"),
           });
-        }
+        },
       );
     },
 
@@ -146,7 +146,7 @@ export default {
         pswpElement,
         PhotoSwipeUIDefault,
         this.galleryItems,
-        this.options
+        this.options,
       );
 
       this.gallery.listen("close", this.onClose);

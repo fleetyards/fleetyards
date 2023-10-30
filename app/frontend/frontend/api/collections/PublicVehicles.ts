@@ -52,7 +52,7 @@ export class PublicVehiclesCollection extends BaseCollection {
 
   async findStatsByUsername(
     username: string,
-    params: PublicVehicleParams | null
+    params: PublicVehicleParams | null,
   ): Promise<PublicVehicleStats | null> {
     const response = await get(`public/hangars/${username}/stats`, {
       q: params?.filters,

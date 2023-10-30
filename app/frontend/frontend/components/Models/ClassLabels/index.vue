@@ -86,7 +86,7 @@ export default {
 
       if ((query[this.filterKey] || []).includes(filter)) {
         const index = query[this.filterKey].findIndex(
-          (item) => item === filter
+          (item) => item === filter,
         );
         if (index > -1) {
           query[this.filterKey].splice(index, 1);

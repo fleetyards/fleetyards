@@ -18,7 +18,7 @@ export const useWebpCheck = () => {
 
     supported.value = await createImageBitmap(response.data).then(
       () => true,
-      () => false
+      () => false,
     );
 
     return supported.value;

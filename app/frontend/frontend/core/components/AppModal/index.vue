@@ -26,19 +26,23 @@ type AppModalOptions = {
   title: string;
   wide: boolean;
   fixed: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props: any;
 };
 
 @Component<AppModal>({})
 export default class AppModal extends Vue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("showOverlay", { namespace: "app" }) showOverlay: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("hideOverlay", { namespace: "app" }) hideOverlay: any;
 
   @Ref("modal") readonly modal!: HTMLElement;
 
   component: string = null;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props: any = null;
 
   wide = false;
