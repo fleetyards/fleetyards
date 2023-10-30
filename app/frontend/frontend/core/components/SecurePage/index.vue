@@ -72,8 +72,8 @@ export default class Signup extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("confirmAccess", { namespace: "session" }) saveConfirmAccess: any;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("resetConfirmAccess", { namespace: "session" })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resetConfirmAccess: any;
 
   submitting = false;
