@@ -174,6 +174,7 @@ class PaintsImporter
       "Drake Cutlass Ghoulish Green" => "Ghoulish Green",
       "2950 Invictus Valkyrie Light Grey" => "Light Grey",
       "2950 Invictus Valkyrie Sage" => "Sage",
+      "Valkyrie Splinter" => "Splinter",
       "2950 Invictus Freelancer Storm Surge" => "Storm Surge",
       "Starfarer Storm Surge" => "Storm Surge",
       "2950 Invictus Starfarer Light Grey" => "Light Grey",
@@ -188,7 +189,8 @@ class PaintsImporter
       "AEGIS Vulcan Hazard Yellow" => "Hazard Yellow",
       "AEGIS Vulcan CTR" => "CTR",
       "Crusader Ares Radiance" => "Radiance",
-      "Crusader Ares Ember" => "Ember"
+      "Crusader Ares Ember" => "Ember",
+      "Freelancer - Black" => "Black"
     }
 
     return paint_map[name] if paint_map[name].present?
@@ -222,6 +224,7 @@ class PaintsImporter
       "Star Runner Blackguard" => ["Mercury Star Runner"],
       "Freelancer Series" => ["Freelancer", "Freelancer DUR", "Freelancer MAX", "Freelancer MIS"],
       "Freelancer" => ["Freelancer", "Freelancer DUR", "Freelancer MAX", "Freelancer MIS"],
+      "Freelancer - Black" => ["Freelancer", "Freelancer DUR", "Freelancer MAX", "Freelancer MIS"],
       "2950 Invictus Freelancer Storm Surge" => ["Freelancer", "Freelancer DUR", "Freelancer MAX", "Freelancer MIS"],
       "Anvil Hornet" => ["F7C-S Hornet Ghost", "F7C-R Hornet Tracker", "F7C-M Super Hornet Heartseeker", "F7C-M Super Hornet", "F7C Hornet Wildfire", "F7C Hornet"],
       "MOLE Dolivine" => ["MOLE"],
@@ -272,7 +275,7 @@ class PaintsImporter
       "Scorpius Sunburn White Orange" => ["Scorpius", "Scorpius Antares"],
       "Scorpius Stormcloud Grey" => ["Scorpius", "Scorpius Antares"],
       "Khartu-al" => ["Khartu-Al"],
-      "Tumrbil Cyclone" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA],
+      "Tumbril Cyclone" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA],
       "F8C" => ["F8C Lightning", "F8C Lightning Executive Edition"],
       "Aegis Vanguard" => ["Vanguard Warden", "Vanguard Sentinel", "Vanguard Hoplite", "Vanguard Harbinger"],
       "Vanguard Series" => ["Vanguard Warden", "Vanguard Sentinel", "Vanguard Hoplite", "Vanguard Harbinger"],
@@ -280,6 +283,7 @@ class PaintsImporter
       "Mustang" => ["Mustang Omega", "Mustang Gamma", "Mustang Delta", "Mustang Beta", "Mustang Alpha"],
       "2950 Invictus Valkyrie Light Grey" => ["Valkyrie"],
       "2950 Invictus Valkyrie Sage" => ["Valkyrie"],
+      "Valkyrie Splinter" => ["Valkyrie"],
       "Starfarer Storm Surge" => ["Starfarer", "Starfarer Gemini"],
       "2950 Invictus Starfarer Light Grey" => ["Starfarer", "Starfarer Gemini"],
       "2950 Invictus Starfarer Black" => ["Starfarer", "Starfarer Gemini"],
@@ -288,6 +292,7 @@ class PaintsImporter
       "Aurora SXSW 2015" => ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"],
       "Operation Pitchfork" => ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"],
       "Dread Pirate" => ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"],
+      "UEE Distinguished Service" => ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"],
       "2950 Invictus Aurora Blue and Gold" => ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"],
       "2950 Invictus Aurora Light and Dark Grey" => ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"],
       "2950 Invictus Auora Green and Gold" => ["Aurora CL", "Aurora ES", "Aurora LN", "Aurora LX", "Aurora MR"],
