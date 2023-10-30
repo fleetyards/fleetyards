@@ -94,7 +94,7 @@
     "autoprefixer": "^10.4.16",
     "browserslist-to-esbuild": "^1.2.0",
     "c8": "8.0.1",
-    "cypress": "13.3.3",
+    "cypress": "12.17.4",
     "eslint": "8.52.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "9.0.0",
