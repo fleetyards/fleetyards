@@ -304,7 +304,7 @@ export default class FleetStats extends Vue {
   loadVehiclesByModel() {
     return this.collection.findVehiclesByModelBySlug(
       this.slug,
-      this.vehiclesByModelLimit
+      this.vehiclesByModelLimit,
     );
   }
 

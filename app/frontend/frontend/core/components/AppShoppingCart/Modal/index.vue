@@ -142,12 +142,16 @@ import ModelsCollection from "@/frontend/api/collections/Models";
 export default class ShoppingCart extends Vue {
   @Getter("mobile") mobile: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Getter("items", { namespace: "shoppingCart" }) cartItems: any[];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("clear", { namespace: "shoppingCart" }) clearCart: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("update", { namespace: "shoppingCart" }) updateInCart: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("remove", { namespace: "shoppingCart" }) removeFromCart: any;
 
   loading = false;
@@ -158,7 +162,7 @@ export default class ShoppingCart extends Vue {
 
   get total() {
     return sumArray(
-      this.cartItems.map((item) => this.sum(item)).filter((item) => item)
+      this.cartItems.map((item) => this.sum(item)).filter((item) => item),
     );
   }
 

@@ -59,7 +59,7 @@
         <ul v-if="processSteps.length" class="list-unstyled process-steps-list">
           <li
             v-for="step in processSteps.filter(
-              (step) => step.status !== 'pending'
+              (step) => step.status !== 'pending',
             )"
             :key="step.name"
             class="process-steps-item"
@@ -144,7 +144,7 @@
                   <dt class="col-sm-8">
                     {{
                       t(
-                        "labels.syncExtension.importedItems.movedVehiclesToWanted"
+                        "labels.syncExtension.importedItems.movedVehiclesToWanted",
                       )
                     }}:
                   </dt>
@@ -172,7 +172,7 @@
                   <dt class="col-sm-8">
                     {{
                       t(
-                        "labels.syncExtension.importedItems.importedComponents"
+                        "labels.syncExtension.importedItems.importedComponents",
                       )
                     }}:
                   </dt>
@@ -212,7 +212,7 @@
                   <dt class="col-sm-8">
                     {{
                       t(
-                        "labels.syncExtension.importedItems.missingComponentVehicles"
+                        "labels.syncExtension.importedItems.missingComponentVehicles",
                       )
                     }}:
                   </dt>
@@ -268,7 +268,7 @@
                   <dt class="col-sm-8">
                     {{
                       t(
-                        "labels.syncExtension.importedItems.missingUpgradeVehicles"
+                        "labels.syncExtension.importedItems.missingUpgradeVehicles",
                       )
                     }}:
                   </dt>
@@ -366,20 +366,20 @@ const pledges = ref<TRSIHangarItem[]>([]);
 
 const items = computed(() =>
   pledges.value.filter((pledge) =>
-    ["ship", "component", "upgrade"].includes(pledge.type)
-  )
+    ["ship", "component", "upgrade"].includes(pledge.type),
+  ),
 );
 
 const ships = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "ship")
+  pledges.value.filter((pledge) => pledge.type === "ship"),
 );
 
 const components = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "component")
+  pledges.value.filter((pledge) => pledge.type === "component"),
 );
 
 const upgrades = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "upgrade")
+  pledges.value.filter((pledge) => pledge.type === "upgrade"),
 );
 
 const result = ref<THangarSyncResult | null>(null);
@@ -387,22 +387,22 @@ const result = ref<THangarSyncResult | null>(null);
 const importedVehicles = computed(() => result.value?.importedVehicles || []);
 const foundVehicles = computed(() => result.value?.foundVehicles || []);
 const movedVehiclesToWanted = computed(
-  () => result.value?.movedVehiclesToWanted || []
+  () => result.value?.movedVehiclesToWanted || [],
 );
 const missingModels = computed(() => result.value?.missingModels || []);
 const importedComponents = computed(
-  () => result.value?.importedComponents || []
+  () => result.value?.importedComponents || [],
 );
 const foundComponents = computed(() => result.value?.foundComponents || []);
 const missingComponents = computed(() => result.value?.missingComponents || []);
 const missingComponentVehicles = computed(
-  () => result.value?.missingComponentVehicles || []
+  () => result.value?.missingComponentVehicles || [],
 );
 const importedUpgrades = computed(() => result.value?.importedUpgrades || []);
 const foundUpgrades = computed(() => result.value?.foundUpgrades || []);
 const missingUpgrades = computed(() => result.value?.missingUpgrades || []);
 const missingUpgradeVehicles = computed(
-  () => result.value?.missingUpgradeVehicles || []
+  () => result.value?.missingUpgradeVehicles || [],
 );
 
 const collection: VehiclesCollection = vehiclesCollection;
@@ -470,7 +470,7 @@ watch(
     if (extensionReady.value) {
       checkRSIIdentity();
     }
-  }
+  },
 );
 
 const checkRSIIdentity = () => {
@@ -492,11 +492,11 @@ const updateStep = (step: string, status: ProcessStep["status"]) => {
 };
 
 const finished = computed(() =>
-  processSteps.value.every((step) => step.status === "success")
+  processSteps.value.every((step) => step.status === "success"),
 );
 
 const finishedWithErrors = computed(() =>
-  processSteps.value.some((step) => step.status === "failure")
+  processSteps.value.some((step) => step.status === "failure"),
 );
 
 const { t } = useI18n();

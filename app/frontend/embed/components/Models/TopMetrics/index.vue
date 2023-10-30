@@ -60,7 +60,7 @@ const crew = computed(() => {
 
   return toNumber(
     [minCrew, maxCrew].filter((item) => item).join(" - "),
-    "people"
+    "people",
   );
 });
 

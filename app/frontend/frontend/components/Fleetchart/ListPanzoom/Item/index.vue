@@ -208,7 +208,7 @@ const cssClasses = computed(() => {
 });
 
 const productionStatus = computed(() =>
-  t(`labels.model.productionStatus.${model.value.productionStatus}`)
+  t(`labels.model.productionStatus.${model.value.productionStatus}`),
 );
 
 const name = computed(() => {
@@ -228,18 +228,18 @@ const modelName = computed(() => {
 });
 
 const length = computed(
-  () => model.value.fleetchartLength * props.sizeMultiplicator
+  () => model.value.fleetchartLength * props.sizeMultiplicator,
 );
 
 const height = computed(
-  () => (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value
+  () => (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value,
 );
 
 const imageWidth = computed(() =>
   Math.min(
     (height.value * sourceImageWidth.value) / sourceImageHeight.value,
-    length.value
-  )
+    length.value,
+  ),
 );
 
 const sourceImageHeight = computed(() => imageByViewpoint.value?.height);
@@ -250,8 +250,8 @@ const sourceImageHeightMax = computed(() =>
       angledView.value?.height,
       sideView.value?.height,
       topView.value?.height,
-    ].filter(Boolean) as number[])
-  )
+    ].filter(Boolean) as number[]),
+  ),
 );
 
 const sourceImageWidth = computed(() => imageByViewpoint.value?.width);
@@ -262,8 +262,8 @@ const sourceImageWidthMax = computed(() =>
       angledView.value?.width,
       sideView.value?.width,
       topView.value?.width,
-    ].filter(Boolean) as number[])
-  )
+    ].filter(Boolean) as number[]),
+  ),
 );
 
 const image = computed(() => {

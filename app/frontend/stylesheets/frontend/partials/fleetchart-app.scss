@@ -9,7 +9,8 @@
   overflow: hidden;
   background-color: #111;
   outline: 0;
-  transition: opacity $transition-base-speed ease-in-out,
+  transition:
+    opacity $transition-base-speed ease-in-out,
     transform $transition-base-speed ease-in-out;
 
   &.fade {

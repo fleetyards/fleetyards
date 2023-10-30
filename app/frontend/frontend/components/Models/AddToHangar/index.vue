@@ -52,7 +52,7 @@ export default class AddToHangar extends Vue {
 
   get onWishlist() {
     return !!(this.wishlistShips || []).find(
-      (item) => item === this.model.slug
+      (item) => item === this.model.slug,
     );
   }
 

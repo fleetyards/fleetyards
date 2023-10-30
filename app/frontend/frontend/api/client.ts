@@ -11,7 +11,9 @@ type ApiResponseMeta = {
 };
 
 export type ApiResponse = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any;
   meta: ApiResponseMeta | null;
   error: null;
@@ -19,8 +21,10 @@ export type ApiResponse = {
 
 export type ApiErrorResponse = {
   data: null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any;
   meta: null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any;
 };
 
@@ -39,8 +43,10 @@ const client = axios.create({
 });
 
 const extractMetaInfo = function extractMetaInfo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   headers: any,
-  params: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: any,
 ): ApiResponseMeta | null {
   const links = linkHeaderParser(headers.link);
 
@@ -51,7 +57,7 @@ const extractMetaInfo = function extractMetaInfo(
       currentPage: parseInt(params.page || 1, 10),
       totalPages: parseInt(
         (links.last && links.last.page) || params.page || 1,
-        10
+        10,
       ),
     };
   }
@@ -60,9 +66,11 @@ const extractMetaInfo = function extractMetaInfo(
 };
 
 const handleError = async function handleError(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any,
-  silent: boolean
+  silent: boolean,
 ): Promise<ApiErrorResponse> {
   if (!silent) {
     nprogress.done();
@@ -86,8 +94,9 @@ const handleError = async function handleError(
 
 const handleResponse = function handleResponse(
   response: AxiosResponse,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any,
-  silent: boolean
+  silent: boolean,
 ): ApiResponse {
   if (!silent) {
     nprogress.done();
@@ -103,6 +112,7 @@ const handleResponse = function handleResponse(
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function get(path: string, params: any = {}, silent = false) {
   if (!silent) {
     nprogress.start();
@@ -134,7 +144,7 @@ export async function post(path: string, body = {}, silent = false) {
         },
       }),
       body,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, body, silent);
@@ -154,7 +164,7 @@ export async function put(path: string, body = {}, silent = false) {
         },
       }),
       body,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, body, silent);
@@ -176,7 +186,7 @@ export async function destroy(path: string, data = {}, silent = false) {
         },
       }),
       data,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, data, silent);
@@ -197,7 +207,7 @@ export async function upload(path: string, body = {}, silent = false) {
     return handleResponse(
       await client.put(path, body, { headers }),
       body,
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, body, silent);
@@ -219,7 +229,7 @@ export async function download(path: string, params = {}, silent = false) {
         },
       }),
       {},
-      silent
+      silent,
     );
   } catch (error) {
     return handleError(error, params, silent);
@@ -245,7 +255,7 @@ export const apiClient = {
 };
 
 export default {
-  // tslint:disable-next-line
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   install(Vue: any) {
     // eslint-disable-next-line no-param-reassign
     Vue.prototype.$api = apiClient;

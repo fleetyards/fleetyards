@@ -492,7 +492,7 @@ export default class FleetchartListFabric extends Vue {
               cols[columnIndex].canvasImage = image;
               resolve();
             });
-          })
+          }),
         );
 
         positionTop += height;
@@ -587,7 +587,7 @@ export default class FleetchartListFabric extends Vue {
   toggleLabels() {
     this.$store.commit(
       `${this.namespace}/setFleetchartLabels`,
-      !this.showLabels
+      !this.showLabels,
     );
   }
 

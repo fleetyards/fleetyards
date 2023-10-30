@@ -139,6 +139,7 @@ export default class Signup extends Vue {
   @Getter("inviteToken", { namespace: "fleet" }) fleetInviteToken;
 
   @Action("resetInviteToken", { namespace: "fleet" })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resetFleetInviteToken: any;
 
   form: SignupForm | null = null;

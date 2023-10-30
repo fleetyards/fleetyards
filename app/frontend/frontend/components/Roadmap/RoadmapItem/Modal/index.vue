@@ -114,15 +114,17 @@ export default class RoadmapItemModal extends Vue {
       })
       .filter(
         (update) =>
-          update.key !== "released" || (update.key === "released" && update.old)
+          update.key !== "released" ||
+          (update.key === "released" && update.old),
       )
       .filter(
         (update) =>
-          update.key !== "commited" || (update.key === "commited" && update.old)
+          update.key !== "commited" ||
+          (update.key === "commited" && update.old),
       )
       .filter(
         (update) =>
-          update.key !== "active" || (update.key === "active" && update.old)
+          update.key !== "active" || (update.key === "active" && update.old),
       );
   }
 

@@ -197,7 +197,7 @@ export default {
       if (!response.error) {
         const models = response.data;
         this.groupedModels = [...models].map((model) =>
-          this.enhanceGroupedModel(this.initialShips, model)
+          this.enhanceGroupedModel(this.initialShips, model),
         );
         this.ungroupedModels = this.initialShips
           .map((slug) => ({
@@ -228,8 +228,8 @@ export default {
           .map((model) =>
             this.enhanceGroupedModel(
               models.map((item) => item.slug),
-              model
-            )
+              model,
+            ),
           );
         this.ungroupedModels = [...models].sort(this.sortByName);
       }
@@ -251,8 +251,8 @@ export default {
           .map((model) =>
             this.enhanceGroupedModel(
               models.map((item) => item.slug),
-              model
-            )
+              model,
+            ),
           );
         this.ungroupedModels = [...models].sort(this.sortByName);
       }

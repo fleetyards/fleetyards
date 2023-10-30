@@ -52,7 +52,7 @@ watch(
   () => {
     internalModels.value = [...props.models];
     internalModels.value.sort(sortByFleetchartLength);
-  }
+  },
 );
 
 const sortByFleetchartLength = (a: Model, b: Model) => {

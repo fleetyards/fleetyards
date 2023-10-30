@@ -45,8 +45,10 @@ import Panel from "@/frontend/core/components/Panel/index.vue";
   },
 })
 export default class Modal extends Vue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("showOverlay", { namespace: "app" }) showOverlay: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("hideOverlay", { namespace: "app" }) hideOverlay: any;
 
   @Ref("modal") readonly modal!: HTMLElement;

@@ -57,7 +57,7 @@ export default class BtnDropdown extends Vue {
     validator(value) {
       return (
         ["default", "transparent", "link", "danger", "dropdown"].indexOf(
-          value
+          value,
         ) !== -1
       );
     },

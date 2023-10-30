@@ -24,8 +24,10 @@ import { Action } from "vuex-class";
 export default class ShoppingCartItemAmount extends Vue {
   @Prop({ required: true }) cartItem!: CartItem;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("reduceAmount", { namespace: "shoppingCart" }) reduceAmount: any;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("increaseAmount", { namespace: "shoppingCart" }) increaseAmount: any;
 }
 </script>

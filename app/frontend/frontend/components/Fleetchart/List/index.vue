@@ -198,7 +198,7 @@ export default class FleetchartList extends Vue {
   onScaleChange() {
     this.$store.commit(
       `${this.namespace}/setFleetchartScale`,
-      this.internalScale
+      this.internalScale,
     );
   }
 
@@ -258,7 +258,7 @@ export default class FleetchartList extends Vue {
   toggleLabels() {
     this.$store.commit(
       `${this.namespace}/setFleetchartLabels`,
-      !this.showLabels
+      !this.showLabels,
     );
   }
 

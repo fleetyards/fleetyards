@@ -128,7 +128,7 @@ export default {
         `models/${this.$route.params.slug}/videos`,
         {
           page: this.$route.query.page,
-        }
+        },
       );
 
       this.loading = false;

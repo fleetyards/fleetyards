@@ -6,8 +6,10 @@ import { routes as initialRoutes } from "@/frontend/routes";
 
 Vue.use(Router);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const addTrailingSlashToAllRoutes = (routes: any) =>
   [].concat(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...routes.map((route: any) => {
       if (["*", "/"].includes(route.path)) {
         return [route];
@@ -34,6 +36,7 @@ const addTrailingSlashToAllRoutes = (routes: any) =>
         modifiedRoute,
         {
           path,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           redirect: (to: any) => ({
             name: route.name,
             params: to.params || null,
@@ -41,7 +44,7 @@ const addTrailingSlashToAllRoutes = (routes: any) =>
           }),
         },
       ];
-    })
+    }),
   );
 
 const router = new Router({
@@ -74,6 +77,7 @@ const router = new Router({
   routes: addTrailingSlashToAllRoutes(initialRoutes),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validateAndResolveNewRoute = (to: any) => {
   if (
     to.meta.needsAuthentication &&

@@ -326,7 +326,7 @@ export default class ShopCommoditiesModal extends Vue {
     const success = await shopCommodityCollection.update(
       this.shopCommodity.shop.id,
       this.shopCommodity.id,
-      this.form
+      this.form,
     );
 
     if (success) {

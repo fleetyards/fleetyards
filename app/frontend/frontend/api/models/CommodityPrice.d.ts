@@ -1,5 +1,6 @@
 type CommodityPrice = {
   id?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any;
 };
 

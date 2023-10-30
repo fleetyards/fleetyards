@@ -10,7 +10,7 @@ export const useHangarItems = () => {
   // const hangarStore = useHangarStore();
 
   const isAuthenticated = computed(
-    () => Store.getters["session/isAuthenticated"]
+    () => Store.getters["session/isAuthenticated"],
   );
 
   const fetchHangarItems = async () => {
@@ -22,7 +22,7 @@ export const useHangarItems = () => {
     // hangarStore.save(await HangarItemsCollection.findAll());
     await Store.dispatch(
       "hangar/saveHangar",
-      await HangarItemsCollection.findAll()
+      await HangarItemsCollection.findAll(),
     );
   };
 
@@ -34,7 +34,7 @@ export const useHangarItems = () => {
     () => route.path,
     () => {
       fetchHangarItems();
-    }
+    },
   );
 
   watch(
@@ -42,6 +42,6 @@ export const useHangarItems = () => {
     () => isAuthenticated.value,
     () => {
       fetchHangarItems();
-    }
+    },
   );
 };

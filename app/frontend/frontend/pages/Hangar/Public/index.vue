@@ -175,6 +175,7 @@ export default class PublicHangar extends Vue {
   @Getter("perPage", { namespace: "publicHangar" }) perPage;
 
   @Action("toggleFleetchart", { namespace: "publicHangar" })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   toggleFleetchart: any;
 
   get hangarGroupCounts(): HangarGroupMetrics[] {

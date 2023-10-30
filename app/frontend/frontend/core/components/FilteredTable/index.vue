@@ -135,6 +135,7 @@ export type FilteredTableColumn = {
 const { t } = useI18n();
 
 type Props = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   records: any[];
   columns: FilteredTableColumn[];
   primaryKey: string;
@@ -171,7 +172,7 @@ watch(
   () => props.selected,
   (value) => {
     internalSelected.value = value;
-  }
+  },
 );
 
 const emit = defineEmits(["selected-change"]);
@@ -180,7 +181,7 @@ watch(
   () => internalSelected.value,
   (value) => {
     emit("selected-change", value);
-  }
+  },
 );
 
 onMounted(() => {
@@ -195,7 +196,8 @@ const onAllSelectedChange = (value: string[]) => {
     ].filter(uniqArray);
   } else {
     internalSelected.value = [...internalSelected.value].filter(
-      (selected) => !props.records.map((record) => record.id).includes(selected)
+      (selected) =>
+        !props.records.map((record) => record.id).includes(selected),
     );
   }
 };

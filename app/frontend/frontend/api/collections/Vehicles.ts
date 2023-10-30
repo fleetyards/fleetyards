@@ -95,7 +95,7 @@ export class VehiclesCollection extends BaseCollection {
 
   async update(
     id: string,
-    form: VehicleForm
+    form: VehicleForm,
   ): Promise<ApiResponse | ApiErrorResponse> {
     const response = await put(`vehicles/${id}`, form);
 
@@ -182,7 +182,7 @@ export class VehiclesCollection extends BaseCollection {
 
   async updateHangarGroupsBulk(
     ids: string,
-    hangarGroupIds: string[]
+    hangarGroupIds: string[],
   ): Promise<boolean> {
     const response = await put(`vehicles/bulk`, {
       hangarGroupIds,
@@ -261,7 +261,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async syncRsiHangar(
-    items: TRSIHangarItem[]
+    items: TRSIHangarItem[],
   ): Promise<THangarSyncResult | null> {
     const response = await put("hangar/sync-rsi-hangar", {
       items,

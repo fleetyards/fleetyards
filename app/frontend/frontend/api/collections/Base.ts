@@ -17,6 +17,7 @@ export default class BaseCollection {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   extractErrorCode(error: any): string | null {
     return error?.response?.data?.code || null;
   }

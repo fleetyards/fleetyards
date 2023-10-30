@@ -35,7 +35,9 @@ $nav-transition-speed: 0.3s;
       text-overflow: ellipsis;
       border: 1px solid transparent;
       cursor: pointer;
-      transition: box-shadow $nav-transition-speed, color $nav-transition-speed;
+      transition:
+        box-shadow $nav-transition-speed,
+        color $nav-transition-speed;
 
       i {
         color: lighten($text-color, 30%);
@@ -122,7 +124,8 @@ $nav-transition-speed: 0.3s;
 
         &:hover {
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9),
+            box-shadow:
+              -3px 0 10px rgba(darken($primary, 20%), 0.9),
               0 3px 10px rgba(darken($primary, 20%), 0.9),
               0 -3px 10px rgba(darken($primary, 20%), 0.9);
           }
@@ -139,7 +142,8 @@ $nav-transition-speed: 0.3s;
           border-bottom-left-radius: 4px;
 
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9),
+            box-shadow:
+              -3px 0 10px rgba(darken($primary, 20%), 0.9),
               0 3px 10px rgba(darken($primary, 20%), 0.9),
               0 -3px 10px rgba(darken($primary, 20%), 0.9);
           }
@@ -166,7 +170,8 @@ $nav-transition-speed: 0.3s;
 
         &:hover {
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9),
+            box-shadow:
+              -3px 0 10px rgba(darken($primary, 20%), 0.9),
               0 3px 10px rgba(darken($primary, 20%), 0.9),
               0 -3px 10px rgba(darken($primary, 20%), 0.9);
           }
@@ -183,7 +188,8 @@ $nav-transition-speed: 0.3s;
           border-bottom-right-radius: 4px;
 
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9),
+            box-shadow:
+              -3px 0 10px rgba(darken($primary, 20%), 0.9),
               0 3px 10px rgba(darken($primary, 20%), 0.9),
               0 -3px 10px rgba(darken($primary, 20%), 0.9);
           }

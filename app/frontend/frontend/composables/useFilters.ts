@@ -26,7 +26,7 @@ export const useFilters = (routeQueryKey = "q") => {
   const route = useRoute();
 
   const routeQuery = computed(
-    () => (route.query[routeQueryKey] || {}) as TFilterData
+    () => (route.query[routeQueryKey] || {}) as TFilterData,
   );
 
   const isFilterSelected = computed(() => {

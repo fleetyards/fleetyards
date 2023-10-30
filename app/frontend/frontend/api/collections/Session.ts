@@ -3,6 +3,7 @@ import { post, destroy } from "@/frontend/api/client";
 export class SessionCollection {
   record: Session | null = null;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   create(params: SessionParams): Promise<any> {
     return post("sessions", params, true);
   }

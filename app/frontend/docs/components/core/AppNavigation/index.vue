@@ -48,7 +48,7 @@ watch(
   () => route.path,
   () => {
     close();
-  }
+  },
 );
 
 onMounted(() => {

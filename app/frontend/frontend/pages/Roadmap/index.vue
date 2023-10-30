@@ -155,7 +155,7 @@ const route = useRoute();
 const isSubRoute = computed(() => route.name !== "roadmap");
 
 const emptyBoxVisible = computed(
-  () => !loading.value && roadmapItems.value.length === 0
+  () => !loading.value && roadmapItems.value.length === 0,
 );
 
 const filteredItems = computed(() => {
@@ -174,7 +174,7 @@ const groupedByRelease = computed<RoadmapItemsByRelease>(() =>
     value[x.release].push(x);
 
     return value;
-  }, {})
+  }, {}),
 );
 
 onMounted(() => {
@@ -192,7 +192,7 @@ watch(
   () => onlyReleased.value,
   () => {
     fetch();
-  }
+  },
 );
 
 const cable = useCable();
@@ -208,7 +208,7 @@ const setupUpdates = () => {
     },
     {
       received: fetch,
-    }
+    },
   );
 };
 

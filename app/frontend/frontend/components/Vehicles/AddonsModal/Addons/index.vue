@@ -146,7 +146,7 @@ export default {
 
       if (this.internalAddons.includes(addonId)) {
         const index = this.internalAddons.findIndex(
-          (itemId) => itemId === addonId
+          (itemId) => itemId === addonId,
         );
         if (index > -1) {
           this.internalAddons.splice(index, 1);

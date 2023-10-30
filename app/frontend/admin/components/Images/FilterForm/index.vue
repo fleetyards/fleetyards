@@ -76,7 +76,7 @@ watch(
   () => {
     setupForm();
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -88,7 +88,7 @@ watch(
       stationIdEq.value = undefined;
     }
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -102,7 +102,7 @@ watch(
       form.value.galleryIdEq = undefined;
       form.value.galleryTypeEq = undefined;
     }
-  }
+  },
 );
 
 watch(
@@ -116,7 +116,7 @@ watch(
       form.value.galleryIdEq = undefined;
       form.value.galleryTypeEq = undefined;
     }
-  }
+  },
 );
 
 const submit = () => {

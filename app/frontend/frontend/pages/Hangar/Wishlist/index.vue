@@ -277,7 +277,7 @@ export default class Hangar extends Vue {
       },
       {
         received: debounce(this.fetch, 500),
-      }
+      },
     );
   }
 
@@ -299,8 +299,8 @@ export default class Hangar extends Vue {
       "download",
       `fleetyards-${this.currentUser.username}-wishlist-${format(
         new Date(),
-        "yyyy-MM-dd"
-      )}.json`
+        "yyyy-MM-dd",
+      )}.json`,
     );
 
     document.body.appendChild(link);

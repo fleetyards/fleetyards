@@ -149,7 +149,7 @@ export default class FleetchartListItem extends Vue {
 
   get productionStatus() {
     return this.$t(
-      `labels.model.productionStatus.${this.model.productionStatus}`
+      `labels.model.productionStatus.${this.model.productionStatus}`,
     );
   }
 
@@ -188,7 +188,7 @@ export default class FleetchartListItem extends Vue {
   get imageWidth() {
     return Math.min(
       (this.height * this.sourceImageWidth) / this.sourceImageHeight,
-      this.length
+      this.length,
     );
   }
 
@@ -316,7 +316,7 @@ export default class FleetchartListItem extends Vue {
     return Math.max(
       model.topViewWidth,
       model.sideViewWidth,
-      model.angledViewWidth
+      model.angledViewWidth,
     );
   }
 
@@ -324,7 +324,7 @@ export default class FleetchartListItem extends Vue {
     return Math.max(
       model.topViewHeight,
       model.sideViewHeight,
-      model.angledViewHeight
+      model.angledViewHeight,
     );
   }
 

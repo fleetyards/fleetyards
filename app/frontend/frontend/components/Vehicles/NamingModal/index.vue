@@ -174,7 +174,7 @@ export default class VehicleNamingModal extends Vue {
     return (
       !this.submitting &&
       Object.keys(this.$refs.form.fields).some(
-        (field) => this.$refs.form.fields[field].dirty
+        (field) => this.$refs.form.fields[field].dirty,
       )
     );
   }
@@ -218,7 +218,7 @@ export default class VehicleNamingModal extends Vue {
 
     const response = await vehiclesCollection.update(
       this.vehicle.id,
-      this.form
+      this.form,
     );
 
     if (!response.error) {
