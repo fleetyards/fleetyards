@@ -53,3 +53,12 @@
     background-color: $primary;
   }
 }
+
+.selectize-input,
+.selectize-control.single .selectize-input.input-active {
+  background: #3a3f44 !important;
+}
+
+.selectize-control.single .selectize-input:after {
+  border-color: #c8c8c8 transparent transparent transparent !important;
+}

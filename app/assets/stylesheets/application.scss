@@ -1,5 +1,8 @@
 //= require_self
+//= require vendor/noty
+//= require vendor/selectize
+//= require vendor/selectize.bootstrap4
 
 $primary: #428bca;
 
-// @import 'partials/selectize-custom';
+@import "partials/selectize-custom";

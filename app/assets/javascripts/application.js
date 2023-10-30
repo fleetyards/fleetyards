@@ -4,6 +4,8 @@
 //= require vendor/date_fns.min
 //= require vendor/highcharts
 //= require vendor/highcharts-theme
+//= require vendor/noty.min
+//= require vendor/selectize.min
 //= require i18n
 //= require i18n/translations
 //= require helper
