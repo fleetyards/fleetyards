@@ -293,6 +293,7 @@ export default class FleetSettings extends Vue {
 
   deleting = false;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   files: any[] = [];
 
   fileExtensions = "jpg,jpeg,png,webp";

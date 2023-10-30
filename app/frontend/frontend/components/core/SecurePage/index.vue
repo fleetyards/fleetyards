@@ -69,9 +69,11 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 export default class Signup extends Vue {
   @Getter("accessConfirmed", { namespace: "session" }) accessConfirmed: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Action("confirmAccess", { namespace: "session" }) saveConfirmAccess: any;
 
   @Action("resetConfirmAccess", { namespace: "session" })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resetConfirmAccess: any;
 
   submitting = false;

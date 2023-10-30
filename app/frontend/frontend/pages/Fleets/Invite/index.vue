@@ -21,6 +21,7 @@ export default class FleetInvite extends Vue {
   @Getter("currentUser", { namespace: "session" }) currentUser: User;
 
   @Action("resetInviteToken", { namespace: "fleet" })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resetFleetInviteToken: any;
 
   @Watch("currentUser")
