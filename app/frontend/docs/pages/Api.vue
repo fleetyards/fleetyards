@@ -43,6 +43,7 @@
 
 <script lang="ts" setup>
 import { SwaggerUIBundle } from "swagger-ui-dist";
+import { SwaggerUIBundle } from "swagger-ui-dist";
 
 const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
 
