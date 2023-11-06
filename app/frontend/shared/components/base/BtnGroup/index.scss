@@ -6,7 +6,6 @@
   min-width: 50px;
   margin-right: 10px;
   margin-bottom: 20px;
-  padding: 2px;
   vertical-align: middle;
   background: $panel-bg;
   border: $panel-border-width solid $panel-inner-border;
@@ -43,6 +42,7 @@
 
   > :deep(.panel-btn-dropdown) {
     margin-right: 0;
+    padding-right: 0;
 
     > .panel-btn {
       margin-right: 0 !important;
@@ -59,6 +59,18 @@
   > :deep(.panel-btn) {
     margin-right: 0 !important;
     border-radius: 0 !important;
+
+    &:not(:last-child):not(:first-child) {
+      padding-inline: 1.5px;
+    }
+
+    &:first-child {
+      padding-right: 1.5px;
+    }
+
+    &:last-child {
+      padding-left: 1.5px;
+    }
 
     .panel-btn-inner {
       border-radius: $border-radius-base - 1px;

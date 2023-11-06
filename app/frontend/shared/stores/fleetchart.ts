@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { type Transform } from "panzoom";
 
 export enum FleetchartViewpoints {
   TOP = "top",
@@ -20,16 +21,10 @@ export enum FleetchartModes {
   CLASSIC = "classic",
 }
 
-type FleetchartZoomData = {
-  x: number;
-  y: number;
-  scale: number;
-};
-
 type FleetchartState = {
   visible: string[];
   zoomData: {
-    [key: string]: FleetchartZoomData;
+    [key: string]: Transform;
   };
   viewpoint: {
     [key: string]: FleetchartViewpoints;
@@ -136,10 +131,7 @@ export const useFleetchartStore = defineStore("fleetchart", {
     }) {
       this.screenHeight[payload.namespace] = payload.screenHeight;
     },
-    updateZoomData(payload: {
-      namespace: string;
-      zoomData: FleetchartZoomData;
-    }) {
+    updateZoomData(payload: { namespace: string; zoomData: Transform }) {
       this.zoomData[payload.namespace] = payload.zoomData;
     },
   },

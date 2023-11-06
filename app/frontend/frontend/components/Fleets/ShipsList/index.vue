@@ -195,7 +195,7 @@ import type {
   VehicleExport,
 } from "@/services/fyApi";
 import { usePagination } from "@/shared/composables/usePagination";
-import debounce from "lodash.debounce";
+import { debounce } from "ts-debounce";
 import { format } from "date-fns";
 import { useNoty } from "@/shared/composables/useNoty";
 import { useFilters } from "@/shared/composables/useFilters";

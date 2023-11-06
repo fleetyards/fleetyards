@@ -2,9 +2,9 @@
   <div class="quick-search-bar">
     <form @submit.prevent="filter">
       <FormInput
-        :id="$route.meta.search || 'search'"
-        v-model="form[route.meta.search]"
-        :translation-key="`search.${route.name}`"
+        v-model="form[route.meta.search as string]"
+        :name="(route.meta.search as string) || 'search'"
+        :translation-key="`search.${String(route.name)}`"
         :no-label="true"
         :autofocus="!mobile"
       />

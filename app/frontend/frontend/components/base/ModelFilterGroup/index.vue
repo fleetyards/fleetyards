@@ -1,7 +1,8 @@
 <template>
   <FilterGroup
     v-model="internalValue"
-    :label="t('labels.filters.manufacturer')"
+    :label="t('labels.selectModel')"
+    :search-label="t('actions.findModel')"
     :query-fn="fetch"
     :query-response-formatter="formatter"
     :name="name"
@@ -15,7 +16,7 @@
 <script lang="ts" setup>
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { type ManufacturerQuery, type Manufacturers } from "@/services/fyApi";
+import { type ModelQuery, type Models } from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
@@ -25,12 +26,14 @@ type Props = {
   modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
+  returnObject?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
-  multiple: true,
+  multiple: false,
   noLabel: true,
+  returnObject: false,
 });
 
 const { t } = useI18n();
@@ -57,22 +60,19 @@ watch(
   },
 );
 
-const formatter = (response: Manufacturers) => {
-  return response.items.map((manufacturer) => {
+const formatter = (response: Models) => {
+  return response.items.map((model) => {
     return {
-      icon: manufacturer.logo,
-      label: manufacturer.name,
-      value: manufacturer.slug,
+      label: model.name,
+      value: model.slug,
     };
   });
 };
 
-const { manufacturers: manufacturersService } = useApiClient();
+const { models: modelsService } = useApiClient();
 
 const fetch = async (params: FilterGroupParams) => {
-  const q: ManufacturerQuery = {
-    withModels: true,
-  };
+  const q: ModelQuery = {};
 
   if (params.search) {
     q.nameCont = params.search;
@@ -82,7 +82,7 @@ const fetch = async (params: FilterGroupParams) => {
     q.slugEq = params.missing as string;
   }
 
-  return manufacturersService.manufacturers({
+  return modelsService.models({
     page: String(params.page || 1),
     q,
   });
@@ -91,6 +91,6 @@ const fetch = async (params: FilterGroupParams) => {
 
 <script lang="ts">
 export default {
-  name: "ManufacturerFilterGroup",
+  name: "ModelFilterGroup",
 };
 </script>

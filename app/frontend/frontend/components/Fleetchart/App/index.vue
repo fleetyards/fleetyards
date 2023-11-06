@@ -7,83 +7,87 @@
       show: isShow,
     }"
   >
-    <BtnDropdown size="small" class="fleetchart-app-mode">
-      <template #label>
-        <template v-if="!mobile">
-          {{ t("labels.fleetchartApp.mode") }}:
-        </template>
-        {{ t(`labels.fleetchartApp.modeOptions.${mode}`) }}
-      </template>
-      <Btn
-        v-for="(option, index) in FleetchartModes"
-        :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
-        size="small"
-        variant="link"
-        :active="mode === option"
-        @click="setMode(option)"
-      >
-        {{ t(`labels.fleetchartApp.modeOptions.${option}`) }}
-      </Btn>
-    </BtnDropdown>
-
-    <Btn size="large" variant="link" class="fleetchart-app-close" @click="hide">
-      <i class="fal fa-times" />
-    </Btn>
-
-    <div class="fleetchart-app__filter">
-      <Btn
-        v-if="hasFilterSlot"
-        v-tooltip="filterTooltip"
-        :active="filterVisible"
-        :aria-label="filterTooltip"
-        size="small"
-        @click="toggleFilter"
-      >
-        <span v-show="isFilterSelected">
-          <i class="fas fa-filter" />
-        </span>
-        <span v-show="!isFilterSelected">
-          <i class="far fa-filter" />
-        </span>
-      </Btn>
-
-      <slot name="pagination" />
-
-      <transition name="fade">
-        <div
-          v-if="filterVisible"
-          class="fleetchart-app__offcanvas-filter__backdrop"
-          @click="toggleFilter"
-        ></div>
-      </transition>
-      <div
-        class="fleetchart-app__offcanvas-filter"
-        :class="{
-          'fleetchart-app__offcanvas-filter--visible': filterVisible,
-        }"
-      >
-        <slot name="filter" />
-      </div>
+    <div
+      class="fleetchart-app__offcanvas"
+      :class="{
+        'fleetchart-app__offcanvas--visible': filterVisible && !mobile,
+      }"
+    >
+      <slot name="filter" />
     </div>
+    <div
+      class="fleetchart-app__content"
+      :class="{
+        'fleetchart-app__content--filter-visible': filterVisible && !mobile,
+      }"
+    >
+      <BtnDropdown size="small" class="fleetchart-app-mode">
+        <template #label>
+          <template v-if="!mobile">
+            {{ t("labels.fleetchartApp.mode") }}:
+          </template>
+          {{ t(`labels.fleetchartApp.modeOptions.${mode}`) }}
+        </template>
+        <Btn
+          v-for="(option, index) in FleetchartModes"
+          :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
+          size="small"
+          variant="dropdown"
+          :active="mode === option"
+          @click="setMode(option)"
+        >
+          {{ t(`labels.fleetchartApp.modeOptions.${option}`) }}
+        </Btn>
+      </BtnDropdown>
 
-    <template v-if="innerItems.length && !loading">
-      <FleetchartListPanzoom
-        v-if="mode == 'panzoom'"
-        :items="innerItems"
-        :my-ship="myShip"
-        :namespace="namespace"
-        :download-name="downloadName"
-      />
-      <FleetchartList
-        v-else
-        :items="innerItems"
-        :my-ship="myShip"
-        :namespace="namespace"
-        :download-name="downloadName"
-      />
-    </template>
+      <Btn
+        size="large"
+        variant="link"
+        class="fleetchart-app-close"
+        @click="hide"
+      >
+        <i class="fal fa-times" />
+      </Btn>
 
-    <Loader v-else :loading="loading" :fixed="true" />
+      <div class="fleetchart-app__filter">
+        <Btn
+          v-if="hasFilterSlot && !mobile"
+          v-tooltip="filterTooltip"
+          :active="filterVisible"
+          :aria-label="filterTooltip"
+          size="small"
+          @click="toggleFilter"
+        >
+          <span v-show="isFilterSelected">
+            <i class="fas fa-filter" />
+          </span>
+          <span v-show="!isFilterSelected">
+            <i class="far fa-filter" />
+          </span>
+        </Btn>
+
+        <slot v-if="!mobile" name="pagination" />
+      </div>
+
+      <template v-if="innerItems.length">
+        <FleetchartListPanzoom
+          v-if="mode == 'panzoom'"
+          :items="innerItems"
+          :my-ship="myShip"
+          :namespace="namespace"
+          :download-name="downloadName"
+        />
+        <FleetchartList
+          v-else
+          :items="innerItems"
+          :my-ship="myShip"
+          :namespace="namespace"
+          :download-name="downloadName"
+        />
+      </template>
+
+      <Loader :loading="loading" :fixed="true" />
+    </div>
   </div>
 </template>
 
@@ -152,10 +156,10 @@ const hasFilterSlot = computed(() => {
 
 const filterTooltip = computed(() => {
   if (filterVisible.value) {
-    return t("actions.hideFilter");
+    return t("filteredList.actions.hideFilter");
   }
 
-  return t("actions.showFilter");
+  return t("filteredList.actions.showFilter");
 });
 
 watch(
@@ -281,3 +285,7 @@ export default {
   name: "FleetchartApp",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index.scss";
+</style>

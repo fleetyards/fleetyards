@@ -2713,6 +2713,19 @@ paths:
           type: string
           default: 30
         required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
@@ -9170,6 +9183,10 @@ components:
           items:
             type: string
         nameCont:
+          type: string
+        nameEq:
+          type: string
+        slugEq:
           type: string
         nameIn:
           type: array

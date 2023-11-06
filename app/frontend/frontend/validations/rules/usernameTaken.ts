@@ -1,6 +1,6 @@
 import { useApiClient } from "@/frontend/composables/useApiClient";
-import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 import { debounce } from "ts-debounce";
+import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 export const useRule = (t: I18nPluginOptions["t"]) => {
   const { users: usersService } = useApiClient();
@@ -21,7 +21,7 @@ export const useRule = (t: I18nPluginOptions["t"]) => {
         return errorMessage;
       })
       .catch(() => t("messages.error.usernameTaken"));
-  }, 200);
+  }, 100) as (value: string) => Promise<boolean | string>;
 
   return validate;
 };

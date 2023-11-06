@@ -77,15 +77,15 @@ const loading = ref(false);
 
 const debug = ref(false);
 
-const scene = ref<THREE.Scene | undefined>();
+let scene: THREE.Scene | undefined = undefined;
 
-const camera = ref<THREE.Camera | undefined>();
+let camera: THREE.Camera | undefined = undefined;
 
-const renderer = ref<THREE.Renderer | undefined>();
+let renderer: THREE.Renderer | undefined = undefined;
 
-const model = ref<THREE.Group | undefined>();
+let model: THREE.Group | undefined = undefined;
 
-const controls = ref<OrbitControls | undefined>();
+let controls: OrbitControls | undefined = undefined;
 
 const autoRotate = ref(true);
 
@@ -139,9 +139,9 @@ watch(
 watch(
   () => zoom.value,
   () => {
-    if (controls.value) {
-      controls.value.enableZoom = zoom.value;
-      controls.value.update();
+    if (controls) {
+      controls.enableZoom = zoom.value;
+      controls.update();
     }
   },
 );
@@ -149,7 +149,7 @@ watch(
 watch(
   () => color.value,
   () => {
-    if (model.value) {
+    if (model) {
       updateModelMaterial();
     }
   },
@@ -158,9 +158,9 @@ watch(
 watch(
   () => autoRotate.value,
   () => {
-    if (controls.value) {
-      controls.value.autoRotate = autoRotate.value;
-      controls.value.update();
+    if (controls) {
+      controls.autoRotate = autoRotate.value;
+      controls.update();
     }
   },
 );
@@ -169,27 +169,27 @@ onMounted(() => {
   loading.value = true;
   progress.value = 0;
 
-  scene.value = setupScene();
-  camera.value = setupCamera();
-  if (camera.value) {
-    scene.value.add(camera.value);
+  scene = setupScene();
+  camera = setupCamera();
+  if (camera) {
+    scene.add(camera);
   }
-  renderer.value = setupRenderer();
-  controls.value = setupControls(renderer.value.domElement, camera.value);
+  renderer = setupRenderer();
+  controls = setupControls(renderer.domElement, camera);
 
   loadModel();
 });
 
 const animate = () => {
-  if (!scene.value || !camera.value) {
+  if (!scene || !camera) {
     return;
   }
 
-  controls.value?.update();
+  controls?.update();
 
   requestAnimationFrame(animate);
 
-  renderer.value?.render(scene.value, camera.value);
+  renderer?.render(scene, camera);
 };
 
 const setupScene = () => {
@@ -284,7 +284,7 @@ const updateModelMaterial = () => {
 
   const windowRefs = ["window", "glass"];
 
-  model.value?.traverse((node) => {
+  model?.traverse((node) => {
     if (!(node as Mesh).isMesh) return;
 
     if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
@@ -308,22 +308,22 @@ const loadModel = () => {
       (gltf) => {
         loading.value = false;
 
-        model.value = gltf.scene;
+        model = gltf.scene;
 
-        model.value.rotation.set(0, 45, 0);
+        model.rotation.set(0, 45, 0);
 
         updateModelMaterial();
 
-        scene.value?.add(model.value);
+        scene?.add(model);
 
-        const box = new THREE.Box3().setFromObject(model.value);
+        const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
 
         const maxValue = Math.max(size.x, size.y);
 
-        camera.value?.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2));
+        camera?.position.set(0, 40, Math.max(maxValue * 1.2, size.y * 2));
 
-        camera.value?.add(setupDirectionalLight(model.value));
+        camera?.add(setupDirectionalLight(model));
 
         animate();
       },

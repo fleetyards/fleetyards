@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
+import { type LocationQueryRaw } from "vue-router";
 import { isFleetRoute as fleetRouteCheck } from "./utils";
 import { useI18n } from "@/frontend/composables/useI18n";
 import NavItem from "./NavItem/index.vue";
@@ -173,12 +173,12 @@ onBeforeUnmount(() => {
 
 const filterFor = (routeName: string) => {
   if (!filters.value[routeName]) {
-    return null;
+    return undefined;
   }
 
   return {
     q: filters.value[routeName],
-  };
+  } as unknown as LocationQueryRaw;
 };
 
 const navigation = ref<HTMLElement | null>(null);

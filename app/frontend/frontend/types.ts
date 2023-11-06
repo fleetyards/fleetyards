@@ -21,6 +21,11 @@ declare global {
     MAINTAINER_ADDRESS_POSTALCODE: string;
     MAINTAINER_ADDRESS_CITY: string;
     MAINTAINER_ADDRESS_COUNTRY: string;
+    RSI_ENDPOINT: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    SwaggerUIBundle: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    SwaggerUIStandalonePreset: any;
   }
 }
 
@@ -34,3 +39,13 @@ export interface ShipListState {
   detailsVisible: boolean;
   filterVisible: boolean;
 }
+
+export type RSIHangarItemKind = "ship" | "component" | "skin" | "upgrade";
+
+export type RSIHangarItem = {
+  id: string;
+  name: string;
+  image?: string;
+  customName?: string;
+  type: RSIHangarItemKind;
+};

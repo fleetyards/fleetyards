@@ -3,13 +3,13 @@
     <div class="row justify-content-lg-center">
       <div class="col-12 col-lg-6">
         <h1>
-          {{ $t("headlines.fleets.invites") }}
+          {{ t("headlines.fleets.invites") }}
         </h1>
       </div>
     </div>
     <div class="row justify-content-lg-center">
       <div class="col-12 col-lg-6">
-        <Panel>
+        <Panel slim>
           <transition-group
             name="fade"
             class="flex-list flex-list-users"
@@ -20,7 +20,7 @@
               <div class="flex-list-row">
                 <div class="fleet-name" />
                 <div class="actions">
-                  {{ $t("labels.actions") }}
+                  {{ t("labels.actions") }}
                 </div>
               </div>
             </div>
@@ -31,170 +31,158 @@
             >
               <div class="flex-list-row">
                 <div class="fleet-name">
-                  {{ invite.fleet.name }}
+                  {{ invite.fleetName }}
                 </div>
                 <div v-if="invited(invite)" class="actions">
                   <Btn
                     size="small"
                     :disabled="submitting"
                     :inline="true"
-                    @click.native="accept(invite)"
+                    @click="accept(invite)"
                   >
                     <i class="fal fa-check" />
-                    {{ $t("actions.fleet.acceptInvite") }}
+                    {{ t("actions.fleet.acceptInvite") }}
                   </Btn>
                   <Btn
                     size="small"
                     variant="danger"
                     :disabled="submitting"
                     :inline="true"
-                    @click.native="decline(invite)"
+                    @click="decline(invite)"
                   >
                     <i class="fal fa-times" />
-                    {{ $t("actions.fleet.declineInvite") }}
+                    {{ t("actions.fleet.declineInvite") }}
                   </Btn>
                 </div>
                 <div v-else-if="requested(invite)">
                   <Btn size="small" :disabled="true" :inline="true">
                     <i class="fal fa-clock" />
-                    {{ $t("labels.fleet.awaitingConfirmation") }}
+                    {{ t("labels.fleet.awaitingConfirmation") }}
                   </Btn>
                 </div>
               </div>
             </div>
             <div
-              v-if="!invites.length && !loading"
+              v-if="!invites?.length && !isLoading"
               key="empty"
               class="fade-list-item col-12 flex-list-item"
             >
               <div class="flex-list-row">
                 <div class="empty">
-                  {{ $t("labels.blank.fleetInvites") }}
+                  {{ t("labels.blank.fleetInvites") }}
                 </div>
               </div>
             </div>
           </transition-group>
         </Panel>
 
-        <Loader :loading="loading" :fixed="true" />
+        <Loader :loading="isLoading" :fixed="true" />
       </div>
     </div>
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+<script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  displaySuccess,
-  displayAlert,
-  displayConfirm,
-} from "@/frontend/lib/Noty";
 import Panel from "@/shared/components/Panel/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useApiClient } from "@/frontend/composables/useApiClient";
+import { type FleetMember } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useQuery } from "@tanstack/vue-query";
 
-const { fleetMembership: membershipService } = useApiClient();
+const { t } = useI18n();
 
-@Component<FleetInvites>({
-  components: {
-    Panel,
-    Loader,
-    Btn,
-  },
-})
-export default class FleetInvites extends Vue {
-  loading = true;
+const { displayAlert, displayConfirm, displaySuccess } = useNoty(t);
 
-  submitting = false;
+const submitting = ref(false);
 
-  invites: FleetMember[] = [];
+const invited = (invite: FleetMember) => {
+  return invite.status === "invited";
+};
 
-  mounted() {
-    this.fetch();
-  }
+const requested = (invite: FleetMember) => {
+  return invite.status === "requested";
+};
 
-  invited(invite) {
-    return invite.status === "invited";
-  }
+const comlink = useComlink();
 
-  requested(invite) {
-    return invite.status === "requested";
-  }
+const { fleetMembership: membershipService, fleets: fleetsService } =
+  useApiClient();
 
-  async accept(invite) {
-    this.submitting = true;
+const router = useRouter();
 
-    try {
-      await membershipService.acceptMembership({
-        fleetSlug: invite.fleet.slug,
-      });
+const accept = async (invite: FleetMember) => {
+  submitting.value = true;
 
-      this.$comlink.$emit("fleet-update");
+  try {
+    await membershipService.acceptMembership({
+      fleetSlug: invite.fleetSlug,
+    });
 
-      displaySuccess({
-        text: this.$t("messages.fleet.invites.accept.success"),
-      });
+    comlink.emit("fleet-update");
 
-      this.$router
-        .push({
-          name: "fleet",
-          params: { slug: invite.fleet.slug },
-        })
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {});
-    } catch (error) {
-      console.error(error);
-      displayAlert({
-        text: this.$t("messages.fleet.invites.accept.failure"),
-      });
-    }
+    displaySuccess({
+      text: t("messages.fleet.invites.accept.success"),
+    });
 
-    this.submitting = false;
-  }
-
-  async decline(invite) {
-    this.submitting = true;
-
-    displayConfirm({
-      text: this.$t("messages.confirm.fleet.invites.decline"),
-      onConfirm: async () => {
-        try {
-          await membershipService.declineMembership({
-            fleetSlug: invite.fleet.slug,
-          });
-
-          this.$comlink.$emit("fleet-update");
-
-          displaySuccess({
-            text: this.$t("messages.fleet.invites.decline.success"),
-          });
-        } catch (error) {
-          console.error(error);
-          displayAlert({
-            text: this.$t("messages.fleet.invites.decline.failure"),
-          });
-        }
-
-        this.submitting = false;
-      },
-      onClose: () => {
-        this.submitting = false;
-      },
+    router
+      .push({
+        name: "fleet",
+        params: { slug: invite.fleetSlug },
+      })
+      .catch(() => {});
+  } catch (error) {
+    console.error(error);
+    displayAlert({
+      text: t("messages.fleet.invites.accept.failure"),
     });
   }
 
-  async fetch() {
-    this.loading = true;
+  submitting.value = false;
+};
 
-    const response = await this.$api.get("fleets/invites");
+const decline = async (invite: FleetMember) => {
+  submitting.value = true;
 
-    this.loading = false;
+  displayConfirm({
+    text: t("messages.confirm.fleet.invites.decline"),
+    onConfirm: async () => {
+      try {
+        await membershipService.declineMembership({
+          fleetSlug: invite.fleetSlug,
+        });
 
-    if (!response.error) {
-      this.invites = response.data;
-    }
-  }
-}
+        comlink.emit("fleet-update");
+
+        displaySuccess({
+          text: t("messages.fleet.invites.decline.success"),
+        });
+      } catch (error) {
+        console.error(error);
+        displayAlert({
+          text: t("messages.fleet.invites.decline.failure"),
+        });
+      }
+
+      submitting.value = false;
+    },
+    onClose: () => {
+      submitting.value = false;
+    },
+  });
+};
+
+const { data: invites, isLoading } = useQuery({
+  queryKey: ["myFleetInvites"],
+  queryFn: () => fleetsService.fleetInvites(),
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "FleetInvites",
+};
 </script>

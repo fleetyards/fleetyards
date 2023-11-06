@@ -11,10 +11,12 @@ export const useRule = (t: I18nPluginOptions["t"]) => {
     // TODO: API_SCHEMA - needs checkUsername api endpoint
     return usersService
       .checkUsername({
-        username: value,
+        requestBody: {
+          value,
+        },
       })
       .then((response) => {
-        if (response.usernameTaken) {
+        if (response.taken) {
           return true;
         }
         return errorMessage;

@@ -13,49 +13,25 @@
       name="manufacturer"
     />
 
-    <!-- <FilterGroup
+    <ProductionStatusFilterGroup
       v-model="form.productionStatusIn"
-      :label="t('labels.filters.models.productionStatus')"
       name="production-status"
-      :options="ModelProductionStatusEnum"
-      :multiple="true"
-      :no-label="true"
-    /> -->
-    <!--
-    <FilterGroup
+    />
+
+    <ClassificationFilterGroup
       v-model="form.classificationIn"
-      :label="t('labels.filters.models.classification')"
-      fetch-path="models/classifications"
       name="classification"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.focusIn"
-      :label="t('labels.filters.models.focus')"
-      fetch-path="models/focus"
-      name="focus"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
-    />
+    <FocusFilterGroup v-model="form.focusIn" name="focus" />
 
-    <FilterGroup
-      v-model="form.sizeIn"
-      :label="t('labels.filters.models.size')"
-      fetch-path="models/sizes"
-      name="size"
-      :multiple="true"
-      :no-label="true"
-    />
+    <SizeFilterGroup v-model="form.sizeIn" name="size" />
 
     <FilterGroup
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
       :label="t('labels.filters.models.pledgePrice')"
-      name="pldege-price"
+      name="pledge-price"
       :multiple="true"
       :no-label="true"
     />
@@ -69,14 +45,7 @@
       :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.willItFit"
-      :label="t('labels.filters.models.willItFit')"
-      fetch-path="models/with-docks"
-      value-attr="slug"
-      name="will-it-fit"
-      :searchable="true"
-    /> -->
+    <WillItFitFilterGroup v-model="form.willItFit" name="will-it-fit" />
 
     <div class="row">
       <div class="col-6">
@@ -200,18 +169,23 @@
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
+import ProductionStatusFilterGroup from "@/frontend/components/base/ProductionStatusFilterGroup/index.vue";
+import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
+import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
+import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
+import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
-import { type ModelQuery, ModelProductionStatusEnum } from "@/services/fyApi";
+import { type ModelQuery } from "@/services/fyApi";
 import { Form } from "vee-validate";
-import { useFilters } from "@/shared/composables/useFilters";
+import { useFilters } from "@/shared/composables/useFilters2";
 
 const { t } = useI18n();
 
-const setupForm = () => {
-  form.value = {
+const prefillFormValues = () => {
+  return {
     searchCont: routeQuery.value.searchCont,
     nameCont: routeQuery.value.nameCont,
     onSaleEq: routeQuery.value.onSaleEq,
@@ -236,14 +210,49 @@ const setupForm = () => {
   };
 };
 
+const setupForm = () => {
+  form.value = prefillFormValues();
+};
+
+interface AllowedFilters extends ModelQuery {
+  fleetchart?: boolean;
+}
+
 const { filter, resetFilter, isFilterSelected, routeQuery } =
-  useFilters<ModelQuery>(setupForm);
+  useFilters<AllowedFilters>(
+    [
+      "searchCont",
+      "nameCont",
+      "onSaleEq",
+      "priceLteq",
+      "priceGteq",
+      "pledgePriceLteq",
+      "pledgePriceGteq",
+      "lengthLteq",
+      "lengthGteq",
+      "beamLteq",
+      "beamGteq",
+      "heightLteq",
+      "heightGteq",
+      "willItFit",
+      "manufacturerIn",
+      "classificationIn",
+      "focusIn",
+      "productionStatusIn",
+      "priceIn",
+      "pledgePriceIn",
+      "sizeIn",
+      "fleetchart",
+    ],
+    ["fleetchart"],
+    setupForm,
+  );
 
 const handleSubmit = () => {
   filter(form.value);
 };
 
-const form = ref<ModelQuery>({});
+const form = ref<ModelQuery>(prefillFormValues());
 
 watch(
   () => form.value,
@@ -252,6 +261,7 @@ watch(
   },
   { deep: true },
 );
+
 const { booleanOptions, priceOptions, pledgePriceOptions } =
   useFilterOptions(t);
 </script>

@@ -23,7 +23,7 @@
       <span class="filter-group-title-prompt">
         {{ prompt }}
       </span>
-      <SmallLoader :loading="loading" />
+      <SmallLoader v-if="queryFn" :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>
     <Collapsed
@@ -198,6 +198,7 @@ const loading = computed(() => {
 });
 
 const { isLoading, isFetching, data, refetch } = useQuery({
+  refetchOnWindowFocus: false,
   queryKey: [
     "filterGroupOptions",
     id.value,
@@ -412,30 +413,46 @@ const selected = (option: string) => {
 
 const emit = defineEmits(["update:modelValue"]);
 
-const select = (option: string) => {
+const select = (optionValue: string) => {
   clearSearch();
 
-  if (selected(option)) {
+  if (selected(optionValue)) {
     if (props.multiple) {
       emit(
         "update:modelValue",
         (props.modelValue as string[]).filter(
-          (item: string) => item !== option,
+          (item: string) => item !== optionValue,
         ),
       );
     } else if (props.nullable) {
       emit("update:modelValue", undefined);
     }
   } else if (props.multiple) {
-    const value = JSON.parse(JSON.stringify(props.modelValue || []));
+    const values: string[] = JSON.parse(JSON.stringify(props.modelValue || []));
 
-    value.push(option);
+    values.push(optionValue);
 
-    emit("update:modelValue", value);
+    if (props.returnObject) {
+      emit(
+        "update:modelValue",
+        values.map((value) => {
+          return internalOptions.value.find((item) => item.value === value);
+        }),
+      );
+    } else {
+      emit("update:modelValue", values);
+    }
 
     focusSearch();
   } else {
-    emit("update:modelValue", option);
+    if (props.returnObject) {
+      emit(
+        "update:modelValue",
+        internalOptions.value.find((item) => item.value === optionValue),
+      );
+    } else {
+      emit("update:modelValue", optionValue);
+    }
 
     toggle();
   }

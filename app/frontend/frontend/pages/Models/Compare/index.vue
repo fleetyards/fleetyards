@@ -1,7 +1,7 @@
 <template>
   <section
     :class="{
-      'nav-slim': navSlim,
+      'nav-slim': navStore.slim,
     }"
     class="container compare-models"
   >
@@ -12,7 +12,7 @@
             <BreadCrumbs :crumbs="crumbs" />
             <br />
             <h1 class="sr-only">
-              {{ $t("headlines.compare.models") }}
+              {{ t("headlines.compare.models") }}
             </h1>
           </div>
         </div>
@@ -20,24 +20,16 @@
           <div class="col-12">
             <div class="row compare-row compare-row-headline">
               <div class="col-12 compare-row-label">
-                <CollectionFilterGroup
+                <ModelFilterGroup
                   v-model="newModel"
                   v-tooltip="disabledTooltip"
-                  name="new-model"
-                  :search-label="$t('actions.findModel')"
-                  :collection="modelsCollection"
-                  value-attr="slug"
-                  translation-key="compare.addModel"
                   :disabled="selectDisabled"
-                  :paginated="true"
-                  :searchable="true"
                   :return-object="true"
-                  :no-label="true"
-                  @input="add"
+                  name="new-model"
                 />
                 <Btn :href="erkulUrl" :block="true" class="erkul-link">
                   <i />
-                  {{ $t("labels.erkul.link") }}
+                  {{ t("labels.erkul.link") }}
                 </Btn>
                 <Starship42Btn
                   :items="sortedModels"
@@ -59,7 +51,7 @@
                     class="lazy"
                   />
                   <div
-                    v-tooltip="$t('labels.compare.removeModel')"
+                    v-tooltip="t('labels.compare.removeModel')"
                     class="remove-model"
                     @click="remove(model)"
                   >
@@ -84,8 +76,8 @@
             <div v-if="!sortedModels.length" class="row compare-row">
               <div class="col-12">
                 <Box class="info" :large="true">
-                  <h1>{{ $t("headlines.compare.models") }}</h1>
-                  <p>{{ $t("texts.compare.models.info") }}</p>
+                  <h1>{{ t("headlines.compare.models") }}</h1>
+                  <p>{{ t("texts.compare.models.info") }}</p>
                 </Box>
               </div>
             </div>
@@ -103,15 +95,10 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+<script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import modelsCollection from "@/frontend/api/collections/Models";
-import modelHardpointsCollection from "@/frontend/api/collections/ModelHardpoints";
-import CollectionFilterGroup from "@/shared/components/base/CollectionFilterGroup/index.vue";
-import Box from "@/shared/components/Box/index.vue";
+import Box from "@/shared/components/base/Box/index.vue";
+import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TopViewRows from "@/frontend/components/Compare/Models/TopView/index.vue";
 import BaseRows from "@/frontend/components/Compare/Models/Base/index.vue";
@@ -119,137 +106,161 @@ import CrewRows from "@/frontend/components/Compare/Models/Crew/index.vue";
 import SpeedRows from "@/frontend/components/Compare/Models/Speed/index.vue";
 import HardpointRows from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
+import { type Model } from "@/services/fyApi";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useNavStore } from "@/frontend/stores/nav";
 
-@Component<ModelsCompare>({
-  components: {
-    CollectionFilterGroup,
-    Box,
-    Btn,
-    BreadCrumbs,
-    TopViewRows,
-    BaseRows,
-    CrewRows,
-    SpeedRows,
-    HardpointRows,
-    Starship42Btn,
-  },
-})
-export default class ModelsCompare extends Vue {
-  @Getter("navSlim", { namespace: "app" }) navSlim: boolean;
+type CompareForm = {
+  models?: string[];
+};
 
-  modelsCollection: ModelsCollection = modelsCollection;
+const { t } = useI18n();
 
-  newModel: Model | null = null;
+const navStore = useNavStore();
 
-  models: Model[] = [];
+const newModel = ref<string>();
 
-  form = {};
+const models = ref<Model[]>([]);
 
-  get erkulUrl() {
-    return "https://www.erkul.games/calculator";
-  }
+const form = ref<CompareForm>({});
 
-  get sortedModels() {
-    const models = JSON.parse(JSON.stringify(this.models));
+const erkulUrl = computed(() => {
+  return "https://www.erkul.games/calculator";
+});
 
-    return models.sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
+const sortedModels = computed(() => {
+  const items = JSON.parse(JSON.stringify(models.value));
 
-      if (a.name > b.name) {
-        return 1;
-      }
-
-      return 0;
-    });
-  }
-
-  get selectDisabled() {
-    return this.models.length > 7;
-  }
-
-  get disabledTooltip() {
-    if (this.selectDisabled) {
-      return this.$t("labels.compare.enough");
+  return items.sort((a: Model, b: Model) => {
+    if (a.name < b.name) {
+      return -1;
     }
 
-    return null;
+    if (a.name > b.name) {
+      return 1;
+    }
+
+    return 0;
+  });
+});
+
+const selectDisabled = computed(() => {
+  return models.value.length > 7;
+});
+
+const disabledTooltip = computed(() => {
+  if (selectDisabled.value) {
+    return t("labels.compare.enough");
   }
 
-  get crumbs() {
-    return [
-      {
-        to: {
-          name: "models",
-        },
-        label: this.$t("nav.models.index"),
+  return undefined;
+});
+
+const crumbs = computed(() => {
+  return [
+    {
+      to: {
+        name: "models",
       },
-    ];
-  }
+      label: t("nav.models.index"),
+    },
+  ];
+});
 
-  @Watch("form", { deep: true })
-  onFormChange() {
-    this.update();
-  }
+onMounted(() => {
+  setupForm();
+  form.value.models?.forEach(async (slug) => {
+    const model = await fetchModel(slug);
 
-  mounted() {
-    this.setupForm();
-    this.form.models.forEach(async (slug) => {
-      const model = await this.fetchModel(slug);
-      this.models.push(model);
-    });
-  }
+    models.value.push(model);
+  });
+});
 
-  setupForm() {
-    const query = JSON.parse(JSON.stringify(this.$route.query || {}));
-    this.form = {
-      models: query.models || [],
-    };
-  }
+const route = useRoute();
 
-  update() {
-    this.$router
-      .replace({
-        name: this.$route.name,
-        query: {
-          models: this.form.models,
-        },
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch(() => {});
-  }
+const setupForm = () => {
+  const query = JSON.parse(JSON.stringify(route.query || {}));
 
-  async add() {
-    if (this.newModel && !this.form.models.includes(this.newModel.slug)) {
-      const model = await this.fetchModel(this.newModel.slug);
-      this.models.push(model);
-      this.form.models.push(this.newModel.slug);
-    }
-    this.newModel = null;
-  }
+  form.value = {
+    models: query.models || [],
+  };
+};
 
-  remove(model) {
-    if (this.form.models.includes(model.slug)) {
-      const index = this.form.models.indexOf(model.slug);
-      this.form.models.splice(index, 1);
+const router = useRouter();
+
+const update = () => {
+  router
+    .push({
+      path: route.path,
+      query: {
+        models: [...(form.value.models || [])],
+      },
+    })
+    .catch(() => {});
+};
+
+watch(
+  () => newModel.value,
+  (value) => {
+    if (!value) {
+      return;
     }
 
-    if (this.models.findIndex((item) => item.slug === model.slug) >= 0) {
-      const index = this.models.findIndex((item) => item.slug === model.slug);
-      this.models.splice(index, 1);
-    }
+    add();
+  },
+);
+
+const add = async () => {
+  if (newModel.value && !form.value.models?.includes(newModel.value)) {
+    const model = await fetchModel(newModel.value);
+
+    models.value.push(model);
+
+    form.value.models?.push(newModel.value);
+
+    update();
   }
 
-  async fetchModel(slug) {
-    const model = await modelsCollection.findBySlug(slug);
+  newModel.value = undefined;
+};
 
-    const hardpoints = await modelHardpointsCollection.findAllByModel(slug);
+const remove = (model: Model) => {
+  if (form.value.models?.includes(model.slug)) {
+    const index = form.value.models.indexOf(model.slug);
 
-    return {
-      ...model,
-      hardpoints,
-    };
+    form.value.models.splice(index, 1);
   }
-}
+
+  if (models.value.findIndex((item) => item.slug === model.slug) >= 0) {
+    const index = models.value.findIndex((item) => item.slug === model.slug);
+
+    models.value.splice(index, 1);
+  }
+
+  update();
+};
+
+const { models: modelsService } = useApiClient();
+
+const fetchModel = async (slug: string) => {
+  const model = await modelsService.model({
+    slug: slug,
+  });
+
+  const hardpoints = await modelsService.modelHardpoints({
+    slug: slug,
+  });
+
+  return {
+    ...model,
+    hardpoints,
+  };
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "ModelsCompare",
+};
 </script>

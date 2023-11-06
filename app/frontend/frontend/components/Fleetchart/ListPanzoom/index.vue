@@ -107,6 +107,7 @@
             :key="`fleetchart-col-${index}`"
             name="fade-list"
             :appear="true"
+            tag="div"
             class="fleetchart-column"
           >
             <FleetchartItem
@@ -157,7 +158,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
-import debounce from "lodash.debounce";
+import { debounce } from "ts-debounce";
 import Starship42Btn from "@/frontend/components/Starship42Btn/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import FleetchartItem from "./Item/index.vue";
@@ -374,7 +375,7 @@ const setupZoom = async () => {
 };
 
 const checkReset = () => {
-  if (markedForReset) {
+  if (markedForReset.value) {
     markedForReset.value = false;
 
     resetZoom();
@@ -613,3 +614,7 @@ export default {
   name: "FleetchartListPanzoom",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index.scss";
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="modal-inner">
-    <Panel :outer-spacing="false">
+    <Panel :outer-spacing="false" slim>
       <div class="modal-content">
         <div class="modal-header">
           <a v-if="!fixed" class="close" aria-label="Close" @click="close">

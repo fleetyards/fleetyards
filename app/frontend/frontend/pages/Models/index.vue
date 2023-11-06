@@ -49,6 +49,7 @@
           </Btn>
         </BtnDropdown>
       </template>
+
       <template #filter>
         <ModelsFilterForm />
       </template>
@@ -69,8 +70,20 @@
           namespace="models"
           :loading="loading"
           download-name="ships-fleetchart"
-        />
+        >
+          <template #pagination>
+            <Paginator
+              :pagination="pagination"
+              :per-page="perPage"
+              :update-per-page="updatePerPage"
+            />
+          </template>
+          <template #filter>
+            <ModelsFilterForm />
+          </template>
+        </FleetchartApp>
       </template>
+
       <template #pagination-bottom>
         <Paginator
           :pagination="pagination"
@@ -94,7 +107,7 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { type ModelQuery, type BaseList } from "@/services/fyApi";
+import { type BaseList } from "@/services/fyApi";
 import { useModelsStore } from "@/frontend/stores/models";
 import { storeToRefs } from "pinia";
 import { useApiClient } from "@/frontend/composables/useApiClient";
@@ -132,13 +145,15 @@ const {
   refetch,
   ...asyncStatus
 } = useQuery({
+  refetchOnWindowFocus: false,
   queryKey: ["models"],
-  queryFn: () =>
-    modelsService.models({
+  queryFn: () => {
+    return modelsService.models({
       q: filters.value.filters,
       page: page.value,
       perPage: perPage.value,
-    }),
+    });
+  },
 });
 
 const toggleDetailsTooltip = computed(() => {
@@ -152,7 +167,7 @@ const toggleDetailsTooltip = computed(() => {
 const route = useRoute();
 
 const filters = computed(() => ({
-  filters: route.query.q as unknown as ModelQuery,
+  filters: route.query,
   page: Number(route.query.page),
 }));
 

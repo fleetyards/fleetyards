@@ -21,7 +21,7 @@ export const useRule = (t: I18nPluginOptions["t"]) => {
         return errorMessage;
       })
       .catch(() => errorMessage);
-  }, 200);
+  }, 100) as (value: string) => Promise<boolean | string>;
 
   return validate;
 };

@@ -312,3 +312,7 @@ export default {
   name: "FleetchartList",
 };
 </script>
+
+<style lang="scss" scoped>
+@import "index.scss";
+</style>

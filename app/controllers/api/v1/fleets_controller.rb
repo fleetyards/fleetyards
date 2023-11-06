@@ -56,7 +56,7 @@ module Api
       def check
         authorize! :check, :api_fleet
 
-        render json: {taken: Fleet.exists?(fid: (params[:value] || "").downcase)}
+        render json: {taken: Fleet.where("lower(fid) = ?", params.fetch(:value, "").downcase).exists?}
       end
 
       def find_by_invite

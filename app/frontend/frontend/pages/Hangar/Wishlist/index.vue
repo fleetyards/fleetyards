@@ -154,7 +154,7 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
-import debounce from "lodash.debounce";
+import { debounce } from "ts-debounce";
 import { format } from "date-fns";
 import wishlistCollection from "@/frontend/api/collections/Wishlist";
 import type { WishlistCollection } from "@/frontend/api/collections/Wishlist";

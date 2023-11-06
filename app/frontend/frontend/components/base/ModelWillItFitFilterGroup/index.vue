@@ -1,12 +1,11 @@
 <template>
   <FilterGroup
     v-model="internalValue"
-    :label="t('labels.filters.manufacturer')"
+    :label="t('labels.filters.models.willItFit')"
     :query-fn="fetch"
     :query-response-formatter="formatter"
     :name="name"
-    :paginated="true"
-    :searchable="true"
+    :searchable="searchable"
     :multiple="multiple"
     :no-label="noLabel"
   />
@@ -14,8 +13,8 @@
 
 <script lang="ts" setup>
 import { useApiClient } from "@/frontend/composables/useApiClient";
+import { type ModelQuery, type Models } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { type ManufacturerQuery, type Manufacturers } from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
@@ -23,14 +22,16 @@ import FilterGroup, {
 type Props = {
   name: string;
   modelValue?: string | string[];
+  searchable?: boolean;
   multiple?: boolean;
   noLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
+  searchable: true,
   multiple: true,
-  noLabel: true,
+  noLabel: false,
 });
 
 const { t } = useI18n();
@@ -57,22 +58,19 @@ watch(
   },
 );
 
-const formatter = (response: Manufacturers) => {
-  return response.items.map((manufacturer) => {
+const formatter = (response: Models) => {
+  return response.items.map((model) => {
     return {
-      icon: manufacturer.logo,
-      label: manufacturer.name,
-      value: manufacturer.slug,
+      label: model.name,
+      value: model.slug,
     };
   });
 };
 
-const { manufacturers: manufacturersService } = useApiClient();
+const { models: modelsService } = useApiClient();
 
 const fetch = async (params: FilterGroupParams) => {
-  const q: ManufacturerQuery = {
-    withModels: true,
-  };
+  const q: ModelQuery = {};
 
   if (params.search) {
     q.nameCont = params.search;
@@ -82,7 +80,7 @@ const fetch = async (params: FilterGroupParams) => {
     q.slugEq = params.missing as string;
   }
 
-  return manufacturersService.manufacturers({
+  return modelsService.modelsWithDocks({
     page: String(params.page || 1),
     q,
   });
@@ -91,6 +89,6 @@ const fetch = async (params: FilterGroupParams) => {
 
 <script lang="ts">
 export default {
-  name: "ManufacturerFilterGroup",
+  name: "ModelWillItFitFilterGroup",
 };
 </script>

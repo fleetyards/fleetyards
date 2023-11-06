@@ -106,8 +106,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const loading = computed(() => {
   return (
-    (props.asyncStatus.isFetching.value || props.asyncStatus.isLoading.value) &&
-    !props.asyncStatus.isRefetching.value
+    props.asyncStatus.isFetching.value ||
+    props.asyncStatus.isLoading.value ||
+    props.asyncStatus.isRefetching.value
   );
 });
 

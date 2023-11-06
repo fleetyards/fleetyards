@@ -10,12 +10,14 @@ import VueHighlightJS from "vue3-highlightjs";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { useI18n } from "@/docs/composables/useI18n";
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 const app = createApp(App);
 
+app.use(VueQueryPlugin);
 app.use(router);
 app.use(VueLazyload);
 app.use(pinia);

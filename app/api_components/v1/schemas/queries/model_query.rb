@@ -22,6 +22,8 @@ module V1
             lengthLteq: {type: :number},
             manufacturerIn: {type: :array, items: {type: :string}},
             nameCont: {type: :string},
+            nameEq: {type: :string},
+            slugEq: {type: :string},
             nameIn: {type: :array, items: {type: :string}},
             nameOrDescriptionCont: {type: :string},
             onSaleEq: {type: :boolean},

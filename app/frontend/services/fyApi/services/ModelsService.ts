@@ -32,9 +32,13 @@ export class ModelsService {
     public modelsWithDocks({
         page = '1',
         perPage = '30',
+        q,
+        cacheId,
     }: {
         page?: string,
         perPage?: string,
+        q?: ModelQuery,
+        cacheId?: string,
     }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
@@ -42,6 +46,8 @@ export class ModelsService {
             query: {
                 'page': page,
                 'perPage': perPage,
+                'q': q,
+                'cacheId': cacheId,
             },
         });
     }

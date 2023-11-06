@@ -303,7 +303,7 @@ import { format } from "date-fns";
 // import type { HangarStatsCollection } from "@/frontend/api/collections/HangarStats";
 // import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
 // import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGroups";
-import debounce from "lodash.debounce";
+import { debounce } from "ts-debounce";
 import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
 import Paginator from "@/frontend/core/components/Paginator/index.vue";
 import type { HangarQuery, HangarStats } from "@/services/fyApi";

@@ -14,7 +14,7 @@
         variant="dropdown"
         size="small"
         :to="pageRoute(1)"
-        :disabled="pagination.currentPage <= 1"
+        :disabled="currentPage <= 1"
         route-active-class=""
         in-group
       >
@@ -23,8 +23,8 @@
       <Btn
         variant="dropdown"
         size="small"
-        :to="pageRoute(pagination.currentPage - 1)"
-        :disabled="pagination.currentPage <= 1"
+        :to="pageRoute(currentPage - 1)"
+        :disabled="currentPage <= 1"
         route-active-class=""
         in-group
       >
@@ -33,7 +33,7 @@
       <span class="pagination-pages" style="flex-grow: none">
         {{
           i18n?.t("paginator.labels.pages", {
-            page: String(pagination.currentPage),
+            page: String(currentPage),
             total: String(pagination.totalPages || 1),
           })
         }}
@@ -41,8 +41,8 @@
       <Btn
         variant="dropdown"
         size="small"
-        :to="pageRoute(pagination.currentPage + 1)"
-        :disabled="pagination.currentPage >= pagination.totalPages"
+        :to="pageRoute(currentPage + 1)"
+        :disabled="currentPage >= pagination.totalPages"
         route-active-class=""
         in-group
       >
@@ -52,7 +52,7 @@
         variant="dropdown"
         size="small"
         :to="pageRoute(pagination.totalPages)"
-        :disabled="pagination.currentPage >= pagination.totalPages"
+        :disabled="currentPage >= pagination.totalPages"
         route-active-class=""
         in-group
       >
@@ -107,6 +107,11 @@ const route = useRoute();
 const pageRoute = (page: number) => ({
   query: { page: String(page), q: route.query.q },
   hash: props.hash,
+});
+
+const currentPage = computed(() => {
+  const page = Number(route.query.page);
+  return Number.isNaN(page) ? 1 : page;
 });
 </script>
 

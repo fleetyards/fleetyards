@@ -21,7 +21,6 @@
     font-size: 1rem;
     display: none;
     min-width: 200px;
-    padding: 2px;
     background: $panel-bg;
     border: $panel-border-width solid $panel-inner-border;
     border-radius: $panel-border-radius;
@@ -62,9 +61,9 @@
       content: "";
     }
 
-    > hr {
+    :deep(hr) {
       height: 2px;
-      margin: 5px 0;
+      margin-block: 5px;
     }
   }
 

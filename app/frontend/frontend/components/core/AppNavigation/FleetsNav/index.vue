@@ -67,6 +67,7 @@ const active = computed(() => {
 const { fleets: fleetsService } = useApiClient();
 
 const { data: fleets, refetch: refetchMyFleets } = useQuery({
+  refetchOnWindowFocus: false,
   queryKey: ["myFleets"],
   queryFn: () => fleetsService.myFleets(),
   enabled: isAuthenticated.value,
@@ -75,7 +76,7 @@ const { data: fleets, refetch: refetchMyFleets } = useQuery({
 const { data: fleetInvites, refetch: refetchInvites } = useQuery({
   queryKey: ["myFleetInvites"],
   queryFn: () => fleetsService.fleetInvites(),
-  enabled: isAuthenticated.value,
+  enabled: isAuthenticated.value && active.value,
 });
 
 watch(

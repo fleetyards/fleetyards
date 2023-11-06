@@ -36,8 +36,6 @@ type Props = {
   inline?: boolean;
   variant?: BtnVariants;
   size?: BtnSizes;
-  url: string;
-  title: string;
   to?: RouteLocationRaw;
   href?: string;
   type?: "button" | "submit";

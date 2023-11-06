@@ -38,7 +38,8 @@ Rails.application.configure do
       :self, :unsafe_inline, :unsafe_eval, :blob, "https://www.youtube.com/iframe_api",
       "https://s.ytimg.com", "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://code.jquery.com", "https://cdn.jsdelivr.net",
-      "https://stackpath.bootstrapcdn.com", "https://starship42.com", "https://www.gstatic.com"
+      "https://stackpath.bootstrapcdn.com", "https://starship42.com", "https://www.gstatic.com",
+      "https://unpkg.com"
     ]
     script_src << "http://#{ViteRuby.config.host_with_port}" if Rails.env.development?
 
