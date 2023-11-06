@@ -37,24 +37,24 @@
 </template>
 
 <script lang="ts" setup>
-import SwaggerUI from "swagger-ui";
+import { SwaggerUIBundle } from "swagger-ui-dist";
 
 const schemaUrl = computed(() => `${window.API_ENDPOINT}/schema.yaml`);
 
 const apiVersion = computed(() => window.API_VERSION);
 const oasVersion = computed(() => window.API_OAS_VERSION);
 
-const swagger = ref<SwaggerUI>();
+const swagger = ref<SwaggerUIBundle>();
 
 onMounted(() => {
-  swagger.value = SwaggerUI({
+  swagger.value = SwaggerUIBundle({
     dom_id: "#swagger-ui",
     url: schemaUrl.value,
     showCommonExtensions: true,
     filter: true,
   });
 
-  swagger.value.initOAuth({
+  swagger.value?.initOAuth({
     clientId: "your-client-id",
     clientSecret: "",
     usePkceWithAuthorizationCodeGrant: true,
