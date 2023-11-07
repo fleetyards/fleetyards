@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.22](https://github.com/fleetyards/fleetyards/compare/v5.27.21...v5.27.22) (2023-11-07)
+
+
+### Bug Fixes
+
+* **compare:** update fleetchart image sizes ([825db43](https://github.com/fleetyards/fleetyards/commit/825db43b20b70c0a9659fc2eb8674dbdec8aefbb))
+
 ### [5.27.21](https://github.com/fleetyards/fleetyards/compare/v5.27.20...v5.27.21) (2023-10-30)
 
 ### [5.27.20](https://github.com/fleetyards/fleetyards/compare/v5.27.19...v5.27.20) (2023-10-30)
