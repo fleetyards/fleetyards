@@ -122,6 +122,12 @@ const router = useRouter();
 
 const { sessions: sessionsService } = useApiClient();
 
+onMounted(() => {
+  if (sessionStore.isAuthenticated) {
+    router.push({ name: "hangar" }).catch(() => {});
+  }
+});
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
