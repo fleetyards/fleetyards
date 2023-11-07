@@ -32,10 +32,10 @@
             class="col-6 text-center compare-row-item compare-row-item-top-view"
           >
             <FleetchartItemImage
+              v-if="model.media.sideView"
               :label="model.name"
               :src="model.media.sideView?.small"
-              :width="length(model)"
-              max-width="100%"
+              :max-width="`${length(model)}%`"
             />
           </div>
         </div>
@@ -49,10 +49,10 @@
             class="col-6 text-center compare-row-item compare-row-item-top-view"
           >
             <FleetchartItemImage
+              v-if="model.media.topView"
               :label="model.name"
               :src="model.media.topView?.small"
-              :width="length(model)"
-              max-width="100%"
+              :max-width="`${length(model)}%`"
             />
           </div>
         </div>
@@ -65,6 +65,7 @@
 import Collapsed from "@/shared/components/Collapsed.vue";
 import FleetchartItemImage from "@/frontend/components/Fleetchart/List/Item/Image/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
@@ -77,28 +78,21 @@ const { t } = useI18n();
 const visible = ref(false);
 
 const compareTopView = ref<HTMLElement | null>(null);
-const maxWidth = computed(() => {
-  if (!compareTopView.value) {
-    return 0;
-  }
 
-  return compareTopView.value.offsetWidth / 4;
-});
-
-const scale = computed(() => {
-  if (props.models.length <= 0) {
-    return 0;
-  }
-
-  const maxLength = Math.max(
-    ...props.models.map((model) => model.fleetchartLength),
+const maxLength = computed(() => {
+  return Math.max(
+    ...props.models.map((model) => model.metrics.fleetchartLength || 1),
     0,
   );
-
-  return maxWidth.value / (maxLength * 3);
 });
 
-const length = (model: Model) => model.fleetchartLength * 3 * scale.value;
+const shipLength = (model: Model) => {
+  return model.metrics.fleetchartLength || 1;
+};
+
+const length = (model: Model) => {
+  return (shipLength(model) * 100) / maxLength.value;
+};
 
 onMounted(() => {
   visible.value = props.models.length > 0;
