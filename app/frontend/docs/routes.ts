@@ -23,7 +23,7 @@ export const routes: RouteRecordRaw[] = [
       version: "v1",
     },
     meta: {
-      title: "api.v1",
+      title: "apiV1",
     },
   },
   {

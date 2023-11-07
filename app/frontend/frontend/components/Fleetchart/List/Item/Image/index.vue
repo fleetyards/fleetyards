@@ -3,7 +3,7 @@
     v-if="src"
     :src="src"
     :style="{
-      width: `${width}px`,
+      width: internalWidth,
       'max-height': height ? `${height}px` : undefined,
       'max-width': maxWidth,
     }"
@@ -20,14 +20,19 @@
 type Props = {
   src: string;
   label: string;
-  width: number;
+  width?: number;
   height?: number;
   maxWidth?: string;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   height: undefined,
+  width: undefined,
   maxWidth: undefined,
+});
+
+const internalWidth = computed(() => {
+  return `${props.width}px` || "auto";
 });
 </script>
 

@@ -95,7 +95,7 @@ const { infoVisible } = storeToRefs(cookiesStore);
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 
-const { t, availableLocales, currentLocale } = useI18n();
+const { t, availableLocales } = useI18n();
 
 useMetaInfo(t);
 

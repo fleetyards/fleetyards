@@ -5,7 +5,7 @@
         <VueUploadComponent
           ref="uploadElement"
           v-model="newImages"
-          :post-action="postAction"
+          post-action="/admin/images"
           drop="body"
           :headers="headers()"
           :data="metaData"
@@ -61,6 +61,7 @@
     <Panel
       v-if="isUploadActive"
       :variant="uploadElement?.dropActive ? 'success' : undefined"
+      slim
       @click="selectImages"
     >
       <div class="dropzone">
@@ -71,7 +72,7 @@
       </div>
     </Panel>
 
-    <Panel v-if="allImages.length">
+    <Panel v-if="allImages.length" slim>
       <transition-group name="fade" class="flex-list" tag="div" appear>
         <div key="heading" class="fade-list-item col-12 flex-list-heading">
           <div class="flex-list-row">
@@ -267,8 +268,12 @@ const cancelSingleUpload = (image: VueUploadItem) => {
   uploadElement.value?.remove(image);
 };
 
-const upload = (file: File, component: typeof VueUploadComponent) => {
-  component.uploadHtml4(file);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const upload = async (
+  file: VueUploadItem,
+  component: typeof VueUploadComponent,
+) => {
+  return await component.uploadHtml4(file);
 };
 
 const emit = defineEmits(["image-uploaded", "image-deleted"]);

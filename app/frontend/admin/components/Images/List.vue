@@ -3,7 +3,7 @@
     :id="name"
     :name="name"
     :records="data?.items || []"
-    :loading="isLoading || isFetching"
+    :async-status="asyncStatus"
     primary-key="id"
     class="images"
   >
@@ -78,7 +78,7 @@ const internalGalleryType = computed(() => {
 
 const { images: imagesService } = useApiClient();
 
-const { isLoading, isFetching, data, refetch } = useQuery({
+const { data, refetch, ...asyncStatus } = useQuery({
   queryKey: [props.name],
   queryFn: () =>
     imagesService.images({

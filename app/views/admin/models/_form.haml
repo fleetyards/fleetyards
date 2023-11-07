@@ -59,12 +59,12 @@
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
       = form.label :focus
-      = form.select :focus, options_from_collection_for_select(Model.focus_filters, :value, :name, model.focus), { include_blank: true }, {class: 'form-control'}
+      = form.select :focus, options_from_collection_for_select(Model.focus_filters, :value, :label, model.focus), { include_blank: true }, {class: 'form-control'}
       %small
         = form_errors model, :focus
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :classification)}
       = form.label :classification
-      = form.select :classification, options_from_collection_for_select(Model.classification_filters, :value, :name, model.classification), { include_blank: true }, {class: 'form-control'}
+      = form.select :classification, options_from_collection_for_select(Model.classification_filters, :value, :label, model.classification), { include_blank: true }, {class: 'form-control'}
       %small
         = form_errors model, :classification
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :manufacturer_id)}
@@ -76,7 +76,7 @@
   .row
     .col-12.col-md-6.form-group{class: form_error?(model, :production_status)}
       = form.label :production_status
-      = form.select :production_status, options_from_collection_for_select(Model.production_status_filters, :value, :name, model.production_status), { include_blank: true }, {class: 'form-control'}
+      = form.select :production_status, options_from_collection_for_select(Model.production_status_filters, :value, :label, model.production_status), { include_blank: true }, {class: 'form-control'}
       %small
         = form_errors model, :production_status
     .col-12.col-md-6.form-group{class: form_error?(model, :production_note)}
@@ -113,7 +113,7 @@
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :size)}
       = form.label :size
-      = form.select :size, options_from_collection_for_select(Model.size_filters, :value, :name, model.size), { include_blank: true }, {class: 'form-control'}
+      = form.select :size, options_from_collection_for_select(Model.size_filters, :value, :label, model.size), { include_blank: true }, {class: 'form-control'}
       %small
         = form_errors model, :size
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :mass)}

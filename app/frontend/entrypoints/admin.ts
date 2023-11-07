@@ -9,14 +9,14 @@ import sentry from "@/shared/plugins/Sentry";
 import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
 import VueLazyload from "vue-lazyload";
-import veeValidate from "@/shared/plugins/VeeValidate";
+import veeValidate from "@/admin/plugins/VeeValidate";
 import { useI18n } from "@/admin/composables/useI18n";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
-console.info(`API Endpoint: ${window.API_ENDPOINT}`);
+console.info(`API Endpoint: ${window.ADMIN_API_ENDPOINT}`);
 
 const app = createApp(App);
 

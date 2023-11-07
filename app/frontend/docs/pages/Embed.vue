@@ -138,6 +138,7 @@ import copyText from "@/shared/utils/CopyText";
 import { useI18n } from "@/docs/composables/useI18n";
 import { useNoty } from "@/shared/composables/useNoty";
 
+/* eslint-disable no-useless-escape */
 const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \<script\>
     window.FleetYardsFleetchartConfig = {
@@ -160,6 +161,7 @@ const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \</script\>
 \<noscript\>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.\</noscript\>
 `;
+/* eslint-enable no-useless-escape */
 
 const { t } = useI18n();
 
