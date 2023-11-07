@@ -130,6 +130,10 @@ export default class Login extends Vue {
   form: LoginForm = null;
 
   mounted() {
+    if (this.$store.getters["session/isAuthenticated"]) {
+      this.$router.push({ name: "hangar" });
+    }
+
     this.setupForm();
   }
 
