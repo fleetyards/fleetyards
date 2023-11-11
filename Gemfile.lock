@@ -637,7 +637,7 @@ GEM
       terminal-table
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    slim (5.1.1)
+    slim (5.2.0)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
     slim-rails (3.6.3)
@@ -690,7 +690,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.8.2)
+    unf_ext (0.0.9)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
     url_plumber (0.1.2)
