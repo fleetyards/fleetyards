@@ -69,6 +69,19 @@ class Starsystem < ApplicationRecord
   ransack_alias :name, :name_or_slug
   ransack_alias :search, :name_or_slug
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "aggregated_danger", "aggregated_economy", "aggregated_population", "aggregated_size", "code",
+      "created_at", "description", "hidden", "id", "id_value", "last_updated_at", "map", "map_x",
+      "map_y", "name", "position_x", "position_y", "position_z", "rsi_id", "search", "slug",
+      "status", "store_image", "system_type", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["affiliations", "celestial_objects", "factions", "moons", "planets"]
+  end
+
   def self.visible
     where(hidden: false)
   end

@@ -1,7 +1,3 @@
-# frozen_string_literal: true
-
-require "rsi/base_loader"
-
 module Rsi
   class RoadmapLoader < ::Rsi::BaseLoader
     attr_accessor :json_file_path

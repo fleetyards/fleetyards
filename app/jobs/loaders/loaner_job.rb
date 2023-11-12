@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "rsi/loaner_loader"
-
 module Loaders
   class LoanerJob < ::Loaders::BaseJob
     def perform

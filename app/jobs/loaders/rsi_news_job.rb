@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "rsi/news_loader"
-
 module Loaders
   class RsiNewsJob < ::Loaders::BaseJob
     def perform

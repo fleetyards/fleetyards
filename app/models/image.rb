@@ -43,6 +43,17 @@ class Image < ApplicationRecord
   ransack_alias :model, :model_slug
   ransack_alias :station, :station_slug
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "background", "caption", "created_at", "enabled", "gallery_id", "gallery_type", "global",
+      "height", "id", "id_value", "model", "name", "station", "updated_at", "width"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["gallery", "model", "station"]
+  end
+
   def self.in_gallery
     where("gallery_id IS NOT ?", nil)
   end

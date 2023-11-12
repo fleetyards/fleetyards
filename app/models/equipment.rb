@@ -66,6 +66,19 @@ class Equipment < ApplicationRecord
 
   ransack_alias :name, :name_or_slug
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "backpack_compatibility", "core_compatibility", "created_at", "damage_reduction",
+      "description", "equipment_type", "extras", "grade", "hidden", "id", "id_value", "item_type",
+      "manufacturer_id", "name", "range", "rate_of_fire", "size", "slot", "slug", "storage",
+      "store_image", "temperature_rating", "updated_at", "volume", "weapon_class"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["manufacturer", "shop_commodities"]
+  end
+
   enum equipment_type: {undersuit: 0, armor: 1, weapon: 2, tool: 3, clothing: 4, medical: 5, weapon_attachment: 6, hacking_tool: 7}
   ransacker :equipment_type, formatter: proc { |v| Equipment.equipment_types[v] } do |parent|
     parent.table[:equipment_type]

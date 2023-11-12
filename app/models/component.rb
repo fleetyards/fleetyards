@@ -60,11 +60,11 @@ class Component < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
-  serialize :type_data
-  serialize :durability
-  serialize :power_connection
-  serialize :heat_connection
-  serialize :ammunition
+  serialize :type_data, coder: YAML
+  serialize :durability, coder: YAML
+  serialize :power_connection, coder: YAML
+  serialize :heat_connection, coder: YAML
+  serialize :ammunition, coder: YAML
 
   def self.ordered_by_name
     order(name: :asc)
@@ -81,6 +81,19 @@ class Component < ApplicationRecord
   end
 
   ransack_alias :name, :name_or_slug
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "ammunition", "component_class", "created_at", "description", "durability", "grade",
+      "heat_connection", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
+      "power_connection", "sc_identifier", "size", "slug", "store_image", "tracking_signal",
+      "type_data", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["manufacturer", "shop_commodities"]
+  end
 
   def self.item_types
     %w[

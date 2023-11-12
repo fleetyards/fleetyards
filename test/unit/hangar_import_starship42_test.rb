@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "hangar_importer"
-require "rsi/models_loader"
 
 class HangarImporterStarship42Test < ActiveSupport::TestCase
   let(:loader) { ::Rsi::ModelsLoader.new }

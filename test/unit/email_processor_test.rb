@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "email_processor"
 
 class EmailProcessorTest < ActiveSupport::TestCase
   test "#process" do

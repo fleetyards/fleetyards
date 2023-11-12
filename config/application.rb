@@ -1,25 +1,8 @@
-# frozen_string_literal: true
-
 require_relative "boot"
 
 require "rails/all"
 require "sprockets/railtie"
 require_relative "../lib/middleware/transform_parameters"
-
-# require 'rails'
-#
-# # Pick the frameworks you want:
-# require 'active_record/railtie' # this adds "active_model/railtie" for us
-# # require "active_storage/engine"
-# require 'action_controller/railtie'
-# require 'action_view/railtie'
-# require 'action_mailer/railtie'
-# require 'active_job/railtie'
-# require 'action_cable/engine'
-# # require "action_mailbox/engine"
-# # require "action_text/engine"
-# require 'rails/test_unit/railtie'
-# require 'sprockets/railtie'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -27,15 +10,21 @@ Bundler.require(*Rails.groups)
 
 module Fleetyards
   class Application < Rails::Application
-    config.load_defaults 7.0
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.1
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets])
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
     config.time_zone = "Berlin"
+    # config.eager_load_paths << Rails.root.join("extras")
 
     # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.default_locale = :en
@@ -64,7 +53,7 @@ module Fleetyards
 
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
-    config.middleware.use TransformParameters
+    config.middleware.use Middleware::TransformParameters
 
     config.app = config_for("app/main")
     config.maintainer = config_for("app/maintainer")

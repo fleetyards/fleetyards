@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "rsi/models_loader"
-
 module Loaders
   class ModelsJob < ::Loaders::BaseJob
     def perform

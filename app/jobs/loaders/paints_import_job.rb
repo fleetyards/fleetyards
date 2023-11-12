@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "paints_importer"
-
 module Loaders
   class PaintsImportJob < ::Loaders::BaseJob
     def perform

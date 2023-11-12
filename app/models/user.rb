@@ -127,6 +127,14 @@ class User < ApplicationRecord
 
   mount_uploader :avatar, AvatarUploader
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "avatar", "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
+      "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
+      "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube"
+    ]
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)

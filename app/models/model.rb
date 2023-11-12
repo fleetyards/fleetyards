@@ -232,9 +232,9 @@ class Model < ApplicationRecord
 
   enum dock_size: Dock.ship_sizes.keys.map(&:to_sym)
 
-  serialize :cargo_holds
-  serialize :quantum_fuel_tanks
-  serialize :hydrogen_fuel_tanks
+  serialize :cargo_holds, coder: YAML
+  serialize :quantum_fuel_tanks, coder: YAML
+  serialize :hydrogen_fuel_tanks, coder: YAML
 
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
@@ -270,6 +270,44 @@ class Model < ApplicationRecord
 
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "active", "angled_view", "angled_view_colored", "angled_view_colored_height",
+      "angled_view_colored_width", "angled_view_height", "angled_view_width", "base_model_id",
+      "beam", "brochure", "cargo", "cargo_holds", "classification", "created_at", "description",
+      "dock_size", "erkul_identifier", "fleetchart_image", "fleetchart_image_height",
+      "fleetchart_image_width", "fleetchart_offset_length", "focus", "front_view",
+      "front_view_colored", "front_view_colored_height", "front_view_colored_width",
+      "front_view_height", "front_view_width", "ground", "ground_acceleration",
+      "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
+      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value",
+      "images_count", "last_pledge_price", "last_updated_at", "length", "loaners_count",
+      "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
+      "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
+      "name", "notified", "on_sale", "pitch", "pledge_price", "price", "production_note",
+      "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
+      "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
+      "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
+      "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
+      "rsi_store_image", "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
+      "sc_identifier", "sc_length", "scm_speed", "scm_speed_acceleration",
+      "scm_speed_decceleration", "search", "side_view", "side_view_colored",
+      "side_view_colored_height", "side_view_colored_width", "side_view_height", "side_view_width",
+      "size", "slug", "store_image", "store_images_updated_at", "store_url", "top_view",
+      "top_view_colored", "top_view_colored_height", "top_view_colored_width", "top_view_height",
+      "top_view_width", "updated_at", "upgrade_kits_count", "videos_count", "yaw"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [
+      "addition", "components", "docks", "images", "loaners", "manufacturer", "model_hardpoints",
+      "model_loaners", "model_snub_crafts", "module_hardpoints", "module_packages", "modules",
+      "paints", "shop_commodities", "snub_crafts", "upgrade_kits", "upgrades", "vehicles",
+      "versions", "videos"
+    ]
+  end
 
   def self.ordered_by_name
     order(name: :asc)

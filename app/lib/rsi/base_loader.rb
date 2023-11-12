@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Rsi
   class BaseLoader
     attr_accessor :base_url

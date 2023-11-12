@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ScData
   class ShipsLoader < ::ScData::BaseLoader
     attr_accessor :components_loader, :hardpoints_loader

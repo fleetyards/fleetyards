@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hangar_importer"
-
 module Api
   module V1
     class HangarsController < ::Api::BaseController

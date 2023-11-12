@@ -23,6 +23,6 @@ class Message < ApplicationRecord
 
   validates :email, :from_raw, :to, presence: true
 
-  serialize :from_raw
-  serialize :to
+  serialize :from_raw, coder: YAML
+  serialize :to, coder: YAML
 end
