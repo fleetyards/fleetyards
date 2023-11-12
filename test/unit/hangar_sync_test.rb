@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "hangar_sync"
-require "rsi/models_loader"
 
 class HangarSyncTest < ActiveSupport::TestCase
   let(:loader) { ::Rsi::ModelsLoader.new }
@@ -17,7 +15,7 @@ class HangarSyncTest < ActiveSupport::TestCase
     end
   end
 
-  it "syncs all data" do
+  test "syncs all data" do
     result = ::HangarSync.new(input).run(user.id)
 
     assert_equal(

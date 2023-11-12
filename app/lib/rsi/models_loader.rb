@@ -1,7 +1,3 @@
-# frozen_string_literal: true
-
-require "rsi/base_loader"
-
 module Rsi
   class ModelsLoader < ::Rsi::BaseLoader
     attr_accessor :json_file_path, :vat_percent, :hardpoints_loader, :manufacturers_loader

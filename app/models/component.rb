@@ -60,11 +60,11 @@ class Component < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
-  serialize :type_data
-  serialize :durability
-  serialize :power_connection
-  serialize :heat_connection
-  serialize :ammunition
+  serialize :type_data, coder: YAML
+  serialize :durability, coder: YAML
+  serialize :power_connection, coder: YAML
+  serialize :heat_connection, coder: YAML
+  serialize :ammunition, coder: YAML
 
   def self.ordered_by_name
     order(name: :asc)

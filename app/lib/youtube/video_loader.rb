@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Youtube
   class VideoLoader
     attr_accessor :base_url, :channel_id, :api_key

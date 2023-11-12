@@ -232,9 +232,9 @@ class Model < ApplicationRecord
 
   enum dock_size: Dock.ship_sizes.keys.map(&:to_sym)
 
-  serialize :cargo_holds
-  serialize :quantum_fuel_tanks
-  serialize :hydrogen_fuel_tanks
+  serialize :cargo_holds, coder: YAML
+  serialize :quantum_fuel_tanks, coder: YAML
+  serialize :hydrogen_fuel_tanks, coder: YAML
 
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
