@@ -526,6 +526,9 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
           additionalProperties: false
+        typeData:
+          oneOf:
+          - "$ref": "#/components/schemas/ComponentQuantumDrive"
         size:
           type: string
         trackingSignal:
@@ -571,6 +574,45 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentQuantumDrive:
+      type: object
+      properties:
+        fuelRate:
+          type: number
+        jumpRange:
+          type: number
+        standardJump:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
+        splineJump:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
+      additionalProperties: false
+      required:
+      - fuelRate
+      - jumpRange
+      - standardJump
+      - splineJump
+      title: ComponentQuantumDrive
+    ComponentQuantumDriveJump:
+      type: object
+      properties:
+        speed:
+          type: number
+        stage1AccelerationRate:
+          type: number
+        stage2AccelerationRate:
+          type: number
+        spoolUpTime:
+          type: number
+        cooldown:
+          type: number
+      additionalProperties: false
+      required:
+      - speed
+      - stage1AccelerationRate
+      - stage2AccelerationRate
+      - spoolUpTime
+      - cooldown
+      title: ComponentQuantumDriveJump
     Dock:
       type: object
       properties:

@@ -21,6 +21,8 @@ export type { CommodityQuery } from './models/CommodityQuery';
 export { CommodityTypeEnum } from './models/CommodityTypeEnum';
 export type { Component } from './models/Component';
 export { ComponentClassEnum } from './models/ComponentClassEnum';
+export type { ComponentQuantumDrive } from './models/ComponentQuantumDrive';
+export type { ComponentQuantumDriveJump } from './models/ComponentQuantumDriveJump';
 export type { Dock } from './models/Dock';
 export type { DockCount } from './models/DockCount';
 export { DockShipSizeEnum } from './models/DockShipSizeEnum';

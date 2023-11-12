@@ -40,6 +40,8 @@ module ScData
         item_class: extract_item_class(description),
         description:,
         manufacturer: manufacturer || component.manufacturer,
+        item_type: item_type_mapping(component_data["Type"], component_data["Types"]),
+        component_class: component_class_mapping(component_data["Class"], component_data["Types"]),
         type_data: extract_type_data(component_data),
         durability: extract_durability(component_data),
         power_connection: extract_power_connection(component_data),
@@ -77,6 +79,92 @@ module ScData
 
     private def extract_ammunition(component_data)
       component_data["Ammunition"]&.transform_keys(&:underscore)
+    end
+
+    private def component_class_mapping(class_name, fallback_types = [])
+      class_mapping = {
+        "Shield generators" => "RSIModular",
+        "Armor" => "RSIModular",
+        "Power plants" => "RSIModular",
+        "Cargo grids" => "RSIModular",
+        "Missile racks" => "RSIWeapon",
+        "Missiles" => "RSIWeapon",
+        "Manned turrets" => "RSIWeapon",
+        "Remote turrets" => "RSIWeapon",
+        "Weapon hardpoints" => "RSIWeapon",
+        "EMP hardpoints" => "RSIWeapon",
+        "Countermeasures" => "RSIWeapon",
+        "UtilityTurret.MannedTurret" => "RSIWeapon",
+        "Mining hardpoints" => "RSIWeapon",
+        "Scanners" => "RSIAvionic",
+        "Radars" => "RSIAvionic",
+        "Quantum drives" => "RSIPropulsion",
+        "Fuel intakes" => "RSIPropulsion",
+        "Fuel tanks" => "RSIPropulsion",
+        "Quantum fuel tanks" => "RSIPropulsion",
+        "Main thrusters" => "RSIThruster",
+        "Maneuvering thrusters" => "RSIThruster",
+        "Retro thrusters" => "RSIThruster",
+        "VTOL thrusters" => "RSIThruster"
+      }
+
+      return class_mapping[class_name] if class_mapping[class_name].present?
+
+      if fallback_types.present?
+        found_type = fallback_types.find do |fallback_type|
+          class_mapping[fallback_type].present?
+        end
+
+        return class_mapping[found_type] if found_type.present?
+      end
+
+      nil
+    end
+
+    private def item_type_mapping(type, fallback_types = [])
+      type_mapping = {
+        "Shield.UNDEFINED" => "shield_generators",
+        "Cooler.UNDEFINED" => "coolers",
+        "PowerPlant.Power" => "power_plants",
+        "QuantumDrive.UNDEFINED" => "quantum_drives",
+        "WeaponGun.Gun" => "weapons",
+        "TurretBase.MannedTurret" => "manned_turrets",
+        "Turret.GunTurret" => "remote_turrets",
+        "Turret.MissileTurret" => "missile_turrets",
+        "Missile.Missile" => "missiles",
+        "MissileLauncher.MissileRack" => "missile_racks",
+        "WeaponMining.Gun" => "mining_lasers",
+        "UtilityTurret.MannedTurret" => "manned_utility_turrets",
+        "Armor.Medium" => "armor_medium",
+        "FuelIntake.Fuel" => "fuel_intakes",
+        "Fuel tanks" => "fuel_tanks",
+        "QuantumFuelTank.QuantumFuel" => "quantum_fuel_tanks",
+        "Scanners" => "scanners",
+        "Radar.MidRangeRadar" => "mid_range_radar",
+        "MainThruster.FixedThruster" => "thrusters",
+        "EMP.UNDEFINED" => "emp",
+        "EMP" => "emp",
+        "ManneuverThruster.JointThruster" => "joint_thrusters",
+        "ManneuverThruster.FixedThruster" => "fixed_thrusters",
+        # "" => "weapon_defensive",
+        "WeaponDefensive.CountermeasureLauncher" => "countermeasure_launcher",
+        "CargoGrid.UNDEFINED" => "cargo_grids",
+        "CargoGrid" => "cargo_grids"
+      }
+
+      if type_mapping[type].present?
+        return type_mapping[type]
+      end
+
+      if fallback_types.present?
+        found_type = fallback_types.find do |fallback_type|
+          type_mapping[fallback_type].present?
+        end
+
+        return type_mapping[found_type] if found_type.present?
+      end
+
+      nil
     end
 
     private def needs_translation?(string)

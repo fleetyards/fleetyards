@@ -51,9 +51,10 @@ en:
           fixed_thrusters: Fixed Thrusters
           fuel_intakes: Fuel Intakes
           fuel_tanks: Fuel Tanks
+          mid_range_radar: Midrange Radar
           joint_thrusters: Joint Thrusters
           manned_turrets: Manned Turrets
-          mid_range_radar: Midrange Radar
+          manned_utility_turrets: Manned Utility Turrets
           mining_lasers: Mining Lasers
           missile_racks: Missle Racks
           missile_turrets: Missile Turrets
@@ -68,6 +69,8 @@ en:
           turrets: Turrets
           weapon_defensive: Weapon Defensive
           weapons: Ship Weapons
+          emps: EMPs
+          armor_medium: Medium Armor
         tracking_signals:
           cross_section: Cross Section
           electromagnetic: Electromagnetic
