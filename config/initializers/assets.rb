@@ -15,4 +15,6 @@ Rails.application.config.assets.precompile += %w[error.css email.css]
 
 Rails.application.config.assets.configure do |env|
   env.export_concurrent = false
+  env.js_compressor = :uglifier
+  env.css_compressor = :sass
 end
