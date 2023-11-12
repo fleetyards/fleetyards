@@ -95,6 +95,7 @@ class Component < ApplicationRecord
       missile_turrets
       missiles
       missile_racks
+      manned_utility_turrets
       mining_lasers
       fuel_intakes
       fuel_tanks
@@ -107,6 +108,8 @@ class Component < ApplicationRecord
       weapon_defensive
       countermeasure_launcher
       cargo_grids
+      emps
+      armor_medium
     ]
   end
 

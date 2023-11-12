@@ -41,6 +41,12 @@ module Shared
               additionalProperties: false
             },
 
+            typeData: {
+              oneOf: [
+                {"$ref": "#/components/schemas/ComponentQuantumDrive"}
+              ]
+            },
+
             size: {type: :string},
             trackingSignal: {type: :string},
             trackingSignalLabel: {type: :string},
