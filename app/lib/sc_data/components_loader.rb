@@ -40,7 +40,7 @@ module ScData
         item_class: extract_item_class(description),
         description:,
         manufacturer: manufacturer || component.manufacturer,
-        item_type: type_mapping(component_data["Type"], component_data["Types"]),
+        item_type: item_type_mapping(component_data["Type"], component_data["Types"]),
         component_class: component_class_mapping(component_data["Class"], component_data["Types"]),
         type_data: extract_type_data(component_data),
         durability: extract_durability(component_data),
