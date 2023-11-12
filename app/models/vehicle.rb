@@ -107,6 +107,25 @@ class Vehicle < ApplicationRecord
     parent.table[:bought_via]
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "alternative_names", "beam", "bought_via", "classification", "created_at", "flagship",
+      "focus", "hangar_groups", "height", "hidden", "id", "id_value", "length", "loaner",
+      "manufacturer", "model_id", "model_paint_id", "module_package_id", "name", "name_visible",
+      "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rsi_pledge_id",
+      "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
+      "user_id", "vehicle_id", "wanted"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [
+      "fleet_vehicles", "hangar_groups", "model", "model_modules", "model_paint", "model_upgrades",
+      "module_package", "public_hangar_groups", "task_forces", "user", "vehicle_modules",
+      "vehicle_upgrades"
+    ]
+  end
+
   serialize :alternative_names, type: Array, coder: YAML
 
   def self.bought_via_filters

@@ -41,6 +41,18 @@ class FleetMembership < ApplicationRecord
     parent.table[:role]
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "hangar_group_id",
+      "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "primary", "requested_at",
+      "role", "ships_filter", "updated_at", "used_invite_token", "user_id", "username"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["fleet", "user"]
+  end
+
   validate_enum_attributes :ships_filter, :role
 
   validates :user_id, uniqueness: {scope: :fleet_id}

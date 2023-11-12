@@ -82,6 +82,16 @@ class CelestialObject < ApplicationRecord
   ransack_alias :name, :name_or_slug
   ransack_alias :search, :name_or_slug_or_starsystem_slug
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "code", "created_at", "description", "designation", "fairchanceact", "habitable", "hidden",
+      "id", "id_value", "last_updated_at", "name", "object_type", "orbit_period", "parent",
+      "parent_id", "rsi_id", "search", "sensor_danger", "sensor_economy", "sensor_population",
+      "size", "slug", "starsystem", "starsystem_id", "status", "store_image", "sub_type",
+      "updated_at"
+    ]
+  end
+
   def self.main
     where(parent_id: nil)
   end

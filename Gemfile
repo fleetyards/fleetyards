@@ -59,7 +59,7 @@ gem "useragent"
 gem "redis-actionpack"
 gem "redis-store"
 
-gem "ransack", "~> 2.0"
+gem "ransack"
 
 gem "deep_merge", require: "deep_merge/rails_compat"
 gem "jbuilder"

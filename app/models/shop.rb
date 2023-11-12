@@ -75,6 +75,15 @@ class Shop < ApplicationRecord
   ransack_alias :celestial_object, :station_celestial_object_slug
   ransack_alias :starsystem, :station_celestial_object_starsystem_slug
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "buying", "celestial_object", "commodity", "commodity_category", "component", "created_at",
+      "description", "equipment", "hidden", "id", "id_value", "location", "model", "name",
+      "refinery_terminal", "rental", "search", "selling", "shop_type", "slug", "starsystem",
+      "station", "station_id", "store_image", "updated_at"
+    ]
+  end
+
   before_validation :update_shop_commodities
   before_save :update_slugs
 

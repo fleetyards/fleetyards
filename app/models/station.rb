@@ -110,6 +110,15 @@ class Station < ApplicationRecord
   ransack_alias :celestial_object, :celestial_object_slug
   ransack_alias :search, :name_or_slug_or_celestial_object_starsystem_slug_or_celestial_object_slug
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "cargo_hub", "celestial_object", "celestial_object_id", "classification", "created_at",
+      "description", "habitable", "habs", "hidden", "id", "id_value", "images_count", "location",
+      "map", "name", "planet_id", "refinery", "search", "size", "slug", "starsystem",
+      "station_type", "status", "store_image", "updated_at"
+    ]
+  end
+
   validates :name, :station_type, presence: true
   validates :name, uniqueness: true
 

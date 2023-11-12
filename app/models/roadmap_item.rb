@@ -39,6 +39,15 @@ class RoadmapItem < ApplicationRecord
 
   ransack_alias :last_updated_at, :versions_created_at
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "active", "body", "committed", "completed", "created_at", "description", "id", "id_value",
+      "image", "inprogress", "last_updated_at", "model_id", "name", "release",
+      "release_description", "released", "rsi_category_id", "rsi_id", "rsi_release_id",
+      "store_image", "tasks", "updated_at"
+    ]
+  end
+
   def self.active
     where(active: true)
   end
