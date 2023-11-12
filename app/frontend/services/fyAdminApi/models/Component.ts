@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ComponentQuantumDrive } from './ComponentQuantumDrive';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
@@ -26,6 +27,7 @@ export type Component = {
     media: {
         storeImage?: MediaImage;
     };
+    typeData?: ComponentQuantumDrive;
     size?: string;
     trackingSignal?: string;
     trackingSignalLabel?: string;
