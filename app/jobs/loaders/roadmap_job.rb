@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "rsi/roadmap_loader"
 require "discord/roadmap_update"
 
 module Loaders
