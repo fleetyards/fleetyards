@@ -103,6 +103,10 @@ class Vehicle < ApplicationRecord
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
 
+  ransacker :bought_via, formatter: proc { |v| Vehicle.bought_via[v] } do |parent|
+    parent.table[:bought_via]
+  end
+
   serialize :alternative_names, type: Array, coder: YAML
 
   def self.bought_via_filters
