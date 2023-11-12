@@ -53,7 +53,7 @@ module Fleetyards
 
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
-    config.middleware.use TransformParameters
+    config.middleware.use Middleware::TransformParameters
 
     config.app = config_for("app/main")
     config.maintainer = config_for("app/maintainer")
