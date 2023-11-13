@@ -16,7 +16,10 @@ module Api
       end
 
       private def components_query_params
-        @components_query_params ||= query_params(:name_cont, id_in: [], name_in: [])
+        @components_query_params ||= query_params(
+          :name_cont,
+          id_in: [], name_in: [], item_type_in: [], manufacturer_slug_in: [], component_class_in: []
+        )
       end
     end
   end
