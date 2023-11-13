@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "rsi/models_loader"
 
 class RsiModelsLoaderTest < ActiveSupport::TestCase
   let(:loader) { ::Rsi::ModelsLoader.new }

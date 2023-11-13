@@ -139,9 +139,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Commodity"
+                "$ref": "#/components/schemas/Commodities"
   "/commodity-prices":
     post:
       summary: Create Commodity Price
@@ -244,9 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Component"
+                "$ref": "#/components/schemas/Components"
   "/equipment":
     get:
       summary: Equipment list
@@ -5118,6 +5114,21 @@ components:
       required:
       - taken
       title: Check
+    Commodities:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Commodity"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Commodities
     Commodity:
       type: object
       properties:
@@ -5244,6 +5255,9 @@ components:
             storeImage:
               "$ref": "#/components/schemas/MediaImage"
           additionalProperties: false
+        typeData:
+          oneOf:
+          - "$ref": "#/components/schemas/ComponentQuantumDrive"
         size:
           type: string
         trackingSignal:
@@ -5289,6 +5303,60 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentQuantumDrive:
+      type: object
+      properties:
+        fuelRate:
+          type: number
+        jumpRange:
+          type: number
+        standardJump:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
+        splineJump:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
+      additionalProperties: false
+      required:
+      - fuelRate
+      - jumpRange
+      - standardJump
+      - splineJump
+      title: ComponentQuantumDrive
+    ComponentQuantumDriveJump:
+      type: object
+      properties:
+        speed:
+          type: number
+        stage1AccelerationRate:
+          type: number
+        stage2AccelerationRate:
+          type: number
+        spoolUpTime:
+          type: number
+        cooldown:
+          type: number
+      additionalProperties: false
+      required:
+      - speed
+      - stage1AccelerationRate
+      - stage2AccelerationRate
+      - spoolUpTime
+      - cooldown
+      title: ComponentQuantumDriveJump
+    Components:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Component"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Components
     Dock:
       type: object
       properties:
@@ -8863,6 +8931,14 @@ components:
             type: string
             format: uuid
         nameIn:
+          type: array
+          items:
+            type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        componentClassIn:
           type: array
           items:
             type: string

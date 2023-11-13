@@ -40,6 +40,17 @@ class Commodity < ApplicationRecord
 
   ransack_alias :type, :commodity_type
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "commodity_type", "created_at", "description", "id", "id_value", "name", "slug",
+      "store_image", "type", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["shop_commodities"]
+  end
+
   validates :name, presence: true, uniqueness: true
   ransack_alias :name, :name_or_slug
 

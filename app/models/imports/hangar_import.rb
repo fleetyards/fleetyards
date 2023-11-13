@@ -30,7 +30,7 @@ module Imports
 
     after_create :set_import_data
 
-    serialize :import_data
+    serialize :import_data, coder: YAML
 
     def set_import_data
       data = JSON.parse(import.read)

@@ -54,7 +54,7 @@ Searchkick.disable_callbacks
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-  ActiveRecord::Migration.check_pending!
+  ActiveRecord::Migration.check_all_pending!
 
   fixtures :all
 
@@ -83,7 +83,7 @@ end
 
 # rubocop:disable Style/ClassAndModuleChildren
 class ActiveSupport::TestCase
-  ActiveRecord::Migration.check_pending!
+  ActiveRecord::Migration.check_all_pending!
 
   fixtures :all
 

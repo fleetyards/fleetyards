@@ -27,7 +27,7 @@
       width: 60px;
     }
 
-    .actions {
+    :deep(.actions) {
       min-width: 150px;
 
       &.actions-1x {
@@ -35,7 +35,7 @@
       }
     }
 
-    .store-image {
+    :deep(.store-image) {
       width: 178px;
       max-width: 100%;
 
@@ -68,6 +68,15 @@
         .image {
           width: 100px;
           height: 100px;
+        }
+      }
+
+      &.extra-small {
+        width: 64px;
+
+        .image {
+          width: 50px;
+          height: 50px;
         }
       }
     }
@@ -109,7 +118,7 @@
       vertical-align: middle;
     }
 
-    .name {
+    :deep(.name) {
       font-weight: normal;
       font-size: 22px;
       font-family: "Orbitron", sans-serif;

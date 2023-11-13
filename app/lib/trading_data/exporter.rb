@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module TradingData
   class Exporter
     attr_accessor :base_url, :json_file_path

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ScData
   class StarmapLoader < ::ScData::BaseLoader
     CATEGORIES_FOR_IMPORT = %w[Outpost Planet Station].freeze

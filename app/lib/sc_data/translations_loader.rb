@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ScData
   class TranslationsLoader < BaseLoader
     attr_accessor :translations

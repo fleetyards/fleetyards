@@ -15,6 +15,7 @@ export default {
   collapse: "Collapse",
   price: "Price",
   expand: "Expand",
+  distance: "Distance",
   anonymous: "Anonymous",
   toggleNavigation: "Toggle Navigation",
   enableYoutube:

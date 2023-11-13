@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Commodity } from '../models/Commodity';
+import type { Commodities } from '../models/Commodities';
 import type { CommodityQuery } from '../models/CommodityQuery';
 import type { FilterOption } from '../models/FilterOption';
 
@@ -28,7 +28,7 @@ export class CommoditiesService {
 
     /**
      * Commodities list
-     * @returns Commodity successful
+     * @returns Commodities successful
      * @throws ApiError
      */
     public commodities({
@@ -41,7 +41,7 @@ export class CommoditiesService {
         perPage?: string,
         q?: CommodityQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Commodity>> {
+    }): CancelablePromise<Commodities> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/commodities',

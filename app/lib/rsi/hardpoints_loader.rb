@@ -1,7 +1,3 @@
-# frozen_string_literal: true
-
-require "rsi/base_loader"
-
 module Rsi
   class HardpointsLoader < ::Rsi::BaseLoader
     attr_accessor :components_loader

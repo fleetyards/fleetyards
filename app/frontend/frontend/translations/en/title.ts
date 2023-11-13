@@ -63,6 +63,7 @@ export default {
   tools: {
     profitCalculator: "Profit Calculator",
     tradeRoutes: "Trade Routes",
+    travelTimes: "Travel Times",
   },
   commodities: "Commodities",
   impressum: "Impressum",

@@ -33,7 +33,11 @@ export default {
     },
   },
   rsiProfile: "RSI Profile",
-  tradeRoutes: "Trade Routes",
+  tools: {
+    index: "Tools",
+    tradeRoutes: "Trade Routes",
+    travelTimes: "Travel Times",
+  },
   api: "API Docs",
   stats: "Stats",
   toggleSlimCollapse: "Collapse",

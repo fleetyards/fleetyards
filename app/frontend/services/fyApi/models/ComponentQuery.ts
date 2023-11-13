@@ -7,5 +7,7 @@ export type ComponentQuery = {
     nameCont?: string;
     idIn?: Array<string>;
     nameIn?: Array<string>;
+    itemTypeIn?: Array<string>;
+    componentClassIn?: Array<string>;
 };
 

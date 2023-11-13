@@ -58,6 +58,16 @@ class TradeRoute < ApplicationRecord
   ransack_alias :commodity, :origin_commodity_item_of_Commodity_type_slug
   ransack_alias :commodity_type, :origin_commodity_item_of_Commodity_type_commodity_type
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "average_profit_per_unit", "average_profit_per_unit_percent", "commodity", "commodity_type",
+      "created_at", "destination_celestial_object_id", "destination_id",
+      "destination_starsystem_id", "destination_station_id", "id", "id_value",
+      "origin_celestial_object_id", "origin_id", "origin_starsystem_id", "origin_station_id",
+      "profit_per_unit", "profit_per_unit_percent", "updated_at"
+    ]
+  end
+
   before_save :calculate_profit
   before_save :set_location
 

@@ -26,7 +26,7 @@ class ScDataLoaderTest < ActiveSupport::TestCase
       model.update(sc_identifier: constellation_sc_data_id)
     end
 
-    test "it loads data from game files" do
+    it "loads data from game files" do
       VCR.use_cassette("sc_data_loader_one") do
         loader.load(model)
 

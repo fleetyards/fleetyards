@@ -27,7 +27,7 @@ class CommodityPrice < ApplicationRecord
   validates :price, presence: true
   validates :type, presence: true
 
-  serialize :submitters, Array
+  serialize :submitters, type: Array, coder: YAML
 
   before_save :check_submissions_for_auto_confirm
 

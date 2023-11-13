@@ -8,6 +8,15 @@ export const routes = [
       backgroundImage: "bg-7",
     },
   },
+  {
+    path: "travel-times/",
+    name: "travel-times",
+    component: () => import("@/frontend/pages/Tools/TravelTimes/index.vue"),
+    meta: {
+      title: "tools.travelTimes",
+      backgroundImage: "bg-8",
+    },
+  },
 ];
 
 export default routes;

@@ -1,7 +1,3 @@
-# frozen_string_literal: true
-
-require "rsi/base_loader"
-
 module Rsi
   class ComponentsLoader < ::Rsi::BaseLoader
     def run(component_data, hardpoint = nil)

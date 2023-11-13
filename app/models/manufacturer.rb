@@ -31,6 +31,17 @@ class Manufacturer < ApplicationRecord
 
   before_save :update_slugs
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for", "logo",
+      "long_name", "name", "rsi_id", "slug", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["components", "models"]
+  end
+
   def self.with_name
     where.not(name: nil)
   end

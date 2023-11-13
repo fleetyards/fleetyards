@@ -144,7 +144,26 @@
   }
 
   &.form-input-inline {
-    margin-bottom: 0;
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    gap: 10px;
+
+    > div {
+      flex-grow: 1;
+    }
+  }
+
+  &.form-input-align-left {
+    input {
+      text-align: left;
+    }
+  }
+
+  &.form-input-align-right {
+    input {
+      text-align: right;
+    }
   }
 
   &.has-error {

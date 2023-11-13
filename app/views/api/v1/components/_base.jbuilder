@@ -41,6 +41,12 @@ json.tracking_signal_label component.tracking_signal_label
 json.type component.item_type
 json.type_label component.item_type_label
 
+json.type_data do
+  if component.type_data.present? && component.item_type.present? && lookup_context.exists?(component.item_type, "api/v1/components", true)
+    json.partial! "api/v1/components/#{component.item_type}", component: component
+  end
+end
+
 json.partial! "api/shared/dates", record: component
 
 # DEPRECATED

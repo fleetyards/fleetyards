@@ -62,14 +62,7 @@
               :label="t('nav.images')"
               icon="fad fa-images"
             />
-            <NavItem
-              :to="{
-                name: 'trade-routes',
-                query: filterFor('trade-routes'),
-              }"
-              :label="t('nav.tradeRoutes')"
-              icon="fad fa-pallet-alt"
-            />
+            <ToolsNav />
             <NavItem
               :to="{ name: 'roadmap' }"
               :label="t('nav.roadmap.index')"
@@ -97,6 +90,7 @@ import NavItem from "./NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import StationsNav from "./StationsNav/index.vue";
+import ToolsNav from "./ToolsNav/index.vue";
 import NavFooter from "./NavFooter/index.vue";
 import CompareNav from "./CompareNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";

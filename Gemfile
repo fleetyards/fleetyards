@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby File.read(".ruby-version").chomp
 
-gem "rails", "7.0.8"
+gem "rails", "7.1.2"
 
 gem "pg", "~> 1.0"
 
@@ -59,7 +59,7 @@ gem "useragent"
 gem "redis-actionpack"
 gem "redis-store"
 
-gem "ransack", "~> 2.4"
+gem "ransack"
 
 gem "deep_merge", require: "deep_merge/rails_compat"
 gem "jbuilder"

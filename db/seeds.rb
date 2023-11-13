@@ -7,8 +7,6 @@ system("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_a
 puts ""
 
 if ENV["TEST_SEEDS"].present?
-  require "rsi/models_loader"
-
   ::Rsi::ModelsLoader.new(vat_percent: Rails.configuration.rsi.vat_percent).all
 
   model = Model.first

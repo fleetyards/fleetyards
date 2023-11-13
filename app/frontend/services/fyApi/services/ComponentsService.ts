@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Component } from '../models/Component';
 import type { ComponentQuery } from '../models/ComponentQuery';
+import type { Components } from '../models/Components';
 import type { FilterOption } from '../models/FilterOption';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -41,7 +41,7 @@ export class ComponentsService {
 
     /**
      * Components list
-     * @returns Component successful
+     * @returns Components successful
      * @throws ApiError
      */
     public components({
@@ -54,7 +54,7 @@ export class ComponentsService {
         perPage?: string,
         q?: ComponentQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Component>> {
+    }): CancelablePromise<Components> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/components',

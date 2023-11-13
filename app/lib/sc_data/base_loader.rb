@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ScData
   class BaseLoader
     def s3_base_url

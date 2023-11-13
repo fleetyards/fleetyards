@@ -90,6 +90,7 @@ type Props = {
   suffix?: string;
   variant?: "default" | "clean";
   size?: "default" | "large";
+  alignment?: "left" | "right";
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -114,6 +115,7 @@ const props = withDefaults(defineProps<Props>(), {
   suffix: undefined,
   variant: "default",
   size: "default",
+  alignment: "left",
 });
 
 watch(
@@ -192,6 +194,8 @@ const cssClasses = computed(() => {
     "form-input-clearable": props.clearable,
     "form-input-disabled": props.disabled,
     "form-input-inline": props.inline,
+    "form-input-align-left": props.alignment === "left",
+    "form-input-align-right": props.alignment === "right",
     [`form-input-${props.type}`]: true,
   };
 });

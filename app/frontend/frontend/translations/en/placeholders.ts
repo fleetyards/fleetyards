@@ -12,6 +12,7 @@ export default {
   discord: "Discord Server",
   youtube: "Youtube Channel",
   twitch: "Twitch Channel",
+  distance: "Distance",
   guilded: "Guilded Server",
   color: "Color",
   fleetInviteToken: "Fleet Invite",
