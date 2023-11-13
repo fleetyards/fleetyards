@@ -32,6 +32,7 @@ namespace :frontend, **frontend_options do
   get "tools/profit-calculator" => "base#index"
   get "tools/trade-routes" => "base#index"
   get "trade-routes", to: redirect("/tools/trade-routes")
+  get "tools/travel-times" => "base#index"
 
   get "stations" => "base#index", :as => :stations
   get "shops" => "base#index", :as => :shops
