@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.29](https://github.com/fleetyards/fleetyards/compare/v5.27.28...v5.27.29) (2023-11-17)
+
+
+### Bug Fixes
+
+* **images:** fallback to direct cdn host ([096983b](https://github.com/fleetyards/fleetyards/commit/096983be712ae917277aeb06cb41e86a6512dc9b))
+
 ### [5.27.28](https://github.com/fleetyards/fleetyards/compare/v5.27.27...v5.27.28) (2023-11-17)
 
 ### [5.27.27](https://github.com/fleetyards/fleetyards/compare/v5.27.26...v5.27.27) (2023-11-17)
