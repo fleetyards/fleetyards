@@ -48,6 +48,10 @@ class RoadmapItem < ApplicationRecord
     ]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["model", "versions"]
+  end
+
   def self.active
     where(active: true)
   end

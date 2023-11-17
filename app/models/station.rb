@@ -119,6 +119,10 @@ class Station < ApplicationRecord
     ]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["celestial_object", "docks", "habitations", "images", "shops"]
+  end
+
   validates :name, :station_type, presence: true
   validates :name, uniqueness: true
 
