@@ -67,10 +67,10 @@ jobs:
       - name: Prefill DB
         run: bundle exec rails db:seed
       - name: Cypress run
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v6
         with:
           start: bundle exec puma -C config/puma.rb
-          wait-on: 'http://localhost:8270'
+          wait-on: "http://localhost:8270"
           wait-on-timeout: 120
           browser: chrome
           record: true
