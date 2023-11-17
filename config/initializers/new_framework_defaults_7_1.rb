@@ -45,7 +45,7 @@
 # +config.active_support.key_generator_hash_digest_class+ configured as SHA1 (the default
 # before Rails 7.0), you need to configure SHA-1 for Active Record Encryption too:
 #++
-Rails.application.config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA1
+# Rails.application.config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA1
 #
 # 2. If you have +config.active_support.key_generator_hash_digest_class+ configured as SHA256 (the new default
 # in 7.0), then you need to configure SHA-256 for Active Record Encryption:
@@ -55,7 +55,7 @@ Rails.application.config.active_record.encryption.hash_digest_class = OpenSSL::D
 # 3. If you don't currently have data encrypted with Active Record encryption, you can disable this setting to
 # configure the default behavior starting 7.1+:
 #++
-# Rails.application.config.active_record.encryption.support_sha1_for_non_deterministic_encryption = false
+Rails.application.config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
 
 ###
 # No longer run after_commit callbacks on the first of multiple Active Record
