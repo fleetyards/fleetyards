@@ -92,6 +92,10 @@ class CelestialObject < ApplicationRecord
     ]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["affiliations", "factions", "moons", "parent", "starsystem"]
+  end
+
   def self.main
     where(parent_id: nil)
   end
