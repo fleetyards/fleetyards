@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
   post "/emails/inbound" => "inbound_emails#create"
 
+  if Rails.env.production?
+    match "/uploads/(*path)", to: redirect { |_params, request| "//cdn.fleetyards.net#{request.fullpath}" }, via: [:get, :head]
+  end
+
   match "404" => "errors#not_found", :via => :all
   match "405" => "errors#method_not_allowed", :via => :all
   match "422" => "errors#unprocessable_entity", :via => :all
