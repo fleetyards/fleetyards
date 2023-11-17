@@ -31,6 +31,10 @@ class HangarGroup < ApplicationRecord
   after_save :touch_vehicles
   after_commit :broadcast_update
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["color", "created_at", "id", "id_value", "name", "public", "slug", "sort", "updated_at", "user_id"]
+  end
+
   def broadcast_update
     HangarChannel.broadcast_to(user, {}.to_json)
   end
