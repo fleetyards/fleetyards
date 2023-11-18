@@ -84,6 +84,10 @@ class Shop < ApplicationRecord
     ]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["shop_commodities", "station"]
+  end
+
   before_validation :update_shop_commodities
   before_save :update_slugs
 
