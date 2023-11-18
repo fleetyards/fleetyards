@@ -14,15 +14,16 @@ Rails.application.configure do
     cable_endpoint = "#{cable_uri.scheme}://#{cable_uri.host}"
     admin_uri = URI.parse(ADMIN_ENDPOINT)
     admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
+    cdn_endpoint = Rails.application.credentials.carrierwave_cloud_cdn_endpoint
 
     connect_src = [
-      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, "https://img.youtube.com",
-      "https://sentry.io", "https://fonts.googleapis.com", "https://fonts.gstatic.com",
-      "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
+      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, cdn_endpoint,
+      "https://img.youtube.com", "https://sentry.io", "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
       "https://www.gstatic.com"
-    ]
+    ].compact
 
     connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development?
     connect_src.push("ws://127.0.0.1:3035", "http://127.0.0.1:3035", "ws://127.0.0.1:3136", "http://127.0.0.1:3136") if Rails.env.development?
@@ -48,9 +49,9 @@ Rails.application.configure do
     ]
 
     img_src = [
-      :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint,
-      Rails.application.credentials.carrierwave_cloud_cdn_endpoint, Rails.configuration.rsi.endpoint,
-      "https://img.youtube.com", "https://img.buymeacoffee.com", "https://validator.swagger.io"
+      :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint, cdn_endpoint,
+      Rails.configuration.rsi.endpoint, "https://img.youtube.com", "https://img.buymeacoffee.com",
+      "https://validator.swagger.io"
     ].compact
 
     font_src = [
