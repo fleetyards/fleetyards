@@ -16,7 +16,8 @@ Rails.application.configure do
     admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
 
     connect_src = [
-      :self, :data, cable_endpoint, api_endpoint, admin_endpoint, "https://img.youtube.com",
+      :self, :data, cable_endpoint, api_endpoint, admin_endpoint,
+      Rails.application.credentials.carrierwave_cloud_cdn_endpoint, "https://img.youtube.com",
       "https://sentry.io", "https://fonts.googleapis.com", "https://fonts.gstatic.com",
       "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
