@@ -57,8 +57,6 @@ module Rsi
 
       prices.compact.sort!
 
-      debugger
-
       self.currency_factor = prices.first / REFRENCE_MODEL_PRICE if prices.present?
     end
 

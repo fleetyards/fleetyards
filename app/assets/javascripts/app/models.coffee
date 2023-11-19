@@ -27,7 +27,7 @@ window.App.Models.reload = ($element) ->
     dataType: "JSON"
     success: ->
       App.Models.workerPath = $element.data('workerpath')
-      displayAlert I18n.t("messages.reload.startet", resource: I18n.t("resources.models"))
+      displayAlert I18n.t("messages.reload.started", resource: I18n.t("resources.models"))
       App.Models.loadInterval = setInterval ->
         App.Models.checkWorkerState(laddaButton, $element)
       , 10000
