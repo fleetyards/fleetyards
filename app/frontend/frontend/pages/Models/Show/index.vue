@@ -193,7 +193,7 @@
                   :width="fleetchartLength"
                 />
               </div>
-              <div class="small">
+              <div>
                 <img
                   v-if="fleetchartImageFront"
                   :src="fleetchartImageFront"
