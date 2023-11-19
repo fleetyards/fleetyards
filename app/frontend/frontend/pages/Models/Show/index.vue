@@ -397,7 +397,7 @@ const fleetchartBeam = computed(() => {
   }
 
   if (modelLength.value > modelBeam.value) {
-    return (maxFleetchartWidth.value * modelLength.value) / modelBeam.value;
+    return (maxFleetchartWidth.value * modelBeam.value) / modelLength.value;
   }
 
   return maxFleetchartWidth.value;
