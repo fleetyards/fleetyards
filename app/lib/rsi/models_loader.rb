@@ -46,7 +46,7 @@ module Rsi
 
       reference_model = Model.find_by(rsi_id: REFRENCE_MODEL_ID)
 
-      return if reference_model.blank?
+      return if reference_model.blank? || reference_model.last_pledge_price.blank?
 
       response = fetch_remote("#{base_url}/pledge/ships/origin-300/300i?#{Time.zone.now.to_i}")
 
