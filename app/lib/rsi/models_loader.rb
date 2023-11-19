@@ -1,17 +1,21 @@
 module Rsi
   class ModelsLoader < ::Rsi::BaseLoader
-    attr_accessor :json_file_path, :vat_percent, :hardpoints_loader, :manufacturers_loader
+    REFRENCE_MODEL_PRICE = 60
+
+    attr_accessor :json_file_path, :vat_percent, :hardpoints_loader, :manufacturers_loader, :currency_factor
 
     def initialize(options = {})
       super
 
       self.json_file_path = "public/models.json"
-      self.vat_percent = options[:vat_percent] || 0
+      self.vat_percent = options[:vat_percent] || 19
       self.manufacturers_loader = ::Rsi::ManufacturersLoader.new
       self.hardpoints_loader = ::Rsi::HardpointsLoader.new
     end
 
     def all
+      setup_currency_factor
+
       models = load_models
 
       models.each do |data|
@@ -24,15 +28,36 @@ module Rsi
     end
 
     def one(rsi_id)
+      setup_currency_factor
+
       models = load_models
 
-      model_data = models.find { |model| model["id"] == rsi_id.to_s }
+      model_data = models.find { |model| model["id"].to_s == rsi_id.to_s }
 
       return if model_data.blank?
 
       sync_model(model_data) unless blocked(rsi_id)
 
       cleanup_variants
+    end
+
+    def setup_currency_factor
+      return if prevent_extra_server_requests?
+
+      response = fetch_remote("#{base_url}/pledge/ships/origin-300/300i?#{Time.zone.now.to_i}")
+
+      return unless response.success?
+
+      page = Nokogiri::HTML(response.body)
+
+      prices = []
+      (page.css("#buying-options .final-price") || []).each do |price_element|
+        prices << extract_price(price_element)
+      end
+
+      prices.compact.sort!
+
+      self.currency_factor = prices.first / REFRENCE_MODEL_PRICE if prices.present?
     end
 
     def load_models
@@ -61,7 +86,7 @@ module Rsi
         create_or_update_model(data)
       end
 
-      load_buying_options(model) unless Rails.env.test?
+      load_buying_options(model) unless prevent_extra_server_requests?
 
       unless paint?(data)
         manufacturers_loader.run(data["manufacturer"], model)
@@ -89,16 +114,31 @@ module Rsi
         prices << extract_price(price_element)
       end
 
-      prices.compact.sort!
+      prices = prices.compact.sort
 
-      model.pledge_price = prices.first if prices.present?
-      model.on_sale = prices.present?
+      if currency_factor.present? && currency_factor > 0 && prices.present?
+        model.pledge_price = (prices.first / currency_factor).round
+        model.on_sale = true
+      elsif prices.present?
+        model.pledge_price = prices.first
+        model.on_sale = true
+      else
+        model.on_sale = false
+      end
     end
 
     private def extract_price(element)
       raw_price = element.text
-      price_match = raw_price.match(/^\$(\d?,?\d+.\d+) USD$/)
-      price_with_local_vat = price_match[1].gsub(/[$,]/, "").to_d if price_match.present?
+
+      price_match_usd = raw_price.match(/^\$(\d?,?\d+.\d+) USD$/)
+      price_match_eur = raw_price.match(/^€(\d?,?\d+.\d+) EUR$/)
+
+      price_with_local_vat = if price_match_usd.present?
+        price_match_usd[1].gsub(/[$,]/, "").to_d
+      elsif price_match_eur.present?
+        price_match_eur[1].gsub(/[€,]/, "").to_d
+      end
+
       price_with_local_vat * 100 / (vat_percent + 100) if price_with_local_vat.present?
     end
 

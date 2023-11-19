@@ -57,6 +57,11 @@ en:
         username: Username
       video:
         url: URL or YouTube ID
+      model:
+        hidden: Hidden?
+        active: Active?
+        ground: Ground?
+        on_sale: On Sale?
     prompt:
       celestial_object:
         starsystem: Please select a Starsystem

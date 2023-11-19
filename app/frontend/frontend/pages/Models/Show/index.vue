@@ -100,24 +100,20 @@
               </Panel>
               <div class="page-actions page-actions-block">
                 <Btn
-                  v-if="
-                    model.onSale && (model.pledgePrice || model.lastPledgePrice)
-                  "
-                  :href="`${model.storeUrl}#buying-options`"
+                  v-if="model.onSale && price"
+                  :href="`${model.links.storeUrl}#buying-options`"
                   style="flex-grow: 3"
                 >
                   {{
                     t("actions.model.onSale", {
-                      price: toDollar(
-                        model.pledgePrice || model.lastPledgePrice,
-                      ),
+                      price: toDollar(price),
                     })
                   }}
                   <small class="price-info">
                     {{ t("labels.taxExcluded") }}
                   </small>
                 </Btn>
-                <Btn v-else :href="model.storeUrl" style="flex-grow: 3">
+                <Btn v-else :href="model.links.storeUrl" style="flex-grow: 3">
                   {{ t("actions.model.store") }}
                 </Btn>
 
@@ -191,36 +187,9 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12">
-              <div class="fleetchart-views">
-                <div>
-                  <img
-                    v-if="fleetchartImageAngled"
-                    :src="fleetchartImageAngled"
-                  />
-                </div>
-                <div>
-                  <img v-if="fleetchartImageTop" :src="fleetchartImageTop" />
-                </div>
-                <div class="small">
-                  <img
-                    v-if="fleetchartImageFront"
-                    :src="fleetchartImageFront"
-                  />
-                </div>
-                <div>
-                  <img v-if="fleetchartImageSide" :src="fleetchartImageSide" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <FleetchartImages v-if="model" :model="model" />
           <hr />
-          <div class="row components">
-            <div class="col-12">
-              <Hardpoints :model="model" />
-            </div>
-          </div>
+          <Hardpoints v-if="model" :model="model" />
         </div>
       </div>
 
@@ -244,6 +213,7 @@ import LoanersList from "@/frontend/components/Models/LoanersList/index.vue";
 import VariantsList from "@/frontend/components/Models/VariantsList/index.vue";
 import UpgradesList from "@/frontend/components/Models/UpgradesList/index.vue";
 import ModulesList from "@/frontend/components/Models/ModulesList/index.vue";
+import FleetchartImages from "@/frontend/components/Models/FleetchartImages/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
@@ -323,70 +293,6 @@ const storeImage = computed(() => {
   return fallbackImageJpg;
 });
 
-const fleetchartImageAngled = computed(() => {
-  if (model.value?.media.angledViewColored) {
-    if (mobile.value) {
-      return model.value?.media.angledViewColored.medium;
-    }
-
-    return model.value?.media.angledViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.angledView) {
-    return model.value?.media.angledView.medium;
-  }
-
-  return model.value?.media.angledView?.large;
-});
-
-const fleetchartImageFront = computed(() => {
-  if (model.value?.media.frontViewColored) {
-    if (mobile.value) {
-      return model.value?.media.frontViewColored.medium;
-    }
-
-    return model.value?.media.frontViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.frontView) {
-    return model.value?.media.frontView.medium;
-  }
-
-  return model.value?.media.frontView?.large;
-});
-
-const fleetchartImageTop = computed(() => {
-  if (model.value?.media.topViewColored) {
-    if (mobile.value) {
-      return model.value?.media.topViewColored.medium;
-    }
-
-    return model.value?.media.topViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.topView) {
-    return model.value?.media.topView.medium;
-  }
-
-  return model.value?.media.topView?.large;
-});
-
-const fleetchartImageSide = computed(() => {
-  if (model.value?.media.sideViewColored) {
-    if (mobile.value) {
-      return model.value?.media.sideViewColored.medium;
-    }
-
-    return model.value?.media.sideViewColored.large;
-  }
-
-  if (mobile.value && model.value?.media.sideView?.medium) {
-    return model.value?.media.sideView.medium;
-  }
-
-  return model.value?.media.sideView?.large;
-});
-
 const starship42Url = computed(
   () => `https://starship42.com/inverse/?ship=${model.value?.name}&mode=color`,
 );
@@ -444,6 +350,14 @@ const crumbs = computed(() => {
 });
 
 const shareUrl = computed(() => window.location.href);
+
+const price = computed(() => {
+  if (!model.value) {
+    return undefined;
+  }
+
+  return model.value.pledgePrice || model.value.lastPledgePrice;
+});
 
 onMounted(() => {
   if (route.query.holoviewer) {

@@ -5,7 +5,9 @@ runs:
   steps:
     - uses: actions/cache@v3
       with:
-        path: "**/node_modules"
+        path: |
+          "**/node_modules"
+          "/home/runner/.cache/Cypress"
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
     - run: yarn install
       shell: bash

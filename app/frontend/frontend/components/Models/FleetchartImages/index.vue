@@ -1,16 +1,32 @@
 <template>
   <div v-if="hasImages" class="fleetchart-views">
     <div>
-      <img v-if="fleetchartImageAngled" :src="fleetchartImageAngled" />
+      <img
+        v-if="fleetchartImageAngled"
+        :src="fleetchartImageAngled"
+        :width="length > beam ? length : beam"
+      />
     </div>
     <div>
-      <img v-if="fleetchartImageTop" :src="fleetchartImageTop" />
-    </div>
-    <div class="small">
-      <img v-if="fleetchartImageFront" :src="fleetchartImageFront" />
+      <img
+        v-if="fleetchartImageTop"
+        :src="fleetchartImageTop"
+        :width="length"
+      />
     </div>
     <div>
-      <img v-if="fleetchartImageSide" :src="fleetchartImageSide" />
+      <img
+        v-if="fleetchartImageFront"
+        :src="fleetchartImageFront"
+        :width="beam"
+      />
+    </div>
+    <div>
+      <img
+        v-if="fleetchartImageSide"
+        :src="fleetchartImageSide"
+        :width="length"
+      />
     </div>
   </div>
 </template>
@@ -98,6 +114,58 @@ const fleetchartImageSide = computed(() => {
   }
 
   return props.model.media.sideView?.large;
+});
+
+const windowWidth = ref(window.innerWidth / 2);
+
+const maxFleetchartWidth = computed(
+  () => windowWidth.value - (windowWidth.value / 100) * 40,
+);
+
+const length = computed(() => {
+  if (!props.model) {
+    return 0;
+  }
+
+  if (modelBeam.value > modelLength.value) {
+    return (maxFleetchartWidth.value * modelLength.value) / modelBeam.value;
+  }
+
+  return maxFleetchartWidth.value;
+});
+
+const beam = computed(() => {
+  if (!props.model) {
+    return 0;
+  }
+
+  if (modelLength.value > modelBeam.value) {
+    return (maxFleetchartWidth.value * modelBeam.value) / modelLength.value;
+  }
+
+  return maxFleetchartWidth.value;
+});
+
+const modelLength = computed(() => {
+  if (!props.model || !props.model.metrics.fleetchartLength) {
+    return 1;
+  }
+
+  return props.model.metrics.fleetchartLength;
+});
+
+const modelBeam = computed(() => {
+  if (!props.model || !props.model.metrics.beam) {
+    return 1;
+  }
+
+  return props.model.metrics.beam;
+});
+
+onMounted(() => {
+  window.addEventListener("resize", () => {
+    windowWidth.value = window.innerWidth / 2;
+  });
 });
 </script>
 

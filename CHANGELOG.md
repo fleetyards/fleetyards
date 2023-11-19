@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.39](https://github.com/fleetyards/fleetyards/compare/v5.27.38...v5.27.39) (2023-11-19)
+
+### [5.27.38](https://github.com/fleetyards/fleetyards/compare/v5.27.37...v5.27.38) (2023-11-19)
+
+### [5.27.37](https://github.com/fleetyards/fleetyards/compare/v5.27.36...v5.27.37) (2023-11-19)
+
+### [5.27.36](https://github.com/fleetyards/fleetyards/compare/v5.27.35...v5.27.36) (2023-11-19)
+
+### [5.27.35](https://github.com/fleetyards/fleetyards/compare/v5.27.34...v5.27.35) (2023-11-19)
+
+### [5.27.34](https://github.com/fleetyards/fleetyards/compare/v5.27.33...v5.27.34) (2023-11-19)
+
+### [5.27.33](https://github.com/fleetyards/fleetyards/compare/v5.27.32...v5.27.33) (2023-11-19)
+
+### [5.27.32](https://github.com/fleetyards/fleetyards/compare/v5.27.31...v5.27.32) (2023-11-18)
+
+### [5.27.31](https://github.com/fleetyards/fleetyards/compare/v5.27.30...v5.27.31) (2023-11-18)
+
+### [5.27.30](https://github.com/fleetyards/fleetyards/compare/v5.27.29...v5.27.30) (2023-11-18)
+
+### [5.27.29](https://github.com/fleetyards/fleetyards/compare/v5.27.28...v5.27.29) (2023-11-17)
+
+
+### Bug Fixes
+
+* **images:** fallback to direct cdn host ([096983b](https://github.com/fleetyards/fleetyards/commit/096983be712ae917277aeb06cb41e86a6512dc9b))
+
+### [5.27.28](https://github.com/fleetyards/fleetyards/compare/v5.27.27...v5.27.28) (2023-11-17)
+
+### [5.27.27](https://github.com/fleetyards/fleetyards/compare/v5.27.26...v5.27.27) (2023-11-17)
+
+### [5.27.26](https://github.com/fleetyards/fleetyards/compare/v5.27.25...v5.27.26) (2023-11-17)
+
+### [5.27.25](https://github.com/fleetyards/fleetyards/compare/v5.27.24...v5.27.25) (2023-11-17)
+
 ### [5.27.24](https://github.com/fleetyards/fleetyards/compare/v5.27.23...v5.27.24) (2023-11-12)
 
 ### [5.27.23](https://github.com/fleetyards/fleetyards/compare/v5.27.22...v5.27.23) (2023-11-10)

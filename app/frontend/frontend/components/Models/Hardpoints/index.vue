@@ -1,58 +1,60 @@
 <template>
-  <div id="hardpoints">
-    <div v-if="erkulUrl" class="d-flex justify-content-center">
-      <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
-        <small>{{ t("labels.erkul.prefix") }}</small>
-        <i />
-        {{ t("labels.erkul.link") }}
-      </Btn>
-    </div>
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-4">
-        <HardpointGroup
-          v-for="group in [
-            ModelHardpointGroupEnum.AVIONIC,
-            ModelHardpointGroupEnum.SYSTEM,
-          ]"
-          :key="group"
-          :group="group"
-          :hardpoints="hardpointsForGroup(group)"
-        />
+  <div id="hardpoints" class="row components">
+    <div class="col-12">
+      <div v-if="erkulUrl" class="d-flex justify-content-center">
+        <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">
+          <small>{{ t("labels.erkul.prefix") }}</small>
+          <i />
+          {{ t("labels.erkul.link") }}
+        </Btn>
       </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <HardpointGroup
-          v-for="group in [
-            ModelHardpointGroupEnum.PROPULSION,
-            ModelHardpointGroupEnum.THRUSTER,
-          ]"
-          :key="group"
-          :group="group"
-          :hardpoints="hardpointsForGroup(group)"
-        />
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <HardpointGroup
+            v-for="group in [
+              ModelHardpointGroupEnum.AVIONIC,
+              ModelHardpointGroupEnum.SYSTEM,
+            ]"
+            :key="group"
+            :group="group"
+            :hardpoints="hardpointsForGroup(group)"
+          />
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <HardpointGroup
+            v-for="group in [
+              ModelHardpointGroupEnum.PROPULSION,
+              ModelHardpointGroupEnum.THRUSTER,
+            ]"
+            :key="group"
+            :group="group"
+            :hardpoints="hardpointsForGroup(group)"
+          />
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <HardpointGroup
+            v-for="group in [ModelHardpointGroupEnum.WEAPON]"
+            :key="group"
+            :group="group"
+            :hardpoints="hardpointsForGroup(group)"
+          />
+        </div>
       </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <HardpointGroup
-          v-for="group in [ModelHardpointGroupEnum.WEAPON]"
-          :key="group"
-          :group="group"
-          :hardpoints="hardpointsForGroup(group)"
-        />
+      <div v-if="scunpackedUrl" class="d-flex justify-content-end">
+        <Btn
+          :href="scunpackedUrl"
+          variant="link"
+          :mobile-block="true"
+          class="scunpacked-link"
+        >
+          <small>{{ t("labels.scunpacked.prefix") }}</small>
+          <i>
+            {{ t("labels.scunpacked.link") }}
+          </i>
+        </Btn>
       </div>
+      <Loader :loading="isLoading || isFetching" :fixed="true" />
     </div>
-    <div v-if="scunpackedUrl" class="d-flex justify-content-end">
-      <Btn
-        :href="scunpackedUrl"
-        variant="link"
-        :mobile-block="true"
-        class="scunpacked-link"
-      >
-        <small>{{ t("labels.scunpacked.prefix") }}</small>
-        <i>
-          {{ t("labels.scunpacked.link") }}
-        </i>
-      </Btn>
-    </div>
-    <Loader :loading="isLoading || isFetching" :fixed="true" />
   </div>
 </template>
 

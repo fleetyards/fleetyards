@@ -36,6 +36,13 @@ class Dock < ApplicationRecord
     parent.table[:ship_size]
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "beam", "created_at", "dock_type", "group", "height", "id", "id_value", "length",
+      "max_ship_size", "min_ship_size", "model_id", "name", "ship_size", "station_id", "updated_at"
+    ]
+  end
+
   SHIP_SIZE_METRICS = {
     extra_extra_small: {
       x: 12,

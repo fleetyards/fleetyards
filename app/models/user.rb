@@ -135,6 +135,13 @@ class User < ApplicationRecord
     ]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    [
+      "fleet_memberships", "fleets", "manufacturers", "models", "public_models", "public_vehicles",
+      "purchased_vehicles", "vehicle_modules", "vehicle_upgrades", "vehicles", "wanted_vehicles"
+    ]
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)

@@ -68,6 +68,10 @@ class TradeRoute < ApplicationRecord
     ]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["destination", "destination_celestial_object", "destination_starsystem", "destination_station", "origin", "origin_celestial_object", "origin_starsystem", "origin_station"]
+  end
+
   before_save :calculate_profit
   before_save :set_location
 

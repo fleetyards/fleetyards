@@ -130,7 +130,26 @@ class ShopCommodity < ApplicationRecord
 
   attr_accessor :commodity_item_selected
 
-  ransack_alias :name, :model_name_or_component_name_or_commodity_name_or_equipment_name_or_model_module_name_or_model_paint_name
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "average_buy_price", "average_rental_price_1_day", "average_rental_price_30_days",
+      "average_rental_price_3_days", "average_rental_price_7_days", "average_sell_price",
+      "buy_price", "commodity_item_id", "commodity_item_type", "confirmed", "created_at", "id",
+      "id_value", "price_per_unit", "rental_price_1_day", "rental_price_30_days",
+      "rental_price_3_days", "rental_price_7_days", "sell_price", "shop_id", "submitted_by",
+      "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [
+      "commodity", "commodity_buy_prices", "commodity_item", "commodity_rental_prices",
+      "commodity_sell_prices", "component", "equipment", "model", "model_module", "model_paint",
+      "shop", "submitter", "trade_route_destinations", "trade_route_origins"
+    ]
+  end
+
+  ransack_alias :name, :model_name_or_component_name_or_commodity_name_or_equipment_name_or_model_module_name
   ransack_alias :category, :commodity_item_type
   ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
   ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug

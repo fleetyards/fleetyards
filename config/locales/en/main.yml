@@ -279,6 +279,8 @@ en:
     starsystems: Starsystems
     users: Users
     workers: Workers
+    header:
+      toggle: Toggle Navigation
   title:
     admin: FleetYards.net Command
     admin_short: FltYrd Command
