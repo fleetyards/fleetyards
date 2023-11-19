@@ -141,6 +141,14 @@ class ShopCommodity < ApplicationRecord
     ]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    [
+      "commodity", "commodity_buy_prices", "commodity_item", "commodity_rental_prices",
+      "commodity_sell_prices", "component", "equipment", "model", "model_module", "model_paint",
+      "shop", "submitter", "trade_route_destinations", "trade_route_origins"
+    ]
+  end
+
   # ransack_alias :name, :model_name_or_component_name_or_commodity_name_or_equipment_name_or_model_module_name
   # ransack_alias :category, :commodity_item_type
   # ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
