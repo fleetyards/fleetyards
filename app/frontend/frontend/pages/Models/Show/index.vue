@@ -9,7 +9,7 @@
               {{ model.name }}
               <small class="text-muted manufacturer">
                 <span class="manufacturer-prefix">from</span>
-                <span v-html="model.manufacturer.name" />
+                <span v-html="model.manufacturer?.name" />
                 <img
                   v-if="model.manufacturer && model.manufacturer.logo"
                   v-lazy="model.manufacturer.logo"
@@ -95,22 +95,20 @@
             </Panel>
             <div class="page-actions page-actions-block">
               <Btn
-                v-if="
-                  model.onSale && (model.pledgePrice || model.lastPledgePrice)
-                "
-                :href="`${model.storeUrl}#buying-options`"
+                v-if="model.onSale && price"
+                :href="`${model.links.storeUrl}#buying-options`"
                 style="flex-grow: 3"
               >
                 {{
                   t("actions.model.onSale", {
-                    price: toDollar(model.pledgePrice || model.lastPledgePrice),
+                    price: toDollar(price),
                   })
                 }}
                 <small class="price-info">
                   {{ t("labels.taxExcluded") }}
                 </small>
               </Btn>
-              <Btn v-else :href="model.storeUrl" style="flex-grow: 3">
+              <Btn v-else :href="model.links.storeUrl" style="flex-grow: 3">
                 {{ t("actions.model.store") }}
               </Btn>
 
@@ -167,8 +165,8 @@
                   :title="metaTitle || ''"
                 />
                 <Btn
-                  v-if="model.salesPageUrl"
-                  :href="model.salesPageUrl"
+                  v-if="model.links.salesPageUrl"
+                  :href="model.links.salesPageUrl"
                   variant="dropdown"
                 >
                   <i class="fad fa-megaphone" />
@@ -185,16 +183,29 @@
                 <img
                   v-if="fleetchartImageAngled"
                   :src="fleetchartImageAngled"
+                  :width="fleetchartLength"
                 />
               </div>
               <div>
-                <img v-if="fleetchartImageTop" :src="fleetchartImageTop" />
+                <img
+                  v-if="fleetchartImageTop"
+                  :src="fleetchartImageTop"
+                  :width="fleetchartLength"
+                />
               </div>
               <div class="small">
-                <img v-if="fleetchartImageFront" :src="fleetchartImageFront" />
+                <img
+                  v-if="fleetchartImageFront"
+                  :src="fleetchartImageFront"
+                  :width="fleetchartBeam"
+                />
               </div>
               <div>
-                <img v-if="fleetchartImageSide" :src="fleetchartImageSide" />
+                <img
+                  v-if="fleetchartImageSide"
+                  :src="fleetchartImageSide"
+                  :width="fleetchartLength"
+                />
               </div>
             </div>
           </div>
@@ -335,6 +346,7 @@ import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/frontend/composables/useMetaInfo";
 import Store from "@/frontend/lib/Store";
+import { type Model } from "@/services/fyApi";
 
 useHangarItems();
 useWishlistItems();
@@ -360,6 +372,52 @@ const upgrades = ref<ModelUpgrade[]>([]);
 const model = ref<Model | null>(null);
 
 const mobile = computed(() => Store.getters.mobile);
+
+const windowWidth = ref(window.innerWidth / 2);
+
+const maxFleetchartWidth = computed(
+  () => windowWidth.value - (windowWidth.value / 100) * 40,
+);
+
+const fleetchartLength = computed(() => {
+  if (!model.value) {
+    return 0;
+  }
+
+  if (modelBeam.value > modelLength.value) {
+    return (maxFleetchartWidth.value * modelLength.value) / modelBeam.value;
+  }
+
+  return maxFleetchartWidth.value;
+});
+
+const fleetchartBeam = computed(() => {
+  if (!model.value) {
+    return 0;
+  }
+
+  if (modelLength.value > modelBeam.value) {
+    return (maxFleetchartWidth.value * modelLength.value) / modelBeam.value;
+  }
+
+  return maxFleetchartWidth.value;
+});
+
+const modelLength = computed(() => {
+  if (!model.value || !model.value.metrics.fleetchartLength) {
+    return 1;
+  }
+
+  return model.value.metrics.fleetchartLength;
+});
+
+const modelBeam = computed(() => {
+  if (!model.value || !model.value.metrics.beam) {
+    return 1;
+  }
+
+  return model.value.metrics.beam;
+});
 
 const holoviewerVisible = computed(
   () => Store.getters["models/holoviewerVisible"],
@@ -459,7 +517,7 @@ const metaTitle = computed(() => {
 
   return t("title.model", {
     name: model.value.name,
-    manufacturer: model.value.manufacturer.name,
+    manufacturer: model.value.manufacturer?.name || "",
   });
 });
 
@@ -499,6 +557,14 @@ const crumbs = computed(() => {
 
 const shareUrl = computed(() => window.location.href);
 
+const price = computed(() => {
+  if (!model.value) {
+    return undefined;
+  }
+
+  return model.value.pledgePrice || model.value.lastPledgePrice;
+});
+
 onMounted(() => {
   fetch();
   fetchExtras();
@@ -506,6 +572,10 @@ onMounted(() => {
   if (route.query.holoviewer) {
     Store.dispatch("models/enableHoloviewer");
   }
+
+  window.addEventListener("resize", () => {
+    windowWidth.value = window.innerWidth / 2;
+  });
 });
 
 const toggleHoloviewer = () => {
