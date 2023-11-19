@@ -1,6 +1,6 @@
 module Rsi
   class ModelsLoader < ::Rsi::BaseLoader
-    REFRENCE_MODEL_ID = 7
+    REFRENCE_MODEL_PRICE = 60
 
     attr_accessor :json_file_path, :vat_percent, :hardpoints_loader, :manufacturers_loader, :currency_factor
 
@@ -8,7 +8,7 @@ module Rsi
       super
 
       self.json_file_path = "public/models.json"
-      self.vat_percent = options[:vat_percent] || 0
+      self.vat_percent = options[:vat_percent] || 19
       self.manufacturers_loader = ::Rsi::ManufacturersLoader.new
       self.hardpoints_loader = ::Rsi::HardpointsLoader.new
     end
@@ -44,10 +44,6 @@ module Rsi
     def setup_currency_factor
       return if prevent_extra_server_requests?
 
-      reference_model = Model.find_by(rsi_id: REFRENCE_MODEL_ID)
-
-      return if reference_model.blank? || reference_model.last_pledge_price.blank?
-
       response = fetch_remote("#{base_url}/pledge/ships/origin-300/300i?#{Time.zone.now.to_i}")
 
       return unless response.success?
@@ -61,7 +57,9 @@ module Rsi
 
       prices.compact.sort!
 
-      self.currency_factor = prices.first / reference_model.last_pledge_price if prices.present?
+      debugger
+
+      self.currency_factor = prices.first / REFRENCE_MODEL_PRICE if prices.present?
     end
 
     def load_models
@@ -119,6 +117,8 @@ module Rsi
       end
 
       prices.compact.sort!
+
+      debugger
 
       if currency_factor.present? && currency_factor > 0 && prices.present?
         model.pledge_price = (prices.first / currency_factor).round

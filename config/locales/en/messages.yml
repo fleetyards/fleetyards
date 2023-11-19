@@ -32,7 +32,7 @@ en:
       invite: No Invite found
       model: No Model found
     reload:
-      startet: "%{resource} reload startet."
+      started: "%{resource} reload started."
       success: "%{resource} successfully reloaded."
     resend_confirmation:
       failure: "%{resource} could not resend confirmation."
