@@ -121,7 +121,7 @@ module Rsi
       prices.compact.sort!
 
       if currency_factor.present? && currency_factor > 0 && prices.present?
-        model.pledge_price = (prices.first / currency_factor).round(2)
+        model.pledge_price = (prices.first / currency_factor).round
         model.on_sale = true
       elsif prices.present?
         model.pledge_price = prices.first
