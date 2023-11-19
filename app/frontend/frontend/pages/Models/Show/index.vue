@@ -183,7 +183,11 @@
                 <img
                   v-if="fleetchartImageAngled"
                   :src="fleetchartImageAngled"
-                  :width="fleetchartLength"
+                  :width="
+                    fleetchartBeam > fleetchartLength
+                      ? fleetchartBeam
+                      : fleetchartLength
+                  "
                 />
               </div>
               <div>
