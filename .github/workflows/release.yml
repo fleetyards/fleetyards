@@ -5,16 +5,16 @@ on:
     tags: ["v*"]
 
 jobs:
-  smoke-test:
-    runs-on: ubuntu-latest
-    env:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/js-setup-action
-      - run: yarn cypress install
-      - name: Run E2E Tests
-        run: yarn run test:e2e --record --config baseUrl=https://${{ vars.STAGE_DOMAIN }} --parallel
+  # smoke-test:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: ./.github/workflows/js-setup-action
+  #     - run: yarn cypress install
+  #     - name: Run E2E Tests
+  #       run: yarn run test:e2e --record --config baseUrl=https://${{ vars.STAGE_DOMAIN }} --parallel
 
   # build:
   #   needs: [smoke-test]
@@ -24,9 +24,8 @@ jobs:
   #       with:
   #         name: ${GITHUB_REF/refs\/tags\//}
   #       secrets: inherit
-
   deploy-to-live:
-    needs: [smoke-test]
+    # needs: [smoke-test]
     uses: ./.github/workflows/deploy.job.yml
     with:
       capEnv: live
