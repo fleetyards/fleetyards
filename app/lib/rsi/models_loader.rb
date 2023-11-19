@@ -114,7 +114,7 @@ module Rsi
         prices << extract_price(price_element)
       end
 
-      prices.compact.sort!
+      prices = prices.compact.sort
 
       if currency_factor.present? && currency_factor > 0 && prices.present?
         model.pledge_price = (prices.first / currency_factor).round
