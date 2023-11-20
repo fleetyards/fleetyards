@@ -7,7 +7,7 @@ module Notifications
     def perform(model_id)
       model = Model.find(model_id)
 
-      Discord::ShipOnSale.new(model:).run
+      Discord::ShipOnSale.new(model:).run if model.pledge_price.present?
 
       user_ids = User.confirmed.where(sale_notify: true).pluck(&:id)
 

@@ -187,6 +187,7 @@ class PaintsImporter
       "2950 Invictus Aurora Blue and Gold" => "Invictus Blue and Gold",
       "2950 Invictus Aurora Light and Dark Grey" => "Light and Dark Grey",
       "2950 Invictus Auora Green and Gold" => "Green and Gold",
+      "2950 Invictus Aurora Green and Gold" => "Green and Gold",
       "AEGIS Vulcan Hazard Yellow" => "Hazard Yellow",
       "AEGIS Vulcan CTR" => "CTR",
       "Crusader Ares Radiance" => "Radiance",
@@ -229,6 +230,7 @@ class PaintsImporter
     starfarer = ["Starfarer", "Starfarer Gemini"]
 
     models_map = {
+      "Syluen" => ["Syulen"],
       "Constellation" => connie,
       "2950 Invictus Constellation Blue and Gold" => connie,
       "2950 Invictus Constellation Dark Green" => connie,
@@ -325,6 +327,7 @@ class PaintsImporter
       "UEE Distinguished Service" => aurora,
       "2950 Invictus Aurora Blue and Gold" => aurora,
       "2950 Invictus Aurora Light and Dark Grey" => aurora,
+      "2950 Invictus Aurora Green and Gold" => aurora,
       "2950 Invictus Auora Green and Gold" => aurora,
       "Pisces" => ["C8 Pisces", "C8X Pisces Expedition", "C8R Pisces"],
       "Anvil Hawk" => ["Hawk"],
