@@ -44,6 +44,12 @@
     border-radius: $panel-content-border-radius;
     transition: all $transition-base-speed ease;
 
+    img {
+      max-width: 100%;
+      width: 16px;
+      max-height: 100%;
+    }
+
     &:focus {
       outline: none;
     }

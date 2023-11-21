@@ -202,6 +202,18 @@
 
           <Btn
             size="small"
+            href="https://robertsspaceindustries.com/account/pledges"
+            target="_blank"
+            variant="dropdown"
+          >
+            <img :src="require('@/images/rsi_logo.png')" />
+            <span>{{ $t("nav.rsiHangar") }}</span>
+          </Btn>
+
+          <hr />
+
+          <Btn
+            size="small"
             variant="dropdown"
             :aria-label="$t('actions.export')"
             @click.native="exportJson"
