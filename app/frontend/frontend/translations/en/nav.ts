@@ -33,6 +33,7 @@ export default {
     },
   },
   rsiProfile: "RSI Profile",
+  rsiHangar: "RSI Hangar",
   tools: {
     index: "Tools",
     tradeRoutes: "Trade Routes",
