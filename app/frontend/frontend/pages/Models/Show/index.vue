@@ -176,8 +176,8 @@
                     :title="metaTitle || ''"
                   />
                   <Btn
-                    v-if="model.salesPageUrl"
-                    :href="model.salesPageUrl"
+                    v-if="model.links.salesPageUrl"
+                    :href="model.links.salesPageUrl"
                     variant="dropdown"
                   >
                     <i class="fad fa-megaphone" />
