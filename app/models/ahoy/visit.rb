@@ -37,7 +37,7 @@ module Ahoy
     end
 
     def self.one_month
-      where(started_at: 1.month.ago..)
+      where(started_at: 1.month.ago...Time.zone.now.beginning_of_day)
     end
 
     def self.one_year
