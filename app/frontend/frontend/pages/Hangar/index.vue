@@ -198,8 +198,8 @@
             target="_blank"
             variant="dropdown"
           >
-            <img :src="require('@/images/rsi_logo.png')" />
-            <span>{{ $t("nav.rsiHangar") }}</span>
+            <img :src="rsiLogo" />
+            <span>{{ t("nav.rsiHangar") }}</span>
           </Btn>
 
           <hr />
@@ -328,6 +328,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import rsiLogo from "@/images/rsi_logo.png";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
