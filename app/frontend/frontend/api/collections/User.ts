@@ -5,7 +5,7 @@ export class UserCollection extends BaseCollection {
   record: User | null = null;
 
   async current(): Promise<RecordResponse<User>> {
-    const response = await get("users/current");
+    const response = await get("users/me");
 
     if (!response.error) {
       this.record = response.data;
@@ -18,7 +18,7 @@ export class UserCollection extends BaseCollection {
   }
 
   async updateProfile(form: UserForm): Promise<RecordResponse<User>> {
-    const response = await put("users/current", form);
+    const response = await put("users/me", form);
 
     if (!response.error) {
       return {
@@ -32,7 +32,7 @@ export class UserCollection extends BaseCollection {
   }
 
   async updateAccount(form: UserAccountForm): Promise<RecordResponse<User>> {
-    const response = await put("users/current-account", form);
+    const response = await put("users/account", form);
 
     if (!response.error) {
       return {
@@ -46,7 +46,7 @@ export class UserCollection extends BaseCollection {
   }
 
   async destroy(): Promise<RecordResponse<boolean>> {
-    const response = await destroy("users/current");
+    const response = await destroy("users/me");
 
     if (!response.error) {
       return {
