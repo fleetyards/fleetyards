@@ -1,5 +1,5 @@
 module PaperTrail
-  class Version < ActiveRecord::Base
+  class Version < ApplicationRecord
     include PaperTrail::VersionConcern
 
     def self.ransackable_attributes(auth_object = nil)
