@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.27.44](https://github.com/fleetyards/fleetyards/compare/v5.27.43...v5.27.44) (2023-12-01)
+
+
+### Bug Fixes
+
+* sync and importer workers to fix RSI Naming convention changes ([b7d91f3](https://github.com/fleetyards/fleetyards/commit/b7d91f325643f667a0e23f9072a2d4e4210b14cf))
+
 ### [5.27.43](https://github.com/fleetyards/fleetyards/compare/v5.27.42...v5.27.43) (2023-11-30)
 
 ### [5.27.42](https://github.com/fleetyards/fleetyards/compare/v5.27.41...v5.27.42) (2023-11-30)
