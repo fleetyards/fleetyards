@@ -200,4 +200,4 @@ gem "enum_attributes_validation", "~> 0.1.7"
 
 gem "bskyrb", "~> 0.5.3"
 
-gem "x", "~> 0.13.0"
+gem "x", "~> 0.14.0"
