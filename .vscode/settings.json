@@ -23,7 +23,7 @@
     "editor.defaultFormatter": "testdouble.vscode-standard-ruby"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.stylelint": true
+    "source.fixAll.stylelint": "explicit"
   },
   "stylelint.enable": true,
   "stylelint.validate": ["css", "less", "postcss", "scss"],
@@ -39,5 +39,10 @@
     "editor.defaultFormatter": "aliariff.vscode-erb-beautify"
   },
   "i18n-ally.keystyle": "nested",
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "[javascript][typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  }
 }
