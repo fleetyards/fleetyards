@@ -1900,7 +1900,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehicleExport"
+                  "$ref": "#/components/schemas/FleetVehicleExport"
         '404':
           description: not found
           content:
