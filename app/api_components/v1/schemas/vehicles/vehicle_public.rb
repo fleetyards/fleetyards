@@ -19,6 +19,7 @@ module V1
             model: {"$ref": "#/components/schemas/Model"},
             username: {type: :string, nullable: true},
             userAvatar: {type: :string, format: :uri, nullable: true},
+            userRsiHandle: {type: :string, nullable: true},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},

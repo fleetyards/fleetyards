@@ -18,3 +18,4 @@ json.modules vehicle.model_modules.map(&:name)
 json.upgrades vehicle.model_upgrades.map(&:name)
 json.username vehicle.user.hide_owner? ? nil : vehicle.user.username
 json.user_avatar vehicle.user.hide_owner? ? nil : vehicle.user.avatar.small.url
+json.user_rsi_handle vehicle.user.hide_owner? ? nil : vehicle.user.rsi_handle

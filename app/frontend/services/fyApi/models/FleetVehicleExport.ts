@@ -22,5 +22,6 @@ export type FleetVehicleExport = {
     upgrades: Array<string>;
     username?: string | null;
     userAvatar?: string | null;
+    userRsiHandle?: string | null;
 };
 

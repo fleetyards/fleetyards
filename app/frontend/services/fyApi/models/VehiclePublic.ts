@@ -20,6 +20,7 @@ export type VehiclePublic = {
     model: Model;
     username?: string | null;
     userAvatar?: string | null;
+    userRsiHandle?: string | null;
     modelModuleIds: Array<string>;
     modelUpgradeIds: Array<string>;
     modulePackage?: ModelModulePackage;
