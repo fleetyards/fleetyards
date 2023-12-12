@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.29.0](https://github.com/fleetyards/fleetyards/compare/v5.28.1...v5.29.0) (2023-12-12)
+
+
+### Features
+
+* **fleets:** add rsi handle to fleet vehicles export ([8a58bd7](https://github.com/fleetyards/fleetyards/commit/8a58bd7c3f542ab0b6a937f560829b4fa197586e))
+
 ### [5.28.1](https://github.com/fleetyards/fleetyards/compare/v5.28.0...v5.28.1) (2023-12-12)
 
 ## [5.28.0](https://github.com/fleetyards/fleetyards/compare/v5.27.44...v5.28.0) (2023-12-12)
