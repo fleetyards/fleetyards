@@ -31,7 +31,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
         required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/VehicleExport"}
+        schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }
@@ -53,7 +53,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       end
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/VehicleExport"}
+        schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
 
         let(:fleetSlug) { fleet.slug }
         let(:user) { users :data }

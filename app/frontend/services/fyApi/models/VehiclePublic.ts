@@ -18,8 +18,8 @@ export type VehiclePublic = {
     hangarGroups: Array<HangarGroupPublic>;
     loaner: boolean;
     model: Model;
-    username?: string;
-    userAvatar?: string;
+    username?: string | null;
+    userAvatar?: string | null;
     modelModuleIds: Array<string>;
     modelUpgradeIds: Array<string>;
     modulePackage?: ModelModulePackage;

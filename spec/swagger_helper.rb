@@ -10,7 +10,7 @@ RSpec.configure do |config|
   admin_v1_components_loader = ComponentsLoader.new("admin/v1")
   shared_v1_components_loader = ComponentsLoader.new("shared/v1")
 
-  config.swagger_root = Rails.root.join(Rails.configuration.api_schema.folder).to_s
+  config.openapi_root = Rails.root.join(Rails.configuration.api_schema.folder).to_s
 
   api_servers = [
     {
@@ -39,7 +39,7 @@ RSpec.configure do |config|
     }
   ]
 
-  config.swagger_docs = {
+  config.openapi_specs = {
     "v1/schema.yaml" => {
       openapi: Rails.configuration.api_schema.oas_version,
       info: {
@@ -90,5 +90,5 @@ RSpec.configure do |config|
     }
   }
 
-  config.swagger_format = :yaml
+  config.openapi_format = :yaml
 end
