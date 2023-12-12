@@ -1,12 +1,12 @@
 {
-  "test/models/fleet_test.rb": 0.04060400137677789,
-  "/Users/mortik/.asdf/installs/ruby/3.2.2/lib/ruby/gems/3.2.0/gems/shoulda-context-2.0.0/lib/shoulda/context/context.rb": 0.22205699933692813,
-  "test/unit/email_processor_test.rb": 0.10572100011631846,
-  "test/models/user_test.rb": 0.027877999935299158,
-  "test/channels/application_cable/connection_test.rb": 1.4999881386756897e-05,
-  "test/unit/hangar_sync_test.rb": 133.49584699980915,
-  "test/unit/hangar_import_starship42_test.rb": 118.24801700003445,
-  "test/unit/hangar_import_hangar_xplor_test.rb": 84.37094900012016,
-  "test/unit/rsi_models_loader_test.rb": 88.95072799967602,
-  "test/unit/hangar_importer_test.rb": 84.95276799984276
+  "/Users/mortik/.asdf/installs/ruby/3.2.2/lib/ruby/gems/3.2.0/gems/shoulda-context-2.0.0/lib/shoulda/context/context.rb": 0.16873999987728894,
+  "test/unit/hangar_import_starship42_test.rb": 170.47161499992944,
+  "test/unit/hangar_import_hangar_xplor_test.rb": 141.84520400012843,
+  "test/unit/hangar_importer_test.rb": 166.7790620001033,
+  "test/models/user_test.rb": 0.03467099997214973,
+  "test/channels/application_cable/connection_test.rb": 1.8999911844730377e-05,
+  "test/models/fleet_test.rb": 0.10982799995690584,
+  "test/unit/rsi_models_loader_test.rb": 186.92061900021508,
+  "test/unit/email_processor_test.rb": 0.1236760001629591,
+  "test/unit/hangar_sync_test.rb": 170.5123340000864
 }
