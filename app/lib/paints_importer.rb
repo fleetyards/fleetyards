@@ -228,8 +228,11 @@ class PaintsImporter
     dragonfly = ["Dragonfly Yellowjacket", "Dragonfly Black"]
     ares = ["Ares Ion", "Ares Inferno"]
     starfarer = ["Starfarer", "Starfarer Gemini"]
+    cutter = ["Cutter", "Cutter Scout", "Cutter Rambler"]
+    x1 = ["X1 Base", "X1 Velocity", "X1 Force"]
 
     models_map = {
+      "Cutter" => cutter,
       "Syluen" => ["Syulen"],
       "Constellation" => connie,
       "2950 Invictus Constellation Blue and Gold" => connie,
@@ -333,7 +336,8 @@ class PaintsImporter
       "Anvil Hawk" => ["Hawk"],
       "Tumbril Nova" => ["Nova"],
       "AEGIS Vulcan Hazard Yellow" => ["Vulcan"],
-      "AEGIS Vulcan CTR" => ["Vulcan"]
+      "AEGIS Vulcan CTR" => ["Vulcan"],
+      "X1" => x1
     }
 
     return models_map[name.strip] if models_map[name.strip].present?
