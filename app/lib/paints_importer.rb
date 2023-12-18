@@ -222,7 +222,7 @@ class PaintsImporter
       "F7C-S Hornet Ghost", "F7C-R Hornet Tracker", "F7C-M Super Hornet Heartseeker",
       "F7C-M Super Hornet", "F7C Hornet Wildfire", "F7C Hornet"
     ]
-    mercury = ["Mercury Star Runner"]
+    mercury = ["Mercury", "Mercury Star Runner"]
     roc = %w[ROC ROC-DS]
     prospector = ["Prospector"]
     dragonfly = ["Dragonfly Yellowjacket", "Dragonfly Black"]

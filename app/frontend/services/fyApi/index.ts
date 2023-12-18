@@ -63,6 +63,7 @@ export type { FleetMembersStats } from './models/FleetMembersStats';
 export type { FleetModelCountsStats } from './models/FleetModelCountsStats';
 export type { FleetPublicVehicles } from './models/FleetPublicVehicles';
 export type { FleetUpdateInput } from './models/FleetUpdateInput';
+export type { FleetVehicleExport } from './models/FleetVehicleExport';
 export type { FleetVehicleQuery } from './models/FleetVehicleQuery';
 export type { FleetVehicles } from './models/FleetVehicles';
 export { FleetVehicleSortEnum } from './models/FleetVehicleSortEnum';

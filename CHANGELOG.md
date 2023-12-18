@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.29.0](https://github.com/fleetyards/fleetyards/compare/v5.28.1...v5.29.0) (2023-12-12)
+
+
+### Features
+
+* **fleets:** add rsi handle to fleet vehicles export ([8a58bd7](https://github.com/fleetyards/fleetyards/commit/8a58bd7c3f542ab0b6a937f560829b4fa197586e))
+
+### [5.28.1](https://github.com/fleetyards/fleetyards/compare/v5.28.0...v5.28.1) (2023-12-12)
+
+## [5.28.0](https://github.com/fleetyards/fleetyards/compare/v5.27.44...v5.28.0) (2023-12-12)
+
+
+### Features
+
+* **fleets:** add username to fleet vehicles export ([22f08cb](https://github.com/fleetyards/fleetyards/commit/22f08cba73290686bc66acd87bb99ef0736a920c))
+
+### [5.27.44](https://github.com/fleetyards/fleetyards/compare/v5.27.43...v5.27.44) (2023-12-01)
+
+
+### Bug Fixes
+
+* sync and importer workers to fix RSI Naming convention changes ([b7d91f3](https://github.com/fleetyards/fleetyards/commit/b7d91f325643f667a0e23f9072a2d4e4210b14cf))
+
+### [5.27.43](https://github.com/fleetyards/fleetyards/compare/v5.27.42...v5.27.43) (2023-11-30)
+
+### [5.27.42](https://github.com/fleetyards/fleetyards/compare/v5.27.41...v5.27.42) (2023-11-30)
+
+### [5.27.41](https://github.com/fleetyards/fleetyards/compare/v5.27.40...v5.27.41) (2023-11-26)
+
+
+### Bug Fixes
+
+* update profile/account ([2e14ea6](https://github.com/fleetyards/fleetyards/commit/2e14ea676b86cbcd0023b5e268d3ac5c0614cd65))
+
+### [5.27.40](https://github.com/fleetyards/fleetyards/compare/v5.27.39...v5.27.40) (2023-11-22)
+
 ### [5.27.39](https://github.com/fleetyards/fleetyards/compare/v5.27.38...v5.27.39) (2023-11-19)
 
 ### [5.27.38](https://github.com/fleetyards/fleetyards/compare/v5.27.37...v5.27.38) (2023-11-19)

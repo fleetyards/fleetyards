@@ -65,6 +65,8 @@ onMounted(() => {
     url: schemaUrl.value,
     showCommonExtensions: true,
     filter: true,
+    defaultModelRendering: "model",
+    defaultModelExpandDepth: 3,
   });
 
   swagger.value?.initOAuth({
@@ -103,6 +105,17 @@ export default {
 
     section h3 {
       font-family: "Orbitron", sans-serif;
+    }
+  }
+  .swagger-ui .model-box-control,
+  .swagger-ui .models-control,
+  .swagger-ui .opblock-summary-control {
+    gap: 5px;
+
+    .opblock-summary-description {
+      flex-grow: 2;
+      text-align: right;
+      font-size: 110%;
     }
   }
 }

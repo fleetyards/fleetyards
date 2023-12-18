@@ -10,11 +10,11 @@ import type { FleetMember } from '../models/FleetMember';
 import type { FleetModelCountsStats } from '../models/FleetModelCountsStats';
 import type { FleetPublicVehicles } from '../models/FleetPublicVehicles';
 import type { FleetUpdateInput } from '../models/FleetUpdateInput';
+import type { FleetVehicleExport } from '../models/FleetVehicleExport';
 import type { FleetVehicleQuery } from '../models/FleetVehicleQuery';
 import type { FleetVehicles } from '../models/FleetVehicles';
 import type { FleetVehiclesStats } from '../models/FleetVehiclesStats';
 import type { Model } from '../models/Model';
-import type { VehicleExport } from '../models/VehicleExport';
 import type { VehiclePublic } from '../models/VehiclePublic';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -401,7 +401,7 @@ export class FleetsService {
 
     /**
      * Fleet Vehicles List
-     * @returns VehicleExport successful
+     * @returns FleetVehicleExport successful
      * @throws ApiError
      */
     public fleetVehiclesExport({
@@ -413,7 +413,7 @@ export class FleetsService {
          */
         fleetSlug: string,
         q?: FleetVehicleQuery,
-    }): CancelablePromise<Array<VehicleExport>> {
+    }): CancelablePromise<Array<FleetVehicleExport>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/fleets/{fleetSlug}/vehicles/export',

@@ -75,7 +75,7 @@ class FleetInviteUrl < ApplicationRecord
     return if token.present?
 
     self.token = loop do
-      random_token = SecureRandom.urlsafe_base64(7, false)
+      random_token = SecureRandom.hex(4) # 8 characters
 
       break random_token unless self.class.exists?(token: random_token)
     end

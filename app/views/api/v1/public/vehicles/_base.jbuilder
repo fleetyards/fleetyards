@@ -16,6 +16,7 @@ json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
 json.username vehicle.user.hide_owner? ? nil : vehicle.user.username
 json.user_avatar vehicle.user.hide_owner? ? nil : vehicle.user.avatar.small.url
+json.user_rsi_handle vehicle.user.hide_owner? ? nil : vehicle.user.rsi_handle
 json.hangar_group_ids vehicle.public_hangar_group_ids
 json.hangar_groups do
   json.array! vehicle.public_hangar_groups, partial: "api/v1/public/hangar_groups/base", as: :group

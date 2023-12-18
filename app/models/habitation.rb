@@ -24,6 +24,13 @@ class Habitation < ApplicationRecord
     parent.table[:habitation_type]
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "created_at", "habitation_name", "habitation_type", "id", "id_value", "name", "station_id",
+      "updated_at"
+    ]
+  end
+
   validates :habitation_type, presence: true
 
   def habitation_type_label
