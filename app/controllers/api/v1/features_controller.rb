@@ -3,8 +3,6 @@
 module Api
   module V1
     class FeaturesController < ::Api::BaseController
-      before_action :authenticate_user!, only: %i[]
-
       def show
         authorize! :show, :api_features
 

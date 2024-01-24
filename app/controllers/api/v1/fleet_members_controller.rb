@@ -11,6 +11,10 @@ module Api
 
       after_action -> { pagination_header(:members) }, only: %i[index]
 
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
+        unless: :user_signed_in?
+
       def index
         authorize! :show, fleet
 

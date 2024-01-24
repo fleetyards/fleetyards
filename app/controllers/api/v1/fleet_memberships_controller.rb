@@ -7,8 +7,45 @@ module Api
         not_found(I18n.t("messages.record_not_found.#{exception.model.downcase}", slug: params[:slug]))
       end
 
-      def show
-        authorize! :show, membership
+      before_action :authenticate_user!, except: %i[accept_request decline_request promote demote destroy]
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
+        unless: :user_signed_in?,
+        only: %i[accept_request decline_request promote demote destroy]
+
+      def current
+        authorize! :show, my_membership
+
+        @member = my_membership
+      end
+
+      def create
+        user = User.find_by!(normalized_username: params[:username].downcase)
+
+        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: current_user.id)
+
+        authorize! :create, member
+
+        if member.save
+          member.invite!
+        else
+          render json: ValidationError.new("fleet_memberships.create", errors: member.errors), status: :bad_request
+        end
+      end
+
+      def create_by_invite
+        invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
+        user = User.find_by!(normalized_username: params[:username].downcase)
+
+        @member = invite_url.fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
+
+        authorize! :create_by_invite, member
+
+        if member.save
+          member.request!
+          invite_url.reduce_limit
+        else
+          render json: ValidationError.new("fleet_memberships.create", errors: member.errors), status: :bad_request
+        end
       end
 
       def update
