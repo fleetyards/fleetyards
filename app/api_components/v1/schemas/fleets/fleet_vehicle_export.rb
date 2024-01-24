@@ -26,7 +26,8 @@ module V1
             modules: {type: :array, items: {type: :string}},
             upgrades: {type: :array, items: {type: :string}},
             username: {type: :string, nullable: true},
-            userAvatar: {type: :string, format: :uri, nullable: true}
+            userAvatar: {type: :string, format: :uri, nullable: true},
+            userRsiHandle: {type: :string, nullable: true}
           },
           additionalProperties: false,
           required: %w[

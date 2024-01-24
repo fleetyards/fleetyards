@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "5.28.1",
+  "version": "5.29.0",
   "scripts": {
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -49,7 +49,7 @@
     "pnp-webpack-plugin": "1.7.0",
     "popper.js": "1.16.1",
     "qs": "6.11.2",
-    "swagger-ui-dist": "^5.9.3",
+    "swagger-ui-dist": "^5.10.3",
     "three": "0.158.0",
     "ts-debounce": "4.0.0",
     "uuid": "^9.0.1",
@@ -117,7 +117,7 @@
     "typescript": "5.2.2",
     "unplugin-auto-import": "^0.16.7",
     "unplugin-vue-components": "^0.25.2",
-    "vite": "4.5.1",
+    "vite": "4.5.2",
     "vite-plugin-pwa": "0.16.7",
     "vite-plugin-rails": "0.1.0",
     "vitest": "0.34.6",
