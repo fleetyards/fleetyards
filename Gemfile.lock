@@ -218,9 +218,9 @@ GEM
       ffi (>= 1.15.0)
     excon (0.105.0)
     execjs (2.9.1)
-    factory_bot (6.4.2)
+    factory_bot (6.4.6)
       activesupport (>= 5.0.0)
-    factory_bot_rails (6.4.2)
+    factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
     faker (3.2.2)
@@ -315,8 +315,8 @@ GEM
     inky-rb (1.4.2.1)
       foundation_emails (~> 2)
       nokogiri
-    io-console (0.7.1)
-    irb (1.11.1)
+    io-console (0.7.2)
+    irb (1.11.2)
       rdoc
       reline (>= 0.4.2)
     jbuilder (2.11.5)
@@ -746,7 +746,7 @@ GEM
       date
       httparty
       json (>= 2.0)
-    zeitwerk (2.6.12)
+    zeitwerk (2.6.13)
 
 PLATFORMS
   arm64-darwin
