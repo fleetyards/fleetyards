@@ -101,7 +101,7 @@ class PaintsImporter
         model_id: model.id,
         name: paint_name,
         remote_store_image_url: paint[:image],
-        hidden: true,
+        hidden: false,
         active: true
       )
 
@@ -242,7 +242,7 @@ class PaintsImporter
     ares = ["Ares Ion", "Ares Inferno"]
     starfarer = ["Starfarer", "Starfarer Gemini"]
     cutter = ["Cutter", "Cutter Scout", "Cutter Rambler"]
-    x1 = ["X1 Base", "X1 Velocity", "X1 Force"]
+    x1 = ["X1", "X1 Velocity", "X1 Force"]
 
     models_map = {
       "Cutter" => cutter,
