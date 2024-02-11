@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "5.29.0",
+  "version": "5.29.1",
   "scripts": {
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
