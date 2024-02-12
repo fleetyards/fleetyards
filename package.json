@@ -107,7 +107,7 @@
     "eslint-plugin-vue": "8.4.1",
     "jsdom": "22.1.0",
     "mocha": "10.3.0",
-    "openapi-typescript-codegen": "^0.25.0",
+    "openapi-typescript-codegen": "^0.27.0",
     "postcss": "8.4.31",
     "prettier": "3.2.5",
     "sass": "1.70.0",
