@@ -121,7 +121,7 @@
     "vite-plugin-pwa": "0.16.7",
     "vite-plugin-rails": "0.1.0",
     "vitest": "0.34.6",
-    "vue-eslint-parser": "9.3.2",
+    "vue-eslint-parser": "9.4.2",
     "vue-template-compiler": "2.7.16",
     "workbox-build": "7.0.0",
     "workbox-window": "7.0.0"
