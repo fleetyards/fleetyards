@@ -165,7 +165,7 @@ module Rsi
 
       %w[length beam height mass].each do |attr|
         updates["rsi_#{attr}"] = data[attr].to_d
-        updates[attr.to_sym] = data[attr].to_d if (model_updated(model, data) && data[attr].to_d != model.send("rsi_#{attr}").to_d) || model.send(attr).blank? || model.send(attr).zero?
+        updates[attr.to_sym] = data[attr].to_d if (model_updated(model, data) && data[attr].to_d != model.send(:"rsi_#{attr}").to_d) || model.send(attr).blank? || model.send(attr).zero?
       end
 
       updates[:rsi_description] = data["description"]
@@ -176,7 +176,7 @@ module Rsi
 
       %w[max_crew min_crew scm_speed].each do |attr|
         updates["rsi_#{attr}"] = nil_or_decimal(data[attr])
-        updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send("rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
+        updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send(:"rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
       end
 
       updates[:rsi_max_speed] = nil_or_decimal(data["afterburner_speed"])
@@ -193,7 +193,7 @@ module Rsi
 
       %w[size focus].each do |attr|
         updates["rsi_#{attr}"] = data[attr]
-        updates[attr] = data[attr] if (model_updated(model, data) && data[attr] != model.send("rsi_#{attr}")) || model.send("rsi_#{attr}").blank?
+        updates[attr] = data[attr] if (model_updated(model, data) && data[attr] != model.send(:"rsi_#{attr}")) || model.send(:"rsi_#{attr}").blank?
       end
 
       updates[:rsi_classification] = data["type"]

@@ -17,10 +17,10 @@ module Pagination
     }
 
     scope = name
-    scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
+    scope = scope.find { |item| instance_variable_get(:"@#{item}") } if scope.is_a?(Array)
 
-    if per_page_params != "all" && instance_variable_get("@#{scope}").present?
-      links = links.merge(pagination_links(instance_variable_get("@#{scope}")))
+    if per_page_params != "all" && instance_variable_get(:"@#{scope}").present?
+      links = links.merge(pagination_links(instance_variable_get(:"@#{scope}")))
     end
 
     headers["Link"] = links.filter_map do |k, v|

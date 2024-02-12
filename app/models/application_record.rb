@@ -14,7 +14,7 @@ class ApplicationRecord < ActiveRecord::Base
   def self.per_page_steps(val = :none)
     if val == :none
       # getter
-      (defined?(@_per_page_steps) && @_per_page_steps)
+      defined?(@_per_page_steps) && @_per_page_steps
     else
       # setter
       @_per_page_steps = val
