@@ -9,7 +9,7 @@ module CarrierWave
 
       class ProcessingValidator < ::ActiveModel::EachValidator
         def validate_each(record, attribute, value)
-          record.__send__("#{attribute}_processing_errors").each do |e|
+          record.__send__(:"#{attribute}_processing_errors").each do |e|
             message = (e.message == e.class.to_s) ? :carrierwave_processing_error : e.message
             record.errors.add(attribute, :carrierwave_processing_error, message: message)
           end
@@ -18,7 +18,7 @@ module CarrierWave
 
       class IntegrityValidator < ::ActiveModel::EachValidator
         def validate_each(record, attribute, value)
-          record.__send__("#{attribute}_integrity_errors").each do |e|
+          record.__send__(:"#{attribute}_integrity_errors").each do |e|
             message = (e.message == e.class.to_s) ? :carrierwave_integrity_error : e.message
             record.errors.add(attribute, :carrierwave_integrity_error, message: message)
           end
@@ -27,7 +27,7 @@ module CarrierWave
 
       class DownloadValidator < ::ActiveModel::EachValidator
         def validate_each(record, attribute, value)
-          record.__send__("#{attribute}_download_errors").each do |e|
+          record.__send__(:"#{attribute}_download_errors").each do |e|
             message = (e.message == e.class.to_s) ? :carrierwave_download_error : e.message
             record.errors.add(attribute, :carrierwave_download_error, message: message)
           end
