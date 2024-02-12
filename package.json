@@ -78,7 +78,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "@types/downloadjs": "^1.4.6",
-    "@types/i18n-js": "3.8.8",
+    "@types/i18n-js": "3.8.9",
     "@types/qs": "^6.9.10",
     "@types/rails__actioncable": "^6.1.9",
     "@types/swagger-ui": "^3.52.4",

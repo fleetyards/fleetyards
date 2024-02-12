@@ -1448,10 +1448,10 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.0.tgz#5fb2e536c1ae9bf35366eed879e827fa59ca41c2"
   integrity sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==
 
-"@types/i18n-js@3.8.8":
-  version "3.8.8"
-  resolved "https://registry.yarnpkg.com/@types/i18n-js/-/i18n-js-3.8.8.tgz#2b5d872955a4a43b59eaa84e68ae495ad5f09c9e"
-  integrity sha512-UmBuMG/42tZZyWDAGjezxXqYf1PZgYVSlU6oHRNO9GJRCQBigTN3vNwE7uJWCJSNNXhtmnW6ENaDO9JSn8NUUQ==
+"@types/i18n-js@3.8.9":
+  version "3.8.9"
+  resolved "https://registry.yarnpkg.com/@types/i18n-js/-/i18n-js-3.8.9.tgz#074d1389539d2db992e6afd7eb379aa02929ef93"
+  integrity sha512-bSxgya4x5O+x+QhfCGckiDDE+17XGPp1TNBgBA/vfF5EwdiZC70F4cKG5QK2v44+v62oY7/t/InreRhxskulcA==
 
 "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.4"
