@@ -106,7 +106,7 @@
     "eslint-plugin-sort-class-members": "1.19.0",
     "eslint-plugin-vue": "8.4.1",
     "jsdom": "22.1.0",
-    "mocha": "10.2.0",
+    "mocha": "10.3.0",
     "openapi-typescript-codegen": "^0.25.0",
     "postcss": "8.4.31",
     "prettier": "3.0.3",
