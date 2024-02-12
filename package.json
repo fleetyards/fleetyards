@@ -83,7 +83,7 @@
     "@types/rails__actioncable": "^6.1.9",
     "@types/swagger-ui": "^3.52.4",
     "@types/swagger-ui-dist": "^3.30.4",
-    "@types/uuid": "^9.0.7",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "6.10.0",
     "@typescript-eslint/parser": "6.10.0",
     "@unocss/preset-wind": "^0.57.3",
