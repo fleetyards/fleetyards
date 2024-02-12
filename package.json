@@ -80,7 +80,7 @@
     "@types/downloadjs": "^1.4.6",
     "@types/i18n-js": "3.8.8",
     "@types/qs": "^6.9.10",
-    "@types/rails__actioncable": "^6.1.9",
+    "@types/rails__actioncable": "^6.1.10",
     "@types/swagger-ui": "^3.52.4",
     "@types/swagger-ui-dist": "^3.30.4",
     "@types/uuid": "^9.0.7",
