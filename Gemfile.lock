@@ -268,9 +268,9 @@ GEM
       rchardet (~> 1.8)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.1)
-    google-protobuf (3.25.1-arm64-darwin)
-    google-protobuf (3.25.1-x86_64-linux)
+    google-protobuf (3.25.2)
+    google-protobuf (3.25.2-arm64-darwin)
+    google-protobuf (3.25.2-x86_64-linux)
     griddler (1.5.2)
       htmlentities
       rails (>= 3.2.0)
@@ -428,7 +428,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
-    pg_query (4.2.3)
+    pg_query (5.1.0)
       google-protobuf (>= 3.22.3)
     pghero (3.4.1)
       activerecord (>= 6)
