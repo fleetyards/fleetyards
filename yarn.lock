@@ -6390,10 +6390,10 @@ synckit@^0.8.6:
     "@pkgr/core" "^0.1.0"
     tslib "^2.6.2"
 
-tailwindcss-safe-area@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/tailwindcss-safe-area/-/tailwindcss-safe-area-0.4.1.tgz#e340bd606c92d182de5316d6511a4c30a8287fe9"
-  integrity sha512-6EOe8D39F8N8poKWkeOcIt2SchyJ8CVfm/k5iZak6+QgOzii0TukNIfItdGbf7ylVtq3CF2CK/Oxo5xvtLwVmQ==
+tailwindcss-safe-area@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/tailwindcss-safe-area/-/tailwindcss-safe-area-0.5.1.tgz#bfde2f0d49478bcc5d54c1462c67d29e154d0745"
+  integrity sha512-aMHJYBi1NIrJ5ldZ9bk+uGLXw8UFCrFR8fheMyJEabV/kaI+qNozRm7UfEKZRgEmS3RMdrt2RQf2w/7S0ceLrQ==
 
 tailwindcss@^3.4.1:
   version "3.4.1"
