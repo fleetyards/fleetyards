@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { FleetMembershipRoleEnum } from './FleetMembershipRoleEnum';
-
 export type Fleet = {
     myRole?: FleetMembershipRoleEnum;
     primary?: boolean;

@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { TradeRouteCommodity } from './TradeRouteCommodity';
 import type { TradeRouteLeg } from './TradeRouteLeg';
-
 export type TradeRoute = {
     id: string;
     origin?: TradeRouteLeg;

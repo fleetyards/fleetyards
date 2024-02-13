@@ -6,14 +6,10 @@ import type { FilterOption } from '../models/FilterOption';
 import type { Image } from '../models/Image';
 import type { Station } from '../models/Station';
 import type { StationQuery } from '../models/StationQuery';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class StationsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Station types
      * @returns FilterOption successful
@@ -25,7 +21,6 @@ export class StationsService {
             url: '/stations/station-types',
         });
     }
-
     /**
      * Station Ship sizes
      * @returns FilterOption successful
@@ -37,7 +32,6 @@ export class StationsService {
             url: '/stations/ship-sizes',
         });
     }
-
     /**
      * Station classifications
      * @returns FilterOption successful
@@ -49,7 +43,6 @@ export class StationsService {
             url: '/stations/classifications',
         });
     }
-
     /**
      * Stations list
      * @returns Station successful
@@ -77,7 +70,6 @@ export class StationsService {
             },
         });
     }
-
     /**
      * Station Detail
      * @returns Station successful
@@ -102,7 +94,6 @@ export class StationsService {
             },
         });
     }
-
     /**
      * Station Images
      * @returns Image successful
@@ -135,5 +126,4 @@ export class StationsService {
             },
         });
     }
-
 }

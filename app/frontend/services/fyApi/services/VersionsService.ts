@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { ScDataVersion } from '../models/ScDataVersion';
 import type { Version } from '../models/Version';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class VersionsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * SC Data Version
      * @returns ScDataVersion successful
@@ -23,7 +19,6 @@ export class VersionsService {
             url: '/sc-data/version',
         });
     }
-
     /**
      * Version of Fleetyards
      * @returns Version successful
@@ -35,5 +30,4 @@ export class VersionsService {
             url: '/version',
         });
     }
-
 }

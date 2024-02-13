@@ -5,14 +5,10 @@
 import type { PasswordInput } from '../models/PasswordInput';
 import type { PasswordRequestInput } from '../models/PasswordRequestInput';
 import type { StandardMessage } from '../models/StandardMessage';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class PasswordService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Request Password reset
      * @returns StandardMessage successful
@@ -33,7 +29,6 @@ export class PasswordService {
             },
         });
     }
-
     /**
      * Update password
      * @returns StandardMessage successful
@@ -55,7 +50,6 @@ export class PasswordService {
             },
         });
     }
-
     /**
      * Update Password with Token
      * @returns StandardMessage successful
@@ -81,5 +75,4 @@ export class PasswordService {
             },
         });
     }
-
 }

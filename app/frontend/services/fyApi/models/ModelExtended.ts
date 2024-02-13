@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { DockCount } from './DockCount';
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ModelLoaner } from './ModelLoaner';
 import type { ShopCommodity } from './ShopCommodity';
 import type { ViewImage } from './ViewImage';
-
 export type ModelExtended = {
     id: string;
     scIdentifier?: string;

@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum TradeRouteSortEnum {
     AVERAGE_PROFIT_PER_UNIT_PERCENT_ASC = 'average_profit_per_unit_percent asc',
     AVERAGE_PROFIT_PER_UNIT_PERCENT_DESC = 'average_profit_per_unit_percent desc',

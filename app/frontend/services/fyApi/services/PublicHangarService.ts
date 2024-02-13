@@ -5,14 +5,10 @@
 import type { HangarEmbedQuery } from '../models/HangarEmbedQuery';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { VehiclePublic } from '../models/VehiclePublic';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class PublicHangarService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Public Hangar embed
      * @returns VehiclePublic empty response
@@ -31,7 +27,6 @@ export class PublicHangarService {
             },
         });
     }
-
     /**
      * Public Hangar
      * @returns VehiclePublic successful
@@ -64,5 +59,4 @@ export class PublicHangarService {
             },
         });
     }
-
 }

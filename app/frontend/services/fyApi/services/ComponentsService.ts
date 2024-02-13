@@ -5,14 +5,10 @@
 import type { Component } from '../models/Component';
 import type { ComponentQuery } from '../models/ComponentQuery';
 import type { FilterOption } from '../models/FilterOption';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ComponentsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * @deprecated
      * Commodity Types
@@ -25,7 +21,6 @@ export class ComponentsService {
             url: '/components/class_filters',
         });
     }
-
     /**
      * @deprecated
      * Commodity Types
@@ -38,7 +33,6 @@ export class ComponentsService {
             url: '/components/item_type_filters',
         });
     }
-
     /**
      * Components list
      * @returns Component successful
@@ -66,5 +60,4 @@ export class ComponentsService {
             },
         });
     }
-
 }

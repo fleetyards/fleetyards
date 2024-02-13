@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { RoadmapItemSortEnum } from './RoadmapItemSortEnum';
-
 export type RoadmapItemQuery = {
     nameCont?: string;
     releasedEq?: boolean;

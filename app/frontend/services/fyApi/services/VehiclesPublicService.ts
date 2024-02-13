@@ -3,14 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { VehiclePublic } from '../models/VehiclePublic';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class VehiclesPublicService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * @deprecated
      * public vehicle
@@ -33,7 +29,6 @@ export class VehiclesPublicService {
             },
         });
     }
-
     /**
      * @deprecated
      * public_fleetchart vehicle
@@ -56,7 +51,6 @@ export class VehiclesPublicService {
             },
         });
     }
-
     /**
      * @deprecated
      * public_quick_stats vehicle
@@ -79,5 +73,4 @@ export class VehiclesPublicService {
             },
         });
     }
-
 }

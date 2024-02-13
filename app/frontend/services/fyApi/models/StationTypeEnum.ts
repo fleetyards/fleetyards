@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum StationTypeEnum {
     LANDING_ZONE = 'landing_zone',
     STATION = 'station',

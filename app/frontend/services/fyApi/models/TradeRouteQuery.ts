@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CommodityTypeEnum } from './CommodityTypeEnum';
 import type { TradeRouteSortEnum } from './TradeRouteSortEnum';
-
 export type TradeRouteQuery = {
     cargoShip?: string;
     originStationIn?: Array<string>;

@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { VideoTypeEnum } from './VideoTypeEnum';
-
 export type Video = {
     id: string;
     type: VideoTypeEnum;

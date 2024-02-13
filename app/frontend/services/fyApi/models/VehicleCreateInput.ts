@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { BoughtViaEnum } from './BoughtViaEnum';
-
 export type VehicleCreateInput = {
     modelId: string;
     name?: string | null;

@@ -14,14 +14,10 @@ import type { FleetVehicleQuery } from '../models/FleetVehicleQuery';
 import type { FleetVehiclesStats } from '../models/FleetVehiclesStats';
 import type { Model } from '../models/Model';
 import type { VehiclePublic } from '../models/VehiclePublic';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class FleetsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Check Fleet FID Availability
      * @returns FleetCheck successful
@@ -42,7 +38,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Create Fleet
      * @returns Fleet successful
@@ -64,7 +59,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Fleets for current User -> use GET /fleets/my
@@ -80,7 +74,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Destroy Fleet
      * You are not the owner of this Fleet
@@ -108,7 +101,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Fleet Detail
      * @returns Fleet successful
@@ -133,7 +125,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Update Fleet
      * You are not an Admin or Officer of this Fleet
@@ -165,7 +156,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Find Fleet by Invite
      * @returns Fleet successful
@@ -190,7 +180,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Fleet Invites current User
      * @returns FleetMember successful
@@ -205,7 +194,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Fleets for current User
      * @returns Fleet successful
@@ -220,7 +208,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Fleet Public Vehicles -> use GET /fleets/{fleetSlug}/public/vehicles
@@ -243,7 +230,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Fleet Fleetchart -> use GET /fleets/{fleetSlug}/vehicles
@@ -266,7 +252,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Fleet Public Fleetchart -> use GET /fleets/{fleetSlug}/public/vehicles
@@ -289,7 +274,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Fleet Vehicle QuickStats -> use GET /fleets/{fleetSlug}/stats/vehicles
@@ -312,7 +296,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Fleet Stats Model Counts -> use GET /fleets/{fleetSlug}/stats/model-counts
@@ -340,7 +323,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Public Fleet Stats Model Counts -> use GET /public/fleets/{fleetSlug}/stats/model-counts
@@ -368,7 +350,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Fleet Vehicles Embed for the Fleetyards Widget -> use GET /public/fleets/{fleetSlug}/vehicles/embed
@@ -396,7 +377,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Fleet Vehicles List
      * @returns FleetVehicleExport successful
@@ -427,7 +407,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Fleet Vehicles List
      * @returns any successful
@@ -470,7 +449,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Public Fleet Stats Model Counts
      * @returns FleetModelCountsStats successful
@@ -500,7 +478,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Public Fleet Vehicles Embed for the Fleetyards Widget
      * @returns VehiclePublic successful
@@ -530,7 +507,6 @@ export class FleetsService {
             },
         });
     }
-
     /**
      * Public Fleet Vehicles List
      * @returns any successful
@@ -572,5 +548,4 @@ export class FleetsService {
             },
         });
     }
-
 }

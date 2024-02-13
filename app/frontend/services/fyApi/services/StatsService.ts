@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { PieChartStats } from '../models/PieChartStats';
 import type { Stats } from '../models/Stats';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class StatsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Stats Components by Class
      * @returns PieChartStats successful
@@ -23,7 +19,6 @@ export class StatsService {
             url: '/stats/components-by-class',
         });
     }
-
     /**
      * Stats Models by Classification
      * @returns PieChartStats successful
@@ -35,7 +30,6 @@ export class StatsService {
             url: '/stats/models-by-classification',
         });
     }
-
     /**
      * Stats Models by Manufacturer
      * @returns PieChartStats successful
@@ -47,7 +41,6 @@ export class StatsService {
             url: '/stats/models-by-manufacturer',
         });
     }
-
     /**
      * Stats Models by Production-Status
      * @returns PieChartStats successful
@@ -59,7 +52,6 @@ export class StatsService {
             url: '/stats/models-by-production-status',
         });
     }
-
     /**
      * Stats Models by Size
      * @returns PieChartStats successful
@@ -71,7 +63,6 @@ export class StatsService {
             url: '/stats/models-by-size',
         });
     }
-
     /**
      * Stats Models per Month
      * @returns PieChartStats successful
@@ -83,7 +74,6 @@ export class StatsService {
             url: '/stats/models-per-month',
         });
     }
-
     /**
      * Stats
      * @returns Stats successful
@@ -95,5 +85,4 @@ export class StatsService {
             url: '/stats/quick-stats',
         });
     }
-
 }

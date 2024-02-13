@@ -4,11 +4,8 @@
 /* eslint-disable */
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class FeaturesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Feature Flags for User
      * @returns string successful
@@ -20,5 +17,4 @@ export class FeaturesService {
             url: '/features',
         });
     }
-
 }

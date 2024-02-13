@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum ModelHardpointSubCategoryEnum {
     RETRO_THRUSTERS = 'retro_thrusters',
     VTOL_THRUSTERS = 'vtol_thrusters',

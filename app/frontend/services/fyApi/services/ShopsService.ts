@@ -8,14 +8,10 @@ import type { ShopCommodity } from '../models/ShopCommodity';
 import type { ShopCommodityOrderQuery } from '../models/ShopCommodityOrderQuery';
 import type { ShopCommodityQuery } from '../models/ShopCommodityQuery';
 import type { ShopQuery } from '../models/ShopQuery';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ShopsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Shop Commodity list
      * @returns ShopCommodity successful
@@ -60,7 +56,6 @@ export class ShopsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Shop types
@@ -73,7 +68,6 @@ export class ShopsService {
             url: '/shops/shop-types',
         });
     }
-
     /**
      * Shops list
      * @returns Shop successful
@@ -101,7 +95,6 @@ export class ShopsService {
             },
         });
     }
-
     /**
      * Shop Detail
      * @returns Shop successful
@@ -132,5 +125,4 @@ export class ShopsService {
             },
         });
     }
-
 }

@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum HabitationTypeEnum {
     CONTAINER = 'container',
     SMALL_APARTMENT = 'small_apartment',

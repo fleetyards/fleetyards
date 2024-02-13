@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { TradeRoute } from '../models/TradeRoute';
 import type { TradeRouteQuery } from '../models/TradeRouteQuery';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class TradeRoutesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Trade Routes
      * @returns TradeRoute successful
@@ -39,5 +35,4 @@ export class TradeRoutesService {
             },
         });
     }
-
 }

@@ -2,12 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Fleet } from './Fleet';
 import type { FleetMembershipRoleEnum } from './FleetMembershipRoleEnum';
 import type { FleetMembershipShipsFilterEnum } from './FleetMembershipShipsFilterEnum';
 import type { FleetMembershipStatusEnum } from './FleetMembershipStatusEnum';
-
 export type FleetMember = {
     id: string;
     username: string;

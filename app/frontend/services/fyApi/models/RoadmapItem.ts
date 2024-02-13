@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MediaImage } from './MediaImage';
 import type { Model } from './Model';
-
 export type RoadmapItem = {
     id: string;
     name: string;

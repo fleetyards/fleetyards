@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { FleetVehicleSortEnum } from './FleetVehicleSortEnum';
-
 export type FleetVehicleQuery = {
     beamGteq?: number;
     beamLteq?: number;

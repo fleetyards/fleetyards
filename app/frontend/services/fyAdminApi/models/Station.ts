@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CelestialObject } from './CelestialObject';
 import type { Dock } from './Dock';
 import type { DockCount } from './DockCount';
@@ -14,7 +13,6 @@ import type { Starsystem } from './Starsystem';
 import type { StationClassificationEnum } from './StationClassificationEnum';
 import type { StationSizeEnum } from './StationSizeEnum';
 import type { StationTypeEnum } from './StationTypeEnum';
-
 export type Station = {
     name: string;
     slug: string;

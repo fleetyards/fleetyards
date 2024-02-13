@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { BoughtViaEnum } from './BoughtViaEnum';
 import type { VehicleSortEnum } from './VehicleSortEnum';
-
 export type HangarQuery = {
     beamGteq?: number;
     beamLteq?: number;

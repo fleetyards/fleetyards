@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { Commodities } from '../models/Commodities';
 import type { CommodityQuery } from '../models/CommodityQuery';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class CommotitiesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Commodities list
      * Get a List of Commodities
@@ -46,5 +42,4 @@ export class CommotitiesService {
             },
         });
     }
-
 }

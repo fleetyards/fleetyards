@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum VehicleSortEnum {
     FLAGSHIP_DESC = 'flagship desc',
     FLAGSHIP_ASC = 'flagship asc',

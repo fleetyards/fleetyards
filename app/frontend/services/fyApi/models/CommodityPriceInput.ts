@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type CommodityPriceInput = {
     commodityItemId: string;
     commodityItemType: string;
@@ -10,15 +9,11 @@ export type CommodityPriceInput = {
     shopId: string;
     timeRange?: string;
 };
-
 export namespace CommodityPriceInput {
-
     export enum path {
         BUY = 'buy',
         SELL = 'sell',
         RENTAL = 'rental',
     }
-
-
 }
 

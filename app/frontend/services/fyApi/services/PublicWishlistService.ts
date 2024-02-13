@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { HangarQuery } from '../models/HangarQuery';
 import type { VehiclePublic } from '../models/VehiclePublic';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class PublicWishlistService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Your Wishlist
      * @returns VehiclePublic successful
@@ -44,5 +40,4 @@ export class PublicWishlistService {
             },
         });
     }
-
 }

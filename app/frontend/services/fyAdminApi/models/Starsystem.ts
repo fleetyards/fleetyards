@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CelestialObject } from './CelestialObject';
 import type { MediaImage } from './MediaImage';
-
 export type Starsystem = {
     name: string;
     slug: string;

@@ -3,14 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { User } from '../models/User';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class UsersService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * @deprecated
      * My Data
@@ -23,7 +19,6 @@ export class UsersService {
             url: '/users/current',
         });
     }
-
     /**
      * My Data
      * @returns User successful
@@ -38,5 +33,4 @@ export class UsersService {
             },
         });
     }
-
 }

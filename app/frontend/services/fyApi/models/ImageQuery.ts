@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type ImageQuery = {
     modelIn?: Array<string>;
     stationIn?: Array<string>;

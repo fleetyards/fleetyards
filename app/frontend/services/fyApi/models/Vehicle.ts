@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { BoughtViaEnum } from './BoughtViaEnum';
 import type { HangarGroup } from './HangarGroup';
 import type { Model } from './Model';
 import type { ModelModulePackage } from './ModelModulePackage';
 import type { ModelPaint } from './ModelPaint';
 import type { ModelUpgrade } from './ModelUpgrade';
-
 export type Vehicle = {
     id: string;
     name?: string;

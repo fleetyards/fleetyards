@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum DockShipSizeEnum {
     EXTRA_EXTRA_SMALL = 'extra_extra_small',
     EXTRA_SMALL = 'extra_small',

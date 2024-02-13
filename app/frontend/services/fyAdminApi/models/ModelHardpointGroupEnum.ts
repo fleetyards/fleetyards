@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum ModelHardpointGroupEnum {
     AVIONIC = 'avionic',
     SYSTEM = 'system',

@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum ComponentClassEnum {
     RSIMODULAR = 'RSIModular',
     RSIWEAPON = 'RSIWeapon',

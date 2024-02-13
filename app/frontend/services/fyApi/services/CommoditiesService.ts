@@ -5,14 +5,10 @@
 import type { Commodity } from '../models/Commodity';
 import type { CommodityQuery } from '../models/CommodityQuery';
 import type { FilterOption } from '../models/FilterOption';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class CommoditiesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * @deprecated
      * Commodity Types
@@ -25,7 +21,6 @@ export class CommoditiesService {
             url: '/commodities/types',
         });
     }
-
     /**
      * Commodities list
      * @returns Commodity successful
@@ -53,5 +48,4 @@ export class CommoditiesService {
             },
         });
     }
-
 }

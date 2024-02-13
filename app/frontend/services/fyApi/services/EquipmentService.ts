@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { Equipment } from '../models/Equipment';
 import type { EquipmentQuery } from '../models/EquipmentQuery';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class EquipmentService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Equipment list
      * @returns Equipment successful
@@ -39,5 +35,4 @@ export class EquipmentService {
             },
         });
     }
-
 }

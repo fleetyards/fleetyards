@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Commodity } from './Commodity';
 import type { CommodityTypeEnum } from './CommodityTypeEnum';
 import type { Component } from './Component';
@@ -16,7 +15,6 @@ import type { ModelPaint } from './ModelPaint';
 import type { Shop } from './Shop';
 import type { ShopCommodityCategoryEnum } from './ShopCommodityCategoryEnum';
 import type { ShopCommodityItemTypeEnum } from './ShopCommodityItemTypeEnum';
-
 export type ShopCommodity = {
     id: string;
     name: string;

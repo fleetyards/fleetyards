@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum FleetVehicleSortEnum {
     MODEL_NAME_ASC = 'model_name asc',
     MODEL_NAME_DESC = 'model_name desc',

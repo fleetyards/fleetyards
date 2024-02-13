@@ -12,14 +12,10 @@ import type { VehicleCheckSerialResponse } from '../models/VehicleCheckSerialRes
 import type { VehicleCreateInput } from '../models/VehicleCreateInput';
 import type { VehicleExport } from '../models/VehicleExport';
 import type { VehicleUpdateInput } from '../models/VehicleUpdateInput';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class VehiclesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Update multiple vehicles
      * @returns void
@@ -40,7 +36,6 @@ export class VehiclesService {
             },
         });
     }
-
     /**
      * Destroy multiple Vehicles
      * @returns void
@@ -61,7 +56,6 @@ export class VehiclesService {
             },
         });
     }
-
     /**
      * Check Vehicle Serial
      * @returns VehicleCheckSerialResponse successful
@@ -82,7 +76,6 @@ export class VehiclesService {
             },
         });
     }
-
     /**
      * Create new Vehicle
      * @returns Vehicle successful
@@ -103,7 +96,6 @@ export class VehiclesService {
             },
         });
     }
-
     /**
      * @deprecated
      * Vehicles List -> use GET /hangar
@@ -129,7 +121,6 @@ export class VehiclesService {
             },
         });
     }
-
     /**
      * @deprecated
      * Vehicle Fleetchart List -> use GET /hangar
@@ -142,7 +133,6 @@ export class VehiclesService {
             url: '/vehicles/fleetchart',
         });
     }
-
     /**
      * @deprecated
      * Vehicle Export -> use GET /hangar/export
@@ -155,7 +145,6 @@ export class VehiclesService {
             url: '/vehicles/export',
         });
     }
-
     /**
      * @deprecated
      * Vehicle import -> use PUT /hangar/import
@@ -174,7 +163,6 @@ export class VehiclesService {
             mediaType: 'multipart/form-data',
         });
     }
-
     /**
      * @deprecated
      * Vehicle Destroy all -> use DELETE /hangar
@@ -187,7 +175,6 @@ export class VehiclesService {
             url: '/vehicles/destroy-all',
         });
     }
-
     /**
      * @deprecated
      * Vehicle embed -> use GET /public/hangar/embed
@@ -200,7 +187,6 @@ export class VehiclesService {
             url: '/vehicles/embed',
         });
     }
-
     /**
      * @deprecated
      * Vehicle Hangar items -> use GET /hangar/items
@@ -213,7 +199,6 @@ export class VehiclesService {
             url: '/vehicles/hangar-items',
         });
     }
-
     /**
      * @deprecated
      * Vehicle hangar -> no replacement
@@ -226,7 +211,6 @@ export class VehiclesService {
             url: '/vehicles/hangar',
         });
     }
-
     /**
      * Delete Vehicle
      * @returns Vehicle successful
@@ -252,7 +236,6 @@ export class VehiclesService {
             },
         });
     }
-
     /**
      * Update Vehicle
      * @returns Vehicle successful
@@ -282,7 +265,6 @@ export class VehiclesService {
             },
         });
     }
-
     /**
      * Delete all ingame bought Vehicles
      * @returns void
@@ -297,5 +279,4 @@ export class VehiclesService {
             },
         });
     }
-
 }

@@ -2,11 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MediaImage } from './MediaImage';
 import type { ModelModule } from './ModelModule';
 import type { ViewImage } from './ViewImage';
-
 export type ModelModulePackage = {
     id: string;
     name: string;

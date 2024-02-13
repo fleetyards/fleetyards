@@ -3,14 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ComponentsFiltersService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Component Item Type Filters
      * Get a list of Component Item Types
@@ -26,5 +22,4 @@ export class ComponentsFiltersService {
             },
         });
     }
-
 }

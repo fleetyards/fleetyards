@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum SearchResultTypeEnum {
     MODEL = 'Model',
     COMPONENT = 'Component',
