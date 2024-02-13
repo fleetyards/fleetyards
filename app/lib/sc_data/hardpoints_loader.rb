@@ -14,7 +14,7 @@ module ScData
       cleanup_ship_matrix_hardpoints(model.id)
 
       hardpoint_types.each do |hardpoint_type|
-        hardpoint_ids << send("extract_#{hardpoint_type}", hardpoint_type, model.id, components)
+        hardpoint_ids << send(:"extract_#{hardpoint_type}", hardpoint_type, model.id, components)
       end
 
       cleanup_old_hardpoints(model.id, hardpoint_ids)

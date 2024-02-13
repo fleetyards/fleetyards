@@ -30,7 +30,7 @@ class FleetchartImageUploader < BaseUploader
 
     width, height = ::MiniMagick::Image.open(file.file)[:dimensions]
 
-    model.send("#{mounted_as}_width=", width)
-    model.send("#{mounted_as}_height=", height)
+    model.send(:"#{mounted_as}_width=", width)
+    model.send(:"#{mounted_as}_height=", height)
   end
 end

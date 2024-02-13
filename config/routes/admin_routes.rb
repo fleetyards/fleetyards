@@ -37,7 +37,7 @@ namespace :admin, path: (Rails.configuration.app.on_subdomain? ? "" : "admin"), 
 
   resources :settings, except: %i[index show]
 
-  authenticate :admin_user, (->(u) { u.present? }) do
+  authenticate :admin_user, ->(u) { u.present? } do
     mount Sidekiq::Web => "/workers"
     mount PgHero::Engine => "/pghero"
     mount Flipper::UI.app(Flipper) => "/features", :as => :features

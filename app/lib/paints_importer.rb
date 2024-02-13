@@ -101,7 +101,7 @@ class PaintsImporter
         model_id: model.id,
         name: paint_name,
         remote_store_image_url: paint[:image],
-        hidden: true,
+        hidden: false,
         active: true
       )
 
@@ -192,7 +192,20 @@ class PaintsImporter
       "AEGIS Vulcan CTR" => "CTR",
       "Crusader Ares Radiance" => "Radiance",
       "Crusader Ares Ember" => "Ember",
-      "Freelancer - Black" => "Black"
+      "Freelancer - Black" => "Black",
+      "600i 2953 Best in Show" => "Best in Show 2953",
+      "Corsair 2953 Best in Show" => "Best in Show 2953",
+      "Vulture 2953 Best in Show" => "Best in Show 2953",
+      "Redeemer 2953 Best in Show" => "Best in Show 2953",
+      "100i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
+      "100i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
+      "400i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
+      "400i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
+      "600i 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
+      "600i 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
+      "X1 2954 Auspicious Red Dog" => "2954 Auspicious Red Dog",
+      "X1 2954 Auspicious Red Dragon" => "2954 Auspicious Red Dragon",
+      "Scorpius Stinger Black Orange" => "Stinger"
     }
 
     return paint_map[name] if paint_map[name].present?
@@ -229,7 +242,7 @@ class PaintsImporter
     ares = ["Ares Ion", "Ares Inferno"]
     starfarer = ["Starfarer", "Starfarer Gemini"]
     cutter = ["Cutter", "Cutter Scout", "Cutter Rambler"]
-    x1 = ["X1 Base", "X1 Velocity", "X1 Force"]
+    x1 = ["X1", "X1 Velocity", "X1 Force"]
 
     models_map = {
       "Cutter" => cutter,
@@ -250,7 +263,7 @@ class PaintsImporter
       "600i" => series_600,
       "600i BIS 2951" => series_600,
       "MPUV BIS 2951" => ["MPUV Personnel", "MPUV Cargo"],
-      "Origin X1 Scarlet" => ["X1 Base", "X1 Velocity", "X1 Force"],
+      "Origin X1 Scarlet" => x1,
       "Mercury Star Runner BIS 2951" => mercury,
       "Star Runner" => mercury,
       "Star Runner Silver Spark" => mercury,
@@ -337,7 +350,20 @@ class PaintsImporter
       "Tumbril Nova" => ["Nova"],
       "AEGIS Vulcan Hazard Yellow" => ["Vulcan"],
       "AEGIS Vulcan CTR" => ["Vulcan"],
-      "X1" => x1
+      "X1" => x1,
+      "600i 2953 Best in Show" => series_600,
+      "Corsair 2953 Best in Show" => ["Corsair"],
+      "Vulture 2953 Best in Show" => ["Vulture"],
+      "Redeemer 2953 Best in Show" => ["Redeemer"],
+      "100i 2954 Auspicious Red Dog" => series_100,
+      "100i 2954 Auspicious Red Dragon" => series_100,
+      "400i 2954 Auspicious Red Dog" => ["400i"],
+      "400i 2954 Auspicious Red Dragon" => ["400i"],
+      "600i 2954 Auspicious Red Dog" => series_600,
+      "600i 2954 Auspicious Red Dragon" => series_600,
+      "X1 2954 Auspicious Red Dog" => x1,
+      "X1 2954 Auspicious Red Dragon" => x1,
+      "Scorpius Stinger Black Orange" => scorpius
     }
 
     return models_map[name.strip] if models_map[name.strip].present?
