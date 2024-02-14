@@ -175,8 +175,7 @@ GEM
     crass (1.0.6)
     css_parser (1.16.0)
       addressable
-    dalli (3.2.7)
-      base64
+    dalli (3.2.8)
     data_migrate (9.2.0)
       activerecord (>= 6.1)
       railties (>= 6.1)
@@ -199,10 +198,10 @@ GEM
       rest-client (>= 2.0.0)
     docile (1.4.0)
     domain_name (0.6.20231109)
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
+    dotenv (3.0.0)
+    dotenv-rails (3.0.0)
+      dotenv (= 3.0.0)
+      railties (>= 6.1)
     drb (2.2.0)
       ruby2_keywords
     dry-cli (1.0.0)
