@@ -175,8 +175,7 @@ GEM
     crass (1.0.6)
     css_parser (1.16.0)
       addressable
-    dalli (3.2.7)
-      base64
+    dalli (3.2.8)
     data_migrate (9.2.0)
       activerecord (>= 6.1)
       railties (>= 6.1)
