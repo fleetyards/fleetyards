@@ -10,13 +10,14 @@
       <template v-if="!mobile"
         >{{ i18n?.t("paginator.labels.perPage") }}:</template
       >
-      {{ perPage }}
+      {{ internalValue }}
     </template>
     <Btn
       v-for="(step, index) in steps"
       :key="`per-page-drowndown-${uuid}-${index}-${step}`"
       size="small"
       variant="dropdown"
+      :active="step === internalValue"
       @click="update(step)"
     >
       {{ step }}
@@ -43,13 +44,24 @@ type Props = {
   inGroup?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   perPage: undefined,
   steps: () => [10, 20, 50, 100],
   size: "default",
   variant: "default",
   inGroup: false,
 });
+
+const internalValue = ref(props.perPage || props.steps[0]);
+
+watch(
+  () => props.perPage,
+  () => {
+    if (props.perPage) {
+      internalValue.value = props.perPage;
+    }
+  },
+);
 
 const mobile = useMobile();
 

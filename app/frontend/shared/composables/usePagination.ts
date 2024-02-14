@@ -9,7 +9,13 @@ export const usePagination = (
 ) => {
   const paginationStore = usePaginationStore();
 
-  const perPage = computed(() => String(paginationStore.findByKey(key)));
+  const perPage = computed(() => {
+    if (!paginationStore.findByKey(key)) {
+      return undefined;
+    }
+
+    return paginationStore.findByKey(key) as string;
+  });
 
   const updatePerPage = (newPerPage: string | number) => {
     paginationStore.setBykey(key, newPerPage);

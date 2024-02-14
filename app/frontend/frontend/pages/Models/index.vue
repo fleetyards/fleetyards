@@ -85,6 +85,7 @@
       </template>
 
       <template #pagination-bottom>
+        {{ perPage }}
         <Paginator
           :pagination="pagination"
           :per-page="perPage"
