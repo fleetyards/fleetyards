@@ -198,9 +198,9 @@ GEM
       rest-client (>= 2.0.0)
     docile (1.4.0)
     domain_name (0.6.20231109)
-    dotenv (3.0.0)
-    dotenv-rails (3.0.0)
-      dotenv (= 3.0.0)
+    dotenv (3.0.1)
+    dotenv-rails (3.0.1)
+      dotenv (= 3.0.1)
       railties (>= 6.1)
     drb (2.2.0)
       ruby2_keywords
