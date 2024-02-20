@@ -19,18 +19,16 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 0;
-    height: 0;
-    border-top: 20px solid $primary;
-    border-right: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-left: 20px solid $primary;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $primary;
+    border-radius: 0 10px 10px 0;
 
     i,
     svg {
-      position: absolute;
-      top: -15px;
-      left: -10px;
       color: #fff;
     }
   }

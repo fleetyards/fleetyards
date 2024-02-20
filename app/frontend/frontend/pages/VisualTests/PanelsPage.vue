@@ -241,7 +241,10 @@
         <div class="row">
           <div class="col-12 col-md-4">
             <h2>Component Panel</h2>
-            <ComponentPanel v-if="component" :component="component[0]" />
+            <ComponentPanel
+              v-if="component && component.items.length"
+              :component="component.items[0]"
+            />
           </div>
         </div>
       </div>

@@ -69,4 +69,8 @@ export default {
   impressum: "Impressum",
   privacyPolicy: "Privacy policy",
   cookiePolicy: "Cookie policy",
+  visualTests: {
+    index: "Visual Tests",
+    panels: "Panels - Visual Tests",
+  },
 };

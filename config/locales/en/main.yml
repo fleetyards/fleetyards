@@ -374,6 +374,8 @@ en:
       tools_profit_calculator: Profit Calculator
       tools_trade-routes: Trade Routes
       tools_travel-times: Travel Times
+      visual-tests: "Visual Tests"
+      visual-tests_panels: Panels - Visual Tests
     image:
       index: All Images
     loaner_uploads:
