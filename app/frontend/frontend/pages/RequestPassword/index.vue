@@ -18,8 +18,8 @@
               :slim="true"
             >
               <FormInput
-                id="email"
                 v-model="form.email"
+                name="email"
                 :error="errors[0]"
                 type="email"
                 :hide-label-on-empty="true"
@@ -49,25 +49,26 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess } from "@/frontend/lib/Noty";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Store from "@/frontend/lib/Store";
-
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 import type { PasswordRequestInput } from "@/services/fyApi";
-import { useRouter } from "vue-router/composables";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
+
+const { displaySuccess } = useNoty(t);
 
 const submitting = ref(false);
 
 const form = ref<PasswordRequestInput>({});
 
-const isAuthenticated = computed(
-  () => Store.getters["session/isAuthenticated"],
-);
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
 
 onMounted(() => {
   setupForm();
@@ -90,7 +91,7 @@ const requestPassword = async () => {
     await passwordService.requestPasswordReset({
       requestBody: form.value,
     });
-  } catch (_error) {
+  } catch (error) {
     // console.error(error);
   }
 

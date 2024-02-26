@@ -8,9 +8,10 @@
       :clearable="true"
     />
 
+    // TODO: migrate to new FilterGroup props
     <FilterGroup
       v-model="form.modelIn"
-      :label="$t('labels.filters.shops.model')"
+      :label="t('labels.filters.shops.model')"
       fetch-path="models"
       name="model"
       value-attr="slug"
@@ -22,7 +23,7 @@
 
     <FilterGroup
       v-model="form.commodityIn"
-      :label="$t('labels.filters.shops.commodity')"
+      :label="t('labels.filters.shops.commodity')"
       fetch-path="commodities"
       name="commodity"
       value-attr="slug"
@@ -34,7 +35,7 @@
 
     <FilterGroup
       v-model="form.equipmentIn"
-      :label="$t('labels.filters.shops.equipment')"
+      :label="t('labels.filters.shops.equipment')"
       fetch-path="equipment"
       name="equipment"
       value-attr="slug"
@@ -46,7 +47,7 @@
 
     <FilterGroup
       v-model="form.componentIn"
-      :label="$t('labels.filters.shops.component')"
+      :label="t('labels.filters.shops.component')"
       fetch-path="components"
       name="component"
       value-attr="slug"
@@ -58,7 +59,7 @@
 
     <FilterGroup
       v-model="form.shopTypeIn"
-      :label="$t('labels.filters.shops.type')"
+      :label="t('labels.filters.shops.type')"
       :fetch="fetchShopTypes"
       name="type"
       :multiple="true"
@@ -67,7 +68,7 @@
 
     <FilterGroup
       v-model="form.stationIn"
-      :label="$t('labels.filters.shops.station')"
+      :label="t('labels.filters.shops.station')"
       fetch-path="stations"
       name="station"
       value-attr="slug"
@@ -79,7 +80,7 @@
 
     <FilterGroup
       v-model="form.celestialObjectIn"
-      :label="$t('labels.filters.shops.celestialObject')"
+      :label="t('labels.filters.shops.celestialObject')"
       fetch-path="celestial-objects"
       name="celestial-object"
       value-attr="slug"
@@ -91,7 +92,7 @@
 
     <FilterGroup
       v-model="form.starsystemIn"
-      :label="$t('labels.filters.shops.starsystem')"
+      :label="t('labels.filters.shops.starsystem')"
       fetch-path="starsystems"
       name="starsystem"
       value-attr="slug"
@@ -101,73 +102,44 @@
       :no-label="true"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import type { ShopQuery } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
+const { t } = useI18n();
 
+const setupForm = () => {
+  form.value = {
+    nameCont: routeQuery.value.nameCont,
+    modelIn: routeQuery.value.modelIn || [],
+    commodityIn: routeQuery.value.commodityIn || [],
+    equipmentIn: routeQuery.value.equipmentIn || [],
+    componentIn: routeQuery.value.componentIn || [],
+    stationIn: routeQuery.value.stationIn || [],
+    celestialObjectIn: routeQuery.value.celestialObjectIn || [],
+    starsystemIn: routeQuery.value.starsystemIn || [],
+    shopTypeIn: routeQuery.value.shopTypeIn || [],
+  };
+};
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<ShopQuery>(setupForm);
+
+const form = ref<ShopQuery>({});
+</script>
+
+<script lang="ts">
 export default {
   name: "ShopsFilterForm",
-
-  components: {
-    FilterGroup,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-    return {
-      loading: false,
-      form: {
-        nameCont: query.nameCont,
-        modelIn: query.modelIn || [],
-        commodityIn: query.commodityIn || [],
-        equipmentIn: query.equipmentIn || [],
-        componentIn: query.componentIn || [],
-        stationIn: query.stationIn || [],
-        celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
-        shopTypeIn: query.shopTypeIn || [],
-      },
-    };
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        nameCont: query.nameCont,
-        modelIn: query.modelIn || [],
-        commodityIn: query.commodityIn || [],
-        equipmentIn: query.equipmentIn || [],
-        componentIn: query.componentIn || [],
-        stationIn: query.stationIn || [],
-        celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
-        shopTypeIn: query.shopTypeIn || [],
-      };
-    },
-  },
-
-  methods: {
-    fetchShopTypes() {
-      return this.$api.get("shops/shop-types");
-    },
-  },
 };
 </script>

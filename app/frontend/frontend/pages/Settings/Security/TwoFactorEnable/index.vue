@@ -90,12 +90,11 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 import { disabledRouteGuard } from "@/frontend/utils/RouteGuards/TwoFactor";
-import twoFactorCollection from "@/frontend/api/collections/TwoFactor";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
 import BackupCodesPanel from "@/frontend/components/Security/TwoFactorBackupCodesPanel/index.vue";
-import SecurePage from "@/frontend/core/components/SecurePage/index.vue";
+import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 
 @Component<TwoFactorEnable>({

@@ -260,7 +260,7 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import VueUploadComponent from "vue-upload-component";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
 import {
   displaySuccess,
@@ -542,7 +542,6 @@ export default class FleetSettings extends Vue {
     if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
       // eslint-disable-next-line no-param-reassign
       newFile.url = "";
-      // eslint-disable-next-line compat/compat
       const URL = window.URL || window.webkitURL;
       if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign

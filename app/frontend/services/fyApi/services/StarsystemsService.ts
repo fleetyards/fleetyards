@@ -4,13 +4,14 @@
 /* eslint-disable */
 import type { Starsystem } from '../models/Starsystem';
 import type { StarsystemQuery } from '../models/StarsystemQuery';
+import type { Starsystems } from '../models/Starsystems';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class StarsystemsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Starsystems list
-     * @returns Starsystem successful
+     * @returns Starsystems successful
      * @throws ApiError
      */
     public starsystems({
@@ -23,7 +24,7 @@ export class StarsystemsService {
         perPage?: string,
         q?: StarsystemQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Starsystem>> {
+    }): CancelablePromise<Starsystems> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/starsystems',

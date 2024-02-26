@@ -9,6 +9,7 @@ export type ModelModule = {
     id: string;
     name: string;
     availability: {
+        listedAt: Array<ShopCommodity>;
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };

@@ -7,29 +7,25 @@
   </div>
 </template>
 
-<script>
-import { sortBy } from "@/frontend/lib/Helpers";
+<script lang="ts" setup>
+import { sortBy } from "@/shared/utils/Array";
+import type { Dock } from "@/services/fyApi";
 
+type Props = {
+  docks: Dock[];
+  size: number | string;
+};
+
+const props = defineProps<Props>();
+
+const sortedDocks = computed(() => {
+  return sortBy(props.docks, "name") as Dock[];
+});
+</script>
+
+<script lang="ts">
 export default {
   name: "StationsDocksItem",
-
-  props: {
-    docks: {
-      type: Array,
-      required: true,
-    },
-
-    size: {
-      type: String,
-      required: true,
-    },
-  },
-
-  computed: {
-    sortedDocks() {
-      return sortBy(this.docks, "name");
-    },
-  },
 };
 </script>
 

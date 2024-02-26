@@ -31,6 +31,7 @@
 #
 class Component < ApplicationRecord
   paginates_per 50
+  max_paginates_per 240
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code item_type item_class],
     word_start: %i[name manufacturer_name item_type],
@@ -51,7 +52,9 @@ class Component < ApplicationRecord
   end
 
   belongs_to :manufacturer, optional: true
+
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :model_hardpoints, dependent: :nullify
 
   validates :name, presence: true
 
@@ -79,8 +82,6 @@ class Component < ApplicationRecord
   ransacker :tracking_signal, formatter: proc { |v| Component.tracking_signals[v] } do |parent|
     parent.table[:tracking_signal]
   end
-
-  ransack_alias :name, :name_or_slug
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -140,7 +141,7 @@ class Component < ApplicationRecord
     Component.item_types.map do |item|
       Filter.new(
         category: "item_type",
-        name: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        label: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
         value: item
       )
     end
@@ -150,7 +151,7 @@ class Component < ApplicationRecord
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(
         category: "class",
-        name: I18n.t("filter.component.class.items.#{item.downcase}"),
+        label: I18n.t("filter.component.class.items.#{item.downcase}"),
         value: item
       )
     end

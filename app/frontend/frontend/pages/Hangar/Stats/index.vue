@@ -143,10 +143,10 @@
   </section>
 </template>
 
-<script>
-import Chart from "@/frontend/core/components/Chart/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
+<script lang="ts" setup>
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Chart from "@/shared/components/Chart/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 export default {
   name: "HangarStats",
@@ -246,5 +246,11 @@ export default {
       return [];
     },
   },
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "HangarStatsPage",
 };
 </script>

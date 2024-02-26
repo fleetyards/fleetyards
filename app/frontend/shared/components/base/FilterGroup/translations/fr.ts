@@ -1,0 +1,9 @@
+export default {
+  filterGroup: {
+    labels: {
+      search: "Saisissez votre recherche",
+      nullablePrompt: "Aucune option sélectionnée",
+      prompt: "Merci de sélectionner une option",
+    },
+  },
+};

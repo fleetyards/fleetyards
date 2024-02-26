@@ -1,24 +1,22 @@
 <template>
-  <Panel class="codes-panel">
-    <div class="panel-body">
-      <p>
-        {{ $t("texts.twoFactor.backupCodes") }}
-      </p>
-      <div class="row d-flex justify-content-center codes-panel-inner">
-        <div
-          v-for="backupCode in codes"
-          :key="backupCode"
-          class="col-6 text-center"
-        >
-          {{ backupCode }}
-        </div>
+  <Panel class="codes-panel" inset>
+    <p>
+      {{ $t("texts.twoFactor.backupCodes") }}
+    </p>
+    <div class="row d-flex justify-content-center codes-panel-inner">
+      <div
+        v-for="backupCode in codes"
+        :key="backupCode"
+        class="col-6 text-center"
+      >
+        {{ backupCode }}
       </div>
-      <hr />
-      <div class="d-flex justify-content-center">
-        <Btn variant="link" @click.native="copyCodes">
-          {{ $t("actions.copyBackupCodes") }}
-        </Btn>
-      </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-center">
+      <Btn variant="link" @click.native="copyCodes">
+        {{ $t("actions.copyBackupCodes") }}
+      </Btn>
     </div>
   </Panel>
 </template>
@@ -26,10 +24,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component<TwoFactorBackupCodesPanel>({
   components: {

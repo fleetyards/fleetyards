@@ -17,7 +17,7 @@ module Api
             Model.classification_filters.select { |item| !allowed_categories || allowed_categories.include?(item.value) },
             Equipment.type_filters.select { |item| !allowed_categories || allowed_categories.include?(item.value) },
             Component.class_filters.select { |item| !allowed_categories || allowed_categories.include?(item.value) }
-          ].flatten.sort_by { |category| [category.category, category.name] }
+          ].flatten.sort_by { |category| [category.category, category.label] }
         end
 
         def commodity_item_types

@@ -5,6 +5,9 @@ json.name model_paint.name
 json.slug model_paint.slug
 
 json.availability do
+  json.listed_at do
+    json.array! model_paint.listed_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+  end
   json.bought_at do
     json.array! model_paint.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
   end

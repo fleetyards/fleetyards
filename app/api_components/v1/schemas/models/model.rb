@@ -62,7 +62,6 @@ module V1
             hasUpgrades: {type: :boolean},
             hasVideos: {type: :boolean},
             holo: {type: :string},
-            holoColored: {type: :boolean, deprecated: true},
             lastPledgePrice: {type: :number},
             lastPledgePriceLabel: {type: :string},
             lastUpdatedAt: {type: :string, format: "date-time"},
@@ -130,7 +129,7 @@ module V1
             price: {type: :number},
             priceLabel: {type: :string},
             productionNote: {type: :string},
-            productionStatus: {type: :string},
+            productionStatus: {"$ref": "#/components/schemas/ModelProductionStatusEnum"},
             rsiId: {type: :integer},
             rsiName: {type: :string},
             rsiSlug: {type: :string},
@@ -160,6 +159,7 @@ module V1
 
             # DEPRECATED
 
+            holoColored: {type: :boolean, deprecated: true},
             afterburnerGroundSpeed: {type: :number, deprecated: true},
             afterburnerSpeed: {type: :number, deprecated: true},
             angledView: {type: :string, deprecated: true},

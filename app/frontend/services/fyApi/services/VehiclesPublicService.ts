@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { HangarPublic } from '../models/HangarPublic';
 import type { VehiclePublic } from '../models/VehiclePublic';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -10,7 +11,7 @@ export class VehiclesPublicService {
     /**
      * @deprecated
      * public vehicle
-     * @returns VehiclePublic successful
+     * @returns HangarPublic successful
      * @throws ApiError
      */
     public deprecateDgetPublicVehicles({
@@ -20,7 +21,7 @@ export class VehiclesPublicService {
          * id
          */
         id: string,
-    }): CancelablePromise<Array<VehiclePublic>> {
+    }): CancelablePromise<HangarPublic> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/vehicles/{id}',

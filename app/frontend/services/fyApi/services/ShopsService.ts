@@ -8,6 +8,7 @@ import type { ShopCommodity } from '../models/ShopCommodity';
 import type { ShopCommodityOrderQuery } from '../models/ShopCommodityOrderQuery';
 import type { ShopCommodityQuery } from '../models/ShopCommodityQuery';
 import type { ShopQuery } from '../models/ShopQuery';
+import type { Shops } from '../models/Shops';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ShopsService {
@@ -70,7 +71,7 @@ export class ShopsService {
     }
     /**
      * Shops list
-     * @returns Shop successful
+     * @returns Shops successful
      * @throws ApiError
      */
     public shops({
@@ -83,7 +84,7 @@ export class ShopsService {
         perPage?: string,
         q?: ShopQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Shop>> {
+    }): CancelablePromise<Shops> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/shops',

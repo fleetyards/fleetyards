@@ -45,15 +45,21 @@
           <i class="fab fa-patreon" />
           Patreon
         </Btn>
+        &nbsp; &nbsp;
+        <Btn href="https://ko-fi.com/fleetyardsnet" size="large">
+          <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
+          Ko-fi
+        </Btn>
       </div>
     </div>
   </Modal>
 </template>
 
 <script lang="ts" setup>
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
 const { t } = useI18n();
 </script>
@@ -64,8 +70,6 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.support-referral-link {
-  font-size: 130%;
-}
+<style lang="scss" scoped>
+@import "./index.scss";
 </style>

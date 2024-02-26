@@ -16,7 +16,7 @@ module V1
               component: {"$ref": "#/components/schemas/Component"},
               details: {type: :string},
               group: {"$ref": "#/components/schemas/ModelHardpointGroupEnum"},
-              itemSlots: {type: :string},
+              itemSlots: {type: :integer},
               key: {type: :string},
               loadoutIdentifier: {type: :string, format: :uuid},
               loadouts: {type: :array, items: {"$ref": "#/components/schemas/ModelHardpointLoadout"}},

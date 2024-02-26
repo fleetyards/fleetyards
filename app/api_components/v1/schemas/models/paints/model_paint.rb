@@ -20,6 +20,10 @@ module V1
               availability: {
                 type: :object,
                 properties: {
+                  listedAt: {
+                    type: :array,
+                    items: {"$ref": "#/components/schemas/ShopCommodity"}
+                  },
                   boughtAt: {
                     type: :array,
                     items: {"$ref": "#/components/schemas/ShopCommodity"}
@@ -30,7 +34,7 @@ module V1
                   }
                 },
                 additionalProperties: false,
-                required: %w[boughtAt soldAt]
+                required: %w[listedAt boughtAt soldAt]
               },
 
               media: {

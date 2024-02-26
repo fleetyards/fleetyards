@@ -83,6 +83,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from "@/frontend/composables/useI18n";
+import type { CelestialObject } from "@/services/fyApi";
 
 type Props = {
   celestialObject: CelestialObject;

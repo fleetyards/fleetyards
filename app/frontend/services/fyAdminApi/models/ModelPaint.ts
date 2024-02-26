@@ -13,6 +13,7 @@ export type ModelPaint = {
     lastUpdatedAt?: string;
     lastUpdatedAtLabel?: string;
     availability: {
+        listedAt: Array<ShopCommodity>;
         boughtAt: Array<ShopCommodity>;
         soldAt: Array<ShopCommodity>;
     };

@@ -32,7 +32,7 @@
             :key="`${model.slug}-manufacturer`"
             class="col-6 text-center compare-row-item"
           >
-            <span class="metrics-value" v-html="model.manufacturer.name" />
+            <span class="metrics-value" v-html="model.manufacturer?.name" />
           </div>
         </div>
         <div class="row compare-row">
@@ -217,6 +217,7 @@
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];

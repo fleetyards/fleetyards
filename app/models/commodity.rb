@@ -62,7 +62,7 @@ class Commodity < ApplicationRecord
     Commodity.commodity_types.map do |(item, _index)|
       Filter.new(
         category: "commodity_type",
-        name: Commodity.human_enum_name(:commodity_type, item),
+        label: Commodity.human_enum_name(:commodity_type, item),
         value: item
       )
     end

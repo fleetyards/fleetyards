@@ -44,7 +44,7 @@
     >
       <FilterForm slot="filter" />
 
-      <template v-if="!mobile" slot="actions">
+      <template v-if="!mobile" #actions>
         <Btn
           v-for="item in subCategories"
           :key="item.value"
@@ -200,19 +200,19 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import PriceModalBtn from "@/frontend/components/ShopCommodities/PriceModalBtn/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { Getter } from "vuex-class";
 import shopCommoditiesCollection from "@/frontend/api/collections/ShopCommodities";
 import shopsCollection from "@/frontend/api/collections/Shops";
 import AddToCartBtn from "@/frontend/core/components/AppShoppingCart/AddToCartBtn/index.vue";
 import { shopRouteGuard } from "@/frontend/utils/RouteGuards/Shops";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
-import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredTable from "@/shared/components/FilteredTable/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilterForm from "@/frontend/components/Shops/ShopItemFilterForm/index.vue";
 import ShopBaseMetrics from "@/frontend/components/Shops/BaseMetrics/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component<Shop>({
   beforeRouteEnter: shopRouteGuard,

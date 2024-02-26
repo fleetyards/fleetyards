@@ -16,7 +16,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
     parameter name: "id", in: :path, description: "HangarGroup ID", schema: {type: :string, format: :uuid}, required: true
 
     delete("HangarGroup Destroy") do
-      operationId "hangarGroupDestroy"
+      operationId "destroy"
       tags "HangarGroups"
       produces "application/json"
 

@@ -6,7 +6,7 @@
     :size="size"
     :inline="inline"
     :block="block"
-    @click.native="openStarship42"
+    @click="openStarship42"
   >
     <template v-if="withIcon">
       <i class="fad fa-cube" /> {{ t("labels.exportStarship42") }}
@@ -18,23 +18,37 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import type {
-  Props as BtnProps,
   BtnVariants,
   BtnSizes,
-} from "@/frontend/core/components/Btn/index.vue";
+} from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
+import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
+import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
+import type { RouteLocationRaw } from "vue-router";
 
-interface Props extends BtnProps {
-  items: Vehicle[] | Model[];
+type Props = {
+  items: (Vehicle | Model | VehiclePublic)[];
   withIcon?: boolean;
   block?: boolean;
   inline?: boolean;
   variant?: BtnVariants;
   size?: BtnSizes;
-}
+  to?: RouteLocationRaw;
+  href?: string;
+  type?: "button" | "submit";
+  loading?: boolean;
+  spinner?: boolean | SpinnerAlignment;
+  exact?: boolean;
+  mobileBlock?: boolean;
+  textInline?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  routeActiveClass?: string;
+  inGroup?: boolean;
+};
 
 const props = withDefaults(defineProps<Props>(), {
   withIcon: false,
@@ -42,13 +56,25 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   variant: "default",
   size: "default",
+  to: undefined,
+  href: undefined,
+  type: "button",
+  loading: false,
+  spinner: false,
+  exact: false,
+  mobileBlock: false,
+  textInline: false,
+  active: false,
+  disabled: false,
+  routeActiveClass: undefined,
+  inGroup: false,
 });
-
-const mobile = computed(() => Store.getters.mobile);
 
 const basePath = "https://starship42.com/fleetview/";
 
 const { t } = useI18n();
+
+const mobile = useMobile();
 
 const tooltip = computed(() => {
   if (mobile.value) {
@@ -75,7 +101,7 @@ const openStarship42 = () => {
     const shipField = document.createElement("input");
     shipField.type = "hidden";
     shipField.name = "s[]";
-    shipField.value = model.rsiName;
+    shipField.value = model.rsiName || model.name;
 
     form.appendChild(shipField);
   });

@@ -21,7 +21,7 @@ paths:
   "/celestial-objects":
     get:
       summary: Celestial Objects List
-      operationId: celestialObjects
+      operationId: list
       description: Get a List of Celestial Objects
       tags:
       - CelestialObjects
@@ -57,9 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/CelestialObject"
+                "$ref": "#/components/schemas/CelestialObjects"
   "/celestial-objects/{slug}":
     parameters:
     - name: slug
@@ -70,7 +68,7 @@ paths:
       required: true
     get:
       summary: Celestial Object Detail
-      operationId: celestialObject
+      operationId: detail
       description: Get Detail of a Celestial Object referenced by its Slug
       tags:
       - CelestialObjects
@@ -141,9 +139,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Commodity"
+                "$ref": "#/components/schemas/Commodities"
   "/commodity-prices":
     post:
       summary: Create Commodity Price
@@ -246,9 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Component"
+                "$ref": "#/components/schemas/Components"
   "/equipment":
     get:
       summary: Equipment list
@@ -423,7 +417,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/FleetCheck"
+                "$ref": "#/components/schemas/Check"
         '401':
           description: unauthorized
           content:
@@ -434,7 +428,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/FleetCheckInput"
+              "$ref": "#/components/schemas/CheckInput"
         required: true
   "/fleets":
     post:
@@ -1963,11 +1957,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  oneOf:
-                  - "$ref": "#/components/schemas/Model"
-                  - "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/FleetVehicles"
         '404':
           description: not found
           content:
@@ -2029,9 +2019,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Vehicle"
+                "$ref": "#/components/schemas/Hangar"
         '401':
           description: unauthorized
           content:
@@ -2062,7 +2050,7 @@ paths:
   "/hangar/groups":
     post:
       summary: HangarGroup create
-      operationId: hangarGroupCreate
+      operationId: create
       tags:
       - HangarGroups
       parameters: []
@@ -2116,7 +2104,7 @@ paths:
       required: true
     delete:
       summary: HangarGroup Destroy
-      operationId: hangarGroupDestroy
+      operationId: destroy
       tags:
       - HangarGroups
       responses:
@@ -2221,7 +2209,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: string
+              type: object
+              properties:
+                import:
+                  type: string
+                  format: binary
         required: true
   "/hangar/items":
     get:
@@ -2583,9 +2575,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Image"
+                "$ref": "#/components/schemas/Images"
   "/images/random":
     get:
       summary: Images random list
@@ -2624,9 +2614,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Manufacturer"
+                "$ref": "#/components/schemas/Manufacturers"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -2665,9 +2653,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Manufacturer"
+                "$ref": "#/components/schemas/Manufacturers"
   "/model-paints":
     get:
       summary: Model Paints List
@@ -2723,9 +2709,26 @@ paths:
           type: string
           default: 30
         required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Models"
   "/models/unscheduled":
     get:
       summary: Unscheduled Models
@@ -2784,9 +2787,23 @@ paths:
       operationId: embed
       tags:
       - Models
+      parameters:
+      - name: models
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+        required: true
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Model"
   "/models/filters":
     get:
       summary: Model Filters
@@ -2884,6 +2901,10 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CargoOptions"
   "/models":
     get:
       summary: Models List
@@ -2922,9 +2943,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
+                "$ref": "#/components/schemas/Models"
   "/models/{slug}":
     parameters:
     - name: slug
@@ -3017,9 +3036,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Image"
+                "$ref": "#/components/schemas/Images"
         '404':
           description: not found
           content:
@@ -3058,9 +3075,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Video"
+                "$ref": "#/components/schemas/Videos"
         '404':
           description: not found
           content:
@@ -3099,9 +3114,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
+                "$ref": "#/components/schemas/Models"
         '404':
           description: not found
           content:
@@ -3140,9 +3153,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
+                "$ref": "#/components/schemas/Models"
         '404':
           description: not found
           content:
@@ -3209,9 +3220,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelModule"
+                "$ref": "#/components/schemas/ModelModules"
         '404':
           description: not found
           content:
@@ -3250,9 +3259,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelModulePackage"
+                "$ref": "#/components/schemas/ModelModulePackages"
         '404':
           description: not found
           content:
@@ -3567,11 +3574,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  oneOf:
-                  - "$ref": "#/components/schemas/Model"
-                  - "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/FleetPublicVehicles"
         '404':
           description: not found
           content:
@@ -3663,9 +3666,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/HangarPublic"
         '404':
           description: not found
           content:
@@ -3746,9 +3747,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/HangarPublic"
         '404':
           description: not found
           content:
@@ -4026,9 +4025,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Shop"
+                "$ref": "#/components/schemas/Shops"
   "/stations/{stationSlug}/shops/{slug}":
     parameters:
     - name: stationSlug
@@ -4099,9 +4096,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Starsystem"
+                "$ref": "#/components/schemas/Starsystems"
   "/starsystems/{slug}":
     parameters:
     - name: slug
@@ -4211,9 +4206,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Station"
+                "$ref": "#/components/schemas/Stations"
   "/stations/{slug}":
     parameters:
     - name: slug
@@ -4272,9 +4265,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Image"
+                "$ref": "#/components/schemas/Images"
         '404':
           description: not_found
           content:
@@ -4425,6 +4416,78 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/TradeRoute"
+  "/users/check-email":
+    post:
+      summary: Check E-Mail Availability
+      operationId: checkEmail
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Check"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
+        required: true
+  "/users/check-username":
+    post:
+      summary: Check Username Availability
+      operationId: checkUsername
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Check"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
+        required: true
+  "/users/signup":
+    post:
+      summary: Create new User
+      operationId: signup
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserCreateInput"
+        required: true
   "/users/current":
     get:
       summary: My Data
@@ -4515,7 +4578,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/VehicleCheckSerialResponse"
+                "$ref": "#/components/schemas/Check"
         '401':
           description: unauthorized
           content:
@@ -4526,7 +4589,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/VehicleCheckSerialInput"
+              "$ref": "#/components/schemas/CheckInput"
         required: true
   "/vehicles":
     post:
@@ -4587,9 +4650,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Vehicle"
+                "$ref": "#/components/schemas/Hangar"
   "/vehicles/fleetchart":
     get:
       summary: Vehicle Fleetchart List -> use GET /hangar
@@ -4641,7 +4702,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: string
+              type: object
+              properties:
+                import:
+                  type: string
+                  format: binary
         required: true
   "/vehicles/destroy-all":
     delete:
@@ -4772,9 +4837,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/HangarPublic"
     delete:
       summary: Delete Vehicle
       operationId: destroyVehicle
@@ -4885,6 +4948,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/vehicles/filters/bought-via":
+    get:
+      summary: Bought Via Filters
+      operationId: boughtViaFilters
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/version":
     get:
       summary: Version of Fleetyards
@@ -4945,9 +5023,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Vehicle"
+                "$ref": "#/components/schemas/Hangar"
         '401':
           description: unauthorized
           content:
@@ -5044,6 +5120,30 @@ components:
       - items
       - meta
       title: BaseList
+    Check:
+      type: object
+      properties:
+        taken:
+          type: boolean
+      additionalProperties: false
+      required:
+      - taken
+      title: Check
+    Commodities:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Commodity"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Commodities
     Commodity:
       type: object
       properties:
@@ -5257,6 +5357,21 @@ components:
       - spoolUpTime
       - cooldown
       title: ComponentQuantumDriveJump
+    Components:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Component"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Components
     Dock:
       type: object
       properties:
@@ -5304,6 +5419,13 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    CommodityPricePathEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      title: CommodityPricePathEnum
     CommodityTypeEnum:
       type: string
       enum:
@@ -5486,6 +5608,13 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    ModelProductionStatusEnum:
+      type: string
+      enum:
+      - in-concept
+      - in-production
+      - flight-ready
+      title: ModelProductionStatusEnum
     OrderDirectionEnum:
       type: string
       enum:
@@ -5800,6 +5929,13 @@ components:
       - type
       - typeLabel
       title: HabitationCount
+    CheckInput:
+      type: object
+      properties:
+        value:
+          type: string
+      additionalProperties: false
+      title: CheckInput
     Manufacturer:
       type: object
       properties:
@@ -6408,15 +6544,6 @@ components:
       - createdAt
       - updatedAt
       title: Fleet
-    FleetCheck:
-      type: object
-      properties:
-        taken:
-          type: boolean
-      additionalProperties: false
-      required:
-      - taken
-      title: FleetCheck
     FleetInviteUrl:
       type: object
       properties:
@@ -6566,6 +6693,23 @@ components:
       required:
       - modelCounts
       title: FleetModelCountsStats
+    FleetPublicVehicles:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            oneOf:
+            - "$ref": "#/components/schemas/Model"
+            - "$ref": "#/components/schemas/VehiclePublic"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: FleetPublicVehicles
     FleetVehicleExport:
       type: object
       properties:
@@ -6631,6 +6775,23 @@ components:
       - modules
       - upgrades
       title: FleetVehicleExport
+    FleetVehicles:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            oneOf:
+            - "$ref": "#/components/schemas/Model"
+            - "$ref": "#/components/schemas/VehiclePublic"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: FleetVehicles
     FleetVehiclesStats:
       type: object
       properties:
@@ -6996,28 +7157,21 @@ components:
     CommodityPriceInput:
       type: object
       properties:
+        price:
+          type: number
         commodityItemId:
           type: string
           format: uuid
         commodityItemType:
           type: string
         path:
-          type: string
-          enum:
-          - buy
-          - sell
-          - rental
+          "$ref": "#/components/schemas/CommodityPricePathEnum"
         shopId:
           type: string
           format: uuid
         timeRange:
           type: string
       additionalProperties: false
-      required:
-      - commodityItemId
-      - commodityItemType
-      - path
-      - shopId
       title: CommodityPriceInput
     ConfirmAccessInput:
       type: object
@@ -7217,16 +7371,34 @@ components:
           type: string
         rememberMe:
           type: boolean
+        twoFactorCode:
+          type: string
       additionalProperties: false
-      required:
-      - login
-      - password
       title: SessionInput
     SyncRsiHangarInput:
       type: array
       items:
         "$ref": "#/components/schemas/RsiHangarItemInput"
       title: SyncRsiHangarInput
+    UserCreateInput:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          min: 8
+        passwordConfirmation:
+          type: string
+        saleNotify:
+          type: boolean
+        fleetInviteToken:
+          type: string
+      additionalProperties: false
+      title: UserCreateInput
     VehicleBulkDestroyInput:
       type: object
       properties:
@@ -7344,49 +7516,39 @@ components:
           nullable: true
         wanted:
           type: boolean
-          nullable: true
         nameVisible:
           type: boolean
-          nullable: true
         public:
           type: boolean
-          nullable: true
         saleNotify:
           type: boolean
-          nullable: true
         flagship:
           type: boolean
-          nullable: true
         modelPaintId:
           type: string
           format: uuid
           nullable: true
         boughtVia:
           "$ref": "#/components/schemas/BoughtViaEnum"
-          nullable: true
         hangarGroupIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
         modelModuleIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
         modelUpgradeIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
         alternativeNames:
           type: array
           items:
             type: string
-          nullable: true
       additionalProperties: false
       title: VehicleUpdateInput
     Manufacturers:
@@ -7421,7 +7583,7 @@ components:
         group:
           "$ref": "#/components/schemas/ModelHardpointGroupEnum"
         itemSlots:
-          type: string
+          type: integer
         key:
           type: string
         loadoutIdentifier:
@@ -7563,9 +7725,6 @@ components:
           type: boolean
         holo:
           type: string
-        holoColored:
-          type: boolean
-          deprecated: true
         lastPledgePrice:
           type: number
         lastPledgePriceLabel:
@@ -7662,7 +7821,7 @@ components:
         productionNote:
           type: string
         productionStatus:
-          type: string
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
         rsiId:
           type: integer
         rsiName:
@@ -7705,6 +7864,9 @@ components:
         updatedAt:
           type: string
           format: date-time
+        holoColored:
+          type: boolean
+          deprecated: true
         afterburnerGroundSpeed:
           type: number
           deprecated: true
@@ -7970,9 +8132,6 @@ components:
           type: boolean
         holo:
           type: string
-        holoColored:
-          type: boolean
-          deprecated: true
         lastPledgePrice:
           type: number
         lastPledgePriceLabel:
@@ -8075,7 +8234,7 @@ components:
         productionNote:
           type: string
         productionStatus:
-          type: string
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
         rsiId:
           type: integer
         rsiName:
@@ -8118,6 +8277,9 @@ components:
         updatedAt:
           type: string
           format: date-time
+        holoColored:
+          type: boolean
+          deprecated: true
         afterburnerGroundSpeed:
           type: number
           deprecated: true
@@ -8481,6 +8643,10 @@ components:
         availability:
           type: object
           properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
@@ -8491,6 +8657,7 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
+          - listedAt
           - boughtAt
           - soldAt
         description:
@@ -8576,6 +8743,10 @@ components:
         availability:
           type: object
           properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
@@ -8586,6 +8757,7 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
+          - listedAt
           - boughtAt
           - soldAt
         media:
@@ -8832,6 +9004,14 @@ components:
           type: array
           items:
             type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        componentClassIn:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       title: ComponentQuery
     EquipmentQuery:
@@ -9067,9 +9247,19 @@ components:
       properties:
         withModels:
           type: boolean
+        nameEq:
+          type: string
         nameCont:
           type: string
         nameIn:
+          type: array
+          items:
+            type: string
+        slugEq:
+          type: string
+        slugCont:
+          type: string
+        slugIn:
           type: array
           items:
             type: string
@@ -9139,6 +9329,10 @@ components:
           items:
             type: string
         nameCont:
+          type: string
+        nameEq:
+          type: string
+        slugEq:
           type: string
         nameIn:
           type: array
@@ -9485,7 +9679,7 @@ components:
         lastVersionChangedAtLabel:
           type: string
         lastVersion:
-          type: string
+          "$ref": "#/components/schemas/RoadmapItemChangeset"
         storeImage:
           type: string
           deprecated: true
@@ -9517,6 +9711,24 @@ components:
       - lastVersionChangedAt
       - lastVersionChangedAtLabel
       title: RoadmapItem
+    RoadmapItemChangeset:
+      type: object
+      properties:
+        release:
+          type: array
+          items:
+            type: string
+            nullable: true
+        committed:
+          type: array
+          items:
+            type: boolean
+        active:
+          type: array
+          items:
+            type: boolean
+      additionalProperties: false
+      title: RoadmapItemChangeset
     RoadmapWeek:
       type: object
       properties:

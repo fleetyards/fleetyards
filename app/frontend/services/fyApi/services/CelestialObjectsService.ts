@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { CelestialObject } from '../models/CelestialObject';
 import type { CelestialObjectQuery } from '../models/CelestialObjectQuery';
+import type { CelestialObjects } from '../models/CelestialObjects';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class CelestialObjectsService {
@@ -11,10 +12,10 @@ export class CelestialObjectsService {
     /**
      * Celestial Objects List
      * Get a List of Celestial Objects
-     * @returns CelestialObject successful
+     * @returns CelestialObjects successful
      * @throws ApiError
      */
-    public celestialObjects({
+    public list({
         page = '1',
         perPage = '30',
         q,
@@ -24,7 +25,7 @@ export class CelestialObjectsService {
         perPage?: string,
         q?: CelestialObjectQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<CelestialObject>> {
+    }): CancelablePromise<CelestialObjects> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/celestial-objects',
@@ -42,7 +43,7 @@ export class CelestialObjectsService {
      * @returns CelestialObject successful
      * @throws ApiError
      */
-    public celestialObject({
+    public detail({
         slug,
     }: {
         /**

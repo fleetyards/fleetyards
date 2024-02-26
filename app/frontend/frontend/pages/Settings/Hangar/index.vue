@@ -81,9 +81,8 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 import { displaySuccess } from "@/frontend/lib/Noty";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import userCollection from "@/frontend/api/collections/User";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Checkbox from "@/shared/components/base/Checkbox/index.vue";
 
 @Component<SettingsHangar>({
   components: {

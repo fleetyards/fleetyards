@@ -31,8 +31,6 @@ class Manufacturer < ApplicationRecord
 
   before_save :update_slugs
 
-  ransack_alias :name, :name_or_slug
-
   def self.ransackable_attributes(auth_object = nil)
     [
       "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for", "logo",
@@ -67,7 +65,7 @@ class Manufacturer < ApplicationRecord
   def to_filter
     Filter.new(
       category: "manufacturer",
-      name:,
+      label: name_clean,
       icon: (logo.small.url if logo.present?),
       value: slug
     )

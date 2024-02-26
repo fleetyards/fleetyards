@@ -32,7 +32,7 @@
 
         <div class="row">
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel class="info-box" transparency="more" inset>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.hangarPreview.notified.headline") }}
@@ -44,7 +44,7 @@
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel class="info-box" transparency="more" inset>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.hangarPreview.manage.headline") }}
@@ -56,7 +56,7 @@
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel class="info-box" transparency="more">
+            <Panel class="info-box" transparency="more" inset>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.hangarPreview.fleetchart.headline") }}
@@ -97,7 +97,7 @@
               v-if="hangarPreview"
               data-test="login"
               :block="true"
-              @click.native="hidePreview"
+              @click="hidePreview"
             >
               {{ t("actions.login") }}
             </Btn>
@@ -111,7 +111,7 @@
               }"
               data-test="login"
               :block="true"
-              @click.native="hidePreview"
+              @click="hidePreview"
             >
               {{ t("actions.login") }}
             </Btn>
@@ -123,20 +123,23 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import { useRouter } from "vue-router/composables";
-import Store from "@/frontend/lib/Store";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 
 const router = useRouter();
 
-const hangarPreview = computed(() => Store.getters["hangar/preview"]);
+const hangarStore = useHangarStore();
+
+const { preview: hangarPreview } = storeToRefs(hangarStore);
 
 const hidePreview = () => {
-  Store.dispatch("hangar/hidePreview");
+  hangarStore.hidePreview();
+
   router.push({
     name: "login",
     params: {

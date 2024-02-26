@@ -14,7 +14,7 @@ export class HangarGroupsService {
      * @returns HangarGroup successful
      * @throws ApiError
      */
-    public hangarGroupCreate({
+    public create({
         requestBody,
     }: {
         requestBody: HangarGroupCreateInput,
@@ -48,7 +48,7 @@ export class HangarGroupsService {
      * @returns HangarGroup successful
      * @throws ApiError
      */
-    public hangarGroupDestroy({
+    public destroy({
         id,
     }: {
         /**

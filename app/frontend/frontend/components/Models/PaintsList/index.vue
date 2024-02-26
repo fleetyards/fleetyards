@@ -1,75 +1,87 @@
 <template>
-  <div class="row">
-    <div class="col-12 paints">
-      <hr v-if="paints.length" />
-      <a href="#paints">
-        <h2 v-if="paints.length" id="paints" class="text-uppercase">
-          {{ $t("labels.model.paints") }}
-        </h2>
-      </a>
-      <transition-group
-        v-if="paints.length"
-        name="fade-list"
-        class="row"
-        tag="div"
-        appear
-      >
-        <div
-          v-for="paint in paints"
-          :key="`paint-${paint.slug}`"
-          class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-        >
-          <TeaserPanel :item="paint" :fullscreen="true" />
+  <AsyncData :async-status="asyncStatus" hide-error inline>
+    <template v-if="paints?.length" #resolved>
+      <hr />
+      <div id="paints" class="row">
+        <div class="col-12">
+          <h2 v-if="paints?.length" id="paints" class="text-uppercase">
+            {{ t("labels.model.paints") }}
+          </h2>
+
+          <transition-group name="fade-list" class="row" tag="div" appear>
+            <div
+              v-for="item in paints"
+              :key="`paints-${item.id}`"
+              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+            >
+              <Panel :bg-image="storeImage(item)">
+                <PanelHeading level="h3">
+                  {{ item.name }}
+                </PanelHeading>
+              </Panel>
+            </div>
+          </transition-group>
         </div>
-      </transition-group>
-      <Loader :loading="loading" :fixed="true" />
-    </div>
-  </div>
+      </div>
+    </template>
+  </AsyncData>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
-import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
+<script lang="ts" setup>
+import AsyncData from "@/shared/components/AsyncData.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { type ModelPaint } from "@/services/fyApi";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import { useMobile } from "@/shared/composables/useMobile";
 
-@Component<ModelPaintList>({
-  components: {
-    Loader,
-    TeaserPanel,
+type Props = {
+  modelSlug: string;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const { data: paints, ...asyncStatus } = useQuery({
+  queryKey: ["model-paints", props.modelSlug],
+  queryFn: () => {
+    return modelsService.modelPaints({
+      slug: props.modelSlug,
+    });
   },
-})
-export default class ModelPaintList extends Vue {
-  @Prop({ required: true }) model!: Model;
+});
 
-  collection: ModelPaintsCollection = modelPaintsCollection;
+const { models: modelsService } = useApiClient();
 
-  loading = false;
+const { supported: webpSupported } = useWebpCheck();
 
-  get paints() {
-    return this.collection.records;
+const mobile = useMobile();
+
+const storeImage = (paint: ModelPaint) => {
+  if (mobile.value && paint.media.storeImage?.medium) {
+    return paint.media.storeImage?.medium;
   }
 
-  @Watch("model")
-  onModelChange() {
-    this.fetch();
+  if (paint.media.storeImage?.large) {
+    return paint.media.storeImage?.large;
   }
 
-  mounted() {
-    this.fetch();
+  if (webpSupported) {
+    return fallbackImage;
   }
 
-  async fetch() {
-    if (!this.model) {
-      return;
-    }
+  return fallbackImageJpg;
+};
+</script>
 
-    this.loading = true;
-
-    await this.collection.findAllByModel(this.model.slug);
-
-    this.loading = false;
-  }
-}
+<script lang="ts">
+export default {
+  name: "ModelPaintList",
+};
 </script>

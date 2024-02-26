@@ -35,7 +35,7 @@
       :hide-empty-box="!gridView"
       :paginated="true"
     >
-      <template slot="actions">
+      <template #actions>
         <BtnDropdown size="small">
           <template v-if="mobile">
             <ShareBtn
@@ -139,11 +139,11 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import PrimaryAction from "@/frontend/core/components/PrimaryAction/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarImportBtn from "@/frontend/components/HangarImportBtn/index.vue";
@@ -154,7 +154,7 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { displayAlert, displayConfirm } from "@/frontend/lib/Noty";
-import debounce from "lodash.debounce";
+import { debounce } from "ts-debounce";
 import { format } from "date-fns";
 import wishlistCollection from "@/frontend/api/collections/Wishlist";
 import type { WishlistCollection } from "@/frontend/api/collections/Wishlist";
@@ -284,7 +284,6 @@ export default class Hangar extends Vue {
   async exportJson() {
     const exportedData = await this.collection.export(this.filters);
 
-    // eslint-disable-next-line compat/compat
     if (!exportedData || !window.URL) {
       displayAlert({ text: this.$t("messages.wishlistExport.failure") });
       return;
@@ -292,7 +291,6 @@ export default class Hangar extends Vue {
 
     const link = document.createElement("a");
 
-    // eslint-disable-next-line compat/compat
     link.href = window.URL.createObjectURL(new Blob([exportedData]));
 
     link.setAttribute(

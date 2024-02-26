@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Manufacturer } from '../models/Manufacturer';
 import type { ManufacturerQuery } from '../models/ManufacturerQuery';
+import type { Manufacturers } from '../models/Manufacturers';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ManufacturersService {
@@ -11,10 +11,10 @@ export class ManufacturersService {
     /**
      * @deprecated
      * with_models manufacturer
-     * @returns Manufacturer successful
+     * @returns Manufacturers successful
      * @throws ApiError
      */
-    public deprecateDgetManufacturersWithModels(): CancelablePromise<Array<Manufacturer>> {
+    public deprecateDgetManufacturersWithModels(): CancelablePromise<Manufacturers> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/manufacturers/with-models',
@@ -22,7 +22,7 @@ export class ManufacturersService {
     }
     /**
      * Manufacturers list
-     * @returns Manufacturer successful
+     * @returns Manufacturers successful
      * @throws ApiError
      */
     public manufacturers({
@@ -35,7 +35,7 @@ export class ManufacturersService {
         perPage?: string,
         q?: ManufacturerQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Manufacturer>> {
+    }): CancelablePromise<Manufacturers> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/manufacturers',

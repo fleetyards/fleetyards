@@ -1,71 +1,75 @@
 <template>
-  <div>
-    <Panel
-      v-if="model"
-      :id="model.slug"
-      class="model-panel"
-      :class="`model-panel-${model.slug}`"
-    >
-      <div class="panel-heading">
-        <h2 class="panel-title">
-          <router-link
-            :to="{
-              name: 'model',
-              params: {
-                slug: model.slug,
-              },
-            }"
-          >
-            <span>{{ model.name }}</span>
-          </router-link>
-
-          <br />
-
-          <small>
+  <Panel
+    :id="internalId"
+    class="model-panel"
+    :class="`model-panel-${model.slug}`"
+    :highlight="highlight"
+    :bg-image="image"
+    :bg-rounded="details ? 'top' : 'all'"
+    shadow="top"
+  >
+    <template #default>
+      <PanelHeading :level="level" class="model-panel-heading">
+        <template #default>
+          <slot name="heading-title">
+            <router-link
+              :to="{
+                name: 'model',
+                params: {
+                  slug: model.slug,
+                },
+              }"
+            >
+              <span>{{ model.name }}</span>
+            </router-link>
+          </slot>
+        </template>
+        <template #subtitle>
+          <slot v-if="model.manufacturer" name="heading-subtitle">
             <router-link
               :to="{
                 query: {
-                  q: filterManufacturerQuery(model.manufacturer.slug),
+                  q: filterManufacturerQuery(
+                    model.manufacturer,
+                  ) as unknown as string,
                 },
               }"
-              v-html="model.manufacturer.name"
+            >
+              {{ model.manufacturer.name }}
+            </router-link>
+          </slot>
+        </template>
+        <template #actions>
+          <slot name="heading-actions">
+            <AddToHangar
+              :model="model"
+              class="model-panel-add-to-hangar-button"
+              variant="panel"
             />
-          </small>
-
-          <AddToHangar
-            :model="model"
-            class="panel-add-to-hangar-button"
-            variant="panel"
-          />
-        </h2>
-      </div>
-      <div
-        :class="{
-          'no-details': !details,
-        }"
-        class="panel-image text-center"
+          </slot>
+        </template>
+      </PanelHeading>
+      <PanelBody
+        class="model-panel-body"
+        :rounded="details ? undefined : 'bottom'"
       >
-        <LazyImage
-          :to="{ name: 'model', params: { slug: model.slug } }"
-          :aria-label="model.name"
-          :src="storeImage"
-          :alt="model.name"
-          class="image"
+        <div
+          v-show="model.onSale"
+          v-tooltip="t('labels.model.onSale')"
+          class="model-panel-on-sale"
         >
-          <div
-            v-show="model.onSale"
-            v-tooltip="t('labels.model.onSale')"
-            class="on-sale"
-          >
-            <i class="fal fa-dollar-sign" />
-          </div>
-        </LazyImage>
-      </div>
-      <PanelDetails
-        :key="`details-${model.slug}-${uuid}-wrapper`"
+          <i class="fal fa-dollar-sign" />
+        </div>
+        <slot name="default" />
+      </PanelBody>
+    </template>
+
+    <template #footer>
+      <Collapsed
+        :key="`details-${model.slug}-${internalId}-wrapper`"
         :visible="details"
       >
-        <div class="production-status">
+        <div class="model-panel-production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
               {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
@@ -76,48 +80,66 @@
           </strong>
         </div>
         <ModelPanelMetrics :model="model" />
-      </PanelDetails>
-    </Panel>
-  </div>
+      </Collapsed>
+    </template>
+  </Panel>
 </template>
 
 <script lang="ts" setup>
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import PanelDetails from "@/frontend/core/components/Panel/PanelDetails/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/Panel/Body/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
-import { v4 as uuidv4 } from "uuid";
+import type { Model, Manufacturer } from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 
 type Props = {
   model: Model;
   details?: boolean;
+  highlight?: boolean;
+  id?: string;
+  storeImage?: string;
+  level?: "h2" | "h3" | "h4";
 };
 
 const props = withDefaults(defineProps<Props>(), {
   details: false,
+  highlight: false,
+  id: undefined,
+  storeImage: undefined,
+  level: "h2",
 });
 
 const { t } = useI18n();
 
-const uuid = ref<string>(uuidv4());
+const internalId = computed(() => props.id || props.model.id);
 
-const storeImage = computed(() => props.model.media.storeImage?.medium);
-
-onMounted(() => {
-  uuid.value = uuidv4();
-});
-
-const filterManufacturerQuery = (manufacturer: string) => ({
+const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
   manufacturerIn: [manufacturer],
 });
-</script>
 
-<script lang="ts">
-export default {
-  name: "ModelPanel",
-};
+const { supported: webpSupported } = useWebpCheck();
+
+const image = computed(() => {
+  if (props.storeImage) {
+    return props.storeImage;
+  }
+
+  if (props.model.media.storeImage) {
+    return props.model.media.storeImage.medium;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
+});
 </script>
 
 <style lang="scss" scoped>

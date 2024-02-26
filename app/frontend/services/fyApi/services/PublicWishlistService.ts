@@ -2,15 +2,15 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { HangarPublic } from '../models/HangarPublic';
 import type { HangarQuery } from '../models/HangarQuery';
-import type { VehiclePublic } from '../models/VehiclePublic';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class PublicWishlistService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Your Wishlist
-     * @returns VehiclePublic successful
+     * @returns HangarPublic successful
      * @throws ApiError
      */
     public get({
@@ -23,7 +23,7 @@ export class PublicWishlistService {
         page?: string,
         perPage?: string,
         q?: HangarQuery,
-    }): CancelablePromise<Array<VehiclePublic>> {
+    }): CancelablePromise<HangarPublic> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/public/wishlists/{username}',

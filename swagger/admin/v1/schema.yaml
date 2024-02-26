@@ -400,6 +400,30 @@ components:
       - items
       - meta
       title: BaseList
+    Check:
+      type: object
+      properties:
+        taken:
+          type: boolean
+      additionalProperties: false
+      required:
+      - taken
+      title: Check
+    Commodities:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Commodity"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Commodities
     Commodity:
       type: object
       properties:
@@ -613,6 +637,21 @@ components:
       - spoolUpTime
       - cooldown
       title: ComponentQuantumDriveJump
+    Components:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            "$ref": "#/components/schemas/Component"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      additionalProperties: false
+      required:
+      - items
+      - meta
+      title: Components
     Dock:
       type: object
       properties:
@@ -660,6 +699,13 @@ components:
       - pledge_store
       - ingame
       title: BoughtViaEnum
+    CommodityPricePathEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      title: CommodityPricePathEnum
     CommodityTypeEnum:
       type: string
       enum:
@@ -842,6 +888,13 @@ components:
       - qed
       - emp
       title: ModelHardpointTypeEnum
+    ModelProductionStatusEnum:
+      type: string
+      enum:
+      - in-concept
+      - in-production
+      - flight-ready
+      title: ModelProductionStatusEnum
     OrderDirectionEnum:
       type: string
       enum:
@@ -1156,6 +1209,13 @@ components:
       - type
       - typeLabel
       title: HabitationCount
+    CheckInput:
+      type: object
+      properties:
+        value:
+          type: string
+      additionalProperties: false
+      title: CheckInput
     Manufacturer:
       type: object
       properties:
@@ -1619,21 +1679,6 @@ components:
       - createdAt
       - updatedAt
       title: CelestialObject
-    Commodities:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-            "$ref": "#/components/schemas/Commodity"
-        meta:
-          "$ref": "#/components/schemas/Meta"
-      additionalProperties: false
-      required:
-      - items
-      - meta
-      title: Commodities
     Image:
       type: object
       properties:
@@ -1827,9 +1872,6 @@ components:
           type: boolean
         holo:
           type: string
-        holoColored:
-          type: boolean
-          deprecated: true
         lastPledgePrice:
           type: number
         lastPledgePriceLabel:
@@ -1926,7 +1968,7 @@ components:
         productionNote:
           type: string
         productionStatus:
-          type: string
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
         rsiId:
           type: integer
         rsiName:
@@ -1969,6 +2011,9 @@ components:
         updatedAt:
           type: string
           format: date-time
+        holoColored:
+          type: boolean
+          deprecated: true
         afterburnerGroundSpeed:
           type: number
           deprecated: true
@@ -2187,6 +2232,10 @@ components:
         availability:
           type: object
           properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
@@ -2197,6 +2246,7 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
+          - listedAt
           - boughtAt
           - soldAt
         description:
@@ -2267,6 +2317,10 @@ components:
         availability:
           type: object
           properties:
+            listedAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ShopCommodity"
             boughtAt:
               type: array
               items:
@@ -2277,6 +2331,7 @@ components:
                 "$ref": "#/components/schemas/ShopCommodity"
           additionalProperties: false
           required:
+          - listedAt
           - boughtAt
           - soldAt
         media:

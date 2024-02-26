@@ -18,15 +18,15 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetCheckInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetCheck"
+        schema "$ref": "#/components/schemas/Check"
 
         let(:user) { users :data }
         let(:input) do
           {
-            fid: "STF"
+            value: "STF"
           }
         end
 

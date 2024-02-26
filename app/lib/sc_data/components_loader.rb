@@ -22,10 +22,7 @@ module ScData
 
       return if name == "<= PLACEHOLDER =>"
 
-      component = Component.find_or_create_by!(
-        sc_identifier: component_data["ClassName"],
-        name:
-      )
+      component = Component.find_or_create_by!(name:)
 
       manufacturer = extract_manufacturer(component_data["Manufacturer"])
 
@@ -33,6 +30,7 @@ module ScData
       description = translations_loader.translate(description) if needs_translation?(description)
 
       component.update!(
+        sc_identifier: component_data["ClassName"],
         size: component_data["Size"],
         grade: component_data["Grade"],
         item_class: extract_item_class(description),

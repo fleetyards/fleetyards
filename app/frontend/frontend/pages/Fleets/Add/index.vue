@@ -1,125 +1,110 @@
 <template>
   <section class="container">
-    <ValidationObserver v-slot="{ handleSubmit }" small>
-      <form @submit.prevent="handleSubmit(submit)">
-        <div class="row justify-content-lg-center">
-          <div class="col-12 col-md-6 col-lg-4">
-            <h1>{{ $t("headlines.fleets.add") }}</h1>
-          </div>
+    <form @submit="submit">
+      <div class="row justify-content-lg-center">
+        <div class="col-12 col-md-6 col-lg-4">
+          <h1>{{ t("headlines.fleets.add") }}</h1>
         </div>
+      </div>
 
-        <div class="row justify-content-lg-center">
-          <div class="col-12 col-md-6 col-lg-4">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="fid"
-              :rules="{
-                required: true,
-                fidTaken: true,
-                min: 3,
-                regex: /^[a-zA-Z0-9\-_]{3,}$/,
-              }"
-              :name="$t('labels.fleet.fid')"
-              slim
-            >
-              <FormInput
-                id="fid"
-                v-model="form.fid"
-                translation-key="fleet.fid"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="name"
-              :rules="{
-                required: true,
-                min: 3,
-                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/,
-              }"
-              :name="$t('labels.name')"
-              slim
-            >
-              <FormInput
-                id="name"
-                v-model="form.name"
-                translation-key="name"
-                :error="errors[0]"
-              />
-            </ValidationProvider>
-          </div>
+      <div class="row justify-content-lg-center">
+        <div class="col-12 col-md-6 col-lg-4">
+          <FormInput name="fid" translation-key="fleet.fid" />
+          <FormInput name="name" translation-key="name" />
         </div>
-        <div class="row justify-content-lg-center">
-          <div class="col-12 col-md-6 col-lg-4">
-            <br />
-            <Btn
-              :loading="submitting"
-              type="submit"
-              size="large"
-              data-test="fleet-save"
-            >
-              {{ $t("actions.save") }}
-            </Btn>
-          </div>
+      </div>
+      <div class="row justify-content-lg-center">
+        <div class="col-12 col-md-6 col-lg-4">
+          <br />
+          <Btn
+            :loading="submitting"
+            type="submit"
+            size="large"
+            data-test="fleet-save"
+          >
+            {{ t("actions.save") }}
+          </Btn>
         </div>
-      </form>
-    </ValidationObserver>
+      </div>
+    </form>
   </section>
 </template>
 
-<script>
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
-import fleetsCollection from "@/frontend/api/collections/Fleets";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+<script lang="ts" setup>
+import { useForm } from "vee-validate";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { type FleetCreateInput, type ApiError } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { transformErrors } from "@/frontend/api/helpers";
 
+const { t } = useI18n();
+
+const { displaySuccess, displayAlert } = useNoty(t);
+
+const form = ref<Partial<FleetCreateInput>>({});
+
+const initialValues = ref<FleetCreateInput>({
+  name: "",
+  fid: "",
+});
+
+const validationSchema = {
+  name: "required|min:3|alpha_dash",
+  fid: "required|min:3|fidTaken|alpha_dash",
+};
+
+const { setErrors, handleSubmit } = useForm({
+  initialValues,
+  validationSchema,
+});
+
+const submitting = ref(false);
+
+const { fleets: fleetsService } = useApiClient();
+
+const router = useRouter();
+
+const comlink = useComlink();
+
+const submit = handleSubmit(async (values) => {
+  submitting.value = true;
+
+  try {
+    const fleet = await fleetsService.createFleet({
+      requestBody: values,
+    });
+
+    comlink.emit("fleet-create");
+
+    displaySuccess({
+      text: t("messages.fleet.create.success"),
+    });
+
+    router
+      .push({
+        name: "fleet",
+        params: { slug: fleet.slug },
+      })
+      .catch(() => {});
+  } catch (error) {
+    const errorResponse = (error as ApiError).body;
+    setErrors(transformErrors(errorResponse.errors));
+
+    displayAlert({
+      text: t("messages.fleet.create.failure"),
+    });
+  }
+
+  submitting.value = false;
+});
+</script>
+
+<script lang="ts">
 export default {
-  name: "FleetAdd",
-
-  components: {
-    Btn,
-    FormInput,
-  },
-
-  data() {
-    return {
-      form: {
-        fid: null,
-        name: null,
-      },
-      loading: false,
-      submitting: false,
-    };
-  },
-
-  methods: {
-    async submit() {
-      this.submitting = true;
-
-      const fleet = await fleetsCollection.create(this.form);
-
-      this.submitting = false;
-
-      if (fleet) {
-        this.$comlink.$emit("fleet-create");
-
-        displaySuccess({
-          text: this.$t("messages.fleet.create.success"),
-        });
-
-        this.$router
-          .push({
-            name: "fleet",
-            params: { slug: fleet.slug },
-          })
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          .catch(() => {});
-      } else {
-        displayAlert({
-          text: this.$t("messages.fleet.create.failure"),
-        });
-      }
-    },
-  },
+  name: "FleetAddPage",
 };
 </script>

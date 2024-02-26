@@ -1,10 +1,9 @@
 <template>
-  <router-view v-if="isSubRoute" />
-  <section v-else class="container">
+  <section class="container">
     <div class="row">
       <div class="col-12">
         <h1 class="sr-only">
-          {{ $t("headlines.stations") }}
+          {{ t("headlines.stations") }}
         </h1>
       </div>
     </div>
@@ -12,12 +11,14 @@
     <FilteredList
       key="stations"
       :collection="collection"
-      :name="$route.name"
+      :name="route.name"
       :route-query="$route.query"
-      :hash="$route.hash"
+      :hash="route.hash"
       :paginated="true"
     >
-      <FilterForm slot="filter" />
+      <template #filter>
+        <FilterForm />
+      </template>
 
       <template #default="{ filterVisible, records }">
         <transition-group name="fade-list" class="row" tag="div" :appear="true">
@@ -37,26 +38,26 @@
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
+<script lang="ts" setup>
+import FilteredList from "@/shared/components/FilteredList/index.vue";
 import StationPanel from "@/frontend/components/Stations/Panel/index.vue";
 import FilterForm from "@/frontend/components/Stations/FilterForm/index.vue";
-import stationsCollection from "@/frontend/api/collections/Stations";
+// import stationsCollection from "@/frontend/api/collections/Stations";
+// import type { StationsCollection } from "@/frontend/api/collections/Stations";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
-@Component<Stations>({
-  components: {
-    FilteredList,
-    StationPanel,
-    FilterForm,
-  },
-})
-export default class Stations extends Vue {
-  collection: StationsCollection = stationsCollection;
+const { t } = useI18n();
 
-  get isSubRoute() {
-    return this.$route.name !== "stations";
-  }
-}
+useMetaInfo(t);
+
+const route = useRoute();
+
+// const collection: StationsCollection = stationsCollection;
+</script>
+
+<script lang="ts">
+export default {
+  name: "StationsPage",
+};
 </script>

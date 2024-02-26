@@ -313,11 +313,13 @@ class Model < ApplicationRecord
     order(name: :asc)
   end
 
+  PRODUCTION_STATUSES = ["in-concept", "in-production", "flight-ready"]
+
   def self.production_status_filters
-    Model.visible.active.all.map(&:production_status).compact_blank.compact.uniq.map do |item|
+    PRODUCTION_STATUSES.map do |item|
       Filter.new(
         category: "productionStatus",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -327,7 +329,7 @@ class Model < ApplicationRecord
     Model.classifications.map do |item|
       Filter.new(
         category: "classification",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -341,7 +343,7 @@ class Model < ApplicationRecord
     Model.visible.active.all.map(&:focus).compact_blank.compact.uniq.map do |item|
       Filter.new(
         category: "focus",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -351,7 +353,7 @@ class Model < ApplicationRecord
     %w[vehicle snub small medium large extra_large capital].map do |item|
       Filter.new(
         category: "size",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end

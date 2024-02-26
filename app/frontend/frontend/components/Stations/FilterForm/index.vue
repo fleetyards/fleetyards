@@ -7,9 +7,11 @@
       :no-label="true"
       :clearable="true"
     />
+
+    // TODO: migrate to new FilterGroup props
     <FilterGroup
       v-model="form.celestialObjectIn"
-      :label="$t('labels.filters.stations.celestialObject')"
+      :label="t('labels.filters.stations.celestialObject')"
       :fetch="fetchCelestialObjects"
       name="celestial-object"
       value-attr="slug"
@@ -21,7 +23,7 @@
 
     <FilterGroup
       v-model="form.starsystemIn"
-      :label="$t('labels.filters.stations.starsystem')"
+      :label="t('labels.filters.stations.starsystem')"
       :fetch="fetchStarsystems"
       name="starsystem"
       value-attr="slug"
@@ -33,7 +35,7 @@
 
     <FilterGroup
       v-model="form.stationTypeIn"
-      :label="$t('labels.filters.stations.type')"
+      :label="t('labels.filters.stations.type')"
       :fetch="fetchStationTypes"
       name="station-types"
       :multiple="true"
@@ -42,7 +44,7 @@
 
     <FilterGroup
       v-model="form.shopsShopTypeIn"
-      :label="$t('labels.filters.stations.shops')"
+      :label="t('labels.filters.stations.shops')"
       :fetch="fetchShopTypes"
       name="shops"
       :multiple="true"
@@ -51,7 +53,7 @@
 
     <FilterGroup
       v-model="form.docksShipSizeIn"
-      :label="$t('labels.filters.stations.docks')"
+      :label="t('labels.filters.stations.docks')"
       :fetch="fetchShipSizes"
       name="docks"
       :multiple="true"
@@ -60,135 +62,108 @@
 
     <RadioList
       v-model="form.habsNotNull"
-      :label="$t('labels.filters.stations.habs')"
-      :reset-label="$t('labels.all')"
+      :label="tt('labels.filters.stations.habs')"
+      :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="habs"
     />
     <RadioList
       v-model="form.refineryEq"
-      :label="$t('labels.filters.stations.refinery')"
-      :reset-label="$t('labels.all')"
+      :label="t('labels.filters.stations.refinery')"
+      :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="refinery"
     />
     <RadioList
       v-model="form.cargoHubEq"
-      :label="$t('labels.filters.stations.cargoHub')"
-      :reset-label="$t('labels.all')"
+      :label="t('labels.filters.stations.cargoHub')"
+      :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="cargoHub"
     />
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fal fa-times" />
-      {{ $t("actions.resetFilter") }}
+      {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
 
-<script>
-import Filters from "@/frontend/mixins/Filters";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { booleanOptions } from "@/frontend/utils/FilterOptions";
+<script lang="ts" setup>
+import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { StationQuery } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
 
+const { t } = useI18n();
+
+const setupForm = () => {
+  form.value = {
+    searchCont: routeQuery.value.searchCont,
+    nameCont: routeQuery.value.nameCont,
+    habsNotNull: routeQuery.value.habsNotNull,
+    cargoHubEq: routeQuery.value.cargoHubEq,
+    refineryEq: routeQuery.value.refineryEq,
+    celestialObjectIn: routeQuery.value.celestialObjectIn || [],
+    starsystemIn: routeQuery.value.starsystemIn || [],
+    stationTypeIn: routeQuery.value.stationTypeIn || [],
+    shopsShopTypeIn: routeQuery.value.shopsShopTypeIn || [],
+    docksShipSizeIn: routeQuery.value.docksShipSizeIn || [],
+  };
+};
+
+const { filter, resetFilter, isFilterSelected, routeQuery } =
+  useFilters<StationQuery>(setupForm);
+
+const form = ref<StationQuery>({});
+
+const { booleanOptions } = useFilterOptions(t);
+
+//   methods: {
+//     fetchCelestialObjects({ page, search, missingValue }) {
+//       const query = {
+//         q: {},
+//       };
+//       if (search) {
+//         query.q.nameCont = search;
+//       } else if (missingValue) {
+//         query.q.nameIn = missingValue;
+//       } else if (page) {
+//         query.page = page;
+//       }
+//       return this.$api.get("celestial-objects", query);
+//     },
+//     fetchStarsystems({ page, search, missingValue }) {
+//       const query = {
+//         q: {},
+//       };
+//       if (search) {
+//         query.q.nameCont = search;
+//       } else if (missingValue) {
+//         query.q.nameIn = missingValue;
+//       } else if (page) {
+//         query.page = page;
+//       }
+//       return this.$api.get("starsystems", query);
+//     },
+//     fetchShipSizes() {
+//       return this.$api.get("stations/ship-sizes");
+//     },
+//     fetchStationTypes() {
+//       return this.$api.get("stations/station-types");
+//     },
+//     fetchShopTypes() {
+//       return this.$api.get("shops/shop-types");
+//     },
+//   },
+// };
+</script>
+
+<script lang="ts">
 export default {
   name: "StationsFilterForm",
-
-  components: {
-    FilterGroup,
-    RadioList,
-    FormInput,
-    Btn,
-  },
-
-  mixins: [Filters],
-
-  data() {
-    const query = this.$route.query.q || {};
-    return {
-      loading: false,
-      form: {
-        searchCont: query.searchCont,
-        nameCont: query.nameCont,
-        habsNotNull: query.habsNotNull,
-        cargoHubEq: query.cargoHubEq,
-        refineryEq: query.refineryEq,
-        celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
-        stationTypeIn: query.stationTypeIn || [],
-        shopsShopTypeIn: query.shopsShopTypeIn || [],
-        docksShipSizeIn: query.docksShipSizeIn || [],
-      },
-    };
-  },
-
-  computed: {
-    booleanOptions() {
-      return booleanOptions;
-    },
-  },
-
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {};
-      this.form = {
-        searchCont: query.searchCont,
-        nameCont: query.nameCont,
-        habsNotNull: query.habsNotNull,
-        cargoHubEq: query.cargoHubEq,
-        refineryEq: query.refineryEq,
-        celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
-        stationTypeIn: query.stationTypeIn || [],
-        shopsShopTypeIn: query.shopsShopTypeIn || [],
-        docksShipSizeIn: query.docksShipSizeIn || [],
-      };
-    },
-  },
-
-  methods: {
-    fetchCelestialObjects({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      };
-      if (search) {
-        query.q.nameCont = search;
-      } else if (missingValue) {
-        query.q.nameIn = missingValue;
-      } else if (page) {
-        query.page = page;
-      }
-      return this.$api.get("celestial-objects", query);
-    },
-    fetchStarsystems({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      };
-      if (search) {
-        query.q.nameCont = search;
-      } else if (missingValue) {
-        query.q.nameIn = missingValue;
-      } else if (page) {
-        query.page = page;
-      }
-      return this.$api.get("starsystems", query);
-    },
-    fetchShipSizes() {
-      return this.$api.get("stations/ship-sizes");
-    },
-    fetchStationTypes() {
-      return this.$api.get("stations/station-types");
-    },
-    fetchShopTypes() {
-      return this.$api.get("shops/shop-types");
-    },
-  },
 };
 </script>

@@ -129,7 +129,7 @@
           size="small"
           :disabled="!canEditOfficerActions(member) || updating"
           :inline="true"
-          @click.native="acceptRequest(member)"
+          @click="acceptRequest(member)"
         >
           <i class="fal fa-check" />
         </Btn>
@@ -139,7 +139,7 @@
           size="small"
           :disabled="!canEditOfficerActions(member) || updating"
           :inline="true"
-          @click.native="declineRequest(member)"
+          @click="declineRequest(member)"
         >
           <i class="fal fa-times" />
         </Btn>
@@ -149,7 +149,7 @@
           size="small"
           :disabled="!canEditAdminActions(member) || updating"
           :inline="true"
-          @click.native="promoteMember(member)"
+          @click="promoteMember(member)"
         >
           <i class="fal fa-chevron-up" />
         </Btn>
@@ -159,7 +159,7 @@
           size="small"
           :disabled="!canEditAdminActions(member) || updating"
           :inline="true"
-          @click.native="demoteMember(member)"
+          @click="demoteMember(member)"
         >
           <i class="fal fa-chevron-down" />
         </Btn>
@@ -167,7 +167,7 @@
           size="small"
           :disabled="!canEditAdminActions(member) || deleting"
           :inline="true"
-          @click.native="removeMember(member)"
+          @click="removeMember(member)"
         >
           <i class="fad fa-trash-alt" />
         </Btn>
@@ -177,20 +177,20 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  displaySuccess,
-  displayAlert,
-  displayConfirm,
-} from "@/frontend/lib/Noty";
-import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Store from "@/frontend/lib/Store";
+import Avatar from "@/shared/components/Avatar/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/frontend/composables/useI18n";
-import { useComlink } from "@/frontend/composables/useComlink";
-import { useRoute } from "vue-router/composables";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useMobile } from "@/shared/composables/useMobile";
+import type { FleetMember } from "@/services/fyApi";
+import { storeToRefs } from "pinia";
 import { useApiClient } from "@/frontend/composables/useApiClient";
 
 const { t } = useI18n();
+
+const { displayConfirm, displaySuccess, displayAlert } = useNoty(t);
 
 type Props = {
   member: FleetMember;
@@ -207,20 +207,22 @@ const deleting = ref(false);
 
 const updating = ref(false);
 
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
 const route = useRoute();
 
 const comlink = useComlink();
 
-const currentUser = computed(() => Store.getters["session/currentUser"]);
+const sessionStore = useSessionStore();
+
+const { currentUser } = storeToRefs(sessionStore);
 
 const currentUserAdmin = computed(() => props.role === "admin");
 
 const currentUserOfficer = computed(() => props.role === "officer");
 
 const canEditOfficerActions = (member: FleetMember) => {
-  if (member && currentUser.value) {
+  if (member && currentUser?.value) {
     return (
       (currentUserAdmin.value || currentUserOfficer.value) &&
       member.username !== currentUser.value.username
@@ -231,7 +233,7 @@ const canEditOfficerActions = (member: FleetMember) => {
 };
 
 const canEditAdminActions = (member: FleetMember) => {
-  if (member && currentUser.value) {
+  if (member && currentUser?.value) {
     return (
       currentUserAdmin.value && member.username !== currentUser.value.username
     );
@@ -250,11 +252,11 @@ const removeMember = async (member: FleetMember) => {
     onConfirm: async () => {
       try {
         await memberService.removeMember({
-          fleetSlug: route.params.slug,
+          fleetSlug: String(route.params.slug),
           username: member.username,
         });
 
-        comlink.$emit("fleet-member-update");
+        comlink.emit("fleet-member-update");
 
         displaySuccess({
           text: t("messages.fleet.members.destroy.success"),
@@ -280,11 +282,11 @@ const demoteMember = async (member: FleetMember) => {
 
   try {
     await memberService.demoteMember({
-      fleetSlug: route.params.slug,
+      fleetSlug: String(route.params.slug),
       username: member.username,
     });
 
-    comlink.$emit("fleet-member-update");
+    comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.demote.success"),
@@ -305,11 +307,11 @@ const promoteMember = async (member: FleetMember) => {
 
   try {
     await memberService.promoteMember({
-      fleetSlug: route.params.slug,
+      fleetSlug: String(route.params.slug),
       username: member.username,
     });
 
-    comlink.$emit("fleet-member-update");
+    comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.promote.success"),
@@ -330,11 +332,11 @@ const acceptRequest = async (member: FleetMember) => {
 
   try {
     await memberService.acceptMember({
-      fleetSlug: route.params.slug,
+      fleetSlug: String(route.params.slug),
       username: member.username,
     });
 
-    comlink.$emit("fleet-member-update");
+    comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.accept.success"),
@@ -355,11 +357,11 @@ const declineRequest = async (member: FleetMember) => {
 
   try {
     await memberService.declineMember({
-      fleetSlug: route.params.slug,
+      fleetSlug: String(route.params.slug),
       username: member.username,
     });
 
-    comlink.$emit("fleet-member-update");
+    comlink.emit("fleet-member-update");
 
     displaySuccess({
       text: t("messages.fleet.members.decline.success"),

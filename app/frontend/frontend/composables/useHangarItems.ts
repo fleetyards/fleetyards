@@ -1,29 +1,24 @@
-import { watch } from "vue";
-import { useRoute } from "vue-router/composables";
-// import { useSessionStore } from "@/frontend/stores/Session";
-// import { useHangarStore } from "@/frontend/stores/Hangar";
-import Store from "@/frontend/lib/Store";
-import HangarItemsCollection from "@/frontend/api/collections/HangarItems";
+import { useRoute } from "vue-router";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+
+const { hangar: hangarService } = useApiClient();
 
 export const useHangarItems = () => {
-  // const sessionStore = useSessionStore();
-  // const hangarStore = useHangarStore();
-
-  const isAuthenticated = computed(
-    () => Store.getters["session/isAuthenticated"],
-  );
+  const sessionStore = useSessionStore();
+  const hangarStore = useHangarStore();
 
   const fetchHangarItems = async () => {
-    // if (!sessionStore.isAuthenticated) {
-    if (!isAuthenticated.value) {
+    if (!sessionStore.isAuthenticated) {
       return;
     }
 
-    // hangarStore.save(await HangarItemsCollection.findAll());
-    await Store.dispatch(
-      "hangar/saveHangar",
-      await HangarItemsCollection.findAll(),
-    );
+    try {
+      hangarStore.save(await hangarService.hangarItems());
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   fetchHangarItems();
@@ -38,8 +33,7 @@ export const useHangarItems = () => {
   );
 
   watch(
-    // () => sessionStore.isAuthenticated,
-    () => isAuthenticated.value,
+    () => sessionStore.isAuthenticated,
     () => {
       fetchHangarItems();
     },

@@ -4,13 +4,14 @@
 /* eslint-disable */
 import type { Image } from '../models/Image';
 import type { ImageQuery } from '../models/ImageQuery';
+import type { Images } from '../models/Images';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ImagesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Images list
-     * @returns Image successful
+     * @returns Images successful
      * @throws ApiError
      */
     public images({
@@ -23,7 +24,7 @@ export class ImagesService {
         perPage?: string,
         q?: ImageQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Image>> {
+    }): CancelablePromise<Images> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/images',

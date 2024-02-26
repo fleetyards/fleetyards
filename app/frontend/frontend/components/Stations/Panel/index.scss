@@ -1,50 +1,5 @@
 .station-panel {
-  > .panel {
-    min-height: 300px;
-    background-color: black;
-
-    .panel-heading .panel-title {
-      margin-top: 10px;
-      font-size: 30px;
-      text-shadow: 0 0 2px black;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    > .panel-inner {
-      padding-right: 15px;
-      padding-left: 15px;
-    }
-  }
-
-  .panel-bg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-radius: $panelContentBorderRadius;
-    opacity: 0.7;
-
-    &::after {
-      position: absolute;
-      top: 0;
-      right: 60%;
-      bottom: 0;
-      left: 0;
-      background: linear-gradient(to right, rgba(black, 0.5) 50%, transparent);
-      border-top-left-radius: $panelContentBorderRadius;
-      border-bottom-left-radius: $panelContentBorderRadius;
-      content: "";
-    }
-  }
-
-  .panel-stats {
+  &-stats {
     dd,
     dt {
       text-shadow: 0 0 2px black;
@@ -78,25 +33,8 @@
 
 @media (max-width: $desktop-breakpoint) {
   .station-panel {
-    > .panel {
-      .panel-heading {
-        padding: 10px 0;
-
-        .panel-title {
-          overflow: auto;
-          white-space: normal;
-        }
-      }
-    }
-
     .items {
       position: relative;
-    }
-
-    .panel-bg {
-      &::after {
-        right: 0;
-      }
     }
   }
 }

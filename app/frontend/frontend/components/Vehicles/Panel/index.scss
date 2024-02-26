@@ -1,0 +1,65 @@
+.vehicle-panel {
+  &-add-to-hangar-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px 6px;
+    font-size: 18px;
+
+    > :first-child {
+      font-size: 18px;
+    }
+  }
+
+  &-flagship-icon {
+    color: $gold;
+  }
+
+  &-loaner-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $success;
+    border-radius: 10px 0 0 10px;
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
+  &-addons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $gray;
+    border-radius: 0 10px 0 0;
+    cursor: pointer;
+
+    &-selected {
+      background-color: $success;
+    }
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
+  &-hangar-groups {
+    position: absolute;
+    right: 5px;
+    bottom: 0;
+  }
+}

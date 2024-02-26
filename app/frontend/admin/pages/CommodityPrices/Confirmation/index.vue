@@ -39,7 +39,7 @@
           </ul>
         </template>
         <template #col-price="{ record }">
-          <span v-html="$toUEC(record.price)" />
+          <span v-html="toUEC(record.price)" />
         </template>
         <template #col-actions="{ record }">
           <BtnGroup :inline="true">
@@ -47,16 +47,18 @@
               size="small"
               variant="dropdown"
               :inline="true"
+              in-group
               @click.native="confirm(record)"
             >
-              {{ $t("actions.confirm") }}
+              {{ t("actions.confirm") }}
             </Btn>
             <Btn
-              v-tooltip="$t('actions.remove')"
+              v-tooltip="t('actions.remove')"
               size="small"
               variant="dropdown"
               :disabled="deleting"
               data-test="shopCommodity-delete"
+              in-group
               @click.native="remove(record)"
             >
               <i class="fal fa-trash" />
@@ -68,25 +70,19 @@
   </FilteredList>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
 import commodityPriceConfirmationsCollection from "@/admin/api/collections/CommodityPriceConfirmations";
-import { displayConfirm } from "@/frontend/lib/Noty";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import FilteredTable from "@/frontend/core/components/FilteredTable/index.vue";
-import BtnGroup from "@/frontend/core/components/BtnGroup/index.vue";
+import { useNoty } from "@/shared/composables/useNoty";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import FilteredTable from "@/shared/components/FilteredTable/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { useI18n } from "@/admin/composables/useI18n";
 
-@Component<AdminCommodityPrices>({
-  components: {
-    FilteredList,
-    FilteredTable,
-    BtnGroup,
-    Btn,
-  },
-})
-export default class AdminCommodityPrices extends Vue {
+const { t, toUEC } = useI18n();
+
+const { displayConfirm } = useNoty(t);
+
   collection: CommodityPriceConfirmationsCollection =
     commodityPriceConfirmationsCollection;
 
@@ -95,26 +91,26 @@ export default class AdminCommodityPrices extends Vue {
   tableColumns = [
     {
       name: "item",
-      label: this.$t("labels.commodityPrice.item"),
+      label: this.t("labels.commodityPrice.item"),
       width: "30%",
     },
-    { name: "shop", label: this.$t("labels.shopCommodity.shop"), width: "20%" },
+    { name: "shop", label: this.t("labels.shopCommodity.shop"), width: "20%" },
     {
       name: "type",
-      label: this.$t("labels.commodityPrice.type"),
+      label: this.t("labels.commodityPrice.type"),
       width: "15%",
     },
     {
       name: "submitters",
-      label: this.$t("labels.commodityPrice.submittedBy"),
+      label: this.t("labels.commodityPrice.submittedBy"),
       width: "20%",
     },
     {
       name: "price",
-      label: this.$t("labels.commodityPrice.price"),
+      label: this.t("labels.commodityPrice.price"),
       width: "20%",
     },
-    { name: "actions", label: this.$t("labels.actions"), width: "12%" },
+    { name: "actions", label: this.t("labels.actions"), width: "12%" },
   ];
 
   async fetch() {
@@ -132,7 +128,7 @@ export default class AdminCommodityPrices extends Vue {
   remove(commodityPrice) {
     this.deleting = true;
     displayConfirm({
-      text: this.$t("messages.confirm.commodityPrice.destroy"),
+      text: this.t("messages.confirm.commodityPrice.destroy"),
       onConfirm: () => {
         this.destroy(commodityPrice);
       },
@@ -149,5 +145,10 @@ export default class AdminCommodityPrices extends Vue {
 
     this.deleting = false;
   }
-}
+</script>
+
+<script lang="ts">
+export default {
+  name: "AdminCommodityPrices",
+};
 </script>

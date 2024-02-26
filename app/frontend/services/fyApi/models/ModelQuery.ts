@@ -17,6 +17,8 @@ export type ModelQuery = {
     lengthLteq?: number;
     manufacturerIn?: Array<string>;
     nameCont?: string;
+    nameEq?: string;
+    slugEq?: string;
     nameIn?: Array<string>;
     nameOrDescriptionCont?: string;
     onSaleEq?: boolean;

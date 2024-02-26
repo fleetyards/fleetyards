@@ -1,4 +1,4 @@
-import { Location } from "vue-router";
+import { RouteLocation } from "vue-router";
 
 type QueryParams = {
   sorts: string[];
@@ -8,11 +8,11 @@ type Dictionary<T> = { [key: string]: T };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface FleetYardsRouteQuery extends Dictionary<any> {
-  q: QueryParams | null;
+  q?: QueryParams;
 }
 
-export interface FleetYardsLocation extends Location {
-  query?: FleetYardsRouteQuery;
+export interface FleetYardsLocation extends RouteLocation {
+  query: FleetYardsRouteQuery;
 }
 
 export const sortByToggle = function sortByToggle(

@@ -1,208 +1,179 @@
 <template>
   <section class="container signup">
     <div class="row">
-      <div v-if="form" class="col-12">
-        <ValidationObserver ref="form" v-slot="{ handleSubmit }" :slim="true">
-          <form @submit.prevent="handleSubmit(signup)">
-            <h1>
-              <router-link to="/" :exact="true">
-                {{ $t("app") }}
-              </router-link>
-            </h1>
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="username"
-              rules="required|alpha_dash|usernameTaken"
-              :name="$t('labels.username')"
-              :slim="true"
-            >
-              <FormInput
-                id="username"
-                v-model="form.username"
-                :error="errors[0]"
-                :hide-label-on-empty="true"
-                :autofocus="true"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="email"
-              rules="required|email"
-              :name="$t('labels.email')"
-              :slim="true"
-            >
-              <FormInput
-                id="email"
-                v-model="form.email"
-                :error="errors[0]"
-                :hide-label-on-empty="true"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="password"
-              rules="required|min:8"
-              :name="$t('labels.password')"
-              :slim="true"
-            >
-              <FormInput
-                id="password"
-                v-model="form.password"
-                :error="errors[0]"
-                type="password"
-                :hide-label-on-empty="true"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="passwordConfirmation"
-              rules="required|confirmed:password"
-              :name="$t('labels.passwordConfirmation')"
-              :slim="true"
-            >
-              <FormInput
-                id="passwordConfirmation"
-                v-model="form.passwordConfirmation"
-                :error="errors[0]"
-                type="password"
-                :hide-label-on-empty="true"
-              />
-            </ValidationProvider>
+      <div class="col-12">
+        <form method="post" @submit="onSubmit">
+          <h1>
+            <router-link to="/" :exact="true">
+              {{ t("app") }}
+            </router-link>
+          </h1>
 
-            <FormInput
-              v-if="fleetInviteToken"
-              id="fleetInviteToken"
-              v-model="form.fleetInviteToken"
-              :disabled="true"
-              :hide-label-on-empty="true"
-              :clearable="true"
-              @clear="resetFleetInviteToken"
-            />
+          <FormInput
+            v-model="values.username"
+            name="username"
+            :hide-label-on-empty="true"
+            :autofocus="true"
+          />
 
-            <Checkbox
-              id="saleNotify"
-              v-model="form.saleNotify"
-              :label="$t('labels.user.saleNotify')"
-            />
+          <FormInput
+            v-model="values.email"
+            name="email"
+            :hide-label-on-empty="true"
+          />
 
-            <Btn
-              :loading="submitting"
-              type="submit"
-              data-test="submit-signup"
-              size="large"
-              :block="true"
-            >
-              {{ $t("actions.signUp") }}
-            </Btn>
+          <FormInput
+            v-model="values.password"
+            name="password"
+            type="password"
+            :hide-label-on-empty="true"
+          />
 
-            <p class="privacy-info">
-              {{ $t("labels.signup.privacyPolicy") }}
-              <router-link :to="{ name: 'privacy-policy' }">
-                {{ $t("labels.privacyPolicy") }}
-              </router-link>
+          <FormInput
+            v-model="values.passwordConfirmation"
+            name="passwordConfirmation"
+            type="password"
+            :hide-label-on-empty="true"
+          />
+
+          <FormInput
+            v-if="fleetInviteToken"
+            v-model="values.fleetInviteToken"
+            name="fleetInviteToken"
+            :disabled="true"
+            :hide-label-on-empty="true"
+            :clearable="true"
+            @clear="resetFleetInviteToken"
+          />
+
+          <Checkbox
+            v-model="values.saleNotify"
+            name="saleNotify"
+            :label="t('labels.user.saleNotify')"
+          />
+
+          <Btn
+            :loading="submitting"
+            type="submit"
+            data-test="submit-signup"
+            size="large"
+            :block="true"
+          >
+            {{ t("actions.signUp") }}
+          </Btn>
+
+          <p class="privacy-info">
+            {{ t("labels.signup.privacyPolicy") }}
+            <router-link :to="{ name: 'privacy-policy' }">
+              {{ t("labels.privacyPolicy") }}
+            </router-link>
+          </p>
+
+          <footer>
+            <p class="text-center">
+              {{ t("labels.alreadyRegistered") }}
             </p>
 
-            <footer>
-              <p class="text-center">
-                {{ $t("labels.alreadyRegistered") }}
-              </p>
-
-              <Btn :to="{ name: 'login' }" size="small" :block="true">
-                {{ $t("actions.login") }}
-              </Btn>
-            </footer>
-          </form>
-        </ValidationObserver>
+            <Btn :to="{ name: 'login' }" size="small" :block="true">
+              {{ t("actions.login") }}
+            </Btn>
+          </footer>
+        </form>
       </div>
     </div>
   </section>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { displaySuccess, displayAlert } from "@/frontend/lib/Noty";
+<script lang="ts" setup>
+import { useForm } from "vee-validate";
 import { transformErrors } from "@/frontend/api/helpers";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { storeToRefs } from "pinia";
+import type {
+  UserCreateInput,
+  ApiError,
+  ValidationError,
+} from "@/services/fyApi";
+import { useApiClient } from "@/frontend/composables/useApiClient";
 
-@Component<Signup>({
-  components: {
-    FormInput,
-    Btn,
-    Checkbox,
-  },
-})
-export default class Signup extends Vue {
-  @Getter("inviteToken", { namespace: "fleet" }) fleetInviteToken;
+const { t } = useI18n();
 
-  @Action("resetInviteToken", { namespace: "fleet" })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resetFleetInviteToken: any;
+const { displaySuccess, displayAlert } = useNoty(t);
 
-  form: SignupForm | null = null;
+const fleetStore = useFleetStore();
 
-  submitting = false;
+const { inviteToken: fleetInviteToken } = storeToRefs(fleetStore);
 
-  mounted() {
-    this.setupForm();
-  }
+const initialValues = ref<UserCreateInput>({
+  username: "",
+  email: "",
+  password: "",
+  passwordConfirmation: "",
+  fleetInviteToken: fleetStore.inviteToken,
+  saleNotify: false,
+});
 
-  setupForm() {
-    this.form = {
-      username: null,
-      email: null,
-      saleNotify: false,
-      password: null,
-      passwordConfirmation: null,
-      fleetInviteToken: this.fleetInviteToken,
-    };
-  }
+const validationSchema = {
+  username: "required|alpha_dash|usernameTaken",
+  email: "required|email",
+  password: "required|min:8",
+  passwordConfirmation: "required|confirmed:password",
+};
 
-  async signup() {
-    this.submitting = true;
+const { values, handleSubmit, setErrors } = useForm({
+  initialValues,
+  validationSchema,
+});
 
-    const response = await this.$api.post("users/signup", this.form);
+const submitting = ref(false);
 
-    this.submitting = false;
+const resetFleetInviteToken = () => {};
 
-    if (!response.error) {
-      displaySuccess({
-        text: this.$t("messages.signup.success"),
-      });
+const router = useRouter();
 
-      this.resetFleetInviteToken();
+const { users: usersService } = useApiClient();
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push("/").catch(() => {});
-    } else if (
-      response.error.response &&
-      response.error.response.data &&
-      response.error.response.data.code === "blocked"
-    ) {
+const onSubmit = handleSubmit(async (values: UserCreateInput) => {
+  submitting.value = true;
+
+  try {
+    await usersService.signup({
+      requestBody: values,
+    });
+
+    displaySuccess({
+      text: t("messages.signup.success"),
+    });
+
+    fleetStore.resetInviteToken();
+
+    router.push("/").catch(() => {});
+  } catch (error) {
+    const errorResponse = (error as ApiError).body as ValidationError;
+
+    if (errorResponse.errors) {
+      setErrors(transformErrors(errorResponse.errors));
+
       displayAlert({
-        text: this.$t("texts.signup.blocked"),
+        text: errorResponse.message,
       });
     } else {
-      const { error } = response;
-      if (error.response && error.response.data) {
-        const { data: errorData } = error.response;
-
-        this.$refs.form.setErrors(transformErrors(errorData.errors));
-
-        displayAlert({
-          text: errorData.message,
-        });
-      } else {
-        displayAlert({
-          text: this.$t("messages.signup.failure"),
-        });
-      }
+      displayAlert({
+        text: errorResponse.message,
+      });
     }
   }
-}
+
+  submitting.value = false;
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: "SignupPage",
+};
 </script>
 
 <style lang="scss">

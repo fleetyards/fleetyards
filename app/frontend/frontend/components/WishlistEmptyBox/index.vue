@@ -33,10 +33,10 @@
 </template>
 
 <script lang="ts" setup>
-import Box from "@/frontend/core/components/Box/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import { useRoute, useRouter } from "vue-router/composables";
-import { useComlink } from "@/frontend/composables/useComlink";
+import Box from "@/shared/components/base/Box/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useRoute, useRouter } from "vue-router";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 
 const { t } = useI18n();

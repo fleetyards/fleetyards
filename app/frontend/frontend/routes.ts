@@ -1,10 +1,24 @@
+import type { RouteRecordRaw } from "vue-router";
 import { routes as StationsRoutes } from "@/frontend/pages/Stations/routes";
 import { routes as RoadmapRoutes } from "@/frontend/pages/Roadmap/routes";
 import { routes as SettingsRoutes } from "@/frontend/pages/Settings/routes";
 import { routes as FleetsRoutes } from "@/frontend/pages/Fleets/routes";
 import { routes as ToolsRoutes } from "@/frontend/pages/Tools/routes";
+import { routes as VisualTestsSubRoutes } from "@/frontend/pages/VisualTests/routes";
 
-export const routes = [
+const VisualTestsRoutes =
+  process.env.NODE_ENV !== "production"
+    ? [
+        {
+          path: "/visual-tests/",
+          name: "visual-tests",
+          component: () => import("@/frontend/pages/VisualTests/index.vue"),
+          children: VisualTestsSubRoutes,
+        },
+      ]
+    : [];
+
+export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
@@ -75,7 +89,7 @@ export const routes = [
     name: "hangar-fleetchart",
     redirect: {
       name: "hangar",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {
@@ -101,7 +115,7 @@ export const routes = [
     name: "hangar-public-fleetchart",
     redirect: {
       name: "hangar-public",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {
@@ -126,7 +140,7 @@ export const routes = [
     name: "models-fleetchart",
     redirect: {
       name: "models",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {
@@ -163,13 +177,9 @@ export const routes = [
   {
     path: "/fleets/",
     name: "fleets",
-    component: () => import("@/frontend/pages/Fleets/index.vue"),
+    component: () => import("@/frontend/pages/Fleets/routerView.vue"),
     children: FleetsRoutes,
     redirect: { name: FleetsRoutes[0].name },
-    meta: {
-      title: "fleets",
-      backgroundImage: "bg-8",
-    },
   },
   {
     path: "/images/",
@@ -181,34 +191,21 @@ export const routes = [
   },
   {
     path: "/stations/",
-    name: "stations",
-    component: () => import("@/frontend/pages/Stations/index.vue"),
+    component: () => import("@/frontend/pages/Stations/routerView.vue"),
     children: StationsRoutes,
-    meta: {
-      title: "stations",
-      quickSearch: "searchCont",
-      backgroundImage: "bg-0",
-    },
+    redirect: { name: StationsRoutes[0].name },
   },
   {
     path: "/tools/",
-    name: "tools",
-    component: () => import("@/frontend/pages/ToolsPage.vue"),
+    component: () => import("@/frontend/pages/Tools/routerView.vue"),
     children: ToolsRoutes,
     redirect: { name: ToolsRoutes[0].name },
-    meta: {
-      title: "tools",
-      backgroundImage: "bg-7",
-    },
   },
   {
     path: "/roadmap/",
-    name: "roadmap",
+    component: () => import("@/frontend/pages/Roadmap/routerView.vue"),
     children: RoadmapRoutes,
-    component: () => import("@/frontend/pages/Roadmap/index.vue"),
-    meta: {
-      title: "roadmap.index",
-    },
+    redirect: { name: RoadmapRoutes[0].name },
   },
   {
     path: "/settings/",
@@ -259,6 +256,7 @@ export const routes = [
     name: "confirm",
     component: () => import("@/frontend/pages/Confirm/index.vue"),
   },
+  ...VisualTestsRoutes,
   {
     path: "/404/",
     name: "404",
@@ -269,7 +267,7 @@ export const routes = [
     },
   },
   {
-    path: "*",
+    path: "/:pathMatch(.*)*",
     component: () => import("@/frontend/pages/NotFound/index.vue"),
     meta: {
       title: "notFound",

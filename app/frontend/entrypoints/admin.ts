@@ -1,62 +1,33 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "@/admin/App.vue";
-import ApiClient from "@/frontend/api/client";
-import store from "@/admin/lib/Store";
-import "@/frontend/plugins/LazyLoad";
-import "@/frontend/lib/Sentry";
-import router from "@/admin/lib/Router";
-import Comlink from "@/frontend/plugins/Comlink";
-import I18nPlugin from "@/frontend/lib/I18n";
-import VTooltip from "v-tooltip";
-import Validations from "@/frontend/plugins/Validations";
-import VShowSlide from "v-show-slide";
+import router from "@/admin/plugins/Router";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import i18n from "@/shared/plugins/I18n";
+import noty from "@/shared/plugins/Noty";
+import sentry from "@/shared/plugins/Sentry";
+import FloatingVue from "floating-vue";
+import "floating-vue/dist/style.css";
+import VueLazyload from "vue-lazyload";
+import veeValidate from "@/admin/plugins/VeeValidate";
+import { useI18n } from "@/admin/composables/useI18n";
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
-Vue.use(VShowSlide);
-Vue.use(ApiClient);
-Vue.use(Comlink);
-Vue.use(I18nPlugin);
-Vue.use(Validations);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
-declare global {
-  interface Window {
-    ADMIN_API_ENDPOINT: string;
-    ON_SUBDOMAIN: boolean;
-  }
-}
+console.info(`API Endpoint: ${window.ADMIN_API_ENDPOINT}`);
 
-Vue.filter("formatSize", (size: number) => {
-  if (size > 1024 * 1024 * 1024 * 1024) {
-    return `${(size / 1024 / 1024 / 1024 / 1024).toFixed(2)} TB`;
-  }
-  if (size > 1024 * 1024 * 1024) {
-    return `${(size / 1024 / 1024 / 1024).toFixed(2)} GB`;
-  }
-  if (size > 1024 * 1024) {
-    return `${(size / 1024 / 1024).toFixed(2)} MB`;
-  }
-  if (size > 1024) {
-    return `${(size / 1024).toFixed(2)} KB`;
-  }
-  return `${size.toString()} B`;
-});
+const app = createApp(App);
 
-if (process.env.NODE_ENV !== "production") {
-  Vue.config.devtools = true;
-} else {
-  Vue.config.productionTip = false;
-}
+app.use(VueQueryPlugin);
+app.use(router);
+app.use(pinia);
+app.use(sentry, router);
+app.use(i18n, useI18n);
+app.use(noty, useI18n);
+app.use(VueLazyload);
+app.use(veeValidate, useI18n);
+app.use(FloatingVue);
 
-VTooltip.enabled = window.innerWidth > 768;
-Vue.use(VTooltip);
-
-console.info(`API Endpoint: ${window.API_ENDPOINT}`);
-
-document.addEventListener("DOMContentLoaded", () => {
-  // eslint-disable-next-line no-new
-  new Vue({
-    el: "#app",
-    router,
-    store,
-    render: (h) => h(App),
-  });
-});
+app.mount("#app");

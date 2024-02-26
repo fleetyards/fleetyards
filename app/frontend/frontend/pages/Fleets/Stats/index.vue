@@ -180,13 +180,13 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Chart from "@/frontend/core/components/Chart/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
 import { fleetRouteGuard } from "@/frontend/utils/RouteGuards/Fleets";
 import fleetsCollection from "@/frontend/api/collections/Fleets";
 import vehiclesCollection from "@/frontend/api/collections/FleetVehicles";
 import membersCollection from "@/frontend/api/collections/FleetMembers";
 import BreadCrumbs from "@/frontend/core/components/BreadCrumbs/index.vue";
+import Chart from "@/shared/components/Chart/index.vue";
+import Panel from "@/shared/components/Panel/index.vue";
 
 @Component({
   beforeRouteEnter: fleetRouteGuard,

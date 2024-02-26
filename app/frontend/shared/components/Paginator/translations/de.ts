@@ -1,0 +1,8 @@
+export default {
+  paginator: {
+    labels: {
+      perPage: "Pro Seite",
+      pages: "%{page} von %{total}",
+    },
+  },
+};

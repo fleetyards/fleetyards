@@ -2,40 +2,48 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CargoOptions } from '../models/CargoOptions';
 import type { FilterOption } from '../models/FilterOption';
-import type { Image } from '../models/Image';
+import type { Images } from '../models/Images';
 import type { Model } from '../models/Model';
 import type { ModelExtended } from '../models/ModelExtended';
 import type { ModelHardpoint } from '../models/ModelHardpoint';
 import type { ModelHardpointSourceEnum } from '../models/ModelHardpointSourceEnum';
-import type { ModelModule } from '../models/ModelModule';
-import type { ModelModulePackage } from '../models/ModelModulePackage';
+import type { ModelModulePackages } from '../models/ModelModulePackages';
+import type { ModelModules } from '../models/ModelModules';
 import type { ModelPaint } from '../models/ModelPaint';
 import type { ModelQuery } from '../models/ModelQuery';
+import type { Models } from '../models/Models';
 import type { ModelUpgrade } from '../models/ModelUpgrade';
-import type { Video } from '../models/Video';
+import type { Videos } from '../models/Videos';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ModelsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Models with Docks
-     * @returns any successful
+     * @returns Models successful
      * @throws ApiError
      */
     public modelsWithDocks({
         page = '1',
         perPage = '30',
+        q,
+        cacheId,
     }: {
         page?: string,
         perPage?: string,
-    }): CancelablePromise<any> {
+        q?: ModelQuery,
+        cacheId?: string,
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/with-docks',
             query: {
                 'page': page,
                 'perPage': perPage,
+                'q': q,
+                'cacheId': cacheId,
             },
         });
     }
@@ -98,13 +106,20 @@ export class ModelsService {
     }
     /**
      * Embed Models
-     * @returns any successful
+     * @returns Model successful
      * @throws ApiError
      */
-    public embed(): CancelablePromise<any> {
+    public embed({
+        models,
+    }: {
+        models: Array<string>,
+    }): CancelablePromise<Array<Model>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/embed',
+            query: {
+                'models': models,
+            },
         });
     }
     /**
@@ -164,7 +179,7 @@ export class ModelsService {
     }
     /**
      * Model Cargo options
-     * @returns any successful
+     * @returns CargoOptions successful
      * @throws ApiError
      */
     public cargoOptions({
@@ -173,7 +188,7 @@ export class ModelsService {
     }: {
         page?: string,
         perPage?: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<CargoOptions> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/cargo-options',
@@ -185,7 +200,7 @@ export class ModelsService {
     }
     /**
      * Models List
-     * @returns Model successful
+     * @returns Models successful
      * @throws ApiError
      */
     public models({
@@ -198,7 +213,7 @@ export class ModelsService {
         perPage?: string,
         q?: ModelQuery,
         cacheId?: string,
-    }): CancelablePromise<Array<Model>> {
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models',
@@ -265,7 +280,7 @@ export class ModelsService {
     }
     /**
      * Model Images
-     * @returns Image successful
+     * @returns Images successful
      * @throws ApiError
      */
     public modelImages({
@@ -279,7 +294,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<Image>> {
+    }): CancelablePromise<Images> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/images',
@@ -297,7 +312,7 @@ export class ModelsService {
     }
     /**
      * Model Videos
-     * @returns Video successful
+     * @returns Videos successful
      * @throws ApiError
      */
     public modelVideos({
@@ -311,7 +326,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<Video>> {
+    }): CancelablePromise<Videos> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/videos',
@@ -329,7 +344,7 @@ export class ModelsService {
     }
     /**
      * Model Variants
-     * @returns Model successful
+     * @returns Models successful
      * @throws ApiError
      */
     public modelVariants({
@@ -343,7 +358,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<Model>> {
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/variants',
@@ -361,7 +376,7 @@ export class ModelsService {
     }
     /**
      * Model Loaners
-     * @returns Model successful
+     * @returns Models successful
      * @throws ApiError
      */
     public modelLoaners({
@@ -375,7 +390,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<Model>> {
+    }): CancelablePromise<Models> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/loaners',
@@ -417,7 +432,7 @@ export class ModelsService {
     }
     /**
      * Model Modules
-     * @returns ModelModule successful
+     * @returns ModelModules successful
      * @throws ApiError
      */
     public modelModules({
@@ -431,7 +446,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<ModelModule>> {
+    }): CancelablePromise<ModelModules> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/modules',
@@ -449,7 +464,7 @@ export class ModelsService {
     }
     /**
      * Model Module Packages
-     * @returns ModelModulePackage successful
+     * @returns ModelModulePackages successful
      * @throws ApiError
      */
     public modelModulePackages({
@@ -463,7 +478,7 @@ export class ModelsService {
         slug: string,
         page?: string,
         perPage?: string,
-    }): CancelablePromise<Array<ModelModulePackage>> {
+    }): CancelablePromise<ModelModulePackages> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/models/{slug}/module-packages',

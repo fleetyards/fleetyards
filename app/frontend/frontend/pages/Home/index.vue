@@ -23,8 +23,8 @@
                     <div class="form-group">
                       <div class="input-group-flex">
                         <FormInput
-                          id="search"
                           v-model="searchQuery"
+                          name="search"
                           size="large"
                           :autofocus="!mobile"
                           translation-key="search.default"
@@ -36,7 +36,7 @@
                           :aria-label="t('labels.search')"
                           size="large"
                           :inline="true"
-                          @click.native="search"
+                          @click="search"
                         >
                           <i class="fal fa-search" />
                         </Btn>
@@ -91,7 +91,7 @@
             :appear="true"
           >
             <div
-              v-for="model in modelsCollection.records"
+              v-for="model in latestModels"
               :key="model.id"
               class="col-12 fade-list-item"
             >
@@ -101,18 +101,19 @@
                   name: 'model',
                   params: { slug: model.slug },
                 }"
-                variant="text"
+                level="h3"
+                slim
               />
             </div>
           </transition-group>
           <Loader :loading="modelsLoading" :fixed="true" />
         </div>
         <div class="col-12 col-lg-6 relative home-images">
-          <Panel>
+          <Panel inset>
             <h2 class="sr-only">
               {{ t("headlines.welcomeImages") }}
             </h2>
-            <div class="panel-body images">
+            <div class="images">
               <transition-group
                 name="fade"
                 class="row flex-center"
@@ -120,7 +121,7 @@
                 :appear="true"
               >
                 <div
-                  v-for="image in imagesCollection.records"
+                  v-for="image in randomImages"
                   :key="image.id"
                   class="col-12 col-md-6 col-lg-6"
                 >
@@ -144,32 +145,28 @@
 
 <script lang="ts" setup>
 import VueScrollTo from "vue-scrollto";
-import { useRouter } from "vue-router/composables";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
+import { RouteLocationRaw } from "vue-router";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Support from "@/frontend/components/Support/index.vue";
-import LazyImage from "@/frontend/core/components/LazyImage/index.vue";
-import modelsCollection from "@/frontend/api/collections/Models";
-import imagesCollection from "@/frontend/api/collections/Images";
 import { useI18n } from "@/frontend/composables/useI18n";
-import Store from "@/frontend/lib/Store";
-import type { Image } from "@/services/fyApi";
+import Panel from "@/shared/components/Panel/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel2/index.vue";
+import LazyImage from "@/shared/components/LazyImage/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import { type Image } from "@/services/fyApi";
 import logo from "@/images/pride/logo-planet.png";
+import { useApiClient } from "@/frontend/composables/useApiClient";
+import { useQuery } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 
-const modelsLoading = ref(false);
-
-const imagesLoading = ref(false);
-
-const searchQuery = ref<string | null>(null);
+const searchQuery = ref<string | undefined>();
 
 const showScrollDown = ref(false);
 
-const mobile = computed(() => Store.getters.mobile);
+const mobile = useMobile();
 
 setTimeout(() => {
   showScrollDown.value = true;
@@ -183,37 +180,31 @@ const search = () => {
   }
 
   router
-    .push({
-      name: "search",
-      query: {
-        q: {
-          search: searchQuery.value,
+    .push(
+      {
+        name: "search",
+        query: {
+          q: { search: searchQuery.value },
         },
-      },
-    })
+      } as unknown as RouteLocationRaw, // HACK to make insufficient types for vue-router work
+    )
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     .catch(() => {});
 };
 
-const fetchModels = async () => {
-  modelsLoading.value = true;
+const { models: modelsService } = useApiClient();
 
-  await modelsCollection.latest();
+const { isLoading: modelsLoading, data: latestModels } = useQuery({
+  queryKey: ["latestModels"],
+  queryFn: () => modelsService.modelsLatest(),
+});
 
-  modelsLoading.value = false;
-};
+const { images: imagesService } = useApiClient();
 
-fetchModels();
-
-const fetchImages = async () => {
-  imagesLoading.value = true;
-
-  await imagesCollection.random();
-
-  imagesLoading.value = false;
-};
-
-fetchImages();
+const { isLoading: imagesLoading, data: randomImages } = useQuery({
+  queryKey: ["randomImages"],
+  queryFn: () => imagesService.imagesRandom({}),
+});
 
 const scrollDown = () => {
   VueScrollTo.scrollTo(".home-ships");

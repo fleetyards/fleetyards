@@ -1,6 +1,7 @@
+import type { RouteRecordRaw } from "vue-router";
 import { routes as SettingsRoutes } from "@/frontend/pages/Fleets/Settings/routes";
 
-export const routes = [
+export const routes: RouteRecordRaw[] = [
   {
     path: "add/",
     name: "fleet-add",
@@ -60,7 +61,7 @@ export const routes = [
     name: "fleet-fleetchart",
     redirect: {
       name: "fleet-ships",
-      query: { fleetchart: true },
+      query: { fleetchart: "true" },
     },
   },
   {

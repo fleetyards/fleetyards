@@ -36,7 +36,7 @@ module Admin
 
         private def model_query_params
           @model_query_params ||= query_params(
-            :name_cont, :id_eq, name_in: [], id_not_in: []
+            :name_cont, :id_eq, name_in: [], id_in: [], id_not_in: []
           )
         end
       end

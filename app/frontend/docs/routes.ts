@@ -1,6 +1,6 @@
-import type { RouteConfig } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
 
-export const routes: RouteConfig[] = [
+export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
@@ -23,7 +23,7 @@ export const routes: RouteConfig[] = [
       version: "v1",
     },
     meta: {
-      title: "api.v1",
+      title: "apiV1",
     },
   },
   {
