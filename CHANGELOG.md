@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.29.3](https://github.com/fleetyards/fleetyards/compare/v5.29.2...v5.29.3) (2024-02-26)
+
+
+### Bug Fixes
+
+* **loaners:** update mapping for new loaner list changes ([ac0e9a0](https://github.com/fleetyards/fleetyards/commit/ac0e9a02dd9c40fb12c6bb2eab5f50f32f7e407e))
+
 ### [5.29.2](https://github.com/fleetyards/fleetyards/compare/v5.29.1...v5.29.2) (2024-02-13)
 
 ### [5.29.1](https://github.com/fleetyards/fleetyards/compare/v5.29.0...v5.29.1) (2024-02-11)
