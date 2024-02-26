@@ -59,8 +59,8 @@ namespace :deploy do
     invoke :"server:broadcast_version"
   end
 
-  desc 'Cleanup expired assets'
-  task :cleanup_assets => [:set_rails_env] do
+  desc "Cleanup expired assets"
+  task cleanup_assets: [:set_rails_env] do
     next unless fetch(:keep_assets)
     on release_roles(fetch(:assets_roles)) do
       within release_path do
