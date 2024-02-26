@@ -32,7 +32,7 @@ import { useField } from "vee-validate";
 type Props = {
   name: string;
   label?: string;
-  modelValue?: boolean | (string | number)[];
+  modelValue?: boolean | string | (string | number)[] | null;
   disabled?: boolean;
   checkboxValue?: string | number;
   slim?: boolean;

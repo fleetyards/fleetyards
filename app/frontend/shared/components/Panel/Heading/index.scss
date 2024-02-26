@@ -22,7 +22,6 @@
     padding: 15px 15px 10px;
     font-size: 22px;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
     font-family: "Orbitron", sans-serif;
     text-shadow: 0 0 2px black;
@@ -31,8 +30,24 @@
     display: flex;
     flex-direction: column;
 
+    &-align-left {
+      text-align: left;
+    }
+
+    &-align-right {
+      text-align: right;
+    }
+
+    &-align-center {
+      text-align: center;
+    }
+
     &-large {
       font-size: 30px;
+    }
+
+    &-singleline {
+      white-space: nowrap;
     }
 
     &-main {

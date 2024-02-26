@@ -1,5 +1,5 @@
 <template>
-  <section class="container main">
+  <section :class="cssClasses">
     <slot v-if="error" name="error">
       <NotFound />
     </slot>
@@ -25,10 +25,18 @@ export type AsyncStatus = {
 type Props = {
   asyncStatus: AsyncStatus;
   showSpinner?: boolean;
+  fullscreen?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   showSpinner: true,
+  fullscreen: true,
+});
+
+const cssClasses = computed(() => {
+  return {
+    "container main": props.fullscreen,
+  };
 });
 
 const error = computed(() => {

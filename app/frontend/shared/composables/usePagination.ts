@@ -1,12 +1,8 @@
 import { useRoute } from "vue-router";
-import { BaseList } from "@/services/fyApi";
 import { usePaginationStore } from "@/shared/stores/pagination";
+import { useQueryClient } from "@tanstack/vue-query";
 
-export const usePagination = (
-  key: string,
-  queryResultRef: Ref<BaseList>,
-  changeCallback: () => void,
-) => {
+export const usePagination = (key: string) => {
   const paginationStore = usePaginationStore();
 
   const perPage = computed(() => {
@@ -25,26 +21,29 @@ export const usePagination = (
 
   const page = computed(() => (route.query.page as string) || "1");
 
-  const pagination = computed(() => queryResultRef.value?.meta?.pagination);
+  const queryClient = useQueryClient();
 
   watch(
     () => page.value,
     () => {
-      changeCallback();
+      queryClient.invalidateQueries({
+        queryKey: [key],
+      });
     },
   );
 
   watch(
     () => perPage.value,
     () => {
-      changeCallback();
+      queryClient.invalidateQueries({
+        queryKey: [key],
+      });
     },
   );
 
   return {
     perPage,
     page,
-    pagination,
     updatePerPage,
   };
 };

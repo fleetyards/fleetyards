@@ -34,6 +34,7 @@ class Ability
     can %i[index], :api_roadmap
     can %i[index], :api_search
     can %i[read], :api_fleet
+    can %i[filters], :api_hangar
 
     can %i[read_public], :api_user
   end

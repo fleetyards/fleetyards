@@ -37,10 +37,15 @@
     <h3 v-if="groups.length || editable" class="label-title">
       {{ t("labels.groups") }}:
     </h3>
-    <draggable v-model="groups" @start="drag = true" @end="drag = false">
-      <transition-group name="fade-list" appear>
+    <draggable
+      v-model="groups"
+      group="hangarGroups"
+      item-key="id"
+      @start="drag = true"
+      @end="drag = false"
+    >
+      <template #item="{ element: group }">
         <a
-          v-for="group in groups"
           :key="group.id"
           :class="{
             active: isActive(group.slug),
@@ -62,7 +67,7 @@
             {{ group.name }}: {{ groupCount(group).count }}
           </span>
         </a>
-      </transition-group>
+      </template>
     </draggable>
     <a
       v-if="editable"
@@ -178,7 +183,7 @@ const filter = (filter) => {
   });
 };
 
-const isActive = (group: HangarGroup) => {
+const isActive = (group: string) => {
   if (!route.query.q) {
     return false;
   }
@@ -195,7 +200,7 @@ const isActive = (group: HangarGroup) => {
   return false;
 };
 
-const isInverted = (group: HangarGroup) => {
+const isInverted = (group: string) => {
   if (!route.query.q) {
     return false;
   }

@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { Check } from '../models/Check';
 import type { CheckInput } from '../models/CheckInput';
+import type { FilterOption } from '../models/FilterOption';
 import type { Hangar } from '../models/Hangar';
 import type { HangarImportResult } from '../models/HangarImportResult';
 import type { HangarQuery } from '../models/HangarQuery';
@@ -298,6 +299,18 @@ export class VehiclesService {
             errors: {
                 401: `unauthorized`,
             },
+        });
+    }
+
+    /**
+     * Bought Via Filters
+     * @returns FilterOption successful
+     * @throws ApiError
+     */
+    public boughtViaFilters(): CancelablePromise<Array<FilterOption>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/vehicles/filters/bought-via',
         });
     }
 

@@ -85,7 +85,7 @@
         v-tooltip="t('labels.model.addons')"
         class="vehicle-panel-addons"
         :class="{
-          'vehicle-panel-selected': hasAddons,
+          'vehicle-panel-addons-selected': hasAddons,
         }"
         @click="openAddonsModal"
       >

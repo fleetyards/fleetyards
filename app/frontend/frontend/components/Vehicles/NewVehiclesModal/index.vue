@@ -21,17 +21,15 @@
         </div>
       </div>
 
-      <CollectionFilterGroup
+      <FilterGroup
+        :label="t('actions.findModel')"
+        :query-fn="fetch"
+        :query-response-formatter="formatter"
         name="model"
-        :search-label="t('actions.findModel')"
-        :collection="modelsCollection"
-        value-attr="id"
-        translation-key="newVehicle"
-        :paginated="true"
         :searchable="true"
-        :return-object="true"
+        :paginated="true"
         :no-label="true"
-        @input="add"
+        @update:model-value="add"
       />
     </form>
     <template #footer>
@@ -54,11 +52,12 @@
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Vehicle, type Model } from "@/services/fyApi";
+import { type Vehicle, type Model, Models, ModelQuery } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useApiClient } from "@/frontend/composables/useApiClient";
+import { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 
 type VehicleFormData = {
   vehicles: Partial<Vehicle>[];
@@ -95,6 +94,34 @@ onMounted(() => {
     vehicles: [],
   };
 });
+
+const { models: modelsService } = useApiClient();
+
+const fetch = async (params: FilterGroupParams) => {
+  const q: ModelQuery = {};
+
+  if (params.search) {
+    q.nameCont = params.search;
+  }
+
+  if (params.missing) {
+    q.slugEq = params.missing as string;
+  }
+
+  return modelsService.models({
+    page: String(params.page || 1),
+    q,
+  });
+};
+
+const formatter = (response: Models) => {
+  return response.items.map((model) => {
+    return {
+      label: model.name,
+      value: model.slug,
+    };
+  });
+};
 
 const comlink = useComlink();
 

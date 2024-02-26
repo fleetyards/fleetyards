@@ -18,8 +18,8 @@
               filter-key="classificationIn"
             />
             <GroupLabels
-              v-if="hangarStats"
-              :hangar-groups="groupsCollection.records"
+              v-if="hangarStats && hangarGroups"
+              :hangar-groups="hangarGroups"
               :hangar-group-counts="hangarGroupCounts"
               :label="t('labels.groups')"
               :editable="true"
@@ -111,13 +111,12 @@
 
     <FilteredList
       key="hangar"
-      :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :hash="$route.hash"
       :paginated="true"
-      :hide-empty-box="!gridView"
       :hide-loading="fleetchartVisible"
+      :hide-empty-box="!gridView"
+      :records="vehicles?.items || []"
+      :name="route.name?.toString() || ''"
+      :async-status="asyncStatus"
     >
       <template #actions>
         <HangarSyncBtn size="small" />
@@ -242,7 +241,7 @@
       </template>
 
       <template #filter>
-        <VehiclesFilterForm :hangar-groups-options="groupsCollection.records" />
+        <!-- <VehiclesFilterForm :hangar-groups-options="hangarGroups" /> -->
       </template>
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
@@ -264,21 +263,35 @@
 
         <VehiclesTable
           v-else
-          :vehicles="records"
+          :vehicles="vehicles?.items || []"
           :primary-key="primaryKey"
           :editable="true"
         />
 
         <FleetchartApp
-          :items="records"
+          :items="vehicles?.items || []"
           namespace="hangar"
           :loading="loading"
           download-name="my-hangar-fleetchart"
         >
           <template #pagination>
-            <Paginator :collection="collection" />
+            <Paginator
+              v-if="vehicles"
+              :query-result-ref="vehicles"
+              :per-page="perPage"
+              :update-per-page="updatePerPage"
+            />
           </template>
         </FleetchartApp>
+      </template>
+
+      <template #pagination-bottom>
+        <Paginator
+          v-if="vehicles"
+          :query-result-ref="vehicles"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+        />
       </template>
 
       <template #empty="{ hideEmptyBox, emptyBoxVisible }">
@@ -292,11 +305,11 @@
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
+import FilteredGrid from "@/shared/components/FilteredGrid/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarImportBtn from "@/frontend/components/HangarImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
@@ -306,19 +319,14 @@ import GroupLabels from "@/frontend/components/Vehicles/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
-// import hangarCollection from "@/frontend/api/collections/Hangar";
-// import type {
-//   HangarCollection,
-//   HangarParams,
-// } from "@/frontend/api/collections/Hangar";
-// import hangarStatsCollection from "@/frontend/api/collections/HangarStats";
-// import type { HangarStatsCollection } from "@/frontend/api/collections/HangarStats";
-// import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
-// import type { HangarGroupsCollection } from "@/frontend/api/collections/HangarGroups";
 import { debounce } from "ts-debounce";
 import HangarEmptyBox from "@/frontend/components/HangarEmptyBox/index.vue";
-import Paginator from "@/frontend/core/components/Paginator/index.vue";
-import type { HangarQuery, HangarStats } from "@/services/fyApi";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import {
+  type HangarQuery,
+  type HangarGroupMetric,
+  HangarGroup,
+} from "@/services/fyApi";
 import { useI18n } from "@/frontend/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useCable } from "@/shared/composables/useCable";
@@ -329,6 +337,9 @@ import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import rsiLogo from "@/images/rsi_logo.png";
+import { usePagination } from "@/shared/composables/usePagination";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { useHangarQueries } from "@/frontend/composables/useHangarQueries";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -341,14 +352,6 @@ const vehiclesChannel = ref<Subscription | null>(null);
 
 const highlightedGroup = ref<string | undefined>();
 
-// const collection: HangarCollection = hangarCollection;
-
-// const statsCollection: HangarStatsCollection = hangarStatsCollection;
-
-// const hangarStats = ref<HangarStats | undefined>();
-
-// const groupsCollection: HangarGroupsCollection = hangarGroupsCollection;
-
 const mobile = useMobile();
 
 const sessionStore = useSessionStore();
@@ -357,12 +360,39 @@ const { currentUser } = storeToRefs(sessionStore);
 
 const hangarStore = useHangarStore();
 
-const { detailsVisible, gridView, perPage, money, fleetchartVisible } =
-  storeToRefs(hangarStore);
+const { detailsVisible, gridView, money } = storeToRefs(hangarStore);
+
+const fleetchartStore = useFleetchartStore();
+
+const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
 const shareTitle = computed(() => t("title.hangar.index"));
 
-const hangarGroupCounts = computed<HangarGroupMetrics[]>(() => {
+const { statsQuery, hangarQuery, groupsQuery } = useHangarQueries();
+
+const filters = computed(() => {
+  return route.query.q as HangarQuery;
+});
+
+const { perPage, page, updatePerPage } = usePagination("hangar");
+
+const {
+  data: vehicles,
+  refetch,
+  ...asyncStatus
+} = hangarQuery(filters, page, perPage);
+
+const { data: hangarStats, refetch: refetchStats } = statsQuery(filters);
+
+const { data: hangarGroups, refetch: refetchGroups } = groupsQuery();
+
+const fetch = () => {
+  refetch();
+  refetchStats();
+  refetchGroups();
+};
+
+const hangarGroupCounts = computed<HangarGroupMetric[]>(() => {
   if (!hangarStats.value) {
     return [];
   }
@@ -385,7 +415,7 @@ const toggleGridViewTooltip = computed(() => {
 });
 
 const shareUrl = computed(() => {
-  if (!currentUser.value) {
+  if (!currentUser?.value) {
     return null;
   }
 
@@ -394,11 +424,6 @@ const shareUrl = computed(() => {
 
 const route = useRoute();
 
-const filters = computed<HangarParams>(() => ({
-  filters: route.query.q as HangarQuery,
-  page: route.query.page ? Number(route.query.page) : 1,
-}));
-
 watch(
   () => route.query.q,
   () => {
@@ -406,20 +431,13 @@ watch(
   },
 );
 
-watch(
-  () => perPage.value,
-  () => {
-    fetch();
-  },
-);
-
 onMounted(() => {
-  fetch();
   setupUpdates();
 
+  comlink.on("vehicle-save", fetch);
   comlink.on("vehicles-delete-all", fetch);
   comlink.on("hangar-group-delete", fetch);
-  comlink.on("hangar-group-save", groupsCollection.findAll);
+  // comlink.on("hangar-group-save", groupsCollection.findAll);
   comlink.on("hangar-sync-finished", fetch);
 });
 
@@ -428,9 +446,10 @@ onUnmounted(() => {
     vehiclesChannel.value.unsubscribe();
   }
 
+  comlink.off("vehicle-save");
   comlink.off("vehicles-delete-all");
   comlink.off("hangar-group-delete");
-  comlink.off("hangar-group-save");
+  // comlink.off("hangar-group-save");
   comlink.off("hangar-sync-finished");
 });
 
@@ -447,7 +466,7 @@ const toggleGridView = () => {
 };
 
 const toggleFleetchart = () => {
-  hangarStore.toggleFleetchart();
+  fleetchartStore.toggleFleetchart("hangar");
 };
 
 const showNewModal = () => {
@@ -464,12 +483,6 @@ const highlightGroup = (group?: HangarGroup) => {
   }
 
   highlightedGroup.value = group.id;
-};
-
-const fetch = async () => {
-  hangarStats.value = await statsCollection.get(filters.value);
-  await groupsCollection.findAll();
-  await collection.findAll(filters.value);
 };
 
 const { consumer } = useCable();
@@ -490,6 +503,10 @@ const setupUpdates = () => {
 };
 
 const exportJson = async () => {
+  if (!currentUser?.value) {
+    return;
+  }
+
   const exportedData = await collection.export(filters.value);
 
   if (!exportedData || !window.URL) {
@@ -505,7 +522,7 @@ const exportJson = async () => {
 
   link.setAttribute(
     "download",
-    `fleetyards-${currentUser.value?.username}-hangar-${format(
+    `fleetyards-${currentUser.value.username}-hangar-${format(
       new Date(),
       "yyyy-MM-dd",
     )}.json`,

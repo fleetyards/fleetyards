@@ -44,6 +44,16 @@
     border-radius: $panel-content-border-radius;
     transition: all $transition-base-speed ease;
 
+    > :first-child {
+      width: 16px;
+      text-align: center;
+      margin-right: 5px;
+    }
+
+    > :last-child {
+      margin-right: 0;
+    }
+
     &:focus {
       outline: none;
     }

@@ -15,6 +15,8 @@ declare module 'vue' {
     Checkbox: typeof import('./shared/components/base/Checkbox/index.vue')['default']
     FilterGroup: typeof import('./shared/components/base/FilterGroup/index.vue')['default']
     FilterGroupOption: typeof import('./shared/components/base/FilterGroup/Option/index.vue')['default']
+    FilterGroupQuery: typeof import('./shared/components/base/FilterGroupQuery/index.vue')['default']
+    FilterGroupQueryOption: typeof import('./shared/components/base/FilterGroupQuery/Option/index.vue')['default']
     FormInput: typeof import('./shared/components/base/FormInput/index.vue')['default']
     FormTextarea: typeof import('./shared/components/base/FormTextarea/index.vue')['default']
     RadioList: typeof import('./shared/components/base/RadioList/index.vue')['default']

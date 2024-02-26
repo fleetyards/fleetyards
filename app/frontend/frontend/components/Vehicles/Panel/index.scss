@@ -48,8 +48,7 @@
     cursor: pointer;
 
     &-selected {
-      border-bottom: 25px solid $success;
-      border-left: 25px solid $success;
+      background-color: $success;
     }
 
     i,

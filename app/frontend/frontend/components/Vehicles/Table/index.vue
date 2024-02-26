@@ -61,7 +61,7 @@
             {{ t("actions.hangar.editGroupsSelected") }}
           </Btn>
           <Btn
-            v-tooltip="$t('actions.deleteSelected')"
+            v-tooltip="t('actions.deleteSelected')"
             size="small"
             :inline="true"
             :disabled="deleting"
@@ -170,7 +170,6 @@
 <script lang="ts" setup>
 // import vehiclesCollection from "@/frontend/api/collections/Vehicles";
 // import wishlistCollection from "@/frontend/api/collections/Wishlist";
-import { displayConfirm } from "@/frontend/lib/Noty";
 import FilteredTable from "@/shared/components/FilteredTable/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -178,163 +177,162 @@ import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import HangarEmptyTable from "@/frontend/components/HangarEmptyTable/index.vue";
 import WishlistEmptyTable from "@/frontend/components/WishlistEmptyTable/index.vue";
+import { useNoty } from "@/shared/composables/useNoty";
+import { useI18n } from "@/frontend/composables/useI18n";
+import { type Vehicle } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
 
-  @Prop({ required: true }) vehicles!: Vehicle[];
+type Props = {
+  vehicles: Vehicle[];
+  primaryKey: string;
+  editable?: boolean;
+  wishlist?: boolean;
+};
 
-  @Prop({ required: true }) primaryKey!: string;
+const props = defineProps<Props>();
 
-  @Prop({ default: false }) editable!: boolean;
+const { t } = useI18n();
+const { displayConfirm } = useNoty(t);
 
-  @Prop({ default: false }) wishlist!: boolean;
+const selected = ref<string[]>([]);
 
-  selected: string[] = [];
+const deleting = ref(false);
 
-  deleting = false;
+const updating = ref(false);
 
-  updating = false;
+const tableColumns: FilteredTableColumn[] = [
+  {
+    name: "store_image",
+    class: "store-image wide",
+    type: "store-image",
+  },
+  {
+    name: "name",
+    width: "40%",
+  },
+  {
+    name: "states",
+    width: "10%",
+  },
+  {
+    name: "groups",
+    label: t("labels.vehicle.hangarGroups"),
+    width: "10%",
+  },
+  { name: "actions", label: t("labels.actions"), minWidth: "140px" },
+];
 
-  tableColumns: FilteredTableColumn[] = [
-    {
-      name: "store_image",
-      class: "store-image wide",
-      type: "store-image",
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("vehicles-delete-all", resetSelected);
+});
+
+onBeforeUnmount(() => {
+  comlink.off("vehicles-delete-all", resetSelected);
+});
+
+const openBulkGroupEditModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/BulkGroupModal/index.vue"),
+    props: {
+      vehicleIds: selected.value,
     },
-    {
-      name: "name",
-      width: "40%",
+  });
+};
+
+const openEditModal = (vehicle) => {
+  comlink.emit("open-modal", {
+    component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
+    props: {
+      vehicle,
+      wishlist: props.wishlist,
     },
-    {
-      name: "states",
-      width: "10%",
+  });
+};
+
+const storeImage = (record: Vehicle) => {
+  if (record && record.paint) {
+    return record.paint.storeImageSmall;
+  }
+
+  if (record && record.upgrade) {
+    return record.upgrade.storeImageMedium;
+  }
+
+  return record.model.storeImageMedium;
+};
+
+const addToWishlistBulk = async () => {
+  updating.value = true;
+
+  await vehiclesCollection.addToWishlistBulk(selected.value);
+
+  resetSelected();
+
+  updating.value = false;
+};
+
+const addToHangarBulk = async () => {
+  updating.value = true;
+
+  await vehiclesCollection.addToHangarBulk(selected.value);
+
+  wishlistCollection.refresh();
+
+  resetSelected();
+
+  updating.value = false;
+};
+
+const hideFromPublicHangar = async () => {
+  updating.value = true;
+
+  await vehiclesCollection.hideFromPublicHangar(selected.value);
+
+  wishlistCollection.refresh();
+
+  updating.value = false;
+};
+
+const showOnPublicHangar = async () => {
+  updating.value = true;
+
+  await vehiclesCollection.showOnPublicHangar(selected.value);
+
+  wishlistCollection.refresh();
+
+  updating.value = false;
+};
+
+const onSelectedChange = (value) => {
+  selected.value = value;
+};
+
+const destroyBulk = async () => {
+  deleting.value = true;
+
+  displayConfirm({
+    text: t("messages.confirm.hangar.destroySelected"),
+    onConfirm: async () => {
+      await vehiclesCollection.destroyBulk(selected.value);
+
+      wishlistCollection.refresh();
+
+      resetSelected();
+
+      deleting.value = false;
     },
-    {
-      name: "groups",
-      label: this.$t("labels.vehicle.hangarGroups"),
-      width: "10%",
+    onClose: () => {
+      deleting.value = false;
     },
-    { name: "actions", label: this.$t("labels.actions"), minWidth: "140px" },
-  ];
+  });
+};
 
-  mounted() {
-    this.$comlink.$on("vehicles-delete-all", this.resetSelected);
-  }
-
-  beforeDestroy() {
-    this.$comlink.$off("vehicles-delete-all");
-  }
-
-  hasAddons(vehicle) {
-    return vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length;
-  }
-
-  upgradable(vehicle) {
-    return (
-      (this.editable || this.hasAddons(vehicle)) &&
-      (vehicle.model.hasModules || vehicle.model.hasUpgrades)
-    );
-  }
-
-  openBulkGroupEditModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/BulkGroupModal/index.vue"),
-      props: {
-        vehicleIds: this.selected,
-      },
-    });
-  }
-
-  openEditModal(vehicle) {
-    this.$comlink.$emit("open-modal", {
-      component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
-      props: {
-        vehicle,
-        wishlist: this.wishlist,
-      },
-    });
-  }
-
-  storeImage(record: Vehicle) {
-    if (record && record.paint) {
-      return record.paint.storeImageSmall;
-    }
-
-    if (record && record.upgrade) {
-      return record.upgrade.storeImageMedium;
-    }
-
-    return record.model.storeImageMedium;
-  }
-
-  async addToWishlistBulk() {
-    this.updating = true;
-
-    await vehiclesCollection.addToWishlistBulk(this.selected);
-
-    this.resetSelected();
-
-    this.updating = false;
-  }
-
-  async addToHangarBulk() {
-    this.updating = true;
-
-    await vehiclesCollection.addToHangarBulk(this.selected);
-
-    wishlistCollection.refresh();
-
-    this.resetSelected();
-
-    this.updating = false;
-  }
-
-  async hideFromPublicHangar() {
-    this.updating = true;
-
-    await vehiclesCollection.hideFromPublicHangar(this.selected);
-
-    wishlistCollection.refresh();
-
-    this.updating = false;
-  }
-
-  async showOnPublicHangar() {
-    this.updating = true;
-
-    await vehiclesCollection.showOnPublicHangar(this.selected);
-
-    wishlistCollection.refresh();
-
-    this.updating = false;
-  }
-
-  onSelectedChange(value) {
-    this.selected = value;
-  }
-
-  async destroyBulk() {
-    this.deleting = true;
-
-    displayConfirm({
-      text: this.$t("messages.confirm.hangar.destroySelected"),
-      onConfirm: async () => {
-        await vehiclesCollection.destroyBulk(this.selected);
-
-        wishlistCollection.refresh();
-
-        this.resetSelected();
-
-        this.deleting = false;
-      },
-      onClose: () => {
-        this.deleting = false;
-      },
-    });
-  }
-
-  resetSelected() {
-    this.selected = [];
-  }
+const resetSelected = () => {
+  selected.value = [];
+};
 </script>
 
 <script lang="ts">

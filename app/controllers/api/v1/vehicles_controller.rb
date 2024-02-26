@@ -5,6 +5,8 @@ module Api
     class VehiclesController < ::Api::BaseController
       include HangarFiltersConcern
 
+      before_action :authenticate_user!, except: %i[bought_via_filters]
+
       def create
         @vehicle = Vehicle.new(
           vehicle_params.merge(public: true)
@@ -101,7 +103,7 @@ module Api
       end
 
       def bought_via_filters
-        authorize! :index, :api_hangar
+        authorize! :filters, :api_hangar
 
         @filters = Vehicle.bought_via_filters
 

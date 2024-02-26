@@ -4948,6 +4948,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/vehicles/filters/bought-via":
+    get:
+      summary: Bought Via Filters
+      operationId: boughtViaFilters
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/version":
     get:
       summary: Version of Fleetyards
@@ -7501,49 +7516,39 @@ components:
           nullable: true
         wanted:
           type: boolean
-          nullable: true
         nameVisible:
           type: boolean
-          nullable: true
         public:
           type: boolean
-          nullable: true
         saleNotify:
           type: boolean
-          nullable: true
         flagship:
           type: boolean
-          nullable: true
         modelPaintId:
           type: string
           format: uuid
           nullable: true
         boughtVia:
           "$ref": "#/components/schemas/BoughtViaEnum"
-          nullable: true
         hangarGroupIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
         modelModuleIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
         modelUpgradeIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
         alternativeNames:
           type: array
           items:
             type: string
-          nullable: true
       additionalProperties: false
       title: VehicleUpdateInput
     Manufacturers:

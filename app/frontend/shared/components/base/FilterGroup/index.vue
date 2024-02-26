@@ -97,10 +97,14 @@ import { v4 as uuidv4 } from "uuid";
 import Option from "./Option/index.vue";
 import type { FilterGroupOption } from "./Option/index.vue";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
-import { useQuery } from "@tanstack/vue-query";
+import {
+  UseQueryReturnType,
+  keepPreviousData,
+  useQuery,
+} from "@tanstack/vue-query";
 import type { BaseList } from "@/services/fyApi";
 
-export type ValueType = string[] | string | number[] | number | boolean;
+export type ValueType = string[] | string | number[] | number | boolean | null;
 
 export type FilterGroupParams = {
   search?: string;
@@ -110,6 +114,9 @@ export type FilterGroupParams = {
 
 type Props = {
   name: string;
+  query?: (
+    params: FilterGroupParams,
+  ) => UseQueryReturnType<FilterGroupOption[], Error>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   queryFn?: (params: FilterGroupParams) => Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -132,6 +139,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  query: undefined,
   queryFn: undefined,
   queryResponseFormatter: (items: FilterGroupOption[]) => items,
   modelValue: undefined,
@@ -232,7 +240,7 @@ const { isLoading, isFetching, data, refetch } = useQuery({
 
     return data;
   },
-  keepPreviousData: true,
+  placeholderData: keepPreviousData,
   enabled: !!props.queryFn,
 });
 
@@ -425,7 +433,7 @@ const select = (optionValue: string) => {
         ),
       );
     } else if (props.nullable) {
-      emit("update:modelValue", undefined);
+      emit("update:modelValue", null);
     }
   } else if (props.multiple) {
     const values: string[] = JSON.parse(JSON.stringify(props.modelValue || []));

@@ -1,5 +1,8 @@
 <template>
-  <div v-if="perPageSelectable || pagination.totalPages > 1" class="pagination">
+  <div
+    v-if="pagination && (perPageSelectable || pagination.totalPages > 1)"
+    class="pagination"
+  >
     <BtnGroup :inline="inline">
       <PerPageDropdown
         v-if="perPageSelectable"
@@ -66,12 +69,12 @@
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PerPageDropdown from "./PerPageDropdown/index.vue";
-import type { Pagination } from "@/services/fyApi";
+import { type BaseList } from "@/services/fyApi";
 import { useRoute } from "vue-router";
 import type { I18nPluginOptions } from "@/shared/plugins/I18n";
 
 type Props = {
-  pagination?: Pagination;
+  queryResultRef: BaseList;
   inline?: boolean;
   updatePerPage?: (perPage: number | string) => void;
   perPage?: number | string;
@@ -79,12 +82,6 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  pagination: () => ({
-    currentPage: 1,
-    totalPages: 1,
-    defaultPerPage: 30,
-    maxPerPage: 100,
-  }),
   updatePerPage: undefined,
   perPage: undefined,
   inline: false,
@@ -92,12 +89,14 @@ const props = withDefaults(defineProps<Props>(), {
   hash: undefined,
 });
 
+const pagination = computed(() => props.queryResultRef.meta.pagination);
+
 const perPageSelectable = computed(
-  () => !!props.pagination?.perPageSteps && !!props.updatePerPage,
+  () => !!pagination.value?.perPageSteps && !!props.updatePerPage,
 );
 
 const internalPerPage = computed(
-  () => props.perPage || props.pagination?.defaultPerPage,
+  () => props.perPage || pagination.value?.defaultPerPage,
 );
 
 const i18n = inject<I18nPluginOptions>("i18n");

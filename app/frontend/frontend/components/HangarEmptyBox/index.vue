@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import Box from "@/shared/components/Box/index.vue";
+import Box from "@/shared/components/base/Box/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import HangarSyncBtn from "@/frontend/components/HangarSyncBtn/index.vue";
 import { useRoute, useRouter } from "vue-router";

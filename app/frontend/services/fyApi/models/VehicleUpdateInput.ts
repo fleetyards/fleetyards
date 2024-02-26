@@ -8,16 +8,16 @@ import type { BoughtViaEnum } from './BoughtViaEnum';
 export type VehicleUpdateInput = {
     name?: string | null;
     serial?: string | null;
-    wanted?: boolean | null;
-    nameVisible?: boolean | null;
-    public?: boolean | null;
-    saleNotify?: boolean | null;
-    flagship?: boolean | null;
+    wanted?: boolean;
+    nameVisible?: boolean;
+    public?: boolean;
+    saleNotify?: boolean;
+    flagship?: boolean;
     modelPaintId?: string | null;
-    boughtVia?: BoughtViaEnum | null;
-    hangarGroupIds?: Array<string> | null;
-    modelModuleIds?: Array<string> | null;
-    modelUpgradeIds?: Array<string> | null;
-    alternativeNames?: Array<string> | null;
+    boughtVia?: BoughtViaEnum;
+    hangarGroupIds?: Array<string>;
+    modelModuleIds?: Array<string>;
+    modelUpgradeIds?: Array<string>;
+    alternativeNames?: Array<string>;
 };
 

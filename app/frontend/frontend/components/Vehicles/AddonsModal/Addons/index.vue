@@ -8,28 +8,31 @@
             :key="`${index}-${addonId}`"
             class="col-12 col-md-6 addon"
           >
-            <Panel>
-              <div
-                v-tooltip="editable && selectTooltip(addon.id)"
-                class="model-panel"
-                :class="{
-                  editable,
-                }"
-                @click.capture="changeAddon(addon.id)"
-              >
-                <div
-                  :style="{
-                    'background-image': `url(${addon.storeImage})`,
-                  }"
-                  class="model-panel-image"
-                />
-                <div class="model-panel-body">
-                  <h3>{{ addon.name }}</h3>
-                </div>
+            <Panel
+              v-tooltip="editable && selectTooltip(addon.id)"
+              alignment="left"
+              slim
+              class="addon-panel"
+              :class="{
+                'addon-panel-editable': editable,
+              }"
+              @click.capture="changeAddon(addon.id)"
+            >
+              <PanelImage
+                :image="storeImage(addon)"
+                image-size="auto"
+                rounded="left"
+                class="addon-image"
+                :alt="addon.name"
+              />
+              <div>
+                <PanelHeading level="h3" title-align="right" multiline>{{
+                  addon.name
+                }}</PanelHeading>
                 <div
                   v-if="selectedAddon(addon.id)"
                   v-tooltip="editable && t('labels.selected')"
-                  class="model-panel-selected"
+                  class="addon-panel-selected"
                 >
                   <i class="fa fa-check" />
                 </div>
@@ -43,11 +46,11 @@
       <FilterGroup
         v-model="addonToAdd"
         :label="label"
-        :options="addons"
+        :options="options"
         name="addons"
         value-attr="id"
         :searchable="true"
-        @input="addAddon"
+        @update:model-value="addAddon"
       />
     </div>
   </div>
@@ -57,20 +60,21 @@
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import Panel from "@/shared/components/Panel/index.vue";
 import { useI18n } from "@/frontend/composables/useI18n";
+import { type ModelModule, type ModelUpgrade } from "@/services/fyApi";
+import { FilterGroupOption } from "@/shared/components/base/FilterGroup/Option/index.vue";
+import PanelHeading from "@/shared/components/Panel/Heading/index.vue";
+import PanelImage from "@/shared/components/Panel/Image/index.vue";
 
 type Props = {
-  addons: {
-    id: string;
-    name: string;
-    storeImage: string;
-  }[];
+  addons: (ModelModule | ModelUpgrade)[];
   label: string;
-  value: string[];
   initialAddons: string[];
-  editable: boolean;
+  modelValue?: string[];
+  editable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
   editable: false,
 });
 
@@ -78,13 +82,27 @@ const { t } = useI18n();
 
 const addonToAdd = ref<string | undefined>();
 
-const internalAddons = ref<string[]>(props.value);
+const internalAddons = ref<string[]>(props.modelValue || []);
+
+const storeImage = (addon: ModelModule | ModelUpgrade) => {
+  return addon.media?.storeImage?.small;
+};
+
+const options = computed((): FilterGroupOption[] => {
+  return props.addons.map((addon) => {
+    return {
+      value: addon.id,
+      label: addon.name,
+      icon: addon.media.storeImage?.small,
+    };
+  });
+});
 
 watch(
-  () => props.value,
+  () => props.modelValue,
   () => {
-    if (internalAddons.value !== props.value) {
-      internalAddons.value = [...props.value];
+    if (internalAddons.value !== props.modelValue) {
+      internalAddons.value = [...(props.modelValue || [])];
     }
   },
 );
@@ -92,7 +110,7 @@ watch(
 watch(
   () => props.addons,
   () => {
-    internalAddons.value = [...props.value];
+    internalAddons.value = [...(props.modelValue || [])];
   },
 );
 
