@@ -62,6 +62,9 @@ module Rsi
     end
 
     private def models_mapping(name)
+      x1_variants = ["X1", "X1 Velocity", "X1 Force"]
+      zeus_variants = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
+
       models_map = {
         "Carrack / Carrack Expedition" => ["Carrack"],
         "Carrack w/ C8X / Carrack Expedition w/C8X" => ["Carrack"],
@@ -79,7 +82,6 @@ module Rsi
         "Spirit A1" => ["A1 Spirit"],
         "Spirit C1" => ["C1 Spirit"],
         "Spirit E1" => ["E1 Spirit"],
-        "Zeus Variants" => ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"],
         "Hull D, E" => ["Hull D", "Hull E"],
         "Idris-M & P" => %w[Idris-P Idris-M],
         "Talon & Talon Shrike" => ["Talon", "Talon Shrike"],
@@ -90,16 +92,19 @@ module Rsi
         "G12A" => ["G12a"],
         "G12R" => ["G12r"],
         "G12 Variants" => ["G12", "G12a", "G12r"],
-        "Zeus ES and MR Variants" => ["Zeus Mk II MR", "Zeus Mk II ES"],
         "Zeus CL" => ["Zeus Mk II CL"],
         "Zeus ES" => ["Zeus Mk II ES"],
         "Zeus MR" => ["Zeus Mk II MR"],
+        "Zeus ES (+ CL)" => ["Zeus Mk II ES", "Zeus Mk II CL"],
+        "Zeus ES and MR Variants" => ["Zeus Mk II MR", "Zeus Mk II ES"],
+        "Zeus Variants" => zeus_variants,
         "Storm Variants" => ["Storm", "Storm AA"],
         "ROC (+ ROC DS)" => %w[ROC ROC-DS],
         "Retaliator" => ["Retaliator Bomber", "Retaliator"],
         "San'Tok.yai" => ["San'tok.yāi"],
         "Nox" => ["Nox", "Nox Kue"],
-        "X1 & Variants" => ["X1 Base", "X1 Velocity", "X1 Force"],
+        "X1 & Variants" => x1_variants,
+        "X1 (+ Velocity, Force)" => x1_variants,
         "Reliant Variants" => ["Reliant Kore", "Reliant Mako", "Reliant Sen", "Reliant Tana"],
         "Cyclone Variants" => %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA]
       }

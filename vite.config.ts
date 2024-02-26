@@ -74,6 +74,7 @@ export default defineConfig({
   },
   build: {
     target: browserslistToEsbuild(),
+    emptyOutDir: false,
     rollupOptions: {
       maxParallelFileOps: 5,
     },
