@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { GalleryTypeEnum } from './GalleryTypeEnum';
-
 export type ImageInputCreate = {
     caption?: string;
     enabled?: boolean;

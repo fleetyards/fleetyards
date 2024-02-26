@@ -5,14 +5,10 @@
 import type { CelestialObject } from '../models/CelestialObject';
 import type { CelestialObjectQuery } from '../models/CelestialObjectQuery';
 import type { CelestialObjects } from '../models/CelestialObjects';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class CelestialObjectsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Celestial Objects List
      * Get a List of Celestial Objects
@@ -41,7 +37,6 @@ export class CelestialObjectsService {
             },
         });
     }
-
     /**
      * Celestial Object Detail
      * Get Detail of a Celestial Object referenced by its Slug
@@ -67,5 +62,4 @@ export class CelestialObjectsService {
             },
         });
     }
-
 }

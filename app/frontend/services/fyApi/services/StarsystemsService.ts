@@ -5,14 +5,10 @@
 import type { Starsystem } from '../models/Starsystem';
 import type { StarsystemQuery } from '../models/StarsystemQuery';
 import type { Starsystems } from '../models/Starsystems';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class StarsystemsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Starsystems list
      * @returns Starsystems successful
@@ -40,7 +36,6 @@ export class StarsystemsService {
             },
         });
     }
-
     /**
      * Starsystem Detail
      * @returns Starsystem successful
@@ -65,5 +60,4 @@ export class StarsystemsService {
             },
         });
     }
-
 }

@@ -5,14 +5,10 @@
 import type { ConfirmAccessInput } from '../models/ConfirmAccessInput';
 import type { SessionInput } from '../models/SessionInput';
 import type { StandardMessage } from '../models/StandardMessage';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class SessionsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * confirm_access session
      * @returns StandardMessage successful
@@ -34,7 +30,6 @@ export class SessionsService {
             },
         });
     }
-
     /**
      * create session
      * @returns StandardMessage successful
@@ -55,7 +50,6 @@ export class SessionsService {
             },
         });
     }
-
     /**
      * delete session
      * @returns any successful
@@ -70,5 +64,4 @@ export class SessionsService {
             },
         });
     }
-
 }

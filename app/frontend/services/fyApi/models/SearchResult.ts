@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CelestialObject } from './CelestialObject';
 import type { Commodity } from './Commodity';
 import type { Component } from './Component';
@@ -14,7 +13,6 @@ import type { SearchResultTypeEnum } from './SearchResultTypeEnum';
 import type { Shop } from './Shop';
 import type { Starsystem } from './Starsystem';
 import type { Station } from './Station';
-
 export type SearchResult = {
     id: string;
     type: SearchResultTypeEnum;

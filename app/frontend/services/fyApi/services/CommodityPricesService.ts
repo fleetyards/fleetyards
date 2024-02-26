@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { CommodityPrice } from '../models/CommodityPrice';
 import type { CommodityPriceInput } from '../models/CommodityPriceInput';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class CommodityPricesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Create Commodity Price
      * @returns CommodityPrice successful
@@ -33,5 +29,4 @@ export class CommodityPricesService {
             },
         });
     }
-
 }

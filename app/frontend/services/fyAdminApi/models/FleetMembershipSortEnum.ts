@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum FleetMembershipSortEnum {
     USER_RSI_HANDLE_ASC = 'user_rsi_handle asc',
     USER_RSI_HANDLE_DESC = 'user_rsi_handle desc',

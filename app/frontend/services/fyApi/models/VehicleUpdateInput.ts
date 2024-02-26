@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { BoughtViaEnum } from './BoughtViaEnum';
-
 export type VehicleUpdateInput = {
     name?: string | null;
     serial?: string | null;

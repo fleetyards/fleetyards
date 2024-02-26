@@ -2,11 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
 import type { ViewImage } from './ViewImage';
-
 export type ModelPaint = {
     id: string;
     name: string;

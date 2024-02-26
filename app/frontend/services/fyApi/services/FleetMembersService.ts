@@ -7,14 +7,10 @@ import type { FleetMemberCreateInput } from '../models/FleetMemberCreateInput';
 import type { FleetMemberQuery } from '../models/FleetMemberQuery';
 import type { FleetMembershipUpdateInput } from '../models/FleetMembershipUpdateInput';
 import type { StandardMessage } from '../models/StandardMessage';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class FleetMembersService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Accept Member
      * No Member found
@@ -49,7 +45,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * Create Member
      * You are not the owner of this Fleet
@@ -82,7 +77,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * @deprecated
      * Update Membership -> use PUT /fleets/{fleetSlug}/membership
@@ -109,7 +103,6 @@ export class FleetMembersService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Fleet Member List
      * @returns FleetMember successful
@@ -149,7 +142,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * Decline Member
      * No Member found
@@ -184,7 +176,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * Demote Member
      * No Member found
@@ -218,7 +209,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * @deprecated
      * My Fleet Membership -> use GET /fleets/{fleetSlug}/membership
@@ -241,7 +231,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * @deprecated
      * Accept Member -> use GET /fleets/{fleetSlug}/members/{username}/accept
@@ -270,7 +259,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * @deprecated
      * Decline Member -> use GET /fleets/{fleetSlug}/members/{username}/decline
@@ -299,7 +287,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * @deprecated
      * Accept Membership -> use GET /fleets/{fleetSlug}/membership/accept
@@ -322,7 +309,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * @deprecated
      * Decline Membership -> use GET /fleets/{fleetSlug}/membership/decline
@@ -345,7 +331,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * @deprecated
      * Leave Fleet -> use DELETE /fleets/{fleetSlug}/membership
@@ -368,7 +353,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * Remove Fleet Member
      * You are not the owner of this Fleet
@@ -402,7 +386,6 @@ export class FleetMembersService {
             },
         });
     }
-
     /**
      * Promote Member
      * No Member found
@@ -436,5 +419,4 @@ export class FleetMembersService {
             },
         });
     }
-
 }

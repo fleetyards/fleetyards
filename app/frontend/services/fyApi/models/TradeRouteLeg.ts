@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { StationTypeEnum } from './StationTypeEnum';
-
 export type TradeRouteLeg = {
     name: string;
     slug: string;

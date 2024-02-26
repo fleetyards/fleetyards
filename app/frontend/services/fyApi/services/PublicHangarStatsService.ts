@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { HangarQuery } from '../models/HangarQuery';
 import type { HangarStatsPublic } from '../models/HangarStatsPublic';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class PublicHangarStatsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Public Hangar Stats
      * @returns HangarStatsPublic successful
@@ -41,5 +37,4 @@ export class PublicHangarStatsService {
             },
         });
     }
-
 }

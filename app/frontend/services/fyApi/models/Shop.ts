@@ -2,12 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CelestialObject } from './CelestialObject';
 import type { MediaImage } from './MediaImage';
 import type { ShopTypeEnum } from './ShopTypeEnum';
 import type { StationShop } from './StationShop';
-
 export type Shop = {
     id: string;
     name: string;

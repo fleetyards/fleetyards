@@ -4,11 +4,8 @@
 /* eslint-disable */
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class VehiclesStatsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * @deprecated
      * Vehicle Quickstats -> use GET /hangar/stats
@@ -21,7 +18,6 @@ export class VehiclesStatsService {
             url: '/vehicles/quick-stats',
         });
     }
-
     /**
      * @deprecated
      * Vehicle Models by size -> use GET /hangar/stats/models-by-size
@@ -34,7 +30,6 @@ export class VehiclesStatsService {
             url: '/vehicles/stats/models-by-size',
         });
     }
-
     /**
      * @deprecated
      * Vehicle Models by ProductionStatus -> use GET /hangar/stats/models-by-production-status
@@ -47,7 +42,6 @@ export class VehiclesStatsService {
             url: '/vehicles/stats/models-by-production-status',
         });
     }
-
     /**
      * @deprecated
      * models_by_manufacturer vehicle
@@ -60,7 +54,6 @@ export class VehiclesStatsService {
             url: '/vehicles/stats/models-by-manufacturer',
         });
     }
-
     /**
      * @deprecated
      * models_by_classification vehicle
@@ -73,5 +66,4 @@ export class VehiclesStatsService {
             url: '/vehicles/stats/models-by-classification',
         });
     }
-
 }

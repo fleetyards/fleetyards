@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { FieldError } from './FieldError';
-
 export type ValidationError = {
     code: string;
     message: string;

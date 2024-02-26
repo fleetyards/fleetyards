@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { HabitationTypeEnum } from './HabitationTypeEnum';
-
 export type Habitation = {
     name: string;
     habitationName?: string;

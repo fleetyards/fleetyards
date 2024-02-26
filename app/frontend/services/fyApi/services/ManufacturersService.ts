@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { ManufacturerQuery } from '../models/ManufacturerQuery';
 import type { Manufacturers } from '../models/Manufacturers';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ManufacturersService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * @deprecated
      * with_models manufacturer
@@ -24,7 +20,6 @@ export class ManufacturersService {
             url: '/manufacturers/with-models',
         });
     }
-
     /**
      * Manufacturers list
      * @returns Manufacturers successful
@@ -52,5 +47,4 @@ export class ManufacturersService {
             },
         });
     }
-
 }

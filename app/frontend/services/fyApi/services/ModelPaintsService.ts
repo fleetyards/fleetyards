@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { ModelPaint } from '../models/ModelPaint';
 import type { ModelPaintQuery } from '../models/ModelPaintQuery';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ModelPaintsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Model Paints List
      * @returns ModelPaint successful
@@ -36,5 +32,4 @@ export class ModelPaintsService {
             },
         });
     }
-
 }

@@ -16,14 +16,10 @@ import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
 import type { ModelUpgrade } from '../models/ModelUpgrade';
 import type { Videos } from '../models/Videos';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ModelsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Models with Docks
      * @returns Models successful
@@ -51,7 +47,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Unscheduled Models
      * @returns any successful
@@ -63,7 +58,6 @@ export class ModelsService {
             url: '/models/unscheduled',
         });
     }
-
     /**
      * Latest Models
      * @returns any successful
@@ -75,7 +69,6 @@ export class ModelsService {
             url: '/models/latest',
         });
     }
-
     /**
      * Available Model-Slugs
      * @returns any successful
@@ -87,7 +80,6 @@ export class ModelsService {
             url: '/models/slugs',
         });
     }
-
     /**
      * Updated Models
      * @returns any successful
@@ -112,7 +104,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Embed Models
      * @returns Model successful
@@ -131,7 +122,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Filters
      * @returns FilterOption successful
@@ -143,7 +133,6 @@ export class ModelsService {
             url: '/models/filters',
         });
     }
-
     /**
      * Model classifications
      * @returns FilterOption successful
@@ -155,7 +144,6 @@ export class ModelsService {
             url: '/models/classifications',
         });
     }
-
     /**
      * Model Production states
      * @returns FilterOption successful
@@ -167,7 +155,6 @@ export class ModelsService {
             url: '/models/production-states',
         });
     }
-
     /**
      * Model focus
      * @returns FilterOption successful
@@ -179,7 +166,6 @@ export class ModelsService {
             url: '/models/focus',
         });
     }
-
     /**
      * Model Sizes
      * @returns FilterOption successful
@@ -191,7 +177,6 @@ export class ModelsService {
             url: '/models/sizes',
         });
     }
-
     /**
      * Model Cargo options
      * @returns CargoOptions successful
@@ -213,7 +198,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Models List
      * @returns Models successful
@@ -241,7 +225,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Detail
      * @returns ModelExtended successful
@@ -266,7 +249,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Hardpoints
      * @returns ModelHardpoint successful
@@ -296,7 +278,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Images
      * @returns Images successful
@@ -329,7 +310,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Videos
      * @returns Videos successful
@@ -362,7 +342,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Variants
      * @returns Models successful
@@ -395,7 +374,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Loaners
      * @returns Models successful
@@ -428,7 +406,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Snubcrafts
      * @returns Model successful
@@ -453,7 +430,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Modules
      * @returns ModelModules successful
@@ -486,7 +462,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Module Packages
      * @returns ModelModulePackages successful
@@ -519,7 +494,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Upgrades
      * @returns ModelUpgrade successful
@@ -544,7 +518,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * Model Paints
      * @returns ModelPaint successful
@@ -569,7 +542,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Model Storeimage
@@ -595,7 +567,6 @@ export class ModelsService {
             },
         });
     }
-
     /**
      * @deprecated
      * Model Fleetchart Image
@@ -622,5 +593,4 @@ export class ModelsService {
             },
         });
     }
-
 }

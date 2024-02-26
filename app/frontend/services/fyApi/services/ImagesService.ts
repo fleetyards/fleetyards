@@ -5,14 +5,10 @@
 import type { Image } from '../models/Image';
 import type { ImageQuery } from '../models/ImageQuery';
 import type { Images } from '../models/Images';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ImagesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Images list
      * @returns Images successful
@@ -40,7 +36,6 @@ export class ImagesService {
             },
         });
     }
-
     /**
      * Images random list
      * Get a randomized List of 14 Images
@@ -60,5 +55,4 @@ export class ImagesService {
             },
         });
     }
-
 }

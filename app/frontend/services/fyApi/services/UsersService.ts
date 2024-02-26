@@ -6,14 +6,10 @@ import type { Check } from '../models/Check';
 import type { CheckInput } from '../models/CheckInput';
 import type { User } from '../models/User';
 import type { UserCreateInput } from '../models/UserCreateInput';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class UsersService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Check E-Mail Availability
      * @returns Check successful
@@ -31,7 +27,6 @@ export class UsersService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Check Username Availability
      * @returns Check successful
@@ -49,7 +44,6 @@ export class UsersService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Create new User
      * @returns User successful
@@ -71,7 +65,6 @@ export class UsersService {
             },
         });
     }
-
     /**
      * @deprecated
      * My Data
@@ -84,7 +77,6 @@ export class UsersService {
             url: '/users/current',
         });
     }
-
     /**
      * My Data
      * @returns User successful
@@ -99,5 +91,4 @@ export class UsersService {
             },
         });
     }
-
 }

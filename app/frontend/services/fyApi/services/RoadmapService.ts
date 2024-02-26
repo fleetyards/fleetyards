@@ -5,14 +5,10 @@
 import type { RoadmapItem } from '../models/RoadmapItem';
 import type { RoadmapItemQuery } from '../models/RoadmapItemQuery';
 import type { RoadmapWeek } from '../models/RoadmapWeek';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class RoadmapService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Roadmap Items
      * @returns RoadmapItem successful
@@ -31,7 +27,6 @@ export class RoadmapService {
             },
         });
     }
-
     /**
      * Roadmap Weeks
      * @returns RoadmapWeek successful
@@ -43,5 +38,4 @@ export class RoadmapService {
             url: '/roadmap/weeks',
         });
     }
-
 }

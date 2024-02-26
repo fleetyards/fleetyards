@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum CommodityPricePathEnum {
     BUY = 'buy',
     SELL = 'sell',

@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export enum ShopCommodityCategoryEnum {
     MODEL = 'model',
     EQUIPMENT = 'equipment',

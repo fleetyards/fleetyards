@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CelestialObjectSortEnum } from './CelestialObjectSortEnum';
-
 export type CelestialObjectQuery = {
     starsystemEq?: string;
     nameCont?: string;

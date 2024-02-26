@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { StationQuery } from '../models/StationQuery';
 import type { Stations } from '../models/Stations';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class StationsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Stations list
      * Get a List of Stations
@@ -46,5 +42,4 @@ export class StationsService {
             },
         });
     }
-
 }

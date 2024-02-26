@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { ModelSortEnum } from './ModelSortEnum';
-
 export type ModelQuery = {
     beamGteq?: number;
     beamLteq?: number;

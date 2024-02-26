@@ -2,13 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { HangarGroupPublic } from './HangarGroupPublic';
 import type { Model } from './Model';
 import type { ModelModulePackage } from './ModelModulePackage';
 import type { ModelPaint } from './ModelPaint';
 import type { ModelUpgrade } from './ModelUpgrade';
-
 export type VehiclePublic = {
     id: string;
     name?: string;

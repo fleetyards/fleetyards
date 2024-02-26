@@ -3,14 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterOption } from '../models/FilterOption';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class CommodityPriceFiltersService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Commodity Types
      * @returns FilterOption successful
@@ -22,5 +18,4 @@ export class CommodityPriceFiltersService {
             url: '/filters/commodity-prices/time-ranges',
         });
     }
-
 }

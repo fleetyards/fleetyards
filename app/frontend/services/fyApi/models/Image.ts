@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Gallery } from './Gallery';
-
 export type Image = {
     id: string;
     background: boolean;

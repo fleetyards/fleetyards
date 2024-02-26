@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MediaImage } from './MediaImage';
-
 export type ModelUpgrade = {
     id: string;
     name: string;

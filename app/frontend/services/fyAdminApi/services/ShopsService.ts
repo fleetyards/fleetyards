@@ -5,14 +5,10 @@
 import type { ShopCommodities } from '../models/ShopCommodities';
 import type { ShopCommodityOrder } from '../models/ShopCommodityOrder';
 import type { ShopCommodityQuery } from '../models/ShopCommodityQuery';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ShopsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Shop Commodities list
      * Get a List of Shop Commodities
@@ -50,5 +46,4 @@ export class ShopsService {
             },
         });
     }
-
 }

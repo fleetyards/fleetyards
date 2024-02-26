@@ -2,11 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Manufacturer } from './Manufacturer';
 import type { MediaImage } from './MediaImage';
 import type { ShopCommodity } from './ShopCommodity';
-
 export type ModelModule = {
     id: string;
     name: string;

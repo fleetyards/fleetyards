@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { FleetMembershipRoleEnum } from './FleetMembershipRoleEnum';
 import type { FleetMembershipSortEnum } from './FleetMembershipSortEnum';
-
 export type FleetMemberQuery = {
     usernameCont?: string;
     /**

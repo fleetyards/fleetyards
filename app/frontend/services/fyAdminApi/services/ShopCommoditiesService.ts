@@ -3,14 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ShopCommodity } from '../models/ShopCommodity';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ShopCommoditiesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Shop Commodity Destroy
      * @returns ShopCommodity successful
@@ -36,5 +32,4 @@ export class ShopCommoditiesService {
             },
         });
     }
-
 }

@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type FleetVehicleExport = {
     name: string;
     slug: string;

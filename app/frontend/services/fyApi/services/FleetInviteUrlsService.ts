@@ -6,14 +6,10 @@ import type { FleetInviteUrl } from '../models/FleetInviteUrl';
 import type { FleetInviteUrlCreateInput } from '../models/FleetInviteUrlCreateInput';
 import type { FleetMember } from '../models/FleetMember';
 import type { FleetMembershipCreateInput } from '../models/FleetMembershipCreateInput';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class FleetInviteUrlsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Create Invite Url
      * @returns FleetInviteUrl successful
@@ -45,7 +41,6 @@ export class FleetInviteUrlsService {
             },
         });
     }
-
     /**
      * Fleet Invite Urls List
      * @returns FleetInviteUrl successful
@@ -79,7 +74,6 @@ export class FleetInviteUrlsService {
             },
         });
     }
-
     /**
      * Remove Invite Url
      * You are not the owner of this Fleet
@@ -113,7 +107,6 @@ export class FleetInviteUrlsService {
             },
         });
     }
-
     /**
      * Create Membership by Invite
      * User is already a member of this fleet
@@ -137,5 +130,4 @@ export class FleetInviteUrlsService {
             },
         });
     }
-
 }

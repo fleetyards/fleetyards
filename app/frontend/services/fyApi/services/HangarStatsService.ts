@@ -5,14 +5,10 @@
 import type { HangarQuery } from '../models/HangarQuery';
 import type { HangarStats } from '../models/HangarStats';
 import type { PieChartStats } from '../models/PieChartStats';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class HangarStatsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Hangar Stats - Models by Classification
      * @returns PieChartStats successful
@@ -27,7 +23,6 @@ export class HangarStatsService {
             },
         });
     }
-
     /**
      * Hangar Stats - Models by Manufacturer
      * @returns PieChartStats successful
@@ -42,7 +37,6 @@ export class HangarStatsService {
             },
         });
     }
-
     /**
      * Hangar Stats - Models by Production Status
      * @returns PieChartStats successful
@@ -57,7 +51,6 @@ export class HangarStatsService {
             },
         });
     }
-
     /**
      * Hangar Stats - Models by Size
      * @returns PieChartStats successful
@@ -72,7 +65,6 @@ export class HangarStatsService {
             },
         });
     }
-
     /**
      * Your Hangar Stats
      * @returns HangarStats successful
@@ -94,5 +86,4 @@ export class HangarStatsService {
             },
         });
     }
-
 }

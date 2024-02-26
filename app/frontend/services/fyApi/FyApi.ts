@@ -5,7 +5,6 @@
 import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
-
 import { CelestialObjectsService } from './services/CelestialObjectsService';
 import { CommoditiesService } from './services/CommoditiesService';
 import { CommodityFiltersService } from './services/CommodityFiltersService';
@@ -48,11 +47,8 @@ import { VehiclesPublicService } from './services/VehiclesPublicService';
 import { VehiclesStatsService } from './services/VehiclesStatsService';
 import { VersionsService } from './services/VersionsService';
 import { WishlistService } from './services/WishlistService';
-
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
-
 export class FyApi {
-
     public readonly celestialObjects: CelestialObjectsService;
     public readonly commodities: CommoditiesService;
     public readonly commodityFilters: CommodityFiltersService;
@@ -95,9 +91,7 @@ export class FyApi {
     public readonly vehiclesStats: VehiclesStatsService;
     public readonly versions: VersionsService;
     public readonly wishlist: WishlistService;
-
     public readonly request: BaseHttpRequest;
-
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
         this.request = new HttpRequest({
             BASE: config?.BASE ?? 'http://api.fleetyards.test/v1',
@@ -110,7 +104,6 @@ export class FyApi {
             HEADERS: config?.HEADERS,
             ENCODE_PATH: config?.ENCODE_PATH,
         });
-
         this.celestialObjects = new CelestialObjectsService(this.request);
         this.commodities = new CommoditiesService(this.request);
         this.commodityFilters = new CommodityFiltersService(this.request);

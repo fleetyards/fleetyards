@@ -7,14 +7,10 @@ import type { ImageInput } from '../models/ImageInput';
 import type { ImageInputCreate } from '../models/ImageInputCreate';
 import type { ImageQuery } from '../models/ImageQuery';
 import type { Images } from '../models/Images';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ImagesService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Image create
      * Create a new Image
@@ -36,7 +32,6 @@ export class ImagesService {
             },
         });
     }
-
     /**
      * Images list
      * Get a List of Images
@@ -71,7 +66,6 @@ export class ImagesService {
             },
         });
     }
-
     /**
      * Image destroy
      * @returns void
@@ -97,7 +91,6 @@ export class ImagesService {
             },
         });
     }
-
     /**
      * Image update
      * @returns Image successful
@@ -127,5 +120,4 @@ export class ImagesService {
             },
         });
     }
-
 }

@@ -8,14 +8,10 @@ import type { HangarQuery } from '../models/HangarQuery';
 import type { HangarSyncResult } from '../models/HangarSyncResult';
 import type { SyncRsiHangarInput } from '../models/SyncRsiHangarInput';
 import type { VehicleExport } from '../models/VehicleExport';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class HangarService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Clear your personal Hangar
      * @returns void
@@ -30,7 +26,6 @@ export class HangarService {
             },
         });
     }
-
     /**
      * Your personal Hangar
      * @returns Hangar successful
@@ -58,7 +53,6 @@ export class HangarService {
             },
         });
     }
-
     /**
      * Export your personal Hangar
      * @returns VehicleExport successful
@@ -73,7 +67,6 @@ export class HangarService {
             },
         });
     }
-
     /**
      * Import to your personal Hangar
      * @returns HangarImportResult successful
@@ -97,7 +90,6 @@ export class HangarService {
             },
         });
     }
-
     /**
      * Your personal Hangar items
      * @returns string successful
@@ -112,7 +104,6 @@ export class HangarService {
             },
         });
     }
-
     /**
      * Move all Ingame Ships from your Hangar to your Wishlist
      * @returns void
@@ -127,7 +118,6 @@ export class HangarService {
             },
         });
     }
-
     /**
      * Sync RSI Hangar
      * @returns HangarSyncResult successful
@@ -151,5 +141,4 @@ export class HangarService {
             },
         });
     }
-
 }

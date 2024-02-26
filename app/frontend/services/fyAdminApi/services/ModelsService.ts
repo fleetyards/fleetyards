@@ -4,14 +4,10 @@
 /* eslint-disable */
 import type { ModelQuery } from '../models/ModelQuery';
 import type { Models } from '../models/Models';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class ModelsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Models list
      * Get a List of Models
@@ -46,5 +42,4 @@ export class ModelsService {
             },
         });
     }
-
 }

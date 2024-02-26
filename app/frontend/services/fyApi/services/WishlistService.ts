@@ -5,14 +5,10 @@
 import type { Hangar } from '../models/Hangar';
 import type { HangarQuery } from '../models/HangarQuery';
 import type { VehicleExport } from '../models/VehicleExport';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class WishlistService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Clear your Wishlist
      * @returns void
@@ -27,7 +23,6 @@ export class WishlistService {
             },
         });
     }
-
     /**
      * Your Wishlist
      * @returns Hangar successful
@@ -55,7 +50,6 @@ export class WishlistService {
             },
         });
     }
-
     /**
      * Export your Wishlist
      * @returns VehicleExport successful
@@ -70,7 +64,6 @@ export class WishlistService {
             },
         });
     }
-
     /**
      * Your Wishlist items
      * @returns string successful
@@ -85,5 +78,4 @@ export class WishlistService {
             },
         });
     }
-
 }

@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { RsiHangarItemKindEnum } from './RsiHangarItemKindEnum';
-
 export type RsiHangarItemInput = {
     id: string;
     name: string;

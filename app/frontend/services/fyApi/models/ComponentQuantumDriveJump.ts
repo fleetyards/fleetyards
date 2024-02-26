@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type ComponentQuantumDriveJump = {
     speed: number;
     stage1AccelerationRate: number;

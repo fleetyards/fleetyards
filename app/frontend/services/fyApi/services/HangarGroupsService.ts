@@ -5,14 +5,10 @@
 import type { HangarGroup } from '../models/HangarGroup';
 import type { HangarGroupCreateInput } from '../models/HangarGroupCreateInput';
 import type { HangarGroupUpdateInput } from '../models/HangarGroupUpdateInput';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class HangarGroupsService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * HangarGroup create
      * @returns HangarGroup successful
@@ -33,7 +29,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * HangarGroup list
      * @returns HangarGroup successful
@@ -48,7 +43,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * HangarGroup Destroy
      * @returns HangarGroup successful
@@ -74,7 +68,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * HangarGroup Update
      * @returns HangarGroup successful
@@ -104,7 +97,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * HangarGroup sort
      * @returns any successful
@@ -121,7 +113,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * @deprecated
      * HangarGroup list
@@ -137,7 +128,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * @deprecated
      * HangarGroup create
@@ -159,7 +149,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * @deprecated
      * HangarGroup Destroy
@@ -186,7 +175,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * @deprecated
      * HangarGroup Update
@@ -217,7 +205,6 @@ export class HangarGroupsService {
             },
         });
     }
-
     /**
      * @deprecated
      * HangarGroup sort
@@ -235,5 +222,4 @@ export class HangarGroupsService {
             },
         });
     }
-
 }

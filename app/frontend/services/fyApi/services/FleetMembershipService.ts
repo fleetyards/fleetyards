@@ -5,14 +5,10 @@
 import type { FleetMember } from '../models/FleetMember';
 import type { FleetMembershipUpdateInput } from '../models/FleetMembershipUpdateInput';
 import type { StandardMessage } from '../models/StandardMessage';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class FleetMembershipService {
-
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
     /**
      * Accept Membership
      * No Membership found
@@ -40,7 +36,6 @@ export class FleetMembershipService {
             },
         });
     }
-
     /**
      * Decline Membership
      * No Membership found
@@ -68,7 +63,6 @@ export class FleetMembershipService {
             },
         });
     }
-
     /**
      * Leave Fleet
      * @returns void
@@ -94,7 +88,6 @@ export class FleetMembershipService {
             },
         });
     }
-
     /**
      * Fleet Membership Detail
      * Membership for this slug and user does not exist
@@ -121,7 +114,6 @@ export class FleetMembershipService {
             },
         });
     }
-
     /**
      * Update Membership
      * Fleet for this slug and user does not exist
@@ -153,5 +145,4 @@ export class FleetMembershipService {
             },
         });
     }
-
 }
