@@ -58,6 +58,18 @@ namespace :deploy do
     invoke :"server:restart_worker"
     invoke :"server:broadcast_version"
   end
+
+  desc 'Cleanup expired assets'
+  task :cleanup_assets => [:set_rails_env] do
+    next unless fetch(:keep_assets)
+    on release_roles(fetch(:assets_roles)) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "'assets:clean[#{fetch(:keep_assets)}, 5184000]'"
+        end
+      end
+    end
+  end
 end
 
 namespace :ruby do
